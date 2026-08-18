@@ -1,0 +1,544 @@
+# typed: strong
+
+module OpenAI
+  module Resources
+    # Given a prompt and/or an input image, the model will generate a new image.
+    class Images
+      # Creates a variation of a given image. This endpoint only supports `dall-e-2`.
+      sig do
+        params(
+          image: OpenAI::Internal::FileInput,
+          model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
+          n: T.nilable(Integer),
+          response_format:
+            T.nilable(
+              OpenAI::ImageCreateVariationParams::ResponseFormat::OrSymbol
+            ),
+          size: T.nilable(OpenAI::ImageCreateVariationParams::Size::OrSymbol),
+          user: String,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::ImagesResponse)
+      end
+      def create_variation(
+        # The image to use as the basis for the variation(s). Must be a valid PNG file,
+        # less than 4MB, and square.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
+        image:,
+        # The model to use for image generation. Only `dall-e-2` is supported at this
+        # time.
+        model: nil,
+        # The number of images to generate. Must be between 1 and 10.
+        n: nil,
+        # The format in which the generated images are returned. Must be one of `url` or
+        # `b64_json`. URLs are only valid for 60 minutes after the image has been
+        # generated.
+        response_format: nil,
+        # The size of the generated images. Must be one of `256x256`, `512x512`, or
+        # `1024x1024`.
+        size: nil,
+        # A unique identifier representing your end-user, which can help OpenAI to monitor
+        # and detect abuse.
+        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        user: nil,
+        request_options: {}
+      )
+      end
+
+      # See {OpenAI::Resources::Images#edit_stream_raw} for streaming counterpart.
+      #
+      # Creates an edited or extended image given one or more source images and a
+      # prompt. This endpoint supports GPT Image models (`gpt-image-1.5`, `gpt-image-1`,
+      # `gpt-image-1-mini`, and `chatgpt-image-latest`) and `dall-e-2`.
+      sig do
+        params(
+          image: OpenAI::ImageEditParams::Image::Variants,
+          prompt: String,
+          background: T.nilable(OpenAI::ImageEditParams::Background::OrSymbol),
+          input_fidelity:
+            T.nilable(OpenAI::ImageEditParams::InputFidelity::OrSymbol),
+          mask: OpenAI::Internal::FileInput,
+          model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
+          n: T.nilable(Integer),
+          output_compression: T.nilable(Integer),
+          output_format:
+            T.nilable(OpenAI::ImageEditParams::OutputFormat::OrSymbol),
+          partial_images: T.nilable(Integer),
+          quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
+          response_format:
+            T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol),
+          size:
+            T.nilable(T.any(String, OpenAI::ImageEditParams::Size::OrSymbol)),
+          user: String,
+          stream: T.noreturn,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::ImagesResponse)
+      end
+      def edit(
+        # The image(s) to edit. Must be a supported image file or an array of images.
+        #
+        # For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`,
+        # `gpt-image-2`, `gpt-image-2-2026-04-21`, and `chatgpt-image-latest`), each image
+        # should be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to
+        # 16 images.
+        #
+        # For `dall-e-2`, you can only provide one image, and it should be a square `png`
+        # file less than 4MB.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
+        image:,
+        # A text description of the desired image(s). The maximum length is 1000
+        # characters for `dall-e-2`, and 32000 characters for the GPT image models.
+        prompt:,
+        # Allows to set transparency for the background of the generated image(s). This
+        # parameter is only supported for GPT image models that support transparent
+        # backgrounds. Must be one of `transparent`, `opaque`, or `auto` (default value).
+        # When `auto` is used, the model will automatically determine the best background
+        # for the image.
+        #
+        # `gpt-image-2` and `gpt-image-2-2026-04-21` do not support transparent
+        # backgrounds. Requests with `background` set to `transparent` will return an
+        # error for these models; use `opaque` or `auto` instead.
+        #
+        # If `transparent`, the output format needs to support transparency, so it should
+        # be set to either `png` (default value) or `webp`.
+        background: nil,
+        # Control how much effort the model will exert to match the style and features,
+        # especially facial features, of input images. This parameter is only supported
+        # for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
+        # `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
+        input_fidelity: nil,
+        # An additional image whose fully transparent areas (e.g. where alpha is zero)
+        # indicate where `image` should be edited. If there are multiple images provided,
+        # the mask will be applied on the first image. Must be a valid PNG file, less than
+        # 4MB, and have the same dimensions as `image`.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
+        mask: nil,
+        # The model to use for image generation. One of `dall-e-2` or a GPT image model
+        # (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
+        # `gpt-image-2-2026-04-21`, or `chatgpt-image-latest`). Defaults to
+        # `gpt-image-1.5`.
+        model: nil,
+        # The number of images to generate. Must be between 1 and 10.
+        n: nil,
+        # The compression level (0-100%) for the generated images. This parameter is only
+        # supported for the GPT image models with the `webp` or `jpeg` output formats, and
+        # defaults to 100.
+        output_compression: nil,
+        # The format in which the generated images are returned. This parameter is only
+        # supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`. The
+        # default value is `png`.
+        output_format: nil,
+        # The number of partial images to generate. This parameter is used for streaming
+        # responses that return partial images. Value must be between 0 and 3. When set to
+        # 0, the response will be a single image sent in one streaming event.
+        #
+        # Note that the final image may be sent before the full number of partial images
+        # are generated if the full image is generated more quickly.
+        partial_images: nil,
+        # The quality of the image that will be generated for GPT image models. Defaults
+        # to `auto`.
+        quality: nil,
+        # The format in which the generated images are returned. Must be one of `url` or
+        # `b64_json`. URLs are only valid for 60 minutes after the image has been
+        # generated. This parameter is only supported for `dall-e-2` (default is `url` for
+        # `dall-e-2`), as GPT image models always return base64-encoded images.
+        response_format: nil,
+        # The size of the generated images. For `gpt-image-2` and
+        # `gpt-image-2-2026-04-21`, arbitrary resolutions are supported as `WIDTHxHEIGHT`
+        # strings, for example `1536x864`. Width and height must both be divisible by 16
+        # and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above
+        # `2560x1440` are experimental, and the maximum supported resolution is
+        # `3840x2160`. The requested size must also satisfy the model's current pixel and
+        # edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are
+        # supported by the GPT image models; `auto` is supported for models that allow
+        # automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
+        # `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
+        # `1024x1792`.
+        size: nil,
+        # A unique identifier representing your end-user, which can help OpenAI to monitor
+        # and detect abuse.
+        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        user: nil,
+        # There is no need to provide `stream:`. Instead, use `#edit_stream_raw` or
+        # `#edit` for streaming and non-streaming use cases, respectively.
+        stream: false,
+        request_options: {}
+      )
+      end
+
+      # See {OpenAI::Resources::Images#edit} for non-streaming counterpart.
+      #
+      # Creates an edited or extended image given one or more source images and a
+      # prompt. This endpoint supports GPT Image models (`gpt-image-1.5`, `gpt-image-1`,
+      # `gpt-image-1-mini`, and `chatgpt-image-latest`) and `dall-e-2`.
+      sig do
+        params(
+          image: OpenAI::ImageEditParams::Image::Variants,
+          prompt: String,
+          background: T.nilable(OpenAI::ImageEditParams::Background::OrSymbol),
+          input_fidelity:
+            T.nilable(OpenAI::ImageEditParams::InputFidelity::OrSymbol),
+          mask: OpenAI::Internal::FileInput,
+          model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
+          n: T.nilable(Integer),
+          output_compression: T.nilable(Integer),
+          output_format:
+            T.nilable(OpenAI::ImageEditParams::OutputFormat::OrSymbol),
+          partial_images: T.nilable(Integer),
+          quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
+          response_format:
+            T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol),
+          size:
+            T.nilable(T.any(String, OpenAI::ImageEditParams::Size::OrSymbol)),
+          user: String,
+          stream: T.noreturn,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(
+          OpenAI::Internal::Stream[OpenAI::ImageEditStreamEvent::Variants]
+        )
+      end
+      def edit_stream_raw(
+        # The image(s) to edit. Must be a supported image file or an array of images.
+        #
+        # For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`,
+        # `gpt-image-2`, `gpt-image-2-2026-04-21`, and `chatgpt-image-latest`), each image
+        # should be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to
+        # 16 images.
+        #
+        # For `dall-e-2`, you can only provide one image, and it should be a square `png`
+        # file less than 4MB.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
+        image:,
+        # A text description of the desired image(s). The maximum length is 1000
+        # characters for `dall-e-2`, and 32000 characters for the GPT image models.
+        prompt:,
+        # Allows to set transparency for the background of the generated image(s). This
+        # parameter is only supported for GPT image models that support transparent
+        # backgrounds. Must be one of `transparent`, `opaque`, or `auto` (default value).
+        # When `auto` is used, the model will automatically determine the best background
+        # for the image.
+        #
+        # `gpt-image-2` and `gpt-image-2-2026-04-21` do not support transparent
+        # backgrounds. Requests with `background` set to `transparent` will return an
+        # error for these models; use `opaque` or `auto` instead.
+        #
+        # If `transparent`, the output format needs to support transparency, so it should
+        # be set to either `png` (default value) or `webp`.
+        background: nil,
+        # Control how much effort the model will exert to match the style and features,
+        # especially facial features, of input images. This parameter is only supported
+        # for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
+        # `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
+        input_fidelity: nil,
+        # An additional image whose fully transparent areas (e.g. where alpha is zero)
+        # indicate where `image` should be edited. If there are multiple images provided,
+        # the mask will be applied on the first image. Must be a valid PNG file, less than
+        # 4MB, and have the same dimensions as `image`.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
+        mask: nil,
+        # The model to use for image generation. One of `dall-e-2` or a GPT image model
+        # (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
+        # `gpt-image-2-2026-04-21`, or `chatgpt-image-latest`). Defaults to
+        # `gpt-image-1.5`.
+        model: nil,
+        # The number of images to generate. Must be between 1 and 10.
+        n: nil,
+        # The compression level (0-100%) for the generated images. This parameter is only
+        # supported for the GPT image models with the `webp` or `jpeg` output formats, and
+        # defaults to 100.
+        output_compression: nil,
+        # The format in which the generated images are returned. This parameter is only
+        # supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`. The
+        # default value is `png`.
+        output_format: nil,
+        # The number of partial images to generate. This parameter is used for streaming
+        # responses that return partial images. Value must be between 0 and 3. When set to
+        # 0, the response will be a single image sent in one streaming event.
+        #
+        # Note that the final image may be sent before the full number of partial images
+        # are generated if the full image is generated more quickly.
+        partial_images: nil,
+        # The quality of the image that will be generated for GPT image models. Defaults
+        # to `auto`.
+        quality: nil,
+        # The format in which the generated images are returned. Must be one of `url` or
+        # `b64_json`. URLs are only valid for 60 minutes after the image has been
+        # generated. This parameter is only supported for `dall-e-2` (default is `url` for
+        # `dall-e-2`), as GPT image models always return base64-encoded images.
+        response_format: nil,
+        # The size of the generated images. For `gpt-image-2` and
+        # `gpt-image-2-2026-04-21`, arbitrary resolutions are supported as `WIDTHxHEIGHT`
+        # strings, for example `1536x864`. Width and height must both be divisible by 16
+        # and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above
+        # `2560x1440` are experimental, and the maximum supported resolution is
+        # `3840x2160`. The requested size must also satisfy the model's current pixel and
+        # edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are
+        # supported by the GPT image models; `auto` is supported for models that allow
+        # automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
+        # `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
+        # `1024x1792`.
+        size: nil,
+        # A unique identifier representing your end-user, which can help OpenAI to monitor
+        # and detect abuse.
+        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        user: nil,
+        # There is no need to provide `stream:`. Instead, use `#edit_stream_raw` or
+        # `#edit` for streaming and non-streaming use cases, respectively.
+        stream: true,
+        request_options: {}
+      )
+      end
+
+      # See {OpenAI::Resources::Images#generate_stream_raw} for streaming counterpart.
+      #
+      # Creates an image given a prompt.
+      # [Learn more](https://platform.openai.com/docs/guides/images).
+      sig do
+        params(
+          prompt: String,
+          background:
+            T.nilable(OpenAI::ImageGenerateParams::Background::OrSymbol),
+          model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
+          moderation:
+            T.nilable(OpenAI::ImageGenerateParams::Moderation::OrSymbol),
+          n: T.nilable(Integer),
+          output_compression: T.nilable(Integer),
+          output_format:
+            T.nilable(OpenAI::ImageGenerateParams::OutputFormat::OrSymbol),
+          partial_images: T.nilable(Integer),
+          quality: T.nilable(OpenAI::ImageGenerateParams::Quality::OrSymbol),
+          response_format:
+            T.nilable(OpenAI::ImageGenerateParams::ResponseFormat::OrSymbol),
+          size:
+            T.nilable(
+              T.any(String, OpenAI::ImageGenerateParams::Size::OrSymbol)
+            ),
+          style: T.nilable(OpenAI::ImageGenerateParams::Style::OrSymbol),
+          user: String,
+          stream: T.noreturn,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::ImagesResponse)
+      end
+      def generate(
+        # A text description of the desired image(s). The maximum length is 32000
+        # characters for the GPT image models, 1000 characters for `dall-e-2` and 4000
+        # characters for `dall-e-3`.
+        prompt:,
+        # Allows to set transparency for the background of the generated image(s). This
+        # parameter is only supported for GPT image models that support transparent
+        # backgrounds. Must be one of `transparent`, `opaque`, or `auto` (default value).
+        # When `auto` is used, the model will automatically determine the best background
+        # for the image.
+        #
+        # `gpt-image-2` and `gpt-image-2-2026-04-21` do not support transparent
+        # backgrounds. Requests with `background` set to `transparent` will return an
+        # error for these models; use `opaque` or `auto` instead.
+        #
+        # If `transparent`, the output format needs to support transparency, so it should
+        # be set to either `png` (default value) or `webp`.
+        background: nil,
+        # The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT
+        # image model (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
+        # or `gpt-image-2-2026-04-21`). Defaults to `dall-e-2` unless a parameter specific
+        # to the GPT image models is used.
+        model: nil,
+        # Control the content-moderation level for images generated by the GPT image
+        # models. Must be either `low` for less restrictive filtering or `auto` (default
+        # value).
+        moderation: nil,
+        # The number of images to generate. Must be between 1 and 10. For `dall-e-3`, only
+        # `n=1` is supported.
+        n: nil,
+        # The compression level (0-100%) for the generated images. This parameter is only
+        # supported for the GPT image models with the `webp` or `jpeg` output formats, and
+        # defaults to 100.
+        output_compression: nil,
+        # The format in which the generated images are returned. This parameter is only
+        # supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`.
+        output_format: nil,
+        # The number of partial images to generate. This parameter is used for streaming
+        # responses that return partial images. Value must be between 0 and 3. When set to
+        # 0, the response will be a single image sent in one streaming event.
+        #
+        # Note that the final image may be sent before the full number of partial images
+        # are generated if the full image is generated more quickly.
+        partial_images: nil,
+        # The quality of the image that will be generated.
+        #
+        # - `auto` (default value) will automatically select the best quality for the
+        #   given model.
+        # - `high`, `medium` and `low` are supported for the GPT image models.
+        # - `hd` and `standard` are supported for `dall-e-3`.
+        # - `standard` is the only option for `dall-e-2`.
+        quality: nil,
+        # The format in which generated images with `dall-e-2` and `dall-e-3` are
+        # returned. Must be one of `url` or `b64_json`. URLs are only valid for 60 minutes
+        # after the image has been generated. This parameter isn't supported for the GPT
+        # image models, which always return base64-encoded images.
+        response_format: nil,
+        # The size of the generated images. For `gpt-image-2` and
+        # `gpt-image-2-2026-04-21`, arbitrary resolutions are supported as `WIDTHxHEIGHT`
+        # strings, for example `1536x864`. Width and height must both be divisible by 16
+        # and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above
+        # `2560x1440` are experimental, and the maximum supported resolution is
+        # `3840x2160`. The requested size must also satisfy the model's current pixel and
+        # edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are
+        # supported by the GPT image models; `auto` is supported for models that allow
+        # automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
+        # `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
+        # `1024x1792`.
+        size: nil,
+        # The style of the generated images. This parameter is only supported for
+        # `dall-e-3`. Must be one of `vivid` or `natural`. Vivid causes the model to lean
+        # towards generating hyper-real and dramatic images. Natural causes the model to
+        # produce more natural, less hyper-real looking images.
+        style: nil,
+        # A unique identifier representing your end-user, which can help OpenAI to monitor
+        # and detect abuse.
+        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        user: nil,
+        # There is no need to provide `stream:`. Instead, use `#generate_stream_raw` or
+        # `#generate` for streaming and non-streaming use cases, respectively.
+        stream: false,
+        request_options: {}
+      )
+      end
+
+      # See {OpenAI::Resources::Images#generate} for non-streaming counterpart.
+      #
+      # Creates an image given a prompt.
+      # [Learn more](https://platform.openai.com/docs/guides/images).
+      sig do
+        params(
+          prompt: String,
+          background:
+            T.nilable(OpenAI::ImageGenerateParams::Background::OrSymbol),
+          model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
+          moderation:
+            T.nilable(OpenAI::ImageGenerateParams::Moderation::OrSymbol),
+          n: T.nilable(Integer),
+          output_compression: T.nilable(Integer),
+          output_format:
+            T.nilable(OpenAI::ImageGenerateParams::OutputFormat::OrSymbol),
+          partial_images: T.nilable(Integer),
+          quality: T.nilable(OpenAI::ImageGenerateParams::Quality::OrSymbol),
+          response_format:
+            T.nilable(OpenAI::ImageGenerateParams::ResponseFormat::OrSymbol),
+          size:
+            T.nilable(
+              T.any(String, OpenAI::ImageGenerateParams::Size::OrSymbol)
+            ),
+          style: T.nilable(OpenAI::ImageGenerateParams::Style::OrSymbol),
+          user: String,
+          stream: T.noreturn,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(
+          OpenAI::Internal::Stream[OpenAI::ImageGenStreamEvent::Variants]
+        )
+      end
+      def generate_stream_raw(
+        # A text description of the desired image(s). The maximum length is 32000
+        # characters for the GPT image models, 1000 characters for `dall-e-2` and 4000
+        # characters for `dall-e-3`.
+        prompt:,
+        # Allows to set transparency for the background of the generated image(s). This
+        # parameter is only supported for GPT image models that support transparent
+        # backgrounds. Must be one of `transparent`, `opaque`, or `auto` (default value).
+        # When `auto` is used, the model will automatically determine the best background
+        # for the image.
+        #
+        # `gpt-image-2` and `gpt-image-2-2026-04-21` do not support transparent
+        # backgrounds. Requests with `background` set to `transparent` will return an
+        # error for these models; use `opaque` or `auto` instead.
+        #
+        # If `transparent`, the output format needs to support transparency, so it should
+        # be set to either `png` (default value) or `webp`.
+        background: nil,
+        # The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT
+        # image model (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
+        # or `gpt-image-2-2026-04-21`). Defaults to `dall-e-2` unless a parameter specific
+        # to the GPT image models is used.
+        model: nil,
+        # Control the content-moderation level for images generated by the GPT image
+        # models. Must be either `low` for less restrictive filtering or `auto` (default
+        # value).
+        moderation: nil,
+        # The number of images to generate. Must be between 1 and 10. For `dall-e-3`, only
+        # `n=1` is supported.
+        n: nil,
+        # The compression level (0-100%) for the generated images. This parameter is only
+        # supported for the GPT image models with the `webp` or `jpeg` output formats, and
+        # defaults to 100.
+        output_compression: nil,
+        # The format in which the generated images are returned. This parameter is only
+        # supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`.
+        output_format: nil,
+        # The number of partial images to generate. This parameter is used for streaming
+        # responses that return partial images. Value must be between 0 and 3. When set to
+        # 0, the response will be a single image sent in one streaming event.
+        #
+        # Note that the final image may be sent before the full number of partial images
+        # are generated if the full image is generated more quickly.
+        partial_images: nil,
+        # The quality of the image that will be generated.
+        #
+        # - `auto` (default value) will automatically select the best quality for the
+        #   given model.
+        # - `high`, `medium` and `low` are supported for the GPT image models.
+        # - `hd` and `standard` are supported for `dall-e-3`.
+        # - `standard` is the only option for `dall-e-2`.
+        quality: nil,
+        # The format in which generated images with `dall-e-2` and `dall-e-3` are
+        # returned. Must be one of `url` or `b64_json`. URLs are only valid for 60 minutes
+        # after the image has been generated. This parameter isn't supported for the GPT
+        # image models, which always return base64-encoded images.
+        response_format: nil,
+        # The size of the generated images. For `gpt-image-2` and
+        # `gpt-image-2-2026-04-21`, arbitrary resolutions are supported as `WIDTHxHEIGHT`
+        # strings, for example `1536x864`. Width and height must both be divisible by 16
+        # and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above
+        # `2560x1440` are experimental, and the maximum supported resolution is
+        # `3840x2160`. The requested size must also satisfy the model's current pixel and
+        # edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are
+        # supported by the GPT image models; `auto` is supported for models that allow
+        # automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
+        # `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
+        # `1024x1792`.
+        size: nil,
+        # The style of the generated images. This parameter is only supported for
+        # `dall-e-3`. Must be one of `vivid` or `natural`. Vivid causes the model to lean
+        # towards generating hyper-real and dramatic images. Natural causes the model to
+        # produce more natural, less hyper-real looking images.
+        style: nil,
+        # A unique identifier representing your end-user, which can help OpenAI to monitor
+        # and detect abuse.
+        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        user: nil,
+        # There is no need to provide `stream:`. Instead, use `#generate_stream_raw` or
+        # `#generate` for streaming and non-streaming use cases, respectively.
+        stream: true,
+        request_options: {}
+      )
+      end
+
+      # @api private
+      sig { params(client: OpenAI::Client).returns(T.attached_class) }
+      def self.new(client:)
+      end
+    end
+  end
+end

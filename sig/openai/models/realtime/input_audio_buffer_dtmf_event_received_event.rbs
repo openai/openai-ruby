@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Realtime
+      type input_audio_buffer_dtmf_event_received_event =
+        {
+          event: String,
+          received_at: Integer,
+          type: :"input_audio_buffer.dtmf_event_received"
+        }
+
+      class InputAudioBufferDtmfEventReceivedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor event: String
+
+        attr_accessor received_at: Integer
+
+        attr_accessor type: :"input_audio_buffer.dtmf_event_received"
+
+        def initialize: (
+          event: String,
+          received_at: Integer,
+          ?type: :"input_audio_buffer.dtmf_event_received"
+        ) -> void
+
+        def to_hash: -> {
+          event: String,
+          received_at: Integer,
+          type: :"input_audio_buffer.dtmf_event_received"
+        }
+      end
+    end
+  end
+end

@@ -1,0 +1,10 @@
+module OpenAI
+  module Models
+    module Responses
+      type computer_action_list =
+        ::Array[OpenAI::Models::Responses::computer_action]
+
+      ComputerActionList: OpenAI::Internal::Type::Converter
+    end
+  end
+end

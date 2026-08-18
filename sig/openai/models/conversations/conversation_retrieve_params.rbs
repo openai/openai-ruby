@@ -1,0 +1,25 @@
+module OpenAI
+  module Models
+    module Conversations
+      type conversation_retrieve_params =
+        { conversation_id: String } & OpenAI::Internal::Type::request_parameters
+
+      class ConversationRetrieveParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor conversation_id: String
+
+        def initialize: (
+          conversation_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          conversation_id: String,
+          request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end

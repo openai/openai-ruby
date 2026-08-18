@@ -1,0 +1,16 @@
+module OpenAI
+  module Models
+    type video_size = :"720x1280" | :"1280x720" | :"1024x1792" | :"1792x1024"
+
+    module VideoSize
+      extend OpenAI::Internal::Type::Enum
+
+      VIDEO_SIZE_720X1280: :"720x1280"
+      VIDEO_SIZE_1280X720: :"1280x720"
+      VIDEO_SIZE_1024X1792: :"1024x1792"
+      VIDEO_SIZE_1792X1024: :"1792x1024"
+
+      def self?.values: -> ::Array[OpenAI::Models::video_size]
+    end
+  end
+end

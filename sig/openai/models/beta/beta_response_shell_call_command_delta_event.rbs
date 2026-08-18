@@ -1,0 +1,70 @@
+module OpenAI
+  module Models
+    class BetaResponseShellCallCommandDeltaEvent = Beta::BetaResponseShellCallCommandDeltaEvent
+
+    module Beta
+      type beta_response_shell_call_command_delta_event =
+        {
+          command_index: Integer,
+          delta: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.shell_call_command.delta",
+          agent: OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent,
+          obfuscation: String
+        }
+
+      class BetaResponseShellCallCommandDeltaEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor command_index: Integer
+
+        attr_accessor delta: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.shell_call_command.delta"
+
+        attr_reader agent: OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent?
+
+        def agent=: (
+          OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent
+        ) -> OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent
+
+        attr_reader obfuscation: String?
+
+        def obfuscation=: (String) -> String
+
+        def initialize: (
+          command_index: Integer,
+          delta: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?agent: OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent,
+          ?obfuscation: String,
+          ?type: :"response.shell_call_command.delta"
+        ) -> void
+
+        def to_hash: -> {
+          command_index: Integer,
+          delta: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.shell_call_command.delta",
+          agent: OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent,
+          obfuscation: String
+        }
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end

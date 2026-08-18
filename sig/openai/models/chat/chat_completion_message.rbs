@@ -1,0 +1,132 @@
+module OpenAI
+  module Models
+    class ChatCompletionMessage = Chat::ChatCompletionMessage
+
+    module Chat
+      type chat_completion_message =
+        {
+          content: String?,
+          refusal: String?,
+          role: :assistant,
+          annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
+          audio: OpenAI::Chat::ChatCompletionAudio?,
+          function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
+          tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
+        }
+
+      class ChatCompletionMessage < OpenAI::Internal::Type::BaseModel
+        attr_accessor content: String?
+
+        attr_accessor refusal: String?
+
+        attr_accessor role: :assistant
+
+        attr_reader annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation]?
+
+        def annotations=: (
+          ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation]
+        ) -> ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation]
+
+        attr_accessor audio: OpenAI::Chat::ChatCompletionAudio?
+
+        attr_reader function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall?
+
+        def function_call=: (
+          OpenAI::Chat::ChatCompletionMessage::FunctionCall
+        ) -> OpenAI::Chat::ChatCompletionMessage::FunctionCall
+
+        attr_reader tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]?
+
+        def tool_calls=: (
+          ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
+        ) -> ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
+
+        def initialize: (
+          content: String?,
+          refusal: String?,
+          ?annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
+          ?audio: OpenAI::Chat::ChatCompletionAudio?,
+          ?function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
+          ?tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call],
+          ?role: :assistant
+        ) -> void
+
+        def to_hash: -> {
+          content: String?,
+          refusal: String?,
+          role: :assistant,
+          annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
+          audio: OpenAI::Chat::ChatCompletionAudio?,
+          function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
+          tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
+        }
+
+        type annotation =
+          {
+            type: :url_citation,
+            url_citation: OpenAI::Chat::ChatCompletionMessage::Annotation::URLCitation
+          }
+
+        class Annotation < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :url_citation
+
+          attr_accessor url_citation: OpenAI::Chat::ChatCompletionMessage::Annotation::URLCitation
+
+          def initialize: (
+            url_citation: OpenAI::Chat::ChatCompletionMessage::Annotation::URLCitation,
+            ?type: :url_citation
+          ) -> void
+
+          def to_hash: -> {
+            type: :url_citation,
+            url_citation: OpenAI::Chat::ChatCompletionMessage::Annotation::URLCitation
+          }
+
+          type url_citation =
+            {
+              end_index: Integer,
+              start_index: Integer,
+              title: String,
+              url: String
+            }
+
+          class URLCitation < OpenAI::Internal::Type::BaseModel
+            attr_accessor end_index: Integer
+
+            attr_accessor start_index: Integer
+
+            attr_accessor title: String
+
+            attr_accessor url: String
+
+            def initialize: (
+              end_index: Integer,
+              start_index: Integer,
+              title: String,
+              url: String
+            ) -> void
+
+            def to_hash: -> {
+              end_index: Integer,
+              start_index: Integer,
+              title: String,
+              url: String
+            }
+          end
+        end
+
+        type function_call = { arguments: String, name: String }
+
+        class FunctionCall < OpenAI::Internal::Type::BaseModel
+          attr_accessor arguments: String
+
+          attr_accessor name: String
+
+          def initialize: (arguments: String, name: String) -> void
+
+          def to_hash: -> { arguments: String, name: String }
+        end
+      end
+    end
+  end
+end

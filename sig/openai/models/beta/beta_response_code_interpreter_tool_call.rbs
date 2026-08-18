@@ -1,0 +1,113 @@
+module OpenAI
+  module Models
+    class BetaResponseCodeInterpreterToolCall = Beta::BetaResponseCodeInterpreterToolCall
+
+    module Beta
+      type beta_response_code_interpreter_tool_call =
+        {
+          id: String,
+          code: String?,
+          container_id: String,
+          outputs: ::Array[OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall::output]?,
+          status: OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall::status,
+          type: :code_interpreter_call,
+          agent: OpenAI::Beta::BetaResponseCodeInterpreterToolCall::Agent?
+        }
+
+      class BetaResponseCodeInterpreterToolCall < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor code: String?
+
+        attr_accessor container_id: String
+
+        attr_accessor outputs: ::Array[OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall::output]?
+
+        attr_accessor status: OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall::status
+
+        attr_accessor type: :code_interpreter_call
+
+        attr_accessor agent: OpenAI::Beta::BetaResponseCodeInterpreterToolCall::Agent?
+
+        def initialize: (
+          id: String,
+          code: String?,
+          container_id: String,
+          outputs: ::Array[OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall::output]?,
+          status: OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall::status,
+          ?agent: OpenAI::Beta::BetaResponseCodeInterpreterToolCall::Agent?,
+          ?type: :code_interpreter_call
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          code: String?,
+          container_id: String,
+          outputs: ::Array[OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall::output]?,
+          status: OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall::status,
+          type: :code_interpreter_call,
+          agent: OpenAI::Beta::BetaResponseCodeInterpreterToolCall::Agent?
+        }
+
+        type output =
+          OpenAI::Beta::BetaResponseCodeInterpreterToolCall::Output::Logs
+          | OpenAI::Beta::BetaResponseCodeInterpreterToolCall::Output::Image
+
+        module Output
+          extend OpenAI::Internal::Type::Union
+
+          type logs = { logs: String, type: :logs }
+
+          class Logs < OpenAI::Internal::Type::BaseModel
+            attr_accessor logs: String
+
+            attr_accessor type: :logs
+
+            def initialize: (logs: String, ?type: :logs) -> void
+
+            def to_hash: -> { logs: String, type: :logs }
+          end
+
+          type image = { type: :image, url: String }
+
+          class Image < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :image
+
+            attr_accessor url: String
+
+            def initialize: (url: String, ?type: :image) -> void
+
+            def to_hash: -> { type: :image, url: String }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall::output]
+        end
+
+        type status =
+          :in_progress | :completed | :incomplete | :interpreting | :failed
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+          INTERPRETING: :interpreting
+          FAILED: :failed
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall::status]
+        end
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end

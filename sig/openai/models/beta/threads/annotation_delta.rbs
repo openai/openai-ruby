@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type annotation_delta =
+          OpenAI::Beta::Threads::FileCitationDeltaAnnotation
+          | OpenAI::Beta::Threads::FilePathDeltaAnnotation
+
+        module AnnotationDelta
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::Threads::annotation_delta]
+        end
+      end
+    end
+  end
+end

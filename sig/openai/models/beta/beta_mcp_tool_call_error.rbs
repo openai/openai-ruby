@@ -1,0 +1,75 @@
+module OpenAI
+  module Models
+    module BetaMcpToolCallError = Beta::BetaMcpToolCallError
+
+    module Beta
+      type beta_mcp_tool_call_error =
+        OpenAI::Beta::BetaMcpToolCallError::McpProtocolError
+        | OpenAI::Beta::BetaMcpToolCallError::McpToolExecutionError
+        | OpenAI::Beta::BetaMcpToolCallError::HTTPError
+
+      module BetaMcpToolCallError
+        extend OpenAI::Internal::Type::Union
+
+        type mcp_protocol_error =
+          { code: Integer, message: String, type: :mcp_protocol_error }
+
+        class McpProtocolError < OpenAI::Internal::Type::BaseModel
+          attr_accessor code: Integer
+
+          attr_accessor message: String
+
+          attr_accessor type: :mcp_protocol_error
+
+          def initialize: (
+            code: Integer,
+            message: String,
+            ?type: :mcp_protocol_error
+          ) -> void
+
+          def to_hash: -> {
+            code: Integer,
+            message: String,
+            type: :mcp_protocol_error
+          }
+        end
+
+        type mcp_tool_execution_error =
+          { content: top, type: :mcp_tool_execution_error }
+
+        class McpToolExecutionError < OpenAI::Internal::Type::BaseModel
+          attr_accessor content: top
+
+          attr_accessor type: :mcp_tool_execution_error
+
+          def initialize: (
+            content: top,
+            ?type: :mcp_tool_execution_error
+          ) -> void
+
+          def to_hash: -> { content: top, type: :mcp_tool_execution_error }
+        end
+
+        type http_error = { code: Integer, message: String, type: :http_error }
+
+        class HTTPError < OpenAI::Internal::Type::BaseModel
+          attr_accessor code: Integer
+
+          attr_accessor message: String
+
+          attr_accessor type: :http_error
+
+          def initialize: (
+            code: Integer,
+            message: String,
+            ?type: :http_error
+          ) -> void
+
+          def to_hash: -> { code: Integer, message: String, type: :http_error }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::beta_mcp_tool_call_error]
+      end
+    end
+  end
+end

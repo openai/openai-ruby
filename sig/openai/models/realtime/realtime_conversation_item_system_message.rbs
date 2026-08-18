@@ -1,0 +1,117 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_conversation_item_system_message =
+        {
+          content: ::Array[OpenAI::Realtime::RealtimeConversationItemSystemMessage::Content],
+          role: :system,
+          type: :message,
+          id: String,
+          object: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::object,
+          status: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::status
+        }
+
+      class RealtimeConversationItemSystemMessage < OpenAI::Internal::Type::BaseModel
+        attr_accessor content: ::Array[OpenAI::Realtime::RealtimeConversationItemSystemMessage::Content]
+
+        attr_accessor role: :system
+
+        attr_accessor type: :message
+
+        attr_reader id: String?
+
+        def id=: (String) -> String
+
+        attr_reader object: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::object?
+
+        def object=: (
+          OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::object
+        ) -> OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::object
+
+        attr_reader status: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::status?
+
+        def status=: (
+          OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::status
+        ) -> OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::status
+
+        def initialize: (
+          content: ::Array[OpenAI::Realtime::RealtimeConversationItemSystemMessage::Content],
+          ?id: String,
+          ?object: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::object,
+          ?status: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::status,
+          ?role: :system,
+          ?type: :message
+        ) -> void
+
+        def to_hash: -> {
+          content: ::Array[OpenAI::Realtime::RealtimeConversationItemSystemMessage::Content],
+          role: :system,
+          type: :message,
+          id: String,
+          object: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::object,
+          status: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::status
+        }
+
+        type content =
+          {
+            text: String,
+            type: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::Content::type_
+          }
+
+        class Content < OpenAI::Internal::Type::BaseModel
+          attr_reader text: String?
+
+          def text=: (String) -> String
+
+          attr_reader type: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::Content::type_?
+
+          def type=: (
+            OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::Content::type_
+          ) -> OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::Content::type_
+
+          def initialize: (
+            ?text: String,
+            ?type: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::Content::type_
+          ) -> void
+
+          def to_hash: -> {
+            text: String,
+            type: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::Content::type_
+          }
+
+          type type_ = :input_text
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            INPUT_TEXT: :input_text
+
+            def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::Content::type_]
+          end
+        end
+
+        type object = :"realtime.item"
+
+        module Object
+          extend OpenAI::Internal::Type::Enum
+
+          REALTIME_ITEM: :"realtime.item"
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::object]
+        end
+
+        type status = :completed | :incomplete | :in_progress
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+          IN_PROGRESS: :in_progress
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::status]
+        end
+      end
+    end
+  end
+end

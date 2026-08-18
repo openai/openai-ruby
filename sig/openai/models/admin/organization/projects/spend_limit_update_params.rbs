@@ -1,0 +1,67 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Projects
+          type spend_limit_update_params =
+            {
+              project_id: String,
+              currency: OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::currency,
+              interval: OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::interval,
+              threshold_amount: Integer
+            }
+            & OpenAI::Internal::Type::request_parameters
+
+          class SpendLimitUpdateParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            attr_accessor project_id: String
+
+            attr_accessor currency: OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::currency
+
+            attr_accessor interval: OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::interval
+
+            attr_accessor threshold_amount: Integer
+
+            def initialize: (
+              project_id: String,
+              currency: OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::currency,
+              interval: OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::interval,
+              threshold_amount: Integer,
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              project_id: String,
+              currency: OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::currency,
+              interval: OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::interval,
+              threshold_amount: Integer,
+              request_options: OpenAI::RequestOptions
+            }
+
+            type currency = :USD
+
+            module Currency
+              extend OpenAI::Internal::Type::Enum
+
+              USD: :USD
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::currency]
+            end
+
+            type interval = :month
+
+            module Interval
+              extend OpenAI::Internal::Type::Enum
+
+              MONTH: :month
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::interval]
+            end
+          end
+        end
+      end
+    end
+  end
+end

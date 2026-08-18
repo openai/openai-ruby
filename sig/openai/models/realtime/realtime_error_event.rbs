@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_error_event =
+        {
+          error: OpenAI::Realtime::RealtimeError,
+          event_id: String,
+          type: :error
+        }
+
+      class RealtimeErrorEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor error: OpenAI::Realtime::RealtimeError
+
+        attr_accessor event_id: String
+
+        attr_accessor type: :error
+
+        def initialize: (
+          error: OpenAI::Realtime::RealtimeError,
+          event_id: String,
+          ?type: :error
+        ) -> void
+
+        def to_hash: -> {
+          error: OpenAI::Realtime::RealtimeError,
+          event_id: String,
+          type: :error
+        }
+      end
+    end
+  end
+end

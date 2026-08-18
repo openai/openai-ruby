@@ -1,0 +1,29 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Projects
+          type data_retention_retrieve_params =
+            { project_id: String } & OpenAI::Internal::Type::request_parameters
+
+          class DataRetentionRetrieveParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            attr_accessor project_id: String
+
+            def initialize: (
+              project_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              project_id: String,
+              request_options: OpenAI::RequestOptions
+            }
+          end
+        end
+      end
+    end
+  end
+end

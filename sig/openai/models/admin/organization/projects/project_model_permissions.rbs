@@ -1,0 +1,49 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        class ProjectModelPermissions = Projects::ProjectModelPermissions
+
+        module Projects
+          type project_model_permissions =
+            {
+              mode: OpenAI::Models::Admin::Organization::Projects::ProjectModelPermissions::mode,
+              model_ids: ::Array[String],
+              object: :"project.model_permissions"
+            }
+
+          class ProjectModelPermissions < OpenAI::Internal::Type::BaseModel
+            attr_accessor mode: OpenAI::Models::Admin::Organization::Projects::ProjectModelPermissions::mode
+
+            attr_accessor model_ids: ::Array[String]
+
+            attr_accessor object: :"project.model_permissions"
+
+            def initialize: (
+              mode: OpenAI::Models::Admin::Organization::Projects::ProjectModelPermissions::mode,
+              model_ids: ::Array[String],
+              ?object: :"project.model_permissions"
+            ) -> void
+
+            def to_hash: -> {
+              mode: OpenAI::Models::Admin::Organization::Projects::ProjectModelPermissions::mode,
+              model_ids: ::Array[String],
+              object: :"project.model_permissions"
+            }
+
+            type mode = :allow_list | :deny_list
+
+            module Mode
+              extend OpenAI::Internal::Type::Enum
+
+              ALLOW_LIST: :allow_list
+              DENY_LIST: :deny_list
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Projects::ProjectModelPermissions::mode]
+            end
+          end
+        end
+      end
+    end
+  end
+end

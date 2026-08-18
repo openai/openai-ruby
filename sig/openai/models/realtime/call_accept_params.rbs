@@ -1,0 +1,72 @@
+module OpenAI
+  module Models
+    module Realtime
+      type call_accept_params =
+        {
+          call_id: String,
+          type: :realtime,
+          audio: OpenAI::Realtime::RealtimeAudioConfig,
+          include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::include_],
+          instructions: String,
+          max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::max_output_tokens,
+          model: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model,
+          output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::output_modality],
+          parallel_tool_calls: bool,
+          prompt: OpenAI::Responses::ResponsePrompt?,
+          reasoning: OpenAI::Realtime::RealtimeReasoning,
+          tool_choice: OpenAI::Models::Realtime::realtime_tool_choice_config,
+          tools: OpenAI::Models::Realtime::realtime_tools_config,
+          tracing: OpenAI::Models::Realtime::realtime_tracing_config?,
+          truncation: OpenAI::Models::Realtime::realtime_truncation
+        }
+        & OpenAI::Internal::Type::request_parameters
+
+      class CallAcceptParams < OpenAI::Models::Realtime::RealtimeSessionCreateRequest
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        def call_id: -> String
+
+        def call_id=: (String _) -> String
+
+        def initialize: (
+          call_id: String,
+          ?audio: OpenAI::Realtime::RealtimeAudioConfig,
+          ?include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::include_],
+          ?instructions: String,
+          ?max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::max_output_tokens,
+          ?model: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model,
+          ?output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::output_modality],
+          ?parallel_tool_calls: bool,
+          ?prompt: OpenAI::Responses::ResponsePrompt?,
+          ?reasoning: OpenAI::Realtime::RealtimeReasoning,
+          ?tool_choice: OpenAI::Models::Realtime::realtime_tool_choice_config,
+          ?tools: OpenAI::Models::Realtime::realtime_tools_config,
+          ?tracing: OpenAI::Models::Realtime::realtime_tracing_config?,
+          ?truncation: OpenAI::Models::Realtime::realtime_truncation,
+          ?type: :realtime,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          call_id: String,
+          type: :realtime,
+          audio: OpenAI::Realtime::RealtimeAudioConfig,
+          include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::include_],
+          instructions: String,
+          max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::max_output_tokens,
+          model: OpenAI::Models::Realtime::RealtimeSessionCreateRequest::model,
+          output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateRequest::output_modality],
+          parallel_tool_calls: bool,
+          prompt: OpenAI::Responses::ResponsePrompt?,
+          reasoning: OpenAI::Realtime::RealtimeReasoning,
+          tool_choice: OpenAI::Models::Realtime::realtime_tool_choice_config,
+          tools: OpenAI::Models::Realtime::realtime_tools_config,
+          tracing: OpenAI::Models::Realtime::realtime_tracing_config?,
+          truncation: OpenAI::Models::Realtime::realtime_truncation,
+          request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end

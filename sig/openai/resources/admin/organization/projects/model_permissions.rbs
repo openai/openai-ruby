@@ -1,0 +1,30 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class Projects
+          class ModelPermissions
+            def retrieve: (
+              String project_id,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::Projects::ProjectModelPermissions
+
+            def update: (
+              String project_id,
+              mode: OpenAI::Models::Admin::Organization::Projects::ModelPermissionUpdateParams::mode,
+              model_ids: ::Array[String],
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::Projects::ProjectModelPermissions
+
+            def delete: (
+              String project_id,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::Projects::ProjectModelPermissionsDeleted
+
+            def initialize: (client: OpenAI::Client) -> void
+          end
+        end
+      end
+    end
+  end
+end

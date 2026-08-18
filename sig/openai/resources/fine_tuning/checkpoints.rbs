@@ -1,0 +1,11 @@
+module OpenAI
+  module Resources
+    class FineTuning
+      class Checkpoints
+        attr_reader permissions: OpenAI::Resources::FineTuning::Checkpoints::Permissions
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end

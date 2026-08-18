@@ -1,0 +1,71 @@
+module OpenAI
+  module Models
+    module Audio
+      type transcription_verbose =
+        {
+          duration: Float,
+          language: String,
+          text: String,
+          segments: ::Array[OpenAI::Audio::TranscriptionSegment],
+          usage: OpenAI::Audio::TranscriptionVerbose::Usage,
+          words: ::Array[OpenAI::Audio::TranscriptionWord]
+        }
+
+      class TranscriptionVerbose < OpenAI::Internal::Type::BaseModel
+        attr_accessor duration: Float
+
+        attr_accessor language: String
+
+        attr_accessor text: String
+
+        attr_reader segments: ::Array[OpenAI::Audio::TranscriptionSegment]?
+
+        def segments=: (
+          ::Array[OpenAI::Audio::TranscriptionSegment]
+        ) -> ::Array[OpenAI::Audio::TranscriptionSegment]
+
+        attr_reader usage: OpenAI::Audio::TranscriptionVerbose::Usage?
+
+        def usage=: (
+          OpenAI::Audio::TranscriptionVerbose::Usage
+        ) -> OpenAI::Audio::TranscriptionVerbose::Usage
+
+        attr_reader words: ::Array[OpenAI::Audio::TranscriptionWord]?
+
+        def words=: (
+          ::Array[OpenAI::Audio::TranscriptionWord]
+        ) -> ::Array[OpenAI::Audio::TranscriptionWord]
+
+        def initialize: (
+          duration: Float,
+          language: String,
+          text: String,
+          ?segments: ::Array[OpenAI::Audio::TranscriptionSegment],
+          ?usage: OpenAI::Audio::TranscriptionVerbose::Usage,
+          ?words: ::Array[OpenAI::Audio::TranscriptionWord]
+        ) -> void
+
+        def to_hash: -> {
+          duration: Float,
+          language: String,
+          text: String,
+          segments: ::Array[OpenAI::Audio::TranscriptionSegment],
+          usage: OpenAI::Audio::TranscriptionVerbose::Usage,
+          words: ::Array[OpenAI::Audio::TranscriptionWord]
+        }
+
+        type usage = { seconds: Float, type: :duration }
+
+        class Usage < OpenAI::Internal::Type::BaseModel
+          attr_accessor seconds: Float
+
+          attr_accessor type: :duration
+
+          def initialize: (seconds: Float, ?type: :duration) -> void
+
+          def to_hash: -> { seconds: Float, type: :duration }
+        end
+      end
+    end
+  end
+end

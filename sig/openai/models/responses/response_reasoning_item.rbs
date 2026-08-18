@@ -1,0 +1,91 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_reasoning_item =
+        {
+          id: String,
+          summary: ::Array[OpenAI::Responses::ResponseReasoningItem::Summary],
+          type: :reasoning,
+          content: ::Array[OpenAI::Responses::ResponseReasoningItem::Content],
+          encrypted_content: String?,
+          status: OpenAI::Models::Responses::ResponseReasoningItem::status
+        }
+
+      class ResponseReasoningItem < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor summary: ::Array[OpenAI::Responses::ResponseReasoningItem::Summary]
+
+        attr_accessor type: :reasoning
+
+        attr_reader content: ::Array[OpenAI::Responses::ResponseReasoningItem::Content]?
+
+        def content=: (
+          ::Array[OpenAI::Responses::ResponseReasoningItem::Content]
+        ) -> ::Array[OpenAI::Responses::ResponseReasoningItem::Content]
+
+        attr_accessor encrypted_content: String?
+
+        attr_reader status: OpenAI::Models::Responses::ResponseReasoningItem::status?
+
+        def status=: (
+          OpenAI::Models::Responses::ResponseReasoningItem::status
+        ) -> OpenAI::Models::Responses::ResponseReasoningItem::status
+
+        def initialize: (
+          id: String,
+          summary: ::Array[OpenAI::Responses::ResponseReasoningItem::Summary],
+          ?content: ::Array[OpenAI::Responses::ResponseReasoningItem::Content],
+          ?encrypted_content: String?,
+          ?status: OpenAI::Models::Responses::ResponseReasoningItem::status,
+          ?type: :reasoning
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          summary: ::Array[OpenAI::Responses::ResponseReasoningItem::Summary],
+          type: :reasoning,
+          content: ::Array[OpenAI::Responses::ResponseReasoningItem::Content],
+          encrypted_content: String?,
+          status: OpenAI::Models::Responses::ResponseReasoningItem::status
+        }
+
+        type summary = { text: String, type: :summary_text }
+
+        class Summary < OpenAI::Internal::Type::BaseModel
+          attr_accessor text: String
+
+          attr_accessor type: :summary_text
+
+          def initialize: (text: String, ?type: :summary_text) -> void
+
+          def to_hash: -> { text: String, type: :summary_text }
+        end
+
+        type content = { text: String, type: :reasoning_text }
+
+        class Content < OpenAI::Internal::Type::BaseModel
+          attr_accessor text: String
+
+          attr_accessor type: :reasoning_text
+
+          def initialize: (text: String, ?type: :reasoning_text) -> void
+
+          def to_hash: -> { text: String, type: :reasoning_text }
+        end
+
+        type status = :in_progress | :completed | :incomplete
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseReasoningItem::status]
+        end
+      end
+    end
+  end
+end

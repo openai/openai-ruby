@@ -1,0 +1,48 @@
+module OpenAI
+  module Models
+    type video_edit_params =
+      { prompt: String, video: OpenAI::Models::VideoEditParams::video }
+      & OpenAI::Internal::Type::request_parameters
+
+    class VideoEditParams < OpenAI::Internal::Type::BaseModel
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
+
+      attr_accessor prompt: String
+
+      attr_accessor video: OpenAI::Models::VideoEditParams::video
+
+      def initialize: (
+        prompt: String,
+        video: OpenAI::Models::VideoEditParams::video,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        prompt: String,
+        video: OpenAI::Models::VideoEditParams::video,
+        request_options: OpenAI::RequestOptions
+      }
+
+      type video =
+        OpenAI::Internal::file_input
+        | OpenAI::VideoEditParams::Video::VideoReferenceInputParam
+
+      module Video
+        extend OpenAI::Internal::Type::Union
+
+        type video_reference_input_param = { id: String }
+
+        class VideoReferenceInputParam < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          def initialize: (id: String) -> void
+
+          def to_hash: -> { id: String }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::VideoEditParams::video]
+      end
+    end
+  end
+end

@@ -1,0 +1,14 @@
+module OpenAI
+  module Models
+    module Audio
+      type translation_create_response =
+        OpenAI::Audio::Translation | OpenAI::Audio::TranslationVerbose
+
+      module TranslationCreateResponse
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Audio::translation_create_response]
+      end
+    end
+  end
+end

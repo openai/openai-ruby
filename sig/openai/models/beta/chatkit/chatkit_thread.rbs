@@ -1,0 +1,96 @@
+module OpenAI
+  module Models
+    module Beta
+      class ChatKitThread = ChatKit::ChatKitThread
+
+      module ChatKit
+        type chatkit_thread =
+          {
+            id: String,
+            created_at: Integer,
+            object: :"chatkit.thread",
+            status: OpenAI::Models::Beta::ChatKit::ChatKitThread::status,
+            title: String?,
+            user: String
+          }
+
+        class ChatKitThread < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor created_at: Integer
+
+          attr_accessor object: :"chatkit.thread"
+
+          attr_accessor status: OpenAI::Models::Beta::ChatKit::ChatKitThread::status
+
+          attr_accessor title: String?
+
+          attr_accessor user: String
+
+          def initialize: (
+            id: String,
+            created_at: Integer,
+            status: OpenAI::Models::Beta::ChatKit::ChatKitThread::status,
+            title: String?,
+            user: String,
+            ?object: :"chatkit.thread"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            created_at: Integer,
+            object: :"chatkit.thread",
+            status: OpenAI::Models::Beta::ChatKit::ChatKitThread::status,
+            title: String?,
+            user: String
+          }
+
+          type status =
+            OpenAI::Beta::ChatKit::ChatKitThread::Status::Active
+            | OpenAI::Beta::ChatKit::ChatKitThread::Status::Locked
+            | OpenAI::Beta::ChatKit::ChatKitThread::Status::Closed
+
+          module Status
+            extend OpenAI::Internal::Type::Union
+
+            type active = { type: :active }
+
+            class Active < OpenAI::Internal::Type::BaseModel
+              attr_accessor type: :active
+
+              def initialize: (?type: :active) -> void
+
+              def to_hash: -> { type: :active }
+            end
+
+            type locked = { reason: String?, type: :locked }
+
+            class Locked < OpenAI::Internal::Type::BaseModel
+              attr_accessor reason: String?
+
+              attr_accessor type: :locked
+
+              def initialize: (reason: String?, ?type: :locked) -> void
+
+              def to_hash: -> { reason: String?, type: :locked }
+            end
+
+            type closed = { reason: String?, type: :closed }
+
+            class Closed < OpenAI::Internal::Type::BaseModel
+              attr_accessor reason: String?
+
+              attr_accessor type: :closed
+
+              def initialize: (reason: String?, ?type: :closed) -> void
+
+              def to_hash: -> { reason: String?, type: :closed }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThread::status]
+          end
+        end
+      end
+    end
+  end
+end

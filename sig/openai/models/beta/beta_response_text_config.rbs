@@ -1,0 +1,45 @@
+module OpenAI
+  module Models
+    class BetaResponseTextConfig = Beta::BetaResponseTextConfig
+
+    module Beta
+      type beta_response_text_config =
+        {
+          format_: OpenAI::Models::Beta::beta_response_format_text_config,
+          verbosity: OpenAI::Models::Beta::BetaResponseTextConfig::verbosity?
+        }
+
+      class BetaResponseTextConfig < OpenAI::Internal::Type::BaseModel
+        attr_reader format_: OpenAI::Models::Beta::beta_response_format_text_config?
+
+        def format_=: (
+          OpenAI::Models::Beta::beta_response_format_text_config
+        ) -> OpenAI::Models::Beta::beta_response_format_text_config
+
+        attr_accessor verbosity: OpenAI::Models::Beta::BetaResponseTextConfig::verbosity?
+
+        def initialize: (
+          ?format_: OpenAI::Models::Beta::beta_response_format_text_config,
+          ?verbosity: OpenAI::Models::Beta::BetaResponseTextConfig::verbosity?
+        ) -> void
+
+        def to_hash: -> {
+          format_: OpenAI::Models::Beta::beta_response_format_text_config,
+          verbosity: OpenAI::Models::Beta::BetaResponseTextConfig::verbosity?
+        }
+
+        type verbosity = :low | :medium | :high
+
+        module Verbosity
+          extend OpenAI::Internal::Type::Enum
+
+          LOW: :low
+          MEDIUM: :medium
+          HIGH: :high
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseTextConfig::verbosity]
+        end
+      end
+    end
+  end
+end

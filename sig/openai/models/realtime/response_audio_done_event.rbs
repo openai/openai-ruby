@@ -1,0 +1,47 @@
+module OpenAI
+  module Models
+    module Realtime
+      type response_audio_done_event =
+        {
+          content_index: Integer,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          response_id: String,
+          type: :"response.output_audio.done"
+        }
+
+      class ResponseAudioDoneEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor content_index: Integer
+
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor response_id: String
+
+        attr_accessor type: :"response.output_audio.done"
+
+        def initialize: (
+          content_index: Integer,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          response_id: String,
+          ?type: :"response.output_audio.done"
+        ) -> void
+
+        def to_hash: -> {
+          content_index: Integer,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          response_id: String,
+          type: :"response.output_audio.done"
+        }
+      end
+    end
+  end
+end

@@ -1,0 +1,47 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_function_call_arguments_done_event =
+        {
+          arguments: String,
+          item_id: String,
+          name: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.function_call_arguments.done"
+        }
+
+      class ResponseFunctionCallArgumentsDoneEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor arguments: String
+
+        attr_accessor item_id: String
+
+        attr_accessor name: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.function_call_arguments.done"
+
+        def initialize: (
+          arguments: String,
+          item_id: String,
+          name: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?type: :"response.function_call_arguments.done"
+        ) -> void
+
+        def to_hash: -> {
+          arguments: String,
+          item_id: String,
+          name: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.function_call_arguments.done"
+        }
+      end
+    end
+  end
+end

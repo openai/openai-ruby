@@ -1,0 +1,39 @@
+module OpenAI
+  module Resources
+    class Skills
+      attr_reader content: OpenAI::Resources::Skills::Content
+
+      attr_reader versions: OpenAI::Resources::Skills::Versions
+
+      def create: (
+        ?files: OpenAI::Models::SkillCreateParams::files,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Skill
+
+      def retrieve: (
+        String skill_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Skill
+
+      def update: (
+        String skill_id,
+        default_version: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Skill
+
+      def list: (
+        ?after: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::SkillListParams::order,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::CursorPage[OpenAI::Skill]
+
+      def delete: (
+        String skill_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::DeletedSkill
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

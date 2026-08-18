@@ -1,0 +1,62 @@
+module OpenAI
+  module Models
+    module Realtime
+      type conversation_item_input_audio_transcription_segment =
+        {
+          id: String,
+          content_index: Integer,
+          end_: Float,
+          event_id: String,
+          item_id: String,
+          speaker: String,
+          start: Float,
+          text: String,
+          type: :"conversation.item.input_audio_transcription.segment"
+        }
+
+      class ConversationItemInputAudioTranscriptionSegment < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor content_index: Integer
+
+        attr_accessor end_: Float
+
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor speaker: String
+
+        attr_accessor start: Float
+
+        attr_accessor text: String
+
+        attr_accessor type: :"conversation.item.input_audio_transcription.segment"
+
+        def initialize: (
+          id: String,
+          content_index: Integer,
+          end_: Float,
+          event_id: String,
+          item_id: String,
+          speaker: String,
+          start: Float,
+          text: String,
+          ?type: :"conversation.item.input_audio_transcription.segment"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          content_index: Integer,
+          end_: Float,
+          event_id: String,
+          item_id: String,
+          speaker: String,
+          start: Float,
+          text: String,
+          type: :"conversation.item.input_audio_transcription.segment"
+        }
+      end
+    end
+  end
+end

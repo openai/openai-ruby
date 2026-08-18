@@ -1,0 +1,44 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_prompt =
+        {
+          id: String,
+          variables: ::Hash[Symbol, OpenAI::Models::Responses::ResponsePrompt::variable]?,
+          version: String?
+        }
+
+      class ResponsePrompt < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor variables: ::Hash[Symbol, OpenAI::Models::Responses::ResponsePrompt::variable]?
+
+        attr_accessor version: String?
+
+        def initialize: (
+          id: String,
+          ?variables: ::Hash[Symbol, OpenAI::Models::Responses::ResponsePrompt::variable]?,
+          ?version: String?
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          variables: ::Hash[Symbol, OpenAI::Models::Responses::ResponsePrompt::variable]?,
+          version: String?
+        }
+
+        type variable =
+          String
+          | OpenAI::Responses::ResponseInputText
+          | OpenAI::Responses::ResponseInputImage
+          | OpenAI::Responses::ResponseInputFile
+
+        module Variable
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponsePrompt::variable]
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,70 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_translation_output_audio_delta_event =
+        {
+          delta: String,
+          event_id: String,
+          type: :"session.output_audio.delta",
+          channels: Integer,
+          elapsed_ms: Integer?,
+          format_: OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent::format_,
+          sample_rate: Integer
+        }
+
+      class RealtimeTranslationOutputAudioDeltaEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor delta: String
+
+        attr_accessor event_id: String
+
+        attr_accessor type: :"session.output_audio.delta"
+
+        attr_reader channels: Integer?
+
+        def channels=: (Integer) -> Integer
+
+        attr_accessor elapsed_ms: Integer?
+
+        attr_reader format_: OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent::format_?
+
+        def format_=: (
+          OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent::format_
+        ) -> OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent::format_
+
+        attr_reader sample_rate: Integer?
+
+        def sample_rate=: (Integer) -> Integer
+
+        def initialize: (
+          delta: String,
+          event_id: String,
+          ?channels: Integer,
+          ?elapsed_ms: Integer?,
+          ?format_: OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent::format_,
+          ?sample_rate: Integer,
+          ?type: :"session.output_audio.delta"
+        ) -> void
+
+        def to_hash: -> {
+          delta: String,
+          event_id: String,
+          type: :"session.output_audio.delta",
+          channels: Integer,
+          elapsed_ms: Integer?,
+          format_: OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent::format_,
+          sample_rate: Integer
+        }
+
+        type format_ = :pcm16
+
+        module Format
+          extend OpenAI::Internal::Type::Enum
+
+          PCM16: :pcm16
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent::format_]
+        end
+      end
+    end
+  end
+end

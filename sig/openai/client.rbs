@@ -1,0 +1,95 @@
+module OpenAI
+  class Client < OpenAI::Internal::Transport::BaseClient
+    DEFAULT_MAX_RETRIES: 2
+
+    DEFAULT_TIMEOUT_IN_SECONDS: Float
+
+    DEFAULT_INITIAL_RETRY_DELAY: Float
+
+    DEFAULT_MAX_RETRY_DELAY: Float
+
+    attr_reader api_key: String?
+
+    attr_reader admin_api_key: String?
+
+    attr_reader organization: String?
+
+    attr_reader project: String?
+
+    attr_reader webhook_secret: String?
+
+    attr_reader completions: OpenAI::Resources::Completions
+
+    attr_reader chat: OpenAI::Resources::Chat
+
+    attr_reader embeddings: OpenAI::Resources::Embeddings
+
+    attr_reader files: OpenAI::Resources::Files
+
+    attr_reader images: OpenAI::Resources::Images
+
+    attr_reader content_provenance_checks: OpenAI::Resources::ContentProvenanceChecks
+
+    attr_reader audio: OpenAI::Resources::Audio
+
+    attr_reader moderations: OpenAI::Resources::Moderations
+
+    attr_reader models: OpenAI::Resources::Models
+
+    attr_reader fine_tuning: OpenAI::Resources::FineTuning
+
+    attr_reader graders: OpenAI::Resources::Graders
+
+    attr_reader vector_stores: OpenAI::Resources::VectorStores
+
+    attr_reader webhooks: OpenAI::Resources::Webhooks
+
+    attr_reader beta: OpenAI::Resources::Beta
+
+    attr_reader batches: OpenAI::Resources::Batches
+
+    attr_reader uploads: OpenAI::Resources::Uploads
+
+    attr_reader admin: OpenAI::Resources::Admin
+
+    attr_reader responses: OpenAI::Resources::Responses
+
+    attr_reader realtime: OpenAI::Resources::Realtime
+
+    attr_reader conversations: OpenAI::Resources::Conversations
+
+    attr_reader evals: OpenAI::Resources::Evals
+
+    attr_reader containers: OpenAI::Resources::Containers
+
+    attr_reader skills: OpenAI::Resources::Skills
+
+    attr_reader videos: OpenAI::Resources::Videos
+
+    private def auth_headers: (
+      security: { bearer_auth: bool, admin_api_key_auth: bool }
+    ) -> ::Hash[String, String]
+
+    private def bearer_auth: -> ::Hash[String, String]
+
+    private def admin_api_key_auth: -> ::Hash[String, String]
+
+    def initialize: (
+      ?api_key: String?,
+      ?admin_api_key: String?,
+      ?organization: String?,
+      ?project: String?,
+      ?webhook_secret: String?,
+      ?base_url: String?,
+      ?data_residency: (Symbol | String)?,
+      ?max_retries: Integer,
+      ?timeout: Float?,
+      ?initial_retry_delay: Float,
+      ?max_retry_delay: Float,
+      ?http_client: OpenAI::_HTTPClient?,
+      ?logger: OpenAI::_Logger?,
+      ?log_level: (Symbol | String)?,
+      ?on_retry: (^(OpenAI::RetryEvent) -> void)?
+    ) -> void
+  end
+end

@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    module Beta
+      module ChatKit
+        type chat_session_automatic_thread_titling = { enabled: bool }
+
+        class ChatSessionAutomaticThreadTitling < OpenAI::Internal::Type::BaseModel
+          attr_accessor enabled: bool
+
+          def initialize: (enabled: bool) -> void
+
+          def to_hash: -> { enabled: bool }
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,15 @@
+module OpenAI
+  module Models
+    type video_seconds = :"4" | :"8" | :"12"
+
+    module VideoSeconds
+      extend OpenAI::Internal::Type::Enum
+
+      VIDEO_SECONDS_4: :"4"
+      VIDEO_SECONDS_8: :"8"
+      VIDEO_SECONDS_12: :"12"
+
+      def self?.values: -> ::Array[OpenAI::Models::video_seconds]
+    end
+  end
+end

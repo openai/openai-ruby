@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    class BetaResponseLocalEnvironment = Beta::BetaResponseLocalEnvironment
+
+    module Beta
+      type beta_response_local_environment = { type: :local }
+
+      class BetaResponseLocalEnvironment < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :local
+
+        def initialize: (?type: :local) -> void
+
+        def to_hash: -> { type: :local }
+      end
+    end
+  end
+end

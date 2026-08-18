@@ -1,0 +1,66 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type fine_tuning_job_failed_webhook_event =
+        {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::FineTuningJobFailedWebhookEvent::Data,
+          type: :"fine_tuning.job.failed",
+          object: OpenAI::Models::Webhooks::FineTuningJobFailedWebhookEvent::object
+        }
+
+      class FineTuningJobFailedWebhookEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor data: OpenAI::Webhooks::FineTuningJobFailedWebhookEvent::Data
+
+        attr_accessor type: :"fine_tuning.job.failed"
+
+        attr_reader object: OpenAI::Models::Webhooks::FineTuningJobFailedWebhookEvent::object?
+
+        def object=: (
+          OpenAI::Models::Webhooks::FineTuningJobFailedWebhookEvent::object
+        ) -> OpenAI::Models::Webhooks::FineTuningJobFailedWebhookEvent::object
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::FineTuningJobFailedWebhookEvent::Data,
+          ?object: OpenAI::Models::Webhooks::FineTuningJobFailedWebhookEvent::object,
+          ?type: :"fine_tuning.job.failed"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::FineTuningJobFailedWebhookEvent::Data,
+          type: :"fine_tuning.job.failed",
+          object: OpenAI::Models::Webhooks::FineTuningJobFailedWebhookEvent::object
+        }
+
+        type data = { id: String }
+
+        class Data < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          def initialize: (id: String) -> void
+
+          def to_hash: -> { id: String }
+        end
+
+        type object = :event
+
+        module Object
+          extend OpenAI::Internal::Type::Enum
+
+          EVENT: :event
+
+          def self?.values: -> ::Array[OpenAI::Models::Webhooks::FineTuningJobFailedWebhookEvent::object]
+        end
+      end
+    end
+  end
+end

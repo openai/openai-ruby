@@ -1,0 +1,87 @@
+module OpenAI
+  module Models
+    class BetaResponseInputMessageItem = Beta::BetaResponseInputMessageItem
+
+    module Beta
+      type beta_response_input_message_item =
+        {
+          id: String,
+          content: OpenAI::Models::Beta::beta_response_input_message_content_list,
+          role: OpenAI::Models::Beta::BetaResponseInputMessageItem::role,
+          type: :message,
+          agent: OpenAI::Beta::BetaResponseInputMessageItem::Agent?,
+          status: OpenAI::Models::Beta::BetaResponseInputMessageItem::status
+        }
+
+      class BetaResponseInputMessageItem < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor content: OpenAI::Models::Beta::beta_response_input_message_content_list
+
+        attr_accessor role: OpenAI::Models::Beta::BetaResponseInputMessageItem::role
+
+        attr_accessor type: :message
+
+        attr_accessor agent: OpenAI::Beta::BetaResponseInputMessageItem::Agent?
+
+        attr_reader status: OpenAI::Models::Beta::BetaResponseInputMessageItem::status?
+
+        def status=: (
+          OpenAI::Models::Beta::BetaResponseInputMessageItem::status
+        ) -> OpenAI::Models::Beta::BetaResponseInputMessageItem::status
+
+        def initialize: (
+          id: String,
+          content: OpenAI::Models::Beta::beta_response_input_message_content_list,
+          role: OpenAI::Models::Beta::BetaResponseInputMessageItem::role,
+          ?agent: OpenAI::Beta::BetaResponseInputMessageItem::Agent?,
+          ?status: OpenAI::Models::Beta::BetaResponseInputMessageItem::status,
+          ?type: :message
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          content: OpenAI::Models::Beta::beta_response_input_message_content_list,
+          role: OpenAI::Models::Beta::BetaResponseInputMessageItem::role,
+          type: :message,
+          agent: OpenAI::Beta::BetaResponseInputMessageItem::Agent?,
+          status: OpenAI::Models::Beta::BetaResponseInputMessageItem::status
+        }
+
+        type role = :user | :system | :developer
+
+        module Role
+          extend OpenAI::Internal::Type::Enum
+
+          USER: :user
+          SYSTEM: :system
+          DEVELOPER: :developer
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputMessageItem::role]
+        end
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+
+        type status = :in_progress | :completed | :incomplete
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputMessageItem::status]
+        end
+      end
+    end
+  end
+end

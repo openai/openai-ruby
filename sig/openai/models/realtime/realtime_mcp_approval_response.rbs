@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_mcp_approval_response =
+        {
+          id: String,
+          approval_request_id: String,
+          approve: bool,
+          type: :mcp_approval_response,
+          reason: String?
+        }
+
+      class RealtimeMcpApprovalResponse < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor approval_request_id: String
+
+        attr_accessor approve: bool
+
+        attr_accessor type: :mcp_approval_response
+
+        attr_accessor reason: String?
+
+        def initialize: (
+          id: String,
+          approval_request_id: String,
+          approve: bool,
+          ?reason: String?,
+          ?type: :mcp_approval_response
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          approval_request_id: String,
+          approve: bool,
+          type: :mcp_approval_response,
+          reason: String?
+        }
+      end
+    end
+  end
+end

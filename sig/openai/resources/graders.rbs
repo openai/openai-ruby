@@ -1,0 +1,9 @@
+module OpenAI
+  module Resources
+    class Graders
+      attr_reader grader_models: OpenAI::Resources::Graders::GraderModels
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

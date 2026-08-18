@@ -1,0 +1,87 @@
+module OpenAI
+  module Models
+    class BetaEasyInputMessage = Beta::BetaEasyInputMessage
+
+    module Beta
+      type beta_easy_input_message =
+        {
+          content: OpenAI::Models::Beta::BetaEasyInputMessage::content,
+          role: OpenAI::Models::Beta::BetaEasyInputMessage::role,
+          phase: OpenAI::Models::Beta::BetaEasyInputMessage::phase?,
+          type: OpenAI::Models::Beta::BetaEasyInputMessage::type_
+        }
+
+      class BetaEasyInputMessage < OpenAI::Internal::Type::BaseModel
+        attr_accessor content: OpenAI::Models::Beta::BetaEasyInputMessage::content
+
+        attr_accessor role: OpenAI::Models::Beta::BetaEasyInputMessage::role
+
+        attr_accessor phase: OpenAI::Models::Beta::BetaEasyInputMessage::phase?
+
+        attr_reader type: OpenAI::Models::Beta::BetaEasyInputMessage::type_?
+
+        def type=: (
+          OpenAI::Models::Beta::BetaEasyInputMessage::type_
+        ) -> OpenAI::Models::Beta::BetaEasyInputMessage::type_
+
+        def initialize: (
+          content: OpenAI::Models::Beta::BetaEasyInputMessage::content,
+          role: OpenAI::Models::Beta::BetaEasyInputMessage::role,
+          ?phase: OpenAI::Models::Beta::BetaEasyInputMessage::phase?,
+          ?type: OpenAI::Models::Beta::BetaEasyInputMessage::type_
+        ) -> void
+
+        def to_hash: -> {
+          content: OpenAI::Models::Beta::BetaEasyInputMessage::content,
+          role: OpenAI::Models::Beta::BetaEasyInputMessage::role,
+          phase: OpenAI::Models::Beta::BetaEasyInputMessage::phase?,
+          type: OpenAI::Models::Beta::BetaEasyInputMessage::type_
+        }
+
+        type content =
+          String
+          | OpenAI::Models::Beta::beta_response_input_message_content_list
+
+        module Content
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaEasyInputMessage::content]
+        end
+
+        type role = :user | :assistant | :system | :developer
+
+        module Role
+          extend OpenAI::Internal::Type::Enum
+
+          USER: :user
+          ASSISTANT: :assistant
+          SYSTEM: :system
+          DEVELOPER: :developer
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaEasyInputMessage::role]
+        end
+
+        type phase = :commentary | :final_answer
+
+        module Phase
+          extend OpenAI::Internal::Type::Enum
+
+          COMMENTARY: :commentary
+          FINAL_ANSWER: :final_answer
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaEasyInputMessage::phase]
+        end
+
+        type type_ = :message
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          MESSAGE: :message
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaEasyInputMessage::type_]
+        end
+      end
+    end
+  end
+end

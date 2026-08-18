@@ -1,0 +1,52 @@
+module OpenAI
+  module Models
+    module Containers
+      type file_list_response =
+        {
+          id: String,
+          bytes: Integer,
+          container_id: String,
+          created_at: Integer,
+          object: :"container.file",
+          path: String,
+          source: String
+        }
+
+      class FileListResponse < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor bytes: Integer
+
+        attr_accessor container_id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor object: :"container.file"
+
+        attr_accessor path: String
+
+        attr_accessor source: String
+
+        def initialize: (
+          id: String,
+          bytes: Integer,
+          container_id: String,
+          created_at: Integer,
+          path: String,
+          source: String,
+          ?object: :"container.file"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          bytes: Integer,
+          container_id: String,
+          created_at: Integer,
+          object: :"container.file",
+          path: String,
+          source: String
+        }
+      end
+    end
+  end
+end

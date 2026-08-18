@@ -1,0 +1,23 @@
+module OpenAI
+  module Models
+    module ChatCompletionRole = Chat::ChatCompletionRole
+
+    module Chat
+      type chat_completion_role =
+        :developer | :system | :user | :assistant | :tool | :function
+
+      module ChatCompletionRole
+        extend OpenAI::Internal::Type::Enum
+
+        DEVELOPER: :developer
+        SYSTEM: :system
+        USER: :user
+        ASSISTANT: :assistant
+        TOOL: :tool
+        FUNCTION: :function
+
+        def self?.values: -> ::Array[OpenAI::Models::Chat::chat_completion_role]
+      end
+    end
+  end
+end

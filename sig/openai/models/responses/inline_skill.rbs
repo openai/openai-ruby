@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Responses
+      type inline_skill =
+        {
+          description: String,
+          name: String,
+          source: OpenAI::Responses::InlineSkillSource,
+          type: :inline
+        }
+
+      class InlineSkill < OpenAI::Internal::Type::BaseModel
+        attr_accessor description: String
+
+        attr_accessor name: String
+
+        attr_accessor source: OpenAI::Responses::InlineSkillSource
+
+        attr_accessor type: :inline
+
+        def initialize: (
+          description: String,
+          name: String,
+          source: OpenAI::Responses::InlineSkillSource,
+          ?type: :inline
+        ) -> void
+
+        def to_hash: -> {
+          description: String,
+          name: String,
+          source: OpenAI::Responses::InlineSkillSource,
+          type: :inline
+        }
+      end
+    end
+  end
+end

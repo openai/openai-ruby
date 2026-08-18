@@ -1,0 +1,69 @@
+module OpenAI
+  module Models
+    module Conversations
+      type computer_screenshot_content =
+        {
+          detail: OpenAI::Models::Conversations::ComputerScreenshotContent::detail,
+          file_id: String?,
+          image_url: String?,
+          type: :computer_screenshot,
+          prompt_cache_breakpoint: OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint
+        }
+
+      class ComputerScreenshotContent < OpenAI::Internal::Type::BaseModel
+        attr_accessor detail: OpenAI::Models::Conversations::ComputerScreenshotContent::detail
+
+        attr_accessor file_id: String?
+
+        attr_accessor image_url: String?
+
+        attr_accessor type: :computer_screenshot
+
+        attr_reader prompt_cache_breakpoint: OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint?
+
+        def prompt_cache_breakpoint=: (
+          OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint
+        ) -> OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint
+
+        def initialize: (
+          detail: OpenAI::Models::Conversations::ComputerScreenshotContent::detail,
+          file_id: String?,
+          image_url: String?,
+          ?prompt_cache_breakpoint: OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint,
+          ?type: :computer_screenshot
+        ) -> void
+
+        def to_hash: -> {
+          detail: OpenAI::Models::Conversations::ComputerScreenshotContent::detail,
+          file_id: String?,
+          image_url: String?,
+          type: :computer_screenshot,
+          prompt_cache_breakpoint: OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint
+        }
+
+        type detail = :low | :high | :auto | :original
+
+        module Detail
+          extend OpenAI::Internal::Type::Enum
+
+          LOW: :low
+          HIGH: :high
+          AUTO: :auto
+          ORIGINAL: :original
+
+          def self?.values: -> ::Array[OpenAI::Models::Conversations::ComputerScreenshotContent::detail]
+        end
+
+        type prompt_cache_breakpoint = { mode: :explicit }
+
+        class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+          attr_accessor mode: :explicit
+
+          def initialize: (?mode: :explicit) -> void
+
+          def to_hash: -> { mode: :explicit }
+        end
+      end
+    end
+  end
+end

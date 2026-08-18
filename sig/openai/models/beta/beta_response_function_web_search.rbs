@@ -1,0 +1,165 @@
+module OpenAI
+  module Models
+    class BetaResponseFunctionWebSearch = Beta::BetaResponseFunctionWebSearch
+
+    module Beta
+      type beta_response_function_web_search =
+        {
+          id: String,
+          action: OpenAI::Models::Beta::BetaResponseFunctionWebSearch::action,
+          status: OpenAI::Models::Beta::BetaResponseFunctionWebSearch::status,
+          type: :web_search_call,
+          agent: OpenAI::Beta::BetaResponseFunctionWebSearch::Agent?
+        }
+
+      class BetaResponseFunctionWebSearch < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor action: OpenAI::Models::Beta::BetaResponseFunctionWebSearch::action
+
+        attr_accessor status: OpenAI::Models::Beta::BetaResponseFunctionWebSearch::status
+
+        attr_accessor type: :web_search_call
+
+        attr_accessor agent: OpenAI::Beta::BetaResponseFunctionWebSearch::Agent?
+
+        def initialize: (
+          id: String,
+          action: OpenAI::Models::Beta::BetaResponseFunctionWebSearch::action,
+          status: OpenAI::Models::Beta::BetaResponseFunctionWebSearch::status,
+          ?agent: OpenAI::Beta::BetaResponseFunctionWebSearch::Agent?,
+          ?type: :web_search_call
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          action: OpenAI::Models::Beta::BetaResponseFunctionWebSearch::action,
+          status: OpenAI::Models::Beta::BetaResponseFunctionWebSearch::status,
+          type: :web_search_call,
+          agent: OpenAI::Beta::BetaResponseFunctionWebSearch::Agent?
+        }
+
+        type action =
+          OpenAI::Beta::BetaResponseFunctionWebSearch::Action::Search
+          | OpenAI::Beta::BetaResponseFunctionWebSearch::Action::OpenPage
+          | OpenAI::Beta::BetaResponseFunctionWebSearch::Action::FindInPage
+
+        module Action
+          extend OpenAI::Internal::Type::Union
+
+          type search =
+            {
+              type: :search,
+              queries: ::Array[String],
+              query: String,
+              sources: ::Array[OpenAI::Beta::BetaResponseFunctionWebSearch::Action::Search::Source]
+            }
+
+          class Search < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :search
+
+            attr_reader queries: ::Array[String]?
+
+            def queries=: (::Array[String]) -> ::Array[String]
+
+            attr_reader query: String?
+
+            def query=: (String) -> String
+
+            attr_reader sources: ::Array[OpenAI::Beta::BetaResponseFunctionWebSearch::Action::Search::Source]?
+
+            def sources=: (
+              ::Array[OpenAI::Beta::BetaResponseFunctionWebSearch::Action::Search::Source]
+            ) -> ::Array[OpenAI::Beta::BetaResponseFunctionWebSearch::Action::Search::Source]
+
+            def initialize: (
+              ?queries: ::Array[String],
+              ?query: String,
+              ?sources: ::Array[OpenAI::Beta::BetaResponseFunctionWebSearch::Action::Search::Source],
+              ?type: :search
+            ) -> void
+
+            def to_hash: -> {
+              type: :search,
+              queries: ::Array[String],
+              query: String,
+              sources: ::Array[OpenAI::Beta::BetaResponseFunctionWebSearch::Action::Search::Source]
+            }
+
+            type source = { type: :url, url: String }
+
+            class Source < OpenAI::Internal::Type::BaseModel
+              attr_accessor type: :url
+
+              attr_accessor url: String
+
+              def initialize: (url: String, ?type: :url) -> void
+
+              def to_hash: -> { type: :url, url: String }
+            end
+          end
+
+          type open_page = { type: :open_page, url: String? }
+
+          class OpenPage < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :open_page
+
+            attr_accessor url: String?
+
+            def initialize: (?url: String?, ?type: :open_page) -> void
+
+            def to_hash: -> { type: :open_page, url: String? }
+          end
+
+          type find_in_page =
+            { pattern: String, type: :find_in_page, url: String }
+
+          class FindInPage < OpenAI::Internal::Type::BaseModel
+            attr_accessor pattern: String
+
+            attr_accessor type: :find_in_page
+
+            attr_accessor url: String
+
+            def initialize: (
+              pattern: String,
+              url: String,
+              ?type: :find_in_page
+            ) -> void
+
+            def to_hash: -> {
+              pattern: String,
+              type: :find_in_page,
+              url: String
+            }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseFunctionWebSearch::action]
+        end
+
+        type status = :in_progress | :searching | :completed | :failed
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          SEARCHING: :searching
+          COMPLETED: :completed
+          FAILED: :failed
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseFunctionWebSearch::status]
+        end
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end

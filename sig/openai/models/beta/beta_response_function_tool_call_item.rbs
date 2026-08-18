@@ -1,0 +1,75 @@
+module OpenAI
+  module Models
+    class BetaResponseFunctionToolCallItem = Beta::BetaResponseFunctionToolCallItem
+
+    module Beta
+      type beta_response_function_tool_call_item =
+        {
+          arguments: String,
+          call_id: String,
+          name: String,
+          id: String,
+          status: OpenAI::Models::Beta::BetaResponseFunctionToolCallItem::status,
+          type: :function_call,
+          agent: OpenAI::Beta::BetaResponseFunctionToolCall::Agent?,
+          caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCall::caller_?,
+          namespace: String,
+          created_by: String
+        }
+
+      class BetaResponseFunctionToolCallItem < OpenAI::Models::Beta::BetaResponseFunctionToolCall
+        def id: -> String
+
+        def id=: (String _) -> String
+
+        def status: -> OpenAI::Models::Beta::BetaResponseFunctionToolCallItem::status
+
+        def status=: (
+          OpenAI::Models::Beta::BetaResponseFunctionToolCallItem::status _
+        ) -> OpenAI::Models::Beta::BetaResponseFunctionToolCallItem::status
+
+        def created_by: -> String?
+
+        def created_by=: (String _) -> String
+
+        def initialize: (
+          arguments: String,
+          call_id: String,
+          name: String,
+          id: String,
+          status: OpenAI::Models::Beta::BetaResponseFunctionToolCallItem::status,
+          ?agent: OpenAI::Beta::BetaResponseFunctionToolCall::Agent?,
+          ?caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCall::caller_?,
+          ?namespace: String,
+          ?created_by: String,
+          ?type: :function_call
+        ) -> void
+
+        def to_hash: -> {
+          arguments: String,
+          call_id: String,
+          name: String,
+          id: String,
+          status: OpenAI::Models::Beta::BetaResponseFunctionToolCallItem::status,
+          type: :function_call,
+          agent: OpenAI::Beta::BetaResponseFunctionToolCall::Agent?,
+          caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCall::caller_?,
+          namespace: String,
+          created_by: String
+        }
+
+        type status = :in_progress | :completed | :incomplete
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseFunctionToolCallItem::status]
+        end
+      end
+    end
+  end
+end

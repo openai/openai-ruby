@@ -1,0 +1,47 @@
+module OpenAI
+  module Models
+    class ChatCompletionSystemMessageParam = Chat::ChatCompletionSystemMessageParam
+
+    module Chat
+      type chat_completion_system_message_param =
+        {
+          content: OpenAI::Models::Chat::ChatCompletionSystemMessageParam::content,
+          role: :system,
+          name: String
+        }
+
+      class ChatCompletionSystemMessageParam < OpenAI::Internal::Type::BaseModel
+        attr_accessor content: OpenAI::Models::Chat::ChatCompletionSystemMessageParam::content
+
+        attr_accessor role: :system
+
+        attr_reader name: String?
+
+        def name=: (String) -> String
+
+        def initialize: (
+          content: OpenAI::Models::Chat::ChatCompletionSystemMessageParam::content,
+          ?name: String,
+          ?role: :system
+        ) -> void
+
+        def to_hash: -> {
+          content: OpenAI::Models::Chat::ChatCompletionSystemMessageParam::content,
+          role: :system,
+          name: String
+        }
+
+        type content =
+          String | ::Array[OpenAI::Chat::ChatCompletionContentPartText]
+
+        module Content
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Chat::ChatCompletionSystemMessageParam::content]
+
+          ChatCompletionContentPartTextArray: OpenAI::Internal::Type::Converter
+        end
+      end
+    end
+  end
+end

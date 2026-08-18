@@ -1,0 +1,28 @@
+module OpenAI
+  module Models
+    module Realtime
+      type mcp_list_tools_failed =
+        { event_id: String, item_id: String, type: :"mcp_list_tools.failed" }
+
+      class McpListToolsFailed < OpenAI::Internal::Type::BaseModel
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor type: :"mcp_list_tools.failed"
+
+        def initialize: (
+          event_id: String,
+          item_id: String,
+          ?type: :"mcp_list_tools.failed"
+        ) -> void
+
+        def to_hash: -> {
+          event_id: String,
+          item_id: String,
+          type: :"mcp_list_tools.failed"
+        }
+      end
+    end
+  end
+end

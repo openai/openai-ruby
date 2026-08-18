@@ -1,0 +1,28 @@
+module OpenAI
+  module Models
+    module Realtime
+      type log_prob_properties =
+        { token: String, bytes: ::Array[Integer], logprob: Float }
+
+      class LogProbProperties < OpenAI::Internal::Type::BaseModel
+        attr_accessor token: String
+
+        attr_accessor bytes: ::Array[Integer]
+
+        attr_accessor logprob: Float
+
+        def initialize: (
+          token: String,
+          bytes: ::Array[Integer],
+          logprob: Float
+        ) -> void
+
+        def to_hash: -> {
+          token: String,
+          bytes: ::Array[Integer],
+          logprob: Float
+        }
+      end
+    end
+  end
+end

@@ -1,0 +1,19 @@
+module OpenAI
+  module Models
+    type audio_response_format =
+      :json | :text | :srt | :verbose_json | :vtt | :diarized_json
+
+    module AudioResponseFormat
+      extend OpenAI::Internal::Type::Enum
+
+      JSON: :json
+      TEXT: :text
+      SRT: :srt
+      VERBOSE_JSON: :verbose_json
+      VTT: :vtt
+      DIARIZED_JSON: :diarized_json
+
+      def self?.values: -> ::Array[OpenAI::Models::audio_response_format]
+    end
+  end
+end

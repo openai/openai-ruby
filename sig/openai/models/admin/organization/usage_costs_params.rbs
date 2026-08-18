@@ -1,0 +1,105 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type usage_costs_params =
+          {
+            start_time: Integer,
+            api_key_ids: ::Array[String],
+            bucket_width: OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width,
+            end_time: Integer,
+            group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by],
+            limit: Integer,
+            page: String,
+            project_ids: ::Array[String]
+          }
+          & OpenAI::Internal::Type::request_parameters
+
+        class UsageCostsParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor start_time: Integer
+
+          attr_reader api_key_ids: ::Array[String]?
+
+          def api_key_ids=: (::Array[String]) -> ::Array[String]
+
+          attr_reader bucket_width: OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width?
+
+          def bucket_width=: (
+            OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width
+          ) -> OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width
+
+          attr_reader end_time: Integer?
+
+          def end_time=: (Integer) -> Integer
+
+          attr_reader group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by]?
+
+          def group_by=: (
+            ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by]
+          ) -> ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by]
+
+          attr_reader limit: Integer?
+
+          def limit=: (Integer) -> Integer
+
+          attr_reader page: String?
+
+          def page=: (String) -> String
+
+          attr_reader project_ids: ::Array[String]?
+
+          def project_ids=: (::Array[String]) -> ::Array[String]
+
+          def initialize: (
+            start_time: Integer,
+            ?api_key_ids: ::Array[String],
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by],
+            ?limit: Integer,
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            start_time: Integer,
+            api_key_ids: ::Array[String],
+            bucket_width: OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width,
+            end_time: Integer,
+            group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by],
+            limit: Integer,
+            page: String,
+            project_ids: ::Array[String],
+            request_options: OpenAI::RequestOptions
+          }
+
+          type bucket_width = :"1d"
+
+          module BucketWidth
+            extend OpenAI::Internal::Type::Enum
+
+            BUCKET_WIDTH_1D: :"1d"
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width]
+          end
+
+          type group_by = :project_id | :line_item | :api_key_id
+
+          module GroupBy
+            extend OpenAI::Internal::Type::Enum
+
+            PROJECT_ID: :project_id
+            LINE_ITEM: :line_item
+            API_KEY_ID: :api_key_id
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by]
+          end
+        end
+      end
+    end
+  end
+end

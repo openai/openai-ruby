@@ -1,0 +1,196 @@
+module OpenAI
+  module Models
+    type image_edit_params =
+      {
+        image: OpenAI::Models::ImageEditParams::image,
+        prompt: String,
+        background: OpenAI::Models::ImageEditParams::background?,
+        input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?,
+        mask: OpenAI::Internal::file_input,
+        model: OpenAI::Models::ImageEditParams::model?,
+        n: Integer?,
+        output_compression: Integer?,
+        output_format: OpenAI::Models::ImageEditParams::output_format?,
+        partial_images: Integer?,
+        quality: OpenAI::Models::ImageEditParams::quality?,
+        response_format: OpenAI::Models::ImageEditParams::response_format?,
+        size: OpenAI::Models::ImageEditParams::size?,
+        user: String
+      }
+      & OpenAI::Internal::Type::request_parameters
+
+    class ImageEditParams < OpenAI::Internal::Type::BaseModel
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
+
+      attr_accessor image: OpenAI::Models::ImageEditParams::image
+
+      attr_accessor prompt: String
+
+      attr_accessor background: OpenAI::Models::ImageEditParams::background?
+
+      attr_accessor input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?
+
+      attr_reader mask: OpenAI::Internal::file_input?
+
+      def mask=: (OpenAI::Internal::file_input) -> OpenAI::Internal::file_input
+
+      attr_accessor model: OpenAI::Models::ImageEditParams::model?
+
+      attr_accessor n: Integer?
+
+      attr_accessor output_compression: Integer?
+
+      attr_accessor output_format: OpenAI::Models::ImageEditParams::output_format?
+
+      attr_accessor partial_images: Integer?
+
+      attr_accessor quality: OpenAI::Models::ImageEditParams::quality?
+
+      attr_accessor response_format: OpenAI::Models::ImageEditParams::response_format?
+
+      attr_accessor size: OpenAI::Models::ImageEditParams::size?
+
+      attr_reader user: String?
+
+      def user=: (String) -> String
+
+      def initialize: (
+        image: OpenAI::Models::ImageEditParams::image,
+        prompt: String,
+        ?background: OpenAI::Models::ImageEditParams::background?,
+        ?input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?,
+        ?mask: OpenAI::Internal::file_input,
+        ?model: OpenAI::Models::ImageEditParams::model?,
+        ?n: Integer?,
+        ?output_compression: Integer?,
+        ?output_format: OpenAI::Models::ImageEditParams::output_format?,
+        ?partial_images: Integer?,
+        ?quality: OpenAI::Models::ImageEditParams::quality?,
+        ?response_format: OpenAI::Models::ImageEditParams::response_format?,
+        ?size: OpenAI::Models::ImageEditParams::size?,
+        ?user: String,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        image: OpenAI::Models::ImageEditParams::image,
+        prompt: String,
+        background: OpenAI::Models::ImageEditParams::background?,
+        input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?,
+        mask: OpenAI::Internal::file_input,
+        model: OpenAI::Models::ImageEditParams::model?,
+        n: Integer?,
+        output_compression: Integer?,
+        output_format: OpenAI::Models::ImageEditParams::output_format?,
+        partial_images: Integer?,
+        quality: OpenAI::Models::ImageEditParams::quality?,
+        response_format: OpenAI::Models::ImageEditParams::response_format?,
+        size: OpenAI::Models::ImageEditParams::size?,
+        user: String,
+        request_options: OpenAI::RequestOptions
+      }
+
+      type image =
+        OpenAI::Internal::file_input | ::Array[OpenAI::Internal::file_input]
+
+      module Image
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::ImageEditParams::image]
+
+        StringArray: OpenAI::Internal::Type::Converter
+      end
+
+      type background = :transparent | :opaque | :auto
+
+      module Background
+        extend OpenAI::Internal::Type::Enum
+
+        TRANSPARENT: :transparent
+        OPAQUE: :opaque
+        AUTO: :auto
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::background]
+      end
+
+      type input_fidelity = :high | :low
+
+      module InputFidelity
+        extend OpenAI::Internal::Type::Enum
+
+        HIGH: :high
+        LOW: :low
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::input_fidelity]
+      end
+
+      type model = String | OpenAI::Models::image_model
+
+      module Model
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::ImageEditParams::model]
+      end
+
+      type output_format = :png | :jpeg | :webp
+
+      module OutputFormat
+        extend OpenAI::Internal::Type::Enum
+
+        PNG: :png
+        JPEG: :jpeg
+        WEBP: :webp
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::output_format]
+      end
+
+      type quality = :standard | :low | :medium | :high | :auto
+
+      module Quality
+        extend OpenAI::Internal::Type::Enum
+
+        STANDARD: :standard
+        LOW: :low
+        MEDIUM: :medium
+        HIGH: :high
+        AUTO: :auto
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::quality]
+      end
+
+      type response_format = :url | :b64_json
+
+      module ResponseFormat
+        extend OpenAI::Internal::Type::Enum
+
+        URL: :url
+        B64_JSON: :b64_json
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::response_format]
+      end
+
+      type size =
+        String
+        | :"256x256"
+        | :"512x512"
+        | :"1024x1024"
+        | :"1536x1024"
+        | :"1024x1536"
+        | :auto
+
+      module Size
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::ImageEditParams::size]
+
+        SIZE_256X256: :"256x256"
+        SIZE_512X512: :"512x512"
+        SIZE_1024X1024: :"1024x1024"
+        SIZE_1536X1024: :"1536x1024"
+        SIZE_1024X1536: :"1024x1536"
+        AUTO: :auto
+      end
+    end
+  end
+end

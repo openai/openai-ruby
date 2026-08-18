@@ -1,0 +1,66 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type fine_tuning_job_cancelled_webhook_event =
+        {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::FineTuningJobCancelledWebhookEvent::Data,
+          type: :"fine_tuning.job.cancelled",
+          object: OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::object
+        }
+
+      class FineTuningJobCancelledWebhookEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor data: OpenAI::Webhooks::FineTuningJobCancelledWebhookEvent::Data
+
+        attr_accessor type: :"fine_tuning.job.cancelled"
+
+        attr_reader object: OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::object?
+
+        def object=: (
+          OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::object
+        ) -> OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::object
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::FineTuningJobCancelledWebhookEvent::Data,
+          ?object: OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::object,
+          ?type: :"fine_tuning.job.cancelled"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::FineTuningJobCancelledWebhookEvent::Data,
+          type: :"fine_tuning.job.cancelled",
+          object: OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::object
+        }
+
+        type data = { id: String }
+
+        class Data < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          def initialize: (id: String) -> void
+
+          def to_hash: -> { id: String }
+        end
+
+        type object = :event
+
+        module Object
+          extend OpenAI::Internal::Type::Enum
+
+          EVENT: :event
+
+          def self?.values: -> ::Array[OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::object]
+        end
+      end
+    end
+  end
+end

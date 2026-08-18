@@ -1,0 +1,7 @@
+module OpenAI
+  module Models
+    module Conversations
+      class OutputTextContent = OpenAI::Models::Responses::ResponseOutputText
+    end
+  end
+end

@@ -1,0 +1,50 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type admin_api_key_create_response =
+          {
+            id: String,
+            created_at: Integer,
+            expires_at: Integer?,
+            owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
+            redacted_value: String,
+            value: String,
+            object: :"organization.admin_api_key",
+            last_used_at: Integer?,
+            name: String?
+          }
+
+        class AdminAPIKeyCreateResponse < OpenAI::Models::Admin::Organization::AdminAPIKey
+          def value: -> String
+
+          def value=: (String _) -> String
+
+          def initialize: (
+            id: String,
+            created_at: Integer,
+            expires_at: Integer?,
+            owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
+            redacted_value: String,
+            value: String,
+            ?last_used_at: Integer?,
+            ?name: String?,
+            ?object: :"organization.admin_api_key"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            created_at: Integer,
+            expires_at: Integer?,
+            owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
+            redacted_value: String,
+            value: String,
+            object: :"organization.admin_api_key",
+            last_used_at: Integer?,
+            name: String?
+          }
+        end
+      end
+    end
+  end
+end

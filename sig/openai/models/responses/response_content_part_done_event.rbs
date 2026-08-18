@@ -1,0 +1,70 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_content_part_done_event =
+        {
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part,
+          sequence_number: Integer,
+          type: :"response.content_part.done"
+        }
+
+      class ResponseContentPartDoneEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor content_index: Integer
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.content_part.done"
+
+        def initialize: (
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part,
+          sequence_number: Integer,
+          ?type: :"response.content_part.done"
+        ) -> void
+
+        def to_hash: -> {
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part,
+          sequence_number: Integer,
+          type: :"response.content_part.done"
+        }
+
+        type part =
+          OpenAI::Responses::ResponseOutputText
+          | OpenAI::Responses::ResponseOutputRefusal
+          | OpenAI::Responses::ResponseContentPartDoneEvent::Part::ReasoningText
+
+        module Part
+          extend OpenAI::Internal::Type::Union
+
+          type reasoning_text = { text: String, type: :reasoning_text }
+
+          class ReasoningText < OpenAI::Internal::Type::BaseModel
+            attr_accessor text: String
+
+            attr_accessor type: :reasoning_text
+
+            def initialize: (text: String, ?type: :reasoning_text) -> void
+
+            def to_hash: -> { text: String, type: :reasoning_text }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseContentPartDoneEvent::part]
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,96 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        class ProjectSpendLimit = Projects::ProjectSpendLimit
+
+        module Projects
+          type project_spend_limit =
+            {
+              currency: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::currency,
+              enforcement: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement,
+              interval: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::interval,
+              object: :"project.spend_limit",
+              threshold_amount: Integer
+            }
+
+          class ProjectSpendLimit < OpenAI::Internal::Type::BaseModel
+            attr_accessor currency: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::currency
+
+            attr_accessor enforcement: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement
+
+            attr_accessor interval: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::interval
+
+            attr_accessor object: :"project.spend_limit"
+
+            attr_accessor threshold_amount: Integer
+
+            def initialize: (
+              currency: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::currency,
+              enforcement: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement,
+              interval: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::interval,
+              threshold_amount: Integer,
+              ?object: :"project.spend_limit"
+            ) -> void
+
+            def to_hash: -> {
+              currency: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::currency,
+              enforcement: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement,
+              interval: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::interval,
+              object: :"project.spend_limit",
+              threshold_amount: Integer
+            }
+
+            type currency = String | :USD
+
+            module Currency
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::currency]
+
+              USD: :USD
+            end
+
+            type enforcement =
+              {
+                status: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Enforcement::status
+              }
+
+            class Enforcement < OpenAI::Internal::Type::BaseModel
+              attr_accessor status: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Enforcement::status
+
+              def initialize: (
+                status: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Enforcement::status
+              ) -> void
+
+              def to_hash: -> {
+                status: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Enforcement::status
+              }
+
+              type status = String | :inactive | :enforcing
+
+              module Status
+                extend OpenAI::Internal::Type::Union
+
+                def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Enforcement::status]
+
+                INACTIVE: :inactive
+                ENFORCING: :enforcing
+              end
+            end
+
+            type interval = String | :month
+
+            module Interval
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::interval]
+
+              MONTH: :month
+            end
+          end
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,44 @@
+module OpenAI
+  module Models
+    class ConversationItemList = Conversations::ConversationItemList
+
+    module Conversations
+      type conversation_item_list =
+        {
+          data: ::Array[OpenAI::Models::Conversations::conversation_item],
+          first_id: String,
+          has_more: bool,
+          last_id: String,
+          object: :list
+        }
+
+      class ConversationItemList < OpenAI::Internal::Type::BaseModel
+        attr_accessor data: ::Array[OpenAI::Models::Conversations::conversation_item]
+
+        attr_accessor first_id: String
+
+        attr_accessor has_more: bool
+
+        attr_accessor last_id: String
+
+        attr_accessor object: :list
+
+        def initialize: (
+          data: ::Array[OpenAI::Models::Conversations::conversation_item],
+          first_id: String,
+          has_more: bool,
+          last_id: String,
+          ?object: :list
+        ) -> void
+
+        def to_hash: -> {
+          data: ::Array[OpenAI::Models::Conversations::conversation_item],
+          first_id: String,
+          has_more: bool,
+          last_id: String,
+          object: :list
+        }
+      end
+    end
+  end
+end

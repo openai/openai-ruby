@@ -1,0 +1,72 @@
+module OpenAI
+  module Models
+    module Audio
+      type transcription_text_delta_event =
+        {
+          delta: String,
+          type: :"transcript.text.delta",
+          logprobs: ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob],
+          segment_id: String
+        }
+
+      class TranscriptionTextDeltaEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor delta: String
+
+        attr_accessor type: :"transcript.text.delta"
+
+        attr_reader logprobs: ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob]?
+
+        def logprobs=: (
+          ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob]
+        ) -> ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob]
+
+        attr_reader segment_id: String?
+
+        def segment_id=: (String) -> String
+
+        def initialize: (
+          delta: String,
+          ?logprobs: ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob],
+          ?segment_id: String,
+          ?type: :"transcript.text.delta"
+        ) -> void
+
+        def to_hash: -> {
+          delta: String,
+          type: :"transcript.text.delta",
+          logprobs: ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob],
+          segment_id: String
+        }
+
+        type logprob =
+          { token: String, bytes: ::Array[Integer], logprob: Float }
+
+        class Logprob < OpenAI::Internal::Type::BaseModel
+          attr_reader token: String?
+
+          def token=: (String) -> String
+
+          attr_reader bytes: ::Array[Integer]?
+
+          def bytes=: (::Array[Integer]) -> ::Array[Integer]
+
+          attr_reader logprob: Float?
+
+          def logprob=: (Float) -> Float
+
+          def initialize: (
+            ?token: String,
+            ?bytes: ::Array[Integer],
+            ?logprob: Float
+          ) -> void
+
+          def to_hash: -> {
+            token: String,
+            bytes: ::Array[Integer],
+            logprob: Float
+          }
+        end
+      end
+    end
+  end
+end

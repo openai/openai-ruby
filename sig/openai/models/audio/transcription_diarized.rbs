@@ -1,0 +1,129 @@
+module OpenAI
+  module Models
+    module Audio
+      type transcription_diarized =
+        {
+          duration: Float,
+          segments: ::Array[OpenAI::Audio::TranscriptionDiarizedSegment],
+          task: :transcribe,
+          text: String,
+          usage: OpenAI::Models::Audio::TranscriptionDiarized::usage
+        }
+
+      class TranscriptionDiarized < OpenAI::Internal::Type::BaseModel
+        attr_accessor duration: Float
+
+        attr_accessor segments: ::Array[OpenAI::Audio::TranscriptionDiarizedSegment]
+
+        attr_accessor task: :transcribe
+
+        attr_accessor text: String
+
+        attr_reader usage: OpenAI::Models::Audio::TranscriptionDiarized::usage?
+
+        def usage=: (
+          OpenAI::Models::Audio::TranscriptionDiarized::usage
+        ) -> OpenAI::Models::Audio::TranscriptionDiarized::usage
+
+        def initialize: (
+          duration: Float,
+          segments: ::Array[OpenAI::Audio::TranscriptionDiarizedSegment],
+          text: String,
+          ?usage: OpenAI::Models::Audio::TranscriptionDiarized::usage,
+          ?task: :transcribe
+        ) -> void
+
+        def to_hash: -> {
+          duration: Float,
+          segments: ::Array[OpenAI::Audio::TranscriptionDiarizedSegment],
+          task: :transcribe,
+          text: String,
+          usage: OpenAI::Models::Audio::TranscriptionDiarized::usage
+        }
+
+        type usage =
+          OpenAI::Audio::TranscriptionDiarized::Usage::Tokens
+          | OpenAI::Audio::TranscriptionDiarized::Usage::Duration
+
+        module Usage
+          extend OpenAI::Internal::Type::Union
+
+          type tokens =
+            {
+              input_tokens: Integer,
+              output_tokens: Integer,
+              total_tokens: Integer,
+              type: :tokens,
+              input_token_details: OpenAI::Audio::TranscriptionDiarized::Usage::Tokens::InputTokenDetails
+            }
+
+          class Tokens < OpenAI::Internal::Type::BaseModel
+            attr_accessor input_tokens: Integer
+
+            attr_accessor output_tokens: Integer
+
+            attr_accessor total_tokens: Integer
+
+            attr_accessor type: :tokens
+
+            attr_reader input_token_details: OpenAI::Audio::TranscriptionDiarized::Usage::Tokens::InputTokenDetails?
+
+            def input_token_details=: (
+              OpenAI::Audio::TranscriptionDiarized::Usage::Tokens::InputTokenDetails
+            ) -> OpenAI::Audio::TranscriptionDiarized::Usage::Tokens::InputTokenDetails
+
+            def initialize: (
+              input_tokens: Integer,
+              output_tokens: Integer,
+              total_tokens: Integer,
+              ?input_token_details: OpenAI::Audio::TranscriptionDiarized::Usage::Tokens::InputTokenDetails,
+              ?type: :tokens
+            ) -> void
+
+            def to_hash: -> {
+              input_tokens: Integer,
+              output_tokens: Integer,
+              total_tokens: Integer,
+              type: :tokens,
+              input_token_details: OpenAI::Audio::TranscriptionDiarized::Usage::Tokens::InputTokenDetails
+            }
+
+            type input_token_details =
+              { audio_tokens: Integer, text_tokens: Integer }
+
+            class InputTokenDetails < OpenAI::Internal::Type::BaseModel
+              attr_reader audio_tokens: Integer?
+
+              def audio_tokens=: (Integer) -> Integer
+
+              attr_reader text_tokens: Integer?
+
+              def text_tokens=: (Integer) -> Integer
+
+              def initialize: (
+                ?audio_tokens: Integer,
+                ?text_tokens: Integer
+              ) -> void
+
+              def to_hash: -> { audio_tokens: Integer, text_tokens: Integer }
+            end
+          end
+
+          type duration = { seconds: Float, type: :duration }
+
+          class Duration < OpenAI::Internal::Type::BaseModel
+            attr_accessor seconds: Float
+
+            attr_accessor type: :duration
+
+            def initialize: (seconds: Float, ?type: :duration) -> void
+
+            def to_hash: -> { seconds: Float, type: :duration }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Audio::TranscriptionDiarized::usage]
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,73 @@
+module OpenAI
+  module Models
+    class BetaResponseUsage = Beta::BetaResponseUsage
+
+    module Beta
+      type beta_response_usage =
+        {
+          input_tokens: Integer,
+          input_tokens_details: OpenAI::Beta::BetaResponseUsage::InputTokensDetails,
+          output_tokens: Integer,
+          output_tokens_details: OpenAI::Beta::BetaResponseUsage::OutputTokensDetails,
+          total_tokens: Integer
+        }
+
+      class BetaResponseUsage < OpenAI::Internal::Type::BaseModel
+        attr_accessor input_tokens: Integer
+
+        attr_accessor input_tokens_details: OpenAI::Beta::BetaResponseUsage::InputTokensDetails
+
+        attr_accessor output_tokens: Integer
+
+        attr_accessor output_tokens_details: OpenAI::Beta::BetaResponseUsage::OutputTokensDetails
+
+        attr_accessor total_tokens: Integer
+
+        def initialize: (
+          input_tokens: Integer,
+          input_tokens_details: OpenAI::Beta::BetaResponseUsage::InputTokensDetails,
+          output_tokens: Integer,
+          output_tokens_details: OpenAI::Beta::BetaResponseUsage::OutputTokensDetails,
+          total_tokens: Integer
+        ) -> void
+
+        def to_hash: -> {
+          input_tokens: Integer,
+          input_tokens_details: OpenAI::Beta::BetaResponseUsage::InputTokensDetails,
+          output_tokens: Integer,
+          output_tokens_details: OpenAI::Beta::BetaResponseUsage::OutputTokensDetails,
+          total_tokens: Integer
+        }
+
+        type input_tokens_details =
+          { cache_write_tokens: Integer, cached_tokens: Integer }
+
+        class InputTokensDetails < OpenAI::Internal::Type::BaseModel
+          attr_accessor cache_write_tokens: Integer
+
+          attr_accessor cached_tokens: Integer
+
+          def initialize: (
+            cache_write_tokens: Integer,
+            cached_tokens: Integer
+          ) -> void
+
+          def to_hash: -> {
+            cache_write_tokens: Integer,
+            cached_tokens: Integer
+          }
+        end
+
+        type output_tokens_details = { reasoning_tokens: Integer }
+
+        class OutputTokensDetails < OpenAI::Internal::Type::BaseModel
+          attr_accessor reasoning_tokens: Integer
+
+          def initialize: (reasoning_tokens: Integer) -> void
+
+          def to_hash: -> { reasoning_tokens: Integer }
+        end
+      end
+    end
+  end
+end

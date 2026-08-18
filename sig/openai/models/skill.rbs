@@ -1,0 +1,50 @@
+module OpenAI
+  module Models
+    type skill =
+      {
+        id: String,
+        created_at: Integer,
+        default_version: String,
+        description: String,
+        latest_version: String,
+        name: String,
+        object: :skill
+      }
+
+    class Skill < OpenAI::Internal::Type::BaseModel
+      attr_accessor id: String
+
+      attr_accessor created_at: Integer
+
+      attr_accessor default_version: String
+
+      attr_accessor description: String
+
+      attr_accessor latest_version: String
+
+      attr_accessor name: String
+
+      attr_accessor object: :skill
+
+      def initialize: (
+        id: String,
+        created_at: Integer,
+        default_version: String,
+        description: String,
+        latest_version: String,
+        name: String,
+        ?object: :skill
+      ) -> void
+
+      def to_hash: -> {
+        id: String,
+        created_at: Integer,
+        default_version: String,
+        description: String,
+        latest_version: String,
+        name: String,
+        object: :skill
+      }
+    end
+  end
+end

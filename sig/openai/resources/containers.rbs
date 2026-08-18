@@ -1,0 +1,37 @@
+module OpenAI
+  module Resources
+    class Containers
+      attr_reader files: OpenAI::Resources::Containers::Files
+
+      def create: (
+        name: String,
+        ?expires_after: OpenAI::ContainerCreateParams::ExpiresAfter,
+        ?file_ids: ::Array[String],
+        ?memory_limit: OpenAI::Models::ContainerCreateParams::memory_limit,
+        ?network_policy: OpenAI::Models::ContainerCreateParams::network_policy,
+        ?skills: ::Array[OpenAI::Models::ContainerCreateParams::skill],
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Models::ContainerCreateResponse
+
+      def retrieve: (
+        String container_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Models::ContainerRetrieveResponse
+
+      def list: (
+        ?after: String,
+        ?limit: Integer,
+        ?name: String,
+        ?order: OpenAI::Models::ContainerListParams::order,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::CursorPage[OpenAI::Models::ContainerListResponse]
+
+      def delete: (
+        String container_id,
+        ?request_options: OpenAI::request_opts
+      ) -> nil
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end
