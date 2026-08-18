@@ -23,6 +23,7 @@ group :development, :test do
   gem "minitest-hooks"
   gem "minitest-proveit"
   gem "minitest-rg"
+  gem "sorbet-runtime"
   gem "webmock"
 end
 

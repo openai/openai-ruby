@@ -176,6 +176,7 @@ GEM
     securerandom (0.4.1)
     sorbet (0.6.12690)
       sorbet-static (= 0.6.12690)
+    sorbet-runtime (0.6.12690)
     sorbet-static (0.6.12690-aarch64-linux)
     sorbet-static (0.6.12690-universal-darwin)
     sorbet-static (0.6.12690-x86_64-linux)
@@ -240,6 +241,7 @@ DEPENDENCIES
   redcarpet
   rubocop
   sorbet
+  sorbet-runtime
   steep
   syntax_tree
   syntax_tree-rbs!
