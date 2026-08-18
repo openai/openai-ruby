@@ -53,8 +53,8 @@ end
 ### Realtime WebSockets
 
 The SDK supports block-scoped, typed Realtime WebSocket sessions for
-server-side text and committed-turn transcription workflows. Add the optional
-`async-websocket` gem, then use `client.realtime.connect`:
+server-side text, committed-turn transcription, and one-turn voice workflows.
+Add the optional `async-websocket` gem, then use `client.realtime.connect`:
 
 ```ruby
 client.realtime.connect(model: "gpt-realtime-2.1") do |connection|
@@ -74,8 +74,8 @@ end
 ```
 
 See the [Realtime WebSocket guide](realtime.md) and the runnable
-[text and transcription examples](examples/realtime/README.md) for lifecycle,
-authentication, proxy, TLS, and custom transport details.
+[text, transcription, and voice examples](examples/realtime/README.md) for
+lifecycle, authentication, proxy, TLS, and custom transport details.
 
 ### Pagination
 

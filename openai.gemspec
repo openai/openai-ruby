@@ -28,7 +28,8 @@ Gem::Specification.new do |s|
       "examples/mtls_custom_http_client.rb",
       "examples/realtime/README.md",
       "examples/realtime/websocket_transcription.rb",
-      "examples/realtime/websocket_text.rb"
+      "examples/realtime/websocket_text.rb",
+      "examples/realtime/websocket_voice_turn.rb"
     ]
   s.extra_rdoc_files = [
     "README.md",

@@ -7,6 +7,9 @@ This directory contains runnable examples for the Realtime WebSocket surface:
 - `websocket_transcription.rb` uploads raw 24 kHz mono PCM16 audio, explicitly
   commits one input turn, streams transcription deltas, verifies the matching
   completed transcript, and exits.
+- `websocket_voice_turn.rb` uploads one raw 24 kHz mono PCM16 turn, explicitly
+  commits it, streams the assistant's audio transcript, saves the PCM response,
+  verifies a completed response, and exits.
 
 Add the optional transport dependency and set an API key:
 
@@ -58,6 +61,34 @@ Optional environment variables:
 This example intentionally reads a file and drains its result after commit. It
 does not claim continuous microphone captioning or concurrent reader/writer
 support; those require a separately reviewed lifecycle boundary.
+
+## Send one voice turn and save the response
+
+Convert an audio file to 24 kHz mono PCM16, run the voice-turn example, then
+play the raw response:
+
+```sh
+ffmpeg -i input.wav -f s16le -acodec pcm_s16le -ac 1 -ar 24000 input.pcm
+bundle exec ruby examples/realtime/websocket_voice_turn.rb input.pcm response.pcm
+ffplay -f s16le -ar 24000 -ac 1 response.pcm
+```
+
+The output path must not already exist. This prevents accidental truncation,
+including when the input and output paths refer to the same file. A successful
+run prints the assistant transcript, writes non-empty response audio, observes
+`response.done status=completed`, and prints
+`[realtime] voice turn smoke test passed`.
+
+Optional environment variables:
+
+- `OPENAI_REALTIME_MODEL` — defaults to `gpt-realtime-2.1`.
+- `OPENAI_REALTIME_VOICE` — defaults to `marin`.
+- `OPENAI_REALTIME_TIMEOUT` — overall example deadline in seconds; defaults to
+  `60`.
+
+This is an explicit, committed file turn. It does not capture a microphone,
+play audio while it arrives, or claim full-duplex conversation support; those
+require a separately reviewed concurrency and device-lifecycle boundary.
 
 See the repository's [Realtime WebSocket guide](../../realtime.md) for the
 public connection API, custom transports, proxy behavior, and TLS setup.

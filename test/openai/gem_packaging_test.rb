@@ -23,6 +23,7 @@ class OpenAI::Test::GemPackagingTest < Minitest::Test
       assert_empty(relative_links - package.contents, "README links are missing from the built gem")
       assert_includes(package.contents, "examples/realtime/websocket_transcription.rb")
       assert_includes(package.contents, "examples/realtime/websocket_text.rb")
+      assert_includes(package.contents, "examples/realtime/websocket_voice_turn.rb")
 
       linked_guides = relative_links.select { File.extname(_1) == ".md" }
       assert_empty(linked_guides - package.spec.extra_rdoc_files, "README guides are missing from RDoc")
