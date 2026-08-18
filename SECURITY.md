@@ -19,11 +19,13 @@ When reporting a vulnerability, include:
 
 Do not include live credentials, API keys, customer data, or unredacted sensitive logs.
 
-For this repository, identify the `openai` gem version, Ruby version, operating
-system, and any relevant provider or transport. Redact authorization headers,
-access tokens, private keys, signed URLs, prompts, model responses, uploaded
-files, and sensitive request/response bodies from logs, error reports, and
-shared diagnostics.
+For this repository, identify the `openai` gem version or relevant source
+commit, Ruby version, operating system, and any relevant provider or transport.
+When relevant, include the installation method (RubyGems, Git, or a local
+path), without sharing private registry URLs or local filesystem paths. Redact
+authorization headers, access tokens, private keys, signed URLs, prompts, model
+responses, uploaded files, and sensitive request/response bodies from logs,
+error reports, and shared diagnostics.
 
 Load API keys from environment variables or an approved secrets manager; never
 commit them to source code, examples, tests, fixtures, or generated artifacts.
