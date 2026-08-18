@@ -16,6 +16,7 @@ module OpenAI
         attr_reader session: OpenAI::Realtime::ConnectionResources::Session
         attr_reader response: OpenAI::Realtime::ConnectionResources::Response
         attr_reader conversation: OpenAI::Realtime::ConnectionResources::Conversation
+        attr_reader input_audio_buffer: OpenAI::Realtime::ConnectionResources::InputAudioBuffer
 
         # @api private
         def initialize: (socket: untyped, url: URI::Generic) -> void

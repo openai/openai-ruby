@@ -102,6 +102,24 @@ module OpenAI
         &block
       )
       end
+
+      sig do
+        params(
+          websocket_base_url: T.nilable(String),
+          request_options: T.nilable(OpenAI::RequestOptions::OrHash),
+          transport: T.untyped,
+          transport_options: T::Hash[Symbol, T.untyped],
+          block: T.proc.params(connection: OpenAI::Realtime::Connection).returns(T.untyped)
+        ).returns(T.untyped)
+      end
+      def connect_transcription(
+        websocket_base_url: nil,
+        request_options: nil,
+        transport: nil,
+        transport_options: {},
+        &block
+      )
+      end
     end
   end
 end

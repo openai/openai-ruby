@@ -21,14 +21,16 @@ module OpenAI
       # @api private
       def initialize(
         client:,
-        model:,
+        query:,
         websocket_base_url:,
         transport:,
         request_options:,
         transport_options:
       )
         @client = client
-        @model = model
+        @query = query.to_h.to_h do |key, value|
+          [key.to_s.dup.freeze, value.to_s.dup.freeze]
+        end.freeze
         @websocket_base_url = websocket_base_url&.to_s&.dup&.freeze
         @transport = transport
         @request_options = request_options
@@ -59,7 +61,7 @@ module OpenAI
 
         @client.with_realtime_connection_request(
           path: "realtime",
-          query: {"model" => @model},
+          query: @query,
           websocket_base_url: @websocket_base_url,
           options: @request_options
         ) do |request, mark_handshake_completed|

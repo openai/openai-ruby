@@ -49,6 +49,30 @@ module OpenAI
         end
       end
 
+      class InputAudioBuffer < Base
+        def append(audio:, event_id: nil)
+          @connection.send_event(
+            compact_event(type: :"input_audio_buffer.append", audio: audio, event_id: event_id)
+          )
+        end
+
+        def append_bytes(bytes, event_id: nil)
+          append(audio: Base64.strict_encode64(bytes), event_id: event_id)
+        end
+
+        def commit(event_id: nil)
+          @connection.send_event(
+            compact_event(type: :"input_audio_buffer.commit", event_id: event_id)
+          )
+        end
+
+        def clear(event_id: nil)
+          @connection.send_event(
+            compact_event(type: :"input_audio_buffer.clear", event_id: event_id)
+          )
+        end
+      end
+
       class Conversation < Base
         # @return [OpenAI::Realtime::ConnectionResources::ConversationItems]
         attr_reader :items
