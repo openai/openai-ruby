@@ -10,7 +10,6 @@ require "rubocop/rake_task"
 require_relative "scripts/rubyfmt_policy"
 require_relative "scripts/rbs_format"
 
-tapioca = "sorbet/tapioca"
 examples = "examples"
 ignore_file = ".ignore"
 pkg = "pkg"
@@ -19,7 +18,7 @@ FILES_ENV = "FORMAT_FILE"
 
 CLEAN.push(*%w[.idea/ .ruby-lsp/ .yardoc/ doc/], *FileList["*.gem"], pkg, ignore_file)
 
-CLOBBER.push(*%w[sorbet/rbi/annotations/ sorbet/rbi/gems/], tapioca)
+CLOBBER.push(*%w[sorbet/rbi/annotations/ sorbet/rbi/gems/])
 
 multitask(:default) do
   sh(*%w[rake --tasks])
@@ -122,11 +121,8 @@ directory(pkg)
 
 desc("Typecheck `*.rbi`")
 multitask("typecheck:sorbet": examples) do
-  sh(*%w[srb typecheck --dir], examples)
-end
-
-directory(tapioca) do
-  sh(*%w[tapioca init])
+  # The shipped RBI directory is already listed in sorbet/config.
+  sh({"SRB_SKIP_GEM_RBIS" => "1"}, *%w[srb typecheck --dir], examples)
 end
 
 desc("Typecheck and validate everything")
