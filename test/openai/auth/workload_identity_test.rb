@@ -497,12 +497,12 @@ class WorkloadIdentityTest < Minitest::Test
     stub_request(:post, "https://auth.openai.com/oauth/token")
       .with do |request|
         JSON.parse(request.body) == {
-          "grant_type" => "urn:ietf:params:oauth:grant-type:token-exchange",
-          "subject_token" => "id-token",
-          "subject_token_type" => "urn:ietf:params:oauth:token-type:id_token",
-          "identity_provider_id" => "idp-123",
-          "service_account_id" => "sa-456"
-        }
+            "grant_type" => "urn:ietf:params:oauth:grant-type:token-exchange",
+            "subject_token" => "id-token",
+            "subject_token_type" => "urn:ietf:params:oauth:token-type:id_token",
+            "identity_provider_id" => "idp-123",
+            "service_account_id" => "sa-456"
+          }
       end
       .to_return(
         status: 200,
@@ -526,12 +526,11 @@ class WorkloadIdentityTest < Minitest::Test
       service_account_id: "sa-456",
       provider: IDTokenProvider.new
     )
-    direct_override =
-      Class.new(OpenAI::Auth::WorkloadIdentityAuth) do
-        private def fetch_token_from_exchange
-          {id: "subclass-token", expires_in: 3600}
-        end
+    direct_override = Class.new(OpenAI::Auth::WorkloadIdentityAuth) do
+      private def fetch_token_from_exchange
+        {id: "subclass-token", expires_in: 3600}
       end
+    end
 
     assert_equal("subclass-token", direct_override.new(config, "org-123").get_token)
 
@@ -540,20 +539,20 @@ class WorkloadIdentityTest < Minitest::Test
         status: 200,
         body: JSON.generate({"access_token" => "handled-token", "expires_in" => 3600})
       )
-    response_override =
-      Class.new(OpenAI::Auth::WorkloadIdentityAuth) do
-        attr_reader :handled, :parsed
+    response_override = Class.new(OpenAI::Auth::WorkloadIdentityAuth) do
+      attr_reader(:handled, :parsed)
 
-        private def handle_token_response(response)
-          @handled = true
-          super
-        end
-
-        private def parse_response_body(response)
-          @parsed = true
-          super
-        end
+      private def handle_token_response(response)
+        @handled = true
+        super
       end
+
+      private def parse_response_body(response)
+        @parsed = true
+        super
+      end
+    end
+
     auth = response_override.new(config, "org-123")
 
     assert_equal("handled-token", auth.get_token)
@@ -798,29 +797,7 @@ class WorkloadIdentityTest < Minitest::Test
         },
         {
           status: 200,
-          body: JSON.generate(
-            {
-              "id" => "chatcmpl-123",
-              "choices" => [
-                {
-                  "finish_reason" => "stop",
-                  "index" => 0,
-                  "message" => {
-                    "content" => "test response",
-                    "role" => "assistant"
-                  }
-                }
-              ],
-              "created" => Time.now.to_i,
-              "model" => "gpt-5.2",
-              "object" => "chat.completion",
-              "usage" => {
-                "completion_tokens" => 10,
-                "prompt_tokens" => 5,
-                "total_tokens" => 15
-              }
-            }
-          ),
+          body: JSON.generate(chat_completion_response),
           headers: {"Content-Type" => "application/json"}
         }
       )
@@ -868,26 +845,7 @@ class WorkloadIdentityTest < Minitest::Test
     stub_request(:post, "http://localhost/chat/completions")
       .to_return(
         status: 200,
-        body: JSON.generate(
-          {
-            "id" => "chatcmpl-123",
-            "choices" => [
-              {
-                "finish_reason" => "stop",
-                "index" => 0,
-                "message" => {"content" => "test response", "role" => "assistant"}
-              }
-            ],
-            "created" => Time.now.to_i,
-            "model" => "gpt-5.2",
-            "object" => "chat.completion",
-            "usage" => {
-              "completion_tokens" => 10,
-              "prompt_tokens" => 5,
-              "total_tokens" => 15
-            }
-          }
-        ),
+        body: JSON.generate(chat_completion_response),
         headers: {"Content-Type" => "application/json"}
       )
 
@@ -952,8 +910,10 @@ class WorkloadIdentityTest < Minitest::Test
         started << true
         release.pop
       end
+
       "id-token"
     end
+
     stub_request(:post, "https://auth.openai.com/oauth/token")
       .to_return(status: 503, body: "unavailable")
     config = OpenAI::Auth::WorkloadIdentity.new(
@@ -967,12 +927,14 @@ class WorkloadIdentityTest < Minitest::Test
     rescue StandardError => e
       e
     end
+
     started.pop
     waiter = Thread.new do
       auth.get_token
     rescue StandardError => e
       e
     end
+
     sleep(0.05)
     release << true
 
@@ -1005,5 +967,26 @@ class WorkloadIdentityTest < Minitest::Test
       auth.instance_variable_set(:@cached_token_expires_at_monotonic, now + expires_in)
       auth.instance_variable_set(:@cached_token_refresh_at_monotonic, now + refresh_in)
     end
+  end
+
+  private def chat_completion_response
+    {
+      "id" => "chatcmpl-123",
+      "choices" => [
+        {
+          "finish_reason" => "stop",
+          "index" => 0,
+          "message" => {"content" => "test response", "role" => "assistant"}
+        }
+      ],
+      "created" => Time.now.to_i,
+      "model" => "gpt-5.2",
+      "object" => "chat.completion",
+      "usage" => {
+        "completion_tokens" => 10,
+        "prompt_tokens" => 5,
+        "total_tokens" => 15
+      }
+    }
   end
 end

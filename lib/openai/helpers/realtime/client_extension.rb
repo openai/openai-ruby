@@ -67,6 +67,7 @@ module OpenAI
           if @workload_identity_request_policy.is_a?(OpenAI::Auth::WorkloadIdentityRequestPolicy::X509)
             raise OpenAI::Errors::Error, "X.509 workload identity does not support Realtime WebSocket connections."
           end
+
           if @provider_runtime && @provider_runtime.name != "azure"
             message = "Realtime WebSocket connections are not supported by the " \
               "#{@provider_runtime.name} provider."

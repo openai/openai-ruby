@@ -1,25 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "../test_helper"
+require_relative "x509_workload_identity_test_support"
 
 class X509WorkloadIdentitySecurityTest < Minitest::Test
   extend Minitest::Serial
-
-  class StubHTTPClient < OpenAI::HTTPClient
-    attr_reader :requests
-
-    def initialize(&execute)
-      super()
-      @execute = execute
-      @requests = []
-      @mutex = Mutex.new
-    end
-
-    def execute(request)
-      @mutex.synchronize { @requests << request }
-      @execute.call(request)
-    end
-  end
+  include X509WorkloadIdentityTestSupport
 
   def test_x509_identity_snapshot_remains_bound_to_the_cached_token
     identity_provider_id = +"tenant-a"
@@ -38,6 +23,7 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
         http_response(status: 200, body: {"ok" => true})
       end
     end
+
     client = OpenAI::Client.new(
       api_key: nil,
       workload_identity: config,
@@ -56,24 +42,25 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
 
   def test_token_exchange_snapshots_identity_from_a_mutable_configuration_subclass
     mutable_identity = {identity_provider_id: "tenant-a"}
-    config_class =
-      Class.new(OpenAI::Auth::X509WorkloadIdentity) do
-        def initialize(mutable_identity)
-          @mutable_identity = mutable_identity
-          super(
-            identity_provider_id: mutable_identity.fetch(:identity_provider_id),
-            service_account_id: "service-account"
-          )
-        end
-
-        def identity_provider_id = @mutable_identity.fetch(:identity_provider_id)
+    config_class = Class.new(OpenAI::Auth::X509WorkloadIdentity) do
+      def initialize(mutable_identity)
+        @mutable_identity = mutable_identity
+        super(
+          identity_provider_id: mutable_identity.fetch(:identity_provider_id),
+          service_account_id: "service-account"
+        )
       end
+
+      def identity_provider_id = @mutable_identity.fetch(:identity_provider_id)
+    end
+
     config = config_class.new(mutable_identity)
     exchange_bodies = []
     http_client = StubHTTPClient.new do |request|
       exchange_bodies << JSON.parse(request.body)
       http_response(status: 200, body: {"access_token" => "token", "expires_in" => 60})
     end
+
     auth = OpenAI::Auth::WorkloadIdentityAuth.new(config, nil, http_client: http_client)
 
     mutable_identity[:identity_provider_id] = "tenant-b"
@@ -97,6 +84,7 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
           http_response(status: 200, body: {"ok" => true})
         end
       end
+
       OpenAI::Client.new(api_key: nil, workload_identity: config, http_client: http_client)
     end
 
@@ -116,6 +104,7 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
         http_response(status: 200, body: {"ok" => true})
       end
     end
+
     client = OpenAI::Client.new(
       api_key: nil,
       workload_identity: x509_config,
@@ -139,11 +128,15 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
 
         http_response(status: 429, headers: {"Retry-After" => "3"}, body: {"error" => "busy"})
       end
+
       exchange = OpenAI::Auth::TokenExchange::X509.new(
         x509_config,
         token_exchange_url: OpenAI::Auth::TokenExchange::DEFAULT_URL,
         http_client: http_client,
-        sleeper: ->(delay) { delays << delay; sleep(delay) }
+        sleeper: -> (delay) {
+          delays << delay
+          sleep(delay)
+        }
       )
 
       assert_raises(Timeout::Error) { exchange.fetch(timeout: 0.05) }
@@ -162,11 +155,12 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
         http_response(status: 200, body: {"access_token" => "token", "expires_in" => 60})
       end
     end
+
     exchange = OpenAI::Auth::TokenExchange::X509.new(
       x509_config,
       token_exchange_url: OpenAI::Auth::TokenExchange::DEFAULT_URL,
       http_client: http_client,
-      sleeper: ->(delay) { sleep(delay) }
+      sleeper: -> (delay) { sleep(delay) }
     )
 
     assert_equal("token", exchange.fetch(timeout: 0.25).fetch(:id))
@@ -234,10 +228,12 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
         http_response(status: 200, body: {"access_token" => "fresh-token", "expires_in" => 60})
       end
     end
+
     sleeper = lambda do |_delay|
       retry_started << true
       release_retry.pop
     end
+
     auth = x509_auth(http_client, sleeper: sleeper)
     rejected_token = auth.get_token
     auth.invalidate_token(rejected_token)
@@ -267,8 +263,10 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
         started << true
         release.pop
       end
+
       http_response(status: 200, body: {"access_token" => "winner-token", "expires_in" => 60})
     end
+
     auth = x509_auth(http_client)
     deadline = OpenAI::Internal::Util.monotonic_secs + 0.05
     leader = Thread.new { auth.get_token(deadline: deadline) }
@@ -313,6 +311,7 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
         end
       end
     end
+
     client = OpenAI::Client.new(
       api_key: nil,
       workload_identity: x509_config,
@@ -330,6 +329,7 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
     retry_request = Thread.new do
       client.request(method: :get, path: "retry", model: OpenAI::Internal::Type::Unknown)
     end
+
     retry_scheduled.pop
 
     rejected_request = client.request(
@@ -382,6 +382,7 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
         end
       end
     end
+
     client = OpenAI::Client.new(
       api_key: nil,
       workload_identity: x509_config,
@@ -399,6 +400,7 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
     retry_request = Thread.new do
       client.request(method: :get, path: "retry", model: OpenAI::Internal::Type::Unknown)
     end
+
     retry_scheduled.pop
 
     rotated_request = client.request(
@@ -443,6 +445,7 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
         end
       end
     end
+
     client = x509_client(http_client)
 
     result = client.request(method: :post, path: "probe", body: {value: "replayable"})
@@ -474,11 +477,13 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
         end
       end
     end
+
     client = x509_client(http_client)
 
     assert_raises(OpenAI::Errors::AuthenticationError) do
       client.request(method: :post, path: "probe", body: {value: "replayable"})
     end
+
     result = client.request(method: :get, path: "probe", model: OpenAI::Internal::Type::Unknown)
 
     assert_equal(true, result[:ok])
@@ -496,12 +501,13 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
 
       http_response(status: 200, body: {"access_token" => "token", "expires_in" => 60})
     end
-    client_class =
-      Class.new(OpenAI::Client) do
-        private def prepare_request(request, **context)
-          super.merge(url: URI("https://attacker.invalid/probe"))
-        end
+
+    client_class = Class.new(OpenAI::Client) do
+      private def prepare_request(request, **context)
+        super.merge(url: URI("https://attacker.invalid/probe"))
       end
+    end
+
     client = client_class.new(api_key: nil, workload_identity: x509_config, http_client: http_client)
 
     error = assert_raises(OpenAI::Errors::Error) do
@@ -517,18 +523,21 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
     misleading_url = Struct.new(:scheme, :host, :port) do
       def to_s = "https://mtls.api.openai.com/v1/probe"
     end
+
     http_client = StubHTTPClient.new do |request|
       raise "API request reached transport" unless request.url.host == "mtls.auth.openai.com"
 
       http_response(status: 200, body: {"access_token" => "token", "expires_in" => 60})
     end
-    client_class =
-      Class.new(OpenAI::Client) do
-        define_method(:prepare_request) do |request, **context|
-          super(request, **context).merge(url: misleading_url.new("https", "attacker.invalid", 443))
-        end
-        private :prepare_request
+
+    client_class = Class.new(OpenAI::Client) do
+      define_method(:prepare_request) do |request, **context|
+        super(request, **context).merge(url: misleading_url.new("https", "attacker.invalid", 443))
       end
+
+      private(:prepare_request)
+    end
+
     client = client_class.new(api_key: nil, workload_identity: x509_config, http_client: http_client)
 
     error = assert_raises(OpenAI::Errors::Error) do
@@ -546,17 +555,18 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
 
       http_response(status: 200, body: {"access_token" => "token", "expires_in" => 60})
     end
-    client_class =
-      Class.new(OpenAI::Client) do
-        private def prepare_request(request, **context)
-          headers = request.fetch(:headers).merge(
-            "Authorization" => "Bearer hook-override",
-            "Cookie" => "hook-session=sensitive",
-            "Set-Cookie" => "hook-response-session=sensitive"
-          )
-          super.merge(headers: headers)
-        end
+
+    client_class = Class.new(OpenAI::Client) do
+      private def prepare_request(request, **context)
+        headers = request.fetch(:headers).merge(
+          "Authorization" => "Bearer hook-override",
+          "Cookie" => "hook-session=sensitive",
+          "Set-Cookie" => "hook-response-session=sensitive"
+        )
+        super.merge(headers: headers)
       end
+    end
+
     client = client_class.new(api_key: nil, workload_identity: x509_config, http_client: http_client)
 
     error = assert_raises(OpenAI::Errors::Error) do
@@ -578,14 +588,15 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
         http_response(status: 200, body: {"ok" => true})
       end
     end
-    client_class =
-      Class.new(OpenAI::Client) do
-        private def prepare_request(request, **context)
-          prepared = super
-          prepared.fetch(:workload_identity_context)[:token] = "hook-injected-token"
-          prepared.merge(headers: prepared.fetch(:headers).merge("authorization" => "Bearer hook-injected-token"))
-        end
+
+    client_class = Class.new(OpenAI::Client) do
+      private def prepare_request(request, **context)
+        prepared = super
+        prepared.fetch(:workload_identity_context)[:token] = "hook-injected-token"
+        prepared.merge(headers: prepared.fetch(:headers).merge("authorization" => "Bearer hook-injected-token"))
       end
+    end
+
     client = client_class.new(api_key: nil, workload_identity: x509_config, http_client: http_client)
 
     error = assert_raises(OpenAI::Errors::Error) do
@@ -607,14 +618,15 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
         http_response(status: 200, body: {"ok" => true})
       end
     end
-    client_class =
-      Class.new(OpenAI::Client) do
-        private def prepare_request(request, **context)
-          prepared = super
-          prepared.fetch(:workload_identity_context).fetch(:token).replace("hook-injected-token")
-          prepared.merge(headers: prepared.fetch(:headers).merge("authorization" => "Bearer hook-injected-token"))
-        end
+
+    client_class = Class.new(OpenAI::Client) do
+      private def prepare_request(request, **context)
+        prepared = super
+        prepared.fetch(:workload_identity_context).fetch(:token).replace("hook-injected-token")
+        prepared.merge(headers: prepared.fetch(:headers).merge("authorization" => "Bearer hook-injected-token"))
       end
+    end
+
     client = client_class.new(api_key: nil, workload_identity: x509_config, http_client: http_client)
 
     error = assert_raises(OpenAI::Errors::Error) do
@@ -636,21 +648,25 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
 
         http_response(status: 200, body: {"access_token" => "token", "expires_in" => 60})
       end
+
       client_class = Class.new(OpenAI::Client) do
-        attr_writer :injected_header
+        attr_writer(:injected_header)
 
         private def prepare_request(request, **context)
           headers = request.fetch(:headers).merge(@injected_header => "hook-api-key")
           super.merge(headers: headers)
         end
       end
-      client = client_class.new(
-        api_key: nil,
-        workload_identity: x509_config,
-        http_client: http_client
-      ).tap do |client|
-        client.injected_header = header
-      end
+
+      client = client_class
+        .new(
+          api_key: nil,
+          workload_identity: x509_config,
+          http_client: http_client
+        )
+        .tap do |client|
+          client.injected_header = header
+        end
 
       error = assert_raises(OpenAI::Errors::Error) do
         client.request(method: :get, path: "probe", model: OpenAI::Internal::Type::Unknown)
@@ -669,21 +685,25 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
 
         http_response(status: 200, body: {"access_token" => "token", "expires_in" => 60})
       end
+
       client_class = Class.new(OpenAI::Client) do
-        attr_writer :injected_header
+        attr_writer(:injected_header)
 
         private def prepare_request(request, **context)
           headers = request.fetch(:headers).merge(@injected_header => "Basic hook-proxy-secret")
           super.merge(headers: headers)
         end
       end
-      client = client_class.new(
-        api_key: nil,
-        workload_identity: x509_config,
-        http_client: http_client
-      ).tap do |client|
-        client.injected_header = header
-      end
+
+      client = client_class
+        .new(
+          api_key: nil,
+          workload_identity: x509_config,
+          http_client: http_client
+        )
+        .tap do |client|
+          client.injected_header = header
+        end
 
       error = assert_raises(OpenAI::Errors::Error) do
         client.request(method: :get, path: "probe", model: OpenAI::Internal::Type::Unknown)
@@ -703,13 +723,14 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
         http_response(status: 200, body: {"ok" => true})
       end
     end
-    client_class =
-      Class.new(OpenAI::Client) do
-        private def prepare_request(request, **context)
-          prepared = super
-          prepared.merge(headers: prepared.fetch(:headers).merge("X-Request-Hook" => "preserved"))
-        end
+
+    client_class = Class.new(OpenAI::Client) do
+      private def prepare_request(request, **context)
+        prepared = super
+        prepared.merge(headers: prepared.fetch(:headers).merge("X-Request-Hook" => "preserved"))
       end
+    end
+
     client = client_class.new(api_key: nil, workload_identity: x509_config, http_client: http_client)
 
     result = client.request(method: :get, path: "probe", model: OpenAI::Internal::Type::Unknown)
@@ -721,13 +742,13 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
 
   def test_x509_rejects_prepare_hook_replacement_of_admin_authorization
     http_client = StubHTTPClient.new { raise "request reached transport" }
-    client_class =
-      Class.new(OpenAI::Client) do
-        private def prepare_request(request, **context)
-          headers = request.fetch(:headers).merge("Authorization" => "Basic customer-secret")
-          super.merge(headers: headers)
-        end
+    client_class = Class.new(OpenAI::Client) do
+      private def prepare_request(request, **context)
+        headers = request.fetch(:headers).merge("Authorization" => "Basic customer-secret")
+        super.merge(headers: headers)
       end
+    end
+
     client = client_class.new(
       api_key: nil,
       admin_api_key: "admin-key",
@@ -751,13 +772,13 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
 
   def test_x509_rejects_prepare_hook_authorization_on_a_headerless_request
     http_client = StubHTTPClient.new { raise "request reached transport" }
-    client_class =
-      Class.new(OpenAI::Client) do
-        private def prepare_request(request, **context)
-          headers = request.fetch(:headers).merge("Authorization" => "Basic customer-secret")
-          super.merge(headers: headers)
-        end
+    client_class = Class.new(OpenAI::Client) do
+      private def prepare_request(request, **context)
+        headers = request.fetch(:headers).merge("Authorization" => "Basic customer-secret")
+        super.merge(headers: headers)
       end
+    end
+
     client = client_class.new(api_key: nil, workload_identity: x509_config, http_client: http_client)
 
     error = assert_raises(OpenAI::Errors::Error) do
@@ -789,6 +810,7 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
         raise "redirect reached unexpected transport origin"
       end
     end
+
     client = x509_client(http_client)
 
     error = assert_raises(OpenAI::Errors::Error) do
@@ -810,6 +832,7 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
         http_response(status: 200, body: {"ok" => true})
       end
     end
+
     client = x509_client(http_client)
 
     result = client.request(method: :get, path: "probe", model: OpenAI::Internal::Type::Unknown)
@@ -922,6 +945,7 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
         end
       end
     end
+
     body = Enumerator.new { _1 << {value: "one shot"} }
     client = x509_client(http_client)
 
@@ -942,44 +966,4 @@ class X509WorkloadIdentitySecurityTest < Minitest::Test
     assert_equal(["Bearer token-1", "Bearer token-2"], api_authorizations)
   end
 
-  private def x509_config(refresh_buffer_seconds: 1200)
-    OpenAI::Auth::X509WorkloadIdentity.new(
-      identity_provider_id: "idp-123",
-      service_account_id: "sa-456",
-      refresh_buffer_seconds: refresh_buffer_seconds
-    )
-  end
-
-  private def x509_auth(
-    http_client,
-    sleeper: ->(_delay) {},
-    monotonic_clock: nil,
-    refresh_buffer_seconds: 1200
-  )
-    kwargs = {http_client: http_client, sleeper: sleeper}
-    kwargs[:monotonic_clock] = monotonic_clock unless monotonic_clock.nil?
-    OpenAI::Auth::WorkloadIdentityAuth.new(
-      x509_config(refresh_buffer_seconds: refresh_buffer_seconds),
-      nil,
-      **kwargs
-    )
-  end
-
-  private def x509_client(http_client)
-    OpenAI::Client.new(
-      api_key: nil,
-      workload_identity: x509_config,
-      http_client: http_client,
-      max_retries: 0
-    )
-  end
-
-  private def http_response(status:, body:, headers: {})
-    body = JSON.generate(body) unless body.is_a?(String)
-    OpenAI::HTTPClient::Response.new(
-      status: status,
-      headers: {"content-type" => "application/json"}.merge(headers),
-      body: body
-    )
-  end
 end

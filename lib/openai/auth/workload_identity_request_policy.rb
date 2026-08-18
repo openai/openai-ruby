@@ -31,8 +31,10 @@ module OpenAI
         raise ArgumentError, invalid_base_url_message if @api_origin.nil?
         return unless provider_owned_origin?(@api_origin)
 
-        raise ArgumentError,
-              "Workload identity cannot authenticate a provider-owned API origin."
+        raise(
+          ArgumentError,
+          "Workload identity cannot authenticate a provider-owned API origin."
+        )
       end
 
       # @api private
@@ -76,8 +78,7 @@ module OpenAI
 
         scheme = uri.scheme&.downcase
         host = uri.host&.downcase&.delete_suffix(".")
-        valid =
-          valid_scheme?(scheme) &&
+        valid = valid_scheme?(scheme) &&
           !host.nil? &&
           !host.empty? &&
           uri.userinfo.nil? &&
@@ -107,8 +108,10 @@ module OpenAI
       def validate_api_request!(request)
         return if api_origin(request.fetch(:url)) == @api_origin
 
-        raise OpenAI::Errors::Error,
-              "Workload identity requests must use the configured API origin."
+        raise(
+          OpenAI::Errors::Error,
+          "Workload identity requests must use the configured API origin."
+        )
       end
 
       # Enforces the X.509 bearer request trust boundary.
@@ -126,16 +129,21 @@ module OpenAI
           if bearer_auth
             placeholder = "Bearer #{OpenAI::Client::WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
             unless expected_authorization == placeholder && actual_authorization == placeholder
-              raise OpenAI::Errors::Error,
-                    "X.509 workload identity cannot be combined with a custom Authorization header."
+              raise(
+                OpenAI::Errors::Error,
+                "X.509 workload identity cannot be combined with a custom Authorization header."
+              )
             end
 
             return request.merge(workload_identity_auth: REQUIRED)
           end
+
           return request if actual_authorization == expected_authorization
 
-          raise OpenAI::Errors::Error,
-                "X.509 workload identity cannot be combined with a custom Authorization header."
+          raise(
+            OpenAI::Errors::Error,
+            "X.509 workload identity cannot be combined with a custom Authorization header."
+          )
         end
 
         # @api private
@@ -145,8 +153,10 @@ module OpenAI
           if request[:workload_identity_auth] == REQUIRED
             expected = "Bearer #{OpenAI::Client::WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
             unless request.fetch(:headers)["authorization"] == expected
-              raise OpenAI::Errors::Error,
-                    "X.509 workload identity cannot be combined with a custom Authorization header."
+              raise(
+                OpenAI::Errors::Error,
+                "X.509 workload identity cannot be combined with a custom Authorization header."
+              )
             end
           end
         end
@@ -156,8 +166,10 @@ module OpenAI
           super
           return if credential_headers(request.fetch(:headers)) == credential_headers(original_headers)
 
-          raise OpenAI::Errors::Error,
-                "X.509 workload identity request hooks cannot modify credential headers."
+          raise(
+            OpenAI::Errors::Error,
+            "X.509 workload identity request hooks cannot modify credential headers."
+          )
         end
 
         private
@@ -174,27 +186,38 @@ module OpenAI
           super
           header_names = request.fetch(:headers).each_key.map { _1.to_s.downcase.tr("_", "-") }
           if header_names.intersect?(API_KEY_HEADERS)
-            raise OpenAI::Errors::Error,
-                  "X.509 workload identity cannot be combined with a custom API-key header."
+            raise(
+              OpenAI::Errors::Error,
+              "X.509 workload identity cannot be combined with a custom API-key header."
+            )
           end
+
           if header_names.include?(PROXY_AUTHORIZATION_HEADER)
-            raise OpenAI::Errors::Error,
-                  "X.509 workload identity requires Proxy-Authorization to be configured by the transport."
+            raise(
+              OpenAI::Errors::Error,
+              "X.509 workload identity requires Proxy-Authorization to be configured by the transport."
+            )
           end
+
           return unless header_names.include?("host")
 
-          raise OpenAI::Errors::Error,
-                "X.509 workload identity requests cannot override the Host header."
+          raise(
+            OpenAI::Errors::Error,
+            "X.509 workload identity requests cannot override the Host header."
+          )
         end
 
         def credential_headers(headers)
-          headers.each_with_object({}) do |(name, value), selected|
-            next unless OpenAI::Internal::Logging.credential_header?(name)
+          headers
+            .each_with_object({}) do |(name, value), selected|
+              next unless OpenAI::Internal::Logging.credential_header?(name)
 
-            normalized_name = name.to_s.downcase
-            selected[normalized_name] ||= []
-            selected.fetch(normalized_name) << value.to_s
-          end.transform_values { _1.sort.freeze }.freeze
+              normalized_name = name.to_s.downcase
+              selected[normalized_name] ||= []
+              selected.fetch(normalized_name) << value.to_s
+            end
+            .transform_values { _1.sort.freeze }
+            .freeze
         end
       end
     end

@@ -35,7 +35,8 @@ module OpenAI
           invalid_target
           unauthorized_client
           unsupported_grant_type
-        ].freeze
+        ]
+          .freeze
         private_constant :BEARER_TOKEN_PATTERN, :OAUTH_ERROR_CODES
 
         # @api private
@@ -46,6 +47,7 @@ module OpenAI
           if token_exchange_url != DEFAULT_URL
             raise ArgumentError, "The X.509 token exchange URL cannot be overridden"
           end
+
           unless http_client.respond_to?(:execute)
             raise ArgumentError, "X.509 workload identity requires an http_client that responds to execute"
           end
@@ -107,27 +109,31 @@ module OpenAI
           when 400, 401, 403
             error_code = body[:error] if body.is_a?(Hash)
             sanitized_body = {error: error_code} if OAUTH_ERROR_CODES.include?(error_code)
-            raise OpenAI::Errors::OAuthError.new(
-              status: response.status,
-              body: sanitized_body,
-              headers: sanitized_error_headers(response.headers),
-              url: @url
+            raise(
+              OpenAI::Errors::OAuthError.new(
+                status: response.status,
+                body: sanitized_body,
+                headers: sanitized_error_headers(response.headers),
+                url: @url
+              )
             )
           when 200..299
             validate_token_response!(body)
           else
-            message =
-              if (300..399).cover?(response.status)
-                "X.509 token exchange refused redirect response with status #{response.status}"
-              else
-                "X.509 token exchange failed with status #{response.status}"
-              end
-            raise OpenAI::Errors::APIError.new(
-              url: @url,
-              status: response.status,
-              headers: sanitized_error_headers(response.headers),
-              body: nil,
-              message: message
+            message = if (300..399).cover?(response.status)
+              "X.509 token exchange refused redirect response with status #{response.status}"
+            else
+              "X.509 token exchange failed with status #{response.status}"
+            end
+
+            raise(
+              OpenAI::Errors::APIError.new(
+                url: @url,
+                status: response.status,
+                headers: sanitized_error_headers(response.headers),
+                body: nil,
+                message: message
+              )
             )
           end
         end
@@ -143,19 +149,24 @@ module OpenAI
               raise invalid_token_response("token_type must be Bearer when present")
             end
           end
+
           unless access_token.is_a?(String) && !access_token.empty?
             raise invalid_token_response("access_token must be a non-empty string")
           end
+
           unless BEARER_TOKEN_PATTERN.match?(access_token)
             raise invalid_token_response("access_token must use the RFC 6750 bearer token grammar")
           end
+
           unless expires_in.is_a?(Integer) || expires_in.is_a?(Float)
             raise invalid_token_response("expires_in must be a positive number")
           end
+
           within_float_range = expires_in.is_a?(Integer) ? expires_in <= Float::MAX : expires_in.finite?
           unless within_float_range && expires_in.positive?
             raise invalid_token_response("expires_in must be a positive number")
           end
+
           expires_in = expires_in.to_f
 
           {id: access_token, expires_in: expires_in}
@@ -197,6 +208,7 @@ module OpenAI
 
             body << chunk
           end
+
           body
         ensure
           OpenAI::Internal::Util.close_fused!(response.body)
@@ -226,6 +238,7 @@ module OpenAI
           if server_delay.nil? && retry_after
             server_delay = Time.httpdate(retry_after) - Time.now
           end
+
           if server_delay&.finite? && !server_delay.negative?
             return [server_delay, MAX_RETRY_DELAY].min
           end
@@ -236,7 +249,7 @@ module OpenAI
         end
 
         def default_retry_delay(retry_count)
-          (INITIAL_RETRY_DELAY * (2**retry_count)).clamp(0, MAX_RETRY_DELAY)
+          (INITIAL_RETRY_DELAY * (2 ** retry_count)).clamp(0, MAX_RETRY_DELAY)
         end
       end
     end

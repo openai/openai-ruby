@@ -18,7 +18,7 @@ module OpenAI
         organization_id,
         token_exchange_url: DEFAULT_TOKEN_EXCHANGE_URL,
         http_client: nil,
-        sleeper: ->(delay) { sleep(delay) },
+        sleeper: -> (delay) { sleep(delay) },
         monotonic_clock: -> { OpenAI::Internal::Util.monotonic_secs }
       )
         @config = config
@@ -38,6 +38,7 @@ module OpenAI
         else
           raise ArgumentError, "Unsupported workload identity configuration: #{config.class}"
         end
+
         @refresh_buffer_seconds = config.refresh_buffer_seconds
         @monotonic_clock = monotonic_clock
 
@@ -85,10 +86,12 @@ module OpenAI
               Thread.handle_interrupt(Exception => :immediate) do
                 perform_refresh(deadline: deadline)
               end
+
             rescue StandardError => e
               @mutex.synchronize do
                 @retry_failed_refresh = e.is_a?(OpenAI::Errors::APIError) || e.is_a?(Timeout::Error)
               end
+
               raise
             ensure
               @mutex.synchronize do
@@ -118,6 +121,7 @@ module OpenAI
           @cached_token_expires_at_monotonic = nil
           @cached_token_refresh_at_monotonic = nil
         end
+
         nil
       end
 
@@ -171,12 +175,12 @@ module OpenAI
       end
 
       private def perform_refresh(deadline:)
-        token_data =
-          if deadline.nil?
-            fetch_token_from_exchange
-          else
-            fetch_token_from_exchange(deadline: deadline)
-          end
+        token_data = if deadline.nil?
+          fetch_token_from_exchange
+        else
+          fetch_token_from_exchange(deadline: deadline)
+        end
+
         now = @monotonic_clock.call
         expires_in = token_data.fetch(:expires_in)
 

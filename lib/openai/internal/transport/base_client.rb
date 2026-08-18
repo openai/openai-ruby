@@ -531,9 +531,11 @@ module OpenAI
               request.fetch(:headers),
               request[:body]
             )
-            original_headers = encoded_headers.to_h do |name, value|
-              [name.dup.freeze, value.dup.freeze]
-            end.freeze
+            original_headers = encoded_headers
+              .to_h do |name, value|
+                [name.dup.freeze, value.dup.freeze]
+              end
+              .freeze
             attempt_request = request.merge(headers: encoded_headers, body: encoded_body)
             prepared_request = prepare_request(
               attempt_request,

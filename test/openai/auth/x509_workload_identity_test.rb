@@ -1,25 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "../test_helper"
+require_relative "x509_workload_identity_test_support"
 
 class X509WorkloadIdentityTest < Minitest::Test
   extend Minitest::Serial
-
-  class StubHTTPClient < OpenAI::HTTPClient
-    attr_reader :requests
-
-    def initialize(&execute)
-      super()
-      @execute = execute
-      @requests = []
-      @mutex = Mutex.new
-    end
-
-    def execute(request)
-      @mutex.synchronize { @requests << request }
-      @execute.call(request)
-    end
-  end
+  include X509WorkloadIdentityTestSupport
 
   def setup
     super
@@ -61,15 +46,18 @@ class X509WorkloadIdentityTest < Minitest::Test
         service_account_id: "service-account"
       )
     end
+
     assert_raises(ArgumentError) do
       OpenAI::Auth::X509WorkloadIdentity.new(
         identity_provider_id: "identity-provider",
         service_account_id: ""
       )
     end
+
     assert_raises(ArgumentError) do
       x509_config(refresh_buffer_seconds: -1)
     end
+
     assert_raises(ArgumentError) do
       OpenAI::Auth::X509WorkloadIdentity.new(
         identity_provider_id: "identity-provider",
@@ -245,6 +233,7 @@ class X509WorkloadIdentityTest < Minitest::Test
         http_response(status: 200, body: {"ok" => true})
       end
     end
+
     client = OpenAI::Client.new(
       api_key: nil,
       workload_identity: x509_config,
@@ -268,6 +257,7 @@ class X509WorkloadIdentityTest < Minitest::Test
     http_client = StubHTTPClient.new do |_request|
       http_response(status: 200, body: {"ok" => true})
     end
+
     client = OpenAI::Client.new(api_key: "api-key", http_client: http_client)
 
     result = client.request(method: :get, path: "probe", model: OpenAI::Internal::Type::Unknown)
@@ -283,6 +273,7 @@ class X509WorkloadIdentityTest < Minitest::Test
     http_client = StubHTTPClient.new do |_request|
       http_response(status: 200, body: {"ok" => true})
     end
+
     client = OpenAI::Client.new(
       api_key: nil,
       admin_api_key: "admin-key",
@@ -408,6 +399,7 @@ class X509WorkloadIdentityTest < Minitest::Test
         http_response(status: 200, body: {"ok" => true})
       end
     end
+
     log_output = StringIO.new
     client = OpenAI::Client.new(
       api_key: nil,
@@ -545,6 +537,7 @@ class X509WorkloadIdentityTest < Minitest::Test
         body: "redirect"
       )
     end
+
     auth = x509_auth(http_client)
 
     error = assert_raises(OpenAI::Errors::APIError) { auth.get_token }
@@ -569,7 +562,7 @@ class X509WorkloadIdentityTest < Minitest::Test
   end
 
   def test_x509_exchange_requires_positive_numeric_expires_in_without_leaking_token
-    [nil, 0, -1, "3600", 10**400].each do |expires_in|
+    [nil, 0, -1, "3600", 10 ** 400].each do |expires_in|
       http_client = StubHTTPClient.new do |_request|
         http_response(
           status: 200,
@@ -607,6 +600,7 @@ class X509WorkloadIdentityTest < Minitest::Test
         yielder << chunk
       end
     end
+
     http_client = StubHTTPClient.new do |_request|
       OpenAI::HTTPClient::Response.new(
         status: 200,
@@ -649,7 +643,7 @@ class X509WorkloadIdentityTest < Minitest::Test
       end
     end
 
-    token = x509_auth(http_client, sleeper: ->(delay) { delays << delay }).get_token
+    token = x509_auth(http_client, sleeper: -> (delay) { delays << delay }).get_token
 
     assert_equal("token", token)
     assert_equal(2, calls)
@@ -668,6 +662,7 @@ class X509WorkloadIdentityTest < Minitest::Test
             yielder << "untrusted retry body"
           end
         end
+
         OpenAI::HTTPClient::Response.new(
           status: 429,
           headers: {"retry-after" => "0"},
@@ -678,7 +673,7 @@ class X509WorkloadIdentityTest < Minitest::Test
       end
     end
 
-    token = x509_auth(http_client, sleeper: ->(_delay) {}).get_token
+    token = x509_auth(http_client, sleeper: -> (_delay) { nil }).get_token
 
     assert_equal("token", token)
     assert_equal(2, calls)
@@ -708,7 +703,7 @@ class X509WorkloadIdentityTest < Minitest::Test
         end
       end
 
-      token = x509_auth(http_client, sleeper: ->(delay) { delays << delay }).get_token
+      token = x509_auth(http_client, sleeper: -> (delay) { delays << delay }).get_token
 
       assert_equal("token", token)
       assert_equal([expected_delay], delays, "Retry-After: #{retry_after}")
@@ -727,7 +722,7 @@ class X509WorkloadIdentityTest < Minitest::Test
       http_response(status: 200, body: {"access_token" => "token", "expires_in" => 60})
     end
 
-    token = x509_auth(http_client, sleeper: ->(delay) { delays << delay }).get_token
+    token = x509_auth(http_client, sleeper: -> (delay) { delays << delay }).get_token
 
     assert_equal("token", token)
     assert_equal(3, calls)
@@ -743,7 +738,7 @@ class X509WorkloadIdentityTest < Minitest::Test
     end
 
     error = assert_raises(OpenAI::Errors::APIError) do
-      x509_auth(http_client, sleeper: ->(delay) { delays << delay }).get_token
+      x509_auth(http_client, sleeper: -> (delay) { delays << delay }).get_token
     end
 
     assert_equal(503, error.status)
@@ -803,6 +798,7 @@ class X509WorkloadIdentityTest < Minitest::Test
       calls += 1
       http_response(status: 200, body: {"access_token" => token, "expires_in" => 10})
     end
+
     auth = x509_auth(http_client, monotonic_clock: -> { now })
 
     assert_equal("first-token", auth.get_token)
@@ -822,6 +818,7 @@ class X509WorkloadIdentityTest < Minitest::Test
       calls += 1
       http_response(status: 200, body: {"access_token" => token, "expires_in" => 10})
     end
+
     auth = x509_auth(
       http_client,
       monotonic_clock: -> { now },
@@ -847,6 +844,7 @@ class X509WorkloadIdentityTest < Minitest::Test
       release.pop
       http_response(status: 200, body: {"access_token" => "shared-token", "expires_in" => 60})
     end
+
     auth = x509_auth(http_client)
     gate = Queue.new
     threads = 100.times.map do
@@ -855,6 +853,7 @@ class X509WorkloadIdentityTest < Minitest::Test
         auth.get_token
       end
     end
+
     100.times { gate << true }
 
     started.pop
@@ -877,6 +876,7 @@ class X509WorkloadIdentityTest < Minitest::Test
       release.pop
       http_response(status: 200, body: {"access_token" => "winner-token", "expires_in" => 60})
     end
+
     auth = x509_auth(http_client)
     leader = Thread.new { auth.get_token }
     started.pop
@@ -908,8 +908,10 @@ class X509WorkloadIdentityTest < Minitest::Test
         started << true
         release.pop
       end
+
       http_response(status: 200, body: {"access_token" => "winner-token", "expires_in" => 60})
     end
+
     auth = x509_auth(http_client)
     leader = Thread.new { auth.get_token }
     started.pop
@@ -937,6 +939,7 @@ class X509WorkloadIdentityTest < Minitest::Test
       calls += 1
       http_response(status: 200, body: {"access_token" => token, "expires_in" => 60})
     end
+
     auth = x509_auth(http_client)
 
     rejected = auth.get_token
@@ -949,44 +952,4 @@ class X509WorkloadIdentityTest < Minitest::Test
     refute_includes(auth.inspect, "fresh-token")
   end
 
-  private def x509_config(refresh_buffer_seconds: 1200)
-    OpenAI::Auth::X509WorkloadIdentity.new(
-      identity_provider_id: "idp-123",
-      service_account_id: "sa-456",
-      refresh_buffer_seconds: refresh_buffer_seconds
-    )
-  end
-
-  private def x509_auth(
-    http_client,
-    sleeper: ->(_delay) {},
-    monotonic_clock: nil,
-    refresh_buffer_seconds: 1200
-  )
-    kwargs = {http_client: http_client, sleeper: sleeper}
-    kwargs[:monotonic_clock] = monotonic_clock unless monotonic_clock.nil?
-    OpenAI::Auth::WorkloadIdentityAuth.new(
-      x509_config(refresh_buffer_seconds: refresh_buffer_seconds),
-      nil,
-      **kwargs
-    )
-  end
-
-  private def x509_client(http_client)
-    OpenAI::Client.new(
-      api_key: nil,
-      workload_identity: x509_config,
-      http_client: http_client,
-      max_retries: 0
-    )
-  end
-
-  private def http_response(status:, body:, headers: {})
-    body = JSON.generate(body) unless body.is_a?(String)
-    OpenAI::HTTPClient::Response.new(
-      status: status,
-      headers: {"content-type" => "application/json"}.merge(headers),
-      body: body
-    )
-  end
 end

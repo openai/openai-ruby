@@ -755,12 +755,12 @@ class HTTPClientTest < Minitest::Test
   end
 
   def test_net_http_client_partitions_connection_pools_by_origin
-    client_class =
-      Class.new(OpenAI::NetHTTPClient) do
-        def checkout(url, &blk)
-          with_pool(url, deadline: nil, &blk)
-        end
+    client_class = Class.new(OpenAI::NetHTTPClient) do
+      def checkout(url, &blk)
+        with_pool(url, deadline: nil, &blk)
       end
+    end
+
     configured_origins = []
     http_client = client_class.new do |http|
       configured_origins << [http.address, http.port]

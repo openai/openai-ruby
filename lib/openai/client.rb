@@ -202,6 +202,7 @@ module OpenAI
       if context && policy.authenticated?(request)
         original_headers = original_headers.merge("authorization" => "Bearer #{context.fetch(:token)}")
       end
+
       policy.validate_prepared!(request, original_headers: original_headers)
     end
 
@@ -213,12 +214,12 @@ module OpenAI
       return super unless workload_identity_request?(request)
 
       context = request[:workload_identity_context]
-      deadline =
-        if context && retry_count.zero?
-          context.fetch(:deadline)
-        else
-          request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
-        end
+      deadline = if context && retry_count.zero?
+        context.fetch(:deadline)
+      else
+        request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
+      end
+
       context = {deadline: deadline, token: nil}
       request = request.merge(workload_identity_context: context)
 
@@ -231,6 +232,7 @@ module OpenAI
             send_retry_header: send_retry_header
           )
         end
+
       rescue OpenAI::Errors::AuthenticationError
         raise unless retry_count.zero? && request_replayable?(request)
 
@@ -258,9 +260,11 @@ module OpenAI
     rescue FrozenError => e
       raise unless e.receiver.equal?(context) || e.receiver.equal?(context[:token])
 
-      raise OpenAI::Errors::Error,
-            "Workload identity request hooks cannot modify authentication context.",
-            cause: nil
+      raise(
+        OpenAI::Errors::Error,
+        "Workload identity request hooks cannot modify authentication context.",
+        cause: nil
+      )
     end
 
     private def workload_identity_request?(request)

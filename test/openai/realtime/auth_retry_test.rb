@@ -70,12 +70,15 @@ class OpenAI::Test::RealtimeAuthRetryTest < Minitest::Test
     client.workload_identity_auth.stub(:get_token, get_token) do
       %w[wss://attacker.invalid/v1 ws://attacker.invalid/v1].each do |websocket_base_url|
         error = assert_raises(OpenAI::Errors::Error) do
-          client.realtime.connect(
-            model: "gpt-realtime-2.1",
-            websocket_base_url: websocket_base_url,
-            transport: transport
-          ) { |_connection| nil }
+          client
+            .realtime
+            .connect(
+              model: "gpt-realtime-2.1",
+              websocket_base_url: websocket_base_url,
+              transport: transport
+            ) { |_connection| nil }
         end
+
         assert_match(/X\.509.*Realtime WebSocket/, error.message)
       end
     end

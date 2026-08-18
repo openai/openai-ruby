@@ -15,14 +15,18 @@ module OpenAI
         refresh_buffer_seconds: 1200
       )
         if identity_provider_id.to_s.strip.empty?
-          raise ArgumentError,
-                "identity_provider_id must not be blank; pass identity_provider_id: " \
-                "or set IDENTITY_PROVIDER_ID"
+          raise(
+            ArgumentError,
+            "identity_provider_id must not be blank; pass identity_provider_id: " \
+              "or set IDENTITY_PROVIDER_ID"
+          )
         end
 
         if service_account_id.to_s.strip.empty?
-          raise ArgumentError,
-                "service_account_id must not be blank; pass service_account_id: or set SERVICE_ACCOUNT_ID"
+          raise(
+            ArgumentError,
+            "service_account_id must not be blank; pass service_account_id: or set SERVICE_ACCOUNT_ID"
+          )
         end
 
         refresh_buffer_seconds = Integer(refresh_buffer_seconds)
