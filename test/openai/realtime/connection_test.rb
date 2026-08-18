@@ -284,7 +284,8 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
         connection.send_event(type: "future.unknown.event")
       end
     end
-    assert_includes(unknown.message, "future.unknown.event")
+    assert_equal("Invalid Realtime client event.", unknown.message)
+    assert_includes(unknown.cause.message, "future.unknown.event")
 
     incomplete = assert_raises(ArgumentError) do
       client.realtime.connect(
@@ -294,7 +295,57 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
         connection.send_event(type: "conversation.item.create")
       end
     end
-    assert_includes(incomplete.message, "required fields")
+    assert_equal("Invalid Realtime client event.", incomplete.message)
+    assert_includes(incomplete.cause.message, "required fields")
+  end
+
+  def test_send_event_keeps_nested_client_values_out_of_the_public_error_message
+    authorization = "secret-mcp-authorization"
+    description = "private customer tool description"
+    transport = FakeTransport.new(FakeSocket.new)
+
+    error = assert_raises(ArgumentError) do
+      client.realtime.connect(model: "gpt-realtime-2.1", transport: transport) do |connection|
+        connection.send_event(
+          type: "response.create",
+          response: {
+            tools: [
+              {
+                type: "unknown_tool_type",
+                authorization: authorization,
+                server_description: description
+              }
+            ]
+          }
+        )
+      end
+    end
+
+    assert_equal("Invalid Realtime client event.", error.message)
+    assert_instance_of(ArgumentError, error.cause)
+    refute_equal(error.message, error.cause.message)
+    refute_includes(error.message, authorization)
+    refute_includes(error.message, description)
+  end
+
+  def test_item_reference_inputs_require_a_non_nil_id
+    [{type: :item_reference}, {type: :item_reference, id: nil}].each do |item|
+      socket = FakeSocket.new
+
+      error = assert_raises(ArgumentError) do
+        client.realtime.connect(
+          model: "gpt-realtime-2.1",
+          transport: FakeTransport.new(socket)
+        ) do |connection|
+          connection.response.create(input: [item])
+        end
+      end
+
+      assert_equal("Invalid Realtime client event.", error.message)
+      assert_includes(error.cause.message, "item_reference")
+      assert_includes(error.cause.message, "non-nil `id`")
+      assert_empty(socket.writes)
+    end
   end
 
   def test_unknown_server_event_remains_observable_and_immutable

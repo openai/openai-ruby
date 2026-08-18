@@ -67,7 +67,9 @@ internally:
 
 For lower-level protocol work, `send_event` accepts a generated client-event
 shape, while `receive`, `each`, and `parse_event` return generated server-event
-types. `send_raw` and `receive_raw` are text-frame escape hatches.
+types. Invalid client events raise `ArgumentError` with a generic public
+message; the converter error remains available through `cause` for explicit
+inspection. `send_raw` and `receive_raw` are text-frame escape hatches.
 
 ## Event compatibility
 
@@ -186,7 +188,9 @@ end
 ```
 
 The SDK owns the authenticated `url`, `headers`, timeout, TLS, and protocol
-settings. `transport_options` therefore cannot override those fields.
+settings. `transport_options` therefore cannot override those fields and are
+snapshotted before authentication so later caller mutation cannot alter the
+handshake.
 
 ## Current scope
 

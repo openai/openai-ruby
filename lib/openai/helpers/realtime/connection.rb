@@ -80,6 +80,10 @@ module OpenAI
 
       # Validate, encode, and send a typed client event.
       def send_event(event)
+        send_raw(encode_client_event(event))
+      end
+
+      private def encode_client_event(event)
         if event.is_a?(Hash)
           validate_discriminator!(event, @client_event_names, kind: "client")
         end
@@ -94,11 +98,13 @@ module OpenAI
           state: state
         )
         if (cause = coercion_error(state))
-          raise ArgumentError.new("Invalid Realtime client event: #{cause.message}"), cause: cause
+          raise cause
         end
         payload = OpenAI::Internal::Type::Converter.dump(OpenAI::Realtime::RealtimeClientEvent, coerced)
         validate_discriminator!(payload, @client_event_names, kind: "client")
-        send_raw(JSON.generate(payload))
+        JSON.generate(payload)
+      rescue StandardError => e
+        raise ArgumentError.new("Invalid Realtime client event."), cause: e
       end
 
       # Send an already encoded text message.

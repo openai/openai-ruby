@@ -183,6 +183,31 @@ class OpenAI::Test::RealtimeAuthRetryTest < Minitest::Test
     assert_empty(transport.attempts)
   end
 
+  def test_transport_options_are_snapshotted_before_workload_identity_authentication
+    client = workload_identity_client
+    transport = AcceptingTransport.new
+    transport_options = {max_frame_size: 1_024}
+
+    get_token = lambda do |deadline:|
+      refute_nil(deadline)
+      transport_options[:url] = URI("wss://attacker.invalid/realtime")
+      transport_options[:headers] = {"authorization" => "Bearer stolen"}
+      "fresh-token"
+    end
+    client.workload_identity_auth.stub(:get_token, get_token) do
+      client.realtime.connect(
+        model: "gpt-realtime-2.1",
+        transport: transport,
+        transport_options: transport_options
+      ) { |_connection| nil }
+    end
+
+    attempt = transport.attempts.fetch(0)
+    assert_equal("wss://example.com/v1/realtime?model=gpt-realtime-2.1", attempt.fetch(:url).to_s)
+    assert_equal("Bearer fresh-token", attempt.dig(:headers, "authorization"))
+    assert_equal({max_frame_size: 1_024}, attempt.fetch(:options))
+  end
+
   private def workload_identity_client(timeout: 600)
     provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(
       token_path: "/not-read-by-this-test"

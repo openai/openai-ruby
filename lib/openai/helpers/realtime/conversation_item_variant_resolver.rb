@@ -12,6 +12,10 @@ module OpenAI
 
           type = value.fetch(:type) { value.fetch("type", OpenAI::Internal::OMIT) }
           if type.to_s == "item_reference"
+            id = value.fetch(:id) { value.fetch("id", nil) }
+            if id.nil?
+              raise ArgumentError, "Realtime item_reference input requires a non-nil `id`"
+            end
             return OpenAI::Realtime::ConversationItemWithReference
           end
           return super unless type.to_s == "message"

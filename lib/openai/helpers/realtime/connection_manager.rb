@@ -32,6 +32,7 @@ module OpenAI
         @websocket_base_url = websocket_base_url&.to_s&.dup&.freeze
         @transport = transport
         @request_options = request_options
+        transport_options = transport_options.dup.freeze
         reserved_options = transport_options.keys.select do |key|
           (key.is_a?(String) || key.is_a?(Symbol)) && RESERVED_TRANSPORT_OPTIONS.include?(key.to_sym)
         end
