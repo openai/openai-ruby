@@ -32,6 +32,22 @@ class OpenAI::Test::BaseModelNilabilityTest < Minitest::Test
     assert_instance_of(TypeError, error.cause)
   end
 
+  def test_constructor_treats_only_the_nil_singleton_as_nullable_nil
+    value = {"nil?" => true, "effort" => "high"}
+    value.define_singleton_method(:nil?) { true }
+    params = OpenAI::Responses::InputTokenCountParams.new(reasoning: value)
+
+    assert_same(value, params[:reasoning])
+    assert_same(value, params.to_h.fetch(:reasoning))
+
+    dumped, = OpenAI::Responses::InputTokenCountParams.dump_request(params)
+    assert_equal({nil?: true, effort: "high"}, dumped.fetch(:reasoning))
+    assert_equal(
+      {"reasoning" => {"nil?" => true, "effort" => "high"}},
+      JSON.parse(JSON.generate(dumped))
+    )
+  end
+
   def test_response_coercion_accepts_explicit_nullable_nil_without_an_error
     state = OpenAI::Internal::Type::Converter.new_coerce_state
     model = OpenAI::Internal::Type::Converter.coerce(

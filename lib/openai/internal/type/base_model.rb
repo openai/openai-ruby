@@ -78,7 +78,7 @@ module OpenAI
             }
 
             define_method(setter) do |value|
-              if value.nil? && nilable
+              if nil.equal?(value) && nilable
                 @coerced.store(name_sym, true)
                 @data.store(name_sym, nil)
               else
