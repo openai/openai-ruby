@@ -62,6 +62,7 @@ module OpenAI
           message = "Please use `#create_streaming` for the streaming use case."
           raise ArgumentError.new(message)
         end
+
         @client.request(
           method: :post,
           path: "completions",
@@ -129,6 +130,7 @@ module OpenAI
           message = "Please use `#create` for the non-streaming use case."
           raise ArgumentError.new(message)
         end
+
         parsed.store(:stream, true)
         @client.request(
           method: :post,

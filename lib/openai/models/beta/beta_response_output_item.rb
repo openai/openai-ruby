@@ -116,8 +116,10 @@ module OpenAI
           #   Encrypted content sent between agents.
           #
           #   @return [Array<OpenAI::Models::Beta::BetaResponseInputText, OpenAI::Models::Beta::BetaResponseOutputText, OpenAI::Models::Beta::BetaResponseOutputItem::AgentMessage::Content::Text, OpenAI::Models::Beta::BetaResponseOutputItem::AgentMessage::Content::SummaryText, OpenAI::Models::Beta::BetaResponseOutputItem::AgentMessage::Content::ReasoningText, OpenAI::Models::Beta::BetaResponseOutputRefusal, OpenAI::Models::Beta::BetaResponseInputImage, OpenAI::Models::Beta::BetaResponseOutputItem::AgentMessage::Content::ComputerScreenshot, OpenAI::Models::Beta::BetaResponseInputFile, OpenAI::Models::Beta::BetaResponseOutputItem::AgentMessage::Content::EncryptedContent>]
-          required :content,
-                   -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Content] }
+          required(
+            :content,
+            -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Content] }
+          )
 
           # @!attribute recipient
           #   The destination agent identity.
@@ -178,15 +180,19 @@ module OpenAI
             variant :input_image, -> { OpenAI::Beta::BetaResponseInputImage }
 
             # A screenshot of a computer.
-            variant :computer_screenshot,
-                    -> { OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Content::ComputerScreenshot }
+            variant(
+              :computer_screenshot,
+              -> { OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Content::ComputerScreenshot }
+            )
 
             # A file input to the model.
             variant :input_file, -> { OpenAI::Beta::BetaResponseInputFile }
 
             # Opaque encrypted content that Responses API decrypts inside trusted model execution.
-            variant :encrypted_content,
-                    -> { OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Content::EncryptedContent }
+            variant(
+              :encrypted_content,
+              -> { OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Content::EncryptedContent }
+            )
 
             class Text < OpenAI::Internal::Type::BaseModel
               # @!attribute text
@@ -254,8 +260,10 @@ module OpenAI
               #   `low`, `auto`, or `original`. Defaults to `auto`.
               #
               #   @return [Symbol, OpenAI::Models::Beta::BetaResponseOutputItem::AgentMessage::Content::ComputerScreenshot::Detail]
-              required :detail,
-                       enum: -> { OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Content::ComputerScreenshot::Detail }
+              required(
+                :detail,
+                enum: -> { OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Content::ComputerScreenshot::Detail }
+              )
 
               # @!attribute file_id
               #   The identifier of an uploaded file that contains the screenshot.
@@ -282,8 +290,12 @@ module OpenAI
               #   token block.
               #
               #   @return [OpenAI::Models::Beta::BetaResponseOutputItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint, nil]
-              optional :prompt_cache_breakpoint,
-                       -> { OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint }
+              optional(
+                :prompt_cache_breakpoint,
+                -> {
+                  OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint
+                }
+              )
 
               # @!method initialize(detail:, file_id:, image_url:, prompt_cache_breakpoint: nil, type: :computer_screenshot)
               #   Some parameter documentations has been truncated, see
@@ -998,19 +1010,23 @@ module OpenAI
           #   The agent that produced this item.
           #
           #   @return [OpenAI::Models::Beta::BetaResponseOutputItem::LocalShellCallOutput::Agent, nil]
-          optional :agent,
-                   -> {
-                     OpenAI::Beta::BetaResponseOutputItem::LocalShellCallOutput::Agent
-                   },
-                   nil?: true
+          optional(
+            :agent,
+            -> {
+              OpenAI::Beta::BetaResponseOutputItem::LocalShellCallOutput::Agent
+            },
+            nil?: true
+          )
 
           # @!attribute status
           #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaResponseOutputItem::LocalShellCallOutput::Status, nil]
-          optional :status,
-                   enum: -> { OpenAI::Beta::BetaResponseOutputItem::LocalShellCallOutput::Status },
-                   nil?: true
+          optional(
+            :status,
+            enum: -> { OpenAI::Beta::BetaResponseOutputItem::LocalShellCallOutput::Status },
+            nil?: true
+          )
 
           # @!method initialize(id:, output:, agent: nil, status: nil, type: :local_shell_call_output)
           #   Some parameter documentations has been truncated, see
@@ -1197,8 +1213,10 @@ module OpenAI
           #   The tools available on the server.
           #
           #   @return [Array<OpenAI::Models::Beta::BetaResponseOutputItem::McpListTools::Tool>]
-          required :tools,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseOutputItem::McpListTools::Tool] }
+          required(
+            :tools,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseOutputItem::McpListTools::Tool] }
+          )
 
           # @!attribute type
           #   The type of the item. Always `mcp_list_tools`.

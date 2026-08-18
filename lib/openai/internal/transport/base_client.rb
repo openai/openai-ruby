@@ -15,15 +15,14 @@ module OpenAI
         MAX_REDIRECTS = 20
 
         # rubocop:disable Style/MutableConstant
-        PLATFORM_HEADERS =
-          {
-            "x-stainless-arch" => OpenAI::Internal::Util.arch,
-            "x-stainless-lang" => "ruby",
-            "x-stainless-os" => OpenAI::Internal::Util.os,
-            "x-stainless-package-version" => OpenAI::VERSION,
-            "x-stainless-runtime" => ::RUBY_ENGINE,
-            "x-stainless-runtime-version" => ::RUBY_ENGINE_VERSION
-          }
+        PLATFORM_HEADERS = {
+          "x-stainless-arch" => OpenAI::Internal::Util.arch,
+          "x-stainless-lang" => "ruby",
+          "x-stainless-os" => OpenAI::Internal::Util.os,
+          "x-stainless-package-version" => OpenAI::VERSION,
+          "x-stainless-runtime" => ::RUBY_ENGINE,
+          "x-stainless-runtime-version" => ::RUBY_ENGINE_VERSION
+        }
         # rubocop:enable Style/MutableConstant
 
         class << self
@@ -126,27 +125,30 @@ module OpenAI
           # @return [Hash{Symbol=>Object}]
           def follow_redirect(request, status:, response_headers:)
             method, url, headers = request.fetch_values(:method, :url, :headers)
-            location =
-              Kernel.then do
-                URI.join(url, response_headers["location"])
-              rescue ArgumentError
-                message = "Server responded with status #{status} but no valid location header."
-                raise OpenAI::Errors::APIConnectionError.new(
+            location = Kernel.then do
+              URI.join(url, response_headers["location"])
+            rescue ArgumentError
+              message = "Server responded with status #{status} but no valid location header."
+              raise(
+                OpenAI::Errors::APIConnectionError.new(
                   url: url,
                   response: response_headers,
                   message: message
                 )
-              end
+              )
+            end
 
             request = {**request, url: location}
 
             case [url.scheme, location.scheme]
             in ["https", "http"]
               message = "Tried to redirect to a insecure URL"
-              raise OpenAI::Errors::APIConnectionError.new(
-                url: url,
-                response: response_headers,
-                message: message
+              raise(
+                OpenAI::Errors::APIConnectionError.new(
+                  url: url,
+                  response: response_headers,
+                  message: message
+                )
               )
             else
               nil
@@ -170,15 +172,18 @@ module OpenAI
               headers = request.fetch(:headers).reject do |name, _|
                 name == "host" || OpenAI::Internal::Logging.credential_header?(name)
               end
+
               request = {**request, headers: headers}
             end
 
             unless request_body_replayable?(request[:body])
               message = "Cannot follow a body-preserving redirect with a non-replayable request body."
-              raise OpenAI::Errors::APIConnectionError.new(
-                url: location,
-                response: response_headers,
-                message: message
+              raise(
+                OpenAI::Errors::APIConnectionError.new(
+                  url: location,
+                  response: response_headers,
+                  message: message
+                )
               )
             end
 
@@ -263,6 +268,7 @@ module OpenAI
           unless http_client.nil? || http_client.respond_to?(:execute)
             raise ArgumentError, "`http_client` must respond to `execute`"
           end
+
           unless on_retry.nil? || on_retry.respond_to?(:call)
             raise ArgumentError, "`on_retry` must respond to `call`"
           end
@@ -270,6 +276,7 @@ module OpenAI
           if log_level.nil?
             log_level = ENV.fetch("OPENAI_LOG", logger.nil? ? :off : :info)
           end
+
           @log_level = OpenAI::Internal::Logging.normalize_level(log_level)
           OpenAI::Internal::Logging.validate_logger!(logger)
           @logger = logger
@@ -376,8 +383,8 @@ module OpenAI
           )
 
           if @idempotency_header &&
-             !headers.key?(@idempotency_header) &&
-             (!Net::HTTP::IDEMPOTENT_METHODS_.include?(method.to_s.upcase) || opts.key?(:idempotency_key))
+              !headers.key?(@idempotency_header) &&
+              (!Net::HTTP::IDEMPOTENT_METHODS_.include?(method.to_s.upcase) || opts.key?(:idempotency_key))
             headers[@idempotency_header] = opts.fetch(:idempotency_key) { generate_idempotency_key }
           end
 
@@ -393,13 +400,12 @@ module OpenAI
 
           headers.reject! { |_, v| v.to_s.empty? }
 
-          body =
-            case method
-            in :get | :head | :options | :trace
-              nil
-            else
-              OpenAI::Internal::Util.deep_merge(*[req[:body], opts[:extra_body]].compact)
-            end
+          body = case method
+          in :get | :head | :options | :trace
+            nil
+          else
+            OpenAI::Internal::Util.deep_merge(*[req[:body], opts[:extra_body]].compact)
+          end
 
           # Generated methods always pass `req[:body]` for operations that define a
           # request body, so only elide the content-type header when the operation
@@ -447,7 +453,7 @@ module OpenAI
           server_delay = delays.find { _1&.finite? && !_1.negative? }
           return [server_delay, @max_retry_delay].min if server_delay
 
-          delay = (@initial_retry_delay * (2**retry_count)).clamp(0, @max_retry_delay)
+          delay = (@initial_retry_delay * (2 ** retry_count)).clamp(0, @max_retry_delay)
           jitter = 1 - (0.25 * rand)
           delay * jitter
         end
@@ -460,13 +466,15 @@ module OpenAI
             self.class.reap_connection!(status, stream: stream)
           end
 
-          raise OpenAI::Errors::APIStatusError.for(
-            url: url,
-            status: status,
-            headers: headers,
-            body: decoded,
-            request: nil,
-            response: response
+          raise(
+            OpenAI::Errors::APIStatusError.for(
+              url: url,
+              status: status,
+              headers: headers,
+              body: decoded,
+              request: nil,
+              response: response
+            )
           )
         end
 
@@ -545,15 +553,15 @@ module OpenAI
             log_context.attempt_failed(e)
           end
 
-          terminal_status =
-            case status
-            in 300..399
-              prepared_request[:follow_redirects] == false
-            in (400..)
-              retry_count >= max_retries || !self.class.should_retry?(status, headers: headers)
-            else
-              false
-            end
+          terminal_status = case status
+          in 300..399
+            prepared_request[:follow_redirects] == false
+          in (400..)
+            retry_count >= max_retries || !self.class.should_retry?(status, headers: headers)
+          else
+            false
+          end
+
           if terminal_status
             raise_status_error!(
               url: url,
@@ -759,14 +767,16 @@ module OpenAI
               path: T.any(String, T::Array[String]),
               query: T.nilable(T::Hash[String, T.nilable(T.any(T::Array[String], String))]),
               headers: T.nilable(
-                T::Hash[String,
-                        T.nilable(
-                          T.any(
-                            String,
-                            Integer,
-                            T::Array[T.nilable(T.any(String, Integer))]
-                          )
-                        )]
+                T::Hash[
+                  String,
+                  T.nilable(
+                    T.any(
+                      String,
+                      Integer,
+                      T::Array[T.nilable(T.any(String, Integer))]
+                    )
+                  )
+                ]
               ),
               body: T.nilable(T.anything),
               unwrap: T.nilable(
@@ -778,13 +788,16 @@ module OpenAI
                 )
               ),
               page: T.nilable(T::Class[OpenAI::Internal::Type::BasePage[OpenAI::Internal::Type::BaseModel]]),
-              stream: T.nilable(T::Class[OpenAI::Internal::Type::BaseStream[T.anything, OpenAI::Internal::Type::BaseModel]]),
+              stream: T.nilable(
+                T::Class[OpenAI::Internal::Type::BaseStream[T.anything, OpenAI::Internal::Type::BaseModel]]
+              ),
               model: T.nilable(OpenAI::Internal::Type::Converter::Input),
               security: T.nilable({bearer_auth?: T::Boolean, admin_api_key_auth?: T::Boolean}),
               options: T.nilable(OpenAI::RequestOptions::OrHash)
             }
           end
         end
+
         define_sorbet_constant!(:RequestInput) do
           T.type_alias do
             {

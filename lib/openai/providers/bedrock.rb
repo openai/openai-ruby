@@ -10,29 +10,21 @@ module OpenAI
       SIGNING_HEADERS = %w[authorization x-amz-content-sha256 x-amz-date x-amz-security-token].freeze
       BEARER_AUTH_MARKER = :openai_bedrock_bearer
       SIGV4_AUTH_MARKER = :openai_bedrock_sigv4
-      MISSING_REGION_MESSAGE =
-        "Bedrock requires an AWS region. Pass `region` to `bedrock(...)`, or set `AWS_REGION` " \
+      MISSING_REGION_MESSAGE = "Bedrock requires an AWS region. Pass `region` to `bedrock(...)`, or set `AWS_REGION` " \
         "or `AWS_DEFAULT_REGION`."
-      MISSING_CREDENTIALS_MESSAGE =
-        "Could not find credentials for Bedrock. Pass a bearer credential or AWS credentials " \
+      MISSING_CREDENTIALS_MESSAGE = "Could not find credentials for Bedrock. Pass a bearer credential or AWS credentials " \
         "to `bedrock(...)`, set `AWS_BEARER_TOKEN_BEDROCK`, or configure the default AWS credential chain."
-      CREDENTIAL_RESOLUTION_MESSAGE =
-        "Failed to resolve AWS credentials for Bedrock. Verify your AWS profile, environment " \
+      CREDENTIAL_RESOLUTION_MESSAGE = "Failed to resolve AWS credentials for Bedrock. Verify your AWS profile, environment " \
         "variables, or runtime identity configuration and try again."
-      NON_REPLAYABLE_BODY_MESSAGE =
-        "Bedrock SigV4 authentication requires a replayable request body. Buffer the body " \
+      NON_REPLAYABLE_BODY_MESSAGE = "Bedrock SigV4 authentication requires a replayable request body. Buffer the body " \
         "before sending or use bearer authentication."
-      MISSING_DEPENDENCY_MESSAGE =
-        "Bedrock AWS authentication requires optional AWS dependencies. Add `gem \"aws-sdk-core\"` " \
+      MISSING_DEPENDENCY_MESSAGE = "Bedrock AWS authentication requires optional AWS dependencies. Add `gem \"aws-sdk-core\"` " \
         "to your Gemfile, run `bundle install`, and try again."
-      PARTIAL_STATIC_CREDENTIALS_MESSAGE =
-        "Static AWS credentials require both `access_key_id` and `secret_access_key`. " \
+      PARTIAL_STATIC_CREDENTIALS_MESSAGE = "Static AWS credentials require both `access_key_id` and `secret_access_key`. " \
         "A `session_token` may only be used with both."
-      AMBIGUOUS_AWS_AUTH_MESSAGE =
-        "Bedrock authentication is ambiguous. Configure exactly one explicit AWS mode: " \
+      AMBIGUOUS_AWS_AUTH_MESSAGE = "Bedrock authentication is ambiguous. Configure exactly one explicit AWS mode: " \
         "static credentials, profile, or credential provider."
-      AMBIGUOUS_AUTH_MESSAGE =
-        "Bedrock authentication is ambiguous. Configure exactly one explicit mode: bearer " \
+      AMBIGUOUS_AUTH_MESSAGE = "Bedrock authentication is ambiguous. Configure exactly one explicit mode: bearer " \
         "credential, static AWS credentials, profile, or credential provider."
 
       class Definition
@@ -76,16 +68,16 @@ module OpenAI
 
             base_url = Bedrock.resolve_base_url(@base_url, region, endpoint: @endpoint)
             Bedrock.validate_canonical_endpoint!(base_url, @endpoint, region)
-            credentials =
-              if @access_key_id
-                Aws::Credentials.new(@access_key_id, @secret_access_key, @session_token)
-              elsif @credentials_provider
-                CustomCredentialsProvider.new(@credentials_provider)
-              elsif @profile
-                ProfileCredentialsProvider.new(@profile, region: region)
-              else
-                DefaultCredentialsProvider.new
-              end
+            credentials = if @access_key_id
+              Aws::Credentials.new(@access_key_id, @secret_access_key, @session_token)
+            elsif @credentials_provider
+              CustomCredentialsProvider.new(@credentials_provider)
+            elsif @profile
+              ProfileCredentialsProvider.new(@profile, region: region)
+            else
+              DefaultCredentialsProvider.new
+            end
+
             auth = SigV4Auth.new(
               endpoint: @endpoint,
               region: region,
@@ -124,9 +116,12 @@ module OpenAI
         private def resolve_token
           token = @token_provider.call
           unless token.is_a?(String) && !token.strip.empty?
-            raise OpenAI::Errors::Error,
-                  "The Bedrock bearer credential provider must return a non-empty string."
+            raise(
+              OpenAI::Errors::Error,
+              "The Bedrock bearer credential provider must return a non-empty string."
+            )
           end
+
           token
         rescue OpenAI::Errors::Error
           raise
@@ -178,12 +173,12 @@ module OpenAI
         rescue OpenAI::Errors::Error
           raise
         rescue StandardError => e
-          message =
-            if @default_chain
-              MISSING_CREDENTIALS_MESSAGE
-            else
-              CREDENTIAL_RESOLUTION_MESSAGE
-            end
+          message = if @default_chain
+            MISSING_CREDENTIALS_MESSAGE
+          else
+            CREDENTIAL_RESOLUTION_MESSAGE
+          end
+
           raise OpenAI::Errors::Error.new(message), cause: e
         end
       end
@@ -236,10 +231,11 @@ module OpenAI
           config = Aws.shared_config
           providers = []
           if config.config_enabled?
-            providers << config.assume_role_web_identity_credentials_from_config(
-              profile: @profile,
-              region: @region
-            )
+            providers <<
+              config.assume_role_web_identity_credentials_from_config(
+                profile: @profile,
+                region: @region
+              )
             providers << config.sso_credentials_from_config(profile: @profile)
             providers << config.assume_role_credentials_from_config(profile: @profile, region: @region)
           end
@@ -254,6 +250,7 @@ module OpenAI
             if config.respond_to?(:login_credentials_from_config)
               providers << config.login_credentials_from_config(profile: @profile, region: @region)
             end
+
             process = config.credential_process(profile: @profile)
             providers << Aws::ProcessCredentials.new([process]) if process
           end
@@ -266,6 +263,7 @@ module OpenAI
         def load_aws!
           require("aws-sdk-core")
           require("aws-sigv4")
+
         rescue LoadError => e
           raise OpenAI::Errors::Error.new(MISSING_DEPENDENCY_MESSAGE), cause: e
         end
@@ -309,8 +307,9 @@ module OpenAI
             return {endpoint: :mantle, region: region}
           end
 
-          if %w[bedrock-runtime bedrock-runtime-fips].include?(service) && region &&
-             runtime_dns_suffixes(region).include?(suffix)
+          if %w[bedrock-runtime bedrock-runtime-fips].include?(service) &&
+              region &&
+              runtime_dns_suffixes(region).include?(suffix)
             return {endpoint: :runtime, region: region}
           end
 
@@ -325,23 +324,31 @@ module OpenAI
           unless uri.is_a?(URI::HTTPS)
             raise ArgumentError, "Canonical Amazon Bedrock endpoints require HTTPS."
           end
+
           if canonical.fetch(:endpoint) != endpoint
-            raise ArgumentError,
-                  "The Bedrock #{canonical.fetch(:endpoint)} hostname does not match the " \
-                  "selected `#{endpoint}` endpoint."
+            raise(
+              ArgumentError,
+              "The Bedrock #{canonical.fetch(:endpoint)} hostname does not match the " \
+                "selected `#{endpoint}` endpoint."
+            )
           end
+
           return if region.nil? || canonical.fetch(:region) == region
 
-          raise ArgumentError,
-                "The Bedrock endpoint region `#{canonical.fetch(:region)}` does not match the " \
-                "configured AWS region `#{region}`."
+          raise(
+            ArgumentError,
+            "The Bedrock endpoint region `#{canonical.fetch(:region)}` does not match the " \
+              "configured AWS region `#{region}`."
+          )
         end
 
         def validate_region!(region)
           return if AWS_REGION_PATTERN.match?(region)
 
-          raise ArgumentError,
-                "The Bedrock AWS `region` is invalid. Use a standard AWS region such as `us-east-1`."
+          raise(
+            ArgumentError,
+            "The Bedrock AWS `region` is invalid. Use a standard AWS region such as `us-east-1`."
+          )
         end
 
         def normalize_endpoint(endpoint)
@@ -357,6 +364,7 @@ module OpenAI
           unless uri.is_a?(URI::HTTP) && uri.host
             raise ArgumentError, "The Bedrock `base_url` must be an absolute HTTP or HTTPS URL."
           end
+
           uri.path = uri.path.sub(%r{/responses(?:/.*)?\z}, "")
           uri.path = "" if uri.path == "/"
           uri.to_s.sub(%r{/\z}, "")
@@ -378,19 +386,23 @@ module OpenAI
           if request[:provider_auth] == marker
             headers.delete("authorization")
           elsif headers.key?("authorization")
-            raise OpenAI::Errors::Error,
-                  "Bedrock provider authentication cannot be combined with a custom `Authorization` header."
+            raise(
+              OpenAI::Errors::Error,
+              "Bedrock provider authentication cannot be combined with a custom `Authorization` header."
+            )
           end
+
           headers
         end
 
         def validate_origin!(url, base_url, action:)
           return if OpenAI::Internal::Util.uri_origin(url) == OpenAI::Internal::Util.uri_origin(base_url)
-          message =
-            "Refusing to #{action} a Bedrock request for an origin other than the configured " \
+          message = "Refusing to #{action} a Bedrock request for an origin other than the configured " \
             "provider URL."
-          raise OpenAI::Errors::Error,
-                message
+          raise(
+            OpenAI::Errors::Error,
+            message
+          )
         end
 
         def validate_endpoint_region!(url, region, endpoint:)
@@ -398,27 +410,31 @@ module OpenAI
           return unless canonical
 
           if canonical.fetch(:endpoint) != endpoint
-            raise OpenAI::Errors::Error,
-                  "The Bedrock #{canonical.fetch(:endpoint)} hostname does not match the " \
-                  "selected `#{endpoint}` endpoint."
+            raise(
+              OpenAI::Errors::Error,
+              "The Bedrock #{canonical.fetch(:endpoint)} hostname does not match the " \
+                "selected `#{endpoint}` endpoint."
+            )
           end
 
           endpoint_region = canonical.fetch(:region)
           return if endpoint_region == region
-          message =
-            "The Bedrock endpoint region `#{endpoint_region}` does not match the SigV4 " \
+          message = "The Bedrock endpoint region `#{endpoint_region}` does not match the SigV4 " \
             "region `#{region}`."
-          raise OpenAI::Errors::Error,
-                message
+          raise(
+            OpenAI::Errors::Error,
+            message
+          )
         end
 
         def validate_credentials!(credentials)
           access_key_id = credentials&.access_key_id
           secret_access_key = credentials&.secret_access_key
           session_token = credentials&.session_token if credentials.respond_to?(:session_token)
-          valid =
-            access_key_id.is_a?(String) && !access_key_id.strip.empty? &&
-            secret_access_key.is_a?(String) && !secret_access_key.strip.empty? &&
+          valid = access_key_id.is_a?(String) &&
+            !access_key_id.strip.empty? &&
+            secret_access_key.is_a?(String) &&
+            !secret_access_key.strip.empty? &&
             (session_token.nil? || (session_token.is_a?(String) && !session_token.strip.empty?))
           return credentials if valid
           raise OpenAI::Errors::Error, CREDENTIAL_RESOLUTION_MESSAGE
@@ -485,6 +501,7 @@ module OpenAI
         if !region.nil? && normalized_region.nil?
           raise ArgumentError, "The Bedrock AWS `region` must not be empty."
         end
+
         Bedrock.validate_region!(normalized_region) if normalized_region
 
         normalized_profile = Bedrock.normalize_optional_string(profile)
@@ -492,20 +509,21 @@ module OpenAI
           raise ArgumentError, "The Bedrock AWS `profile` must not be empty."
         end
 
-        configured_base_url =
-          if base_url.equal?(OpenAI::Internal::OMIT)
-            Bedrock.normalize_optional_string(ENV["AWS_BEDROCK_BASE_URL"])
-          elsif base_url.nil?
-            nil
-          else
-            normalized = Bedrock.normalize_optional_string(base_url)
-            raise(ArgumentError, "The Bedrock `base_url` must not be empty.") unless normalized
-            normalized
-          end
+        configured_base_url = if base_url.equal?(OpenAI::Internal::OMIT)
+          Bedrock.normalize_optional_string(ENV["AWS_BEDROCK_BASE_URL"])
+        elsif base_url.nil?
+          nil
+        else
+          normalized = Bedrock.normalize_optional_string(base_url)
+          raise ArgumentError, "The Bedrock `base_url` must not be empty." unless normalized
+          normalized
+        end
+
         configured_base_url = Bedrock.normalize_base_url(configured_base_url) if configured_base_url
         canonical_endpoint = if configured_base_url
           Bedrock.parse_endpoint_hostname(URI(configured_base_url).host)
         end
+
         resolved_endpoint = normalized_endpoint || canonical_endpoint&.fetch(:endpoint) || :mantle
 
         has_access_key = !access_key_id.nil?
@@ -513,13 +531,17 @@ module OpenAI
         if has_access_key != has_secret_key || (!session_token.nil? && !has_access_key)
           raise ArgumentError, Bedrock::PARTIAL_STATIC_CREDENTIALS_MESSAGE
         end
+
         normalized_access_key_id = Bedrock.normalize_optional_string(access_key_id)
         normalized_secret_access_key = Bedrock.normalize_optional_string(secret_access_key)
         normalized_session_token = Bedrock.normalize_optional_string(session_token)
         if has_access_key && [normalized_access_key_id, normalized_secret_access_key].any?(&:nil?)
-          raise ArgumentError,
-                "Static AWS credentials require non-empty `access_key_id` and `secret_access_key` values."
+          raise(
+            ArgumentError,
+            "Static AWS credentials require non-empty `access_key_id` and `secret_access_key` values."
+          )
         end
+
         if !session_token.nil? && normalized_session_token.nil?
           raise ArgumentError, "A static AWS `session_token` must not be empty when provided."
         end
@@ -529,18 +551,25 @@ module OpenAI
         if explicit_api_key && normalized_api_key.nil?
           raise ArgumentError, "The Bedrock bearer credential must not be empty."
         end
+
         if explicit_api_key && !token_provider.nil?
-          raise ArgumentError,
-                "The `api_key` and `token_provider` options are mutually exclusive. Configure only one."
+          raise(
+            ArgumentError,
+            "The `api_key` and `token_provider` options are mutually exclusive. Configure only one."
+          )
         end
+
         if !token_provider.nil? && !token_provider.respond_to?(:call)
           raise ArgumentError, "The Bedrock `token_provider` must respond to `call`."
         end
+
         if !credentials_provider.nil? &&
-           !credentials_provider.respond_to?(:call) &&
-           !credentials_provider.respond_to?(:credentials)
-          raise ArgumentError,
-                "The Bedrock `credentials_provider` must respond to `call` or `credentials`."
+            !credentials_provider.respond_to?(:call) &&
+            !credentials_provider.respond_to?(:credentials)
+          raise(
+            ArgumentError,
+            "The Bedrock `credentials_provider` must respond to `call` or `credentials`."
+          )
         end
 
         explicit_bearer = explicit_api_key || !token_provider.nil?
@@ -548,30 +577,31 @@ module OpenAI
         if aws_modes > 1
           raise ArgumentError, Bedrock::AMBIGUOUS_AWS_AUTH_MESSAGE
         end
+
         if explicit_bearer && aws_modes.positive?
           raise ArgumentError, Bedrock::AMBIGUOUS_AUTH_MESSAGE
         end
 
         skip_environment_bearer = !api_key.equal?(OpenAI::Internal::OMIT) && api_key.nil?
-        environment_bearer =
-          !explicit_bearer && aws_modes.zero? && !skip_environment_bearer &&
+        environment_bearer = !explicit_bearer &&
+          aws_modes.zero? &&
+          !skip_environment_bearer &&
           !Bedrock.normalize_optional_string(ENV["AWS_BEARER_TOKEN_BEDROCK"]).nil?
-        bearer_provider =
-          if explicit_api_key
-            normalized_api_key.freeze
-            -> { normalized_api_key }
-          elsif !token_provider.nil?
-            token_provider
-          elsif environment_bearer
-            lambda do
-              ENV["AWS_BEARER_TOKEN_BEDROCK"] ||
-                raise(OpenAI::Errors::Error, Bedrock::MISSING_CREDENTIALS_MESSAGE)
-            end
+        bearer_provider = if explicit_api_key
+          normalized_api_key.freeze
+          -> { normalized_api_key }
+        elsif !token_provider.nil?
+          token_provider
+        elsif environment_bearer
+          lambda do
+            ENV["AWS_BEARER_TOKEN_BEDROCK"] ||
+              raise(OpenAI::Errors::Error, Bedrock::MISSING_CREDENTIALS_MESSAGE)
           end
+        end
 
         if normalized_region.nil? && (bearer_provider.nil? || configured_base_url.nil?)
           normalized_region = Bedrock.normalize_optional_string(ENV["AWS_REGION"]) ||
-                              Bedrock.normalize_optional_string(ENV["AWS_DEFAULT_REGION"])
+            Bedrock.normalize_optional_string(ENV["AWS_DEFAULT_REGION"])
           Bedrock.validate_region!(normalized_region) if normalized_region
         end
 

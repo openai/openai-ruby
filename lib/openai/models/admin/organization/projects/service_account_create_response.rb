@@ -15,9 +15,11 @@ module OpenAI
             # @!attribute api_key
             #
             #   @return [OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey, nil]
-            required :api_key,
-                     -> { OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey },
-                     nil?: true
+            required(
+              :api_key,
+              -> { OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey },
+              nil?: true
+            )
 
             # @!attribute created_at
             #
@@ -39,8 +41,10 @@ module OpenAI
             #   Accounts created with `create_service_account_only` have role `none`.
             #
             #   @return [Symbol, OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role]
-            required :role,
-                     enum: -> { OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role }
+            required(
+              :role,
+              enum: -> { OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role }
+            )
 
             # @!method initialize(id:, api_key:, created_at:, name:, role:, object: :"organization.project.service_account")
             #   Some parameter documentations has been truncated, see

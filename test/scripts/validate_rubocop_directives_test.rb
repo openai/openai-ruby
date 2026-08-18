@@ -47,7 +47,7 @@ class ValidateRuboCopDirectivesTest < Minitest::Test
   end
 
   def test_ignores_directive_text_inside_strings
-    source = %(message = "# rubocop:disable all"\n)
+    source = "message = \"# rubocop:disable all\"\n"
 
     assert_empty(RuboCopDirectiveGuard.violations_for("example.rb", source))
   end

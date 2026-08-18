@@ -39,8 +39,10 @@ module OpenAI
           #   `line_item`, `api_key_id` and any combination of them.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::UsageCostsParams::GroupBy>, nil]
-          optional :group_by,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageCostsParams::GroupBy] }
+          optional(
+            :group_by,
+            -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageCostsParams::GroupBy] }
+          )
 
           # @!attribute limit
           #   A limit on the number of buckets to be returned. Limit can range between 1 and

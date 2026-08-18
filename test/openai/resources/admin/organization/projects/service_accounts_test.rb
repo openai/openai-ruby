@@ -12,22 +12,21 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::ServiceAccountsTes
 
     assert_pattern do
       response => {
-        id: String,
-        api_key: OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey | nil,
-        created_at: Integer,
-        name: String,
-        object: Symbol,
-        role: OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role
-      }
+          id: String,
+          api_key: OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey | nil,
+          created_at: Integer,
+          name: String,
+          object: Symbol,
+          role: OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role
+        }
     end
   end
 
   def test_retrieve_required_params
-    response =
-      @openai.admin.organization.projects.service_accounts.retrieve(
-        "service_account_id",
-        project_id: "project_id"
-      )
+    response = @openai.admin.organization.projects.service_accounts.retrieve(
+      "service_account_id",
+      project_id: "project_id"
+    )
 
     assert_pattern do
       response => OpenAI::Admin::Organization::Projects::ProjectServiceAccount
@@ -35,21 +34,20 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::ServiceAccountsTes
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        name: String,
-        object: Symbol,
-        role: OpenAI::Admin::Organization::Projects::ProjectServiceAccount::Role
-      }
+          id: String,
+          created_at: Integer,
+          name: String,
+          object: Symbol,
+          role: OpenAI::Admin::Organization::Projects::ProjectServiceAccount::Role
+        }
     end
   end
 
   def test_update_required_params
-    response =
-      @openai.admin.organization.projects.service_accounts.update(
-        "service_account_id",
-        project_id: "project_id"
-      )
+    response = @openai.admin.organization.projects.service_accounts.update(
+      "service_account_id",
+      project_id: "project_id"
+    )
 
     assert_pattern do
       response => OpenAI::Admin::Organization::Projects::ProjectServiceAccount
@@ -57,12 +55,12 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::ServiceAccountsTes
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        name: String,
-        object: Symbol,
-        role: OpenAI::Admin::Organization::Projects::ProjectServiceAccount::Role
-      }
+          id: String,
+          created_at: Integer,
+          name: String,
+          object: Symbol,
+          role: OpenAI::Admin::Organization::Projects::ProjectServiceAccount::Role
+        }
     end
   end
 
@@ -82,21 +80,20 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::ServiceAccountsTes
 
     assert_pattern do
       row => {
-        id: String,
-        created_at: Integer,
-        name: String,
-        object: Symbol,
-        role: OpenAI::Admin::Organization::Projects::ProjectServiceAccount::Role
-      }
+          id: String,
+          created_at: Integer,
+          name: String,
+          object: Symbol,
+          role: OpenAI::Admin::Organization::Projects::ProjectServiceAccount::Role
+        }
     end
   end
 
   def test_delete_required_params
-    response =
-      @openai.admin.organization.projects.service_accounts.delete(
-        "service_account_id",
-        project_id: "project_id"
-      )
+    response = @openai.admin.organization.projects.service_accounts.delete(
+      "service_account_id",
+      project_id: "project_id"
+    )
 
     assert_pattern do
       response => OpenAI::Models::Admin::Organization::Projects::ServiceAccountDeleteResponse
@@ -104,10 +101,10 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::ServiceAccountsTes
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 end

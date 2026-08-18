@@ -74,7 +74,7 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
   def test_base_model
     assert_raises(RuntimeError) do
       Class.new(OpenAI::Helpers::StructuredOutput::BaseModel) do
-        optional :name, String
+        optional(:name, String)
       end
     end
   end
@@ -226,54 +226,49 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
   def test_definition_reusing
     cases = {
       M6 => {
-        :$defs =>
-          {
-            "" =>
-                {
-                  type: "object",
-                  properties: {a: {type: "string"}, b: {:$ref => "#/$defs/"}},
-                  required: %w[a b],
-                  additionalProperties: false
-                }
-          },
+        :$defs => {
+          "" => {
+            type: "object",
+            properties: {a: {type: "string"}, b: {:$ref => "#/$defs/"}},
+            required: %w[a b],
+            additionalProperties: false
+          }
+        },
         :$ref => "#/$defs/"
       },
-      M7 =>
-        {
-          :$defs =>
-            {
-              ".a" =>
+      M7 => {
+        :$defs => {
+          ".a" => {
+            type: "object",
+            properties: {
+              a: {
+                anyOf: [
                   {
-                    type: "object",
-                    properties: {
-                      a: {
-                        anyOf: [
-                          {
-                            type: "array",
-                            items: {anyOf: [{type: "string", enum: ["one"]}, {type: "null"}]}
-                          },
-                          {type: "null"}
-                        ]
-                      },
-                      b: {
-                        anyOf: [
-                          {
-                            type: "array",
-                            items: {anyOf: [{type: "string", enum: ["one"]}, {type: "null"}]}
-                          },
-                          {type: "null"}
-                        ]
-                      }
-                    },
-                    required: %w[a b],
-                    additionalProperties: false
-                  }
+                    type: "array",
+                    items: {anyOf: [{type: "string", enum: ["one"]}, {type: "null"}]}
+                  },
+                  {type: "null"}
+                ]
+              },
+              b: {
+                anyOf: [
+                  {
+                    type: "array",
+                    items: {anyOf: [{type: "string", enum: ["one"]}, {type: "null"}]}
+                  },
+                  {type: "null"}
+                ]
+              }
             },
-          :type => "object",
-          :properties => {a: {:$ref => "#/$defs/.a"}, b: {:$ref => "#/$defs/.a"}},
-          :required => %w[a b],
-          :additionalProperties => false
+            required: %w[a b],
+            additionalProperties: false
+          }
         },
+        :type => "object",
+        :properties => {a: {:$ref => "#/$defs/.a"}, b: {:$ref => "#/$defs/.a"}},
+        :required => %w[a b],
+        :additionalProperties => false
+      },
       M8 => {
         type: "object",
         properties: {
@@ -342,23 +337,21 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
         additionalProperties: false
       },
       M10 => {
-        :$defs =>
-          {
-            "" =>
-                {
-                  type: "object",
-                  properties: {
-                    b: {
-                      type: "object",
-                      properties: {a: {:$ref => "#/$defs/"}, b: {:$ref => "#/$defs/"}},
-                      required: %w[a b],
-                      additionalProperties: false
-                    }
-                  },
-                  required: ["b"],
-                  additionalProperties: false
-                }
-          },
+        :$defs => {
+          "" => {
+            type: "object",
+            properties: {
+              b: {
+                type: "object",
+                properties: {a: {:$ref => "#/$defs/"}, b: {:$ref => "#/$defs/"}},
+                required: %w[a b],
+                additionalProperties: false
+              }
+            },
+            required: ["b"],
+            additionalProperties: false
+          }
+        },
         :$ref => "#/$defs/"
       },
       U3 => {

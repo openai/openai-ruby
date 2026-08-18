@@ -40,8 +40,12 @@ module OpenAI
           #   them.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::UsageFileSearchCallsParams::GroupBy>, nil]
-          optional :group_by,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageFileSearchCallsParams::GroupBy] }
+          optional(
+            :group_by,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageFileSearchCallsParams::GroupBy]
+            }
+          )
 
           # @!attribute limit
           #   Specifies the number of buckets to return.

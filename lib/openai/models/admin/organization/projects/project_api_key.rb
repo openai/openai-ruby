@@ -46,8 +46,10 @@ module OpenAI
             #   Whether the API key's owner currently has effective access to the project.
             #
             #   @return [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess]
-            required :owner_project_access,
-                     enum: -> { OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess }
+            required(
+              :owner_project_access,
+              enum: -> { OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess }
+            )
 
             # @!attribute redacted_value
             #   The redacted value of the API key
@@ -80,8 +82,10 @@ module OpenAI
               #   The service account that owns a project API key.
               #
               #   @return [OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount, nil]
-              optional :service_account,
-                       -> { OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount }
+              optional(
+                :service_account,
+                -> { OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount }
+              )
 
               # @!attribute type
               #   `user` or `service_account`

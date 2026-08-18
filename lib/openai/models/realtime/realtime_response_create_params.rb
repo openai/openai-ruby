@@ -70,8 +70,10 @@ module OpenAI
         #   model.
         #
         #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateParams::OutputModality>, nil]
-        optional :output_modalities,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeResponseCreateParams::OutputModality] }
+        optional(
+          :output_modalities,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeResponseCreateParams::OutputModality] }
+        )
 
         # @!attribute parallel_tool_calls
         #   Whether the model may call multiple tools in parallel. Only supported by
@@ -104,8 +106,10 @@ module OpenAI
         #   Tools available to the model.
         #
         #   @return [Array<OpenAI::Models::Realtime::RealtimeFunctionTool, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool>, nil]
-        optional :tools,
-                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Realtime::RealtimeResponseCreateParams::Tool] }
+        optional(
+          :tools,
+          -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Realtime::RealtimeResponseCreateParams::Tool] }
+        )
 
         # @!method initialize(audio: nil, conversation: nil, input: nil, instructions: nil, max_output_tokens: nil, metadata: nil, output_modalities: nil, parallel_tool_calls: nil, prompt: nil, reasoning: nil, tool_choice: nil, tools: nil)
         #   Some parameter documentations has been truncated, see

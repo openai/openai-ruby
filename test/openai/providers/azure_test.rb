@@ -15,7 +15,8 @@ class OpenAI::Test::AzureProviderTest < Minitest::Test
     OPENAI_CUSTOM_HEADERS
     OPENAI_ORG_ID
     OPENAI_PROJECT_ID
-  ].freeze
+  ]
+    .freeze
 
   def before_all
     super
@@ -83,15 +84,21 @@ class OpenAI::Test::AzureProviderTest < Minitest::Test
 
     assert_equal(
       "environment-key",
-      environment_runtime.prepare_request.call(
-        azure_request("https://environment.openai.azure.com/openai/v1/models")
-      ).dig(:headers, "api-key")
+      environment_runtime
+        .prepare_request
+        .call(
+          azure_request("https://environment.openai.azure.com/openai/v1/models")
+        )
+        .dig(:headers, "api-key")
     )
     assert_equal(
       "explicit-key",
-      explicit_runtime.prepare_request.call(
-        azure_request("https://explicit.openai.azure.com/openai/v1/models")
-      ).dig(:headers, "api-key")
+      explicit_runtime
+        .prepare_request
+        .call(
+          azure_request("https://explicit.openai.azure.com/openai/v1/models")
+        )
+        .dig(:headers, "api-key")
     )
   end
 
@@ -173,7 +180,7 @@ class OpenAI::Test::AzureProviderTest < Minitest::Test
       ),
       default_headers: {
         "Authorization" => "Bearer string-custom",
-        Authorization: "Bearer symbol-custom",
+        :Authorization => "Bearer symbol-custom",
         "Api-Key" => "string-custom-key",
         :"Api-Key" => "symbol-custom-key",
         :"X-Cost-Center" => "finance"
@@ -232,6 +239,7 @@ class OpenAI::Test::AzureProviderTest < Minitest::Test
     error = assert_raises(OpenAI::Errors::Error) do
       invalid_runtime.prepare_request.call(azure_request)
     end
+
     assert_match(/must return a non-empty string/, error.message)
 
     failing_runtime = OpenAI::Internal::Provider.configure(
@@ -243,6 +251,7 @@ class OpenAI::Test::AzureProviderTest < Minitest::Test
     error = assert_raises(OpenAI::Errors::Error) do
       failing_runtime.prepare_request.call(azure_request)
     end
+
     assert_equal("Failed to resolve a bearer token for Azure OpenAI.", error.message)
     assert_equal("token provider failed", error.cause.message)
   end
@@ -277,6 +286,7 @@ class OpenAI::Test::AzureProviderTest < Minitest::Test
       error = assert_raises(OpenAI::Errors::Error) do
         runtime.prepare_request.call(azure_request.merge(headers: headers))
       end
+
       assert_match(/cannot be combined with a custom/, error.message)
     end
   end
@@ -321,6 +331,7 @@ class OpenAI::Test::AzureProviderTest < Minitest::Test
       error = assert_raises(ArgumentError, options.inspect) do
         OpenAI::Providers.azure(**options)
       end
+
       assert_match(message, error.message, options.inspect)
     end
   end

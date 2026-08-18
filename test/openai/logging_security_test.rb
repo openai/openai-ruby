@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "minitest/mock"
+
 require_relative "test_helper"
 
 class LoggingSecurityTest < Minitest::Test
@@ -42,12 +43,12 @@ class LoggingSecurityTest < Minitest::Test
   def test_url_sanitization_redacts_percent_encoded_and_nested_credential_keys
     url = URI(
       "https://user:password@example.com/probe?" \
-      "access%54oken=encoded-access-secret&" \
-      "access%4Bey=encoded-access-key-secret&" \
-      "credentials%5Bclient%53ecret%5D=encoded-client-secret&" \
-      "access_token%5B%5D=encoded-array-secret&" \
-      "credentials%5Bvalue%5D=encoded-credential-secret&" \
-      "safe=visible"
+        "access%54oken=encoded-access-secret&" \
+        "access%4Bey=encoded-access-key-secret&" \
+        "credentials%5Bclient%53ecret%5D=encoded-client-secret&" \
+        "access_token%5B%5D=encoded-array-secret&" \
+        "credentials%5Bvalue%5D=encoded-credential-secret&" \
+        "safe=visible"
     )
 
     [OpenAI::Internal::Logging.safe_url(url), OpenAI::Internal::Logging.safe_path(url)].each do |formatted|
@@ -132,8 +133,7 @@ class LoggingSecurityTest < Minitest::Test
   end
 
   def test_debug_logs_summarize_form_urlencoded_request_bodies_without_fields_or_values
-    body =
-      "client_secret=client-form-secret&access_token=access-form-secret&" \
+    body = "client_secret=client-form-secret&access_token=access-form-secret&" \
       "accessKey=access-key-form-secret&credentials%5Bvalue%5D=credential-form-secret&" \
       "access_token%5B%5D=array-form-secret&" \
       "credentials%5BsessionToken%5D=nested-form-secret&" \
@@ -159,8 +159,7 @@ class LoggingSecurityTest < Minitest::Test
   end
 
   def test_debug_logs_summarize_form_urlencoded_response_bodies_without_fields_or_values
-    body =
-      "accessToken=response-access-secret&access_token%5B%5D=response-array-secret&" \
+    body = "accessToken=response-access-secret&access_token%5B%5D=response-array-secret&" \
       "accessKey=response-access-key-secret&credentials%5Bvalue%5D=response-credential-secret&" \
       "credentials%5Bclient_secret%5D=response-client-secret&safe=visible"
     formatted = OpenAI::Internal::Logging.format_observed_body(
@@ -181,7 +180,7 @@ class LoggingSecurityTest < Minitest::Test
   def test_debug_logs_omit_malformed_or_oversized_form_bodies
     headers = {"content-type" => "application/x-www-form-urlencoded"}
     malformed = "access_token=malformed-secret&invalid=\xFF".b
-    oversized = "access_token=oversized-secret&padding=#{'x' * OpenAI::Internal::Logging::MAX_BODY_BYTES}"
+    oversized = "access_token=oversized-secret&padding=#{"x" * OpenAI::Internal::Logging::MAX_BODY_BYTES}"
 
     [malformed, oversized].each do |body|
       formatted = OpenAI::Internal::Logging.format_body(body, headers: headers)
@@ -294,7 +293,7 @@ class LoggingSecurityTest < Minitest::Test
   end
 
   def test_debug_logs_omit_malformed_json_without_emitting_partial_body_content
-    body = '{"private-key":"private-signed-url?sig=malformed-synthetic-credential"'
+    body = "{\"private-key\":\"private-signed-url?sig=malformed-synthetic-credential\""
     headers = {"content-type" => "application/json"}
 
     [
@@ -327,6 +326,7 @@ class LoggingSecurityTest < Minitest::Test
       request = value
       value.is_a?(OpenAI::HTTPClient::Request)
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       base_url: "https://example.com/v1",
@@ -367,6 +367,7 @@ class LoggingSecurityTest < Minitest::Test
       )
       transport.expect(:execute, redirect_response) { |request| request.is_a?(OpenAI::HTTPClient::Request) }
     end
+
     transport.expect(:execute, response) { |request| request.is_a?(OpenAI::HTTPClient::Request) }
     client = OpenAI::Client.new(
       api_key: "test-key",
@@ -388,7 +389,7 @@ class LoggingSecurityTest < Minitest::Test
     response = OpenAI::HTTPClient::Response.new(
       status: 200,
       headers: {"content-type" => "application/json", "x-request-id" => "req_security"},
-      body: '{"ok":true}'
+      body: "{\"ok\":true}"
     )
     request = nil
     transport = Minitest::Mock.new(Object.new)
@@ -396,6 +397,7 @@ class LoggingSecurityTest < Minitest::Test
       request = value
       value.is_a?(OpenAI::HTTPClient::Request)
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       base_url: "https://example.com/v1",

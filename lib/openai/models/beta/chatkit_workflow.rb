@@ -15,9 +15,11 @@ module OpenAI
         #   null when no overrides were provided.
         #
         #   @return [Hash{Symbol=>String, Boolean, Float}, nil]
-        required :state_variables,
-                 -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Beta::ChatKitWorkflow::StateVariable] },
-                 nil?: true
+        required(
+          :state_variables,
+          -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Beta::ChatKitWorkflow::StateVariable] },
+          nil?: true
+        )
 
         # @!attribute tracing
         #   Tracing settings applied to the workflow.

@@ -4,8 +4,7 @@ module OpenAI
   module Models
     module Realtime
       # @type [OpenAI::Internal::Type::Converter]
-      RealtimeToolsConfig =
-        OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Realtime::RealtimeToolsConfigUnion }]
+      RealtimeToolsConfig = OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Realtime::RealtimeToolsConfigUnion }]
     end
   end
 end

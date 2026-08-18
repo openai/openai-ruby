@@ -77,9 +77,11 @@ module OpenAI
           #   The tool invocation context(s).
           #
           #   @return [Array<Symbol, OpenAI::Models::Responses::Tool::Mcp::AllowedCaller>, nil]
-          optional :allowed_callers,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::Tool::Mcp::AllowedCaller] },
-                   nil?: true
+          optional(
+            :allowed_callers,
+            -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::Tool::Mcp::AllowedCaller] },
+            nil?: true
+          )
 
           # @!attribute allowed_tools
           #   List of allowed tool names or a filter object.
@@ -413,11 +415,13 @@ module OpenAI
           #   The tool invocation context(s).
           #
           #   @return [Array<Symbol, OpenAI::Models::Responses::Tool::CodeInterpreter::AllowedCaller>, nil]
-          optional :allowed_callers,
-                   -> {
-                     OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::Tool::CodeInterpreter::AllowedCaller]
-                   },
-                   nil?: true
+          optional(
+            :allowed_callers,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::Tool::CodeInterpreter::AllowedCaller]
+            },
+            nil?: true
+          )
 
           # @!method initialize(container:, allowed_callers: nil, type: :code_interpreter)
           #   Some parameter documentations has been truncated, see
@@ -462,18 +466,24 @@ module OpenAI
               #   The memory limit for the code interpreter container.
               #
               #   @return [Symbol, OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit, nil]
-              optional :memory_limit,
-                       enum: -> {
-                         OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit
-                       },
-                       nil?: true
+              optional(
+                :memory_limit,
+                enum: -> {
+                  OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit
+                },
+                nil?: true
+              )
 
               # @!attribute network_policy
               #   Network access policy for the container.
               #
               #   @return [OpenAI::Models::Responses::ContainerNetworkPolicyDisabled, OpenAI::Models::Responses::ContainerNetworkPolicyAllowlist, nil]
-              optional :network_policy,
-                       union: -> { OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::NetworkPolicy }
+              optional(
+                :network_policy,
+                union: -> {
+                  OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::NetworkPolicy
+                }
+              )
 
               # @!method initialize(file_ids: nil, memory_limit: nil, network_policy: nil, type: :auto)
               #   Configuration for a code interpreter container. Optionally specify the IDs of
@@ -582,11 +592,13 @@ module OpenAI
           #   `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
           #
           #   @return [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::InputFidelity, nil]
-          optional :input_fidelity,
-                   enum: -> {
-                     OpenAI::Responses::Tool::ImageGeneration::InputFidelity
-                   },
-                   nil?: true
+          optional(
+            :input_fidelity,
+            enum: -> {
+              OpenAI::Responses::Tool::ImageGeneration::InputFidelity
+            },
+            nil?: true
+          )
 
           # @!attribute input_image_mask
           #   Optional mask for inpainting. Contains `image_url` (string, optional) and

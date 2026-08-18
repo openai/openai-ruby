@@ -39,8 +39,10 @@ module OpenAI
             #   enabled keys.
             #
             #   @return [Symbol, OpenAI::Models::Admin::Organization::Projects::APIKeyListParams::OwnerProjectAccess, nil]
-            optional :owner_project_access,
-                     enum: -> { OpenAI::Admin::Organization::Projects::APIKeyListParams::OwnerProjectAccess }
+            optional(
+              :owner_project_access,
+              enum: -> { OpenAI::Admin::Organization::Projects::APIKeyListParams::OwnerProjectAccess }
+            )
 
             # @!method initialize(project_id:, after: nil, limit: nil, owner_project_access: nil, request_options: {})
             #   Some parameter documentations has been truncated, see

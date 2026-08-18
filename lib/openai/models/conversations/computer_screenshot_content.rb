@@ -36,8 +36,10 @@ module OpenAI
         #   token block.
         #
         #   @return [OpenAI::Models::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint, nil]
-        optional :prompt_cache_breakpoint,
-                 -> { OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint }
+        optional(
+          :prompt_cache_breakpoint,
+          -> { OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint }
+        )
 
         # @!method initialize(detail:, file_id:, image_url:, prompt_cache_breakpoint: nil, type: :computer_screenshot)
         #   Some parameter documentations has been truncated, see

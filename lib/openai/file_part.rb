@@ -64,17 +64,16 @@ module OpenAI
     # @param content_type [String, nil]
     def initialize(content, filename: nil, content_type: nil)
       @content_type = content_type
-      @filename =
-        case [filename, (@content = content)]
-        in [String | Pathname, _]
-          ::File.basename(filename)
-        in [nil, Pathname]
-          content.basename.to_path
-        in [nil, IO]
-          content.to_path
-        else
-          filename
-        end
+      @filename = case [filename, (@content = content)]
+      in [String | Pathname, _]
+        ::File.basename(filename)
+      in [nil, Pathname]
+        content.basename.to_path
+      in [nil, IO]
+        content.to_path
+      else
+        filename
+      end
     end
   end
 end

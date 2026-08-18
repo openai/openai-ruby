@@ -69,7 +69,9 @@ module OpenAI
               #   @return [Array(String, Symbol)]
 
               define_sorbet_constant!(:Variants) do
-                T.type_alias { T.any(String, OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Currency::TaggedSymbol) }
+                T.type_alias {
+                  T.any(String, OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Currency::TaggedSymbol)
+                }
               end
 
               # @!group
@@ -85,8 +87,10 @@ module OpenAI
               #   Whether the hard spend limit is currently enforcing.
               #
               #   @return [String, Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Enforcement::Status]
-              required :status,
-                       union: -> { OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement::Status }
+              required(
+                :status,
+                union: -> { OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement::Status }
+              )
 
               # @!method initialize(status:)
               #   The current enforcement state of the hard spend limit.
@@ -101,15 +105,28 @@ module OpenAI
 
                 variant String
 
-                variant const: -> { OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Enforcement::Status::INACTIVE }
+                variant(
+                  const: -> {
+                    OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Enforcement::Status::INACTIVE
+                  }
+                )
 
-                variant const: -> { OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Enforcement::Status::ENFORCING }
+                variant(
+                  const: -> {
+                    OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Enforcement::Status::ENFORCING
+                  }
+                )
 
                 # @!method self.variants
                 #   @return [Array(String, Symbol)]
 
                 define_sorbet_constant!(:Variants) do
-                  T.type_alias { T.any(String, OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement::Status::TaggedSymbol) }
+                  T.type_alias {
+                    T.any(
+                      String,
+                      OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement::Status::TaggedSymbol
+                    )
+                  }
                 end
 
                 # @!group
@@ -136,7 +153,9 @@ module OpenAI
               #   @return [Array(String, Symbol)]
 
               define_sorbet_constant!(:Variants) do
-                T.type_alias { T.any(String, OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Interval::TaggedSymbol) }
+                T.type_alias {
+                  T.any(String, OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Interval::TaggedSymbol)
+                }
               end
 
               # @!group

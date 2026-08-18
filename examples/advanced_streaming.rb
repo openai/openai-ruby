@@ -19,8 +19,7 @@ begin
 
   # the `stream` itself is an `https://rubyapi.org/3.3/o/enumerable`
   #   which means that you can work with the stream almost as if it is an array
-  all_choices =
-    stream
+  all_choices = stream
     # calling any of the `enumerable` methods will block until the whole stream is consumed
     #   it will also clean up the stream.
     .select do |completion|
@@ -34,10 +33,13 @@ begin
   abort("The eager stream completed without choices") if all_choices.empty?
   eager_stream_finished = all_choices.any? do |choice|
     case choice[:finish_reason]
-    when String, Symbol then true
-    else false
+    when String, Symbol
+      true
+    else
+      false
     end
   end
+
   unless eager_stream_finished
     abort("The eager stream ended before a terminal choice was received")
   end
@@ -57,8 +59,7 @@ begin
     temperature: 0.0
   )
 
-  stream_of_choices =
-    stream
+  stream_of_choices = stream
     # calling `#lazy` will return a deferred `https://rubyapi.org/3.3/o/enumerator/lazy`
     .lazy
     # each successive calls to methods that return another `enumerable` will not consume the stream
@@ -82,10 +83,13 @@ begin
   stream_of_choices.each do |choice|
     lazy_choice_count += 1
     case choice[:finish_reason]
-    when String, Symbol then lazy_terminal_choice_count += 1
+    when String, Symbol
+      lazy_terminal_choice_count += 1
     end
+
     pp(choice)
   end
+
   abort("The lazy stream completed without choices") if lazy_choice_count.zero?
   if lazy_terminal_choice_count.zero?
     abort("The lazy stream ended before a terminal choice was received")

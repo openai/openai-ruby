@@ -50,10 +50,10 @@ module OpenAI
             # @see OpenAI::Models::Admin::Organization::Projects::RoleRetrieveParams
             def retrieve(role_id, params)
               parsed, options = OpenAI::Admin::Organization::Projects::RoleRetrieveParams.dump_request(params)
-              project_id =
-                parsed.delete(:project_id) do
-                  raise ArgumentError.new("missing required path argument #{_1}")
-                end
+              project_id = parsed.delete(:project_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
+
               @client.request(
                 method: :get,
                 path: ["projects/%1$s/roles/%2$s", project_id, role_id],
@@ -84,10 +84,10 @@ module OpenAI
             # @see OpenAI::Models::Admin::Organization::Projects::RoleUpdateParams
             def update(role_id, params)
               parsed, options = OpenAI::Admin::Organization::Projects::RoleUpdateParams.dump_request(params)
-              project_id =
-                parsed.delete(:project_id) do
-                  raise ArgumentError.new("missing required path argument #{_1}")
-                end
+              project_id = parsed.delete(:project_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
+
               @client.request(
                 method: :post,
                 path: ["projects/%1$s/roles/%2$s", project_id, role_id],
@@ -148,10 +148,10 @@ module OpenAI
             # @see OpenAI::Models::Admin::Organization::Projects::RoleDeleteParams
             def delete(role_id, params)
               parsed, options = OpenAI::Admin::Organization::Projects::RoleDeleteParams.dump_request(params)
-              project_id =
-                parsed.delete(:project_id) do
-                  raise ArgumentError.new("missing required path argument #{_1}")
-                end
+              project_id = parsed.delete(:project_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
+
               @client.request(
                 method: :delete,
                 path: ["projects/%1$s/roles/%2$s", project_id, role_id],

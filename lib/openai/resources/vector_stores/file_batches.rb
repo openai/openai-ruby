@@ -116,10 +116,10 @@ module OpenAI
         # @see OpenAI::Models::VectorStores::FileBatchRetrieveParams
         def retrieve(batch_id, params)
           parsed, options = OpenAI::VectorStores::FileBatchRetrieveParams.dump_request(params)
-          vector_store_id =
-            parsed.delete(:vector_store_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+          vector_store_id = parsed.delete(:vector_store_id) do
+            raise ArgumentError.new("missing required path argument #{_1}")
+          end
+
           @client.request(
             method: :get,
             path: ["vector_stores/%1$s/file_batches/%2$s", vector_store_id, batch_id],
@@ -145,10 +145,10 @@ module OpenAI
         # @see OpenAI::Models::VectorStores::FileBatchCancelParams
         def cancel(batch_id, params)
           parsed, options = OpenAI::VectorStores::FileBatchCancelParams.dump_request(params)
-          vector_store_id =
-            parsed.delete(:vector_store_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+          vector_store_id = parsed.delete(:vector_store_id) do
+            raise ArgumentError.new("missing required path argument #{_1}")
+          end
+
           @client.request(
             method: :post,
             path: ["vector_stores/%1$s/file_batches/%2$s/cancel", vector_store_id, batch_id],
@@ -186,10 +186,10 @@ module OpenAI
         # @see OpenAI::Models::VectorStores::FileBatchListFilesParams
         def list_files(batch_id, params)
           parsed, options = OpenAI::VectorStores::FileBatchListFilesParams.dump_request(params)
-          vector_store_id =
-            parsed.delete(:vector_store_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+          vector_store_id = parsed.delete(:vector_store_id) do
+            raise ArgumentError.new("missing required path argument #{_1}")
+          end
+
           query = OpenAI::Internal::Util.encode_query_params(parsed)
           @client.request(
             method: :get,
@@ -240,26 +240,32 @@ module OpenAI
 
           begin
             loop do
-              batch = poller.request(
-                request_options,
-                extra_headers: {"OpenAI-Beta" => "assistants=v2"},
-                resource: batch
-              ) do |options|
-                retrieve(batch_id, vector_store_id: vector_store_id, request_options: options)
-              end
+              batch = poller
+                .request(
+                  request_options,
+                  extra_headers: {"OpenAI-Beta" => "assistants=v2"},
+                  resource: batch
+                ) do |options|
+                  retrieve(batch_id, vector_store_id: vector_store_id, request_options: options)
+                end
+
               case batch.status
               when OpenAI::VectorStores::VectorStoreFileBatch::Status::IN_PROGRESS
                 poller.wait(batch)
-              when OpenAI::VectorStores::VectorStoreFileBatch::Status::COMPLETED,
-                   OpenAI::VectorStores::VectorStoreFileBatch::Status::FAILED,
-                   OpenAI::VectorStores::VectorStoreFileBatch::Status::CANCELLED
+              when
+                  OpenAI::VectorStores::VectorStoreFileBatch::Status::COMPLETED,
+                  OpenAI::VectorStores::VectorStoreFileBatch::Status::FAILED,
+                  OpenAI::VectorStores::VectorStoreFileBatch::Status::CANCELLED
                 return batch
               else
-                raise OpenAI::Errors::PollingError,
-                      "Unexpected status while waiting for vector store file batch " \
-                      "#{batch_id}: #{batch.status.inspect}"
+                raise(
+                  OpenAI::Errors::PollingError,
+                  "Unexpected status while waiting for vector store file batch " \
+                    "#{batch_id}: #{batch.status.inspect}"
+                )
               end
             end
+
           rescue OpenAI::Errors::APITimeoutError
             poller.check_deadline!(batch)
             raise
@@ -320,15 +326,19 @@ module OpenAI
             raise ArgumentError, "`file_ids` cannot contain more than #{max_files} entries"
           end
 
-          uploaded = OpenAI::Internal::VectorStoreFileUploader.new(
-            client: @client,
-            max_concurrency: max_concurrency,
-            request_options: request_options
-          ).upload(files, max_files: max_files - file_ids.length)
+          uploaded = OpenAI::Internal::VectorStoreFileUploader
+            .new(
+              client: @client,
+              max_concurrency: max_concurrency,
+              request_options: request_options
+            )
+            .upload(files, max_files: max_files - file_ids.length)
 
           if uploaded.empty?
-            raise ArgumentError,
-                  "No `files` provided. Use `create_and_poll` when all files are already uploaded."
+            raise(
+              ArgumentError,
+              "No `files` provided. Use `create_and_poll` when all files are already uploaded."
+            )
           end
 
           create_and_poll(

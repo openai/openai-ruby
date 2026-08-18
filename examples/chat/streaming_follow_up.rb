@@ -14,7 +14,7 @@ messages = [
   {role: :user, content: "Tell me a short story about a robot. Stop after 2 sentences."}
 ]
 
-puts "First streamed completion:"
+puts("First streamed completion:")
 assistant_text = ""
 first_stream_completed = false
 
@@ -43,7 +43,7 @@ messages << {role: :assistant, content: assistant_text}
 messages << {role: :user, content: "Continue the story with 2 more sentences while keeping the same style."}
 
 puts
-puts "Second streamed completion (with prior turns included):"
+puts("Second streamed completion (with prior turns included):")
 
 stream2 = client.chat.completions.stream(
   model: "gpt-4o-mini",
@@ -67,4 +67,4 @@ abort("The follow-up stream completed without content") if follow_up_text.strip.
 abort("The follow-up stream ended before its content completed") unless follow_up_stream_completed
 
 puts
-puts "Done. The second stream is a new completion that used the prior turns as context."
+puts("Done. The second stream is a new completion that used the prior turns as context.")

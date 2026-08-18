@@ -160,7 +160,7 @@ module OpenAI
         def inspect(depth: 0)
           items = OpenAI::Internal::Type::Converter.inspect(item_type, depth: depth.succ)
 
-          "#{self.class}[#{[items, nilable? ? 'nil' : nil].compact.join(' | ')}]"
+          "#{self.class}[#{[items, nilable? ? "nil" : nil].compact.join(" | ")}]"
         end
       end
     end

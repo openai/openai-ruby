@@ -40,8 +40,10 @@ module OpenAI
           #   combination of them.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::UsageImagesParams::GroupBy>, nil]
-          optional :group_by,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageImagesParams::GroupBy] }
+          optional(
+            :group_by,
+            -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageImagesParams::GroupBy] }
+          )
 
           # @!attribute limit
           #   Specifies the number of buckets to return.
@@ -77,16 +79,20 @@ module OpenAI
           #   `512x512`, `1024x1024`, `1792x1792`, `1024x1792` or any combination of them.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::UsageImagesParams::Size>, nil]
-          optional :sizes,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageImagesParams::Size] }
+          optional(
+            :sizes,
+            -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageImagesParams::Size] }
+          )
 
           # @!attribute sources
           #   Return only usages for these sources. Possible values are `image.generation`,
           #   `image.edit`, `image.variation` or any combination of them.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::UsageImagesParams::Source>, nil]
-          optional :sources,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageImagesParams::Source] }
+          optional(
+            :sources,
+            -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageImagesParams::Source] }
+          )
 
           # @!attribute user_ids
           #   Return only usage for these users.

@@ -57,12 +57,12 @@ module OpenAI
         remaining = check_deadline!(resource)
         options = bounded_request_options(request_options, extra_headers: extra_headers, remaining: remaining)
 
-        result =
-          if remaining.nil?
-            block.call(options)
-          else
-            Timeout.timeout(remaining) { block.call(options) }
-          end
+        result = if remaining.nil?
+          block.call(options)
+        else
+          Timeout.timeout(remaining) { block.call(options) }
+        end
+
         check_deadline!(result)
         result
       rescue Timeout::Error
@@ -92,6 +92,7 @@ module OpenAI
           # Disable those retries so the polling deadline bounds the whole request.
           bounded[:max_retries] = 0
         end
+
         bounded
       end
 
@@ -130,10 +131,12 @@ module OpenAI
       end
 
       private def raise_timeout(resource)
-        raise OpenAI::Errors::PollingTimeoutError.new(
-          operation: @operation,
-          timeout: @timeout,
-          resource: resource
+        raise(
+          OpenAI::Errors::PollingTimeoutError.new(
+            operation: @operation,
+            timeout: @timeout,
+            resource: resource
+          )
         )
       end
 

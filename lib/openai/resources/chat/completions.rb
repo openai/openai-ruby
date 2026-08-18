@@ -126,7 +126,7 @@ module OpenAI
           model, tool_models = get_structured_output_models(parsed)
 
           # rubocop:disable Metrics/BlockLength
-          unwrap = ->(raw) do
+          unwrap = -> (raw) do
             if model.is_a?(OpenAI::StructuredOutput::JsonSchemaConverter)
               raw[:choices]&.each do |choice|
                 message = choice.fetch(:message)
@@ -136,10 +136,12 @@ module OpenAI
                 rescue JSON::ParserError => e
                   parsed = e
                 end
+
                 coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
                 message.store(:parsed, coerced)
               end
             end
+
             raw[:choices]&.each do |choice|
               choice.dig(:message, :tool_calls)&.each do |tool_call|
                 func = tool_call.fetch(:function)
@@ -151,6 +153,7 @@ module OpenAI
                 rescue JSON::ParserError => e
                   parsed = e
                 end
+
                 coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
                 func.store(:parsed, coerced)
               end
@@ -186,7 +189,9 @@ module OpenAI
                 }
               }
             )
-          in {response_format: {type: :json_schema, json_schema: OpenAI::StructuredOutput::JsonSchemaConverter => model}}
+          in {
+              response_format: {type: :json_schema, json_schema: OpenAI::StructuredOutput::JsonSchemaConverter => model}
+            }
             parsed.fetch(:response_format).update(
               json_schema: {
                 strict: true,
@@ -194,7 +199,12 @@ module OpenAI
                 schema: model.to_json_schema
               }
             )
-          in {response_format: {type: :json_schema, json_schema: {schema: OpenAI::StructuredOutput::JsonSchemaConverter => model}}}
+          in {
+              response_format: {
+                  type: :json_schema,
+                  json_schema: {schema: OpenAI::StructuredOutput::JsonSchemaConverter => model}
+                }
+            }
             parsed.dig(:response_format, :json_schema).store(:schema, model.to_json_schema)
           in {tools: Array => tools}
             mapped = tools.map do |tool|
@@ -220,6 +230,7 @@ module OpenAI
                 tool
               end
             end
+
             tools.replace(mapped)
           else
           end
@@ -378,6 +389,7 @@ module OpenAI
             message = "Please use `#create` for the non-streaming use case."
             raise ArgumentError.new(message)
           end
+
           parsed.store(:stream, true)
           @client.request(
             method: :post,

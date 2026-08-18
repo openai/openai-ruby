@@ -7,6 +7,7 @@ module OpenAI
       # Marks enumerators whose overridden rewind safely closes the iterator.
       module FusedEnumerator
       end
+
       private_constant :FusedEnumerator
 
       # @api private
@@ -20,14 +21,17 @@ module OpenAI
       #
       # @return [Enumerable<Module, Class>]
       def self.walk_namespaces(ns)
-        ns.constants(false).lazy.flat_map do
-          case (c = ns.const_get(_1, false))
-          in Module | Class
-            walk_namespaces(c)
-          else
-            []
+        ns
+          .constants(false)
+          .lazy
+          .flat_map do
+            case (c = ns.const_get(_1, false))
+            in Module | Class
+              walk_namespaces(c)
+            else
+              []
+            end
           end
-        end
           .chain([ns])
       end
 
@@ -234,6 +238,7 @@ module OpenAI
                 return blk&.call
               end
             end
+
           in [_, Proc]
             pick.call(data)
           else
@@ -394,13 +399,13 @@ module OpenAI
         # @return [Hash{String=>String}]
         def normalized_headers(*headers)
           headers.compact.flat_map(&:to_a).to_h do |key, val|
-            value =
-              case val
-              in Array
-                val.filter_map { _1&.to_s&.strip }.join(", ")
-              else
-                val&.to_s&.strip
-              end
+            value = case val
+            in Array
+              val.filter_map { _1&.to_s&.strip }.join(", ")
+            else
+              val&.to_s&.strip
+            end
+
             [key.to_s.downcase, value]
           end
         end
@@ -453,6 +458,7 @@ module OpenAI
             element.each do |name, value|
               write_query_param_element!(collection, "#{key}[#{name}]", value)
             end
+
           in Array
             collection["#{key}[]"] = element.map(&:to_s)
           else
@@ -495,6 +501,7 @@ module OpenAI
             y << format(content_line, content_type || "application/json")
             y << JSON.generate(val)
           end
+
           y << "\r\n"
         end
 
@@ -535,6 +542,7 @@ module OpenAI
             y << "; filename=\"#{filename}\""
           else
           end
+
           y << "\r\n"
 
           write_multipart_content(y, val: val, closing: closing)
@@ -553,6 +561,7 @@ module OpenAI
             val.each do |name, value|
               write_multipart_value(y, boundary: boundary, key: "#{key}[#{name}]", val: value, closing: closing)
             end
+
           in Array
             val.each do |value|
               write_multipart_value(y, boundary: boundary, key: "#{key}[]", val: value, closing: closing)
@@ -583,6 +592,7 @@ module OpenAI
             else
               write_multipart_chunk(y, boundary: boundary, key: nil, val: body, closing: closing)
             end
+
             y << "--#{boundary}--\r\n"
           end
 
@@ -660,6 +670,7 @@ module OpenAI
               raise e unless suppress_error
               json
             end
+
           in OpenAI::Internal::Util::JSONL_CONTENT
             lines = decode_lines(stream)
             chain_fused(lines) do |y|
@@ -669,6 +680,7 @@ module OpenAI
                 y << JSON.parse(_1, symbolize_names: true)
               end
             end
+
           in %r{\Atext/event-stream[ \t]*(?:;|\z)}i
             lines = decode_lines(stream)
             decode_sse(lines)
@@ -701,16 +713,19 @@ module OpenAI
             else
               enum.each(&y)
             end
+
           ensure
             close&.call
             close = nil
           end
+
           iter.extend(FusedEnumerator)
 
           iter.define_singleton_method(:rewind) do
             fused = true
             self
           end
+
           iter
         end
 
@@ -768,6 +783,7 @@ module OpenAI
                 else
                   y << buffer.slice!(..(match.end(1).pred))
                 end
+
                 offset = 0
                 cr_seen = nil
               end
@@ -864,7 +880,7 @@ module OpenAI
         # @api private
         #
         # @return [Object]
-        def to_sorbet_type = raise(NotImplementedError)
+        def to_sorbet_type = raise NotImplementedError
 
         class << self
           # @api private

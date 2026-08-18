@@ -377,8 +377,10 @@ module OpenAI
               #   A list of the relevant tool calls.
               #
               #   @return [Array<OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall>]
-              required :tool_calls,
-                       -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::RequiredActionFunctionToolCall] }
+              required(
+                :tool_calls,
+                -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::RequiredActionFunctionToolCall] }
+              )
 
               # @!method initialize(tool_calls:)
               #   Details on the tool outputs needed for this run to continue.

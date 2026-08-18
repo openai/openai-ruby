@@ -16,9 +16,11 @@ module OpenAI
           #   response completes.
           #
           #   @return [String, OpenAI::Models::Beta::BetaResponseConversationParam, nil]
-          optional :conversation,
-                   union: -> { OpenAI::Beta::Responses::InputTokenCountParams::Conversation },
-                   nil?: true
+          optional(
+            :conversation,
+            union: -> { OpenAI::Beta::Responses::InputTokenCountParams::Conversation },
+            nil?: true
+          )
 
           # @!attribute input
           #   Text, image, or file inputs to the model, used to generate a response
@@ -89,9 +91,11 @@ module OpenAI
           #   Controls which tool the model should use, if any.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaToolChoiceOptions, OpenAI::Models::Beta::BetaToolChoiceAllowed, OpenAI::Models::Beta::BetaToolChoiceTypes, OpenAI::Models::Beta::BetaToolChoiceFunction, OpenAI::Models::Beta::BetaToolChoiceMcp, OpenAI::Models::Beta::BetaToolChoiceCustom, OpenAI::Models::Beta::Responses::InputTokenCountParams::ToolChoice::BetaSpecificProgrammaticToolCallingParam, OpenAI::Models::Beta::BetaToolChoiceApplyPatch, OpenAI::Models::Beta::BetaToolChoiceShell, nil]
-          optional :tool_choice,
-                   union: -> { OpenAI::Beta::Responses::InputTokenCountParams::ToolChoice },
-                   nil?: true
+          optional(
+            :tool_choice,
+            union: -> { OpenAI::Beta::Responses::InputTokenCountParams::ToolChoice },
+            nil?: true
+          )
 
           # @!attribute tools
           #   An array of tools the model may call while generating a response. You can
@@ -115,8 +119,10 @@ module OpenAI
           # @!attribute betas
           #
           #   @return [Array<Symbol, OpenAI::Models::Beta::Responses::InputTokenCountParams::Beta>, nil]
-          optional :betas,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::Responses::InputTokenCountParams::Beta] }
+          optional(
+            :betas,
+            -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::Responses::InputTokenCountParams::Beta] }
+          )
 
           # @!method initialize(conversation: nil, input: nil, instructions: nil, model: nil, parallel_tool_calls: nil, personality: nil, previous_response_id: nil, reasoning: nil, text: nil, tool_choice: nil, tools: nil, truncation: nil, betas: nil, request_options: {})
           #   Some parameter documentations has been truncated, see
@@ -181,8 +187,9 @@ module OpenAI
             #   @return [Array(String, Array<OpenAI::Models::Beta::BetaEasyInputMessage, OpenAI::Models::Beta::BetaResponseInputItem::Message, OpenAI::Models::Beta::BetaResponseOutputMessage, OpenAI::Models::Beta::BetaResponseFileSearchToolCall, OpenAI::Models::Beta::BetaResponseComputerToolCall, OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput, OpenAI::Models::Beta::BetaResponseFunctionWebSearch, OpenAI::Models::Beta::BetaResponseFunctionToolCall, OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall, OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam, OpenAI::Models::Beta::BetaResponseInputItem::AdditionalTools, OpenAI::Models::Beta::BetaResponseReasoningItem, OpenAI::Models::Beta::BetaResponseCompactionItemParam, OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall, OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ShellCall, OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::McpListTools, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalRequest, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalResponse, OpenAI::Models::Beta::BetaResponseInputItem::McpCall, OpenAI::Models::Beta::BetaResponseCustomToolCallOutput, OpenAI::Models::Beta::BetaResponseCustomToolCall, OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger, OpenAI::Models::Beta::BetaResponseInputItem::ItemReference, OpenAI::Models::Beta::BetaResponseInputItem::Program, OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput>)]
 
             # @type [OpenAI::Internal::Type::Converter]
-            BetaResponseInputItemArray =
-              OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Beta::BetaResponseInputItem }]
+            BetaResponseInputItemArray = OpenAI::Internal::Type::ArrayOf[
+              union: -> { OpenAI::Beta::BetaResponseInputItem }
+            ]
           end
 
           # A model-owned style preset to apply to this request. Omit this parameter to use
@@ -222,9 +229,11 @@ module OpenAI
             #   for the response.
             #
             #   @return [Symbol, OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::Context, nil]
-            optional :context,
-                     enum: -> { OpenAI::Beta::Responses::InputTokenCountParams::Reasoning::Context },
-                     nil?: true
+            optional(
+              :context,
+              enum: -> { OpenAI::Beta::Responses::InputTokenCountParams::Reasoning::Context },
+              nil?: true
+            )
 
             # @!attribute effort
             #   Constrains effort on reasoning for reasoning models. Currently supported values
@@ -235,9 +244,11 @@ module OpenAI
             #   model-specific support.
             #
             #   @return [Symbol, OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::Effort, nil]
-            optional :effort,
-                     enum: -> { OpenAI::Beta::Responses::InputTokenCountParams::Reasoning::Effort },
-                     nil?: true
+            optional(
+              :effort,
+              enum: -> { OpenAI::Beta::Responses::InputTokenCountParams::Reasoning::Effort },
+              nil?: true
+            )
 
             # @!attribute generate_summary
             #   @deprecated
@@ -249,9 +260,11 @@ module OpenAI
             #   `concise`, or `detailed`.
             #
             #   @return [Symbol, OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::GenerateSummary, nil]
-            optional :generate_summary,
-                     enum: -> { OpenAI::Beta::Responses::InputTokenCountParams::Reasoning::GenerateSummary },
-                     nil?: true
+            optional(
+              :generate_summary,
+              enum: -> { OpenAI::Beta::Responses::InputTokenCountParams::Reasoning::GenerateSummary },
+              nil?: true
+            )
 
             # @!attribute mode
             #   Controls the reasoning execution mode for the request.
@@ -270,9 +283,11 @@ module OpenAI
             #   models after `gpt-5`.
             #
             #   @return [Symbol, OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::Summary, nil]
-            optional :summary,
-                     enum: -> { OpenAI::Beta::Responses::InputTokenCountParams::Reasoning::Summary },
-                     nil?: true
+            optional(
+              :summary,
+              enum: -> { OpenAI::Beta::Responses::InputTokenCountParams::Reasoning::Summary },
+              nil?: true
+            )
 
             # @!method initialize(context: nil, effort: nil, generate_summary: nil, mode: nil, summary: nil)
             #   Some parameter documentations has been truncated, see
@@ -372,7 +387,9 @@ module OpenAI
               #   @return [Array(String, Symbol)]
 
               define_sorbet_constant!(:Variants) do
-                T.type_alias { T.any(String, OpenAI::Beta::Responses::InputTokenCountParams::Reasoning::Mode::TaggedSymbol) }
+                T.type_alias {
+                  T.any(String, OpenAI::Beta::Responses::InputTokenCountParams::Reasoning::Mode::TaggedSymbol)
+                }
               end
 
               # @!group
@@ -429,9 +446,11 @@ module OpenAI
             #   default is `medium`.
             #
             #   @return [Symbol, OpenAI::Models::Beta::Responses::InputTokenCountParams::Text::Verbosity, nil]
-            optional :verbosity,
-                     enum: -> { OpenAI::Beta::Responses::InputTokenCountParams::Text::Verbosity },
-                     nil?: true
+            optional(
+              :verbosity,
+              enum: -> { OpenAI::Beta::Responses::InputTokenCountParams::Text::Verbosity },
+              nil?: true
+            )
 
             # @!method initialize(format_: nil, verbosity: nil)
             #   Some parameter documentations has been truncated, see
@@ -495,7 +514,11 @@ module OpenAI
             # Use this option to force the model to call a specific custom tool.
             variant -> { OpenAI::Beta::BetaToolChoiceCustom }
 
-            variant -> { OpenAI::Beta::Responses::InputTokenCountParams::ToolChoice::BetaSpecificProgrammaticToolCallingParam }
+            variant(
+              -> {
+                OpenAI::Beta::Responses::InputTokenCountParams::ToolChoice::BetaSpecificProgrammaticToolCallingParam
+              }
+            )
 
             # Forces the model to call the apply_patch tool when executing a tool call.
             variant -> { OpenAI::Beta::BetaToolChoiceApplyPatch }

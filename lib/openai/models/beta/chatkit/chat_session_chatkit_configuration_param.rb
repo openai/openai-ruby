@@ -10,8 +10,10 @@ module OpenAI
           #   titling is enabled by default.
           #
           #   @return [OpenAI::Models::Beta::ChatKit::ChatSessionChatKitConfigurationParam::AutomaticThreadTitling, nil]
-          optional :automatic_thread_titling,
-                   -> { OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::AutomaticThreadTitling }
+          optional(
+            :automatic_thread_titling,
+            -> { OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::AutomaticThreadTitling }
+          )
 
           # @!attribute file_upload
           #   Configuration for upload enablement and limits. When omitted, uploads are

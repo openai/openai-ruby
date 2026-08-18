@@ -190,7 +190,7 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
           {
             finish_reason: "stop",
             index: 0,
-            message: {content: '{"displayName":"Ada","middleName":null}', role: "assistant"}
+            message: {content: "{\"displayName\":\"Ada\",\"middleName\":null}", role: "assistant"}
           }
         ],
         created: 1_700_000_000,
@@ -230,7 +230,7 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
             content: [
               {
                 annotations: [],
-                text: '{"displayName":"Ada","middleName":null}',
+                text: "{\"displayName\":\"Ada\",\"middleName\":null}",
                 type: "output_text"
               }
             ],
@@ -243,7 +243,9 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     )
 
     response = @client.responses.create(
-      model: "gpt-4o-mini", input: "Generate a profile", text: AliasedProfile
+      model: "gpt-4o-mini",
+      input: "Generate a profile",
+      text: AliasedProfile
     )
 
     assert_requested(:post, "http://localhost/responses") do |request|
@@ -296,7 +298,9 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
       response_format: AliasedProfileCollection
     )
     response = @client.responses.create(
-      model: "gpt-4o-mini", input: "Generate profiles", text: AliasedProfileCollection
+      model: "gpt-4o-mini",
+      input: "Generate profiles",
+      text: AliasedProfileCollection
     )
 
     [chat.choices.first.message.parsed, response.output.first.content.first.parsed].each do |parsed|

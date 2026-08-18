@@ -35,4 +35,5 @@ stream.each do |event|
     pp(event.parsed)
   end
 end
+
 abort("The stream ended without a finalized tool call") unless tool_call_received

@@ -51,8 +51,14 @@ module OpenAI
               #   represented by a different object type.
               #
               #   @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image>]
-              required :outputs,
-                       -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output] }
+              required(
+                :outputs,
+                -> {
+                  OpenAI::Internal::Type::ArrayOf[
+                    union: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output
+                  ]
+                }
+              )
 
               # @!method initialize(input:, outputs:)
               #   Some parameter documentations has been truncated, see
@@ -72,10 +78,15 @@ module OpenAI
                 discriminator :type
 
                 # Text output from the Code Interpreter tool call as part of a run step.
-                variant :logs, -> { OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs }
+                variant(
+                  :logs,
+                  -> { OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs }
+                )
 
-                variant :image,
-                        -> { OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image }
+                variant(
+                  :image,
+                  -> { OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image }
+                )
 
                 class Logs < OpenAI::Internal::Type::BaseModel
                   # @!attribute logs
@@ -102,8 +113,10 @@ module OpenAI
                   # @!attribute image
                   #
                   #   @return [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image]
-                  required :image,
-                           -> { OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image }
+                  required(
+                    :image,
+                    -> { OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image }
+                  )
 
                   # @!attribute type
                   #   Always `image`.

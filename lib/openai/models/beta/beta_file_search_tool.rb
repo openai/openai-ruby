@@ -151,7 +151,9 @@ module OpenAI
 
               variant OpenAI::Internal::Type::Boolean
 
-              variant -> { OpenAI::Models::Beta::BetaFileSearchTool::Filters::ComparisonFilter::Value::UnionMember3Array }
+              variant(
+                -> { OpenAI::Models::Beta::BetaFileSearchTool::Filters::ComparisonFilter::Value::UnionMember3Array }
+              )
 
               module UnionMember3
                 extend OpenAI::Internal::Type::Union
@@ -168,10 +170,11 @@ module OpenAI
               #   @return [Array(String, Float, Boolean, Array<String, Float>)]
 
               # @type [OpenAI::Internal::Type::Converter]
-              UnionMember3Array =
-                OpenAI::Internal::Type::ArrayOf[union: -> {
+              UnionMember3Array = OpenAI::Internal::Type::ArrayOf[
+                union: -> {
                   OpenAI::Beta::BetaFileSearchTool::Filters::ComparisonFilter::Value::UnionMember3
-                }]
+                }
+              ]
             end
           end
 
@@ -181,8 +184,14 @@ module OpenAI
             #   `CompoundFilter`.
             #
             #   @return [Array<OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter, Object>]
-            required :filters,
-                     -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter] }
+            required(
+              :filters,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[
+                  union: OpenAI::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter
+                ]
+              }
+            )
 
             # @!attribute type
             #   Type of operation: `and` or `or`.
@@ -232,16 +241,24 @@ module OpenAI
                 #   - `nin`: not in
                 #
                 #   @return [Symbol, OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::Type]
-                required :type,
-                         enum: -> { OpenAI::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::Type }
+                required(
+                  :type,
+                  enum: -> {
+                    OpenAI::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::Type
+                  }
+                )
 
                 # @!attribute value
                 #   The value to compare against the attribute key; supports string, number, or
                 #   boolean types.
                 #
                 #   @return [String, Float, Boolean, Array<String, Float>]
-                required :value,
-                         union: -> { OpenAI::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::Value }
+                required(
+                  :value,
+                  union: -> {
+                    OpenAI::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::Value
+                  }
+                )
 
                 # @!method initialize(key:, type:, value:)
                 #   Some parameter documentations has been truncated, see
@@ -299,7 +316,11 @@ module OpenAI
 
                   variant OpenAI::Internal::Type::Boolean
 
-                  variant -> { OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::Value::UnionMember3Array }
+                  variant(
+                    -> {
+                      OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::Value::UnionMember3Array
+                    }
+                  )
 
                   module UnionMember3
                     extend OpenAI::Internal::Type::Union
@@ -316,10 +337,11 @@ module OpenAI
                   #   @return [Array(String, Float, Boolean, Array<String, Float>)]
 
                   # @type [OpenAI::Internal::Type::Converter]
-                  UnionMember3Array =
-                    OpenAI::Internal::Type::ArrayOf[
-                      union: -> { OpenAI::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::Value::UnionMember3 }
-                    ]
+                  UnionMember3Array = OpenAI::Internal::Type::ArrayOf[
+                    union: -> {
+                      OpenAI::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::Value::UnionMember3
+                    }
+                  ]
                 end
               end
 

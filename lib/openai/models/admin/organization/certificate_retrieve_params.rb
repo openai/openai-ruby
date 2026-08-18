@@ -19,8 +19,12 @@ module OpenAI
           #   supported value is `content` to fetch the PEM content of the certificate.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::CertificateRetrieveParams::Include>, nil]
-          optional :include,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::CertificateRetrieveParams::Include] }
+          optional(
+            :include,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::CertificateRetrieveParams::Include]
+            }
+          )
 
           # @!method initialize(certificate_id:, include: nil, request_options: {})
           #   Some parameter documentations has been truncated, see

@@ -68,12 +68,15 @@ class OpenAI::Test::PathParameterQueryTest < Minitest::Test
       }
     )
 
-    events = @client.responses.retrieve_streaming(
-      "resp_audit",
-      include: [:"file_search_call.results"],
-      include_obfuscation: false,
-      starting_after: 7
-    ).to_a
+    events = @client
+      .responses
+      .retrieve_streaming(
+        "resp_audit",
+        include: [:"file_search_call.results"],
+        include_obfuscation: false,
+        starting_after: 7
+      )
+      .to_a
 
     assert_equal("streamed text", events.first.delta)
     assert_requested(request)
@@ -105,13 +108,17 @@ class OpenAI::Test::PathParameterQueryTest < Minitest::Test
       headers: {"OpenAI-Beta" => "responses_multi_agent=v1"}
     )
 
-    events = @client.beta.responses.retrieve_streaming(
-      "resp_audit",
-      include: [:"file_search_call.results"],
-      include_obfuscation: false,
-      starting_after: 7,
-      betas: [:"responses_multi_agent=v1"]
-    ).to_a
+    events = @client
+      .beta
+      .responses
+      .retrieve_streaming(
+        "resp_audit",
+        include: [:"file_search_call.results"],
+        include_obfuscation: false,
+        starting_after: 7,
+        betas: [:"responses_multi_agent=v1"]
+      )
+      .to_a
 
     assert_equal("streamed text", events.first.delta)
     assert_requested(request)

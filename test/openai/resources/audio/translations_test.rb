@@ -13,8 +13,7 @@ class OpenAI::Test::Resources::Audio::TranslationsTest < OpenAI::Test::ResourceT
     assert_pattern do
       case response
       in (
-        OpenAI::Audio::Translation |
-        OpenAI::Audio::TranslationVerbose
+        OpenAI::Audio::Translation | OpenAI::Audio::TranslationVerbose
       )
         nil
       end

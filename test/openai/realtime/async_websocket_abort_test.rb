@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "async/websocket/client"
+
 require_relative "../test_helper"
 
 class OpenAI::Test::AsyncWebSocketAbortTest < Minitest::Test
@@ -12,8 +13,9 @@ class OpenAI::Test::AsyncWebSocketAbortTest < Minitest::Test
         reader, @writer = IO.pipe
         reader.close
       end
+
       def to_io = @writer
-      def close = raise("buffered close must not run")
+      def close = raise "buffered close must not run"
     end
 
     class Pool

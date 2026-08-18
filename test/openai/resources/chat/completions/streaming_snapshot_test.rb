@@ -53,6 +53,7 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
       @stream.each do |event|
         @events << event
       end
+
       self
     end
 
@@ -65,7 +66,8 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
   class LocationWeather < OpenAI::BaseModel
     required :city, String
     required :temperature, Float
-    required :units, String # "c" or "f"
+    # "c" or "f"
+    required :units, String
   end
 
   class LocationWeatherMultiple < OpenAI::BaseModel
@@ -181,11 +183,11 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
 
     content_done = listener.events.find { |e| e.type == :"content.done" }
     assert_pattern do
-      content_done => OpenAI::Helpers::Streaming::ChatContentDoneEvent[
-        type: :"content.done",
-        content: /unable to provide real-time weather/i,
-        parsed: nil
-      ]
+      content_done => OpenAI::Helpers::Streaming::ChatContentDoneEvent(
+          type: :"content.done",
+          content: /unable to provide real-time weather/i,
+          parsed: nil
+        )
     end
   end
 
@@ -227,54 +229,54 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
     completion = listener.stream.get_final_completion
     assert_pattern do
       completion => {
-        choices: [
-          {
-            finish_reason: :stop,
-            index: 0,
-            logprobs: nil,
-            message: {
-              annotations: nil,
-              audio: nil,
-              content: /{.*"city".*"temperature".*"units".*}/,
-              function_call: nil,
-              parsed: LocationWeather[
-                city: "San Francisco",
-                temperature: 61.0,
-                units: "f"
-              ],
-              refusal: nil,
-              role: :assistant,
-              tool_calls: nil
+          choices: [
+              {
+                  finish_reason: :stop,
+                  index: 0,
+                  logprobs: nil,
+                  message: {
+                      annotations: nil,
+                      audio: nil,
+                      content: /{.*"city".*"temperature".*"units".*}/,
+                      function_call: nil,
+                      parsed: LocationWeather(
+                          city: "San Francisco",
+                          temperature: 61.0,
+                          units: "f"
+                        ),
+                      refusal: nil,
+                      role: :assistant,
+                      tool_calls: nil
+                    }
+                }
+            ],
+          created: Integer,
+          id: String,
+          model: "gpt-4o-2024-08-06",
+          object: :"chat.completion",
+          service_tier: nil,
+          system_fingerprint: String,
+          usage: {
+              completion_tokens: Integer,
+              completion_tokens_details: Object,
+              prompt_tokens: Integer,
+              prompt_tokens_details: nil,
+              total_tokens: Integer
             }
-          }
-        ],
-        created: Integer,
-        id: String,
-        model: "gpt-4o-2024-08-06",
-        object: :"chat.completion",
-        service_tier: nil,
-        system_fingerprint: String,
-        usage: {
-          completion_tokens: Integer,
-          completion_tokens_details: Object,
-          prompt_tokens: Integer,
-          prompt_tokens_details: nil,
-          total_tokens: Integer
         }
-      }
     end
 
     content_done = listener.events.find { |e| e.type == :"content.done" }
     assert_pattern do
-      content_done => OpenAI::Helpers::Streaming::ChatContentDoneEvent[
-        type: :"content.done",
-        content: /{.*"city".*"temperature".*"units".*}/,
-        parsed: LocationWeather[
-          city: "San Francisco",
-          temperature: 61.0,
-          units: "f"
-        ]
-      ]
+      content_done => OpenAI::Helpers::Streaming::ChatContentDoneEvent(
+          type: :"content.done",
+          content: /{.*"city".*"temperature".*"units".*}/,
+          parsed: LocationWeather(
+              city: "San Francisco",
+              temperature: 61.0,
+              units: "f"
+            )
+        )
     end
   end
 
@@ -316,24 +318,24 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
       expected_temp = expected_temperatures[idx]
       assert_pattern do
         choice => {
-          finish_reason: :stop,
-          index: ^idx,
-          logprobs: nil,
-          message: {
-            annotations: nil,
-            audio: nil,
-            content: /{.*"city".*"temperature".*"units".*}/,
-            function_call: nil,
-            parsed: LocationWeather[
-              city: "San Francisco",
-              temperature: ^expected_temp,
-              units: "f"
-            ],
-            refusal: nil,
-            role: :assistant,
-            tool_calls: nil
+            finish_reason: :stop,
+            index: ^idx,
+            logprobs: nil,
+            message: {
+                annotations: nil,
+                audio: nil,
+                content: /{.*"city".*"temperature".*"units".*}/,
+                function_call: nil,
+                parsed: LocationWeather(
+                    city: "San Francisco",
+                    temperature: ^expected_temp,
+                    units: "f"
+                  ),
+                refusal: nil,
+                role: :assistant,
+                tool_calls: nil
+              }
           }
-        }
       end
     end
   end
@@ -376,30 +378,30 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
 
     refusal_done = listener.events.find { |e| e.type == :"refusal.done" }
     assert_pattern do
-      refusal_done => OpenAI::Helpers::Streaming::ChatRefusalDoneEvent[
-        type: :"refusal.done",
-        refusal: /sorry.*can't assist/i
-      ]
+      refusal_done => OpenAI::Helpers::Streaming::ChatRefusalDoneEvent(
+          type: :"refusal.done",
+          refusal: /sorry.*can't assist/i
+        )
     end
 
     completion = listener.stream.get_final_completion
     choice = completion.choices.first
     assert_pattern do
       choice => {
-        finish_reason: :stop,
-        index: 0,
-        logprobs: nil,
-        message: {
-          annotations: nil,
-          audio: nil,
-          content: nil,
-          function_call: nil,
-          parsed: nil,
-          refusal: /sorry.*can't assist/i,
-          role: :assistant,
-          tool_calls: nil
+          finish_reason: :stop,
+          index: 0,
+          logprobs: nil,
+          message: {
+              annotations: nil,
+              audio: nil,
+              content: nil,
+              function_call: nil,
+              parsed: nil,
+              refusal: /sorry.*can't assist/i,
+              role: :assistant,
+              tool_calls: nil
+            }
         }
-      }
     end
   end
 
@@ -421,20 +423,20 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
     logprobs_content_delta = listener.events.find { |e| e.type == :"logprobs.content.delta" }
     assert(logprobs_content_delta)
     assert_pattern do
-      logprobs_content_delta => OpenAI::Helpers::Streaming::ChatLogprobsContentDeltaEvent[
-        type: :"logprobs.content.delta",
-        content: Array,
-        snapshot: Array
-      ]
+      logprobs_content_delta => OpenAI::Helpers::Streaming::ChatLogprobsContentDeltaEvent(
+          type: :"logprobs.content.delta",
+          content: Array,
+          snapshot: Array
+        )
     end
 
     logprobs_content_done = listener.events.find { |e| e.type == :"logprobs.content.done" }
     assert(logprobs_content_done)
     assert_pattern do
-      logprobs_content_done => OpenAI::Helpers::Streaming::ChatLogprobsContentDoneEvent[
-        type: :"logprobs.content.done",
-        content: Array
-      ]
+      logprobs_content_done => OpenAI::Helpers::Streaming::ChatLogprobsContentDoneEvent(
+          type: :"logprobs.content.done",
+          content: Array
+        )
     end
 
     assert(logprobs_content_done.content.all? { |lp| lp.respond_to?(:token) && lp.respond_to?(:logprob) })
@@ -443,23 +445,23 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
     choice = completion.choices.first
     assert_pattern do
       choice => {
-        finish_reason: :stop,
-        index: 0,
-        logprobs: {
-          content: Array,
-          refusal: nil
-        },
-        message: {
-          annotations: nil,
-          audio: nil,
-          content: /Foo/,
-          function_call: nil,
-          parsed: nil,
-          refusal: nil,
-          role: :assistant,
-          tool_calls: nil
+          finish_reason: :stop,
+          index: 0,
+          logprobs: {
+              content: Array,
+              refusal: nil
+            },
+          message: {
+              annotations: nil,
+              audio: nil,
+              content: /Foo/,
+              function_call: nil,
+              parsed: nil,
+              refusal: nil,
+              role: :assistant,
+              tool_calls: nil
+            }
         }
-      }
     end
   end
 
@@ -482,43 +484,43 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
     logprobs_refusal_delta = listener.events.find { |e| e.type == :"logprobs.refusal.delta" }
     assert(logprobs_refusal_delta)
     assert_pattern do
-      logprobs_refusal_delta => OpenAI::Helpers::Streaming::ChatLogprobsRefusalDeltaEvent[
-        type: :"logprobs.refusal.delta",
-        refusal: Array,
-        snapshot: Array
-      ]
+      logprobs_refusal_delta => OpenAI::Helpers::Streaming::ChatLogprobsRefusalDeltaEvent(
+          type: :"logprobs.refusal.delta",
+          refusal: Array,
+          snapshot: Array
+        )
     end
 
     logprobs_refusal_done = listener.events.find { |e| e.type == :"logprobs.refusal.done" }
     assert(logprobs_refusal_done)
     assert_pattern do
-      logprobs_refusal_done => OpenAI::Helpers::Streaming::ChatLogprobsRefusalDoneEvent[
-        type: :"logprobs.refusal.done",
-        refusal: Array
-      ]
+      logprobs_refusal_done => OpenAI::Helpers::Streaming::ChatLogprobsRefusalDoneEvent(
+          type: :"logprobs.refusal.done",
+          refusal: Array
+        )
     end
 
     completion = listener.stream.get_final_completion
     choice = completion.choices.first
     assert_pattern do
       choice => {
-        finish_reason: :stop,
-        index: 0,
-        logprobs: {
-          content: nil,
-          refusal: Array
-        },
-        message: {
-          annotations: nil,
-          audio: nil,
-          content: nil,
-          function_call: nil,
-          parsed: nil,
-          refusal: /sorry.*can't assist/i,
-          role: :assistant,
-          tool_calls: nil
+          finish_reason: :stop,
+          index: 0,
+          logprobs: {
+              content: nil,
+              refusal: Array
+            },
+          message: {
+              annotations: nil,
+              audio: nil,
+              content: nil,
+              function_call: nil,
+              parsed: nil,
+              refusal: /sorry.*can't assist/i,
+              role: :assistant,
+              tool_calls: nil
+            }
         }
-      }
     end
   end
 
@@ -550,17 +552,17 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
     # Test the function arguments done event
     args_done = listener.events.find { |e| e.type == :"tool_calls.function.arguments.done" }
     assert_pattern do
-      args_done => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDoneEvent[
-        type: :"tool_calls.function.arguments.done",
-        name: String,
-        index: 0,
-        arguments: /{.*"city".*"Edinburgh".*"country".*}/,
-        parsed: GetWeatherArgs[
-          city: "Edinburgh",
-          country: "UK",
-          units: "c"
-        ]
-      ]
+      args_done => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDoneEvent(
+          type: :"tool_calls.function.arguments.done",
+          name: String,
+          index: 0,
+          arguments: /{.*"city".*"Edinburgh".*"country".*}/,
+          parsed: GetWeatherArgs(
+              city: "Edinburgh",
+              country: "UK",
+              units: "c"
+            )
+        )
     end
 
     completion = listener.stream.get_final_completion
@@ -568,34 +570,34 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
 
     assert_pattern do
       choice => {
-        finish_reason: :tool_calls,
-        index: 0,
-        logprobs: nil,
-        message: {
-          annotations: nil,
-          audio: nil,
-          content: nil,
-          function_call: nil,
-          parsed: nil,
-          refusal: nil,
-          role: :assistant,
-          tool_calls: [
-            {
-              function: {
-                arguments: /{.*"city".*"Edinburgh".*"country".*}/,
-                name: String,
-                parsed: GetWeatherArgs[
-                  city: "Edinburgh",
-                  country: "UK",
-                  units: "c"
+          finish_reason: :tool_calls,
+          index: 0,
+          logprobs: nil,
+          message: {
+              annotations: nil,
+              audio: nil,
+              content: nil,
+              function_call: nil,
+              parsed: nil,
+              refusal: nil,
+              role: :assistant,
+              tool_calls: [
+                  {
+                      function: {
+                          arguments: /{.*"city".*"Edinburgh".*"country".*}/,
+                          name: String,
+                          parsed: GetWeatherArgs(
+                              city: "Edinburgh",
+                              country: "UK",
+                              units: "c"
+                            )
+                        },
+                      id: String,
+                      type: :function
+                    }
                 ]
-              },
-              id: String,
-              type: :function
             }
-          ]
         }
-      }
     end
   end
 
@@ -644,31 +646,31 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
     # First tool call event (weather)
     weather_event = args_done_events[0]
     assert_pattern do
-      weather_event => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDoneEvent[
-        type: :"tool_calls.function.arguments.done",
-        name: /GetWeatherArgs|get_weather_args/i,
-        index: 0,
-        arguments: /{.*"city".*"Edinburgh".*"country".*}/,
-        parsed: GetWeatherArgsMultiple[
-          city: "Edinburgh",
-          country: "GB"
-        ]
-      ]
+      weather_event => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDoneEvent(
+          type: :"tool_calls.function.arguments.done",
+          name: /GetWeatherArgs|get_weather_args/i,
+          index: 0,
+          arguments: /{.*"city".*"Edinburgh".*"country".*}/,
+          parsed: GetWeatherArgsMultiple(
+              city: "Edinburgh",
+              country: "GB"
+            )
+        )
     end
 
     # Second tool call event (stock)
     stock_event = args_done_events[1]
     assert_pattern do
-      stock_event => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDoneEvent[
-        type: :"tool_calls.function.arguments.done",
-        name: "get_stock_price",
-        index: 1,
-        arguments: /{.*"ticker".*"AAPL".*"exchange".*}/,
-        parsed: GetStockPrice[
-          ticker: "AAPL",
-          exchange: "NASDAQ"
-        ]
-      ]
+      stock_event => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDoneEvent(
+          type: :"tool_calls.function.arguments.done",
+          name: "get_stock_price",
+          index: 1,
+          arguments: /{.*"ticker".*"AAPL".*"exchange".*}/,
+          parsed: GetStockPrice(
+              ticker: "AAPL",
+              exchange: "NASDAQ"
+            )
+        )
     end
 
     completion = listener.stream.get_final_completion
@@ -680,34 +682,34 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
     weather_call = choice.message.tool_calls[0]
     assert_pattern do
       weather_call => {
-        function: {
-          arguments: /{.*"city".*"Edinburgh".*"country".*}/,
-          name: /GetWeatherArgs|get_weather_args/i,
-          parsed: GetWeatherArgsMultiple[
-            city: "Edinburgh",
-            country: "GB"
-          ]
-        },
-        id: String,
-        type: :function
-      }
+          function: {
+              arguments: /{.*"city".*"Edinburgh".*"country".*}/,
+              name: /GetWeatherArgs|get_weather_args/i,
+              parsed: GetWeatherArgsMultiple(
+                  city: "Edinburgh",
+                  country: "GB"
+                )
+            },
+          id: String,
+          type: :function
+        }
     end
 
     # Check second tool call (stock)
     stock_call = choice.message.tool_calls[1]
     assert_pattern do
       stock_call => {
-        function: {
-          arguments: /{.*"ticker".*"AAPL".*"exchange".*}/,
-          name: "get_stock_price",
-          parsed: GetStockPrice[
-            ticker: "AAPL",
-            exchange: "NASDAQ"
-          ]
-        },
-        id: String,
-        type: :function
-      }
+          function: {
+              arguments: /{.*"ticker".*"AAPL".*"exchange".*}/,
+              name: "get_stock_price",
+              parsed: GetStockPrice(
+                  ticker: "AAPL",
+                  exchange: "NASDAQ"
+                )
+            },
+          id: String,
+          type: :function
+        }
     end
   end
 
@@ -748,33 +750,33 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
 
     assert_pattern do
       choice => {
-        finish_reason: :tool_calls,
-        index: 0,
-        logprobs: nil,
-        message: {
-          annotations: nil,
-          audio: nil,
-          content: nil,
-          function_call: nil,
-          parsed: nil,
-          refusal: nil,
-          role: :assistant,
-          tool_calls: [
-            {
-              function: {
-                arguments: /{.*"city".*"San Francisco".*"state".*"CA".*}/,
-                name: "get_weather",
-                parsed: {
-                  city: "San Francisco",
-                  state: "CA"
-                }
-              },
-              id: String,
-              type: :function
+          finish_reason: :tool_calls,
+          index: 0,
+          logprobs: nil,
+          message: {
+              annotations: nil,
+              audio: nil,
+              content: nil,
+              function_call: nil,
+              parsed: nil,
+              refusal: nil,
+              role: :assistant,
+              tool_calls: [
+                  {
+                      function: {
+                          arguments: /{.*"city".*"San Francisco".*"state".*"CA".*}/,
+                          name: "get_weather",
+                          parsed: {
+                              city: "San Francisco",
+                              state: "CA"
+                            }
+                        },
+                      id: String,
+                      type: :function
+                    }
+                ]
             }
-          ]
         }
-      }
     end
   end
 
@@ -798,20 +800,20 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
 
     assert_pattern do
       choice => {
-        finish_reason: :stop,
-        index: 0,
-        logprobs: nil,
-        message: {
-          annotations: nil,
-          audio: nil,
-          content: /{.*"location".*San Francisco.*"weather".*}/m,
-          function_call: nil,
-          parsed: nil,
-          refusal: nil,
-          role: :assistant,
-          tool_calls: nil
+          finish_reason: :stop,
+          index: 0,
+          logprobs: nil,
+          message: {
+              annotations: nil,
+              audio: nil,
+              content: /{.*"location".*San Francisco.*"weather".*}/m,
+              function_call: nil,
+              parsed: nil,
+              refusal: nil,
+              role: :assistant,
+              tool_calls: nil
+            }
         }
-      }
     end
   end
 
@@ -845,13 +847,13 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
 
     args_done = listener.events.find { |e| e.type == :"tool_calls.function.arguments.done" }
     assert_pattern do
-      args_done => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDoneEvent[
-        type: :"tool_calls.function.arguments.done",
-        name: "get_weather",
-        index: 0,
-        arguments: /{.*"city".*"New York City".*}/,
-        parsed: nil
-      ]
+      args_done => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDoneEvent(
+          type: :"tool_calls.function.arguments.done",
+          name: "get_weather",
+          index: 0,
+          arguments: /{.*"city".*"New York City".*}/,
+          parsed: nil
+        )
     end
 
     completion = listener.stream.get_final_completion
@@ -859,30 +861,30 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
 
     assert_pattern do
       choice => {
-        finish_reason: :tool_calls,
-        index: 0,
-        logprobs: nil,
-        message: {
-          annotations: nil,
-          audio: nil,
-          content: nil,
-          function_call: nil,
-          parsed: nil,
-          refusal: nil,
-          role: :assistant,
-          tool_calls: [
-            {
-              function: {
-                arguments: /{.*"city".*"New York City".*}/,
-                name: "get_weather",
-                parsed: nil
-              },
-              id: String,
-              type: :function
+          finish_reason: :tool_calls,
+          index: 0,
+          logprobs: nil,
+          message: {
+              annotations: nil,
+              audio: nil,
+              content: nil,
+              function_call: nil,
+              parsed: nil,
+              refusal: nil,
+              role: :assistant,
+              tool_calls: [
+                  {
+                      function: {
+                          arguments: /{.*"city".*"New York City".*}/,
+                          name: "get_weather",
+                          parsed: nil
+                        },
+                      id: String,
+                      type: :function
+                    }
+                ]
             }
-          ]
         }
-      }
     end
   end
 
@@ -905,20 +907,20 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
 
     assert_pattern do
       choice => {
-        finish_reason: :stop,
-        index: 0,
-        logprobs: nil,
-        message: {
-          annotations: nil,
-          audio: nil,
-          content: /unable to provide real-time weather/i,
-          function_call: nil,
-          parsed: nil,
-          refusal: nil,
-          role: :assistant,
-          tool_calls: nil
+          finish_reason: :stop,
+          index: 0,
+          logprobs: nil,
+          message: {
+              annotations: nil,
+              audio: nil,
+              content: /unable to provide real-time weather/i,
+              function_call: nil,
+              parsed: nil,
+              refusal: nil,
+              role: :assistant,
+              tool_calls: nil
+            }
         }
-      }
     end
   end
 end

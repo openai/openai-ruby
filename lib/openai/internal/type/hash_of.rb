@@ -100,14 +100,13 @@ module OpenAI
           value
             .to_h do |key, val|
               k = key.is_a?(String) ? key.to_sym : key
-              v =
-                case [nilable?, val]
-                in [true, nil]
-                  exactness[:yes] += 1
-                  nil
-                else
-                  OpenAI::Internal::Type::Converter.coerce(target, val, state: state)
-                end
+              v = case [nilable?, val]
+              in [true, nil]
+                exactness[:yes] += 1
+                nil
+              else
+                OpenAI::Internal::Type::Converter.coerce(target, val, state: state)
+              end
 
               exactness[:no] += 1 unless k.is_a?(Symbol)
               [k, v]
@@ -178,7 +177,7 @@ module OpenAI
         def inspect(depth: 0)
           items = OpenAI::Internal::Type::Converter.inspect(item_type, depth: depth.succ)
 
-          "#{self.class}[#{[items, nilable? ? 'nil' : nil].compact.join(' | ')}]"
+          "#{self.class}[#{[items, nilable? ? "nil" : nil].compact.join(" | ")}]"
         end
       end
     end

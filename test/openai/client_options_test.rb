@@ -9,9 +9,17 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
   EU = "https://eu.api.openai.com/v1"
   US = "https://us.api.openai.com/v1"
   ENVIRONMENT_VARIABLES = %w[
-    OPENAI_API_KEY OPENAI_ADMIN_KEY OPENAI_BASE_URL OPENAI_CUSTOM_HEADERS
-    OPENAI_ORG_ID OPENAI_PROJECT_ID OPENAI_WEBHOOK_SECRET OPENAI_LOG OPENAI_MODEL
-  ].freeze
+    OPENAI_API_KEY
+    OPENAI_ADMIN_KEY
+    OPENAI_BASE_URL
+    OPENAI_CUSTOM_HEADERS
+    OPENAI_ORG_ID
+    OPENAI_PROJECT_ID
+    OPENAI_WEBHOOK_SECRET
+    OPENAI_LOG
+    OPENAI_MODEL
+  ]
+    .freeze
 
   class Capture < OpenAI::HTTPClient
     attr_reader :requests
@@ -26,11 +34,23 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
       OpenAI::HTTPClient::Response.new(
         status: 200,
         headers: {"content-type" => "application/json"},
-        body: [JSON.generate({
-          id: "resp_test", object: "response",
-          output: [{type: "message", id: "msg_test", role: "assistant", status: "completed",
-                    content: [{type: "output_text", text: "Hello from the EU!", annotations: []}]}]
-        })]
+        body: [
+          JSON.generate(
+            {
+              id: "resp_test",
+              object: "response",
+              output: [
+                {
+                  type: "message",
+                  id: "msg_test",
+                  role: "assistant",
+                  status: "completed",
+                  content: [{type: "output_text", text: "Hello from the EU!", annotations: []}]
+                }
+              ]
+            }
+          )
+        ]
       )
     end
   end
@@ -66,21 +86,49 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
 
   def test_copy_without_overrides_preserves_every_constructor_option
     logger = Logger.new(StringIO.new)
-    callback = ->(_event) { nil }
+    callback = -> (_event) { nil }
     client = new_client(
-      admin_api_key: "admin-key", organization: "org", project: "project", webhook_secret: "secret",
-      default_headers: {"x-test" => "value"}, max_retries: 4, timeout: nil,
-      initial_retry_delay: 0.1, max_retry_delay: 2.0,
-      logger: logger, log_level: :debug, on_retry: callback
+      admin_api_key: "admin-key",
+      organization: "org",
+      project: "project",
+      webhook_secret: "secret",
+      default_headers: {"x-test" => "value"},
+      max_retries: 4,
+      timeout: nil,
+      initial_retry_delay: 0.1,
+      max_retry_delay: 2.0,
+      logger: logger,
+      log_level: :debug,
+      on_retry: callback
     )
     copy = client.with_options
 
-    [:api_key, :admin_api_key, :organization, :project, :webhook_secret, :base_url, :headers, :max_retries,
-     :timeout, :initial_retry_delay, :max_retry_delay, :logger, :log_level, :on_retry, :requester].each do |name|
+    [
+      :api_key,
+      :admin_api_key,
+      :organization,
+      :project,
+      :webhook_secret,
+      :base_url,
+      :headers,
+      :max_retries,
+      :timeout,
+      :initial_retry_delay,
+      :max_retry_delay,
+      :logger,
+      :log_level,
+      :on_retry,
+      :requester
+    ].each do |name|
       expected = client.public_send(name)
       actual = copy.public_send(name)
-      expected.nil? ? assert_nil(actual, "#{name} was not inherited") : assert_equal(expected, actual, "#{name} was not inherited")
+      expected.nil? ? assert_nil(actual, "#{name} was not inherited") : assert_equal(
+        expected,
+        actual,
+        "#{name} was not inherited"
+      )
     end
+
     refute_same(client, copy)
     refute_same(client.headers, copy.headers)
     assert_same(callback, copy.on_retry)
@@ -102,6 +150,7 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
         prepared.merge(headers: prepared[:headers].merge("x-subclass-request" => "preserved"))
       end
     end
+
     original = client_class.new(api_key: "test-key", base_url: GLOBAL, http_client: @transport)
     copy = original.with_options(base_url: EU)
     copy.responses.create(model: "gpt-4.1-mini", input: "Hello")
@@ -123,6 +172,7 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
         super(**options)
       end
     end
+
     original = client_class.new(label: "shared", api_key: "test-key", http_client: @transport)
 
     assert_raises(ArgumentError) { original.with_options(base_url: EU) }
@@ -138,7 +188,7 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
 
   def test_eu_example_runs_with_the_mock_transport
     original_new = OpenAI::Client.method(:new)
-    constructor = ->(**options) { original_new.call(api_key: "test-key", http_client: @transport, **options) }
+    constructor = -> (**options) { original_new.call(api_key: "test-key", http_client: @transport, **options) }
     stdout, = capture_io do
       OpenAI::Client.stub(:new, constructor) do
         load(File.expand_path("../../examples/eu_residency.rb", __dir__))
@@ -199,7 +249,9 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
 
   def test_workload_identity_configuration_is_retained_and_can_be_replaced
     identity = OpenAI::Auth::WorkloadIdentity.new(
-      identity_provider_id: "provider", service_account_id: "account", provider: Object.new
+      identity_provider_id: "provider",
+      service_account_id: "account",
+      provider: Object.new
     )
     client = new_client(api_key: nil, workload_identity: identity)
     copy = client.with_options(base_url: EU)
@@ -237,7 +289,9 @@ class OpenAI::Test::ClientOptionsTest < Minitest::Test
 
   def test_switching_providers_does_not_leak_previous_configuration
     original = new_client(
-      admin_api_key: "admin-key", organization: "org", project: "project",
+      admin_api_key: "admin-key",
+      organization: "org",
+      project: "project",
       default_headers: {"x-api-key" => "old-secret", "x-private" => "old-value"}
     )
     provider = OpenAI::Providers.bedrock(region: "us-east-1", api_key: "bedrock-key")

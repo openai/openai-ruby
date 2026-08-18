@@ -15,13 +15,13 @@ module OpenAI
         set-cookie
         x-amz-security-token
         x-api-key
-      ].freeze
+      ]
+        .freeze
       MAX_BODY_BYTES = 16 * 1024
       MAX_ARRAY_ITEMS = 100
       OPAQUE_STRING_BYTES = 1_024
       SENSITIVE_BODY_KEY = /(?:api[-_]?key|authorization|credential|password|secret|signature|token)/i
-      SENSITIVE_QUERY_KEY =
-        /(?:(?:\A|[-_\[])(?:key|sig)|(?-i:K)ey|api[-_]?key|authorization|credentials?|password|secret|signature|token)(?:\[|\]|\z)/i
+      SENSITIVE_QUERY_KEY = /(?:(?:\A|[-_\[])(?:key|sig)|(?-i:K)ey|api[-_]?key|authorization|credentials?|password|secret|signature|token)(?:\[|\]|\z)/i
       URL_HEADER_KEY = /(?:\A|[-_])(?:location|url|uri)\z|\A(?:link|refresh)\z/i
 
       class Context
@@ -46,16 +46,18 @@ module OpenAI
               "headers=#{OpenAI::Internal::Logging.format_headers(request.headers)} " \
               "body=#{OpenAI::Internal::Logging.format_body(request.body, headers: request.headers)}"
           end
+
           @attempt_started_at = OpenAI::Internal::Util.monotonic_secs
         end
 
         def response_received(response)
           log(:debug) do
             "[openai] response received log_id=#{id} attempt=#{@attempts} " \
-              "status=#{response.status} request_id=#{safe_field(response.headers['x-request-id'])} " \
+              "status=#{response.status} request_id=#{safe_field(response.headers["x-request-id"])} " \
               "duration_ms=#{attempt_duration_ms} " \
               "headers=#{OpenAI::Internal::Logging.format_headers(response.headers)}"
           end
+
           return response unless enabled?(:debug)
 
           observed = ObservedBody.new(
@@ -101,7 +103,7 @@ module OpenAI
           log(:info) do
             "[openai] request complete log_id=#{id} method=#{@method} " \
               "path=#{OpenAI::Internal::Logging.safe_path(@url)} " \
-              "status=#{response.status} request_id=#{safe_field(response.headers['x-request-id'])} " \
+              "status=#{response.status} request_id=#{safe_field(response.headers["x-request-id"])} " \
               "attempts=#{@attempts} duration_ms=#{duration_ms}"
           end
         end
@@ -118,7 +120,7 @@ module OpenAI
           log(:error) do
             "[openai] request failed log_id=#{id} method=#{@method} " \
               "path=#{OpenAI::Internal::Logging.safe_path(@url)} " \
-              "status=#{status || 'none'} request_id=#{safe_field(request_id)} " \
+              "status=#{status || "none"} request_id=#{safe_field(request_id)} " \
               "error=#{error.class} attempts=#{@attempts} duration_ms=#{duration_ms}"
           end
         end
@@ -166,6 +168,7 @@ module OpenAI
           in :error
             @logger.error(message)
           end
+
         rescue StandardError
           nil
         end
@@ -195,6 +198,7 @@ module OpenAI
               capture(chunk)
               yield(chunk)
             end
+
             @complete = true
           ensure
             close
@@ -264,7 +268,7 @@ module OpenAI
         def safe_field(value)
           return "none" if value.nil?
 
-          value.to_s.dump.delete_prefix('"').delete_suffix('"')
+          value.to_s.dump.delete_prefix("\"").delete_suffix("\"")
         end
 
         # @api private
@@ -284,19 +288,19 @@ module OpenAI
         end
 
         def format_headers(headers)
-          redacted =
-            headers.sort.to_h do |name, value|
-              normalized_name = name.to_s.downcase
-              rendered =
-                if sensitive_header?(normalized_name)
-                  "[REDACTED]"
-                elsif URL_HEADER_KEY.match?(normalized_name)
-                  sanitized_header_url(value)
-                else
-                  value
-                end
-              [name, rendered]
+          redacted = headers.sort.to_h do |name, value|
+            normalized_name = name.to_s.downcase
+            rendered = if sensitive_header?(normalized_name)
+              "[REDACTED]"
+            elsif URL_HEADER_KEY.match?(normalized_name)
+              sanitized_header_url(value)
+            else
+              value
             end
+
+            [name, rendered]
+          end
+
           JSON.generate(redacted)
         end
 
@@ -322,6 +326,7 @@ module OpenAI
           unless textual_content_type?(content_type)
             return "[BINARY BODY OMITTED] bytes=#{total_bytes}"
           end
+
           if total_bytes > MAX_BODY_BYTES && json_content_type?(content_type)
             return "[JSON BODY OMITTED] bytes=#{total_bytes} reason=too_large"
           end
@@ -343,6 +348,7 @@ module OpenAI
           pairs = URI.decode_www_form(query).map do |name, value|
             [name, SENSITIVE_QUERY_KEY.match?(name) ? "[REDACTED]" : value]
           end
+
           URI.encode_www_form(pairs)
         rescue ArgumentError
           nil
@@ -373,6 +379,7 @@ module OpenAI
           unless content_type.match?(%r{\Aapplication/x-www-form-urlencoded(?:;|\z)}i)
             return "[TEXT BODY OMITTED] bytes=#{total_bytes}"
           end
+
           return "[FORM BODY OMITTED] bytes=#{total_bytes} reason=too_large" if total_bytes > MAX_BODY_BYTES
 
           fields = URI.decode_www_form(body).length
@@ -384,21 +391,21 @@ module OpenAI
         end
 
         private def summarize_json_body(value, total_bytes:)
-          shape =
-            case value
-            in Hash
-              "object fields=#{value.length}"
-            in Array
-              "array items=#{value.length}"
-            in String
-              "string"
-            in Integer | Float
-              "number"
-            in true | false
-              "boolean"
-            in nil
-              "null"
-            end
+          shape = case value
+          in Hash
+            "object fields=#{value.length}"
+          in Array
+            "array items=#{value.length}"
+          in String
+            "string"
+          in Integer | Float
+            "number"
+          in true | false
+            "boolean"
+          in nil
+            "null"
+          end
+
           "[JSON BODY] bytes=#{total_bytes} type=#{shape}"
         end
       end

@@ -74,6 +74,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     transport = scripted_transport do
       [200, {"openai-poll-after-ms" => "25"}, responses.shift]
     end
+
     client = build_client(transport)
 
     result, sleeps = capture_sleep do
@@ -196,6 +197,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     transport = scripted_transport do
       [401, {}, {error: {message: "expired token", type: "authentication_error"}}]
     end
+
     auth = ScriptedWorkloadIdentityAuth.new(slow_token_requests: [2])
     client = build_workload_identity_client(transport, auth)
     started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
@@ -232,17 +234,19 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
 
   def test_workload_identity_authentication_consumes_the_request_timeout
     transport = scripted_transport { flunk("request should not be sent") }
-    auth = Class.new do
-      attr_reader :deadline
+    auth = Class
+      .new do
+        attr_reader(:deadline)
 
-      def get_token(deadline:)
-        @deadline = deadline
-        sleep(0.03)
-        "token"
+        def get_token(deadline:)
+          @deadline = deadline
+          sleep(0.03)
+          "token"
+        end
+
+        def invalidate_token = nil
       end
-
-      def invalidate_token = nil
-    end.new
+      .new
     client = build_workload_identity_client(transport, auth)
 
     error = assert_raises(OpenAI::Errors::APITimeoutError) do
@@ -325,10 +329,10 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
 
   def test_polling_helpers_preserve_a_shorter_request_timeout_error
     polls = [
-      ->(client) do
+      -> (client) do
         client.files.wait_for_processing("file_123", timeout: 10, request_options: {timeout: 0.01})
       end,
-      ->(client) do
+      -> (client) do
         client.vector_stores.files.poll(
           "file_123",
           vector_store_id: "vs_123",
@@ -336,7 +340,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
           request_options: {timeout: 0.01}
         )
       end,
-      ->(client) do
+      -> (client) do
         client.vector_stores.file_batches.poll(
           "batch_123",
           vector_store_id: "vs_123",
@@ -409,7 +413,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       build_client(transport).files.wait_for_processing("file_123")
     end
 
-    assert_match('"mystery"', error.message)
+    assert_match("\"mystery\"", error.message)
   end
 
   def test_vector_store_file_poll_handles_all_terminal_states
@@ -430,6 +434,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     transport = scripted_transport do
       [200, {"openai-poll-after-ms" => "500"}, responses.shift]
     end
+
     options = OpenAI::RequestOptions.new(extra_headers: {"X-Test" => "yes"})
 
     result, sleeps = capture_sleep do
@@ -455,7 +460,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       build_client(transport).vector_stores.files.poll("file_123", vector_store_id: "vs_123")
     end
 
-    assert_match('"mystery"', error.message)
+    assert_match("\"mystery\"", error.message)
   end
 
   def test_vector_store_file_create_and_poll_forwards_creation_parameters
@@ -502,6 +507,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     assert_raises(ArgumentError) do
       client.vector_stores.files.create_and_poll("vs_123", file_id: "file_123", timeout: -1)
     end
+
     assert_raises(ArgumentError) do
       client.vector_stores.files.upload_and_poll(
         "vs_123",
@@ -509,6 +515,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
         poll_interval: 0
       )
     end
+
     assert_raises(ArgumentError) do
       client.vector_stores.file_batches.create_and_poll(
         "vs_123",
@@ -516,6 +523,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
         timeout: -1
       )
     end
+
     assert_raises(ArgumentError) do
       client.vector_stores.file_batches.upload_and_poll(
         "vs_123",
@@ -523,6 +531,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
         poll_interval: 0
       )
     end
+
     assert_empty(transport.requests)
   end
 
@@ -550,9 +559,9 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     )
 
     assert_equal(:completed, result.status)
-    assert_includes(request_bodies.fetch("/v1/files"), 'name="purpose"')
+    assert_includes(request_bodies.fetch("/v1/files"), "name=\"purpose\"")
     assert_includes(request_bodies.fetch("/v1/files"), "assistants")
-    assert_includes(request_bodies.fetch("/v1/files"), 'filename="handbook.md"')
+    assert_includes(request_bodies.fetch("/v1/files"), "filename=\"handbook.md\"")
     attached = JSON.parse(request_bodies.fetch("/v1/vector_stores/vs_123/files"))
     assert_equal("file_uploaded", attached.fetch("file_id"))
     assert_equal({"department" => "engineering"}, attached.fetch("attributes"))
@@ -587,6 +596,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     expected = %w[file-upload vector-store-file].map do |operation|
       "stainless-ruby-#{Digest::SHA256.hexdigest("header-key\0#{operation}")}"
     end
+
     assert_equal(expected, keys)
   end
 
@@ -632,7 +642,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       )
     end
 
-    assert_match('"mystery"', error.message)
+    assert_match("\"mystery\"", error.message)
   end
 
   def test_vector_store_batch_create_and_poll
@@ -682,6 +692,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
           upload_count += 1
           "file_uploaded_#{upload_count}"
         end
+
         sleep(0.02)
         lock.synchronize { active_uploads -= 1 }
         [200, {}, file_object(id: id, status: "processed")]
@@ -694,6 +705,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
         flunk("unexpected request: #{request.method} #{request.path}")
       end
     end
+
     input = 4.times.map { StringIO.new("file #{_1}") }.each
 
     result = build_client(transport).vector_stores.file_batches.upload_and_poll(
@@ -724,6 +736,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       direct_attempts += 1
       [500, {}, {error: {message: "persisted before failure", type: "server_error"}}]
     end
+
     direct_reader, direct_writer = IO.pipe
     direct_writer.write("direct")
     direct_writer.close
@@ -741,6 +754,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       batch_attempts += 1
       [500, {}, {error: {message: "persisted before failure", type: "server_error"}}]
     end
+
     batch_reader, batch_writer = IO.pipe
     batch_writer.write("batch")
     batch_writer.close
@@ -774,16 +788,16 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       post_keys[request.path] << key
       next persisted.fetch(key) if persisted.key?(key)
 
-      success =
-        case request.path
-        when "/v1/files"
-          next_file += 1
-          [200, {}, file_object(id: "file_uploaded_#{next_file}", status: "processed")]
-        when "/v1/vector_stores/vs_123/file_batches"
-          [200, {}, vector_batch(status: "in_progress")]
-        else
-          flunk("unexpected request: #{request.method} #{request.path}")
-        end
+      success = case request.path
+      when "/v1/files"
+        next_file += 1
+        [200, {}, file_object(id: "file_uploaded_#{next_file}", status: "processed")]
+      when "/v1/vector_stores/vs_123/file_batches"
+        [200, {}, vector_batch(status: "in_progress")]
+      else
+        flunk("unexpected request: #{request.method} #{request.path}")
+      end
+
       persisted[key] = success
       [500, {}, {error: {message: "persisted before failure", type: "server_error"}}]
     end
@@ -802,6 +816,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     expected_upload_keys = 2.times.map do |index|
       "stainless-ruby-#{Digest::SHA256.hexdigest("operation-key\0file-upload-#{index}")}"
     end
+
     expected_batch_key = "stainless-ruby-#{Digest::SHA256.hexdigest("operation-key\0file-batch")}"
     assert_equal(expected_upload_keys.sort, upload_keys.uniq.sort)
     assert_equal([expected_batch_key, expected_batch_key], batch_keys)
@@ -815,6 +830,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     assert_raises(ArgumentError) do
       batches.upload_and_poll("vs_123", files: [StringIO.new("file")], max_concurrency: 0)
     end
+
     assert_raises(ArgumentError) do
       batches.upload_and_poll("vs_123", files: [StringIO.new("file")], max_concurrency: 1.5)
     end
@@ -837,6 +853,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
         yielder << "file.txt"
       end
     end
+
     assert_raises(ArgumentError) do
       batches.upload_and_poll(
         "vs_123",
@@ -860,6 +877,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
         file_ids: Array.new(2_001, "file_existing")
       )
     end
+
     assert_empty(transport.requests)
   end
 
@@ -879,6 +897,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
         request_options: {max_retries: 0}
       )
     end
+
     assert_equal(["/v1/files"], transport.requests.map(&:path))
   end
 

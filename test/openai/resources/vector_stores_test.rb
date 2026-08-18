@@ -12,18 +12,18 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        file_counts: OpenAI::VectorStore::FileCounts,
-        last_active_at: Integer | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        name: String,
-        object: Symbol,
-        status: OpenAI::VectorStore::Status,
-        usage_bytes: Integer,
-        expires_after: OpenAI::VectorStore::ExpiresAfter | nil,
-        expires_at: Integer | nil
-      }
+          id: String,
+          created_at: Integer,
+          file_counts: OpenAI::VectorStore::FileCounts,
+          last_active_at: Integer | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          name: String,
+          object: Symbol,
+          status: OpenAI::VectorStore::Status,
+          usage_bytes: Integer,
+          expires_after: OpenAI::VectorStore::ExpiresAfter | nil,
+          expires_at: Integer | nil
+        }
     end
   end
 
@@ -36,18 +36,18 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        file_counts: OpenAI::VectorStore::FileCounts,
-        last_active_at: Integer | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        name: String,
-        object: Symbol,
-        status: OpenAI::VectorStore::Status,
-        usage_bytes: Integer,
-        expires_after: OpenAI::VectorStore::ExpiresAfter | nil,
-        expires_at: Integer | nil
-      }
+          id: String,
+          created_at: Integer,
+          file_counts: OpenAI::VectorStore::FileCounts,
+          last_active_at: Integer | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          name: String,
+          object: Symbol,
+          status: OpenAI::VectorStore::Status,
+          usage_bytes: Integer,
+          expires_after: OpenAI::VectorStore::ExpiresAfter | nil,
+          expires_at: Integer | nil
+        }
     end
   end
 
@@ -60,18 +60,18 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        file_counts: OpenAI::VectorStore::FileCounts,
-        last_active_at: Integer | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        name: String,
-        object: Symbol,
-        status: OpenAI::VectorStore::Status,
-        usage_bytes: Integer,
-        expires_after: OpenAI::VectorStore::ExpiresAfter | nil,
-        expires_at: Integer | nil
-      }
+          id: String,
+          created_at: Integer,
+          file_counts: OpenAI::VectorStore::FileCounts,
+          last_active_at: Integer | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          name: String,
+          object: Symbol,
+          status: OpenAI::VectorStore::Status,
+          usage_bytes: Integer,
+          expires_after: OpenAI::VectorStore::ExpiresAfter | nil,
+          expires_at: Integer | nil
+        }
     end
   end
 
@@ -91,18 +91,18 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       row => {
-        id: String,
-        created_at: Integer,
-        file_counts: OpenAI::VectorStore::FileCounts,
-        last_active_at: Integer | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        name: String,
-        object: Symbol,
-        status: OpenAI::VectorStore::Status,
-        usage_bytes: Integer,
-        expires_after: OpenAI::VectorStore::ExpiresAfter | nil,
-        expires_at: Integer | nil
-      }
+          id: String,
+          created_at: Integer,
+          file_counts: OpenAI::VectorStore::FileCounts,
+          last_active_at: Integer | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          name: String,
+          object: Symbol,
+          status: OpenAI::VectorStore::Status,
+          usage_bytes: Integer,
+          expires_after: OpenAI::VectorStore::ExpiresAfter | nil,
+          expires_at: Integer | nil
+        }
     end
   end
 
@@ -115,10 +115,10 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 
@@ -138,12 +138,12 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       row => {
-        attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStoreSearchResponse::Attribute]) | nil,
-        content: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::VectorStoreSearchResponse::Content]),
-        file_id: String,
-        filename: String,
-        score: Float
-      }
+          attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStoreSearchResponse::Attribute]) | nil,
+          content: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::VectorStoreSearchResponse::Content]),
+          file_id: String,
+          filename: String,
+          score: Float
+        }
     end
   end
 end

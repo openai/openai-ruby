@@ -64,8 +64,10 @@ module OpenAI
         #   model.
         #
         #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeResponse::OutputModality>, nil]
-        optional :output_modalities,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeResponse::OutputModality] }
+        optional(
+          :output_modalities,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeResponse::OutputModality] }
+        )
 
         # @!attribute status
         #   The final status of the response (`completed`, `cancelled`, `failed`, or

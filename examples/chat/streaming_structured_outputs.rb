@@ -49,6 +49,7 @@ response
     completed_parsed_output_received = true
     pp(parsed)
   end
+
 unless completed_parsed_output_received
   abort("The final completion did not contain a completed parsed MathResponse")
 end

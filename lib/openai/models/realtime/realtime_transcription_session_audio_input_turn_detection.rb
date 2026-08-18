@@ -25,12 +25,16 @@ module OpenAI
         discriminator :type
 
         # Server-side voice activity detection (VAD) which flips on when user speech is detected and off after a period of silence.
-        variant :server_vad,
-                -> { OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::ServerVad }
+        variant(
+          :server_vad,
+          -> { OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::ServerVad }
+        )
 
         # Server-side semantic turn detection which uses a model to determine when the user has finished speaking.
-        variant :semantic_vad,
-                -> { OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::SemanticVad }
+        variant(
+          :semantic_vad,
+          -> { OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::SemanticVad }
+        )
 
         class ServerVad < OpenAI::Internal::Type::BaseModel
           # @!attribute type
@@ -146,8 +150,10 @@ module OpenAI
           #   and `high` have max timeouts of 8s, 4s, and 2s respectively.
           #
           #   @return [Symbol, OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::SemanticVad::Eagerness, nil]
-          optional :eagerness,
-                   enum: -> { OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::SemanticVad::Eagerness }
+          optional(
+            :eagerness,
+            enum: -> { OpenAI::Realtime::RealtimeTranscriptionSessionAudioInputTurnDetection::SemanticVad::Eagerness }
+          )
 
           # @!attribute interrupt_response
           #   Whether or not to automatically interrupt any ongoing response with output to

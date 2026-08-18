@@ -71,4 +71,5 @@ response
       pp(parsed)
     end
   end
+
 abort("The final response did not contain a parsed Query tool call") if parsed_tool_call_count.zero?

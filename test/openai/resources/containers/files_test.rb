@@ -12,14 +12,14 @@ class OpenAI::Test::Resources::Containers::FilesTest < OpenAI::Test::ResourceTes
 
     assert_pattern do
       response => {
-        id: String,
-        bytes: Integer,
-        container_id: String,
-        created_at: Integer,
-        object: Symbol,
-        path: String,
-        source: String
-      }
+          id: String,
+          bytes: Integer,
+          container_id: String,
+          created_at: Integer,
+          object: Symbol,
+          path: String,
+          source: String
+        }
     end
   end
 
@@ -32,14 +32,14 @@ class OpenAI::Test::Resources::Containers::FilesTest < OpenAI::Test::ResourceTes
 
     assert_pattern do
       response => {
-        id: String,
-        bytes: Integer,
-        container_id: String,
-        created_at: Integer,
-        object: Symbol,
-        path: String,
-        source: String
-      }
+          id: String,
+          bytes: Integer,
+          container_id: String,
+          created_at: Integer,
+          object: Symbol,
+          path: String,
+          source: String
+        }
     end
   end
 
@@ -59,14 +59,14 @@ class OpenAI::Test::Resources::Containers::FilesTest < OpenAI::Test::ResourceTes
 
     assert_pattern do
       row => {
-        id: String,
-        bytes: Integer,
-        container_id: String,
-        created_at: Integer,
-        object: Symbol,
-        path: String,
-        source: String
-      }
+          id: String,
+          bytes: Integer,
+          container_id: String,
+          created_at: Integer,
+          object: Symbol,
+          path: String,
+          source: String
+        }
     end
   end
 

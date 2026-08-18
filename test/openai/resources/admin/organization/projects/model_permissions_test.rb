@@ -12,20 +12,19 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::ModelPermissionsTe
 
     assert_pattern do
       response => {
-        mode: OpenAI::Admin::Organization::Projects::ProjectModelPermissions::Mode,
-        model_ids: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        object: Symbol
-      }
+          mode: OpenAI::Admin::Organization::Projects::ProjectModelPermissions::Mode,
+          model_ids: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          object: Symbol
+        }
     end
   end
 
   def test_update_required_params
-    response =
-      @openai.admin.organization.projects.model_permissions.update(
-        "project_id",
-        mode: :allow_list,
-        model_ids: ["string"]
-      )
+    response = @openai.admin.organization.projects.model_permissions.update(
+      "project_id",
+      mode: :allow_list,
+      model_ids: ["string"]
+    )
 
     assert_pattern do
       response => OpenAI::Admin::Organization::Projects::ProjectModelPermissions
@@ -33,10 +32,10 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::ModelPermissionsTe
 
     assert_pattern do
       response => {
-        mode: OpenAI::Admin::Organization::Projects::ProjectModelPermissions::Mode,
-        model_ids: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        object: Symbol
-      }
+          mode: OpenAI::Admin::Organization::Projects::ProjectModelPermissions::Mode,
+          model_ids: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          object: Symbol
+        }
     end
   end
 
@@ -49,9 +48,9 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::ModelPermissionsTe
 
     assert_pattern do
       response => {
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 end

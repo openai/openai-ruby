@@ -16,9 +16,10 @@ stream.text.each do |text|
   streamed_text << text
   print(text)
 end
+
 abort("The response stream completed without yielding text") if streamed_text.strip.empty?
 
 puts
 
 # Get all of the text that was streamed with .get_output_text
-puts "Character count: #{stream.get_output_text.length}"
+puts("Character count: #{stream.get_output_text.length}")

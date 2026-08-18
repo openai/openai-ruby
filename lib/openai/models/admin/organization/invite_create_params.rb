@@ -28,8 +28,10 @@ module OpenAI
           #   not be invited to any projects, including the default one.
           #
           #   @return [Array<OpenAI::Models::Admin::Organization::InviteCreateParams::Project>, nil]
-          optional :projects,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::InviteCreateParams::Project] }
+          optional(
+            :projects,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::InviteCreateParams::Project] }
+          )
 
           # @!method initialize(email:, role:, projects: nil, request_options: {})
           #   Some parameter documentations has been truncated, see

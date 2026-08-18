@@ -18,6 +18,7 @@ stream.text.each do |text|
   content_received ||= !text.strip.empty?
   print(text)
 end
+
 puts
 
 abort("The text stream completed without content") unless content_received

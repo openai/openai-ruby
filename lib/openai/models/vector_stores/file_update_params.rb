@@ -26,11 +26,13 @@ module OpenAI
         #   characters, booleans, or numbers.
         #
         #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
-        required :attributes,
-                 -> {
-                   OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::FileUpdateParams::Attribute]
-                 },
-                 nil?: true
+        required(
+          :attributes,
+          -> {
+            OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::FileUpdateParams::Attribute]
+          },
+          nil?: true
+        )
 
         # @!method initialize(vector_store_id:, file_id:, attributes:, request_options: {})
         #   Some parameter documentations has been truncated, see

@@ -27,9 +27,11 @@ module OpenAI
         #   Represents the use of a local environment to perform shell actions.
         #
         #   @return [OpenAI::Models::Beta::BetaResponseLocalEnvironment, OpenAI::Models::Beta::BetaResponseContainerReference, nil]
-        required :environment,
-                 union: -> { OpenAI::Beta::BetaResponseFunctionShellToolCall::Environment },
-                 nil?: true
+        required(
+          :environment,
+          union: -> { OpenAI::Beta::BetaResponseFunctionShellToolCall::Environment },
+          nil?: true
+        )
 
         # @!attribute status
         #   The status of the shell call. One of `in_progress`, `completed`, or
@@ -54,10 +56,12 @@ module OpenAI
         #   The execution context that produced this tool call.
         #
         #   @return [OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::Caller::Direct, OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::Caller::Program, nil]
-        optional :caller_,
-                 union: -> { OpenAI::Beta::BetaResponseFunctionShellToolCall::Caller },
-                 api_name: :caller,
-                 nil?: true
+        optional(
+          :caller_,
+          union: -> { OpenAI::Beta::BetaResponseFunctionShellToolCall::Caller },
+          api_name: :caller,
+          nil?: true
+        )
 
         # @!attribute created_by
         #   The ID of the entity that created this tool call.

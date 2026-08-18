@@ -97,15 +97,16 @@ module OpenAI
             content = output.content[event.content_index]
             assert_type(content, :output_text)
 
-            events_to_yield << OpenAI::Streaming::ResponseTextDeltaEvent.new(
-              content_index: event.content_index,
-              delta: event.delta,
-              item_id: event.item_id,
-              output_index: event.output_index,
-              sequence_number: event.sequence_number,
-              type: event.type,
-              snapshot: content.text
-            )
+            events_to_yield <<
+              OpenAI::Streaming::ResponseTextDeltaEvent.new(
+                content_index: event.content_index,
+                delta: event.delta,
+                item_id: event.item_id,
+                output_index: event.output_index,
+                sequence_number: event.sequence_number,
+                type: event.type,
+                snapshot: content.text
+              )
 
           when OpenAI::Models::Responses::ResponseTextDoneEvent
             output = @current_snapshot.output[event.output_index]
@@ -116,35 +117,38 @@ module OpenAI
 
             parsed = parse_structured_text(content.text)
 
-            events_to_yield << OpenAI::Streaming::ResponseTextDoneEvent.new(
-              content_index: event.content_index,
-              item_id: event.item_id,
-              output_index: event.output_index,
-              sequence_number: event.sequence_number,
-              text: event.text,
-              type: event.type,
-              parsed: parsed
-            )
+            events_to_yield <<
+              OpenAI::Streaming::ResponseTextDoneEvent.new(
+                content_index: event.content_index,
+                item_id: event.item_id,
+                output_index: event.output_index,
+                sequence_number: event.sequence_number,
+                text: event.text,
+                type: event.type,
+                parsed: parsed
+              )
 
           when OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent
             output = @current_snapshot.output[event.output_index]
             assert_type(output, :function_call)
 
-            events_to_yield << OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent.new(
-              delta: event.delta,
-              item_id: event.item_id,
-              output_index: event.output_index,
-              sequence_number: event.sequence_number,
-              type: event.type,
-              snapshot: output.arguments
-            )
+            events_to_yield <<
+              OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent.new(
+                delta: event.delta,
+                item_id: event.item_id,
+                output_index: event.output_index,
+                sequence_number: event.sequence_number,
+                type: event.type,
+                snapshot: output.arguments
+              )
 
           when OpenAI::Models::Responses::ResponseCompletedEvent
-            events_to_yield << OpenAI::Streaming::ResponseCompletedEvent.new(
-              sequence_number: event.sequence_number,
-              type: event.type,
-              response: event.response
-            )
+            events_to_yield <<
+              OpenAI::Streaming::ResponseCompletedEvent.new(
+                sequence_number: event.sequence_number,
+                type: event.type,
+                response: event.response
+              )
 
           else
             # Pass through other events unchanged.
@@ -219,8 +223,10 @@ module OpenAI
             parsed = JSON.parse(text, symbolize_names: true)
             OpenAI::Internal::Type::Converter.coerce(@text_format, parsed)
           rescue JSON::ParserError => e
-            raise "Failed to parse structured text as JSON for #{@text_format}: #{e.message}. " \
-                  "Raw text: #{text.inspect}"
+            raise(
+              "Failed to parse structured text as JSON for #{@text_format}: #{e.message}. " \
+                "Raw text: #{text.inspect}"
+            )
           end
         end
       end

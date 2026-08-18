@@ -12,9 +12,9 @@ class OpenAI::Test::Resources::Admin::Organization::DataRetentionTest < OpenAI::
 
     assert_pattern do
       response => {
-        object: Symbol,
-        type: OpenAI::Admin::Organization::OrganizationDataRetention::Type
-      }
+          object: Symbol,
+          type: OpenAI::Admin::Organization::OrganizationDataRetention::Type
+        }
     end
   end
 
@@ -27,9 +27,9 @@ class OpenAI::Test::Resources::Admin::Organization::DataRetentionTest < OpenAI::
 
     assert_pattern do
       response => {
-        object: Symbol,
-        type: OpenAI::Admin::Organization::OrganizationDataRetention::Type
-      }
+          object: Symbol,
+          type: OpenAI::Admin::Organization::OrganizationDataRetention::Type
+        }
     end
   end
 end

@@ -12,23 +12,23 @@ class OpenAI::Test::Resources::Beta::Threads::Runs::StepsTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        id: String,
-        assistant_id: String,
-        cancelled_at: Integer | nil,
-        completed_at: Integer | nil,
-        created_at: Integer,
-        expired_at: Integer | nil,
-        failed_at: Integer | nil,
-        last_error: OpenAI::Beta::Threads::Runs::RunStep::LastError | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        object: Symbol,
-        run_id: String,
-        status: OpenAI::Beta::Threads::Runs::RunStep::Status,
-        step_details: OpenAI::Beta::Threads::Runs::RunStep::StepDetails,
-        thread_id: String,
-        type: OpenAI::Beta::Threads::Runs::RunStep::Type,
-        usage: OpenAI::Beta::Threads::Runs::RunStep::Usage | nil
-      }
+          id: String,
+          assistant_id: String,
+          cancelled_at: Integer | nil,
+          completed_at: Integer | nil,
+          created_at: Integer,
+          expired_at: Integer | nil,
+          failed_at: Integer | nil,
+          last_error: OpenAI::Beta::Threads::Runs::RunStep::LastError | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          object: Symbol,
+          run_id: String,
+          status: OpenAI::Beta::Threads::Runs::RunStep::Status,
+          step_details: OpenAI::Beta::Threads::Runs::RunStep::StepDetails,
+          thread_id: String,
+          type: OpenAI::Beta::Threads::Runs::RunStep::Type,
+          usage: OpenAI::Beta::Threads::Runs::RunStep::Usage | nil
+        }
     end
   end
 
@@ -48,23 +48,23 @@ class OpenAI::Test::Resources::Beta::Threads::Runs::StepsTest < OpenAI::Test::Re
 
     assert_pattern do
       row => {
-        id: String,
-        assistant_id: String,
-        cancelled_at: Integer | nil,
-        completed_at: Integer | nil,
-        created_at: Integer,
-        expired_at: Integer | nil,
-        failed_at: Integer | nil,
-        last_error: OpenAI::Beta::Threads::Runs::RunStep::LastError | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        object: Symbol,
-        run_id: String,
-        status: OpenAI::Beta::Threads::Runs::RunStep::Status,
-        step_details: OpenAI::Beta::Threads::Runs::RunStep::StepDetails,
-        thread_id: String,
-        type: OpenAI::Beta::Threads::Runs::RunStep::Type,
-        usage: OpenAI::Beta::Threads::Runs::RunStep::Usage | nil
-      }
+          id: String,
+          assistant_id: String,
+          cancelled_at: Integer | nil,
+          completed_at: Integer | nil,
+          created_at: Integer,
+          expired_at: Integer | nil,
+          failed_at: Integer | nil,
+          last_error: OpenAI::Beta::Threads::Runs::RunStep::LastError | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          object: Symbol,
+          run_id: String,
+          status: OpenAI::Beta::Threads::Runs::RunStep::Status,
+          step_details: OpenAI::Beta::Threads::Runs::RunStep::StepDetails,
+          thread_id: String,
+          type: OpenAI::Beta::Threads::Runs::RunStep::Type,
+          usage: OpenAI::Beta::Threads::Runs::RunStep::Usage | nil
+        }
     end
   end
 end

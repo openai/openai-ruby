@@ -88,7 +88,7 @@ class OpenAI::Test::UtilDataHandlingTest < Minitest::Test
 
       OpenAI::Internal::Util.dig(Object, 1) => nil
       OpenAI::Internal::Util.dig([], 1.0) { 2 } => 2
-      OpenAI::Internal::Util.dig([], ->(_) { 2 }) => 2
+      OpenAI::Internal::Util.dig([], -> (_) { 2 }) => 2
       OpenAI::Internal::Util.dig([1], -> { _1 in [1] }) => true
     end
   end
@@ -208,7 +208,7 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
       encoded = io.to_a
       @ctype = headers["content-type"]
       # rubocop:disable Lint/EmptyBlock
-      @io = OpenAI::Internal::Util::ReadIOAdapter.new(encoded.to_enum) {}
+      @io = OpenAI::Internal::Util::ReadIOAdapter.new(encoded.to_enum) { }
       # rubocop:enable Lint/EmptyBlock
       @c_len = encoded.join.bytesize.to_s
       super()
@@ -270,7 +270,7 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
     )
     body = stream.respond_to?(:read) ? stream.read : stream.to_a.join
 
-    assert_includes(body, %q(filename="a \"b\"Evil: 1.md"))
+    assert_includes(body, "filename=\"a \\\"b\\\"Evil: 1.md\"")
     refute_includes(body, "\r\nEvil:")
   end
 
@@ -293,7 +293,7 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
     )
     body = stream.respond_to?(:read) ? stream.read : stream.to_a.join
 
-    assert_includes(body, %q(name="a \"b\"\\\\cEvil: 1"))
+    assert_includes(body, "name=\"a \\\"b\\\"\\\\cEvil: 1\"")
     refute_includes(body, "\r\nEvil:")
   end
 
@@ -406,13 +406,13 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
       cgi = FakeCGI.new(*encoded)
       testcase.each do |key, val|
         assert_pattern do
-          parsed =
-            case (p = cgi[key])
-            in StringIO
-              p.read
-            else
-              p
-            end
+          parsed = case (p = cgi[key])
+          in StringIO
+            p.read
+          else
+            p
+          end
+
           parsed => ^val
         end
       end
@@ -429,7 +429,7 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
     cases.each do |input, expected|
       io = StringIO.new
       # rubocop:disable Lint/EmptyBlock
-      adapter = OpenAI::Internal::Util::ReadIOAdapter.new(input) {}
+      adapter = OpenAI::Internal::Util::ReadIOAdapter.new(input) { }
       # rubocop:enable Lint/EmptyBlock
       IO.copy_stream(adapter, io)
       assert_equal(expected, io.string)
@@ -438,7 +438,7 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
 
   def test_read_all_from_enumerator
     # rubocop:disable Lint/EmptyBlock
-    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(["hello ", "world"].each) {}
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(["hello ", "world"].each) { }
     # rubocop:enable Lint/EmptyBlock
 
     assert_equal("hello world", adapter.read)
@@ -524,6 +524,7 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
       enum = OpenAI::Internal::Util.writable_enum do |y|
         IO.copy_stream(input, y)
       end
+
       assert_equal(expected, enum.to_a.join)
     end
   end
@@ -539,7 +540,7 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
       closed = true
     end
     # rubocop:disable Lint/EmptyBlock
-    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(input) {}
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(input) { }
     # rubocop:enable Lint/EmptyBlock
 
     assert_equal("first", adapter.read(5))
@@ -558,7 +559,7 @@ class OpenAI::Test::UtilIOAdapterTest < Minitest::Test
       yielder << "first"
     end
     # rubocop:disable Lint/EmptyBlock
-    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(input) {}
+    adapter = OpenAI::Internal::Util::ReadIOAdapter.new(input) { }
     # rubocop:enable Lint/EmptyBlock
 
     adapter.close
@@ -579,6 +580,7 @@ class OpenAI::Test::UtilFusedEnumTest < Minitest::Test
         steps = _1
         y << _1
       end
+
     ensure
       once = once.succ
     end
@@ -587,6 +589,7 @@ class OpenAI::Test::UtilFusedEnumTest < Minitest::Test
       touched = true
       loop { enum.next }
     end
+
     OpenAI::Internal::Util.close_fused!(fused)
 
     assert_equal(1, once)
@@ -634,9 +637,10 @@ class OpenAI::Test::UtilFusedEnumTest < Minitest::Test
 
   def test_rewind_chain
     once = 0
-    fused = OpenAI::Internal::Util.fused_enum([1, 2, 3].to_enum) do
-      once = once.succ
-    end
+    fused = OpenAI::Internal::Util
+      .fused_enum([1, 2, 3].to_enum) do
+        once = once.succ
+      end
       .lazy
       .map(&:succ)
       .filter(&:odd?)
@@ -676,6 +680,7 @@ class OpenAI::Test::UtilFusedEnumTest < Minitest::Test
       taken = taken.succ
       _1
     end
+
     fused = OpenAI::Internal::Util.fused_enum(enum)
     first = fused.next
 
@@ -686,10 +691,13 @@ class OpenAI::Test::UtilFusedEnumTest < Minitest::Test
 
   def test_closed_fused_taken_count
     taken = 0
-    enum = [1, 2, 3].to_enum.lazy.map do
-      taken = taken.succ
-      _1
-    end
+    enum = [1, 2, 3]
+      .to_enum
+      .lazy
+      .map do
+        taken = taken.succ
+        _1
+      end
       .map(&:succ)
       .filter(&:odd?)
     fused = OpenAI::Internal::Util.fused_enum(enum)
@@ -701,10 +709,13 @@ class OpenAI::Test::UtilFusedEnumTest < Minitest::Test
 
   def test_closed_fused_extern_iter_taken_count
     taken = 0
-    enum = [1, 2, 3].to_enum.lazy.map do
-      taken = taken.succ
-      _1
-    end
+    enum = [1, 2, 3]
+      .to_enum
+      .lazy
+      .map do
+        taken = taken.succ
+        _1
+      end
       .map(&:succ)
       .filter(&:itself)
     first = enum.next
@@ -718,10 +729,13 @@ class OpenAI::Test::UtilFusedEnumTest < Minitest::Test
 
   def test_close_fused_sse_chain
     taken = 0
-    enum = [1, 2, 3].to_enum.lazy.map do
-      taken = taken.succ
-      _1
-    end
+    enum = [1, 2, 3]
+      .to_enum
+      .lazy
+      .map do
+        taken = taken.succ
+        _1
+      end
       .map(&:succ)
       .filter(&:odd?)
       .map(&:to_s)

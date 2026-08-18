@@ -25,7 +25,7 @@ stream.each do |event|
     tokens = event.content
     last = tokens.last
     next unless last
-    alts = last.top_logprobs.map { |t| "#{t.token}=#{format('%.2f', t.logprob)}" }.join(", ")
+    alts = last.top_logprobs.map { |t| "#{t.token}=#{format("%.2f", t.logprob)}" }.join(", ")
     puts("\nlogprobs: [#{alts}]")
   when OpenAI::Streaming::ChatLogprobsContentDoneEvent
     abort("The logprobs stream completed without tokens") if event.content.empty?
@@ -34,4 +34,5 @@ stream.each do |event|
     puts("\n--- logprobs collection finished (#{event.content.length} tokens) ---")
   end
 end
+
 abort("The logprobs stream ended before completion") unless logprobs_received

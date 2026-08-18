@@ -220,8 +220,14 @@ module OpenAI
             #   vector store attached to the assistant.
             #
             #   @return [Array<OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore>, nil]
-            optional :vector_stores,
-                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore] }
+            optional(
+              :vector_stores,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[
+                  OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore
+                ]
+              }
+            )
 
             # @!method initialize(vector_store_ids: nil, vector_stores: nil)
             #   Some parameter documentations has been truncated, see
@@ -238,8 +244,12 @@ module OpenAI
               #   strategy.
               #
               #   @return [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static, nil]
-              optional :chunking_strategy,
-                       union: -> { OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy }
+              optional(
+                :chunking_strategy,
+                union: -> {
+                  OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy
+                }
+              )
 
               # @!attribute file_ids
               #   A list of [file](https://platform.openai.com/docs/api-reference/files) IDs to
@@ -282,11 +292,19 @@ module OpenAI
                 discriminator :type
 
                 # The default strategy. This strategy currently uses a `max_chunk_size_tokens` of `800` and `chunk_overlap_tokens` of `400`.
-                variant :auto,
-                        -> { OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto }
+                variant(
+                  :auto,
+                  -> {
+                    OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto
+                  }
+                )
 
-                variant :static,
-                        -> { OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static }
+                variant(
+                  :static,
+                  -> {
+                    OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
+                  }
+                )
 
                 class Auto < OpenAI::Internal::Type::BaseModel
                   # @!attribute type
@@ -306,8 +324,12 @@ module OpenAI
                   # @!attribute static
                   #
                   #   @return [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static]
-                  required :static,
-                           -> { OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static }
+                  required(
+                    :static,
+                    -> {
+                      OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
+                    }
+                  )
 
                   # @!attribute type
                   #   Always `static`.

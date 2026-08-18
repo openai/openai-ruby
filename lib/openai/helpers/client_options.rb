@@ -15,13 +15,18 @@ module OpenAI
       class << self
         # @api private
         def capture(**options)
-          options.transform_values do |value|
-            case value
-            when String then value.dup.freeze
-            when Hash then value.transform_values { _1.is_a?(String) ? _1.dup.freeze : _1 }.freeze
-            else value
+          options
+            .transform_values do |value|
+              case value
+              when String
+                value.dup.freeze
+              when Hash
+                value.transform_values { _1.is_a?(String) ? _1.dup.freeze : _1 }.freeze
+              else
+                value
+              end
             end
-          end.freeze
+            .freeze
         end
 
         # @api private
@@ -38,7 +43,7 @@ module OpenAI
 
           unknown = overrides.keys - defaults.keys
           unless unknown.empty?
-            raise ArgumentError, "Unknown client option#{unknown.one? ? '' : 's'}: #{unknown.join(', ')}"
+            raise ArgumentError, "Unknown client option#{unknown.one? ? "" : "s"}: #{unknown.join(", ")}"
           end
 
           options = defaults.dup
@@ -49,6 +54,7 @@ module OpenAI
             [:api_key, :admin_api_key, :workload_identity, :base_url, :organization, :project].each do |name|
               options[name] = nil
             end
+
             options[:default_headers] = {}
           elsif credentials_changed
             options[:default_headers] = options.fetch(:default_headers).reject do |name, _value|

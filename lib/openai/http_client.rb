@@ -26,10 +26,11 @@ module OpenAI
     # @param headers [Hash{String=>String}]
     def initialize(status:, headers:)
       @status = Integer(status)
-      @headers =
-        headers.to_h do |name, value|
+      @headers = headers
+        .to_h do |name, value|
           [name.to_s.downcase.freeze, value.to_s.dup.freeze]
-        end.freeze
+        end
+        .freeze
       @request_id = @headers["x-request-id"]
       freeze
     end
@@ -167,6 +168,7 @@ module OpenAI
             OpenAI::Internal::Util.close_fused!(source)
           end
         end
+
         freeze
       end
     end

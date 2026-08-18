@@ -22,24 +22,34 @@ module OpenAI
         variant :"response.audio.transcript.done", -> { OpenAI::Responses::ResponseAudioTranscriptDoneEvent }
 
         # Emitted when a partial code snippet is streamed by the code interpreter.
-        variant :"response.code_interpreter_call_code.delta",
-                -> { OpenAI::Responses::ResponseCodeInterpreterCallCodeDeltaEvent }
+        variant(
+          :"response.code_interpreter_call_code.delta",
+          -> { OpenAI::Responses::ResponseCodeInterpreterCallCodeDeltaEvent }
+        )
 
         # Emitted when the code snippet is finalized by the code interpreter.
-        variant :"response.code_interpreter_call_code.done",
-                -> { OpenAI::Responses::ResponseCodeInterpreterCallCodeDoneEvent }
+        variant(
+          :"response.code_interpreter_call_code.done",
+          -> { OpenAI::Responses::ResponseCodeInterpreterCallCodeDoneEvent }
+        )
 
         # Emitted when the code interpreter call is completed.
-        variant :"response.code_interpreter_call.completed",
-                -> { OpenAI::Responses::ResponseCodeInterpreterCallCompletedEvent }
+        variant(
+          :"response.code_interpreter_call.completed",
+          -> { OpenAI::Responses::ResponseCodeInterpreterCallCompletedEvent }
+        )
 
         # Emitted when a code interpreter call is in progress.
-        variant :"response.code_interpreter_call.in_progress",
-                -> { OpenAI::Responses::ResponseCodeInterpreterCallInProgressEvent }
+        variant(
+          :"response.code_interpreter_call.in_progress",
+          -> { OpenAI::Responses::ResponseCodeInterpreterCallInProgressEvent }
+        )
 
         # Emitted when the code interpreter is actively interpreting the code snippet.
-        variant :"response.code_interpreter_call.interpreting",
-                -> { OpenAI::Responses::ResponseCodeInterpreterCallInterpretingEvent }
+        variant(
+          :"response.code_interpreter_call.interpreting",
+          -> { OpenAI::Responses::ResponseCodeInterpreterCallInterpretingEvent }
+        )
 
         # Emitted when the model response is complete.
         variant :"response.completed", -> { OpenAI::Responses::ResponseCompletedEvent }
@@ -57,24 +67,34 @@ module OpenAI
         variant :error, -> { OpenAI::Responses::ResponseErrorEvent }
 
         # Emitted when a file search call is completed (results found).
-        variant :"response.file_search_call.completed",
-                -> { OpenAI::Responses::ResponseFileSearchCallCompletedEvent }
+        variant(
+          :"response.file_search_call.completed",
+          -> { OpenAI::Responses::ResponseFileSearchCallCompletedEvent }
+        )
 
         # Emitted when a file search call is initiated.
-        variant :"response.file_search_call.in_progress",
-                -> { OpenAI::Responses::ResponseFileSearchCallInProgressEvent }
+        variant(
+          :"response.file_search_call.in_progress",
+          -> { OpenAI::Responses::ResponseFileSearchCallInProgressEvent }
+        )
 
         # Emitted when a file search is currently searching.
-        variant :"response.file_search_call.searching",
-                -> { OpenAI::Responses::ResponseFileSearchCallSearchingEvent }
+        variant(
+          :"response.file_search_call.searching",
+          -> { OpenAI::Responses::ResponseFileSearchCallSearchingEvent }
+        )
 
         # Emitted when there is a partial function-call arguments delta.
-        variant :"response.function_call_arguments.delta",
-                -> { OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent }
+        variant(
+          :"response.function_call_arguments.delta",
+          -> { OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent }
+        )
 
         # Emitted when function-call arguments are finalized.
-        variant :"response.function_call_arguments.done",
-                -> { OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent }
+        variant(
+          :"response.function_call_arguments.done",
+          -> { OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent }
+        )
 
         # A streaming event that indicated a shell command was added to a tool call.
         variant :"response.shell_call_command.added", -> { OpenAI::Responses::ResponseShellCallCommandAddedEvent }
@@ -86,12 +106,16 @@ module OpenAI
         variant :"response.shell_call_command.done", -> { OpenAI::Responses::ResponseShellCallCommandDoneEvent }
 
         # A streaming event that indicated shell call output was incrementally added.
-        variant :"response.shell_call_output_content.delta",
-                -> { OpenAI::Responses::ResponseShellCallOutputContentDeltaEvent }
+        variant(
+          :"response.shell_call_output_content.delta",
+          -> { OpenAI::Responses::ResponseShellCallOutputContentDeltaEvent }
+        )
 
         # A streaming event that indicated shell call output was completed.
-        variant :"response.shell_call_output_content.done",
-                -> { OpenAI::Responses::ResponseShellCallOutputContentDoneEvent }
+        variant(
+          :"response.shell_call_output_content.done",
+          -> { OpenAI::Responses::ResponseShellCallOutputContentDoneEvent }
+        )
 
         # Emitted when the response is in progress.
         variant :"response.in_progress", -> { OpenAI::Responses::ResponseInProgressEvent }
@@ -109,20 +133,28 @@ module OpenAI
         variant :"response.output_item.done", -> { OpenAI::Responses::ResponseOutputItemDoneEvent }
 
         # Emitted when a new reasoning summary part is added.
-        variant :"response.reasoning_summary_part.added",
-                -> { OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent }
+        variant(
+          :"response.reasoning_summary_part.added",
+          -> { OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent }
+        )
 
         # Emitted when a reasoning summary part is completed.
-        variant :"response.reasoning_summary_part.done",
-                -> { OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent }
+        variant(
+          :"response.reasoning_summary_part.done",
+          -> { OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent }
+        )
 
         # Emitted when a delta is added to a reasoning summary text.
-        variant :"response.reasoning_summary_text.delta",
-                -> { OpenAI::Responses::ResponseReasoningSummaryTextDeltaEvent }
+        variant(
+          :"response.reasoning_summary_text.delta",
+          -> { OpenAI::Responses::ResponseReasoningSummaryTextDeltaEvent }
+        )
 
         # Emitted when a reasoning summary text is completed.
-        variant :"response.reasoning_summary_text.done",
-                -> { OpenAI::Responses::ResponseReasoningSummaryTextDoneEvent }
+        variant(
+          :"response.reasoning_summary_text.done",
+          -> { OpenAI::Responses::ResponseReasoningSummaryTextDoneEvent }
+        )
 
         # Emitted when a delta is added to a reasoning text.
         variant :"response.reasoning_text.delta", -> { OpenAI::Responses::ResponseReasoningTextDeltaEvent }
@@ -143,32 +175,46 @@ module OpenAI
         variant :"response.output_text.done", -> { OpenAI::Responses::ResponseTextDoneEvent }
 
         # Emitted when a web search call is completed.
-        variant :"response.web_search_call.completed",
-                -> { OpenAI::Responses::ResponseWebSearchCallCompletedEvent }
+        variant(
+          :"response.web_search_call.completed",
+          -> { OpenAI::Responses::ResponseWebSearchCallCompletedEvent }
+        )
 
         # Emitted when a web search call is initiated.
-        variant :"response.web_search_call.in_progress",
-                -> { OpenAI::Responses::ResponseWebSearchCallInProgressEvent }
+        variant(
+          :"response.web_search_call.in_progress",
+          -> { OpenAI::Responses::ResponseWebSearchCallInProgressEvent }
+        )
 
         # Emitted when a web search call is executing.
-        variant :"response.web_search_call.searching",
-                -> { OpenAI::Responses::ResponseWebSearchCallSearchingEvent }
+        variant(
+          :"response.web_search_call.searching",
+          -> { OpenAI::Responses::ResponseWebSearchCallSearchingEvent }
+        )
 
         # Emitted when an image generation tool call has completed and the final image is available.
-        variant :"response.image_generation_call.completed",
-                -> { OpenAI::Responses::ResponseImageGenCallCompletedEvent }
+        variant(
+          :"response.image_generation_call.completed",
+          -> { OpenAI::Responses::ResponseImageGenCallCompletedEvent }
+        )
 
         # Emitted when an image generation tool call is actively generating an image (intermediate state).
-        variant :"response.image_generation_call.generating",
-                -> { OpenAI::Responses::ResponseImageGenCallGeneratingEvent }
+        variant(
+          :"response.image_generation_call.generating",
+          -> { OpenAI::Responses::ResponseImageGenCallGeneratingEvent }
+        )
 
         # Emitted when an image generation tool call is in progress.
-        variant :"response.image_generation_call.in_progress",
-                -> { OpenAI::Responses::ResponseImageGenCallInProgressEvent }
+        variant(
+          :"response.image_generation_call.in_progress",
+          -> { OpenAI::Responses::ResponseImageGenCallInProgressEvent }
+        )
 
         # Emitted when a partial image is available during image generation streaming.
-        variant :"response.image_generation_call.partial_image",
-                -> { OpenAI::Responses::ResponseImageGenCallPartialImageEvent }
+        variant(
+          :"response.image_generation_call.partial_image",
+          -> { OpenAI::Responses::ResponseImageGenCallPartialImageEvent }
+        )
 
         # Emitted when there is a delta (partial update) to the arguments of an MCP tool call.
         variant :"response.mcp_call_arguments.delta", -> { OpenAI::Responses::ResponseMcpCallArgumentsDeltaEvent }
@@ -192,23 +238,31 @@ module OpenAI
         variant :"response.mcp_list_tools.failed", -> { OpenAI::Responses::ResponseMcpListToolsFailedEvent }
 
         # Emitted when the system is in the process of retrieving the list of available MCP tools.
-        variant :"response.mcp_list_tools.in_progress",
-                -> { OpenAI::Responses::ResponseMcpListToolsInProgressEvent }
+        variant(
+          :"response.mcp_list_tools.in_progress",
+          -> { OpenAI::Responses::ResponseMcpListToolsInProgressEvent }
+        )
 
         # Emitted when an annotation is added to output text content.
-        variant :"response.output_text.annotation.added",
-                -> { OpenAI::Responses::ResponseOutputTextAnnotationAddedEvent }
+        variant(
+          :"response.output_text.annotation.added",
+          -> { OpenAI::Responses::ResponseOutputTextAnnotationAddedEvent }
+        )
 
         # Emitted when a response is queued and waiting to be processed.
         variant :"response.queued", -> { OpenAI::Responses::ResponseQueuedEvent }
 
         # Event representing a delta (partial update) to the input of a custom tool call.
-        variant :"response.custom_tool_call_input.delta",
-                -> { OpenAI::Responses::ResponseCustomToolCallInputDeltaEvent }
+        variant(
+          :"response.custom_tool_call_input.delta",
+          -> { OpenAI::Responses::ResponseCustomToolCallInputDeltaEvent }
+        )
 
         # Event indicating that input for a custom tool call is complete.
-        variant :"response.custom_tool_call_input.done",
-                -> { OpenAI::Responses::ResponseCustomToolCallInputDoneEvent }
+        variant(
+          :"response.custom_tool_call_input.done",
+          -> { OpenAI::Responses::ResponseCustomToolCallInputDoneEvent }
+        )
 
         # @!method self.variants
         #   @return [Array(OpenAI::Models::Responses::ResponseAudioDeltaEvent, OpenAI::Models::Responses::ResponseAudioDoneEvent, OpenAI::Models::Responses::ResponseAudioTranscriptDeltaEvent, OpenAI::Models::Responses::ResponseAudioTranscriptDoneEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDeltaEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDoneEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallCompletedEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallInProgressEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallInterpretingEvent, OpenAI::Models::Responses::ResponseCompletedEvent, OpenAI::Models::Responses::ResponseContentPartAddedEvent, OpenAI::Models::Responses::ResponseContentPartDoneEvent, OpenAI::Models::Responses::ResponseCreatedEvent, OpenAI::Models::Responses::ResponseErrorEvent, OpenAI::Models::Responses::ResponseFileSearchCallCompletedEvent, OpenAI::Models::Responses::ResponseFileSearchCallInProgressEvent, OpenAI::Models::Responses::ResponseFileSearchCallSearchingEvent, OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent, OpenAI::Models::Responses::ResponseFunctionCallArgumentsDoneEvent, OpenAI::Models::Responses::ResponseShellCallCommandAddedEvent, OpenAI::Models::Responses::ResponseShellCallCommandDeltaEvent, OpenAI::Models::Responses::ResponseShellCallCommandDoneEvent, OpenAI::Models::Responses::ResponseShellCallOutputContentDeltaEvent, OpenAI::Models::Responses::ResponseShellCallOutputContentDoneEvent, OpenAI::Models::Responses::ResponseInProgressEvent, OpenAI::Models::Responses::ResponseFailedEvent, OpenAI::Models::Responses::ResponseIncompleteEvent, OpenAI::Models::Responses::ResponseOutputItemAddedEvent, OpenAI::Models::Responses::ResponseOutputItemDoneEvent, OpenAI::Models::Responses::ResponseReasoningSummaryPartAddedEvent, OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent, OpenAI::Models::Responses::ResponseReasoningSummaryTextDeltaEvent, OpenAI::Models::Responses::ResponseReasoningSummaryTextDoneEvent, OpenAI::Models::Responses::ResponseReasoningTextDeltaEvent, OpenAI::Models::Responses::ResponseReasoningTextDoneEvent, OpenAI::Models::Responses::ResponseRefusalDeltaEvent, OpenAI::Models::Responses::ResponseRefusalDoneEvent, OpenAI::Models::Responses::ResponseTextDeltaEvent, OpenAI::Models::Responses::ResponseTextDoneEvent, OpenAI::Models::Responses::ResponseWebSearchCallCompletedEvent, OpenAI::Models::Responses::ResponseWebSearchCallInProgressEvent, OpenAI::Models::Responses::ResponseWebSearchCallSearchingEvent, OpenAI::Models::Responses::ResponseImageGenCallCompletedEvent, OpenAI::Models::Responses::ResponseImageGenCallGeneratingEvent, OpenAI::Models::Responses::ResponseImageGenCallInProgressEvent, OpenAI::Models::Responses::ResponseImageGenCallPartialImageEvent, OpenAI::Models::Responses::ResponseMcpCallArgumentsDeltaEvent, OpenAI::Models::Responses::ResponseMcpCallArgumentsDoneEvent, OpenAI::Models::Responses::ResponseMcpCallCompletedEvent, OpenAI::Models::Responses::ResponseMcpCallFailedEvent, OpenAI::Models::Responses::ResponseMcpCallInProgressEvent, OpenAI::Models::Responses::ResponseMcpListToolsCompletedEvent, OpenAI::Models::Responses::ResponseMcpListToolsFailedEvent, OpenAI::Models::Responses::ResponseMcpListToolsInProgressEvent, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent, OpenAI::Models::Responses::ResponseQueuedEvent, OpenAI::Models::Responses::ResponseCustomToolCallInputDeltaEvent, OpenAI::Models::Responses::ResponseCustomToolCallInputDoneEvent)]

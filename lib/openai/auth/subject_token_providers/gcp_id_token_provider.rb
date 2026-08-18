@@ -33,20 +33,23 @@ module OpenAI
           request = Net::HTTP::Get.new(uri)
           request["Metadata-Flavor"] = "Google"
 
-          response = Net::HTTP.start(
-            uri.hostname,
-            uri.port,
-            use_ssl: false,
-            open_timeout: @timeout,
-            read_timeout: @timeout
-          ) do |http|
-            http.request(request)
-          end
+          response = Net::HTTP
+            .start(
+              uri.hostname,
+              uri.port,
+              use_ssl: false,
+              open_timeout: @timeout,
+              read_timeout: @timeout
+            ) do |http|
+              http.request(request)
+            end
 
           unless response.is_a?(Net::HTTPSuccess)
-            raise OpenAI::Errors::SubjectTokenProviderError.new(
-              message: "GCP Metadata Server returned #{response.code}: #{response.body}",
-              provider: "gcp-metadata"
+            raise(
+              OpenAI::Errors::SubjectTokenProviderError.new(
+                message: "GCP Metadata Server returned #{response.code}: #{response.body}",
+                provider: "gcp-metadata"
+              )
             )
           end
 
@@ -54,10 +57,12 @@ module OpenAI
         rescue OpenAI::Errors::SubjectTokenProviderError
           raise
         rescue StandardError => e
-          raise OpenAI::Errors::SubjectTokenProviderError.new(
-            message: "Failed to fetch token from GCP Metadata Server: #{e.message}",
-            provider: "gcp-metadata",
-            cause: e
+          raise(
+            OpenAI::Errors::SubjectTokenProviderError.new(
+              message: "Failed to fetch token from GCP Metadata Server: #{e.message}",
+              provider: "gcp-metadata",
+              cause: e
+            )
           )
         end
       end

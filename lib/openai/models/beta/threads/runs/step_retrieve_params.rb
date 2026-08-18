@@ -35,8 +35,10 @@ module OpenAI
             #   for more information.
             #
             #   @return [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>, nil]
-            optional :include,
-                     -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::Threads::Runs::RunStepInclude] }
+            optional(
+              :include,
+              -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::Threads::Runs::RunStepInclude] }
+            )
 
             # @!method initialize(thread_id:, run_id:, step_id:, include: nil, request_options: {})
             #   Some parameter documentations has been truncated, see

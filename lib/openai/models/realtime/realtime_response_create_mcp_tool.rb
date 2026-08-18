@@ -20,19 +20,23 @@ module OpenAI
         #   The tool invocation context(s).
         #
         #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller>, nil]
-        optional :allowed_callers,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller]
-                 },
-                 nil?: true
+        optional(
+          :allowed_callers,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller]
+          },
+          nil?: true
+        )
 
         # @!attribute allowed_tools
         #   List of allowed tool names or a filter object.
         #
         #   @return [Array<String>, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::McpToolFilter, nil]
-        optional :allowed_tools,
-                 union: -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedTools },
-                 nil?: true
+        optional(
+          :allowed_tools,
+          union: -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedTools },
+          nil?: true
+        )
 
         # @!attribute authorization
         #   An OAuth access token that can be used with a remote MCP server, either with a
@@ -79,9 +83,11 @@ module OpenAI
         #   Specify which of the MCP server's tools require approval.
         #
         #   @return [OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting, nil]
-        optional :require_approval,
-                 union: -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval },
-                 nil?: true
+        optional(
+          :require_approval,
+          union: -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval },
+          nil?: true
+        )
 
         # @!attribute server_description
         #   Optional description of the MCP server, used to provide more context.
@@ -246,15 +252,19 @@ module OpenAI
             #   A filter object to specify which tools are allowed.
             #
             #   @return [OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always, nil]
-            optional :always,
-                     -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always }
+            optional(
+              :always,
+              -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always }
+            )
 
             # @!attribute never
             #   A filter object to specify which tools are allowed.
             #
             #   @return [OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never, nil]
-            optional :never,
-                     -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never }
+            optional(
+              :never,
+              -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never }
+            )
 
             # @!method initialize(always: nil, never: nil)
             #   Some parameter documentations has been truncated, see

@@ -28,9 +28,12 @@ module OpenAI
         transport_options:
       )
         @client = client
-        @query = query.to_h.to_h do |key, value|
-          [key.to_s.dup.freeze, value.to_s.dup.freeze]
-        end.freeze
+        @query = query
+          .to_h
+          .to_h do |key, value|
+            [key.to_s.dup.freeze, value.to_s.dup.freeze]
+          end
+          .freeze
         @websocket_base_url = websocket_base_url&.to_s&.dup&.freeze
         @transport = transport
         @request_options = request_options
@@ -38,10 +41,14 @@ module OpenAI
         reserved_options = transport_options.keys.select do |key|
           (key.is_a?(String) || key.is_a?(Symbol)) && RESERVED_TRANSPORT_OPTIONS.include?(key.to_sym)
         end
+
         unless reserved_options.empty?
-          raise ArgumentError,
-                "`transport_options` cannot include #{reserved_options.map(&:inspect).join(', ')}"
+          raise(
+            ArgumentError,
+            "`transport_options` cannot include #{reserved_options.map(&:inspect).join(", ")}"
+          )
         end
+
         @transport_options = transport_options
       end
 
@@ -59,36 +66,39 @@ module OpenAI
           raise ArgumentError, "`transport` must respond to `open`"
         end
 
-        @client.with_realtime_connection_request(
-          path: "realtime",
-          query: @query,
-          websocket_base_url: @websocket_base_url,
-          options: @request_options
-        ) do |request, mark_handshake_completed|
-          transport.open(
-            url: request.fetch(:url),
-            headers: request.fetch(:headers),
-            timeout: request.fetch(:timeout),
-            **@transport_options
-          ) do |socket|
-            mark_handshake_completed.call
-            connection = OpenAI::Realtime::Connection.new(socket: socket, url: request.fetch(:url))
-            begin
-              yield(connection)
-            ensure
-              pending_error = $ERROR_INFO
-              begin
-                if pending_error
-                  connection.abort unless connection.closed?
-                else
-                  connection.close unless connection.closed?
+        @client
+          .with_realtime_connection_request(
+            path: "realtime",
+            query: @query,
+            websocket_base_url: @websocket_base_url,
+            options: @request_options
+          ) do |request, mark_handshake_completed|
+            transport
+              .open(
+                url: request.fetch(:url),
+                headers: request.fetch(:headers),
+                timeout: request.fetch(:timeout),
+                **@transport_options
+              ) do |socket|
+                mark_handshake_completed.call
+                connection = OpenAI::Realtime::Connection.new(socket: socket, url: request.fetch(:url))
+                begin
+                  yield(connection)
+                ensure
+                  pending_error = $ERROR_INFO
+                  begin
+                    if pending_error
+                      connection.abort unless connection.closed?
+                    else
+                      connection.close unless connection.closed?
+                    end
+
+                  rescue StandardError
+                    raise if pending_error.nil?
+                  end
                 end
-              rescue StandardError
-                raise if pending_error.nil?
               end
-            end
           end
-        end
       end
     end
   end

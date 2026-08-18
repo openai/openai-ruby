@@ -28,8 +28,10 @@ module OpenAI
         #   An array of shell call output contents
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Output>]
-        required :output,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output] }
+        required(
+          :output,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output] }
+        )
 
         # @!attribute status
         #   The status of the shell call output. One of `in_progress`, `completed`, or
@@ -48,10 +50,12 @@ module OpenAI
         #   The execution context that produced this tool call.
         #
         #   @return [OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Caller::Program, nil]
-        optional :caller_,
-                 union: -> { OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller },
-                 api_name: :caller,
-                 nil?: true
+        optional(
+          :caller_,
+          union: -> { OpenAI::Responses::ResponseFunctionShellToolCallOutput::Caller },
+          api_name: :caller,
+          nil?: true
+        )
 
         # @!attribute created_by
         #   The identifier of the actor that created the item.

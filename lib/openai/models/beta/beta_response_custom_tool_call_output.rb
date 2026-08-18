@@ -39,10 +39,12 @@ module OpenAI
         #   The execution context that produced this tool call.
         #
         #   @return [OpenAI::Models::Beta::BetaResponseCustomToolCallOutput::Caller::Direct, OpenAI::Models::Beta::BetaResponseCustomToolCallOutput::Caller::Program, nil]
-        optional :caller_,
-                 union: -> { OpenAI::Beta::BetaResponseCustomToolCallOutput::Caller },
-                 api_name: :caller,
-                 nil?: true
+        optional(
+          :caller_,
+          union: -> { OpenAI::Beta::BetaResponseCustomToolCallOutput::Caller },
+          api_name: :caller,
+          nil?: true
+        )
 
         # @!method initialize(call_id:, output:, id: nil, agent: nil, caller_: nil, type: :custom_tool_call_output)
         #   Some parameter documentations has been truncated, see
@@ -98,10 +100,11 @@ module OpenAI
           #   @return [Array(String, Array<OpenAI::Models::Beta::BetaResponseInputText, OpenAI::Models::Beta::BetaResponseInputImage, OpenAI::Models::Beta::BetaResponseInputFile>)]
 
           # @type [OpenAI::Internal::Type::Converter]
-          OutputContentListArray =
-            OpenAI::Internal::Type::ArrayOf[union: -> {
+          OutputContentListArray = OpenAI::Internal::Type::ArrayOf[
+            union: -> {
               OpenAI::Beta::BetaResponseCustomToolCallOutput::Output::OutputContentList
-            }]
+            }
+          ]
         end
 
         # @see OpenAI::Models::Beta::BetaResponseCustomToolCallOutput#agent

@@ -63,13 +63,13 @@ class OpenAI::Test::ContentTypeDispatchTest < Minitest::Test
       [{id: 1}, {id: 2}]
     )
 
-    assert_equal(['{"id":1}', '{"id":2}'], encoded.to_a)
+    assert_equal(["{\"id\":1}", "{\"id\":2}"], encoded.to_a)
   end
 
   def test_mixed_case_jsonl_is_decoded_as_individual_records
     decoded = OpenAI::Internal::Util.decode_content(
       {"content-type" => "application/jsonL"},
-      stream: [%({"id":1}\n{"id":2}\n).b]
+      stream: ["{\"id\":1}\n{\"id\":2}\n".b]
     )
 
     assert_equal([{id: 1}, {id: 2}], decoded.to_a)
@@ -96,7 +96,7 @@ class OpenAI::Test::ContentTypeDispatchTest < Minitest::Test
   def test_sse_content_type_with_jsonl_parameter_is_decoded_as_sse
     decoded = OpenAI::Internal::Util.decode_content(
       {"content-type" => "text/event-stream; name=jsonl"},
-      stream: ['data: {"id"'.b, ":1}\n\n".b]
+      stream: ["data: {\"id\"".b, ":1}\n\n".b]
     )
 
     assert_equal(
@@ -108,7 +108,7 @@ class OpenAI::Test::ContentTypeDispatchTest < Minitest::Test
   def test_mixed_case_sse_content_type_is_decoded_as_sse
     decoded = OpenAI::Internal::Util.decode_content(
       {"content-type" => "TEXT/EVENT-STREAM; charset=utf-8"},
-      stream: ['data: {"id"'.b, ":1}\n\n".b]
+      stream: ["data: {\"id\"".b, ":1}\n\n".b]
     )
 
     assert_equal(

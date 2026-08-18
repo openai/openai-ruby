@@ -20,7 +20,7 @@ class ValidateRBSScriptTest < Minitest::Test
             end
           end
         RBS
-        "second.rbs" => <<~RBS
+              "second.rbs" => <<~RBS
           module Example
             class Second
               def value: () -> Integer
@@ -186,11 +186,13 @@ class ValidateRBSScriptTest < Minitest::Test
       root = Pathname(dir)
       sig = root.join("sig")
       sig.mkpath
-      root.join("Steepfile").write(<<~RUBY)
-        target(:lib) do
-          signature("sig")
-        end
-      RUBY
+      root.join("Steepfile").write(
+        <<~RUBY
+          target(:lib) do
+            signature("sig")
+          end
+        RUBY
+      )
 
       signatures.each do |name, contents|
         path = sig.join(name)
@@ -217,16 +219,18 @@ class ValidateRBSScriptTest < Minitest::Test
     bin = root.join("bin")
     bin.mkpath
     executable = bin.join("steep")
-    executable.write(<<~RUBY)
-      #!/usr/bin/env ruby
-      # frozen_string_literal: true
+    executable.write(
+      <<~RUBY
+        #!/usr/bin/env ruby
+        # frozen_string_literal: true
 
-      log = ENV.fetch("FAKE_STEEP_LOG")
-      call = File.file?(log) ? File.foreach(log).count : 0
-      File.open(log, "a") { _1.puts(ARGV.join("\\t")) }
-      results = ENV.fetch("FAKE_STEEP_RESULTS").split(",").map { Integer(_1) }
-      exit(results.fetch(call, results.last))
-    RUBY
+        log = ENV.fetch("FAKE_STEEP_LOG")
+        call = File.file?(log) ? File.foreach(log).count : 0
+        File.open(log, "a") { _1.puts(ARGV.join("\\t")) }
+        results = ENV.fetch("FAKE_STEEP_RESULTS").split(",").map { Integer(_1) }
+        exit(results.fetch(call, results.last))
+      RUBY
+    )
     executable.chmod(0o755)
     root.join("steep.log")
   end

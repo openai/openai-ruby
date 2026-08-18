@@ -139,7 +139,11 @@ through the manually dispatched `Examples E2E` workflow.
 
 ## Linting and formatting
 
-This repository uses [rubocop](https://github.com/rubocop/rubocop) for correctness and security checks. Ruby source formatting is temporarily paused while we switch to rubyfmt. [syntax_tree](https://github.com/ruby-syntax-tree/syntax_tree) continues to format `*.rbi` and `*.rbs` files.
+[rubyfmt](https://github.com/fables-tales/rubyfmt) owns Ruby source layout. The `scripts/rubyfmt` launcher uses version 0.14.1 and downloads a checksum-verified release into your user cache when needed. To use an existing installation, set `RUBYFMT` to an executable of that exact version.
+
+[rubocop](https://github.com/rubocop/rubocop) remains responsible for correctness and security checks. The existing CI lint task also checks rubyfmt output. [syntax_tree](https://github.com/ruby-syntax-tree/syntax_tree) continues to format `*.rbi` and `*.rbs` files.
+
+All Ruby sources are formatted; file-level opt-outs are rejected. Two existing handwritten pattern-matching expressions use equivalent forms that avoid rubyfmt 0.14.1 bugs. Their source comments explain why, and regression tests check that both complete files format into valid Ruby and remain unchanged on a second pass.
 
 There are two separate type checkers supported by this library: [sorbet](https://github.com/sorbet/sorbet) and [steep](https://github.com/soutaro/steep) are used for verifying `*.rbi` and `*.rbs` files respectively.
 

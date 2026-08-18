@@ -49,4 +49,5 @@ response
     parsed_output_received = true
     pp(parsed)
   end
+
 abort("The final response did not contain a parsed MathResponse") unless parsed_output_received

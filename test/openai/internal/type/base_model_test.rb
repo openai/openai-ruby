@@ -369,7 +369,9 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
       [M5, {d: "d"}] => [{yes: 3}, {d: :d}],
       [M5, {d: nil}] => [{yes: 2, no: 1}, {d: nil}],
 
-      [M6, {a: [{a: []}]}] => [{yes: 6}, -> { _1 in {a: [M6]} }]
+      # rubyfmt 0.14.1 rewrites `{a: [M6]}` in a predicate as invalid `{:a => [M6]}`.
+      # The value here is a model's to_h result; preserve the nested-array assertion.
+      [M6, {a: [{a: []}]}] => [{yes: 6}, -> (value) { value.is_a?(Hash) && (value[:a] in [M6]) }]
     }
 
     cases.each do |lhs, rhs|
@@ -384,6 +386,7 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
         else
           coerced => ^expect
         end
+
         state.fetch(:exactness).filter { _2.nonzero? }.to_h => ^exactness
       end
     end
@@ -644,6 +647,7 @@ class OpenAI::Test::UnionTest < Minitest::Test
         else
           coerced => ^expect
         end
+
         state.fetch(:exactness).filter { _2.nonzero? }.to_h => ^exactness
         state => {branched: ^branched}
       end

@@ -63,19 +63,21 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     transport = FakeTransport.new(socket)
     event = nil
 
-    result = client.realtime.connect(
-      model: "gpt-realtime-2.1",
-      request_options: {
-        extra_headers: {"X-Trace-ID" => "trace_1"},
-        timeout: 12
-      },
-      transport: transport,
-      transport_options: {max_frame_size: 1_024}
-    ) do |connection|
-      assert_instance_of(OpenAI::Realtime::Connection, connection)
-      event = connection.receive
-      :block_result
-    end
+    result = client
+      .realtime
+      .connect(
+        model: "gpt-realtime-2.1",
+        request_options: {
+          extra_headers: {"X-Trace-ID" => "trace_1"},
+          timeout: 12
+        },
+        transport: transport,
+        transport_options: {max_frame_size: 1_024}
+      ) do |connection|
+        assert_instance_of(OpenAI::Realtime::Connection, connection)
+        event = connection.receive
+        :block_result
+      end
 
     assert_equal(:block_result, result)
     assert_instance_of(OpenAI::Realtime::ResponseTextDeltaEvent, event)
@@ -142,11 +144,13 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     transport = FakeTransport.new(socket)
     configured = client(default_headers: {"Proxy-Authorization" => "Basic configured-secret"})
 
-    configured.realtime.connect(
-      model: "gpt-realtime-2.1",
-      request_options: {extra_headers: {"proxy-authorization" => "Basic request-secret"}},
-      transport: transport
-    ) { |_connection| nil }
+    configured
+      .realtime
+      .connect(
+        model: "gpt-realtime-2.1",
+        request_options: {extra_headers: {"proxy-authorization" => "Basic request-secret"}},
+        transport: transport
+      ) { |_connection| nil }
 
     refute(transport.open_args.fetch(:headers).key?("proxy-authorization"))
   end
@@ -158,11 +162,13 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
       transport_key = stringify ? key.to_s : key
       transport = FakeTransport.new(FakeSocket.new)
       error = assert_raises(ArgumentError) do
-        client.realtime.connect(
-          model: "gpt-realtime-2.1",
-          transport: transport,
-          transport_options: {transport_key => Object.new}
-        ) { |_connection| nil }
+        client
+          .realtime
+          .connect(
+            model: "gpt-realtime-2.1",
+            transport: transport,
+            transport_options: {transport_key => Object.new}
+          ) { |_connection| nil }
       end
 
       assert_includes(error.message, transport_key.inspect)
@@ -174,14 +180,16 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     transport = FakeTransport.new(FakeSocket.new)
     endpoint = +"wss://socket.example.test/custom/v2"
 
-    client.realtime.connect(
-      model: "gpt-realtime-2.1",
-      websocket_base_url: endpoint,
-      transport: transport
-    ) do |_connection|
-      endpoint.replace("wss://attacker.invalid/v1")
-      nil
-    end
+    client
+      .realtime
+      .connect(
+        model: "gpt-realtime-2.1",
+        websocket_base_url: endpoint,
+        transport: transport
+      ) do |_connection|
+        endpoint.replace("wss://attacker.invalid/v1")
+        nil
+      end
 
     assert_equal(
       "wss://socket.example.test/custom/v2/realtime?model=gpt-realtime-2.1",
@@ -200,12 +208,15 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
 
     invalid_urls.each do |url|
       error = assert_raises(ArgumentError) do
-        client.realtime.connect(
-          model: "gpt-realtime-2.1",
-          websocket_base_url: url,
-          transport: FakeTransport.new(FakeSocket.new)
-        ) { |_connection| nil }
+        client
+          .realtime
+          .connect(
+            model: "gpt-realtime-2.1",
+            websocket_base_url: url,
+            transport: FakeTransport.new(FakeSocket.new)
+          ) { |_connection| nil }
       end
+
       assert_includes(error.message, "`websocket_base_url`")
     end
   end
@@ -239,11 +250,13 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     transport = FakeTransport.new(FakeSocket.new)
 
     error = assert_raises(ArgumentError) do
-      azure.realtime.connect(
-        model: "deployment",
-        websocket_base_url: "wss://socket.example.test/v1",
-        transport: transport
-      ) { |_connection| nil }
+      azure
+        .realtime
+        .connect(
+          model: "deployment",
+          websocket_base_url: "wss://socket.example.test/v1",
+          transport: transport
+        ) { |_connection| nil }
     end
 
     assert_includes(error.message, "cannot be combined with `provider`")
@@ -413,6 +426,7 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
         connection.send_event(type: "future.unknown.event")
       end
     end
+
     assert_equal("Invalid Realtime client event.", unknown.message)
     assert_includes(unknown.cause.message, "future.unknown.event")
 
@@ -424,6 +438,7 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
         connection.send_event(type: "conversation.item.create")
       end
     end
+
     assert_equal("Invalid Realtime client event.", incomplete.message)
     assert_includes(incomplete.cause.message, "required fields")
   end
@@ -519,6 +534,7 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
         &:receive
       )
     end
+
     assert_instance_of(JSON::ParserError, malformed.cause)
 
     data = JSON.generate(type: "response.output_text.delta")
@@ -529,6 +545,7 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
         &:receive
       )
     end
+
     assert_includes(incomplete.cause.message, "required fields")
   end
 
@@ -563,16 +580,18 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     transport = FakeTransport.new(FakeSocket.new)
 
     error = assert_raises(ArgumentError) do
-      client.realtime.connect(
-        model: "gpt-realtime-2.1",
-        request_options: {max_retries: 1},
-        transport: transport
-      ) { |_connection| nil }
+      client
+        .realtime
+        .connect(
+          model: "gpt-realtime-2.1",
+          request_options: {max_retries: 1},
+          transport: transport
+        ) { |_connection| nil }
     end
 
     assert_equal(
       "`request_options[:max_retries]` is not supported for Realtime WebSocket connections; " \
-      "use 0 or omit it",
+        "use 0 or omit it",
       error.message
     )
     assert_nil(transport.open_args)
@@ -587,16 +606,18 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     options.each do |request_options|
       transport = FakeTransport.new(FakeSocket.new)
       error = assert_raises(ArgumentError) do
-        client.realtime.connect(
-          model: "gpt-realtime-2.1",
-          request_options: request_options,
-          transport: transport
-        ) { |_connection| nil }
+        client
+          .realtime
+          .connect(
+            model: "gpt-realtime-2.1",
+            request_options: request_options,
+            transport: transport
+          ) { |_connection| nil }
       end
 
       assert_equal(
         "`request_options[:extra_query]` is not supported for Realtime WebSocket connections; " \
-        "omit it",
+          "omit it",
         error.message
       )
       assert_nil(transport.open_args)
@@ -606,11 +627,13 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
   def test_connect_allows_zero_max_retries
     transport = FakeTransport.new(FakeSocket.new)
 
-    client.realtime.connect(
-      model: "gpt-realtime-2.1",
-      request_options: {max_retries: 0, extra_query: {}},
-      transport: transport
-    ) { |_connection| nil }
+    client
+      .realtime
+      .connect(
+        model: "gpt-realtime-2.1",
+        request_options: {max_retries: 0, extra_query: {}},
+        transport: transport
+      ) { |_connection| nil }
 
     refute_nil(transport.open_args)
   end
@@ -618,11 +641,13 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
   def test_empty_extra_query_cannot_inject_data_during_validation
     transport = FakeTransport.new(FakeSocket.new)
 
-    client.realtime.connect(
-      model: "gpt-realtime-2.1",
-      request_options: {extra_query: MutatingEmptyQuery.new},
-      transport: transport
-    ) { |_connection| nil }
+    client
+      .realtime
+      .connect(
+        model: "gpt-realtime-2.1",
+        request_options: {extra_query: MutatingEmptyQuery.new},
+        transport: transport
+      ) { |_connection| nil }
 
     assert_equal(
       "wss://example.com/v1/realtime?model=gpt-realtime-2.1",
@@ -665,11 +690,14 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
 
     exceptional_socket = FakeSocket.new
     error = assert_raises(RuntimeError) do
-      client.realtime.connect(
-        model: "gpt-realtime-2.1",
-        transport: FakeTransport.new(exceptional_socket)
-      ) { |_connection| raise "application failed" }
+      client
+        .realtime
+        .connect(
+          model: "gpt-realtime-2.1",
+          transport: FakeTransport.new(exceptional_socket)
+        ) { |_connection| raise "application failed" }
     end
+
     assert_equal("application failed", error.message)
     assert_predicate(exceptional_socket, :aborted?)
     assert_nil(exceptional_socket.close_args)
@@ -677,19 +705,25 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
 
   def test_cleanup_errors_propagate_only_after_successful_blocks
     cleanup_error = assert_raises(IOError) do
-      client.realtime.connect(
-        model: "gpt-realtime-2.1",
-        transport: FakeTransport.new(FailingCloseSocket.new)
-      ) { |_connection| :done }
+      client
+        .realtime
+        .connect(
+          model: "gpt-realtime-2.1",
+          transport: FakeTransport.new(FailingCloseSocket.new)
+        ) { |_connection| :done }
     end
+
     assert_equal("close failed", cleanup_error.message)
 
     application_error = assert_raises(RuntimeError) do
-      client.realtime.connect(
-        model: "gpt-realtime-2.1",
-        transport: FakeTransport.new(FailingCloseSocket.new)
-      ) { |_connection| raise "application failed" }
+      client
+        .realtime
+        .connect(
+          model: "gpt-realtime-2.1",
+          transport: FakeTransport.new(FailingCloseSocket.new)
+        ) { |_connection| raise "application failed" }
     end
+
     assert_equal("application failed", application_error.message)
   end
 
@@ -700,6 +734,7 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
         transport: FakeTransport.new(FakeSocket.new)
       )
     end
+
     assert_includes(error.message, "block is required")
   end
 

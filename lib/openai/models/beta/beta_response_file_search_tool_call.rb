@@ -39,9 +39,11 @@ module OpenAI
         #   The results of the file search tool call.
         #
         #   @return [Array<OpenAI::Models::Beta::BetaResponseFileSearchToolCall::Result>, nil]
-        optional :results,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseFileSearchToolCall::Result] },
-                 nil?: true
+        optional(
+          :results,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseFileSearchToolCall::Result] },
+          nil?: true
+        )
 
         # @!method initialize(id:, queries:, status:, agent: nil, results: nil, type: :file_search_call)
         #   Some parameter documentations has been truncated, see
@@ -103,11 +105,13 @@ module OpenAI
           #   characters, booleans, or numbers.
           #
           #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
-          optional :attributes,
-                   -> {
-                     OpenAI::Internal::Type::HashOf[union: OpenAI::Beta::BetaResponseFileSearchToolCall::Result::Attribute]
-                   },
-                   nil?: true
+          optional(
+            :attributes,
+            -> {
+              OpenAI::Internal::Type::HashOf[union: OpenAI::Beta::BetaResponseFileSearchToolCall::Result::Attribute]
+            },
+            nil?: true
+          )
 
           # @!attribute file_id
           #   The unique ID of the file.

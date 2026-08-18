@@ -446,9 +446,11 @@ module OpenAI
           #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           #
           #   @return [Symbol, OpenAI::Models::Conversations::ConversationItem::LocalShellCallOutput::Status, nil]
-          optional :status,
-                   enum: -> { OpenAI::Conversations::ConversationItem::LocalShellCallOutput::Status },
-                   nil?: true
+          optional(
+            :status,
+            enum: -> { OpenAI::Conversations::ConversationItem::LocalShellCallOutput::Status },
+            nil?: true
+          )
 
           # @!method initialize(id:, output:, status: nil, type: :local_shell_call_output)
           #   Some parameter documentations has been truncated, see
@@ -497,8 +499,10 @@ module OpenAI
           #   The tools available on the server.
           #
           #   @return [Array<OpenAI::Models::Conversations::ConversationItem::McpListTools::Tool>]
-          required :tools,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Conversations::ConversationItem::McpListTools::Tool] }
+          required(
+            :tools,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Conversations::ConversationItem::McpListTools::Tool] }
+          )
 
           # @!attribute type
           #   The type of the item. Always `mcp_list_tools`.

@@ -99,6 +99,7 @@ module OpenAI
           message = "Please use `#edit_stream_raw` for the streaming use case."
           raise ArgumentError.new(message)
         end
+
         @client.request(
           method: :post,
           path: "images/edits",
@@ -164,6 +165,7 @@ module OpenAI
           message = "Please use `#edit` for the non-streaming use case."
           raise ArgumentError.new(message)
         end
+
         parsed.store(:stream, true)
         @client.request(
           method: :post,
@@ -228,6 +230,7 @@ module OpenAI
           message = "Please use `#generate_stream_raw` for the streaming use case."
           raise ArgumentError.new(message)
         end
+
         @client.request(
           method: :post,
           path: "images/generations",
@@ -285,6 +288,7 @@ module OpenAI
           message = "Please use `#generate` for the non-streaming use case."
           raise ArgumentError.new(message)
         end
+
         parsed.store(:stream, true)
         @client.request(
           method: :post,

@@ -32,9 +32,11 @@ module OpenAI
             freeze_json(key)
             freeze_json(item)
           end
+
         when Array
           value.each { |item| freeze_json(item) }
         end
+
         value.freeze
       end
     end

@@ -204,19 +204,24 @@ module OpenAI
             file = poller.request(request_options, resource: file) do |options|
               retrieve(file_id, request_options: options)
             end
+
             case file.status
             when OpenAI::FileObject::Status::UPLOADED
               poller.wait(file)
-            when OpenAI::FileObject::Status::PROCESSED,
-                 OpenAI::FileObject::Status::ERROR,
-                 :deleted,
-                 "deleted"
+            when
+                OpenAI::FileObject::Status::PROCESSED,
+                OpenAI::FileObject::Status::ERROR,
+                :deleted,
+                "deleted"
               return file
             else
-              raise OpenAI::Errors::PollingError,
-                    "Unexpected status while waiting for file #{file_id}: #{file.status.inspect}"
+              raise(
+                OpenAI::Errors::PollingError,
+                "Unexpected status while waiting for file #{file_id}: #{file.status.inspect}"
+              )
             end
           end
+
         rescue OpenAI::Errors::APITimeoutError
           poller.check_deadline!(file)
           raise

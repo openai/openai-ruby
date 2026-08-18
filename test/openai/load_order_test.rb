@@ -19,15 +19,14 @@ class OpenAI::Test::LoadOrderTest < Minitest::Test
       raise "OpenAI::Client was autorequired" if defined?(OpenAI::Client)
     RUBY
 
-    _, stderr, status =
-      Open3.capture3(
-        {"RUBYOPT" => nil},
-        RbConfig.ruby,
-        "-I",
-        File.expand_path("../../lib", __dir__),
-        "-e",
-        script
-      )
+    _, stderr, status = Open3.capture3(
+      {"RUBYOPT" => nil},
+      RbConfig.ruby,
+      "-I",
+      File.expand_path("../../lib", __dir__),
+      "-e",
+      script
+    )
 
     assert_predicate(status, :success?, stderr)
   end
@@ -46,14 +45,13 @@ class OpenAI::Test::LoadOrderTest < Minitest::Test
       raise "OpenAI::Client was not autorequired" unless defined?(OpenAI::Client)
     RUBY
 
-    _, stderr, status =
-      Open3.capture3(
-        {"RUBYOPT" => nil},
-        RbConfig.ruby,
-        "-e",
-        script,
-        chdir: File.expand_path("../..", __dir__)
-      )
+    _, stderr, status = Open3.capture3(
+      {"RUBYOPT" => nil},
+      RbConfig.ruby,
+      "-e",
+      script,
+      chdir: File.expand_path("../..", __dir__)
+    )
 
     assert_predicate(status, :success?, stderr)
   end
@@ -77,14 +75,13 @@ class OpenAI::Test::LoadOrderTest < Minitest::Test
       raise "missing OrHash" unless OpenAI::Models::Batch.sorbet_constant_defined?(:OrHash)
     RUBY
 
-    _, stderr, status =
-      Open3.capture3(
-        RbConfig.ruby,
-        "-I",
-        File.expand_path("../../lib", __dir__),
-        "-e",
-        script
-      )
+    _, stderr, status = Open3.capture3(
+      RbConfig.ruby,
+      "-I",
+      File.expand_path("../../lib", __dir__),
+      "-e",
+      script
+    )
 
     assert_predicate(status, :success?, stderr)
   end

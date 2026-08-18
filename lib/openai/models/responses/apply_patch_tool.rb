@@ -14,11 +14,13 @@ module OpenAI
         #   The tool invocation context(s).
         #
         #   @return [Array<Symbol, OpenAI::Models::Responses::ApplyPatchTool::AllowedCaller>, nil]
-        optional :allowed_callers,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::ApplyPatchTool::AllowedCaller]
-                 },
-                 nil?: true
+        optional(
+          :allowed_callers,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::ApplyPatchTool::AllowedCaller]
+          },
+          nil?: true
+        )
 
         # @!method initialize(allowed_callers: nil, type: :apply_patch)
         #   Allows the assistant to create, delete, or update files using unified diffs.

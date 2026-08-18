@@ -199,16 +199,15 @@ module OpenAI
       #
       # @return [self]
       def self.for(url:, status:, headers:, body:, request:, response:, message: nil)
-        kwargs =
-          {
-            url: url,
-            status: status,
-            headers: headers,
-            body: body,
-            request: request,
-            response: response,
-            message: message
-          }
+        kwargs = {
+          url: url,
+          status: status,
+          headers: headers,
+          body: body,
+          request: request,
+          response: response,
+          message: message
+        }
 
         case status
         in 400
@@ -313,14 +312,13 @@ module OpenAI
       def initialize(status:, body:, headers:)
         @error_code = OpenAI::Internal::Type::Converter.coerce(OpenAI::Models::OAuthErrorCode, body&.dig(:error))
 
-        message =
-          if body&.dig(:error_description)
-            body[:error_description]
-          elsif @error_code
-            @error_code
-          else
-            "OAuth2 authentication error"
-          end
+        message = if body&.dig(:error_description)
+          body[:error_description]
+        elsif @error_code
+          @error_code
+        else
+          "OAuth2 authentication error"
+        end
 
         super(
           url: URI("https://auth.openai.com/oauth/token"),

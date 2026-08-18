@@ -17,9 +17,15 @@ module OpenAI
             #   Principals from which the role assignment is inherited, when available.
             #
             #   @return [Array<OpenAI::Models::Admin::Organization::Groups::RoleRetrieveResponse::AssignmentSource>, nil]
-            required :assignment_sources,
-                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::Groups::RoleRetrieveResponse::AssignmentSource] },
-                     nil?: true
+            required(
+              :assignment_sources,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[
+                  OpenAI::Models::Admin::Organization::Groups::RoleRetrieveResponse::AssignmentSource
+                ]
+              },
+              nil?: true
+            )
 
             # @!attribute created_at
             #   When the role was created.
@@ -37,9 +43,11 @@ module OpenAI
             #   User details for the actor that created the role, when available.
             #
             #   @return [Hash{Symbol=>Object}, nil]
-            required :created_by_user_obj,
-                     OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown],
-                     nil?: true
+            required(
+              :created_by_user_obj,
+              OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown],
+              nil?: true
+            )
 
             # @!attribute description
             #   Description of the role.

@@ -24,10 +24,12 @@ class CalendarEvent < OpenAI::BaseModel
   required :participants, OpenAI::ArrayOf[Participant]
   required :optional_participants, OpenAI::ArrayOf[Participant, doc: "who might not show up"], nil?: true
   required :is_virtual, OpenAI::Boolean
-  required :location,
-           OpenAI::UnionOf[String, Location],
-           nil?: true,
-           doc: "Event location"
+  required(
+    :location,
+    OpenAI::UnionOf[String, Location],
+    nil?: true,
+    doc: "Event location"
+  )
 end
 
 # gets API Key from environment variable `OPENAI_API_KEY`

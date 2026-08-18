@@ -16,8 +16,10 @@ module OpenAI
             if id.nil?
               raise ArgumentError, "Realtime item_reference input requires a non-nil `id`"
             end
+
             return OpenAI::Realtime::ConversationItemWithReference
           end
+
           return super unless type.to_s == "message"
 
           role = value.fetch(:role) { value.fetch("role", OpenAI::Internal::OMIT) }

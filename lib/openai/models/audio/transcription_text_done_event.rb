@@ -30,8 +30,10 @@ module OpenAI
         #   with the `include[]` parameter set to `logprobs`.
         #
         #   @return [Array<OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob>, nil]
-        optional :logprobs,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Audio::TranscriptionTextDoneEvent::Logprob] }
+        optional(
+          :logprobs,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Audio::TranscriptionTextDoneEvent::Logprob] }
+        )
 
         # @!attribute usage
         #   Usage statistics for models billed by token usage.

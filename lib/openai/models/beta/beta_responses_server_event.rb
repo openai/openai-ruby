@@ -28,86 +28,124 @@ module OpenAI
         variant :"response.audio.done", -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseAudioWsDone }
 
         # Emitted when there is a partial transcript of audio.
-        variant :"response.audio.transcript.delta",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseAudioTranscriptWsDelta }
+        variant(
+          :"response.audio.transcript.delta",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseAudioTranscriptWsDelta }
+        )
 
         # Emitted when the full audio transcript is completed.
-        variant :"response.audio.transcript.done",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseAudioTranscriptWsDone }
+        variant(
+          :"response.audio.transcript.done",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseAudioTranscriptWsDone }
+        )
 
         # Emitted when a partial code snippet is streamed by the code interpreter.
-        variant :"response.code_interpreter_call_code.delta",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallCodeWsDelta }
+        variant(
+          :"response.code_interpreter_call_code.delta",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallCodeWsDelta }
+        )
 
         # Emitted when the code snippet is finalized by the code interpreter.
-        variant :"response.code_interpreter_call_code.done",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallCodeWsDone }
+        variant(
+          :"response.code_interpreter_call_code.done",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallCodeWsDone }
+        )
 
         # Emitted when the code interpreter call is completed.
-        variant :"response.code_interpreter_call.completed",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsCompleted }
+        variant(
+          :"response.code_interpreter_call.completed",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsCompleted }
+        )
 
         # Emitted when a code interpreter call is in progress.
-        variant :"response.code_interpreter_call.in_progress",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallInWsProgress }
+        variant(
+          :"response.code_interpreter_call.in_progress",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallInWsProgress }
+        )
 
         # Emitted when the code interpreter is actively interpreting the code snippet.
-        variant :"response.code_interpreter_call.interpreting",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsInterpreting }
+        variant(
+          :"response.code_interpreter_call.interpreting",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsInterpreting }
+        )
 
         # Emitted when the model response is complete.
         variant :"response.completed", -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsCompleted }
 
         # Emitted when a new content part is added.
-        variant :"response.content_part.added",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsAdded }
+        variant(
+          :"response.content_part.added",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsAdded }
+        )
 
         # Emitted when a content part is done.
-        variant :"response.content_part.done",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsDone }
+        variant(
+          :"response.content_part.done",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsDone }
+        )
 
         # An event that is emitted when a response is created.
         variant :"response.created", -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsCreated }
 
         # Emitted when a file search call is completed (results found).
-        variant :"response.file_search_call.completed",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsCompleted }
+        variant(
+          :"response.file_search_call.completed",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsCompleted }
+        )
 
         # Emitted when a file search call is initiated.
-        variant :"response.file_search_call.in_progress",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallInWsProgress }
+        variant(
+          :"response.file_search_call.in_progress",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallInWsProgress }
+        )
 
         # Emitted when a file search is currently searching.
-        variant :"response.file_search_call.searching",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsSearching }
+        variant(
+          :"response.file_search_call.searching",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsSearching }
+        )
 
         # Emitted when there is a partial function-call arguments delta.
-        variant :"response.function_call_arguments.delta",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDelta }
+        variant(
+          :"response.function_call_arguments.delta",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDelta }
+        )
 
         # Emitted when function-call arguments are finalized.
-        variant :"response.function_call_arguments.done",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDone }
+        variant(
+          :"response.function_call_arguments.done",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDone }
+        )
 
         # A streaming event that indicated a shell command was added to a tool call.
-        variant :"response.shell_call_command.added",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsAdded }
+        variant(
+          :"response.shell_call_command.added",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsAdded }
+        )
 
         # A streaming event that indicated a shell command was incrementally updated.
-        variant :"response.shell_call_command.delta",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsDelta }
+        variant(
+          :"response.shell_call_command.delta",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsDelta }
+        )
 
         # A streaming event that indicated a shell command was completed.
-        variant :"response.shell_call_command.done",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsDone }
+        variant(
+          :"response.shell_call_command.done",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsDone }
+        )
 
         # A streaming event that indicated shell call output was incrementally added.
-        variant :"response.shell_call_output_content.delta",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallOutputContentWsDelta }
+        variant(
+          :"response.shell_call_output_content.delta",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallOutputContentWsDelta }
+        )
 
         # A streaming event that indicated shell call output was completed.
-        variant :"response.shell_call_output_content.done",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallOutputContentWsDone }
+        variant(
+          :"response.shell_call_output_content.done",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseShellCallOutputContentWsDone }
+        )
 
         # Emitted when the response is in progress.
         variant :"response.in_progress", -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseInWsProgress }
@@ -119,126 +157,184 @@ module OpenAI
         variant :"response.incomplete", -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsIncomplete }
 
         # Emitted when a new output item is added.
-        variant :"response.output_item.added",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseOutputItemWsAdded }
+        variant(
+          :"response.output_item.added",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseOutputItemWsAdded }
+        )
 
         # Emitted when an output item is marked done.
-        variant :"response.output_item.done",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseOutputItemWsDone }
+        variant(
+          :"response.output_item.done",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseOutputItemWsDone }
+        )
 
         # Emitted when a new reasoning summary part is added.
-        variant :"response.reasoning_summary_part.added",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryPartWsAdded }
+        variant(
+          :"response.reasoning_summary_part.added",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryPartWsAdded }
+        )
 
         # Emitted when a reasoning summary part is completed.
-        variant :"response.reasoning_summary_part.done",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryPartWsDone }
+        variant(
+          :"response.reasoning_summary_part.done",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryPartWsDone }
+        )
 
         # Emitted when a delta is added to a reasoning summary text.
-        variant :"response.reasoning_summary_text.delta",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryTextWsDelta }
+        variant(
+          :"response.reasoning_summary_text.delta",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryTextWsDelta }
+        )
 
         # Emitted when a reasoning summary text is completed.
-        variant :"response.reasoning_summary_text.done",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryTextWsDone }
+        variant(
+          :"response.reasoning_summary_text.done",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryTextWsDone }
+        )
 
         # Emitted when a delta is added to a reasoning text.
-        variant :"response.reasoning_text.delta",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningTextWsDelta }
+        variant(
+          :"response.reasoning_text.delta",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningTextWsDelta }
+        )
 
         # Emitted when a reasoning text is completed.
-        variant :"response.reasoning_text.done",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningTextWsDone }
+        variant(
+          :"response.reasoning_text.done",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseReasoningTextWsDone }
+        )
 
         # Emitted when there is a partial refusal text.
-        variant :"response.refusal.delta",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseRefusalWsDelta }
+        variant(
+          :"response.refusal.delta",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseRefusalWsDelta }
+        )
 
         # Emitted when refusal text is finalized.
         variant :"response.refusal.done", -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseRefusalWsDone }
 
         # Emitted when there is an additional text delta.
-        variant :"response.output_text.delta",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseTextWsDelta }
+        variant(
+          :"response.output_text.delta",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseTextWsDelta }
+        )
 
         # Emitted when text content is finalized.
-        variant :"response.output_text.done",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseTextWsDone }
+        variant(
+          :"response.output_text.done",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseTextWsDone }
+        )
 
         # Emitted when a web search call is completed.
-        variant :"response.web_search_call.completed",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallWsCompleted }
+        variant(
+          :"response.web_search_call.completed",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallWsCompleted }
+        )
 
         # Emitted when a web search call is initiated.
-        variant :"response.web_search_call.in_progress",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallInWsProgress }
+        variant(
+          :"response.web_search_call.in_progress",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallInWsProgress }
+        )
 
         # Emitted when a web search call is executing.
-        variant :"response.web_search_call.searching",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallWsSearching }
+        variant(
+          :"response.web_search_call.searching",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallWsSearching }
+        )
 
         # Emitted when an image generation tool call has completed and the final image is available.
-        variant :"response.image_generation_call.completed",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallWsCompleted }
+        variant(
+          :"response.image_generation_call.completed",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallWsCompleted }
+        )
 
         # Emitted when an image generation tool call is actively generating an image (intermediate state).
-        variant :"response.image_generation_call.generating",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallWsGenerating }
+        variant(
+          :"response.image_generation_call.generating",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallWsGenerating }
+        )
 
         # Emitted when an image generation tool call is in progress.
-        variant :"response.image_generation_call.in_progress",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallInWsProgress }
+        variant(
+          :"response.image_generation_call.in_progress",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallInWsProgress }
+        )
 
         # Emitted when a partial image is available during image generation streaming.
-        variant :"response.image_generation_call.partial_image",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallPartialWsImage }
+        variant(
+          :"response.image_generation_call.partial_image",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallPartialWsImage }
+        )
 
         # Emitted when there is a delta (partial update) to the arguments of an MCP tool call.
-        variant :"response.mcp_call_arguments.delta",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpCallArgumentsWsDelta }
+        variant(
+          :"response.mcp_call_arguments.delta",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpCallArgumentsWsDelta }
+        )
 
         # Emitted when the arguments for an MCP tool call are finalized.
-        variant :"response.mcp_call_arguments.done",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpCallArgumentsWsDone }
+        variant(
+          :"response.mcp_call_arguments.done",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpCallArgumentsWsDone }
+        )
 
         # Emitted when an MCP  tool call has completed successfully.
-        variant :"response.mcp_call.completed",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpCallWsCompleted }
+        variant(
+          :"response.mcp_call.completed",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpCallWsCompleted }
+        )
 
         # Emitted when an MCP  tool call has failed.
-        variant :"response.mcp_call.failed",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpCallWsFailed }
+        variant(
+          :"response.mcp_call.failed",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpCallWsFailed }
+        )
 
         # Emitted when an MCP  tool call is in progress.
-        variant :"response.mcp_call.in_progress",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpCallInWsProgress }
+        variant(
+          :"response.mcp_call.in_progress",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpCallInWsProgress }
+        )
 
         # Emitted when the list of available MCP tools has been successfully retrieved.
-        variant :"response.mcp_list_tools.completed",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsWsCompleted }
+        variant(
+          :"response.mcp_list_tools.completed",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsWsCompleted }
+        )
 
         # Emitted when the attempt to list available MCP tools has failed.
-        variant :"response.mcp_list_tools.failed",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsWsFailed }
+        variant(
+          :"response.mcp_list_tools.failed",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsWsFailed }
+        )
 
         # Emitted when the system is in the process of retrieving the list of available MCP tools.
-        variant :"response.mcp_list_tools.in_progress",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsInWsProgress }
+        variant(
+          :"response.mcp_list_tools.in_progress",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsInWsProgress }
+        )
 
         # Emitted when an annotation is added to output text content.
-        variant :"response.output_text.annotation.added",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseOutputTextAnnotationWsAdded }
+        variant(
+          :"response.output_text.annotation.added",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseOutputTextAnnotationWsAdded }
+        )
 
         # Emitted when a response is queued and waiting to be processed.
         variant :"response.queued", -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsQueued }
 
         # Event representing a delta (partial update) to the input of a custom tool call.
-        variant :"response.custom_tool_call_input.delta",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCustomToolCallInputWsDelta }
+        variant(
+          :"response.custom_tool_call_input.delta",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCustomToolCallInputWsDelta }
+        )
 
         # Event indicating that input for a custom tool call is complete.
-        variant :"response.custom_tool_call_input.done",
-                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCustomToolCallInputWsDone }
+        variant(
+          :"response.custom_tool_call_input.done",
+          -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCustomToolCallInputWsDone }
+        )
 
         class BetaResponseAudioWsDelta < OpenAI::Models::Beta::BetaResponseAudioDeltaEvent
           # @!attribute stream_id
@@ -1939,11 +2035,13 @@ module OpenAI
           #   The agent that owns this multi-agent streaming event.
           #
           #   @return [OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent, nil]
-          optional :agent,
-                   -> {
-                     OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent
-                   },
-                   nil?: true
+          optional(
+            :agent,
+            -> {
+              OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent
+            },
+            nil?: true
+          )
 
           # @!attribute sequence_number
           #   The sequence number of an error emitted by the response stream.

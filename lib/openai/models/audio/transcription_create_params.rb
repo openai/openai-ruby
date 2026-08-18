@@ -41,9 +41,11 @@ module OpenAI
         #   seconds.
         #
         #   @return [Symbol, :auto, OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig, nil]
-        optional :chunking_strategy,
-                 union: -> { OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy },
-                 nil?: true
+        optional(
+          :chunking_strategy,
+          union: -> { OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy },
+          nil?: true
+        )
 
         # @!attribute include
         #   Additional information to include in the transcription response. `logprobs` will
@@ -136,8 +138,10 @@ module OpenAI
         #   `gpt-4o-transcribe-diarize`.
         #
         #   @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>, nil]
-        optional :timestamp_granularities,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity] }
+        optional(
+          :timestamp_granularities,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity] }
+        )
 
         # @!method initialize(file:, model:, chunking_strategy: nil, include: nil, keywords: nil, known_speaker_names: nil, known_speaker_references: nil, language: nil, languages: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #   Some parameter documentations has been truncated, see

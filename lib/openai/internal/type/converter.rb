@@ -213,6 +213,7 @@ module OpenAI
                     state[:error] = e
                   end
                 end
+
               in -> { _1 <= Float }
                 if value.is_a?(Numeric)
                   exactness[:yes] += 1
@@ -224,6 +225,7 @@ module OpenAI
                     state[:error] = e
                   end
                 end
+
               in -> { _1 <= String }
                 case value
                 in String | Symbol | Numeric
@@ -235,17 +237,20 @@ module OpenAI
                 else
                   state[:error] = TypeError.new("#{value.class} can't be coerced into #{String}")
                 end
+
               in -> { _1 <= Date || _1 <= Time }
                 Kernel.then do
                   return target.parse(value).tap { exactness[:yes] += 1 }
                 rescue ArgumentError, TypeError => e
                   state[:error] = e
                 end
+
               in -> { _1 <= StringIO } if value.is_a?(String)
                 exactness[:yes] += 1
                 return StringIO.new(value.b)
               else
               end
+
             in Symbol
               case value
               in Symbol | String
@@ -327,6 +332,7 @@ module OpenAI
         define_sorbet_constant!(:Input) do
           T.type_alias { T.any(OpenAI::Internal::Type::Converter, T::Class[T.anything]) }
         end
+
         define_sorbet_constant!(:CoerceState) do
           T.type_alias do
             {
@@ -338,6 +344,7 @@ module OpenAI
             }
           end
         end
+
         define_sorbet_constant!(:DumpState) do
           T.type_alias { {can_retry: T::Boolean} }
         end

@@ -65,10 +65,10 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
 
     content_done = events.find { |e| e.type == :"content.done" }
     assert_pattern do
-      content_done => OpenAI::Helpers::Streaming::ChatContentDoneEvent[
-        type: :"content.done",
-        content: "Hello there! How can I help?"
-      ]
+      content_done => OpenAI::Helpers::Streaming::ChatContentDoneEvent(
+          type: :"content.done",
+          content: "Hello there! How can I help?"
+        )
     end
 
     chunk_events = events.select { |e| e.type == :chunk }
@@ -76,13 +76,13 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
 
     first_chunk = chunk_events.first
     assert_pattern do
-      first_chunk => OpenAI::Helpers::Streaming::ChatChunkEvent[
-        type: :chunk,
-        chunk: {
-          id: "chatcmpl-123",
-          model: "gpt-4o-mini"
-        }
-      ]
+      first_chunk => OpenAI::Helpers::Streaming::ChatChunkEvent(
+          type: :chunk,
+          chunk: {
+              id: "chatcmpl-123",
+              model: "gpt-4o-mini"
+            }
+        )
     end
   end
 
@@ -205,10 +205,10 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
 
     refusal_done = events.find { |e| e.type == :"refusal.done" }
     assert_pattern do
-      refusal_done => OpenAI::Helpers::Streaming::ChatRefusalDoneEvent[
-        type: :"refusal.done",
-        refusal: "I cannot help with that"
-      ]
+      refusal_done => OpenAI::Helpers::Streaming::ChatRefusalDoneEvent(
+          type: :"refusal.done",
+          refusal: "I cannot help with that"
+        )
     end
   end
 
@@ -222,7 +222,7 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
       events,
       expected_name: "get_weather",
       expected_index: 0,
-      expected_arguments: '{"location":"Paris","units":"celsius"}'
+      expected_arguments: "{\"location\":\"Paris\",\"units\":\"celsius\"}"
     )
   end
 
@@ -263,13 +263,13 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
 
     assert_pattern do
       completion.choices.first.message.tool_calls.first.function => {
-        arguments: '{"location":"New York","units":"fahrenheit"}',
-        name: "get_weather",
-        parsed: WeatherToolModel[
-          location: "New York",
-          units: "fahrenheit"
-        ]
-      }
+          arguments: "{\"location\":\"New York\",\"units\":\"fahrenheit\"}",
+          name: "get_weather",
+          parsed: WeatherToolModel(
+              location: "New York",
+              units: "fahrenheit"
+            )
+        }
     end
   end
 
@@ -290,7 +290,9 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
     stub_streaming_response(sse_response)
 
     assert_raises(OpenAI::Helpers::Streaming::ContentFilterFinishReasonError) do
-      @client.chat.completions.stream(**basic_params, response_format: ContentFilterTestModel).each { |_e| } # rubocop:disable Lint/EmptyBlock
+      # rubocop:disable Lint/EmptyBlock
+      @client.chat.completions.stream(**basic_params, response_format: ContentFilterTestModel).each { |_e| }
+      # rubocop:enable Lint/EmptyBlock
     end
   end
 
@@ -347,29 +349,31 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
     ]
 
     error = assert_raises(OpenAI::LengthFinishReasonError) do
-      @client.chat.completions.stream(**basic_params, tools: tools).each { |_e| } # rubocop:disable Lint/EmptyBlock
+      # rubocop:disable Lint/EmptyBlock
+      @client.chat.completions.stream(**basic_params, tools: tools).each { |_e| }
+      # rubocop:enable Lint/EmptyBlock
     end
 
     assert_pattern do
-      error.completion => OpenAI::Chat::ParsedChatCompletion[
-        object: :"chat.completion",
-        choices: [
-          OpenAI::Chat::ParsedChoice[
-            finish_reason: :length,
-            index: 0,
-            message: {
-              role: :assistant,
-              tool_calls: [
-                {
-                  id: "call_123",
-                  type: :function,
-                  function: {name: "get_weather", arguments: '{"city":"Paris"}'}
-                }
-              ]
-            }
-          ]
-        ]
-      ]
+      error.completion => OpenAI::Chat::ParsedChatCompletion(
+          object: :"chat.completion",
+          choices: [
+              OpenAI::Chat::ParsedChoice(
+                  finish_reason: :length,
+                  index: 0,
+                  message: {
+                      role: :assistant,
+                      tool_calls: [
+                          {
+                              id: "call_123",
+                              type: :function,
+                              function: {name: "get_weather", arguments: "{\"city\":\"Paris\"}"}
+                            }
+                        ]
+                    }
+                )
+            ]
+        )
     end
   end
 
@@ -388,26 +392,30 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
     stub_streaming_response(sse_response)
 
     error = assert_raises(OpenAI::LengthFinishReasonError) do
-      @client.chat.completions
-             .stream(**basic_params, response_format: PersonModel)
-             .each { |_e| } # rubocop:disable Lint/EmptyBlock
+      @client
+        .chat
+        .completions
+        .stream(**basic_params, response_format: PersonModel)
+        # rubocop:disable Lint/EmptyBlock
+        .each { |_e| }
+      # rubocop:enable Lint/EmptyBlock
     end
 
     # The partial completion accumulated before the length limit was hit is the
     # only way for callers to recover the truncated content.
     assert_pattern do
-      error.completion => OpenAI::Chat::ParsedChatCompletion[
-        id: "chatcmpl-123",
-        model: "gpt-4o-mini",
-        object: :"chat.completion",
-        choices: [
-          OpenAI::Chat::ParsedChoice[
-            finish_reason: :length,
-            index: 0,
-            message: {role: :assistant, content: '{"name":"John",'}
-          ]
-        ]
-      ]
+      error.completion => OpenAI::Chat::ParsedChatCompletion(
+          id: "chatcmpl-123",
+          model: "gpt-4o-mini",
+          object: :"chat.completion",
+          choices: [
+              OpenAI::Chat::ParsedChoice(
+                  finish_reason: :length,
+                  index: 0,
+                  message: {role: :assistant, content: "{\"name\":\"John\","}
+                )
+            ]
+        )
     end
   end
 
@@ -482,35 +490,37 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
 
     weather_delta = deltas.find { |e| e.index.zero? && e.name == "get_weather" }
     assert_pattern do
-      weather_delta => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDeltaEvent[
-        type: :"tool_calls.function.arguments.delta",
-        name: "get_weather",
-        index: 0
-      ]
+      weather_delta => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDeltaEvent(
+          type: :"tool_calls.function.arguments.delta",
+          name: "get_weather",
+          index: 0
+        )
     end
 
     dones = events.select { |e| e.type == :"tool_calls.function.arguments.done" }
 
     weather_done = dones.find { |e| e.index.zero? }
     assert_pattern do
-      weather_done => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDoneEvent[
-        type: :"tool_calls.function.arguments.done",
-        name: "get_weather",
-        index: 0,
-        arguments: String
-      ]
+      weather_done => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDoneEvent(
+          type: :"tool_calls.function.arguments.done",
+          name: "get_weather",
+          index: 0,
+          arguments: String
+        )
     end
+
     assert(weather_done.arguments.include?("city"))
 
     stock_done = dones.find { |e| e.index == 1 }
     assert_pattern do
-      stock_done => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDoneEvent[
-        type: :"tool_calls.function.arguments.done",
-        name: "get_stock",
-        index: 1,
-        arguments: String
-      ]
+      stock_done => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDoneEvent(
+          type: :"tool_calls.function.arguments.done",
+          name: "get_stock",
+          index: 1,
+          arguments: String
+        )
     end
+
     assert(stock_done.arguments.include?("ticker"))
 
     completion = stream.get_final_completion
@@ -549,20 +559,20 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
 
     content_done = events.find { |e| e.type == :"content.done" }
     assert_pattern do
-      content_done => OpenAI::Helpers::Streaming::ChatContentDoneEvent[
-        type: :"content.done",
-        content: "Hello"
-      ]
+      content_done => OpenAI::Helpers::Streaming::ChatContentDoneEvent(
+          type: :"content.done",
+          content: "Hello"
+        )
     end
 
     tool_done = events.find { |e| e.type == :"tool_calls.function.arguments.done" }
     assert_pattern do
-      tool_done => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDoneEvent[
-        type: :"tool_calls.function.arguments.done",
-        name: "op",
-        index: 0,
-        arguments: '{"arg":1}'
-      ]
+      tool_done => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDoneEvent(
+          type: :"tool_calls.function.arguments.done",
+          name: "op",
+          index: 0,
+          arguments: "{\"arg\":1}"
+        )
     end
 
     completion = stream.get_final_completion
@@ -602,22 +612,22 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
     assert_equal(3, content_deltas.length)
     assert_equal(
       [
-        '{"name":',
-        '{"name":"John",',
-        '{"name":"John","age":30}'
+        "{\"name\":",
+        "{\"name\":\"John\",",
+        "{\"name\":\"John\",\"age\":30}"
       ],
       content_deltas.map(&:snapshot)
     )
 
     assert_pattern do
-      content_done => OpenAI::Helpers::Streaming::ChatContentDoneEvent[
-        type: :"content.done",
-        content: '{"name":"John","age":30}',
-        parsed: PersonModel[
-          name: "John",
-          age: 30
-        ]
-      ]
+      content_done => OpenAI::Helpers::Streaming::ChatContentDoneEvent(
+          type: :"content.done",
+          content: "{\"name\":\"John\",\"age\":30}",
+          parsed: PersonModel(
+              name: "John",
+              age: 30
+            )
+        )
     end
   end
 
@@ -634,11 +644,11 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
     return unless completion.choices.first.message.parsed
     assert_pattern do
       completion.choices.first.message => {
-        parsed: PersonModel[
-          name: "John",
-          age: 30
-        ]
-      }
+          parsed: PersonModel(
+              name: "John",
+              age: 30
+            )
+        }
     end
   end
 
@@ -693,29 +703,31 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
     assert_equal(expected_deltas.first, first_delta.snapshot)
   end
 
-  def assert_tool_call_delta_events(events, expected_name:, expected_index:, expected_arguments:) # rubocop:disable Lint/UnusedMethodArgument
+  # rubocop:disable Lint/UnusedMethodArgument
+  def assert_tool_call_delta_events(events, expected_name:, expected_index:, expected_arguments:)
     tool_deltas = events.select { |e| e.type == :"tool_calls.function.arguments.delta" }
     assert(tool_deltas.length.positive?, "No tool call delta events found")
 
     first_tool_delta = tool_deltas.first
     assert_pattern do
-      first_tool_delta => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDeltaEvent[
-        type: :"tool_calls.function.arguments.delta",
-        name: expected_name,
-        index: expected_index
-      ]
+      first_tool_delta => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDeltaEvent(
+          type: :"tool_calls.function.arguments.delta",
+          name: expected_name,
+          index: expected_index
+        )
     end
 
     tool_done = events.find { |e| e.type == :"tool_calls.function.arguments.done" }
     assert_pattern do
-      tool_done => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDoneEvent[
-        type: :"tool_calls.function.arguments.done",
-        name: expected_name,
-        index: expected_index,
-        arguments: expected_arguments
-      ]
+      tool_done => OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDoneEvent(
+          type: :"tool_calls.function.arguments.done",
+          name: expected_name,
+          index: expected_index,
+          arguments: expected_arguments
+        )
     end
   end
+  # rubocop:enable Lint/UnusedMethodArgument
 
   def stub_structured_output_request
     stub_request(:post, "http://localhost/chat/completions")
@@ -757,10 +769,10 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
 
     content_done = events.find { |e| e.type == :"content.done" }
     assert_pattern do
-      content_done => OpenAI::Helpers::Streaming::ChatContentDoneEvent[
-        type: :"content.done",
-        content: ""
-      ]
+      content_done => OpenAI::Helpers::Streaming::ChatContentDoneEvent(
+          type: :"content.done",
+          content: ""
+        )
     end
 
     completion = stream.get_final_completion
@@ -1238,9 +1250,9 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
     tool_calls = completion.choices.first.message.tool_calls
     assert_equal(2, tool_calls.length)
     assert_equal("func1", tool_calls[0].function.name)
-    assert_equal('{"a":1}', tool_calls[0].function.arguments)
+    assert_equal("{\"a\":1}", tool_calls[0].function.arguments)
     assert_equal("func2", tool_calls[1].function.name)
-    assert_equal('{"b":2}', tool_calls[1].function.arguments)
+    assert_equal("{\"b\":2}", tool_calls[1].function.arguments)
 
     # Test 4: Nested object accumulation with recursive merging
     sse_response_nested = <<~SSE
@@ -1259,7 +1271,7 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
     stub_streaming_response(sse_response_nested)
     stream = @client.chat.completions.stream(**basic_params)
     completion = stream.get_final_completion
-    assert_equal('{"data":{"nested":{"value":42}}}', completion.choices.first.message.content)
+    assert_equal("{\"data\":{\"nested\":{\"value\":42}}}", completion.choices.first.message.content)
 
     # Test 5: Type property replacement (not accumulation)
     sse_response_type_replacement = <<~SSE
@@ -1279,7 +1291,7 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
     tool_call = completion.choices.first.message.tool_calls.first
     # Type should remain "function" (last value wins due to replacement logic)
     assert_equal(:function, tool_call.type)
-    assert_equal('{"x":1}', tool_call.function.arguments)
+    assert_equal("{\"x\":1}", tool_call.function.arguments)
 
     # Test 6: Multiple choices with different index values
     sse_response_multiple_choices = <<~SSE
@@ -1333,9 +1345,9 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
     assert_equal(2, tool_calls.length)
     # Interleaved updates should accumulate properly for each index
     assert_equal("func1", tool_calls[0].function.name)
-    assert_equal('{"x":1}', tool_calls[0].function.arguments)
+    assert_equal("{\"x\":1}", tool_calls[0].function.arguments)
     assert_equal("func2", tool_calls[1].function.name)
-    assert_equal('{"y":2}', tool_calls[1].function.arguments)
+    assert_equal("{\"y\":2}", tool_calls[1].function.arguments)
 
     # Test 8: Empty deltas and nil handling
     sse_response_empty_deltas = <<~SSE

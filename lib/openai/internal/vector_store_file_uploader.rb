@@ -58,6 +58,7 @@ module OpenAI
             start_gate.close
             workers.each(&:join)
           end
+
         ensure
           stop_workers(start_gate, workers, lock, state)
         end
@@ -86,6 +87,7 @@ module OpenAI
 
             staged << stage_file(file, temporary_files)
           end
+
           complete = true
           [staged, temporary_files]
         ensure
@@ -155,29 +157,34 @@ module OpenAI
 
       private def start_workers(start_gate, staged, worker_count, lock, uploaded, state, workers)
         worker_count.times do
-          workers << Thread.new do
-            Thread.handle_interrupt(Exception => :immediate) do
-              start_gate.pop
-              while (work = claim_work(staged, lock, state))
-                upload_one(work, lock, uploaded)
+          workers <<
+            Thread
+              .new do
+                Thread.handle_interrupt(Exception => :immediate) do
+                  start_gate.pop
+                  while (work = claim_work(staged, lock, state))
+                    upload_one(work, lock, uploaded)
+                  end
+                end
+                # rubocop:disable Lint/RescueException -- worker failure is propagated after every join
+              rescue Exception => e
+                record_error(e, lock, state)
               end
-            end
-          rescue Exception => e # rubocop:disable Lint/RescueException -- worker failure is propagated after every join
-            record_error(e, lock, state)
-          end.tap { _1.report_on_exception = false }
+              # rubocop:enable Lint/RescueException
+              .tap { _1.report_on_exception = false }
         end
       end
 
       private def upload_one(work, lock, uploaded)
         index, staged_file = work
-        result =
-          if staged_file.streamed
-            ::File.open(staged_file.file.content, "rb") do |stream|
-              create_file(staged_file.file.with_content(stream), index)
-            end
-          else
-            create_file(staged_file.file, index)
+        result = if staged_file.streamed
+          ::File.open(staged_file.file.content, "rb") do |stream|
+            create_file(staged_file.file.with_content(stream), index)
           end
+        else
+          create_file(staged_file.file, index)
+        end
+
         lock.synchronize { uploaded[index] = result }
       end
 

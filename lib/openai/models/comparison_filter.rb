@@ -104,8 +104,9 @@ module OpenAI
         #   @return [Array(String, Float, Boolean, Array<String, Float>)]
 
         # @type [OpenAI::Internal::Type::Converter]
-        UnionMember3Array =
-          OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::ComparisonFilter::Value::UnionMember3 }]
+        UnionMember3Array = OpenAI::Internal::Type::ArrayOf[
+          union: -> { OpenAI::ComparisonFilter::Value::UnionMember3 }
+        ]
       end
     end
   end

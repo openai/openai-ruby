@@ -18,10 +18,10 @@ module OpenAI
           # @see OpenAI::Models::Containers::Files::ContentRetrieveParams
           def retrieve(file_id, params)
             parsed, options = OpenAI::Containers::Files::ContentRetrieveParams.dump_request(params)
-            container_id =
-              parsed.delete(:container_id) do
-                raise ArgumentError.new("missing required path argument #{_1}")
-              end
+            container_id = parsed.delete(:container_id) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
+
             @client.request(
               method: :get,
               path: ["containers/%1$s/files/%2$s/content", container_id, file_id],

@@ -232,20 +232,26 @@ module OpenAI
           #   developer.
           #
           #   @return [Array<OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck>, nil]
-          optional :acknowledged_safety_checks,
-                   -> {
-                     OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]
-                   },
-                   nil?: true
+          optional(
+            :acknowledged_safety_checks,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[
+                OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck
+              ]
+            },
+            nil?: true
+          )
 
           # @!attribute status
           #   The status of the message input. One of `in_progress`, `completed`, or
           #   `incomplete`. Populated when input items are returned via API.
           #
           #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status, nil]
-          optional :status,
-                   enum: -> { OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status },
-                   nil?: true
+          optional(
+            :status,
+            enum: -> { OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status },
+            nil?: true
+          )
 
           # @!method initialize(call_id:, output:, id: nil, acknowledged_safety_checks: nil, status: nil, type: :computer_call_output)
           #   Some parameter documentations has been truncated, see
@@ -341,10 +347,12 @@ module OpenAI
           #   The execution context that produced this tool call.
           #
           #   @return [OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Caller::Program, nil]
-          optional :caller_,
-                   union: -> { OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller },
-                   api_name: :caller,
-                   nil?: true
+          optional(
+            :caller_,
+            union: -> { OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller },
+            api_name: :caller,
+            nil?: true
+          )
 
           # @!attribute name
           #   The name of the tool that produced the output.
@@ -363,9 +371,11 @@ module OpenAI
           #   Populated when items are returned via API.
           #
           #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status, nil]
-          optional :status,
-                   enum: -> { OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status },
-                   nil?: true
+          optional(
+            :status,
+            enum: -> { OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status },
+            nil?: true
+          )
 
           # @!method initialize(call_id:, output:, id: nil, caller_: nil, name: nil, namespace: nil, status: nil, type: :function_call_output)
           #   Some parameter documentations has been truncated, see
@@ -503,11 +513,13 @@ module OpenAI
           #   The status of the tool search call.
           #
           #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::Status, nil]
-          optional :status,
-                   enum: -> {
-                     OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status
-                   },
-                   nil?: true
+          optional(
+            :status,
+            enum: -> {
+              OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status
+            },
+            nil?: true
+          )
 
           # @!method initialize(arguments:, id: nil, call_id: nil, execution: nil, status: nil, type: :tool_search_call)
           #   @param arguments [Object] The arguments supplied to the tool search call.
@@ -780,9 +792,11 @@ module OpenAI
           #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           #
           #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput::Status, nil]
-          optional :status,
-                   enum: -> { OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status },
-                   nil?: true
+          optional(
+            :status,
+            enum: -> { OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status },
+            nil?: true
+          )
 
           # @!method initialize(id:, output:, status: nil, type: :local_shell_call_output)
           #   Some parameter documentations has been truncated, see
@@ -844,18 +858,22 @@ module OpenAI
           #   The execution context that produced this tool call.
           #
           #   @return [OpenAI::Models::Responses::ResponseInputItem::ShellCall::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::ShellCall::Caller::Program, nil]
-          optional :caller_,
-                   union: -> { OpenAI::Responses::ResponseInputItem::ShellCall::Caller },
-                   api_name: :caller,
-                   nil?: true
+          optional(
+            :caller_,
+            union: -> { OpenAI::Responses::ResponseInputItem::ShellCall::Caller },
+            api_name: :caller,
+            nil?: true
+          )
 
           # @!attribute environment
           #   The environment to execute the shell commands in.
           #
           #   @return [OpenAI::Models::Responses::LocalEnvironment, OpenAI::Models::Responses::ContainerReference, nil]
-          optional :environment,
-                   union: -> { OpenAI::Responses::ResponseInputItem::ShellCall::Environment },
-                   nil?: true
+          optional(
+            :environment,
+            union: -> { OpenAI::Responses::ResponseInputItem::ShellCall::Environment },
+            nil?: true
+          )
 
           # @!attribute status
           #   The status of the shell call. One of `in_progress`, `completed`, or
@@ -1009,8 +1027,10 @@ module OpenAI
           #   outcomes.
           #
           #   @return [Array<OpenAI::Models::Responses::ResponseFunctionShellCallOutputContent>]
-          required :output,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionShellCallOutputContent] }
+          required(
+            :output,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFunctionShellCallOutputContent] }
+          )
 
           # @!attribute type
           #   The type of the item. Always `shell_call_output`.
@@ -1029,10 +1049,12 @@ module OpenAI
           #   The execution context that produced this tool call.
           #
           #   @return [OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::Caller::Program, nil]
-          optional :caller_,
-                   union: -> { OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller },
-                   api_name: :caller,
-                   nil?: true
+          optional(
+            :caller_,
+            union: -> { OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller },
+            api_name: :caller,
+            nil?: true
+          )
 
           # @!attribute max_output_length
           #   The maximum number of UTF-8 characters captured for this shell call's combined
@@ -1045,11 +1067,13 @@ module OpenAI
           #   The status of the shell call output.
           #
           #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::Status, nil]
-          optional :status,
-                   enum: -> {
-                     OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status
-                   },
-                   nil?: true
+          optional(
+            :status,
+            enum: -> {
+              OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status
+            },
+            nil?: true
+          )
 
           # @!method initialize(call_id:, output:, id: nil, caller_: nil, max_output_length: nil, status: nil, type: :shell_call_output)
           #   Some parameter documentations has been truncated, see
@@ -1170,10 +1194,12 @@ module OpenAI
           #   The execution context that produced this tool call.
           #
           #   @return [OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::Caller::Program, nil]
-          optional :caller_,
-                   union: -> { OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller },
-                   api_name: :caller,
-                   nil?: true
+          optional(
+            :caller_,
+            union: -> { OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller },
+            api_name: :caller,
+            nil?: true
+          )
 
           # @!method initialize(call_id:, operation:, status:, id: nil, caller_: nil, type: :apply_patch_call)
           #   Some parameter documentations has been truncated, see
@@ -1385,10 +1411,12 @@ module OpenAI
           #   The execution context that produced this tool call.
           #
           #   @return [OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Direct, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Program, nil]
-          optional :caller_,
-                   union: -> { OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller },
-                   api_name: :caller,
-                   nil?: true
+          optional(
+            :caller_,
+            union: -> { OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller },
+            api_name: :caller,
+            nil?: true
+          )
 
           # @!attribute output
           #   Optional human-readable log text from the apply patch tool (e.g., patch results
@@ -1493,8 +1521,10 @@ module OpenAI
           #   The tools available on the server.
           #
           #   @return [Array<OpenAI::Models::Responses::ResponseInputItem::McpListTools::Tool>]
-          required :tools,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseInputItem::McpListTools::Tool] }
+          required(
+            :tools,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseInputItem::McpListTools::Tool] }
+          )
 
           # @!attribute type
           #   The type of the item. Always `mcp_list_tools`.

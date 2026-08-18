@@ -46,8 +46,10 @@ module OpenAI
           #   A list of grader results for this output item.
           #
           #   @return [Array<OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Result>]
-          required :results,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Result] }
+          required(
+            :results,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Result] }
+          )
 
           # @!attribute run_id
           #   The identifier of the evaluation run associated with this output item.
@@ -153,8 +155,12 @@ module OpenAI
             #   An array of input messages.
             #
             #   @return [Array<OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input>]
-            required :input,
-                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input] }
+            required(
+              :input,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input]
+              }
+            )
 
             # @!attribute max_completion_tokens
             #   The maximum number of tokens allowed for completion.
@@ -172,8 +178,12 @@ module OpenAI
             #   An array of output messages.
             #
             #   @return [Array<OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output>]
-            required :output,
-                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output] }
+            required(
+              :output,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output]
+              }
+            )
 
             # @!attribute seed
             #   The seed used for generating the sample.

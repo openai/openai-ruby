@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require "timeout"
+
 require_relative "../../lib/openai"
 
 module OpenAI
@@ -47,6 +48,7 @@ module OpenAI
               else
                 output.puts
               end
+
               output.puts("[realtime] transcription.completed item=#{event.item_id}")
               completed_transcript = transcript
               break
@@ -95,9 +97,11 @@ module OpenAI
 
               connection.input_audio_buffer.append_bytes(chunk)
             end
+
             connection.input_audio_buffer.commit
             stream_transcript(connection, output: output)
           end
+
           output.puts("[realtime] transcription smoke test passed")
           transcript
         end

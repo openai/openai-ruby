@@ -96,8 +96,12 @@ module OpenAI
             #   The sources used in the search.
             #
             #   @return [Array<OpenAI::Models::Beta::BetaResponseFunctionWebSearch::Action::Search::Source>, nil]
-            optional :sources,
-                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseFunctionWebSearch::Action::Search::Source] }
+            optional(
+              :sources,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaResponseFunctionWebSearch::Action::Search::Source]
+              }
+            )
 
             # @!method initialize(queries: nil, query: nil, sources: nil, type: :search)
             #   Some parameter documentations has been truncated, see

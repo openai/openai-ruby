@@ -14,8 +14,10 @@ module OpenAI
           # @!attribute model_grader_token_usage_per_model
           #
           #   @return [Hash{Symbol=>Object}]
-          required :model_grader_token_usage_per_model,
-                   OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
+          required(
+            :model_grader_token_usage_per_model,
+            OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
+          )
 
           # @!attribute reward
           #

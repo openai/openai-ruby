@@ -38,8 +38,12 @@ module OpenAI
           #   `item.input_audio_transcription.logprobs`
           #
           #   @return [Array<Symbol, OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::Include>, nil]
-          optional :include,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::TranscriptionSessionUpdate::Session::Include] }
+          optional(
+            :include,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::TranscriptionSessionUpdate::Session::Include]
+            }
+          )
 
           # @!attribute input_audio_format
           #   The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`. For
@@ -47,8 +51,10 @@ module OpenAI
           #   (mono), and little-endian byte order.
           #
           #   @return [Symbol, OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::InputAudioFormat, nil]
-          optional :input_audio_format,
-                   enum: -> { OpenAI::Realtime::TranscriptionSessionUpdate::Session::InputAudioFormat }
+          optional(
+            :input_audio_format,
+            enum: -> { OpenAI::Realtime::TranscriptionSessionUpdate::Session::InputAudioFormat }
+          )
 
           # @!attribute input_audio_noise_reduction
           #   Configuration for input audio noise reduction. This can be set to `null` to turn
@@ -58,8 +64,10 @@ module OpenAI
           #   perception of the input audio.
           #
           #   @return [OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::InputAudioNoiseReduction, nil]
-          optional :input_audio_noise_reduction,
-                   -> { OpenAI::Realtime::TranscriptionSessionUpdate::Session::InputAudioNoiseReduction }
+          optional(
+            :input_audio_noise_reduction,
+            -> { OpenAI::Realtime::TranscriptionSessionUpdate::Session::InputAudioNoiseReduction }
+          )
 
           # @!attribute input_audio_transcription
           #   Configuration for input audio transcription. The client can optionally set the

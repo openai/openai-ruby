@@ -7,7 +7,7 @@ require "base64"
 
 client = OpenAI::Client.new
 
-puts "Starting image streaming example..."
+puts("Starting image streaming example...")
 
 stream = client.images.generate_stream_raw(
   model: "gpt-image-2",
@@ -47,4 +47,4 @@ end
 
 abort("Image stream ended before the final image completed") if completed_count.zero?
 
-puts "Image streaming completed!"
+puts("Image streaming completed!")

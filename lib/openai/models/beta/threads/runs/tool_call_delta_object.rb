@@ -18,8 +18,10 @@ module OpenAI
             #   `function`.
             #
             #   @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta>, nil]
-            optional :tool_calls,
-                     -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Runs::ToolCallDelta] }
+            optional(
+              :tool_calls,
+              -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Runs::ToolCallDelta] }
+            )
 
             # @!method initialize(tool_calls: nil, type: :tool_calls)
             #   Some parameter documentations has been truncated, see

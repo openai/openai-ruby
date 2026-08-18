@@ -37,9 +37,11 @@ module OpenAI
           #   The format of the audio data. Currently supported formats are `mp3` and `wav`.
           #
           #   @return [Symbol, OpenAI::Models::Responses::ResponseInputAudio::InputAudio::Format]
-          required :format_,
-                   enum: -> { OpenAI::Responses::ResponseInputAudio::InputAudio::Format },
-                   api_name: :format
+          required(
+            :format_,
+            enum: -> { OpenAI::Responses::ResponseInputAudio::InputAudio::Format },
+            api_name: :format
+          )
 
           # @!method initialize(data:, format_:)
           #   Some parameter documentations has been truncated, see

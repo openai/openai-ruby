@@ -10,7 +10,8 @@ require "tmpdir"
 require "yaml"
 
 module OpenAIExamplesE2E
-  class ConfigurationError < StandardError; end
+  class ConfigurationError < StandardError
+  end
 
   Example = Data.define(:path, :status, :expected_output, :minimum_output_bytes, :reason)
   InventorySummary = Data.define(:covered, :excluded, :total, :percentage)
@@ -56,7 +57,7 @@ module OpenAIExamplesE2E
         "",
         format(
           "**%<percentage>.2f%% exercised (%<covered>d/%<total>d examples); " \
-          "%<excluded>d explicitly excluded.**",
+            "%<excluded>d explicitly excluded.**",
           percentage: inventory.percentage,
           covered: inventory.covered,
           total: inventory.total,
@@ -74,8 +75,9 @@ module OpenAIExamplesE2E
         )
         results.each do |result|
           outcome = result.success ? "passed" : "failed: #{escape_markdown(result.error)}"
-          lines << "| `#{result.path}` | #{outcome} | #{format('%.2fs', result.duration_seconds)} |"
+          lines << "| `#{result.path}` | #{outcome} | #{format("%.2fs", result.duration_seconds)} |"
         end
+
         lines << ""
       end
 
@@ -84,6 +86,7 @@ module OpenAIExamplesE2E
         excluded_examples.each do |example|
           lines << "- `#{example.path}` — #{example.reason}"
         end
+
         lines << ""
       end
 
@@ -113,19 +116,18 @@ module OpenAIExamplesE2E
 
       missing = discovered_paths - configured_paths
       stale = configured_paths - discovered_paths
-      errors << "unclassified examples: #{missing.join(', ')}" unless missing.empty?
-      errors << "manifest entries without files: #{stale.join(', ')}" unless stale.empty?
+      errors << "unclassified examples: #{missing.join(", ")}" unless missing.empty?
+      errors << "manifest entries without files: #{stale.join(", ")}" unless stale.empty?
 
       examples.each do |example|
         unless VALID_STATUSES.include?(example.status)
-          errors << "#{example.path}: status must be one of #{VALID_STATUSES.join(', ')}"
+          errors << "#{example.path}: status must be one of #{VALID_STATUSES.join(", ")}"
           next
         end
 
         if example.status == "covered"
           has_expected_output = example.expected_output.is_a?(String) && !example.expected_output.empty?
-          has_minimum_output =
-            example.minimum_output_bytes.is_a?(Integer) && example.minimum_output_bytes.positive?
+          has_minimum_output = example.minimum_output_bytes.is_a?(Integer) && example.minimum_output_bytes.positive?
           if !example.expected_output.nil? && !has_expected_output
             errors << "#{example.path}: expected_output must be a non-empty string"
           elsif !example.minimum_output_bytes.nil? && !has_minimum_output
@@ -264,6 +266,7 @@ module OpenAIExamplesE2E
       if example.expected_output && !output.include?(example.expected_output)
         return "expected output not found: #{example.expected_output}"
       end
+
       if example.minimum_output_bytes && output.bytesize < example.minimum_output_bytes
         return "expected at least #{example.minimum_output_bytes} output bytes, got #{output.bytesize}"
       end
@@ -318,16 +321,15 @@ module OpenAIExamplesE2E
       inventory.validate!
       ensure_api_key! unless options[:inventory_only]
 
-      report =
-        if options[:inventory_only]
-          Report.new(
-            inventory: inventory.summary,
-            results: [],
-            excluded_examples: inventory.excluded_examples
-          )
-        else
-          Runner.new(inventory: inventory, timeout: options[:timeout], output: @output).run
-        end
+      report = if options[:inventory_only]
+        Report.new(
+          inventory: inventory.summary,
+          results: [],
+          excluded_examples: inventory.excluded_examples
+        )
+      else
+        Runner.new(inventory: inventory, timeout: options[:timeout], output: @output).run
+      end
 
       write_report(report, options[:report_dir])
       report.success? ? 0 : 1
@@ -344,22 +346,26 @@ module OpenAIExamplesE2E
         report_dir: Pathname(ENV.fetch("EXAMPLES_E2E_REPORT_DIR", @root.join("tmp/examples-e2e").to_s)),
         timeout: Integer(ENV.fetch("EXAMPLES_E2E_TIMEOUT", DEFAULT_TIMEOUT.to_s), 10)
       }
-      OptionParser.new do |parser|
-        parser.banner = "Usage: scripts/examples-e2e.rb [options]"
-        parser.on("--inventory-only", "Validate the example inventory without running examples") do
-          options[:inventory_only] = true
+      OptionParser
+        .new do |parser|
+          parser.banner = "Usage: scripts/examples-e2e.rb [options]"
+          parser.on("--inventory-only", "Validate the example inventory without running examples") do
+            options[:inventory_only] = true
+          end
+
+          parser.on("--report-dir PATH", String, "Directory for JSON and Markdown reports") do |path|
+            options[:report_dir] = Pathname(path)
+          end
+
+          parser.on(
+            "--timeout SECONDS",
+            Integer,
+            "Per-example timeout (default: #{DEFAULT_TIMEOUT})"
+          ) do |seconds|
+            options[:timeout] = seconds
+          end
         end
-        parser.on("--report-dir PATH", String, "Directory for JSON and Markdown reports") do |path|
-          options[:report_dir] = Pathname(path)
-        end
-        parser.on(
-          "--timeout SECONDS",
-          Integer,
-          "Per-example timeout (default: #{DEFAULT_TIMEOUT})"
-        ) do |seconds|
-          options[:timeout] = seconds
-        end
-      end.parse!(arguments)
+        .parse!(arguments)
       options
     end
 
