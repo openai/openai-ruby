@@ -15,12 +15,28 @@ module OpenAI
     end
     def realtime_connection_request(path:, query:, options: nil)
     end
+
+    # @api private
+    sig do
+      params(
+        path: String,
+        query: T::Hash[String, String],
+        options: T.nilable(OpenAI::RequestOptions::OrHash),
+        block: T.proc.params(request: OpenAI::Internal::Transport::BaseClient::RequestInput).returns(T.untyped)
+      ).returns(T.untyped)
+    end
+    def with_realtime_connection_request(path:, query:, options: nil, &block)
+    end
   end
 
   module Errors
     class RealtimeConnectionError < OpenAI::Errors::Error
       sig { returns(URI::Generic) }
       attr_reader :url
+
+      # @api private
+      sig { returns(T.nilable(Integer)) }
+      attr_reader :http_status
 
       sig { returns(T.nilable(Exception)) }
       def cause
@@ -30,10 +46,11 @@ module OpenAI
         params(
           url: URI::Generic,
           message: T.nilable(String),
-          cause: T.nilable(Exception)
+          cause: T.nilable(Exception),
+          http_status: T.nilable(Integer)
         ).returns(T.attached_class)
       end
-      def self.new(url:, message: nil, cause: nil)
+      def self.new(url:, message: nil, cause: nil, http_status: nil)
       end
     end
 

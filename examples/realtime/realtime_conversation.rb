@@ -5,6 +5,7 @@ require "async"
 require "async/barrier"
 require "timeout"
 require_relative "../../lib/openai"
+require_relative "audio_files"
 require_relative "event_stream"
 
 module OpenAI
@@ -89,6 +90,8 @@ module OpenAI
         end
 
         class PCMFileMicrophone
+          attr_reader :path
+
           def initialize(path)
             @path = path
             @stopping = false
@@ -184,16 +187,26 @@ module OpenAI
         end
 
         class PCMFileSpeaker
+          attr_reader :path
+
           def initialize(path)
-            @output = File.open(path, "wb")
+            @path = path
+            @output = nil
           end
 
-          def write(bytes) = @output.write(bytes)
+          def prepare(input_path:)
+            @output ||= AudioFiles.open_output(input_path: input_path, output_path: @path)
+          end
 
-          def interrupt = @output.flush
+          def write(bytes)
+            @output ||= File.open(@path, "wb")
+            @output.write(bytes)
+          end
+
+          def interrupt = @output&.flush
 
           def close
-            @output.close unless @output.closed?
+            @output&.close unless @output&.closed?
           end
         end
 
@@ -462,6 +475,16 @@ module OpenAI
           end
           barrier.wait do |task|
             result, error = task.wait
+            if result == :receiver
+              if error || stop_after
+                connection.abort
+                raise error if error
+
+                break
+              end
+
+              next
+            end
             raise error if error
 
             outbound.close if result == :sender
@@ -483,6 +506,9 @@ module OpenAI
           output: $stdout,
           stop_after: nil
         )
+          file_backed = microphone.is_a?(PCMFileMicrophone) && speaker.is_a?(PCMFileSpeaker)
+          speaker.prepare(input_path: microphone.path) if file_backed
+
           client.realtime.connect(model: model) do |connection|
             run_session(
               connection,
@@ -494,6 +520,8 @@ module OpenAI
               stop_after: stop_after
             )
           end
+        ensure
+          speaker.close if file_backed
         end
       end
     end

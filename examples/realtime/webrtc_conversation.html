@@ -94,6 +94,8 @@
       let dataChannel;
       let microphoneStream;
       let transcriptLine;
+      let startupController;
+      let startupGeneration = 0;
 
       function setStatus(message) {
         statusElement.textContent = message;
@@ -135,68 +137,92 @@
       }
 
       async function startConversation() {
+        const generation = ++startupGeneration;
+        const controller = new AbortController();
+        startupController = controller;
         startButton.disabled = true;
         transcriptElement.replaceChildren();
         setStatus("Requesting microphone access…");
 
         try {
-          peerConnection = new RTCPeerConnection();
-          peerConnection.addEventListener("track", (event) => {
+          const connection = new RTCPeerConnection();
+          peerConnection = connection;
+          connection.addEventListener("track", (event) => {
             remoteAudio.srcObject = event.streams[0];
             remoteAudio.play().catch(() => setStatus("Click the page to enable audio playback."));
           });
-          peerConnection.addEventListener("connectionstatechange", () => {
-            const state = peerConnection?.connectionState;
+          connection.addEventListener("connectionstatechange", () => {
+            if (generation !== startupGeneration) return;
+
+            const state = connection.connectionState;
             if (state === "connected") setStatus("Listening…");
             if (state === "disconnected") setStatus("Connection interrupted; reconnecting…");
             if (state === "failed") void stopConversation({status: "Connection failed"});
           });
 
-          microphoneStream = await navigator.mediaDevices.getUserMedia({
+          const stream = await navigator.mediaDevices.getUserMedia({
             audio: {
               echoCancellation: true,
               noiseSuppression: true,
               autoGainControl: true
             }
           });
-          const microphone = microphoneStream.getAudioTracks()[0];
+          if (generation !== startupGeneration) {
+            stream.getTracks().forEach((track) => track.stop());
+            return;
+          }
+          microphoneStream = stream;
+          stopButton.disabled = false;
+          const microphone = stream.getAudioTracks()[0];
           const settings = microphone.getSettings();
           mediaElement.textContent = [
             `Microphone: ${microphone.label || "active"}`,
             `echo cancellation ${settings.echoCancellation === false ? "unavailable" : "requested"}`,
             `noise suppression ${settings.noiseSuppression === false ? "unavailable" : "requested"}`
           ].join(" · ");
-          peerConnection.addTrack(microphone, microphoneStream);
+          connection.addTrack(microphone, stream);
 
-          dataChannel = peerConnection.createDataChannel("oai-events");
-          dataChannel.addEventListener("message", handleEvent);
-          dataChannel.addEventListener("open", () => setStatus("Listening…"));
+          const channel = connection.createDataChannel("oai-events");
+          dataChannel = channel;
+          channel.addEventListener("message", handleEvent);
+          channel.addEventListener("open", () => setStatus("Listening…"));
 
-          await peerConnection.setLocalDescription(await peerConnection.createOffer());
-          const tokenResponse = await fetch("/token", {method: "POST"});
+          await connection.setLocalDescription(await connection.createOffer());
+          const tokenResponse = await fetch("/token", {
+            method: "POST",
+            signal: controller.signal
+          });
           if (!tokenResponse.ok) throw new Error(await tokenResponse.text());
           const token = await tokenResponse.json();
           if (!token.value) throw new Error("Realtime client secret was missing");
 
           const response = await fetch("https://api.openai.com/v1/realtime/calls", {
             method: "POST",
+            signal: controller.signal,
             headers: {
               "Authorization": `Bearer ${token.value}`,
               "Content-Type": "application/sdp"
             },
-            body: peerConnection.localDescription.sdp
+            body: connection.localDescription.sdp
           });
           if (!response.ok) throw new Error(await response.text());
 
-          await peerConnection.setRemoteDescription({type: "answer", sdp: await response.text()});
-          stopButton.disabled = false;
+          if (generation !== startupGeneration) return;
+          await connection.setRemoteDescription({type: "answer", sdp: await response.text()});
         } catch (error) {
+          if (generation !== startupGeneration || error.name === "AbortError") return;
+
           stopConversation();
           setStatus(error.message.trim() || "Unable to start the conversation");
+        } finally {
+          if (generation === startupGeneration) startupController = undefined;
         }
       }
 
       function stopConversation({status = "Stopped"} = {}) {
+        startupGeneration += 1;
+        startupController?.abort();
+        startupController = undefined;
         dataChannel?.close();
         peerConnection?.close();
         microphoneStream?.getTracks().forEach((track) => track.stop());
@@ -214,8 +240,7 @@
       startButton.addEventListener("click", startConversation);
       stopButton.addEventListener("click", () => stopConversation());
       window.addEventListener("pagehide", () => {
-        microphoneStream?.getTracks().forEach((track) => track.stop());
-        peerConnection?.close();
+        stopConversation();
       });
     </script>
   </body>

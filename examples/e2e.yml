@@ -46,6 +46,9 @@ examples:
   examples/image_stream.rb:
     status: covered
     expected_output: Final image completed!
+  examples/realtime/audio_files.rb:
+    status: excluded
+    reason: Support library that preflights file-backed Realtime audio examples; it has no standalone entry point.
   examples/realtime/event_stream.rb:
     status: excluded
     reason: Support library imported by runnable Realtime examples; it has no standalone entry point.

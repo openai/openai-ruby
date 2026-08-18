@@ -7,10 +7,28 @@ class OpenAI::Test::AsyncWebSocketAbortTest < Minitest::Test
   extend Minitest::Serial
 
   class Framer
-    attr_reader :closed
+    class Stream
+      def initialize
+        reader, @writer = IO.pipe
+        reader.close
+      end
+      def to_io = @writer
+      def close = raise("buffered close must not run")
+    end
 
-    def initialize = @closed = false
-    def close = @closed = true
+    class Pool
+      attr_reader :released
+
+      def release(connection) = @released = connection
+    end
+
+    def initialize
+      @stream = Stream.new
+      @pool = Pool.new
+      @connection = Object.new
+    end
+
+    def closed = @stream.to_io.closed?
   end
 
   class Connection

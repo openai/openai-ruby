@@ -84,6 +84,7 @@ class OpenAI::Test::RealtimeExamplesTestCase < Minitest::Test
 
   class RecordingConnection
     attr_reader :conversation, :input_audio_buffer, :received, :response, :session, :writer_fibers
+    attr_reader :aborted
 
     def initialize(events = [])
       @events = events
@@ -102,6 +103,8 @@ class OpenAI::Test::RealtimeExamplesTestCase < Minitest::Test
     def receive
       @events.shift.tap { |event| @received << event&.type }
     end
+
+    def abort = @aborted = true
   end
 
   class ExplodingConnection < RecordingConnection

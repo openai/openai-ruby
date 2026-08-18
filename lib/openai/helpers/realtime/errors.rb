@@ -7,6 +7,13 @@ module OpenAI
       # @return [URI::Generic]
       attr_reader :url
 
+      # HTTP status returned by a failed WebSocket upgrade, when available.
+      #
+      # @api private
+      #
+      # @return [Integer, nil]
+      attr_reader :http_status
+
       # @return [Exception, nil]
       def cause = @cause.nil? ? super : @cause
 
@@ -15,9 +22,11 @@ module OpenAI
       # @param url [URI::Generic]
       # @param message [String, nil]
       # @param cause [Exception, nil]
-      def initialize(url:, message: nil, cause: nil)
+      # @param http_status [Integer, nil]
+      def initialize(url:, message: nil, cause: nil, http_status: nil)
         @url = url
         @cause = cause
+        @http_status = http_status
         detail = cause && !cause.message.empty? ? ": #{cause.message}" : "."
         super(message || "Realtime WebSocket connection error#{detail}")
       end

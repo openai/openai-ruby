@@ -8,15 +8,19 @@ require "async/websocket/server"
 require "socket"
 
 require_relative "../test_helper"
+require_relative "transport_test_helpers"
 
 class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
   extend Minitest::Serial
 
+  AbortFramer = OpenAI::Test::RealtimeTransportTestHelpers::AbortFramer
+
   class SynchronousConnection
-    attr_reader :scheduler
+    attr_reader :framer, :scheduler
 
     def initialize
       @closed = false
+      @framer = AbortFramer.new
       @scheduler = nil
     end
 
@@ -28,7 +32,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     def read = "message"
     def write(_message) = nil
     def flush = nil
-    def closed? = @closed
+    def closed? = @closed || @framer.aborted?
     def close(*) = (@closed = true)
   end
 
@@ -106,7 +110,9 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     parsed_endpoint = nil
     parse = Async::HTTP::Endpoint.method(:parse)
     parser = lambda do |url, **options|
-      parsed_endpoint = parse.call(url, **options)
+      endpoint = parse.call(url, **options)
+      parsed_endpoint = endpoint if url.to_s.start_with?("wss://localhost/")
+      endpoint
     end
     url = URI("wss://localhost/v1/realtime?model=gpt-realtime-2.1")
 
@@ -164,7 +170,9 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     parsed_endpoint = nil
     parse = Async::HTTP::Endpoint.method(:parse)
     parser = lambda do |url, **options|
-      parsed_endpoint = parse.call(url, **options)
+      endpoint = parse.call(url, **options)
+      parsed_endpoint = endpoint if url.to_s.start_with?("wss://example.com/")
+      endpoint
     end
     url = URI("wss://example.com/v1/realtime?model=gpt-realtime-2.1")
 
@@ -298,7 +306,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     end
 
     assert_equal("application failed", error.message)
-    assert_equal(1, connection.close_count)
+    assert_equal(0, connection.close_count)
     assert_equal(1, transport_client.close_count)
     assert_predicate(connection, :closed?)
     assert_predicate(transport_client, :closed)

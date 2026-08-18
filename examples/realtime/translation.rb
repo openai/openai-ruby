@@ -4,6 +4,7 @@
 require "async"
 require "async/barrier"
 require_relative "../../lib/openai"
+require_relative "audio_files"
 require_relative "event_stream"
 
 module OpenAI
@@ -37,15 +38,13 @@ module OpenAI
           end
         end
 
-        def write_input(connection, input_path)
-          File.open(input_path, "rb") do |input|
-            while (chunk = input.read(9_600))
-              connection.input_audio_buffer.append_bytes(chunk)
-            end
+        def write_input(connection, input)
+          while (chunk = input.read(9_600))
+            connection.input_audio_buffer.append_bytes(chunk)
           end
         end
 
-        def exchange(connection, input_path:, audio_output:, transcript_output:)
+        def exchange(connection, input:, audio_output:, transcript_output:)
           barrier = Async::Barrier.new
           reader = barrier.async do
             stream(
@@ -65,7 +64,7 @@ module OpenAI
           end
 
           barrier.async do
-            write_input(connection, input_path)
+            write_input(connection, input)
             connection.session.close
             [:uploader, nil]
           rescue StandardError => e
@@ -82,12 +81,12 @@ module OpenAI
         end
 
         def run(client:, model:, input_path:, output_path:, target_language:, transcript_output: $stdout)
-          File.open(output_path, "wb") do |audio_output|
+          AudioFiles.open(input_path: input_path, output_path: output_path) do |input, audio_output|
             client.realtime.translations.connect(model: model) do |connection|
               connection.session.update(audio: {output: {language: target_language}})
               exchange(
                 connection,
-                input_path: input_path,
+                input: input,
                 audio_output: audio_output,
                 transcript_output: transcript_output
               )

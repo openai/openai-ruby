@@ -88,7 +88,14 @@ module OpenAI
             message: "Cannot send on a closed Realtime WebSocket."
           )
         end
-        @socket.write(data)
+        text = data.dup
+        text.force_encoding(Encoding::UTF_8) if text.encoding == Encoding::BINARY
+        text = text.encode(Encoding::UTF_8) unless text.encoding == Encoding::UTF_8
+        unless text.valid_encoding?
+          raise ArgumentError, "Realtime WebSocket text must contain valid UTF-8"
+        end
+
+        @socket.write(text)
         nil
       end
 

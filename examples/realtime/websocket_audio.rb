@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require_relative "../../lib/openai"
+require_relative "audio_files"
 require_relative "event_stream"
 
 module OpenAI
@@ -37,7 +38,7 @@ module OpenAI
         end
 
         def run(client:, model:, input_path:, output_path:)
-          File.open(output_path, "wb") do |output|
+          AudioFiles.open(input_path: input_path, output_path: output_path) do |input, output|
             client.realtime.connect(model: model) do |connection|
               configure(connection)
               EventStream.wait_for(
@@ -45,10 +46,8 @@ module OpenAI
                 OpenAI::Realtime::SessionUpdatedEvent,
                 closed_message: "Realtime connection closed before session.updated"
               )
-              File.open(input_path, "rb") do |input|
-                while (chunk = input.read(4_800))
-                  connection.input_audio_buffer.append_bytes(chunk)
-                end
+              while (chunk = input.read(4_800))
+                connection.input_audio_buffer.append_bytes(chunk)
               end
               connection.input_audio_buffer.commit
               connection.response.create

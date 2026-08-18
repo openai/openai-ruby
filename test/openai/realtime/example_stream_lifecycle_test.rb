@@ -140,6 +140,8 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
       Kernel.sleep(0.01)
       yield(@event)
     end
+
+    def abort = nil
   end
 
   Event = Data.define(:type, :data) do
@@ -521,7 +523,8 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
       input.flush
 
       error = assert_raises(RuntimeError) do
-        OpenAI::Examples::Realtime::Translation.write_input(connection, input.path)
+        input.rewind
+        OpenAI::Examples::Realtime::Translation.write_input(connection, input)
       end
 
       assert_same(upload_error, error)
@@ -536,13 +539,14 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
     Tempfile.create("translation-input") do |input|
       input.write("audio")
       input.flush
+      input.rewind
 
       error = Timeout.timeout(1) do
         Sync do
           assert_raises(RuntimeError) do
             OpenAI::Examples::Realtime::Translation.exchange(
               connection,
-              input_path: input.path,
+              input: input,
               audio_output: StringIO.new,
               transcript_output: StringIO.new
             )
@@ -564,12 +568,13 @@ class OpenAI::Test::RealtimeExampleStreamLifecycleTest < Minitest::Test
     Tempfile.create("translation-input") do |input|
       input.write("audio")
       input.flush
+      input.rewind
 
       error = Sync do
         assert_raises(RuntimeError) do
           OpenAI::Examples::Realtime::Translation.exchange(
             connection,
-            input_path: input.path,
+            input: input,
             audio_output: StringIO.new,
             transcript_output: StringIO.new
           )

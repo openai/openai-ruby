@@ -53,35 +53,36 @@ module OpenAI
       def open
         raise ArgumentError, "A block is required to open a Realtime WebSocket." unless block_given?
 
-        request = @client.realtime_connection_request(
-          path: @path,
-          query: @query,
-          options: @request_options
-        )
         transport = @transport || OpenAI::Realtime::Transports::AsyncWebSocket.new
         unless transport.respond_to?(:open)
           raise ArgumentError, "`transport` must respond to `open`"
         end
 
-        transport.open(
-          url: request.fetch(:url),
-          headers: request.fetch(:headers),
-          timeout: request.fetch(:timeout),
-          **@transport_options
-        ) do |socket|
-          connection = @connection_class.new(socket: socket, url: request.fetch(:url))
-          begin
-            yield(connection)
-          ensure
-            pending_error = $ERROR_INFO
+        @client.with_realtime_connection_request(
+          path: @path,
+          query: @query,
+          options: @request_options
+        ) do |request|
+          transport.open(
+            url: request.fetch(:url),
+            headers: request.fetch(:headers),
+            timeout: request.fetch(:timeout),
+            **@transport_options
+          ) do |socket|
+            connection = @connection_class.new(socket: socket, url: request.fetch(:url))
             begin
-              if pending_error
-                connection.abort unless connection.closed?
-              else
-                connection.close unless connection.closed?
+              yield(connection)
+            ensure
+              pending_error = $ERROR_INFO
+              begin
+                if pending_error
+                  connection.abort unless connection.closed?
+                else
+                  connection.close unless connection.closed?
+                end
+              rescue StandardError
+                raise if pending_error.nil?
               end
-            rescue StandardError
-              raise if pending_error.nil?
             end
           end
         end

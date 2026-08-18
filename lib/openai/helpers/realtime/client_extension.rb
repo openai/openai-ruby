@@ -71,6 +71,21 @@ module OpenAI
           request.merge(url: url, headers: headers)
         end
 
+        # Yield an authenticated WebSocket request, refreshing a rejected workload
+        # identity token exactly once after a definitive upgrade 401.
+        #
+        # @api private
+        def with_realtime_connection_request(path:, query:, options: nil)
+          request = realtime_connection_request(path: path, query: query, options: options)
+          yield(request)
+        rescue OpenAI::Errors::RealtimeConnectionError => e
+          raise unless e.http_status == 401 && @workload_identity_auth
+
+          @workload_identity_auth.invalidate_token
+          refreshed = realtime_connection_request(path: path, query: query, options: options)
+          yield(refreshed)
+        end
+
         private def with_websocket_base_url(request, path:)
           url = OpenAI::Internal::Util.join_parsed_uri(
             OpenAI::Internal::Util.parse_uri(@websocket_base_url.to_s),

@@ -28,7 +28,10 @@ interface.
 
 A transient WebRTC `disconnected` state keeps the peer alive while the browser
 attempts recovery. A terminal `failed` state stops the microphone and peer
-immediately. Because Ruby never allocates or tracks the browser's call, a browser
+immediately. Stop becomes available as soon as microphone capture succeeds; it
+also aborts either pending startup request and ignores stale completions, so a
+slow token or SDP exchange cannot leave capture running. Because Ruby never
+allocates or tracks the browser's call, a browser
 disconnect while the token response is being delivered cannot orphan a
 server-owned call.
 
@@ -85,6 +88,9 @@ bundle exec ruby examples/realtime/realtime_conversation.rb
 
 This bounded mode exits successfully only after a completed `response.done`;
 a cancelled response or clean EOF before that event fails the smoke test.
+File-backed mode verifies that the input is readable and that input and output
+are not the same file, symlink target, or hardlink before opening a session or
+truncating output.
 
 ## WebSocket text
 
@@ -152,6 +158,8 @@ completed `response.done`. EOF before completion, or completion without an
 audio delta, is reported as a failed smoke test. The example disables automatic
 turn detection and waits for `session.updated` before uploading, so its explicit
 buffer commit and `response.create` cannot race server VAD.
+The input is opened and verified distinct from the output before the output is
+truncated or an authenticated session is created.
 
 ## Realtime transcription
 
@@ -194,6 +202,8 @@ operation is not hidden by cleanup.
 If the reader fails while input is still being uploaded, the example cancels
 the uploader immediately instead of draining the rest of the file. If the
 reader has already failed on buffered input or EOF, upload never starts.
+As with the raw-audio example, input readability and input/output identity are
+checked before output truncation or session creation.
 
 ## MCP approval
 
@@ -230,7 +240,9 @@ The recommended `webrtc_conversation.rb` instead demonstrates the preferred
 browser path: Ruby creates a short-lived client secret and the browser exchanges
 SDP directly with OpenAI. `webrtc_call.rb` remains a minimal stdin/stdout
 building block for a trusted server integration that deliberately owns call
-creation and preserves the returned call ID.
+creation and preserves the returned call ID. That process retains cleanup
+ownership through the stdout write and flush; if downstream SDP delivery fails,
+it best-effort hangs up the known call ID without hiding the handoff error.
 
 ## Sideband control
 
@@ -264,6 +276,9 @@ including after a timeout or sideband failure; an already-ended call is treated
 as successfully cleaned up. Cleanup ownership begins before the accept request,
 so a lost response after the service accepts the call still triggers hangup
 while preserving the original error. EOF before the selected event fails a bounded run.
+By contrast, a definitive `409 Conflict` means another handler already owns the
+call, so the losing worker propagates that response without hanging up the
+winner's healthy call.
 Without a carrier-originated incoming call, the same accept-then-attach
 orchestration is covered by the local example and HTTP resource tests, but that
 is not a substitute for the final telephony smoke test.

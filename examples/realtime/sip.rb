@@ -24,18 +24,24 @@ module OpenAI
         end
 
         def run(client:, call_id:, model:, output: $stdout, stop_after: nil)
-          client.realtime.calls.accept(
-            call_id,
-            type: :realtime,
-            model: model,
-            instructions: "You are answering a phone call. Be warm and concise."
-          )
+          owns_cleanup = true
+          begin
+            client.realtime.calls.accept(
+              call_id,
+              type: :realtime,
+              model: model,
+              instructions: "You are answering a phone call. Be warm and concise."
+            )
+          rescue OpenAI::Errors::ConflictError
+            owns_cleanup = false
+            raise
+          end
 
           client.realtime.connect_to_call(call_id: call_id) do |connection|
             stream(connection, output: output, stop_after: stop_after)
           end
         ensure
-          hangup(client, call_id, active_error: $ERROR_INFO)
+          hangup(client, call_id, active_error: $ERROR_INFO) if owns_cleanup
         end
 
         def hangup(client, call_id, active_error:)

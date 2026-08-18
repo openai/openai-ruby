@@ -7,17 +7,27 @@ module OpenAI
       query: ::Hash[String, String],
       ?options: OpenAI::request_opts?
     ) -> OpenAI::Internal::Transport::BaseClient::request_input
+
+    # @api private
+    def with_realtime_connection_request: (
+      path: String,
+      query: ::Hash[String, String],
+      ?options: OpenAI::request_opts?
+    ) { (OpenAI::Internal::Transport::BaseClient::request_input request) -> top } -> top
   end
 
   module Errors
     class RealtimeConnectionError < OpenAI::Errors::Error
       attr_reader url: URI::Generic
+      # @api private
+      attr_reader http_status: Integer?
       def cause: -> Exception?
 
       def initialize: (
         url: URI::Generic,
         ?message: String?,
-        ?cause: Exception?
+        ?cause: Exception?,
+        ?http_status: Integer?
       ) -> void
     end
 

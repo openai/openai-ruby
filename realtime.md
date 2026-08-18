@@ -497,7 +497,8 @@ routing-aware hangup cleanup.
   immutable `UnknownServerEvent` values instead of terminating the session.
 - Exceptions raised by the application block propagate unchanged. The
   connection hard-aborts instead of starting another potentially blocked
-  WebSocket close handshake, while the adapter still releases its client.
+  WebSocket close handshake. Hard abort closes the raw socket without flushing
+  buffered frames, then releases the adapter's pool ownership.
   Cleanup does not replace an active error; after a successful block, its first
   graceful cleanup error is surfaced.
 
@@ -523,6 +524,22 @@ provider clients derive the WebSocket URL from the configured Azure v1 endpoint
 and resolve provider-owned API-key or bearer authentication immediately before
 the handshake. Providers without a Realtime WebSocket surface fail before a
 credential is sent.
+
+The default adapter follows Ruby's standard `http_proxy` / `https_proxy` and
+`no_proxy` environment policy. Proxied WebSockets use HTTP `CONNECT`: proxy
+credentials are confined to the tunnel request, origin credentials remain
+inside the tunnel, and the target TLS context still performs hostname and peer
+verification. IPv6 literals are bracketed in both handshake and CONNECT
+authorities. A definitive upgrade `401` invalidates a cached workload-identity
+token and retries exactly once; ambiguous upgraded connections are never
+replayed.
+
+Protocol HTTP/1 tracing receives a redacted view of handshake headers while the
+wire receives the original values. The same SDK sensitive-header policy covers
+`Authorization`, Azure `api-key`, `Proxy-Authorization`, and other credential
+headers. `send_raw` likewise normalizes valid text to UTF-8 and rejects invalid
+byte sequences so protocol-websocket always emits a text frame rather than
+choosing a binary opcode from the Ruby String encoding.
 
 ## Custom transport
 
