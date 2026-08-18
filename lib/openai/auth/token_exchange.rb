@@ -92,8 +92,10 @@ module OpenAI
             end
 
             return handle_response(response)
-          rescue OpenAI::Errors::APIConnectionError
-            raise if retry_count >= MAX_RETRIES
+          rescue OpenAI::Errors::APIConnectionError => error
+            if retry_count >= MAX_RETRIES
+              raise error.class.new(url: @url), cause: nil
+            end
 
             wait_before_retry({}, retry_count: retry_count, deadline: deadline)
             retry_count += 1

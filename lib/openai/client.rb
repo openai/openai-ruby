@@ -220,7 +220,9 @@ module OpenAI
         request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
       end
 
-      context = {deadline: deadline, token: nil}
+      replay_state = context&.fetch(:replay_state) || []
+
+      context = {deadline: deadline, token: nil, replay_state: replay_state}
       request = request.merge(workload_identity_context: context)
 
       begin
@@ -234,9 +236,11 @@ module OpenAI
         end
 
       rescue OpenAI::Errors::AuthenticationError
-        raise unless retry_count.zero? && request_replayable?(request)
+        raise unless retry_count.zero? && replay_state.empty? && request_replayable?(request)
 
-        context = {deadline: context.fetch(:deadline), token: nil}
+        replay_state << true
+        replay_state.freeze
+        context = {deadline: context.fetch(:deadline), token: nil, replay_state: replay_state}
         request = request.merge(workload_identity_context: context)
         with_workload_identity_401_invalidation(context) do
           super(
