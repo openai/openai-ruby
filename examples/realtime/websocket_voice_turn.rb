@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require "base64"
+require "tempfile"
 require "timeout"
 
 require_relative "../../lib/openai"
@@ -18,7 +19,6 @@ module OpenAI
         def stream_response(connection, audio_output:, output: $stdout)
           audio_bytes = 0
           transcript = +""
-          started_transcript = false
           completed = false
 
           connection.each do |event|
@@ -32,22 +32,10 @@ module OpenAI
             when OpenAI::Realtime::ResponseAudioTranscriptDeltaEvent
               next if event.delta.empty?
 
-              output.print("[assistant] ") unless started_transcript
-              started_transcript = true
               transcript << event.delta
-              output.print(event.delta)
-              output.flush
             when OpenAI::Realtime::ResponseAudioTranscriptDoneEvent
               next if event.transcript.empty? || event.transcript == transcript
 
-              if started_transcript
-                output.puts
-                output.puts("[realtime] final transcript: #{event.transcript}")
-              else
-                output.puts("[assistant] #{event.transcript}")
-              end
-
-              started_transcript = false
               transcript.replace(event.transcript)
             when OpenAI::Realtime::ResponseAudioDeltaEvent
               begin
@@ -60,7 +48,6 @@ module OpenAI
               audio_output.flush
               audio_bytes += bytes.bytesize
             when OpenAI::Realtime::ResponseDoneEvent
-              output.puts if started_transcript
               status = event.response.status
               raise "Realtime response did not complete." unless status == :completed
               raise "Realtime response completed without audio output" if audio_bytes.zero?
@@ -125,16 +112,25 @@ module OpenAI
         end
 
         def open_output(path)
-          file = begin
-            File.open(path, File::WRONLY | File::CREAT | File::EXCL | File::BINARY, 0o600)
-          rescue Errno::EEXIST
+          begin
+            File.lstat(path)
+          rescue Errno::ENOENT
+            # The destination is available.
+          else
             raise ArgumentError, "output path must not already exist"
           end
 
-          begin
+          directory = File.dirname(path)
+          Tempfile.create([".openai-realtime-", ".tmp"], directory, mode: File::BINARY, perm: 0o600) do |file|
             yield(file)
-          ensure
-            file.close
+            file.flush
+            file.fsync
+
+            begin
+              File.link(file.path, path)
+            rescue Errno::EEXIST
+              raise ArgumentError, "output path must not already exist"
+            end
           end
         end
 

@@ -133,6 +133,8 @@ client owns the turn boundary, then call `response.create` after `commit`:
 ```ruby
 require "base64"
 
+transcript = +""
+
 client.realtime.connect(model: "gpt-realtime-2.1") do |connection|
   connection.session.update(
     type: :realtime,
@@ -160,7 +162,7 @@ client.realtime.connect(model: "gpt-realtime-2.1") do |connection|
     when OpenAI::Realtime::ResponseAudioDeltaEvent
       audio_output.write(Base64.strict_decode64(event.delta))
     when OpenAI::Realtime::ResponseAudioTranscriptDeltaEvent
-      print(event.delta)
+      transcript << event.delta
     when OpenAI::Realtime::ResponseDoneEvent
       raise "Realtime response failed." unless event.response.status == :completed
       break
@@ -175,8 +177,11 @@ The runnable
 [`websocket_voice_turn.rb`](examples/realtime/websocket_voice_turn.rb) example
 checks the complete lifecycle: non-empty input, explicit commit, streamed audio
 and transcript, a successful terminal response, binary output, and an output
-path that does not already exist. It writes raw 24 kHz mono PCM16 so callers can
-play or convert the file without container buffering.
+path that does not already exist. It returns the transcript to its caller while
+keeping diagnostics metadata-only. Audio is staged privately and published at
+the requested path only after the complete turn succeeds, so a failure or
+timeout leaves no partial response behind. It writes raw 24 kHz mono PCM16 so
+callers can play or convert the file without container buffering.
 
 ## Event compatibility
 

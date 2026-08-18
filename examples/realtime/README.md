@@ -8,8 +8,8 @@ This directory contains runnable examples for the Realtime WebSocket surface:
   commits one input turn, streams transcription deltas, verifies the matching
   completed transcript, and exits.
 - `websocket_voice_turn.rb` uploads one raw 24 kHz mono PCM16 turn, explicitly
-  commits it, streams the assistant's audio transcript, saves the PCM response,
-  verifies a completed response, and exits.
+  commits it, collects the assistant's streamed audio transcript, saves the PCM
+  response, verifies a completed response, and exits.
 
 Add the optional transport dependency and set an API key:
 
@@ -74,9 +74,12 @@ ffplay -f s16le -ar 24000 -ac 1 response.pcm
 ```
 
 The output path must not already exist. This prevents accidental truncation,
-including when the input and output paths refer to the same file. A successful
-run prints the assistant transcript, writes non-empty response audio, observes
-`response.done status=completed`, and prints
+including when the input and output paths refer to the same file. The example
+stages audio privately and publishes the path only after success, so a failed
+or timed-out run leaves no partial response behind and the command can be
+retried. `WebSocketVoiceTurn.run` returns the assistant transcript explicitly;
+diagnostic output never includes it. A successful run writes non-empty response
+audio, observes `response.done status=completed`, and prints
 `[realtime] voice turn smoke test passed`.
 
 Optional environment variables:

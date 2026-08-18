@@ -99,7 +99,7 @@ class OpenAI::Test::RealtimeWebSocketVoiceTurnExampleTest < Minitest::Test
       session.dig(:audio, :output, :format)
     )
     assert_equal(:marin, session.dig(:audio, :output, :voice))
-    assert_includes(diagnostics.string, "Hello from Ruby.")
+    refute_includes(diagnostics.string, "Hello from Ruby.")
     assert_includes(diagnostics.string, "response.done status=completed")
     assert_includes(diagnostics.string, "voice turn smoke test passed")
   end
@@ -173,7 +173,7 @@ class OpenAI::Test::RealtimeWebSocketVoiceTurnExampleTest < Minitest::Test
     )
 
     assert_equal("Final words.", transcript)
-    assert_includes(diagnostics.string, "Final words.")
+    refute_includes(diagnostics.string, "Final words.")
   end
 
   def test_example_keeps_service_error_details_out_of_the_exception_message
@@ -232,6 +232,73 @@ class OpenAI::Test::RealtimeWebSocketVoiceTurnExampleTest < Minitest::Test
       end
 
       assert_includes(error.message, "raised by caller")
+      refute_path_exists(path)
+    end
+  end
+
+  def test_output_file_is_not_published_when_the_run_fails
+    Dir.mktmpdir("openai-realtime-voice") do |directory|
+      path = File.join(directory, "response.pcm")
+
+      error = assert_raises(RuntimeError) do
+        OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) do |file|
+          file.write("partial audio")
+          refute_path_exists(path)
+          raise "voice turn failed"
+        end
+      end
+
+      assert_equal("voice turn failed", error.message)
+      refute_path_exists(path)
+      assert_empty(Dir.children(directory))
+    end
+  end
+
+  def test_output_file_is_not_published_when_the_run_times_out
+    Dir.mktmpdir("openai-realtime-voice") do |directory|
+      path = File.join(directory, "response.pcm")
+
+      assert_raises(Timeout::Error) do
+        OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) do |file|
+          file.write("partial audio")
+          refute_path_exists(path)
+          raise Timeout::Error, "execution expired"
+        end
+      end
+
+      refute_path_exists(path)
+      assert_empty(Dir.children(directory))
+    end
+  end
+
+  def test_output_file_is_published_after_a_successful_run
+    Dir.mktmpdir("openai-realtime-voice") do |directory|
+      path = File.join(directory, "response.pcm")
+
+      OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) do |file|
+        file.write("complete audio")
+        refute_path_exists(path)
+      end
+
+      assert_equal("complete audio", File.binread(path))
+      assert_equal(["response.pcm"], Dir.children(directory))
+    end
+  end
+
+  def test_output_file_does_not_replace_a_destination_created_during_the_run
+    Dir.mktmpdir("openai-realtime-voice") do |directory|
+      path = File.join(directory, "response.pcm")
+
+      error = assert_raises(ArgumentError) do
+        OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) do |file|
+          file.write("complete audio")
+          File.binwrite(path, "other owner")
+        end
+      end
+
+      assert_equal("output path must not already exist", error.message)
+      assert_equal("other owner", File.binread(path))
+      assert_equal(["response.pcm"], Dir.children(directory))
     end
   end
 
