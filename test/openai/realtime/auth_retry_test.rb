@@ -183,6 +183,31 @@ class OpenAI::Test::RealtimeAuthRetryTest < Minitest::Test
     assert_empty(transport.attempts)
   end
 
+  def test_extra_query_is_rejected_before_workload_identity_authentication
+    client = workload_identity_client
+    transport = AcceptingTransport.new
+    token_requests = 0
+
+    get_token = lambda do |deadline:|
+      refute_nil(deadline)
+      token_requests += 1
+      "unused-token"
+    end
+    error = client.workload_identity_auth.stub(:get_token, get_token) do
+      assert_raises(ArgumentError) do
+        client.realtime.connect(
+          model: "gpt-realtime-2.1",
+          request_options: {extra_query: {"credential" => "fake-sensitive-value"}},
+          transport: transport
+        ) { |_connection| nil }
+      end
+    end
+
+    assert_includes(error.message, "`request_options[:extra_query]` is not supported")
+    assert_equal(0, token_requests)
+    assert_empty(transport.attempts)
+  end
+
   def test_transport_options_are_snapshotted_before_workload_identity_authentication
     client = workload_identity_client
     transport = AcceptingTransport.new

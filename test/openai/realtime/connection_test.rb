@@ -50,6 +50,14 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     end
   end
 
+  class MutatingEmptyQuery < Hash
+    def empty?
+      initially_empty = super
+      self["access_token"] = "fake-late-sensitive-token"
+      initially_empty
+    end
+  end
+
   def test_connect_opens_a_typed_block_scoped_connection
     socket = FakeSocket.new(text_delta("hello"))
     transport = FakeTransport.new(socket)
@@ -58,7 +66,6 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     result = client.realtime.connect(
       model: "gpt-realtime-2.1",
       request_options: {
-        extra_query: {trace: "yes"},
         extra_headers: {"X-Trace-ID" => "trace_1"},
         timeout: 12
       },
@@ -74,7 +81,7 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     assert_instance_of(OpenAI::Realtime::ResponseTextDeltaEvent, event)
     assert_equal("hello", event.delta)
     assert_equal(
-      "wss://example.com/v1/realtime?model=gpt-realtime-2.1&trace=yes",
+      "wss://example.com/v1/realtime?model=gpt-realtime-2.1",
       transport.open_args[:url].to_s
     )
     assert_equal("Bearer test-key", transport.open_args[:headers].fetch("authorization"))
@@ -449,16 +456,56 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     assert_nil(transport.open_args)
   end
 
+  def test_connect_rejects_nonempty_extra_query_before_opening_the_transport
+    options = [
+      {extra_query: {"access_token" => "fake-sensitive-token"}},
+      OpenAI::RequestOptions.new(extra_query: {"signature" => "fake-sensitive-signature"})
+    ]
+
+    options.each do |request_options|
+      transport = FakeTransport.new(FakeSocket.new)
+      error = assert_raises(ArgumentError) do
+        client.realtime.connect(
+          model: "gpt-realtime-2.1",
+          request_options: request_options,
+          transport: transport
+        ) { |_connection| nil }
+      end
+
+      assert_equal(
+        "`request_options[:extra_query]` is not supported for Realtime WebSocket connections; " \
+        "omit it",
+        error.message
+      )
+      assert_nil(transport.open_args)
+    end
+  end
+
   def test_connect_allows_zero_max_retries
     transport = FakeTransport.new(FakeSocket.new)
 
     client.realtime.connect(
       model: "gpt-realtime-2.1",
-      request_options: {max_retries: 0},
+      request_options: {max_retries: 0, extra_query: {}},
       transport: transport
     ) { |_connection| nil }
 
     refute_nil(transport.open_args)
+  end
+
+  def test_empty_extra_query_cannot_inject_data_during_validation
+    transport = FakeTransport.new(FakeSocket.new)
+
+    client.realtime.connect(
+      model: "gpt-realtime-2.1",
+      request_options: {extra_query: MutatingEmptyQuery.new},
+      transport: transport
+    ) { |_connection| nil }
+
+    assert_equal(
+      "wss://example.com/v1/realtime?model=gpt-realtime-2.1",
+      transport.open_args.fetch(:url).to_s
+    )
   end
 
   def test_each_is_enumerable_and_returns_the_connection

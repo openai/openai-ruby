@@ -76,8 +76,15 @@ module OpenAI
 
           websocket_uri = parse_websocket_base_url(websocket_base_url)
 
-          opts = options.to_h
+          opts = options.to_h.dup
           OpenAI::RequestOptions.validate!(opts)
+          extra_query = opts.delete(:extra_query)
+          unless extra_query.nil? || (extra_query.respond_to?(:empty?) && extra_query.empty?)
+            message =
+              "`request_options[:extra_query]` is not supported for Realtime WebSocket " \
+              "connections; omit it"
+            raise ArgumentError, message
+          end
           max_retries = opts[:max_retries]
           unless max_retries.nil? || max_retries == 0
             message =
