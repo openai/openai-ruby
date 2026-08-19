@@ -185,6 +185,43 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
     assert_equal(1, requests.length)
   end
 
+  def test_preserves_valid_ipvfuture_endpoints_and_same_origin_redirects
+    %w[v1.foo vF.a:b].each do |hostname|
+      requests = []
+      client, http_client = client_with_responses(
+        requests,
+        redirect_response(307, "https://[#{hostname}]/v1/redirected"),
+        successful_response,
+        base_url: "https://[#{hostname}]/v1"
+      )
+
+      response = client.request(method: :post, path: "probe", body: {prompt: "fake-private-prompt"})
+
+      http_client.verify
+      assert_equal(true, response[:ok])
+      assert_equal(["[#{hostname}]", "[#{hostname}]"], requests.map { _1.url.host })
+      assert_equal(requests.first.body, requests.last.body)
+      assert_equal("Bearer fake-api-key", requests.last.headers.fetch("authorization"))
+    end
+  end
+
+  def test_rejects_cross_origin_redirect_between_distinct_ipvfuture_hosts
+    requests = []
+    client, http_client = client_with_responses(
+      requests,
+      redirect_response(307, "https://[v1.bar]/v1/redirected"),
+      base_url: "https://[v1.foo]/v1"
+    )
+
+    error = assert_raises(OpenAI::Errors::APIConnectionError) do
+      client.request(method: :post, path: "probe", body: {prompt: "fake-private-prompt"})
+    end
+
+    http_client.verify
+    assert_equal("https://[v1.bar]", error.url.to_s)
+    assert_equal(1, requests.length)
+  end
+
   def test_preserves_bodyless_cross_origin_get_and_head_redirects
     [[:get, 307], [:get, 308], [:head, 307], [:head, 308], [:head, 303]].each do |method, status|
       destination = "https://example.com/redirected/#{method}/#{status}"
@@ -442,7 +479,7 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
         url = prepared.fetch(:url)
         url.user = "fake-prepared-user"
         url.password = "fake-prepared-password"
-        url.query = "#{url.query}&api_key=fake-prepared-query-key&opaque=fake-prepared-opaque-secret"
+        url.query << "&api_key=fake-prepared-query-key&opaque=fake-prepared-opaque-secret"
         prepared.merge(url: url)
       end
     end
@@ -479,7 +516,7 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
         return prepared if redirect_count.zero?
 
         url = prepared.fetch(:url)
-        url.host = "escaped.example"
+        url.host.replace("escaped.example")
         url.query = "api_key=fake-escaped-query-key"
         prepared.merge(url: url, headers: prepared.fetch(:headers).merge("hOsT" => "escaped.example"))
       end

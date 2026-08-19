@@ -187,11 +187,11 @@ module OpenAI
             # from undici
             origin = OpenAI::Internal::Util.uri_origin(url)
             redirect_origin = OpenAI::Internal::Util.uri_origin(location)
-            if url.host.start_with?("[")
+            if url.host.start_with?("[") && !url.hostname.start_with?("v", "V")
               origin = origin.sub(url.host, "[#{IPAddr.new(url.hostname)}]")
             end
 
-            if location.host.start_with?("[")
+            if location.host.start_with?("[") && !location.hostname.start_with?("v", "V")
               redirect_origin = redirect_origin.sub(location.host, "[#{IPAddr.new(location.hostname)}]")
             end
 
@@ -554,7 +554,7 @@ module OpenAI
           end
 
           url, max_retries = request.fetch_values(:url, :max_retries)
-          authorized_url = url.dup
+          authorized_url = URI(url.to_s)
           prepared_request = request
           trusted_origin = request[:redirect_trusted_origin]
 
@@ -564,7 +564,7 @@ module OpenAI
               request[:body]
             )
             attempt_request = request.except(:redirect_trusted_origin, :redirect_body_forbidden).merge(
-              url: authorized_url.dup,
+              url: URI(authorized_url.to_s),
               headers: encoded_headers,
               body: encoded_body
             )
@@ -576,13 +576,13 @@ module OpenAI
 
             prepared_url = prepared_request.fetch(:url)
             prepared_origin = OpenAI::Internal::Util.uri_origin(prepared_url)
-            if prepared_url.host&.start_with?("[")
+            if prepared_url.host&.start_with?("[") && !prepared_url.hostname.start_with?("v", "V")
               prepared_origin = prepared_origin.sub(prepared_url.host, "[#{IPAddr.new(prepared_url.hostname)}]")
             end
 
             trusted_origin ||= prepared_origin
             authorized_origin = OpenAI::Internal::Util.uri_origin(authorized_url)
-            if authorized_url.host.start_with?("[")
+            if authorized_url.host.start_with?("[") && !authorized_url.hostname.start_with?("v", "V")
               authorized_origin = authorized_origin.sub(authorized_url.host, "[#{IPAddr.new(authorized_url.hostname)}]")
             end
 
