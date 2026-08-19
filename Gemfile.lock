@@ -151,12 +151,12 @@ GEM
       prism (~> 1.7)
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
-    sorbet (0.6.12753)
-      sorbet-static (= 0.6.12753)
+    sorbet (0.6.13421)
+      sorbet-static (= 0.6.13421)
     sorbet-runtime (0.6.13421)
-    sorbet-static (0.6.12753-aarch64-linux)
-    sorbet-static (0.6.12753-universal-darwin)
-    sorbet-static (0.6.12753-x86_64-linux)
+    sorbet-static (0.6.13421-aarch64-linux)
+    sorbet-static (0.6.13421-universal-darwin)
+    sorbet-static (0.6.13421-x86_64-linux)
     steep (2.0.0)
       concurrent-ruby (>= 1.1.10)
       csv (>= 3.0.9)
@@ -214,7 +214,7 @@ DEPENDENCIES
   rbs
   redcarpet
   rubocop
-  sorbet (< 0.6.12760)
+  sorbet (< 0.6.13422)
   sorbet-runtime
   steep
   syntax_tree
