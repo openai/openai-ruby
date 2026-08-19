@@ -12,7 +12,6 @@ PATH
   remote: .
   specs:
     openai (0.80.0)
-      cgi
       connection_pool (>= 2.2.3)
       logger
 
@@ -225,6 +224,7 @@ DEPENDENCIES
   async
   async-websocket
   aws-sdk-core (~> 3)
+  cgi
   minitest (~> 5.27)
   minitest-hooks
   minitest-proveit
