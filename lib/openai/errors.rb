@@ -261,7 +261,7 @@ module OpenAI
         in String | Symbol | Numeric | true | false => upstream_message
           upstream_message
         else
-          safe_status_message(url: url, status: status, headers: headers, body: body)
+          safe_status_message(url: url, status: status, body: body)
         end
 
         @code = OpenAI::Internal::Type::Converter.coerce(String, OpenAI::Internal::Util.dig(body, :code))
@@ -278,7 +278,7 @@ module OpenAI
         )
       end
 
-      private def safe_status_message(url:, status:, headers:, body:)
+      private def safe_status_message(url:, status:, body:)
         sensitive_description = %r{
           https?:// |
           \bdata:[^,]{0,512}, |
@@ -404,29 +404,6 @@ module OpenAI
 
         safe_url = OpenAI::Internal::Logging.safe_url(url).sub(/[?#].*/, "")
         fields = ["status=#{status}", "url=#{safe_url}"]
-        request_id = headers&.[]("x-request-id")
-        if request_id
-          rendered_request_id = request_id.to_s
-          safe_request_id = %r{
-            \A(?:
-              req_(?:[a-z0-9]{1,16}(?:_[a-z0-9]{1,12})?|[a-f0-9]{17,124}) |
-              req-[a-z0-9]{1,16}-[a-z0-9]{1,32} |
-              trace(?:_[a-z0-9]{1,16}|(?:\.[a-z0-9]{1,16}){1,4}) |
-              (?:email-delivery|customer-support|data-center|response-service|input-validator|service)-
-                (?:req|trace)-[a-f0-9]{1,32} |
-              runtime-(?:chat|response|stream)-request |
-              [a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}
-            )\z
-          }ix
-          if rendered_request_id.bytesize <= 128 && rendered_request_id.ascii_only?
-            normalized_digits = rendered_request_id.gsub(/(?<=\d)[._-](?:req|trace|request)[._-](?=\d)/i, "-")
-            sensitive_numeric_id = normalized_digits.scan(/\d+(?:[._-]\d+)*/).any? { _1.count("0-9") >= 13 }
-            if !sensitive_numeric_id && rendered_request_id.match?(safe_request_id)
-              fields << "request_id=#{bounded_status_field(request_id, limit: 128)}"
-            end
-          end
-        end
-
         fields << "message=#{bounded_status_field(upstream_message, limit: 512)}" if upstream_message
 
         fields.join(" ")

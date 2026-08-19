@@ -21,7 +21,7 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
     assert_instance_of(OpenAI::Errors::BadRequestError, error)
     assert_includes(error.message, "status=400")
     assert_includes(error.message, "url=https://example.com/v1/responses")
-    assert_includes(error.message, "request_id=req_nested")
+    refute_includes(error.message, "request_id=")
     assert_includes(error.message, "The requested model is unavailable")
     refute_includes(error.message, "private customer prompt")
     refute_includes(error.message, "private model response")
@@ -625,6 +625,15 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
   def test_sensitive_request_ids_are_omitted_without_altering_raw_headers
     slack_credential = ["xoxb", "123456789012", "123456789012", "fakeSlackCredential"].join("-")
     request_ids = [
+      "req_123456789",
+      "req_4155552671",
+      "req_123456789012",
+      "req_12345_6789",
+      "trace.123.45.6789",
+      "req-prod-4155552671",
+      "service-req-123456789",
+      "req_a123456789",
+      "trace.abc123456789",
       "req_4111111111111111",
       "req_378282246310005",
       "req_4222222222222",
@@ -732,7 +741,7 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
     end
   end
 
-  def test_ordinary_request_id_formats_remain_visible
+  def test_ordinary_request_ids_remain_available_without_entering_exception_messages
     request_ids = [
       "req_1234567890abcdef",
       "req_signed_url",
@@ -757,7 +766,7 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
     request_ids.each do |request_id|
       error = status_error(headers: {"x-request-id" => request_id})
 
-      assert_includes(error.message, "request_id=#{request_id}")
+      refute_includes(error.message, "request_id=")
       assert_same(request_id, error.request_id)
     end
   end
@@ -777,11 +786,11 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
     end
   end
 
-  def test_request_ids_require_a_bounded_ascii_identifier_without_altering_raw_headers
+  def test_request_ids_remain_private_without_altering_raw_headers
     allowed_request_id = "req_" + ("a" * 124)
     allowed_error = status_error(headers: {"x-request-id" => allowed_request_id})
 
-    assert_includes(allowed_error.message, "request_id=#{allowed_request_id}")
+    refute_includes(allowed_error.message, "request_id=")
     assert_same(allowed_request_id, allowed_error.request_id)
 
     ["req_" + ("a" * 125), "req_" + ("😀" * 600)].each do |request_id|
@@ -960,7 +969,7 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
     assert_equal(response_body, error.body)
     assert_equal("req_logged", error.request_id)
     assert_includes(logged, "status=400")
-    assert_includes(logged, "request_id=req_logged")
+    refute_includes(logged, "request_id=")
     assert_includes(logged, "Provider rejected the request")
     refute_includes(logged, "fake-user")
     refute_includes(logged, "fake-password")
