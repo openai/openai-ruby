@@ -426,7 +426,9 @@ module OpenAI
             origin.hostname = address.to_s if address.ipv6?
           end
 
-          unless OpenAI::Internal::Util.uri_origin(request_origin) == OpenAI::Internal::Util.uri_origin(base_origin)
+          unless !request_origin.host.to_s.empty? &&
+              !base_origin.host.to_s.empty? &&
+              OpenAI::Internal::Util.uri_origin(request_origin) == OpenAI::Internal::Util.uri_origin(base_origin)
             raise OpenAI::Errors::Error, "Request path must resolve to the configured base URL origin"
           end
 
