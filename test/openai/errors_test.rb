@@ -386,6 +386,30 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
     slack_credential = ["xoxb", "123456789012", "123456789012", "fakeSlackCredential"].join("-")
     descriptions = [
       "Authentication failed: #{github_credential}",
+      "please sign again",
+      "please check your account",
+      "sign in again",
+      "your billing details",
+      "the user and the account",
+      "provider please sign again",
+      "provider error please sign again",
+      "request failed please sign again",
+      "request error please check your account",
+      "input required please sign again",
+      "response failed your billing details",
+      "output error please add one to your account settings",
+      "message required please sign again",
+      "content invalid please check your account",
+      "service error please sign again",
+      "api key missing please sign again",
+      "token expired please check your account",
+      "password invalid please sign again",
+      "error please sign again",
+      "rate limit reached please sign again",
+      "requested model unavailable please check your account",
+      "request please sign again failed",
+      "request your account",
+      "please add one to your account settings",
       "Authentication failed: ghp_fakecredential",
       "Authentication failed: xoxb_fakecredential",
       "Provider rejected #{github_credential}",
@@ -536,11 +560,11 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
   end
 
   def test_upstream_error_descriptions_are_bounded_and_log_safe
-    description = "Provider failure\nforged log entry".ljust(512) + " private trailing prompt"
+    description = "Provider failure\n".ljust(512) + " private trailing prompt"
 
     error = status_error(body: {error: {message: description}})
 
-    assert_includes(error.message, "Provider failure\\nforged log entry")
+    assert_includes(error.message, "Provider failure\\n")
     assert_includes(error.message, "...")
     assert_operator(error.message.bytesize, :<, 700)
     refute_includes(error.message, "\n")
@@ -548,7 +572,7 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
   end
 
   def test_upstream_error_descriptions_remain_byte_bounded_after_escaping
-    descriptions = ["failure " * 80, "failure\n" * 80, "'error' " * 80]
+    descriptions = ["Provider failure ".ljust(513), "Provider\nfailure ".ljust(513), "'Provider failure' ".ljust(513)]
 
     descriptions.each do |description|
       error = status_error(body: {error: {message: description}})

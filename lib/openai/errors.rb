@@ -359,11 +359,18 @@ module OpenAI
           next false if classified_candidate.strip.empty? || classified_candidate.match?(sensitive_description)
           next false unless classified_candidate.match?(safe_description)
 
+          diagnostic_words = classified_candidate.downcase.scan(/[a-z]+|\d+/)
+          safe_named_code = classified_candidate.match?(/\A[a-z]+(?:_[a-z0-9]+){1,4}\z/i)
+          unless safe_named_code ||
+              classified_candidate.match?(/\d/) ||
+              safe_provider_diagnostic?(diagnostic_words)
+            next false
+          end
+
           classified_markers = classified_candidate.gsub(/(?<=[a-z0-9])(?=[A-Z])/, " ").tr("_-", "  ")
           credential = classified_markers.match?(credential_description)
           content = classified_markers.match?(content_description)
           if classified_candidate.match?(/\d/)
-            diagnostic_words = classified_candidate.downcase.scan(/[a-z]+|\d+/)
             if credential
               quantity_indexes = diagnostic_words.each_index.select { diagnostic_words[_1].match?(/\A\d+\z/) }
               quantity_prefix = quantity_indexes.one? ? diagnostic_words[...quantity_indexes.first] : []
@@ -388,7 +395,6 @@ module OpenAI
               safe_status_code = status_code.length == 3 &&
                 ("100".."599").cover?(status_code) &&
                 [%w[error], %w[status], %w[http status]].include?(diagnostic_words[...-1])
-              safe_named_code = classified_candidate.match?(/\A[a-z]+(?:_[a-z0-9]+){1,4}\z/i)
               next false unless safe_status_code || safe_named_code
             end
           end
@@ -421,6 +427,87 @@ module OpenAI
         fields << "message=#{bounded_status_field(upstream_message, limit: 512)}" if upstream_message
 
         fields.join(" ")
+      end
+
+      private def safe_provider_diagnostic?(words)
+        words = words.drop(1) if %w[the your].include?(words.first)
+        safe_templates = [
+          %w[nested provider error],
+          %w[nested provider explanation],
+          %w[nested oauth provider error],
+          %w[oauth provider rejected the request],
+          %w[oauth credentials were rejected],
+          %w[provider error],
+          %w[provider failure],
+          %w[provider rejected the request],
+          %w[top level explanation],
+          %w[rate limit reached please try again later],
+          %w[you exceeded your current quota please check your plan and billing details],
+          %w[requested model was not found],
+          %w[requested model is unavailable],
+          %w[internal server error],
+          %w[service temporarily unavailable],
+          %w[invalid bearer token],
+          %w[invalid access token],
+          %w[invalid token expired],
+          %w[api key missing],
+          %w[basic authentication failed],
+          %w[access token is expired],
+          %w[access token is expired please sign in again],
+          %w[token is invalid],
+          %w[token is invalid or has expired],
+          %w[api key is missing],
+          %w[api key required],
+          %w[api key required for this operation],
+          %w[api key format is invalid],
+          %w[api key authentication failed],
+          %w[api key cannot be empty],
+          %w[api key has expired],
+          %w[api key does not exist],
+          %w[client secret missing],
+          %w[client secret does not match],
+          %w[password too short],
+          %w[password cannot be blank],
+          %w[api key is missing add one to your account settings],
+          %w[api key is valid but does not have permission to access this resource],
+          %w[client secret is invalid],
+          %w[access token does not contain the required scopes],
+          %w[signature is invalid],
+          %w[request input is invalid],
+          %w[input exceeds the maximum context length],
+          %w[request contains too many input tokens],
+          %w[request input is invalid expected a string],
+          %w[input is invalid expected a string],
+          %w[input is required],
+          %w[input is required for this operation],
+          %w[response is malformed],
+          %w[response is malformed and could not be processed],
+          %w[response could not be parsed as json],
+          %w[response is malformed expected an object],
+          %w[output is too long],
+          %w[output is too long for the selected model],
+          %w[output was truncated because it exceeded the maximum token limit],
+          %w[api key is invalid check your credentials],
+          %w[message is required],
+          %w[content is required],
+          %w[data url is invalid],
+          %w[invalid data expected a string],
+          %w[expected input string],
+          %w[authentication failed],
+          %w[authorization failed],
+          %w[request failed],
+          %w[request rejected],
+          %w[input invalid],
+          %w[response invalid],
+          %w[output invalid],
+          %w[model unavailable],
+          %w[rate limit exceeded],
+          %w[quota exceeded],
+          %w[invalid request],
+          %w[resource not found],
+          %w[permission denied]
+        ]
+        safe_templates.include?(words)
       end
 
       private def bounded_status_field(value, limit:)
