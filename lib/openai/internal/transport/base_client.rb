@@ -370,6 +370,16 @@ module OpenAI
 
           query = OpenAI::Internal::Util.deep_merge(req[:query].to_h, opts[:extra_query].to_h)
 
+          url = OpenAI::Internal::Util.join_parsed_uri(
+            @base_url_components,
+            {**req, path: path, query: query}
+          )
+          request_origin = URI.parse(url.to_s).normalize
+          base_origin = URI.parse(@base_url.to_s).normalize
+          unless OpenAI::Internal::Util.uri_origin(request_origin) == OpenAI::Internal::Util.uri_origin(base_origin)
+            raise OpenAI::Errors::Error, "Request path must resolve to the configured base URL origin"
+          end
+
           headers = OpenAI::Internal::Util.normalized_headers(
             @headers,
             auth_headers(
@@ -412,10 +422,6 @@ module OpenAI
           # has no body at all, not when an optional body param was omitted.
           headers.delete("content-type") if body.nil? && !req.key?(:body)
 
-          url = OpenAI::Internal::Util.join_parsed_uri(
-            @base_url_components,
-            {**req, path: path, query: query}
-          )
           max_retries = opts.fetch(:max_retries, @max_retries)
           max_retries = 0 unless self.class.request_body_replayable?(body)
           {
