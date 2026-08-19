@@ -335,6 +335,73 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
     assert_same(headers, error.headers)
   end
 
+  def test_sensitive_request_ids_are_omitted_without_altering_raw_headers
+    request_ids = [
+      "access_token=fake-request-access-token",
+      "Bearer fake-request-bearer-token",
+      "sk-proj-fake-request-api-key",
+      "AWSAccessKeyId=AKIAIOSFODNN7EXAMPLE",
+      "customer_id=fake-customer-identifier",
+      "user_identifier=fake-user-identifier",
+      "email=fake-customer@example.test",
+      "fake-customer@example.test",
+      "fake-customer+tag@example.test",
+      "emailAddress=fake-customer@example.test",
+      "e-mail=fake-customer@example.test",
+      "e_mail=fake-customer@example.test",
+      "mail=fake-customer@example.test",
+      "prompt=private customer prompt"
+    ]
+
+    request_ids.each do |request_id|
+      headers = {"x-request-id" => request_id}
+      body = {error: {message: "Provider rejected the request"}}
+
+      error = status_error(headers: headers, body: body)
+
+      assert_includes(error.message, "status=400")
+      assert_includes(error.message, "Provider rejected the request")
+      refute_includes(error.message, "request_id=")
+      refute_includes(error.message, "fake-")
+      refute_includes(error.message, "private customer")
+      assert_same(request_id, error.request_id)
+      assert_same(headers, error.headers)
+      assert_same(body, error.body)
+    end
+  end
+
+  def test_ordinary_request_id_formats_remain_visible
+    request_ids = [
+      "req_1234567890abcdef",
+      "req-prod-1234567890",
+      "4c37c3c3-e770-4b3d-8d2e-b5e0e6de6e03",
+      "trace.1234abcd.5678efgh",
+      "email-delivery-req-123"
+    ]
+
+    request_ids.each do |request_id|
+      error = status_error(headers: {"x-request-id" => request_id})
+
+      assert_includes(error.message, "request_id=#{request_id}")
+      assert_same(request_id, error.request_id)
+    end
+  end
+
+  def test_non_utf8_request_ids_remain_log_safe_without_altering_raw_headers
+    request_ids = ["req_\xFF".b, "req_\xFF".dup.force_encoding(Encoding::UTF_8)]
+
+    request_ids.each do |request_id|
+      headers = {"x-request-id" => request_id}
+
+      error = status_error(headers: headers)
+
+      assert_instance_of(OpenAI::Errors::BadRequestError, error)
+      assert_includes(error.message, "request_id=req_\\xFF")
+      assert_same(request_id, error.request_id)
+      assert_same(headers, error.headers)
+    end
+  end
+
   def test_request_ids_are_bounded_without_altering_raw_headers
     request_id = "req_" + ("😀" * 600)
     headers = {"x-request-id" => request_id}

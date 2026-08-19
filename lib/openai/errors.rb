@@ -284,6 +284,7 @@ module OpenAI
           \b(?:bearer|basic)\s+(?!tokens?\b|credentials?\b|authentication\b)\S |
           \b(?:(?:access|refresh|id|session)\s+)?(?:tokens?|credentials?)\s+
               (?!is\b|was\b|invalid\b|expired\b|missing\b|required\b)[a-z0-9._-]{8,} |
+          \b[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}\b |
           \beyJ[a-z0-9_-]+\.[a-z0-9_-]+\.[a-z0-9_-]+ |
           \b(?:AKIA|ASIA)[a-z0-9]{16}\b |
           \b(?:sk|rk|ek)(?:[-_][a-z0-9]{16,}|(?:[-_][a-z0-9]+){2,}) |
@@ -299,6 +300,7 @@ module OpenAI
               ) |
           \b(?:[a-z0-9]+[-_])*
               (?:api[-_\s]?key|access[-_\s]?token|client[-_\s]?secret|authorization|awsaccesskeyid|
+                  (?:customer|user)[-_\s]?(?:id|identifier)|email|
                   (?:set[-_\s]?)?cookie|credentials?|assertions?|tokens?|keys?|signature|secret|password|
                   prompt|input|responses?|outputs?|messages?|content)
               (?:[-_][a-z0-9]+|\[[a-z0-9_-]*\])*
@@ -321,7 +323,13 @@ module OpenAI
         safe_url = OpenAI::Internal::Logging.safe_url(url).sub(/[?#].*/, "")
         fields = ["status=#{status}", "url=#{safe_url}"]
         request_id = headers&.[]("x-request-id")
-        fields << "request_id=#{bounded_status_field(request_id, limit: 128)}" if request_id
+        if request_id
+          classified_request_id = request_id.to_s[...512].encode(Encoding::UTF_8, invalid: :replace, undef: :replace)
+          unless classified_request_id.match?(sensitive_description)
+            fields << "request_id=#{bounded_status_field(request_id, limit: 128)}"
+          end
+        end
+
         fields << "message=#{bounded_status_field(upstream_message, limit: 512)}" if upstream_message
 
         fields.join(" ")
