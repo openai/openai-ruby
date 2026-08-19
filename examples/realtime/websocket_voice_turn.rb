@@ -139,6 +139,13 @@ module OpenAI
         end
 
         def open_output(path)
+          if Gem.win_platform?
+            raise(
+              ArgumentError,
+              "secure voice output is unavailable on Windows because Ruby cannot verify owner-only ACLs"
+            )
+          end
+
           directory = File.realpath(File.dirname(path))
           directory_stat = File.stat(directory)
           if (directory_stat.mode & 0o022).positive? && !directory_stat.sticky?
@@ -160,6 +167,7 @@ module OpenAI
           Dir.mktmpdir(".openai-realtime-", directory) do |staging_directory|
             File.chmod(0o700, staging_directory)
             Tempfile.create(["response-", ".tmp"], staging_directory, mode: File::BINARY, perm: 0o600) do |file|
+              verify_hard_link_support!(source_path: file.path, directory: directory)
               result = yield(file)
               file.flush
               file.fsync
@@ -172,6 +180,28 @@ module OpenAI
               end
 
               result
+            end
+          end
+        end
+
+        def verify_hard_link_support!(source_path:, directory:)
+          Tempfile.create([".openai-realtime-link-", ".tmp"], directory, perm: 0o600) do |probe|
+            probe_path = probe.path
+            probe.close
+            File.unlink(probe_path)
+            linked = false
+
+            begin
+              File.link(source_path, probe_path)
+              linked = true
+            rescue NotImplementedError, SystemCallError
+              raise(
+                ArgumentError,
+                "output filesystem must support atomic no-clobber hard links",
+                cause: nil
+              )
+            ensure
+              File.unlink(probe_path) if linked
             end
           end
         end

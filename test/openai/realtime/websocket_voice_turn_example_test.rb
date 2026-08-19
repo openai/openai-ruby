@@ -337,6 +337,76 @@ class OpenAI::Test::RealtimeWebSocketVoiceTurnExampleTest < Minitest::Test
     end
   end
 
+  def test_file_boundary_rejects_windows_before_connecting
+    Dir.mktmpdir("openai-realtime-voice") do |directory|
+      input_path = File.join(directory, "input.pcm")
+      output_path = File.join(directory, "response.pcm")
+      File.binwrite(input_path, "pcm")
+      realtime = RecordingRealtime.new(RecordingConnection.new(successful_events))
+      test_thread = Thread.current
+      win_platform = Gem.method(:win_platform?)
+      platform_check = -> { Thread.current.equal?(test_thread) ? true : win_platform.call }
+
+      error = Gem.stub(:win_platform?, platform_check) do
+        assert_raises(ArgumentError) do
+          OpenAI::Examples::Realtime::WebSocketVoiceTurn.run_to_file(
+            client: RecordingClient.new(realtime: realtime),
+            input_path: input_path,
+            output_path: output_path,
+            model: "gpt-realtime-2.1",
+            voice: :marin,
+            timeout_seconds: 1,
+            output: StringIO.new
+          )
+        end
+      end
+
+      assert_equal(
+        "secure voice output is unavailable on Windows because Ruby cannot verify owner-only ACLs",
+        error.message
+      )
+      assert_empty(realtime.models)
+      refute_path_exists(output_path)
+    end
+  end
+
+  def test_file_boundary_rejects_filesystems_without_hard_links_before_connecting
+    Dir.mktmpdir("openai-realtime-voice") do |directory|
+      input_path = File.join(directory, "input.pcm")
+      output_path = File.join(directory, "response.pcm")
+      File.binwrite(input_path, "pcm")
+      realtime = RecordingRealtime.new(RecordingConnection.new(successful_events))
+      test_thread = Thread.current
+      create_link = File.method(:link)
+      unsupported_link = lambda do |*args|
+        raise Errno::ENOTSUP if Thread.current.equal?(test_thread)
+
+        create_link.call(*args)
+      end
+
+      error = File.stub(:link, unsupported_link) do
+        assert_raises(ArgumentError) do
+          OpenAI::Examples::Realtime::WebSocketVoiceTurn.run_to_file(
+            client: RecordingClient.new(realtime: realtime),
+            input_path: input_path,
+            output_path: output_path,
+            model: "gpt-realtime-2.1",
+            voice: :marin,
+            timeout_seconds: 1,
+            output: StringIO.new
+          )
+        end
+      end
+
+      assert_equal(
+        "output filesystem must support atomic no-clobber hard links",
+        error.message
+      )
+      assert_empty(realtime.models)
+      refute_path_exists(output_path)
+    end
+  end
+
   def test_output_file_must_not_already_exist
     Dir.mktmpdir("openai-realtime-voice") do |directory|
       path = File.join(directory, "response.pcm")

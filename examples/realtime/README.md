@@ -77,7 +77,10 @@ The output path must not already exist. This prevents accidental truncation,
 including when the input and output paths refer to the same file. The example
 stages audio privately and publishes the path only after success, so a failed
 or timed-out run leaves no partial response behind and the command can be
-retried. `WebSocketVoiceTurn.run` returns the assistant transcript explicitly;
+retried. Before connecting, it verifies that the output filesystem supports
+the atomic hard-link operation used for no-clobber publication. It fails closed
+on Windows because Ruby's portable file-mode API cannot verify owner-only NTFS
+ACLs. `WebSocketVoiceTurn.run` returns the assistant transcript explicitly;
 diagnostic output never includes it. The executable boundary also suppresses
 payload-bearing parser causes from malformed protocol events. A successful run
 writes non-empty response audio, observes `response.done status=completed`,

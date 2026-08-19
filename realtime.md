@@ -182,8 +182,11 @@ timeout leaves no partial response behind. The staging directory is owner-only,
 and the example rejects group- or world-writable output directories without a
 sticky bit rather than risk publishing a substituted pathname. It writes raw
 24 kHz mono PCM16 so callers can play or convert the file without container
-buffering. At its executable boundary, malformed protocol events become a
-generic exception without the payload-bearing parser error as a retained cause.
+buffering. Before connecting, it verifies that the output filesystem supports
+atomic hard-link publication; it fails closed on Windows because Ruby cannot
+portably verify owner-only NTFS ACLs. At its executable boundary, malformed
+protocol events become a generic exception without the payload-bearing parser
+error as a retained cause.
 
 ## Event compatibility
 
