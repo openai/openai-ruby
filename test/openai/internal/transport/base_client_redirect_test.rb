@@ -82,6 +82,44 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
     assert_equal("Bearer fake-api-key", requests.last.headers.fetch("authorization"))
   end
 
+  def test_preserves_same_origin_redirect_when_ipv6_spelling_changes
+    [307, 308].each do |status|
+      destination = "https://[::1]/v1/redirected/#{status}"
+      requests = []
+      client, http_client = client_with_responses(
+        requests,
+        redirect_response(status, destination),
+        successful_response,
+        base_url: "https://[0:0:0:0:0:0:0:1]/v1"
+      )
+
+      response = client.request(method: :post, path: "probe", body: {prompt: "fake-private-prompt"})
+
+      http_client.verify
+      assert_equal(true, response[:ok])
+      assert_equal(destination, requests.last.url.to_s)
+      assert_equal(requests.first.body, requests.last.body)
+      assert_equal("Bearer fake-api-key", requests.last.headers.fetch("authorization"))
+    end
+  end
+
+  def test_rejects_cross_origin_redirect_between_distinct_ipv6_addresses
+    requests = []
+    client, http_client = client_with_responses(
+      requests,
+      redirect_response(307, "https://[::2]/v1/redirected"),
+      base_url: "https://[0:0:0:0:0:0:0:1]/v1"
+    )
+
+    error = assert_raises(OpenAI::Errors::APIConnectionError) do
+      client.request(method: :post, path: "probe", body: {prompt: "fake-private-prompt"})
+    end
+
+    http_client.verify
+    assert_equal("https://[::2]", error.url.to_s)
+    assert_equal(1, requests.length)
+  end
+
   def test_preserves_bodyless_cross_origin_get_and_head_redirects
     [[:get, 307], [:get, 308], [:head, 307], [:head, 308], [:head, 303]].each do |method, status|
       destination = "https://example.com/redirected/#{method}/#{status}"
@@ -118,6 +156,82 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
     assert_equal(true, response[:ok])
     assert_equal([:post, :post], requests.map(&:method))
     assert_nil(requests.last.body)
+    refute_includes(requests.last.headers, "authorization")
+  end
+
+  def test_rejects_cross_origin_redirect_when_request_preparation_adds_a_body
+    [307, 308].each do |status|
+      requests = []
+      client, http_client = client_with_responses(
+        requests,
+        redirect_response(status, "https://example.com/redirected"),
+        client_class: body_adding_client_class
+      )
+
+      error = assert_raises(OpenAI::Errors::APIConnectionError) do
+        client.request(method: :post, path: "probe")
+      end
+
+      http_client.verify
+      assert_equal("https://example.com", error.url.to_s)
+      assert_equal(1, requests.length)
+      assert_equal("fake-prepared-private-prompt", requests.first.body)
+    end
+  end
+
+  def test_preserves_same_origin_redirect_when_request_preparation_adds_a_body
+    requests = []
+    client, http_client = client_with_responses(
+      requests,
+      redirect_response(307, "https://trusted.example/v1/redirected"),
+      successful_response,
+      client_class: body_adding_client_class
+    )
+
+    response = client.request(method: :post, path: "probe")
+
+    http_client.verify
+    assert_equal(true, response[:ok])
+    assert_equal(["fake-prepared-private-prompt", "fake-prepared-private-prompt"], requests.map(&:body))
+    assert_equal("Bearer fake-api-key", requests.last.headers.fetch("authorization"))
+  end
+
+  def test_preserves_false_json_body_on_same_origin_redirect
+    requests = []
+    client, http_client = client_with_responses(
+      requests,
+      redirect_response(307, "https://trusted.example/v1/redirected"),
+      successful_response
+    )
+
+    response = client.request(method: :post, path: "probe", body: false)
+
+    http_client.verify
+    assert_equal(true, response[:ok])
+    assert_equal(["false", "false"], requests.map(&:body))
+  end
+
+  def test_preserves_bodyless_cross_origin_redirect_when_request_preparation_removes_a_body
+    client_class = Class.new(OpenAI::Client) do
+      private def prepare_request(request, redirect_count:, retry_count:)
+        prepared = super
+        prepared.merge(body: nil)
+      end
+    end
+
+    requests = []
+    client, http_client = client_with_responses(
+      requests,
+      redirect_response(307, "https://example.com/redirected"),
+      successful_response,
+      client_class: client_class
+    )
+
+    response = client.request(method: :post, path: "probe", body: {prompt: "fake-never-sent-prompt"})
+
+    http_client.verify
+    assert_equal(true, response[:ok])
+    assert_equal([nil, nil], requests.map(&:body))
     refute_includes(requests.last.headers, "authorization")
   end
 
@@ -255,7 +369,38 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
     end
   end
 
-  private def client_with_responses(requests, *responses, **options)
+  def test_rejected_cross_origin_redirect_never_retains_sensitive_response_headers
+    response = OpenAI::HTTPClient::Response.new(
+      status: 307,
+      headers: {
+        "location" => "https://example.com/redirected",
+        "set-cookie" => "session=fake-session-cookie",
+        "x-provider-token" => "fake-provider-token",
+        "authorization" => "Bearer fake-response-authorization"
+      },
+      body: ""
+    )
+    requests = []
+    client, http_client = client_with_responses(requests, response)
+
+    error = assert_raises(OpenAI::Errors::APIConnectionError) do
+      client.request(method: :post, path: "probe", body: {prompt: "fake-private-prompt"})
+    end
+
+    http_client.verify
+    serialized = Marshal.dump(error)
+    %w[fake-session-cookie fake-provider-token fake-response-authorization].each do |secret|
+      refute_includes(serialized, secret)
+    end
+  end
+
+  private def client_with_responses(
+    requests,
+    *responses,
+    base_url: "https://trusted.example/v1",
+    client_class: OpenAI::Client,
+    **options
+  )
     http_client = Minitest::Mock.new(OpenAI::HTTPClient.new)
     responses.each do |response|
       http_client.expect(:execute, response) do |request|
@@ -264,13 +409,22 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
       end
     end
 
-    client = OpenAI::Client.new(
+    client = client_class.new(
       api_key: "fake-api-key",
-      base_url: "https://trusted.example/v1",
+      base_url: base_url,
       http_client: http_client,
       **options
     )
     [client, http_client]
+  end
+
+  private def body_adding_client_class
+    Class.new(OpenAI::Client) do
+      private def prepare_request(request, redirect_count:, retry_count:)
+        prepared = super
+        prepared.merge(body: "fake-prepared-private-prompt")
+      end
+    end
   end
 
   private def redirect_response(status, destination)

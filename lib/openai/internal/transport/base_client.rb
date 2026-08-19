@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "ipaddr"
+
 require_relative "../logging"
 
 module OpenAI
@@ -170,6 +172,14 @@ module OpenAI
             # from undici
             origin = OpenAI::Internal::Util.uri_origin(url)
             redirect_origin = OpenAI::Internal::Util.uri_origin(location)
+            if url.host.start_with?("[")
+              origin = origin.sub(url.host, "[#{IPAddr.new(url.hostname)}]")
+            end
+
+            if location.host.start_with?("[")
+              redirect_origin = redirect_origin.sub(location.host, "[#{IPAddr.new(location.hostname)}]")
+            end
+
             unless origin.casecmp?(redirect_origin)
               unless request[:body].nil?
                 # An attacker who controls a trusted endpoint's redirect destination could receive the body.
@@ -177,7 +187,6 @@ module OpenAI
                 raise(
                   OpenAI::Errors::APIConnectionError.new(
                     url: URI(redirect_origin),
-                    response: response_headers.except("location"),
                     message: message
                   )
                 )
@@ -597,12 +606,18 @@ module OpenAI
           in 300..399
             self.class.reap_connection!(status, stream: stream)
 
-            redirect_source = request.merge(url: prepared_request.fetch(:url))
+            redirect_body = request[:body]
+            redirect_body = prepared_request[:body] if redirect_body.nil? || prepared_request[:body].nil?
+            redirect_source = request.merge(
+              url: prepared_request.fetch(:url),
+              body: redirect_body
+            )
             redirected_request = self.class.follow_redirect(
               redirect_source,
               status: status,
               response_headers: headers
             )
+            redirected_request = redirected_request.merge(body: nil) if request[:body].nil?
             send_request(
               redirected_request,
               redirect_count: redirect_count + 1,
