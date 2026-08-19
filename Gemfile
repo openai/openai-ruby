@@ -19,10 +19,8 @@ group :development, :test do
   gem "async-websocket"
   gem "aws-sdk-core", "~> 3"
   gem "minitest", "~> 5.27"
-  gem "minitest-focus"
   gem "minitest-hooks"
   gem "minitest-proveit"
-  gem "minitest-rg"
   gem "sorbet-runtime"
   gem "webmock"
 end
