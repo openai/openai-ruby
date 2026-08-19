@@ -8,8 +8,8 @@ This directory contains runnable examples for the Realtime WebSocket surface:
   commits one input turn, streams transcription deltas, verifies the matching
   completed transcript, and exits.
 - `websocket_voice_turn.rb` uploads one raw 24 kHz mono PCM16 turn, explicitly
-  commits it, collects the assistant's streamed audio transcript, saves the PCM
-  response, verifies a completed response, and exits.
+  commits it, streams the assistant's PCM response to standard output, returns
+  its transcript to embedded callers, verifies a completed response, and exits.
 
 Add the optional transport dependency and set an API key:
 
@@ -62,30 +62,30 @@ This example intentionally reads a file and drains its result after commit. It
 does not claim continuous microphone captioning or concurrent reader/writer
 support; those require a separately reviewed lifecycle boundary.
 
-## Send one voice turn and save the response
+## Send one voice turn and play the response
 
-Convert an audio file to 24 kHz mono PCM16, run the voice-turn example, then
-play the raw response:
+Convert an audio file to 24 kHz mono PCM16, stream it through the voice-turn
+example, and play the response as it arrives:
 
 ```sh
-ffmpeg -i input.wav -f s16le -acodec pcm_s16le -ac 1 -ar 24000 input.pcm
-bundle exec ruby examples/realtime/websocket_voice_turn.rb input.pcm response.pcm
-ffplay -f s16le -ar 24000 -ac 1 response.pcm
+ffmpeg -v error -i input.wav -f s16le -acodec pcm_s16le -ac 1 -ar 24000 - \
+  | bundle exec ruby examples/realtime/websocket_voice_turn.rb \
+  | ffplay -v error -f s16le -ar 24000 -ac 1 -
 ```
 
-The output path must not already exist. This prevents accidental truncation,
-including when the input and output paths refer to the same file. The example
-stages audio privately and publishes the path only after success, so a failed
-or timed-out run leaves no partial response behind and the command can be
-retried. Before connecting, it verifies that the output filesystem supports
-the atomic hard-link operation used for no-clobber publication. It fails closed
-on Windows because Ruby's portable file-mode API cannot verify owner-only NTFS
-ACLs. `WebSocketVoiceTurn.run` returns the assistant transcript explicitly;
-diagnostic output never includes it. The executable boundary also suppresses
-payload-bearing parser causes from malformed protocol events. A successful run
-writes non-empty response audio, observes `response.done status=completed`,
-publishes the requested file, and only then prints
-`[realtime] voice turn smoke test passed`.
+The executable reads raw PCM from standard input, writes only response PCM to
+standard output, and sends metadata-only diagnostics to standard error.
+`WebSocketVoiceTurn.run_with_timeout` returns the assistant transcript to
+embedded callers without printing it. Its single deadline covers the initial
+input read, network turn, and response stream. The boundary also suppresses
+path details from operating-system I/O errors and payload-bearing parser causes
+from malformed protocol events. A successful run writes non-empty response
+audio, observes `response.done status=completed`, and then prints
+`[realtime] voice turn smoke test passed` to standard error.
+
+The example intentionally does not own output filenames, overwrite policy, or
+filesystem durability. If you redirect its standard output to a file, those
+semantics belong to your shell or application.
 
 Optional environment variables:
 

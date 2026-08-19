@@ -124,7 +124,7 @@ example additionally rejects empty input and requires a matching non-empty
 completion. It defaults to `gpt-transcribe`, which is intended for committed
 turns over WebSockets.
 
-## Send one voice turn and save the spoken response
+## Send one voice turn and stream the spoken response
 
 A normal Realtime session can accept an explicitly committed PCM turn and
 stream PCM response audio plus its transcript. Disable turn detection when the
@@ -174,19 +174,16 @@ end
 The runnable
 [`websocket_voice_turn.rb`](examples/realtime/websocket_voice_turn.rb) example
 checks the complete lifecycle: non-empty input, explicit commit, streamed audio
-and transcript, a successful terminal response, binary output, and an output
-path that does not already exist. It returns the transcript to its caller while
-keeping diagnostics metadata-only. Audio is staged privately and published at
-the requested path only after the complete turn succeeds, so a failure or
-timeout leaves no partial response behind. The staging directory is owner-only,
-and the example rejects group- or world-writable output directories without a
-sticky bit rather than risk publishing a substituted pathname. It writes raw
-24 kHz mono PCM16 so callers can play or convert the file without container
-buffering. Before connecting, it verifies that the output filesystem supports
-atomic hard-link publication; it fails closed on Windows because Ruby cannot
-portably verify owner-only NTFS ACLs. At its executable boundary, malformed
-protocol events become a generic exception without the payload-bearing parser
-error as a retained cause.
+and transcript, a successful terminal response, and binary output. The
+executable reads raw PCM from standard input, writes response PCM to standard
+output, and keeps metadata-only diagnostics on standard error. Its single
+deadline begins before the initial input read and covers the complete network
+turn. Embedded callers receive the transcript as the return value. At the
+executable boundary, operating-system I/O errors and malformed protocol events
+become generic exceptions without sensitive paths, payloads, or retained
+causes. The example deliberately leaves output filenames, overwrite policy,
+and filesystem durability to the caller rather than claiming a portable secure
+file-publication contract.
 
 ## Event compatibility
 

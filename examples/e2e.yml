@@ -57,7 +57,7 @@ examples:
     reason: Requires caller-provided 24 kHz mono PCM16 speech audio and live Realtime transcription access.
   examples/realtime/websocket_voice_turn.rb:
     status: excluded
-    reason: Requires caller-provided 24 kHz mono PCM16 speech audio, an output path, and live Realtime audio access.
+    reason: Requires caller-provided 24 kHz mono PCM16 speech audio, a PCM response sink, and live Realtime audio access.
   examples/picture.rb:
     status: covered
     minimum_output_bytes: 1

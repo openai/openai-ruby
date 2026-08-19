@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "stringio"
-require "tmpdir"
 
 require_relative "../test_helper"
 require_relative "../../../examples/realtime/websocket_voice_turn"
@@ -57,20 +56,30 @@ class OpenAI::Test::RealtimeWebSocketVoiceTurnExampleTest < Minitest::Test
     end
   end
 
+  class BlockingInput
+    def binmode = self
+    def read(_bytes) = sleep(60)
+  end
+
+  class SystemCallFailureInput
+    def binmode = self
+
+    def read(_bytes)
+      raise Errno::ENOENT, "private-customer-audio.pcm"
+    end
+  end
+
   class RecordingRealtime
     attr_reader :models
 
-    def initialize(connection, after_connect: nil)
-      @after_connect = after_connect
+    def initialize(connection)
       @connection = connection
       @models = []
     end
 
     def connect(model:)
       @models << model
-      result = yield(@connection)
-      @after_connect&.call
-      result
+      yield(@connection)
     end
   end
 
@@ -189,34 +198,31 @@ class OpenAI::Test::RealtimeWebSocketVoiceTurnExampleTest < Minitest::Test
     refute_includes(diagnostics.string, "Final words.")
   end
 
-  def test_file_boundary_rejects_an_empty_authoritative_transcript
-    Dir.mktmpdir("openai-realtime-voice") do |directory|
-      input_path = File.join(directory, "input.pcm")
-      output_path = File.join(directory, "response.pcm")
-      File.binwrite(input_path, "pcm")
-      events = [
-        transcript_delta("Stale streamed words."),
-        transcript_done(""),
-        audio_delta("audio"),
-        response_done
-      ]
-      realtime = RecordingRealtime.new(RecordingConnection.new(events))
+  def test_stream_boundary_rejects_an_empty_authoritative_transcript
+    events = [
+      transcript_delta("Stale streamed words."),
+      transcript_done(""),
+      audio_delta("audio"),
+      response_done
+    ]
+    diagnostics = StringIO.new
 
-      error = assert_raises(RuntimeError) do
-        OpenAI::Examples::Realtime::WebSocketVoiceTurn.run_to_file(
-          client: RecordingClient.new(realtime: realtime),
-          input_path: input_path,
-          output_path: output_path,
-          model: "gpt-realtime-2.1",
-          voice: :marin,
-          timeout_seconds: 1,
-          output: StringIO.new
-        )
-      end
-
-      assert_equal("Realtime response completed without an audio transcript", error.message)
-      refute_path_exists(output_path)
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::WebSocketVoiceTurn.run_with_timeout(
+        client: RecordingClient.new(
+          realtime: RecordingRealtime.new(RecordingConnection.new(events))
+        ),
+        input: StringIO.new("pcm".b),
+        audio_output: StringIO.new("".b),
+        model: "gpt-realtime-2.1",
+        voice: :marin,
+        timeout_seconds: 1,
+        output: diagnostics
+      )
     end
+
+    assert_equal("Realtime response completed without an audio transcript", error.message)
+    refute_includes(diagnostics.string, "voice turn smoke test passed")
   end
 
   def test_example_keeps_service_error_details_out_of_the_exception_message
@@ -250,340 +256,97 @@ class OpenAI::Test::RealtimeWebSocketVoiceTurnExampleTest < Minitest::Test
     assert_equal("Realtime returned invalid audio data.", error.message)
   end
 
-  def test_file_boundary_suppresses_protocol_error_data_and_cause
-    Dir.mktmpdir("openai-realtime-voice") do |directory|
-      input_path = File.join(directory, "input.pcm")
-      output_path = File.join(directory, "response.pcm")
-      File.binwrite(input_path, "pcm")
-      customer_data = "private malformed frame content"
-      protocol_error = OpenAI::Errors::RealtimeProtocolError.new(
-        data: customer_data,
-        cause: JSON::ParserError.new(customer_data)
-      )
-      realtime = RecordingRealtime.new(ProtocolFailureConnection.new(protocol_error))
-      diagnostics = StringIO.new
+  def test_stream_boundary_streams_audio_and_returns_transcript
+    realtime = RecordingRealtime.new(RecordingConnection.new(successful_events))
+    audio_output = StringIO.new("".b)
+    transcript = nil
 
-      error = assert_raises(RuntimeError) do
-        OpenAI::Examples::Realtime::WebSocketVoiceTurn.run_to_file(
-          client: RecordingClient.new(realtime: realtime),
-          input_path: input_path,
-          output_path: output_path,
-          model: "gpt-realtime-2.1",
-          voice: :marin,
-          timeout_seconds: 1,
-          output: diagnostics
-        )
-      end
-
-      assert_instance_of(RuntimeError, error)
-      assert_equal("Realtime protocol error.", error.message)
-      assert_nil(error.cause)
-      refute_includes(error.full_message, customer_data)
-      refute_includes(diagnostics.string, customer_data)
-      refute_path_exists(output_path)
-    end
-  end
-
-  def test_file_boundary_reports_success_only_after_output_publication
-    Dir.mktmpdir("openai-realtime-voice") do |directory|
-      input_path = File.join(directory, "input.pcm")
-      output_path = File.join(directory, "response.pcm")
-      File.binwrite(input_path, "pcm")
-      realtime = RecordingRealtime.new(
-        RecordingConnection.new(successful_events),
-        after_connect: -> { File.binwrite(output_path, "other owner") }
-      )
-      diagnostics = StringIO.new
-
-      error = assert_raises(ArgumentError) do
-        OpenAI::Examples::Realtime::WebSocketVoiceTurn.run_to_file(
-          client: RecordingClient.new(realtime: realtime),
-          input_path: input_path,
-          output_path: output_path,
-          model: "gpt-realtime-2.1",
-          voice: :marin,
-          timeout_seconds: 1,
-          output: diagnostics
-        )
-      end
-
-      assert_equal("output path must not already exist", error.message)
-      assert_equal("other owner", File.binread(output_path))
-      refute_includes(diagnostics.string, "voice turn smoke test passed")
-    end
-  end
-
-  def test_file_boundary_publishes_output_before_reporting_success
-    Dir.mktmpdir("openai-realtime-voice") do |directory|
-      input_path = File.join(directory, "input.pcm")
-      output_path = File.join(directory, "response.pcm")
-      File.binwrite(input_path, "pcm")
-      realtime = RecordingRealtime.new(RecordingConnection.new(successful_events))
-      diagnostics = StringIO.new
-
-      transcript = OpenAI::Examples::Realtime::WebSocketVoiceTurn.run_to_file(
+    stdout, stderr = capture_io do
+      transcript = OpenAI::Examples::Realtime::WebSocketVoiceTurn.run_with_timeout(
         client: RecordingClient.new(realtime: realtime),
-        input_path: input_path,
-        output_path: output_path,
+        input: StringIO.new("pcm".b),
+        audio_output: audio_output,
+        model: "gpt-realtime-2.1",
+        voice: :marin,
+        timeout_seconds: 1
+      )
+    end
+
+    assert_equal("Hello from Ruby.", transcript)
+    assert_equal("voice-response".b, audio_output.string)
+    assert_empty(stdout)
+    assert_equal("[realtime] voice turn smoke test passed\n", stderr.lines.last)
+    refute_includes(stderr, transcript)
+  end
+
+  def test_stream_boundary_deadline_covers_the_initial_input_read
+    realtime = RecordingRealtime.new(RecordingConnection.new(successful_events))
+    diagnostics = StringIO.new
+
+    assert_raises(Timeout::Error) do
+      OpenAI::Examples::Realtime::WebSocketVoiceTurn.run_with_timeout(
+        client: RecordingClient.new(realtime: realtime),
+        input: BlockingInput.new,
+        audio_output: StringIO.new("".b),
+        model: "gpt-realtime-2.1",
+        voice: :marin,
+        timeout_seconds: 0.05,
+        output: diagnostics
+      )
+    end
+
+    assert_empty(realtime.models)
+    refute_includes(diagnostics.string, "voice turn smoke test passed")
+  end
+
+  def test_stream_boundary_suppresses_protocol_error_data_and_cause
+    customer_data = "private malformed frame content"
+    protocol_error = OpenAI::Errors::RealtimeProtocolError.new(
+      data: customer_data,
+      cause: JSON::ParserError.new(customer_data)
+    )
+    realtime = RecordingRealtime.new(ProtocolFailureConnection.new(protocol_error))
+    diagnostics = StringIO.new
+
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::WebSocketVoiceTurn.run_with_timeout(
+        client: RecordingClient.new(realtime: realtime),
+        input: StringIO.new("pcm".b),
+        audio_output: StringIO.new("".b),
         model: "gpt-realtime-2.1",
         voice: :marin,
         timeout_seconds: 1,
         output: diagnostics
       )
-
-      assert_equal("Hello from Ruby.", transcript)
-      assert_equal("voice-response".b, File.binread(output_path))
-      assert_equal("[realtime] voice turn smoke test passed\n", diagnostics.string.lines.last)
     end
+
+    assert_instance_of(RuntimeError, error)
+    assert_equal("Realtime protocol error.", error.message)
+    assert_nil(error.cause)
+    refute_includes(error.full_message, customer_data)
+    refute_includes(diagnostics.string, customer_data)
   end
 
-  def test_file_boundary_rejects_windows_before_connecting
-    Dir.mktmpdir("openai-realtime-voice") do |directory|
-      input_path = File.join(directory, "input.pcm")
-      output_path = File.join(directory, "response.pcm")
-      File.binwrite(input_path, "pcm")
-      realtime = RecordingRealtime.new(RecordingConnection.new(successful_events))
-      test_thread = Thread.current
-      win_platform = Gem.method(:win_platform?)
-      platform_check = -> { Thread.current.equal?(test_thread) ? true : win_platform.call }
+  def test_stream_boundary_suppresses_system_call_error_details
+    customer_path = "private-customer-audio.pcm"
+    realtime = RecordingRealtime.new(RecordingConnection.new(successful_events))
 
-      error = Gem.stub(:win_platform?, platform_check) do
-        assert_raises(ArgumentError) do
-          OpenAI::Examples::Realtime::WebSocketVoiceTurn.run_to_file(
-            client: RecordingClient.new(realtime: realtime),
-            input_path: input_path,
-            output_path: output_path,
-            model: "gpt-realtime-2.1",
-            voice: :marin,
-            timeout_seconds: 1,
-            output: StringIO.new
-          )
-        end
-      end
-
-      assert_equal(
-        "secure voice output is unavailable on Windows because Ruby cannot verify owner-only ACLs",
-        error.message
+    error = assert_raises(RuntimeError) do
+      OpenAI::Examples::Realtime::WebSocketVoiceTurn.run_with_timeout(
+        client: RecordingClient.new(realtime: realtime),
+        input: SystemCallFailureInput.new,
+        audio_output: StringIO.new("".b),
+        model: "gpt-realtime-2.1",
+        voice: :marin,
+        timeout_seconds: 1,
+        output: StringIO.new
       )
-      assert_empty(realtime.models)
-      refute_path_exists(output_path)
     end
-  end
 
-  def test_file_boundary_rejects_filesystems_without_hard_links_before_connecting
-    Dir.mktmpdir("openai-realtime-voice") do |directory|
-      input_path = File.join(directory, "input.pcm")
-      output_path = File.join(directory, "response.pcm")
-      File.binwrite(input_path, "pcm")
-      realtime = RecordingRealtime.new(RecordingConnection.new(successful_events))
-      test_thread = Thread.current
-      create_link = File.method(:link)
-      unsupported_link = lambda do |*args|
-        raise Errno::ENOTSUP if Thread.current.equal?(test_thread)
-
-        create_link.call(*args)
-      end
-
-      error = File.stub(:link, unsupported_link) do
-        assert_raises(ArgumentError) do
-          OpenAI::Examples::Realtime::WebSocketVoiceTurn.run_to_file(
-            client: RecordingClient.new(realtime: realtime),
-            input_path: input_path,
-            output_path: output_path,
-            model: "gpt-realtime-2.1",
-            voice: :marin,
-            timeout_seconds: 1,
-            output: StringIO.new
-          )
-        end
-      end
-
-      assert_equal(
-        "output filesystem must support atomic no-clobber hard links",
-        error.message
-      )
-      assert_empty(realtime.models)
-      refute_path_exists(output_path)
-    end
-  end
-
-  def test_output_file_must_not_already_exist
-    Dir.mktmpdir("openai-realtime-voice") do |directory|
-      path = File.join(directory, "response.pcm")
-      File.binwrite(path, "keep me")
-
-      error = assert_raises(ArgumentError) do
-        OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) { |_file| nil }
-      end
-
-      assert_equal("output path must not already exist", error.message)
-      assert_equal("keep me", File.binread(path))
-    end
-  end
-
-  def test_output_file_rejects_symlink_and_hardlink_destinations
-    Dir.mktmpdir("openai-realtime-voice") do |directory|
-      target = File.join(directory, "existing.pcm")
-      File.binwrite(target, "keep me")
-      destinations = [
-        File.join(directory, "response-symlink.pcm"),
-        File.join(directory, "response-hardlink.pcm")
-      ]
-      File.symlink(target, destinations.fetch(0))
-      File.link(target, destinations.fetch(1))
-
-      destinations.each do |path|
-        error = assert_raises(ArgumentError) do
-          OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) { |_file| nil }
-        end
-
-        assert_equal("output path must not already exist", error.message)
-      end
-
-      assert_equal("keep me", File.binread(target))
-      assert_predicate(File.lstat(destinations.fetch(0)), :symlink?)
-      assert(File.identical?(target, destinations.fetch(1)))
-    end
-  end
-
-  def test_output_file_does_not_relabel_errors_from_the_caller_block
-    Dir.mktmpdir("openai-realtime-voice") do |directory|
-      path = File.join(directory, "response.pcm")
-
-      error = assert_raises(Errno::EEXIST) do
-        OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) do |_file|
-          raise Errno::EEXIST, "raised by caller"
-        end
-      end
-
-      assert_includes(error.message, "raised by caller")
-      refute_path_exists(path)
-    end
-  end
-
-  def test_output_file_is_not_published_when_the_run_fails
-    Dir.mktmpdir("openai-realtime-voice") do |directory|
-      path = File.join(directory, "response.pcm")
-
-      error = assert_raises(RuntimeError) do
-        OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) do |file|
-          file.write("partial audio")
-          refute_path_exists(path)
-          raise "voice turn failed"
-        end
-      end
-
-      assert_equal("voice turn failed", error.message)
-      refute_path_exists(path)
-      assert_empty(Dir.children(directory))
-    end
-  end
-
-  def test_output_file_is_not_published_when_the_run_times_out
-    Dir.mktmpdir("openai-realtime-voice") do |directory|
-      path = File.join(directory, "response.pcm")
-
-      assert_raises(Timeout::Error) do
-        OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) do |file|
-          file.write("partial audio")
-          refute_path_exists(path)
-          raise Timeout::Error, "execution expired"
-        end
-      end
-
-      refute_path_exists(path)
-      assert_empty(Dir.children(directory))
-    end
-  end
-
-  def test_output_file_is_published_after_a_successful_run
-    Dir.mktmpdir("openai-realtime-voice") do |directory|
-      path = File.join(directory, "response.pcm")
-
-      OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) do |file|
-        file.write("complete audio")
-        refute_path_exists(path)
-
-        staging_directory = File.dirname(file.path)
-        refute_equal(directory, staging_directory)
-        assert_equal(0o700, File.stat(staging_directory).mode & 0o777)
-      end
-
-      assert_equal("complete audio", File.binread(path))
-      assert_equal(0o600, File.stat(path).mode & 0o777)
-      assert_equal(["response.pcm"], Dir.children(directory))
-    end
-  end
-
-  def test_output_file_rejects_a_replaceable_staging_path
-    Dir.mktmpdir("openai-realtime-voice") do |directory|
-      File.chmod(0o770, directory)
-      path = File.join(directory, "response.pcm")
-
-      error = assert_raises(ArgumentError) do
-        OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) do |file|
-          file.write("private audio")
-          File.unlink(file.path)
-          File.binwrite(file.path, "attacker-controlled audio")
-        end
-      end
-
-      assert_equal(
-        "output directory must not be writable by other users unless it has the sticky bit set",
-        error.message
-      )
-      refute_path_exists(path)
-      assert_empty(Dir.children(directory))
-    end
-  end
-
-  def test_output_file_allows_a_sticky_shared_directory
-    Dir.mktmpdir("openai-realtime-voice") do |directory|
-      File.chmod(0o1777, directory)
-      path = File.join(directory, "response.pcm")
-
-      OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) do |file|
-        file.write("complete audio")
-      end
-
-      assert_equal("complete audio", File.binread(path))
-      assert_equal(0o600, File.stat(path).mode & 0o777)
-    end
-  end
-
-  def test_output_file_does_not_publish_a_substituted_private_staging_path
-    Dir.mktmpdir("openai-realtime-voice") do |directory|
-      path = File.join(directory, "response.pcm")
-
-      error = assert_raises(RuntimeError) do
-        OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) do |file|
-          file.write("private audio")
-          File.unlink(file.path)
-          File.binwrite(file.path, "attacker-controlled audio")
-        end
-      end
-
-      assert_equal("staged output changed before publication", error.message)
-      refute_path_exists(path)
-      assert_empty(Dir.children(directory))
-    end
-  end
-
-  def test_output_file_does_not_replace_a_destination_created_during_the_run
-    Dir.mktmpdir("openai-realtime-voice") do |directory|
-      path = File.join(directory, "response.pcm")
-
-      error = assert_raises(ArgumentError) do
-        OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) do |file|
-          file.write("complete audio")
-          File.binwrite(path, "other owner")
-        end
-      end
-
-      assert_equal("output path must not already exist", error.message)
-      assert_equal("other owner", File.binread(path))
-      assert_equal(["response.pcm"], Dir.children(directory))
-    end
+    assert_equal("Realtime stream I/O error.", error.message)
+    assert_nil(error.cause)
+    refute_includes(error.full_message, customer_path)
+    assert_empty(realtime.models)
   end
 
   private def run_with_events(events)

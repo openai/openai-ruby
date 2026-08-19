@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "tempfile"
-require "tmpdir"
 require "timeout"
 
 require_relative "../../lib/openai"
@@ -108,102 +106,32 @@ module OpenAI
           end
         end
 
-        def run_to_file(
+        def run_with_timeout(
           client:,
-          input_path:,
-          output_path:,
+          input:,
+          audio_output:,
           model:,
           voice:,
           timeout_seconds:,
-          output: $stdout
+          output: $stderr
         )
-          transcript = File.open(input_path, "rb") do |input|
-            open_output(output_path) do |audio_output|
-              Timeout.timeout(timeout_seconds) do
-                run(
-                  client: client,
-                  input: input,
-                  audio_output: audio_output,
-                  model: model,
-                  voice: voice,
-                  output: output
-                )
-              end
-            end
+          transcript = Timeout.timeout(timeout_seconds) do
+            run(
+              client: client,
+              input: input,
+              audio_output: audio_output,
+              model: model,
+              voice: voice,
+              output: output
+            )
           end
 
           output.puts("[realtime] voice turn smoke test passed")
           transcript
         rescue OpenAI::Errors::RealtimeProtocolError
           raise RuntimeError, "Realtime protocol error.", cause: nil
-        end
-
-        def open_output(path)
-          if Gem.win_platform?
-            raise(
-              ArgumentError,
-              "secure voice output is unavailable on Windows because Ruby cannot verify owner-only ACLs"
-            )
-          end
-
-          directory = File.realpath(File.dirname(path))
-          directory_stat = File.stat(directory)
-          if (directory_stat.mode & 0o022).positive? && !directory_stat.sticky?
-            raise(
-              ArgumentError,
-              "output directory must not be writable by other users unless it has the sticky bit set"
-            )
-          end
-
-          output_path = File.join(directory, File.basename(path))
-          begin
-            File.lstat(output_path)
-          rescue Errno::ENOENT
-            # The destination is available.
-          else
-            raise ArgumentError, "output path must not already exist"
-          end
-
-          Dir.mktmpdir(".openai-realtime-", directory) do |staging_directory|
-            File.chmod(0o700, staging_directory)
-            Tempfile.create(["response-", ".tmp"], staging_directory, mode: File::BINARY, perm: 0o600) do |file|
-              verify_hard_link_support!(source_path: file.path, directory: directory)
-              result = yield(file)
-              file.flush
-              file.fsync
-              raise "staged output changed before publication" unless File.identical?(file.path, file)
-
-              begin
-                File.link(file.path, output_path)
-              rescue Errno::EEXIST
-                raise ArgumentError, "output path must not already exist"
-              end
-
-              result
-            end
-          end
-        end
-
-        def verify_hard_link_support!(source_path:, directory:)
-          Tempfile.create([".openai-realtime-link-", ".tmp"], directory, perm: 0o600) do |probe|
-            probe_path = probe.path
-            probe.close
-            File.unlink(probe_path)
-            linked = false
-
-            begin
-              File.link(source_path, probe_path)
-              linked = true
-            rescue NotImplementedError, SystemCallError
-              raise(
-                ArgumentError,
-                "output filesystem must support atomic no-clobber hard links",
-                cause: nil
-              )
-            ensure
-              File.unlink(probe_path) if linked
-            end
-          end
+        rescue SystemCallError
+          raise RuntimeError, "Realtime stream I/O error.", cause: nil
         end
 
       end
@@ -212,24 +140,13 @@ module OpenAI
 end
 
 if $PROGRAM_NAME == __FILE__
-  input_path = ARGV.fetch(0) do
-    abort(
-      "Usage: bundle exec ruby examples/realtime/websocket_voice_turn.rb INPUT.pcm OUTPUT.pcm"
-    )
-  end
-
-  output_path = ARGV.fetch(1) do
-    abort(
-      "Usage: bundle exec ruby examples/realtime/websocket_voice_turn.rb INPUT.pcm OUTPUT.pcm"
-    )
-  end
-
-  OpenAI::Examples::Realtime::WebSocketVoiceTurn.run_to_file(
+  OpenAI::Examples::Realtime::WebSocketVoiceTurn.run_with_timeout(
     client: OpenAI::Client.new,
-    input_path: input_path,
-    output_path: output_path,
+    input: $stdin,
+    audio_output: $stdout,
     model: ENV.fetch("OPENAI_REALTIME_MODEL", "gpt-realtime-2.1"),
     voice: ENV.fetch("OPENAI_REALTIME_VOICE", "marin"),
-    timeout_seconds: Integer(ENV.fetch("OPENAI_REALTIME_TIMEOUT", "60"))
+    timeout_seconds: Integer(ENV.fetch("OPENAI_REALTIME_TIMEOUT", "60")),
+    output: $stderr
   )
 end
