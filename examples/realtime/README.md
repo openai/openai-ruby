@@ -78,8 +78,10 @@ including when the input and output paths refer to the same file. The example
 stages audio privately and publishes the path only after success, so a failed
 or timed-out run leaves no partial response behind and the command can be
 retried. `WebSocketVoiceTurn.run` returns the assistant transcript explicitly;
-diagnostic output never includes it. A successful run writes non-empty response
-audio, observes `response.done status=completed`, and prints
+diagnostic output never includes it. The executable boundary also suppresses
+payload-bearing parser causes from malformed protocol events. A successful run
+writes non-empty response audio, observes `response.done status=completed`,
+publishes the requested file, and only then prints
 `[realtime] voice turn smoke test passed`.
 
 Optional environment variables:

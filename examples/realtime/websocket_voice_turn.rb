@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "base64"
 require "tempfile"
 require "tmpdir"
 require "timeout"
@@ -40,7 +39,7 @@ module OpenAI
               transcript.replace(event.transcript)
             when OpenAI::Realtime::ResponseAudioDeltaEvent
               begin
-                bytes = Base64.strict_decode64(event.delta)
+                bytes = event.delta.unpack1("m0")
               rescue ArgumentError
                 raise "Realtime returned invalid audio data."
               end
@@ -94,7 +93,7 @@ module OpenAI
           }
 
           output.puts("[realtime] connecting with #{model}")
-          transcript = client.realtime.connect(model: model) do |connection|
+          client.realtime.connect(model: model) do |connection|
             connection.session.update(**session)
             connection.input_audio_buffer.append_bytes(first_chunk)
             while (chunk = input.read(chunk_bytes))
@@ -107,9 +106,36 @@ module OpenAI
             connection.response.create
             stream_response(connection, audio_output: audio_output, output: output)
           end
+        end
+
+        def run_to_file(
+          client:,
+          input_path:,
+          output_path:,
+          model:,
+          voice:,
+          timeout_seconds:,
+          output: $stdout
+        )
+          transcript = File.open(input_path, "rb") do |input|
+            open_output(output_path) do |audio_output|
+              Timeout.timeout(timeout_seconds) do
+                run(
+                  client: client,
+                  input: input,
+                  audio_output: audio_output,
+                  model: model,
+                  voice: voice,
+                  output: output
+                )
+              end
+            end
+          end
 
           output.puts("[realtime] voice turn smoke test passed")
           transcript
+        rescue OpenAI::Errors::RealtimeProtocolError
+          raise RuntimeError, "Realtime protocol error.", cause: nil
         end
 
         def open_output(path)
@@ -134,7 +160,7 @@ module OpenAI
           Dir.mktmpdir(".openai-realtime-", directory) do |staging_directory|
             File.chmod(0o700, staging_directory)
             Tempfile.create(["response-", ".tmp"], staging_directory, mode: File::BINARY, perm: 0o600) do |file|
-              yield(file)
+              result = yield(file)
               file.flush
               file.fsync
               raise "staged output changed before publication" unless File.identical?(file.path, file)
@@ -144,6 +170,8 @@ module OpenAI
               rescue Errno::EEXIST
                 raise ArgumentError, "output path must not already exist"
               end
+
+              result
             end
           end
         end
@@ -166,17 +194,12 @@ if $PROGRAM_NAME == __FILE__
     )
   end
 
-  File.open(input_path, "rb") do |input|
-    OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(output_path) do |audio_output|
-      Timeout.timeout(Integer(ENV.fetch("OPENAI_REALTIME_TIMEOUT", "60"))) do
-        OpenAI::Examples::Realtime::WebSocketVoiceTurn.run(
-          client: OpenAI::Client.new,
-          input: input,
-          audio_output: audio_output,
-          model: ENV.fetch("OPENAI_REALTIME_MODEL", "gpt-realtime-2.1"),
-          voice: ENV.fetch("OPENAI_REALTIME_VOICE", "marin")
-        )
-      end
-    end
-  end
+  OpenAI::Examples::Realtime::WebSocketVoiceTurn.run_to_file(
+    client: OpenAI::Client.new,
+    input_path: input_path,
+    output_path: output_path,
+    model: ENV.fetch("OPENAI_REALTIME_MODEL", "gpt-realtime-2.1"),
+    voice: ENV.fetch("OPENAI_REALTIME_VOICE", "marin"),
+    timeout_seconds: Integer(ENV.fetch("OPENAI_REALTIME_TIMEOUT", "60"))
+  )
 end

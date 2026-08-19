@@ -131,8 +131,6 @@ stream PCM response audio plus its transcript. Disable turn detection when the
 client owns the turn boundary, then call `response.create` after `commit`:
 
 ```ruby
-require "base64"
-
 transcript = +""
 
 client.realtime.connect(model: "gpt-realtime-2.1") do |connection|
@@ -160,7 +158,7 @@ client.realtime.connect(model: "gpt-realtime-2.1") do |connection|
   connection.each do |event|
     case event
     when OpenAI::Realtime::ResponseAudioDeltaEvent
-      audio_output.write(Base64.strict_decode64(event.delta))
+      audio_output.write(event.delta.unpack1("m0"))
     when OpenAI::Realtime::ResponseAudioTranscriptDeltaEvent
       transcript << event.delta
     when OpenAI::Realtime::ResponseDoneEvent
@@ -184,7 +182,8 @@ timeout leaves no partial response behind. The staging directory is owner-only,
 and the example rejects group- or world-writable output directories without a
 sticky bit rather than risk publishing a substituted pathname. It writes raw
 24 kHz mono PCM16 so callers can play or convert the file without container
-buffering.
+buffering. At its executable boundary, malformed protocol events become a
+generic exception without the payload-bearing parser error as a retained cause.
 
 ## Event compatibility
 

@@ -25,6 +25,11 @@ class OpenAI::Test::GemPackagingTest < Minitest::Test
       assert_includes(package.contents, "examples/realtime/websocket_text.rb")
       assert_includes(package.contents, "examples/realtime/websocket_voice_turn.rb")
 
+      package.extract_files(directory, "examples/realtime/websocket_voice_turn.rb")
+      voice_turn_source = File.read(File.join(directory, "examples/realtime/websocket_voice_turn.rb"))
+      refute_includes(voice_turn_source, "require \"base64\"")
+      refute_match(/\bBase64\./, voice_turn_source)
+
       linked_guides = relative_links.select { File.extname(_1) == ".md" }
       assert_empty(linked_guides - package.spec.extra_rdoc_files, "README guides are missing from RDoc")
     end
