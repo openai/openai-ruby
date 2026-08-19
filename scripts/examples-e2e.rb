@@ -43,8 +43,8 @@ module OpenAIExamplesE2E
             successful: result.success,
             duration_seconds: result.duration_seconds,
             error: result.error,
-            stdout: result.success ? nil : result.stdout,
-            stderr: result.success ? nil : result.stderr
+            stdout: nil,
+            stderr: nil
           }
         end,
         exclusions: excluded_examples.to_h { [_1.path, _1.reason] }
@@ -244,7 +244,7 @@ module OpenAIExamplesE2E
         duration_seconds: duration.round(2),
         stdout: truncate(stdout_value),
         stderr: truncate(stderr_value),
-        error: "runner error: #{e.class}: #{e.message}"
+        error: "runner error: #{e.class}"
       )
     end
 
@@ -264,7 +264,7 @@ module OpenAIExamplesE2E
       return "example timed out after #{@timeout} seconds" if timed_out
       return "example exited with status #{status.exitstatus}" unless status.success?
       if example.expected_output && !output.include?(example.expected_output)
-        return "expected output not found: #{example.expected_output}"
+        return "expected output not found"
       end
 
       if example.minimum_output_bytes && output.bytesize < example.minimum_output_bytes
