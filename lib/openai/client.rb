@@ -133,7 +133,13 @@ module OpenAI
       return {} if @provider_runtime
 
       enabled_security = security.select { |_, enabled| enabled }
-      headers = {bearer_auth:, admin_api_key_auth:}.slice(*enabled_security.keys).values.reduce({}, :merge)
+      enabled_auth = {bearer_auth:, admin_api_key_auth:}.select { |scheme, _| enabled_security.key?(scheme) }
+      headers = enabled_auth.values.reduce({}) do |merged, authentication|
+        merged.merge(authentication) do |header, previous, current|
+          header == "authorization" ? previous : current
+        end
+      end
+
       if headers.empty? && enabled_security.any?
         raise(
           ArgumentError,

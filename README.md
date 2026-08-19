@@ -938,6 +938,11 @@ response = client.request(
 )
 ```
 
+Generic requests use the ordinary API key when one is configured, even if an
+admin API key is also available. A client configured with only an admin API key
+uses that key. To explicitly use an admin API key when both credentials are
+configured, pass `security: {admin_api_key_auth: true}` to `client.request`.
+
 ### Concurrency & connection pooling
 
 `OpenAI::Client` instances using the default `OpenAI::NetHTTPClient` are threadsafe, but are only fork-safe when there are no in-flight HTTP requests. Injected HTTP clients are responsible for documenting and enforcing their own concurrency guarantees.
