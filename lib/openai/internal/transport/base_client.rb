@@ -377,11 +377,17 @@ module OpenAI
             {**req, path: path, query: query}
           )
           request_origin = URI.parse(url.to_s).normalize
-          base_origin = URI.parse(@base_url.to_s).normalize
+          base_origin = URI.parse(OpenAI::Internal::Util.unparse_uri(@base_url_components).to_s).normalize
           [request_origin, base_origin].each do |origin|
             next unless origin.hostname&.include?(":")
 
-            origin.hostname = IPAddr.new(origin.hostname).to_s
+            begin
+              address = IPAddr.new(origin.hostname)
+            rescue IPAddr::InvalidAddressError
+              next
+            end
+
+            origin.hostname = address.to_s if address.ipv6?
           end
 
           unless OpenAI::Internal::Util.uri_origin(request_origin) == OpenAI::Internal::Util.uri_origin(base_origin)

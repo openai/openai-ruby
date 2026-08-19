@@ -199,6 +199,92 @@ class OpenAI::Test::BaseClientOriginTest < Minitest::Test
     end
   end
 
+  def test_preserves_same_origin_ipvfuture_literals_without_ipv6_canonicalization
+    transport = Minitest::Mock.new(OpenAI::HTTPClient.new)
+    paths = [
+      "models",
+      "https://[v1.foo:bar]:8443/v1/models",
+      "//[v1.foo:bar]:8443/v1/models"
+    ]
+    paths.each do
+      transport.expect(:execute, successful_response) do |request|
+        assert_equal("https://[v1.foo:bar]:8443/v1/models", request.url.to_s)
+        assert_equal("Bearer fake-api-key", request.headers.fetch("authorization"))
+        true
+      end
+    end
+
+    client = OpenAI::Client.new(
+      api_key: "fake-api-key",
+      base_url: "https://[v1.foo:bar]:8443/v1",
+      http_client: transport
+    )
+    paths.each { client.request(method: :get, path: _1) }
+
+    assert_mock(transport)
+  end
+
+  def test_rejects_cross_origin_ipvfuture_literals_before_authentication
+    client = OpenAI::Client.new(
+      api_key: "fake-api-key",
+      base_url: "https://[v1.foo:bar]:8443/v1",
+      http_client: @transport
+    )
+    paths = [
+      "https://[v1.other:host]:8443/v1/models",
+      "//[v1.other:host]:8443/v1/models",
+      "https://[v1.foo:bar]:9443/v1/models",
+      "http://[v1.foo:bar]:8443/v1/models"
+    ]
+
+    client.stub(:auth_headers, -> (security:) { flunk("Authentication selected: #{security}") }) do
+      paths.each { assert_rejected_before_transport(client, _1) }
+    end
+  end
+
+  def test_rejects_origins_trusted_only_by_mutating_the_public_base_url
+    scenarios = [
+      [-> (url) { url.host = "attacker.example" }, "https://attacker.example/v1/models"],
+      [-> (url) { url.host = "attacker.example" }, "//attacker.example/v1/models"],
+      [-> (url) { url.scheme = "http" }, "http://trusted.example/v1/models"],
+      [-> (url) { url.port = 8443 }, "https://trusted.example:8443/v1/models"]
+    ]
+
+    scenarios.each do |mutate, path|
+      client = OpenAI::Client.new(
+        api_key: "fake-api-key",
+        base_url: "https://trusted.example/v1",
+        http_client: @transport
+      )
+      mutate.call(client.base_url)
+
+      client.stub(:auth_headers, -> (security:) { flunk("Authentication selected: #{security}") }) do
+        assert_rejected_before_transport(client, path)
+      end
+    end
+  end
+
+  def test_preserves_mutable_public_base_url_without_changing_configured_routing
+    transport = Minitest::Mock.new(OpenAI::HTTPClient.new)
+    transport.expect(:execute, successful_response) do |request|
+      assert_equal("https://trusted.example/v1/models", request.url.to_s)
+      assert_equal("Bearer fake-api-key", request.headers.fetch("authorization"))
+      true
+    end
+
+    client = OpenAI::Client.new(
+      api_key: "fake-api-key",
+      base_url: "https://trusted.example/v1",
+      http_client: transport
+    )
+
+    client.base_url.host = "modified.example"
+    assert_equal("modified.example", client.base_url.host)
+    client.request(method: :get, path: "models")
+
+    assert_mock(transport)
+  end
+
   def test_preserves_custom_ports_generated_resource_paths_and_return_types
     transport = Minitest::Mock.new(OpenAI::HTTPClient.new)
     response = OpenAI::HTTPClient::Response.new(
