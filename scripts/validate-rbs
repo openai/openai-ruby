@@ -1,49 +1,51 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "fileutils"
 require "open3"
 require "pathname"
-require "tmpdir"
+require "yaml"
 
 module OpenAI
   module RBSValidation
-    # These directives change name resolution on a per-file basis, so signatures
-    # containing them cannot be safely combined and must take the reference path.
-    FILE_SCOPED_DIRECTIVE = /^\s*(?:use\b|#\s*resolve-type-names\s*:)/
+    # These dependencies either have no standalone RBS library or are already
+    # loaded by RBS core. `net/http` is published under a different RBS name.
+    EXCLUDED_LIBRARIES = %w[English etc rbconfig set stringio].freeze
+    LIBRARY_NAMES = {"net/http" => "net-http"}.freeze
+    ANSI_ESCAPE = /\e\[[\d;]*m/
+
+    LOCATION = %r{
+      (?<file>[^\s:]+\.rbs):
+      (?<line>\d+):(?<column>\d+)
+      (?:\.\.\.(?<end_line>\d+):(?<end_column>\d+))?
+      :\s*(?<message>[^\n]+)
+    }x
 
     module_function
 
     def run(root: Pathname.pwd, stdout: $stdout, stderr: $stderr, env: ENV.to_h)
-      steepfile = root.join("Steepfile")
-      raise Errno::ENOENT, steepfile unless steepfile.file?
-
       signatures = signature_paths(root)
       raise "No RBS files found under #{root.join("sig")}" if signatures.empty?
+      return 1 unless valid_contents?(root, signatures, stdout: stdout, stderr: stderr, env: env)
 
-      status = if signatures.any? { requires_reference_check?(_1) }
-        run_reference_check(root, stdout: stdout, stderr: stderr, env: env)
-      else
-        fast_status = run_parse_check(root, env: env)
-        fast_status = run_consolidated_check(root, steepfile, signatures, env: env) if fast_status.success?
-        unless fast_status.success?
-          stdout.puts(
-            "Fast RBS validation failed; checking original signature files for exact diagnostics."
-          )
-          fast_status = run_reference_check(root, stdout: stdout, stderr: stderr, env: env)
-        end
+      parse_status = run_command(
+        root,
+        [rbs_command(env), "parse", "sig"],
+        stdout: stdout,
+        stderr: stderr,
+        env: env
+      )
+      return 1 unless parse_status.success?
 
-        fast_status
-      end
+      command = [rbs_command(env), "-I", "sig", "--no-collection"]
+      libraries(root).each { command.push("-r", _1) }
+      command << "validate"
 
-      if status.success?
-        noun = signatures.one? ? "file" : "files"
-        stdout.puts("Validated #{signatures.size} RBS #{noun} with no errors.")
-        0
-      else
-        1
-      end
+      validation_status = run_command(root, command, stdout: stdout, stderr: stderr, env: env)
+      return 1 unless validation_status.success?
 
+      noun = signatures.one? ? "file" : "files"
+      stdout.puts("Validated #{signatures.size} RBS #{noun} with no errors.")
+      0
     rescue StandardError => e
       message = if e.respond_to?(:detailed_message)
         e.detailed_message(highlight: false)
@@ -61,69 +63,93 @@ module OpenAI
 
     private_class_method :signature_paths
 
-    def requires_reference_check?(path)
-      contents = path.binread
-      # RBS 3.9 treats NUL as EOF. In a combined buffer, that would hide every
-      # declaration from later files even though the originals parse separately.
-      # Match the complete file because RBS's magic-comment grammar permits its
-      # whitespace matcher to span lines (for example, "#\nresolve-type-names:").
-      contents.include?("\0") || contents.match?(FILE_SCOPED_DIRECTIVE)
-    end
+    def libraries(root)
+      manifest = YAML.safe_load_file(root.join("manifest.yaml"), symbolize_names: true)
+      dependencies = manifest.fetch(:dependencies)
 
-    private_class_method :requires_reference_check?
+      dependencies.filter_map do |dependency|
+        next if EXCLUDED_LIBRARIES.include?(dependency)
 
-    def run_parse_check(root, env:)
-      _stdout, _stderr, status = Open3.capture3(env, "rbs", "parse", "sig", chdir: root.to_s)
-      status
-    end
-
-    private_class_method :run_parse_check
-
-    def run_consolidated_check(root, steepfile, signatures, env:)
-      Dir.mktmpdir("openai-rbs-validation") do |directory|
-        temporary_root = Pathname(directory)
-        temporary_sig = temporary_root.join("sig")
-        temporary_sig.mkpath
-        temporary_steepfile = temporary_root.join("Steepfile")
-        FileUtils.cp(steepfile, temporary_steepfile)
-        # Steep validates reopened namespaces once per input file. Combining the
-        # generated declarations avoids that repeated work; Steep still performs
-        # all parsing and semantic validation through its public CLI.
-        concatenate(signatures, temporary_sig.join("all.rbs"))
-
-        command = [env.fetch("STEEP_COMMAND", "steep"), "check", "--no-type-check", "--jobs=1"]
-        command << "--steepfile=#{temporary_steepfile}"
-        _stdout, _stderr, status = Open3.capture3(env, *command, chdir: root.to_s)
-        status
+        LIBRARY_NAMES.fetch(dependency, dependency)
       end
     end
 
-    private_class_method :run_consolidated_check
+    private_class_method :libraries
 
-    def concatenate(signatures, destination)
-      destination.open("wb") do |combined|
-        signatures.each do |path|
-          contents = path.binread
-          combined.write(contents)
-          combined.write("\n") unless contents.end_with?("\n")
-          combined.write("\n")
+    def rbs_command(env)
+      env.fetch("RBS_COMMAND", "rbs")
+    end
+
+    private_class_method :rbs_command
+
+    def valid_contents?(root, signatures, stdout:, stderr:, env:)
+      signatures.each do |path|
+        contents = path.binread
+        message = if !contents.force_encoding(Encoding::UTF_8).valid_encoding?
+          "invalid byte sequence in UTF-8"
+        elsif contents.include?("\0")
+          "string contains null byte"
         end
+
+        next unless message
+
+        relative_path = path.relative_path_from(root).to_s
+        diagnostic = "#{relative_path}: #{message}"
+        stderr.puts(diagnostic)
+        emit_annotation(relative_path, "1", "1", nil, nil, diagnostic, stdout: stdout) if env.key?("CI")
+        return false
       end
+
+      true
     end
 
-    private_class_method :concatenate
+    private_class_method :valid_contents?
 
-    def run_reference_check(root, stdout:, stderr:, env:)
-      command = [env.fetch("STEEP_COMMAND", "steep"), "check", "--no-type-check"]
-      command << "--jobs=#{env.fetch("STEEP_JOBS")}" if env.key?("STEEP_JOBS")
-      command << "--format=github" if env.key?("CI")
+    def run_command(root, command, stdout:, stderr:, env:)
       output, errors, status = Open3.capture3(env, *command, chdir: root.to_s)
-      stdout.print(output)
-      stderr.print(errors)
+      unless status.success?
+        output = output.gsub(ANSI_ESCAPE, "")
+        errors = errors.gsub(ANSI_ESCAPE, "")
+        stdout.print(output)
+        stderr.print(errors)
+        emit_github_annotations(output, errors, stdout: stdout) if env.key?("CI")
+      end
+
       status
     end
 
-    private_class_method :run_reference_check
+    private_class_method :run_command
+
+    def emit_github_annotations(output, errors, stdout:)
+      "#{output}\n#{errors}".scan(LOCATION).uniq.each do |match|
+        file, line, column, end_line, end_column, message = match
+        end_column = Integer(end_column) + 1 if end_column
+        emit_annotation(file, line, Integer(column) + 1, end_line, end_column, message, stdout: stdout)
+      end
+    end
+
+    private_class_method :emit_github_annotations
+
+    def emit_annotation(file, line, column, end_line, end_column, message, stdout:)
+      metadata = ["file=#{property_escape(file)}", "line=#{line}", "col=#{column}"]
+      metadata << "endLine=#{end_line}" if end_line
+      metadata << "endColumn=#{end_column}" if end_column
+      stdout.puts("::error #{metadata.join(",")}::#{annotation_escape(message)}")
+    end
+
+    private_class_method :emit_annotation
+
+    def property_escape(value)
+      annotation_escape(value.to_s).gsub(":", "%3A").gsub(",", "%2C")
+    end
+
+    private_class_method :property_escape
+
+    def annotation_escape(value)
+      value.to_s.gsub("%", "%25").gsub("\r", "%0D").gsub("\n", "%0A")
+    end
+
+    private_class_method :annotation_escape
   end
 end
 

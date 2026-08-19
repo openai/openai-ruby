@@ -136,7 +136,6 @@ class FormattingPolicyTest < Minitest::Test
       puts JSON.generate({
         paths: RubyfmtPolicy.paths,
         expected: RuboCopDirectiveGuard.rubocop_target_paths,
-        steepfile: RubyfmtPolicy.paths(["Steepfile"]),
         empty: RubyfmtPolicy.paths([]),
         exemptions: RubyfmtPolicy.violations(RubyfmtPolicy.paths)
       })
@@ -146,8 +145,6 @@ class FormattingPolicyTest < Minitest::Test
     result = JSON.parse(stdout)
     assert_equal(result.fetch("expected"), result.fetch("paths"))
     assert(result.fetch("paths").any? { _1.end_with?(".rbi") })
-    assert_includes(result.fetch("paths").map { File.basename(_1) }, "Steepfile")
-    assert_equal([File.join(ROOT, "Steepfile")], result.fetch("steepfile"))
     assert_empty(result.fetch("empty"))
     assert_empty(result.fetch("exemptions"))
   end

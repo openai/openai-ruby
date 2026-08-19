@@ -145,7 +145,7 @@ through the manually dispatched `Examples E2E` workflow.
 
 All Ruby sources are formatted; file-level opt-outs are rejected. Two existing handwritten pattern-matching expressions use equivalent forms that avoid rubyfmt 0.14.1 bugs. Their source comments explain why, and regression tests check that both complete files format into valid Ruby and remain unchanged on a second pass.
 
-There are two separate type checkers supported by this library: [sorbet](https://github.com/sorbet/sorbet) and [steep](https://github.com/soutaro/steep) are used for verifying `*.rbi` and `*.rbs` files respectively.
+Sorbet typechecks the `*.rbi` files, and the RBS CLI validates the `*.rbs` signatures.
 
 To lint and typecheck:
 
