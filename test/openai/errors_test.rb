@@ -124,6 +124,8 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
       "invalid_client" => {error: "invalid_client"},
       "invalid bearer token" => {error: {message: "invalid bearer token"}},
       "Invalid access token" => {error: {message: "Invalid access token"}},
+      "Invalid token 'expired'" => {error: {message: "Invalid token 'expired'"}},
+      "API key 'missing'" => {error: {message: "API key 'missing'"}},
       "Basic authentication failed" => {error: {message: "Basic authentication failed"}},
       "The access token is expired" => {error: {message: "The access token is expired"}},
       "The access token is expired. Please sign in again." => {
@@ -284,6 +286,55 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
       refute_includes(error.message, "fake-upstream")
       refute_includes(error.message, "private upstream")
       assert_same(description, error.body.dig(:error, :message))
+    end
+  end
+
+  def test_provider_messages_do_not_disclose_quoted_credential_values
+    descriptions = [
+      "Invalid token 'opaqueprovidercredential123'",
+      "Invalid API key 'opaqueprovidercredential123'",
+      "Invalid access token \"opaqueprovidercredential123\"",
+      "Rejected client secret 'opaqueprovidercredential123'",
+      "Rejected credentials 'opaqueprovidercredential123'",
+      "Invalid API key ‘opaqueprovidercredential123’",
+      "Invalid token “opaqueprovidercredential123”",
+      "Invalid token 'expired.opaqueprovidercredential123'",
+      "Invalid token 'expired opaqueprovidercredential123'",
+      "Invalid token 'expired-opaqueprovidercredential123'",
+      "Invalid token 'required+opaqueprovidercredential123'",
+      "Invalid token 'empty@opaqueprovidercredential123'",
+      "API key 'missing opaqueprovidercredential123'",
+      "Invalid token \xFF'opaqueprovidercredential123'".b
+    ]
+
+    descriptions.each do |description|
+      error = status_error(body: {error: {message: description}})
+
+      assert_includes(error.message, "status=400")
+      refute_includes(error.message, "message=")
+      refute_includes(error.message, "opaqueprovidercredential")
+      assert_same(description, error.body.dig(:error, :message))
+    end
+  end
+
+  def test_malformed_provider_message_encodings_preserve_api_status_and_raw_response
+    malformed_json_body = JSON.parse("{\"error\":{\"message\":\"\\udcff\"}}", symbolize_names: true)
+    bodies = [
+      malformed_json_body,
+      {error: {message: "Provider failure \xFF".b}},
+      {error: {message: "Provider failure \xFF".dup.force_encoding(Encoding::UTF_8)}}
+    ]
+
+    bodies.each do |body|
+      original_message = body.dig(:error, :message)
+      error = status_error(body: body)
+
+      assert_instance_of(OpenAI::Errors::BadRequestError, error)
+      assert_equal(400, error.status)
+      assert_includes(error.message, "status=400")
+      assert(error.message.valid_encoding?)
+      assert_same(body, error.body)
+      assert_same(original_message, error.body.dig(:error, :message))
     end
   end
 

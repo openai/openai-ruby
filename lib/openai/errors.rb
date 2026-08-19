@@ -284,6 +284,15 @@ module OpenAI
           \b(?:bearer|basic)\s+(?!tokens?\b|credentials?\b|authentication\b)\S |
           \b(?:(?:access|refresh|id|session)\s+)?(?:tokens?|credentials?)\s+
               (?!is\b|was\b|invalid\b|expired\b|missing\b|required\b)[a-z0-9._-]{8,} |
+          \b(?:api[-_\s]?key|(?:access|refresh|id|session)[-_\s]?tokens?|tokens?|
+              client[-_\s]?secret|secrets?|credentials?|passwords?|authorization|
+              (?:set[-_\s]?)?cookies?|assertions?|keys?|signatures?)
+              \s+(?:\uFFFD\s*)*["'“‘]\s*
+              (?!
+                (?:invalid|expired|missing|required|malformed|unsupported|incorrect|unknown|
+                    revoked|disabled|empty)\s*["'”’]
+              )
+              \S |
           \b[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}\b |
           \beyJ[a-z0-9_-]+\.[a-z0-9_-]+\.[a-z0-9_-]+ |
           \b(?:AKIA|ASIA)[a-z0-9]{16}\b |
@@ -304,7 +313,7 @@ module OpenAI
                   (?:set[-_\s]?)?cookie|credentials?|assertions?|tokens?|keys?|signature|secret|password|
                   prompt|input|responses?|outputs?|messages?|content)
               (?:[-_][a-z0-9]+|\[[a-z0-9_-]*\])*
-              (?:["']?\s*[:=]\s*|\s+(?:is|was)\s+)
+              (?:["']?\s*[:=]\s*|\s+(?:is|was)\s+|\s+["'“‘]\s*)
               (?!
                 (?:invalid|expired|missing|required|malformed|unsupported|incorrect|unknown|
                     revoked|disabled|empty|too\s+(?:long|short|large|small)|string|integer|
@@ -318,7 +327,12 @@ module OpenAI
           OpenAI::Internal::Util.dig(body, [:error, :error_description]),
           OpenAI::Internal::Util.dig(body, :error_description),
           OpenAI::Internal::Util.dig(body, :error)
-        ].find { _1.is_a?(String) && !_1.strip.empty? && !_1[...512].match?(sensitive_description) }
+        ].find do |candidate|
+          next false unless candidate.is_a?(String)
+
+          classified_candidate = candidate[...512].encode(Encoding::UTF_8, invalid: :replace, undef: :replace)
+          !classified_candidate.strip.empty? && !classified_candidate.match?(sensitive_description)
+        end
 
         safe_url = OpenAI::Internal::Logging.safe_url(url).sub(/[?#].*/, "")
         fields = ["status=#{status}", "url=#{safe_url}"]
