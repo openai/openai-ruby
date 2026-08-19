@@ -34,7 +34,7 @@ module OpenAI
 
               transcript << event.delta
             when OpenAI::Realtime::ResponseAudioTranscriptDoneEvent
-              next if event.transcript.empty? || event.transcript == transcript
+              next if event.transcript == transcript
 
               transcript.replace(event.transcript)
             when OpenAI::Realtime::ResponseAudioDeltaEvent

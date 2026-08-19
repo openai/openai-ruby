@@ -189,6 +189,36 @@ class OpenAI::Test::RealtimeWebSocketVoiceTurnExampleTest < Minitest::Test
     refute_includes(diagnostics.string, "Final words.")
   end
 
+  def test_file_boundary_rejects_an_empty_authoritative_transcript
+    Dir.mktmpdir("openai-realtime-voice") do |directory|
+      input_path = File.join(directory, "input.pcm")
+      output_path = File.join(directory, "response.pcm")
+      File.binwrite(input_path, "pcm")
+      events = [
+        transcript_delta("Stale streamed words."),
+        transcript_done(""),
+        audio_delta("audio"),
+        response_done
+      ]
+      realtime = RecordingRealtime.new(RecordingConnection.new(events))
+
+      error = assert_raises(RuntimeError) do
+        OpenAI::Examples::Realtime::WebSocketVoiceTurn.run_to_file(
+          client: RecordingClient.new(realtime: realtime),
+          input_path: input_path,
+          output_path: output_path,
+          model: "gpt-realtime-2.1",
+          voice: :marin,
+          timeout_seconds: 1,
+          output: StringIO.new
+        )
+      end
+
+      assert_equal("Realtime response completed without an audio transcript", error.message)
+      refute_path_exists(output_path)
+    end
+  end
+
   def test_example_keeps_service_error_details_out_of_the_exception_message
     customer_text = "private audio content echoed by the service"
     event = OpenAI::Realtime::RealtimeErrorEvent.new(
