@@ -176,8 +176,8 @@ module OpenAI
                 message = "Cannot follow a cross-origin redirect with a request body."
                 raise(
                   OpenAI::Errors::APIConnectionError.new(
-                    url: location,
-                    response: response_headers,
+                    url: URI(redirect_origin),
+                    response: response_headers.except("location"),
                     message: message
                   )
                 )

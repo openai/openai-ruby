@@ -803,7 +803,7 @@ class OpenAITest < Minitest::Test
       )
     end
 
-    assert_equal(destination, error.url.to_s)
+    assert_equal("https://example.com", error.url.to_s)
     assert_equal("Cannot follow a cross-origin redirect with a request body.", error.message)
     assert_requested(:post, source) do |request|
       assert_includes(request.body, "fake-private-customer-prompt")

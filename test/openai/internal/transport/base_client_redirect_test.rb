@@ -19,7 +19,7 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
     end
 
     http_client.verify
-    assert_equal(destination, error.url.to_s)
+    assert_equal("https://example.com", error.url.to_s)
     assert_equal("Cannot follow a cross-origin redirect with a request body.", error.message)
     assert_equal(["https://trusted.example/v1/uploads"], requests.map { _1.url.to_s })
     assert_includes(requests.fetch(0).body.to_a.join, "fake-private-file-contents")
@@ -152,7 +152,7 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
     end
 
     http_client.verify
-    assert_equal(destination, error.url.to_s)
+    assert_equal("https://trusted.example:444", error.url.to_s)
     assert_equal("Cannot follow a cross-origin redirect with a request body.", error.message)
     assert_equal(1, requests.length)
   end
@@ -167,7 +167,7 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
     end
 
     http_client.verify
-    assert_equal(destination, error.url.to_s)
+    assert_equal("https://example.com", error.url.to_s)
     assert_equal("Cannot follow a cross-origin redirect with a request body.", error.message)
     assert_equal(1, requests.length)
   end
@@ -230,6 +230,29 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
     refute_includes(output.string, "fake-private-prompt")
     refute_includes(output.string, "fake-mcp-oauth-token")
     refute_includes(output.string, "fake-redirect-token")
+  end
+
+  def test_rejected_cross_origin_redirect_never_retains_destination_credentials_in_exception
+    destination = "https://fake-user:fake-password@example.com:8443/private/fake-path-credential" \
+      "?access_token=fake-query-token&opaque=fake-opaque-token#fake-fragment-token"
+    requests = []
+    client, http_client = client_with_responses(requests, redirect_response(307, destination))
+
+    error = assert_raises(OpenAI::Errors::APIConnectionError) do
+      client.request(method: :post, path: "probe", body: {prompt: "fake-private-prompt"})
+    end
+
+    http_client.verify
+    refute_includes(error.url.to_s, "fake-query-token")
+    assert_equal("https://example.com:8443", error.url.to_s)
+    assert_nil(error.url.userinfo)
+    assert_nil(error.url.query)
+    assert_nil(error.url.fragment)
+
+    serialized = Marshal.dump(error)
+    %w[fake-password fake-path-credential fake-query-token fake-opaque-token fake-fragment-token].each do |secret|
+      refute_includes(serialized, secret)
+    end
   end
 
   private def client_with_responses(requests, *responses, **options)
