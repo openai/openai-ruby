@@ -129,6 +129,54 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
     assert_equal("Bearer fake-api-key", requests.last.headers.fetch("authorization"))
   end
 
+  def test_preserves_explicit_default_ports_and_ipv6_spelling_in_original_requests
+    scenarios = [
+      ["https://trusted.example/v1", "https://trusted.example:443/v1/models"],
+      ["http://trusted.example/v1", "http://trusted.example:80/v1/models"],
+      ["https://[::1]/v1", "https://[::1]:443/v1/models"],
+      ["https://[2001:db8::1]/v1", "https://[2001:0DB8:0:0:0:0:0:1]:443/v1/models"]
+    ]
+
+    scenarios.each do |base_url, path|
+      requests = []
+      client, http_client = client_with_responses(requests, successful_response, base_url: base_url)
+
+      response = client.request(method: :get, path: path)
+
+      http_client.verify
+      assert_equal(true, response[:ok])
+      assert_equal(path, requests.fetch(0).url.to_s)
+      assert_equal("Bearer fake-api-key", requests.fetch(0).headers.fetch("authorization"))
+    end
+  end
+
+  def test_treats_explicit_default_ports_as_same_origin_on_body_preserving_redirects
+    scenarios = [
+      ["https://trusted.example/v1", "https://trusted.example:443/v1/probe", "https://trusted.example/v1/next"],
+      ["https://trusted.example:443/v1", "probe", "https://trusted.example/v1/next"],
+      ["http://trusted.example:80/v1", "probe", "http://trusted.example/v1/next"],
+      ["https://[::1]:443/v1", "probe", "https://[0:0:0:0:0:0:0:1]/v1/next"]
+    ]
+
+    scenarios.each do |base_url, path, destination|
+      requests = []
+      client, http_client = client_with_responses(
+        requests,
+        redirect_response(307, destination),
+        successful_response,
+        base_url: base_url
+      )
+
+      response = client.request(method: :post, path: path, body: {prompt: "fake-private-prompt"})
+
+      http_client.verify
+      assert_equal(true, response[:ok])
+      assert_equal(destination, requests.last.url.to_s)
+      assert_equal(requests.first.body, requests.last.body)
+      assert_equal("Bearer fake-api-key", requests.last.headers.fetch("authorization"))
+    end
+  end
+
   def test_preserves_same_origin_redirect_when_hostname_case_changes
     destination = "https://TRUSTED.EXAMPLE/v1/redirected"
     requests = []
@@ -561,6 +609,61 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
         assert_equal("safe-trace-value", request.headers.fetch("x-safe-trace"))
       end
     end
+  end
+
+  def test_isolates_mutated_redirect_headers_and_values_across_retries_and_later_hops
+    client_class = Class.new(OpenAI::Client) do
+      private def prepare_request(request, redirect_count:, retry_count:)
+        prepared = super
+        return prepared unless redirect_count == 1 && retry_count.zero?
+
+        prepared.fetch(:url).host.replace("escaped.example")
+        headers = prepared.fetch(:headers)
+        headers.fetch("authorization").replace("Bearer fake-escaped-mutated-authorization")
+        headers["hOsT"] = "escaped.example"
+        headers["X-Api-Key"] = "fake-escaped-mutated-api-key"
+        headers["Cookie"] = "session=fake-escaped-mutated-cookie"
+        headers["Proxy-Authorization"] = "Bearer fake-escaped-mutated-proxy-token"
+        headers["X-Amz-Security-Token"] = "fake-escaped-mutated-session-token"
+        prepared
+      end
+    end
+
+    requests = []
+    client, http_client = client_with_responses(
+      requests,
+      redirect_response(307, "https://trusted.example/v1/first"),
+      OpenAI::HTTPClient::Response.new(status: 500, headers: {}, body: ""),
+      redirect_response(307, "https://trusted.example/v1/second"),
+      successful_response,
+      client_class: client_class,
+      max_retries: 1,
+      initial_retry_delay: 0,
+      max_retry_delay: 0
+    )
+
+    response = client.request(method: :get, path: "probe")
+
+    http_client.verify
+    assert_equal(true, response[:ok])
+    assert_equal(
+      ["/v1/probe", "/v1/first", "/v1/first", "/v1/second"],
+      requests.map { _1.url.path }
+    )
+    assert_equal("Bearer fake-api-key", requests.first.headers.fetch("authorization"))
+
+    requests.drop(1).each do |request|
+      assert_equal("trusted.example", request.url.host)
+      refute_includes(request.headers.values.join(" "), "fake-escaped-mutated")
+      refute(request.headers.keys.any? { _1.casecmp?("host") }, "escaped Host persisted across attempts")
+      %w[cookie proxy-authorization x-amz-security-token x-api-key].each do |header|
+        refute(request.headers.keys.any? { _1.casecmp?(header) }, "escaped #{header} persisted across attempts")
+      end
+    end
+
+    refute(requests.fetch(1).headers.keys.any? { _1.casecmp?("authorization") })
+    assert_equal("Bearer fake-api-key", requests.fetch(2).headers.fetch("authorization"))
+    assert_equal("Bearer fake-api-key", requests.fetch(3).headers.fetch("authorization"))
   end
 
   def test_preserves_same_origin_redirect_url_changes_during_preparation

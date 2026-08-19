@@ -185,8 +185,8 @@ module OpenAI
             end
 
             # from undici
-            origin = OpenAI::Internal::Util.uri_origin(url)
-            redirect_origin = OpenAI::Internal::Util.uri_origin(location)
+            origin = OpenAI::Internal::Util.uri_origin(URI(url.to_s))
+            redirect_origin = OpenAI::Internal::Util.uri_origin(URI(location.to_s))
             if url.host.start_with?("[") && !url.hostname.start_with?("v", "V")
               origin = origin.sub(url.host, "[#{IPAddr.new(url.hostname)}]")
             end
@@ -554,7 +554,7 @@ module OpenAI
           end
 
           url, max_retries = request.fetch_values(:url, :max_retries)
-          authorized_url = URI(url.to_s)
+          authorized_url = url.class.new(*URI.split(url.to_s))
           prepared_request = request
           trusted_origin = request[:redirect_trusted_origin]
 
@@ -564,8 +564,8 @@ module OpenAI
               request[:body]
             )
             attempt_request = request.except(:redirect_trusted_origin, :redirect_body_forbidden).merge(
-              url: URI(authorized_url.to_s),
-              headers: encoded_headers,
+              url: authorized_url.class.new(*URI.split(authorized_url.to_s)),
+              headers: encoded_headers.transform_values(&:dup),
               body: encoded_body
             )
             prepared_request = prepare_request(
@@ -575,13 +575,13 @@ module OpenAI
             )
 
             prepared_url = prepared_request.fetch(:url)
-            prepared_origin = OpenAI::Internal::Util.uri_origin(prepared_url)
+            prepared_origin = OpenAI::Internal::Util.uri_origin(URI(prepared_url.to_s))
             if prepared_url.host&.start_with?("[") && !prepared_url.hostname.start_with?("v", "V")
               prepared_origin = prepared_origin.sub(prepared_url.host, "[#{IPAddr.new(prepared_url.hostname)}]")
             end
 
             trusted_origin ||= prepared_origin
-            authorized_origin = OpenAI::Internal::Util.uri_origin(authorized_url)
+            authorized_origin = OpenAI::Internal::Util.uri_origin(URI(authorized_url.to_s))
             if authorized_url.host.start_with?("[") && !authorized_url.hostname.start_with?("v", "V")
               authorized_origin = authorized_origin.sub(authorized_url.host, "[#{IPAddr.new(authorized_url.hostname)}]")
             end
