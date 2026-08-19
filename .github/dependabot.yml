@@ -37,5 +37,5 @@ updates:
     groups:
       codeql:
         patterns:
-          - "github/codeql-action"
+          - "github/codeql-action/*"
     open-pull-requests-limit: 5
