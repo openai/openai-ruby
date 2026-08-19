@@ -300,7 +300,7 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
     assert_equal(["custom.txt", "text/custom", "custom-body"], metadata_and_contents(part))
     assert_equal([nil, "text/plain", "unnamed-body"], metadata_and_contents(unnamed))
     assert_equal(
-      [part_source_file.to_path, "application/octet-stream", "file-body"],
+      [File.basename(part_source_file.to_path), "application/octet-stream", "file-body"],
       metadata_and_contents(io_part)
     )
     assert_same(pathname, path.fetch(0))
@@ -311,6 +311,33 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
     source_file&.close
     part_source_file&.close
     tempfile&.close!
+  end
+
+  def test_staged_file_part_io_upload_omits_absolute_local_path
+    bodies = []
+    staged_paths = []
+    resource = FilesResource.new(capture_contents: false) do |file|
+      staged_paths << file.content.to_path
+      _headers, stream = OpenAI::Internal::Util.encode_content(
+        {"content-type" => "multipart/form-data"},
+        {file: file}
+      )
+      bodies << stream.to_a.join
+      UploadedFile.new("uploaded")
+    end
+
+    Tempfile.create(["upload-", ".txt"]) do |content|
+      content.write("upload-body")
+      content.rewind
+      local_path = content.to_path
+      uploader(resource).upload([OpenAI::FilePart.new(content)])
+
+      body = bodies.fetch(0)
+      assert_includes(body, "filename=\"#{File.basename(local_path)}\"")
+      refute_includes(body, local_path)
+      refute_predicate(content, :closed?)
+      refute_path_exists(staged_paths.fetch(0))
+    end
   end
 
   def test_upload_removes_spooled_files_after_failure
