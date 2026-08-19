@@ -257,7 +257,13 @@ module OpenAI
       # @param response [nil]
       # @param message [String, nil]
       def initialize(url:, status:, headers:, body:, request:, response:, message: nil)
-        message ||= OpenAI::Internal::Util.dig(body, :message) { {url: url.to_s, status: status, body: body} }
+        message ||= case OpenAI::Internal::Util.dig(body, :message)
+        in String | Symbol | Numeric | true | false => upstream_message
+          upstream_message
+        else
+          safe_status_message(url: url, status: status, headers: headers, body: body)
+        end
+
         @code = OpenAI::Internal::Type::Converter.coerce(String, OpenAI::Internal::Util.dig(body, :code))
         @param = OpenAI::Internal::Type::Converter.coerce(String, OpenAI::Internal::Util.dig(body, :param))
         @type = OpenAI::Internal::Type::Converter.coerce(String, OpenAI::Internal::Util.dig(body, :type))
@@ -270,6 +276,54 @@ module OpenAI
           response: response,
           message: message&.to_s
         )
+      end
+
+      private def safe_status_message(url:, status:, headers:, body:)
+        sensitive_description = %r{
+          https?:// |
+          \b(?:bearer|basic)\s+(?!tokens?\b|credentials?\b|authentication\b)\S |
+          \b(?:(?:access|refresh|id|session)\s+)?(?:tokens?|credentials?)\s+
+              (?!is\b|was\b|invalid\b|expired\b|missing\b|required\b)[a-z0-9._-]{8,} |
+          \beyJ[a-z0-9_-]+\.[a-z0-9_-]+\.[a-z0-9_-]+ |
+          \b(?:AKIA|ASIA)[a-z0-9]{16}\b |
+          \b(?:sk|rk|ek)(?:[-_][a-z0-9]{16,}|(?:[-_][a-z0-9]+){2,}) |
+          \b(?:[a-z0-9]+[-_])*
+              (?:api[-_\s]?key|access[-_\s]?token|client[-_\s]?secret|authorization|awsaccesskeyid|
+                  (?:set[-_\s]?)?cookie|credentials?|assertions?|tokens?|keys?|signature|secret|password|
+                  prompt|input|responses?|outputs?|messages?|content)
+              (?:[-_][a-z0-9]+|\[[a-z0-9_-]*\])*
+              (?:["']?\s*[:=]\s*|\s+(?:is|was)\s+)
+              (?!
+                (?:invalid|expired|missing|required|malformed|unsupported|incorrect|unknown|
+                    revoked|disabled|empty|too\s+(?:long|short|large|small)|string|integer|
+                    number|boolean|object|array|null|\d+(?:\s+tokens?)?)\b
+                    (?!\s*[:=]\s*(?!expected\b|string\b|integer\b|number\b|boolean\b)\S)
+              )
+              \S
+        }ix
+        upstream_message = [
+          OpenAI::Internal::Util.dig(body, [:error, :message]),
+          OpenAI::Internal::Util.dig(body, [:error, :error_description]),
+          OpenAI::Internal::Util.dig(body, :error_description),
+          OpenAI::Internal::Util.dig(body, :error)
+        ].find { _1.is_a?(String) && !_1[...512].match?(sensitive_description) }
+
+        safe_url = OpenAI::Internal::Logging.safe_url(url)
+        safe_url = safe_url.sub(/\?[^#]*/, "") unless url.query.nil?
+        fields = ["status=#{status}", "url=#{safe_url}"]
+        request_id = headers&.[]("x-request-id")
+        fields << "request_id=#{bounded_status_field(request_id, limit: 128)}" if request_id
+        fields << "message=#{bounded_status_field(upstream_message, limit: 512)}" if upstream_message
+
+        fields.join(" ")
+      end
+
+      private def bounded_status_field(value, limit:)
+        text = value.to_s
+        escaped = OpenAI::Internal::Logging.safe_field(text[...limit])
+        return escaped if text.length <= limit && escaped.bytesize <= limit
+
+        "#{escaped.byteslice(0, limit)}..."
       end
     end
 
