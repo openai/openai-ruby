@@ -539,6 +539,7 @@ module OpenAI
           end
 
           url, max_retries = request.fetch_values(:url, :max_retries)
+          prepared_request = request
 
           begin
             encoded_headers, encoded_body = OpenAI::Internal::Util.encode_content(
