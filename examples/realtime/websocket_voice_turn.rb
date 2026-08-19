@@ -3,6 +3,7 @@
 
 require "base64"
 require "tempfile"
+require "tmpdir"
 require "timeout"
 
 require_relative "../../lib/openai"
@@ -112,24 +113,37 @@ module OpenAI
         end
 
         def open_output(path)
+          directory = File.realpath(File.dirname(path))
+          directory_stat = File.stat(directory)
+          if (directory_stat.mode & 0o022).positive? && !directory_stat.sticky?
+            raise(
+              ArgumentError,
+              "output directory must not be writable by other users unless it has the sticky bit set"
+            )
+          end
+
+          output_path = File.join(directory, File.basename(path))
           begin
-            File.lstat(path)
+            File.lstat(output_path)
           rescue Errno::ENOENT
             # The destination is available.
           else
             raise ArgumentError, "output path must not already exist"
           end
 
-          directory = File.dirname(path)
-          Tempfile.create([".openai-realtime-", ".tmp"], directory, mode: File::BINARY, perm: 0o600) do |file|
-            yield(file)
-            file.flush
-            file.fsync
+          Dir.mktmpdir(".openai-realtime-", directory) do |staging_directory|
+            File.chmod(0o700, staging_directory)
+            Tempfile.create(["response-", ".tmp"], staging_directory, mode: File::BINARY, perm: 0o600) do |file|
+              yield(file)
+              file.flush
+              file.fsync
+              raise "staged output changed before publication" unless File.identical?(file.path, file)
 
-            begin
-              File.link(file.path, path)
-            rescue Errno::EEXIST
-              raise ArgumentError, "output path must not already exist"
+              begin
+                File.link(file.path, output_path)
+              rescue Errno::EEXIST
+                raise ArgumentError, "output path must not already exist"
+              end
             end
           end
         end

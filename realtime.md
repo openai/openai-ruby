@@ -180,8 +180,11 @@ and transcript, a successful terminal response, binary output, and an output
 path that does not already exist. It returns the transcript to its caller while
 keeping diagnostics metadata-only. Audio is staged privately and published at
 the requested path only after the complete turn succeeds, so a failure or
-timeout leaves no partial response behind. It writes raw 24 kHz mono PCM16 so
-callers can play or convert the file without container buffering.
+timeout leaves no partial response behind. The staging directory is owner-only,
+and the example rejects group- or world-writable output directories without a
+sticky bit rather than risk publishing a substituted pathname. It writes raw
+24 kHz mono PCM16 so callers can play or convert the file without container
+buffering.
 
 ## Event compatibility
 

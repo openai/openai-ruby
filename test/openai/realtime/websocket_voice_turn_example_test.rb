@@ -221,6 +221,31 @@ class OpenAI::Test::RealtimeWebSocketVoiceTurnExampleTest < Minitest::Test
     end
   end
 
+  def test_output_file_rejects_symlink_and_hardlink_destinations
+    Dir.mktmpdir("openai-realtime-voice") do |directory|
+      target = File.join(directory, "existing.pcm")
+      File.binwrite(target, "keep me")
+      destinations = [
+        File.join(directory, "response-symlink.pcm"),
+        File.join(directory, "response-hardlink.pcm")
+      ]
+      File.symlink(target, destinations.fetch(0))
+      File.link(target, destinations.fetch(1))
+
+      destinations.each do |path|
+        error = assert_raises(ArgumentError) do
+          OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) { |_file| nil }
+        end
+
+        assert_equal("output path must not already exist", error.message)
+      end
+
+      assert_equal("keep me", File.binread(target))
+      assert_predicate(File.lstat(destinations.fetch(0)), :symlink?)
+      assert(File.identical?(target, destinations.fetch(1)))
+    end
+  end
+
   def test_output_file_does_not_relabel_errors_from_the_caller_block
     Dir.mktmpdir("openai-realtime-voice") do |directory|
       path = File.join(directory, "response.pcm")
@@ -278,10 +303,69 @@ class OpenAI::Test::RealtimeWebSocketVoiceTurnExampleTest < Minitest::Test
       OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) do |file|
         file.write("complete audio")
         refute_path_exists(path)
+
+        staging_directory = File.dirname(file.path)
+        refute_equal(directory, staging_directory)
+        assert_equal(0o700, File.stat(staging_directory).mode & 0o777)
       end
 
       assert_equal("complete audio", File.binread(path))
+      assert_equal(0o600, File.stat(path).mode & 0o777)
       assert_equal(["response.pcm"], Dir.children(directory))
+    end
+  end
+
+  def test_output_file_rejects_a_replaceable_staging_path
+    Dir.mktmpdir("openai-realtime-voice") do |directory|
+      File.chmod(0o770, directory)
+      path = File.join(directory, "response.pcm")
+
+      error = assert_raises(ArgumentError) do
+        OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) do |file|
+          file.write("private audio")
+          File.unlink(file.path)
+          File.binwrite(file.path, "attacker-controlled audio")
+        end
+      end
+
+      assert_equal(
+        "output directory must not be writable by other users unless it has the sticky bit set",
+        error.message
+      )
+      refute_path_exists(path)
+      assert_empty(Dir.children(directory))
+    end
+  end
+
+  def test_output_file_allows_a_sticky_shared_directory
+    Dir.mktmpdir("openai-realtime-voice") do |directory|
+      File.chmod(0o1777, directory)
+      path = File.join(directory, "response.pcm")
+
+      OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) do |file|
+        file.write("complete audio")
+      end
+
+      assert_equal("complete audio", File.binread(path))
+      assert_equal(0o600, File.stat(path).mode & 0o777)
+    end
+  end
+
+  def test_output_file_does_not_publish_a_substituted_private_staging_path
+    Dir.mktmpdir("openai-realtime-voice") do |directory|
+      path = File.join(directory, "response.pcm")
+
+      error = assert_raises(RuntimeError) do
+        OpenAI::Examples::Realtime::WebSocketVoiceTurn.open_output(path) do |file|
+          file.write("private audio")
+          File.unlink(file.path)
+          File.binwrite(file.path, "attacker-controlled audio")
+        end
+      end
+
+      assert_equal("staged output changed before publication", error.message)
+      refute_path_exists(path)
+      assert_empty(Dir.children(directory))
     end
   end
 
