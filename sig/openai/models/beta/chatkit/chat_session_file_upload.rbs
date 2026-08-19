@@ -1,0 +1,30 @@
+module OpenAI
+  module Models
+    module Beta
+      module ChatKit
+        type chat_session_file_upload =
+          { enabled: bool, max_file_size: Integer?, max_files: Integer? }
+
+        class ChatSessionFileUpload < OpenAI::Internal::Type::BaseModel
+          attr_accessor enabled: bool
+
+          attr_accessor max_file_size: Integer?
+
+          attr_accessor max_files: Integer?
+
+          def initialize: (
+            enabled: bool,
+            max_file_size: Integer?,
+            max_files: Integer?
+          ) -> void
+
+          def to_hash: -> {
+            enabled: bool,
+            max_file_size: Integer?,
+            max_files: Integer?
+          }
+        end
+      end
+    end
+  end
+end

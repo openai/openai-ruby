@@ -1,0 +1,43 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_tracing_config =
+        :auto | OpenAI::Realtime::RealtimeTracingConfig::TracingConfiguration
+
+      module RealtimeTracingConfig
+        extend OpenAI::Internal::Type::Union
+
+        type tracing_configuration =
+          { group_id: String, metadata: top, workflow_name: String }
+
+        class TracingConfiguration < OpenAI::Internal::Type::BaseModel
+          attr_reader group_id: String?
+
+          def group_id=: (String) -> String
+
+          attr_reader metadata: top?
+
+          def metadata=: (top) -> top
+
+          attr_reader workflow_name: String?
+
+          def workflow_name=: (String) -> String
+
+          def initialize: (
+            ?group_id: String,
+            ?metadata: top,
+            ?workflow_name: String
+          ) -> void
+
+          def to_hash: -> {
+            group_id: String,
+            metadata: top,
+            workflow_name: String
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Realtime::realtime_tracing_config]
+      end
+    end
+  end
+end

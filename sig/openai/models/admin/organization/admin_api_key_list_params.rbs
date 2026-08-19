@@ -1,0 +1,57 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type admin_api_key_list_params =
+          {
+            after: String?,
+            limit: Integer,
+            order: OpenAI::Models::Admin::Organization::AdminAPIKeyListParams::order
+          }
+          & OpenAI::Internal::Type::request_parameters
+
+        class AdminAPIKeyListParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor after: String?
+
+          attr_reader limit: Integer?
+
+          def limit=: (Integer) -> Integer
+
+          attr_reader order: OpenAI::Models::Admin::Organization::AdminAPIKeyListParams::order?
+
+          def order=: (
+            OpenAI::Models::Admin::Organization::AdminAPIKeyListParams::order
+          ) -> OpenAI::Models::Admin::Organization::AdminAPIKeyListParams::order
+
+          def initialize: (
+            ?after: String?,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::AdminAPIKeyListParams::order,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            after: String?,
+            limit: Integer,
+            order: OpenAI::Models::Admin::Organization::AdminAPIKeyListParams::order,
+            request_options: OpenAI::RequestOptions
+          }
+
+          type order = :asc | :desc
+
+          module Order
+            extend OpenAI::Internal::Type::Enum
+
+            ASC: :asc
+            DESC: :desc
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::AdminAPIKeyListParams::order]
+          end
+        end
+      end
+    end
+  end
+end

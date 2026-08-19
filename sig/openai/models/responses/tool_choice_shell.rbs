@@ -1,0 +1,15 @@
+module OpenAI
+  module Models
+    module Responses
+      type tool_choice_shell = { type: :shell }
+
+      class ToolChoiceShell < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :shell
+
+        def initialize: (?type: :shell) -> void
+
+        def to_hash: -> { type: :shell }
+      end
+    end
+  end
+end

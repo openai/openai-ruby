@@ -1,0 +1,30 @@
+module OpenAI
+  module Models
+    module Realtime
+      type input_audio_buffer_append_event =
+        { audio: String, type: :"input_audio_buffer.append", event_id: String }
+
+      class InputAudioBufferAppendEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor audio: String
+
+        attr_accessor type: :"input_audio_buffer.append"
+
+        attr_reader event_id: String?
+
+        def event_id=: (String) -> String
+
+        def initialize: (
+          audio: String,
+          ?event_id: String,
+          ?type: :"input_audio_buffer.append"
+        ) -> void
+
+        def to_hash: -> {
+          audio: String,
+          type: :"input_audio_buffer.append",
+          event_id: String
+        }
+      end
+    end
+  end
+end

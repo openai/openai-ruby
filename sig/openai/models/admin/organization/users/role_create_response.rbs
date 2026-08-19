@@ -1,0 +1,36 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Users
+          type role_create_response =
+            {
+              object: :"user.role",
+              role: OpenAI::Admin::Organization::Role,
+              user: OpenAI::Admin::Organization::OrganizationUser
+            }
+
+          class RoleCreateResponse < OpenAI::Internal::Type::BaseModel
+            attr_accessor object: :"user.role"
+
+            attr_accessor role: OpenAI::Admin::Organization::Role
+
+            attr_accessor user: OpenAI::Admin::Organization::OrganizationUser
+
+            def initialize: (
+              role: OpenAI::Admin::Organization::Role,
+              user: OpenAI::Admin::Organization::OrganizationUser,
+              ?object: :"user.role"
+            ) -> void
+
+            def to_hash: -> {
+              object: :"user.role",
+              role: OpenAI::Admin::Organization::Role,
+              user: OpenAI::Admin::Organization::OrganizationUser
+            }
+          end
+        end
+      end
+    end
+  end
+end

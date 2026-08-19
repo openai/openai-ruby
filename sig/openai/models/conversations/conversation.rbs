@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Conversations
+      type conversation =
+        {
+          id: String,
+          created_at: Integer,
+          metadata: top,
+          object: :conversation
+        }
+
+      class Conversation < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor metadata: top
+
+        attr_accessor object: :conversation
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          metadata: top,
+          ?object: :conversation
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          metadata: top,
+          object: :conversation
+        }
+      end
+    end
+  end
+end

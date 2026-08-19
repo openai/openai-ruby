@@ -1,0 +1,26 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class SpendLimit
+          def retrieve: (
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::OrganizationSpendLimit
+
+          def update: (
+            currency: OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::currency,
+            interval: OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::interval,
+            threshold_amount: Integer,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::OrganizationSpendLimit
+
+          def delete: (
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::OrganizationSpendLimitDeleted
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

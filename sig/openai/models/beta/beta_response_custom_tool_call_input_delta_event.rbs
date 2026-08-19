@@ -1,0 +1,59 @@
+module OpenAI
+  module Models
+    class BetaResponseCustomToolCallInputDeltaEvent = Beta::BetaResponseCustomToolCallInputDeltaEvent
+
+    module Beta
+      type beta_response_custom_tool_call_input_delta_event =
+        {
+          delta: String,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.custom_tool_call_input.delta",
+          agent: OpenAI::Beta::BetaResponseCustomToolCallInputDeltaEvent::Agent?
+        }
+
+      class BetaResponseCustomToolCallInputDeltaEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor delta: String
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.custom_tool_call_input.delta"
+
+        attr_accessor agent: OpenAI::Beta::BetaResponseCustomToolCallInputDeltaEvent::Agent?
+
+        def initialize: (
+          delta: String,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?agent: OpenAI::Beta::BetaResponseCustomToolCallInputDeltaEvent::Agent?,
+          ?type: :"response.custom_tool_call_input.delta"
+        ) -> void
+
+        def to_hash: -> {
+          delta: String,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.custom_tool_call_input.delta",
+          agent: OpenAI::Beta::BetaResponseCustomToolCallInputDeltaEvent::Agent?
+        }
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end

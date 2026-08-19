@@ -1,0 +1,47 @@
+module OpenAI
+  module Models
+    module Audio
+      type transcription_text_segment_event =
+        {
+          id: String,
+          end_: Float,
+          speaker: String,
+          start: Float,
+          text: String,
+          type: :"transcript.text.segment"
+        }
+
+      class TranscriptionTextSegmentEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor end_: Float
+
+        attr_accessor speaker: String
+
+        attr_accessor start: Float
+
+        attr_accessor text: String
+
+        attr_accessor type: :"transcript.text.segment"
+
+        def initialize: (
+          id: String,
+          end_: Float,
+          speaker: String,
+          start: Float,
+          text: String,
+          ?type: :"transcript.text.segment"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          end_: Float,
+          speaker: String,
+          start: Float,
+          text: String,
+          type: :"transcript.text.segment"
+        }
+      end
+    end
+  end
+end

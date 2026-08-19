@@ -1,0 +1,132 @@
+# typed: strong
+
+module OpenAI
+  module Resources
+
+    # Files are used to upload documents that can be used with features like
+    # Assistants and Fine-tuning.
+    class Files
+
+      # Upload a file that can be used across various endpoints. Individual files can be
+      # up to 512 MB, and each project can store up to 2.5 TB of files in total. There
+      # is no organization-wide storage limit. Uploads to this endpoint are rate-limited
+      # to 1,000 requests per minute per authenticated user.
+      #
+      # - The Assistants API supports files up to 2 million tokens and of specific file
+      #   types. See the
+      #   [Assistants Tools guide](https://platform.openai.com/docs/assistants/tools)
+      #   for details.
+      # - The Fine-tuning API only supports `.jsonl` files. The input also has certain
+      #   required formats for fine-tuning
+      #   [chat](https://platform.openai.com/docs/api-reference/fine-tuning/chat-input)
+      #   or
+      #   [completions](https://platform.openai.com/docs/api-reference/fine-tuning/completions-input)
+      #   models.
+      # - The Batch API only supports `.jsonl` files up to 200 MB in size. The input
+      #   also has a specific required
+      #   [format](https://platform.openai.com/docs/api-reference/batch/request-input).
+      # - For Retrieval or `file_search` ingestion, upload files here first. If you need
+      #   to attach multiple uploaded files to the same vector store, use
+      #   [`/vector_stores/{vector_store_id}/file_batches`](https://platform.openai.com/docs/api-reference/vector-stores-file-batches/createBatch)
+      #   instead of attaching them one by one. Vector store attachment has separate
+      #   limits from file upload, including 2,000 attached files per minute per
+      #   organization.
+      #
+      # Please [contact us](https://help.openai.com/) if you need to increase these
+      # storage limits.
+      sig {
+        params(
+          file: OpenAI::Internal::FileInput,
+          purpose: OpenAI::FilePurpose::OrSymbol,
+          expires_after: OpenAI::FileCreateParams::ExpiresAfter::OrHash,
+          request_options: OpenAI::RequestOptions::OrHash
+        )
+          .returns(OpenAI::FileObject)
+      }
+      def create(
+        # The File object (not file name) to be uploaded.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
+        file:,
+        # The intended purpose of the uploaded file. One of:
+        #
+        # - `assistants`: Used in the Assistants API
+        # - `batch`: Used in the Batch API
+        # - `fine-tune`: Used for fine-tuning
+        # - `vision`: Images used for vision fine-tuning
+        # - `user_data`: Flexible file type for any purpose
+        # - `evals`: Used for eval data sets
+        purpose:,
+        # The expiration policy for a file. By default, files with `purpose=batch` expire
+        # after 30 days and all other files are persisted until they are manually deleted.
+        expires_after: nil,
+        request_options: {}
+      )
+      end
+
+      # Returns information about a specific file.
+      sig { params(file_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::FileObject) }
+      def retrieve(
+        # The ID of the file to use for this request.
+        file_id,
+        request_options: {}
+      )
+      end
+
+      # Returns a list of files.
+      sig {
+        params(
+          after: String,
+          limit: Integer,
+          order: OpenAI::FileListParams::Order::OrSymbol,
+          purpose: String,
+          request_options: OpenAI::RequestOptions::OrHash
+        )
+          .returns(OpenAI::Internal::CursorPage[OpenAI::FileObject])
+      }
+      def list(
+        # A cursor for use in pagination. `after` is an object ID that defines your place
+        # in the list. For instance, if you make a list request and receive 100 objects,
+        # ending with obj_foo, your subsequent call can include after=obj_foo in order to
+        # fetch the next page of the list.
+        after: nil,
+        # A limit on the number of objects to be returned. Limit can range between 1 and
+        # 10,000, and the default is 10,000.
+        limit: nil,
+        # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
+        # order and `desc` for descending order.
+        order: nil,
+        # Only return files with the given purpose.
+        purpose: nil,
+        request_options: {}
+      )
+      end
+
+      # Delete a file and remove it from all vector stores.
+      sig { params(file_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::FileDeleted) }
+      def delete(
+        # The ID of the file to use for this request.
+        file_id,
+        request_options: {}
+      )
+      end
+
+      # Returns a response containing the contents of the specified file.
+      sig { params(file_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(StringIO) }
+      def content(
+        # The ID of the file to use for this request.
+        file_id,
+        request_options: {}
+      )
+      end
+
+      # @api private
+      sig { params(client: OpenAI::Client).returns(T.attached_class) }
+      def self.new(client:)
+      end
+    end
+
+  end
+end

@@ -1,0 +1,19 @@
+module OpenAI
+  module Models
+    class BetaResponseOutputRefusal = Beta::BetaResponseOutputRefusal
+
+    module Beta
+      type beta_response_output_refusal = { refusal: String, type: :refusal }
+
+      class BetaResponseOutputRefusal < OpenAI::Internal::Type::BaseModel
+        attr_accessor refusal: String
+
+        attr_accessor type: :refusal
+
+        def initialize: (refusal: String, ?type: :refusal) -> void
+
+        def to_hash: -> { refusal: String, type: :refusal }
+      end
+    end
+  end
+end

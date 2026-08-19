@@ -1,0 +1,120 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type invite =
+          {
+            id: String,
+            created_at: Integer,
+            email: String,
+            object: :"organization.invite",
+            projects: ::Array[OpenAI::Admin::Organization::Invite::Project],
+            role: OpenAI::Models::Admin::Organization::Invite::role,
+            status: OpenAI::Models::Admin::Organization::Invite::status,
+            accepted_at: Integer?,
+            expires_at: Integer?
+          }
+
+        class Invite < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor created_at: Integer
+
+          attr_accessor email: String
+
+          attr_accessor object: :"organization.invite"
+
+          attr_accessor projects: ::Array[OpenAI::Admin::Organization::Invite::Project]
+
+          attr_accessor role: OpenAI::Models::Admin::Organization::Invite::role
+
+          attr_accessor status: OpenAI::Models::Admin::Organization::Invite::status
+
+          attr_accessor accepted_at: Integer?
+
+          attr_accessor expires_at: Integer?
+
+          def initialize: (
+            id: String,
+            created_at: Integer,
+            email: String,
+            projects: ::Array[OpenAI::Admin::Organization::Invite::Project],
+            role: OpenAI::Models::Admin::Organization::Invite::role,
+            status: OpenAI::Models::Admin::Organization::Invite::status,
+            ?accepted_at: Integer?,
+            ?expires_at: Integer?,
+            ?object: :"organization.invite"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            created_at: Integer,
+            email: String,
+            object: :"organization.invite",
+            projects: ::Array[OpenAI::Admin::Organization::Invite::Project],
+            role: OpenAI::Models::Admin::Organization::Invite::role,
+            status: OpenAI::Models::Admin::Organization::Invite::status,
+            accepted_at: Integer?,
+            expires_at: Integer?
+          }
+
+          type project =
+            {
+              id: String,
+              role: OpenAI::Models::Admin::Organization::Invite::Project::role
+            }
+
+          class Project < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor role: OpenAI::Models::Admin::Organization::Invite::Project::role
+
+            def initialize: (
+              id: String,
+              role: OpenAI::Models::Admin::Organization::Invite::Project::role
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              role: OpenAI::Models::Admin::Organization::Invite::Project::role
+            }
+
+            type role = :member | :owner
+
+            module Role
+              extend OpenAI::Internal::Type::Enum
+
+              MEMBER: :member
+              OWNER: :owner
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Invite::Project::role]
+            end
+          end
+
+          type role = :owner | :reader
+
+          module Role
+            extend OpenAI::Internal::Type::Enum
+
+            OWNER: :owner
+            READER: :reader
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Invite::role]
+          end
+
+          type status = :accepted | :expired | :pending
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            ACCEPTED: :accepted
+            EXPIRED: :expired
+            PENDING: :pending
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Invite::status]
+          end
+        end
+      end
+    end
+  end
+end

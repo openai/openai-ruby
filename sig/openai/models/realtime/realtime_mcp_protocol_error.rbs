@@ -1,0 +1,28 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_mcp_protocol_error =
+        { code: Integer, message: String, type: :protocol_error }
+
+      class RealtimeMcpProtocolError < OpenAI::Internal::Type::BaseModel
+        attr_accessor code: Integer
+
+        attr_accessor message: String
+
+        attr_accessor type: :protocol_error
+
+        def initialize: (
+          code: Integer,
+          message: String,
+          ?type: :protocol_error
+        ) -> void
+
+        def to_hash: -> {
+          code: Integer,
+          message: String,
+          type: :protocol_error
+        }
+      end
+    end
+  end
+end

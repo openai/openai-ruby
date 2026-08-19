@@ -1,0 +1,189 @@
+# typed: strong
+
+module OpenAI
+  module Models
+
+    module Responses
+
+      class ResponseReasoningSummaryPartDoneEvent < OpenAI::Internal::Type::BaseModel
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
+
+        # The ID of the item this summary part is associated with.
+        sig { returns(String) }
+        attr_accessor :item_id
+
+        # The index of the output item this summary part is associated with.
+        sig { returns(Integer) }
+        attr_accessor :output_index
+
+        # The completed summary part.
+        sig { returns(OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part) }
+        attr_reader :part
+
+        sig { params(part: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part::OrHash).void }
+        attr_writer :part
+
+        # The sequence number of this event.
+        sig { returns(Integer) }
+        attr_accessor :sequence_number
+
+        # The index of the summary part within the reasoning summary.
+        sig { returns(Integer) }
+        attr_accessor :summary_index
+
+        # The type of the event. Always `response.reasoning_summary_part.done`.
+        sig { returns(Symbol) }
+        attr_accessor :type
+
+        # The completion status of the summary part. Omitted when the part completed
+        # normally and set to `incomplete` when generation was interrupted.
+        sig { returns(T.nilable(OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol)) }
+        attr_reader :status
+
+        sig { params(status: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::OrSymbol).void }
+        attr_writer :status
+
+        # Emitted when a reasoning summary part is completed.
+        sig do
+          params(
+
+            item_id: String,
+
+            output_index: Integer,
+
+            part: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part::OrHash,
+
+            sequence_number: Integer,
+
+            summary_index: Integer,
+
+            status: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::OrSymbol,
+
+            type: Symbol
+          )
+            .returns(T.attached_class)
+        end
+        def self.new(
+
+          # The ID of the item this summary part is associated with.
+          item_id:,
+
+          # The index of the output item this summary part is associated with.
+          output_index:,
+
+          # The completed summary part.
+          part:,
+
+          # The sequence number of this event.
+          sequence_number:,
+
+          # The index of the summary part within the reasoning summary.
+          summary_index:,
+
+          # The completion status of the summary part. Omitted when the part completed
+          # normally and set to `incomplete` when generation was interrupted.
+          status: nil,
+
+          # The type of the event. Always `response.reasoning_summary_part.done`.
+
+          type: :"response.reasoning_summary_part.done"
+        )
+        end
+
+        sig do
+          override.returns(
+            {
+              item_id: String,
+              output_index: Integer,
+              part: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
+              sequence_number: Integer,
+              summary_index: Integer,
+              type: Symbol,
+              status: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol
+            }
+          )
+        end
+        def to_hash
+        end
+
+        class Part < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The text of the summary part.
+          sig { returns(String) }
+          attr_accessor :text
+
+          # The type of the summary part. Always `summary_text`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # The completed summary part.
+          sig do
+            params(
+
+              text: String,
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # The text of the summary part.
+            text:,
+
+            # The type of the summary part. Always `summary_text`.
+
+            type: :summary_text
+          )
+          end
+
+          sig do
+            override.returns(
+              {text: String, type: Symbol}
+            )
+          end
+          def to_hash
+          end
+
+        end
+
+        # The completion status of the summary part. Omitted when the part completed
+        # normally and set to `incomplete` when generation was interrupted.
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol = T.type_alias {
+            T.all(Symbol, OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status)
+          }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          INCOMPLETE = T.let(
+            :incomplete,
+            OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol
+          )
+
+          sig {
+            override.returns(T::Array[OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol])
+          }
+          def self.values
+          end
+        end
+
+      end
+
+    end
+
+  end
+end

@@ -1,0 +1,984 @@
+# typed: strong
+
+module OpenAI
+  module Models
+
+    module Responses
+
+      class ResponseComputerToolCall < OpenAI::Internal::Type::BaseModel
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponseComputerToolCall,
+            OpenAI::Internal::AnyHash
+          )
+        end
+
+        # The unique ID of the computer call.
+        sig { returns(String) }
+        attr_accessor :id
+
+        # An identifier used when responding to the tool call with output.
+        sig { returns(String) }
+        attr_accessor :call_id
+
+        # The pending safety checks for the computer call.
+        sig { returns(T::Array[OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck]) }
+        attr_accessor :pending_safety_checks
+
+        # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+        # Populated when items are returned via API.
+        sig { returns(OpenAI::Responses::ResponseComputerToolCall::Status::OrSymbol) }
+        attr_accessor :status
+
+        # The type of the computer call. Always `computer_call`.
+        sig { returns(OpenAI::Responses::ResponseComputerToolCall::Type::OrSymbol) }
+        attr_accessor :type
+
+        # A click action.
+        sig {
+          returns(
+            T.nilable(
+              T.any(
+                OpenAI::Responses::ResponseComputerToolCall::Action::Click,
+                OpenAI::Responses::ResponseComputerToolCall::Action::DoubleClick,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Drag,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Keypress,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Move,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Screenshot,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Scroll,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Type,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Wait
+              )
+            )
+          )
+        }
+        attr_reader :action
+
+        sig {
+          params(
+            action: T.any(
+              OpenAI::Responses::ResponseComputerToolCall::Action::Click::OrHash,
+              OpenAI::Responses::ResponseComputerToolCall::Action::DoubleClick::OrHash,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Drag::OrHash,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Keypress::OrHash,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Move::OrHash,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Screenshot::OrHash,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Scroll::OrHash,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Type::OrHash,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Wait::OrHash
+            )
+          )
+            .void
+        }
+        attr_writer :action
+
+        # Flattened batched actions for `computer_use`. Each action includes an `type`
+        # discriminator and action-specific fields.
+        sig {
+          returns(
+            T.nilable(
+              T::Array[
+                T.any(
+                  OpenAI::Responses::ComputerAction::Click,
+                  OpenAI::Responses::ComputerAction::DoubleClick,
+                  OpenAI::Responses::ComputerAction::Drag,
+                  OpenAI::Responses::ComputerAction::Keypress,
+                  OpenAI::Responses::ComputerAction::Move,
+                  OpenAI::Responses::ComputerAction::Screenshot,
+                  OpenAI::Responses::ComputerAction::Scroll,
+                  OpenAI::Responses::ComputerAction::Type,
+                  OpenAI::Responses::ComputerAction::Wait
+                )
+              ]
+            )
+          )
+        }
+        attr_reader :actions
+
+        sig {
+          params(
+            actions: T::Array[
+              T.any(
+                OpenAI::Responses::ComputerAction::Click::OrHash,
+                OpenAI::Responses::ComputerAction::DoubleClick::OrHash,
+                OpenAI::Responses::ComputerAction::Drag::OrHash,
+                OpenAI::Responses::ComputerAction::Keypress::OrHash,
+                OpenAI::Responses::ComputerAction::Move::OrHash,
+                OpenAI::Responses::ComputerAction::Screenshot::OrHash,
+                OpenAI::Responses::ComputerAction::Scroll::OrHash,
+                OpenAI::Responses::ComputerAction::Type::OrHash,
+                OpenAI::Responses::ComputerAction::Wait::OrHash
+              )
+            ]
+          )
+            .void
+        }
+        attr_writer :actions
+
+        # A tool call to a computer use tool. See the
+        # [computer use guide](https://platform.openai.com/docs/guides/tools-computer-use)
+        # for more information.
+        sig do
+          params(
+
+            id: String,
+
+            call_id: String,
+
+            pending_safety_checks: T::Array[OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck::OrHash],
+
+            status: OpenAI::Responses::ResponseComputerToolCall::Status::OrSymbol,
+
+            type: OpenAI::Responses::ResponseComputerToolCall::Type::OrSymbol,
+
+            action: T.any(
+              OpenAI::Responses::ResponseComputerToolCall::Action::Click::OrHash,
+              OpenAI::Responses::ResponseComputerToolCall::Action::DoubleClick::OrHash,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Drag::OrHash,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Keypress::OrHash,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Move::OrHash,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Screenshot::OrHash,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Scroll::OrHash,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Type::OrHash,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Wait::OrHash
+            ),
+
+            actions: T::Array[
+              T.any(
+                OpenAI::Responses::ComputerAction::Click::OrHash,
+                OpenAI::Responses::ComputerAction::DoubleClick::OrHash,
+                OpenAI::Responses::ComputerAction::Drag::OrHash,
+                OpenAI::Responses::ComputerAction::Keypress::OrHash,
+                OpenAI::Responses::ComputerAction::Move::OrHash,
+                OpenAI::Responses::ComputerAction::Screenshot::OrHash,
+                OpenAI::Responses::ComputerAction::Scroll::OrHash,
+                OpenAI::Responses::ComputerAction::Type::OrHash,
+                OpenAI::Responses::ComputerAction::Wait::OrHash
+              )
+            ]
+          )
+            .returns(T.attached_class)
+        end
+        def self.new(
+
+          # The unique ID of the computer call.
+          id:,
+
+          # An identifier used when responding to the tool call with output.
+          call_id:,
+
+          # The pending safety checks for the computer call.
+          pending_safety_checks:,
+
+          # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+          # Populated when items are returned via API.
+          status:,
+
+          # The type of the computer call. Always `computer_call`.
+          type:,
+
+          # A click action.
+          action: nil,
+
+          # Flattened batched actions for `computer_use`. Each action includes an `type`
+          # discriminator and action-specific fields.
+
+          actions: nil
+        )
+        end
+
+        sig do
+          override.returns(
+            {
+              id: String,
+              call_id: String,
+              pending_safety_checks: T::Array[OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck],
+              status: OpenAI::Responses::ResponseComputerToolCall::Status::OrSymbol,
+              type: OpenAI::Responses::ResponseComputerToolCall::Type::OrSymbol,
+              action: T.any(
+                OpenAI::Responses::ResponseComputerToolCall::Action::Click,
+                OpenAI::Responses::ResponseComputerToolCall::Action::DoubleClick,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Drag,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Keypress,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Move,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Screenshot,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Scroll,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Type,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Wait
+              ),
+              actions: T::Array[
+                T.any(
+                  OpenAI::Responses::ComputerAction::Click,
+                  OpenAI::Responses::ComputerAction::DoubleClick,
+                  OpenAI::Responses::ComputerAction::Drag,
+                  OpenAI::Responses::ComputerAction::Keypress,
+                  OpenAI::Responses::ComputerAction::Move,
+                  OpenAI::Responses::ComputerAction::Screenshot,
+                  OpenAI::Responses::ComputerAction::Scroll,
+                  OpenAI::Responses::ComputerAction::Type,
+                  OpenAI::Responses::ComputerAction::Wait
+                )
+              ]
+            }
+          )
+        end
+        def to_hash
+        end
+
+        class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The ID of the pending safety check.
+          sig { returns(String) }
+          attr_accessor :id
+
+          # The type of the pending safety check.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :code
+
+          # Details about the pending safety check.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :message
+
+          # A pending safety check for the computer call.
+          sig do
+            params(
+
+              id: String,
+
+              code: T.nilable(String),
+
+              message: T.nilable(String)
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # The ID of the pending safety check.
+            id:,
+
+            # The type of the pending safety check.
+            code: nil,
+
+            # Details about the pending safety check.
+
+            message: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {id: String, code: T.nilable(String), message: T.nilable(String)}
+            )
+          end
+          def to_hash
+          end
+
+        end
+
+        # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+        # Populated when items are returned via API.
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseComputerToolCall::Status) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          IN_PROGRESS = T.let(:in_progress, OpenAI::Responses::ResponseComputerToolCall::Status::TaggedSymbol)
+          COMPLETED = T.let(:completed, OpenAI::Responses::ResponseComputerToolCall::Status::TaggedSymbol)
+          INCOMPLETE = T.let(:incomplete, OpenAI::Responses::ResponseComputerToolCall::Status::TaggedSymbol)
+
+          sig { override.returns(T::Array[OpenAI::Responses::ResponseComputerToolCall::Status::TaggedSymbol]) }
+          def self.values
+          end
+        end
+
+        # The type of the computer call. Always `computer_call`.
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseComputerToolCall::Type) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          COMPUTER_CALL = T.let(:computer_call, OpenAI::Responses::ResponseComputerToolCall::Type::TaggedSymbol)
+
+          sig { override.returns(T::Array[OpenAI::Responses::ResponseComputerToolCall::Type::TaggedSymbol]) }
+          def self.values
+          end
+        end
+
+        # A click action.
+        module Action
+          extend OpenAI::Internal::Type::Union
+
+          Variants = T.type_alias {
+            T.any(
+              OpenAI::Responses::ResponseComputerToolCall::Action::Click,
+              OpenAI::Responses::ResponseComputerToolCall::Action::DoubleClick,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Drag,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Keypress,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Move,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Screenshot,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Scroll,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Type,
+              OpenAI::Responses::ResponseComputerToolCall::Action::Wait
+            )
+          }
+
+          class Click < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseComputerToolCall::Action::Click,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Indicates which mouse button was pressed during the click. One of `left`,
+            # `right`, `wheel`, `back`, or `forward`.
+            sig { returns(OpenAI::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol) }
+            attr_accessor :button
+
+            # Specifies the event type. For a click action, this property is always `click`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # The x-coordinate where the click occurred.
+            sig { returns(Integer) }
+            attr_accessor :x
+
+            # The y-coordinate where the click occurred.
+            sig { returns(Integer) }
+            attr_accessor :y_
+
+            # The keys being held while clicking.
+            sig { returns(T.nilable(T::Array[String])) }
+            attr_accessor :keys
+
+            # A click action.
+            sig do
+              params(
+
+                button: OpenAI::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol,
+
+                x: Integer,
+
+                y_: Integer,
+
+                keys: T.nilable(T::Array[String]),
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Indicates which mouse button was pressed during the click. One of `left`,
+              # `right`, `wheel`, `back`, or `forward`.
+              button:,
+
+              # The x-coordinate where the click occurred.
+              x:,
+
+              # The y-coordinate where the click occurred.
+              y_:,
+
+              # The keys being held while clicking.
+              keys: nil,
+
+              # Specifies the event type. For a click action, this property is always `click`.
+
+              type: :click
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  button: OpenAI::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol,
+                  type: Symbol,
+                  x: Integer,
+                  y_: Integer,
+                  keys: T.nilable(T::Array[String])
+                }
+              )
+            end
+            def to_hash
+            end
+
+            # Indicates which mouse button was pressed during the click. One of `left`,
+            # `right`, `wheel`, `back`, or `forward`.
+            module Button
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Responses::ResponseComputerToolCall::Action::Click::Button)
+              }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              LEFT = T.let(:left, OpenAI::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol)
+              RIGHT = T.let(:right, OpenAI::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol)
+              WHEEL = T.let(:wheel, OpenAI::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol)
+              BACK = T.let(:back, OpenAI::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol)
+              FORWARD = T.let(
+                :forward,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol
+              )
+
+              sig {
+                override.returns(
+                  T::Array[OpenAI::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol]
+                )
+              }
+              def self.values
+              end
+            end
+          end
+
+          class DoubleClick < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseComputerToolCall::Action::DoubleClick,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The keys being held while double-clicking.
+            sig { returns(T.nilable(T::Array[String])) }
+            attr_accessor :keys
+
+            # Specifies the event type. For a double click action, this property is always set
+            # to `double_click`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # The x-coordinate where the double click occurred.
+            sig { returns(Integer) }
+            attr_accessor :x
+
+            # The y-coordinate where the double click occurred.
+            sig { returns(Integer) }
+            attr_accessor :y_
+
+            # A double click action.
+            sig do
+              params(
+
+                keys: T.nilable(T::Array[String]),
+
+                x: Integer,
+
+                y_: Integer,
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The keys being held while double-clicking.
+              keys:,
+
+              # The x-coordinate where the double click occurred.
+              x:,
+
+              # The y-coordinate where the double click occurred.
+              y_:,
+
+              # Specifies the event type. For a double click action, this property is always set
+              # to `double_click`.
+
+              type: :double_click
+            )
+            end
+
+            sig do
+              override.returns(
+                {keys: T.nilable(T::Array[String]), type: Symbol, x: Integer, y_: Integer}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Drag < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseComputerToolCall::Action::Drag,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # An array of coordinates representing the path of the drag action. Coordinates
+            # will appear as an array of objects, eg
+            #
+            # ```
+            # [
+            #   { x: 100, y: 200 },
+            #   { x: 200, y: 300 }
+            # ]
+            # ```
+            sig { returns(T::Array[OpenAI::Responses::ResponseComputerToolCall::Action::Drag::Path]) }
+            attr_accessor :path
+
+            # Specifies the event type. For a drag action, this property is always set to
+            # `drag`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # The keys being held while dragging the mouse.
+            sig { returns(T.nilable(T::Array[String])) }
+            attr_accessor :keys
+
+            # A drag action.
+            sig do
+              params(
+
+                path: T::Array[OpenAI::Responses::ResponseComputerToolCall::Action::Drag::Path::OrHash],
+
+                keys: T.nilable(T::Array[String]),
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # An array of coordinates representing the path of the drag action. Coordinates
+              # will appear as an array of objects, eg
+              #
+              # ```
+              # [
+              #   { x: 100, y: 200 },
+              #   { x: 200, y: 300 }
+              # ]
+              # ```
+              path:,
+
+              # The keys being held while dragging the mouse.
+              keys: nil,
+
+              # Specifies the event type. For a drag action, this property is always set to
+              # `drag`.
+
+              type: :drag
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  path: T::Array[OpenAI::Responses::ResponseComputerToolCall::Action::Drag::Path],
+                  type: Symbol,
+                  keys: T.nilable(T::Array[String])
+                }
+              )
+            end
+            def to_hash
+            end
+
+            class Path < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseComputerToolCall::Action::Drag::Path,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # The x-coordinate.
+              sig { returns(Integer) }
+              attr_accessor :x
+
+              # The y-coordinate.
+              sig { returns(Integer) }
+              attr_accessor :y_
+
+              # An x/y coordinate pair, e.g. `{ x: 100, y: 200 }`.
+              sig do
+                params(
+
+                  x: Integer,
+
+                  y_: Integer
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # The x-coordinate.
+                x:,
+
+                # The y-coordinate.
+
+                y_:
+              )
+              end
+
+              sig do
+                override.returns(
+                  {x: Integer, y_: Integer}
+                )
+              end
+              def to_hash
+              end
+
+            end
+          end
+
+          class Keypress < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseComputerToolCall::Action::Keypress,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The combination of keys the model is requesting to be pressed. This is an array
+            # of strings, each representing a key.
+            sig { returns(T::Array[String]) }
+            attr_accessor :keys
+
+            # Specifies the event type. For a keypress action, this property is always set to
+            # `keypress`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # A collection of keypresses the model would like to perform.
+            sig do
+              params(
+
+                keys: T::Array[String],
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The combination of keys the model is requesting to be pressed. This is an array
+              # of strings, each representing a key.
+              keys:,
+
+              # Specifies the event type. For a keypress action, this property is always set to
+              # `keypress`.
+
+              type: :keypress
+            )
+            end
+
+            sig do
+              override.returns(
+                {keys: T::Array[String], type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Move < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseComputerToolCall::Action::Move,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Specifies the event type. For a move action, this property is always set to
+            # `move`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # The x-coordinate to move to.
+            sig { returns(Integer) }
+            attr_accessor :x
+
+            # The y-coordinate to move to.
+            sig { returns(Integer) }
+            attr_accessor :y_
+
+            # The keys being held while moving the mouse.
+            sig { returns(T.nilable(T::Array[String])) }
+            attr_accessor :keys
+
+            # A mouse move action.
+            sig do
+              params(
+
+                x: Integer,
+
+                y_: Integer,
+
+                keys: T.nilable(T::Array[String]),
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The x-coordinate to move to.
+              x:,
+
+              # The y-coordinate to move to.
+              y_:,
+
+              # The keys being held while moving the mouse.
+              keys: nil,
+
+              # Specifies the event type. For a move action, this property is always set to
+              # `move`.
+
+              type: :move
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol, x: Integer, y_: Integer, keys: T.nilable(T::Array[String])}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Screenshot < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseComputerToolCall::Action::Screenshot,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Specifies the event type. For a screenshot action, this property is always set
+            # to `screenshot`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # A screenshot action.
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Specifies the event type. For a screenshot action, this property is always set
+              # to `screenshot`.
+
+              type: :screenshot
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Scroll < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseComputerToolCall::Action::Scroll,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The horizontal scroll distance.
+            sig { returns(Integer) }
+            attr_accessor :scroll_x
+
+            # The vertical scroll distance.
+            sig { returns(Integer) }
+            attr_accessor :scroll_y
+
+            # Specifies the event type. For a scroll action, this property is always set to
+            # `scroll`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # The x-coordinate where the scroll occurred.
+            sig { returns(Integer) }
+            attr_accessor :x
+
+            # The y-coordinate where the scroll occurred.
+            sig { returns(Integer) }
+            attr_accessor :y_
+
+            # The keys being held while scrolling.
+            sig { returns(T.nilable(T::Array[String])) }
+            attr_accessor :keys
+
+            # A scroll action.
+            sig do
+              params(
+
+                scroll_x: Integer,
+
+                scroll_y: Integer,
+
+                x: Integer,
+
+                y_: Integer,
+
+                keys: T.nilable(T::Array[String]),
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The horizontal scroll distance.
+              scroll_x:,
+
+              # The vertical scroll distance.
+              scroll_y:,
+
+              # The x-coordinate where the scroll occurred.
+              x:,
+
+              # The y-coordinate where the scroll occurred.
+              y_:,
+
+              # The keys being held while scrolling.
+              keys: nil,
+
+              # Specifies the event type. For a scroll action, this property is always set to
+              # `scroll`.
+
+              type: :scroll
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  scroll_x: Integer,
+                  scroll_y: Integer,
+                  type: Symbol,
+                  x: Integer,
+                  y_: Integer,
+                  keys: T.nilable(T::Array[String])
+                }
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Type < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseComputerToolCall::Action::Type,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The text to type.
+            sig { returns(String) }
+            attr_accessor :text
+
+            # Specifies the event type. For a type action, this property is always set to
+            # `type`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # An action to type in text.
+            sig do
+              params(
+
+                text: String,
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The text to type.
+              text:,
+
+              # Specifies the event type. For a type action, this property is always set to
+              # `type`.
+
+              type: :type
+            )
+            end
+
+            sig do
+              override.returns(
+                {text: String, type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Wait < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseComputerToolCall::Action::Wait,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Specifies the event type. For a wait action, this property is always set to
+            # `wait`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # A wait action.
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Specifies the event type. For a wait action, this property is always set to
+              # `wait`.
+
+              type: :wait
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          sig { override.returns(T::Array[OpenAI::Responses::ResponseComputerToolCall::Action::Variants]) }
+          def self.variants
+          end
+
+        end
+
+      end
+
+    end
+
+  end
+end

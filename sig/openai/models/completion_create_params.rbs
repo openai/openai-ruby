@@ -1,0 +1,146 @@
+module OpenAI
+  module Models
+    type completion_create_params =
+      {
+        model: OpenAI::Models::CompletionCreateParams::model,
+        prompt: OpenAI::Models::CompletionCreateParams::prompt?,
+        best_of: Integer?,
+        echo: bool?,
+        frequency_penalty: Float?,
+        logit_bias: ::Hash[Symbol, Integer]?,
+        logprobs: Integer?,
+        max_tokens: Integer?,
+        n: Integer?,
+        presence_penalty: Float?,
+        seed: Integer?,
+        stop: OpenAI::Models::CompletionCreateParams::stop?,
+        stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
+        suffix: String?,
+        temperature: Float?,
+        top_p: Float?,
+        user: String
+      }
+      & OpenAI::Internal::Type::request_parameters
+
+    class CompletionCreateParams < OpenAI::Internal::Type::BaseModel
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
+
+      attr_accessor model: OpenAI::Models::CompletionCreateParams::model
+
+      attr_accessor prompt: OpenAI::Models::CompletionCreateParams::prompt?
+
+      attr_accessor best_of: Integer?
+
+      attr_accessor echo: bool?
+
+      attr_accessor frequency_penalty: Float?
+
+      attr_accessor logit_bias: ::Hash[Symbol, Integer]?
+
+      attr_accessor logprobs: Integer?
+
+      attr_accessor max_tokens: Integer?
+
+      attr_accessor n: Integer?
+
+      attr_accessor presence_penalty: Float?
+
+      attr_accessor seed: Integer?
+
+      attr_accessor stop: OpenAI::Models::CompletionCreateParams::stop?
+
+      attr_accessor stream_options: OpenAI::Chat::ChatCompletionStreamOptions?
+
+      attr_accessor suffix: String?
+
+      attr_accessor temperature: Float?
+
+      attr_accessor top_p: Float?
+
+      attr_reader user: String?
+
+      def user=: (String) -> String
+
+      def initialize: (
+        model: OpenAI::Models::CompletionCreateParams::model,
+        prompt: OpenAI::Models::CompletionCreateParams::prompt?,
+        ?best_of: Integer?,
+        ?echo: bool?,
+        ?frequency_penalty: Float?,
+        ?logit_bias: ::Hash[Symbol, Integer]?,
+        ?logprobs: Integer?,
+        ?max_tokens: Integer?,
+        ?n: Integer?,
+        ?presence_penalty: Float?,
+        ?seed: Integer?,
+        ?stop: OpenAI::Models::CompletionCreateParams::stop?,
+        ?stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
+        ?suffix: String?,
+        ?temperature: Float?,
+        ?top_p: Float?,
+        ?user: String,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        model: OpenAI::Models::CompletionCreateParams::model,
+        prompt: OpenAI::Models::CompletionCreateParams::prompt?,
+        best_of: Integer?,
+        echo: bool?,
+        frequency_penalty: Float?,
+        logit_bias: ::Hash[Symbol, Integer]?,
+        logprobs: Integer?,
+        max_tokens: Integer?,
+        n: Integer?,
+        presence_penalty: Float?,
+        seed: Integer?,
+        stop: OpenAI::Models::CompletionCreateParams::stop?,
+        stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
+        suffix: String?,
+        temperature: Float?,
+        top_p: Float?,
+        user: String,
+        request_options: OpenAI::RequestOptions
+      }
+
+      type model =
+        String | :"gpt-3.5-turbo-instruct" | :"davinci-002" | :"babbage-002"
+
+      module Model
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::CompletionCreateParams::model]
+
+        GPT_3_5_TURBO_INSTRUCT: :"gpt-3.5-turbo-instruct"
+        DAVINCI_002: :"davinci-002"
+        BABBAGE_002: :"babbage-002"
+      end
+
+      type prompt =
+        String | ::Array[String] | ::Array[Integer] | ::Array[::Array[Integer]]
+
+      module Prompt
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::CompletionCreateParams::prompt]
+
+        StringArray: OpenAI::Internal::Type::Converter
+
+        IntegerArray: OpenAI::Internal::Type::Converter
+
+        ArrayOfToken2DArray: OpenAI::Internal::Type::Converter
+      end
+
+      type stop = (String | ::Array[String])?
+
+      module Stop
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::CompletionCreateParams::stop]
+
+        StringArray: OpenAI::Internal::Type::Converter
+      end
+    end
+  end
+end

@@ -1,0 +1,15 @@
+module OpenAI
+  module Models
+    module Responses
+      type container_network_policy_disabled = { type: :disabled }
+
+      class ContainerNetworkPolicyDisabled < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :disabled
+
+        def initialize: (?type: :disabled) -> void
+
+        def to_hash: -> { type: :disabled }
+      end
+    end
+  end
+end

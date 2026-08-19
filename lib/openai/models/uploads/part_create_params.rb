@@ -1,0 +1,38 @@
+# frozen_string_literal: true
+
+module OpenAI
+  module Models
+    module Uploads
+      # @see OpenAI::Resources::Uploads::Parts#create
+      class PartCreateParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        # @!attribute upload_id
+        #
+        #   @return [String]
+        required :upload_id, String
+
+        # @!attribute data
+        #   The chunk of bytes for this Part.
+        #
+        #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        #   content type.
+        #
+        #   @return [Pathname, StringIO, IO, String, OpenAI::FilePart]
+        required :data, OpenAI::Internal::Type::FileInput
+
+        # @!method initialize(upload_id:, data:, request_options: {})
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Uploads::PartCreateParams} for more details.
+        #
+        #   @param upload_id [String]
+        #
+        #   @param data [Pathname, StringIO, IO, String, OpenAI::FilePart] The chunk of bytes for this Part.
+        #
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
+      end
+    end
+  end
+end

@@ -1,0 +1,66 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type fine_tuning_job_succeeded_webhook_event =
+        {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::FineTuningJobSucceededWebhookEvent::Data,
+          type: :"fine_tuning.job.succeeded",
+          object: OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent::object
+        }
+
+      class FineTuningJobSucceededWebhookEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor data: OpenAI::Webhooks::FineTuningJobSucceededWebhookEvent::Data
+
+        attr_accessor type: :"fine_tuning.job.succeeded"
+
+        attr_reader object: OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent::object?
+
+        def object=: (
+          OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent::object
+        ) -> OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent::object
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::FineTuningJobSucceededWebhookEvent::Data,
+          ?object: OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent::object,
+          ?type: :"fine_tuning.job.succeeded"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::FineTuningJobSucceededWebhookEvent::Data,
+          type: :"fine_tuning.job.succeeded",
+          object: OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent::object
+        }
+
+        type data = { id: String }
+
+        class Data < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          def initialize: (id: String) -> void
+
+          def to_hash: -> { id: String }
+        end
+
+        type object = :event
+
+        module Object
+          extend OpenAI::Internal::Type::Enum
+
+          EVENT: :event
+
+          def self?.values: -> ::Array[OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent::object]
+        end
+      end
+    end
+  end
+end

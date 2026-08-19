@@ -1,0 +1,317 @@
+# frozen_string_literal: true
+
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        # @see OpenAI::Resources::Admin::Organization::AuditLogs#list
+        class AuditLogListParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          # @!attribute actor_emails
+          #   Return only events performed by users with these emails.
+          #
+          #   @return [Array<String>, nil]
+          optional :actor_emails, OpenAI::Internal::Type::ArrayOf[String]
+
+          # @!attribute actor_ids
+          #   Return only events performed by these actors. Can be a user ID, a service
+          #   account ID, or an api key tracking ID.
+          #
+          #   @return [Array<String>, nil]
+          optional :actor_ids, OpenAI::Internal::Type::ArrayOf[String]
+
+          # @!attribute after
+          #   A cursor for use in pagination. `after` is an object ID that defines your place
+          #   in the list. For instance, if you make a list request and receive 100 objects,
+          #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+          #   fetch the next page of the list.
+          #
+          #   @return [String, nil]
+          optional :after, String
+
+          # @!attribute before
+          #   A cursor for use in pagination. `before` is an object ID that defines your place
+          #   in the list. For instance, if you make a list request and receive 100 objects,
+          #   starting with obj_foo, your subsequent call can include before=obj_foo in order
+          #   to fetch the previous page of the list.
+          #
+          #   @return [String, nil]
+          optional :before, String
+
+          # @!attribute effective_at
+          #   Return only events whose `effective_at` (Unix seconds) is in this range.
+          #
+          #   @return [OpenAI::Models::Admin::Organization::AuditLogListParams::EffectiveAt, nil]
+          optional :effective_at, -> { OpenAI::Admin::Organization::AuditLogListParams::EffectiveAt }
+
+          # @!attribute event_types
+          #   Return only events with a `type` in one of these values. For example,
+          #   `project.created`. For all options, see the documentation for the
+          #   [audit log object](https://platform.openai.com/docs/api-reference/audit-logs/object).
+          #
+          #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::AuditLogListParams::EventType>, nil]
+          optional(
+            :event_types,
+            -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::AuditLogListParams::EventType] }
+          )
+
+          # @!attribute limit
+          #   A limit on the number of objects to be returned. Limit can range between 1 and
+          #   100, and the default is 20.
+          #
+          #   @return [Integer, nil]
+          optional :limit, Integer
+
+          # @!attribute project_ids
+          #   Return only events for these projects.
+          #
+          #   @return [Array<String>, nil]
+          optional :project_ids, OpenAI::Internal::Type::ArrayOf[String]
+
+          # @!attribute resource_ids
+          #   Return only events performed on these targets. For example, a project ID
+          #   updated. For ChatGPT connector role events, use the workspace connector resource
+          #   ID shown in `details.id`, such as `<workspace_id>__<connector_id>`.
+          #
+          #   @return [Array<String>, nil]
+          optional :resource_ids, OpenAI::Internal::Type::ArrayOf[String]
+
+          # @!attribute tenant_only
+          #   Return only tenant-scoped events associated with this organization. Required for
+          #   tenant-scoped events such as `role.bound_to_resource` and
+          #   `role.unbound_from_resource`. When `true`, all supplied event types must be
+          #   tenant-scoped.
+          #
+          #   @return [Boolean, nil]
+          optional :tenant_only, OpenAI::Internal::Type::Boolean
+
+          # @!method initialize(actor_emails: nil, actor_ids: nil, after: nil, before: nil, effective_at: nil, event_types: nil, limit: nil, project_ids: nil, resource_ids: nil, tenant_only: nil, request_options: {})
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Admin::Organization::AuditLogListParams} for more details.
+          #
+          #   @param actor_emails [Array<String>] Return only events performed by users with these emails.
+          #
+          #   @param actor_ids [Array<String>] Return only events performed by these actors. Can be a user ID, a service accoun
+          #
+          #   @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+          #
+          #   @param before [String] A cursor for use in pagination. `before` is an object ID that defines your place
+          #
+          #   @param effective_at [OpenAI::Models::Admin::Organization::AuditLogListParams::EffectiveAt] Return only events whose `effective_at` (Unix seconds) is in this range.
+          #
+          #   @param event_types [Array<Symbol, OpenAI::Models::Admin::Organization::AuditLogListParams::EventType>] Return only events with a `type` in one of these values. For example, `project.c
+          #
+          #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+          #
+          #   @param project_ids [Array<String>] Return only events for these projects.
+          #
+          #   @param resource_ids [Array<String>] Return only events performed on these targets. For example, a project ID updated
+          #
+          #   @param tenant_only [Boolean] Return only tenant-scoped events associated with this organization. Required for
+          #
+          #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
+
+          class EffectiveAt < OpenAI::Internal::Type::BaseModel
+            # @!attribute gt
+            #   Return only events whose `effective_at` (Unix seconds) is greater than this
+            #   value.
+            #
+            #   @return [Integer, nil]
+            optional :gt, Integer
+
+            # @!attribute gte
+            #   Return only events whose `effective_at` (Unix seconds) is greater than or equal
+            #   to this value.
+            #
+            #   @return [Integer, nil]
+            optional :gte, Integer
+
+            # @!attribute lt
+            #   Return only events whose `effective_at` (Unix seconds) is less than this value.
+            #
+            #   @return [Integer, nil]
+            optional :lt, Integer
+
+            # @!attribute lte
+            #   Return only events whose `effective_at` (Unix seconds) is less than or equal to
+            #   this value.
+            #
+            #   @return [Integer, nil]
+            optional :lte, Integer
+
+            # @!method initialize(gt: nil, gte: nil, lt: nil, lte: nil)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Admin::Organization::AuditLogListParams::EffectiveAt} for more
+            #   details.
+            #
+            #   Return only events whose `effective_at` (Unix seconds) is in this range.
+            #
+            #   @param gt [Integer] Return only events whose `effective_at` (Unix seconds) is greater than this valu
+            #
+            #   @param gte [Integer] Return only events whose `effective_at` (Unix seconds) is greater than or equal
+            #
+            #   @param lt [Integer] Return only events whose `effective_at` (Unix seconds) is less than this value.
+            #
+            #   @param lte [Integer] Return only events whose `effective_at` (Unix seconds) is less than or equal to
+          end
+
+          # The event type.
+          module EventType
+            extend OpenAI::Internal::Type::Enum
+
+            API_KEY_CREATED = :"api_key.created"
+            API_KEY_UPDATED = :"api_key.updated"
+            API_KEY_DELETED = :"api_key.deleted"
+            CERTIFICATE_CREATED = :"certificate.created"
+            CERTIFICATE_UPDATED = :"certificate.updated"
+            CERTIFICATE_DELETED = :"certificate.deleted"
+            CERTIFICATES_ACTIVATED = :"certificates.activated"
+            CERTIFICATES_DEACTIVATED = :"certificates.deactivated"
+            CHECKPOINT_PERMISSION_CREATED = :"checkpoint.permission.created"
+            CHECKPOINT_PERMISSION_DELETED = :"checkpoint.permission.deleted"
+            EXTERNAL_KEY_REGISTERED = :"external_key.registered"
+            EXTERNAL_KEY_REMOVED = :"external_key.removed"
+            GROUP_CREATED = :"group.created"
+            GROUP_UPDATED = :"group.updated"
+            GROUP_DELETED = :"group.deleted"
+            INVITE_SENT = :"invite.sent"
+            INVITE_ACCEPTED = :"invite.accepted"
+            INVITE_DELETED = :"invite.deleted"
+            IP_ALLOWLIST_CREATED = :"ip_allowlist.created"
+            IP_ALLOWLIST_UPDATED = :"ip_allowlist.updated"
+            IP_ALLOWLIST_DELETED = :"ip_allowlist.deleted"
+            IP_ALLOWLIST_CONFIG_ACTIVATED = :"ip_allowlist.config.activated"
+            IP_ALLOWLIST_CONFIG_DEACTIVATED = :"ip_allowlist.config.deactivated"
+            LOGIN_SUCCEEDED = :"login.succeeded"
+            LOGIN_FAILED = :"login.failed"
+            LOGOUT_SUCCEEDED = :"logout.succeeded"
+            LOGOUT_FAILED = :"logout.failed"
+            ORGANIZATION_UPDATED = :"organization.updated"
+            PROJECT_CREATED = :"project.created"
+            PROJECT_UPDATED = :"project.updated"
+            PROJECT_ARCHIVED = :"project.archived"
+            PROJECT_DELETED = :"project.deleted"
+            RATE_LIMIT_UPDATED = :"rate_limit.updated"
+            RATE_LIMIT_DELETED = :"rate_limit.deleted"
+            RESOURCE_DELETED = :"resource.deleted"
+            TUNNEL_CREATED = :"tunnel.created"
+            TUNNEL_UPDATED = :"tunnel.updated"
+            TUNNEL_DELETED = :"tunnel.deleted"
+            WORKLOAD_IDENTITY_PROVIDER_CREATED = :"workload_identity_provider.created"
+            WORKLOAD_IDENTITY_PROVIDER_UPDATED = :"workload_identity_provider.updated"
+            WORKLOAD_IDENTITY_PROVIDER_DELETED = :"workload_identity_provider.deleted"
+            WORKLOAD_IDENTITY_PROVIDER_MAPPING_CREATED = :"workload_identity_provider_mapping.created"
+            WORKLOAD_IDENTITY_PROVIDER_MAPPING_UPDATED = :"workload_identity_provider_mapping.updated"
+            WORKLOAD_IDENTITY_PROVIDER_MAPPING_DELETED = :"workload_identity_provider_mapping.deleted"
+            ROLE_CREATED = :"role.created"
+            ROLE_UPDATED = :"role.updated"
+            ROLE_DELETED = :"role.deleted"
+            ROLE_ASSIGNMENT_CREATED = :"role.assignment.created"
+            ROLE_ASSIGNMENT_DELETED = :"role.assignment.deleted"
+            ROLE_BOUND_TO_RESOURCE = :"role.bound_to_resource"
+            ROLE_UNBOUND_FROM_RESOURCE = :"role.unbound_from_resource"
+            SCIM_ENABLED = :"scim.enabled"
+            SCIM_DISABLED = :"scim.disabled"
+            SERVICE_ACCOUNT_CREATED = :"service_account.created"
+            SERVICE_ACCOUNT_UPDATED = :"service_account.updated"
+            SERVICE_ACCOUNT_DELETED = :"service_account.deleted"
+            USER_ADDED = :"user.added"
+            USER_UPDATED = :"user.updated"
+            USER_DELETED = :"user.deleted"
+            TENANT_METADATA_UPDATED = :"tenant.metadata.updated"
+            TENANT_MICROSOFT_ENTRA_MAPPING_UPSERTED = :"tenant.microsoft_entra_mapping.upserted"
+            TENANT_MICROSOFT_ENTRA_MAPPING_DELETED = :"tenant.microsoft_entra_mapping.deleted"
+            TENANT_WORKLOAD_IDENTITY_PROVIDER_CREATED = :"tenant.workload_identity.provider.created"
+            TENANT_WORKLOAD_IDENTITY_PROVIDER_UPDATED = :"tenant.workload_identity.provider.updated"
+            TENANT_WORKLOAD_IDENTITY_PROVIDER_ARCHIVED = :"tenant.workload_identity.provider.archived"
+            TENANT_WORKLOAD_IDENTITY_MAPPING_CREATED = :"tenant.workload_identity.mapping.created"
+            TENANT_WORKLOAD_IDENTITY_MAPPING_UPDATED = :"tenant.workload_identity.mapping.updated"
+            TENANT_WORKLOAD_IDENTITY_MAPPING_ARCHIVED = :"tenant.workload_identity.mapping.archived"
+            TENANT_WORKLOAD_IDENTITY_BINDING_CREATED = :"tenant.workload_identity.binding.created"
+            TENANT_WORKLOAD_IDENTITY_PRINCIPAL_PROVISIONED = :"tenant.workload_identity.principal.provisioned"
+            TENANT_WORKLOAD_IDENTITY_ACCESS_TOKEN_ISSUED = :"tenant.workload_identity.access_token.issued"
+            TENANT_ADMIN_API_KEY_CREATED = :"tenant.admin_api_key.created"
+            TENANT_ADMIN_API_KEY_UPDATED = :"tenant.admin_api_key.updated"
+            TENANT_ADMIN_API_KEY_DELETED = :"tenant.admin_api_key.deleted"
+            TENANT_PROJECT_API_KEY_CREATED = :"tenant.project_api_key.created"
+            TENANT_CHATGPT_ACCESS_TOKEN_REVOKED = :"tenant.chatgpt_access_token.revoked"
+            TENANT_MIGRATION_COMPLETED = :"tenant.migration.completed"
+            TENANT_SSO_MIGRATED = :"tenant.sso.migrated"
+            TENANT_DOMAINS_MIGRATED = :"tenant.domains.migrated"
+            TENANT_SSO_CONNECTION_CREATED = :"tenant.sso_connection.created"
+            TENANT_SSO_CONNECTION_UPDATED = :"tenant.sso_connection.updated"
+            TENANT_SSO_CONNECTION_DELETED = :"tenant.sso_connection.deleted"
+            TENANT_SSO_CONNECTION_SETUP_STARTED = :"tenant.sso_connection.setup.started"
+            TENANT_POLICY_CREATED = :"tenant.policy.created"
+            TENANT_POLICY_UPDATED = :"tenant.policy.updated"
+            TENANT_POLICY_DELETED = :"tenant.policy.deleted"
+            TENANT_POLICY_ATTACHED = :"tenant.policy.attached"
+            TENANT_POLICY_DETACHED = :"tenant.policy.detached"
+            TENANT_PRINCIPAL_AUTHENTICATION_POLICY_RESOLVED = :"tenant.principal_authentication_policy.resolved"
+            TENANT_SCIM_SETUP_STARTED = :"tenant.scim.setup.started"
+            TENANT_SCIM_DELETION_REQUESTED = :"tenant.scim.deletion.requested"
+            TENANT_SCIM_DIRECTORY_CREATED = :"tenant.scim.directory.created"
+            TENANT_PRODUCT_ACCESS_POLICY_UPDATED = :"tenant.product_access_policy.updated"
+            TENANT_RESOURCE_SHARE_GRANT_CREATED = :"tenant.resource_share_grant.created"
+            TENANT_RESOURCE_SHARE_GRANT_UPDATED = :"tenant.resource_share_grant.updated"
+            TENANT_RESOURCE_SHARE_GRANT_ACCEPTED = :"tenant.resource_share_grant.accepted"
+            TENANT_RESOURCE_SHARE_GRANT_DECLINED = :"tenant.resource_share_grant.declined"
+            TENANT_RESOURCE_SHARE_GRANT_REVOKED = :"tenant.resource_share_grant.revoked"
+            TENANT_RESOURCE_SHARE_GRANT_DELETED = :"tenant.resource_share_grant.deleted"
+            TENANT_SERVICE_ACCOUNT_UPDATED = :"tenant.service_account.updated"
+            TENANT_SERVICE_ACCOUNT_DELETED = :"tenant.service_account.deleted"
+            TENANT_SERVICE_ACCOUNT_TOKEN_REVOKED = :"tenant.service_account.token.revoked"
+            TENANT_BILLING_OVERAGE_LIMIT_UPDATED = :"tenant.billing.overage_limit.updated"
+            TENANT_BILLING_ALERTS_UPDATED = :"tenant.billing.alerts.updated"
+            TENANT_BILLING_INFO_UPDATED = :"tenant.billing.info.updated"
+            TENANT_USAGE_LIMIT_WORKSPACE_UPDATED = :"tenant.usage_limit.workspace.updated"
+            TENANT_USAGE_LIMIT_GROUP_UPDATED = :"tenant.usage_limit.group.updated"
+            TENANT_USAGE_LIMIT_USER_UPDATED = :"tenant.usage_limit.user.updated"
+            TENANT_USAGE_LIMIT_INCREASE_REQUEST_UPDATED = :"tenant.usage_limit.increase_request.updated"
+            TENANT_USAGE_LIMIT_INCREASE_REQUEST_RESOLVED = :"tenant.usage_limit.increase_request.resolved"
+            TENANT_GROUP_CREATED = :"tenant.group.created"
+            TENANT_GROUP_UPDATED = :"tenant.group.updated"
+            TENANT_GROUP_DELETED = :"tenant.group.deleted"
+            TENANT_GROUP_MEMBER_ADDED = :"tenant.group.member.added"
+            TENANT_GROUP_MEMBER_REMOVED = :"tenant.group.member.removed"
+            TENANT_MIGRATION_ROLLOUT_STATUS_UPDATED = :"tenant.migration_rollout.status.updated"
+            TENANT_MIGRATION_ROLLOUT_TIER_UPDATED = :"tenant.migration_rollout.tier.updated"
+            TENANT_ROLE_METADATA_UPDATED = :"tenant.role.metadata.updated"
+            TENANT_CUSTOM_ROLE_CREATED = :"tenant.custom_role.created"
+            TENANT_CUSTOM_ROLE_UPDATED = :"tenant.custom_role.updated"
+            TENANT_CUSTOM_ROLE_DELETED = :"tenant.custom_role.deleted"
+            TENANT_ROLE_ASSIGNMENT_CREATED = :"tenant.role_assignment.created"
+            TENANT_ROLE_ASSIGNMENT_DELETED = :"tenant.role_assignment.deleted"
+            TENANT_RESOURCE_ROLE_ASSIGNMENT_CREATED = :"tenant.resource_role_assignment.created"
+            TENANT_RESOURCE_ROLE_ASSIGNMENT_DELETED = :"tenant.resource_role_assignment.deleted"
+            TENANT_RESOURCE_ACCESS_UPDATED = :"tenant.resource_access.updated"
+            TENANT_RESOURCE_ACCESS_DELETED = :"tenant.resource_access.deleted"
+            TENANT_ADS_ACCOUNT_ONBOARDING_REDEMPTION = :"tenant.ads_account.onboarding.redemption"
+            TENANT_SESSION_POLICY_CREATED = :"tenant.session_policy.created"
+            TENANT_SESSION_POLICY_UPDATED = :"tenant.session_policy.updated"
+            TENANT_SESSION_POLICY_DELETED = :"tenant.session_policy.deleted"
+            TENANT_SESSION_REVOCATION_STARTED = :"tenant.session_revocation.started"
+            TENANT_THIRD_PARTY_APP_POLICY_UPDATED = :"tenant.third_party_app_policy.updated"
+            TENANT_USER_ADDED = :"tenant.user.added"
+            TENANT_USER_UPDATED = :"tenant.user.updated"
+            TENANT_USER_REMOVED = :"tenant.user.removed"
+            TENANT_USER_LOOKED_UP = :"tenant.user.looked_up"
+            TENANT_USER_INVITED = :"tenant.user.invited"
+            TENANT_MEMBERSHIP_REVOKED = :"tenant.membership.revoked"
+            TENANT_API_ORGANIZATION_INVITE_UPSERTED = :"tenant.api_organization_invite.upserted"
+            TENANT_API_ORGANIZATION_INVITE_DELETED = :"tenant.api_organization_invite.deleted"
+            TENANT_CHATGPT_WORKSPACE_INVITE_UPSERTED = :"tenant.chatgpt_workspace_invite.upserted"
+            TENANT_MEMBERSHIP_ACCEPTED = :"tenant.membership.accepted"
+            TENANT_MEMBERSHIP_DECLINED = :"tenant.membership.declined"
+            TENANT_WORKSPACE_INVITE_EMAIL_SETTINGS_UPDATED = :"tenant.workspace_invite_email_settings.updated"
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+        end
+      end
+    end
+  end
+end

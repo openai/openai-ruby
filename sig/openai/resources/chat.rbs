@@ -1,0 +1,9 @@
+module OpenAI
+  module Resources
+    class Chat
+      attr_reader completions: OpenAI::Resources::Chat::Completions
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

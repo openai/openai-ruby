@@ -1,0 +1,126 @@
+module OpenAI
+  module Models
+    class BetaCustomTool = Beta::BetaCustomTool
+
+    module Beta
+      type beta_custom_tool =
+        {
+          name: String,
+          type: :custom,
+          allowed_callers: ::Array[OpenAI::Models::Beta::BetaCustomTool::allowed_caller]?,
+          defer_loading: bool,
+          description: String,
+          format_: OpenAI::Models::Beta::BetaCustomTool::format_
+        }
+
+      class BetaCustomTool < OpenAI::Internal::Type::BaseModel
+        attr_accessor name: String
+
+        attr_accessor type: :custom
+
+        attr_accessor allowed_callers: ::Array[OpenAI::Models::Beta::BetaCustomTool::allowed_caller]?
+
+        attr_reader defer_loading: bool?
+
+        def defer_loading=: (bool) -> bool
+
+        attr_reader description: String?
+
+        def description=: (String) -> String
+
+        attr_reader format_: OpenAI::Models::Beta::BetaCustomTool::format_?
+
+        def format_=: (
+          OpenAI::Models::Beta::BetaCustomTool::format_
+        ) -> OpenAI::Models::Beta::BetaCustomTool::format_
+
+        def initialize: (
+          name: String,
+          ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaCustomTool::allowed_caller]?,
+          ?defer_loading: bool,
+          ?description: String,
+          ?format_: OpenAI::Models::Beta::BetaCustomTool::format_,
+          ?type: :custom
+        ) -> void
+
+        def to_hash: -> {
+          name: String,
+          type: :custom,
+          allowed_callers: ::Array[OpenAI::Models::Beta::BetaCustomTool::allowed_caller]?,
+          defer_loading: bool,
+          description: String,
+          format_: OpenAI::Models::Beta::BetaCustomTool::format_
+        }
+
+        type allowed_caller = :direct | :programmatic
+
+        module AllowedCaller
+          extend OpenAI::Internal::Type::Enum
+
+          DIRECT: :direct
+          PROGRAMMATIC: :programmatic
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaCustomTool::allowed_caller]
+        end
+
+        type format_ =
+          OpenAI::Beta::BetaCustomTool::Format::Text
+          | OpenAI::Beta::BetaCustomTool::Format::Grammar
+
+        module Format
+          extend OpenAI::Internal::Type::Union
+
+          type text = { type: :text }
+
+          class Text < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :text
+
+            def initialize: (?type: :text) -> void
+
+            def to_hash: -> { type: :text }
+          end
+
+          type grammar =
+            {
+              definition: String,
+              syntax: OpenAI::Models::Beta::BetaCustomTool::Format::Grammar::syntax,
+              type: :grammar
+            }
+
+          class Grammar < OpenAI::Internal::Type::BaseModel
+            attr_accessor definition: String
+
+            attr_accessor syntax: OpenAI::Models::Beta::BetaCustomTool::Format::Grammar::syntax
+
+            attr_accessor type: :grammar
+
+            def initialize: (
+              definition: String,
+              syntax: OpenAI::Models::Beta::BetaCustomTool::Format::Grammar::syntax,
+              ?type: :grammar
+            ) -> void
+
+            def to_hash: -> {
+              definition: String,
+              syntax: OpenAI::Models::Beta::BetaCustomTool::Format::Grammar::syntax,
+              type: :grammar
+            }
+
+            type syntax = :lark | :regex
+
+            module Syntax
+              extend OpenAI::Internal::Type::Enum
+
+              LARK: :lark
+              REGEX: :regex
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::BetaCustomTool::Format::Grammar::syntax]
+            end
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaCustomTool::format_]
+        end
+      end
+    end
+  end
+end

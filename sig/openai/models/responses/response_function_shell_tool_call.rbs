@@ -1,0 +1,140 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_function_shell_tool_call =
+        {
+          id: String,
+          action: OpenAI::Responses::ResponseFunctionShellToolCall::Action,
+          call_id: String,
+          environment: OpenAI::Models::Responses::ResponseFunctionShellToolCall::environment?,
+          status: OpenAI::Models::Responses::ResponseFunctionShellToolCall::status,
+          type: :shell_call,
+          caller_: OpenAI::Models::Responses::ResponseFunctionShellToolCall::caller_?,
+          created_by: String
+        }
+
+      class ResponseFunctionShellToolCall < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor action: OpenAI::Responses::ResponseFunctionShellToolCall::Action
+
+        attr_accessor call_id: String
+
+        attr_accessor environment: OpenAI::Models::Responses::ResponseFunctionShellToolCall::environment?
+
+        attr_accessor status: OpenAI::Models::Responses::ResponseFunctionShellToolCall::status
+
+        attr_accessor type: :shell_call
+
+        attr_accessor caller_: OpenAI::Models::Responses::ResponseFunctionShellToolCall::caller_?
+
+        attr_reader created_by: String?
+
+        def created_by=: (String) -> String
+
+        def initialize: (
+          id: String,
+          action: OpenAI::Responses::ResponseFunctionShellToolCall::Action,
+          call_id: String,
+          environment: OpenAI::Models::Responses::ResponseFunctionShellToolCall::environment?,
+          status: OpenAI::Models::Responses::ResponseFunctionShellToolCall::status,
+          ?caller_: OpenAI::Models::Responses::ResponseFunctionShellToolCall::caller_?,
+          ?created_by: String,
+          ?type: :shell_call
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          action: OpenAI::Responses::ResponseFunctionShellToolCall::Action,
+          call_id: String,
+          environment: OpenAI::Models::Responses::ResponseFunctionShellToolCall::environment?,
+          status: OpenAI::Models::Responses::ResponseFunctionShellToolCall::status,
+          type: :shell_call,
+          caller_: OpenAI::Models::Responses::ResponseFunctionShellToolCall::caller_?,
+          created_by: String
+        }
+
+        type action =
+          {
+            commands: ::Array[String],
+            max_output_length: Integer?,
+            timeout_ms: Integer?
+          }
+
+        class Action < OpenAI::Internal::Type::BaseModel
+          attr_accessor commands: ::Array[String]
+
+          attr_accessor max_output_length: Integer?
+
+          attr_accessor timeout_ms: Integer?
+
+          def initialize: (
+            commands: ::Array[String],
+            max_output_length: Integer?,
+            timeout_ms: Integer?
+          ) -> void
+
+          def to_hash: -> {
+            commands: ::Array[String],
+            max_output_length: Integer?,
+            timeout_ms: Integer?
+          }
+        end
+
+        type environment =
+          OpenAI::Responses::ResponseLocalEnvironment
+          | OpenAI::Responses::ResponseContainerReference
+
+        module Environment
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseFunctionShellToolCall::environment]
+        end
+
+        type status = :in_progress | :completed | :incomplete
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseFunctionShellToolCall::status]
+        end
+
+        type caller_ =
+          OpenAI::Responses::ResponseFunctionShellToolCall::Caller::Direct
+          | OpenAI::Responses::ResponseFunctionShellToolCall::Caller::Program
+
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          type direct = { type: :direct }
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :direct
+
+            def initialize: (?type: :direct) -> void
+
+            def to_hash: -> { type: :direct }
+          end
+
+          type program = { caller_id: String, type: :program }
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            attr_accessor caller_id: String
+
+            attr_accessor type: :program
+
+            def initialize: (caller_id: String, ?type: :program) -> void
+
+            def to_hash: -> { caller_id: String, type: :program }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseFunctionShellToolCall::caller_]
+        end
+      end
+    end
+  end
+end

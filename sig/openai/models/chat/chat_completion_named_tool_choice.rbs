@@ -1,0 +1,39 @@
+module OpenAI
+  module Models
+    class ChatCompletionNamedToolChoice = Chat::ChatCompletionNamedToolChoice
+
+    module Chat
+      type chat_completion_named_tool_choice =
+        {
+          function: OpenAI::Chat::ChatCompletionNamedToolChoice::Function,
+          type: :function
+        }
+
+      class ChatCompletionNamedToolChoice < OpenAI::Internal::Type::BaseModel
+        attr_accessor function: OpenAI::Chat::ChatCompletionNamedToolChoice::Function
+
+        attr_accessor type: :function
+
+        def initialize: (
+          function: OpenAI::Chat::ChatCompletionNamedToolChoice::Function,
+          ?type: :function
+        ) -> void
+
+        def to_hash: -> {
+          function: OpenAI::Chat::ChatCompletionNamedToolChoice::Function,
+          type: :function
+        }
+
+        type function = { name: String }
+
+        class Function < OpenAI::Internal::Type::BaseModel
+          attr_accessor name: String
+
+          def initialize: (name: String) -> void
+
+          def to_hash: -> { name: String }
+        end
+      end
+    end
+  end
+end

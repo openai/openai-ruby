@@ -1,0 +1,51 @@
+module OpenAI
+  module Models
+    module Beta
+      class ChatKitWidgetItem = ChatKit::ChatKitWidgetItem
+
+      module ChatKit
+        type chatkit_widget_item =
+          {
+            id: String,
+            created_at: Integer,
+            object: :"chatkit.thread_item",
+            thread_id: String,
+            type: :"chatkit.widget",
+            widget: String
+          }
+
+        class ChatKitWidgetItem < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor created_at: Integer
+
+          attr_accessor object: :"chatkit.thread_item"
+
+          attr_accessor thread_id: String
+
+          attr_accessor type: :"chatkit.widget"
+
+          attr_accessor widget: String
+
+          def initialize: (
+            id: String,
+            created_at: Integer,
+            thread_id: String,
+            widget: String,
+            ?object: :"chatkit.thread_item",
+            ?type: :"chatkit.widget"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            created_at: Integer,
+            object: :"chatkit.thread_item",
+            thread_id: String,
+            type: :"chatkit.widget",
+            widget: String
+          }
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Realtime
+      type input_audio_buffer_timeout_triggered =
+        {
+          audio_end_ms: Integer,
+          audio_start_ms: Integer,
+          event_id: String,
+          item_id: String,
+          type: :"input_audio_buffer.timeout_triggered"
+        }
+
+      class InputAudioBufferTimeoutTriggered < OpenAI::Internal::Type::BaseModel
+        attr_accessor audio_end_ms: Integer
+
+        attr_accessor audio_start_ms: Integer
+
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor type: :"input_audio_buffer.timeout_triggered"
+
+        def initialize: (
+          audio_end_ms: Integer,
+          audio_start_ms: Integer,
+          event_id: String,
+          item_id: String,
+          ?type: :"input_audio_buffer.timeout_triggered"
+        ) -> void
+
+        def to_hash: -> {
+          audio_end_ms: Integer,
+          audio_start_ms: Integer,
+          event_id: String,
+          item_id: String,
+          type: :"input_audio_buffer.timeout_triggered"
+        }
+      end
+    end
+  end
+end

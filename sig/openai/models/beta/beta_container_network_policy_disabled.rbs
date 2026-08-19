@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    class BetaContainerNetworkPolicyDisabled = Beta::BetaContainerNetworkPolicyDisabled
+
+    module Beta
+      type beta_container_network_policy_disabled = { type: :disabled }
+
+      class BetaContainerNetworkPolicyDisabled < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :disabled
+
+        def initialize: (?type: :disabled) -> void
+
+        def to_hash: -> { type: :disabled }
+      end
+    end
+  end
+end

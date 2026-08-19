@@ -1,0 +1,128 @@
+module OpenAI
+  module Models
+    module Beta
+      type message_stream_event =
+        OpenAI::Beta::MessageStreamEvent::ThreadMessageCreated
+        | OpenAI::Beta::MessageStreamEvent::ThreadMessageInProgress
+        | OpenAI::Beta::MessageStreamEvent::ThreadMessageDelta
+        | OpenAI::Beta::MessageStreamEvent::ThreadMessageCompleted
+        | OpenAI::Beta::MessageStreamEvent::ThreadMessageIncomplete
+
+      module MessageStreamEvent
+        extend OpenAI::Internal::Type::Union
+
+        type thread_message_created =
+          {
+            data: OpenAI::Beta::Threads::Message,
+            event: :"thread.message.created"
+          }
+
+        class ThreadMessageCreated < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Message
+
+          attr_accessor event: :"thread.message.created"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Message,
+            ?event: :"thread.message.created"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Message,
+            event: :"thread.message.created"
+          }
+        end
+
+        type thread_message_in_progress =
+          {
+            data: OpenAI::Beta::Threads::Message,
+            event: :"thread.message.in_progress"
+          }
+
+        class ThreadMessageInProgress < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Message
+
+          attr_accessor event: :"thread.message.in_progress"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Message,
+            ?event: :"thread.message.in_progress"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Message,
+            event: :"thread.message.in_progress"
+          }
+        end
+
+        type thread_message_delta =
+          {
+            data: OpenAI::Beta::Threads::MessageDeltaEvent,
+            event: :"thread.message.delta"
+          }
+
+        class ThreadMessageDelta < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::MessageDeltaEvent
+
+          attr_accessor event: :"thread.message.delta"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::MessageDeltaEvent,
+            ?event: :"thread.message.delta"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::MessageDeltaEvent,
+            event: :"thread.message.delta"
+          }
+        end
+
+        type thread_message_completed =
+          {
+            data: OpenAI::Beta::Threads::Message,
+            event: :"thread.message.completed"
+          }
+
+        class ThreadMessageCompleted < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Message
+
+          attr_accessor event: :"thread.message.completed"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Message,
+            ?event: :"thread.message.completed"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Message,
+            event: :"thread.message.completed"
+          }
+        end
+
+        type thread_message_incomplete =
+          {
+            data: OpenAI::Beta::Threads::Message,
+            event: :"thread.message.incomplete"
+          }
+
+        class ThreadMessageIncomplete < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Message
+
+          attr_accessor event: :"thread.message.incomplete"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Message,
+            ?event: :"thread.message.incomplete"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Message,
+            event: :"thread.message.incomplete"
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::message_stream_event]
+      end
+    end
+  end
+end

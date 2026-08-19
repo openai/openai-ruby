@@ -1,0 +1,12 @@
+module OpenAI
+  module Models
+    type image_edit_stream_event =
+      OpenAI::ImageEditPartialImageEvent | OpenAI::ImageEditCompletedEvent
+
+    module ImageEditStreamEvent
+      extend OpenAI::Internal::Type::Union
+
+      def self?.variants: -> ::Array[OpenAI::Models::image_edit_stream_event]
+    end
+  end
+end

@@ -1,0 +1,50 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_transcription_session_create_request =
+        {
+          type: :transcription,
+          audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio,
+          include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
+        }
+
+      class RealtimeTranscriptionSessionCreateRequest < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :transcription
+
+        attr_reader audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio?
+
+        def audio=: (
+          OpenAI::Realtime::RealtimeTranscriptionSessionAudio
+        ) -> OpenAI::Realtime::RealtimeTranscriptionSessionAudio
+
+        attr_reader include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]?
+
+        def include=: (
+          ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
+        ) -> ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
+
+        def initialize: (
+          ?audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio,
+          ?include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_],
+          ?type: :transcription
+        ) -> void
+
+        def to_hash: -> {
+          type: :transcription,
+          audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio,
+          include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
+        }
+
+        type include_ = :"item.input_audio_transcription.logprobs"
+
+        module Include
+          extend OpenAI::Internal::Type::Enum
+
+          ITEM_INPUT_AUDIO_TRANSCRIPTION_LOGPROBS: :"item.input_audio_transcription.logprobs"
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
+        end
+      end
+    end
+  end
+end

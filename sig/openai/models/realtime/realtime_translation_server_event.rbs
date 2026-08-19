@@ -1,0 +1,20 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_translation_server_event =
+        OpenAI::Realtime::RealtimeErrorEvent
+        | OpenAI::Realtime::RealtimeTranslationSessionCreatedEvent
+        | OpenAI::Realtime::RealtimeTranslationSessionUpdatedEvent
+        | OpenAI::Realtime::RealtimeTranslationSessionClosedEvent
+        | OpenAI::Realtime::RealtimeTranslationInputTranscriptDeltaEvent
+        | OpenAI::Realtime::RealtimeTranslationOutputTranscriptDeltaEvent
+        | OpenAI::Realtime::RealtimeTranslationOutputAudioDeltaEvent
+
+      module RealtimeTranslationServerEvent
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Realtime::realtime_translation_server_event]
+      end
+    end
+  end
+end

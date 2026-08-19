@@ -1,0 +1,7 @@
+module OpenAI
+  module Models
+    module Conversations
+      class InputFileContent = OpenAI::Models::Responses::ResponseInputFile
+    end
+  end
+end

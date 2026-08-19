@@ -1,0 +1,66 @@
+module OpenAI
+  module Models
+    module Responses
+      type custom_tool =
+        {
+          name: String,
+          type: :custom,
+          allowed_callers: ::Array[OpenAI::Models::Responses::CustomTool::allowed_caller]?,
+          defer_loading: bool,
+          description: String,
+          format_: OpenAI::Models::custom_tool_input_format
+        }
+
+      class CustomTool < OpenAI::Internal::Type::BaseModel
+        attr_accessor name: String
+
+        attr_accessor type: :custom
+
+        attr_accessor allowed_callers: ::Array[OpenAI::Models::Responses::CustomTool::allowed_caller]?
+
+        attr_reader defer_loading: bool?
+
+        def defer_loading=: (bool) -> bool
+
+        attr_reader description: String?
+
+        def description=: (String) -> String
+
+        attr_reader format_: OpenAI::Models::custom_tool_input_format?
+
+        def format_=: (
+          OpenAI::Models::custom_tool_input_format
+        ) -> OpenAI::Models::custom_tool_input_format
+
+        def initialize: (
+          name: String,
+          ?allowed_callers: ::Array[OpenAI::Models::Responses::CustomTool::allowed_caller]?,
+          ?defer_loading: bool,
+          ?description: String,
+          ?format_: OpenAI::Models::custom_tool_input_format,
+          ?type: :custom
+        ) -> void
+
+        def to_hash: -> {
+          name: String,
+          type: :custom,
+          allowed_callers: ::Array[OpenAI::Models::Responses::CustomTool::allowed_caller]?,
+          defer_loading: bool,
+          description: String,
+          format_: OpenAI::Models::custom_tool_input_format
+        }
+
+        type allowed_caller = :direct | :programmatic
+
+        module AllowedCaller
+          extend OpenAI::Internal::Type::Enum
+
+          DIRECT: :direct
+          PROGRAMMATIC: :programmatic
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::CustomTool::allowed_caller]
+        end
+      end
+    end
+  end
+end

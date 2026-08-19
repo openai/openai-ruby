@@ -1,0 +1,39 @@
+module OpenAI
+  module Models
+    class ChatCompletionNamedToolChoiceCustom = Chat::ChatCompletionNamedToolChoiceCustom
+
+    module Chat
+      type chat_completion_named_tool_choice_custom =
+        {
+          custom: OpenAI::Chat::ChatCompletionNamedToolChoiceCustom::Custom,
+          type: :custom
+        }
+
+      class ChatCompletionNamedToolChoiceCustom < OpenAI::Internal::Type::BaseModel
+        attr_accessor custom: OpenAI::Chat::ChatCompletionNamedToolChoiceCustom::Custom
+
+        attr_accessor type: :custom
+
+        def initialize: (
+          custom: OpenAI::Chat::ChatCompletionNamedToolChoiceCustom::Custom,
+          ?type: :custom
+        ) -> void
+
+        def to_hash: -> {
+          custom: OpenAI::Chat::ChatCompletionNamedToolChoiceCustom::Custom,
+          type: :custom
+        }
+
+        type custom = { name: String }
+
+        class Custom < OpenAI::Internal::Type::BaseModel
+          attr_accessor name: String
+
+          def initialize: (name: String) -> void
+
+          def to_hash: -> { name: String }
+        end
+      end
+    end
+  end
+end

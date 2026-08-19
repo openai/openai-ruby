@@ -1,0 +1,43 @@
+module OpenAI
+  module Models
+    module Beta
+      type assistant_tool_choice =
+        {
+          type: OpenAI::Models::Beta::AssistantToolChoice::type_,
+          function: OpenAI::Beta::AssistantToolChoiceFunction
+        }
+
+      class AssistantToolChoice < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: OpenAI::Models::Beta::AssistantToolChoice::type_
+
+        attr_reader function: OpenAI::Beta::AssistantToolChoiceFunction?
+
+        def function=: (
+          OpenAI::Beta::AssistantToolChoiceFunction
+        ) -> OpenAI::Beta::AssistantToolChoiceFunction
+
+        def initialize: (
+          type: OpenAI::Models::Beta::AssistantToolChoice::type_,
+          ?function: OpenAI::Beta::AssistantToolChoiceFunction
+        ) -> void
+
+        def to_hash: -> {
+          type: OpenAI::Models::Beta::AssistantToolChoice::type_,
+          function: OpenAI::Beta::AssistantToolChoiceFunction
+        }
+
+        type type_ = :function | :code_interpreter | :file_search
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          FUNCTION: :function
+          CODE_INTERPRETER: :code_interpreter
+          FILE_SEARCH: :file_search
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AssistantToolChoice::type_]
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Realtime
+      type input_audio_buffer_committed_event =
+        {
+          event_id: String,
+          item_id: String,
+          type: :"input_audio_buffer.committed",
+          previous_item_id: String?
+        }
+
+      class InputAudioBufferCommittedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor type: :"input_audio_buffer.committed"
+
+        attr_accessor previous_item_id: String?
+
+        def initialize: (
+          event_id: String,
+          item_id: String,
+          ?previous_item_id: String?,
+          ?type: :"input_audio_buffer.committed"
+        ) -> void
+
+        def to_hash: -> {
+          event_id: String,
+          item_id: String,
+          type: :"input_audio_buffer.committed",
+          previous_item_id: String?
+        }
+      end
+    end
+  end
+end

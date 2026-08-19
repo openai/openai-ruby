@@ -1,0 +1,14 @@
+module OpenAI
+  module Models
+    type oauth_error_code = :invalid_grant | :invalid_subject_token | String
+
+    module OAuthErrorCode
+      extend OpenAI::Internal::Type::Union
+
+      def self?.variants: -> ::Array[OpenAI::Models::oauth_error_code]
+
+      INVALID_GRANT: :invalid_grant
+      INVALID_SUBJECT_TOKEN: :invalid_subject_token
+    end
+  end
+end

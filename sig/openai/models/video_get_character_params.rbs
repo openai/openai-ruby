@@ -1,0 +1,23 @@
+module OpenAI
+  module Models
+    type video_get_character_params =
+      { character_id: String } & OpenAI::Internal::Type::request_parameters
+
+    class VideoGetCharacterParams < OpenAI::Internal::Type::BaseModel
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
+
+      attr_accessor character_id: String
+
+      def initialize: (
+        character_id: String,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        character_id: String,
+        request_options: OpenAI::RequestOptions
+      }
+    end
+  end
+end

@@ -1,0 +1,203 @@
+module OpenAI
+  module Models
+    type eval_update_response =
+      {
+        id: String,
+        created_at: Integer,
+        data_source_config: OpenAI::Models::EvalUpdateResponse::data_source_config,
+        metadata: OpenAI::Models::metadata?,
+        name: String,
+        object: :eval,
+        testing_criteria: ::Array[OpenAI::Models::EvalUpdateResponse::testing_criterion]
+      }
+
+    class EvalUpdateResponse < OpenAI::Internal::Type::BaseModel
+      attr_accessor id: String
+
+      attr_accessor created_at: Integer
+
+      attr_accessor data_source_config: OpenAI::Models::EvalUpdateResponse::data_source_config
+
+      attr_accessor metadata: OpenAI::Models::metadata?
+
+      attr_accessor name: String
+
+      attr_accessor object: :eval
+
+      attr_accessor testing_criteria: ::Array[OpenAI::Models::EvalUpdateResponse::testing_criterion]
+
+      def initialize: (
+        id: String,
+        created_at: Integer,
+        data_source_config: OpenAI::Models::EvalUpdateResponse::data_source_config,
+        metadata: OpenAI::Models::metadata?,
+        name: String,
+        testing_criteria: ::Array[OpenAI::Models::EvalUpdateResponse::testing_criterion],
+        ?object: :eval
+      ) -> void
+
+      def to_hash: -> {
+        id: String,
+        created_at: Integer,
+        data_source_config: OpenAI::Models::EvalUpdateResponse::data_source_config,
+        metadata: OpenAI::Models::metadata?,
+        name: String,
+        object: :eval,
+        testing_criteria: ::Array[OpenAI::Models::EvalUpdateResponse::testing_criterion]
+      }
+
+      type data_source_config =
+        OpenAI::EvalCustomDataSourceConfig
+        | OpenAI::Models::EvalUpdateResponse::DataSourceConfig::Logs
+        | OpenAI::EvalStoredCompletionsDataSourceConfig
+
+      module DataSourceConfig
+        extend OpenAI::Internal::Type::Union
+
+        type logs =
+          {
+            schema: ::Hash[Symbol, top],
+            type: :logs,
+            metadata: OpenAI::Models::metadata?
+          }
+
+        class Logs < OpenAI::Internal::Type::BaseModel
+          attr_accessor schema: ::Hash[Symbol, top]
+
+          attr_accessor type: :logs
+
+          attr_accessor metadata: OpenAI::Models::metadata?
+
+          def initialize: (
+            schema: ::Hash[Symbol, top],
+            ?metadata: OpenAI::Models::metadata?,
+            ?type: :logs
+          ) -> void
+
+          def to_hash: -> {
+            schema: ::Hash[Symbol, top],
+            type: :logs,
+            metadata: OpenAI::Models::metadata?
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::EvalUpdateResponse::data_source_config]
+      end
+
+      type testing_criterion =
+        OpenAI::Graders::LabelModelGrader
+        | OpenAI::Graders::StringCheckGrader
+        | OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderTextSimilarity
+        | OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderPython
+        | OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderScoreModel
+
+      module TestingCriterion
+        extend OpenAI::Internal::Type::Union
+
+        type eval_grader_text_similarity =
+          {
+            evaluation_metric: OpenAI::Models::Graders::TextSimilarityGrader::evaluation_metric,
+            input: String,
+            name: String,
+            reference: String,
+            pass_threshold: Float,
+            type: :text_similarity
+          }
+
+        class EvalGraderTextSimilarity < OpenAI::Models::Graders::TextSimilarityGrader
+          def pass_threshold: -> Float
+
+          def pass_threshold=: (Float _) -> Float
+
+          def initialize: (
+            evaluation_metric: OpenAI::Models::Graders::TextSimilarityGrader::evaluation_metric,
+            input: String,
+            name: String,
+            reference: String,
+            pass_threshold: Float,
+            ?type: :text_similarity
+          ) -> void
+
+          def to_hash: -> {
+            evaluation_metric: OpenAI::Models::Graders::TextSimilarityGrader::evaluation_metric,
+            input: String,
+            name: String,
+            reference: String,
+            pass_threshold: Float,
+            type: :text_similarity
+          }
+        end
+
+        type eval_grader_python =
+          {
+            name: String,
+            source: String,
+            type: :python,
+            image_tag: String,
+            pass_threshold: Float
+          }
+
+        class EvalGraderPython < OpenAI::Models::Graders::PythonGrader
+          def pass_threshold: -> Float?
+
+          def pass_threshold=: (Float _) -> Float
+
+          def initialize: (
+            name: String,
+            source: String,
+            ?image_tag: String,
+            ?pass_threshold: Float,
+            ?type: :python
+          ) -> void
+
+          def to_hash: -> {
+            name: String,
+            source: String,
+            type: :python,
+            image_tag: String,
+            pass_threshold: Float
+          }
+        end
+
+        type eval_grader_score_model =
+          {
+            input: ::Array[OpenAI::Graders::ScoreModelGrader::Input],
+            model: String,
+            name: String,
+            type: :score_model,
+            range: ::Array[Float],
+            sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams,
+            pass_threshold: Float
+          }
+
+        class EvalGraderScoreModel < OpenAI::Models::Graders::ScoreModelGrader
+          def pass_threshold: -> Float?
+
+          def pass_threshold=: (Float _) -> Float
+
+          def initialize: (
+            input: ::Array[OpenAI::Graders::ScoreModelGrader::Input],
+            model: String,
+            name: String,
+            ?range: ::Array[Float],
+            ?sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams,
+            ?pass_threshold: Float,
+            ?type: :score_model
+          ) -> void
+
+          def to_hash: -> {
+            input: ::Array[OpenAI::Graders::ScoreModelGrader::Input],
+            model: String,
+            name: String,
+            type: :score_model,
+            range: ::Array[Float],
+            sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams,
+            pass_threshold: Float
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::EvalUpdateResponse::testing_criterion]
+      end
+    end
+  end
+end

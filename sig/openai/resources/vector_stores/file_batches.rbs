@@ -1,0 +1,41 @@
+module OpenAI
+  module Resources
+    class VectorStores
+      class FileBatches
+        def create: (
+          String vector_store_id,
+          ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::attribute]?,
+          ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+          ?file_ids: ::Array[String],
+          ?files: ::Array[OpenAI::VectorStores::FileBatchCreateParams::File],
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::VectorStores::VectorStoreFileBatch
+
+        def retrieve: (
+          String batch_id,
+          vector_store_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::VectorStores::VectorStoreFileBatch
+
+        def cancel: (
+          String batch_id,
+          vector_store_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::VectorStores::VectorStoreFileBatch
+
+        def list_files: (
+          String batch_id,
+          vector_store_id: String,
+          ?after: String,
+          ?before: String,
+          ?filter: OpenAI::Models::VectorStores::FileBatchListFilesParams::filter,
+          ?limit: Integer,
+          ?order: OpenAI::Models::VectorStores::FileBatchListFilesParams::order,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Internal::CursorPage[OpenAI::VectorStores::VectorStoreFile]
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end

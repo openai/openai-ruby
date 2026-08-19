@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_mcp_call_in_progress_event =
+        {
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.mcp_call.in_progress"
+        }
+
+      class ResponseMcpCallInProgressEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.mcp_call.in_progress"
+
+        def initialize: (
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?type: :"response.mcp_call.in_progress"
+        ) -> void
+
+        def to_hash: -> {
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.mcp_call.in_progress"
+        }
+      end
+    end
+  end
+end

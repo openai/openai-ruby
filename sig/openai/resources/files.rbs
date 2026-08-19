@@ -1,0 +1,37 @@
+module OpenAI
+  module Resources
+    class Files
+      def create: (
+        file: OpenAI::Internal::file_input,
+        purpose: OpenAI::Models::file_purpose,
+        ?expires_after: OpenAI::FileCreateParams::ExpiresAfter,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::FileObject
+
+      def retrieve: (
+        String file_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::FileObject
+
+      def list: (
+        ?after: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::FileListParams::order,
+        ?purpose: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::CursorPage[OpenAI::FileObject]
+
+      def delete: (
+        String file_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::FileDeleted
+
+      def content: (
+        String file_id,
+        ?request_options: OpenAI::request_opts
+      ) -> StringIO
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

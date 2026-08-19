@@ -1,0 +1,80 @@
+module OpenAI
+  module Models
+    type vector_store_search_response =
+      {
+        attributes: ::Hash[Symbol, OpenAI::Models::VectorStoreSearchResponse::attribute]?,
+        content: ::Array[OpenAI::Models::VectorStoreSearchResponse::Content],
+        file_id: String,
+        filename: String,
+        score: Float
+      }
+
+    class VectorStoreSearchResponse < OpenAI::Internal::Type::BaseModel
+      attr_accessor attributes: ::Hash[Symbol, OpenAI::Models::VectorStoreSearchResponse::attribute]?
+
+      attr_accessor content: ::Array[OpenAI::Models::VectorStoreSearchResponse::Content]
+
+      attr_accessor file_id: String
+
+      attr_accessor filename: String
+
+      attr_accessor score: Float
+
+      def initialize: (
+        attributes: ::Hash[Symbol, OpenAI::Models::VectorStoreSearchResponse::attribute]?,
+        content: ::Array[OpenAI::Models::VectorStoreSearchResponse::Content],
+        file_id: String,
+        filename: String,
+        score: Float
+      ) -> void
+
+      def to_hash: -> {
+        attributes: ::Hash[Symbol, OpenAI::Models::VectorStoreSearchResponse::attribute]?,
+        content: ::Array[OpenAI::Models::VectorStoreSearchResponse::Content],
+        file_id: String,
+        filename: String,
+        score: Float
+      }
+
+      type attribute = String | Float | bool
+
+      module Attribute
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::VectorStoreSearchResponse::attribute]
+      end
+
+      type content =
+        {
+          text: String,
+          type: OpenAI::Models::VectorStoreSearchResponse::Content::type_
+        }
+
+      class Content < OpenAI::Internal::Type::BaseModel
+        attr_accessor text: String
+
+        attr_accessor type: OpenAI::Models::VectorStoreSearchResponse::Content::type_
+
+        def initialize: (
+          text: String,
+          type: OpenAI::Models::VectorStoreSearchResponse::Content::type_
+        ) -> void
+
+        def to_hash: -> {
+          text: String,
+          type: OpenAI::Models::VectorStoreSearchResponse::Content::type_
+        }
+
+        type type_ = :text
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          TEXT: :text
+
+          def self?.values: -> ::Array[OpenAI::Models::VectorStoreSearchResponse::Content::type_]
+        end
+      end
+    end
+  end
+end

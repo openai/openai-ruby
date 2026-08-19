@@ -1,0 +1,1445 @@
+# typed: strong
+
+module OpenAI
+  module Models
+
+    module Responses
+
+      # A tool that can be used to generate a response.
+      module Tool
+        extend OpenAI::Internal::Type::Union
+
+        Variants = T.type_alias do
+          T.any(
+            OpenAI::Responses::FunctionTool,
+            OpenAI::Responses::FileSearchTool,
+            OpenAI::Responses::ComputerTool,
+            OpenAI::Responses::ComputerUsePreviewTool,
+            OpenAI::Responses::Tool::Mcp,
+            OpenAI::Responses::Tool::CodeInterpreter,
+            OpenAI::Responses::Tool::ProgrammaticToolCalling,
+            OpenAI::Responses::Tool::ImageGeneration,
+            OpenAI::Responses::Tool::LocalShell,
+            OpenAI::Responses::FunctionShellTool,
+            OpenAI::Responses::CustomTool,
+            OpenAI::Responses::NamespaceTool,
+            OpenAI::Responses::ToolSearchTool,
+            OpenAI::Responses::ApplyPatchTool,
+            OpenAI::Responses::WebSearchTool,
+            OpenAI::Responses::WebSearchPreviewTool
+          )
+        end
+
+        class Mcp < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::Tool::Mcp,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # A label for this MCP server, used to identify it in tool calls.
+          sig { returns(String) }
+          attr_accessor :server_label
+
+          # The type of the MCP tool. Always `mcp`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # The tool invocation context(s).
+          sig { returns(T.nilable(T::Array[OpenAI::Responses::Tool::Mcp::AllowedCaller::OrSymbol])) }
+          attr_accessor :allowed_callers
+
+          # List of allowed tool names or a filter object.
+          sig {
+            returns(T.nilable(T.any(T::Array[String], OpenAI::Responses::Tool::Mcp::AllowedTools::McpToolFilter)))
+          }
+          attr_accessor :allowed_tools
+
+          # An OAuth access token that can be used with a remote MCP server, either with a
+          # custom MCP server URL or a service connector. Your application must handle the
+          # OAuth authorization flow and provide the token here.
+          sig { returns(T.nilable(String)) }
+          attr_reader :authorization
+
+          sig { params(authorization: String).void }
+          attr_writer :authorization
+
+          # Identifier for service connectors, like those available in ChatGPT. One of
+          # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
+          # service connectors
+          # [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+          #
+          # Currently supported `connector_id` values are:
+          #
+          # - Dropbox: `connector_dropbox`
+          # - Gmail: `connector_gmail`
+          # - Google Calendar: `connector_googlecalendar`
+          # - Google Drive: `connector_googledrive`
+          # - Microsoft Teams: `connector_microsoftteams`
+          # - Outlook Calendar: `connector_outlookcalendar`
+          # - Outlook Email: `connector_outlookemail`
+          # - SharePoint: `connector_sharepoint`
+          sig { returns(T.nilable(OpenAI::Responses::Tool::Mcp::ConnectorID::OrSymbol)) }
+          attr_reader :connector_id
+
+          sig { params(connector_id: OpenAI::Responses::Tool::Mcp::ConnectorID::OrSymbol).void }
+          attr_writer :connector_id
+
+          # Whether this MCP tool is deferred and discovered via tool search.
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_reader :defer_loading
+
+          sig { params(defer_loading: T::Boolean).void }
+          attr_writer :defer_loading
+
+          # Optional HTTP headers to send to the MCP server. Use for authentication or other
+          # purposes.
+          sig { returns(T.nilable(T::Hash[Symbol, String])) }
+          attr_accessor :headers
+
+          # Specify which of the MCP server's tools require approval.
+          sig {
+            returns(
+              T.nilable(
+                T.any(
+                  OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter,
+                  OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting::OrSymbol
+                )
+              )
+            )
+          }
+          attr_accessor :require_approval
+
+          # Optional description of the MCP server, used to provide more context.
+          sig { returns(T.nilable(String)) }
+          attr_reader :server_description
+
+          sig { params(server_description: String).void }
+          attr_writer :server_description
+
+          # The URL for the MCP server. One of `server_url`, `connector_id`, or `tunnel_id`
+          # must be provided.
+          sig { returns(T.nilable(String)) }
+          attr_reader :server_url
+
+          sig { params(server_url: String).void }
+          attr_writer :server_url
+
+          # The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+          # `server_url`, `connector_id`, or `tunnel_id` must be provided.
+          sig { returns(T.nilable(String)) }
+          attr_reader :tunnel_id
+
+          sig { params(tunnel_id: String).void }
+          attr_writer :tunnel_id
+
+          # Give the model access to additional tools via remote Model Context Protocol
+          # (MCP) servers.
+          # [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
+          sig do
+            params(
+
+              server_label: String,
+
+              allowed_callers: T.nilable(T::Array[OpenAI::Responses::Tool::Mcp::AllowedCaller::OrSymbol]),
+
+              allowed_tools: T.nilable(
+                T.any(T::Array[String], OpenAI::Responses::Tool::Mcp::AllowedTools::McpToolFilter::OrHash)
+              ),
+
+              authorization: String,
+
+              connector_id: OpenAI::Responses::Tool::Mcp::ConnectorID::OrSymbol,
+
+              defer_loading: T::Boolean,
+
+              headers: T.nilable(T::Hash[Symbol, String]),
+
+              require_approval: T.nilable(
+                T.any(
+                  OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::OrHash,
+                  OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting::OrSymbol
+                )
+              ),
+
+              server_description: String,
+
+              server_url: String,
+
+              tunnel_id: String,
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # A label for this MCP server, used to identify it in tool calls.
+            server_label:,
+
+            # The tool invocation context(s).
+            allowed_callers: nil,
+
+            # List of allowed tool names or a filter object.
+            allowed_tools: nil,
+
+            # An OAuth access token that can be used with a remote MCP server, either with a
+            # custom MCP server URL or a service connector. Your application must handle the
+            # OAuth authorization flow and provide the token here.
+            authorization: nil,
+
+            # Identifier for service connectors, like those available in ChatGPT. One of
+            # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
+            # service connectors
+            # [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+            #
+            # Currently supported `connector_id` values are:
+            #
+            # - Dropbox: `connector_dropbox`
+            # - Gmail: `connector_gmail`
+            # - Google Calendar: `connector_googlecalendar`
+            # - Google Drive: `connector_googledrive`
+            # - Microsoft Teams: `connector_microsoftteams`
+            # - Outlook Calendar: `connector_outlookcalendar`
+            # - Outlook Email: `connector_outlookemail`
+            # - SharePoint: `connector_sharepoint`
+            connector_id: nil,
+
+            # Whether this MCP tool is deferred and discovered via tool search.
+            defer_loading: nil,
+
+            # Optional HTTP headers to send to the MCP server. Use for authentication or other
+            # purposes.
+            headers: nil,
+
+            # Specify which of the MCP server's tools require approval.
+            require_approval: nil,
+
+            # Optional description of the MCP server, used to provide more context.
+            server_description: nil,
+
+            # The URL for the MCP server. One of `server_url`, `connector_id`, or `tunnel_id`
+            # must be provided.
+            server_url: nil,
+
+            # The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+            # `server_url`, `connector_id`, or `tunnel_id` must be provided.
+            tunnel_id: nil,
+
+            # The type of the MCP tool. Always `mcp`.
+
+            type: :mcp
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                server_label: String,
+                type: Symbol,
+                allowed_callers: T.nilable(T::Array[OpenAI::Responses::Tool::Mcp::AllowedCaller::OrSymbol]),
+                allowed_tools: T.nilable(
+                  T.any(T::Array[String], OpenAI::Responses::Tool::Mcp::AllowedTools::McpToolFilter)
+                ),
+                authorization: String,
+                connector_id: OpenAI::Responses::Tool::Mcp::ConnectorID::OrSymbol,
+                defer_loading: T::Boolean,
+                headers: T.nilable(T::Hash[Symbol, String]),
+                require_approval: T.nilable(
+                  T.any(
+                    OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter,
+                    OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting::OrSymbol
+                  )
+                ),
+                server_description: String,
+                server_url: String,
+                tunnel_id: String
+              }
+            )
+          end
+          def to_hash
+          end
+
+          module AllowedCaller
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::Tool::Mcp::AllowedCaller) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            DIRECT = T.let(:direct, OpenAI::Responses::Tool::Mcp::AllowedCaller::TaggedSymbol)
+            PROGRAMMATIC = T.let(:programmatic, OpenAI::Responses::Tool::Mcp::AllowedCaller::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Responses::Tool::Mcp::AllowedCaller::TaggedSymbol]) }
+            def self.values
+            end
+          end
+
+          # List of allowed tool names or a filter object.
+          module AllowedTools
+            extend OpenAI::Internal::Type::Union
+
+            Variants = T.type_alias {
+              T.any(T::Array[String], OpenAI::Responses::Tool::Mcp::AllowedTools::McpToolFilter)
+            }
+
+            class McpToolFilter < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::Tool::Mcp::AllowedTools::McpToolFilter,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+              # is
+              # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+              # it will match this filter.
+              sig { returns(T.nilable(T::Boolean)) }
+              attr_reader :read_only
+
+              sig { params(read_only: T::Boolean).void }
+              attr_writer :read_only
+
+              # List of allowed tool names.
+              sig { returns(T.nilable(T::Array[String])) }
+              attr_reader :tool_names
+
+              sig { params(tool_names: T::Array[String]).void }
+              attr_writer :tool_names
+
+              # A filter object to specify which tools are allowed.
+              sig do
+                params(
+
+                  read_only: T::Boolean,
+
+                  tool_names: T::Array[String]
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                # is
+                # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                # it will match this filter.
+                read_only: nil,
+
+                # List of allowed tool names.
+
+                tool_names: nil
+              )
+              end
+
+              sig do
+                override.returns(
+                  {read_only: T::Boolean, tool_names: T::Array[String]}
+                )
+              end
+              def to_hash
+              end
+
+            end
+
+            sig { override.returns(T::Array[OpenAI::Responses::Tool::Mcp::AllowedTools::Variants]) }
+            def self.variants
+            end
+
+            StringArray = T.let(
+              OpenAI::Internal::Type::ArrayOf[String],
+              OpenAI::Internal::Type::Converter
+            )
+
+          end
+
+          # Identifier for service connectors, like those available in ChatGPT. One of
+          # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
+          # service connectors
+          # [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+          #
+          # Currently supported `connector_id` values are:
+          #
+          # - Dropbox: `connector_dropbox`
+          # - Gmail: `connector_gmail`
+          # - Google Calendar: `connector_googlecalendar`
+          # - Google Drive: `connector_googledrive`
+          # - Microsoft Teams: `connector_microsoftteams`
+          # - Outlook Calendar: `connector_outlookcalendar`
+          # - Outlook Email: `connector_outlookemail`
+          # - SharePoint: `connector_sharepoint`
+          module ConnectorID
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::Tool::Mcp::ConnectorID) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            CONNECTOR_DROPBOX = T.let(:connector_dropbox, OpenAI::Responses::Tool::Mcp::ConnectorID::TaggedSymbol)
+            CONNECTOR_GMAIL = T.let(:connector_gmail, OpenAI::Responses::Tool::Mcp::ConnectorID::TaggedSymbol)
+            CONNECTOR_GOOGLECALENDAR = T.let(
+              :connector_googlecalendar,
+              OpenAI::Responses::Tool::Mcp::ConnectorID::TaggedSymbol
+            )
+            CONNECTOR_GOOGLEDRIVE = T.let(
+              :connector_googledrive,
+              OpenAI::Responses::Tool::Mcp::ConnectorID::TaggedSymbol
+            )
+            CONNECTOR_MICROSOFTTEAMS = T.let(
+              :connector_microsoftteams,
+              OpenAI::Responses::Tool::Mcp::ConnectorID::TaggedSymbol
+            )
+            CONNECTOR_OUTLOOKCALENDAR = T.let(
+              :connector_outlookcalendar,
+              OpenAI::Responses::Tool::Mcp::ConnectorID::TaggedSymbol
+            )
+            CONNECTOR_OUTLOOKEMAIL = T.let(
+              :connector_outlookemail,
+              OpenAI::Responses::Tool::Mcp::ConnectorID::TaggedSymbol
+            )
+            CONNECTOR_SHAREPOINT = T.let(:connector_sharepoint, OpenAI::Responses::Tool::Mcp::ConnectorID::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Responses::Tool::Mcp::ConnectorID::TaggedSymbol]) }
+            def self.values
+            end
+          end
+
+          # Specify which of the MCP server's tools require approval.
+          module RequireApproval
+            extend OpenAI::Internal::Type::Union
+
+            Variants = T.type_alias {
+              T.any(
+                OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter,
+                OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting::TaggedSymbol
+              )
+            }
+
+            class McpToolApprovalFilter < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # A filter object to specify which tools are allowed.
+              sig { returns(T.nilable(OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always)) }
+              attr_reader :always
+
+              sig {
+                params(always: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always::OrHash)
+                  .void
+              }
+              attr_writer :always
+
+              # A filter object to specify which tools are allowed.
+              sig { returns(T.nilable(OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never)) }
+              attr_reader :never
+
+              sig {
+                params(never: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never::OrHash).void
+              }
+              attr_writer :never
+
+              # Specify which of the MCP server's tools require approval. Can be `always`,
+              # `never`, or a filter object associated with tools that require approval.
+              sig do
+                params(
+
+                  always: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always::OrHash,
+
+                  never: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never::OrHash
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # A filter object to specify which tools are allowed.
+                always: nil,
+
+                # A filter object to specify which tools are allowed.
+
+                never: nil
+              )
+              end
+
+              sig do
+                override.returns(
+                  {
+                    always: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
+                    never: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never
+                  }
+                )
+              end
+              def to_hash
+              end
+
+              class Always < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                # is
+                # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                # it will match this filter.
+                sig { returns(T.nilable(T::Boolean)) }
+                attr_reader :read_only
+
+                sig { params(read_only: T::Boolean).void }
+                attr_writer :read_only
+
+                # List of allowed tool names.
+                sig { returns(T.nilable(T::Array[String])) }
+                attr_reader :tool_names
+
+                sig { params(tool_names: T::Array[String]).void }
+                attr_writer :tool_names
+
+                # A filter object to specify which tools are allowed.
+                sig do
+                  params(
+
+                    read_only: T::Boolean,
+
+                    tool_names: T::Array[String]
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                  # is
+                  # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                  # it will match this filter.
+                  read_only: nil,
+
+                  # List of allowed tool names.
+
+                  tool_names: nil
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {read_only: T::Boolean, tool_names: T::Array[String]}
+                  )
+                end
+                def to_hash
+                end
+
+              end
+
+              class Never < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                # is
+                # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                # it will match this filter.
+                sig { returns(T.nilable(T::Boolean)) }
+                attr_reader :read_only
+
+                sig { params(read_only: T::Boolean).void }
+                attr_writer :read_only
+
+                # List of allowed tool names.
+                sig { returns(T.nilable(T::Array[String])) }
+                attr_reader :tool_names
+
+                sig { params(tool_names: T::Array[String]).void }
+                attr_writer :tool_names
+
+                # A filter object to specify which tools are allowed.
+                sig do
+                  params(
+
+                    read_only: T::Boolean,
+
+                    tool_names: T::Array[String]
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                  # is
+                  # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                  # it will match this filter.
+                  read_only: nil,
+
+                  # List of allowed tool names.
+
+                  tool_names: nil
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {read_only: T::Boolean, tool_names: T::Array[String]}
+                  )
+                end
+                def to_hash
+                end
+
+              end
+            end
+
+            # Specify a single approval policy for all tools. One of `always` or `never`. When
+            # set to `always`, all tools will require approval. When set to `never`, all tools
+            # will not require approval.
+            module McpToolApprovalSetting
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting)
+              }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              ALWAYS = T.let(
+                :always,
+                OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting::TaggedSymbol
+              )
+              NEVER = T.let(:never, OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting::TaggedSymbol)
+
+              sig {
+                override.returns(
+                  T::Array[OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting::TaggedSymbol]
+                )
+              }
+              def self.values
+              end
+            end
+
+            sig { override.returns(T::Array[OpenAI::Responses::Tool::Mcp::RequireApproval::Variants]) }
+            def self.variants
+            end
+
+          end
+        end
+
+        class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::Tool::CodeInterpreter,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The code interpreter container. Can be a container ID or an object that
+          # specifies uploaded file IDs to make available to your code, along with an
+          # optional `memory_limit` setting.
+          sig { returns(T.any(String, OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto)) }
+          attr_accessor :container
+
+          # The type of the code interpreter tool. Always `code_interpreter`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # The tool invocation context(s).
+          sig { returns(T.nilable(T::Array[OpenAI::Responses::Tool::CodeInterpreter::AllowedCaller::OrSymbol])) }
+          attr_accessor :allowed_callers
+
+          # A tool that runs Python code to help generate a response to a prompt.
+          sig do
+            params(
+
+              container: T.any(
+                String,
+                OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::OrHash
+              ),
+
+              allowed_callers: T.nilable(T::Array[OpenAI::Responses::Tool::CodeInterpreter::AllowedCaller::OrSymbol]),
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # The code interpreter container. Can be a container ID or an object that
+            # specifies uploaded file IDs to make available to your code, along with an
+            # optional `memory_limit` setting.
+            container:,
+
+            # The tool invocation context(s).
+            allowed_callers: nil,
+
+            # The type of the code interpreter tool. Always `code_interpreter`.
+
+            type: :code_interpreter
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                container: T.any(String, OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto),
+                type: Symbol,
+                allowed_callers: T.nilable(T::Array[OpenAI::Responses::Tool::CodeInterpreter::AllowedCaller::OrSymbol])
+              }
+            )
+          end
+          def to_hash
+          end
+
+          # The code interpreter container. Can be a container ID or an object that
+          # specifies uploaded file IDs to make available to your code, along with an
+          # optional `memory_limit` setting.
+          module Container
+            extend OpenAI::Internal::Type::Union
+
+            Variants = T.type_alias {
+              T.any(String, OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto)
+            }
+
+            class CodeInterpreterToolAuto < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # Always `auto`.
+              sig { returns(Symbol) }
+              attr_accessor :type
+
+              # An optional list of uploaded files to make available to your code.
+              sig { returns(T.nilable(T::Array[String])) }
+              attr_reader :file_ids
+
+              sig { params(file_ids: T::Array[String]).void }
+              attr_writer :file_ids
+
+              # The memory limit for the code interpreter container.
+              sig {
+                returns(
+                  T.nilable(
+                    OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::OrSymbol
+                  )
+                )
+              }
+              attr_accessor :memory_limit
+
+              # Network access policy for the container.
+              sig {
+                returns(
+                  T.nilable(
+                    T.any(
+                      OpenAI::Responses::ContainerNetworkPolicyDisabled,
+                      OpenAI::Responses::ContainerNetworkPolicyAllowlist
+                    )
+                  )
+                )
+              }
+              attr_reader :network_policy
+
+              sig {
+                params(
+                  network_policy: T.any(
+                    OpenAI::Responses::ContainerNetworkPolicyDisabled::OrHash,
+                    OpenAI::Responses::ContainerNetworkPolicyAllowlist::OrHash
+                  )
+                )
+                  .void
+              }
+              attr_writer :network_policy
+
+              # Configuration for a code interpreter container. Optionally specify the IDs of
+              # the files to run the code on.
+              sig do
+                params(
+
+                  file_ids: T::Array[String],
+
+                  memory_limit: T.nilable(
+                    OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::OrSymbol
+                  ),
+
+                  network_policy: T.any(
+                    OpenAI::Responses::ContainerNetworkPolicyDisabled::OrHash,
+                    OpenAI::Responses::ContainerNetworkPolicyAllowlist::OrHash
+                  ),
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # An optional list of uploaded files to make available to your code.
+                file_ids: nil,
+
+                # The memory limit for the code interpreter container.
+                memory_limit: nil,
+
+                # Network access policy for the container.
+                network_policy: nil,
+
+                # Always `auto`.
+
+                type: :auto
+              )
+              end
+
+              sig do
+                override.returns(
+                  {
+                    type: Symbol,
+                    file_ids: T::Array[String],
+                    memory_limit: T.nilable(
+                      OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::OrSymbol
+                    ),
+                    network_policy: T.any(
+                      OpenAI::Responses::ContainerNetworkPolicyDisabled,
+                      OpenAI::Responses::ContainerNetworkPolicyAllowlist
+                    )
+                  }
+                )
+              end
+              def to_hash
+              end
+
+              # The memory limit for the code interpreter container.
+              module MemoryLimit
+                extend OpenAI::Internal::Type::Enum
+
+                TaggedSymbol = T.type_alias {
+                  T.all(
+                    Symbol,
+                    OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit
+                  )
+                }
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                MEMORY_LIMIT_1G = T.let(
+                  :"1g",
+                  OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
+                )
+                MEMORY_LIMIT_4G = T.let(
+                  :"4g",
+                  OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
+                )
+                MEMORY_LIMIT_16G = T.let(
+                  :"16g",
+                  OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
+                )
+                MEMORY_LIMIT_64G = T.let(
+                  :"64g",
+                  OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
+                )
+
+                sig {
+                  override.returns(
+                    T::Array[
+                      OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit::TaggedSymbol
+                    ]
+                  )
+                }
+                def self.values
+                end
+              end
+
+              # Network access policy for the container.
+              module NetworkPolicy
+                extend OpenAI::Internal::Type::Union
+
+                Variants = T.type_alias {
+                  T.any(
+                    OpenAI::Responses::ContainerNetworkPolicyDisabled,
+                    OpenAI::Responses::ContainerNetworkPolicyAllowlist
+                  )
+                }
+
+                sig {
+                  override.returns(
+                    T::Array[
+                      OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::NetworkPolicy::Variants
+                    ]
+                  )
+                }
+                def self.variants
+                end
+
+              end
+            end
+
+            sig { override.returns(T::Array[OpenAI::Responses::Tool::CodeInterpreter::Container::Variants]) }
+            def self.variants
+            end
+
+          end
+
+          module AllowedCaller
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::Tool::CodeInterpreter::AllowedCaller) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            DIRECT = T.let(:direct, OpenAI::Responses::Tool::CodeInterpreter::AllowedCaller::TaggedSymbol)
+            PROGRAMMATIC = T.let(:programmatic, OpenAI::Responses::Tool::CodeInterpreter::AllowedCaller::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Responses::Tool::CodeInterpreter::AllowedCaller::TaggedSymbol]) }
+            def self.values
+            end
+          end
+        end
+
+        class ProgrammaticToolCalling < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::Tool::ProgrammaticToolCalling,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The type of the tool. Always `programmatic_tool_calling`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          sig do
+            params(
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # The type of the tool. Always `programmatic_tool_calling`.
+
+            type: :programmatic_tool_calling
+          )
+          end
+
+          sig do
+            override.returns(
+              {type: Symbol}
+            )
+          end
+          def to_hash
+          end
+
+        end
+
+        class ImageGeneration < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::Tool::ImageGeneration,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The type of the image generation tool. Always `image_generation`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # Whether to generate a new image or edit an existing image. Default: `auto`.
+          sig { returns(T.nilable(OpenAI::Responses::Tool::ImageGeneration::Action::OrSymbol)) }
+          attr_reader :action
+
+          sig { params(action: OpenAI::Responses::Tool::ImageGeneration::Action::OrSymbol).void }
+          attr_writer :action
+
+          # Allows to set transparency for the background of the generated image(s). This
+          # parameter is only supported for GPT image models that support transparent
+          # backgrounds. Must be one of `transparent`, `opaque`, or `auto` (default value).
+          # When `auto` is used, the model will automatically determine the best background
+          # for the image.
+          #
+          # `gpt-image-2` and `gpt-image-2-2026-04-21` do not support transparent
+          # backgrounds. Requests with `background` set to `transparent` will return an
+          # error for these models; use `opaque` or `auto` instead.
+          #
+          # If `transparent`, the output format needs to support transparency, so it should
+          # be set to either `png` (default value) or `webp`.
+          sig { returns(T.nilable(OpenAI::Responses::Tool::ImageGeneration::Background::OrSymbol)) }
+          attr_reader :background
+
+          sig { params(background: OpenAI::Responses::Tool::ImageGeneration::Background::OrSymbol).void }
+          attr_writer :background
+
+          # Control how much effort the model will exert to match the style and features,
+          # especially facial features, of input images. This parameter is only supported
+          # for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
+          # `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
+          sig { returns(T.nilable(OpenAI::Responses::Tool::ImageGeneration::InputFidelity::OrSymbol)) }
+          attr_accessor :input_fidelity
+
+          # Optional mask for inpainting. Contains `image_url` (string, optional) and
+          # `file_id` (string, optional).
+          sig { returns(T.nilable(OpenAI::Responses::Tool::ImageGeneration::InputImageMask)) }
+          attr_reader :input_image_mask
+
+          sig { params(input_image_mask: OpenAI::Responses::Tool::ImageGeneration::InputImageMask::OrHash).void }
+          attr_writer :input_image_mask
+
+          # The image generation model to use. Default: `gpt-image-1`.
+          sig { returns(T.nilable(T.any(String, OpenAI::Responses::Tool::ImageGeneration::Model::OrSymbol))) }
+          attr_reader :model
+
+          sig { params(model: T.any(String, OpenAI::Responses::Tool::ImageGeneration::Model::OrSymbol)).void }
+          attr_writer :model
+
+          # Moderation level for the generated image. Default: `auto`.
+          sig { returns(T.nilable(OpenAI::Responses::Tool::ImageGeneration::Moderation::OrSymbol)) }
+          attr_reader :moderation
+
+          sig { params(moderation: OpenAI::Responses::Tool::ImageGeneration::Moderation::OrSymbol).void }
+          attr_writer :moderation
+
+          # Compression level for the output image. Default: 100.
+          sig { returns(T.nilable(Integer)) }
+          attr_reader :output_compression
+
+          sig { params(output_compression: Integer).void }
+          attr_writer :output_compression
+
+          # The output format of the generated image. One of `png`, `webp`, or `jpeg`.
+          # Default: `png`.
+          sig { returns(T.nilable(OpenAI::Responses::Tool::ImageGeneration::OutputFormat::OrSymbol)) }
+          attr_reader :output_format
+
+          sig { params(output_format: OpenAI::Responses::Tool::ImageGeneration::OutputFormat::OrSymbol).void }
+          attr_writer :output_format
+
+          # Number of partial images to generate in streaming mode, from 0 (default value)
+          # to 3.
+          sig { returns(T.nilable(Integer)) }
+          attr_reader :partial_images
+
+          sig { params(partial_images: Integer).void }
+          attr_writer :partial_images
+
+          # The quality of the generated image. One of `low`, `medium`, `high`, or `auto`.
+          # Default: `auto`.
+          sig { returns(T.nilable(OpenAI::Responses::Tool::ImageGeneration::Quality::OrSymbol)) }
+          attr_reader :quality
+
+          sig { params(quality: OpenAI::Responses::Tool::ImageGeneration::Quality::OrSymbol).void }
+          attr_writer :quality
+
+          # The size of the generated images. For `gpt-image-2` and
+          # `gpt-image-2-2026-04-21`, arbitrary resolutions are supported as `WIDTHxHEIGHT`
+          # strings, for example `1536x864`. Width and height must both be divisible by 16
+          # and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above
+          # `2560x1440` are experimental, and the maximum supported resolution is
+          # `3840x2160`. The requested size must also satisfy the model's current pixel and
+          # edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are
+          # supported by the GPT image models; `auto` is supported for models that allow
+          # automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
+          # `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
+          # `1024x1792`.
+          sig { returns(T.nilable(T.any(String, OpenAI::Responses::Tool::ImageGeneration::Size::OrSymbol))) }
+          attr_reader :size
+
+          sig { params(size: T.any(String, OpenAI::Responses::Tool::ImageGeneration::Size::OrSymbol)).void }
+          attr_writer :size
+
+          # A tool that generates images using the GPT image models.
+          sig do
+            params(
+
+              action: OpenAI::Responses::Tool::ImageGeneration::Action::OrSymbol,
+
+              background: OpenAI::Responses::Tool::ImageGeneration::Background::OrSymbol,
+
+              input_fidelity: T.nilable(OpenAI::Responses::Tool::ImageGeneration::InputFidelity::OrSymbol),
+
+              input_image_mask: OpenAI::Responses::Tool::ImageGeneration::InputImageMask::OrHash,
+
+              model: T.any(String, OpenAI::Responses::Tool::ImageGeneration::Model::OrSymbol),
+
+              moderation: OpenAI::Responses::Tool::ImageGeneration::Moderation::OrSymbol,
+
+              output_compression: Integer,
+
+              output_format: OpenAI::Responses::Tool::ImageGeneration::OutputFormat::OrSymbol,
+
+              partial_images: Integer,
+
+              quality: OpenAI::Responses::Tool::ImageGeneration::Quality::OrSymbol,
+
+              size: T.any(String, OpenAI::Responses::Tool::ImageGeneration::Size::OrSymbol),
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Whether to generate a new image or edit an existing image. Default: `auto`.
+            action: nil,
+
+            # Allows to set transparency for the background of the generated image(s). This
+            # parameter is only supported for GPT image models that support transparent
+            # backgrounds. Must be one of `transparent`, `opaque`, or `auto` (default value).
+            # When `auto` is used, the model will automatically determine the best background
+            # for the image.
+            #
+            # `gpt-image-2` and `gpt-image-2-2026-04-21` do not support transparent
+            # backgrounds. Requests with `background` set to `transparent` will return an
+            # error for these models; use `opaque` or `auto` instead.
+            #
+            # If `transparent`, the output format needs to support transparency, so it should
+            # be set to either `png` (default value) or `webp`.
+            background: nil,
+
+            # Control how much effort the model will exert to match the style and features,
+            # especially facial features, of input images. This parameter is only supported
+            # for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
+            # `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
+            input_fidelity: nil,
+
+            # Optional mask for inpainting. Contains `image_url` (string, optional) and
+            # `file_id` (string, optional).
+            input_image_mask: nil,
+
+            # The image generation model to use. Default: `gpt-image-1`.
+            model: nil,
+
+            # Moderation level for the generated image. Default: `auto`.
+            moderation: nil,
+
+            # Compression level for the output image. Default: 100.
+            output_compression: nil,
+
+            # The output format of the generated image. One of `png`, `webp`, or `jpeg`.
+            # Default: `png`.
+            output_format: nil,
+
+            # Number of partial images to generate in streaming mode, from 0 (default value)
+            # to 3.
+            partial_images: nil,
+
+            # The quality of the generated image. One of `low`, `medium`, `high`, or `auto`.
+            # Default: `auto`.
+            quality: nil,
+
+            # The size of the generated images. For `gpt-image-2` and
+            # `gpt-image-2-2026-04-21`, arbitrary resolutions are supported as `WIDTHxHEIGHT`
+            # strings, for example `1536x864`. Width and height must both be divisible by 16
+            # and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above
+            # `2560x1440` are experimental, and the maximum supported resolution is
+            # `3840x2160`. The requested size must also satisfy the model's current pixel and
+            # edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are
+            # supported by the GPT image models; `auto` is supported for models that allow
+            # automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
+            # `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
+            # `1024x1792`.
+            size: nil,
+
+            # The type of the image generation tool. Always `image_generation`.
+
+            type: :image_generation
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                type: Symbol,
+                action: OpenAI::Responses::Tool::ImageGeneration::Action::OrSymbol,
+                background: OpenAI::Responses::Tool::ImageGeneration::Background::OrSymbol,
+                input_fidelity: T.nilable(OpenAI::Responses::Tool::ImageGeneration::InputFidelity::OrSymbol),
+                input_image_mask: OpenAI::Responses::Tool::ImageGeneration::InputImageMask,
+                model: T.any(String, OpenAI::Responses::Tool::ImageGeneration::Model::OrSymbol),
+                moderation: OpenAI::Responses::Tool::ImageGeneration::Moderation::OrSymbol,
+                output_compression: Integer,
+                output_format: OpenAI::Responses::Tool::ImageGeneration::OutputFormat::OrSymbol,
+                partial_images: Integer,
+                quality: OpenAI::Responses::Tool::ImageGeneration::Quality::OrSymbol,
+                size: T.any(String, OpenAI::Responses::Tool::ImageGeneration::Size::OrSymbol)
+              }
+            )
+          end
+          def to_hash
+          end
+
+          # Whether to generate a new image or edit an existing image. Default: `auto`.
+          module Action
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::Tool::ImageGeneration::Action) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            GENERATE = T.let(:generate, OpenAI::Responses::Tool::ImageGeneration::Action::TaggedSymbol)
+            EDIT = T.let(:edit, OpenAI::Responses::Tool::ImageGeneration::Action::TaggedSymbol)
+            AUTO = T.let(:auto, OpenAI::Responses::Tool::ImageGeneration::Action::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Responses::Tool::ImageGeneration::Action::TaggedSymbol]) }
+            def self.values
+            end
+          end
+
+          # Allows to set transparency for the background of the generated image(s). This
+          # parameter is only supported for GPT image models that support transparent
+          # backgrounds. Must be one of `transparent`, `opaque`, or `auto` (default value).
+          # When `auto` is used, the model will automatically determine the best background
+          # for the image.
+          #
+          # `gpt-image-2` and `gpt-image-2-2026-04-21` do not support transparent
+          # backgrounds. Requests with `background` set to `transparent` will return an
+          # error for these models; use `opaque` or `auto` instead.
+          #
+          # If `transparent`, the output format needs to support transparency, so it should
+          # be set to either `png` (default value) or `webp`.
+          module Background
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::Tool::ImageGeneration::Background) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            TRANSPARENT = T.let(:transparent, OpenAI::Responses::Tool::ImageGeneration::Background::TaggedSymbol)
+            OPAQUE = T.let(:opaque, OpenAI::Responses::Tool::ImageGeneration::Background::TaggedSymbol)
+            AUTO = T.let(:auto, OpenAI::Responses::Tool::ImageGeneration::Background::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Responses::Tool::ImageGeneration::Background::TaggedSymbol]) }
+            def self.values
+            end
+          end
+
+          # Control how much effort the model will exert to match the style and features,
+          # especially facial features, of input images. This parameter is only supported
+          # for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
+          # `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
+          module InputFidelity
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::Tool::ImageGeneration::InputFidelity) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            HIGH = T.let(:high, OpenAI::Responses::Tool::ImageGeneration::InputFidelity::TaggedSymbol)
+            LOW = T.let(:low, OpenAI::Responses::Tool::ImageGeneration::InputFidelity::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Responses::Tool::ImageGeneration::InputFidelity::TaggedSymbol]) }
+            def self.values
+            end
+          end
+
+          class InputImageMask < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::Tool::ImageGeneration::InputImageMask,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # File ID for the mask image.
+            sig { returns(T.nilable(String)) }
+            attr_reader :file_id
+
+            sig { params(file_id: String).void }
+            attr_writer :file_id
+
+            # Base64-encoded mask image.
+            sig { returns(T.nilable(String)) }
+            attr_reader :image_url
+
+            sig { params(image_url: String).void }
+            attr_writer :image_url
+
+            # Optional mask for inpainting. Contains `image_url` (string, optional) and
+            # `file_id` (string, optional).
+            sig do
+              params(
+
+                file_id: String,
+
+                image_url: String
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # File ID for the mask image.
+              file_id: nil,
+
+              # Base64-encoded mask image.
+
+              image_url: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {file_id: String, image_url: String}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          # The image generation model to use. Default: `gpt-image-1`.
+          module Model
+            extend OpenAI::Internal::Type::Union
+
+            Variants = T.type_alias { T.any(String, OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol) }
+
+            sig { override.returns(T::Array[OpenAI::Responses::Tool::ImageGeneration::Model::Variants]) }
+            def self.variants
+            end
+
+            TaggedSymbol = T.type_alias do
+              T.all(Symbol, OpenAI::Responses::Tool::ImageGeneration::Model)
+            end
+
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            GPT_IMAGE_1 = T.let(:"gpt-image-1", OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol)
+            GPT_IMAGE_1_MINI = T.let(:"gpt-image-1-mini", OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol)
+            GPT_IMAGE_2 = T.let(:"gpt-image-2", OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol)
+            GPT_IMAGE_2_2026_04_21 = T.let(
+              :"gpt-image-2-2026-04-21",
+              OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol
+            )
+            GPT_IMAGE_1_5 = T.let(:"gpt-image-1.5", OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol)
+            CHATGPT_IMAGE_LATEST = T.let(
+              :"chatgpt-image-latest",
+              OpenAI::Responses::Tool::ImageGeneration::Model::TaggedSymbol
+            )
+
+          end
+
+          # Moderation level for the generated image. Default: `auto`.
+          module Moderation
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::Tool::ImageGeneration::Moderation) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            AUTO = T.let(:auto, OpenAI::Responses::Tool::ImageGeneration::Moderation::TaggedSymbol)
+            LOW = T.let(:low, OpenAI::Responses::Tool::ImageGeneration::Moderation::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Responses::Tool::ImageGeneration::Moderation::TaggedSymbol]) }
+            def self.values
+            end
+          end
+
+          # The output format of the generated image. One of `png`, `webp`, or `jpeg`.
+          # Default: `png`.
+          module OutputFormat
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::Tool::ImageGeneration::OutputFormat) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            PNG = T.let(:png, OpenAI::Responses::Tool::ImageGeneration::OutputFormat::TaggedSymbol)
+            WEBP = T.let(:webp, OpenAI::Responses::Tool::ImageGeneration::OutputFormat::TaggedSymbol)
+            JPEG = T.let(:jpeg, OpenAI::Responses::Tool::ImageGeneration::OutputFormat::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Responses::Tool::ImageGeneration::OutputFormat::TaggedSymbol]) }
+            def self.values
+            end
+          end
+
+          # The quality of the generated image. One of `low`, `medium`, `high`, or `auto`.
+          # Default: `auto`.
+          module Quality
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::Tool::ImageGeneration::Quality) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            LOW = T.let(:low, OpenAI::Responses::Tool::ImageGeneration::Quality::TaggedSymbol)
+            MEDIUM = T.let(:medium, OpenAI::Responses::Tool::ImageGeneration::Quality::TaggedSymbol)
+            HIGH = T.let(:high, OpenAI::Responses::Tool::ImageGeneration::Quality::TaggedSymbol)
+            AUTO = T.let(:auto, OpenAI::Responses::Tool::ImageGeneration::Quality::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Responses::Tool::ImageGeneration::Quality::TaggedSymbol]) }
+            def self.values
+            end
+          end
+
+          # The size of the generated images. For `gpt-image-2` and
+          # `gpt-image-2-2026-04-21`, arbitrary resolutions are supported as `WIDTHxHEIGHT`
+          # strings, for example `1536x864`. Width and height must both be divisible by 16
+          # and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above
+          # `2560x1440` are experimental, and the maximum supported resolution is
+          # `3840x2160`. The requested size must also satisfy the model's current pixel and
+          # edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are
+          # supported by the GPT image models; `auto` is supported for models that allow
+          # automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
+          # `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
+          # `1024x1792`.
+          module Size
+            extend OpenAI::Internal::Type::Union
+
+            Variants = T.type_alias { T.any(String, OpenAI::Responses::Tool::ImageGeneration::Size::TaggedSymbol) }
+
+            sig { override.returns(T::Array[OpenAI::Responses::Tool::ImageGeneration::Size::Variants]) }
+            def self.variants
+            end
+
+            TaggedSymbol = T.type_alias do
+              T.all(Symbol, OpenAI::Responses::Tool::ImageGeneration::Size)
+            end
+
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            SIZE_1024X1024 = T.let(:"1024x1024", OpenAI::Responses::Tool::ImageGeneration::Size::TaggedSymbol)
+            SIZE_1024X1536 = T.let(:"1024x1536", OpenAI::Responses::Tool::ImageGeneration::Size::TaggedSymbol)
+            SIZE_1536X1024 = T.let(:"1536x1024", OpenAI::Responses::Tool::ImageGeneration::Size::TaggedSymbol)
+            AUTO = T.let(:auto, OpenAI::Responses::Tool::ImageGeneration::Size::TaggedSymbol)
+
+          end
+        end
+
+        class LocalShell < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::Tool::LocalShell,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The type of the local shell tool. Always `local_shell`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # A tool that allows the model to execute shell commands in a local environment.
+          sig do
+            params(
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # The type of the local shell tool. Always `local_shell`.
+
+            type: :local_shell
+          )
+          end
+
+          sig do
+            override.returns(
+              {type: Symbol}
+            )
+          end
+          def to_hash
+          end
+
+        end
+
+        sig { override.returns(T::Array[OpenAI::Responses::Tool::Variants]) }
+        def self.variants
+        end
+
+      end
+
+    end
+
+  end
+end

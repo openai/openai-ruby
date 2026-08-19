@@ -1,0 +1,41 @@
+module OpenAI
+  module Models
+    type function_definition =
+      {
+        name: String,
+        description: String,
+        parameters: OpenAI::Models::function_parameters,
+        strict: bool?
+      }
+
+    class FunctionDefinition < OpenAI::Internal::Type::BaseModel
+      attr_accessor name: String
+
+      attr_reader description: String?
+
+      def description=: (String) -> String
+
+      attr_reader parameters: OpenAI::Models::function_parameters?
+
+      def parameters=: (
+        OpenAI::Models::function_parameters
+      ) -> OpenAI::Models::function_parameters
+
+      attr_accessor strict: bool?
+
+      def initialize: (
+        name: String,
+        ?description: String,
+        ?parameters: OpenAI::Models::function_parameters,
+        ?strict: bool?
+      ) -> void
+
+      def to_hash: -> {
+        name: String,
+        description: String,
+        parameters: OpenAI::Models::function_parameters,
+        strict: bool?
+      }
+    end
+  end
+end

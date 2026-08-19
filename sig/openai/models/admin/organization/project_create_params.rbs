@@ -1,0 +1,36 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type project_create_params =
+          { name: String, external_key_id: String?, geography: String? }
+          & OpenAI::Internal::Type::request_parameters
+
+        class ProjectCreateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor name: String
+
+          attr_accessor external_key_id: String?
+
+          attr_accessor geography: String?
+
+          def initialize: (
+            name: String,
+            ?external_key_id: String?,
+            ?geography: String?,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            name: String,
+            external_key_id: String?,
+            geography: String?,
+            request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

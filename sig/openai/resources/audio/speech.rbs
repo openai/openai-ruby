@@ -1,0 +1,20 @@
+module OpenAI
+  module Resources
+    class Audio
+      class Speech
+        def create: (
+          input: String,
+          model: OpenAI::Models::Audio::SpeechCreateParams::model,
+          voice: OpenAI::Models::Audio::SpeechCreateParams::voice,
+          ?instructions: String,
+          ?response_format: OpenAI::Models::Audio::SpeechCreateParams::response_format,
+          ?speed: Float,
+          ?stream_format: OpenAI::Models::Audio::SpeechCreateParams::stream_format,
+          ?request_options: OpenAI::request_opts
+        ) -> StringIO
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end

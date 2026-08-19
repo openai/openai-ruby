@@ -1,0 +1,293 @@
+# typed: strong
+
+module OpenAI
+  module Models
+
+    module Audio
+
+      class SpeechCreateParams < OpenAI::Internal::Type::BaseModel
+
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Audio::SpeechCreateParams,
+            OpenAI::Internal::AnyHash
+          )
+        end
+
+        # The text to generate audio for. The maximum length is 4096 characters.
+        sig { returns(String) }
+        attr_accessor :input
+
+        # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
+        # `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.
+        sig { returns(T.any(String, OpenAI::Audio::SpeechModel::OrSymbol)) }
+        attr_accessor :model
+
+        # The voice to use when generating the audio. Supported built-in voices are
+        # `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`,
+        # `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice
+        # object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the
+        # voices are available in the
+        # [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
+        sig {
+          returns(
+            T.any(
+              String,
+              OpenAI::Audio::SpeechCreateParams::Voice::OrSymbol,
+              OpenAI::Audio::SpeechCreateParams::Voice::ID
+            )
+          )
+        }
+        attr_accessor :voice
+
+        # Control the voice of your generated audio with additional instructions. Does not
+        # work with `tts-1` or `tts-1-hd`.
+        sig { returns(T.nilable(String)) }
+        attr_reader :instructions
+
+        sig { params(instructions: String).void }
+        attr_writer :instructions
+
+        # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
+        # `wav`, and `pcm`.
+        sig { returns(T.nilable(OpenAI::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)) }
+        attr_reader :response_format
+
+        sig { params(response_format: OpenAI::Audio::SpeechCreateParams::ResponseFormat::OrSymbol).void }
+        attr_writer :response_format
+
+        # The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
+        # the default.
+        sig { returns(T.nilable(Float)) }
+        attr_reader :speed
+
+        sig { params(speed: Float).void }
+        attr_writer :speed
+
+        # The format to stream the audio in. Supported formats are `sse` and `audio`.
+        # `sse` is not supported for `tts-1` or `tts-1-hd`.
+        sig { returns(T.nilable(OpenAI::Audio::SpeechCreateParams::StreamFormat::OrSymbol)) }
+        attr_reader :stream_format
+
+        sig { params(stream_format: OpenAI::Audio::SpeechCreateParams::StreamFormat::OrSymbol).void }
+        attr_writer :stream_format
+
+        sig do
+          params(
+
+            input: String,
+
+            model: T.any(String, OpenAI::Audio::SpeechModel::OrSymbol),
+
+            voice: T.any(
+              String,
+              OpenAI::Audio::SpeechCreateParams::Voice::OrSymbol,
+              OpenAI::Audio::SpeechCreateParams::Voice::ID::OrHash
+            ),
+
+            instructions: String,
+
+            response_format: OpenAI::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
+
+            speed: Float,
+
+            stream_format: OpenAI::Audio::SpeechCreateParams::StreamFormat::OrSymbol,
+
+            request_options: OpenAI::RequestOptions::OrHash
+          )
+            .returns(T.attached_class)
+        end
+        def self.new(
+
+          # The text to generate audio for. The maximum length is 4096 characters.
+          input:,
+
+          # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
+          # `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.
+          model:,
+
+          # The voice to use when generating the audio. Supported built-in voices are
+          # `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`,
+          # `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice
+          # object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the
+          # voices are available in the
+          # [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
+          voice:,
+
+          # Control the voice of your generated audio with additional instructions. Does not
+          # work with `tts-1` or `tts-1-hd`.
+          instructions: nil,
+
+          # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
+          # `wav`, and `pcm`.
+          response_format: nil,
+
+          # The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
+          # the default.
+          speed: nil,
+
+          # The format to stream the audio in. Supported formats are `sse` and `audio`.
+          # `sse` is not supported for `tts-1` or `tts-1-hd`.
+          stream_format: nil,
+
+          request_options: {}
+        )
+        end
+
+        sig do
+          override.returns(
+            {
+              input: String,
+              model: T.any(String, OpenAI::Audio::SpeechModel::OrSymbol),
+              voice: T.any(
+                String,
+                OpenAI::Audio::SpeechCreateParams::Voice::OrSymbol,
+                OpenAI::Audio::SpeechCreateParams::Voice::ID
+              ),
+              instructions: String,
+              response_format: OpenAI::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
+              speed: Float,
+              stream_format: OpenAI::Audio::SpeechCreateParams::StreamFormat::OrSymbol,
+              request_options: OpenAI::RequestOptions
+            }
+          )
+        end
+        def to_hash
+        end
+
+        # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
+        # `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.
+        module Model
+          extend OpenAI::Internal::Type::Union
+
+          Variants = T.type_alias { T.any(String, OpenAI::Audio::SpeechModel::TaggedSymbol) }
+
+          sig { override.returns(T::Array[OpenAI::Audio::SpeechCreateParams::Model::Variants]) }
+          def self.variants
+          end
+
+        end
+
+        # The voice to use when generating the audio. Supported built-in voices are
+        # `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`,
+        # `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice
+        # object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the
+        # voices are available in the
+        # [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
+        module Voice
+          extend OpenAI::Internal::Type::Union
+
+          Variants = T.type_alias {
+            T.any(
+              String,
+              OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol,
+              OpenAI::Audio::SpeechCreateParams::Voice::ID
+            )
+          }
+
+          class ID < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Audio::SpeechCreateParams::Voice::ID,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The custom voice ID, e.g. `voice_1234`.
+            sig { returns(String) }
+            attr_accessor :id
+
+            # Custom voice reference.
+            sig do
+              params(
+
+                id: String
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The custom voice ID, e.g. `voice_1234`.
+
+              id:
+            )
+            end
+
+            sig do
+              override.returns(
+                {id: String}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          sig { override.returns(T::Array[OpenAI::Audio::SpeechCreateParams::Voice::Variants]) }
+          def self.variants
+          end
+
+          TaggedSymbol = T.type_alias do
+            T.all(Symbol, OpenAI::Audio::SpeechCreateParams::Voice)
+          end
+
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          ALLOY = T.let(:alloy, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          ASH = T.let(:ash, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          BALLAD = T.let(:ballad, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          CORAL = T.let(:coral, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          ECHO = T.let(:echo, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          SAGE = T.let(:sage, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          SHIMMER = T.let(:shimmer, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          VERSE = T.let(:verse, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          MARIN = T.let(:marin, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          CEDAR = T.let(:cedar, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+
+        end
+
+        # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
+        # `wav`, and `pcm`.
+        module ResponseFormat
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Audio::SpeechCreateParams::ResponseFormat) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          MP3 = T.let(:mp3, OpenAI::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)
+          OPUS = T.let(:opus, OpenAI::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)
+          AAC = T.let(:aac, OpenAI::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)
+          FLAC = T.let(:flac, OpenAI::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)
+          WAV = T.let(:wav, OpenAI::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)
+          PCM = T.let(:pcm, OpenAI::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)
+
+          sig { override.returns(T::Array[OpenAI::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol]) }
+          def self.values
+          end
+        end
+
+        # The format to stream the audio in. Supported formats are `sse` and `audio`.
+        # `sse` is not supported for `tts-1` or `tts-1-hd`.
+        module StreamFormat
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Audio::SpeechCreateParams::StreamFormat) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          SSE = T.let(:sse, OpenAI::Audio::SpeechCreateParams::StreamFormat::TaggedSymbol)
+          AUDIO = T.let(:audio, OpenAI::Audio::SpeechCreateParams::StreamFormat::TaggedSymbol)
+
+          sig { override.returns(T::Array[OpenAI::Audio::SpeechCreateParams::StreamFormat::TaggedSymbol]) }
+          def self.values
+          end
+        end
+
+      end
+
+    end
+
+  end
+end

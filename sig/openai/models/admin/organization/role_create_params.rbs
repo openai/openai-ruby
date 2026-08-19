@@ -1,0 +1,40 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type role_create_params =
+          {
+            permissions: ::Array[String],
+            role_name: String,
+            description: String?
+          }
+          & OpenAI::Internal::Type::request_parameters
+
+        class RoleCreateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor permissions: ::Array[String]
+
+          attr_accessor role_name: String
+
+          attr_accessor description: String?
+
+          def initialize: (
+            permissions: ::Array[String],
+            role_name: String,
+            ?description: String?,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            permissions: ::Array[String],
+            role_name: String,
+            description: String?,
+            request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,15 @@
+module OpenAI
+  module Models
+    module Beta
+      type assistant_tool_choice_function = { name: String }
+
+      class AssistantToolChoiceFunction < OpenAI::Internal::Type::BaseModel
+        attr_accessor name: String
+
+        def initialize: (name: String) -> void
+
+        def to_hash: -> { name: String }
+      end
+    end
+  end
+end

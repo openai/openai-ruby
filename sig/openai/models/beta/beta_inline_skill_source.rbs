@@ -1,0 +1,30 @@
+module OpenAI
+  module Models
+    class BetaInlineSkillSource = Beta::BetaInlineSkillSource
+
+    module Beta
+      type beta_inline_skill_source =
+        { data: String, media_type: :"application/zip", type: :base64 }
+
+      class BetaInlineSkillSource < OpenAI::Internal::Type::BaseModel
+        attr_accessor data: String
+
+        attr_accessor media_type: :"application/zip"
+
+        attr_accessor type: :base64
+
+        def initialize: (
+          data: String,
+          ?media_type: :"application/zip",
+          ?type: :base64
+        ) -> void
+
+        def to_hash: -> {
+          data: String,
+          media_type: :"application/zip",
+          type: :base64
+        }
+      end
+    end
+  end
+end

@@ -1,0 +1,50 @@
+# frozen_string_literal: true
+
+module OpenAI
+  module Models
+    module Responses
+      class ResponseOutputItemAddedEvent < OpenAI::Internal::Type::BaseModel
+        # @!attribute item
+        #   The output item that was added. For reasoning items, `encrypted_content` may be
+        #   incomplete while the item is in progress. Use the reasoning item from the
+        #   corresponding `response.output_item.done` event when passing it as input to a
+        #   subsequent request.
+        #
+        #   @return [OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseOutputItem::Program, OpenAI::Models::Responses::ResponseOutputItem::ProgramOutput, OpenAI::Models::Responses::ResponseToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItem, OpenAI::Models::Responses::ResponseOutputItem::AdditionalTools, OpenAI::Models::Responses::ResponseCompactionItem, OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseOutputItem::LocalShellCall, OpenAI::Models::Responses::ResponseOutputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseFunctionShellToolCall, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput, OpenAI::Models::Responses::ResponseApplyPatchToolCall, OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput, OpenAI::Models::Responses::ResponseOutputItem::McpCall, OpenAI::Models::Responses::ResponseOutputItem::McpListTools, OpenAI::Models::Responses::ResponseOutputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseOutputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseCustomToolCallOutputItem]
+        required :item, union: -> { OpenAI::Responses::ResponseOutputItem }
+
+        # @!attribute output_index
+        #   The index of the output item that was added.
+        #
+        #   @return [Integer]
+        required :output_index, Integer
+
+        # @!attribute sequence_number
+        #   The sequence number of this event.
+        #
+        #   @return [Integer]
+        required :sequence_number, Integer
+
+        # @!attribute type
+        #   The type of the event. Always `response.output_item.added`.
+        #
+        #   @return [Symbol, :"response.output_item.added"]
+        required :type, const: :"response.output_item.added"
+
+        # @!method initialize(item:, output_index:, sequence_number:, type: :"response.output_item.added")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseOutputItemAddedEvent} for more details.
+        #
+        #   Emitted when a new output item is added.
+        #
+        #   @param item [OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseOutputItem::Program, OpenAI::Models::Responses::ResponseOutputItem::ProgramOutput, OpenAI::Models::Responses::ResponseToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItem, OpenAI::Models::Responses::ResponseOutputItem::AdditionalTools, OpenAI::Models::Responses::ResponseCompactionItem, OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseOutputItem::LocalShellCall, OpenAI::Models::Responses::ResponseOutputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseFunctionShellToolCall, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput, OpenAI::Models::Responses::ResponseApplyPatchToolCall, OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput, OpenAI::Models::Responses::ResponseOutputItem::McpCall, OpenAI::Models::Responses::ResponseOutputItem::McpListTools, OpenAI::Models::Responses::ResponseOutputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseOutputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseCustomToolCallOutputItem] The output item that was added. For reasoning items, `encrypted_content`
+        #
+        #   @param output_index [Integer] The index of the output item that was added.
+        #
+        #   @param sequence_number [Integer] The sequence number of this event.
+        #
+        #   @param type [Symbol, :"response.output_item.added"] The type of the event. Always `response.output_item.added`.
+      end
+    end
+  end
+end

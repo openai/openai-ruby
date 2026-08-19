@@ -1,0 +1,31 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        module Runs
+          type tool_calls_step_details =
+            {
+              tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call],
+              type: :tool_calls
+            }
+
+          class ToolCallsStepDetails < OpenAI::Internal::Type::BaseModel
+            attr_accessor tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call]
+
+            attr_accessor type: :tool_calls
+
+            def initialize: (
+              tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call],
+              ?type: :tool_calls
+            ) -> void
+
+            def to_hash: -> {
+              tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call],
+              type: :tool_calls
+            }
+          end
+        end
+      end
+    end
+  end
+end

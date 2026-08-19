@@ -1,0 +1,289 @@
+# typed: strong
+
+module OpenAI
+  module Models
+
+    BetaWebSearchTool = Beta::BetaWebSearchTool
+
+    module Beta
+
+      class BetaWebSearchTool < OpenAI::Internal::Type::BaseModel
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaWebSearchTool,
+            OpenAI::Internal::AnyHash
+          )
+        end
+
+        # The type of the web search tool. One of `web_search` or `web_search_2025_08_26`.
+        sig { returns(OpenAI::Beta::BetaWebSearchTool::Type::OrSymbol) }
+        attr_accessor :type
+
+        # Allow live internet access for web search. Defaults to true when omitted. When
+        # false, the web search tool runs in offline/cache-only mode and will not fetch
+        # new external content.
+        sig { returns(T.nilable(T::Boolean)) }
+        attr_reader :external_web_access
+
+        sig { params(external_web_access: T::Boolean).void }
+        attr_writer :external_web_access
+
+        # Filters for the search.
+        sig { returns(T.nilable(OpenAI::Beta::BetaWebSearchTool::Filters)) }
+        attr_reader :filters
+
+        sig { params(filters: T.nilable(OpenAI::Beta::BetaWebSearchTool::Filters::OrHash)).void }
+        attr_writer :filters
+
+        # High level guidance for the amount of context window space to use for the
+        # search. One of `low`, `medium`, or `high`. `medium` is the default.
+        sig { returns(T.nilable(OpenAI::Beta::BetaWebSearchTool::SearchContextSize::OrSymbol)) }
+        attr_reader :search_context_size
+
+        sig { params(search_context_size: OpenAI::Beta::BetaWebSearchTool::SearchContextSize::OrSymbol).void }
+        attr_writer :search_context_size
+
+        # The approximate location of the user.
+        sig { returns(T.nilable(OpenAI::Beta::BetaWebSearchTool::UserLocation)) }
+        attr_reader :user_location
+
+        sig { params(user_location: T.nilable(OpenAI::Beta::BetaWebSearchTool::UserLocation::OrHash)).void }
+        attr_writer :user_location
+
+        # Search the Internet for sources related to the prompt. Learn more about the
+        # [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
+        sig do
+          params(
+
+            type: OpenAI::Beta::BetaWebSearchTool::Type::OrSymbol,
+
+            external_web_access: T::Boolean,
+
+            filters: T.nilable(OpenAI::Beta::BetaWebSearchTool::Filters::OrHash),
+
+            search_context_size: OpenAI::Beta::BetaWebSearchTool::SearchContextSize::OrSymbol,
+
+            user_location: T.nilable(OpenAI::Beta::BetaWebSearchTool::UserLocation::OrHash)
+          )
+            .returns(T.attached_class)
+        end
+        def self.new(
+
+          # The type of the web search tool. One of `web_search` or `web_search_2025_08_26`.
+          type:,
+
+          # Allow live internet access for web search. Defaults to true when omitted. When
+          # false, the web search tool runs in offline/cache-only mode and will not fetch
+          # new external content.
+          external_web_access: nil,
+
+          # Filters for the search.
+          filters: nil,
+
+          # High level guidance for the amount of context window space to use for the
+          # search. One of `low`, `medium`, or `high`. `medium` is the default.
+          search_context_size: nil,
+
+          # The approximate location of the user.
+
+          user_location: nil
+        )
+        end
+
+        sig do
+          override.returns(
+            {
+              type: OpenAI::Beta::BetaWebSearchTool::Type::OrSymbol,
+              external_web_access: T::Boolean,
+              filters: T.nilable(OpenAI::Beta::BetaWebSearchTool::Filters),
+              search_context_size: OpenAI::Beta::BetaWebSearchTool::SearchContextSize::OrSymbol,
+              user_location: T.nilable(OpenAI::Beta::BetaWebSearchTool::UserLocation)
+            }
+          )
+        end
+        def to_hash
+        end
+
+        # The type of the web search tool. One of `web_search` or `web_search_2025_08_26`.
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaWebSearchTool::Type) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          WEB_SEARCH = T.let(:web_search, OpenAI::Beta::BetaWebSearchTool::Type::TaggedSymbol)
+          WEB_SEARCH_2025_08_26 = T.let(:web_search_2025_08_26, OpenAI::Beta::BetaWebSearchTool::Type::TaggedSymbol)
+
+          sig { override.returns(T::Array[OpenAI::Beta::BetaWebSearchTool::Type::TaggedSymbol]) }
+          def self.values
+          end
+        end
+
+        class Filters < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaWebSearchTool::Filters,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Allowed domains for the search. If not provided, all domains are allowed.
+          # Subdomains of the provided domains are allowed as well.
+          #
+          # Example: `["pubmed.ncbi.nlm.nih.gov"]`
+          sig { returns(T.nilable(T::Array[String])) }
+          attr_accessor :allowed_domains
+
+          # Filters for the search.
+          sig do
+            params(
+
+              allowed_domains: T.nilable(T::Array[String])
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Allowed domains for the search. If not provided, all domains are allowed.
+            # Subdomains of the provided domains are allowed as well.
+            #
+            # Example: `["pubmed.ncbi.nlm.nih.gov"]`
+
+            allowed_domains: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {allowed_domains: T.nilable(T::Array[String])}
+            )
+          end
+          def to_hash
+          end
+
+        end
+
+        # High level guidance for the amount of context window space to use for the
+        # search. One of `low`, `medium`, or `high`. `medium` is the default.
+        module SearchContextSize
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaWebSearchTool::SearchContextSize) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          LOW = T.let(:low, OpenAI::Beta::BetaWebSearchTool::SearchContextSize::TaggedSymbol)
+          MEDIUM = T.let(:medium, OpenAI::Beta::BetaWebSearchTool::SearchContextSize::TaggedSymbol)
+          HIGH = T.let(:high, OpenAI::Beta::BetaWebSearchTool::SearchContextSize::TaggedSymbol)
+
+          sig { override.returns(T::Array[OpenAI::Beta::BetaWebSearchTool::SearchContextSize::TaggedSymbol]) }
+          def self.values
+          end
+        end
+
+        class UserLocation < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaWebSearchTool::UserLocation,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Free text input for the city of the user, e.g. `San Francisco`.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :city
+
+          # The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
+          # the user, e.g. `US`.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :country
+
+          # Free text input for the region of the user, e.g. `California`.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :region
+
+          # The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
+          # user, e.g. `America/Los_Angeles`.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :timezone
+
+          # The type of location approximation. Always `approximate`.
+          sig { returns(T.nilable(OpenAI::Beta::BetaWebSearchTool::UserLocation::Type::OrSymbol)) }
+          attr_reader :type
+
+          sig { params(type: OpenAI::Beta::BetaWebSearchTool::UserLocation::Type::OrSymbol).void }
+          attr_writer :type
+
+          # The approximate location of the user.
+          sig do
+            params(
+
+              city: T.nilable(String),
+
+              country: T.nilable(String),
+
+              region: T.nilable(String),
+
+              timezone: T.nilable(String),
+
+              type: OpenAI::Beta::BetaWebSearchTool::UserLocation::Type::OrSymbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Free text input for the city of the user, e.g. `San Francisco`.
+            city: nil,
+
+            # The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
+            # the user, e.g. `US`.
+            country: nil,
+
+            # Free text input for the region of the user, e.g. `California`.
+            region: nil,
+
+            # The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
+            # user, e.g. `America/Los_Angeles`.
+            timezone: nil,
+
+            # The type of location approximation. Always `approximate`.
+
+            type: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                city: T.nilable(String),
+                country: T.nilable(String),
+                region: T.nilable(String),
+                timezone: T.nilable(String),
+                type: OpenAI::Beta::BetaWebSearchTool::UserLocation::Type::OrSymbol
+              }
+            )
+          end
+          def to_hash
+          end
+
+          # The type of location approximation. Always `approximate`.
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaWebSearchTool::UserLocation::Type) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            APPROXIMATE = T.let(:approximate, OpenAI::Beta::BetaWebSearchTool::UserLocation::Type::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Beta::BetaWebSearchTool::UserLocation::Type::TaggedSymbol]) }
+            def self.values
+            end
+          end
+        end
+
+      end
+
+    end
+
+  end
+end

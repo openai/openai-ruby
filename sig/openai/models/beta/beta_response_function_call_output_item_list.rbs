@@ -1,0 +1,12 @@
+module OpenAI
+  module Models
+    BetaResponseFunctionCallOutputItemList: OpenAI::Internal::Type::Converter
+
+    module Beta
+      type beta_response_function_call_output_item_list =
+        ::Array[OpenAI::Models::Beta::beta_response_function_call_output_item]
+
+      BetaResponseFunctionCallOutputItemList: OpenAI::Internal::Type::Converter
+    end
+  end
+end

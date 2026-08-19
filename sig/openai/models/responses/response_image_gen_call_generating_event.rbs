@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_image_gen_call_generating_event =
+        {
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.image_generation_call.generating"
+        }
+
+      class ResponseImageGenCallGeneratingEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.image_generation_call.generating"
+
+        def initialize: (
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?type: :"response.image_generation_call.generating"
+        ) -> void
+
+        def to_hash: -> {
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.image_generation_call.generating"
+        }
+      end
+    end
+  end
+end

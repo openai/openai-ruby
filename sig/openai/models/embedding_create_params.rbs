@@ -1,0 +1,88 @@
+module OpenAI
+  module Models
+    type embedding_create_params =
+      {
+        input: OpenAI::Models::EmbeddingCreateParams::input,
+        model: OpenAI::Models::EmbeddingCreateParams::model,
+        dimensions: Integer,
+        encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
+        user: String
+      }
+      & OpenAI::Internal::Type::request_parameters
+
+    class EmbeddingCreateParams < OpenAI::Internal::Type::BaseModel
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
+
+      attr_accessor input: OpenAI::Models::EmbeddingCreateParams::input
+
+      attr_accessor model: OpenAI::Models::EmbeddingCreateParams::model
+
+      attr_reader dimensions: Integer?
+
+      def dimensions=: (Integer) -> Integer
+
+      attr_reader encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format?
+
+      def encoding_format=: (
+        OpenAI::Models::EmbeddingCreateParams::encoding_format
+      ) -> OpenAI::Models::EmbeddingCreateParams::encoding_format
+
+      attr_reader user: String?
+
+      def user=: (String) -> String
+
+      def initialize: (
+        input: OpenAI::Models::EmbeddingCreateParams::input,
+        model: OpenAI::Models::EmbeddingCreateParams::model,
+        ?dimensions: Integer,
+        ?encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
+        ?user: String,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        input: OpenAI::Models::EmbeddingCreateParams::input,
+        model: OpenAI::Models::EmbeddingCreateParams::model,
+        dimensions: Integer,
+        encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
+        user: String,
+        request_options: OpenAI::RequestOptions
+      }
+
+      type input =
+        String | ::Array[String] | ::Array[Integer] | ::Array[::Array[Integer]]
+
+      module Input
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::EmbeddingCreateParams::input]
+
+        StringArray: OpenAI::Internal::Type::Converter
+
+        IntegerArray: OpenAI::Internal::Type::Converter
+
+        ArrayOfToken2DArray: OpenAI::Internal::Type::Converter
+      end
+
+      type model = String | OpenAI::Models::embedding_model
+
+      module Model
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::EmbeddingCreateParams::model]
+      end
+
+      type encoding_format = :float | :base64
+
+      module EncodingFormat
+        extend OpenAI::Internal::Type::Enum
+
+        FLOAT: :float
+        BASE64: :base64
+
+        def self?.values: -> ::Array[OpenAI::Models::EmbeddingCreateParams::encoding_format]
+      end
+    end
+  end
+end

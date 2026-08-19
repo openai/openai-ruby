@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Realtime
+      type response_cancel_event =
+        { type: :"response.cancel", event_id: String, response_id: String }
+
+      class ResponseCancelEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :"response.cancel"
+
+        attr_reader event_id: String?
+
+        def event_id=: (String) -> String
+
+        attr_reader response_id: String?
+
+        def response_id=: (String) -> String
+
+        def initialize: (
+          ?event_id: String,
+          ?response_id: String,
+          ?type: :"response.cancel"
+        ) -> void
+
+        def to_hash: -> {
+          type: :"response.cancel",
+          event_id: String,
+          response_id: String
+        }
+      end
+    end
+  end
+end

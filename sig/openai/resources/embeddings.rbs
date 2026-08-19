@@ -1,0 +1,16 @@
+module OpenAI
+  module Resources
+    class Embeddings
+      def create: (
+        input: OpenAI::Models::EmbeddingCreateParams::input,
+        model: OpenAI::Models::EmbeddingCreateParams::model,
+        ?dimensions: Integer,
+        ?encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
+        ?user: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::CreateEmbeddingResponse
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

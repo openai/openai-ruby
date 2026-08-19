@@ -1,0 +1,85 @@
+module OpenAI
+  module Models
+    module Realtime
+      type rate_limits_updated_event =
+        {
+          event_id: String,
+          rate_limits: ::Array[OpenAI::Realtime::RateLimitsUpdatedEvent::RateLimit],
+          type: :"rate_limits.updated"
+        }
+
+      class RateLimitsUpdatedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor event_id: String
+
+        attr_accessor rate_limits: ::Array[OpenAI::Realtime::RateLimitsUpdatedEvent::RateLimit]
+
+        attr_accessor type: :"rate_limits.updated"
+
+        def initialize: (
+          event_id: String,
+          rate_limits: ::Array[OpenAI::Realtime::RateLimitsUpdatedEvent::RateLimit],
+          ?type: :"rate_limits.updated"
+        ) -> void
+
+        def to_hash: -> {
+          event_id: String,
+          rate_limits: ::Array[OpenAI::Realtime::RateLimitsUpdatedEvent::RateLimit],
+          type: :"rate_limits.updated"
+        }
+
+        type rate_limit =
+          {
+            limit: Integer,
+            name: OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit::name_,
+            remaining: Integer,
+            reset_seconds: Float
+          }
+
+        class RateLimit < OpenAI::Internal::Type::BaseModel
+          attr_reader limit: Integer?
+
+          def limit=: (Integer) -> Integer
+
+          attr_reader name: OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit::name_?
+
+          def name=: (
+            OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit::name_
+          ) -> OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit::name_
+
+          attr_reader remaining: Integer?
+
+          def remaining=: (Integer) -> Integer
+
+          attr_reader reset_seconds: Float?
+
+          def reset_seconds=: (Float) -> Float
+
+          def initialize: (
+            ?limit: Integer,
+            ?name: OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit::name_,
+            ?remaining: Integer,
+            ?reset_seconds: Float
+          ) -> void
+
+          def to_hash: -> {
+            limit: Integer,
+            name: OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit::name_,
+            remaining: Integer,
+            reset_seconds: Float
+          }
+
+          type name_ = :requests | :tokens
+
+          module Name
+            extend OpenAI::Internal::Type::Enum
+
+            REQUESTS: :requests
+            TOKENS: :tokens
+
+            def self?.values: -> ::Array[OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit::name_]
+          end
+        end
+      end
+    end
+  end
+end

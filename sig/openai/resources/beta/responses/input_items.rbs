@@ -1,0 +1,21 @@
+module OpenAI
+  module Resources
+    class Beta
+      class Responses
+        class InputItems
+          def list: (
+            String response_id,
+            ?after: String,
+            ?include: ::Array[OpenAI::Models::Beta::beta_response_includable],
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::Responses::InputItemListParams::order,
+            ?betas: ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::CursorPage[OpenAI::Models::Beta::beta_response_item]
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

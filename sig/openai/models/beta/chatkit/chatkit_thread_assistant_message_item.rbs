@@ -1,0 +1,51 @@
+module OpenAI
+  module Models
+    module Beta
+      class ChatKitThreadAssistantMessageItem = ChatKit::ChatKitThreadAssistantMessageItem
+
+      module ChatKit
+        type chatkit_thread_assistant_message_item =
+          {
+            id: String,
+            content: ::Array[OpenAI::Beta::ChatKit::ChatKitResponseOutputText],
+            created_at: Integer,
+            object: :"chatkit.thread_item",
+            thread_id: String,
+            type: :"chatkit.assistant_message"
+          }
+
+        class ChatKitThreadAssistantMessageItem < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor content: ::Array[OpenAI::Beta::ChatKit::ChatKitResponseOutputText]
+
+          attr_accessor created_at: Integer
+
+          attr_accessor object: :"chatkit.thread_item"
+
+          attr_accessor thread_id: String
+
+          attr_accessor type: :"chatkit.assistant_message"
+
+          def initialize: (
+            id: String,
+            content: ::Array[OpenAI::Beta::ChatKit::ChatKitResponseOutputText],
+            created_at: Integer,
+            thread_id: String,
+            ?object: :"chatkit.thread_item",
+            ?type: :"chatkit.assistant_message"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            content: ::Array[OpenAI::Beta::ChatKit::ChatKitResponseOutputText],
+            created_at: Integer,
+            object: :"chatkit.thread_item",
+            thread_id: String,
+            type: :"chatkit.assistant_message"
+          }
+        end
+      end
+    end
+  end
+end

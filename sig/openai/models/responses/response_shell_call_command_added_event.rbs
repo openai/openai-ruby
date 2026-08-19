@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_shell_call_command_added_event =
+        {
+          command: String,
+          command_index: Integer,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.shell_call_command.added"
+        }
+
+      class ResponseShellCallCommandAddedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor command: String
+
+        attr_accessor command_index: Integer
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.shell_call_command.added"
+
+        def initialize: (
+          command: String,
+          command_index: Integer,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?type: :"response.shell_call_command.added"
+        ) -> void
+
+        def to_hash: -> {
+          command: String,
+          command_index: Integer,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.shell_call_command.added"
+        }
+      end
+    end
+  end
+end

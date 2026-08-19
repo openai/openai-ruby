@@ -1,0 +1,54 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type project =
+          {
+            id: String,
+            created_at: Integer,
+            object: :"organization.project",
+            archived_at: Integer?,
+            external_key_id: String?,
+            name: String?,
+            status: String?
+          }
+
+        class Project < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor created_at: Integer
+
+          attr_accessor object: :"organization.project"
+
+          attr_accessor archived_at: Integer?
+
+          attr_accessor external_key_id: String?
+
+          attr_accessor name: String?
+
+          attr_accessor status: String?
+
+          def initialize: (
+            id: String,
+            created_at: Integer,
+            ?archived_at: Integer?,
+            ?external_key_id: String?,
+            ?name: String?,
+            ?status: String?,
+            ?object: :"organization.project"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            created_at: Integer,
+            object: :"organization.project",
+            archived_at: Integer?,
+            external_key_id: String?,
+            name: String?,
+            status: String?
+          }
+        end
+      end
+    end
+  end
+end

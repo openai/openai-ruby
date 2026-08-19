@@ -1,0 +1,16 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_format_text_config =
+        OpenAI::ResponseFormatText
+        | OpenAI::Responses::ResponseFormatTextJSONSchemaConfig
+        | OpenAI::ResponseFormatJSONObject
+
+      module ResponseFormatTextConfig
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Responses::response_format_text_config]
+      end
+    end
+  end
+end

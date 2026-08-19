@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    module Responses
+      type tool_choice_custom = { name: String, type: :custom }
+
+      class ToolChoiceCustom < OpenAI::Internal::Type::BaseModel
+        attr_accessor name: String
+
+        attr_accessor type: :custom
+
+        def initialize: (name: String, ?type: :custom) -> void
+
+        def to_hash: -> { name: String, type: :custom }
+      end
+    end
+  end
+end

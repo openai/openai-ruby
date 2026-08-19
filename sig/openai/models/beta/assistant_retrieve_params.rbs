@@ -1,0 +1,25 @@
+module OpenAI
+  module Models
+    module Beta
+      type assistant_retrieve_params =
+        { assistant_id: String } & OpenAI::Internal::Type::request_parameters
+
+      class AssistantRetrieveParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor assistant_id: String
+
+        def initialize: (
+          assistant_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          assistant_id: String,
+          request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end

@@ -1,0 +1,127 @@
+module OpenAI
+  module Models
+    module Beta
+      class ChatKitThreadUserMessageItem = ChatKit::ChatKitThreadUserMessageItem
+
+      module ChatKit
+        type chatkit_thread_user_message_item =
+          {
+            id: String,
+            attachments: ::Array[OpenAI::Beta::ChatKit::ChatKitAttachment],
+            content: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::content],
+            created_at: Integer,
+            inference_options: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions?,
+            object: :"chatkit.thread_item",
+            thread_id: String,
+            type: :"chatkit.user_message"
+          }
+
+        class ChatKitThreadUserMessageItem < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor attachments: ::Array[OpenAI::Beta::ChatKit::ChatKitAttachment]
+
+          attr_accessor content: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::content]
+
+          attr_accessor created_at: Integer
+
+          attr_accessor inference_options: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions?
+
+          attr_accessor object: :"chatkit.thread_item"
+
+          attr_accessor thread_id: String
+
+          attr_accessor type: :"chatkit.user_message"
+
+          def initialize: (
+            id: String,
+            attachments: ::Array[OpenAI::Beta::ChatKit::ChatKitAttachment],
+            content: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::content],
+            created_at: Integer,
+            inference_options: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions?,
+            thread_id: String,
+            ?object: :"chatkit.thread_item",
+            ?type: :"chatkit.user_message"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            attachments: ::Array[OpenAI::Beta::ChatKit::ChatKitAttachment],
+            content: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::content],
+            created_at: Integer,
+            inference_options: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions?,
+            object: :"chatkit.thread_item",
+            thread_id: String,
+            type: :"chatkit.user_message"
+          }
+
+          type content =
+            OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::InputText
+            | OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::QuotedText
+
+          module Content
+            extend OpenAI::Internal::Type::Union
+
+            type input_text = { text: String, type: :input_text }
+
+            class InputText < OpenAI::Internal::Type::BaseModel
+              attr_accessor text: String
+
+              attr_accessor type: :input_text
+
+              def initialize: (text: String, ?type: :input_text) -> void
+
+              def to_hash: -> { text: String, type: :input_text }
+            end
+
+            type quoted_text = { text: String, type: :quoted_text }
+
+            class QuotedText < OpenAI::Internal::Type::BaseModel
+              attr_accessor text: String
+
+              attr_accessor type: :quoted_text
+
+              def initialize: (text: String, ?type: :quoted_text) -> void
+
+              def to_hash: -> { text: String, type: :quoted_text }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::content]
+          end
+
+          type inference_options =
+            {
+              model: String?,
+              tool_choice: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice?
+            }
+
+          class InferenceOptions < OpenAI::Internal::Type::BaseModel
+            attr_accessor model: String?
+
+            attr_accessor tool_choice: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice?
+
+            def initialize: (
+              model: String?,
+              tool_choice: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice?
+            ) -> void
+
+            def to_hash: -> {
+              model: String?,
+              tool_choice: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice?
+            }
+
+            type tool_choice = { id: String }
+
+            class ToolChoice < OpenAI::Internal::Type::BaseModel
+              attr_accessor id: String
+
+              def initialize: (id: String) -> void
+
+              def to_hash: -> { id: String }
+            end
+          end
+        end
+      end
+    end
+  end
+end

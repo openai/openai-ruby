@@ -1,0 +1,39 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_compaction_item =
+        {
+          id: String,
+          encrypted_content: String,
+          type: :compaction,
+          created_by: String
+        }
+
+      class ResponseCompactionItem < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor encrypted_content: String
+
+        attr_accessor type: :compaction
+
+        attr_reader created_by: String?
+
+        def created_by=: (String) -> String
+
+        def initialize: (
+          id: String,
+          encrypted_content: String,
+          ?created_by: String,
+          ?type: :compaction
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          encrypted_content: String,
+          type: :compaction,
+          created_by: String
+        }
+      end
+    end
+  end
+end

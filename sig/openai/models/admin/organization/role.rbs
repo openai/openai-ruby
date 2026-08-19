@@ -1,0 +1,54 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type role =
+          {
+            id: String,
+            description: String?,
+            name: String,
+            object: :role,
+            permissions: ::Array[String],
+            predefined_role: bool,
+            resource_type: String
+          }
+
+        class Role < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor description: String?
+
+          attr_accessor name: String
+
+          attr_accessor object: :role
+
+          attr_accessor permissions: ::Array[String]
+
+          attr_accessor predefined_role: bool
+
+          attr_accessor resource_type: String
+
+          def initialize: (
+            id: String,
+            description: String?,
+            name: String,
+            permissions: ::Array[String],
+            predefined_role: bool,
+            resource_type: String,
+            ?object: :role
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            description: String?,
+            name: String,
+            object: :role,
+            permissions: ::Array[String],
+            predefined_role: bool,
+            resource_type: String
+          }
+        end
+      end
+    end
+  end
+end

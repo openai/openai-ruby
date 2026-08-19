@@ -1,0 +1,41 @@
+module OpenAI
+  module Models
+    module Audio
+      type translation_verbose =
+        {
+          duration: Float,
+          language: String,
+          text: String,
+          segments: ::Array[OpenAI::Audio::TranscriptionSegment]
+        }
+
+      class TranslationVerbose < OpenAI::Internal::Type::BaseModel
+        attr_accessor duration: Float
+
+        attr_accessor language: String
+
+        attr_accessor text: String
+
+        attr_reader segments: ::Array[OpenAI::Audio::TranscriptionSegment]?
+
+        def segments=: (
+          ::Array[OpenAI::Audio::TranscriptionSegment]
+        ) -> ::Array[OpenAI::Audio::TranscriptionSegment]
+
+        def initialize: (
+          duration: Float,
+          language: String,
+          text: String,
+          ?segments: ::Array[OpenAI::Audio::TranscriptionSegment]
+        ) -> void
+
+        def to_hash: -> {
+          duration: Float,
+          language: String,
+          text: String,
+          segments: ::Array[OpenAI::Audio::TranscriptionSegment]
+        }
+      end
+    end
+  end
+end

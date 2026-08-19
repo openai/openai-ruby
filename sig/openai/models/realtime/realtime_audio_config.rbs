@@ -1,0 +1,35 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_audio_config =
+        {
+          input: OpenAI::Realtime::RealtimeAudioConfigInput,
+          output: OpenAI::Realtime::RealtimeAudioConfigOutput
+        }
+
+      class RealtimeAudioConfig < OpenAI::Internal::Type::BaseModel
+        attr_reader input: OpenAI::Realtime::RealtimeAudioConfigInput?
+
+        def input=: (
+          OpenAI::Realtime::RealtimeAudioConfigInput
+        ) -> OpenAI::Realtime::RealtimeAudioConfigInput
+
+        attr_reader output: OpenAI::Realtime::RealtimeAudioConfigOutput?
+
+        def output=: (
+          OpenAI::Realtime::RealtimeAudioConfigOutput
+        ) -> OpenAI::Realtime::RealtimeAudioConfigOutput
+
+        def initialize: (
+          ?input: OpenAI::Realtime::RealtimeAudioConfigInput,
+          ?output: OpenAI::Realtime::RealtimeAudioConfigOutput
+        ) -> void
+
+        def to_hash: -> {
+          input: OpenAI::Realtime::RealtimeAudioConfigInput,
+          output: OpenAI::Realtime::RealtimeAudioConfigOutput
+        }
+      end
+    end
+  end
+end

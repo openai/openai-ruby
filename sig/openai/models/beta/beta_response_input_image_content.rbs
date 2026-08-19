@@ -1,0 +1,67 @@
+module OpenAI
+  module Models
+    class BetaResponseInputImageContent = Beta::BetaResponseInputImageContent
+
+    module Beta
+      type beta_response_input_image_content =
+        {
+          type: :input_image,
+          detail: OpenAI::Models::Beta::BetaResponseInputImageContent::detail?,
+          file_id: String?,
+          image_url: String?,
+          prompt_cache_breakpoint: OpenAI::Beta::BetaResponseInputImageContent::PromptCacheBreakpoint?
+        }
+
+      class BetaResponseInputImageContent < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :input_image
+
+        attr_accessor detail: OpenAI::Models::Beta::BetaResponseInputImageContent::detail?
+
+        attr_accessor file_id: String?
+
+        attr_accessor image_url: String?
+
+        attr_accessor prompt_cache_breakpoint: OpenAI::Beta::BetaResponseInputImageContent::PromptCacheBreakpoint?
+
+        def initialize: (
+          ?detail: OpenAI::Models::Beta::BetaResponseInputImageContent::detail?,
+          ?file_id: String?,
+          ?image_url: String?,
+          ?prompt_cache_breakpoint: OpenAI::Beta::BetaResponseInputImageContent::PromptCacheBreakpoint?,
+          ?type: :input_image
+        ) -> void
+
+        def to_hash: -> {
+          type: :input_image,
+          detail: OpenAI::Models::Beta::BetaResponseInputImageContent::detail?,
+          file_id: String?,
+          image_url: String?,
+          prompt_cache_breakpoint: OpenAI::Beta::BetaResponseInputImageContent::PromptCacheBreakpoint?
+        }
+
+        type detail = :low | :high | :auto | :original
+
+        module Detail
+          extend OpenAI::Internal::Type::Enum
+
+          LOW: :low
+          HIGH: :high
+          AUTO: :auto
+          ORIGINAL: :original
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputImageContent::detail]
+        end
+
+        type prompt_cache_breakpoint = { mode: :explicit }
+
+        class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+          attr_accessor mode: :explicit
+
+          def initialize: (?mode: :explicit) -> void
+
+          def to_hash: -> { mode: :explicit }
+        end
+      end
+    end
+  end
+end

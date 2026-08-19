@@ -1,0 +1,38 @@
+module OpenAI
+  module Models
+    module BetaResponseFormatTextConfig = Beta::BetaResponseFormatTextConfig
+
+    module Beta
+      type beta_response_format_text_config =
+        OpenAI::Beta::BetaResponseFormatTextConfig::Text
+        | OpenAI::Beta::BetaResponseFormatTextJSONSchemaConfig
+        | OpenAI::Beta::BetaResponseFormatTextConfig::JSONObject
+
+      module BetaResponseFormatTextConfig
+        extend OpenAI::Internal::Type::Union
+
+        type text = { type: :text }
+
+        class Text < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :text
+
+          def initialize: (?type: :text) -> void
+
+          def to_hash: -> { type: :text }
+        end
+
+        type json_object = { type: :json_object }
+
+        class JSONObject < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :json_object
+
+          def initialize: (?type: :json_object) -> void
+
+          def to_hash: -> { type: :json_object }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::beta_response_format_text_config]
+      end
+    end
+  end
+end

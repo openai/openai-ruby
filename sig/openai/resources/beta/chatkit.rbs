@@ -1,0 +1,13 @@
+module OpenAI
+  module Resources
+    class Beta
+      class ChatKit
+        attr_reader sessions: OpenAI::Resources::Beta::ChatKit::Sessions
+
+        attr_reader threads: OpenAI::Resources::Beta::ChatKit::Threads
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end

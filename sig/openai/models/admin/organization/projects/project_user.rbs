@@ -1,0 +1,53 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        class ProjectUser = Projects::ProjectUser
+
+        module Projects
+          type project_user =
+            {
+              id: String,
+              added_at: Integer,
+              object: :"organization.project.user",
+              role: String,
+              email: String?,
+              name: String?
+            }
+
+          class ProjectUser < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor added_at: Integer
+
+            attr_accessor object: :"organization.project.user"
+
+            attr_accessor role: String
+
+            attr_accessor email: String?
+
+            attr_accessor name: String?
+
+            def initialize: (
+              id: String,
+              added_at: Integer,
+              role: String,
+              ?email: String?,
+              ?name: String?,
+              ?object: :"organization.project.user"
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              added_at: Integer,
+              object: :"organization.project.user",
+              role: String,
+              email: String?,
+              name: String?
+            }
+          end
+        end
+      end
+    end
+  end
+end

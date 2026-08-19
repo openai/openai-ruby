@@ -1,0 +1,22 @@
+# frozen_string_literal: true
+
+require_relative "../../test_helper"
+
+class OpenAI::Test::Resources::Audio::TranslationsTest < OpenAI::Test::ResourceTest
+  def test_create_required_params
+    response = @openai.audio.translations.create(file: StringIO.new("Example data"), model: :"whisper-1")
+
+    assert_pattern do
+      response => OpenAI::Models::Audio::TranslationCreateResponse
+    end
+
+    assert_pattern do
+      case response
+      in (
+        OpenAI::Audio::Translation | OpenAI::Audio::TranslationVerbose
+      )
+        nil
+      end
+    end
+  end
+end

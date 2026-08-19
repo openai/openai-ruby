@@ -1,0 +1,78 @@
+module OpenAI
+  module Models
+    module Audio
+      type translation_create_params =
+        {
+          file: OpenAI::Internal::file_input,
+          model: OpenAI::Models::Audio::TranslationCreateParams::model,
+          prompt: String,
+          response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format,
+          temperature: Float
+        }
+        & OpenAI::Internal::Type::request_parameters
+
+      class TranslationCreateParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor file: OpenAI::Internal::file_input
+
+        attr_accessor model: OpenAI::Models::Audio::TranslationCreateParams::model
+
+        attr_reader prompt: String?
+
+        def prompt=: (String) -> String
+
+        attr_reader response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format?
+
+        def response_format=: (
+          OpenAI::Models::Audio::TranslationCreateParams::response_format
+        ) -> OpenAI::Models::Audio::TranslationCreateParams::response_format
+
+        attr_reader temperature: Float?
+
+        def temperature=: (Float) -> Float
+
+        def initialize: (
+          file: OpenAI::Internal::file_input,
+          model: OpenAI::Models::Audio::TranslationCreateParams::model,
+          ?prompt: String,
+          ?response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format,
+          ?temperature: Float,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          file: OpenAI::Internal::file_input,
+          model: OpenAI::Models::Audio::TranslationCreateParams::model,
+          prompt: String,
+          response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format,
+          temperature: Float,
+          request_options: OpenAI::RequestOptions
+        }
+
+        type model = String | OpenAI::Models::audio_model
+
+        module Model
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Audio::TranslationCreateParams::model]
+        end
+
+        type response_format = :json | :text | :srt | :verbose_json | :vtt
+
+        module ResponseFormat
+          extend OpenAI::Internal::Type::Enum
+
+          JSON: :json
+          TEXT: :text
+          SRT: :srt
+          VERBOSE_JSON: :verbose_json
+          VTT: :vtt
+
+          def self?.values: -> ::Array[OpenAI::Models::Audio::TranslationCreateParams::response_format]
+        end
+      end
+    end
+  end
+end

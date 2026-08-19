@@ -1,0 +1,25 @@
+module OpenAI
+  module Models
+    module Realtime
+      type call_hangup_params =
+        { call_id: String } & OpenAI::Internal::Type::request_parameters
+
+      class CallHangupParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor call_id: String
+
+        def initialize: (
+          call_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          call_id: String,
+          request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end

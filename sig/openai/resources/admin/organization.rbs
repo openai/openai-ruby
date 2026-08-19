@@ -1,0 +1,33 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        attr_reader audit_logs: OpenAI::Resources::Admin::Organization::AuditLogs
+
+        attr_reader admin_api_keys: OpenAI::Resources::Admin::Organization::AdminAPIKeys
+
+        attr_reader usage: OpenAI::Resources::Admin::Organization::Usage
+
+        attr_reader invites: OpenAI::Resources::Admin::Organization::Invites
+
+        attr_reader users: OpenAI::Resources::Admin::Organization::Users
+
+        attr_reader groups: OpenAI::Resources::Admin::Organization::Groups
+
+        attr_reader roles: OpenAI::Resources::Admin::Organization::Roles
+
+        attr_reader data_retention: OpenAI::Resources::Admin::Organization::DataRetention
+
+        attr_reader spend_limit: OpenAI::Resources::Admin::Organization::SpendLimit
+
+        attr_reader spend_alerts: OpenAI::Resources::Admin::Organization::SpendAlerts
+
+        attr_reader certificates: OpenAI::Resources::Admin::Organization::Certificates
+
+        attr_reader projects: OpenAI::Resources::Admin::Organization::Projects
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end
