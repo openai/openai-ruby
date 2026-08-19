@@ -8,6 +8,14 @@ class CodeQLWorkflowTest < Minitest::Test
   WORKFLOW = File.join(ROOT, ".github/workflows/codeql.yml")
   ACTIONS = %w[github/codeql-action/init github/codeql-action/analyze].freeze
 
+  def test_codeql_job_names_match_required_status_checks
+    job = YAML.safe_load_file(WORKFLOW).fetch("jobs").fetch("analyze")
+    languages = job.fetch("strategy").fetch("matrix").fetch("language")
+    check_names = languages.map { job.fetch("name").sub("${{ matrix.language }}", _1) }
+
+    assert_equal(["CodeQL (actions)", "CodeQL (ruby)"], check_names)
+  end
+
   def test_codeql_actions_use_the_same_pinned_release
     uses = File.read(WORKFLOW).scan(
       %r{^\s*uses:\s+(github/codeql-action/(?:init|analyze))@([0-9a-f]{40})\s+#\s+(v\d+\.\d+\.\d+)\s*$}
