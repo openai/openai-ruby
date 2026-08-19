@@ -417,10 +417,13 @@ module OpenAI
               [a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}
             )\z
           }ix
-          if rendered_request_id.bytesize <= 128 &&
-              rendered_request_id.ascii_only? &&
-              rendered_request_id.match?(safe_request_id)
-            fields << "request_id=#{bounded_status_field(request_id, limit: 128)}"
+          if rendered_request_id.bytesize <= 128 && rendered_request_id.ascii_only?
+            uuid_request_id = rendered_request_id.match?(/\A[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}\z/i)
+            normalized_digits = rendered_request_id.gsub(/(?<=\d)[._-](?:req|trace|request)[._-](?=\d)/i, "-")
+            sensitive_numeric_id = normalized_digits.scan(/\d+(?:[._-]\d+)*/).any? { _1.count("0-9") >= 13 }
+            if (uuid_request_id || !sensitive_numeric_id) && rendered_request_id.match?(safe_request_id)
+              fields << "request_id=#{bounded_status_field(request_id, limit: 128)}"
+            end
           end
         end
 
