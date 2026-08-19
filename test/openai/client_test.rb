@@ -776,16 +776,15 @@ class OpenAITest < Minitest::Test
     end
   end
 
-  def test_client_redirect_auth_strip_cross_origin
+  def test_client_rejects_cross_origin_307_redirect_with_sensitive_body
+    source = "http://localhost/chat/completions"
+    destination = "https://example.com/redirected"
     stub_request(:post, "http://localhost/chat/completions").to_return_json(
       status: 307,
-      headers: {"location" => "https://example.com/redirected"},
+      headers: {"location" => destination},
       body: {}
     )
-    stub_request(:any, "https://example.com/redirected").to_return(
-      status: 307,
-      headers: {"location" => "https://example.com/redirected"}
-    )
+    stub_request(:post, destination).to_return_json(status: 200, body: {})
 
     openai = OpenAI::Client.new(
       base_url: "http://localhost",
@@ -793,18 +792,25 @@ class OpenAITest < Minitest::Test
       admin_api_key: "My Admin API Key"
     )
 
-    assert_raises(OpenAI::Errors::APIConnectionError) do
+    error = assert_raises(OpenAI::Errors::APIConnectionError) do
       openai.chat.completions.create(
-        messages: [{content: "string", role: :developer}],
+        messages: [{content: "fake-private-customer-prompt", role: :developer}],
         model: :"gpt-5.4",
-        request_options: {extra_headers: {"authorization" => "Bearer xyz"}}
+        request_options: {
+          extra_body: {tools: [{type: "mcp", authorization: "fake-mcp-oauth-token"}]},
+          extra_headers: {"authorization" => "Bearer xyz"}
+        }
       )
     end
 
-    assert_requested(:any, "https://example.com/redirected", times: OpenAI::Client::MAX_REDIRECTS) do
-      headers = _1.headers.keys.map(&:downcase)
-      refute_includes(headers, "authorization")
+    assert_equal(destination, error.url.to_s)
+    assert_equal("Cannot follow a cross-origin redirect with a request body.", error.message)
+    assert_requested(:post, source) do |request|
+      assert_includes(request.body, "fake-private-customer-prompt")
+      assert_includes(request.body, "fake-mcp-oauth-token")
     end
+
+    assert_not_requested(:any, destination)
   end
 
   def test_client_redirect_strips_symbol_sensitive_headers_cross_origin

@@ -168,7 +168,21 @@ module OpenAI
             end
 
             # from undici
-            if OpenAI::Internal::Util.uri_origin(url) != OpenAI::Internal::Util.uri_origin(location)
+            origin = OpenAI::Internal::Util.uri_origin(url)
+            redirect_origin = OpenAI::Internal::Util.uri_origin(location)
+            unless origin.casecmp?(redirect_origin)
+              unless request[:body].nil?
+                # An attacker who controls a trusted endpoint's redirect destination could receive the body.
+                message = "Cannot follow a cross-origin redirect with a request body."
+                raise(
+                  OpenAI::Errors::APIConnectionError.new(
+                    url: location,
+                    response: response_headers,
+                    message: message
+                  )
+                )
+              end
+
               headers = request.fetch(:headers).reject do |name, _|
                 name == "host" || OpenAI::Internal::Logging.credential_header?(name)
               end
