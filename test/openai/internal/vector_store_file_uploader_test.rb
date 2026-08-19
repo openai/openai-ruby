@@ -260,7 +260,7 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
     custom_part = OpenAI::FilePart.new(
       "custom-body",
       filename: "nested/custom.txt",
-      content_type: "text/custom"
+      content_type: "text/custom; charset=UTF-8; name=\"custom; file.txt\""
     )
     unnamed_part = OpenAI::FilePart.new("unnamed-body")
     file_part = OpenAI::FilePart.new(part_source_file)
@@ -297,7 +297,10 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
       ["upload", "application/octet-stream", "pipe-body"],
       metadata_and_contents(pathless_io)
     )
-    assert_equal(["custom.txt", "text/custom", "custom-body"], metadata_and_contents(part))
+    assert_equal(
+      ["custom.txt", "text/custom; charset=UTF-8; name=\"custom; file.txt\"", "custom-body"],
+      metadata_and_contents(part)
+    )
     assert_equal([nil, "text/plain", "unnamed-body"], metadata_and_contents(unnamed))
     assert_equal(
       [File.basename(part_source_file.to_path), "application/octet-stream", "file-body"],
@@ -337,6 +340,30 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
       refute_includes(body, local_path)
       refute_predicate(content, :closed?)
       refute_path_exists(staged_paths.fetch(0))
+    end
+  end
+
+  def test_upload_rejects_mutated_mime_header_injection_before_staging_metadata
+    payloads = ["text/plain\r\nX-Injected: yes", "text/plain\r\n\r\ninjected-body"]
+    original_tempfile_new = Tempfile.method(:new)
+
+    payloads.each do |payload|
+      resource = FilesResource.new { flunk("upload should not be called") }
+      content_type = +"text/plain"
+      file = OpenAI::FilePart.new(StringIO.new("contents"), content_type: content_type)
+      content_type.replace(payload)
+      staged_path = nil
+      tempfile_factory = lambda do |*args|
+        original_tempfile_new.call(*args).tap { staged_path = Pathname(_1.path) }
+      end
+
+      Tempfile.stub(:new, tempfile_factory) do
+        assert_raises(ArgumentError, payload.inspect) { uploader(resource).upload([file]) }
+      end
+
+      refute_nil(staged_path)
+      refute_predicate(staged_path, :exist?)
+      assert_empty(resource.calls)
     end
   end
 
