@@ -412,7 +412,8 @@ module OpenAI
               req_(?:[a-z0-9]{1,16}(?:_[a-z0-9]{1,12})?|[a-f0-9]{17,124}) |
               req-[a-z0-9]{1,16}-[a-z0-9]{1,32} |
               trace(?:_[a-z0-9]{1,16}|(?:\.[a-z0-9]{1,16}){1,4}) |
-              [a-z0-9]{1,16}(?:-[a-z0-9]{1,16}){0,3}-(?:req|trace)-[a-z0-9]{1,32} |
+              (?:email-delivery|customer-support|data-center|response-service|input-validator|service)-
+                (?:req|trace)-[a-f0-9]{1,32} |
               runtime-(?:chat|response|stream)-request |
               [a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}
             )\z
