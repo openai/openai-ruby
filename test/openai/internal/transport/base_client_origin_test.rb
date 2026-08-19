@@ -28,6 +28,75 @@ class OpenAI::Test::BaseClientOriginTest < Minitest::Test
     end
   end
 
+  def test_rejects_authorityless_destinations_before_selecting_api_key_authentication
+    scenarios = [
+      ["unix:///trusted.sock/v1", "unix:///attacker.sock/stolen"],
+      ["unix:///trusted.sock/v1", "unix:///trusted.sock/v1/models"],
+      ["unix:///trusted.sock/v1", "models"],
+      ["unix:///trusted.sock/v1", "/trusted.sock/v1/models"],
+      ["file:///trusted.sock/v1", "file:///attacker.sock/stolen"],
+      ["custom:///trusted/socket/v1", "custom:///attacker/socket/stolen"]
+    ]
+
+    scenarios.each do |base_url, path|
+      client = OpenAI::Client.new(
+        api_key: "fake-api-key",
+        base_url: base_url,
+        http_client: @transport
+      )
+
+      client.stub(:auth_headers, -> (security:) { flunk("Authentication selected: #{security}") }) do
+        assert_rejected_before_transport(client, path)
+      end
+    end
+  end
+
+  def test_rejects_authorityless_destinations_before_selecting_administrator_authentication
+    client = OpenAI::Client.new(
+      api_key: nil,
+      admin_api_key: "fake-admin-key",
+      base_url: "unix:///trusted.sock/v1",
+      http_client: @transport
+    )
+
+    client.stub(:auth_headers, -> (security:) { flunk("Authentication selected: #{security}") }) do
+      assert_rejected_before_transport(
+        client,
+        "unix:///attacker.sock/admin",
+        security: {admin_api_key_auth: true}
+      )
+    end
+  end
+
+  def test_rejects_authorityless_destinations_before_materializing_workload_identity_tokens
+    workload_identity = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: "fake-identity-provider",
+      service_account_id: "fake-service-account",
+      provider: Object.new
+    )
+    client = OpenAI::Client.new(
+      api_key: nil,
+      workload_identity: workload_identity,
+      base_url: "unix:///trusted.sock/v1",
+      http_client: @transport
+    )
+
+    client.workload_identity_auth.stub(:get_token, -> (**) { flunk("Workload token materialized") }) do
+      assert_rejected_before_transport(client, "unix:///attacker.sock/stolen")
+    end
+  end
+
+  def test_rejects_authorityless_destinations_without_enabled_authentication
+    client = OpenAI::Client.new(
+      api_key: nil,
+      admin_api_key: "fake-admin-key",
+      base_url: "unix:///trusted.sock/v1",
+      http_client: @transport
+    )
+
+    assert_rejected_before_transport(client, "models", security: {})
+  end
+
   def test_rejects_cross_origin_paths_before_selecting_administrator_authentication
     client = OpenAI::Client.new(
       api_key: nil,
@@ -123,6 +192,49 @@ class OpenAI::Test::BaseClientOriginTest < Minitest::Test
     paths.each { client.request(method: :get, path: _1) }
 
     assert_mock(transport)
+  end
+
+  def test_preserves_authority_bearing_custom_transport_destinations
+    transport = Minitest::Mock.new(OpenAI::HTTPClient.new)
+    paths = [
+      "models",
+      "/v1/models",
+      "unix://trusted-socket/v1/models",
+      "//trusted-socket/v1/models"
+    ]
+    paths.each do
+      transport.expect(:execute, successful_response) do |request|
+        assert_equal("unix://trusted-socket/v1/models", request.url.to_s)
+        assert_equal("Bearer fake-api-key", request.headers.fetch("authorization"))
+        true
+      end
+    end
+
+    client = OpenAI::Client.new(
+      api_key: "fake-api-key",
+      base_url: "unix://trusted-socket/v1",
+      http_client: transport
+    )
+    paths.each { client.request(method: :get, path: _1) }
+
+    assert_mock(transport)
+  end
+
+  def test_rejects_cross_origin_authority_bearing_custom_transport_destinations
+    client = OpenAI::Client.new(
+      api_key: "fake-api-key",
+      base_url: "unix://trusted-socket/v1",
+      http_client: @transport
+    )
+    paths = [
+      "unix://attacker-socket/stolen",
+      "//attacker-socket/stolen",
+      "custom://trusted-socket/stolen"
+    ]
+
+    client.stub(:auth_headers, -> (security:) { flunk("Authentication selected: #{security}") }) do
+      paths.each { assert_rejected_before_transport(client, _1) }
+    end
   end
 
   def test_preserves_equivalent_default_ports_and_hostname_casing
