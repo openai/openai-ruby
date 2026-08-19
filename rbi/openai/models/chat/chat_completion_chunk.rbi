@@ -47,6 +47,15 @@ module OpenAI
         sig { params(moderation: T.nilable(OpenAI::Chat::ChatCompletionChunk::Moderation::OrHash)).void }
         attr_writer :moderation
 
+        # An obfuscation string added to normalize the size of streamed chunks as a
+        # mitigation to certain side-channel attacks. The field is included by default and
+        # omitted when `stream_options.include_obfuscation` is `false`.
+        sig { returns(T.nilable(String)) }
+        attr_reader :obfuscation
+
+        sig { params(obfuscation: String).void }
+        attr_writer :obfuscation
+
         # Specifies the processing type used for serving the request.
         #
         # - If set to 'auto', then the request will be processed with the service tier
@@ -108,6 +117,8 @@ module OpenAI
 
             moderation: T.nilable(OpenAI::Chat::ChatCompletionChunk::Moderation::OrHash),
 
+            obfuscation: String,
+
             service_tier: T.nilable(OpenAI::Chat::ChatCompletionChunk::ServiceTier::OrSymbol),
 
             system_fingerprint: String,
@@ -138,6 +149,11 @@ module OpenAI
           # Moderation results for the request input and generated output. Present on the
           # moderation chunk when moderated completions are requested.
           moderation: nil,
+
+          # An obfuscation string added to normalize the size of streamed chunks as a
+          # mitigation to certain side-channel attacks. The field is included by default and
+          # omitted when `stream_options.include_obfuscation` is `false`.
+          obfuscation: nil,
 
           # Specifies the processing type used for serving the request.
           #
@@ -190,6 +206,7 @@ module OpenAI
               model: String,
               object: Symbol,
               moderation: T.nilable(OpenAI::Chat::ChatCompletionChunk::Moderation),
+              obfuscation: String,
               service_tier: T.nilable(OpenAI::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol),
               system_fingerprint: String,
               usage: T.nilable(OpenAI::CompletionUsage)

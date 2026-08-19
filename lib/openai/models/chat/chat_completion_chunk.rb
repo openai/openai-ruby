@@ -44,6 +44,14 @@ module OpenAI
         #   @return [OpenAI::Models::Chat::ChatCompletionChunk::Moderation, nil]
         optional :moderation, -> { OpenAI::Chat::ChatCompletionChunk::Moderation }, nil?: true
 
+        # @!attribute obfuscation
+        #   An obfuscation string added to normalize the size of streamed chunks as a
+        #   mitigation to certain side-channel attacks. The field is included by default and
+        #   omitted when `stream_options.include_obfuscation` is `false`.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
         # @!attribute service_tier
         #   Specifies the processing type used for serving the request.
         #
@@ -91,7 +99,7 @@ module OpenAI
         #   @return [OpenAI::Models::CompletionUsage, nil]
         optional :usage, -> { OpenAI::CompletionUsage }, nil?: true
 
-        # @!method initialize(id:, choices:, created:, model:, moderation: nil, service_tier: nil, system_fingerprint: nil, usage: nil, object: :"chat.completion.chunk")
+        # @!method initialize(id:, choices:, created:, model:, moderation: nil, obfuscation: nil, service_tier: nil, system_fingerprint: nil, usage: nil, object: :"chat.completion.chunk")
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Chat::ChatCompletionChunk} for more details.
         #
@@ -108,6 +116,8 @@ module OpenAI
         #   @param model [String] The model to generate the completion.
         #
         #   @param moderation [OpenAI::Models::Chat::ChatCompletionChunk::Moderation, nil] Moderation results for the request input and generated output. Present
+        #
+        #   @param obfuscation [String] An obfuscation string added to normalize the size of streamed chunks as a
         #
         #   @param service_tier [Symbol, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier, nil] Specifies the processing type used for serving the request.
         #
