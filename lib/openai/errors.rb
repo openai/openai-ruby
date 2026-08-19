@@ -363,17 +363,31 @@ module OpenAI
           credential = classified_markers.match?(credential_description)
           content = classified_markers.match?(content_description)
           if classified_candidate.match?(/\d/)
+            diagnostic_words = classified_candidate.downcase.scan(/[a-z]+|\d+/)
             if credential
-              first_quantity = classified_markers.index(/\d/)
-              first_credential = classified_markers.index(credential_description)
+              quantity_indexes = diagnostic_words.each_index.select { diagnostic_words[_1].match?(/\A\d+\z/) }
+              quantity_prefix = quantity_indexes.one? ? diagnostic_words[...quantity_indexes.first] : []
+              safe_prefix_words = %w[the your request input output context maximum max minimum min limit length] +
+                %w[contains exceeds exceed exceeded is of too long]
               only_quantity_tokens = classified_markers.scan(credential_description).all? { _1.match?(/\Atokens?\z/i) }
               safe_limit = content &&
-                first_credential > first_quantity &&
                 only_quantity_tokens &&
-                classified_markers.match?(/\b\d+\s+(?:(?:input|output)\s+)?tokens?\b/i)
+                quantity_indexes.one? &&
+                diagnostic_words[quantity_indexes.first].length <= 8 &&
+                quantity_prefix.all? { safe_prefix_words.include?(_1) } &&
+                quantity_prefix.any? { %w[request input output context].include?(_1) } &&
+                quantity_prefix.any? do
+                  %w[maximum max minimum min limit length contains exceeds exceed exceeded].include?(_1)
+                end &&
+                [%w[token], %w[tokens], %w[input token], %w[input tokens], %w[output token], %w[output tokens]].include?(
+                  diagnostic_words[(quantity_indexes.first + 1)..]
+                )
               next false unless safe_limit
             else
-              safe_status_code = classified_candidate.match?(/\A(?:http\s+)?(?:status|error)\s*:?\s*[1-5]\d{2}\z/i)
+              status_code = diagnostic_words.last
+              safe_status_code = status_code.length == 3 &&
+                ("100".."599").cover?(status_code) &&
+                [%w[error], %w[status], %w[http status]].include?(diagnostic_words[...-1])
               safe_named_code = classified_candidate.match?(/\A[a-z]+(?:_[a-z0-9]+){1,4}\z/i)
               next false unless safe_status_code || safe_named_code
             end

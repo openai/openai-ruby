@@ -400,6 +400,16 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
       "User ID 12345678901234567890",
       "Account 1234567890123456",
       "Request 12345678901234567890",
+      "Your request contains 8192 input tokens: 4111111111111111",
+      "Maximum output: 2048 tokens 1234567890123456",
+      "The maximum output length is 4096 tokens: 4111111111111111",
+      "Your request contains 8192 input tokens: user 1234567890123456",
+      "Account 12345678 input tokens",
+      "User ID 12345678 input tokens",
+      "Your account 12345678 output tokens",
+      "Billing details 12345678 input tokens",
+      "The user account number 12345678 input tokens",
+      "The user value 12345678 output tokens",
       "Provider prefix #{github_credential} suffix",
       "Provider rejected req_#{github_credential}",
       "Provider failure \xFF#{github_credential}".b,
@@ -416,6 +426,19 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
       assert_same(body, error.body)
       assert_same(description, error.body.dig(:error, :message))
     end
+  end
+
+  def test_status_diagnostics_handle_long_whitespace_without_exposing_trailing_values
+    safe_description = "error" + (" " * 480) + "500"
+    unsafe_description = "error" + (" " * 480) + "999"
+
+    safe_error = status_error(body: {error: {message: safe_description}})
+    unsafe_error = status_error(body: {error: {message: unsafe_description}})
+
+    assert_includes(safe_error.message, "500")
+    assert_same(safe_description, safe_error.body.dig(:error, :message))
+    refute_includes(unsafe_error.message, "message=")
+    assert_same(unsafe_description, unsafe_error.body.dig(:error, :message))
   end
 
   def test_provider_messages_do_not_disclose_space_delimited_credential_values
