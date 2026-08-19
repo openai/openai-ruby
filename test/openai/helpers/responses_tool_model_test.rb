@@ -39,7 +39,7 @@ class OpenAI::Test::ResponsesToolModelTest < Minitest::Test
 
       assert_nil(model)
       assert_empty(tool_models)
-      assert_same(parameters, function[:parameters])
+      assert(parameters.equal?(function[:parameters]))
       assert_same(tool, tools.first)
     end
   end
