@@ -27,7 +27,7 @@ end
 
 desc("Preview docs; use `PORT=<PORT>` to change the port")
 multitask(:"docs:preview") do
-  Bundler.with_unbundled_env { sh(*%w[./scripts/docs preview]) }
+  Bundler.with_original_env { sh(*%w[./scripts/docs preview]) }
 end
 
 bedrock_tests = FileList["test/openai/providers/bedrock*_test.rb"]
@@ -161,7 +161,7 @@ multitask(lint: [:"lint:rubocop", :"lint:rubocop_directives", :typecheck])
 
 desc("Build yard docs")
 multitask(:"build:docs") do
-  Bundler.with_unbundled_env { sh(*%w[./scripts/docs build]) }
+  Bundler.with_original_env { sh(*%w[./scripts/docs build]) }
 end
 
 desc("Build ruby gem")

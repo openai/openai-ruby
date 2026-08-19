@@ -14,8 +14,9 @@
   errors, snapshots, and CI artifacts. Clearly fake or sanitized payloads may
   remain in tests and diagnostics.
 - Review direct and transitive dependency changes in `Gemfile`, `Gemfile.lock`,
-  and `openai.gemspec`, including gem sources, locked Git revisions, native
-  extensions, and install/build scripts. Do not run unreviewed scripts.
+  `docs/Gemfile`, `docs/Gemfile.lock`, and `openai.gemspec`, including gem
+  sources, locked Git revisions, native extensions, and install/build scripts.
+  Do not run unreviewed scripts.
 - Pin GitHub Actions to full commit SHAs and preserve least-privilege job
   permissions, `permissions: {}`, and `persist-credentials: false`.
 - Protect GitHub App private keys and release credentials. Preserve protected
