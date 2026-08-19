@@ -151,6 +151,54 @@ class OpenAI::Test::BaseClientOriginTest < Minitest::Test
     assert_mock(transport)
   end
 
+  def test_preserves_equivalent_ipv6_literals_in_absolute_and_network_paths
+    transport = Minitest::Mock.new(OpenAI::HTTPClient.new)
+    scenarios = [
+      ["http://[::1]:8080/v1", "http://[0:0:0:0:0:0:0:1]:8080/v1/models"],
+      ["http://[::1]:8080/v1", "//[0:0:0:0:0:0:0:1]:8080/v1/models"],
+      ["http://[0:0:0:0:0:0:0:1]:8080/v1", "http://[::1]:8080/v1/models"],
+      ["http://[0:0:0:0:0:0:0:1]:8080/v1", "//[::1]:8080/v1/models"],
+      ["https://[2001:db8::1]/v1", "https://[2001:0DB8:0:0:0:0:0:1]:443/v1/models"],
+      ["https://[::ffff:127.0.0.1]/v1", "https://[0:0:0:0:0:ffff:7f00:1]/v1/models"]
+    ]
+    scenarios.each do |base_url, path|
+      expected_url = path.start_with?("//") ? "#{URI.parse(base_url).scheme}:#{path}" : path
+      transport.expect(:execute, successful_response) do |request|
+        assert_equal(expected_url, request.url.to_s)
+        assert_equal("Bearer fake-api-key", request.headers.fetch("authorization"))
+        true
+      end
+    end
+
+    scenarios.each do |base_url, path|
+      client = OpenAI::Client.new(api_key: "fake-api-key", base_url: base_url, http_client: transport)
+      client.request(method: :get, path: path)
+    end
+
+    assert_mock(transport)
+  end
+
+  def test_rejects_cross_origin_ipv6_addresses_ports_and_schemes
+    client = OpenAI::Client.new(
+      api_key: "fake-api-key",
+      base_url: "https://[::1]:8443/v1",
+      http_client: @transport
+    )
+    paths = [
+      "https://[::2]:8443/v1/models",
+      "//[0:0:0:0:0:0:0:2]:8443/v1/models",
+      "https://[0:0:0:0:0:0:0:1]:9443/v1/models",
+      "http://[0:0:0:0:0:0:0:1]:8443/v1/models",
+      "https://[::ffff:127.0.0.1]:8443/v1/models",
+      "https://127.0.0.1:8443/v1/models",
+      "https://localhost:8443/v1/models"
+    ]
+
+    client.stub(:auth_headers, -> (security:) { flunk("Authentication selected: #{security}") }) do
+      paths.each { assert_rejected_before_transport(client, _1) }
+    end
+  end
+
   def test_preserves_custom_ports_generated_resource_paths_and_return_types
     transport = Minitest::Mock.new(OpenAI::HTTPClient.new)
     response = OpenAI::HTTPClient::Response.new(

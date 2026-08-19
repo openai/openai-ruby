@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "ipaddr"
+
 require_relative "../logging"
 
 module OpenAI
@@ -376,6 +378,12 @@ module OpenAI
           )
           request_origin = URI.parse(url.to_s).normalize
           base_origin = URI.parse(@base_url.to_s).normalize
+          [request_origin, base_origin].each do |origin|
+            next unless origin.hostname&.include?(":")
+
+            origin.hostname = IPAddr.new(origin.hostname).to_s
+          end
+
           unless OpenAI::Internal::Util.uri_origin(request_origin) == OpenAI::Internal::Util.uri_origin(base_origin)
             raise OpenAI::Errors::Error, "Request path must resolve to the configured base URL origin"
           end
