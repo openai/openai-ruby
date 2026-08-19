@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ruby-syntax-tree/syntax_tree-rbs.git
-  revision: f94bc3060682ffbd126e4d5086ffedc89073d626
+  revision: 247832988a850b8df050cf207f652872fda49973
   branch: main
   specs:
     syntax_tree-rbs (1.0.0)
