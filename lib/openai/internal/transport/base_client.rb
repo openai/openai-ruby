@@ -15,6 +15,16 @@ module OpenAI
 
         # from whatwg fetch spec
         MAX_REDIRECTS = 20
+        REDIRECT_ENTITY_HEADERS = %w[
+          content-encoding
+          content-language
+          content-length
+          content-location
+          content-type
+          transfer-encoding
+        ]
+          .freeze
+        private_constant :REDIRECT_ENTITY_HEADERS
 
         # rubocop:disable Style/MutableConstant
         PLATFORM_HEADERS = {
@@ -164,12 +174,12 @@ module OpenAI
             # from whatwg fetch spec
             case [status, method]
             in [301 | 302, :post] | [303, _]
-              drop = %w[content-encoding content-language content-length content-location content-type]
               request = {
                 **request,
                 method: method == :head ? :head : :get,
-                headers: headers.except(*drop),
-                body: nil
+                headers: headers.reject { |name, _| REDIRECT_ENTITY_HEADERS.include?(name.to_s.downcase) },
+                body: nil,
+                redirect_body_forbidden: true
               }
             else
             end
@@ -544,6 +554,7 @@ module OpenAI
           end
 
           url, max_retries = request.fetch_values(:url, :max_retries)
+          authorized_url = url.dup
           prepared_request = request
           trusted_origin = request[:redirect_trusted_origin]
 
@@ -552,7 +563,8 @@ module OpenAI
               request.fetch(:headers),
               request[:body]
             )
-            attempt_request = request.except(:redirect_trusted_origin).merge(
+            attempt_request = request.except(:redirect_trusted_origin, :redirect_body_forbidden).merge(
+              url: authorized_url.dup,
               headers: encoded_headers,
               body: encoded_body
             )
@@ -564,17 +576,33 @@ module OpenAI
 
             prepared_url = prepared_request.fetch(:url)
             prepared_origin = OpenAI::Internal::Util.uri_origin(prepared_url)
-            if prepared_url.host.start_with?("[")
+            if prepared_url.host&.start_with?("[")
               prepared_origin = prepared_origin.sub(prepared_url.host, "[#{IPAddr.new(prepared_url.hostname)}]")
             end
 
             trusted_origin ||= prepared_origin
-            if redirect_count.positive? && !trusted_origin.casecmp?(prepared_origin)
+            authorized_origin = OpenAI::Internal::Util.uri_origin(authorized_url)
+            if authorized_url.host.start_with?("[")
+              authorized_origin = authorized_origin.sub(authorized_url.host, "[#{IPAddr.new(authorized_url.hostname)}]")
+            end
+
+            cross_origin = redirect_count.positive? && !trusted_origin.casecmp?(authorized_origin)
+            escaped_origin = redirect_count.positive? && !authorized_origin.casecmp?(prepared_origin)
+            body_forbidden = request[:redirect_body_forbidden] || cross_origin
+            if cross_origin || escaped_origin || body_forbidden
               safe_headers = prepared_request.fetch(:headers).reject do |name, _|
-                name.to_s.casecmp?("host") || OpenAI::Internal::Logging.credential_header?(name)
+                normalized_name = name.to_s.downcase
+                (cross_origin &&
+                  (normalized_name == "host" || OpenAI::Internal::Logging.credential_header?(name))) ||
+                  (body_forbidden && REDIRECT_ENTITY_HEADERS.include?(normalized_name))
               end
 
-              prepared_request = prepared_request.merge(headers: safe_headers, body: nil)
+              prepared_request = prepared_request.merge(
+                url: cross_origin || escaped_origin ? authorized_url : prepared_url,
+                method: body_forbidden ? request.fetch(:method) : prepared_request.fetch(:method),
+                headers: safe_headers,
+                body: body_forbidden ? nil : prepared_request[:body]
+              )
             end
 
             url, max_retries, timeout = prepared_request.fetch_values(:url, :max_retries, :timeout)

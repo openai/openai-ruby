@@ -341,6 +341,176 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
     end
   end
 
+  def test_keeps_converted_same_origin_redirects_bodyless_after_preparation
+    client_class = Class.new(OpenAI::Client) do
+      private def prepare_request(request, redirect_count:, retry_count:)
+        prepared = super
+        prepared.merge(
+          method: redirect_count.positive? ? :post : prepared.fetch(:method),
+          body: "fake-prepared-private-prompt"
+        )
+      end
+    end
+
+    [[:post, 301, :get], [:post, 302, :get], [:post, 303, :get], [:head, 303, :head]].each do |
+        method,
+        status,
+        next_method
+      |
+      requests = []
+      client, http_client = client_with_responses(
+        requests,
+        redirect_response(status, "https://trusted.example/v1/redirected/#{status}"),
+        successful_response,
+        client_class: client_class
+      )
+
+      response = client.request(method: method, path: "probe")
+
+      http_client.verify
+      assert_equal(true, response[:ok])
+      assert_equal([method, next_method], requests.map(&:method))
+      assert_equal("fake-prepared-private-prompt", requests.first.body)
+      assert_nil(requests.last.body)
+    end
+  end
+
+  def test_preserves_authorized_cross_origin_url_without_preparer_credentials_on_retry
+    client_class = Class.new(OpenAI::Client) do
+      private def prepare_request(request, redirect_count:, retry_count:)
+        prepared = super
+        return prepared if redirect_count.zero?
+
+        url = prepared.fetch(:url)
+        url.user = "fake-prepared-user"
+        url.password = "fake-prepared-password"
+        url.query = "#{url.query}&api_key=fake-prepared-query-key&opaque=fake-prepared-opaque-secret"
+        prepared.merge(url: url)
+      end
+    end
+
+    destination = "https://download.example/file?download=public&signature=fake-authorized-signature"
+    requests = []
+    client, http_client = client_with_responses(
+      requests,
+      redirect_response(307, destination),
+      OpenAI::HTTPClient::Response.new(status: 500, headers: {}, body: ""),
+      successful_response,
+      client_class: client_class,
+      max_retries: 1,
+      initial_retry_delay: 0,
+      max_retry_delay: 0
+    )
+
+    response = client.request(method: :get, path: "probe")
+
+    http_client.verify
+    assert_equal(true, response[:ok])
+    requests.drop(1).each do |request|
+      assert_equal(destination, request.url.to_s)
+      assert_nil(request.url.userinfo)
+      refute_includes(request.url.query, "fake-prepared-query-key")
+      refute_includes(request.url.query, "fake-prepared-opaque-secret")
+    end
+  end
+
+  def test_prevents_redirect_preparation_from_escaping_the_authorized_origin
+    client_class = Class.new(OpenAI::Client) do
+      private def prepare_request(request, redirect_count:, retry_count:)
+        prepared = super
+        return prepared if redirect_count.zero?
+
+        url = prepared.fetch(:url)
+        url.host = "escaped.example"
+        url.query = "api_key=fake-escaped-query-key"
+        prepared.merge(url: url)
+      end
+    end
+
+    ["https://download.example/file?download=public", "https://trusted.example/v1/file?download=public"].each do |
+        destination
+      |
+      requests = []
+      client, http_client = client_with_responses(
+        requests,
+        redirect_response(307, destination),
+        successful_response,
+        client_class: client_class
+      )
+
+      response = client.request(method: :get, path: "probe")
+
+      http_client.verify
+      assert_equal(true, response[:ok])
+      assert_equal(destination, requests.last.url.to_s)
+      refute_includes(requests.last.url.to_s, "fake-escaped-query-key")
+    end
+  end
+
+  def test_preserves_same_origin_redirect_url_changes_during_preparation
+    client_class = Class.new(OpenAI::Client) do
+      private def prepare_request(request, redirect_count:, retry_count:)
+        prepared = super
+        return prepared if redirect_count.zero?
+
+        url = prepared.fetch(:url)
+        url.query = "safe_provider_parameter=fake-provider-value"
+        prepared.merge(url: url)
+      end
+    end
+
+    requests = []
+    client, http_client = client_with_responses(
+      requests,
+      redirect_response(307, "https://trusted.example/v1/redirected"),
+      successful_response,
+      client_class: client_class
+    )
+
+    response = client.request(method: :get, path: "probe")
+
+    http_client.verify
+    assert_equal(true, response[:ok])
+    assert_equal("safe_provider_parameter=fake-provider-value", requests.last.url.query)
+  end
+
+  def test_removes_entity_headers_when_redirect_preparation_restores_a_forbidden_body
+    client_class = Class.new(OpenAI::Client) do
+      private def prepare_request(request, redirect_count:, retry_count:)
+        prepared = super
+        prepared.merge(
+          body: "fake-prepared-private-prompt",
+          headers: prepared.fetch(:headers).merge(
+            "Content-Length" => "28",
+            "Transfer-Encoding" => "chunked",
+            "Content-Type" => "application/octet-stream",
+            "Content-Encoding" => "gzip",
+            "Content-Language" => "en",
+            "Content-Location" => "/fake-content"
+          )
+        )
+      end
+    end
+
+    requests = []
+    client, http_client = client_with_responses(
+      requests,
+      redirect_response(301, "https://download.example/redirected"),
+      successful_response,
+      client_class: client_class
+    )
+
+    response = client.request(method: :post, path: "probe")
+
+    http_client.verify
+    assert_equal(true, response[:ok])
+    assert_nil(requests.last.body)
+    %w[content-length transfer-encoding content-type content-encoding content-language content-location]
+      .each do |header|
+        refute(requests.last.headers.keys.any? { _1.casecmp?(header) }, "#{header} remained on the bodyless redirect")
+      end
+  end
+
   def test_strips_credentials_added_during_cross_origin_redirect_preparation
     client_class = Class.new(OpenAI::Client) do
       private def prepare_request(request, redirect_count:, retry_count:)
@@ -557,6 +727,8 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
   private def body_adding_client_class
     Class.new(OpenAI::Client) do
       private def prepare_request(request, redirect_count:, retry_count:)
+        raise "internal redirect body policy reached a preparer" if request.key?(:redirect_body_forbidden)
+
         prepared = super
         prepared.merge(body: "fake-prepared-private-prompt")
       end
@@ -566,7 +738,9 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
   private def origin_rewriting_client_class
     Class.new(OpenAI::Client) do
       private def prepare_request(request, redirect_count:, retry_count:)
-        raise "internal redirect trust metadata reached a preparer" if request.key?(:redirect_trusted_origin)
+        if [:redirect_trusted_origin, :redirect_body_forbidden].any? { request.key?(_1) }
+          raise "internal redirect policy reached a preparer"
+        end
 
         prepared = super
         if redirect_count.zero?
