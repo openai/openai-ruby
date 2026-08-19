@@ -518,7 +518,16 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
         url = prepared.fetch(:url)
         url.host.replace("escaped.example")
         url.query = "api_key=fake-escaped-query-key"
-        prepared.merge(url: url, headers: prepared.fetch(:headers).merge("hOsT" => "escaped.example"))
+        prepared.merge(
+          url: url,
+          headers: prepared.fetch(:headers).merge(
+            "hOsT" => "escaped.example",
+            "Authorization" => "Bearer fake-escaped-authorization",
+            "cOoKiE" => "session=fake-escaped-cookie",
+            "X-Api-Key" => "fake-escaped-api-key",
+            "x-safe-trace" => "safe-trace-value"
+          )
+        )
       end
     end
 
@@ -545,6 +554,11 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
         assert_equal(destination, request.url.to_s)
         refute_includes(request.url.to_s, "fake-escaped-query-key")
         refute(request.headers.keys.any? { _1.casecmp?("host") }, "escaped Host header reached the redirect")
+        %w[authorization cookie x-api-key].each do |header|
+          refute(request.headers.keys.any? { _1.casecmp?(header) }, "escaped #{header} reached the redirect")
+        end
+
+        assert_equal("safe-trace-value", request.headers.fetch("x-safe-trace"))
       end
     end
   end
