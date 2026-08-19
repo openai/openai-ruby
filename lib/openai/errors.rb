@@ -371,12 +371,20 @@ module OpenAI
         fields = ["status=#{status}", "url=#{safe_url}"]
         request_id = headers&.[]("x-request-id")
         if request_id
-          classified_request_id = request_id.to_s[...512].encode(Encoding::UTF_8, invalid: :replace, undef: :replace)
-          request_id_markers = classified_request_id.gsub(/(?<=[a-z0-9])(?=[A-Z])/, " ").tr("_-", "  ")
-          ordinary_service_id = classified_request_id.match?(/\A[a-z0-9]+(?:-[a-z0-9]+)*-(?:req|trace)-[a-z0-9]+\z/i)
-          unless classified_request_id.match?(sensitive_description) ||
-              request_id_markers.match?(credential_description) ||
-              (request_id_markers.match?(content_description) && !ordinary_service_id)
+          rendered_request_id = request_id.to_s
+          safe_request_id = %r{
+            \A(?:
+              req_(?:[a-z0-9]{1,16}(?:_[a-z0-9]{1,12})?|[a-f0-9]{17,124}) |
+              req-[a-z0-9]{1,16}-[a-z0-9]{1,32} |
+              trace(?:_[a-z0-9]{1,16}|(?:\.[a-z0-9]{1,16}){1,4}) |
+              [a-z0-9]{1,16}(?:-[a-z0-9]{1,16}){0,3}-(?:req|trace)-[a-z0-9]{1,32} |
+              runtime-(?:chat|response|stream)-request |
+              [a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}
+            )\z
+          }ix
+          if rendered_request_id.bytesize <= 128 &&
+              rendered_request_id.ascii_only? &&
+              rendered_request_id.match?(safe_request_id)
             fields << "request_id=#{bounded_status_field(request_id, limit: 128)}"
           end
         end

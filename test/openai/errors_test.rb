@@ -487,20 +487,35 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
     assert_same(body, error.body)
   end
 
-  def test_request_ids_are_log_safe_without_altering_raw_headers
+  def test_request_ids_with_control_characters_are_omitted_without_altering_raw_headers
     request_id = "req_safe\nforged log entry"
     headers = {"x-request-id" => request_id}
 
     error = status_error(headers: headers)
 
-    assert_includes(error.message, "request_id=req_safe\\nforged log entry")
+    refute_includes(error.message, "request_id=")
     refute_includes(error.message, "\n")
     assert_same(request_id, error.request_id)
     assert_same(headers, error.headers)
   end
 
   def test_sensitive_request_ids_are_omitted_without_altering_raw_headers
+    slack_credential = ["xoxb", "123456789012", "123456789012", "fakeSlackCredential"].join("-")
     request_ids = [
+      "ghp_abcdefghijklmnopqrstuvwxyz0123456789",
+      "github_pat_11fakeToken_abcdefghijklmnopqrstuvwxyz",
+      slack_credential,
+      "opaqueprovidercredential1234567890",
+      "req_ghp_abcdefghijklmnopqrstuvwxyz0123456789",
+      "req_github_pat_11fakeToken_abcdefghijklmnopqrstuvwxyz",
+      "req_#{slack_credential}",
+      "trace.#{slack_credential}",
+      "req_AKIAIOSFODNN7EXAMPLE",
+      "req_sk-proj-fakeprovidercredential123",
+      "trace.eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJmYWtlIn0.fakesignature",
+      "#{slack_credential}-request",
+      "req_opaqueprovidercredential1234567890",
+      "opaqueprovidercredential1234567890-request",
       "access_token=fake-request-access-token",
       "Bearer fake-request-bearer-token",
       "sk-proj-fake-request-api-key",
@@ -553,14 +568,18 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
   def test_ordinary_request_id_formats_remain_visible
     request_ids = [
       "req_1234567890abcdef",
+      "req_signed_url",
       "req-prod-1234567890",
       "4c37c3c3-e770-4b3d-8d2e-b5e0e6de6e03",
+      "trace_1",
       "trace.1234abcd.5678efgh",
       "email-delivery-req-123",
       "customer-support-req-123",
       "data-center-req-123",
       "response-service-trace-123",
-      "input-validator-req-123"
+      "input-validator-req-123",
+      "runtime-chat-request",
+      "runtime-response-request"
     ]
 
     request_ids.each do |request_id|
@@ -571,7 +590,7 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
     end
   end
 
-  def test_non_utf8_request_ids_remain_log_safe_without_altering_raw_headers
+  def test_non_utf8_request_ids_are_omitted_without_altering_raw_headers
     request_ids = ["req_\xFF".b, "req_\xFF".dup.force_encoding(Encoding::UTF_8)]
 
     request_ids.each do |request_id|
@@ -580,23 +599,27 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
       error = status_error(headers: headers)
 
       assert_instance_of(OpenAI::Errors::BadRequestError, error)
-      assert_includes(error.message, "request_id=req_\\xFF")
+      refute_includes(error.message, "request_id=")
       assert_same(request_id, error.request_id)
       assert_same(headers, error.headers)
     end
   end
 
-  def test_request_ids_are_bounded_without_altering_raw_headers
-    request_id = "req_" + ("😀" * 600)
-    headers = {"x-request-id" => request_id}
+  def test_request_ids_require_a_bounded_ascii_identifier_without_altering_raw_headers
+    allowed_request_id = "req_" + ("a" * 124)
+    allowed_error = status_error(headers: {"x-request-id" => allowed_request_id})
 
-    error = status_error(headers: headers)
-    rendered = error.message.split("request_id=", 2).last
+    assert_includes(allowed_error.message, "request_id=#{allowed_request_id}")
+    assert_same(allowed_request_id, allowed_error.request_id)
 
-    assert_operator(rendered.bytesize, :<=, 131)
-    assert(rendered.end_with?("..."))
-    assert_same(request_id, error.request_id)
-    assert_same(headers, error.headers)
+    ["req_" + ("a" * 125), "req_" + ("😀" * 600)].each do |request_id|
+      headers = {"x-request-id" => request_id}
+      error = status_error(headers: headers)
+
+      refute_includes(error.message, "request_id=")
+      assert_same(request_id, error.request_id)
+      assert_same(headers, error.headers)
+    end
   end
 
   def test_existing_top_level_and_explicit_messages_remain_unchanged
