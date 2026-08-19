@@ -16,6 +16,7 @@ class OpenAI::Test::MultipartContentTypeTest < Minitest::Test
     inputs.each do |input_name, input_factory|
       [:files, :upload_parts].each do |endpoint|
         payloads.each do |payload|
+          input = nil
           input = input_factory.call
           content_type = +"text/plain"
           file = OpenAI::FilePart.new(input, filename: "safe.txt", content_type: content_type)
@@ -74,6 +75,7 @@ class OpenAI::Test::MultipartContentTypeTest < Minitest::Test
     inputs.each do |input_name, (input_factory, expected_content_type)|
       [:files, :upload_parts].each do |endpoint|
         [false, true].each do |wrapped|
+          input = nil
           input = input_factory.call
           file = wrapped ? OpenAI::FilePart.new(input) : input
           body = multipart_upload_body(file, endpoint: endpoint)
