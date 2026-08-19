@@ -323,6 +323,13 @@ module OpenAI
         safe_description = %r{
           \A(?:
             [\s'"“”‘’().,:;!?-]+ | \d+ |
+            \b(?:invalid_(?:request|client|grant|scope|token|subject_token|prompt|
+                    image(?:_format|_url|_mode)?|base64_image)|
+                unauthorized_client|unsupported_(?:grant_type|response_type|image_media_type)|
+                access_denied|insufficient_scope|server_error|temporarily_unavailable|
+                rate_limit_exceeded|data_residency_mismatch|bio_policy|vector_store_timeout|
+                image_(?:too_(?:large|small)|parse_error|content_policy_violation|
+                    file_(?:too_large|not_found))|empty_image_file|failed_to_download_image)\b |
             \b(?:a|an|the|this|your|for|of|to|from|in|on|with|by|and|or|has|have|is|was|were|
                 be|not|no|does|do|could|cannot|must|should|when|it|invalid|expired|missing|
                 required|malformed|unsupported|incorrect|unknown|revoked|disabled|empty|blank|
@@ -335,7 +342,9 @@ module OpenAI
                 input|response|output|message|content|data|url|selected|model|processed|role|
                 user|value|field|header|exist|match|exceeds|exceed|exceeded|context|contains|
                 contain|many|parsed|as|json|truncated|because|valid|but|permission|resource|
-                scopes|scope)\b
+                scopes|scope|nested|oauth|error|explanation|top|level|failure|forged|log|entry|
+                rate|reached|try|later|you|current|quota|plan|billing|details|found|internal|
+                server|service|temporarily|http|status)\b
           )+\z
         }ix
         upstream_message = [
@@ -348,20 +357,26 @@ module OpenAI
 
           classified_candidate = candidate[...512].encode(Encoding::UTF_8, invalid: :replace, undef: :replace)
           next false if classified_candidate.strip.empty? || classified_candidate.match?(sensitive_description)
+          next false unless classified_candidate.match?(safe_description)
 
           classified_markers = classified_candidate.gsub(/(?<=[a-z0-9])(?=[A-Z])/, " ").tr("_-", "  ")
           credential = classified_markers.match?(credential_description)
           content = classified_markers.match?(content_description)
-          next false if (credential || content) && !classified_candidate.match?(safe_description)
-          if credential && classified_candidate.match?(/\d/)
-            first_quantity = classified_markers.index(/\d/)
-            first_credential = classified_markers.index(credential_description)
-            only_quantity_tokens = classified_markers.scan(credential_description).all? { _1.match?(/\Atokens?\z/i) }
-            safe_limit = content &&
-              first_credential > first_quantity &&
-              only_quantity_tokens &&
-              classified_markers.match?(/\b\d+\s+(?:(?:input|output)\s+)?tokens?\b/i)
-            next false unless safe_limit
+          if classified_candidate.match?(/\d/)
+            if credential
+              first_quantity = classified_markers.index(/\d/)
+              first_credential = classified_markers.index(credential_description)
+              only_quantity_tokens = classified_markers.scan(credential_description).all? { _1.match?(/\Atokens?\z/i) }
+              safe_limit = content &&
+                first_credential > first_quantity &&
+                only_quantity_tokens &&
+                classified_markers.match?(/\b\d+\s+(?:(?:input|output)\s+)?tokens?\b/i)
+              next false unless safe_limit
+            else
+              safe_status_code = classified_candidate.match?(/\A(?:http\s+)?(?:status|error)\s*:?\s*[1-5]\d{2}\z/i)
+              safe_named_code = classified_candidate.match?(/\A[a-z]+(?:_[a-z0-9]+){1,4}\z/i)
+              next false unless safe_status_code || safe_named_code
+            end
           end
 
           true

@@ -122,6 +122,29 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
       "Nested OAuth provider error" => {error: {error_description: "Nested OAuth provider error"}},
       "OAuth provider rejected the request" => {error_description: "OAuth provider rejected the request"},
       "invalid_client" => {error: "invalid_client"},
+      "invalid_grant" => {error: "invalid_grant"},
+      "invalid_token" => {error: "invalid_token"},
+      "invalid_subject_token" => {error: "invalid_subject_token"},
+      "unauthorized_client" => {error: "unauthorized_client"},
+      "unsupported_grant_type" => {error: "unsupported_grant_type"},
+      "access_denied" => {error: "access_denied"},
+      "insufficient_scope" => {error: "insufficient_scope"},
+      "server_error" => {error: "server_error"},
+      "temporarily_unavailable" => {error: "temporarily_unavailable"},
+      "rate_limit_exceeded" => {error: "rate_limit_exceeded"},
+      "invalid_prompt" => {error: "invalid_prompt"},
+      "invalid_base64_image" => {error: "invalid_base64_image"},
+      "Rate limit reached. Please try again later." => {
+        error: {message: "Rate limit reached. Please try again later."}
+      },
+      "You exceeded your current quota, please check your plan and billing details." => {
+        error: {message: "You exceeded your current quota, please check your plan and billing details."}
+      },
+      "The requested model was not found" => {error: {message: "The requested model was not found"}},
+      "Internal server error" => {error: {message: "Internal server error"}},
+      "Service temporarily unavailable" => {error: {message: "Service temporarily unavailable"}},
+      "Error 500" => {error: {message: "Error 500"}},
+      "HTTP status: 429" => {error: {message: "HTTP status: 429"}},
       "invalid bearer token" => {error: {message: "invalid bearer token"}},
       "Invalid access token" => {error: {message: "Invalid access token"}},
       "Invalid token 'expired'" => {error: {message: "Invalid token 'expired'"}},
@@ -357,6 +380,44 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
     end
   end
 
+  def test_provider_messages_reject_unclassified_credential_shapes
+    github_credential = "ghp_" + ("a" * 36)
+    github_pat = ["github", "pat", "11fakeToken", "abcdefghijklmnopqrstuvwxyz"].join("_")
+    slack_credential = ["xoxb", "123456789012", "123456789012", "fakeSlackCredential"].join("-")
+    descriptions = [
+      "Authentication failed: #{github_credential}",
+      "Authentication failed: ghp_fakecredential",
+      "Authentication failed: xoxb_fakecredential",
+      "Provider rejected #{github_credential}",
+      "Authentication failed: #{github_pat}",
+      "Service rejected #{slack_credential}",
+      "Validation failed: opaqueprovidercredential1234567890",
+      "12345678901234567890",
+      "4111111111111111",
+      "123456",
+      "Authentication failed: 12345678901234567890",
+      "Provider rejected: 12345678901234567890",
+      "User ID 12345678901234567890",
+      "Account 1234567890123456",
+      "Request 12345678901234567890",
+      "Provider prefix #{github_credential} suffix",
+      "Provider rejected req_#{github_credential}",
+      "Provider failure \xFF#{github_credential}".b,
+      "Authentication failed:\n#{slack_credential}"
+    ]
+
+    descriptions.each do |description|
+      body = {error: {message: description}}
+      error = status_error(body: body)
+
+      assert_instance_of(OpenAI::Errors::BadRequestError, error)
+      assert_includes(error.message, "status=400")
+      refute_includes(error.message, "message=")
+      assert_same(body, error.body)
+      assert_same(description, error.body.dig(:error, :message))
+    end
+  end
+
   def test_provider_messages_do_not_disclose_space_delimited_credential_values
     descriptions = [
       "Invalid API key opaqueprovidercredential123",
@@ -452,7 +513,7 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
   end
 
   def test_upstream_error_descriptions_are_bounded_and_log_safe
-    description = "Provider failure\nforged log entry " + ("x" * 600) + " private trailing prompt"
+    description = "Provider failure\nforged log entry".ljust(512) + " private trailing prompt"
 
     error = status_error(body: {error: {message: description}})
 
@@ -464,7 +525,7 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
   end
 
   def test_upstream_error_descriptions_remain_byte_bounded_after_escaping
-    descriptions = ["😀" * 600, "x\n" * 600, "\\" * 600]
+    descriptions = ["failure " * 80, "failure\n" * 80, "'error' " * 80]
 
     descriptions.each do |description|
       error = status_error(body: {error: {message: description}})
@@ -473,6 +534,17 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
       assert_operator(rendered.bytesize, :<=, 515)
       assert(rendered.end_with?("..."))
       refute_includes(rendered, "\n")
+      assert_same(description, error.body.dig(:error, :message))
+    end
+  end
+
+  def test_non_diagnostic_provider_payloads_are_omitted_without_changing_raw_messages
+    ["😀" * 600, "\\" * 600].each do |description|
+      body = {error: {message: description}}
+      error = status_error(body: body)
+
+      refute_includes(error.message, "message=")
+      assert_same(body, error.body)
       assert_same(description, error.body.dig(:error, :message))
     end
   end
