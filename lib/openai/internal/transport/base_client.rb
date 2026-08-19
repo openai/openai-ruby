@@ -140,6 +140,11 @@ module OpenAI
               )
             end
 
+            unless %w[http https].include?(location.scheme) && !location.host.to_s.empty?
+              message = "Server responded with status #{status} but no valid location header."
+              raise OpenAI::Errors::APIConnectionError.new(url: url, message: message)
+            end
+
             request = {**request, url: location}
 
             case [url.scheme, location.scheme]
@@ -552,6 +557,28 @@ module OpenAI
               redirect_count: redirect_count,
               retry_count: retry_count
             )
+
+            if redirect_count.positive?
+              prepared_url = prepared_request.fetch(:url)
+              configured_origin = OpenAI::Internal::Util.uri_origin(@base_url)
+              prepared_origin = OpenAI::Internal::Util.uri_origin(prepared_url)
+              if @base_url.host.start_with?("[")
+                configured_origin = configured_origin.sub(@base_url.host, "[#{IPAddr.new(@base_url.hostname)}]")
+              end
+
+              if prepared_url.host.start_with?("[")
+                prepared_origin = prepared_origin.sub(prepared_url.host, "[#{IPAddr.new(prepared_url.hostname)}]")
+              end
+
+              unless configured_origin.casecmp?(prepared_origin)
+                safe_headers = prepared_request.fetch(:headers).reject do |name, _|
+                  name.to_s.casecmp?("host") || OpenAI::Internal::Logging.credential_header?(name)
+                end
+
+                prepared_request = prepared_request.merge(headers: safe_headers, body: nil)
+              end
+            end
+
             url, max_retries, timeout = prepared_request.fetch_values(:url, :max_retries, :timeout)
             input = OpenAI::HTTPClient::Request.new(
               method: prepared_request.fetch(:method),

@@ -256,6 +256,77 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
     end
   end
 
+  def test_prevents_request_preparation_from_restoring_body_on_cross_origin_get_redirects
+    [301, 302, 303].each do |status|
+      requests = []
+      client, http_client = client_with_responses(
+        requests,
+        redirect_response(status, "https://example.com/redirected/#{status}"),
+        successful_response,
+        client_class: body_adding_client_class
+      )
+
+      response = client.request(method: :post, path: "probe")
+
+      http_client.verify
+      assert_equal(true, response[:ok])
+      assert_equal([:post, :get], requests.map(&:method))
+      assert_equal("fake-prepared-private-prompt", requests.first.body)
+      assert_nil(requests.last.body)
+    end
+  end
+
+  def test_strips_credentials_added_during_cross_origin_redirect_preparation
+    client_class = Class.new(OpenAI::Client) do
+      private def prepare_request(request, redirect_count:, retry_count:)
+        prepared = super
+        prepared.merge(
+          headers: prepared.fetch(:headers).merge(
+            "Authorization" => "Bearer fake-prepared-authorization",
+            "Cookie" => "session=fake-prepared-cookie",
+            "X-Api-Key" => "fake-prepared-api-key",
+            "x-safe-trace" => "safe-trace-value"
+          )
+        )
+      end
+    end
+
+    requests = []
+    client, http_client = client_with_responses(
+      requests,
+      redirect_response(307, "https://example.com/redirected"),
+      successful_response,
+      client_class: client_class
+    )
+
+    response = client.request(method: :get, path: "probe")
+
+    http_client.verify
+    assert_equal(true, response[:ok])
+    assert_equal("Bearer fake-prepared-authorization", requests.first.headers.fetch("Authorization"))
+    %w[authorization cookie x-api-key].each do |header|
+      refute(requests.last.headers.keys.any? { _1.casecmp?(header) }, "#{header} reached the redirect")
+    end
+
+    assert_equal("safe-trace-value", requests.last.headers.fetch("x-safe-trace"))
+  end
+
+  def test_rejects_hostless_and_non_http_redirect_targets
+    ["mailto:fake-user@example.com", "ftp://example.com/redirected", "file:///tmp/fake-private-file"].each do |target|
+      requests = []
+      client, http_client = client_with_responses(requests, redirect_response(307, target))
+
+      error = assert_raises(OpenAI::Errors::APIConnectionError) do
+        client.request(method: :post, path: "probe", body: {prompt: "fake-private-prompt"})
+      end
+
+      http_client.verify
+      assert_equal("https://trusted.example/v1/probe", error.url.to_s)
+      assert_equal("Server responded with status 307 but no valid location header.", error.message)
+      assert_equal(1, requests.length)
+    end
+  end
+
   def test_rejects_cross_origin_redirect_when_only_the_https_port_changes
     destination = "https://trusted.example:444/v1/redirected"
     requests = []
