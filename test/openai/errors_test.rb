@@ -112,7 +112,11 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
       assert_includes(error.message, "url=https://example.com/v1/responses")
       refute_includes(error.message, "private")
       refute_includes(error.message, "fake-")
-      assert_same(body, error.body)
+      if body.nil?
+        assert_nil(error.body)
+      else
+        assert_same(body, error.body)
+      end
     end
   end
 
