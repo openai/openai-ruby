@@ -234,7 +234,10 @@ class OpenAI::Test::FilePartTest < Minitest::Test
       content_types = [
         "text/plain; name=before#{byte.chr}after",
         "text/plain; name=\"before#{byte.chr}after\"",
-        "text/plain; name=\"before\\#{byte.chr}after\""
+        "text/plain; name=\"before\\#{byte.chr}after\"",
+        "text/plain;#{byte.chr}",
+        "text/plain;;#{byte.chr}charset=UTF-8",
+        "text/plain; ;#{byte.chr};charset=UTF-8"
       ]
 
       content_types.each do |content_type|
@@ -256,7 +259,6 @@ class OpenAI::Test::FilePartTest < Minitest::Test
       "text /plain",
       "text/plain header",
       "text/plain: header",
-      "text/plain;",
       "text/plain; charset",
       "text/plain; =UTF-8",
       "text/plain; charset=",
@@ -298,6 +300,24 @@ class OpenAI::Test::FilePartTest < Minitest::Test
     end
 
     assert_nil(OpenAI::FilePart.new("contents").content_type)
+  end
+
+  def test_content_type_preserves_empty_parameter_slots
+    valid = [
+      "text/plain;",
+      "text/plain;;charset=UTF-8",
+      "text/plain; ; charset=UTF-8; ",
+      "text/plain;\t;\tcharset=UTF-8;\t;",
+      "text/plain; charset=UTF-8;;format=flowed;",
+      "text/plain; ; title=\"report; final.txt\"; ;"
+    ]
+
+    valid.each do |content_type|
+      file = OpenAI::FilePart.new("contents", content_type: content_type)
+
+      assert_equal(content_type, file.content_type)
+      assert_equal(content_type, file.with_content(Pathname("replacement")).content_type)
+    end
   end
 
   def test_content_type_revalidates_metadata_mutated_after_construction

@@ -11,7 +11,12 @@ class OpenAI::Test::MultipartContentTypeTest < Minitest::Test
       "pathless IO" => -> { pathless_io },
       "Pathname" => -> { Pathname(__FILE__) }
     }
-    payloads = ["text/plain\r\nX-Injected: yes", "text/plain\r\n\r\ninjected-body"]
+    payloads = [
+      "text/plain\r\nX-Injected: yes",
+      "text/plain\r\n\r\ninjected-body",
+      "text/plain;\r\nX-Injected: yes",
+      "text/plain;;charset=UTF-8\r\n\r\ninjected-body"
+    ]
 
     inputs.each do |input_name, input_factory|
       [:files, :upload_parts].each do |endpoint|
@@ -97,6 +102,23 @@ class OpenAI::Test::MultipartContentTypeTest < Minitest::Test
         ensure
           input&.close if input.is_a?(IO) && !input.closed?
         end
+      end
+    end
+  end
+
+  def test_direct_uploads_and_upload_parts_preserve_empty_content_type_parameter_slots
+    content_types = ["text/plain;", "text/plain;;charset=UTF-8", "text/plain; ;charset=UTF-8; "]
+
+    content_types.each do |content_type|
+      [:files, :upload_parts].each do |endpoint|
+        file = OpenAI::FilePart.new(StringIO.new("contents"), content_type: content_type)
+        body = multipart_upload_body(file, endpoint: endpoint)
+        _headers, stream = OpenAI::Internal::Util.encode_content(
+          {"content-type" => "multipart/form-data"},
+          body
+        )
+
+        assert_includes(stream.to_a.join, "Content-Type: #{content_type}\r\n\r\ncontents")
       end
     end
   end

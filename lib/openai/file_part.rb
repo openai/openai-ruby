@@ -2,7 +2,7 @@
 
 module OpenAI
   class FilePart
-    # HTTP media types contain ASCII tokens and optional token or quoted-string parameters.
+    # HTTP media types contain ASCII tokens and possibly empty parameter slots.
     # Quoted values may contain horizontal whitespace and non-ASCII header bytes, but
     # never CR, LF, NUL, other forbidden control bytes, or an unescaped quote.
     #
@@ -15,13 +15,15 @@ module OpenAI
       [!#$%&'*+\-.^_`|~0-9A-Za-z]+
       (?:
         [\x20\t]*;[\x20\t]*
-        [!#$%&'*+\-.^_`|~0-9A-Za-z]+
-        [\x20\t]*=[\x20\t]*
         (?:
           [!#$%&'*+\-.^_`|~0-9A-Za-z]+
-          |
-          "(?:[\x20\t\x21\x23-\x5B\x5D-\x7E\x80-\xFF]|\\[\x20\t\x21-\x7E\x80-\xFF])*"
-        )
+          [\x20\t]*=[\x20\t]*
+          (?:
+            [!#$%&'*+\-.^_`|~0-9A-Za-z]+
+            |
+            "(?:[\x20\t\x21\x23-\x5B\x5D-\x7E\x80-\xFF]|\\[\x20\t\x21-\x7E\x80-\xFF])*"
+          )
+        )?
       )*
       [\x20\t]*
       \z
