@@ -19,7 +19,7 @@ group :development, :test do
   gem "async-websocket"
   gem "aws-sdk-core", "~> 3"
   gem "cgi"
-  gem "minitest", "~> 5.27"
+  gem "minitest", "~> 6.0"
   gem "minitest-hooks"
   gem "minitest-proveit"
   gem "sorbet-runtime"
