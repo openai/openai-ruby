@@ -423,7 +423,7 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
         url = prepared.fetch(:url)
         url.host = "escaped.example"
         url.query = "api_key=fake-escaped-query-key"
-        prepared.merge(url: url)
+        prepared.merge(url: url, headers: prepared.fetch(:headers).merge("hOsT" => "escaped.example"))
       end
     end
 
@@ -434,16 +434,23 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
       client, http_client = client_with_responses(
         requests,
         redirect_response(307, destination),
+        OpenAI::HTTPClient::Response.new(status: 500, headers: {}, body: ""),
         successful_response,
-        client_class: client_class
+        client_class: client_class,
+        max_retries: 1,
+        initial_retry_delay: 0,
+        max_retry_delay: 0
       )
 
       response = client.request(method: :get, path: "probe")
 
       http_client.verify
       assert_equal(true, response[:ok])
-      assert_equal(destination, requests.last.url.to_s)
-      refute_includes(requests.last.url.to_s, "fake-escaped-query-key")
+      requests.drop(1).each do |request|
+        assert_equal(destination, request.url.to_s)
+        refute_includes(request.url.to_s, "fake-escaped-query-key")
+        refute(request.headers.keys.any? { _1.casecmp?("host") }, "escaped Host header reached the redirect")
+      end
     end
   end
 

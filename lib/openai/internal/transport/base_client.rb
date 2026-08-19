@@ -588,17 +588,18 @@ module OpenAI
 
             cross_origin = redirect_count.positive? && !trusted_origin.casecmp?(authorized_origin)
             escaped_origin = redirect_count.positive? && !authorized_origin.casecmp?(prepared_origin)
+            restore_authorized_url = cross_origin || escaped_origin
             body_forbidden = request[:redirect_body_forbidden] || cross_origin
-            if cross_origin || escaped_origin || body_forbidden
+            if restore_authorized_url || body_forbidden
               safe_headers = prepared_request.fetch(:headers).reject do |name, _|
                 normalized_name = name.to_s.downcase
-                (cross_origin &&
-                  (normalized_name == "host" || OpenAI::Internal::Logging.credential_header?(name))) ||
+                (restore_authorized_url && normalized_name == "host") ||
+                  (cross_origin && OpenAI::Internal::Logging.credential_header?(name)) ||
                   (body_forbidden && REDIRECT_ENTITY_HEADERS.include?(normalized_name))
               end
 
               prepared_request = prepared_request.merge(
-                url: cross_origin || escaped_origin ? authorized_url : prepared_url,
+                url: restore_authorized_url ? authorized_url : prepared_url,
                 method: body_forbidden ? request.fetch(:method) : prepared_request.fetch(:method),
                 headers: safe_headers,
                 body: body_forbidden ? nil : prepared_request[:body]
