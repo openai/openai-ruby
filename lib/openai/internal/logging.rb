@@ -338,6 +338,7 @@ module OpenAI
           uri = url.dup
           uri.user = nil
           uri.password = nil
+          uri.fragment = nil
           return uri if uri.query.nil?
 
           uri.query = sanitized_query(uri.query)
