@@ -58,7 +58,7 @@ module OpenAI
         end
 
         def append_bytes(bytes, event_id: nil)
-          append(audio: Base64.strict_encode64(bytes), event_id: event_id)
+          append(audio: [bytes].pack("m0"), event_id: event_id)
         end
 
         def commit(event_id: nil)
