@@ -75,7 +75,7 @@ Gemspec/RequireMFA:
 Gemspec/DeprecatedAttributeAssignment:
   Enabled: true
 
-# Preserve the safety cops already enforced by RuboCop 1.81.7.
+# Preserve existing safety cops and explicitly enable newly reviewed checks.
 # Future pending cops remain opt-in.
 Lint/AmbiguousAssignment:
   Enabled: true
@@ -91,7 +91,11 @@ Lint/ConstantReassignment:
   Enabled: true
 Lint/CopDirectiveSyntax:
   Enabled: true
+Lint/DataDefineOverride:
+  Enabled: true
 Lint/DeprecatedConstants:
+  Enabled: true
+Lint/DeprecatedReference:
   Enabled: true
 Lint/DuplicateBranch:
   Enabled: true
@@ -123,6 +127,8 @@ Lint/LambdaWithoutLiteralBlock:
 Lint/LiteralAssignmentInCondition:
   Enabled: true
 Lint/MixedCaseRange:
+  Enabled: true
+Lint/NameTypo:
   Enabled: true
 Lint/NoReturnInBeginEndBlocks:
   Enabled: true
@@ -165,6 +171,8 @@ Lint/TripleQuotes:
 Lint/UnescapedBracketInRegexp:
   Enabled: true
 Lint/UnexpectedBlockArity:
+  Enabled: true
+Lint/UnreachablePatternBranch:
   Enabled: true
 Lint/UnmodifiedReduceAccumulator:
   Enabled: true
