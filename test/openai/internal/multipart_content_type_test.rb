@@ -3,6 +3,17 @@
 require_relative "../test_helper"
 
 class OpenAI::Test::MultipartContentTypeTest < Minitest::Test
+  class OverriddenContentTypeFile < OpenAI::FilePart
+    def initialize(content, effective_content_type:)
+      @effective_content_type = effective_content_type
+      super(content, content_type: "text/plain")
+    end
+
+    def content_type
+      @effective_content_type
+    end
+  end
+
   def test_direct_uploads_and_upload_parts_reject_mutated_mime_header_injection
     inputs = {
       "String" => -> { "contents" },
@@ -42,6 +53,57 @@ class OpenAI::Test::MultipartContentTypeTest < Minitest::Test
         ensure
           input&.close if input.is_a?(IO) && !input.closed?
         end
+      end
+    end
+  end
+
+  def test_direct_uploads_and_upload_parts_reject_overridden_mime_header_injection
+    content_types = [
+      "text/plain\r\nX-Injected: yes",
+      "text/plain\r\n\r\ninjected-body",
+      "text/plain;\r\nX-Injected: yes"
+    ]
+
+    content_types.each do |content_type|
+      [:files, :upload_parts].each do |endpoint|
+        file = OverriddenContentTypeFile.new(
+          StringIO.new("contents"),
+          effective_content_type: content_type
+        )
+        chunks = []
+
+        assert_raises(ArgumentError, "#{endpoint}: #{content_type.inspect}") do
+          body = multipart_upload_body(file, endpoint: endpoint)
+          _headers, stream = OpenAI::Internal::Util.encode_content(
+            {"content-type" => "multipart/form-data"},
+            body
+          )
+          stream.each { chunks << _1 }
+        end
+
+        refute_includes(chunks.join, "\r\nX-Injected:")
+        refute_includes(chunks.join, "\r\n\r\ninjected-body")
+      end
+    end
+  end
+
+  def test_direct_uploads_and_upload_parts_preserve_valid_overridden_content_types
+    content_types = ["text/plain; charset=UTF-8", "text/plain;;charset=UTF-8", nil]
+
+    content_types.each do |content_type|
+      [:files, :upload_parts].each do |endpoint|
+        file = OverriddenContentTypeFile.new(
+          StringIO.new("contents"),
+          effective_content_type: content_type
+        )
+        body = multipart_upload_body(file, endpoint: endpoint)
+        _headers, stream = OpenAI::Internal::Util.encode_content(
+          {"content-type" => "multipart/form-data"},
+          body
+        )
+        effective = content_type || "application/octet-stream"
+
+        assert_includes(stream.to_a.join, "Content-Type: #{effective}\r\n\r\ncontents")
       end
     end
   end

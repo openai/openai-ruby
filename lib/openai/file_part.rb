@@ -30,16 +30,26 @@ module OpenAI
     }nx
     private_constant :MEDIA_TYPE
 
+    # Validate an effective media type before it is written to multipart headers.
+    #
+    # @api private
+    # @param content_type [String, nil]
+    # @return [String, nil]
+    # @raise [ArgumentError] if the content type is not a valid MIME media type
+    def self.validate_content_type(content_type)
+      return if content_type.nil?
+      return content_type if content_type.is_a?(String) && MEDIA_TYPE.match?(content_type.b)
+
+      raise ArgumentError, "`content_type` must be a valid MIME media type"
+    end
+
     # @return [Pathname, StringIO, IO, String]
     attr_reader :content
 
     # @return [String, nil]
     # @raise [ArgumentError] if the content type is not a valid MIME media type
     def content_type
-      return if @content_type.nil?
-      return @content_type if @content_type.is_a?(String) && MEDIA_TYPE.match?(@content_type.b)
-
-      raise ArgumentError, "`content_type` must be a valid MIME media type"
+      OpenAI::FilePart.validate_content_type(@content_type)
     end
 
     # @return [String, nil]
@@ -98,10 +108,7 @@ module OpenAI
     # @param content_type [String, nil]
     # @raise [ArgumentError] if the content type is not a valid MIME media type
     def initialize(content, filename: nil, content_type: nil)
-      unless content_type.nil? || (content_type.is_a?(String) && MEDIA_TYPE.match?(content_type.b))
-        raise ArgumentError, "`content_type` must be a valid MIME media type"
-      end
-
+      OpenAI::FilePart.validate_content_type(content_type)
       @content_type = content_type
       @filename = case [filename, (@content = content)]
       in [String | Pathname, _]
