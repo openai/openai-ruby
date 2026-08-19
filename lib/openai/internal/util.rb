@@ -498,7 +498,7 @@ module OpenAI
               y,
               val: val.content,
               closing: closing,
-              content_type: val.content_type
+              content_type: OpenAI::FilePart.validate_content_type(val.content_type)
             )
           in Pathname
             y << format(content_line, content_type || "application/octet-stream")

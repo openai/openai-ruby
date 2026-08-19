@@ -2,6 +2,11 @@
 
 module OpenAI
   class FilePart
+    # @api private
+    sig { params(content_type: T.nilable(String)).returns(T.nilable(String)) }
+    def self.validate_content_type(content_type)
+    end
+
     sig { returns(T.any(Pathname, StringIO, IO, String)) }
     attr_reader :content
 
