@@ -341,6 +341,64 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
     end
   end
 
+  def test_converts_prepared_post_redirects_using_dispatched_method_across_retries
+    client_class = Class.new(OpenAI::Client) do
+      private def prepare_request(request, redirect_count:, retry_count:)
+        super.merge(method: :post, body: "fake-prepared-private-prompt")
+      end
+    end
+
+    [301, 302, 303].each do |status|
+      %w[trusted.example download.example].each do |hostname|
+        requests = []
+        client, http_client = client_with_responses(
+          requests,
+          OpenAI::HTTPClient::Response.new(status: 500, headers: {}, body: ""),
+          redirect_response(status, "https://#{hostname}/redirected/#{status}"),
+          OpenAI::HTTPClient::Response.new(status: 500, headers: {}, body: ""),
+          successful_response,
+          client_class: client_class,
+          max_retries: 2,
+          initial_retry_delay: 0,
+          max_retry_delay: 0
+        )
+
+        response = client.request(method: :get, path: "probe")
+
+        http_client.verify
+        assert_equal(true, response[:ok])
+        assert_equal([:post, :post, :get, :get], requests.map(&:method))
+        assert_equal(
+          ["fake-prepared-private-prompt", "fake-prepared-private-prompt", nil, nil],
+          requests.map(&:body)
+        )
+      end
+    end
+  end
+
+  def test_preserves_dispatched_head_method_on_303_redirect
+    client_class = Class.new(OpenAI::Client) do
+      private def prepare_request(request, redirect_count:, retry_count:)
+        super.merge(method: :head, body: "fake-prepared-private-prompt")
+      end
+    end
+
+    requests = []
+    client, http_client = client_with_responses(
+      requests,
+      redirect_response(303, "https://trusted.example/v1/redirected"),
+      successful_response,
+      client_class: client_class
+    )
+
+    response = client.request(method: :get, path: "probe")
+
+    http_client.verify
+    assert_equal(true, response[:ok])
+    assert_equal([:head, :head], requests.map(&:method))
+    assert_nil(requests.last.body)
+  end
+
   def test_keeps_converted_same_origin_redirects_bodyless_after_preparation
     client_class = Class.new(OpenAI::Client) do
       private def prepare_request(request, redirect_count:, retry_count:)

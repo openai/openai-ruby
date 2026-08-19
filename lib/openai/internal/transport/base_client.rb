@@ -662,9 +662,10 @@ module OpenAI
             self.class.reap_connection!(status, stream: stream)
 
             redirect_body = request[:body]
-            redirect_body = prepared_request[:body] if redirect_body.nil? || prepared_request[:body].nil?
+            redirect_body = input.body if redirect_body.nil? || input.body.nil?
             redirect_source = request.merge(
-              url: prepared_request.fetch(:url),
+              method: input.method,
+              url: input.url,
               body: redirect_body
             )
             redirected_request = self.class.follow_redirect(
