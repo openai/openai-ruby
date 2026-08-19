@@ -8,7 +8,8 @@ group :development do
   gem "rake"
   gem "rbs"
   gem "rubocop"
-  gem "sorbet"
+  # Later Sorbet requires T::Module, which older customer typecheckers cannot parse.
+  gem "sorbet", "< 0.6.12760"
   gem "steep"
   gem "syntax_tree"
   gem "syntax_tree-rbs", github: "ruby-syntax-tree/syntax_tree-rbs", branch: "main"
