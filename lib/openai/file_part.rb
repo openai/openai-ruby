@@ -70,7 +70,7 @@ module OpenAI
       in [nil, Pathname]
         content.basename.to_path
       in [nil, IO]
-        content.to_path
+        content.to_path&.then { ::File.basename(_1) }
       else
         filename
       end

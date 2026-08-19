@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../test_helper"
+require "tempfile"
 
 class OpenAI::Test::UtilDataHandlingTest < Minitest::Test
   def test_left_map
@@ -272,6 +273,22 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
 
     assert_includes(body, "filename=\"a \\\"b\\\"Evil: 1.md\"")
     refute_includes(body, "\r\nEvil:")
+  end
+
+  def test_multipart_file_part_io_omits_absolute_local_path
+    Tempfile.create(["upload-", ".txt"]) do |content|
+      content.write("upload-body")
+      content.rewind
+      local_path = content.to_path
+      _headers, stream = OpenAI::Internal::Util.encode_content(
+        {"content-type" => "multipart/form-data"},
+        {file: OpenAI::FilePart.new(content)}
+      )
+      body = stream.to_a.join
+
+      assert_includes(body, "filename=\"#{File.basename(local_path)}\"")
+      refute_includes(body, local_path)
+    end
   end
 
   def test_multipart_filename_encoding_with_binary_content
