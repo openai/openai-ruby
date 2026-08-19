@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "bundler"
 require "pathname"
 require "tempfile"
 
@@ -26,7 +27,7 @@ end
 
 desc("Preview docs; use `PORT=<PORT>` to change the port")
 multitask(:"docs:preview") do
-  sh(*%w[yard server --reload --quiet --bind \[::\] --port], ENV.fetch("PORT", "8808"))
+  Bundler.with_unbundled_env { sh(*%w[./scripts/docs preview]) }
 end
 
 bedrock_tests = FileList["test/openai/providers/bedrock*_test.rb"]
@@ -160,7 +161,7 @@ multitask(lint: [:"lint:rubocop", :"lint:rubocop_directives", :typecheck])
 
 desc("Build yard docs")
 multitask(:"build:docs") do
-  sh(*%w[yard])
+  Bundler.with_unbundled_env { sh(*%w[./scripts/docs build]) }
 end
 
 desc("Build ruby gem")
