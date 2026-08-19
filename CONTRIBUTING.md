@@ -123,11 +123,11 @@ which makes no API requests:
 $ bundle exec rake test:examples:inventory
 ```
 
-Failed live examples currently include captured stdout and stderr in their
-reports, and the live CI workflow uploads those reports even on failure. Do not
-run the live suite or workflow until captured output and reports redact or omit
-credentials, customer data, and other sensitive prompts, model responses, or
-uploaded files. Only run the suite after those safeguards are in place:
+Live reports include example paths, pass/fail status, timing, and structural
+failure diagnostics. Existing stdout/stderr report fields remain present but are
+always null. Captured output and exception messages are omitted from JSON
+reports, Markdown summaries, and the explicitly selected CI artifacts. Running
+the live suite still makes real API requests:
 
 ```bash
 $ bundle exec rake test:examples:e2e

@@ -56,8 +56,22 @@ class ValidateRBSScriptTest < Minitest::Test
     )
 
     refute_predicate(status, :success?)
-    assert_includes(stdout, "RBS::UnknownTypeName")
-    assert_includes(stdout, "b.rbs")
+    assert_match(
+      /sig\/a\.rbs.*string contains null byte.*RBS::UnexpectedError|sig\/b\.rbs.*RBS::UnknownTypeName/m,
+      stdout
+    )
+  end
+
+  def test_checks_original_files_directly_when_a_signature_contains_nul
+    stdout, stderr, status, calls = run_validation(
+      {"invalid.rbs" => "module Example\nend\n\x00"},
+      fake_steep_results: [1]
+    )
+
+    refute_predicate(status, :success?)
+    assert_empty(stdout)
+    assert_empty(stderr)
+    assert_equal([%w[check --no-type-check]], calls)
   end
 
   def test_uses_one_consolidated_steep_check_on_success

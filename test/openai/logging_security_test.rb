@@ -63,6 +63,119 @@ class LoggingSecurityTest < Minitest::Test
     end
   end
 
+  def test_url_sanitization_removes_plain_and_percent_encoded_fragments_without_mutating_urls
+    urls = {
+      "https://user:password@example.com/probe?safe=visible&access_token=fake-query-secret" \
+        "#access_token=fake-fragment-secret" => "https://example.com/probe?safe=visible&access_token=%5BREDACTED%5D",
+      "https://example.com/probe#access%5Ftoken%3Dfake-percent-encoded-fragment-secret" => "https://example.com/probe"
+    }
+
+    urls.each do |original, expected|
+      url = URI(original)
+
+      assert_equal(expected, OpenAI::Internal::Logging.safe_url(url))
+      assert_equal(original, url.to_s)
+      refute_includes(OpenAI::Internal::Logging.safe_path(url), "fragment-secret")
+    end
+
+    fragment_only = URI("#access_token=fake-fragment-only-secret")
+
+    assert_equal("", OpenAI::Internal::Logging.safe_url(fragment_only))
+    assert_equal("/", OpenAI::Internal::Logging.safe_path(fragment_only))
+    assert_equal("#access_token=fake-fragment-only-secret", fragment_only.to_s)
+  end
+
+  def test_url_sanitization_preserves_fragment_free_rendering_and_invalid_header_fallbacks
+    original = "https://user:password@example.com/probe?access_token=fake-query-secret&safe=hello%20world"
+    url = URI(original)
+
+    assert_equal(
+      "https://example.com/probe?access_token=%5BREDACTED%5D&safe=hello+world",
+      OpenAI::Internal::Logging.safe_url(url)
+    )
+    assert_equal(
+      "/probe?access_token=%5BREDACTED%5D&safe=hello+world",
+      OpenAI::Internal::Logging.safe_path(url)
+    )
+    assert_equal(original, url.to_s)
+
+    invalid = "https://example.com/next path#access_token=fake-invalid-fragment-secret"
+
+    assert_equal(
+      "{\"Location\":\"[URL OMITTED]\"}",
+      OpenAI::Internal::Logging.format_headers("Location" => invalid)
+    )
+  end
+
+  def test_debug_response_headers_remove_fragments_from_every_url_valued_header
+    response_headers = {
+      "Location" => "https://user:password@example.com/files?safe=visible&sig=fake-location-query-secret" \
+        "#access_token=fake-location-fragment-secret",
+      "Link" => "https://example.com/next#access_token=fake-link-fragment-secret",
+      "Refresh" => "https://example.com/refresh#access%5Ftoken%3Dfake-refresh-fragment-secret",
+      "X-Download-URL" => "https://example.com/download?token=fake-download-query-secret&safe=still-visible" \
+        "#client_secret=fake-download-fragment-secret"
+    }
+    output, request = logged_request(
+      log_level: :debug,
+      query: {"access_token" => "fake-request-query-secret", "safe" => "visible"},
+      response_headers: response_headers
+    )
+
+    assert_includes(output, "response received")
+    assert_includes(output, "https://example.com/files?safe=visible&sig=%5BREDACTED%5D")
+    assert_includes(output, "https://example.com/next")
+    assert_includes(output, "https://example.com/refresh")
+    assert_includes(output, "https://example.com/download?token=%5BREDACTED%5D&safe=still-visible")
+    assert_includes(output, "access_token=%5BREDACTED%5D")
+    assert_includes(request.url.to_s, "fake-request-query-secret")
+    refute_includes(output, "fake-location-query-secret")
+    refute_includes(output, "fake-download-query-secret")
+    refute_includes(output, "fake-request-query-secret")
+    refute_includes(output, "fragment-secret")
+    refute_includes(output, "user:password@")
+  end
+
+  def test_debug_redirect_logs_remove_fragments_without_changing_transport_urls
+    location = "/v1/redirected?safe=visible&access_token=fake-redirect-query-secret" \
+      "#access%5Ftoken%3Dfake-redirect-fragment-secret"
+    output, response, redirected_request = logged_response(
+      path: "legacy/issue",
+      response_body: {"value" => "ordinary-response-value"},
+      redirect: {status: 307, location: location}
+    )
+
+    assert_equal("ordinary-response-value", response[:value])
+    assert_equal("https://example.com#{location}", redirected_request.url.to_s)
+    assert_includes(
+      output,
+      "redirect=1 method=POST " \
+        "url=https://example.com/v1/redirected?safe=visible&access_token=%5BREDACTED%5D "
+    )
+    assert_includes(output, "\"location\":\"/v1/redirected?safe=visible&access_token=%5BREDACTED%5D\"")
+    refute_includes(output, "fake-redirect-query-secret")
+    refute_includes(output, "fake-redirect-fragment-secret")
+    refute_includes(output, "access%5Ftoken%3D")
+  end
+
+  def test_info_logs_preserve_query_redaction_without_exposing_response_header_fragments
+    output, request = logged_request(
+      log_level: :info,
+      query: {"access_token" => "fake-info-query-secret", "safe" => "visible"},
+      response_headers: {
+        "Location" => "https://example.com/next#access_token=fake-info-fragment-secret"
+      }
+    )
+
+    assert_includes(output, "request complete")
+    assert_includes(output, "path=/v1/probe?access_token=%5BREDACTED%5D&safe=visible")
+    assert_includes(request.url.to_s, "fake-info-query-secret")
+    refute_includes(output, "request started")
+    refute_includes(output, "response received")
+    refute_includes(output, "fake-info-query-secret")
+    refute_includes(output, "fake-info-fragment-secret")
+  end
+
   def test_debug_logs_never_expose_newly_issued_credential_values
     issuers = {
       "organization/admin_api_keys" => "sk-admin-demo-release-audit",
@@ -314,10 +427,20 @@ class LoggingSecurityTest < Minitest::Test
   def test_responses_create_never_logs_body_content_or_changes_payloads
     image_url = "https://storage.example.test/private/image.png?sv=2025-01-01&sig=request-synthetic-credential"
     response_url = "https://storage.example.test/private/output.png?sig=response-synthetic-credential"
+    response_headers = {
+      "location" => "https://download.example.test/location#access_token=location-synthetic-credential",
+      "link" => "https://download.example.test/link#access_token=link-synthetic-credential",
+      "refresh" => "https://download.example.test/refresh#access%5Ftoken%3Drefresh-synthetic-credential",
+      "x-download-url" => "https://download.example.test/download#token=download-synthetic-credential"
+    }
     output = StringIO.new
     response = OpenAI::HTTPClient::Response.new(
       status: 200,
-      headers: {"content-type" => "application/json", "x-request-id" => "req_signed_url"},
+      headers: {
+        "content-type" => "application/json",
+        "x-request-id" => "req_signed_url",
+        **response_headers
+      },
       body: JSON.generate(id: "resp_signed_url", output: [], metadata: {download_url: response_url})
     )
     request = nil
@@ -343,6 +466,12 @@ class LoggingSecurityTest < Minitest::Test
     assert_mock(transport)
     assert_equal(image_url, JSON.parse(request.body).dig("input", 0, "content", 0, "image_url"))
     assert_equal(response_url, result.metadata[:download_url])
+    assert_equal("req_signed_url", result.last_response.request_id)
+    assert_predicate(result.last_response.headers, :frozen?)
+    response_headers.each do |name, value|
+      assert_equal(value, result.last_response.headers.fetch(name))
+    end
+
     assert_includes(output.string, "[JSON BODY]")
     assert_includes(output.string, "type=object fields=")
     refute_includes(output.string, "synthetic-credential")
@@ -353,6 +482,7 @@ class LoggingSecurityTest < Minitest::Test
 
   private def logged_response(path:, response_body:, redirect: nil)
     output = StringIO.new
+    transport_request = nil
     response = OpenAI::HTTPClient::Response.new(
       status: 200,
       headers: {"content-type" => "application/json", "x-request-id" => "req_credential"},
@@ -368,7 +498,11 @@ class LoggingSecurityTest < Minitest::Test
       transport.expect(:execute, redirect_response) { |request| request.is_a?(OpenAI::HTTPClient::Request) }
     end
 
-    transport.expect(:execute, response) { |request| request.is_a?(OpenAI::HTTPClient::Request) }
+    transport.expect(:execute, response) do |request|
+      transport_request = request
+      request.is_a?(OpenAI::HTTPClient::Request)
+    end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       base_url: "https://example.com/v1",
@@ -380,15 +514,15 @@ class LoggingSecurityTest < Minitest::Test
     parsed = client.request(method: :post, path: path, body: {"value" => "ordinary-request-value"})
     assert_mock(transport)
 
-    [output.string, parsed]
+    [output.string, parsed, transport_request]
   end
 
-  private def logged_request(log_level:, query: nil, headers: nil, body: nil)
+  private def logged_request(log_level:, query: nil, headers: nil, body: nil, response_headers: {})
     output = StringIO.new
     logger = Logger.new(output)
     response = OpenAI::HTTPClient::Response.new(
       status: 200,
-      headers: {"content-type" => "application/json", "x-request-id" => "req_security"},
+      headers: {"content-type" => "application/json", "x-request-id" => "req_security"}.merge(response_headers),
       body: "{\"ok\":true}"
     )
     request = nil

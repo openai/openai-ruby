@@ -2,11 +2,55 @@
 
 module OpenAI
   class FilePart
+    # HTTP media types contain ASCII tokens and possibly empty parameter slots.
+    # Quoted values may contain horizontal whitespace and non-ASCII header bytes, but
+    # never CR, LF, NUL, other forbidden control bytes, or an unescaped quote.
+    #
+    # @api private
+    # @type [Regexp]
+    MEDIA_TYPE = %r{
+      \A
+      [!#$%&'*+\-.^_`|~0-9A-Za-z]+
+      /
+      [!#$%&'*+\-.^_`|~0-9A-Za-z]+
+      (?:
+        [\x20\t]*;[\x20\t]*
+        (?:
+          [!#$%&'*+\-.^_`|~0-9A-Za-z]+
+          [\x20\t]*=[\x20\t]*
+          (?:
+            [!#$%&'*+\-.^_`|~0-9A-Za-z]+
+            |
+            "(?:[\x20\t\x21\x23-\x5B\x5D-\x7E\x80-\xFF]|\\[\x20\t\x21-\x7E\x80-\xFF])*"
+          )
+        )?
+      )*
+      [\x20\t]*
+      \z
+    }nx
+    private_constant :MEDIA_TYPE
+
+    # Validate an effective media type before it is written to multipart headers.
+    #
+    # @api private
+    # @param content_type [String, nil]
+    # @return [String, nil]
+    # @raise [ArgumentError] if the content type is not a valid MIME media type
+    def self.validate_content_type(content_type)
+      return if content_type.nil?
+      return content_type if content_type.is_a?(String) && MEDIA_TYPE.match?(content_type.b)
+
+      raise ArgumentError, "`content_type` must be a valid MIME media type"
+    end
+
     # @return [Pathname, StringIO, IO, String]
     attr_reader :content
 
     # @return [String, nil]
-    attr_reader :content_type
+    # @raise [ArgumentError] if the content type is not a valid MIME media type
+    def content_type
+      OpenAI::FilePart.validate_content_type(@content_type)
+    end
 
     # @return [String, nil]
     attr_reader :filename
@@ -62,7 +106,9 @@ module OpenAI
     # @param content [Pathname, StringIO, IO, String]
     # @param filename [Pathname, String, nil]
     # @param content_type [String, nil]
+    # @raise [ArgumentError] if the content type is not a valid MIME media type
     def initialize(content, filename: nil, content_type: nil)
+      OpenAI::FilePart.validate_content_type(content_type)
       @content_type = content_type
       @filename = case [filename, (@content = content)]
       in [String | Pathname, _]
@@ -70,7 +116,7 @@ module OpenAI
       in [nil, Pathname]
         content.basename.to_path
       in [nil, IO]
-        content.to_path
+        content.to_path&.then { ::File.basename(_1) }
       else
         filename
       end
