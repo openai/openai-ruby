@@ -47,6 +47,71 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
     end
   end
 
+  def test_preserves_redirects_within_the_initially_prepared_trusted_origin
+    [307, 308].each do |status|
+      destination = "https://prepared.example/v1/redirected/#{status}"
+      requests = []
+      client, http_client = client_with_responses(
+        requests,
+        redirect_response(status, destination),
+        successful_response,
+        client_class: origin_rewriting_client_class
+      )
+
+      response = client.request(method: :post, path: "probe", body: {prompt: "fake-private-prompt"})
+
+      http_client.verify
+      assert_equal(true, response[:ok])
+      assert_equal(["prepared.example", "prepared.example"], requests.map { _1.url.host })
+      assert_equal(requests.first.body, requests.last.body)
+      assert_includes(requests.last.body, "fake-private-prompt")
+      assert_equal("Bearer fake-prepared-origin-authorization", requests.last.headers.fetch("Authorization"))
+      assert_equal("fake-prepared-origin-api-key", requests.last.headers.fetch("X-Api-Key"))
+    end
+  end
+
+  def test_rewritten_trusted_origin_still_rejects_body_preserving_cross_origin_redirects
+    [307, 308].each do |status|
+      requests = []
+      client, http_client = client_with_responses(
+        requests,
+        redirect_response(status, "https://untrusted.example/redirected"),
+        client_class: origin_rewriting_client_class
+      )
+
+      error = assert_raises(OpenAI::Errors::APIConnectionError) do
+        client.request(method: :post, path: "probe", body: {prompt: "fake-private-prompt"})
+      end
+
+      http_client.verify
+      assert_equal("https://untrusted.example", error.url.to_s)
+      assert_equal(["prepared.example"], requests.map { _1.url.host })
+    end
+  end
+
+  def test_rewritten_trusted_origin_strips_prepared_credentials_on_cross_origin_hops
+    requests = []
+    client, http_client = client_with_responses(
+      requests,
+      redirect_response(307, "https://prepared.example/v1/same-origin"),
+      redirect_response(307, "https://untrusted.example/redirected"),
+      successful_response,
+      client_class: origin_rewriting_client_class
+    )
+
+    response = client.request(method: :get, path: "probe")
+
+    http_client.verify
+    assert_equal(true, response[:ok])
+    assert_equal(["prepared.example", "prepared.example", "untrusted.example"], requests.map { _1.url.host })
+    assert_equal("Bearer fake-prepared-origin-authorization", requests.fetch(1).headers.fetch("Authorization"))
+    %w[authorization cookie x-api-key].each do |header|
+      refute(requests.last.headers.keys.any? { _1.casecmp?(header) }, "#{header} reached the untrusted origin")
+    end
+
+    assert_equal("safe-trace-value", requests.last.headers.fetch("x-safe-trace"))
+  end
+
   def test_preserves_same_origin_redirect_with_explicit_default_https_port
     requests = []
     client, http_client = client_with_responses(
@@ -494,6 +559,30 @@ class OpenAI::Test::BaseClientRedirectTest < Minitest::Test
       private def prepare_request(request, redirect_count:, retry_count:)
         prepared = super
         prepared.merge(body: "fake-prepared-private-prompt")
+      end
+    end
+  end
+
+  private def origin_rewriting_client_class
+    Class.new(OpenAI::Client) do
+      private def prepare_request(request, redirect_count:, retry_count:)
+        raise "internal redirect trust metadata reached a preparer" if request.key?(:redirect_trusted_origin)
+
+        prepared = super
+        if redirect_count.zero?
+          rewritten_url = prepared.fetch(:url).dup
+          rewritten_url.host = "prepared.example"
+          prepared = prepared.merge(url: rewritten_url)
+        end
+
+        prepared.merge(
+          headers: prepared.fetch(:headers).merge(
+            "Authorization" => "Bearer fake-prepared-origin-authorization",
+            "Cookie" => "session=fake-prepared-origin-cookie",
+            "X-Api-Key" => "fake-prepared-origin-api-key",
+            "x-safe-trace" => "safe-trace-value"
+          )
+        )
       end
     end
   end

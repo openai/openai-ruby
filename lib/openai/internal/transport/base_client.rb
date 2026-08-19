@@ -545,38 +545,36 @@ module OpenAI
 
           url, max_retries = request.fetch_values(:url, :max_retries)
           prepared_request = request
+          trusted_origin = request[:redirect_trusted_origin]
 
           begin
             encoded_headers, encoded_body = OpenAI::Internal::Util.encode_content(
               request.fetch(:headers),
               request[:body]
             )
-            attempt_request = request.merge(headers: encoded_headers, body: encoded_body)
+            attempt_request = request.except(:redirect_trusted_origin).merge(
+              headers: encoded_headers,
+              body: encoded_body
+            )
             prepared_request = prepare_request(
               attempt_request,
               redirect_count: redirect_count,
               retry_count: retry_count
             )
 
-            if redirect_count.positive?
-              prepared_url = prepared_request.fetch(:url)
-              configured_origin = OpenAI::Internal::Util.uri_origin(@base_url)
-              prepared_origin = OpenAI::Internal::Util.uri_origin(prepared_url)
-              if @base_url.host.start_with?("[")
-                configured_origin = configured_origin.sub(@base_url.host, "[#{IPAddr.new(@base_url.hostname)}]")
+            prepared_url = prepared_request.fetch(:url)
+            prepared_origin = OpenAI::Internal::Util.uri_origin(prepared_url)
+            if prepared_url.host.start_with?("[")
+              prepared_origin = prepared_origin.sub(prepared_url.host, "[#{IPAddr.new(prepared_url.hostname)}]")
+            end
+
+            trusted_origin ||= prepared_origin
+            if redirect_count.positive? && !trusted_origin.casecmp?(prepared_origin)
+              safe_headers = prepared_request.fetch(:headers).reject do |name, _|
+                name.to_s.casecmp?("host") || OpenAI::Internal::Logging.credential_header?(name)
               end
 
-              if prepared_url.host.start_with?("[")
-                prepared_origin = prepared_origin.sub(prepared_url.host, "[#{IPAddr.new(prepared_url.hostname)}]")
-              end
-
-              unless configured_origin.casecmp?(prepared_origin)
-                safe_headers = prepared_request.fetch(:headers).reject do |name, _|
-                  name.to_s.casecmp?("host") || OpenAI::Internal::Logging.credential_header?(name)
-                end
-
-                prepared_request = prepared_request.merge(headers: safe_headers, body: nil)
-              end
+              prepared_request = prepared_request.merge(headers: safe_headers, body: nil)
             end
 
             url, max_retries, timeout = prepared_request.fetch_values(:url, :max_retries, :timeout)
@@ -646,6 +644,7 @@ module OpenAI
               response_headers: headers
             )
             redirected_request = redirected_request.merge(body: nil) if request[:body].nil?
+            redirected_request = redirected_request.merge(redirect_trusted_origin: trusted_origin)
             send_request(
               redirected_request,
               redirect_count: redirect_count + 1,
