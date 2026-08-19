@@ -134,12 +134,41 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
       "The token is invalid" => {error: {message: "The token is invalid"}},
       "The token is invalid or has expired." => {error: {message: "The token is invalid or has expired."}},
       "The API key is missing" => {error: {message: "The API key is missing"}},
+      "API key required" => {error: {message: "API key required"}},
+      "API key required for this operation" => {error: {message: "API key required for this operation"}},
+      "API key format is invalid" => {error: {message: "API key format is invalid"}},
+      "API key authentication failed" => {error: {message: "API key authentication failed"}},
+      "API key cannot be empty" => {error: {message: "API key cannot be empty"}},
+      "API key has expired" => {error: {message: "API key has expired"}},
+      "API key does not exist" => {error: {message: "API key does not exist"}},
+      "Client secret missing" => {error: {message: "Client secret missing"}},
+      "Client secret does not match" => {error: {message: "Client secret does not match"}},
+      "Password too short" => {error: {message: "Password too short"}},
+      "Password cannot be blank" => {error: {message: "Password cannot be blank"}},
       "The API key is missing. Add one to your account settings." => {
         error: {message: "The API key is missing. Add one to your account settings."}
       },
+      "The API key is valid but does not have permission to access this resource" => {
+        error: {message: "The API key is valid but does not have permission to access this resource"}
+      },
       "The client secret is invalid" => {error: {message: "The client secret is invalid"}},
+      "The access token does not contain the required scopes" => {
+        error: {message: "The access token does not contain the required scopes"}
+      },
       "The signature is invalid" => {error: {message: "The signature is invalid"}},
       "The request input is invalid" => {error: {message: "The request input is invalid"}},
+      "The input exceeds the maximum context length" => {
+        error: {message: "The input exceeds the maximum context length"}
+      },
+      "The input exceeds the maximum context length of 8192 tokens" => {
+        error: {message: "The input exceeds the maximum context length of 8192 tokens"}
+      },
+      "Your request contains too many input tokens" => {
+        error: {message: "Your request contains too many input tokens"}
+      },
+      "Your request contains 8192 input tokens" => {
+        error: {message: "Your request contains 8192 input tokens"}
+      },
       "The request input is invalid: expected a string." => {
         error: {message: "The request input is invalid: expected a string."}
       },
@@ -157,12 +186,21 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
       "The response is malformed and could not be processed." => {
         error: {message: "The response is malformed and could not be processed."}
       },
+      "The response could not be parsed as JSON" => {
+        error: {message: "The response could not be parsed as JSON"}
+      },
       "The response is malformed (expected an object)." => {
         error: {message: "The response is malformed (expected an object)."}
       },
       "The output is too long" => {error: {message: "The output is too long"}},
       "The output is too long for the selected model." => {
         error: {message: "The output is too long for the selected model."}
+      },
+      "The output was truncated because it exceeded the maximum token limit" => {
+        error: {message: "The output was truncated because it exceeded the maximum token limit"}
+      },
+      "The maximum output length is 4096 tokens" => {
+        error: {message: "The maximum output length is 4096 tokens"}
       },
       "The output is too long - maximum is 2048 tokens." => {
         error: {message: "The output is too long - maximum is 2048 tokens."}
@@ -172,6 +210,8 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
       },
       "Message is required" => {error: {message: "Message is required"}},
       "Content is required" => {error: {message: "Content is required"}},
+      "Data URL is invalid" => {error: {message: "Data URL is invalid"}},
+      "Invalid data: expected a string" => {error: {message: "Invalid data: expected a string"}},
       "Expected input: string" => {error: {message: "Expected input: string"}},
       "Maximum output: 2048 tokens" => {error: {message: "Maximum output: 2048 tokens"}}
     }
@@ -317,6 +357,79 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
     end
   end
 
+  def test_provider_messages_do_not_disclose_space_delimited_credential_values
+    descriptions = [
+      "Invalid API key opaqueprovidercredential123",
+      "Invalid client secret opaqueprovidercredential123",
+      "Rejected private key opaqueprovidercredential123",
+      "Rejected password opaqueprovidercredential123",
+      "Invalid API key missing-opaqueprovidercredential123",
+      "Invalid client secret expired opaqueprovidercredential123",
+      "Invalid API key required for opaqueprovidercredential123",
+      "Invalid client secret missing for opaqueprovidercredential123",
+      "Invalid API key not opaqueprovidercredential123",
+      "Invalid API key format opaqueprovidercredential123",
+      "Rejected password !P@ssw0rd123",
+      "Rejected password $uperSecret123",
+      "Rejected password #opaqueprovidercredential123",
+      "Rejected client secret +opaqueprovidercredential123",
+      "Rejected client secret /opaqueprovidercredential123",
+      "Invalid API key -opaqueprovidercredential123",
+      "Rejected private key .opaqueprovidercredential123",
+      "Rejected assertion %opaqueprovidercredential123",
+      "Rejected password \xFFopaqueprovidercredential123".b,
+      "Rejected api_key_value opaqueprovidercredential123",
+      "Rejected apiKeyValue opaqueprovidercredential123",
+      "Rejected client_secret_value opaqueprovidercredential123",
+      "Rejected clientSecretValue opaqueprovidercredential123",
+      "Rejected private_key_pem opaqueprovidercredential123",
+      "Rejected privateKeyPem opaqueprovidercredential123",
+      "Rejected access_token_value opaqueprovidercredential123",
+      "Rejected accessTokenValue opaqueprovidercredential123",
+      "Rejected refresh_token_value opaqueprovidercredential123",
+      "Rejected password_hash opaqueprovidercredential123",
+      "Rejected user_prompt opaqueprovidercredential123",
+      "Rejected input_text opaqueprovidercredential123",
+      "Rejected output_text opaqueprovidercredential123",
+      "API key 123456 request input",
+      "Password 123456 content",
+      "Client secret 123456 response",
+      "Maximum output: 2048 tokens API key 123456",
+      "4096 output tokens client secret 123456"
+    ]
+
+    descriptions.each do |description|
+      error = status_error(body: {error: {message: description}})
+
+      assert_includes(error.message, "status=400")
+      refute_includes(error.message, "message=")
+      refute_includes(error.message, "opaqueprovidercredential")
+      assert_same(description, error.body.dig(:error, :message))
+    end
+  end
+
+  def test_provider_messages_do_not_disclose_data_url_payloads
+    descriptions = [
+      "Invalid image URL: data:image/png;base64,cHJpdmF0ZS1jdXN0b21lci1pbWFnZQ==",
+      "Invalid document URL: DATA:application/pdf;base64,cHJpdmF0ZS1kb2N1bWVudA==",
+      "Invalid content data:text/plain,private%20customer%20prompt",
+      "Invalid inline response data:,private-customer-response",
+      "Invalid image data:image/svg+xml;charset=utf-8,%3Csvg%3Eprivate%3C/svg%3E",
+      "Invalid image URL: data: image/png;base64,cHJpdmF0ZS1jdXN0b21lcg==",
+      "Invalid image URL: data:\timage/png;base64,cHJpdmF0ZS1jdXN0b21lcg==",
+      "Invalid image URL: data:image/png; base64,cHJpdmF0ZS1jdXN0b21lcg=="
+    ]
+
+    descriptions.each do |description|
+      error = status_error(body: {error: {message: description}})
+
+      assert_includes(error.message, "status=400")
+      refute_includes(error.message, "message=")
+      refute_includes(error.message.downcase, "data:")
+      assert_same(description, error.body.dig(:error, :message))
+    end
+  end
+
   def test_malformed_provider_message_encodings_preserve_api_status_and_raw_response
     malformed_json_body = JSON.parse("{\"error\":{\"message\":\"\\udcff\"}}", symbolize_names: true)
     bodies = [
@@ -401,7 +514,23 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
       "e-mail=fake-customer@example.test",
       "e_mail=fake-customer@example.test",
       "mail=fake-customer@example.test",
-      "prompt=private customer prompt"
+      "prompt=private customer prompt",
+      "Invalid API key opaqueprovidercredential123",
+      "Rejected client secret +opaqueprovidercredential123",
+      "Rejected password !P@ssw0rd123",
+      "Rejected private key opaqueprovidercredential123",
+      "Invalid client secret expired opaqueprovidercredential123",
+      "Invalid token 'expired.opaqueprovidercredential123'",
+      "Rejected api_key_value opaqueprovidercredential123",
+      "Rejected apiKeyValue opaqueprovidercredential123",
+      "Rejected clientSecretValue opaqueprovidercredential123",
+      "Rejected privateKeyPem opaqueprovidercredential123",
+      "Rejected accessTokenValue opaqueprovidercredential123",
+      "Rejected password_hash opaqueprovidercredential123",
+      "Rejected user_prompt opaqueprovidercredential123",
+      "Rejected input_text opaqueprovidercredential123",
+      "Rejected output_text opaqueprovidercredential123",
+      "data:image/png;base64,cHJpdmF0ZS1jdXN0b21lcg=="
     ]
 
     request_ids.each do |request_id|
@@ -427,7 +556,11 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
       "req-prod-1234567890",
       "4c37c3c3-e770-4b3d-8d2e-b5e0e6de6e03",
       "trace.1234abcd.5678efgh",
-      "email-delivery-req-123"
+      "email-delivery-req-123",
+      "customer-support-req-123",
+      "data-center-req-123",
+      "response-service-trace-123",
+      "input-validator-req-123"
     ]
 
     request_ids.each do |request_id|
