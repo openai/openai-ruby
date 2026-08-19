@@ -2,6 +2,8 @@
 
 require_relative "../test_helper"
 
+require "cgi"
+
 class OpenAI::Test::UtilDataHandlingTest < Minitest::Test
   def test_left_map
     assert_pattern do
@@ -131,6 +133,55 @@ class OpenAI::Test::UtilHeaderHandlingTest < Minitest::Test
 end
 
 class OpenAI::Test::UtilUriHandlingTest < Minitest::Test
+  def test_decoding_query
+    assert_equal(
+      {"name" => ["first last", "✓"], "path" => ["/v1/files"]},
+      OpenAI::Internal::Util.decode_query("name=first+last&name=%E2%9C%93&path=%2Fv1%2Ffiles")
+    )
+  end
+
+  def test_decoding_query_with_semicolon_separators_and_empty_segments
+    assert_equal(
+      {"first" => ["1"], "second" => ["2"]},
+      OpenAI::Internal::Util.decode_query("&&first=1;;second=2&")
+    )
+  end
+
+  def test_decoding_query_with_valueless_keys
+    assert_equal(
+      {"flag" => [], "empty" => [""]},
+      OpenAI::Internal::Util.decode_query("flag&empty=&flag")
+    )
+  end
+
+  def test_decoding_query_with_malformed_percent_escapes
+    assert_equal(
+      {"%" => ["100%"], "mixed" => ["A%GGB"], "tail" => ["%+"]},
+      OpenAI::Internal::Util.decode_query("%=100%&mixed=%41%GG%42&tail=%+")
+    )
+  end
+
+  def test_decoding_query_preserves_binary_and_invalid_utf8
+    binary = OpenAI::Internal::Util.decode_query("value=%FF".b).fetch("value").fetch(0)
+    invalid_utf8 = OpenAI::Internal::Util.decode_query("value=%FF").fetch("value").fetch(0)
+
+    assert_equal("\xFF".b, binary)
+    assert_equal(Encoding::BINARY, binary.encoding)
+    assert_equal("\xFF".b, invalid_utf8.b)
+    assert_equal(Encoding::UTF_8, invalid_utf8.encoding)
+    refute_predicate(invalid_utf8, :valid_encoding?)
+  end
+
+  def test_decoding_query_default
+    decoded = OpenAI::Internal::Util.decode_query(nil)
+    default = decoded["missing"]
+
+    assert_equal({}, decoded)
+    assert_equal([], default)
+    assert_predicate(default, :frozen?)
+    refute_includes(decoded, "missing")
+  end
+
   def test_parsing
     %w[
       http://example.com

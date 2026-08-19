@@ -38,7 +38,6 @@ Gem::Specification.new do |s|
     "realtime.md",
     "examples/realtime/README.md"
   ]
-  s.add_dependency("cgi")
   s.add_dependency("connection_pool", ">= 2.2.3")
   s.add_dependency("logger")
 end
