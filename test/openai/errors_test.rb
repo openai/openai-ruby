@@ -74,6 +74,26 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
     assert_includes(error.url.to_s, "custom_provider_field")
   end
 
+  def test_fallback_omits_url_fragments_without_changing_the_original_url
+    urls = [
+      URI("https://example.com/v1/responses#access_token=fake-fragment-token"),
+      URI("https://example.com/v1/responses?safe=visible#prompt=private-customer-prompt"),
+      URI("https://example.com/v1/responses#response=private-model-response?included=yes")
+    ]
+
+    urls.each do |url|
+      error = status_error(url: url, body: {error: {message: "Provider rejected the request"}})
+
+      assert_includes(error.message, "url=https://example.com/v1/responses")
+      refute_includes(error.message, "#")
+      refute_includes(error.message, "?")
+      refute_includes(error.message, "fake-fragment")
+      refute_includes(error.message, "private-")
+      assert_same(url, error.url)
+      refute_nil(error.url.fragment)
+    end
+  end
+
   def test_unrecognized_and_non_string_error_shapes_never_stringify_raw_bodies
     bodies = [
       {prompt: "private customer prompt", token: "fake-body-token"},
@@ -121,6 +141,12 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
       "The request input is invalid: expected a string." => {
         error: {message: "The request input is invalid: expected a string."}
       },
+      "The input is invalid (expected a string)." => {
+        error: {message: "The input is invalid (expected a string)."}
+      },
+      "The input is invalid; expected a string." => {
+        error: {message: "The input is invalid; expected a string."}
+      },
       "The input is required" => {error: {message: "The input is required"}},
       "The input is required for this operation." => {
         error: {message: "The input is required for this operation."}
@@ -129,9 +155,18 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
       "The response is malformed and could not be processed." => {
         error: {message: "The response is malformed and could not be processed."}
       },
+      "The response is malformed (expected an object)." => {
+        error: {message: "The response is malformed (expected an object)."}
+      },
       "The output is too long" => {error: {message: "The output is too long"}},
       "The output is too long for the selected model." => {
         error: {message: "The output is too long for the selected model."}
+      },
+      "The output is too long - maximum is 2048 tokens." => {
+        error: {message: "The output is too long - maximum is 2048 tokens."}
+      },
+      "The API key is invalid (check your credentials)." => {
+        error: {message: "The API key is invalid (check your credentials)."}
       },
       "Message is required" => {error: {message: "Message is required"}},
       "Content is required" => {error: {message: "Content is required"}},
@@ -141,6 +176,60 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
 
     bodies.each do |expected, body|
       assert_includes(status_error(body: body).message, expected)
+    end
+  end
+
+  def test_blank_provider_messages_do_not_hide_useful_fallback_descriptions
+    bodies = [
+      {error: {message: "", error_description: "Nested provider explanation"}},
+      {error: {message: " \t\n ", error_description: "Nested provider explanation"}},
+      {error: {message: "", error_description: "   "}, error_description: "Top-level explanation"},
+      {error: {message: "\n", error_description: "\t"}}
+    ]
+
+    bodies.each do |body|
+      error = status_error(body: body)
+      expected = body[:error_description] || body.dig(:error, :error_description)
+
+      if expected.strip.empty?
+        refute_includes(error.message, "message=")
+      else
+        assert_includes(error.message, "message=#{expected}")
+      end
+
+      assert_same(body, error.body)
+    end
+  end
+
+  def test_provider_validation_words_do_not_allow_sensitive_suffixes
+    descriptions = [
+      "The input is invalid (private customer prompt)",
+      "The response is malformed [private model response]",
+      "The output is too long {private customer content}",
+      "The access token is expired (fake-upstream-credential)",
+      "The access token is expired, fake-upstream-credential",
+      "The access token is expired\nfake-upstream-credential",
+      "The input is invalid - private customer prompt",
+      "The input is invalid, private customer prompt",
+      "The input is invalid / private customer prompt",
+      "The input is invalid – private customer prompt",
+      "The input is invalid... private customer prompt",
+      "The prompt is invalid; private customer prompt",
+      "The input is invalid because private customer content was provided",
+      "The input is invalid due to private customer prompt",
+      "The input is invalid\nprivate customer prompt",
+      "The response is malformed. private model response",
+      "The response is malformed, private model response"
+    ]
+
+    descriptions.each do |description|
+      error = status_error(body: {error: {message: description}})
+
+      assert_includes(error.message, "status=400")
+      refute_includes(error.message, "message=")
+      refute_includes(error.message, "private")
+      refute_includes(error.message, "fake-upstream")
+      assert_same(description, error.body.dig(:error, :message))
     end
   end
 
@@ -211,7 +300,7 @@ class OpenAI::Test::ErrorsTest < Minitest::Test
   end
 
   def test_upstream_error_descriptions_remain_byte_bounded_after_escaping
-    descriptions = ["😀" * 600, "\n" * 600, "\\" * 600]
+    descriptions = ["😀" * 600, "x\n" * 600, "\\" * 600]
 
     descriptions.each do |description|
       error = status_error(body: {error: {message: description}})

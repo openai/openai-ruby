@@ -287,6 +287,16 @@ module OpenAI
           \beyJ[a-z0-9_-]+\.[a-z0-9_-]+\.[a-z0-9_-]+ |
           \b(?:AKIA|ASIA)[a-z0-9]{16}\b |
           \b(?:sk|rk|ek)(?:[-_][a-z0-9]{16,}|(?:[-_][a-z0-9]+){2,}) |
+          \b(?:invalid|expired|missing|required|malformed|unsupported|incorrect|unknown|
+              revoked|disabled|empty|too\s+(?:long|short|large|small))\b
+              (?:
+                [\s\S]{0,512}\b(?:private|customer\s+(?:prompt|input|response|output|content|data)|
+                    model\s+(?:response|output))\b |
+                \s*[\r\n\(\[\{<"';,/—–-]+\s*
+                    (?!expected\b|(?:a|an)\s+(?:string|integer|number|boolean|object|array)\b|
+                        maximum\b|max\b|minimum\b|min\b|limit\b|check\b|please\b|add\b|
+                        retry\b|refresh\b|sign\b)\S
+              ) |
           \b(?:[a-z0-9]+[-_])*
               (?:api[-_\s]?key|access[-_\s]?token|client[-_\s]?secret|authorization|awsaccesskeyid|
                   (?:set[-_\s]?)?cookie|credentials?|assertions?|tokens?|keys?|signature|secret|password|
@@ -306,10 +316,9 @@ module OpenAI
           OpenAI::Internal::Util.dig(body, [:error, :error_description]),
           OpenAI::Internal::Util.dig(body, :error_description),
           OpenAI::Internal::Util.dig(body, :error)
-        ].find { _1.is_a?(String) && !_1[...512].match?(sensitive_description) }
+        ].find { _1.is_a?(String) && !_1.strip.empty? && !_1[...512].match?(sensitive_description) }
 
-        safe_url = OpenAI::Internal::Logging.safe_url(url)
-        safe_url = safe_url.sub(/\?[^#]*/, "") unless url.query.nil?
+        safe_url = OpenAI::Internal::Logging.safe_url(url).sub(/[?#].*/, "")
         fields = ["status=#{status}", "url=#{safe_url}"]
         request_id = headers&.[]("x-request-id")
         fields << "request_id=#{bounded_status_field(request_id, limit: 128)}" if request_id
