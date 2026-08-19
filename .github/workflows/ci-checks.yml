@@ -20,7 +20,7 @@ jobs:
     env:
       RUBOCOP_CACHE_ROOT: ${{ github.workspace }}/.cache/rubocop
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
         with:
           persist-credentials: false
       - name: Set up Ruby
@@ -46,7 +46,7 @@ jobs:
       contents: read
     runs-on: ${{ inputs.runner }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
         with:
           persist-credentials: false
       - name: Set up Ruby
@@ -68,7 +68,7 @@ jobs:
       # fallback tuned so failing builds produce exact diagnostics promptly.
       STEEP_JOBS: 8
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
         with:
           persist-credentials: false
       - name: Set up Ruby
@@ -86,7 +86,7 @@ jobs:
       contents: read
     runs-on: ${{ inputs.runner }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
         with:
           persist-credentials: false
       - name: Set up Ruby
@@ -108,7 +108,7 @@ jobs:
       matrix:
         ruby-version: ['3.3', '3.4', '4.0']
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
         with:
           persist-credentials: false
       - name: Set up Ruby
