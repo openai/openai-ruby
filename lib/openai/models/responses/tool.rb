@@ -608,7 +608,9 @@ module OpenAI
           optional :input_image_mask, -> { OpenAI::Responses::Tool::ImageGeneration::InputImageMask }
 
           # @!attribute model
-          #   The image generation model to use. Default: `gpt-image-1`.
+          #   The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
+          #   `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`, or
+          #   `chatgpt-image-latest`. Default: `gpt-image-1`.
           #
           #   @return [String, Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Model, nil]
           optional :model, union: -> { OpenAI::Responses::Tool::ImageGeneration::Model }
@@ -676,7 +678,7 @@ module OpenAI
           #
           #   @param input_image_mask [OpenAI::Models::Responses::Tool::ImageGeneration::InputImageMask] Optional mask for inpainting. Contains `image_url`
           #
-          #   @param model [String, Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Model] The image generation model to use. Default: `gpt-image-1`.
+          #   @param model [String, Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Model] The image generation model to use. One of `gpt-image-1`,
           #
           #   @param moderation [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Moderation] Moderation level for the generated image. Default: `auto`.
           #
@@ -774,7 +776,9 @@ module OpenAI
             #   @param image_url [String] Base64-encoded mask image.
           end
 
-          # The image generation model to use. Default: `gpt-image-1`.
+          # The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
+          # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`, or
+          # `chatgpt-image-latest`. Default: `gpt-image-1`.
           #
           # @see OpenAI::Models::Responses::Tool::ImageGeneration#model
           module Model
