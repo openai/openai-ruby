@@ -80,6 +80,7 @@ module OpenAI
           @current_completion_snapshot = nil
           @choice_snapshots_by_index = {}
           @tool_call_snapshots_by_choice_index = {}
+          @choice_snapshots_sorted = true
           @choice_event_states = {}
           @input_tools = Array(input_tools)
           @response_format = response_format
@@ -122,6 +123,10 @@ module OpenAI
         def accumulate_chunk(chunk)
           if @current_completion_snapshot.nil?
             completion_snapshot = convert_initial_chunk_into_snapshot(chunk)
+            @choice_snapshots_sorted = completion_snapshot.choices.each_cons(2).all? do |previous, current|
+              previous.index <= current.index
+            end
+
             completion_snapshot.choices.each do |choice_snapshot|
               next if @choice_snapshots_by_index.key?(choice_snapshot.index)
 
@@ -132,13 +137,10 @@ module OpenAI
           end
 
           completion_snapshot = @current_completion_snapshot
-          appended_choice = false
 
           chunk.choices.each do |choice|
-            appended_choice = true if accumulate_choice!(choice, completion_snapshot)
+            accumulate_choice!(choice, completion_snapshot)
           end
-
-          completion_snapshot.choices.sort_by!(&:index) if appended_choice
 
           completion_snapshot.usage = chunk.usage if chunk.usage
           completion_snapshot.system_fingerprint = chunk.system_fingerprint if chunk.system_fingerprint
@@ -148,11 +150,10 @@ module OpenAI
 
         def accumulate_choice!(choice, completion_snapshot)
           choice_snapshot = @choice_snapshots_by_index[choice.index]
-          appended_choice = choice_snapshot.nil?
 
-          if appended_choice
+          if choice_snapshot.nil?
             choice_snapshot = create_new_choice_snapshot(choice)
-            completion_snapshot.choices << choice_snapshot
+            insert_choice_snapshot!(completion_snapshot.choices, choice_snapshot)
           else
             update_existing_choice_snapshot(choice, choice_snapshot)
           end
@@ -167,7 +168,6 @@ module OpenAI
           parse_tool_calls!(choice.delta.tool_calls, tool_calls_by_index)
 
           accumulate_logprobs!(choice.logprobs, choice_snapshot)
-          appended_choice
         end
 
         def create_new_choice_snapshot(choice)
@@ -427,6 +427,24 @@ module OpenAI
           end
 
           @tool_call_snapshots_by_choice_index[choice_snapshot.index] = tool_calls_by_index
+        end
+
+        def insert_choice_snapshot!(choice_snapshots, choice_snapshot)
+          unless @choice_snapshots_sorted
+            choice_snapshots.sort_by!(&:index)
+            @choice_snapshots_sorted = true
+          end
+
+          if choice_snapshots.empty? || choice_snapshots.last.index < choice_snapshot.index
+            choice_snapshots << choice_snapshot
+            return
+          end
+
+          insertion_index = choice_snapshots.bsearch_index do |existing_choice|
+            existing_choice.index > choice_snapshot.index
+          end
+
+          choice_snapshots.insert(insertion_index || choice_snapshots.length, choice_snapshot)
         end
 
         def validate_chunk_indices!(chunk)

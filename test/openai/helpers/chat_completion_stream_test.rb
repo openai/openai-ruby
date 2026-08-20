@@ -111,7 +111,53 @@ class OpenAI::Test::ChatCompletionStreamTest < Minitest::Test
     assert_operator(comparisons, :<=, choice_count * 32)
   end
 
+  def test_in_order_choice_appends_do_not_resort_existing_snapshots
+    choice_count = 128
+    state = OpenAI::Helpers::Streaming::ChatCompletionStreamState.new
+    state.handle_chunk(build_chunk(choice_index: 0, delta: {role: :assistant}))
+
+    index_reads = count_choice_snapshot_index_reads do
+      1.upto(choice_count - 1) do |index|
+        state.handle_chunk(build_chunk(choice_index: index, delta: {role: :assistant}))
+      end
+    end
+
+    assert_equal((0...choice_count).to_a, state.get_final_completion.choices.map(&:index))
+    assert_operator(index_reads, :<=, choice_count * 16)
+  end
+
+  def test_initial_choice_order_is_preserved_until_a_choice_is_appended
+    state = OpenAI::Helpers::Streaming::ChatCompletionStreamState.new
+    state.handle_chunk(
+      build_chunk_with_choices(
+        [
+          {index: 2, delta: {role: :assistant}, finish_reason: nil},
+          {index: 0, delta: {role: :assistant}, finish_reason: nil}
+        ]
+      )
+    )
+
+    assert_equal([2, 0], state.current_completion_snapshot.choices.map(&:index))
+
+    state.handle_chunk(build_chunk(choice_index: 1, delta: {role: :assistant}))
+    assert_equal([0, 1, 2], state.current_completion_snapshot.choices.map(&:index))
+  end
+
   private
+
+  def count_choice_snapshot_index_reads
+    reads = 0
+    trace = TracePoint.new(:call) do |event|
+      if event.method_id == :index && event.self.is_a?(OpenAI::Models::Chat::ParsedChoice)
+        reads += 1
+      end
+    end
+
+    trace.enable { yield }
+    reads
+  ensure
+    trace&.disable
+  end
 
   def count_integer_equality_calls
     comparisons = 0
