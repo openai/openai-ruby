@@ -74,6 +74,79 @@ types. Invalid client events raise `ArgumentError` with a generic public
 message; the converter error remains available through `cause` for explicit
 inspection. `send_raw` and `receive_raw` are text-frame escape hatches.
 
+## Standard text workflows
+
+The same generic helpers cover local function results, image content, and MCP
+approval responses; these workflows do not require additional convenience
+methods on the production client.
+
+### Local function calling
+
+Configure the session with one function, `parallel_tool_calls: false`, and a
+forced function `tool_choice`. After sending a prompt and creating the first
+response, require a `ResponseFunctionCallArgumentsDoneEvent` whose
+`response_id` matches the first completed `ResponseDoneEvent`. Validate the
+function name and parsed JSON before executing local code:
+
+```ruby
+connection.conversation.items.create(
+  type: :function_call_output,
+  call_id: function_event.call_id,
+  output: JSON.generate(result)
+)
+connection.response.create(tool_choice: :none)
+```
+
+The runnable [`function_calling.rb`](examples/realtime/function_calling.rb)
+example implements the full two-response state machine and requires non-empty
+text in the completed final `response.done` payload.
+
+### Image input
+
+Validate and encode local image bytes before calling `connect`, then use a
+normal user message with image and text content:
+
+```ruby
+connection.conversation.items.create(
+  type: :message,
+  role: :user,
+  content: [
+    {type: :input_image, image_url: "data:image/png;base64,#{encoded_image}"},
+    {type: :input_text, text: "Describe the image."}
+  ]
+)
+connection.response.create
+```
+
+The runnable [`image_input.rb`](examples/realtime/image_input.rb) validates PNG
+or JPEG structure before opening the authenticated WebSocket. It keeps paths,
+image bytes, prompts, and response text out of diagnostics and requires
+non-empty text in a completed response.
+
+### MCP approval
+
+MCP tool discovery is complete only after both `McpListToolsCompleted` and the
+matching `ConversationItemDone` containing `RealtimeMcpListTools` arrive. Their
+order is not guaranteed. Select a tool from that finalized list, force it in
+`response.create`, then answer the matching approval request through the
+generic item helper:
+
+```ruby
+connection.conversation.items.create(
+  type: :mcp_approval_response,
+  id: approval_response_id,
+  approval_request_id: approval_request.id,
+  approve: true,
+  reason: "Approved by application policy."
+)
+```
+
+After the correlated MCP call and first response both complete, request a
+follow-up with `tool_choice: :none`. The runnable
+[`mcp_approval.rb`](examples/realtime/mcp_approval.rb) demonstrates the full
+ordering-tolerant lifecycle and takes its MCP server URL from the caller rather
+than embedding an endpoint.
+
 ## Transcribe one committed audio turn
 
 Use `connect_transcription` for the dedicated transcription handshake. Select

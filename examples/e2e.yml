@@ -49,6 +49,15 @@ examples:
   examples/mtls_custom_http_client.rb:
     status: excluded
     reason: Requires an enrolled mTLS certificate, private key, endpoint, and model.
+  examples/realtime/function_calling.rb:
+    status: covered
+    expected_output: "[realtime] function calling smoke test passed"
+  examples/realtime/image_input.rb:
+    status: excluded
+    reason: Requires a caller-provided PNG or JPEG and live Realtime image-input access.
+  examples/realtime/mcp_approval.rb:
+    status: excluded
+    reason: Requires a caller-selected remote MCP server and live Realtime MCP access.
   examples/realtime/websocket_text.rb:
     status: covered
     expected_output: "[realtime] smoke test passed"

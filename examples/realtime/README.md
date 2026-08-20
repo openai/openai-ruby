@@ -10,6 +10,14 @@ This directory contains runnable examples for the Realtime WebSocket surface:
 - `websocket_voice_turn.rb` uploads one raw 24 kHz mono PCM16 turn, explicitly
   commits it, streams the assistant's PCM response to standard output, returns
   its transcript to embedded callers, verifies a completed response, and exits.
+- `function_calling.rb` forces one local function call, validates and executes
+  it, submits a generic `function_call_output` item, and requires completed
+  tool and final-text responses.
+- `image_input.rb` validates and encodes one caller-provided PNG or JPEG before
+  connecting, submits it with a text prompt, and requires completed text.
+- `mcp_approval.rb` correlates MCP discovery events, selects one advertised
+  tool, submits an approval response, waits for tool completion, and requires
+  completed follow-up text.
 
 Add the optional transport dependency and set an API key:
 
@@ -36,6 +44,73 @@ Optional environment variables:
   echoed to diagnostic output.
 - `OPENAI_REALTIME_TIMEOUT` — overall example deadline in seconds; defaults to
   `30`.
+
+## Call one deterministic local function
+
+```sh
+bundle exec ruby examples/realtime/function_calling.rb
+```
+
+The example configures exactly one forced function with parallel calls
+disabled. It validates the function name and the complete JSON argument shape,
+executes deterministic local code, and submits the result through
+`conversation.items.create(type: :function_call_output, ...)`. The second
+response disables tools and must finish with non-empty text. Prompts, arguments,
+tool output, and model text are not written to diagnostics.
+
+Optional environment variables:
+
+- `OPENAI_REALTIME_MODEL` — defaults to `gpt-realtime-2.1`.
+- `OPENAI_REALTIME_PROMPT` — defaults to a weather question.
+- `OPENAI_REALTIME_TIMEOUT` — overall example deadline in seconds; defaults to
+  `30`.
+
+## Send one validated image
+
+```sh
+OPENAI_REALTIME_IMAGE=/path/to/input.png \
+  bundle exec ruby examples/realtime/image_input.rb
+```
+
+The image is fully read, structurally validated as PNG or JPEG, and base64
+encoded before the authenticated WebSocket is opened. The response text is
+returned to embedded callers; executable diagnostics report only lifecycle
+metadata. Invalid images and file failures do not expose the input path or
+payload in their public error messages.
+
+Optional environment variables:
+
+- `OPENAI_REALTIME_IMAGE` — required path to a PNG or JPEG.
+- `OPENAI_REALTIME_MODEL` — defaults to `gpt-realtime-2.1`.
+- `OPENAI_REALTIME_PROMPT` — defaults to a concise image-description request.
+- `OPENAI_REALTIME_TIMEOUT` — overall example deadline in seconds; defaults to
+  `30`.
+
+## Approve one discovered MCP tool
+
+Choose and operate a remote MCP server appropriate for your application; the
+SDK example deliberately does not prescribe a public endpoint.
+
+```sh
+MCP_SERVER_URL=https://your-mcp-server.example/mcp \
+  bundle exec ruby examples/realtime/mcp_approval.rb
+```
+
+Tool discovery emits two independently ordered signals. The example waits for
+both `mcp_list_tools.completed` and the matching finalized
+`mcp_list_tools` conversation item before selecting the first advertised tool.
+It then validates the approval request, submits a generic
+`mcp_approval_response` item, correlates tool completion, and requests a final
+response with tools disabled. Every response must complete, and the final
+`response.done` must contain non-empty text.
+
+Optional environment variables:
+
+- `MCP_SERVER_URL` — required URL for a caller-selected MCP server.
+- `OPENAI_REALTIME_MODEL` — defaults to `gpt-realtime-2.1`.
+- `OPENAI_REALTIME_PROMPT` — defaults to a generic request to use the server.
+- `OPENAI_REALTIME_TIMEOUT` — overall example deadline in seconds; defaults to
+  `60`.
 
 ## Transcribe one committed audio turn
 
