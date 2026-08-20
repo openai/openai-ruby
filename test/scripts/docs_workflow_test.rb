@@ -20,6 +20,14 @@ class DocsWorkflowTest < Minitest::Test
     assert_includes(gemfile, "source \"https://rubygems.org\", cooldown: 7")
   end
 
+  def test_docs_lockfile_checksums_all_documentation_gems
+    lockfile = File.read(DOCS_LOCKFILE)
+
+    %w[redcarpet webrick yard].each do |gem|
+      assert_match(/^  #{gem} \([^)]+\) sha256=[0-9a-f]{64}$/, lockfile)
+    end
+  end
+
   def test_dependabot_updates_the_docs_bundle
     dependabot = YAML.safe_load_file(File.join(ROOT, ".github/dependabot.yml"))
     bundler_updates = dependabot.fetch("updates").select { _1.fetch("package-ecosystem") == "bundler" }
