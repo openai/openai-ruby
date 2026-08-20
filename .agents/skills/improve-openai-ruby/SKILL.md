@@ -91,20 +91,29 @@ such a task could still open one. Existing open skill-owned pull requests are
 durable reservations. This serializes the count-and-create sequence across
 overlapping iterations.
 
+The five-pull-request ceiling governs creation capacity, not required
+maintenance of an existing skill-owned pull request. An existing-PR
+remediation task does not consume `available_slots` and may create the fresh
+exact-head worktree required to fix that pull request even when no creation
+slots remain. It must update the same branch and pull request and must never
+open a replacement or additional pull request. New-candidate tasks require a
+creation slot.
+
 Before reviewing new candidates, query open pull requests and deduplicate all
 pull requests carrying the marker or branch prefix. Count drafts and ready
 pull requests. If the count cannot be determined reliably, do not create a pull
-request. If five or more are open, create no new branch or pull request; tend
-an existing skill-owned pull request that needs CI or review work, or finish
-with a no-change report. Never close a pull request merely to make room.
+request. If five or more are open, create no new-candidate task, branch, or pull
+request; tend an existing skill-owned pull request that needs CI or review
+work, or finish with a no-change report. Never close a pull request merely to
+make room.
 
 Let `available_slots` be five minus the current number of open skill-owned pull
-requests. The iteration may create up to `available_slots` new pull requests,
-including several in one run. Re-query the open count immediately before
-opening each pull request; stop creating pull requests if the count reaches
-five or can no longer be determined reliably. Each new pull request must
-represent an independent improvement and carry the marker or branch prefix
-above.
+requests. This value limits only new-candidate tasks and new pull requests. The
+iteration may create up to `available_slots` new pull requests, including
+several in one run. Re-query the open count immediately before opening each
+pull request; stop creating pull requests if the count reaches five or can no
+longer be determined reliably. Each new pull request must represent an
+independent improvement and carry the marker or branch prefix above.
 
 Prioritize existing skill-owned pull requests with failing CI, unresolved
 actionable review feedback, merge conflicts, or other clear blockers.
@@ -163,9 +172,10 @@ a stale failure or an issue's proposed implementation as proof.
 Run `$codex-security:security-scan` in whole-repository Standard mode when no
 completed scan can be verified within the previous seven days, and immediately
 when authentication, transport, redirects, TLS, proxies, uploads, paths,
-deserialization, logging, dependencies, CI, or release behavior changed since
-the most recent scan. Treat scan results as leads and independently validate
-their reachability, counterevidence, severity, and compatibility implications.
+deserialization, logging, webhooks, dependencies, CI, or release behavior
+changed since the most recent scan. Treat scan results as leads and
+independently validate their reachability, counterevidence, severity, and
+compatibility implications.
 
 If the security skill or its required runtime is unavailable, record the gap
 and perform the best source-backed manual security pass available; never claim
@@ -199,28 +209,33 @@ unit.
 When running in Codex with project task and worktree support, keep the current
 task as the coordinator. The coordinator may perform the read-only survey and
 candidate selection, but must not implement a selected change in its own
-worktree. For each selected candidate:
+worktree. For each selected new candidate or existing-PR remediation:
 
-1. Re-query the skill-owned open pull-request count and reserve no more than the
-   remaining `available_slots`.
+1. For a new candidate, re-query the skill-owned open pull-request count and
+   reserve no more than the remaining `available_slots`. For existing-PR
+   remediation, confirm that the pull request remains open and revalidate its
+   exact remote head; no creation slot is required.
 2. Create a new Codex task in the current project and configure it with a fresh
    linked Git worktree. For a new candidate, use the current default-branch
    commit. For maintenance of an existing pull request, use its exact remote
    head commit so the task contains the change under review. Do not create a
    new project, use the primary checkout, or reuse another task's worktree.
-3. Give the task exactly one independent candidate, its evidence, compatibility
-   constraints, generator-ownership classification and source-of-truth plan,
-   verification plan, branch prefix, pull-request marker, and the applicable
-   repository instructions. Use a project task, not an in-process subagent, for
-   implementation work.
+3. Give the task exactly one independent candidate or existing-PR remediation,
+   its evidence, compatibility constraints, generator-ownership classification
+   and source-of-truth plan, verification plan, branch prefix, pull-request
+   marker, and the applicable repository instructions. Use a project task, not
+   an in-process subagent, for implementation work.
 4. Track the task, worktree, branch, pull request, CI, and review state from the
    coordinator until the handoff is complete.
 
-Create one implementation task and worktree per intended pull request. Do not
-dispatch more implementation tasks than the available pull-request capacity,
-even though a task without a pull request does not yet count as open. If Codex
-cannot create the task or linked worktree, report the blocker and do not
-silently fall back to editing in the coordinator or primary checkout.
+Create one implementation task and worktree per intended new pull request or
+existing pull request being remediated. Do not dispatch more new-candidate
+implementation tasks than the available pull-request capacity, even though a
+task without a pull request does not yet count as open. Existing-PR remediation
+tasks are excluded from that limit; each must update only its same branch and
+pull request and cannot create another. If Codex cannot create the task or
+linked worktree, report the blocker and do not silently fall back to editing in
+the coordinator or primary checkout.
 
 ## Meet the proof gate
 
@@ -255,13 +270,18 @@ change pass.
 4. Inspect the complete diff for secrets, sensitive diagnostics, accidental
    generated churn, dependency changes, and public-API changes. Run
    `git diff --check`.
-5. Before any push, run `$thermo-nuclear-code-quality-review` on the complete
+5. If the complete change touches a sensitive boundary listed under **Run
+   security review regularly**, run the security review against the
+   implementation task's final diff before pushing, even when the seven-day
+   repository scan is current. Address every substantiated finding and rerun
+   affected checks.
+6. Before any push, run `$thermo-nuclear-code-quality-review` on the complete
    change when that skill is available. If it is unavailable, record the gap
    and perform a manual maintainability review covering structural
    simplification, abstraction boundaries, spaghetti growth, file size, and
    legibility; never claim that the skill ran. Address every substantiated issue
    from either path and rerun checks affected by the review fixes.
-6. If required verification cannot run or does not pass, do not present the
+7. If required verification cannot run or does not pass, do not present the
    change as safe. Fix the problem or finish without a pull request and report
    the exact blocker.
 
