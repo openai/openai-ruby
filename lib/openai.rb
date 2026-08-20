@@ -2,7 +2,6 @@
 
 # Standard libraries.
 require "English"
-require "cgi"
 require "date"
 require "erb"
 require "etc"

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "ipaddr"
+
 require_relative "../logging"
 
 module OpenAI
@@ -13,6 +15,16 @@ module OpenAI
 
         # from whatwg fetch spec
         MAX_REDIRECTS = 20
+        REDIRECT_ENTITY_HEADERS = %w[
+          content-encoding
+          content-language
+          content-length
+          content-location
+          content-type
+          transfer-encoding
+        ]
+          .freeze
+        private_constant :REDIRECT_ENTITY_HEADERS
 
         # rubocop:disable Style/MutableConstant
         PLATFORM_HEADERS = {
@@ -138,6 +150,11 @@ module OpenAI
               )
             end
 
+            unless %w[http https].include?(location.scheme) && !location.host.to_s.empty?
+              message = "Server responded with status #{status} but no valid location header."
+              raise OpenAI::Errors::APIConnectionError.new(url: url, message: message)
+            end
+
             request = {**request, url: location}
 
             case [url.scheme, location.scheme]
@@ -157,18 +174,39 @@ module OpenAI
             # from whatwg fetch spec
             case [status, method]
             in [301 | 302, :post] | [303, _]
-              drop = %w[content-encoding content-language content-length content-location content-type]
               request = {
                 **request,
                 method: method == :head ? :head : :get,
-                headers: headers.except(*drop),
-                body: nil
+                headers: headers.reject { |name, _| REDIRECT_ENTITY_HEADERS.include?(name.to_s.downcase) },
+                body: nil,
+                redirect_body_forbidden: true
               }
             else
             end
 
             # from undici
-            if OpenAI::Internal::Util.uri_origin(url) != OpenAI::Internal::Util.uri_origin(location)
+            origin = OpenAI::Internal::Util.uri_origin(URI(url.to_s))
+            redirect_origin = OpenAI::Internal::Util.uri_origin(URI(location.to_s))
+            if url.host.start_with?("[") && !url.hostname.start_with?("v", "V")
+              origin = origin.sub(url.host, "[#{IPAddr.new(url.hostname)}]")
+            end
+
+            if location.host.start_with?("[") && !location.hostname.start_with?("v", "V")
+              redirect_origin = redirect_origin.sub(location.host, "[#{IPAddr.new(location.hostname)}]")
+            end
+
+            unless origin.casecmp?(redirect_origin)
+              unless request[:body].nil?
+                # An attacker who controls a trusted endpoint's redirect destination could receive the body.
+                message = "Cannot follow a cross-origin redirect with a request body."
+                raise(
+                  OpenAI::Errors::APIConnectionError.new(
+                    url: URI(redirect_origin),
+                    message: message
+                  )
+                )
+              end
+
               headers = request.fetch(:headers).reject do |name, _|
                 name == "host" || OpenAI::Internal::Logging.credential_header?(name)
               end
@@ -370,6 +408,30 @@ module OpenAI
 
           query = OpenAI::Internal::Util.deep_merge(req[:query].to_h, opts[:extra_query].to_h)
 
+          url = OpenAI::Internal::Util.join_parsed_uri(
+            @base_url_components,
+            {**req, path: path, query: query}
+          )
+          request_origin = URI.parse(url.to_s).normalize
+          base_origin = URI.parse(OpenAI::Internal::Util.unparse_uri(@base_url_components).to_s).normalize
+          [request_origin, base_origin].each do |origin|
+            next unless origin.hostname&.include?(":")
+
+            begin
+              address = IPAddr.new(origin.hostname)
+            rescue IPAddr::InvalidAddressError
+              next
+            end
+
+            origin.hostname = address.to_s if address.ipv6?
+          end
+
+          unless !request_origin.host.to_s.empty? &&
+              !base_origin.host.to_s.empty? &&
+              OpenAI::Internal::Util.uri_origin(request_origin) == OpenAI::Internal::Util.uri_origin(base_origin)
+            raise OpenAI::Errors::Error, "Request path must resolve to the configured base URL origin"
+          end
+
           headers = OpenAI::Internal::Util.normalized_headers(
             @headers,
             auth_headers(
@@ -412,10 +474,6 @@ module OpenAI
           # has no body at all, not when an optional body param was omitted.
           headers.delete("content-type") if body.nil? && !req.key?(:body)
 
-          url = OpenAI::Internal::Util.join_parsed_uri(
-            @base_url_components,
-            {**req, path: path, query: query}
-          )
           max_retries = opts.fetch(:max_retries, @max_retries)
           max_retries = 0 unless self.class.request_body_replayable?(body)
           {
@@ -516,18 +574,58 @@ module OpenAI
           end
 
           url, max_retries = request.fetch_values(:url, :max_retries)
+          authorized_url = url.class.new(*URI.split(url.to_s))
+          prepared_request = request
+          trusted_origin = request[:redirect_trusted_origin]
 
           begin
             encoded_headers, encoded_body = OpenAI::Internal::Util.encode_content(
               request.fetch(:headers),
               request[:body]
             )
-            attempt_request = request.merge(headers: encoded_headers, body: encoded_body)
+            attempt_request = request.except(:redirect_trusted_origin, :redirect_body_forbidden).merge(
+              url: authorized_url.class.new(*URI.split(authorized_url.to_s)),
+              headers: encoded_headers.transform_values(&:dup),
+              body: encoded_body
+            )
             prepared_request = prepare_request(
               attempt_request,
               redirect_count: redirect_count,
               retry_count: retry_count
             )
+
+            prepared_url = prepared_request.fetch(:url)
+            prepared_origin = OpenAI::Internal::Util.uri_origin(URI(prepared_url.to_s))
+            if prepared_url.host&.start_with?("[") && !prepared_url.hostname.start_with?("v", "V")
+              prepared_origin = prepared_origin.sub(prepared_url.host, "[#{IPAddr.new(prepared_url.hostname)}]")
+            end
+
+            trusted_origin ||= prepared_origin
+            authorized_origin = OpenAI::Internal::Util.uri_origin(URI(authorized_url.to_s))
+            if authorized_url.host.start_with?("[") && !authorized_url.hostname.start_with?("v", "V")
+              authorized_origin = authorized_origin.sub(authorized_url.host, "[#{IPAddr.new(authorized_url.hostname)}]")
+            end
+
+            cross_origin = redirect_count.positive? && !trusted_origin.casecmp?(authorized_origin)
+            escaped_origin = redirect_count.positive? && !authorized_origin.casecmp?(prepared_origin)
+            restore_authorized_url = cross_origin || escaped_origin
+            body_forbidden = request[:redirect_body_forbidden] || cross_origin
+            if restore_authorized_url || body_forbidden
+              safe_headers = prepared_request.fetch(:headers).reject do |name, _|
+                normalized_name = name.to_s.downcase
+                (restore_authorized_url &&
+                  (normalized_name == "host" || OpenAI::Internal::Logging.credential_header?(name))) ||
+                  (body_forbidden && REDIRECT_ENTITY_HEADERS.include?(normalized_name))
+              end
+
+              prepared_request = prepared_request.merge(
+                url: restore_authorized_url ? authorized_url : prepared_url,
+                method: body_forbidden ? request.fetch(:method) : prepared_request.fetch(:method),
+                headers: safe_headers,
+                body: body_forbidden ? nil : prepared_request[:body]
+              )
+            end
+
             url, max_retries, timeout = prepared_request.fetch_values(:url, :max_retries, :timeout)
             input = OpenAI::HTTPClient::Request.new(
               method: prepared_request.fetch(:method),
@@ -583,12 +681,20 @@ module OpenAI
           in 300..399
             self.class.reap_connection!(status, stream: stream)
 
-            redirect_source = request.merge(url: prepared_request.fetch(:url))
+            redirect_body = request[:body]
+            redirect_body = prepared_request[:body] if redirect_body.nil? || prepared_request[:body].nil?
+            redirect_source = request.merge(
+              method: prepared_request.fetch(:method),
+              url: prepared_request.fetch(:url),
+              body: redirect_body
+            )
             redirected_request = self.class.follow_redirect(
               redirect_source,
               status: status,
               response_headers: headers
             )
+            redirected_request = redirected_request.merge(body: nil) if request[:body].nil?
+            redirected_request = redirected_request.merge(redirect_trusted_origin: trusted_origin)
             send_request(
               redirected_request,
               redirect_count: redirect_count + 1,

@@ -4,7 +4,7 @@ require_relative "../test_helper"
 require "timeout"
 
 class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
-  RequestRecord = Data.define(:method, :path, :headers, :body, :timeout)
+  RequestRecord = Data.define(:http_method, :path, :headers, :body, :timeout)
 
   class ScriptedHTTPClient
     attr_reader :requests
@@ -467,14 +467,14 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     created_body = nil
     request_options = {extra_headers: {"X-Test" => "yes"}}
     transport = scripted_transport do |request|
-      case [request.method, request.path]
+      case [request.http_method, request.path]
       in [:post, "/v1/vector_stores/vs_123/files"]
         created_body = JSON.parse(request.body)
         [200, {}, vector_file(status: "in_progress")]
       in [:get, "/v1/vector_stores/vs_123/files/file_123"]
         [200, {}, vector_file(status: "completed")]
       else
-        flunk("unexpected request: #{request.method} #{request.path}")
+        flunk("unexpected request: #{request.http_method} #{request.path}")
       end
     end
 
@@ -539,7 +539,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     request_bodies = {}
     transport = scripted_transport do |request|
       request_bodies[request.path] = request.body
-      case [request.method, request.path]
+      case [request.http_method, request.path]
       in [:post, "/v1/files"]
         [200, {}, file_object(id: "file_uploaded", status: "processed")]
       in [:post, "/v1/vector_stores/vs_123/files"]
@@ -547,7 +547,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       in [:get, "/v1/vector_stores/vs_123/files/file_uploaded"]
         [200, {}, vector_file(id: "file_uploaded", status: "completed")]
       else
-        flunk("unexpected request: #{request.method} #{request.path}")
+        flunk("unexpected request: #{request.http_method} #{request.path}")
       end
     end
 
@@ -578,7 +578,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       when "/v1/vector_stores/vs_123/files"
         [200, {}, vector_file(id: "file_uploaded", status: "completed")]
       else
-        flunk("unexpected request: #{request.method} #{request.path}")
+        flunk("unexpected request: #{request.http_method} #{request.path}")
       end
     end
 
@@ -649,14 +649,14 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     created_body = nil
     request_options = {extra_headers: {"X-Test" => "yes"}}
     transport = scripted_transport do |request|
-      case [request.method, request.path]
+      case [request.http_method, request.path]
       in [:post, "/v1/vector_stores/vs_123/file_batches"]
         created_body = JSON.parse(request.body)
         [200, {}, vector_batch(status: "in_progress")]
       in [:get, "/v1/vector_stores/vs_123/file_batches/batch_123"]
         [200, {}, vector_batch(status: "completed")]
       else
-        flunk("unexpected request: #{request.method} #{request.path}")
+        flunk("unexpected request: #{request.http_method} #{request.path}")
       end
     end
 
@@ -684,7 +684,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     upload_count = 0
     batch_body = nil
     transport = scripted_transport do |request|
-      case [request.method, request.path]
+      case [request.http_method, request.path]
       in [:post, "/v1/files"]
         id = lock.synchronize do
           active_uploads += 1
@@ -702,7 +702,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       in [:get, "/v1/vector_stores/vs_123/file_batches/batch_123"]
         [200, {}, vector_batch(status: "completed")]
       else
-        flunk("unexpected request: #{request.method} #{request.path}")
+        flunk("unexpected request: #{request.http_method} #{request.path}")
       end
     end
 
@@ -780,7 +780,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     post_keys = Hash.new { |hash, path| hash[path] = [] }
     next_file = 0
     transport = scripted_transport do |request|
-      if request.method == :get
+      if request.http_method == :get
         next [200, {}, vector_batch(status: "completed")]
       end
 
@@ -795,7 +795,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       when "/v1/vector_stores/vs_123/file_batches"
         [200, {}, vector_batch(status: "in_progress")]
       else
-        flunk("unexpected request: #{request.method} #{request.path}")
+        flunk("unexpected request: #{request.http_method} #{request.path}")
       end
 
       persisted[key] = success

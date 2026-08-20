@@ -300,7 +300,24 @@ module OpenAI
         #
         # @return [Hash{String=>Array<String>}]
         def decode_query(query)
-          CGI.parse(query.to_s)
+          params = {}
+          query.to_s.split(/[&;]/).each do |pair|
+            key, value = pair.split("=", 2).map do |component|
+              # URI rejects malformed escapes, while CGI leaves them literal and stops at a trailing "%+".
+              escaped = component.gsub(/%(?![0-9a-fA-F]{2})/, "%25")
+              escaped = escaped.delete_suffix("+") + "%2B" if component.end_with?("%+")
+              decoded = URI.decode_www_form_component(escaped).force_encoding(Encoding::UTF_8)
+              decoded.valid_encoding? ? decoded : decoded.force_encoding(component.encoding)
+            end
+
+            next unless key
+
+            params[key] ||= []
+            params[key] << value if value
+          end
+
+          params.default = [].freeze
+          params
         end
 
         # @api private
@@ -481,7 +498,7 @@ module OpenAI
               y,
               val: val.content,
               closing: closing,
-              content_type: val.content_type
+              content_type: OpenAI::FilePart.validate_content_type(val.content_type)
             )
           in Pathname
             y << format(content_line, content_type || "application/octet-stream")

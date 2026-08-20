@@ -1,5 +1,8 @@
 module OpenAI
   class FilePart
+    # @api private
+    def self.validate_content_type: (String? content_type) -> String?
+
     attr_reader content: Pathname | StringIO | IO | String
 
     attr_reader content_type: String?
