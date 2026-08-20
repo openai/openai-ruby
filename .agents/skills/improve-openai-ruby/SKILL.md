@@ -1,6 +1,6 @@
 ---
 name: improve-openai-ruby
-description: Run safe, recurring, whole-repository maintenance for the OpenAI Ruby SDK. Use for a scheduled or manually repeated improvement pass that should inspect the codebase, select and implement zero or more independent high-confidence non-breaking improvements, verify each thoroughly, and submit each as a bounded pull request. Cover correctness, security, reliability, performance, Ruby idioms, architecture, maintainability, tests, and developer tooling while keeping no more than five skill-owned pull requests open. When running in a local Codex project, execute each selected improvement in a new Codex task with its own linked worktree in the current project.
+description: Run safe, recurring, whole-repository maintenance for the OpenAI Ruby SDK. Use for a scheduled or manually repeated improvement pass that should inspect the codebase, remediate one existing skill-owned pull request or select and implement at most one high-confidence non-breaking improvement, verify it thoroughly, and submit a bounded pull request when needed. Cover correctness, security, reliability, performance, Ruby idioms, architecture, maintainability, tests, and developer tooling while keeping no more than five skill-owned pull requests open. When running in a local Codex project, execute the selected work in a new Codex task with its own linked worktree in the current project.
 ---
 
 # Improve OpenAI Ruby
@@ -93,52 +93,49 @@ Fail closed if the trusted actor set or any metadata cannot be verified. Do not
 count or mutate an unauthenticated lookalike as skill-owned; still consider it
 when checking for overlapping work.
 
-Before counting capacity, dispatching work, or mutating a skill-owned pull
-request, acquire one exclusive repository-wide coordinator lease shared by
+Before choosing an iteration mode, dispatching work, or mutating a skill-owned
+pull request, acquire one exclusive repository-wide coordinator lease shared by
 scheduled and manual invocations. Use the host scheduler's concurrency guard or
 another atomic compare-and-set lock; a process-local flag is insufficient. If
 a scheduler concurrency key does not also cover manual invocations, it is not a
 shared lease. If the shared lease is unavailable or cannot be verified, make no
 mutations and finish with a deferred report. Hold the lease through the
-open-pull-request count, implementation tasks, and creation or abandonment of
-every intended pull request. An implementation task without an open pull
-request is not a durable slot reservation, so do not release the lease while
-such a task could still open one. Existing open skill-owned pull requests are
-durable reservations. This serializes the count-and-create sequence across
-overlapping iterations.
+open-pull-request count, the selected implementation task, and creation or
+abandonment of its intended pull request. An implementation task without an open
+pull request is not a durable reservation, so do not release the lease while it
+could still open one. Existing open skill-owned pull requests are durable
+reservations. This serializes the count-and-create sequence across overlapping
+iterations.
 
-The five-pull-request ceiling governs creation capacity, not required
-maintenance of an existing skill-owned pull request. An existing-PR
-remediation task does not consume `available_slots` and may create the fresh
-exact-head worktree required to fix that pull request even when no creation
-slots remain. It must update the same branch and pull request and must never
-open a replacement or additional pull request. New-candidate tasks require a
-creation slot.
+While holding the coordinator lease, query open pull requests, authenticate
+each candidate against the ownership tuple above, deduplicate the authenticated
+skill-owned set, and count its drafts and ready pull requests. If the count
+cannot be determined reliably, do not create a pull request.
 
-Before reviewing new candidates, query open pull requests, authenticate each
-candidate against the ownership tuple above, and deduplicate the authenticated
-skill-owned set. Count its drafts and ready pull requests. If the count cannot
-be determined reliably, do not create a pull request. If five or more are open,
-create no new-candidate task, branch, or pull request; tend an authenticated
-existing skill-owned pull request that needs CI or review work, or finish with
-a no-change report. Never close a pull request merely to make room.
+Choose at most one of these two work modes before selecting candidates:
 
-Let `available_slots` be five minus the current number of open skill-owned pull
-requests. This value limits only new-candidate tasks and new pull requests. The
-iteration may create up to `available_slots` new pull requests, including
-several in one run. Re-query the open count immediately before opening each
-pull request; stop creating pull requests if the count reaches five or can no
-longer be determined reliably. Each new pull request must represent an
-independent improvement and carry both the marker and branch prefix above. After
-creation, verify its complete ownership tuple before treating it as a durable
-reservation.
+- **Existing-PR remediation mode.** Use this mode when an authenticated
+  skill-owned pull request has failing CI, unresolved actionable review
+  feedback, a merge conflict, or another clear blocker. Select one such pull
+  request for the iteration. The number of open skill-owned pull requests never
+  limits remediation selection, task dispatch, or creation of the required
+  exact-head worktree. The remediation task must update the same branch and
+  pull request and must never open a replacement or additional pull request.
+- **New-improvement mode.** Use this mode only when no authenticated existing
+  skill-owned pull request needs actionable remediation and fewer than five
+  authenticated skill-owned pull requests are open. Select at most one new
+  candidate and create at most one pull request in the iteration. Re-query the
+  authenticated open count immediately before dispatching its task and again
+  before opening its pull request; stop if the count reaches five or can no
+  longer be determined reliably. The new pull request must carry both the marker
+  and branch prefix above. After creation, verify its complete ownership tuple
+  before treating it as a durable reservation.
 
-Prioritize existing skill-owned pull requests with failing CI, unresolved
-actionable review feedback, merge conflicts, or other clear blockers.
-Maintaining those pull requests does not prohibit using genuinely available
-slots, but never abandon a broken pull request in favor of generating new
-work. Search open and recently merged work for overlap before starting each
-candidate.
+The five-pull-request ceiling governs only new-improvement mode; never use it
+to block existing-PR remediation at any stage. Never close a pull request merely
+to make room. Search open and recently merged work for overlap before starting
+each candidate. If neither mode is eligible, select no candidate and finish with
+a deferred or no-change report that states why.
 
 ## Survey the whole repository
 
@@ -188,12 +185,14 @@ a stale failure or an issue's proposed implementation as proof.
 ## Run security review regularly
 
 Run `$codex-security:security-scan` in whole-repository Standard mode when no
-completed scan can be verified within the previous seven days, and immediately
-when authentication, transport, redirects, TLS, proxies, uploads, paths,
-deserialization, logging, webhooks, dependencies, CI, or release behavior
-changed since the most recent scan. Treat scan results as leads and
-independently validate their reachability, counterevidence, severity, and
-compatibility implications.
+completed scan can be verified within the previous seven days. Treat applicable
+repository `AGENTS.md` and `CONTRIBUTING.md` as the canonical definition of
+security-sensitive boundaries instead of copying an evolving list into this
+skill. Run a fresh security review immediately after any change those
+instructions classify as sensitive, including endpoint behavior even when
+transport code is unchanged. Treat scan results as leads and independently
+validate their reachability, counterevidence, severity, and compatibility
+implications.
 
 If the security skill or its required runtime is unavailable, record the gap
 and perform the best source-backed manual security pass available; never claim
@@ -212,10 +211,14 @@ complexity or establish a missing invariant. Reject candidates that are
 cosmetic, speculative, duplicate active work, depend on unavailable evidence,
 or require an unapproved product/API decision.
 
-Choose zero or more independent candidates, capped by `available_slots`. Each
-candidate must be implementable, verifiable, and reviewable on its own. Combine
-dependent changes into one coherent pull request or defer them; do not create a
-stack of mutually dependent pull requests merely to use the available capacity.
+Choose at most one candidate belonging to the iteration mode selected under
+**Serialize capacity and enforce the pull-request ceiling**. In existing-PR
+remediation mode, selection is never limited by the number of open pull
+requests. In new-improvement mode, select a new candidate only while the
+authenticated open count remains below five. Do not mix modes in one iteration.
+The candidate must be implementable, verifiable, and reviewable on its own.
+Combine dependent changes into one coherent pull request or defer them; do not
+create a stack of mutually dependent pull requests.
 
 Do not bundle unrelated cleanup into any pull request. A wider internal
 refactor is eligible only when it is the simplest behavior-preserving fix, has
@@ -227,12 +230,12 @@ unit.
 When running in Codex with project task and worktree support, keep the current
 task as the coordinator. The coordinator may perform the read-only survey and
 candidate selection, but must not implement a selected change in its own
-worktree. For each selected new candidate or existing-PR remediation:
+worktree. For the selected new candidate or existing-PR remediation:
 
-1. For a new candidate, re-query the skill-owned open pull-request count and
-   reserve no more than the remaining `available_slots`. For existing-PR
-   remediation, confirm that the pull request remains open and revalidate its
-   exact remote head; no creation slot is required.
+1. For a new candidate, re-query the authenticated skill-owned open
+   pull-request count and proceed only while it remains below five. For
+   existing-PR remediation, confirm that the pull request remains open and
+   revalidate its exact remote head; the open count never gates this work.
 2. Create a new Codex task in the current project and configure it with a fresh
    linked Git worktree. For a new candidate, use the current default-branch
    commit. For maintenance of an existing pull request, use its exact remote
@@ -246,14 +249,13 @@ worktree. For each selected new candidate or existing-PR remediation:
 4. Track the task, worktree, branch, pull request, CI, and review state from the
    coordinator until the handoff is complete.
 
-Create one implementation task and worktree per intended new pull request or
-existing pull request being remediated. Do not dispatch more new-candidate
-implementation tasks than the available pull-request capacity, even though a
-task without a pull request does not yet count as open. Existing-PR remediation
-tasks are excluded from that limit; each must update only its same branch and
-pull request and cannot create another. If Codex cannot create the task or
-linked worktree, report the blocker and do not silently fall back to editing in
-the coordinator or primary checkout.
+Create one implementation task and worktree for the selected new pull request
+or existing pull request being remediated. Do not dispatch the new-candidate
+task when the authenticated open count has reached five. Never apply that
+ceiling to existing-PR remediation; the remediation task must update only its
+same branch and pull request and cannot create another. If Codex cannot create
+the task or linked worktree, report the blocker and do not silently fall back to
+editing in the coordinator or primary checkout.
 
 ## Meet the proof gate
 
@@ -288,9 +290,9 @@ change pass.
 4. Inspect the complete diff for secrets, sensitive diagnostics, accidental
    generated churn, dependency changes, and public-API changes. Run
    `git diff --check`.
-5. If the complete change touches a sensitive boundary listed under **Run
-   security review regularly**, run the security review against the
-   implementation task's final diff before pushing, even when the seven-day
+5. If applicable repository `AGENTS.md` or `CONTRIBUTING.md` classifies the
+   complete change as security-sensitive, run a fresh security review against
+   the implementation task's final diff before pushing, even when the seven-day
    repository scan is current. Address every substantiated finding and rerun
    affected checks.
 6. Before any push, run `$thermo-nuclear-code-quality-review` on the complete
@@ -305,12 +307,13 @@ change pass.
 
 ## Submit and own the pull request
 
-Write a focused pull request for each selected improvement. Include the marker,
-evidence for the problem, root cause, why the design is compatible, exact
-generator-ownership decision, verification, and any benchmark results or
-intentional limitations. For a generated change, identify the upstream
-OpenAPI/config/compiler/template fix and show that regeneration produced the
-public diff. Keep vulnerability details out of public text.
+For a selected new improvement, write one focused pull request. In existing-PR
+remediation mode, update only that same pull request and preserve its scope.
+Include the marker, evidence for the problem, root cause, why the design is
+compatible, exact generator-ownership decision, verification, and any benchmark
+results or intentional limitations. For a generated change, identify the
+upstream OpenAPI/config/compiler/template fix and show that regeneration
+produced the public diff. Keep vulnerability details out of public text.
 
 Use Conventional Commits syntax for the pull-request title and every commit
 subject: `<type>[optional scope]: <imperative summary>`. Choose the narrowest
