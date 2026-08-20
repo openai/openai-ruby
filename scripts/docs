@@ -4,7 +4,11 @@ set -e
 
 cd -- "$(dirname -- "$0")/.."
 
-export BUNDLE_APP_CONFIG="${BUNDLE_APP_CONFIG:-$PWD/.bundle}"
+if [[ -z "${BUNDLE_APP_CONFIG:-}" ]]; then
+  export BUNDLE_APP_CONFIG="$PWD/.bundle"
+elif [[ "$BUNDLE_APP_CONFIG" != /* ]]; then
+  export BUNDLE_APP_CONFIG="$PWD/$BUNDLE_APP_CONFIG"
+fi
 export BUNDLE_GEMFILE="$PWD/docs/Gemfile"
 export BUNDLE_LOCKFILE="$PWD/docs/Gemfile.lock"
 

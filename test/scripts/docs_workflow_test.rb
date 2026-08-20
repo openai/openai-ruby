@@ -63,10 +63,27 @@ class DocsWorkflowTest < Minitest::Test
     end
   end
 
+  def test_docs_script_resolves_explicit_relative_config_from_repository_root
+    Dir.mktmpdir do |directory|
+      write_bundle_probe(directory)
+      app_config = "relative-bundle-config"
+      env = unactivated_env.merge(
+        "BUNDLE_APP_CONFIG" => app_config,
+        "PATH" => executable_path(directory)
+      )
+
+      stdout, stderr, status = Open3.capture3(env, File.join(ROOT, "scripts/docs"), "install")
+
+      assert(status.success?, stderr)
+      docs = JSON.parse(stdout)
+      assert_equal(File.join(ROOT, app_config), docs.fetch("app_config_path"))
+    end
+  end
+
   def test_rake_aliases_preserve_explicit_config_and_select_docs_lockfile
     Dir.mktmpdir do |directory|
       write_bundle_probe(directory)
-      app_config = File.join(directory, "bundle-config")
+      app_config = "relative-bundle-config"
       env = unactivated_env.merge(
         "BUNDLE_APP_CONFIG" => app_config,
         "BUNDLE_LOCKFILE" => File.join(ROOT, "Gemfile.lock"),
@@ -86,7 +103,7 @@ class DocsWorkflowTest < Minitest::Test
 
         assert(status.success?, stderr)
         docs = JSON.parse(stdout.lines.last)
-        assert_equal(app_config, docs.fetch("app_config_path"))
+        assert_equal(File.join(ROOT, app_config), docs.fetch("app_config_path"))
         assert_equal(DOCS_GEMFILE, docs.fetch("gemfile"))
         assert_equal(DOCS_LOCKFILE, docs.fetch("lockfile"))
         refute(docs.fetch("env").key?("BUNDLE_BIN_PATH"))
