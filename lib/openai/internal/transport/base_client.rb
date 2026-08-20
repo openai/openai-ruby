@@ -863,7 +863,8 @@ module OpenAI
         #
         # @return [String]
         def inspect
-          "#<#{self.class.name}:0x#{object_id.to_s(16)} base_url=#{@base_url} max_retries=#{@max_retries} timeout=#{@timeout}>"
+          safe_base_url = OpenAI::Internal::Logging.safe_url(@base_url)
+          "#<#{self.class.name}:0x#{object_id.to_s(16)} base_url=#{safe_base_url} max_retries=#{@max_retries} timeout=#{@timeout}>"
         end
 
         define_sorbet_constant!(:RequestComponents) do
