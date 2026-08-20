@@ -38,7 +38,21 @@ module OpenAI
         # @param other [Object]
         #
         # @return [Boolean]
-        def ===(other) = other.is_a?(Array) && other.all?(item_type)
+        def ===(other)
+          return false unless other.is_a?(Array)
+
+          target = item_type
+          other.all? do |item|
+            case item
+            in ^target
+              true
+            in nil
+              nilable?
+            else
+              false
+            end
+          end
+        end
 
         # @api public
         #
@@ -52,7 +66,7 @@ module OpenAI
         # @api public
         #
         # @return [Integer]
-        def hash = [self.class, item_type].hash
+        def hash = [self.class, item_type, nilable?].hash
 
         # @api private
         #
