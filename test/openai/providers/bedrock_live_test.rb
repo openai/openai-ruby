@@ -5,6 +5,7 @@ require_relative "../test_helper"
 # Real AWS requests are disabled unless BEDROCK_LIVE_TEST=1 is explicitly set.
 #
 # AWS_REGION=us-east-1 BEDROCK_LIVE_TEST=1 \
+#   BUNDLE_GEMFILE=gemfiles/bedrock.gemfile \
 #   bundle exec ruby test/openai/providers/bedrock_live_test.rb
 #
 # BEDROCK_AUTH_MODE selects auto, bearer, token-provider, sigv4, static, or profile.

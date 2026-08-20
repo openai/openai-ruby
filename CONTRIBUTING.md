@@ -29,7 +29,8 @@ This will install all the required dependencies.
   request/response bodies, prompts, or uploaded files from logs, exceptions,
   error messages, fixtures, and CI artifacts. Clearly fake or sanitized
   payloads may remain in tests and diagnostics.
-- **Dependencies:** Review `Gemfile`, `Gemfile.lock`, and `openai.gemspec`
+- **Dependencies:** Review `Gemfile`, `Gemfile.lock`, `gemfiles/*.gemfile`,
+  `gemfiles/*.gemfile.lock`, and `openai.gemspec`
   changes, including direct and transitive gems, sources, locked Git revisions,
   native extensions, and install/build scripts. Do not run unreviewed scripts
   or accept unexplained lockfile changes.
@@ -108,6 +109,14 @@ $ ./scripts/mock
 
 ```bash
 $ bundle exec rake test
+```
+
+The primary bundle intentionally omits the optional AWS SDK. Install the
+dedicated Bedrock bundle and run its tests separately:
+
+```bash
+$ BUNDLE_GEMFILE=gemfiles/bedrock.gemfile bundle install
+$ BUNDLE_GEMFILE=gemfiles/bedrock.gemfile bundle exec rake test:bedrock
 ```
 
 ### Running examples end-to-end

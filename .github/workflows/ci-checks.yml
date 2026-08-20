@@ -116,8 +116,32 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
+      - name: Check primary dependency bundle
+        run: bundle check
       - name: Run tests
         run: ./scripts/test
+
+  test-bedrock:
+    timeout-minutes: 10
+    name: test (bedrock, ruby 4.0)
+    permissions:
+      contents: read
+    runs-on: ${{ inputs.runner }}
+    env:
+      BUNDLE_GEMFILE: gemfiles/bedrock.gemfile
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
+        with:
+          ruby-version: '4.0'
+          bundler-cache: true
+      - name: Check Bedrock dependency bundle
+        run: bundle check
+      - name: Run Bedrock tests
+        run: bundle exec rake test:bedrock
 
   required:
     timeout-minutes: 5
@@ -128,6 +152,7 @@ jobs:
       - typecheck
       - validate-rbs
       - package
+      - test-bedrock
       - test-ruby
     if: ${{ always() }}
     permissions: {}
@@ -139,10 +164,12 @@ jobs:
           TYPECHECK_RESULT: ${{ needs.typecheck.result }}
           RBS_VALIDATION_RESULT: ${{ needs.validate-rbs.result }}
           PACKAGE_RESULT: ${{ needs.package.result }}
+          BEDROCK_TEST_RESULT: ${{ needs.test-bedrock.result }}
           TEST_RESULT: ${{ needs.test-ruby.result }}
         run: |
           test "$LINT_RESULT" = "success"
           test "$TYPECHECK_RESULT" = "success"
           test "$RBS_VALIDATION_RESULT" = "success"
           test "$PACKAGE_RESULT" = "success"
+          test "$BEDROCK_TEST_RESULT" = "success"
           test "$TEST_RESULT" = "success"

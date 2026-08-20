@@ -29,13 +29,30 @@ multitask(:"docs:preview") do
   sh(*%w[yard server --reload --quiet --bind \[::\] --port], ENV.fetch("PORT", "8808"))
 end
 
-desc("Run test suites; use `TEST=path/to/test.rb` to run a specific test file")
-multitask(test: [:"test:examples:inventory"]) do
-  rb = FileList[ENV.fetch("TEST", "./test/**/*_test.rb")]
-    .map { "require_relative(#{_1.dump});" }
-    .join
+bedrock_tests = FileList["test/openai/providers/bedrock*_test.rb"]
+
+run_tests = lambda do |files|
+  abort("No test files selected") if files.empty?
+
+  rb = files.map { "require_relative(#{_1.dump});" }.join
 
   ruby(*%w[-w -e], rb, verbose: false) { fail unless _1 }
+end
+
+desc("Run non-Bedrock test suites; use `TEST=path/to/test.rb` to run a specific test file")
+multitask(test: [:"test:examples:inventory"]) do
+  files = FileList[ENV.fetch("TEST", "test/**/*_test.rb")]
+  requested_bedrock_tests = files.to_a & bedrock_tests.to_a
+  if ENV.key?("TEST") && !requested_bedrock_tests.empty?
+    abort("Run Bedrock tests with `BUNDLE_GEMFILE=gemfiles/bedrock.gemfile bundle exec rake test:bedrock`")
+  end
+
+  run_tests.call(files.exclude(*bedrock_tests))
+end
+
+desc("Run Bedrock tests with the AWS test bundle")
+multitask("test:bedrock") do
+  run_tests.call(bedrock_tests)
 end
 
 desc("Lint `*.rb(i)`")

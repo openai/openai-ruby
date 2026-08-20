@@ -18,7 +18,6 @@ end
 group :development, :test do
   gem "async"
   gem "async-websocket"
-  gem "aws-sdk-core", "~> 3"
   gem "cgi"
   gem "minitest", "~> 6.0"
   gem "minitest-hooks", ">= 1.5.4"

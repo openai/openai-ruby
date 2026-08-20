@@ -187,6 +187,7 @@ Real AWS requests are disabled in the test suite unless `BEDROCK_LIVE_TEST=1` is
 
 ```sh
 AWS_REGION=us-east-1 BEDROCK_LIVE_TEST=1 \
+  BUNDLE_GEMFILE=gemfiles/bedrock.gemfile \
   bundle exec ruby test/openai/providers/bedrock_live_test.rb
 ```
 
