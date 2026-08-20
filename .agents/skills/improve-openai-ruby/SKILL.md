@@ -116,7 +116,8 @@ Choose at most one of these two work modes before selecting candidates:
 
 - **Existing-PR remediation mode.** Use this mode when an authenticated
   skill-owned pull request has failing CI, unresolved actionable review
-  feedback, a merge conflict, or another clear blocker. Select one such pull
+  feedback, a merge conflict, another clear blocker, or passed exact-head CI
+  but still awaits its draft-to-ready review handoff. Select one such pull
   request for the iteration. The number of open skill-owned pull requests never
   limits remediation selection, task dispatch, or creation of the required
   exact-head worktree. The remediation task must update the same branch and
@@ -316,14 +317,35 @@ upstream OpenAPI/config/compiler/template fix and show that regeneration
 produced the public diff. Keep vulnerability details out of public text.
 
 Use Conventional Commits syntax for the pull-request title and every commit
-subject: `<type>[optional scope]: <imperative summary>`. Choose the narrowest
-accurate type, such as `fix`, `perf`, `refactor`, `test`, `docs`, `build`, `ci`,
-or `chore`. Do not use `!` or a `BREAKING CHANGE` footer because breaking work
-is outside this skill's scope. Before every push, inspect all subjects between
-the default-branch base and `HEAD`; before opening or updating a pull request,
-validate its title and inspect the remote commit list again. Correct any
-nonconforming subject on the skill-owned branch before handoff, without
-rewriting commits owned by another contributor.
+subject created by the skill: `<type>[optional scope]: <imperative summary>`.
+Choose the narrowest accurate type, such as `fix`, `perf`, `refactor`, `test`,
+`docs`, `build`, `ci`, or `chore`. Do not use `!` or a `BREAKING CHANGE` footer
+because breaking work is outside this skill's scope. Before every push, inspect
+all subjects between the default-branch base and `HEAD`; before opening or
+updating a pull request, validate its title and inspect the remote commit list
+again. Treat a commit as skill-owned only when the authenticated implementation
+task recorded its SHA when creating it; author or committer metadata alone is
+not ownership evidence, and unknown provenance is non-skill-owned. Correct a
+nonconforming subject only for a skill-owned commit that has not appeared on the
+remote and only when doing so rewrites no non-skill-owned descendant. Never
+rewrite a contributor's or maintainer's commit, or any commit already present
+on the remote, even on a skill-owned branch. For every nonconforming subject
+that cannot be corrected under these constraints, record its exact SHA and a
+sanitized subject in the handoff, keep the pull-request title conforming, and do
+not claim that the complete commit history conforms. Omit a subject containing
+credentials or vulnerability details and coordinate privately under repository
+policy. If repository policy requires every historical subject to conform,
+stop for maintainer correction rather than rewriting history the skill does not
+own.
+
+Create every new improvement pull request as a draft. Keep it draft while
+exact-head required CI is absent, queued, pending, failing, approval-gated, or
+otherwise incomplete. Because `CODEOWNERS` can automatically request reviewers
+when a pull request becomes ready, treat the transition from draft to ready as
+a review handoff. Mark the same pull request ready only after the exact-head CI
+gate below passes; then confirm the automatic review request and add an explicit
+team request only when repository policy requires one and the expected request
+is absent. Never open a new improvement pull request ready for review.
 
 Monitor CI for at most 45 minutes or the remaining invocation budget, whichever
 is shorter. Diagnose and fix branch-caused failures within that budget, rerun
