@@ -1,0 +1,21 @@
+module OpenAI
+  module Helpers
+    module StructuredOutput
+      module ChatCompletionParser
+        def self.build_unwrap: (
+          top model,
+          ::Hash[String, top] tool_models
+        ) -> (^(::Hash[Symbol, top]) -> ::Hash[Symbol, top])
+
+        def self.get_models: (
+          ::Hash[Symbol, top] parsed
+        ) -> [top, ::Hash[String, top]]
+
+        def self.build_tools: (
+          ::Array[::Hash[Symbol, top]]? tools,
+          ::Hash[String, top] tool_models
+        ) -> ::Array[::Hash[Symbol, top]]
+      end
+    end
+  end
+end
