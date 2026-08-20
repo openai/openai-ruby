@@ -59,13 +59,16 @@ module OpenAI
         # @param page_data [Object]
         def initialize(client:, req:, response_metadata:, page_data:)
           options = req[:options].to_h
+          query = OpenAI::Internal::Util
+            .deep_merge(req[:query].to_h, options[:extra_query].to_h)
+            .to_h { |key, value| [key.is_a?(String) ? key.to_sym : key, value] }
 
           @client = client
-          # Keep the effective query, but clear its higher-precedence copy so a page's
-          # follow-up cursor can replace the caller's original cursor.
+          # Keep the normalized effective query, but clear its higher-precedence copy
+          # so a page's follow-up cursor can replace the caller's original cursor.
           @req = {
             **req,
-            query: OpenAI::Internal::Util.deep_merge(req[:query].to_h, options[:extra_query].to_h),
+            query: query,
             options: {**options, extra_query: {}}
           }
           @model = req.fetch(:model)

@@ -273,11 +273,13 @@ class OpenAI::Test::PathParameterQueryTest < Minitest::Test
     assert_requested(next_request)
   end
 
-  def test_id_cursor_pagination_overrides_extra_query_cursor
+  def test_id_cursor_pagination_normalizes_string_extra_query_cursor
     path = "/chat/completions"
+    first_query = {"after" => "chatcmpl_old", "debug" => "enabled", "trace" => "enabled"}
+    next_query = {"after" => "chatcmpl_new", "debug" => "enabled", "trace" => "enabled"}
     first_request = stub_get(
       path,
-      query: {"after" => "chatcmpl_old", "trace" => "enabled"},
+      query: first_query,
       body: {
         data: [
           {
@@ -292,44 +294,60 @@ class OpenAI::Test::PathParameterQueryTest < Minitest::Test
         object: "list"
       }
     )
-    next_request = stub_get(
-      path,
-      query: {"after" => "chatcmpl_new", "trace" => "enabled"}
-    )
+    next_request = stub_get(path, query: next_query)
 
     page = @client.chat.completions.list(
-      request_options: {extra_query: {after: "chatcmpl_old", trace: "enabled"}}
+      request_options: {
+        extra_query: {"after" => "chatcmpl_old", "trace" => "enabled", :debug => "enabled"}
+      }
     )
     stored_request = page.instance_variable_get(:@req)
+    next_page = page.next_page
+    next_stored_request = next_page.instance_variable_get(:@req)
 
-    assert_equal({after: "chatcmpl_old", trace: "enabled"}, stored_request[:query])
-    assert_empty(stored_request.dig(:options, :extra_query))
-    assert_instance_of(OpenAI::Internal::CursorPage, page.next_page)
     assert_requested(first_request)
     assert_requested(next_request)
+    assert_equal(
+      {after: "chatcmpl_old", debug: "enabled", trace: "enabled"},
+      stored_request[:query]
+    )
+    assert_equal(
+      {after: "chatcmpl_new", debug: "enabled", trace: "enabled"},
+      next_stored_request[:query]
+    )
+    assert_empty(stored_request.dig(:options, :extra_query))
+    assert_empty(next_stored_request.dig(:options, :extra_query))
+    assert_instance_of(OpenAI::Internal::CursorPage, next_page)
   end
 
-  def test_server_cursor_pagination_overrides_extra_query_cursor
+  def test_server_cursor_pagination_normalizes_string_extra_query_cursor
     path = "/projects/proj_123/users/user_123/roles"
+    first_query = {"after" => "role_old", "debug" => "enabled", "trace" => "enabled"}
+    next_query = {"after" => "role_new", "debug" => "enabled", "trace" => "enabled"}
     first_request = stub_get(
       path,
-      query: {"after" => "role_old", "trace" => "enabled"},
+      query: first_query,
       body: {data: [], has_more: true, next: "role_new"}
     )
-    next_request = stub_get(
-      path,
-      query: {"after" => "role_new", "trace" => "enabled"}
-    )
+    next_request = stub_get(path, query: next_query)
 
     page = @client.admin.organization.projects.users.roles.list(
       "user_123",
       project_id: "proj_123",
-      request_options: {extra_query: {after: "role_old", trace: "enabled"}}
+      request_options: {extra_query: {"after" => "role_old", "trace" => "enabled", :debug => "enabled"}}
     )
 
-    assert_instance_of(OpenAI::Internal::NextCursorPage, page.next_page)
+    next_page = page.next_page
+    stored_request = page.instance_variable_get(:@req)
+    next_stored_request = next_page.instance_variable_get(:@req)
+
     assert_requested(first_request)
     assert_requested(next_request)
+    assert_equal({after: "role_old", debug: "enabled", trace: "enabled"}, stored_request[:query])
+    assert_equal({after: "role_new", debug: "enabled", trace: "enabled"}, next_stored_request[:query])
+    assert_empty(stored_request.dig(:options, :extra_query))
+    assert_empty(next_stored_request.dig(:options, :extra_query))
+    assert_instance_of(OpenAI::Internal::NextCursorPage, next_page)
   end
 
   private
