@@ -58,8 +58,19 @@ module OpenAI
         # @param response_metadata [OpenAI::ResponseMetadata]
         # @param page_data [Object]
         def initialize(client:, req:, response_metadata:, page_data:)
+          options = req[:options].to_h
+          query = OpenAI::Internal::Util
+            .deep_merge(req[:query].to_h, options[:extra_query].to_h)
+            .to_h { |key, value| [key == "after" ? :after : key, value] }
+
           @client = client
-          @req = req
+          # Keep the effective query with a canonical cursor key, but clear its
+          # higher-precedence copy so a page can replace the caller's original cursor.
+          @req = {
+            **req,
+            query: query,
+            options: {**options, extra_query: {}}
+          }
           @model = req.fetch(:model)
           @last_response = response_metadata
           super()
