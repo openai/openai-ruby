@@ -7,6 +7,9 @@ This directory contains runnable examples for the Realtime WebSocket surface:
 - `websocket_transcription.rb` uploads raw 24 kHz mono PCM16 audio, explicitly
   commits one input turn, streams transcription deltas, verifies the matching
   completed transcript, and exits.
+- `websocket_voice_turn.rb` uploads one raw 24 kHz mono PCM16 turn, explicitly
+  commits it, streams the assistant's PCM response to standard output, returns
+  its transcript to embedded callers, verifies a completed response, and exits.
 
 Add the optional transport dependency and set an API key:
 
@@ -58,6 +61,42 @@ Optional environment variables:
 This example intentionally reads a file and drains its result after commit. It
 does not claim continuous microphone captioning or concurrent reader/writer
 support; those require a separately reviewed lifecycle boundary.
+
+## Send one voice turn and play the response
+
+Convert an audio file to 24 kHz mono PCM16, stream it through the voice-turn
+example, and play the response as it arrives:
+
+```sh
+ffmpeg -v error -i input.wav -f s16le -acodec pcm_s16le -ac 1 -ar 24000 - \
+  | bundle exec ruby examples/realtime/websocket_voice_turn.rb \
+  | ffplay -v error -f s16le -ar 24000 -ac 1 -
+```
+
+The executable reads raw PCM from standard input, writes only response PCM to
+standard output, and sends metadata-only diagnostics to standard error.
+`WebSocketVoiceTurn.run_with_timeout` returns the assistant transcript to
+embedded callers without printing it. Its single deadline covers the initial
+input read, network turn, and response stream. The boundary also suppresses
+path details from operating-system I/O errors and payload-bearing parser causes
+from malformed protocol events. A successful run writes non-empty response
+audio, observes `response.done status=completed`, and then prints
+`[realtime] voice turn smoke test passed` to standard error.
+
+The example intentionally does not own output filenames, overwrite policy, or
+filesystem durability. If you redirect its standard output to a file, those
+semantics belong to your shell or application.
+
+Optional environment variables:
+
+- `OPENAI_REALTIME_MODEL` — defaults to `gpt-realtime-2.1`.
+- `OPENAI_REALTIME_VOICE` — defaults to `marin`.
+- `OPENAI_REALTIME_TIMEOUT` — overall example deadline in seconds; defaults to
+  `60`.
+
+This is an explicit, committed file turn. It does not capture a microphone,
+play audio while it arrives, or claim full-duplex conversation support; those
+require a separately reviewed concurrency and device-lifecycle boundary.
 
 See the repository's [Realtime WebSocket guide](../../realtime.md) for the
 public connection API, custom transports, proxy behavior, and TLS setup.

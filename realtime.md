@@ -1,9 +1,10 @@
 # Realtime WebSockets
 
 The Ruby SDK provides a typed, block-scoped WebSocket client for server-side
-Realtime text sessions and committed-turn transcription. The implementation
-stays at one cohesive boundary: authenticated WebSocket connection setup,
-protocol event validation, deterministic cleanup, and synchronous event flow.
+Realtime text sessions, committed-turn transcription, and one-turn voice
+workflows. The implementation stays at one cohesive boundary: authenticated
+WebSocket connection setup, protocol event validation, deterministic cleanup,
+and synchronous event flow.
 
 ## Installation
 
@@ -122,6 +123,67 @@ different input turns is not guaranteed. The runnable
 example additionally rejects empty input and requires a matching non-empty
 completion. It defaults to `gpt-transcribe`, which is intended for committed
 turns over WebSockets.
+
+## Send one voice turn and stream the spoken response
+
+A normal Realtime session can accept an explicitly committed PCM turn and
+stream PCM response audio plus its transcript. Disable turn detection when the
+client owns the turn boundary, then call `response.create` after `commit`:
+
+```ruby
+transcript = +""
+
+client.realtime.connect(model: "gpt-realtime-2.1") do |connection|
+  connection.session.update(
+    type: :realtime,
+    output_modalities: [:audio],
+    audio: {
+      input: {
+        format: {type: :"audio/pcm", rate: 24_000},
+        turn_detection: nil
+      },
+      output: {
+        format: {type: :"audio/pcm", rate: 24_000},
+        voice: :marin
+      }
+    }
+  )
+
+  while (chunk = input.read(9_600))
+    connection.input_audio_buffer.append_bytes(chunk)
+  end
+  connection.input_audio_buffer.commit
+  connection.response.create
+
+  connection.each do |event|
+    case event
+    when OpenAI::Realtime::ResponseAudioDeltaEvent
+      audio_output.write(event.delta.unpack1("m0"))
+    when OpenAI::Realtime::ResponseAudioTranscriptDeltaEvent
+      transcript << event.delta
+    when OpenAI::Realtime::ResponseDoneEvent
+      raise "Realtime response failed." unless event.response.status == :completed
+      break
+    when OpenAI::Realtime::RealtimeErrorEvent
+      raise "Realtime API error."
+    end
+  end
+end
+```
+
+The runnable
+[`websocket_voice_turn.rb`](examples/realtime/websocket_voice_turn.rb) example
+checks the complete lifecycle: non-empty input, explicit commit, streamed audio
+and transcript, a successful terminal response, and binary output. The
+executable reads raw PCM from standard input, writes response PCM to standard
+output, and keeps metadata-only diagnostics on standard error. Its single
+deadline begins before the initial input read and covers the complete network
+turn. Embedded callers receive the transcript as the return value. At the
+executable boundary, operating-system I/O errors and malformed protocol events
+become generic exceptions without sensitive paths, payloads, or retained
+causes. The example deliberately leaves output filenames, overwrite policy,
+and filesystem durability to the caller rather than claiming a portable secure
+file-publication contract.
 
 ## Event compatibility
 
@@ -250,7 +312,7 @@ handshake.
 ## Current scope
 
 This phase does not add continuous microphone capture, concurrent live
-captioning, response-audio playback, WebRTC/SDP lifecycle helpers, SIP or
+captioning, live response-audio playback, WebRTC/SDP lifecycle helpers, SIP or
 sideband helpers, translation connections, image input, function calling
 helpers, or MCP helpers. Existing generated HTTP resources remain
 generated-code-owned. New convenience APIs and examples for those workflows
