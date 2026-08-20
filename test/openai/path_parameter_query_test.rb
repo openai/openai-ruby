@@ -6,6 +6,25 @@ class OpenAI::Test::PathParameterQueryTest < Minitest::Test
   extend Minitest::Serial
   include WebMock::API
 
+  class PaginatedHTTPClient < OpenAI::HTTPClient
+    attr_reader :requests
+
+    def initialize(*bodies)
+      super()
+      @bodies = bodies
+      @requests = []
+    end
+
+    def execute(request)
+      @requests << request
+      OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "application/json"},
+        body: [JSON.generate(@bodies.fetch(@requests.length - 1))]
+      )
+    end
+  end
+
   def before_all
     super
     WebMock.enable!
@@ -273,6 +292,47 @@ class OpenAI::Test::PathParameterQueryTest < Minitest::Test
     assert_requested(next_request)
   end
 
+  def test_beta_response_input_items_pagination_preserves_string_path_query_override
+    first_body = {
+      data: [
+        {
+          id: "item_1",
+          content: [],
+          role: "user",
+          status: "completed",
+          type: "message"
+        }
+      ],
+      first_id: "item_1",
+      has_more: true,
+      last_id: "item_1",
+      object: "list"
+    }
+    transport = PaginatedHTTPClient.new(first_body, {data: [], has_more: false})
+    client = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: "test-api-key",
+      http_client: transport
+    )
+
+    page = client.beta.responses.input_items.list(
+      "resp_123",
+      request_options: {extra_query: {"beta" => "false"}}
+    )
+    next_page = page.next_page
+
+    assert_equal(
+      [
+        [["beta", "false"]],
+        [["after", "item_1"], ["beta", "false"]]
+      ],
+      transport.requests.map { URI.decode_www_form(_1.url.query.to_s).sort }
+    )
+    assert_equal("false", page.instance_variable_get(:@req).dig(:query, "beta"))
+    assert_equal("false", next_page.instance_variable_get(:@req).dig(:query, "beta"))
+    assert_instance_of(OpenAI::Internal::CursorPage, next_page)
+  end
+
   def test_id_cursor_pagination_normalizes_string_extra_query_cursor
     path = "/chat/completions"
     first_query = {"after" => "chatcmpl_old", "debug" => "enabled", "trace" => "enabled"}
@@ -308,11 +368,11 @@ class OpenAI::Test::PathParameterQueryTest < Minitest::Test
     assert_requested(first_request)
     assert_requested(next_request)
     assert_equal(
-      {after: "chatcmpl_old", debug: "enabled", trace: "enabled"},
+      {:after => "chatcmpl_old", :debug => "enabled", "trace" => "enabled"},
       stored_request[:query]
     )
     assert_equal(
-      {after: "chatcmpl_new", debug: "enabled", trace: "enabled"},
+      {:after => "chatcmpl_new", :debug => "enabled", "trace" => "enabled"},
       next_stored_request[:query]
     )
     assert_empty(stored_request.dig(:options, :extra_query))
@@ -343,8 +403,8 @@ class OpenAI::Test::PathParameterQueryTest < Minitest::Test
 
     assert_requested(first_request)
     assert_requested(next_request)
-    assert_equal({after: "role_old", debug: "enabled", trace: "enabled"}, stored_request[:query])
-    assert_equal({after: "role_new", debug: "enabled", trace: "enabled"}, next_stored_request[:query])
+    assert_equal({:after => "role_old", :debug => "enabled", "trace" => "enabled"}, stored_request[:query])
+    assert_equal({:after => "role_new", :debug => "enabled", "trace" => "enabled"}, next_stored_request[:query])
     assert_empty(stored_request.dig(:options, :extra_query))
     assert_empty(next_stored_request.dig(:options, :extra_query))
     assert_instance_of(OpenAI::Internal::NextCursorPage, next_page)
