@@ -46,7 +46,9 @@ Classify the root cause as one of:
 - source OpenAPI or Stainless configuration;
 - a Castiron compiler, renderer, template, transform, or shared generated
   runtime;
-- an intentionally handwritten Ruby extension point.
+- an intentionally handwritten Ruby extension point;
+- an intentionally handwritten repository artifact, such as CI, documentation,
+  or developer tooling.
 
 If the desired change belongs to either generator-owned category, do not patch
 the generated public Ruby output by hand. Fix the earliest correct source of
@@ -58,6 +60,7 @@ promotion workflow; if its required repository access or publication authority
 is unavailable, defer the candidate and report the blocker instead of landing
 a public-only workaround. Use SDK-specific handwritten code only when the
 ownership evidence shows that the behavior is deliberately outside generation.
+Apply the same evidence requirement to other handwritten repository artifacts.
 
 ## Enforce the pull-request ceiling
 
@@ -231,8 +234,11 @@ change pass.
    generated churn, dependency changes, and public-API changes. Run
    `git diff --check`.
 5. Before any push, run `$thermo-nuclear-code-quality-review` on the complete
-   change and address every substantiated issue. Rerun checks affected by the
-   review fixes.
+   change when that skill is available. If it is unavailable, record the gap
+   and perform a manual maintainability review covering structural
+   simplification, abstraction boundaries, spaghetti growth, file size, and
+   legibility; never claim that the skill ran. Address every substantiated issue
+   from either path and rerun checks affected by the review fixes.
 6. If required verification cannot run or does not pass, do not present the
    change as safe. Fix the problem or finish without a pull request and report
    the exact blocker.
@@ -262,10 +268,12 @@ Monitor CI until all checks reach a terminal successful state. Diagnose and fix
 branch-caused failures, rerun affected local checks, push the correction, and
 continue monitoring. Do not dismiss an ambiguous failure as flaky without
 evidence. When review feedback is addressed, comment with the specific fix
-before resolving the thread. After CI is green, follow `AGENTS.md` to request
-review in `#sdk-reviews` and keep follow-up asks in the created Slack thread.
-If required GitHub or Slack authorization is unavailable, report that exact
-handoff gap instead of pretending the action completed.
+before resolving the thread. When applicable repository instructions require a
+Slack handoff and that capability is available, post to the specified channel
+and keep follow-up asks in the created thread. Do not invent or hardcode a Slack
+handoff when the repository does not require one. If required GitHub or Slack
+authorization is unavailable, report that exact handoff gap instead of
+pretending the action completed.
 
 Finish each iteration with the starting and ending commits, active
 skill-owned pull-request count, areas reviewed, selected candidates or
