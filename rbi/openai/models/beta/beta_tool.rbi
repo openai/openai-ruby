@@ -983,8 +983,8 @@ module OpenAI
           attr_writer :input_image_mask
 
           # The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-          # `gpt-image-1.5`, `gpt-image-2`, or `gpt-image-2-2026-04-21`. Default:
-          # `gpt-image-1`.
+          # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`, or
+          # `chatgpt-image-latest`. Default: `gpt-image-1`.
           sig { returns(T.nilable(T.any(String, OpenAI::Beta::BetaTool::ImageGeneration::Model::OrSymbol))) }
           attr_reader :model
 
@@ -1106,8 +1106,8 @@ module OpenAI
             input_image_mask: nil,
 
             # The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-            # `gpt-image-1.5`, `gpt-image-2`, or `gpt-image-2-2026-04-21`. Default:
-            # `gpt-image-1`.
+            # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`, or
+            # `chatgpt-image-latest`. Default: `gpt-image-1`.
             model: nil,
 
             # Moderation level for the generated image. Default: `auto`.
@@ -1284,8 +1284,8 @@ module OpenAI
           end
 
           # The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-          # `gpt-image-1.5`, `gpt-image-2`, or `gpt-image-2-2026-04-21`. Default:
-          # `gpt-image-1`.
+          # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`, or
+          # `chatgpt-image-latest`. Default: `gpt-image-1`.
           module Model
             extend OpenAI::Internal::Type::Union
 

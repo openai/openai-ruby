@@ -607,8 +607,8 @@ module OpenAI
 
           # @!attribute model
           #   The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-          #   `gpt-image-1.5`, `gpt-image-2`, or `gpt-image-2-2026-04-21`. Default:
-          #   `gpt-image-1`.
+          #   `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`, or
+          #   `chatgpt-image-latest`. Default: `gpt-image-1`.
           #
           #   @return [String, Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Model, nil]
           optional :model, union: -> { OpenAI::Responses::Tool::ImageGeneration::Model }
@@ -775,8 +775,8 @@ module OpenAI
           end
 
           # The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-          # `gpt-image-1.5`, `gpt-image-2`, or `gpt-image-2-2026-04-21`. Default:
-          # `gpt-image-1`.
+          # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`, or
+          # `chatgpt-image-latest`. Default: `gpt-image-1`.
           #
           # @see OpenAI::Models::Responses::Tool::ImageGeneration#model
           module Model
