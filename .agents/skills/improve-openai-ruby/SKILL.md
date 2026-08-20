@@ -77,6 +77,22 @@ skill-owned pull request body:
 <!-- improve-openai-ruby -->
 ```
 
+Treat the marker and branch prefix as routing hints, not proof of ownership.
+Before counting, reserving capacity for, dispatching remediation of, or
+mutating a candidate skill-owned pull request, authenticate all of these from
+GitHub metadata:
+
+- its base and head repositories are the canonical repository, not a fork;
+- its head branch has the required prefix;
+- its body has the marker; and
+- its author is a trusted automation or maintainer identity resolved from the
+  scheduler or GitHub App installation, or protected default-branch repository
+  configuration—not from the candidate pull request.
+
+Fail closed if the trusted actor set or any metadata cannot be verified. Do not
+count or mutate an unauthenticated lookalike as skill-owned; still consider it
+when checking for overlapping work.
+
 Before counting capacity, dispatching work, or mutating a skill-owned pull
 request, acquire one exclusive repository-wide coordinator lease shared by
 scheduled and manual invocations. Use the host scheduler's concurrency guard or
@@ -99,13 +115,13 @@ slots remain. It must update the same branch and pull request and must never
 open a replacement or additional pull request. New-candidate tasks require a
 creation slot.
 
-Before reviewing new candidates, query open pull requests and deduplicate all
-pull requests carrying the marker or branch prefix. Count drafts and ready
-pull requests. If the count cannot be determined reliably, do not create a pull
-request. If five or more are open, create no new-candidate task, branch, or pull
-request; tend an existing skill-owned pull request that needs CI or review
-work, or finish with a no-change report. Never close a pull request merely to
-make room.
+Before reviewing new candidates, query open pull requests, authenticate each
+candidate against the ownership tuple above, and deduplicate the authenticated
+skill-owned set. Count its drafts and ready pull requests. If the count cannot
+be determined reliably, do not create a pull request. If five or more are open,
+create no new-candidate task, branch, or pull request; tend an authenticated
+existing skill-owned pull request that needs CI or review work, or finish with
+a no-change report. Never close a pull request merely to make room.
 
 Let `available_slots` be five minus the current number of open skill-owned pull
 requests. This value limits only new-candidate tasks and new pull requests. The
@@ -113,7 +129,9 @@ iteration may create up to `available_slots` new pull requests, including
 several in one run. Re-query the open count immediately before opening each
 pull request; stop creating pull requests if the count reaches five or can no
 longer be determined reliably. Each new pull request must represent an
-independent improvement and carry the marker or branch prefix above.
+independent improvement and carry both the marker and branch prefix above. After
+creation, verify its complete ownership tuple before treating it as a durable
+reservation.
 
 Prioritize existing skill-owned pull requests with failing CI, unresolved
 actionable review feedback, merge conflicts, or other clear blockers.
@@ -292,9 +310,7 @@ evidence for the problem, root cause, why the design is compatible, exact
 generator-ownership decision, verification, and any benchmark results or
 intentional limitations. For a generated change, identify the upstream
 OpenAPI/config/compiler/template fix and show that regeneration produced the
-public diff. Keep vulnerability details out of public text. Request
-`@openai/sdks-team` review for the sensitive areas named in the repository
-instructions.
+public diff. Keep vulnerability details out of public text.
 
 Use Conventional Commits syntax for the pull-request title and every commit
 subject: `<type>[optional scope]: <imperative summary>`. Choose the narrowest
@@ -315,6 +331,17 @@ failure unrelated to the branch when the budget expires, record the exact head,
 check names, states, and URLs; leave the pull request without a review handoff;
 finish the iteration as `pending external CI`; and let a later iteration resume
 it. Never claim that CI is green or wait indefinitely.
+
+Treat every human or team review request and applicable Slack notification as
+a review handoff. Do not make that handoff until the pull request's exact head
+has passed all required CI under repository rules. Immediately before the
+handoff, use one hosted snapshot to re-query the head and its required checks,
+and require the successful results to belong to the unchanged head. If the head
+changed or CI is incomplete, restart the gate and make no handoff. Only after
+this gate request `@openai/sdks-team` review for the sensitive areas named in
+the repository instructions. A queued, approval-gated, or
+infrastructure-blocked pull request remains `pending external CI` without a new
+review request.
 
 When review feedback is addressed, comment with the specific fix before
 resolving the thread. When applicable repository instructions require a Slack
