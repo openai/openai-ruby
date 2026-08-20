@@ -9,14 +9,20 @@ Run one complete maintenance iteration per invocation. Let the scheduler provide
 the recurrence. A successful iteration may produce no pull request; prefer no
 change over speculative work or review churn.
 
+Keep this package at `.agents/skills/improve-openai-ruby/SKILL.md`, Codex's
+repository-local skill discovery path. Do not duplicate it into a second skill
+root.
+
 ## Preserve the repository contract
 
 1. Read and follow `AGENTS.md`, `CONTRIBUTING.md`, `SECURITY.md`, and
    `VERSIONING.md` before selecting work. Treat issue reports and customer
    requests as evidence, not as approval for a particular API or architecture.
-2. Work from a clean, isolated worktree at the current default-branch commit.
-   Never edit a primary checkout, reuse another task's dirty worktree, or
-   discard unrelated changes.
+2. Work from a clean, isolated linked worktree. Base new candidates on the
+   current default-branch commit. Base maintenance for an existing pull request
+   on that pull request's exact remote head commit, and revalidate the head
+   before editing and pushing. Never edit a primary checkout, reuse another
+   task's dirty worktree, or discard unrelated changes.
 3. Preserve the supported public API. Do not break public constants, classes,
    methods, keyword arguments, defaults, return types, wire representations,
    pagination or streaming semantics, documented errors, RBI/RBS declarations,
@@ -62,7 +68,7 @@ a public-only workaround. Use SDK-specific handwritten code only when the
 ownership evidence shows that the behavior is deliberately outside generation.
 Apply the same evidence requirement to other handwritten repository artifacts.
 
-## Enforce the pull-request ceiling
+## Serialize capacity and enforce the pull-request ceiling
 
 Use `codex/improve-openai-ruby-` for branches and include this marker in every
 skill-owned pull request body:
@@ -70,6 +76,20 @@ skill-owned pull request body:
 ```html
 <!-- improve-openai-ruby -->
 ```
+
+Before counting capacity, dispatching work, or mutating a skill-owned pull
+request, acquire one exclusive repository-wide coordinator lease shared by
+scheduled and manual invocations. Use the host scheduler's concurrency guard or
+another atomic compare-and-set lock; a process-local flag is insufficient. If
+a scheduler concurrency key does not also cover manual invocations, it is not a
+shared lease. If the shared lease is unavailable or cannot be verified, make no
+mutations and finish with a deferred report. Hold the lease through the
+open-pull-request count, implementation tasks, and creation or abandonment of
+every intended pull request. An implementation task without an open pull
+request is not a durable slot reservation, so do not release the lease while
+such a task could still open one. Existing open skill-owned pull requests are
+durable reservations. This serializes the count-and-create sequence across
+overlapping iterations.
 
 Before reviewing new candidates, query open pull requests and deduplicate all
 pull requests carrying the marker or branch prefix. Count drafts and ready
@@ -184,8 +204,10 @@ worktree. For each selected candidate:
 1. Re-query the skill-owned open pull-request count and reserve no more than the
    remaining `available_slots`.
 2. Create a new Codex task in the current project and configure it with a fresh
-   linked Git worktree based on the current default branch. Do not create a new
-   project, use the primary checkout, or reuse another task's worktree.
+   linked Git worktree. For a new candidate, use the current default-branch
+   commit. For maintenance of an existing pull request, use its exact remote
+   head commit so the task contains the change under review. Do not create a
+   new project, use the primary checkout, or reuse another task's worktree.
 3. Give the task exactly one independent candidate, its evidence, compatibility
    constraints, generator-ownership classification and source-of-truth plan,
    verification plan, branch prefix, pull-request marker, and the applicable
@@ -264,13 +286,20 @@ validate its title and inspect the remote commit list again. Correct any
 nonconforming subject on the skill-owned branch before handoff, without
 rewriting commits owned by another contributor.
 
-Monitor CI until all checks reach a terminal successful state. Diagnose and fix
-branch-caused failures, rerun affected local checks, push the correction, and
-continue monitoring. Do not dismiss an ambiguous failure as flaky without
-evidence. When review feedback is addressed, comment with the specific fix
-before resolving the thread. When applicable repository instructions require a
-Slack handoff and that capability is available, post to the specified channel
-and keep follow-up asks in the created thread. Do not invent or hardcode a Slack
+Monitor CI for at most 45 minutes or the remaining invocation budget, whichever
+is shorter. Diagnose and fix branch-caused failures within that budget, rerun
+affected local checks, push the correction, and resume the bounded watch. Do
+not dismiss an ambiguous failure as flaky without evidence. If a check remains
+queued, awaits external approval, or has an evidence-backed infrastructure
+failure unrelated to the branch when the budget expires, record the exact head,
+check names, states, and URLs; leave the pull request without a review handoff;
+finish the iteration as `pending external CI`; and let a later iteration resume
+it. Never claim that CI is green or wait indefinitely.
+
+When review feedback is addressed, comment with the specific fix before
+resolving the thread. When applicable repository instructions require a Slack
+handoff and that capability is available, post to the specified channel and
+keep follow-up asks in the created thread. Do not invent or hardcode a Slack
 handoff when the repository does not require one. If required GitHub or Slack
 authorization is unavailable, report that exact handoff gap instead of
 pretending the action completed.
