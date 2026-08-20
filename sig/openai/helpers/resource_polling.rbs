@@ -1,0 +1,31 @@
+module OpenAI
+  module Helpers
+    module ResourcePolling
+      def self.wait_for_file: (
+        OpenAI::Resources::Files resource,
+        String file_id,
+        poll_interval: (Integer | Float)?,
+        timeout: (Integer | Float)?,
+        request_options: OpenAI::request_opts?
+      ) -> OpenAI::Models::FileObject
+
+      def self.poll_vector_store_file: (
+        OpenAI::Resources::VectorStores::Files resource,
+        String file_id,
+        vector_store_id: String,
+        poll_interval: (Integer | Float)?,
+        timeout: (Integer | Float)?,
+        request_options: OpenAI::request_opts?
+      ) -> OpenAI::Models::VectorStores::VectorStoreFile
+
+      def self.poll_vector_store_file_batch: (
+        OpenAI::Resources::VectorStores::FileBatches resource,
+        String batch_id,
+        vector_store_id: String,
+        poll_interval: (Integer | Float)?,
+        timeout: (Integer | Float)?,
+        request_options: OpenAI::request_opts?
+      ) -> OpenAI::Models::VectorStores::VectorStoreFileBatch
+    end
+  end
+end

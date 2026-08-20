@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../helpers/resource_polling"
+
 module OpenAI
   module Resources
     class VectorStores
@@ -231,45 +233,14 @@ module OpenAI
           timeout: OpenAI::Internal::Poller::DEFAULT_TIMEOUT,
           request_options: {}
         )
-          poller = OpenAI::Internal::Poller.new(
-            operation: "vector store file batch #{batch_id}",
+          OpenAI::Helpers::ResourcePolling.poll_vector_store_file_batch(
+            self,
+            batch_id,
+            vector_store_id: vector_store_id,
             poll_interval: poll_interval,
-            timeout: timeout
+            timeout: timeout,
+            request_options: request_options
           )
-          batch = nil
-
-          begin
-            loop do
-              batch = poller
-                .request(
-                  request_options,
-                  extra_headers: {"OpenAI-Beta" => "assistants=v2"},
-                  resource: batch
-                ) do |options|
-                  retrieve(batch_id, vector_store_id: vector_store_id, request_options: options)
-                end
-
-              case batch.status
-              when OpenAI::VectorStores::VectorStoreFileBatch::Status::IN_PROGRESS
-                poller.wait(batch)
-              when
-                  OpenAI::VectorStores::VectorStoreFileBatch::Status::COMPLETED,
-                  OpenAI::VectorStores::VectorStoreFileBatch::Status::FAILED,
-                  OpenAI::VectorStores::VectorStoreFileBatch::Status::CANCELLED
-                return batch
-              else
-                raise(
-                  OpenAI::Errors::PollingError,
-                  "Unexpected status while waiting for vector store file batch " \
-                    "#{batch_id}: #{batch.status.inspect}"
-                )
-              end
-            end
-
-          rescue OpenAI::Errors::APITimeoutError
-            poller.check_deadline!(batch)
-            raise
-          end
         end
 
         # Upload files concurrently, create a vector store file batch, and wait for

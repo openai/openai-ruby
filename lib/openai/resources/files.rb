@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../helpers/resource_polling"
+
 module OpenAI
   module Resources
     # Files are used to upload documents that can be used with features like
@@ -192,40 +194,13 @@ module OpenAI
         timeout: OpenAI::Internal::Poller::DEFAULT_TIMEOUT,
         request_options: {}
       )
-        poller = OpenAI::Internal::Poller.new(
-          operation: "file #{file_id}",
+        OpenAI::Helpers::ResourcePolling.wait_for_file(
+          self,
+          file_id,
           poll_interval: poll_interval,
-          timeout: timeout
+          timeout: timeout,
+          request_options: request_options
         )
-        file = nil
-
-        begin
-          loop do
-            file = poller.request(request_options, resource: file) do |options|
-              retrieve(file_id, request_options: options)
-            end
-
-            case file.status
-            when OpenAI::FileObject::Status::UPLOADED
-              poller.wait(file)
-            when
-                OpenAI::FileObject::Status::PROCESSED,
-                OpenAI::FileObject::Status::ERROR,
-                :deleted,
-                "deleted"
-              return file
-            else
-              raise(
-                OpenAI::Errors::PollingError,
-                "Unexpected status while waiting for file #{file_id}: #{file.status.inspect}"
-              )
-            end
-          end
-
-        rescue OpenAI::Errors::APITimeoutError
-          poller.check_deadline!(file)
-          raise
-        end
       end
 
       # @api private
