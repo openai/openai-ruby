@@ -30,7 +30,7 @@ module OpenAI
       # @raise [OpenAI::HTTP::Error]
       # @return [self]
       def next_page
-        RuntimeError.new("No more pages available.")
+        raise RuntimeError.new("No more pages available.")
       end
 
       # @param blk [Proc]
