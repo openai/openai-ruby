@@ -26,9 +26,3 @@ group :development, :test do
   gem "sorbet-runtime"
   gem "webmock"
 end
-
-group :development, :docs do
-  gem "redcarpet"
-  gem "webrick"
-  gem "yard"
-end

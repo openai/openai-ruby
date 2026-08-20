@@ -23,6 +23,28 @@ updates:
           - patch
     open-pull-requests-limit: 5
 
+  - package-ecosystem: bundler
+    directory: /docs
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Etc/UTC
+    cooldown:
+      default-days: 8
+    groups:
+      production-dependencies:
+        dependency-type: production
+        update-types:
+          - minor
+          - patch
+      development-dependencies:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+    open-pull-requests-limit: 5
+
   - package-ecosystem: github-actions
     directory: /
     schedule:

@@ -16,7 +16,9 @@ To set up the repository, run:
 $ ./scripts/bootstrap
 ```
 
-This will install all the required dependencies.
+This installs the dependencies used by the normal test, lint, typecheck, and
+package workflows. Documentation tooling has a separate bundle; see
+[Documentation](#documentation).
 
 ## Security requirements
 
@@ -30,10 +32,10 @@ This will install all the required dependencies.
   error messages, fixtures, and CI artifacts. Clearly fake or sanitized
   payloads may remain in tests and diagnostics.
 - **Dependencies:** Review `Gemfile`, `Gemfile.lock`, `gemfiles/*.gemfile`,
-  `gemfiles/*.gemfile.lock`, and `openai.gemspec`
-  changes, including direct and transitive gems, sources, locked Git revisions,
-  native extensions, and install/build scripts. Do not run unreviewed scripts
-  or accept unexplained lockfile changes.
+  `gemfiles/*.gemfile.lock`, `docs/Gemfile`, `docs/Gemfile.lock`, and
+  `openai.gemspec` changes, including direct and transitive gems, sources,
+  locked Git revisions, native extensions, and install/build scripts. Do not
+  run unreviewed scripts or accept unexplained lockfile changes.
 - **CI and publishing:** Pin GitHub Actions to full commit SHAs, grant minimum
   per-job permissions, and preserve `permissions: {}`,
   `persist-credentials: false`, protected release environments, and RubyGems
@@ -190,10 +192,26 @@ This can be installed along side Ruby LSP.
 
 2. For each generic type in `*.rbi` files, a spurious "Duplicate type member" error is present.
 
-## Documentation Preview
+## Documentation
+
+Documentation dependencies are intentionally isolated from the primary
+contributor bundle. Install them with:
+
+```bash
+$ ./scripts/docs install
+```
+
+To build the documentation, run:
+
+```bash
+$ ./scripts/docs build
+```
 
 To preview the documentation, run:
 
 ```bash
-$ bundle exec rake docs:preview [PORT=8808]
+$ PORT=8808 ./scripts/docs preview
 ```
+
+The existing `bundle exec rake build:docs` and
+`bundle exec rake docs:preview` tasks delegate to the same docs bundle.
