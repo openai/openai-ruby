@@ -124,7 +124,9 @@ module OpenAI
     #
     # @return [Hash{String=>String}]
     private def auth_headers(security:)
-      {bearer_auth:, admin_api_key_auth:}.slice(*security.keys).values.reduce({}, :merge)
+      enabled_auth = {bearer_auth:, admin_api_key_auth:}.slice(*security.select { |_, enabled| enabled }.keys)
+      headers = enabled_auth.values.reduce({}, :merge)
+      headers.merge(enabled_auth.fetch(:bearer_auth, {}).slice("authorization"))
     end
 
     # @api private
