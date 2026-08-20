@@ -99,12 +99,58 @@ scheduled and manual invocations. Use the host scheduler's concurrency guard or
 another atomic compare-and-set lock; a process-local flag is insufficient. If
 a scheduler concurrency key does not also cover manual invocations, it is not a
 shared lease. If the shared lease is unavailable or cannot be verified, make no
-mutations and finish with a deferred report. Hold the lease through the
-open-pull-request count, the selected implementation task, and creation or
-abandonment of its intended pull request. An implementation task without an open
-pull request is not a durable reservation, so do not release the lease while it
-could still open one. Existing open skill-owned pull requests are durable
-reservations. This serializes the count-and-create sequence across overlapping
+mutations and finish with a deferred report. The lease must expose an owner
+identity or token and defined lease-loss, crash, and stale-owner recovery.
+Before every skill-controlled mutation, the coordinator and implementation
+task must still hold that ownership or an equivalent host-provided fence and
+must stop immediately on loss. A successor may mutate only after the prior
+owner and its implementation task have stopped or been fenced from further
+writes; fail closed when the host cannot prove equivalent non-overlap.
+
+Treat this as the exclusive writer lease for the complete skill-owned
+pull-request lifecycle, not only as a count-and-create lock. Hold it while the
+current iteration or its implementation task can still change source, commits,
+the remote branch, pull-request draft or ready state, review threads or
+requests, or a Slack handoff. Do not release it merely because a draft pull
+request now exists. An open skill-owned pull request is a durable capacity
+reservation, not a mutation lease, and never authorizes a second owner to
+service it concurrently. An implementation task without an open pull request
+is neither a capacity reservation nor a reason to release the writer lease
+while it could still open one.
+
+Release or transfer the writer lease only after the current owner reaches one
+of three boundaries: it completed the required review handoff; it entered
+`pending external CI`; or it reached a terminal, deferred, no-change, or
+abandoned outcome. Every boundary must be quiescent. Before any release or
+transfer, stop, join, or fence every skill-controlled implementation task and
+ensure that no skill-controlled command, callback, task, or worker can still
+mutate source, GitHub, or Slack. A deferred outcome may include a required
+handoff or other mutation that this owner cannot currently perform, such as
+missing GitHub or Slack authorization; it means that no mutation is currently
+executable by this owner, not that no future skill work remains. Persist the
+outcome and reason and, when a pull request exists, its identity, branch, exact
+remote head, observed CI and review state, and next required action; then
+commit to no further mutation.
+
+Read-only monitoring, including monitoring owned by an external coordinator,
+may continue without the lease after a quiescent boundary. Repository CI,
+maintainers, and other external actors may still update mutable check, review,
+or pull-request state. Before a monitor or later invocation performs any
+mutation or handoff, it must atomically reacquire the same repository-wide
+lease, reauthenticate the pull request, verify its repository, base and head
+branches, and exact remote head, reload current CI and review state, and
+recompute the next action while holding the lease. Expected CI or review-state
+progress is not an invariant mismatch. If ownership, branch identity, or the
+exact head changed, abandon the stale plan and restart from the newly validated
+state before mutating. A direct transfer is safe only as an atomic
+compare-and-set from the current lease token to one named successor after the
+current owner is quiescent. If atomic transfer is not available, release first
+and require the successor to reacquire normally; the two owners must never
+overlap.
+
+Hold the writer lease through the authenticated open-pull-request count and any
+new pull-request creation or abandonment. This serializes both the
+count-and-create sequence and every later mutation across overlapping
 iterations.
 
 While holding the coordinator lease, query open pull requests, authenticate
@@ -354,8 +400,10 @@ not dismiss an ambiguous failure as flaky without evidence. If a check remains
 queued, awaits external approval, or has an evidence-backed infrastructure
 failure unrelated to the branch when the budget expires, record the exact head,
 check names, states, and URLs; leave the pull request without a review handoff;
-finish the iteration as `pending external CI`; and let a later iteration resume
-it. Never claim that CI is green or wait indefinitely.
+enter the quiescent lease-transfer boundary above; finish the iteration as
+`pending external CI`; and let a later iteration resume it only after lease
+reacquisition and exact-head validation. Never claim that CI is green or wait
+indefinitely.
 
 Treat every human or team review request and applicable Slack notification as
 a review handoff. Do not make that handoff until the pull request's exact head
@@ -374,7 +422,9 @@ handoff and that capability is available, post to the specified channel and
 keep follow-up asks in the created thread. Do not invent or hardcode a Slack
 handoff when the repository does not require one. If required GitHub or Slack
 authorization is unavailable, report that exact handoff gap instead of
-pretending the action completed.
+pretending the action completed. Persist it as a quiescent deferred outcome so
+that a later authorized owner can reacquire the writer lease, revalidate the
+exact head and current state, and complete the handoff.
 
 Finish each iteration with the starting and ending commits, active
 skill-owned pull-request count, areas reviewed, selected candidates or
