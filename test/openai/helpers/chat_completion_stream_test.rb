@@ -63,7 +63,69 @@ class OpenAI::Test::ChatCompletionStreamTest < Minitest::Test
     assert_equal(["{\"value\":true}", "{\"value\":true}"], tool_calls.map { |tool_call| tool_call.function.arguments })
   end
 
+  def test_tool_call_snapshot_lookups_are_linear
+    tool_call_count = 128
+    tool_calls = Array.new(tool_call_count) do |index|
+      tool_call_delta(index: index, arguments: "")
+    end
+
+    state = OpenAI::Helpers::Streaming::ChatCompletionStreamState.new
+    state.handle_chunk(
+      build_chunk(choice_index: 0, delta: {role: :assistant, tool_calls: tool_calls})
+    )
+
+    updates = Array.new(tool_call_count) do |index|
+      {index: index, function: {arguments: "{}"}}
+    end
+
+    comparisons = count_integer_equality_calls do
+      state.handle_chunk(
+        build_chunk(
+          choice_index: 0,
+          delta: {tool_calls: updates},
+          finish_reason: :tool_calls
+        )
+      )
+    end
+
+    final_tool_calls = state.get_final_completion.choices.first.message.tool_calls
+    assert_equal(tool_call_count, final_tool_calls.length)
+    assert_equal(["{}"] * tool_call_count, final_tool_calls.map { |tool_call| tool_call.function.arguments })
+    assert_operator(comparisons, :<=, tool_call_count * 32)
+  end
+
+  def test_choice_snapshot_lookups_are_linear
+    choice_count = 128
+    choices = Array.new(choice_count) do |index|
+      {index: index, delta: {role: :assistant, content: "choice #{index}"}, finish_reason: nil}
+    end
+
+    state = OpenAI::Helpers::Streaming::ChatCompletionStreamState.new
+    state.handle_chunk(build_chunk_with_choices([]))
+
+    comparisons = count_integer_equality_calls do
+      state.handle_chunk(build_chunk_with_choices(choices))
+    end
+
+    assert_equal((0...choice_count).to_a, state.get_final_completion.choices.map(&:index))
+    assert_operator(comparisons, :<=, choice_count * 32)
+  end
+
   private
+
+  def count_integer_equality_calls
+    comparisons = 0
+    trace = TracePoint.new(:c_call) do |event|
+      if event.defined_class == Integer && event.method_id == :==
+        comparisons += 1
+      end
+    end
+
+    trace.enable { yield }
+    comparisons
+  ensure
+    trace&.disable
+  end
 
   def stream_tool_call(state, choice_index:, tool_index:, finish: true)
     events = state.handle_chunk(
@@ -102,6 +164,12 @@ class OpenAI::Test::ChatCompletionStreamTest < Minitest::Test
   end
 
   def build_chunk(choice_index:, delta:, finish_reason: nil)
+    build_chunk_with_choices(
+      [{index: choice_index, delta: delta, finish_reason: finish_reason}]
+    )
+  end
+
+  def build_chunk_with_choices(choices)
     OpenAI::Internal::Type::Converter.coerce(
       OpenAI::Chat::ChatCompletionChunk,
       {
@@ -109,7 +177,7 @@ class OpenAI::Test::ChatCompletionStreamTest < Minitest::Test
         object: :"chat.completion.chunk",
         created: 1,
         model: "gpt-4o-mini",
-        choices: [{index: choice_index, delta: delta, finish_reason: finish_reason}]
+        choices: choices
       }
     )
   end
