@@ -174,14 +174,31 @@ module OpenAIExamplesE2E
     private
 
     def document
-      @document ||= YAML.safe_load_file(manifest_path, aliases: false)
+      @document ||= YAML.safe_load_file(manifest_path, aliases: false).tap do |value|
+        unless value.is_a?(Hash)
+          raise ConfigurationError, "#{manifest_path}: manifest root must be a mapping"
+        end
+      end
+
     rescue Errno::ENOENT
       raise ConfigurationError, "example E2E manifest not found: #{manifest_path}"
     end
 
     def configured_examples
       value = document["examples"]
-      raise ConfigurationError, "manifest examples must be a mapping" unless value.is_a?(Hash)
+      unless value.is_a?(Hash)
+        raise ConfigurationError, "#{manifest_path}: manifest examples must be a mapping"
+      end
+
+      value.each do |path, configuration|
+        next if configuration.is_a?(Hash)
+
+        raise(
+          ConfigurationError,
+          "#{manifest_path}: #{path}: example configuration must be a mapping"
+        )
+      end
+
       value
     end
 

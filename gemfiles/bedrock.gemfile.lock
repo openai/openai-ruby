@@ -11,7 +11,9 @@ GIT
 PATH
   remote: ..
   specs:
+  # x-release-please-start-version
     openai (0.80.0)
+  # x-release-please-end
       connection_pool (>= 2.2.3)
       logger
 

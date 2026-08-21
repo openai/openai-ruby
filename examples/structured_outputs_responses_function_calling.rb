@@ -22,9 +22,19 @@ response = client.responses.create(
   tool_choice: {type: :function, name: "GetWeather"}
 )
 
+parsed_tool_call_count = 0
 response
   .output
   .each do |output|
-    # parsed is an instance of `GetWeather`
-    pp(output.parsed)
+    case output
+    when OpenAI::Models::Responses::ResponseFunctionToolCall
+      # parsed is an instance of `GetWeather`
+      parsed = output.parsed
+      next unless parsed.is_a?(GetWeather)
+
+      parsed_tool_call_count += 1
+      pp(parsed)
+    end
   end
+
+abort("The response did not contain a parsed GetWeather tool call") if parsed_tool_call_count.zero?
