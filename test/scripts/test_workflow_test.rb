@@ -122,37 +122,7 @@ class TestWorkflowTest < Minitest::Test
 
   def test_mock_launcher_cleans_up_its_process_group_after_readiness_timeout
     owned_pid = nil
-    project = File.join(@directory, "mock-project")
-    bin = File.join(@directory, "mock-bin")
-    pid_record = File.join(@directory, "mock-pid")
-    pid_file = File.join(@directory, "mock-pid-file")
-    spec = File.join(project, "openapi.yml")
-    FileUtils.mkdir_p(File.join(project, "scripts"))
-    FileUtils.mkdir_p(bin)
-    File.symlink(File.join(ROOT, "scripts/mock"), File.join(project, "scripts/mock"))
-    File.write(spec, "openapi: 3.0.0\n")
-    write_executable(File.join(bin, "curl"), "#!/usr/bin/env bash\nexit 22\n")
-    write_executable(File.join(bin, "sleep"), "#!/usr/bin/env bash\nexit 0\n")
-    write_executable(
-      File.join(bin, "npm"),
-      <<~BASH
-        #!/usr/bin/env bash
-        if [[ " $* " == *" --version "* ]]; then
-          exit 0
-        fi
-        printf '%s\n' "$$" > "$MOCK_PID_RECORD"
-        exec "$RUBY" -e 'sleep 60'
-      BASH
-    )
-
-    env = {
-      "MOCK_PID_RECORD" => pid_record,
-      "PATH" => [bin, ENV.fetch("PATH")].join(File::PATH_SEPARATOR),
-      "RUBY" => RbConfig.ruby,
-      "STEADY_PID_FILE" => pid_file
-    }
-    stdout, stderr, status = Open3.capture3(env, File.join(project, "scripts/mock"), spec, "--daemon")
-    owned_pid = Integer(File.read(pid_record), 10)
+    stdout, stderr, status, owned_pid, pid_file = run_mock_launcher(mode: "hang")
 
     refute(status.success?, "#{stdout}\n#{stderr}")
     assert_includes(stdout, "Timed out waiting for Steady server to start")
@@ -162,6 +132,29 @@ class TestWorkflowTest < Minitest::Test
     begin
       Process.kill("TERM", -owned_pid)
     rescue Errno::ESRCH, TypeError
+      nil
+    end
+  end
+
+  def test_mock_launcher_reaps_a_crashed_child_without_waiting_for_readiness_timeout
+    stdout, stderr, status, owned_pid, pid_file = run_mock_launcher(mode: "crash")
+
+    refute(status.success?, "#{stdout}\n#{stderr}")
+    refute_includes(stdout, "Timed out waiting for Steady server to start")
+    assert(wait_for_process_exit(owned_pid, timeout: 5), "expected crashed process #{owned_pid} to be reaped")
+    refute(File.exist?(pid_file), "expected child failure to clear PID file")
+  end
+
+  def test_process_exit_wait_treats_zombie_as_exited
+    skip("requires Linux procfs") unless File.directory?("/proc/self")
+
+    pid = Process.spawn(RbConfig.ruby, "-e", "exit")
+
+    assert(wait_for_process_exit(pid, timeout: 5), "expected zombie PID #{pid} to count as exited")
+  ensure
+    begin
+      Process.wait(pid)
+    rescue Errno::ECHILD, TypeError
       nil
     end
   end
@@ -241,6 +234,44 @@ class TestWorkflowTest < Minitest::Test
     Open3.capture3(env, File.join(@project, "scripts/test"), chdir: @project)
   end
 
+  def run_mock_launcher(mode:)
+    project = File.join(@directory, "mock-project")
+    bin = File.join(@directory, "mock-bin")
+    pid_record = File.join(@directory, "mock-pid")
+    pid_file = File.join(@directory, "mock-pid-file")
+    spec = File.join(project, "openapi.yml")
+    FileUtils.mkdir_p(File.join(project, "scripts"))
+    FileUtils.mkdir_p(bin)
+    File.symlink(File.join(ROOT, "scripts/mock"), File.join(project, "scripts/mock"))
+    File.write(spec, "openapi: 3.0.0\n")
+    write_executable(File.join(bin, "curl"), "#!/usr/bin/env bash\nexit 22\n")
+    write_executable(File.join(bin, "sleep"), "#!/usr/bin/env bash\nexit 0\n")
+    write_executable(
+      File.join(bin, "npm"),
+      <<~BASH
+        #!/usr/bin/env bash
+        if [[ " $* " == *" --version "* ]]; then
+          exit 0
+        fi
+        printf '%s\n' "$$" > "$MOCK_PID_RECORD"
+        if [ "$MOCK_NPM_MODE" = "crash" ]; then
+          exit 42
+        fi
+        exec "$RUBY" -e 'sleep 60'
+      BASH
+    )
+
+    env = {
+      "MOCK_NPM_MODE" => mode,
+      "MOCK_PID_RECORD" => pid_record,
+      "PATH" => [bin, ENV.fetch("PATH")].join(File::PATH_SEPARATOR),
+      "RUBY" => RbConfig.ruby,
+      "STEADY_PID_FILE" => pid_file
+    }
+    stdout, stderr, status = Open3.capture3(env, File.join(project, "scripts/mock"), spec, "--daemon")
+    [stdout, stderr, status, Integer(File.read(pid_record), 10), pid_file]
+  end
+
   def wait_for_exit(pid, timeout:)
     deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + timeout
     loop do
@@ -263,10 +294,19 @@ class TestWorkflowTest < Minitest::Test
         return true
       end
 
+      return true if zombie_process?(pid)
+
       return false if Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
 
       sleep(0.01)
     end
+  end
+
+  def zombie_process?(pid)
+    stat = File.read("/proc/#{pid}/stat")
+    stat.rpartition(") ").last.start_with?("Z ")
+  rescue Errno::EACCES, Errno::ENOENT, Errno::ENOTDIR
+    false
   end
 
   def write_bundle

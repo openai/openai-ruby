@@ -43,16 +43,26 @@ clear_mock_pid_file() {
   fi
 }
 
+mock_process_is_running() {
+  local expected_pid="$1"
+  local running_pid
+
+  while IFS= read -r running_pid; do
+    if [ "$running_pid" = "$expected_pid" ]; then
+      return 0
+    fi
+  done < <(jobs -pr)
+
+  return 1
+}
+
 # Run steady mock on the given spec
 if [ "$1" == "--daemon" ]; then
   # Pre-install the package so the download doesn't eat into the startup timeout
   npm exec --package=@stdy/cli@0.22.1 -- steady --version
 
-  mock_pid=$(ruby -e '
-    log = File.open(".stdy.log", "w")
-    pid = Process.spawn(*ARGV, pgroup: true, out: log, err: [:child, :out])
-    puts(pid)
-  ' npm exec --package=@stdy/cli@0.22.1 -- steady --host 127.0.0.1 -p 4010 --validator-query-array-format=brackets --validator-form-array-format=brackets --validator-query-object-format=brackets --validator-form-object-format=brackets "$URL")
+  ruby -e 'Process.setpgrp; exec(*ARGV)' npm exec --package=@stdy/cli@0.22.1 -- steady --host 127.0.0.1 -p 4010 --validator-query-array-format=brackets --validator-form-array-format=brackets --validator-query-object-format=brackets --validator-form-object-format=brackets "$URL" &> .stdy.log &
+  mock_pid=$!
 
   if [ -n "${STEADY_PID_FILE:-}" ]; then
     printf '%s\n' "$mock_pid" > "$STEADY_PID_FILE"
@@ -62,7 +72,8 @@ if [ "$1" == "--daemon" ]; then
   echo -n "Waiting for server"
   attempts=0
   while ! curl --silent --fail "http://127.0.0.1:4010/_x-steady/health" >/dev/null 2>&1; do
-    if ! kill -0 "$mock_pid" 2>/dev/null; then
+    if ! mock_process_is_running "$mock_pid"; then
+      wait "$mock_pid" 2>/dev/null || true
       echo
       cat .stdy.log
       stop_mock_process_group "$mock_pid"
