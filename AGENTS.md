@@ -10,6 +10,16 @@ When regenerating `gemfiles/bedrock.gemfile.lock`, preserve the
 `x-release-please` markers around the local `openai` version. Release Please
 uses them to update this lockfile; Bundler can remove them when rewriting it.
 
+## Custom-code budget
+
+Follow [the custom-code guidance](scripts/castiron/CUSTOM_CODE.md). Budget changes
+belong in a separate PR containing only `.castiron-ratchet.json`, with an explicit justification
+in the PR description. Increases require a **human approving review** before merging.
+Agents may investigate and draft proposals, but must not approve budget increases
+(including through a human's credentials) or bypass the gate. Do not weaken
+counting, broaden exclusions, or alter generation metadata to make a change pass.
+The checker and effective budget come from main, not the PR. Keep default CODEOWNERS.
+
 ## Security requirements
 
 - Never commit real API keys, access tokens, signing keys, credentials, or
