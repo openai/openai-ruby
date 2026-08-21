@@ -27,6 +27,22 @@ class OpenAI::Test::RealtimeMCPApprovalExampleTest < Minitest::Test
     )
   end
 
+  def test_denies_a_policy_result_that_only_compares_equal_to_true
+    equality_spoof = Object.new
+    equality_spoof.define_singleton_method(:==) { |_other| true }
+    client, connection, = recording_client(
+      [tool_list_completed, item_done(tool_list_item), item_done(approval_request)]
+    )
+
+    error = assert_raises(RuntimeError) do
+      run_example(client, approval_policy: -> (**_request) { equality_spoof })
+    end
+
+    assert_equal("Realtime MCP tool call was not approved by the application.", error.message)
+    approval = connection.conversation.items.calls.fetch(1)
+    assert_equal(false, approval.fetch(:approve))
+  end
+
   def test_exact_match_policy_approves_only_the_caller_allowed_tool_and_arguments
     policy = OpenAI::Examples::Realtime::MCPApproval.exact_match_policy(
       allowed_tool_name: "lookup",

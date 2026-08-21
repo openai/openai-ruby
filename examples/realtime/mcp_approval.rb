@@ -155,11 +155,13 @@ module OpenAI
 
             state[:approval_request_id] = item.id
             state[:approval_request_arguments] = item.arguments
-            authorized = approval_policy&.call(
-              server_label: item.server_label,
-              tool_name: item.name,
-              arguments: item.arguments
-            ) == true
+            authorized = true.equal?(
+              approval_policy&.call(
+                server_label: item.server_label,
+                tool_name: item.name,
+                arguments: item.arguments
+              )
+            )
             unless authorized
               submit_approval_response(
                 connection,

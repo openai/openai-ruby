@@ -134,16 +134,19 @@ order is not guaranteed. Select a tool from that finalized list, force it in
 generic item helper:
 
 ```ruby
+approved = true.equal?(
+  application_policy.call(
+    server_label: approval_request.server_label,
+    tool_name: approval_request.name,
+    arguments: approval_request.arguments
+  )
+)
 connection.conversation.items.create(
   type: :mcp_approval_response,
   id: approval_response_id,
   approval_request_id: approval_request.id,
-  approve: application_policy.call(
-    server_label: approval_request.server_label,
-    tool_name: approval_request.name,
-    arguments: approval_request.arguments
-  ) == true,
-  reason: "Approved by application policy."
+  approve: approved,
+  reason: "Decided by application policy."
 )
 ```
 
