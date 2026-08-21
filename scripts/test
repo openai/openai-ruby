@@ -13,13 +13,18 @@ function steady_is_running() {
   curl --silent --fail "http://127.0.0.1:4010/_x-steady/health" >/dev/null 2>&1
 }
 
-kill_server_on_port() {
-  pids=$(lsof -t -i tcp:"$1" -sTCP:LISTEN || echo "")
-  if [ "$pids" != "" ]; then
-    while IFS= read -r pid; do
-      kill "$pid" 2>/dev/null || true
-    done <<< "$pids"
-    echo "Stopped $pids."
+stop_owned_mock() {
+  local pid_file="$1"
+  local pid=""
+
+  if [ -s "$pid_file" ]; then
+    read -r pid < "$pid_file"
+  fi
+  rm -f "$pid_file"
+
+  if [[ "$pid" =~ ^[0-9]+$ ]]; then
+    kill -TERM -- "-$pid" 2>/dev/null || kill -TERM "$pid" 2>/dev/null || true
+    echo "Stopped mock process group $pid."
   fi
 }
 
@@ -28,11 +33,14 @@ function is_overriding_api_base_url() {
 }
 
 if ! is_overriding_api_base_url && ! steady_is_running ; then
-  # Start the dev server
-  ./scripts/mock --daemon
+  mock_pid_file=$(mktemp)
 
-  # When we exit this script, make sure to kill the background mock server process
-  trap 'kill_server_on_port 4010' EXIT
+  # The mock launcher records only the process group created by this invocation.
+  # Arming this before startup also covers a server that binds but never becomes ready.
+  trap 'stop_owned_mock "$mock_pid_file"' EXIT
+
+  # Start the dev server
+  STEADY_PID_FILE="$mock_pid_file" ./scripts/mock --daemon
 fi
 
 if is_overriding_api_base_url ; then

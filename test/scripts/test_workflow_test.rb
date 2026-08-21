@@ -24,7 +24,6 @@ class TestWorkflowTest < Minitest::Test
     write_mock
     write_bundle
     write_curl
-    write_lsof
   end
 
   def teardown
@@ -44,7 +43,6 @@ class TestWorkflowTest < Minitest::Test
     listener_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60")
     stdout, stderr, status = run_test_script(
       curl_mode: "http_error",
-      lsof_pids: listener_pid.to_s,
       mock_mode: "fail"
     )
 
@@ -70,38 +68,110 @@ class TestWorkflowTest < Minitest::Test
     end
   end
 
-  def test_cleanup_stops_every_process_listening_on_mock_port
-    stale_pid = Process.spawn(RbConfig.ruby, "-e", "exit")
-    Process.wait(stale_pid)
-    pids = 2.times.map { Process.spawn(RbConfig.ruby, "-e", "sleep 60") }
+  def test_cleanup_stops_only_the_mock_owned_by_this_invocation
+    owned_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60", pgroup: true)
+    preexisting_ipv6_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60", pgroup: true)
     stdout, stderr, status = run_test_script(
       curl_mode: "unavailable_until_mock",
-      lsof_pids: [stale_pid, *pids].join("\n")
+      mock_owned_pid: owned_pid.to_s
     )
 
     assert(status.success?, "#{stdout}\n#{stderr}")
-    pids.each { assert(wait_for_exit(_1, timeout: 5), "expected cleanup to stop PID #{_1}") }
+    assert(wait_for_exit(owned_pid, timeout: 5), "expected cleanup to stop owned PID #{owned_pid}")
+    refute(
+      wait_for_exit(preexisting_ipv6_pid, timeout: 1),
+      "expected cleanup to preserve pre-existing IPv6 listener PID #{preexisting_ipv6_pid}"
+    )
   ensure
-    Array(pids).each do |pid|
+    [owned_pid, preexisting_ipv6_pid].compact.each do |pid|
       Process.kill("TERM", pid)
     rescue Errno::ESRCH
       nil
     end
 
-    Array(pids).each do |pid|
+    [owned_pid, preexisting_ipv6_pid].compact.each do |pid|
       Process.wait(pid)
     rescue Errno::ECHILD
       nil
     end
   end
 
+  def test_failed_mock_readiness_cleans_up_the_owned_process_group
+    owned_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60", pgroup: true)
+    stdout, stderr, status = run_test_script(
+      curl_mode: "unavailable_until_mock",
+      mock_mode: "fail",
+      mock_owned_pid: owned_pid.to_s
+    )
+
+    refute(status.success?, "#{stdout}\n#{stderr}")
+    assert(wait_for_exit(owned_pid, timeout: 5), "expected failed startup to stop owned PID #{owned_pid}")
+  ensure
+    begin
+      Process.kill("TERM", owned_pid)
+    rescue Errno::ESRCH, TypeError
+      nil
+    end
+
+    begin
+      Process.wait(owned_pid)
+    rescue Errno::ECHILD, TypeError
+      nil
+    end
+  end
+
+  def test_mock_launcher_cleans_up_its_process_group_after_readiness_timeout
+    owned_pid = nil
+    project = File.join(@directory, "mock-project")
+    bin = File.join(@directory, "mock-bin")
+    pid_record = File.join(@directory, "mock-pid")
+    pid_file = File.join(@directory, "mock-pid-file")
+    spec = File.join(project, "openapi.yml")
+    FileUtils.mkdir_p(File.join(project, "scripts"))
+    FileUtils.mkdir_p(bin)
+    File.symlink(File.join(ROOT, "scripts/mock"), File.join(project, "scripts/mock"))
+    File.write(spec, "openapi: 3.0.0\n")
+    write_executable(File.join(bin, "curl"), "#!/usr/bin/env bash\nexit 22\n")
+    write_executable(File.join(bin, "sleep"), "#!/usr/bin/env bash\nexit 0\n")
+    write_executable(
+      File.join(bin, "npm"),
+      <<~BASH
+        #!/usr/bin/env bash
+        if [[ " $* " == *" --version "* ]]; then
+          exit 0
+        fi
+        printf '%s\n' "$$" > "$MOCK_PID_RECORD"
+        exec "$RUBY" -e 'sleep 60'
+      BASH
+    )
+
+    env = {
+      "MOCK_PID_RECORD" => pid_record,
+      "PATH" => [bin, ENV.fetch("PATH")].join(File::PATH_SEPARATOR),
+      "RUBY" => RbConfig.ruby,
+      "STEADY_PID_FILE" => pid_file
+    }
+    stdout, stderr, status = Open3.capture3(env, File.join(project, "scripts/mock"), spec, "--daemon")
+    owned_pid = Integer(File.read(pid_record), 10)
+
+    refute(status.success?, "#{stdout}\n#{stderr}")
+    assert_includes(stdout, "Timed out waiting for Steady server to start")
+    assert(wait_for_process_exit(owned_pid, timeout: 5), "expected timeout to stop process group #{owned_pid}")
+    refute(File.exist?(pid_file), "expected timeout to clear PID file")
+  ensure
+    begin
+      Process.kill("TERM", -owned_pid)
+    rescue Errno::ESRCH, TypeError
+      nil
+    end
+  end
+
   def test_cleanup_leaves_non_listening_connections_running
-    listener_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60")
+    listener_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60", pgroup: true)
     client_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60")
     stdout, stderr, status = run_test_script(
       curl_mode: "unavailable_until_mock",
-      lsof_pids: listener_pid.to_s,
-      lsof_connected_pids: client_pid.to_s
+      mock_owned_pid: listener_pid.to_s
     )
 
     assert(status.success?, "#{stdout}\n#{stderr}")
@@ -151,15 +221,19 @@ class TestWorkflowTest < Minitest::Test
     File.exist?(path) ? File.readlines(path, chomp: true) : []
   end
 
-  def run_test_script(curl_mode:, api_base_url: nil, lsof_pids: nil, lsof_connected_pids: nil, mock_mode: nil)
+  def run_test_script(
+    curl_mode:,
+    api_base_url: nil,
+    mock_mode: nil,
+    mock_owned_pid: nil
+  )
     env = {
       "BUNDLE_CALLS" => @bundle_calls,
       "CURL_CALLS" => @curl_calls,
       "CURL_MODE" => curl_mode,
-      "LSOF_CONNECTED_PIDS" => lsof_connected_pids,
-      "LSOF_PIDS" => lsof_pids,
       "MOCK_CALLS" => @mock_calls,
       "MOCK_MODE" => mock_mode,
+      "MOCK_OWNED_PID" => mock_owned_pid,
       "MOCK_STARTED" => @mock_started,
       "PATH" => [@bin, ENV.fetch("PATH")].join(File::PATH_SEPARATOR),
       "TEST_API_BASE_URL" => api_base_url
@@ -178,6 +252,21 @@ class TestWorkflowTest < Minitest::Test
 
   rescue Errno::ECHILD
     true
+  end
+
+  def wait_for_process_exit(pid, timeout:)
+    deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + timeout
+    loop do
+      begin
+        Process.kill(0, pid)
+      rescue Errno::ESRCH
+        return true
+      end
+
+      return false if Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
+
+      sleep(0.01)
+    end
   end
 
   def write_bundle
@@ -221,33 +310,15 @@ class TestWorkflowTest < Minitest::Test
     )
   end
 
-  def write_lsof
-    write_executable(
-      File.join(@bin, "lsof"),
-      <<~BASH
-        #!/usr/bin/env bash
-        found=false
-        if [ -n "$LSOF_PIDS" ]; then
-          printf '%s\n' "$LSOF_PIDS"
-          found=true
-        fi
-        if [[ " $* " != *" -sTCP:LISTEN "* ]] && [ -n "$LSOF_CONNECTED_PIDS" ]; then
-          printf '%s\n' "$LSOF_CONNECTED_PIDS"
-          found=true
-        fi
-        if [ "$found" = false ]; then
-          exit 1
-        fi
-      BASH
-    )
-  end
-
   def write_mock
     write_executable(
       File.join(@project, "scripts/mock"),
       <<~BASH
         #!/usr/bin/env bash
         printf '%s\n' "$*" > "$MOCK_CALLS"
+        if [ -n "$MOCK_OWNED_PID" ] && [ -n "$STEADY_PID_FILE" ]; then
+          printf '%s\n' "$MOCK_OWNED_PID" > "$STEADY_PID_FILE"
+        fi
         if [ "$MOCK_MODE" = "fail" ]; then
           exit 1
         fi
