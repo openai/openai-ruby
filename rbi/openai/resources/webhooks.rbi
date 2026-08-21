@@ -36,9 +36,9 @@ module OpenAI
       def unwrap(
         # The raw webhook payload as a string
         payload,
-        # The webhook headers
+        # The raw HTTP headers that came with the payload
         headers = {},
-        # The webhook secret (optional, will use ENV["OPENAI_WEBHOOK_SECRET"] if not provided)
+        # The webhook signing key
         webhook_secret = nil
       )
       end
@@ -54,13 +54,13 @@ module OpenAI
           .void
       }
       def verify_signature(
-        # The webhook payload as a string
+        # The raw webhook payload as a string
         payload,
-        # The webhook headers
+        # The raw HTTP headers that came with the payload
         headers,
-        # The webhook secret (optional, will use ENV["OPENAI_WEBHOOK_SECRET"] if not provided)
+        # The webhook signing key
         webhook_secret = nil,
-        # Maximum age of the webhook in seconds (default: 300 = 5 minutes)
+        # Maximum age of the webhook in seconds
         tolerance = 300
       )
       end
