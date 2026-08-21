@@ -571,11 +571,17 @@ module OpenAI
               end
 
               acc_entries_by_index = {}
+              entries_ordered = true
+              last_entry_index = nil
               acc_value.each do |entry|
                 next unless entry.is_a?(Hash)
 
                 entry_index = entry[:index] || entry["index"]
-                acc_entries_by_index[entry_index] ||= entry if entry_index
+                next unless entry_index
+
+                entries_ordered &&= last_entry_index.nil? || last_entry_index <= entry_index
+                last_entry_index = entry_index
+                acc_entries_by_index[entry_index] ||= entry
               end
 
               appended_entry = false
@@ -605,13 +611,15 @@ module OpenAI
                 if acc_entry.nil?
                   acc_value << delta_entry
                   acc_entries_by_index[index] = delta_entry
+                  entries_ordered &&= last_entry_index.nil? || last_entry_index < index
+                  last_entry_index = index
                   appended_entry = true
                 else
                   accumulate_delta(acc_entry, delta_entry)
                 end
               end
 
-              if appended_entry
+              if appended_entry && !entries_ordered
                 acc_value.sort_by! { |entry| entry[:index] || entry["index"] }
               end
             else

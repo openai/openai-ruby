@@ -94,6 +94,32 @@ class OpenAI::Test::ChatCompletionStreamTest < Minitest::Test
     assert_operator(comparisons, :<=, tool_call_count * 32)
   end
 
+  def test_in_order_tool_call_appends_do_not_resort_existing_snapshots
+    tool_call_count = 128
+    state = OpenAI::Helpers::Streaming::ChatCompletionStreamState.new
+    state.handle_chunk(
+      build_chunk(
+        choice_index: 0,
+        delta: {role: :assistant, tool_calls: [tool_call_delta(index: 0, arguments: "")]}
+      )
+    )
+
+    sorts = count_array_sort_by_calls do
+      1.upto(tool_call_count - 1) do |index|
+        state.handle_chunk(
+          build_chunk(
+            choice_index: 0,
+            delta: {tool_calls: [tool_call_delta(index: index, arguments: "")]}
+          )
+        )
+      end
+    end
+
+    final_tool_calls = state.get_final_completion.choices.first.message.tool_calls
+    assert_equal((0...tool_call_count).to_a, final_tool_calls.map { |tool_call| tool_call[:index] })
+    assert_equal(0, sorts)
+  end
+
   def test_choice_snapshot_lookups_are_linear
     choice_count = 128
     choices = Array.new(choice_count) do |index|
@@ -169,6 +195,20 @@ class OpenAI::Test::ChatCompletionStreamTest < Minitest::Test
 
     trace.enable { yield }
     comparisons
+  ensure
+    trace&.disable
+  end
+
+  def count_array_sort_by_calls
+    sorts = 0
+    trace = TracePoint.new(:c_call) do |event|
+      if event.defined_class == Array && event.method_id == :sort_by!
+        sorts += 1
+      end
+    end
+
+    trace.enable { yield }
+    sorts
   ensure
     trace&.disable
   end
