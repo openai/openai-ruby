@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+cd -- "$(dirname -- "$0")/.."
+
+releases=(v0.78.0 v0.80.0)
+missing_releases=()
+for release in "${releases[@]}"; do
+  if ! git rev-parse --verify --quiet "refs/tags/${release}^{commit}" >/dev/null; then
+    missing_releases+=("$release")
+  fi
+done
+
+if ((${#missing_releases[@]} > 0)); then
+  printf 'Missing required release tags: %s\n' "${missing_releases[*]}" >&2
+  printf 'Fetch them with `git fetch --tags` before running this differential.\n' >&2
+  exit 1
+fi
+
+tmp_dir=$(mktemp -d)
+trap 'rm -rf -- "$tmp_dir"' EXIT
+
+for release in "${releases[@]}"; do
+  mkdir "$tmp_dir/$release"
+  git archive "refs/tags/$release" | tar -x -C "$tmp_dir/$release"
+  ruby scripts/union-characterization "$tmp_dir/$release/lib" >"$tmp_dir/$release.json"
+done
+
+echo "Comparing published releases v0.78.0 and v0.80.0..."
+diff -u "$tmp_dir/v0.78.0.json" "$tmp_dir/v0.80.0.json"
+
+ruby scripts/union-characterization >"$tmp_dir/main.json"
+
+echo "Published releases agree. Their differential from the current checkout follows:"
+if diff -u --label v0.78.0-and-v0.80.0 --label current-checkout \
+  "$tmp_dir/v0.80.0.json" "$tmp_dir/main.json"
+then
+  echo "No differences."
+else
+  status=$?
+  if ((status > 1)); then
+    exit "$status"
+  fi
+fi
