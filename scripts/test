@@ -28,11 +28,11 @@ function is_overriding_api_base_url() {
 }
 
 if ! is_overriding_api_base_url && ! steady_is_running ; then
-  # When we exit this script, make sure to kill the background mock server process
-  trap 'kill_server_on_port 4010' EXIT
-
   # Start the dev server
   ./scripts/mock --daemon
+
+  # When we exit this script, make sure to kill the background mock server process
+  trap 'kill_server_on_port 4010' EXIT
 fi
 
 if is_overriding_api_base_url ; then

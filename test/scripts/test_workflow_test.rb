@@ -40,6 +40,36 @@ class TestWorkflowTest < Minitest::Test
     assert_bundle_ran
   end
 
+  def test_failed_mock_start_leaves_preexisting_listener_running
+    listener_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60")
+    stdout, stderr, status = run_test_script(
+      curl_mode: "http_error",
+      lsof_pids: listener_pid.to_s,
+      mock_mode: "fail"
+    )
+
+    refute(status.success?, "#{stdout}\n#{stderr}")
+    assert_equal(["--daemon"], calls(@mock_calls))
+    refute(
+      wait_for_exit(listener_pid, timeout: 1),
+      "expected failed startup to leave listener PID #{listener_pid} running"
+    )
+  ensure
+    if listener_pid
+      begin
+        Process.kill("TERM", listener_pid)
+      rescue Errno::ESRCH
+        nil
+      end
+
+      begin
+        Process.wait(listener_pid)
+      rescue Errno::ECHILD
+        nil
+      end
+    end
+  end
+
   def test_cleanup_stops_every_process_listening_on_mock_port
     stale_pid = Process.spawn(RbConfig.ruby, "-e", "exit")
     Process.wait(stale_pid)
@@ -121,7 +151,7 @@ class TestWorkflowTest < Minitest::Test
     File.exist?(path) ? File.readlines(path, chomp: true) : []
   end
 
-  def run_test_script(curl_mode:, api_base_url: nil, lsof_pids: nil, lsof_connected_pids: nil)
+  def run_test_script(curl_mode:, api_base_url: nil, lsof_pids: nil, lsof_connected_pids: nil, mock_mode: nil)
     env = {
       "BUNDLE_CALLS" => @bundle_calls,
       "CURL_CALLS" => @curl_calls,
@@ -129,6 +159,7 @@ class TestWorkflowTest < Minitest::Test
       "LSOF_CONNECTED_PIDS" => lsof_connected_pids,
       "LSOF_PIDS" => lsof_pids,
       "MOCK_CALLS" => @mock_calls,
+      "MOCK_MODE" => mock_mode,
       "MOCK_STARTED" => @mock_started,
       "PATH" => [@bin, ENV.fetch("PATH")].join(File::PATH_SEPARATOR),
       "TEST_API_BASE_URL" => api_base_url
@@ -217,6 +248,9 @@ class TestWorkflowTest < Minitest::Test
       <<~BASH
         #!/usr/bin/env bash
         printf '%s\n' "$*" > "$MOCK_CALLS"
+        if [ "$MOCK_MODE" = "fail" ]; then
+          exit 1
+        fi
         : > "$MOCK_STARTED"
       BASH
     )
