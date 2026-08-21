@@ -65,6 +65,32 @@ class TestWorkflowTest < Minitest::Test
     end
   end
 
+  def test_cleanup_leaves_non_listening_connections_running
+    listener_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60")
+    client_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60")
+    stdout, stderr, status = run_test_script(
+      curl_mode: "unavailable_until_mock",
+      lsof_pids: listener_pid.to_s,
+      lsof_connected_pids: client_pid.to_s
+    )
+
+    assert(status.success?, "#{stdout}\n#{stderr}")
+    assert(wait_for_exit(listener_pid), "expected cleanup to stop listener PID #{listener_pid}")
+    refute(wait_for_exit(client_pid), "expected cleanup to leave client PID #{client_pid} running")
+  ensure
+    [listener_pid, client_pid].compact.each do |pid|
+      Process.kill("TERM", pid)
+    rescue Errno::ESRCH
+      nil
+    end
+
+    [listener_pid, client_pid].compact.each do |pid|
+      Process.wait(pid)
+    rescue Errno::ECHILD
+      nil
+    end
+  end
+
   def test_healthy_local_mock_is_reused
     stdout, stderr, status = run_test_script(curl_mode: "healthy")
 
@@ -95,11 +121,12 @@ class TestWorkflowTest < Minitest::Test
     File.exist?(path) ? File.readlines(path, chomp: true) : []
   end
 
-  def run_test_script(curl_mode:, api_base_url: nil, lsof_pids: nil)
+  def run_test_script(curl_mode:, api_base_url: nil, lsof_pids: nil, lsof_connected_pids: nil)
     env = {
       "BUNDLE_CALLS" => @bundle_calls,
       "CURL_CALLS" => @curl_calls,
       "CURL_MODE" => curl_mode,
+      "LSOF_CONNECTED_PIDS" => lsof_connected_pids,
       "LSOF_PIDS" => lsof_pids,
       "MOCK_CALLS" => @mock_calls,
       "MOCK_STARTED" => @mock_started,
@@ -167,10 +194,18 @@ class TestWorkflowTest < Minitest::Test
       File.join(@bin, "lsof"),
       <<~BASH
         #!/usr/bin/env bash
-        if [ -z "$LSOF_PIDS" ]; then
+        found=false
+        if [ -n "$LSOF_PIDS" ]; then
+          printf '%s\n' "$LSOF_PIDS"
+          found=true
+        fi
+        if [[ " $* " != *" -sTCP:LISTEN "* ]] && [ -n "$LSOF_CONNECTED_PIDS" ]; then
+          printf '%s\n' "$LSOF_CONNECTED_PIDS"
+          found=true
+        fi
+        if [ "$found" = false ]; then
           exit 1
         fi
-        printf '%s\n' "$LSOF_PIDS"
       BASH
     )
   end

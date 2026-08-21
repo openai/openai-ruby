@@ -14,7 +14,7 @@ function steady_is_running() {
 }
 
 kill_server_on_port() {
-  pids=$(lsof -t -i tcp:"$1" || echo "")
+  pids=$(lsof -t -i tcp:"$1" -sTCP:LISTEN || echo "")
   if [ "$pids" != "" ]; then
     while IFS= read -r pid; do
       kill "$pid" 2>/dev/null || true
