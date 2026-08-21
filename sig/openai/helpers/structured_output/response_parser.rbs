@@ -1,0 +1,17 @@
+module OpenAI
+  module Helpers
+    module StructuredOutput
+      module ResponseParser
+        def self.parse!: (
+          ::Hash[Symbol, top] raw,
+          top model,
+          ::Hash[String, top] tool_models
+        ) -> ::Hash[Symbol, top]
+
+        def self.get_models: (
+          ::Hash[Symbol, top] parsed
+        ) -> [top, ::Hash[String, top]]
+      end
+    end
+  end
+end

@@ -111,6 +111,7 @@ class FormattingPolicyTest < Minitest::Test
   def test_pattern_workarounds_format_as_valid_idempotent_ruby
     %w[
       lib/openai/resources/responses.rb
+      lib/openai/helpers/structured_output/response_parser.rb
       test/openai/internal/type/base_model_test.rb
       rbi/openai/internal/type/base_model.rbi
     ]
