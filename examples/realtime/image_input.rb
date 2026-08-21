@@ -29,6 +29,23 @@ module OpenAI
           [1, 0, 2, 2],
           [0, 1, 1, 2]
         ].freeze
+        JPEG_FRAME_MARKERS = [
+          0xC0,
+          0xC1,
+          0xC2,
+          0xC3,
+          0xC5,
+          0xC6,
+          0xC7,
+          0xC9,
+          0xCA,
+          0xCB,
+          0xCD,
+          0xCE,
+          0xCF
+        ].freeze
+        JPEG_LOSSLESS_FRAME_MARKERS = [0xC3, 0xC7, 0xCB, 0xCF].freeze
+        JPEG_PROGRESSIVE_FRAME_MARKERS = [0xC2, 0xC6, 0xCA, 0xCE].freeze
 
         module_function
 
@@ -147,28 +164,47 @@ module OpenAI
             end
           end
 
-          inflater = Zlib::Inflate.new
-          decompressed = inflater.inflate(idat)
-          decompressed << inflater.finish
-          return false unless inflater.total_in == idat.bytesize
-
           row_sizes = passes.map { |pass_width, _| ((pass_width * bits_per_pixel) + 7) / 8 }
           expected_size = passes.each_with_index.sum do |(_, pass_height), index|
             pass_height * (row_sizes.fetch(index) + 1)
           end
 
-          return false unless decompressed.bytesize == expected_size
+          valid_png_scanlines?(idat, passes, row_sizes, expected_size)
+        end
 
-          offset = 0
-          passes.each_with_index do |(_, pass_height), index|
-            pass_height.times do
-              return false unless (0..4).cover?(decompressed.getbyte(offset))
+        def valid_png_scanlines?(idat, passes, row_sizes, expected_size, inflater: Zlib::Inflate.new)
+          output_size = 0
+          pass_index = 0
+          rows_remaining = passes.fetch(pass_index).fetch(1)
+          scanline_size = row_sizes.fetch(pass_index) + 1
+          scanline_offset = 0
 
-              offset += row_sizes.fetch(index) + 1
+          inflater.inflate(idat) do |chunk|
+            return false if chunk.bytesize > expected_size - output_size
+
+            output_size += chunk.bytesize
+            chunk.each_byte do |byte|
+              return false if scanline_offset.zero? && !(0..4).cover?(byte)
+
+              scanline_offset += 1
+              next unless scanline_offset == scanline_size
+
+              scanline_offset = 0
+              rows_remaining -= 1
+              next unless rows_remaining.zero?
+
+              pass_index += 1
+              next if pass_index == passes.length
+
+              rows_remaining = passes.fetch(pass_index).fetch(1)
+              scanline_size = row_sizes.fetch(pass_index) + 1
             end
           end
 
-          offset == decompressed.bytesize
+          inflater.finished? &&
+            inflater.total_in == idat.bytesize &&
+            output_size == expected_size &&
+            pass_index == passes.length
         rescue Zlib::Error
           false
         ensure
@@ -197,7 +233,7 @@ module OpenAI
           return false unless bytes.start_with?(JPEG_SIGNATURE)
 
           offset = 2
-          saw_frame = false
+          frame = nil
           saw_scan = false
           while offset < bytes.bytesize
             return false unless bytes.getbyte(offset) == 0xFF
@@ -208,18 +244,33 @@ module OpenAI
             return false unless marker
 
             offset += 1
-            return saw_frame && saw_scan && offset == bytes.bytesize if marker == 0xD9
+            if marker == 0xD9
+              return !frame.nil? && frame.fetch(:height).positive? && saw_scan && offset == bytes.bytesize
+            end
+
             next if marker == 0x01 || (0xD0..0xD7).cover?(marker)
             return false if offset + 2 > bytes.bytesize
 
             length = bytes.byteslice(offset, 2).unpack1("n")
             return false if length < 2 || offset + length > bytes.bytesize
 
-            saw_frame ||= (0xC0..0xC3).cover?(marker) ||
-              (0xC5..0xC7).cover?(marker) ||
-              (0xC9..0xCB).cover?(marker) ||
-              (0xCD..0xCF).cover?(marker)
-            if marker == 0xDA
+            data = bytes.byteslice(offset + 2, length - 2)
+            if JPEG_FRAME_MARKERS.include?(marker)
+              frame = jpeg_frame(marker, data)
+              return false unless frame
+
+              offset += length
+            elsif marker == 0xDC
+              return false unless saw_scan
+
+              frame = jpeg_frame_with_dnl(frame, data)
+              return false unless frame
+
+              offset += length
+            elsif marker == 0xDA
+              return false unless frame
+              return false unless valid_jpeg_scan_header?(data, frame)
+
               saw_scan = true
               offset += length
               offset = scan_to_next_jpeg_marker(bytes, offset)
@@ -232,15 +283,130 @@ module OpenAI
           false
         end
 
+        def jpeg_frame(marker, data)
+          return unless data.bytesize >= 6
+
+          precision, height, width, component_count = data.unpack("CnnC")
+          return unless valid_jpeg_precision?(marker, precision)
+          return unless width.positive? && component_count.positive?
+          return unless data.bytesize == 6 + (3 * component_count)
+
+          component_data = data.byteslice(6..).unpack("C*").each_slice(3).to_a
+          valid_components = component_data.all? do |_, sampling, table|
+            horizontal_sampling = sampling >> 4
+            vertical_sampling = sampling & 0x0F
+            (1..4).cover?(horizontal_sampling) &&
+              (1..4).cover?(vertical_sampling) &&
+              (0..3).cover?(table)
+          end
+
+          return unless valid_components
+
+          components = component_data.to_h do |component, sampling, _|
+            [component, (sampling >> 4) * (sampling & 0x0F)]
+          end
+
+          return unless components.length == component_data.length
+
+          {marker: marker, precision: precision, height: height, components: components}
+        end
+
+        def jpeg_frame_with_dnl(frame, data)
+          return unless frame && frame.fetch(:height).zero? && data.bytesize == 2
+
+          height = data.unpack1("n")
+          return unless height.positive?
+
+          frame.merge(height: height)
+        end
+
+        def valid_jpeg_precision?(marker, precision)
+          return precision == 8 if marker == 0xC0
+          return (2..16).cover?(precision) if JPEG_LOSSLESS_FRAME_MARKERS.include?(marker)
+
+          [8, 12].include?(precision)
+        end
+
+        def valid_jpeg_scan_header?(data, frame)
+          return false if data.empty?
+
+          frame_components = frame.fetch(:components)
+          component_count = data.getbyte(0)
+          return false unless (1..4).cover?(component_count)
+          return false if component_count > frame_components.length
+          return false unless data.bytesize == 4 + (2 * component_count)
+
+          scan_components = component_count.times.map do |index|
+            component = data.getbyte(1 + (2 * index))
+            tables = data.getbyte(2 + (2 * index))
+            return false unless frame_components.include?(component)
+            return false unless (0..3).cover?(tables >> 4) && (0..3).cover?(tables & 0x0F)
+
+            component
+          end
+
+          return false unless scan_components.uniq.length == scan_components.length
+          if component_count > 1
+            sampling_blocks = scan_components.sum { |component| frame_components.fetch(component) }
+            return false if sampling_blocks > 10
+          end
+
+          spectral_start, spectral_end, approximation = data.byteslice(-3, 3).unpack("C3")
+          valid_jpeg_scan_parameters?(
+            frame,
+            component_count,
+            spectral_start,
+            spectral_end,
+            approximation
+          )
+        end
+
+        def valid_jpeg_scan_parameters?(
+          frame,
+          component_count,
+          spectral_start,
+          spectral_end,
+          approximation
+        )
+          successive_high = approximation >> 4
+          successive_low = approximation & 0x0F
+          frame_marker = frame.fetch(:marker)
+
+          if JPEG_LOSSLESS_FRAME_MARKERS.include?(frame_marker)
+            return (1..7).cover?(spectral_start) &&
+              spectral_end.zero? &&
+              successive_high.zero? &&
+              successive_low < frame.fetch(:precision)
+          end
+
+          unless JPEG_PROGRESSIVE_FRAME_MARKERS.include?(frame_marker)
+            return spectral_start.zero? && spectral_end == 63 && approximation.zero?
+          end
+
+          spectral_start <= spectral_end &&
+            spectral_end <= 63 &&
+            (!spectral_start.zero? || spectral_end.zero?) &&
+            (spectral_start.zero? || component_count == 1) &&
+            successive_high <= 13 &&
+            successive_low <= 13 &&
+            (successive_high.zero? || successive_high == successive_low + 1)
+        end
+
         def scan_to_next_jpeg_marker(bytes, offset)
+          saw_data = false
           while offset < bytes.bytesize
             if bytes.getbyte(offset) == 0xFF
               following = bytes.getbyte(offset + 1)
               return nil unless following
-              return offset if following != 0x00 && !(0xD0..0xD7).cover?(following)
+              if following == 0x00
+                saw_data = true
+              elsif !(0xD0..0xD7).cover?(following)
+                return saw_data ? offset : nil
+              end
 
               offset += 2
             else
+              saw_data = true
               offset += 1
             end
           end
