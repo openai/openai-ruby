@@ -70,6 +70,12 @@ mock_process_is_running() {
   return 1
 }
 
+mock_owns_listener() {
+  local expected_process_group="$1"
+
+  lsof -nP -a -g "$expected_process_group" -iTCP@127.0.0.1:4010 -sTCP:LISTEN >/dev/null 2>&1
+}
+
 # Run steady mock on the given spec
 if [ "$1" == "--daemon" ]; then
   # Pre-install the package so the download doesn't eat into the startup timeout
@@ -93,13 +99,15 @@ if [ "$1" == "--daemon" ]; then
   attempts=0
   while true; do
     if curl --silent --fail "http://127.0.0.1:4010/_x-steady/health" >/dev/null 2>&1; then
-      # A concurrent launcher may own the healthy endpoint. Accept readiness
-      # only while the process group created by this invocation is still live.
-      if mock_process_is_running "$mock_pid"; then
+      # A concurrent launcher may own the healthy endpoint while this
+      # invocation is still alive but failing to bind. Require the listener
+      # itself to belong to the process group created by this invocation.
+      if mock_process_is_running "$mock_pid" && mock_owns_listener "$mock_pid"; then
         break
       fi
 
       echo
+      echo "Mock process group $mock_pid does not own the healthy listener on 127.0.0.1:4010"
       cat .stdy.log
       exit 1
     fi

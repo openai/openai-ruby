@@ -156,13 +156,29 @@ class TestWorkflowTest < Minitest::Test
     refute(File.exist?(pid_file), "expected child failure to clear PID file")
   end
 
+  def test_mock_launcher_rejects_an_unrelated_healthy_endpoint_while_its_child_is_alive
+    stdout, stderr, status, owned_pid, pid_file = run_mock_launcher(
+      mode: "hang",
+      curl_mode: "healthy"
+    )
+
+    refute(status.success?, "#{stdout}\n#{stderr}")
+    assert(wait_for_process_exit(owned_pid, timeout: 5), "expected unbound process group #{owned_pid} to stop")
+    refute(File.exist?(pid_file), "expected rejected ownership to clear PID file")
+  end
+
   def test_mock_launcher_transfers_a_healthy_process_group_to_its_caller
     owned_pid = nil
-    stdout, stderr, status, owned_pid, pid_file = run_mock_launcher(mode: "hang", curl_mode: "healthy")
+    stdout, stderr, status, owned_pid, pid_file, lsof_calls = run_mock_launcher(
+      mode: "delayed_start",
+      curl_mode: "healthy",
+      listener_mode: "owned"
+    )
 
     assert(status.success?, "#{stdout}\n#{stderr}")
     refute(wait_for_process_exit(owned_pid, timeout: 1), "expected healthy process group #{owned_pid} to remain")
     assert_equal("#{owned_pid}\n", File.read(pid_file))
+    assert_includes(File.read(lsof_calls), "-g #{owned_pid} -iTCP@127.0.0.1:4010 -sTCP:LISTEN")
   ensure
     begin
       Process.kill("TERM", -owned_pid) if owned_pid
@@ -298,28 +314,31 @@ class TestWorkflowTest < Minitest::Test
     Open3.capture3(env, File.join(@project, "scripts/test"), chdir: @project)
   end
 
-  def run_mock_launcher(mode:, curl_mode: "unavailable")
-    fixture = mock_launcher_fixture(mode: mode, curl_mode: curl_mode)
+  def run_mock_launcher(mode:, curl_mode: "unavailable", listener_mode: "unrelated")
+    fixture = mock_launcher_fixture(mode: mode, curl_mode: curl_mode, listener_mode: listener_mode)
     stdout, stderr, status = Open3.capture3(
       fixture.fetch(:env),
       fixture.fetch(:script),
       fixture.fetch(:spec),
       "--daemon"
     )
+    wait_for_file(fixture.fetch(:pid_record), timeout: 10)
     [
       stdout,
       stderr,
       status,
       Integer(File.read(fixture.fetch(:pid_record)), 10),
-      fixture.fetch(:pid_file)
+      fixture.fetch(:pid_file),
+      fixture.fetch(:lsof_calls)
     ]
   end
 
-  def mock_launcher_fixture(mode:, curl_mode: "unavailable")
+  def mock_launcher_fixture(mode:, curl_mode: "unavailable", listener_mode: "unrelated")
     project = File.join(@directory, "mock-project")
     bin = File.join(@directory, "mock-bin")
     pid_record = File.join(@directory, "mock-pid")
     exited_record = File.join(@directory, "mock-exited")
+    lsof_calls = File.join(@directory, "lsof-calls")
     pid_file = File.join(@directory, "mock-pid-file")
     stdout_path = File.join(@directory, "mock-stdout")
     stderr_path = File.join(@directory, "mock-stderr")
@@ -333,6 +352,9 @@ class TestWorkflowTest < Minitest::Test
       <<~BASH
         #!/usr/bin/env bash
         if [ "$MOCK_CURL_MODE" = "healthy" ]; then
+          while [ ! -f "$MOCK_PID_RECORD" ]; do
+            "$RUBY" -e 'sleep 0.01'
+          done
           exit 0
         fi
         if [ "$MOCK_CURL_MODE" = "healthy_after_child_exit" ]; then
@@ -346,11 +368,22 @@ class TestWorkflowTest < Minitest::Test
     )
     write_executable(File.join(bin, "sleep"), "#!/usr/bin/env bash\nexit 0\n")
     write_executable(
+      File.join(bin, "lsof"),
+      <<~BASH
+        #!/usr/bin/env bash
+        printf '%s\n' "$*" > "$MOCK_LSOF_CALLS"
+        [ "$MOCK_LISTENER_MODE" = "owned" ]
+      BASH
+    )
+    write_executable(
       File.join(bin, "npm"),
       <<~BASH
         #!/usr/bin/env bash
         if [[ " $* " == *" --version "* ]]; then
           exit 0
+        fi
+        if [ "$MOCK_NPM_MODE" = "delayed_start" ]; then
+          "$RUBY" -e 'sleep 0.2'
         fi
         printf '%s\n' "$$" > "$MOCK_PID_RECORD"
         trap ': > "$MOCK_EXITED_RECORD"' EXIT
@@ -364,6 +397,8 @@ class TestWorkflowTest < Minitest::Test
     env = {
       "MOCK_CURL_MODE" => curl_mode,
       "MOCK_EXITED_RECORD" => exited_record,
+      "MOCK_LISTENER_MODE" => listener_mode,
+      "MOCK_LSOF_CALLS" => lsof_calls,
       "MOCK_NPM_MODE" => mode,
       "MOCK_PID_RECORD" => pid_record,
       "PATH" => [bin, ENV.fetch("PATH")].join(File::PATH_SEPARATOR),
@@ -372,6 +407,7 @@ class TestWorkflowTest < Minitest::Test
     }
     {
       env: env,
+      lsof_calls: lsof_calls,
       pid_file: pid_file,
       pid_record: pid_record,
       script: File.join(project, "scripts/mock"),
