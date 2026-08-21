@@ -76,8 +76,17 @@ mock_owns_listener() {
   lsof -nP -a -g "$expected_process_group" -iTCP@127.0.0.1:4010 -sTCP:LISTEN >/dev/null 2>&1
 }
 
+require_lsof() {
+  if ! command -v lsof >/dev/null 2>&1 || ! lsof -v >/dev/null 2>&1; then
+    echo "Error: lsof is required for --daemon mock startup; install it and ensure it is available on PATH" >&2
+    return 1
+  fi
+}
+
 # Run steady mock on the given spec
 if [ "$1" == "--daemon" ]; then
+  require_lsof
+
   # Pre-install the package so the download doesn't eat into the startup timeout
   npm exec --package=@stdy/cli@0.22.1 -- steady --version
 

@@ -167,6 +167,35 @@ class TestWorkflowTest < Minitest::Test
     refute(File.exist?(pid_file), "expected rejected ownership to clear PID file")
   end
 
+  def test_mock_launcher_requires_lsof_before_spawning_mock
+    owned_pid = nil
+    fixture = mock_launcher_fixture(
+      mode: "hang",
+      curl_mode: "healthy",
+      lsof_mode: "unavailable"
+    )
+    stdout, stderr, status = Open3.capture3(
+      fixture.fetch(:env),
+      fixture.fetch(:script),
+      fixture.fetch(:spec),
+      "--daemon"
+    )
+    if File.exist?(fixture.fetch(:pid_record))
+      owned_pid = Integer(File.read(fixture.fetch(:pid_record)), 10)
+    end
+
+    refute(status.success?, stdout)
+    assert_includes(stderr, "lsof is required for --daemon mock startup")
+    refute(File.exist?(fixture.fetch(:pid_record)), "expected dependency validation before spawning mock")
+    refute(File.exist?(fixture.fetch(:pid_file)), "expected dependency failure before recording ownership")
+  ensure
+    begin
+      Process.kill("TERM", -owned_pid) if owned_pid
+    rescue Errno::ESRCH, TypeError
+      nil
+    end
+  end
+
   def test_mock_launcher_transfers_a_healthy_process_group_to_its_caller
     owned_pid = nil
     stdout, stderr, status, owned_pid, pid_file, lsof_calls = run_mock_launcher(
@@ -333,7 +362,12 @@ class TestWorkflowTest < Minitest::Test
     ]
   end
 
-  def mock_launcher_fixture(mode:, curl_mode: "unavailable", listener_mode: "unrelated")
+  def mock_launcher_fixture(
+    mode:,
+    curl_mode: "unavailable",
+    listener_mode: "unrelated",
+    lsof_mode: "available"
+  )
     project = File.join(@directory, "mock-project")
     bin = File.join(@directory, "mock-bin")
     pid_record = File.join(@directory, "mock-pid")
@@ -371,6 +405,12 @@ class TestWorkflowTest < Minitest::Test
       File.join(bin, "lsof"),
       <<~BASH
         #!/usr/bin/env bash
+        if [ "$MOCK_LSOF_MODE" = "unavailable" ]; then
+          exit 127
+        fi
+        if [ "$1" = "-v" ]; then
+          exit 0
+        fi
         printf '%s\n' "$*" > "$MOCK_LSOF_CALLS"
         [ "$MOCK_LISTENER_MODE" = "owned" ]
       BASH
@@ -399,6 +439,7 @@ class TestWorkflowTest < Minitest::Test
       "MOCK_EXITED_RECORD" => exited_record,
       "MOCK_LISTENER_MODE" => listener_mode,
       "MOCK_LSOF_CALLS" => lsof_calls,
+      "MOCK_LSOF_MODE" => lsof_mode,
       "MOCK_NPM_MODE" => mode,
       "MOCK_PID_RECORD" => pid_record,
       "PATH" => [bin, ENV.fetch("PATH")].join(File::PATH_SEPARATOR),
