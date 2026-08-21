@@ -78,7 +78,10 @@ module OpenAI
 
         def initialize(response_format: nil, input_tools: nil)
           @current_completion_snapshot = nil
-          @choice_event_states = []
+          @choice_snapshots_by_index = {}
+          @tool_call_snapshots_by_choice_index = {}
+          @choice_snapshots_sorted = true
+          @choice_event_states = {}
           @input_tools = Array(input_tools)
           @response_format = response_format
           @rich_response_format = response_format.is_a?(Class) ? response_format : nil
@@ -105,6 +108,7 @@ module OpenAI
 
           return [] unless chunk.is_a?(OpenAI::Chat::ChatCompletionChunk)
 
+          validate_chunk_indices!(chunk)
           @current_completion_snapshot = accumulate_chunk(chunk)
           build_events(chunk: chunk, completion_snapshot: @current_completion_snapshot)
         end
@@ -118,7 +122,18 @@ module OpenAI
 
         def accumulate_chunk(chunk)
           if @current_completion_snapshot.nil?
-            return convert_initial_chunk_into_snapshot(chunk)
+            completion_snapshot = convert_initial_chunk_into_snapshot(chunk)
+            @choice_snapshots_sorted = completion_snapshot.choices.each_cons(2).all? do |previous, current|
+              previous.index <= current.index
+            end
+
+            completion_snapshot.choices.each do |choice_snapshot|
+              next if @choice_snapshots_by_index.key?(choice_snapshot.index)
+
+              index_choice_snapshot!(choice_snapshot)
+            end
+
+            return completion_snapshot
           end
 
           completion_snapshot = @current_completion_snapshot
@@ -134,21 +149,23 @@ module OpenAI
         end
 
         def accumulate_choice!(choice, completion_snapshot)
-          choice_snapshot = completion_snapshot.choices[choice.index]
+          choice_snapshot = @choice_snapshots_by_index[choice.index]
 
           if choice_snapshot.nil?
             choice_snapshot = create_new_choice_snapshot(choice)
-            completion_snapshot.choices[choice.index] = choice_snapshot
+            insert_choice_snapshot!(completion_snapshot.choices, choice_snapshot)
           else
             update_existing_choice_snapshot(choice, choice_snapshot)
           end
+
+          tool_calls_by_index = index_choice_snapshot!(choice_snapshot)
 
           if choice.finish_reason
             choice_snapshot.finish_reason = choice.finish_reason
             handle_finish_reason(choice.finish_reason, completion_snapshot)
           end
 
-          parse_tool_calls!(choice.delta.tool_calls, choice_snapshot.message.tool_calls)
+          parse_tool_calls!(choice.delta.tool_calls, tool_calls_by_index)
 
           accumulate_logprobs!(choice.logprobs, choice_snapshot)
         end
@@ -180,23 +197,25 @@ module OpenAI
           )
 
           choice_events = chunk.choices.flat_map do |choice|
-            build_choice_events(choice, completion_snapshot)
+            build_choice_events(choice)
           end
 
           [chunk_event] + choice_events
         end
 
-        def build_choice_events(choice, completion_snapshot)
+        def build_choice_events(choice)
           choice_state = get_choice_state(choice)
-          choice_snapshot = completion_snapshot.choices[choice.index]
+          choice_snapshot = @choice_snapshots_by_index.fetch(choice.index)
+          tool_calls_by_index = @tool_call_snapshots_by_choice_index.fetch(choice.index)
 
           content_delta_events(choice, choice_snapshot) +
-            tool_call_delta_events(choice, choice_snapshot) +
+            tool_call_delta_events(choice, tool_calls_by_index) +
             logprobs_delta_events(choice, choice_snapshot) +
             choice_state.get_done_events(
               choice_chunk: choice,
               choice_snapshot: choice_snapshot,
-              response_format: @response_format
+              response_format: @response_format,
+              tool_calls_by_index: tool_calls_by_index
             )
         end
 
@@ -225,16 +244,13 @@ module OpenAI
           events
         end
 
-        def tool_call_delta_events(choice, choice_snapshot)
+        def tool_call_delta_events(choice, tool_calls_by_index)
           events = []
           return events unless choice.delta.tool_calls
 
-          tool_calls = choice_snapshot.message.tool_calls
-          return events unless tool_calls
-
           choice.delta.tool_calls.each do |tool_call_delta|
-            tool_call = tool_calls[tool_call_delta.index]
-            next unless tool_call.type == :function && tool_call_delta.function
+            tool_call = tool_calls_by_index[tool_call_delta.index]
+            next unless tool_call&.type == :function && tool_call_delta.function
 
             parsed_args = if tool_call.function.respond_to?(:parsed)
               tool_call.function.parsed
@@ -290,11 +306,11 @@ module OpenAI
           end
         end
 
-        def parse_tool_calls!(delta_tool_calls, snapshot_tool_calls)
-          return unless delta_tool_calls && snapshot_tool_calls
+        def parse_tool_calls!(delta_tool_calls, tool_calls_by_index)
+          return unless delta_tool_calls
 
           delta_tool_calls.each do |tool_call_chunk|
-            tool_call_snapshot = snapshot_tool_calls[tool_call_chunk.index]
+            tool_call_snapshot = tool_calls_by_index[tool_call_chunk.index]
             next unless tool_call_snapshot&.type == :function
 
             input_tool = find_input_tool(tool_call_snapshot.function.name)
@@ -400,6 +416,51 @@ module OpenAI
 
         def find_input_tool(name)
           @input_tools.find { |tool| tool.dig(:function, :name) == name }
+        end
+
+        def index_choice_snapshot!(choice_snapshot)
+          @choice_snapshots_by_index[choice_snapshot.index] = choice_snapshot
+
+          tool_calls_by_index = {}
+          Array(choice_snapshot.message.tool_calls).each do |tool_call|
+            tool_calls_by_index[tool_call[:index]] ||= tool_call
+          end
+
+          @tool_call_snapshots_by_choice_index[choice_snapshot.index] = tool_calls_by_index
+        end
+
+        def insert_choice_snapshot!(choice_snapshots, choice_snapshot)
+          unless @choice_snapshots_sorted
+            choice_snapshots.sort_by!(&:index)
+            @choice_snapshots_sorted = true
+          end
+
+          if choice_snapshots.empty? || choice_snapshots.last.index < choice_snapshot.index
+            choice_snapshots << choice_snapshot
+            return
+          end
+
+          insertion_index = choice_snapshots.bsearch_index do |existing_choice|
+            existing_choice.index > choice_snapshot.index
+          end
+
+          choice_snapshots.insert(insertion_index || choice_snapshots.length, choice_snapshot)
+        end
+
+        def validate_chunk_indices!(chunk)
+          chunk.choices.each do |choice|
+            validate_stream_index!(choice.index, "choice")
+
+            Array(choice.delta.tool_calls).each do |tool_call|
+              validate_stream_index!(tool_call.index, "tool call")
+            end
+          end
+        end
+
+        def validate_stream_index!(index, kind)
+          return unless index.negative?
+
+          raise StreamError.new("Invalid streamed #{kind} index #{index}: expected a non-negative integer")
         end
 
         def parse_function_tool_arguments(function)
@@ -509,6 +570,22 @@ module OpenAI
                 next
               end
 
+              acc_entries_by_index = {}
+              entries_ordered = true
+              last_entry_index = nil
+              acc_value.each do |entry|
+                next unless entry.is_a?(Hash)
+
+                entry_index = entry[:index] || entry["index"]
+                next unless entry_index
+
+                entries_ordered &&= last_entry_index.nil? || last_entry_index <= entry_index
+                last_entry_index = entry_index
+                acc_entries_by_index[entry_index] ||= entry
+              end
+
+              appended_entry = false
+
               delta_value.each do |delta_entry|
                 unless delta_entry.is_a?(Hash)
                   raise(
@@ -529,11 +606,21 @@ module OpenAI
                   )
                 end
 
-                if acc_value[index].nil?
-                  acc_value[index] = delta_entry
-                elsif acc_value[index].is_a?(Hash)
-                  acc_value[index] = accumulate_delta(acc_value[index], delta_entry)
+                acc_entry = acc_entries_by_index[index]
+
+                if acc_entry.nil?
+                  acc_value << delta_entry
+                  acc_entries_by_index[index] = delta_entry
+                  entries_ordered &&= last_entry_index.nil? || last_entry_index < index
+                  last_entry_index = index
+                  appended_entry = true
+                else
+                  accumulate_delta(acc_entry, delta_entry)
                 end
+              end
+
+              if appended_entry && !entries_ordered
+                acc_value.sort_by! { |entry| entry[:index] || entry["index"] }
               end
             else
               acc[key] = acc_value
@@ -556,14 +643,14 @@ module OpenAI
           @current_tool_call_index = nil
         end
 
-        def get_done_events(choice_chunk:, choice_snapshot:, response_format:)
+        def get_done_events(choice_chunk:, choice_snapshot:, response_format:, tool_calls_by_index:)
           events = []
 
           if choice_snapshot.finish_reason
             events.concat(content_done_events(choice_snapshot, response_format))
 
             if @current_tool_call_index && !@done_tool_calls.include?(@current_tool_call_index)
-              event = tool_done_event(choice_snapshot, @current_tool_call_index)
+              event = tool_done_event(tool_calls_by_index, @current_tool_call_index)
               events << event if event
             end
           end
@@ -573,7 +660,7 @@ module OpenAI
               events.concat(content_done_events(choice_snapshot, response_format))
 
               if @current_tool_call_index
-                event = tool_done_event(choice_snapshot, @current_tool_call_index)
+                event = tool_done_event(tool_calls_by_index, @current_tool_call_index)
                 events << event if event
               end
             end
@@ -640,12 +727,12 @@ module OpenAI
           events
         end
 
-        def tool_done_event(choice_snapshot, tool_index)
+        def tool_done_event(tool_calls_by_index, tool_index)
           return nil if @done_tool_calls.include?(tool_index)
 
           @done_tool_calls.add(tool_index)
 
-          tool_call = choice_snapshot.message.tool_calls&.[](tool_index)
+          tool_call = tool_calls_by_index[tool_index]
           return nil unless tool_call&.type == :function
 
           parsed_args = parse_function_tool_arguments(tool_call.function)
