@@ -27,7 +27,7 @@ stream.each do |event|
     # Save partial image to file
     filename = "partial_#{event.partial_image_index + 1}.png"
     image_data = Base64.decode64(event.b64_json)
-    File.write(filename, image_data)
+    File.binwrite(filename, image_data)
     puts("  Saved to: #{File.expand_path(filename)}")
 
   when OpenAI::Models::ImageGenCompletedEvent
@@ -40,7 +40,7 @@ stream.each do |event|
 
     # Save final image to file
     filename = "final_image.png"
-    File.write(filename, image_data)
+    File.binwrite(filename, image_data)
     puts("  Saved to: #{File.expand_path(filename)}")
   end
 end
