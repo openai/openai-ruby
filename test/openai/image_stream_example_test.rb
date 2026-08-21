@@ -36,21 +36,21 @@ class OpenAI::Test::ImageStreamExampleTest < Minitest::Test
 
   def test_example_preserves_decoded_png_bytes
     Dir.mktmpdir("openai-image-stream-example") do |directory|
-      environment = {
+      environment = Bundler.unbundled_env.merge(
         "OPENAI_API_KEY" => nil,
         "OPENAI_IMAGE_FIXTURE" => PNG_FIXTURE,
         "OPENAI_IMAGE_STREAM_EXAMPLE" => File.expand_path("../../examples/image_stream.rb", __dir__),
-        "OPENAI_LIBRARY" => File.expand_path("../../lib/openai.rb", __dir__)
-      }
-      stdout, stderr, status = Bundler.with_unbundled_env do
-        Open3.capture3(
-          environment,
-          RbConfig.ruby,
-          "-e",
-          STUBBED_EXAMPLE_RUNNER,
-          chdir: directory
-        )
-      end
+        "OPENAI_LIBRARY" => File.expand_path("../../lib/openai.rb", __dir__),
+        "RUBYLIB" => $LOAD_PATH.join(File::PATH_SEPARATOR)
+      )
+      stdout, stderr, status = Open3.capture3(
+        environment,
+        RbConfig.ruby,
+        "-e",
+        STUBBED_EXAMPLE_RUNNER,
+        chdir: directory,
+        unsetenv_others: true
+      )
 
       assert(status.success?, stderr)
       assert_empty(stderr)
