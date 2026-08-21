@@ -43,6 +43,20 @@ clear_mock_pid_file() {
   fi
 }
 
+cleanup_mock_process() {
+  trap - EXIT INT TERM
+  stop_mock_process_group "$mock_pid"
+  wait "$mock_pid" 2>/dev/null || true
+  clear_mock_pid_file
+}
+
+cleanup_mock_on_exit() {
+  local status="$?"
+
+  cleanup_mock_process
+  exit "$status"
+}
+
 mock_process_is_running() {
   local expected_pid="$1"
   local running_pid
@@ -64,6 +78,12 @@ if [ "$1" == "--daemon" ]; then
   ruby -e 'Process.setpgrp; exec(*ARGV)' npm exec --package=@stdy/cli@0.22.1 -- steady --host 127.0.0.1 -p 4010 --validator-query-array-format=brackets --validator-form-array-format=brackets --validator-query-object-format=brackets --validator-form-object-format=brackets "$URL" &> .stdy.log &
   mock_pid=$!
 
+  # Until readiness is confirmed, every exit path owns cleanup. Once the
+  # daemon is ready, scripts/test assumes ownership through STEADY_PID_FILE.
+  trap cleanup_mock_on_exit EXIT
+  trap 'exit 130' INT
+  trap 'exit 143' TERM
+
   if [ -n "${STEADY_PID_FILE:-}" ]; then
     printf '%s\n' "$mock_pid" > "$STEADY_PID_FILE"
   fi
@@ -71,13 +91,23 @@ if [ "$1" == "--daemon" ]; then
   # Wait for server to come online via health endpoint (max 30s)
   echo -n "Waiting for server"
   attempts=0
-  while ! curl --silent --fail "http://127.0.0.1:4010/_x-steady/health" >/dev/null 2>&1; do
+  while true; do
+    if curl --silent --fail "http://127.0.0.1:4010/_x-steady/health" >/dev/null 2>&1; then
+      # A concurrent launcher may own the healthy endpoint. Accept readiness
+      # only while the process group created by this invocation is still live.
+      if mock_process_is_running "$mock_pid"; then
+        break
+      fi
+
+      echo
+      cat .stdy.log
+      exit 1
+    fi
+
     if ! mock_process_is_running "$mock_pid"; then
       wait "$mock_pid" 2>/dev/null || true
       echo
       cat .stdy.log
-      stop_mock_process_group "$mock_pid"
-      clear_mock_pid_file
       exit 1
     fi
     attempts=$((attempts + 1))
@@ -85,14 +115,13 @@ if [ "$1" == "--daemon" ]; then
       echo
       echo "Timed out waiting for Steady server to start"
       cat .stdy.log
-      stop_mock_process_group "$mock_pid"
-      clear_mock_pid_file
       exit 1
     fi
     echo -n "."
     sleep 0.1
   done
 
+  trap - EXIT INT TERM
   echo
 else
   npm exec --package=@stdy/cli@0.22.1 -- steady --host 127.0.0.1 -p 4010 --validator-query-array-format=brackets --validator-form-array-format=brackets --validator-query-object-format=brackets --validator-form-object-format=brackets "$URL"

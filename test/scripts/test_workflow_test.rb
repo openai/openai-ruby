@@ -130,7 +130,7 @@ class TestWorkflowTest < Minitest::Test
     refute(File.exist?(pid_file), "expected timeout to clear PID file")
   ensure
     begin
-      Process.kill("TERM", -owned_pid)
+      Process.kill("TERM", -owned_pid) if owned_pid
     rescue Errno::ESRCH, TypeError
       nil
     end
@@ -143,6 +143,70 @@ class TestWorkflowTest < Minitest::Test
     refute_includes(stdout, "Timed out waiting for Steady server to start")
     assert(wait_for_process_exit(owned_pid, timeout: 5), "expected crashed process #{owned_pid} to be reaped")
     refute(File.exist?(pid_file), "expected child failure to clear PID file")
+  end
+
+  def test_mock_launcher_rejects_an_unrelated_healthy_endpoint_after_its_child_exits
+    stdout, stderr, status, owned_pid, pid_file = run_mock_launcher(
+      mode: "crash",
+      curl_mode: "healthy_after_child_exit"
+    )
+
+    refute(status.success?, "#{stdout}\n#{stderr}")
+    assert(wait_for_process_exit(owned_pid, timeout: 5), "expected crashed process #{owned_pid} to be reaped")
+    refute(File.exist?(pid_file), "expected child failure to clear PID file")
+  end
+
+  def test_mock_launcher_transfers_a_healthy_process_group_to_its_caller
+    owned_pid = nil
+    stdout, stderr, status, owned_pid, pid_file = run_mock_launcher(mode: "hang", curl_mode: "healthy")
+
+    assert(status.success?, "#{stdout}\n#{stderr}")
+    refute(wait_for_process_exit(owned_pid, timeout: 1), "expected healthy process group #{owned_pid} to remain")
+    assert_equal("#{owned_pid}\n", File.read(pid_file))
+  ensure
+    begin
+      Process.kill("TERM", -owned_pid) if owned_pid
+    rescue Errno::ESRCH, TypeError
+      nil
+    end
+  end
+
+  def test_mock_launcher_cleans_up_its_process_group_when_interrupted
+    fixture = mock_launcher_fixture(mode: "hang")
+    launcher_pid = Process.spawn(
+      fixture.fetch(:env),
+      fixture.fetch(:script),
+      fixture.fetch(:spec),
+      "--daemon",
+      out: fixture.fetch(:stdout_path),
+      err: fixture.fetch(:stderr_path)
+    )
+    wait_for_file(fixture.fetch(:pid_record), timeout: 10)
+    owned_pid = Integer(File.read(fixture.fetch(:pid_record)), 10)
+
+    Process.kill("TERM", launcher_pid)
+    Process.wait(launcher_pid)
+
+    assert(wait_for_process_exit(owned_pid, timeout: 5), "expected interrupt to stop process group #{owned_pid}")
+    refute(File.exist?(fixture.fetch(:pid_file)), "expected interrupt to clear PID file")
+  ensure
+    begin
+      Process.kill("TERM", launcher_pid)
+    rescue Errno::ESRCH, TypeError
+      nil
+    end
+
+    begin
+      Process.kill("TERM", -owned_pid) if owned_pid
+    rescue Errno::ESRCH, TypeError
+      nil
+    end
+
+    begin
+      Process.wait(launcher_pid)
+    rescue Errno::ECHILD, TypeError
+      nil
+    end
   end
 
   def test_process_exit_wait_treats_zombie_as_exited
@@ -234,17 +298,52 @@ class TestWorkflowTest < Minitest::Test
     Open3.capture3(env, File.join(@project, "scripts/test"), chdir: @project)
   end
 
-  def run_mock_launcher(mode:)
+  def run_mock_launcher(mode:, curl_mode: "unavailable")
+    fixture = mock_launcher_fixture(mode: mode, curl_mode: curl_mode)
+    stdout, stderr, status = Open3.capture3(
+      fixture.fetch(:env),
+      fixture.fetch(:script),
+      fixture.fetch(:spec),
+      "--daemon"
+    )
+    [
+      stdout,
+      stderr,
+      status,
+      Integer(File.read(fixture.fetch(:pid_record)), 10),
+      fixture.fetch(:pid_file)
+    ]
+  end
+
+  def mock_launcher_fixture(mode:, curl_mode: "unavailable")
     project = File.join(@directory, "mock-project")
     bin = File.join(@directory, "mock-bin")
     pid_record = File.join(@directory, "mock-pid")
+    exited_record = File.join(@directory, "mock-exited")
     pid_file = File.join(@directory, "mock-pid-file")
+    stdout_path = File.join(@directory, "mock-stdout")
+    stderr_path = File.join(@directory, "mock-stderr")
     spec = File.join(project, "openapi.yml")
     FileUtils.mkdir_p(File.join(project, "scripts"))
     FileUtils.mkdir_p(bin)
     File.symlink(File.join(ROOT, "scripts/mock"), File.join(project, "scripts/mock"))
     File.write(spec, "openapi: 3.0.0\n")
-    write_executable(File.join(bin, "curl"), "#!/usr/bin/env bash\nexit 22\n")
+    write_executable(
+      File.join(bin, "curl"),
+      <<~BASH
+        #!/usr/bin/env bash
+        if [ "$MOCK_CURL_MODE" = "healthy" ]; then
+          exit 0
+        fi
+        if [ "$MOCK_CURL_MODE" = "healthy_after_child_exit" ]; then
+          while [ ! -f "$MOCK_EXITED_RECORD" ]; do
+            sleep 0.01
+          done
+          exit 0
+        fi
+        exit 22
+      BASH
+    )
     write_executable(File.join(bin, "sleep"), "#!/usr/bin/env bash\nexit 0\n")
     write_executable(
       File.join(bin, "npm"),
@@ -254,6 +353,7 @@ class TestWorkflowTest < Minitest::Test
           exit 0
         fi
         printf '%s\n' "$$" > "$MOCK_PID_RECORD"
+        trap ': > "$MOCK_EXITED_RECORD"' EXIT
         if [ "$MOCK_NPM_MODE" = "crash" ]; then
           exit 42
         fi
@@ -262,14 +362,32 @@ class TestWorkflowTest < Minitest::Test
     )
 
     env = {
+      "MOCK_CURL_MODE" => curl_mode,
+      "MOCK_EXITED_RECORD" => exited_record,
       "MOCK_NPM_MODE" => mode,
       "MOCK_PID_RECORD" => pid_record,
       "PATH" => [bin, ENV.fetch("PATH")].join(File::PATH_SEPARATOR),
       "RUBY" => RbConfig.ruby,
       "STEADY_PID_FILE" => pid_file
     }
-    stdout, stderr, status = Open3.capture3(env, File.join(project, "scripts/mock"), spec, "--daemon")
-    [stdout, stderr, status, Integer(File.read(pid_record), 10), pid_file]
+    {
+      env: env,
+      pid_file: pid_file,
+      pid_record: pid_record,
+      script: File.join(project, "scripts/mock"),
+      spec: spec,
+      stderr_path: stderr_path,
+      stdout_path: stdout_path
+    }
+  end
+
+  def wait_for_file(path, timeout:)
+    deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + timeout
+    until File.exist?(path)
+      raise "timed out waiting for #{path}" if Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
+
+      sleep(0.01)
+    end
   end
 
   def wait_for_exit(pid, timeout:)
