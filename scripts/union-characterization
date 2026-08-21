@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "json"
+require "openai"
+
+require_relative "../test/openai/internal/type/union_characterization"
+
+puts(JSON.pretty_generate(OpenAI::Test::UnionCharacterization.observe))

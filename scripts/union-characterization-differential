@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+cd -- "$(dirname -- "$0")/.."
+
+tmp_dir=$(mktemp -d)
+trap 'rm -rf -- "$tmp_dir"' EXIT
+
+for release in v0.78.0 v0.80.0; do
+  mkdir "$tmp_dir/$release"
+  git archive "$release" | tar -x -C "$tmp_dir/$release"
+  ruby -I"$tmp_dir/$release/lib" scripts/union-characterization >"$tmp_dir/$release.json"
+  diff -u test/fixtures/union_characterization/published.json "$tmp_dir/$release.json"
+done
+
+ruby -Ilib scripts/union-characterization >"$tmp_dir/main.json"
+diff -u test/fixtures/union_characterization/main.json "$tmp_dir/main.json"
+
+echo "Union characterization matches v0.78.0, v0.80.0, and main baselines."

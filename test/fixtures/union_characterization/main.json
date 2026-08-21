@@ -1,0 +1,545 @@
+{
+  "responses_string_message_without_type": {
+    "context": "request",
+    "input_form": "wire",
+    "discriminator_evidence": {
+      "property": "type",
+      "state": "missing"
+    },
+    "exact_candidates": [
+      "OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger"
+    ],
+    "structural_candidates": [
+      "OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger"
+    ],
+    "best_ranked_fallbacks": [],
+    "uniquely_resolvable": false,
+    "compatibility_selected": "OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger",
+    "selected_exactness": {
+      "yes": 2,
+      "no": 0,
+      "maybe": 0
+    },
+    "serialized_body": {
+      "input": [
+        {
+          "role": "user",
+          "content": "hello"
+        }
+      ],
+      "model": "gpt-4o"
+    }
+  },
+  "responses_typed_message_without_type": {
+    "context": "request",
+    "input_form": "wire",
+    "discriminator_evidence": {
+      "property": "type",
+      "state": "missing"
+    },
+    "exact_candidates": [
+      "OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger"
+    ],
+    "structural_candidates": [
+      "OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger"
+    ],
+    "best_ranked_fallbacks": [],
+    "uniquely_resolvable": false,
+    "compatibility_selected": "OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger",
+    "selected_exactness": {
+      "yes": 2,
+      "no": 0,
+      "maybe": 0
+    },
+    "serialized_body": {
+      "input": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "hello"
+            }
+          ]
+        }
+      ],
+      "model": "gpt-4o"
+    }
+  },
+  "responses_typed_message_without_type_symbols": {
+    "context": "request",
+    "input_form": "ruby_symbols",
+    "discriminator_evidence": {
+      "property": "type",
+      "state": "missing"
+    },
+    "exact_candidates": [
+      "OpenAI::Models::Responses::EasyInputMessage",
+      "OpenAI::Models::Responses::ResponseInputItem::Message",
+      "OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger"
+    ],
+    "structural_candidates": [
+      "OpenAI::Models::Responses::EasyInputMessage",
+      "OpenAI::Models::Responses::ResponseInputItem::Message",
+      "OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger"
+    ],
+    "best_ranked_fallbacks": [],
+    "uniquely_resolvable": false,
+    "compatibility_selected": "OpenAI::Models::Responses::EasyInputMessage",
+    "selected_exactness": {
+      "yes": 9,
+      "no": 0,
+      "maybe": 0
+    },
+    "serialized_body": {
+      "input": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "hello"
+            }
+          ]
+        }
+      ],
+      "model": "gpt-4o"
+    }
+  },
+  "responses_typed_message_with_duplicate_tag": {
+    "context": "request",
+    "input_form": "wire",
+    "discriminator_evidence": {
+      "property": "type",
+      "state": "known_duplicate",
+      "matching_variants": 3,
+      "value": "message"
+    },
+    "exact_candidates": [
+      "OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger"
+    ],
+    "structural_candidates": [
+      "OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger"
+    ],
+    "best_ranked_fallbacks": [],
+    "uniquely_resolvable": false,
+    "compatibility_selected": "OpenAI::Models::Responses::EasyInputMessage",
+    "selected_exactness": {
+      "yes": 3,
+      "no": 2,
+      "maybe": 0
+    },
+    "serialized_body": {
+      "input": [
+        {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "hello"
+            }
+          ]
+        }
+      ],
+      "model": "gpt-4o"
+    }
+  },
+  "responses_typed_message_with_duplicate_tag_symbols": {
+    "context": "request",
+    "input_form": "ruby_symbols",
+    "discriminator_evidence": {
+      "property": "type",
+      "state": "known_duplicate",
+      "matching_variants": 3,
+      "value": "message"
+    },
+    "exact_candidates": [
+      "OpenAI::Models::Responses::EasyInputMessage",
+      "OpenAI::Models::Responses::ResponseInputItem::Message"
+    ],
+    "structural_candidates": [
+      "OpenAI::Models::Responses::EasyInputMessage",
+      "OpenAI::Models::Responses::ResponseInputItem::Message",
+      "OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger"
+    ],
+    "best_ranked_fallbacks": [],
+    "uniquely_resolvable": false,
+    "compatibility_selected": "OpenAI::Models::Responses::EasyInputMessage",
+    "selected_exactness": {
+      "yes": 9,
+      "no": 0,
+      "maybe": 0
+    },
+    "serialized_body": {
+      "input": [
+        {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "hello"
+            }
+          ]
+        }
+      ],
+      "model": "gpt-4o"
+    }
+  },
+  "responses_typed_message_with_unknown_field": {
+    "context": "request",
+    "input_form": "wire",
+    "discriminator_evidence": {
+      "property": "type",
+      "state": "missing"
+    },
+    "exact_candidates": [
+      "OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger"
+    ],
+    "structural_candidates": [
+      "OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger"
+    ],
+    "best_ranked_fallbacks": [],
+    "uniquely_resolvable": false,
+    "compatibility_selected": "OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger",
+    "selected_exactness": {
+      "yes": 2,
+      "no": 0,
+      "maybe": 0
+    },
+    "serialized_body": {
+      "input": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "hello"
+            }
+          ],
+          "future_field": {
+            "preserved": true
+          }
+        }
+      ],
+      "model": "gpt-4o"
+    }
+  },
+  "beta_typed_message_without_type": {
+    "context": "request",
+    "input_form": "wire",
+    "discriminator_evidence": {
+      "property": "type",
+      "state": "missing"
+    },
+    "exact_candidates": [
+      "OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger"
+    ],
+    "structural_candidates": [
+      "OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger"
+    ],
+    "best_ranked_fallbacks": [],
+    "uniquely_resolvable": false,
+    "compatibility_selected": "OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger",
+    "selected_exactness": {
+      "yes": 3,
+      "no": 0,
+      "maybe": 0
+    },
+    "serialized_body": {
+      "input": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "hello"
+            }
+          ]
+        }
+      ],
+      "model": "gpt-4o"
+    }
+  },
+  "beta_typed_message_with_duplicate_tag_symbols": {
+    "context": "request",
+    "input_form": "ruby_symbols",
+    "discriminator_evidence": {
+      "property": "type",
+      "state": "known_duplicate",
+      "matching_variants": 3,
+      "value": "message"
+    },
+    "exact_candidates": [
+      "OpenAI::Models::Beta::BetaEasyInputMessage",
+      "OpenAI::Models::Beta::BetaResponseInputItem::Message"
+    ],
+    "structural_candidates": [
+      "OpenAI::Models::Beta::BetaEasyInputMessage",
+      "OpenAI::Models::Beta::BetaResponseInputItem::Message",
+      "OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger"
+    ],
+    "best_ranked_fallbacks": [],
+    "uniquely_resolvable": false,
+    "compatibility_selected": "OpenAI::Models::Beta::BetaEasyInputMessage",
+    "selected_exactness": {
+      "yes": 9,
+      "no": 0,
+      "maybe": 0
+    },
+    "serialized_body": {
+      "input": [
+        {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "hello"
+            }
+          ]
+        }
+      ],
+      "model": "gpt-4o"
+    }
+  },
+  "responses_unknown_stream_event": {
+    "context": "response_stream",
+    "input_form": "wire",
+    "discriminator_evidence": {
+      "property": "type",
+      "state": "explicitly_unknown",
+      "matching_variants": 0,
+      "value": "future.unmodeled.event"
+    },
+    "exact_candidates": [],
+    "structural_candidates": [],
+    "best_ranked_fallbacks": [
+      "OpenAI::Models::Responses::ResponseErrorEvent"
+    ],
+    "uniquely_resolvable": false,
+    "compatibility_selected": "OpenAI::Models::Responses::ResponseErrorEvent",
+    "selected_exactness": {
+      "yes": 2,
+      "no": 2,
+      "maybe": 2
+    },
+    "serialized_body": {
+      "type": "future.unmodeled.event",
+      "sequence_number": 9
+    }
+  },
+  "responses_unknown_stream_event_symbols": {
+    "context": "response_stream",
+    "input_form": "ruby_symbols",
+    "discriminator_evidence": {
+      "property": "type",
+      "state": "explicitly_unknown",
+      "matching_variants": 0,
+      "value": "future.unmodeled.event"
+    },
+    "exact_candidates": [],
+    "structural_candidates": [
+      "OpenAI::Models::Responses::ResponseAudioDoneEvent",
+      "OpenAI::Models::Responses::ResponseAudioTranscriptDoneEvent"
+    ],
+    "best_ranked_fallbacks": [
+      "OpenAI::Models::Responses::ResponseImageGenCallPartialImageEvent"
+    ],
+    "uniquely_resolvable": false,
+    "compatibility_selected": "OpenAI::Models::Responses::ResponseImageGenCallPartialImageEvent",
+    "selected_exactness": {
+      "yes": 6,
+      "no": 4,
+      "maybe": 1
+    },
+    "serialized_body": {
+      "sequence_number": 9,
+      "type": "future.unmodeled.event"
+    }
+  },
+  "beta_unknown_stream_event": {
+    "context": "response_stream",
+    "input_form": "wire",
+    "discriminator_evidence": {
+      "property": "type",
+      "state": "explicitly_unknown",
+      "matching_variants": 0,
+      "value": "future.unmodeled.event"
+    },
+    "exact_candidates": [],
+    "structural_candidates": [],
+    "best_ranked_fallbacks": [
+      "OpenAI::Models::Beta::BetaResponseErrorEvent"
+    ],
+    "uniquely_resolvable": false,
+    "compatibility_selected": "OpenAI::Models::Beta::BetaResponseErrorEvent",
+    "selected_exactness": {
+      "yes": 3,
+      "no": 2,
+      "maybe": 2
+    },
+    "serialized_body": {
+      "type": "future.unmodeled.event",
+      "sequence_number": 9
+    }
+  },
+  "beta_unknown_stream_event_symbols": {
+    "context": "response_stream",
+    "input_form": "ruby_symbols",
+    "discriminator_evidence": {
+      "property": "type",
+      "state": "explicitly_unknown",
+      "matching_variants": 0,
+      "value": "future.unmodeled.event"
+    },
+    "exact_candidates": [],
+    "structural_candidates": [
+      "OpenAI::Models::Beta::BetaResponseAudioDoneEvent",
+      "OpenAI::Models::Beta::BetaResponseAudioTranscriptDoneEvent"
+    ],
+    "best_ranked_fallbacks": [
+      "OpenAI::Models::Beta::BetaResponseImageGenCallPartialImageEvent"
+    ],
+    "uniquely_resolvable": false,
+    "compatibility_selected": "OpenAI::Models::Beta::BetaResponseImageGenCallPartialImageEvent",
+    "selected_exactness": {
+      "yes": 7,
+      "no": 4,
+      "maybe": 1
+    },
+    "serialized_body": {
+      "sequence_number": 9,
+      "type": "future.unmodeled.event"
+    }
+  },
+  "realtime_unknown_server_event": {
+    "context": "response_stream",
+    "input_form": "wire",
+    "discriminator_evidence": {
+      "property": "type",
+      "state": "explicitly_unknown",
+      "matching_variants": 0,
+      "value": "future.unmodeled.event"
+    },
+    "exact_candidates": [],
+    "structural_candidates": [],
+    "best_ranked_fallbacks": [],
+    "uniquely_resolvable": false,
+    "compatibility_selected": "Hash",
+    "selected_error": "ArgumentError",
+    "selected_exactness": {
+      "yes": 0,
+      "no": 1,
+      "maybe": 0
+    },
+    "serialized_body": {
+      "type": "future.unmodeled.event",
+      "sequence_number": 9
+    },
+    "public_boundary": {
+      "available": true,
+      "selected": "OpenAI::Models::Realtime::UnknownServerEvent",
+      "body": {
+        "type": "future.unmodeled.event",
+        "sequence_number": 9
+      }
+    }
+  },
+  "realtime_unknown_server_event_symbols": {
+    "context": "response_stream",
+    "input_form": "ruby_symbols",
+    "discriminator_evidence": {
+      "property": "type",
+      "state": "explicitly_unknown",
+      "matching_variants": 0,
+      "value": "future.unmodeled.event"
+    },
+    "exact_candidates": [],
+    "structural_candidates": [],
+    "best_ranked_fallbacks": [
+      "OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionDeltaEvent"
+    ],
+    "uniquely_resolvable": false,
+    "compatibility_selected": "OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionDeltaEvent",
+    "selected_exactness": {
+      "yes": 4,
+      "no": 2,
+      "maybe": 1
+    },
+    "serialized_body": {
+      "type": "future.unmodeled.event",
+      "sequence_number": 9
+    },
+    "public_boundary": {
+      "available": true,
+      "selected": "OpenAI::Models::Realtime::UnknownServerEvent",
+      "body": {
+        "type": "future.unmodeled.event",
+        "sequence_number": 9
+      }
+    }
+  },
+  "realtime_known_unique_server_event": {
+    "context": "response_stream",
+    "input_form": "wire",
+    "discriminator_evidence": {
+      "property": "type",
+      "state": "known_unique",
+      "matching_variants": 1,
+      "value": "conversation.created"
+    },
+    "exact_candidates": [],
+    "structural_candidates": [],
+    "best_ranked_fallbacks": [],
+    "uniquely_resolvable": true,
+    "compatibility_selected": "OpenAI::Models::Realtime::ConversationCreatedEvent",
+    "selected_exactness": {
+      "yes": 2,
+      "no": 2,
+      "maybe": 0
+    },
+    "serialized_body": {
+      "type": "conversation.created",
+      "event_id": "evt_1",
+      "conversation": {
+        "id": "conv_1",
+        "object": "realtime.conversation"
+      }
+    }
+  },
+  "realtime_known_unique_server_event_symbols": {
+    "context": "response_stream",
+    "input_form": "ruby_symbols",
+    "discriminator_evidence": {
+      "property": "type",
+      "state": "known_unique",
+      "matching_variants": 1,
+      "value": "conversation.created"
+    },
+    "exact_candidates": [
+      "OpenAI::Models::Realtime::ConversationCreatedEvent"
+    ],
+    "structural_candidates": [
+      "OpenAI::Models::Realtime::ConversationCreatedEvent",
+      "OpenAI::Models::Realtime::InputAudioBufferClearedEvent"
+    ],
+    "best_ranked_fallbacks": [],
+    "uniquely_resolvable": true,
+    "compatibility_selected": "OpenAI::Models::Realtime::ConversationCreatedEvent",
+    "selected_exactness": {
+      "yes": 6,
+      "no": 0,
+      "maybe": 0
+    },
+    "serialized_body": {
+      "conversation": {
+        "id": "conv_1",
+        "object": "realtime.conversation"
+      },
+      "event_id": "evt_1",
+      "type": "conversation.created"
+    }
+  }
+}
