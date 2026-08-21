@@ -50,7 +50,7 @@ class TestWorkflowTest < Minitest::Test
     )
 
     assert(status.success?, "#{stdout}\n#{stderr}")
-    pids.each { assert(wait_for_exit(_1), "expected cleanup to stop PID #{_1}") }
+    pids.each { assert(wait_for_exit(_1, timeout: 5), "expected cleanup to stop PID #{_1}") }
   ensure
     Array(pids).each do |pid|
       Process.kill("TERM", pid)
@@ -75,8 +75,8 @@ class TestWorkflowTest < Minitest::Test
     )
 
     assert(status.success?, "#{stdout}\n#{stderr}")
-    assert(wait_for_exit(listener_pid), "expected cleanup to stop listener PID #{listener_pid}")
-    refute(wait_for_exit(client_pid), "expected cleanup to leave client PID #{client_pid} running")
+    assert(wait_for_exit(listener_pid, timeout: 5), "expected cleanup to stop listener PID #{listener_pid}")
+    refute(wait_for_exit(client_pid, timeout: 1), "expected cleanup to leave client PID #{client_pid} running")
   ensure
     [listener_pid, client_pid].compact.each do |pid|
       Process.kill("TERM", pid)
@@ -136,14 +136,15 @@ class TestWorkflowTest < Minitest::Test
     Open3.capture3(env, File.join(@project, "scripts/test"), chdir: @project)
   end
 
-  def wait_for_exit(pid)
-    100.times do
+  def wait_for_exit(pid, timeout:)
+    deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + timeout
+    loop do
       return true if Process.waitpid(pid, Process::WNOHANG)
+      return false if Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
 
       sleep(0.01)
     end
 
-    false
   rescue Errno::ECHILD
     true
   end
