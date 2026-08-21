@@ -10,8 +10,8 @@ This corpus records current behavior; it does not declare every selected class t
 - `serialized_body` proves that accepted request shorthand and unknown fields retain their wire representation regardless of materialization.
 - `public_boundary` records context-specific behavior when it differs from the shared union. It is currently available for the Realtime connection introduced after v0.80.0.
 
-The fixtures deliberately pair wire-string hashes with idiomatic Ruby symbol hashes. Their different candidate sets are part of the observed contract.
+The fixtures deliberately pair wire-string hashes with idiomatic Ruby symbol hashes. Their different candidate sets are part of the observed contract. Focused tests retain the compatibility-sensitive selections and serialized bodies without checking in full generated output snapshots.
 
-`published.json` is the shared v0.78.0/v0.80.0 release baseline; the two releases produce identical observations for this corpus. `main.json` is the current generated/runtime baseline. Run `scripts/union-characterization-differential` under the repository Ruby to regenerate every observation in temporary tag archives and verify the checked-in files.
+Run `scripts/union-characterization` to print every current observation. Run `scripts/union-characterization-differential` under the repository Ruby to generate observations from temporary v0.78.0 and v0.80.0 tag archives, verify that those published releases agree, and print their differential from the current checkout.
 
 The two published baselines agree for this corpus. Current `main` retains the request behavior and serialized bodies, but newer generated Responses/Beta variants change which known event wins structural fallback for an explicit unknown stream tag. Current Realtime adds a public connection boundary that returns `UnknownServerEvent`, even though direct shared-union coercion can still select a known event for symbolized input.
