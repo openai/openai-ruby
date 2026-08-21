@@ -96,16 +96,22 @@ module OpenAI
 
           target = item_type
           exactness[:yes] += 1
-          value
-            .map do |item|
-              case [nilable?, item]
-              in [true, nil]
-                exactness[:yes] += 1
-                nil
-              else
-                OpenAI::Internal::Type::Converter.coerce(target, item, state: state)
-              end
+          previous_error = state.fetch(:error)
+          last_error = nil
+          converted = value.map do |item|
+            case [nilable?, item]
+            in [true, nil]
+              exactness[:yes] += 1
+              nil
+            else
+              coerced, item_error = OpenAI::Internal::Type::Converter.coerce_with_error(target, item, state: state)
+              last_error = item_error if item_error
+              coerced
             end
+          end
+
+          state[:error] = last_error || previous_error
+          converted
         end
 
         # @api private
