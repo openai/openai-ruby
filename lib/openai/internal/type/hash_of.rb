@@ -46,6 +46,8 @@ module OpenAI
               case [key, val]
               in [Symbol | String, ^type]
                 true
+              in [Symbol | String, nil]
+                nilable?
               else
                 false
               end
@@ -67,7 +69,7 @@ module OpenAI
         # @api public
         #
         # @return [Integer]
-        def hash = [self.class, item_type].hash
+        def hash = [self.class, item_type, nilable?].hash
 
         # @api private
         #
@@ -137,7 +139,9 @@ module OpenAI
         #
         # @return [Object]
         def to_sorbet_type
-          T::Hash[OpenAI::Internal::Util::SorbetRuntimeSupport.to_sorbet_type(item_type)]
+          type = OpenAI::Internal::Util::SorbetRuntimeSupport.to_sorbet_type(item_type)
+          type = T.nilable(type) if nilable?
+          T::Hash[Symbol, type]
         end
 
         # @api private
