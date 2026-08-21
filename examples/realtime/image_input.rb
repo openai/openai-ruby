@@ -12,6 +12,23 @@ module OpenAI
       module ImageInput
         PNG_SIGNATURE = "\x89PNG\r\n\x1A\n".b
         JPEG_SIGNATURE = "\xFF\xD8".b
+        PNG_BIT_DEPTHS = {
+          0 => [1, 2, 4, 8, 16],
+          2 => [8, 16],
+          3 => [1, 2, 4, 8],
+          4 => [8, 16],
+          6 => [8, 16]
+        }.freeze
+        PNG_CHANNELS = {0 => 1, 2 => 3, 3 => 1, 4 => 2, 6 => 4}.freeze
+        PNG_ADAM7_PASSES = [
+          [0, 0, 8, 8],
+          [4, 0, 8, 8],
+          [0, 4, 4, 8],
+          [2, 0, 4, 4],
+          [0, 2, 2, 4],
+          [1, 0, 2, 2],
+          [0, 1, 1, 2]
+        ].freeze
 
         module_function
 
@@ -76,6 +93,8 @@ module OpenAI
 
           offset = PNG_SIGNATURE.bytesize
           chunk_index = 0
+          ihdr = nil
+          idat = +"".b
           saw_idat = false
           saw_iend = false
           while offset < bytes.bytesize
@@ -86,12 +105,17 @@ module OpenAI
             chunk_end = offset + 12 + length
             return false if chunk_end > bytes.bytesize
             return false if chunk_index.zero? && (type != "IHDR" || length != 13)
+            return false if !chunk_index.zero? && type == "IHDR"
 
             data = bytes.byteslice(offset + 8, length)
             expected_crc = bytes.byteslice(offset + 8 + length, 4).unpack1("N")
             return false unless Zlib.crc32(type + data) == expected_crc
 
-            saw_idat = true if type == "IDAT"
+            ihdr = data if type == "IHDR"
+            if type == "IDAT"
+              saw_idat = true
+              idat << data
+            end
 
             if type == "IEND"
               return false unless length.zero?
@@ -105,7 +129,68 @@ module OpenAI
             offset = chunk_end
           end
 
-          saw_idat && saw_iend && offset == bytes.bytesize
+          saw_idat && saw_iend && offset == bytes.bytesize && valid_png_data?(ihdr, idat)
+        end
+
+        def valid_png_data?(ihdr, idat)
+          layout = png_layout(ihdr)
+          return false unless layout
+
+          width, height, bits_per_pixel, interlace = layout
+          passes = if interlace.zero?
+            [[width, height]]
+          else
+            PNG_ADAM7_PASSES.filter_map do |x_start, y_start, x_step, y_step|
+              pass_width = png_pass_size(width, x_start, x_step)
+              pass_height = png_pass_size(height, y_start, y_step)
+              [pass_width, pass_height] unless pass_width.zero? || pass_height.zero?
+            end
+          end
+
+          inflater = Zlib::Inflate.new
+          decompressed = inflater.inflate(idat)
+          decompressed << inflater.finish
+          return false unless inflater.total_in == idat.bytesize
+
+          row_sizes = passes.map { |pass_width, _| ((pass_width * bits_per_pixel) + 7) / 8 }
+          expected_size = passes.each_with_index.sum do |(_, pass_height), index|
+            pass_height * (row_sizes.fetch(index) + 1)
+          end
+
+          return false unless decompressed.bytesize == expected_size
+
+          offset = 0
+          passes.each_with_index do |(_, pass_height), index|
+            pass_height.times do
+              return false unless (0..4).cover?(decompressed.getbyte(offset))
+
+              offset += row_sizes.fetch(index) + 1
+            end
+          end
+
+          offset == decompressed.bytesize
+        rescue Zlib::Error
+          false
+        ensure
+          inflater&.close
+        end
+
+        def png_layout(ihdr)
+          return unless ihdr&.bytesize == 13
+
+          width, height, bit_depth, color_type, compression, filter, interlace = ihdr.unpack("NNCCCCC")
+          return unless width.positive? && height.positive?
+          return unless width <= 0x7FFF_FFFF && height <= 0x7FFF_FFFF
+          return unless PNG_BIT_DEPTHS.fetch(color_type, []).include?(bit_depth)
+          return unless compression.zero? && filter.zero? && [0, 1].include?(interlace)
+
+          [width, height, PNG_CHANNELS.fetch(color_type) * bit_depth, interlace]
+        end
+
+        def png_pass_size(full_size, start, step)
+          return 0 if full_size <= start
+
+          (full_size - start + step - 1) / step
         end
 
         def valid_jpeg?(bytes)

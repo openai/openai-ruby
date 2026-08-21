@@ -100,6 +100,7 @@ module OpenAI
           raise "Realtime returned an unexpected function name." unless tool_call.name == TOOL_NAME
 
           arguments = JSON.parse(tool_call.arguments)
+          city = nil
           city = arguments["city"] if arguments.is_a?(Hash) && arguments.keys == ["city"]
           unless city.is_a?(String) && !city.empty?
             raise "Realtime returned invalid function arguments."

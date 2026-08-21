@@ -77,7 +77,12 @@ class OpenAI::Test::RealtimeFunctionCallingExampleTest < Minitest::Test
     assert_equal("Realtime returned an unexpected function name.", wrong_name.message)
     refute_includes(wrong_name.message, "private_unexpected_name")
 
-    ["{private malformed", JSON.generate(location: "Paris"), JSON.generate(city: "")].each do |arguments|
+    [
+      "{private malformed",
+      JSON.generate([]),
+      JSON.generate(location: "Paris"),
+      JSON.generate(city: "")
+    ].each do |arguments|
       error = run_error(
         [function_call(arguments: arguments), response_done(id: "response_tool")]
       )

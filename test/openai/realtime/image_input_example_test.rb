@@ -53,9 +53,14 @@ class OpenAI::Test::RealtimeImageInputExampleTest < Minitest::Test
   end
 
   def test_rejects_invalid_or_corrupted_images_before_connecting
+    zero_width_ihdr = [0, 1, 8, 0, 0, 0, 0].pack("NNCCCCC")
     invalid_images = [
       "not an image".b,
       valid_png.dup.tap { _1.setbyte(30, _1.getbyte(30) ^ 0xFF) },
+      png_fixture(ihdr: zero_width_ihdr),
+      png_fixture(idat: "corrupt compressed data".b),
+      png_fixture(idat: Zlib::Deflate.deflate("\x00\x00".b) + "trailing data".b),
+      png_fixture(idat: Zlib::Deflate.deflate("\x00".b)),
       valid_jpeg.delete_suffix("\xFF\xD9".b)
     ]
 
@@ -147,11 +152,18 @@ class OpenAI::Test::RealtimeImageInputExampleTest < Minitest::Test
   private def valid_png
     @valid_png ||= begin
       ihdr = [1, 1, 8, 0, 0, 0, 0].pack("NNCCCCC")
-      OpenAI::Examples::Realtime::ImageInput::PNG_SIGNATURE +
-        png_chunk("IHDR", ihdr) +
-        png_chunk("IDAT", Zlib::Deflate.deflate("\x00\x00".b)) +
-        png_chunk("IEND", "".b)
+      png_fixture(ihdr: ihdr)
     end
+  end
+
+  private def png_fixture(
+    ihdr: [1, 1, 8, 0, 0, 0, 0].pack("NNCCCCC"),
+    idat: Zlib::Deflate.deflate("\x00\x00".b)
+  )
+    OpenAI::Examples::Realtime::ImageInput::PNG_SIGNATURE +
+      png_chunk("IHDR", ihdr) +
+      png_chunk("IDAT", idat) +
+      png_chunk("IEND", "".b)
   end
 
   private def png_chunk(type, data)
