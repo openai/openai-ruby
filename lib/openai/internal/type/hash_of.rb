@@ -46,6 +46,8 @@ module OpenAI
               case [key, val]
               in [Symbol | String, ^type]
                 true
+              in [Symbol | String, nil]
+                nilable?
               else
                 false
               end
@@ -67,7 +69,7 @@ module OpenAI
         # @api public
         #
         # @return [Integer]
-        def hash = [self.class, item_type].hash
+        def hash = [self.class, item_type, nilable?].hash
 
         # @api private
         #
@@ -97,20 +99,26 @@ module OpenAI
 
           target = item_type
           exactness[:yes] += 1
-          value
-            .to_h do |key, val|
-              k = key.is_a?(String) ? key.to_sym : key
-              v = case [nilable?, val]
-              in [true, nil]
-                exactness[:yes] += 1
-                nil
-              else
-                OpenAI::Internal::Type::Converter.coerce(target, val, state: state)
-              end
-
-              exactness[:no] += 1 unless k.is_a?(Symbol)
-              [k, v]
+          previous_error = state.fetch(:error)
+          last_error = nil
+          converted = value.to_h do |key, val|
+            k = key.is_a?(String) ? key.to_sym : key
+            v = case [nilable?, val]
+            in [true, nil]
+              exactness[:yes] += 1
+              nil
+            else
+              coerced, value_error = OpenAI::Internal::Type::Converter.coerce_with_error(target, val, state: state)
+              last_error = value_error if value_error
+              coerced
             end
+
+            exactness[:no] += 1 unless k.is_a?(Symbol)
+            [k, v]
+          end
+
+          state[:error] = last_error || previous_error
+          converted
         end
 
         # @api private
@@ -137,7 +145,9 @@ module OpenAI
         #
         # @return [Object]
         def to_sorbet_type
-          T::Hash[OpenAI::Internal::Util::SorbetRuntimeSupport.to_sorbet_type(item_type)]
+          type = OpenAI::Internal::Util::SorbetRuntimeSupport.to_sorbet_type(item_type)
+          type = T.nilable(type) if nilable?
+          T::Hash[Symbol, type]
         end
 
         # @api private

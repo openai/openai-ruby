@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../helpers/resource_polling"
+
 module OpenAI
   module Resources
     class VectorStores
@@ -256,45 +258,14 @@ module OpenAI
           timeout: OpenAI::Internal::Poller::DEFAULT_TIMEOUT,
           request_options: {}
         )
-          poller = OpenAI::Internal::Poller.new(
-            operation: "vector store file #{file_id}",
+          OpenAI::Helpers::ResourcePolling.poll_vector_store_file(
+            self,
+            file_id,
+            vector_store_id: vector_store_id,
             poll_interval: poll_interval,
-            timeout: timeout
+            timeout: timeout,
+            request_options: request_options
           )
-          file = nil
-
-          begin
-            loop do
-              file = poller
-                .request(
-                  request_options,
-                  extra_headers: {"OpenAI-Beta" => "assistants=v2"},
-                  resource: file
-                ) do |options|
-                  retrieve(file_id, vector_store_id: vector_store_id, request_options: options)
-                end
-
-              case file.status
-              when OpenAI::VectorStores::VectorStoreFile::Status::IN_PROGRESS
-                poller.wait(file)
-              when
-                  OpenAI::VectorStores::VectorStoreFile::Status::COMPLETED,
-                  OpenAI::VectorStores::VectorStoreFile::Status::FAILED,
-                  OpenAI::VectorStores::VectorStoreFile::Status::CANCELLED
-                return file
-              else
-                raise(
-                  OpenAI::Errors::PollingError,
-                  "Unexpected status while waiting for vector store file " \
-                    "#{file_id}: #{file.status.inspect}"
-                )
-              end
-            end
-
-          rescue OpenAI::Errors::APITimeoutError
-            poller.check_deadline!(file)
-            raise
-          end
         end
 
         # Upload a file and attach it to a vector store.
