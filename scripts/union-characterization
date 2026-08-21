@@ -2,7 +2,11 @@
 # frozen_string_literal: true
 
 require "json"
-require "openai"
+
+openai_lib = File.expand_path(ARGV.shift || File.expand_path("../lib", __dir__))
+abort("Usage: scripts/union-characterization [openai-lib-directory]") unless ARGV.empty?
+
+require File.join(openai_lib, "openai")
 
 require_relative "../test/openai/internal/type/union_characterization"
 
