@@ -13,8 +13,8 @@ This directory contains runnable examples for the Realtime WebSocket surface:
 - `function_calling.rb` forces one local function call, validates and executes
   it, submits a generic `function_call_output` item, and requires completed
   tool and final-text responses.
-- `image_input.rb` validates and encodes one caller-provided PNG or JPEG before
-  connecting, submits it with a text prompt, and requires completed text.
+- `image_input.rb` submits one application-validated PNG or JPEG data URI with
+  a text prompt and requires completed text.
 - `mcp_approval.rb` correlates MCP discovery events, selects one advertised
   tool, submits an approval response, waits for tool completion, and requires
   completed follow-up text.
@@ -65,22 +65,24 @@ Optional environment variables:
 - `OPENAI_REALTIME_TIMEOUT` — overall example deadline in seconds; defaults to
   `30`.
 
-## Send one validated image
+## Send one application-validated image
 
 ```sh
-OPENAI_REALTIME_IMAGE=/path/to/input.png \
+OPENAI_REALTIME_IMAGE_URL='data:image/png;base64,...' \
   bundle exec ruby examples/realtime/image_input.rb
 ```
 
-The image is fully read, structurally validated as PNG or JPEG, and base64
-encoded before the authenticated WebSocket is opened. The response text is
-returned to embedded callers; executable diagnostics report only lifecycle
-metadata. Invalid images and file failures do not expose the input path or
-payload in their public error messages.
+The example accepts an application-validated PNG or JPEG base64 data URI and
+passes it to the Realtime API unchanged. The calling application owns image
+fetching, decoding, media-type checks, size limits, and data-URI creation; this
+SDK example deliberately does not implement an image decoder. The response text
+is returned to embedded callers, and executable diagnostics report only
+lifecycle metadata.
 
 Optional environment variables:
 
-- `OPENAI_REALTIME_IMAGE` — required path to a PNG or JPEG.
+- `OPENAI_REALTIME_IMAGE_URL` — required application-validated PNG or JPEG
+  base64 data URI.
 - `OPENAI_REALTIME_MODEL` — defaults to `gpt-realtime-2.1`.
 - `OPENAI_REALTIME_PROMPT` — defaults to a concise image-description request.
 - `OPENAI_REALTIME_TIMEOUT` — overall example deadline in seconds; defaults to
@@ -93,20 +95,33 @@ SDK example deliberately does not prescribe a public endpoint.
 
 ```sh
 MCP_SERVER_URL=https://your-mcp-server.example/mcp \
+MCP_APPROVED_TOOL=lookup \
+MCP_APPROVED_ARGUMENTS='{"query":"Ruby"}' \
   bundle exec ruby examples/realtime/mcp_approval.rb
 ```
 
 Tool discovery emits two independently ordered signals. The example waits for
 both `mcp_list_tools.completed` and the matching finalized
 `mcp_list_tools` conversation item before selecting the first advertised tool.
-It then validates the approval request, submits a generic
-`mcp_approval_response` item, correlates tool completion, and requests a final
-response with tools disabled. Every response must complete, and the final
+It then validates the approval request and consults a caller-provided approval
+policy before submitting a generic `mcp_approval_response` item. The executable
+uses an exact tool-name and argument-string allowlist from the environment.
+Embedded applications can pass their own `approval_policy` callable, which
+receives `server_label:`, `tool_name:`, and `arguments:`. Missing policies and
+every result other than literal `true` deny the request. Before sending an
+approval, the example also requires the approval-request arguments to match the
+completed generated arguments; the finalized call must retain that exact
+argument string. It then correlates approved tool completion and requests a
+final response with tools disabled. Every response must complete, and the final
 `response.done` must contain non-empty text.
 
 Optional environment variables:
 
 - `MCP_SERVER_URL` — required URL for a caller-selected MCP server.
+- `MCP_APPROVED_TOOL` — required exact tool name independently allowed by the
+  application.
+- `MCP_APPROVED_ARGUMENTS` — required exact JSON argument string independently
+  allowed by the application.
 - `OPENAI_REALTIME_MODEL` — defaults to `gpt-realtime-2.1`.
 - `OPENAI_REALTIME_PROMPT` — defaults to a generic request to use the server.
 - `OPENAI_REALTIME_TIMEOUT` — overall example deadline in seconds; defaults to

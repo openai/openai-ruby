@@ -103,7 +103,7 @@ text in the completed final `response.done` payload.
 
 ### Image input
 
-Validate and encode local image bytes before calling `connect`, then use a
+Validate an image in your application before calling `connect`, then use a
 normal user message with image and text content:
 
 ```ruby
@@ -118,10 +118,12 @@ connection.conversation.items.create(
 connection.response.create
 ```
 
-The runnable [`image_input.rb`](examples/realtime/image_input.rb) validates PNG
-or JPEG structure before opening the authenticated WebSocket. It keeps paths,
-image bytes, prompts, and response text out of diagnostics and requires
-non-empty text in a completed response.
+The runnable [`image_input.rb`](examples/realtime/image_input.rb) accepts an
+application-validated PNG or JPEG base64 data URI. The application owns image
+fetching, decoding, media-type checks, size limits, and data-URI creation. The
+example intentionally does not duplicate an image decoder; it keeps image data,
+prompts, and response text out of diagnostics and requires non-empty text in a
+completed response.
 
 ### MCP approval
 
@@ -136,7 +138,11 @@ connection.conversation.items.create(
   type: :mcp_approval_response,
   id: approval_response_id,
   approval_request_id: approval_request.id,
-  approve: true,
+  approve: application_policy.call(
+    server_label: approval_request.server_label,
+    tool_name: approval_request.name,
+    arguments: approval_request.arguments
+  ) == true,
   reason: "Approved by application policy."
 )
 ```
@@ -144,8 +150,13 @@ connection.conversation.items.create(
 After the correlated MCP call and first response both complete, request a
 follow-up with `tool_choice: :none`. The runnable
 [`mcp_approval.rb`](examples/realtime/mcp_approval.rb) demonstrates the full
-ordering-tolerant lifecycle and takes its MCP server URL from the caller rather
-than embedding an endpoint.
+ordering-tolerant lifecycle, takes its MCP server URL from the caller rather
+than embedding an endpoint, and denies approval unless a caller-provided policy
+returns literal `true`. Server- and model-originated values are inputs to that
+policy, not authorization by themselves. Before submitting approval, it also
+requires the approval request's argument string to equal the completed generated
+arguments; the finalized MCP call must retain those same arguments before its
+completion is accepted.
 
 ## Transcribe one committed audio turn
 

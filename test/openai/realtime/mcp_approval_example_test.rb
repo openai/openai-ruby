@@ -9,6 +9,53 @@ require_relative "example_test_support"
 class OpenAI::Test::RealtimeMCPApprovalExampleTest < Minitest::Test
   include OpenAI::Test::RealtimeExampleTestSupport
 
+  APPROVE_POLICY = -> (**_request) { true }
+
+  def test_defaults_to_deny_without_an_application_approval_policy
+    client, connection, = recording_client(
+      [tool_list_completed, item_done(tool_list_item), item_done(approval_request)]
+    )
+
+    error = assert_raises(RuntimeError) { run_example(client, approval_policy: nil) }
+
+    assert_equal("Realtime MCP tool call was not approved by the application.", error.message)
+    approval = connection.conversation.items.calls.fetch(1)
+    assert_equal(false, approval.fetch(:approve))
+    assert_equal(
+      "Denied because no caller-provided application policy approved this request.",
+      approval.fetch(:reason)
+    )
+  end
+
+  def test_exact_match_policy_approves_only_the_caller_allowed_tool_and_arguments
+    policy = OpenAI::Examples::Realtime::MCPApproval.exact_match_policy(
+      allowed_tool_name: "lookup",
+      allowed_arguments: "{}"
+    )
+
+    assert(
+      policy.call(
+        server_label: OpenAI::Examples::Realtime::MCPApproval::SERVER_LABEL,
+        tool_name: "lookup",
+        arguments: "{}"
+      )
+    )
+    refute(
+      policy.call(
+        server_label: OpenAI::Examples::Realtime::MCPApproval::SERVER_LABEL,
+        tool_name: "delete_everything",
+        arguments: "{}"
+      )
+    )
+    refute(
+      policy.call(
+        server_label: OpenAI::Examples::Realtime::MCPApproval::SERVER_LABEL,
+        tool_name: "lookup",
+        arguments: "{\"scope\":\"broader\"}"
+      )
+    )
+  end
+
   def test_correlates_discovery_approves_one_tool_and_returns_final_text
     prompt = "private MCP request"
     client, connection, realtime = recording_client(
@@ -30,6 +77,7 @@ class OpenAI::Test::RealtimeMCPApprovalExampleTest < Minitest::Test
       model: "gpt-realtime-2.1",
       server_url: "https://mcp.example.test/server",
       prompt: prompt,
+      approval_policy: APPROVE_POLICY,
       output: diagnostics
     )
 
@@ -46,6 +94,10 @@ class OpenAI::Test::RealtimeMCPApprovalExampleTest < Minitest::Test
     assert_equal("approval_response_1", approval_item.fetch(:id))
     assert_equal("approval_1", approval_item.fetch(:approval_request_id))
     assert_equal(true, approval_item.fetch(:approve))
+    assert_equal(
+      "Approved by the caller-provided application policy.",
+      approval_item.fetch(:reason)
+    )
     assert_equal(
       [
         {
@@ -216,6 +268,42 @@ class OpenAI::Test::RealtimeMCPApprovalExampleTest < Minitest::Test
     assert_equal("Realtime MCP tool call did not match the approved request.", error.message)
   end
 
+  def test_denies_approval_when_arguments_done_do_not_match_the_approved_request
+    mismatched_arguments = OpenAI::Realtime::ResponseMcpCallArgumentsDone.new(
+      arguments: "{\"scope\":\"broader\"}",
+      event_id: "event_arguments",
+      item_id: "call_1",
+      output_index: 0,
+      response_id: "response_tool"
+    )
+    client, connection, = recording_client(
+      [tool_list_completed, item_done(tool_list_item), item_done(approval_request), mismatched_arguments]
+    )
+
+    error = assert_raises(RuntimeError) { run_example(client) }
+
+    assert_equal("Realtime MCP tool call arguments did not match the approved request.", error.message)
+    approval = connection.conversation.items.calls.fetch(1)
+    assert_equal(false, approval.fetch(:approve))
+  end
+
+  def test_rejects_a_finalized_tool_call_with_different_arguments
+    mismatched_call = mcp_tool_call(arguments: "{\"scope\":\"broader\"}")
+    client, = recording_client(
+      [
+        tool_list_completed,
+        item_done(tool_list_item),
+        mcp_arguments_done,
+        item_done(approval_request),
+        item_done(mismatched_call)
+      ]
+    )
+
+    error = assert_raises(RuntimeError) { run_example(client) }
+
+    assert_equal("Realtime MCP tool call arguments did not match the approved request.", error.message)
+  end
+
   def test_rejects_mismatched_first_response
     client, = recording_client(
       [
@@ -246,12 +334,13 @@ class OpenAI::Test::RealtimeMCPApprovalExampleTest < Minitest::Test
     assert_equal("Realtime final MCP response completed without text output.", empty_error.message)
   end
 
-  private def run_example(client)
+  private def run_example(client, approval_policy: APPROVE_POLICY)
     OpenAI::Examples::Realtime::MCPApproval.run(
       client: client,
       model: "gpt-realtime-2.1",
       server_url: "https://mcp.example.test/server",
       prompt: "private prompt",
+      approval_policy: approval_policy,
       output: StringIO.new
     )
   end
@@ -317,11 +406,11 @@ class OpenAI::Test::RealtimeMCPApprovalExampleTest < Minitest::Test
     )
   end
 
-  private def mcp_tool_call(approval_request_id: "approval_1")
+  private def mcp_tool_call(approval_request_id: "approval_1", arguments: "{}")
     OpenAI::Realtime::RealtimeMcpToolCall.new(
       id: "call_1",
       approval_request_id: approval_request_id,
-      arguments: "{}",
+      arguments: arguments,
       name: "lookup",
       server_label: OpenAI::Examples::Realtime::MCPApproval::SERVER_LABEL
     )

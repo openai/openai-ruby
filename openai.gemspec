@@ -29,7 +29,6 @@ Gem::Specification.new do |s|
       "examples/realtime/README.md",
       "examples/realtime/function_calling.rb",
       "examples/realtime/image_input.rb",
-      "examples/realtime/jpeg_entropy_validation.rb",
       "examples/realtime/mcp_approval.rb",
       "examples/realtime/websocket_transcription.rb",
       "examples/realtime/websocket_text.rb",
