@@ -11,6 +11,34 @@ require "yaml"
 require_relative "../../scripts/examples-e2e"
 
 class ExamplesE2EInventoryTest < Minitest::Test
+  def test_rejects_non_mapping_manifest_roots
+    [nil, [], "invalid"].each do |document|
+      with_manifest(document) do |inventory, manifest_path|
+        error = assert_raises(OpenAIExamplesE2E::ConfigurationError) { inventory.validate! }
+
+        assert_equal("#{manifest_path}: manifest root must be a mapping", error.message)
+      end
+    end
+  end
+
+  def test_rejects_non_mapping_example_configurations
+    [nil, [], "invalid"].each do |configuration|
+      document = {
+        "version" => 1,
+        "examples" => {"examples/example.rb" => configuration}
+      }
+
+      with_manifest(document) do |inventory, manifest_path|
+        error = assert_raises(OpenAIExamplesE2E::ConfigurationError) { inventory.validate! }
+
+        assert_equal(
+          "#{manifest_path}: examples/example.rb: example configuration must be a mapping",
+          error.message
+        )
+      end
+    end
+  end
+
   def test_rejects_non_string_exclusion_reasons
     [nil, false, 1, []].each do |reason|
       with_inventory(status: "excluded", reason: reason) do |inventory|
@@ -30,6 +58,17 @@ class ExamplesE2EInventoryTest < Minitest::Test
   private
 
   def with_inventory(status:, reason:)
+    document = {
+      "version" => 1,
+      "examples" => {
+        "examples/example.rb" => {"status" => status, "reason" => reason}
+      }
+    }
+
+    with_manifest(document) { |inventory, _manifest_path| yield(inventory) }
+  end
+
+  def with_manifest(document)
     Dir.mktmpdir("openai-examples-e2e-test") do |directory|
       root = Pathname(directory)
       example_path = root.join("examples/example.rb")
@@ -37,16 +76,10 @@ class ExamplesE2EInventoryTest < Minitest::Test
       example_path.write("# frozen_string_literal: true\n")
 
       manifest_path = root.join("examples/e2e.yml")
-      manifest_path.write(
-        YAML.dump(
-          "version" => 1,
-          "examples" => {
-            "examples/example.rb" => {"status" => status, "reason" => reason}
-          }
-        )
-      )
+      manifest_path.write(YAML.dump(document))
 
-      yield(OpenAIExamplesE2E::Inventory.new(root: root, manifest_path: manifest_path))
+      inventory = OpenAIExamplesE2E::Inventory.new(root: root, manifest_path: manifest_path)
+      yield(inventory, manifest_path)
     end
   end
 end
