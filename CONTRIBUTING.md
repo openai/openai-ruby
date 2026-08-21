@@ -121,6 +121,10 @@ $ BUNDLE_GEMFILE=gemfiles/bedrock.gemfile bundle install
 $ BUNDLE_GEMFILE=gemfiles/bedrock.gemfile bundle exec rake test:bedrock
 ```
 
+When regenerating `gemfiles/bedrock.gemfile.lock`, preserve the
+`x-release-please` markers around the local `openai` version. Release Please
+uses them to update this lockfile; Bundler can remove them when rewriting it.
+
 ### Running examples end-to-end
 
 The live example suite executes every example marked as `covered` in

@@ -4,6 +4,12 @@
 
 - Prefer direct method calls over Ruby reflection (`send`, `__send__`, or `public_send`) for internal SDK plumbing. When an internal method must be callable across components without becoming supported public API, keep the method public for direct dispatch and mark it `@api private`. Keep its RBI and RBS declarations at the same visibility.
 
+## Release maintenance
+
+When regenerating `gemfiles/bedrock.gemfile.lock`, preserve the
+`x-release-please` markers around the local `openai` version. Release Please
+uses them to update this lockfile; Bundler can remove them when rewriting it.
+
 ## Security requirements
 
 - Never commit real API keys, access tokens, signing keys, credentials, or
