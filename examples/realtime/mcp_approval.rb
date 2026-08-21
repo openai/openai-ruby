@@ -70,9 +70,10 @@ module OpenAI
             discovery_events: {},
             discovery_items: {},
             selected_tool: nil,
-            approval_sent: false,
+            approval_request_id: nil,
             tool_call_item_id: nil,
             tool_call_response_id: nil,
+            tool_call_item: nil,
             tool_completed: false,
             first_response_done: false,
             final_response_requested: false,
@@ -94,6 +95,7 @@ module OpenAI
 
             state[:tool_call_item_id] = event.item_id
             state[:tool_call_response_id] = event.response_id
+            validate_tool_call(state)
           when OpenAI::Realtime::ResponseMcpCallCompleted
             unless event.item_id == state[:tool_call_item_id]
               raise "Realtime MCP completion did not match the requested tool call."
@@ -121,7 +123,9 @@ module OpenAI
               raise "Realtime returned an unexpected MCP approval request."
             end
 
-            raise "Realtime returned more than one MCP approval request." if state[:approval_sent]
+            if state[:approval_request_id]
+              raise "Realtime returned more than one MCP approval request."
+            end
 
             connection.conversation.items.create(
               type: :mcp_approval_response,
@@ -130,9 +134,37 @@ module OpenAI
               approve: true,
               reason: "Approved by the example application policy."
             )
-            state[:approval_sent] = true
+            state[:approval_request_id] = item.id
+            validate_tool_call(state)
+            request_final_response(connection, state: state)
+          when OpenAI::Realtime::RealtimeMcpToolCall
+            raise "Realtime returned more than one finalized MCP tool call." if state[:tool_call_item]
+
+            state[:tool_call_item] = item
+            validate_tool_call(state)
             request_final_response(connection, state: state)
           end
+        end
+
+        def validate_tool_call(state)
+          item = state[:tool_call_item]
+          return unless item
+
+          selected_tool = state[:selected_tool]
+          unless selected_tool && item.server_label == SERVER_LABEL && item.name == selected_tool.name
+            raise "Realtime returned an unexpected finalized MCP tool call."
+          end
+
+          item_id = state[:tool_call_item_id]
+          if item_id && item.id != item_id
+            raise "Realtime MCP tool call did not match the requested tool call."
+          end
+
+          approval_request_id = state[:approval_request_id]
+          return unless approval_request_id
+          return if item.approval_request_id == approval_request_id
+
+          raise "Realtime MCP tool call did not match the approved request."
         end
 
         def select_tool(connection, prompt:, state:)
@@ -185,7 +217,12 @@ module OpenAI
 
         def request_final_response(connection, state:)
           return if state[:final_response_requested]
-          return unless state[:first_response_done] && state[:approval_sent] && state[:tool_completed]
+          unless state[:first_response_done] &&
+              state[:approval_request_id] &&
+              state[:tool_call_item] &&
+              state[:tool_completed]
+            return
+          end
 
           connection.response.create(tool_choice: :none)
           state[:final_response_requested] = true

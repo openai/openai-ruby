@@ -55,6 +55,9 @@ examples:
   examples/realtime/image_input.rb:
     status: excluded
     reason: Requires a caller-provided PNG or JPEG and live Realtime image-input access.
+  examples/realtime/jpeg_entropy_validation.rb:
+    status: excluded
+    reason: Internal JPEG validation helper exercised through the image-input example tests.
   examples/realtime/mcp_approval.rb:
     status: excluded
     reason: Requires a caller-selected remote MCP server and live Realtime MCP access.

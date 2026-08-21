@@ -82,10 +82,16 @@ class OpenAI::Test::RealtimeImageInputExampleTest < Minitest::Test
     dnl = jpeg_segment(0xDC, [1].pack("n"))
     single_component_4x4 = [8, 1, 1, 1, 1, 0x44, 0].pack("CnnC4")
     valid_images = [
-      jpeg_fixture(frame_marker: 0xC2, scan: progressive_scan),
-      jpeg_fixture(frame_marker: 0xC3, frame: lossless_frame, scan: lossless_scan),
+      jpeg_fixture(frame_marker: 0xC2, scan: progressive_scan, scan_data: "\x7F".b),
+      jpeg_fixture(
+        frame_marker: 0xC3,
+        frame: lossless_frame,
+        scan: lossless_scan,
+        scan_data: "\x7F".b
+      ),
       jpeg_fixture(frame: dnl_frame, after_scan: dnl),
-      jpeg_fixture(frame: single_component_4x4)
+      jpeg_fixture(frame: single_component_4x4),
+      progressive_restart_jpeg
     ]
 
     valid_images.each do |bytes|
@@ -99,6 +105,45 @@ class OpenAI::Test::RealtimeImageInputExampleTest < Minitest::Test
     idat = Zlib::Deflate.deflate("\x00\x00".b * height)
 
     assert(OpenAI::Examples::Realtime::ImageInput.valid_png?(png_fixture(ihdr: ihdr, idat: idat)))
+  end
+
+  def test_rejects_indexed_png_without_a_preceding_palette_before_connecting
+    ihdr = [1, 1, 8, 3, 0, 0, 0].pack("NNCCCCC")
+    idat = Zlib::Deflate.deflate("\x00\x00".b)
+    palette = "\x00\x00\x00".b
+    valid_indexed_png = OpenAI::Examples::Realtime::ImageInput::PNG_SIGNATURE +
+      png_chunk("IHDR", ihdr) +
+      png_chunk("PLTE", palette) +
+      png_chunk("IDAT", idat) +
+      png_chunk("IEND", "".b)
+    invalid_images = [
+      png_fixture(ihdr: ihdr, idat: idat),
+      OpenAI::Examples::Realtime::ImageInput::PNG_SIGNATURE +
+        png_chunk("IHDR", ihdr) +
+        png_chunk("IDAT", idat) +
+        png_chunk("PLTE", palette) +
+        png_chunk("IEND", "".b)
+    ]
+
+    assert(OpenAI::Examples::Realtime::ImageInput.valid_png?(valid_indexed_png))
+    invalid_images.each do |bytes|
+      with_image(bytes, "private-indexed.png") do |path|
+        client, _connection, realtime = recording_client([])
+
+        error = assert_raises(ArgumentError) do
+          OpenAI::Examples::Realtime::ImageInput.run(
+            client: client,
+            model: "gpt-realtime-2.1",
+            image_path: path,
+            prompt: "private prompt",
+            output: StringIO.new
+          )
+        end
+
+        assert_equal("Realtime image input must be a valid PNG or JPEG file", error.message)
+        assert_empty(realtime.models)
+      end
+    end
   end
 
   def test_bounds_png_inflation_before_connecting
@@ -178,6 +223,70 @@ class OpenAI::Test::RealtimeImageInputExampleTest < Minitest::Test
 
     invalid_images.each do |bytes|
       with_image(bytes, "private-invalid-frame.jpg") do |path|
+        client, _connection, realtime = recording_client([])
+
+        error = assert_raises(ArgumentError) do
+          OpenAI::Examples::Realtime::ImageInput.run(
+            client: client,
+            model: "gpt-realtime-2.1",
+            image_path: path,
+            prompt: "private prompt",
+            output: StringIO.new
+          )
+        end
+
+        assert_equal("Realtime image input must be a valid PNG or JPEG file", error.message)
+        assert_empty(realtime.models)
+      end
+    end
+  end
+
+  def test_rejects_jpeg_with_invalid_coding_tables_or_scan_data_before_connecting
+    quantization_table_one = [8, 1, 1, 1, 1, 0x11, 1].pack("CnnC4")
+    huffman_table_one = [1, 1, 0x11, 0, 63, 0].pack("C6")
+    large_frame = [8, 100, 100, 1, 1, 0x11, 0].pack("CnnC4")
+    progressive_frame = [8, 1, 1, 1, 1, 0x11, 0].pack("CnnC4")
+    progressive_dc_scan = [1, 1, 0, 0, 0, 0].pack("C6")
+    invalid_dc_refinement = [1, 1, 0, 0, 0, 0x10].pack("C6")
+    lossless_nonzero_quantizer = [8, 1, 1, 1, 1, 0x11, 3].pack("CnnC4")
+    invalid_progression = "\xFF\xD8".b +
+      jpeg_coding_tables +
+      jpeg_segment(0xC2, progressive_frame) +
+      jpeg_segment(0xDA, progressive_dc_scan) +
+      "\x7F".b +
+      jpeg_segment(0xDA, invalid_dc_refinement) +
+      "\x7F\xFF\xD9".b
+    invalid_images = [
+      jpeg_fixture(tables: "".b),
+      jpeg_fixture(frame: quantization_table_one),
+      jpeg_fixture(scan: huffman_table_one),
+      jpeg_fixture(frame: large_frame),
+      jpeg_fixture(scan_data: "\x80".b),
+      jpeg_fixture(tables: jpeg_coding_tables(quantization: "\x00".b * 64)),
+      jpeg_fixture(
+        tables: jpeg_coding_tables(
+          quantization: ([1] * 64).pack("n*"),
+          quantization_precision: 1
+        )
+      ),
+      jpeg_fixture(
+        frame_marker: 0xC3,
+        frame: lossless_nonzero_quantizer,
+        scan: [1, 1, 0, 1, 0, 0].pack("C6"),
+        scan_data: "\x7F".b
+      ),
+      jpeg_fixture(tables: jpeg_coding_tables(dc_symbols: "\xFF".b)),
+      jpeg_fixture(
+        tables: jpeg_coding_tables(
+          dc_counts: [2, *([0] * 15)].pack("C*"),
+          dc_symbols: "\x00\x01".b
+        )
+      ),
+      invalid_progression
+    ]
+
+    invalid_images.each do |bytes|
+      with_image(bytes, "private-invalid-table.jpg") do |path|
         client, _connection, realtime = recording_client([])
 
         error = assert_raises(ArgumentError) do
@@ -322,10 +431,12 @@ class OpenAI::Test::RealtimeImageInputExampleTest < Minitest::Test
     frame_marker: 0xC0,
     frame: [8, 1, 1, 1, 1, 0x11, 0].pack("CnnC4"),
     scan: [1, 1, 0, 0, 63, 0].pack("C6"),
-    scan_data: "\x01\x02\xFF\x00\x03".b,
+    scan_data: "\x3F".b,
+    tables: jpeg_coding_tables,
     after_scan: "".b
   )
     "\xFF\xD8".b +
+      tables +
       jpeg_segment(frame_marker, frame) +
       jpeg_segment(0xDA, scan) +
       scan_data +
@@ -335,6 +446,51 @@ class OpenAI::Test::RealtimeImageInputExampleTest < Minitest::Test
 
   private def jpeg_segment(marker, data)
     "\xFF".b + marker.chr(Encoding::BINARY) + [data.bytesize + 2].pack("n") + data
+  end
+
+  private def jpeg_coding_tables(
+    quantization: "\x01".b * 64,
+    quantization_precision: 0,
+    dc_counts: [1, *([0] * 15)].pack("C*"),
+    dc_symbols: "\x00".b,
+    ac_counts: [1, *([0] * 15)].pack("C*"),
+    ac_symbols: "\x00".b
+  )
+    huffman = "\x00".b +
+      dc_counts +
+      dc_symbols +
+      "\x10".b +
+      ac_counts +
+      ac_symbols
+    quantization_definition = (quantization_precision << 4).chr(Encoding::BINARY)
+    jpeg_segment(0xDB, quantization_definition + quantization) + jpeg_segment(0xC4, huffman)
+  end
+
+  private def progressive_restart_jpeg
+    ac_counts = [1, 1, *([0] * 14)].pack("C*")
+    tables = jpeg_coding_tables(ac_counts: ac_counts, ac_symbols: "\x01\x00".b)
+    frame = [8, 8, 16, 1, 1, 0x11, 0].pack("CnnC4")
+    dc_scan = [1, 1, 0, 0, 0, 0].pack("C6")
+    ac_first_scan = [1, 1, 0, 1, 2, 1].pack("C6")
+    ac_refinement_scan = [1, 1, 0, 1, 2, 0x10].pack("C6")
+    restart = "\xFF\xD0".b
+
+    "\xFF\xD8".b +
+      tables +
+      jpeg_segment(0xC2, frame) +
+      jpeg_segment(0xDD, [1].pack("n")) +
+      jpeg_segment(0xDA, dc_scan) +
+      "\x7F".b +
+      restart +
+      "\x7F".b +
+      jpeg_segment(0xDA, ac_first_scan) +
+      "\x6F".b +
+      restart +
+      "\x6F".b +
+      jpeg_segment(0xDA, ac_refinement_scan) +
+      "\x3F".b +
+      restart +
+      "\x3F\xFF\xD9".b
   end
 
   private def jpeg_frame(components)

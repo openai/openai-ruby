@@ -384,10 +384,10 @@ handshake.
 
 ## Current scope
 
-This phase does not add continuous microphone capture, concurrent live
-captioning, live response-audio playback, WebRTC/SDP lifecycle helpers, SIP or
-sideband helpers, translation connections, image input, function calling
-helpers, or MCP helpers. Existing generated HTTP resources remain
-generated-code-owned. New convenience APIs and examples for those workflows
-have different media, ownership, security, and lifecycle contracts and should
-be reviewed as separate follow-ups.
+The examples in this guide cover local function calling, image input, and MCP
+approval through the generic Realtime connection API. They do not add
+workflow-specific convenience methods or change production runtime behavior.
+Continuous microphone capture, concurrent live captioning, live response-audio playback,
+WebRTC/SDP lifecycle helpers, SIP or sideband helpers, and translation
+connections remain out of scope. Existing generated HTTP resources remain
+generated-code-owned.

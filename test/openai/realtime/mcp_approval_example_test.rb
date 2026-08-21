@@ -17,6 +17,7 @@ class OpenAI::Test::RealtimeMCPApprovalExampleTest < Minitest::Test
         item_done(tool_list_item),
         item_done(approval_request),
         mcp_arguments_done,
+        item_done(mcp_tool_call),
         mcp_call_completed,
         response_done(id: "response_tool"),
         response_done(id: "response_final", text: "The tool completed successfully.")
@@ -72,6 +73,7 @@ class OpenAI::Test::RealtimeMCPApprovalExampleTest < Minitest::Test
       response_done(id: "response_tool"),
       item_done(approval_request),
       mcp_call_completed,
+      item_done(mcp_tool_call),
       response_done(id: "response_final", text: "Done.")
     ]
     client, connection, = recording_client(events)
@@ -194,6 +196,26 @@ class OpenAI::Test::RealtimeMCPApprovalExampleTest < Minitest::Test
     assert_equal("Realtime MCP completion did not match the requested tool call.", error.message)
   end
 
+  def test_rejects_tool_call_for_a_different_approval_request
+    mismatched_call = mcp_tool_call(approval_request_id: "other_approval")
+    client, = recording_client(
+      [
+        tool_list_completed,
+        item_done(tool_list_item),
+        mcp_arguments_done,
+        item_done(mismatched_call),
+        item_done(approval_request),
+        mcp_call_completed,
+        response_done(id: "response_tool"),
+        response_done(id: "response_final", text: "Wrong call completed.")
+      ]
+    )
+
+    error = assert_raises(RuntimeError) { run_example(client) }
+
+    assert_equal("Realtime MCP tool call did not match the approved request.", error.message)
+  end
+
   def test_rejects_mismatched_first_response
     client, = recording_client(
       [
@@ -240,6 +262,7 @@ class OpenAI::Test::RealtimeMCPApprovalExampleTest < Minitest::Test
       item_done(tool_list_item),
       mcp_arguments_done,
       item_done(approval_request),
+      item_done(mcp_tool_call),
       mcp_call_completed,
       initial_done,
       final_done
@@ -291,6 +314,16 @@ class OpenAI::Test::RealtimeMCPApprovalExampleTest < Minitest::Test
       event_id: "event_complete",
       item_id: "call_1",
       output_index: 0
+    )
+  end
+
+  private def mcp_tool_call(approval_request_id: "approval_1")
+    OpenAI::Realtime::RealtimeMcpToolCall.new(
+      id: "call_1",
+      approval_request_id: approval_request_id,
+      arguments: "{}",
+      name: "lookup",
+      server_label: OpenAI::Examples::Realtime::MCPApproval::SERVER_LABEL
     )
   end
 
