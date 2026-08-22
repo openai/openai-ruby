@@ -121,6 +121,8 @@ $ bundle exec rake
 ## Running tests
 
 Most tests require you to [set up a mock server](https://github.com/dgellow/steady) against the OpenAPI spec to run the tests.
+Install `lsof` and ensure it is available on `PATH`; the daemon launcher uses it
+to verify that the mock process group owns its listening socket before tests run.
 
 ```sh
 $ ./scripts/mock

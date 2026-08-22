@@ -29,18 +29,100 @@ fi
 
 echo "==> Starting mock server with URL ${URL}"
 
+stop_mock_process_group() {
+  local pid="$1"
+
+  if [[ "$pid" =~ ^[0-9]+$ ]]; then
+    kill -TERM -- "-$pid" 2>/dev/null || kill -TERM "$pid" 2>/dev/null || true
+  fi
+}
+
+clear_mock_pid_file() {
+  if [ -n "${STEADY_PID_FILE:-}" ]; then
+    rm -f "$STEADY_PID_FILE"
+  fi
+}
+
+cleanup_mock_process() {
+  trap - EXIT INT TERM
+  stop_mock_process_group "$mock_pid"
+  wait "$mock_pid" 2>/dev/null || true
+  clear_mock_pid_file
+}
+
+cleanup_mock_on_exit() {
+  local status="$?"
+
+  cleanup_mock_process
+  exit "$status"
+}
+
+mock_process_is_running() {
+  local expected_pid="$1"
+  local running_pid
+
+  while IFS= read -r running_pid; do
+    if [ "$running_pid" = "$expected_pid" ]; then
+      return 0
+    fi
+  done < <(jobs -pr)
+
+  return 1
+}
+
+mock_owns_listener() {
+  local expected_process_group="$1"
+
+  lsof -nP -a -g "$expected_process_group" -iTCP@127.0.0.1:4010 -sTCP:LISTEN >/dev/null 2>&1
+}
+
+require_lsof() {
+  if ! command -v lsof >/dev/null 2>&1 || ! lsof -v >/dev/null 2>&1; then
+    echo "Error: lsof is required for --daemon mock startup; install it and ensure it is available on PATH" >&2
+    return 1
+  fi
+}
+
 # Run steady mock on the given spec
 if [ "$1" == "--daemon" ]; then
+  require_lsof
+
   # Pre-install the package so the download doesn't eat into the startup timeout
   npm exec --package=@stdy/cli@0.22.1 -- steady --version
 
-  npm exec --package=@stdy/cli@0.22.1 -- steady --host 127.0.0.1 -p 4010 --validator-query-array-format=brackets --validator-form-array-format=brackets --validator-query-object-format=brackets --validator-form-object-format=brackets "$URL" &> .stdy.log &
+  ruby -e 'Process.setpgrp; exec(*ARGV)' npm exec --package=@stdy/cli@0.22.1 -- steady --host 127.0.0.1 -p 4010 --validator-query-array-format=brackets --validator-form-array-format=brackets --validator-query-object-format=brackets --validator-form-object-format=brackets "$URL" &> .stdy.log &
+  mock_pid=$!
+
+  # Until readiness is confirmed, every exit path owns cleanup. Once the
+  # daemon is ready, scripts/test assumes ownership through STEADY_PID_FILE.
+  trap cleanup_mock_on_exit EXIT
+  trap 'exit 130' INT
+  trap 'exit 143' TERM
+
+  if [ -n "${STEADY_PID_FILE:-}" ]; then
+    printf '%s\n' "$mock_pid" > "$STEADY_PID_FILE"
+  fi
 
   # Wait for server to come online via health endpoint (max 30s)
   echo -n "Waiting for server"
   attempts=0
-  while ! curl --silent --fail "http://127.0.0.1:4010/_x-steady/health" >/dev/null 2>&1; do
-    if ! kill -0 $! 2>/dev/null; then
+  while true; do
+    if curl --silent --fail "http://127.0.0.1:4010/_x-steady/health" >/dev/null 2>&1; then
+      # A concurrent launcher may own the healthy endpoint while this
+      # invocation is still alive but failing to bind. Require the listener
+      # itself to belong to the process group created by this invocation.
+      if mock_process_is_running "$mock_pid" && mock_owns_listener "$mock_pid"; then
+        break
+      fi
+
+      echo
+      echo "Mock process group $mock_pid does not own the healthy listener on 127.0.0.1:4010"
+      cat .stdy.log
+      exit 1
+    fi
+
+    if ! mock_process_is_running "$mock_pid"; then
+      wait "$mock_pid" 2>/dev/null || true
       echo
       cat .stdy.log
       exit 1
@@ -56,6 +138,7 @@ if [ "$1" == "--daemon" ]; then
     sleep 0.1
   done
 
+  trap - EXIT INT TERM
   echo
 else
   npm exec --package=@stdy/cli@0.22.1 -- steady --host 127.0.0.1 -p 4010 --validator-query-array-format=brackets --validator-form-array-format=brackets --validator-query-object-format=brackets --validator-form-object-format=brackets "$URL"
