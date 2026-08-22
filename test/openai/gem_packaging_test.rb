@@ -21,6 +21,9 @@ class OpenAI::Test::GemPackagingTest < Minitest::Test
       package = Gem::Package.new(gem_file)
 
       assert_empty(relative_links - package.contents, "README links are missing from the built gem")
+      assert_includes(package.contents, "examples/realtime/function_calling.rb")
+      assert_includes(package.contents, "examples/realtime/image_input.rb")
+      assert_includes(package.contents, "examples/realtime/mcp_approval.rb")
       assert_includes(package.contents, "examples/realtime/websocket_transcription.rb")
       assert_includes(package.contents, "examples/realtime/websocket_text.rb")
       assert_includes(package.contents, "examples/realtime/websocket_voice_turn.rb")

@@ -74,6 +74,93 @@ types. Invalid client events raise `ArgumentError` with a generic public
 message; the converter error remains available through `cause` for explicit
 inspection. `send_raw` and `receive_raw` are text-frame escape hatches.
 
+## Standard text workflows
+
+The same generic helpers cover local function results, image content, and MCP
+approval responses; these workflows do not require additional convenience
+methods on the production client.
+
+### Local function calling
+
+Configure the session with one function, `parallel_tool_calls: false`, and a
+forced function `tool_choice`. After sending a prompt and creating the first
+response, require a `ResponseFunctionCallArgumentsDoneEvent` whose
+`response_id` matches the first completed `ResponseDoneEvent`. Validate the
+function name and parsed JSON before executing local code:
+
+```ruby
+connection.conversation.items.create(
+  type: :function_call_output,
+  call_id: function_event.call_id,
+  output: JSON.generate(result)
+)
+connection.response.create(tool_choice: :none)
+```
+
+The runnable [`function_calling.rb`](examples/realtime/function_calling.rb)
+example implements the full two-response state machine and requires non-empty
+text in the completed final `response.done` payload.
+
+### Image input
+
+Validate an image in your application before calling `connect`, then use a
+normal user message with image and text content:
+
+```ruby
+connection.conversation.items.create(
+  type: :message,
+  role: :user,
+  content: [
+    {type: :input_image, image_url: "data:image/png;base64,#{encoded_image}"},
+    {type: :input_text, text: "Describe the image."}
+  ]
+)
+connection.response.create
+```
+
+The runnable [`image_input.rb`](examples/realtime/image_input.rb) accepts an
+application-validated PNG or JPEG base64 data URI. The application owns image
+fetching, decoding, media-type checks, size limits, and data-URI creation. The
+example intentionally does not duplicate an image decoder; it keeps image data,
+prompts, and response text out of diagnostics and requires non-empty text in a
+completed response.
+
+### MCP approval
+
+MCP tool discovery is complete only after both `McpListToolsCompleted` and the
+matching `ConversationItemDone` containing `RealtimeMcpListTools` arrive. Their
+order is not guaranteed. Select a tool from that finalized list, force it in
+`response.create`, then answer the matching approval request through the
+generic item helper:
+
+```ruby
+approved = true.equal?(
+  application_policy.call(
+    server_label: approval_request.server_label,
+    tool_name: approval_request.name,
+    arguments: approval_request.arguments
+  )
+)
+connection.conversation.items.create(
+  type: :mcp_approval_response,
+  id: approval_response_id,
+  approval_request_id: approval_request.id,
+  approve: approved,
+  reason: "Decided by application policy."
+)
+```
+
+After the correlated MCP call and first response both complete, request a
+follow-up with `tool_choice: :none`. The runnable
+[`mcp_approval.rb`](examples/realtime/mcp_approval.rb) demonstrates the full
+ordering-tolerant lifecycle, takes its MCP server URL from the caller rather
+than embedding an endpoint, and denies approval unless a caller-provided policy
+returns literal `true`. Server- and model-originated values are inputs to that
+policy, not authorization by themselves. Before submitting approval, it also
+requires the approval request's argument string to equal the completed generated
+arguments; the finalized MCP call must retain those same arguments before its
+completion is accepted.
+
 ## Transcribe one committed audio turn
 
 Use `connect_transcription` for the dedicated transcription handshake. Select
@@ -311,10 +398,10 @@ handshake.
 
 ## Current scope
 
-This phase does not add continuous microphone capture, concurrent live
-captioning, live response-audio playback, WebRTC/SDP lifecycle helpers, SIP or
-sideband helpers, translation connections, image input, function calling
-helpers, or MCP helpers. Existing generated HTTP resources remain
-generated-code-owned. New convenience APIs and examples for those workflows
-have different media, ownership, security, and lifecycle contracts and should
-be reviewed as separate follow-ups.
+The examples in this guide cover local function calling, image input, and MCP
+approval through the generic Realtime connection API. They do not add
+workflow-specific convenience methods or change production runtime behavior.
+Continuous microphone capture, concurrent live captioning, live response-audio playback,
+WebRTC/SDP lifecycle helpers, SIP or sideband helpers, and translation
+connections remain out of scope. Existing generated HTTP resources remain
+generated-code-owned.
