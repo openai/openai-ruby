@@ -52,6 +52,37 @@ class RBSFormatTest < Minitest::Test
     end
   end
 
+  def test_preserves_comments_within_multiline_alias_declarations
+    [
+      "class Foo # compatibility alias\n  = Bar\n",
+      "class # alias kind\n  Foo = Bar\n",
+      "class Foo = # alias target\n  Bar\n",
+      "module Foo # first comment\n  # second comment\n  = Bar\n",
+      "module ::Foo # qualified alias\n  = ::Bar\n"
+    ].each do |source|
+      assert_equal(source, RBSFormat.format(source))
+    end
+  end
+
+  def test_preserves_each_nested_alias_comment_and_formats_ordinary_aliases
+    source = <<~RBS
+      module Example
+        class First # first compatibility alias
+          = One
+        module ::Second # second compatibility alias
+          = ::Two
+        class   Third   =   Three
+      end
+    RBS
+
+    formatted = RBSFormat.format(source)
+
+    assert_includes(formatted, "  class First # first compatibility alias\n    = One")
+    assert_includes(formatted, "  module ::Second # second compatibility alias\n    = ::Two")
+    assert_includes(formatted, "  class Third = Three")
+    assert_equal(formatted, RBSFormat.format(formatted))
+  end
+
   def test_preserves_nested_aliases_without_rewriting_annotation_contents
     source = <<~RBS
       module Outer
