@@ -9,8 +9,9 @@ module RBSFormat
   def format(source)
     marker = SecureRandom.uuid
     # Preserve the existing workaround for Syntax Tree's unsupported class/module aliases.
-    protected_source = source.gsub(/(class|module) ([^ \n]+) = (.+$)/) do
-      "# #{Regexp.last_match(1)} #{marker}\n#{Regexp.last_match(2)}: #{Regexp.last_match(3)}"
+    protected_source = source.gsub(/^([ \t]*)(class|module)[ \t]+([^ \t\n=]+)[ \t]*=[ \t]*(.+)$/) do
+      indentation, kind, name, target = Regexp.last_match.captures
+      "#{indentation}# #{kind} #{marker}\n#{indentation}#{name}: #{target}"
     end
 
     SyntaxTree::RBS.format(protected_source).gsub(
