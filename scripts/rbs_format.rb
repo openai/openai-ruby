@@ -13,7 +13,7 @@ module RBSFormat
     protected_source = source.dup
     alias_declarations(RBS::Parser.parse_signature(source).last).reverse_each do |declaration|
       location = declaration.location
-      kind = location.source.split.first
+      kind = location[:keyword].source
       restorations[location.start_pos] = if location.source.include?("#")
         location.source
       else

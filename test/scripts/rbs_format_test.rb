@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "minitest/autorun"
+require "tempfile"
 
 require_relative "../../scripts/rbs_format"
 
@@ -61,6 +62,36 @@ class RBSFormatTest < Minitest::Test
       "module ::Foo # qualified alias\n  = ::Bar\n"
     ].each do |source|
       assert_equal(source, RBSFormat.format(source))
+    end
+  end
+
+  def test_preserves_class_alias_with_adjacent_keyword_comment
+    source = "class# compatibility note\n  Foo::Bar = ::Baz\n"
+    formatted = RBSFormat.format(source)
+
+    assert_equal(source, formatted)
+    assert_equal(formatted, RBSFormat.format(formatted))
+  end
+
+  def test_preserves_module_alias_with_adjacent_keyword_comment
+    source = "module# compatibility note\n  ::Foo = ::Bar\n"
+    formatted = RBSFormat.format(source)
+
+    assert_equal(source, formatted)
+    assert_equal(formatted, RBSFormat.format(formatted))
+  end
+
+  def test_write_mode_preserves_aliases_with_adjacent_keyword_comments
+    %w[class module].each do |kind|
+      source = "#{kind}# compatibility note\n  Alias = Target\n"
+
+      Tempfile.create(["rbs-format", ".rbs"]) do |file|
+        file.write(source)
+        file.flush
+
+        assert_empty(RBSFormat.run([file.path], check: false))
+        assert_equal(source, File.read(file.path))
+      end
     end
   end
 
