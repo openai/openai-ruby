@@ -24,11 +24,12 @@ custom-code-budget, and review requirements throughout the workflow.
 Public, non-sensitive maintenance pull requests must carry the repository's
 `codex-maintenance` label. Coordinate every public dispatch and publication with
 `scripts/maintenance_state.py` in this skill directory. Its repository-scoped,
-owner-only ledger under the user cache is shared across linked worktrees and
-protected by an exclusive cross-process file lock. Never override its state
-directory in a real scan or implementation task. Finding identifiers are
-stored only as SHA-256 digests; ledger files and their directory are private to
-the current user.
+owner-only ledger under `XDG_STATE_HOME` (or `~/.local/state`) is shared across
+linked worktrees and protected by an exclusive cross-process file lock. Never
+store it under an expendable cache directory or override its state directory in
+a real scan or implementation task. Finding identifiers are stored only as
+SHA-256 digests; ledger files and their directory are private to the current
+user.
 
 Reserve capacity **before** dispatching a task. Under the lock, the coordinator
 counts open labeled PRs plus outstanding unpublished reservations, rejects
@@ -39,9 +40,14 @@ not satisfy this invariant.
 
 Publish only through the coordinator's `publish` command. It holds that same
 lock across the fresh GitHub recount, draft creation with `codex-maintenance`,
-and verification that the new PR is labeled. If labeling cannot be verified,
-it closes only the draft it just created before releasing the lock. Do not
-bypass this command or release a reservation before the labeled PR exists.
+and verification that the new PR is labeled. Persist the intended base/head
+before creation; if GitHub creates the draft but loses the response, reconcile
+exactly one matching open draft and verify its label before persisting its URL.
+Fail closed on missing, multiple, mismatched, or unlabeled recovery candidates.
+If labeling cannot be verified for a draft whose creation was directly
+confirmed, close only that owned draft; never close an ambiguously recovered
+candidate. Do not bypass this command or release a reservation before the
+labeled PR exists.
 
 When the public cap is full, do not dispatch public implementation tasks or open
 another public pull request. An already authorized private security

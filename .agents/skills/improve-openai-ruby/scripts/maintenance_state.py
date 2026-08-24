@@ -29,9 +29,27 @@ def state_directory(repository: str, override: str | None) -> Path:
     if override:
         return Path(override).expanduser()
 
-    cache = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache"))
+    state_root = Path(
+        os.environ.get("XDG_STATE_HOME") or (Path.home() / ".local" / "state")
+    )
     namespace = hashlib.sha256(repository.encode()).hexdigest()[:16]
-    return cache / "openai-ruby-maintenance" / namespace
+    return state_root / "openai-ruby-maintenance" / namespace
+
+
+def persist_state(directory: Path, state: dict[str, Any]) -> None:
+    with tempfile.NamedTemporaryFile("w", dir=directory, delete=False) as temporary:
+        os.fchmod(temporary.fileno(), 0o600)
+        json.dump(state, temporary, indent=2, sort_keys=True)
+        temporary.write("\n")
+        temporary.flush()
+        os.fsync(temporary.fileno())
+    os.replace(temporary.name, directory / "state.json")
+
+    descriptor = os.open(directory, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
+    try:
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
 
 
 @contextlib.contextmanager
@@ -73,21 +91,7 @@ def locked_state(directory: Path) -> Iterator[dict[str, Any]]:
             raise CoordinationError("maintenance ledger has an unsupported schema")
 
         yield state
-
-        with tempfile.NamedTemporaryFile("w", dir=directory, delete=False) as temporary:
-            os.fchmod(temporary.fileno(), 0o600)
-            json.dump(state, temporary, indent=2, sort_keys=True)
-            temporary.write("\n")
-            temporary.flush()
-            os.fsync(temporary.fileno())
-        os.replace(temporary.name, path)
-        directory_descriptor = os.open(
-            directory, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
-        )
-        try:
-            os.fsync(directory_descriptor)
-        finally:
-            os.close(directory_descriptor)
+        persist_state(directory, state)
     finally:
         fcntl.flock(descriptor, fcntl.LOCK_UN)
         os.close(descriptor)
@@ -215,53 +219,148 @@ def publish(arguments: argparse.Namespace, state: dict[str, Any]) -> dict[str, A
         raise CoordinationError(
             "maintenance reservation already has a public pull request"
         )
+
+    attempted = reservation.get("publication_attempt")
+    requested_target = {"base": arguments.base, "head": arguments.head}
+    if attempted:
+        if attempted != requested_target:
+            raise CoordinationError(
+                "publication target does not match the reserved attempt"
+            )
+        return recover_publication(arguments, reservation)
+
     if open_pull_request_count(arguments) >= arguments.limit:
         raise CoordinationError(
             "maintenance PR capacity was consumed before publication"
         )
 
+    reservation["publication_attempt"] = requested_target
+    persist_state(state_directory(arguments.repo, arguments.state_dir), state)
+
+    try:
+        output = run_gh(
+            arguments.gh,
+            "pr",
+            "create",
+            "--repo",
+            arguments.repo,
+            "--base",
+            arguments.base,
+            "--head",
+            arguments.head,
+            "--title",
+            arguments.title,
+            "--body-file",
+            arguments.body_file,
+            "--draft",
+            "--label",
+            LABEL,
+        )
+    except CoordinationError:
+        return recover_publication(arguments, reservation)
+
+    urls = [line.strip() for line in output.splitlines() if line.startswith("https://")]
+    if len(urls) != 1:
+        return recover_publication(arguments, reservation)
+
+    return verify_publication(arguments, reservation, urls[0], created_here=True)
+
+
+def recover_publication(
+    arguments: argparse.Namespace, reservation: dict[str, Any]
+) -> dict[str, Any]:
     output = run_gh(
         arguments.gh,
         "pr",
-        "create",
+        "list",
         "--repo",
         arguments.repo,
+        "--state",
+        "open",
         "--base",
         arguments.base,
         "--head",
         arguments.head,
-        "--title",
-        arguments.title,
-        "--body-file",
-        arguments.body_file,
-        "--draft",
-        "--label",
-        LABEL,
+        "--limit",
+        "2",
+        "--json",
+        "url,isDraft,baseRefName,headRefName,labels",
     )
-    urls = [line.strip() for line in output.splitlines() if line.startswith("https://")]
-    if len(urls) != 1:
+    try:
+        candidates = json.loads(output)
+    except json.JSONDecodeError as error:
         raise CoordinationError(
-            "GitHub did not return exactly one created pull-request URL"
+            "existing draft recovery returned invalid metadata"
+        ) from error
+
+    if not isinstance(candidates, list) or len(candidates) != 1:
+        raise CoordinationError(
+            "ambiguous publication requires exactly one existing open draft"
         )
 
-    url = urls[0]
+    candidate = candidates[0]
+    if (
+        not isinstance(candidate, dict)
+        or candidate.get("isDraft") is not True
+        or candidate.get("baseRefName") != arguments.base
+        or candidate.get("headRefName") != arguments.head
+        or not isinstance(candidate.get("url"), str)
+    ):
+        raise CoordinationError(
+            "existing draft does not match the reserved base/head target"
+        )
+
+    return verify_publication(
+        arguments, reservation, candidate["url"], created_here=False
+    )
+
+
+def verify_publication(
+    arguments: argparse.Namespace,
+    reservation: dict[str, Any],
+    url: str,
+    *,
+    created_here: bool,
+) -> dict[str, Any]:
     try:
         metadata = json.loads(
-            run_gh(arguments.gh, "pr", "view", url, "--json", "labels")
+            run_gh(
+                arguments.gh,
+                "pr",
+                "view",
+                url,
+                "--json",
+                "labels,isDraft,baseRefName,headRefName",
+            )
         )
         labels = {label["name"] for label in metadata["labels"]}
     except (CoordinationError, json.JSONDecodeError, KeyError, TypeError) as error:
-        run_gh(arguments.gh, "pr", "close", url)
+        if created_here:
+            run_gh(arguments.gh, "pr", "close", url)
         raise CoordinationError(
             "created maintenance pull request could not be verified"
         ) from error
+
+    if (
+        metadata.get("isDraft") is not True
+        or metadata.get("baseRefName") != arguments.base
+        or metadata.get("headRefName") != arguments.head
+    ):
+        if created_here:
+            run_gh(arguments.gh, "pr", "close", url)
+        raise CoordinationError(
+            "existing draft does not match the reserved base/head target"
+        )
+
     if LABEL not in labels:
-        run_gh(arguments.gh, "pr", "close", url)
+        if created_here:
+            run_gh(arguments.gh, "pr", "close", url)
         raise CoordinationError(
             "created maintenance pull request was missing its required label"
         )
 
     reservation["pr_url"] = url
+    reservation.pop("publication_attempt", None)
     reservation["updated_at"] = time.time()
     return reservation
 
