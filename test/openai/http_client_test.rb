@@ -25,6 +25,8 @@ class HTTPClientTest < Minitest::Test
       :max_retries,
       :open_timeout,
       :read_timeout,
+      :use_ssl,
+      :verify_mode,
       :write_timeout
     )
 
@@ -688,6 +690,165 @@ class HTTPClientTest < Minitest::Test
 
     assert_same(configuration_error, raised)
     assert_predicate(connection, :finished?)
+  end
+
+  def test_net_http_client_closes_a_connection_started_by_a_failing_validator
+    connection = StubNetHTTP.new(use_ssl: true)
+    replacement = StubNetHTTP.new(use_ssl: true)
+    available = [connection, replacement]
+    validation_error = StandardError.new("connection validation failed")
+    client_class = Class.new(OpenAI::NetHTTPClient) do
+      define_method(:connect) { |**| available.shift }
+      private(:connect)
+    end
+
+    http_client = client_class.new
+    request = OpenAI::HTTPClient::Request.new(
+      method: :get,
+      url: URI("https://example.com/v1/probe"),
+      headers: {"authorization" => "Bearer fake-sensitive-token"},
+      body: nil,
+      timeout: 1
+    )
+
+    raised = assert_raises(StandardError) do
+      http_client.execute(request) do |http|
+        assert_same(connection, http)
+        http.start
+        raise validation_error
+      end
+    end
+
+    assert_same(validation_error, raised)
+    assert_predicate(connection, :finished?)
+    refute_predicate(connection, :started?)
+    refute_includes(raised.full_message(highlight: false), "fake-sensitive-token")
+
+    follow_up_error = StandardError.new("follow-up validation failed")
+    raised = assert_raises(StandardError) do
+      http_client.execute(request) do |http|
+        assert_same(replacement, http)
+        refute_predicate(http, :started?)
+        raise follow_up_error
+      end
+    end
+
+    assert_same(follow_up_error, raised)
+  ensure
+    http_client&.close
+  end
+
+  def test_net_http_client_discards_an_existing_connection_when_validation_fails
+    connections = []
+    validation_error = StandardError.new("connection validation failed")
+    client_class = Class.new(OpenAI::NetHTTPClient) do
+      define_method(:connect) { |**| StubNetHTTP.new(use_ssl: true).tap { connections << _1 } }
+      private(:connect)
+    end
+
+    http_client = client_class.new
+    request = OpenAI::HTTPClient::Request.new(
+      method: :get,
+      url: URI("https://example.com/v1/probe"),
+      headers: {},
+      body: nil,
+      timeout: 1
+    )
+    connection = checkout_connection(http_client, request.url)
+
+    raised = assert_raises(StandardError) do
+      http_client.execute(request) do |http|
+        assert_same(connection, http)
+        raise validation_error
+      end
+    end
+
+    assert_same(validation_error, raised)
+    refute_predicate(connection, :started?)
+    assert_predicate(connection, :finished?)
+    replacement = checkout_connection(http_client, request.url)
+    refute_same(connection, replacement)
+    assert_equal(2, connections.length)
+  ensure
+    http_client&.close
+  end
+
+  def test_net_http_client_discards_tls_settings_after_a_failing_validator
+    connections = []
+    validation_error = StandardError.new("connection validation failed")
+    client_class = Class.new(OpenAI::NetHTTPClient) do
+      define_method(:connect) do |**|
+        StubNetHTTP.new(use_ssl: true, request_error: IOError.new("safe network probe")).tap do |connection|
+          connection.verify_mode = OpenSSL::SSL::VERIFY_PEER
+          connections << connection
+        end
+      end
+
+      private(:connect)
+    end
+
+    http_client = client_class.new
+    request = OpenAI::HTTPClient::Request.new(
+      method: :get,
+      url: URI("https://example.com/v1/probe"),
+      headers: {"authorization" => "Bearer fake-sensitive-token"},
+      body: nil,
+      timeout: 1
+    )
+
+    raised = assert_raises(StandardError) do
+      http_client.execute(request) do |connection|
+        connection.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        raise validation_error
+      end
+    end
+
+    assert_same(validation_error, raised)
+    assert_equal(OpenSSL::SSL::VERIFY_NONE, connections.fetch(0).verify_mode)
+    assert_raises(OpenAI::Errors::APIConnectionError) { http_client.execute(request) }
+    assert_equal(2, connections.length)
+    assert_equal(OpenSSL::SSL::VERIFY_PEER, connections.fetch(1).verify_mode)
+    refute_same(connections.fetch(0), connections.fetch(1))
+  ensure
+    http_client&.close
+  end
+
+  def test_net_http_client_discards_tls_settings_after_an_invalid_returning_validator
+    connections = []
+    client_class = Class.new(OpenAI::NetHTTPClient) do
+      define_method(:connect) do |**|
+        StubNetHTTP.new(use_ssl: true, request_error: IOError.new("safe network probe")).tap do |connection|
+          connection.verify_mode = OpenSSL::SSL::VERIFY_PEER
+          connections << connection
+        end
+      end
+
+      private(:connect)
+    end
+
+    http_client = client_class.new
+    request = OpenAI::HTTPClient::Request.new(
+      method: :get,
+      url: URI("https://example.com/v1/probe"),
+      headers: {"authorization" => "Bearer fake-sensitive-token"},
+      body: nil,
+      timeout: 1
+    )
+
+    error = assert_raises(ArgumentError) do
+      http_client.execute(request) do |connection|
+        connection.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        connection.use_ssl = false
+      end
+    end
+
+    assert_match(/preserve TLS/, error.message)
+    assert_raises(OpenAI::Errors::APIConnectionError) { http_client.execute(request) }
+    assert_equal(2, connections.length)
+    assert_equal(OpenSSL::SSL::VERIFY_PEER, connections.fetch(1).verify_mode)
+    assert_predicate(connections.fetch(1), :use_ssl?)
+  ensure
+    http_client&.close
   end
 
   def test_net_http_client_wraps_malformed_responses_as_connection_errors
