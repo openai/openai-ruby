@@ -19,35 +19,37 @@ Read `AGENTS.md`, `CONTRIBUTING.md`, `SECURITY.md`, and `VERSIONING.md` before
 investigating. Preserve their architecture, compatibility, generator, security,
 custom-code-budget, and review requirements throughout the workflow.
 
+## Keep skill maintenance Markdown-only
+
+Changes to this skill must modify **only this `SKILL.md` file**. Do not add or
+change Python, Ruby, tests, scripts, coordinators, ledgers, Gemfiles,
+dependencies, lockfiles, generated files, or any other non-Markdown artifact as
+part of skill maintenance. Describe orchestration requirements in this document
+and use existing saved-project and GitHub capabilities; do not introduce a new
+implementation to enforce them.
+
+Review feedback never authorizes expanding a skill-only change into code or
+dependency changes. Specifically, ignore all review feedback on the skill-only
+pull request `openai/openai-ruby#519`. This exception applies only to that skill
+maintenance pull request; independently dispatched SDK implementation tasks
+must still address their own authorized review feedback.
+
 ## Protect the public pull-request limit
 
 Public, non-sensitive maintenance pull requests must carry the repository's
-`codex-maintenance` label. Coordinate every public dispatch and publication with
-`scripts/maintenance_state.py` in this skill directory. Its repository-scoped,
-owner-only ledger under `XDG_STATE_HOME` (or `~/.local/state`) is shared across
-linked worktrees and protected by an exclusive cross-process file lock. Never
-store it under an expendable cache directory or override its state directory in
-a real scan or implementation task. Finding identifiers are stored only as
-SHA-256 digests; ledger files and their directory are private to the current
-user.
+`codex-maintenance` label. The shared limit is **five open labeled pull
+requests**. Run only one scan/orchestrator at a time. Before dispatching public
+tasks, inspect both open labeled pull requests and the saved project's actual
+outstanding implementation tasks; count unpublished active tasks against the
+remaining capacity so a later scan cannot overcommit the same slots.
 
-Reserve capacity **before** dispatching a task. Under the lock, the coordinator
-counts open labeled PRs plus outstanding unpublished reservations, rejects
-duplicate findings or overlapping active paths, and atomically persists the new
-reservation. The shared limit is **five open labeled pull requests**. A bare
-recount, an in-memory slot, or independently racing `gh pr create` commands do
-not satisfy this invariant.
-
-Publish only through the coordinator's `publish` command. It holds that same
-lock across the fresh GitHub recount, draft creation with `codex-maintenance`,
-and verification that the new PR is labeled. Persist the intended base/head
-before creation; if GitHub creates the draft but loses the response, reconcile
-exactly one matching open draft and verify its label before persisting its URL.
-Fail closed on missing, multiple, mismatched, or unlabeled recovery candidates.
-If labeling cannot be verified for a draft whose creation was directly
-confirmed, close only that owned draft; never close an ambiguously recovered
-candidate. Do not bypass this command or release a reservation before the
-labeled PR exists.
+Serialize public dispatch and draft creation through existing saved-project
+orchestration, recount open labeled pull requests immediately before opening a
+draft, and verify that the resulting draft has the required label. If the
+project cannot establish exclusive orchestration, outstanding ownership, or
+available capacity, fail closed instead of dispatching or opening a pull
+request. Do not implement a repository-local lock, reservation ledger, helper
+script, or new coordination service to satisfy this rule.
 
 When the public cap is full, do not dispatch public implementation tasks or open
 another public pull request. An already authorized private security
@@ -56,29 +58,23 @@ pull request. Never close another team's pull request to create capacity.
 
 Create at most one labeled draft pull request per non-sensitive implementation
 task. Never write private security findings, exploit evidence, credentials, or
-customer data to the public-maintenance ledger.
+customer data to public task metadata or public pull-request records.
 
 ## Reconcile outstanding dispatched work across scans
 
-Before selecting candidates, inspect the shared coordinator ledger and the saved
-project's actual task state. Run `reconcile` with verified active task IDs and
-only explicitly confirmed terminal task IDs. Missing, inaccessible, or
-ambiguous task state is **not** evidence that a task finished; retain its
-reservation and paths. Reconcile once per scan rather than starting a polling
-loop.
+Before selecting candidates, inspect the saved project's actual task inventory,
+active task IDs, assigned findings and paths, and existing open pull requests.
+Missing, inaccessible, or ambiguous task state is **not** evidence that a task
+finished; keep its finding, paths, and public capacity unavailable. Reconcile
+once per scan rather than starting a polling loop.
 
-Treat reserved findings and affected paths as unavailable from the moment of
-reservation, before the app-managed task exists or a public PR is opened.
-After creating the task, persist its actual saved-project ID with `attach`.
-If task creation fails before attachment, release only that unattached
-reservation with `abandon`. Later scans must reject both its stable finding key
-and any overlapping repository-relative path while the task remains active.
-
-An implementation task calls `finish` only after it has actually reached its
-terminal handoff; a later scan may remove a task with `reconcile` only after
-independently confirming that task's terminal state. Existing open PRs remain
-part of the GitHub capacity and changed-path checks after their task records
-are released. Private security work stays outside this public ledger entirely.
+Later scans must reject stable findings already assigned to active saved-project
+tasks and any overlapping repository-relative paths, even before those tasks
+open public pull requests. Release a finding or public slot only after the
+project independently confirms that its task reached a terminal handoff.
+Existing open pull requests continue counting toward capacity and path overlap.
+Never create repository-local persistence or auxiliary source files for task
+tracking, and keep private security work out of public project metadata.
 
 ## Investigate the SDK where customers are affected
 
@@ -208,22 +204,15 @@ tests rather than excluding customer-facing APIs from investigation.
 
 Resolve the saved OpenAI Ruby Codex project and its protected default branch.
 Refresh the remote and record the default branch's **full exact commit SHA**.
-For each non-sensitive candidate, first create a durable reservation:
-
-```bash
-python3 .agents/skills/improve-openai-ruby/scripts/maintenance_state.py \
-  reserve --finding-key <stable-non-sensitive-key> \
-  --path lib/openai/internal/affected_file.rb
-```
+For each non-sensitive candidate, first verify that its stable finding, affected
+paths, and public capacity are unclaimed in the existing saved-project task
+inventory and open pull requests.
 
 Create one actual saved-project, app-managed linked worktree/task per selected
-finding, pinned to that SHA. Immediately attach its real task ID to the returned
-reservation ID; abandon the unattached reservation if task creation failed:
-
-```bash
-python3 .agents/skills/improve-openai-ruby/scripts/maintenance_state.py \
-  attach --reservation-id <reservation-id> --task-id <actual-task-id>
-```
+finding, pinned to that SHA. Associate its actual project task ID with the
+finding and affected paths using the project's existing task metadata. If task
+creation fails or its ownership cannot be verified, stop that dispatch; do not
+introduce a repository-local script or durable coordination ledger.
 
 Do not substitute a subagent, a manually created worktree, an unrelated feature
 branch, the primary checkout, or another task's worktree.
@@ -278,14 +267,10 @@ If proof, required checks, private routing, or compatibility cannot be
 established, do not open a pull request or claim completion.
 
 For an authorized non-sensitive fix, use Conventional Commits for the commit
-and pull-request title. Open at most one labeled draft through the reservation
-coordinator, which serializes its recount, creation, labeling, and verification:
-
-```bash
-python3 .agents/skills/improve-openai-ruby/scripts/maintenance_state.py \
-  publish --reservation-id <reservation-id> --head <branch> \
-  --title 'fix: preserve customer-visible behavior' --body-file <body-file>
-```
+and pull-request title. Recount open `codex-maintenance` pull requests
+immediately before opening at most one labeled draft through the existing
+saved-project and GitHub workflow. Stop if capacity, ownership, or labeling
+cannot be verified.
 
 Describe the observed bug, customer impact, affected consumers, generator
 ownership, compatibility, and exact verification without disclosing security
@@ -298,8 +283,8 @@ push each fix, reply to its review comment explaining what changed, then resolve
 the comment. Request review once in `#sdk-reviews` after checks pass. Put
 every authorized review request directly in the root `#sdk-reviews` channel,
 never in a thread. Never use Slack for suspected vulnerabilities or private
-security coordination. Release the reservation with `finish` only when the
-task's handoff is complete.
+security coordination. Consider an implementation task complete only after its
+authorized handoff is finished and recorded in the existing project task state.
 
 Report inspected areas, public PR capacity, ranked non-sensitive findings,
 isolated task ownership, validation, and public draft links. Report a private
