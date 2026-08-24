@@ -175,22 +175,31 @@ module OpenAI
     #
 
     # @api private
-    private def prepare_request(request, redirect_count:, retry_count:)
-      if @workload_identity_auth && @requester.instance_of?(OpenAI::Auth::X509Transport)
-        canonical_headers = @requester.validate_api_request!(
-          url: request.fetch(:url),
-          headers: request.fetch(:headers)
-        )
-        authorization = canonical_headers["authorization"]
-        expected = "Bearer #{WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
-        admin_authorization = @admin_api_key && "Bearer #{@admin_api_key}"
-        unless authorization == expected || (admin_authorization && authorization == admin_authorization)
-          raise OpenAI::Errors::Error, "X.509 requests cannot override the selected authorization credential"
-        end
-
-        request = request.merge(headers: canonical_headers)
+    private def build_request(request, options)
+      unless @workload_identity_auth && @requester.instance_of?(OpenAI::Auth::X509Transport)
+        return super
       end
 
+      selected = request.fetch(:security, {bearer_auth: true, admin_api_key_auth: true})
+      security = {
+        bearer_auth: selected[:bearer_auth] == true,
+        admin_api_key_auth: selected[:admin_api_key_auth] == true
+      }.freeze
+      expected = auth_headers(security: security)["authorization"]
+      built = super(request.merge(security: security), options)
+      canonical_headers = @requester.validate_api_request!(
+        url: built.fetch(:url),
+        headers: built.fetch(:headers)
+      )
+      unless expected == canonical_headers["authorization"]
+        raise OpenAI::Errors::Error, "X.509 requests cannot override the selected authorization credential"
+      end
+
+      built.merge(headers: canonical_headers)
+    end
+
+    # @api private
+    private def prepare_request(request, redirect_count:, retry_count:)
       request = prepare_workload_identity_request(request) if workload_identity_request?(request)
       preparer = @provider_runtime&.prepare_request
       return super(request, redirect_count: redirect_count, retry_count: retry_count) unless preparer
@@ -198,11 +207,61 @@ module OpenAI
     end
 
     # @api private
+    private def validate_prepared_request(request, original_request:)
+      prepared_request = super
+      return prepared_request unless @workload_identity_auth && @requester.instance_of?(OpenAI::Auth::X509Transport)
+
+      canonical_headers = @requester.validate_api_request!(
+        url: prepared_request.fetch(:url),
+        headers: prepared_request.fetch(:headers)
+      )
+      expected = if (context = original_request[:x509_request_context])
+        "Bearer #{context.fetch(:token)}"
+      else
+        original_request.fetch(:headers)["authorization"]
+      end
+
+      unless canonical_headers["authorization"] == expected
+        raise OpenAI::Errors::Error, "X.509 requests cannot override the selected authorization credential"
+      end
+
+      prepared_request.merge(headers: canonical_headers)
+    end
+
+    # @api private
     private def send_request(request, redirect_count:, retry_count:, send_retry_header:)
+      if @workload_identity_auth && @requester.instance_of?(OpenAI::Auth::X509Transport)
+        canonical_headers = @requester.validate_api_request!(
+          url: request.fetch(:url),
+          headers: request.fetch(:headers)
+        )
+        request = request.merge(headers: canonical_headers)
+        authorization = canonical_headers["authorization"]
+        expected = "Bearer #{WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
+        admin_authorization = @admin_api_key && "Bearer #{@admin_api_key}"
+        unless authorization.nil? || authorization == expected || authorization == admin_authorization
+          raise OpenAI::Errors::Error, "X.509 requests cannot override the selected authorization credential"
+        end
+      end
+
       return super unless workload_identity_request?(request)
 
-      deadline = request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
+      x509_request = @requester.instance_of?(OpenAI::Auth::X509Transport)
+      previous_context = request[:x509_request_context]
+      deadline = if x509_request
+        previous_context&.fetch(:deadline) ||
+          request[:workload_identity_deadline] ||
+          request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
+      else
+        request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
+      end
+
       request = request.merge(workload_identity_deadline: deadline)
+      if x509_request
+        replay_state = previous_context&.fetch(:replay_state) || []
+        context = {deadline: deadline, replay_state: replay_state, token: nil}
+        request = request.merge(x509_request_context: context)
+      end
 
       begin
         super(
@@ -212,15 +271,31 @@ module OpenAI
           send_retry_header: send_retry_header
         )
       rescue OpenAI::Errors::AuthenticationError
-        raise unless retry_count.zero? && request_replayable?(request)
-        @workload_identity_auth.invalidate_token
+        @workload_identity_auth.invalidate_token(context.fetch(:token)) if x509_request
+        replay_allowed = retry_count.zero? && request_replayable?(request)
+        replay_allowed &&= replay_state.empty? if x509_request
+        raise unless replay_allowed
 
-        super(
-          request,
-          redirect_count: redirect_count,
-          retry_count: retry_count + 1,
-          send_retry_header: send_retry_header
-        )
+        if x509_request
+          replay_state << true
+          replay_state.freeze
+          context = {deadline: deadline, replay_state: replay_state, token: nil}
+          request = request.merge(x509_request_context: context)
+        else
+          @workload_identity_auth.invalidate_token
+        end
+
+        begin
+          super(
+            request,
+            redirect_count: redirect_count,
+            retry_count: retry_count + 1,
+            send_retry_header: send_retry_header
+          )
+        rescue OpenAI::Errors::AuthenticationError
+          @workload_identity_auth.invalidate_token(context.fetch(:token)) if x509_request
+          raise
+        end
       end
     end
 
@@ -234,9 +309,14 @@ module OpenAI
     private def prepare_workload_identity_request(request)
       deadline = request[:workload_identity_deadline]
       token = @workload_identity_auth.get_token(deadline: deadline)
+      if (context = request[:x509_request_context])
+        context[:token] = token.dup.freeze
+        context.freeze
+      end
+
       updated_headers = request[:headers].merge("authorization" => "Bearer #{token}")
       request_with_remaining_timeout(
-        request.except(:workload_identity_deadline).merge(headers: updated_headers),
+        request.except(:workload_identity_deadline, :x509_request_context).merge(headers: updated_headers),
         deadline
       )
     rescue Timeout::Error => e

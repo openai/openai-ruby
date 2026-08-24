@@ -148,6 +148,18 @@ module OpenAI
     private def prepare_request(request, redirect_count:, retry_count:)
     end
 
+    # @api private
+    sig do
+      override
+        .params(
+          request: OpenAI::Internal::Transport::BaseClient::RequestInput,
+          original_request: OpenAI::Internal::Transport::BaseClient::RequestInput
+        )
+        .returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
+    end
+    private def validate_prepared_request(request, original_request:)
+    end
+
     # Returns a new client with the supplied options overridden.
     sig do
       params(
