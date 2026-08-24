@@ -1,5 +1,12 @@
 # Contributor instructions
 
+## Commit conventions
+
+- Use the `examples:` Conventional Commit prefix for changes whose primary
+  purpose is updating or fixing examples, including their dedicated tests. Apply
+  the same prefix to pull request titles; do not use `fix:` or `fix(examples):`
+  for these changes.
+
 ## Ruby implementation guidelines
 
 - Prefer direct method calls over Ruby reflection (`send`, `__send__`, or `public_send`) for internal SDK plumbing. When an internal method must be callable across components without becoming supported public API, keep the method public for direct dispatch and mark it `@api private`. Keep its RBI and RBS declarations at the same visibility.
@@ -45,3 +52,21 @@ The checker and effective budget come from main, not the PR. Keep default CODEOW
   [CONTRIBUTING.md](CONTRIBUTING.md).
 - Report suspected vulnerabilities privately as described in
   [SECURITY.md](SECURITY.md), never in public issues or pull requests.
+
+## Large-payload compatibility
+
+Treat large payloads as a normal API contract, not evidence of malformed or
+hostile input. Responses, Chat Completions, and other APIs can legitimately
+return large `application/json` bodies and SSE streaming events. Do not introduce
+arbitrary fixed limits on HTTP bodies, events, or lines as a security or efficiency
+fix. Prefer incremental processing, amortized-linear buffering, timely cleanup,
+and caller cancellation. Any new
+rejection limit needs an explicit, owner-approved API contract and a review of
+existing supported payloads and transports.
+
+Protect this behavior with focused, deterministic public-entrypoint tests using
+large synthetic payloads generated in memory, not committed captures or live
+image generation. Their high memory use is intentional: do not shrink the
+payloads or raise client limits to make the tests pass. Keep coverage to the main
+HTTP JSON and streaming categories, and run large cases sequentially to keep peak
+memory reasonable. The fixture size is a regression probe, not a new API maximum.
