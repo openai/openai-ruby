@@ -47,13 +47,15 @@ module OpenAI
           # Create a new project in the organization. Projects can be created and archived,
           # but cannot be deleted.
           #
-          # @overload create(name:, external_key_id: nil, geography: nil, request_options: {})
+          # @overload create(name:, external_key_id: nil, geography: nil, residency: nil, request_options: {})
           #
           # @param name [String] The friendly name of the project, this name appears in reports.
           #
           # @param external_key_id [String, nil] External key ID to associate with the project.
           #
           # @param geography [String, nil] Create the project with the specified data residency region. Your organization m
+          #
+          # @param residency [Symbol, OpenAI::Models::Admin::Organization::ProjectCreateParams::Residency, nil] Create the project with the specified residency configuration. Your organization
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -93,6 +95,9 @@ module OpenAI
             )
           end
 
+          # Some parameter documentations has been truncated, see
+          # {OpenAI::Models::Admin::Organization::ProjectUpdateParams} for more details.
+          #
           # Modifies a project in the organization.
           #
           # @overload update(project_id, external_key_id: nil, geography: nil, name: nil, request_options: {})

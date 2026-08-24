@@ -40,6 +40,13 @@ module OpenAI
           sig { returns(T.nilable(String)) }
           attr_accessor :name
 
+          # The residency configuration for the project.
+          sig { returns(T.nilable(OpenAI::Admin::Organization::Project::Residency::TaggedSymbol)) }
+          attr_reader :residency
+
+          sig { params(residency: OpenAI::Admin::Organization::Project::Residency::OrSymbol).void }
+          attr_writer :residency
+
           # `active` or `archived`
           sig { returns(T.nilable(String)) }
           attr_accessor :status
@@ -57,6 +64,8 @@ module OpenAI
               external_key_id: T.nilable(String),
 
               name: T.nilable(String),
+
+              residency: OpenAI::Admin::Organization::Project::Residency::OrSymbol,
 
               status: T.nilable(String),
 
@@ -81,6 +90,9 @@ module OpenAI
             # The name of the project. This appears in reporting.
             name: nil,
 
+            # The residency configuration for the project.
+            residency: nil,
+
             # `active` or `archived`
             status: nil,
 
@@ -99,11 +111,46 @@ module OpenAI
                 archived_at: T.nilable(Integer),
                 external_key_id: T.nilable(String),
                 name: T.nilable(String),
+                residency: OpenAI::Admin::Organization::Project::Residency::TaggedSymbol,
                 status: T.nilable(String)
               }
             )
           end
           def to_hash
+          end
+
+          # The residency configuration for the project.
+          module Residency
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Admin::Organization::Project::Residency) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            GLOBAL = T.let(:GLOBAL, OpenAI::Admin::Organization::Project::Residency::TaggedSymbol)
+            US_STORAGE_PROCESSING = T.let(
+              :US_STORAGE_PROCESSING,
+              OpenAI::Admin::Organization::Project::Residency::TaggedSymbol
+            )
+            EU_STORAGE_PROCESSING = T.let(
+              :EU_STORAGE_PROCESSING,
+              OpenAI::Admin::Organization::Project::Residency::TaggedSymbol
+            )
+            JP_STORAGE = T.let(:JP_STORAGE, OpenAI::Admin::Organization::Project::Residency::TaggedSymbol)
+            KR_STORAGE = T.let(:KR_STORAGE, OpenAI::Admin::Organization::Project::Residency::TaggedSymbol)
+            CA_STORAGE = T.let(:CA_STORAGE, OpenAI::Admin::Organization::Project::Residency::TaggedSymbol)
+            SG_STORAGE = T.let(:SG_STORAGE, OpenAI::Admin::Organization::Project::Residency::TaggedSymbol)
+            IN_STORAGE = T.let(:IN_STORAGE, OpenAI::Admin::Organization::Project::Residency::TaggedSymbol)
+            AU_STORAGE = T.let(:AU_STORAGE, OpenAI::Admin::Organization::Project::Residency::TaggedSymbol)
+            GB_STORAGE = T.let(:GB_STORAGE, OpenAI::Admin::Organization::Project::Residency::TaggedSymbol)
+            AE_STORAGE = T.let(:AE_STORAGE, OpenAI::Admin::Organization::Project::Residency::TaggedSymbol)
+            AE_STORAGE_PROCESSING = T.let(
+              :AE_STORAGE_PROCESSING,
+              OpenAI::Admin::Organization::Project::Residency::TaggedSymbol
+            )
+
+            sig { override.returns(T::Array[OpenAI::Admin::Organization::Project::Residency::TaggedSymbol]) }
+            def self.values
+            end
           end
 
         end

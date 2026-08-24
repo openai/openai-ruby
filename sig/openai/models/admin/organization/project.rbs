@@ -10,6 +10,7 @@ module OpenAI
             archived_at: Integer?,
             external_key_id: String?,
             name: String?,
+            residency: OpenAI::Models::Admin::Organization::Project::residency,
             status: String?
           }
 
@@ -26,6 +27,12 @@ module OpenAI
 
           attr_accessor name: String?
 
+          attr_reader residency: OpenAI::Models::Admin::Organization::Project::residency?
+
+          def residency=: (
+            OpenAI::Models::Admin::Organization::Project::residency
+          ) -> OpenAI::Models::Admin::Organization::Project::residency
+
           attr_accessor status: String?
 
           def initialize: (
@@ -34,6 +41,7 @@ module OpenAI
             ?archived_at: Integer?,
             ?external_key_id: String?,
             ?name: String?,
+            ?residency: OpenAI::Models::Admin::Organization::Project::residency,
             ?status: String?,
             ?object: :"organization.project"
           ) -> void
@@ -45,8 +53,42 @@ module OpenAI
             archived_at: Integer?,
             external_key_id: String?,
             name: String?,
+            residency: OpenAI::Models::Admin::Organization::Project::residency,
             status: String?
           }
+
+          type residency =
+            :GLOBAL
+            | :US_STORAGE_PROCESSING
+            | :EU_STORAGE_PROCESSING
+            | :JP_STORAGE
+            | :KR_STORAGE
+            | :CA_STORAGE
+            | :SG_STORAGE
+            | :IN_STORAGE
+            | :AU_STORAGE
+            | :GB_STORAGE
+            | :AE_STORAGE
+            | :AE_STORAGE_PROCESSING
+
+          module Residency
+            extend OpenAI::Internal::Type::Enum
+
+            GLOBAL: :GLOBAL
+            US_STORAGE_PROCESSING: :US_STORAGE_PROCESSING
+            EU_STORAGE_PROCESSING: :EU_STORAGE_PROCESSING
+            JP_STORAGE: :JP_STORAGE
+            KR_STORAGE: :KR_STORAGE
+            CA_STORAGE: :CA_STORAGE
+            SG_STORAGE: :SG_STORAGE
+            IN_STORAGE: :IN_STORAGE
+            AU_STORAGE: :AU_STORAGE
+            GB_STORAGE: :GB_STORAGE
+            AE_STORAGE: :AE_STORAGE
+            AE_STORAGE_PROCESSING: :AE_STORAGE_PROCESSING
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Project::residency]
+          end
         end
       end
     end

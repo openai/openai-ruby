@@ -31,6 +31,7 @@ module OpenAI
             name: String,
             ?external_key_id: String?,
             ?geography: String?,
+            ?residency: OpenAI::Models::Admin::Organization::ProjectCreateParams::residency?,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Admin::Organization::Project
 

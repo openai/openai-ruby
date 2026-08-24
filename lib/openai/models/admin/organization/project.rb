@@ -42,13 +42,19 @@ module OpenAI
           #   @return [String, nil]
           optional :name, String, nil?: true
 
+          # @!attribute residency
+          #   The residency configuration for the project.
+          #
+          #   @return [Symbol, OpenAI::Models::Admin::Organization::Project::Residency, nil]
+          optional :residency, enum: -> { OpenAI::Admin::Organization::Project::Residency }
+
           # @!attribute status
           #   `active` or `archived`
           #
           #   @return [String, nil]
           optional :status, String, nil?: true
 
-          # @!method initialize(id:, created_at:, archived_at: nil, external_key_id: nil, name: nil, status: nil, object: :"organization.project")
+          # @!method initialize(id:, created_at:, archived_at: nil, external_key_id: nil, name: nil, residency: nil, status: nil, object: :"organization.project")
           #   Represents an individual project.
           #
           #   @param id [String] The identifier, which can be referenced in API endpoints
@@ -61,9 +67,34 @@ module OpenAI
           #
           #   @param name [String, nil] The name of the project. This appears in reporting.
           #
+          #   @param residency [Symbol, OpenAI::Models::Admin::Organization::Project::Residency] The residency configuration for the project.
+          #
           #   @param status [String, nil] `active` or `archived`
           #
           #   @param object [Symbol, :"organization.project"] The object type, which is always `organization.project`
+
+          # The residency configuration for the project.
+          #
+          # @see OpenAI::Models::Admin::Organization::Project#residency
+          module Residency
+            extend OpenAI::Internal::Type::Enum
+
+            GLOBAL = :GLOBAL
+            US_STORAGE_PROCESSING = :US_STORAGE_PROCESSING
+            EU_STORAGE_PROCESSING = :EU_STORAGE_PROCESSING
+            JP_STORAGE = :JP_STORAGE
+            KR_STORAGE = :KR_STORAGE
+            CA_STORAGE = :CA_STORAGE
+            SG_STORAGE = :SG_STORAGE
+            IN_STORAGE = :IN_STORAGE
+            AU_STORAGE = :AU_STORAGE
+            GB_STORAGE = :GB_STORAGE
+            AE_STORAGE = :AE_STORAGE
+            AE_STORAGE_PROCESSING = :AE_STORAGE_PROCESSING
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
         end
       end
     end

@@ -18,6 +18,7 @@ class OpenAI::Test::Resources::Admin::Organization::ProjectsTest < OpenAI::Test:
           archived_at: Integer | nil,
           external_key_id: String | nil,
           name: String | nil,
+          residency: OpenAI::Admin::Organization::Project::Residency | nil,
           status: String | nil
         }
     end
@@ -38,6 +39,7 @@ class OpenAI::Test::Resources::Admin::Organization::ProjectsTest < OpenAI::Test:
           archived_at: Integer | nil,
           external_key_id: String | nil,
           name: String | nil,
+          residency: OpenAI::Admin::Organization::Project::Residency | nil,
           status: String | nil
         }
     end
@@ -58,6 +60,7 @@ class OpenAI::Test::Resources::Admin::Organization::ProjectsTest < OpenAI::Test:
           archived_at: Integer | nil,
           external_key_id: String | nil,
           name: String | nil,
+          residency: OpenAI::Admin::Organization::Project::Residency | nil,
           status: String | nil
         }
     end
@@ -85,6 +88,7 @@ class OpenAI::Test::Resources::Admin::Organization::ProjectsTest < OpenAI::Test:
           archived_at: Integer | nil,
           external_key_id: String | nil,
           name: String | nil,
+          residency: OpenAI::Admin::Organization::Project::Residency | nil,
           status: String | nil
         }
     end
@@ -105,6 +109,7 @@ class OpenAI::Test::Resources::Admin::Organization::ProjectsTest < OpenAI::Test:
           archived_at: Integer | nil,
           external_key_id: String | nil,
           name: String | nil,
+          residency: OpenAI::Admin::Organization::Project::Residency | nil,
           status: String | nil
         }
     end
