@@ -176,6 +176,21 @@ module OpenAI
 
     # @api private
     private def prepare_request(request, redirect_count:, retry_count:)
+      if @workload_identity_auth && @requester.instance_of?(OpenAI::Auth::X509Transport)
+        canonical_headers = @requester.validate_api_request!(
+          url: request.fetch(:url),
+          headers: request.fetch(:headers)
+        )
+        authorization = canonical_headers["authorization"]
+        expected = "Bearer #{WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER}"
+        admin_authorization = @admin_api_key && "Bearer #{@admin_api_key}"
+        unless authorization == expected || (admin_authorization && authorization == admin_authorization)
+          raise OpenAI::Errors::Error, "X.509 requests cannot override the selected authorization credential"
+        end
+
+        request = request.merge(headers: canonical_headers)
+      end
+
       request = prepare_workload_identity_request(request) if workload_identity_request?(request)
       preparer = @provider_runtime&.prepare_request
       return super(request, redirect_count: redirect_count, retry_count: retry_count) unless preparer
@@ -252,7 +267,27 @@ module OpenAI
     # @param overrides [Hash{Symbol=>Object}] Options accepted by {#initialize}.
     # @return [self]
     def with_options(**overrides)
-      self.class.new(**OpenAI::Internal::ClientOptions.copy(@copy_options, overrides))
+      previous_transport = @copy_options.fetch(:http_client)
+      transport = overrides.fetch(:http_client, previous_transport)
+      if overrides[:data_residency] && transport.instance_of?(OpenAI::Auth::X509Transport)
+        residency = overrides.fetch(:data_residency)
+        options = OpenAI::Internal::ClientOptions.copy(@copy_options, overrides.except(:data_residency))
+        options.delete(:base_url) unless overrides.key?(:base_url)
+        return self.class.new(**options, data_residency: residency)
+      end
+
+      options = OpenAI::Internal::ClientOptions.copy(@copy_options, overrides)
+      adopted_identity = options.fetch(:workload_identity).instance_of?(OpenAI::Auth::X509WorkloadIdentity) &&
+        !@copy_options.fetch(:workload_identity).instance_of?(OpenAI::Auth::X509WorkloadIdentity)
+      previous_origin = previous_transport.api_origin if previous_transport.instance_of?(OpenAI::Auth::X509Transport)
+      selected_origin = transport.api_origin if transport.instance_of?(OpenAI::Auth::X509Transport)
+      if (adopted_identity || previous_origin != selected_origin) &&
+          !overrides.key?(:base_url) &&
+          !overrides[:data_residency]
+        options.delete(:base_url)
+      end
+
+      self.class.new(**options)
     end
 
     # Creates and returns a new client for interacting with the API.
@@ -262,7 +297,7 @@ module OpenAI
     #
     # @param admin_api_key [String, nil] Defaults to `ENV["OPENAI_ADMIN_KEY"]`
     #
-    # @param workload_identity [OpenAI::Auth::WorkloadIdentity, nil]
+    # @param workload_identity [OpenAI::Auth::WorkloadIdentity, OpenAI::Auth::X509WorkloadIdentity, nil]
     #   OAuth2 workload identity configuration for token exchange authentication.
     #   Mutually exclusive with `api_key`.
     #
@@ -323,11 +358,29 @@ module OpenAI
       log_level: nil,
       on_retry: nil
     )
+      x509_identity = workload_identity.instance_of?(OpenAI::Auth::X509WorkloadIdentity)
+      if x509_identity && !http_client.instance_of?(OpenAI::Auth::X509Transport)
+        raise ArgumentError, "X.509 workload identity requires an attested X509Transport"
+      end
+
       base_url = OpenAI::Internal::ClientOptions.resolve_data_residency(
         data_residency,
         base_url: base_url,
         provider: provider
       )
+      if http_client.instance_of?(OpenAI::Auth::X509Transport) && !data_residency.nil?
+        regional_origins = {
+          "global" => "https://mtls.api.openai.com",
+          "us" => "https://mtls-us.api.openai.com",
+          "eu" => "https://mtls-eu.api.openai.com"
+        }
+        unless regional_origins[data_residency.to_s] == http_client.api_origin
+          raise ArgumentError, "X.509 data residency must match its attested OpenAI mTLS API origin"
+        end
+
+        base_url = "#{http_client.api_origin}/v1"
+      end
+
       provider_runtime = nil
       unless provider.nil?
         provider_name = OpenAI::Internal::Provider.name(provider)
@@ -370,7 +423,21 @@ module OpenAI
       webhook_secret = nil if webhook_secret.equal?(OpenAI::Internal::OMIT)
       base_url = provider_runtime.base_url if provider_runtime
       base_url = nil if base_url.equal?(OpenAI::Internal::OMIT)
-      base_url ||= "https://api.openai.com/v1"
+      base_url ||= if http_client.instance_of?(OpenAI::Auth::X509Transport)
+        "#{http_client.api_origin}/v1"
+      else
+        "https://api.openai.com/v1"
+      end
+
+      if x509_identity
+        configured_uri = URI(base_url.to_s)
+        unless configured_uri.is_a?(URI::HTTPS) &&
+            configured_uri.userinfo.nil? &&
+            configured_uri.port == URI::HTTPS::DEFAULT_PORT &&
+            OpenAI::Internal::Util.uri_origin(configured_uri).casecmp?(http_client.api_origin)
+          raise ArgumentError, "X.509 workload identity requires its attested OpenAI mTLS API origin"
+        end
+      end
 
       if !api_key.nil? && !workload_identity.nil?
         raise ArgumentError, "`api_key` and `workload_identity` are mutually exclusive"
@@ -411,9 +478,19 @@ module OpenAI
         @workload_identity_auth = nil
       else
         @api_key = WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER
+        token_exchange = if x509_identity
+          OpenAI::Auth::X509TokenExchange.new(workload_identity, transport: http_client)
+        end
+
         @workload_identity_auth = OpenAI::Auth::WorkloadIdentityAuth.new(
           workload_identity,
-          organization&.to_s
+          organization&.to_s,
+          token_exchange_url: if x509_identity
+            "#{OpenAI::Auth::X509Transport::ISSUER_ORIGIN}/oauth/token"
+          else
+            OpenAI::Auth::WorkloadIdentityAuth::DEFAULT_TOKEN_EXCHANGE_URL
+          end,
+          token_exchange: token_exchange
         )
       end
 

@@ -17,11 +17,13 @@ module OpenAI
       def initialize(
         config,
         organization_id,
-        token_exchange_url: DEFAULT_TOKEN_EXCHANGE_URL
+        token_exchange_url: DEFAULT_TOKEN_EXCHANGE_URL,
+        token_exchange: nil
       )
         @config = config
         @organization_id = organization_id
         @token_exchange_url = URI(token_exchange_url)
+        @token_exchange = token_exchange
 
         @cached_token = nil
         @cached_token_expires_at_monotonic = nil
@@ -144,6 +146,8 @@ module OpenAI
       end
 
       private def fetch_token_from_exchange(deadline:)
+        return @token_exchange.fetch(deadline: deadline) unless @token_exchange.nil?
+
         subject_token = @config.provider.get_token
         check_deadline!(deadline)
 
