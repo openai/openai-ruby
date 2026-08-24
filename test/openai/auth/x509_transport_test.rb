@@ -487,6 +487,7 @@ class OpenAI::Test::X509TransportTest < Minitest::Test
     identity = pki.client_identity
     verification_results = []
     configured_client = OpenAI::NetHTTPClient.new(size: 1) do |connection|
+      Harness.configure_http_connect_proxy(connection, proxy.uri)
       connection.cert_store = pki.trust_store
       connection.cert = identity.certificate
       connection.extra_chain_cert = [pki.intermediate_certificate]
@@ -536,6 +537,9 @@ class OpenAI::Test::X509TransportTest < Minitest::Test
       refute_includes(record.headers, "authorization")
     end
 
+  rescue OpenAI::Errors::APIConnectionError => error
+    cause = error.cause
+    raise "Ephemeral mTLS fixture connection failed: #{cause&.class}: #{cause&.message}"
   ensure
     configured_client&.close
     proxy&.close
