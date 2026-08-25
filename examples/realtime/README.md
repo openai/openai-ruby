@@ -10,6 +10,8 @@ This directory contains runnable examples for the Realtime WebSocket surface:
 - `websocket_voice_turn.rb` uploads one raw 24 kHz mono PCM16 turn, explicitly
   commits it, streams the assistant's PCM response to standard output, returns
   its transcript to embedded callers, verifies a completed response, and exits.
+- `sideband.rb` attaches to an existing, application-authorized WebRTC or SIP
+  call, updates its session policy, verifies the typed update event, and exits.
 - `function_calling.rb` forces one local function call, validates and executes
   it, submits a generic `function_call_output` item, and requires completed
   tool and final-text responses.
@@ -126,6 +128,30 @@ Optional environment variables:
 - `OPENAI_REALTIME_PROMPT` — defaults to a generic request to use the server.
 - `OPENAI_REALTIME_TIMEOUT` — overall example deadline in seconds; defaults to
   `60`.
+
+## Control an existing WebRTC or SIP call
+
+Start an application-authorized WebRTC call or obtain the call ID from a
+verified `realtime.call.incoming` webhook, then attach the Ruby control plane:
+
+```sh
+OPENAI_REALTIME_CALL_ID=rtc_example \
+  bundle exec ruby examples/realtime/sideband.rb
+```
+
+The example opens `client.realtime.connect_to_call`, updates the existing
+session instructions, requires a typed `session.updated` event confirming those
+instructions, and exits.
+Diagnostics include only lifecycle metadata, never the call ID, instructions,
+event payloads, or service error details. The existing call remains active when
+the sideband WebSocket closes; its owner must explicitly hang up when needed.
+
+Optional environment variables:
+
+- `OPENAI_REALTIME_INSTRUCTIONS` — server-side session policy; defaults to a
+  concise business-rules instruction.
+- `OPENAI_REALTIME_TIMEOUT` — overall example deadline in seconds; defaults to
+  `30`.
 
 ## Transcribe one committed audio turn
 

@@ -84,6 +84,24 @@ module OpenAI
           sig { params(item_id: String, event_id: T.nilable(String)).void }
           def retrieve(item_id:, event_id: nil)
           end
+
+          sig do
+            params(
+              item_id: String,
+              content_index: Integer,
+              audio_end_ms: Integer,
+              event_id: T.nilable(String)
+            )
+              .void
+          end
+          def truncate(item_id:, content_index:, audio_end_ms:, event_id: nil)
+          end
+        end
+
+        class OutputAudioBuffer < Base
+          sig { params(event_id: T.nilable(String)).void }
+          def clear(event_id: nil)
+          end
         end
       end
     end

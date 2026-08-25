@@ -12,7 +12,8 @@ module OpenAI
             websocket_base_url: T.nilable(String),
             transport: T.untyped,
             request_options: T.nilable(OpenAI::RequestOptions::OrHash),
-            transport_options: T::Hash[Symbol, T.untyped]
+            transport_options: T::Hash[Symbol, T.untyped],
+            connection_class: T.class_of(OpenAI::Realtime::Connection)
           )
             .returns(T.attached_class)
         end
@@ -22,7 +23,8 @@ module OpenAI
           websocket_base_url:,
           transport:,
           request_options:,
-          transport_options:
+          transport_options:,
+          connection_class: OpenAI::Realtime::Connection
         )
         end
 

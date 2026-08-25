@@ -67,6 +67,43 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
     refute_includes(traced_target, "signature")
   end
 
+  def test_sideband_traces_include_the_resource_identifier_but_redact_credentials
+    wire_headers = nil
+    wire_target = nil
+    Traces::Backend::Capture.spans.clear
+    handler = -> (_connection) { nil }
+
+    with_server(
+      handler,
+      wrap: lambda { |websocket|
+        lambda do |request|
+          wire_headers = request.headers.to_h
+          wire_target = request.path
+          websocket.call(request)
+        end
+      }
+    ) do |url|
+      client = OpenAI::Client.new(
+        api_key: "origin-secret",
+        base_url: "http://127.0.0.1:#{url.port}/v1",
+        default_headers: {"api-key" => "azure-secret"},
+        timeout: 2
+      )
+
+      client.realtime.connect_to_call(call_id: "rtc_resource_identifier") do |_connection|
+        nil
+      end
+    end
+
+    assert_equal("/v1/realtime?call_id=rtc_resource_identifier", wire_target)
+    assert_equal(wire_target, traced_request_target(method: "GET"))
+    assert_equal("Bearer origin-secret", Array(wire_headers.fetch("authorization")).first)
+    assert_equal("azure-secret", Array(wire_headers.fetch("api-key")).first)
+    traced_headers = traced_request_headers(method: "GET")
+    assert_equal("[REDACTED]", traced_headers.fetch("authorization"))
+    assert_equal("[REDACTED]", traced_headers.fetch("api-key"))
+  end
+
   def test_binary_encoded_json_is_sent_as_a_text_frame
     message_class = nil
     handler = lambda do |connection|

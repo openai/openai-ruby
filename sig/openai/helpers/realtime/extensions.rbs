@@ -60,6 +60,16 @@ module OpenAI
         (OpenAI::Realtime::Connection connection) -> top
       } -> top
 
+      def connect_to_call: (
+        call_id: String,
+        ?websocket_base_url: String?,
+        ?request_options: OpenAI::request_opts?,
+        ?transport: untyped?,
+        ?transport_options: ::Hash[Symbol, untyped]
+      ) {
+        (OpenAI::Realtime::SidebandConnection connection) -> top
+      } -> top
+
       def connect_transcription: (
         ?websocket_base_url: String?,
         ?request_options: OpenAI::request_opts?,

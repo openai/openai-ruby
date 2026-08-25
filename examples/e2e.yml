@@ -58,6 +58,9 @@ examples:
   examples/realtime/mcp_approval.rb:
     status: excluded
     reason: Requires a caller-selected remote MCP server and live Realtime MCP access.
+  examples/realtime/sideband.rb:
+    status: excluded
+    reason: Requires an existing, application-authorized WebRTC or SIP call ID and live Realtime access.
   examples/realtime/websocket_text.rb:
     status: covered
     expected_output: "[realtime] smoke test passed"
