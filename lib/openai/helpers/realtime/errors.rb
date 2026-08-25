@@ -24,10 +24,30 @@ module OpenAI
       # @param cause [Exception, nil]
       # @param http_status [Integer, nil]
       def initialize(url:, message: nil, cause: nil, http_status: nil)
-        @url = url
+        @url = sanitized_error_url(url)
         @cause = cause
         @http_status = http_status
         super(message || "Realtime WebSocket connection error.")
+      end
+
+      private def sanitized_error_url(url)
+        query = url.query
+        return url if query.nil?
+
+        contains_call_id = false
+        parameters = query.split("&", -1).map do |parameter|
+          name = parameter.partition("=").first
+          next parameter unless URI.decode_www_form_component(name) == "call_id"
+
+          contains_call_id = true
+          "#{name}=[REDACTED]"
+        end
+
+        return url unless contains_call_id
+
+        url.dup.tap { |sanitized| sanitized.query = parameters.join("&") }
+      rescue ArgumentError, URI::Error
+        url.dup.tap { |sanitized| sanitized.query = nil }
       end
     end
 

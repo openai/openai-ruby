@@ -202,4 +202,20 @@ class OpenAI::Test::RealtimeSidebandConnectionTest < Minitest::Test
     assert_same(failure, error)
     assert_predicate(socket, :aborted?)
   end
+
+  def test_closed_sideband_connections_redact_call_ids_from_connection_errors
+    socket = FakeSocket.new
+
+    client.realtime.connect_to_call(call_id: "rtc_sensitive", transport: FakeTransport.new(socket)) do |connection|
+      connection.close
+
+      error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
+        connection.send_raw("{}")
+      end
+
+      assert_equal("call_id=[REDACTED]", error.url.query)
+      refute_includes(error.url.to_s, "rtc_sensitive")
+      assert_includes(connection.url.to_s, "rtc_sensitive")
+    end
+  end
 end

@@ -247,6 +247,40 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     refute_includes(error.message, error.cause.message)
   end
 
+  def test_sideband_handshake_failures_redact_the_error_url
+    port = available_port
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      base_url: "http://127.0.0.1:#{port}/v1",
+      timeout: 0.5
+    )
+
+    error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
+      client.realtime.connect_to_call(call_id: "rtc_sensitive") { |_connection| nil }
+    end
+
+    assert_equal(
+      "ws://127.0.0.1:#{port}/v1/realtime?call_id=[REDACTED]",
+      error.url.to_s
+    )
+    refute_includes(error.url.to_s, "rtc_sensitive")
+    refute_nil(error.cause)
+  end
+
+  def test_sideband_socket_failures_redact_the_error_url
+    handler = -> (connection) { connection.close(1011, "service failure") }
+
+    with_websocket_server(handler) do |client|
+      error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
+        client.realtime.connect_to_call(call_id: "rtc_sensitive", &:receive)
+      end
+
+      assert_instance_of(Protocol::WebSocket::ClosedError, error.cause)
+      assert_equal("call_id=[REDACTED]", error.url.query)
+      refute_includes(error.url.to_s, "rtc_sensitive")
+    end
+  end
+
   def test_request_timeout_bounds_negotiation_but_not_an_established_session
     server = TCPServer.new("127.0.0.1", 0)
     release_server = Queue.new

@@ -318,9 +318,10 @@ connection.output_audio_buffer.clear
 The SDK owns and URL-encodes the `call_id` handshake query parameter. The real
 call ID remains in the connection URL and is sent on the wire; the default
 transport redacts it from optional HTTP request-target and endpoint traces,
-while API keys and other sensitive headers remain redacted. Sideband connections
-inherit the same authentication, endpoint override, proxy, TLS, timeout,
-block-lifetime, and exceptional-abort behavior as standard Realtime WebSockets.
+and `RealtimeConnectionError#url` also redacts it. API keys and other
+sensitive headers remain redacted. Sideband connections inherit the same
+authentication, endpoint override, proxy, TLS, timeout, block-lifetime, and
+exceptional-abort behavior as standard Realtime WebSockets.
 Closing the sideband connection does not hang up the existing call: call
 lifetime and explicit `client.realtime.calls.hangup(call_id)` remain the
 application owner's responsibility.
