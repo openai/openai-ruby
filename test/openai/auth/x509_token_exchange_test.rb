@@ -378,6 +378,61 @@ class OpenAI::Test::X509TokenExchangeTest < Minitest::Test
     refute_includes(error.inspect, "fake-secret")
   end
 
+  def test_retryable_issuer_failures_preserve_only_safe_retry_metadata
+    statuses = [408, 409, 429, 500, 503]
+    safe_headers = {
+      "x-request-id" => "req_fake",
+      "retry-after" => "3",
+      "retry-after-ms" => "25",
+      "x-should-retry" => "true"
+    }
+
+    statuses.each do |status|
+      response = OpenAI::HTTPClient::Response.new(
+        status: status,
+        headers: safe_headers.merge("set-cookie" => "session=fake-secret", "authorization" => "Bearer fake-secret"),
+        body: "fake-secret-body"
+      )
+
+      error = @http_client.stub(:execute, -> (_request) { response }) do
+        assert_raises(OpenAI::Errors::APIError) { @exchange.fetch }
+      end
+
+      assert_equal(status, error.status)
+      assert_equal(safe_headers, error.headers)
+      assert_nil(error.body)
+      refute_match(/fake-secret/, error.inspect)
+    end
+  end
+
+  def test_oauth_failures_do_not_expose_retry_metadata
+    response = OpenAI::HTTPClient::Response.new(
+      status: 401,
+      headers: {"x-request-id" => "req_fake", "retry-after" => "2", "set-cookie" => "fake-secret"},
+      body: JSON.generate(error: "invalid_grant")
+    )
+
+    error = @http_client.stub(:execute, -> (_request) { response }) do
+      assert_raises(OpenAI::Errors::OAuthError) { @exchange.fetch }
+    end
+
+    assert_equal({"x-request-id" => "req_fake"}, error.headers)
+  end
+
+  def test_nonretryable_issuer_failures_do_not_expose_retry_metadata
+    response = OpenAI::HTTPClient::Response.new(
+      status: 404,
+      headers: {"x-request-id" => "req_fake", "retry-after" => "2", "x-should-retry" => "true"},
+      body: "fake-secret-body"
+    )
+
+    error = @http_client.stub(:execute, -> (_request) { response }) do
+      assert_raises(OpenAI::Errors::APIError) { @exchange.fetch }
+    end
+
+    assert_equal({"x-request-id" => "req_fake"}, error.headers)
+  end
+
   def test_large_failure_bodies_preserve_status_without_exposing_content
     response = OpenAI::HTTPClient::Response.new(
       status: 503,

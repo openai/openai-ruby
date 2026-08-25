@@ -146,6 +146,10 @@ module OpenAI
           raise error
         end
 
+        if [408, 409, 429].include?(response.status) || (500..599).cover?(response.status)
+          headers.merge!(response.headers.slice("retry-after", "retry-after-ms", "x-should-retry"))
+        end
+
         raise(
           OpenAI::Errors::APIError.new(
             url: URI(TOKEN_URL),
