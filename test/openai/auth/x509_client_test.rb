@@ -460,6 +460,214 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
     assert_equal(2, issuer_attempts)
   end
 
+  def test_x509_issuer_retries_connection_failures_without_exceeding_its_budget
+    reader = Class.new do
+      def initialize(source) = @source = source
+      def read(*) = @source.read(*)
+    end
+
+    [OpenAI::Errors::APIConnectionError, OpenAI::Errors::APITimeoutError].each do |error_class|
+      events = []
+      client = OpenAI::Client.new(
+        api_key: nil,
+        workload_identity: @identity,
+        http_client: @transport,
+        max_retries: 1,
+        initial_retry_delay: 0,
+        max_retry_delay: 0,
+        on_retry: -> (event) {
+          events << event
+          raise "fake retry observer failure"
+        }
+      )
+      issuer_attempts = 0
+      api_attempts = 0
+      source = StringIO.new("fake-sensitive-nonreplayable-upload")
+      dispatch = lambda do |request|
+        if request.url.host == "mtls.auth.openai.com"
+          issuer_attempts += 1
+          if issuer_attempts == 1
+            raise error_class.new(url: request.url, message: "fake-sensitive-network-secret")
+          end
+
+          x509_issuer_success
+        else
+          api_attempts += 1
+          x509_model_response
+        end
+      end
+
+      @native.stub(:execute, dispatch) do
+        result = client.request(method: :post, path: "/v1/upload", body: reader.new(source))
+        assert_equal("fake-model", result.fetch(:id))
+      end
+
+      assert_equal(2, issuer_attempts)
+      assert_equal(1, api_attempts)
+      assert_equal(0, source.pos)
+      assert_equal(1, events.length)
+      event = events.fetch(0)
+      assert_instance_of(error_class, event.error)
+      assert_nil(event.response)
+      assert_nil(event.status)
+      assert_equal(2, event.attempt)
+      assert_equal(2, event.max_attempts)
+      assert_equal("https://mtls.auth.openai.com/oauth/token", event.error.url.to_s)
+      refute_includes(event.error.message, "fake-sensitive-network-secret")
+      assert_nil(event.error.cause)
+    end
+  end
+
+  def test_x509_terminal_issuer_connection_failure_is_not_retried_again_by_api_transport
+    events = []
+    client = OpenAI::Client.new(
+      api_key: nil,
+      workload_identity: @identity,
+      http_client: @transport,
+      max_retries: 1,
+      initial_retry_delay: 0,
+      max_retry_delay: 0,
+      on_retry: -> (event) { events << event }
+    )
+    attempts = 0
+    dispatch = lambda do |request|
+      attempts += 1
+      raise OpenAI::Errors::APIConnectionError.new(url: request.url)
+    end
+
+    @native.stub(:execute, dispatch) do
+      assert_raises(OpenAI::Errors::APIConnectionError) { client.models.retrieve("fake-model") }
+    end
+
+    assert_equal(2, attempts)
+    assert_equal(1, events.length)
+    assert_instance_of(OpenAI::Errors::APIConnectionError, events.fetch(0).error)
+  end
+
+  def test_x509_issuer_connection_retry_consumes_the_shared_api_retry_budget
+    events = []
+    client = OpenAI::Client.new(
+      api_key: nil,
+      workload_identity: @identity,
+      http_client: @transport,
+      max_retries: 1,
+      initial_retry_delay: 0,
+      max_retry_delay: 0,
+      on_retry: -> (event) { events << event }
+    )
+    issuer_attempts = 0
+    api_attempts = 0
+    dispatch = lambda do |request|
+      if request.url.host == "mtls.auth.openai.com"
+        issuer_attempts += 1
+        if issuer_attempts == 1
+          raise OpenAI::Errors::APIConnectionError.new(url: request.url)
+        end
+
+        x509_issuer_success
+      else
+        api_attempts += 1
+        x509_issuer_failure(503)
+      end
+    end
+
+    @native.stub(:execute, dispatch) do
+      error = assert_raises(OpenAI::Errors::APIError) { client.models.retrieve("fake-model") }
+      assert_equal(503, error.status)
+    end
+
+    assert_equal(2, issuer_attempts)
+    assert_equal(1, api_attempts)
+    assert_equal(1, events.length)
+    assert_instance_of(OpenAI::Errors::APIConnectionError, events.fetch(0).error)
+  end
+
+  def test_x509_issuer_connection_retry_cannot_exceed_the_absolute_request_deadline
+    events = []
+    client = OpenAI::Client.new(
+      api_key: nil,
+      workload_identity: @identity,
+      http_client: @transport,
+      max_retries: 1,
+      timeout: 0.05,
+      initial_retry_delay: 1,
+      max_retry_delay: 1,
+      on_retry: -> (event) { events << event }
+    )
+    attempts = 0
+    dispatch = lambda do |request|
+      attempts += 1
+      raise OpenAI::Errors::APIConnectionError.new(url: request.url)
+    end
+
+    @native.stub(:execute, dispatch) do
+      assert_raises(OpenAI::Errors::APITimeoutError) { client.models.retrieve("fake-model") }
+    end
+
+    assert_equal(1, attempts)
+    assert_empty(events)
+  end
+
+  def test_x509_issuer_status_retries_emit_safe_standard_callback_and_logging_events
+    events = []
+    log_output = StringIO.new
+    logger = Logger.new(log_output)
+    client = OpenAI::Client.new(
+      api_key: nil,
+      workload_identity: @identity,
+      http_client: @transport,
+      max_retries: 2,
+      initial_retry_delay: 0,
+      max_retry_delay: 0,
+      logger: logger,
+      log_level: :debug,
+      on_retry: -> (event) { events << event }
+    )
+    issuer_attempts = 0
+    dispatch = lambda do |request|
+      if request.url.host == "mtls.auth.openai.com"
+        issuer_attempts += 1
+        if issuer_attempts == 1
+          x509_issuer_failure(
+            429,
+            headers: {
+              "x-request-id" => "req_fake_issuer",
+              "retry-after" => "0",
+              "authorization" => "Bearer fake-sensitive-header",
+              "set-cookie" => "fake-sensitive-cookie"
+            }
+          )
+        else
+          x509_issuer_success
+        end
+      else
+        x509_model_response
+      end
+    end
+
+    @native.stub(:execute, dispatch) do
+      assert_equal("fake-model", client.models.retrieve("fake-model").id)
+    end
+
+    assert_equal(1, events.length)
+    event = events.fetch(0)
+    assert_equal(2, event.attempt)
+    assert_equal(3, event.max_attempts)
+    assert_equal(0.0, event.delay)
+    assert_equal(429, event.status)
+    assert_equal("req_fake_issuer", event.request_id)
+    assert_equal({"x-request-id" => "req_fake_issuer", "retry-after" => "0"}, event.response.headers)
+    assert_nil(event.error)
+    assert_predicate(event, :frozen?)
+    log = log_output.string
+    assert_includes(log, "request retry")
+    assert_includes(log, "status=429")
+    refute_includes(log, "fake-sensitive-header")
+    refute_includes(log, "fake-sensitive-cookie")
+    refute_includes(log, "idp_fake")
+    refute_includes(log, "svc_acct_fake")
+  end
+
   def test_x509_issuer_and_api_share_one_request_retry_budget
     cases = [
       [1, 1, 1, false, 2, 1],

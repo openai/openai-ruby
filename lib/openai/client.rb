@@ -269,14 +269,18 @@ module OpenAI
         replay_state = previous_context&.fetch(:replay_state) || []
         issuer_retries = previous_context&.fetch(:issuer_retries, 0) || 0
         auth_max_retries = previous_context&.fetch(:auth_max_retries) || request.fetch(:x509_auth_max_retries)
+        api_max_retries = previous_context&.fetch(:api_max_retries) || request.fetch(:max_retries)
+        log_context = previous_context&.fetch(:log_context) || yield
         context = {
           deadline: deadline,
           replay_state: replay_state,
           issuer_retries: issuer_retries,
           auth_max_retries: auth_max_retries,
+          api_max_retries: api_max_retries,
+          log_context: log_context,
           token: nil
         }
-        request = request.merge(x509_request_context: context)
+        request = request.merge(x509_request_context: context, max_retries: 0)
       end
 
       begin
@@ -297,11 +301,15 @@ module OpenAI
           replay_state.freeze
           issuer_retries = context.fetch(:issuer_retries)
           auth_max_retries = context.fetch(:auth_max_retries)
+          api_max_retries = context.fetch(:api_max_retries)
+          log_context = context.fetch(:log_context)
           context = {
             deadline: deadline,
             replay_state: replay_state,
             issuer_retries: issuer_retries,
             auth_max_retries: auth_max_retries,
+            api_max_retries: api_max_retries,
+            log_context: log_context,
             token: nil
           }
           request = request.merge(x509_request_context: context)
@@ -343,13 +351,15 @@ module OpenAI
         token = @workload_identity_auth.get_token(deadline: deadline)
       rescue OpenAI::Errors::APIError => error
         status = error.status
-        retryable_status = [408, 409, 429].include?(status) ||
+        connection_failure = error.is_a?(OpenAI::Errors::APIConnectionError)
+        retryable_status = connection_failure ||
+          [408, 409, 429].include?(status) ||
           (status.is_a?(Integer) && (500..599).cover?(status))
         consumed_retries = attempts + previous_issuer_retries + retry_count
         unless @requester.instance_of?(OpenAI::Auth::X509Transport) &&
             retryable_status &&
             consumed_retries < request.fetch(:x509_request_context).fetch(:auth_max_retries) &&
-            self.class.should_retry?(status, headers: error.headers || {})
+            (connection_failure || self.class.should_retry?(status, headers: error.headers || {}))
           raise
         end
 
@@ -358,6 +368,20 @@ module OpenAI
           raise Timeout::Error, "request timed out during workload identity authentication"
         end
 
+        context = request.fetch(:x509_request_context)
+        response = if connection_failure
+          nil
+        else
+          OpenAI::ResponseMetadata.new(status: status, headers: error.headers || {})
+        end
+
+        context.fetch(:log_context).retry_scheduled(
+          connection_failure ? error : status,
+          delay: delay,
+          response: response,
+          retry_count: consumed_retries,
+          max_retries: context.fetch(:auth_max_retries)
+        )
         sleep(delay)
         attempts += 1
         retry
@@ -375,7 +399,7 @@ module OpenAI
         .merge(headers: updated_headers)
       if context
         updated_request = updated_request.merge(
-          max_retries: [request.fetch(:max_retries) - context.fetch(:issuer_retries), 0].max
+          max_retries: [context.fetch(:api_max_retries) - context.fetch(:issuer_retries), 0].max
         )
       end
 
