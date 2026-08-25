@@ -180,7 +180,11 @@ module OpenAI
         return super
       end
 
-      selected = request.fetch(:security, {bearer_auth: true, admin_api_key_auth: true})
+      selected = {}.merge(request.fetch(:security, {bearer_auth: true, admin_api_key_auth: true})).freeze
+      if selected.any? { |scheme, enabled| enabled && scheme != :bearer_auth && scheme != :admin_api_key_auth }
+        raise ArgumentError, "Unsupported authentication security scheme for X.509 workload identity"
+      end
+
       security = {
         bearer_auth: selected[:bearer_auth] == true,
         admin_api_key_auth: selected[:admin_api_key_auth] == true
@@ -200,7 +204,10 @@ module OpenAI
 
     # @api private
     private def prepare_request(request, redirect_count:, retry_count:)
-      request = prepare_workload_identity_request(request) if workload_identity_request?(request)
+      if workload_identity_request?(request)
+        request = prepare_workload_identity_request(request, retry_count: retry_count)
+      end
+
       preparer = @provider_runtime&.prepare_request
       return super(request, redirect_count: redirect_count, retry_count: retry_count) unless preparer
       preparer.call(request)
@@ -259,7 +266,8 @@ module OpenAI
       request = request.merge(workload_identity_deadline: deadline)
       if x509_request
         replay_state = previous_context&.fetch(:replay_state) || []
-        context = {deadline: deadline, replay_state: replay_state, token: nil}
+        issuer_retries = previous_context&.fetch(:issuer_retries, 0) || 0
+        context = {deadline: deadline, replay_state: replay_state, issuer_retries: issuer_retries, token: nil}
         request = request.merge(x509_request_context: context)
       end
 
@@ -279,7 +287,8 @@ module OpenAI
         if x509_request
           replay_state << true
           replay_state.freeze
-          context = {deadline: deadline, replay_state: replay_state, token: nil}
+          issuer_retries = context.fetch(:issuer_retries)
+          context = {deadline: deadline, replay_state: replay_state, issuer_retries: issuer_retries, token: nil}
           request = request.merge(x509_request_context: context)
         else
           @workload_identity_auth.invalidate_token
@@ -311,8 +320,9 @@ module OpenAI
       request[:headers]["authorization"] == expected
     end
 
-    private def prepare_workload_identity_request(request)
+    private def prepare_workload_identity_request(request, retry_count:)
       deadline = request[:workload_identity_deadline]
+      previous_issuer_retries = request[:x509_request_context]&.fetch(:issuer_retries, 0) || 0
       attempts = 0
       begin
         token = @workload_identity_auth.get_token(deadline: deadline)
@@ -320,9 +330,10 @@ module OpenAI
         status = error.status
         retryable_status = [408, 409, 429].include?(status) ||
           (status.is_a?(Integer) && (500..599).cover?(status))
+        consumed_retries = attempts + previous_issuer_retries + retry_count
         unless @requester.instance_of?(OpenAI::Auth::X509Transport) &&
             retryable_status &&
-            attempts < request.fetch(:max_retries) &&
+            consumed_retries < request.fetch(:max_retries) &&
             self.class.should_retry?(status, headers: error.headers || {})
           raise
         end
@@ -338,13 +349,23 @@ module OpenAI
       end
 
       if (context = request[:x509_request_context])
+        context[:issuer_retries] = previous_issuer_retries + attempts
         context[:token] = token.dup.freeze
         context.freeze
       end
 
       updated_headers = request[:headers].merge("authorization" => "Bearer #{token}")
+      updated_request = request
+        .except(:workload_identity_deadline, :x509_request_context)
+        .merge(headers: updated_headers)
+      if context
+        updated_request = updated_request.merge(
+          max_retries: request.fetch(:max_retries) - context.fetch(:issuer_retries)
+        )
+      end
+
       request_with_remaining_timeout(
-        request.except(:workload_identity_deadline, :x509_request_context).merge(headers: updated_headers),
+        updated_request,
         deadline
       )
     rescue Timeout::Error => e

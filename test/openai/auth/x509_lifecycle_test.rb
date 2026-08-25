@@ -561,6 +561,45 @@ class OpenAI::Test::X509LifecycleTest < Minitest::Test
     refute_includes(request.headers, "authorization")
   end
 
+  def test_unknown_enabled_security_schemes_are_rejected_before_issuer_or_api_dispatch
+    selections = [
+      {bearer_auth_typo: true},
+      {bearer_auth: true, bearer_auth_typo: true},
+      {bearer_auth: false, admin_api_key_auth: false, bearer_auth_typo: true},
+      {"bearer_auth_typo" => true},
+      {"bearer_auth" => true}
+    ]
+
+    @native.stub(:execute, -> (_request) { flunk("unknown security schemes must not dispatch") }) do
+      selections.each do |security|
+        error = assert_raises(ArgumentError) do
+          @client.request(method: :get, path: "/v1/models/fake-model", security: security)
+        end
+
+        assert_match(/unsupported authentication security scheme/i, error.message)
+      end
+    end
+  end
+
+  def test_unknown_disabled_security_schemes_do_not_change_unauthenticated_requests
+    observed = []
+    dispatch = lambda do |request|
+      observed << request
+      model_response
+    end
+
+    @native.stub(:execute, dispatch) do
+      @client.request(
+        method: :get,
+        path: "/v1/models/fake-model",
+        security: {bearer_auth: false, admin_api_key_auth: false, bearer_auth_typo: false}
+      )
+    end
+
+    assert_equal(1, observed.length)
+    refute_includes(observed.fetch(0).headers, "authorization")
+  end
+
   def test_disabled_security_schemes_cannot_inject_an_authorization_override
     client = OpenAI::Client.new(
       api_key: nil,

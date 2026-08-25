@@ -460,6 +460,50 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
     assert_equal(2, issuer_attempts)
   end
 
+  def test_x509_issuer_and_api_share_one_request_retry_budget
+    cases = [
+      [1, 1, 1, false, 2, 1],
+      [2, 1, 1, true, 2, 2],
+      [2, 1, 2, false, 2, 2],
+      [1, 0, 1, true, 1, 2],
+      [2, 2, 1, false, 3, 1]
+    ]
+
+    cases.each do |max_retries, issuer_failures, api_failures, succeeds, expected_issuer, expected_api|
+      client = OpenAI::Client.new(
+        api_key: nil,
+        workload_identity: @identity,
+        http_client: @transport,
+        max_retries: max_retries,
+        initial_retry_delay: 0,
+        max_retry_delay: 0
+      )
+      issuer_attempts = 0
+      api_attempts = 0
+      dispatch = lambda do |request|
+        if request.url.host == "mtls.auth.openai.com"
+          issuer_attempts += 1
+          issuer_attempts <= issuer_failures ? x509_issuer_failure(503) : x509_issuer_success
+        else
+          api_attempts += 1
+          api_attempts <= api_failures ? x509_issuer_failure(503) : x509_model_response
+        end
+      end
+
+      @native.stub(:execute, dispatch) do
+        if succeeds
+          assert_equal("fake-model", client.models.retrieve("fake-model").id)
+        else
+          error = assert_raises(OpenAI::Errors::APIError) { client.models.retrieve("fake-model") }
+          assert_equal(503, error.status)
+        end
+      end
+
+      assert_equal(expected_issuer, issuer_attempts)
+      assert_equal(expected_api, api_attempts)
+    end
+  end
+
   def test_x509_issuer_retries_honor_safe_seconds_and_millisecond_headers
     delays = [
       [{"retry-after" => "0.25"}, 0.25],
