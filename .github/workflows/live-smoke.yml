@@ -36,8 +36,30 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: bundle exec rake test:live:smoke
+
+  x509-live-smoke:
+    name: live X.509 workload identity smoke
+    needs: live-smoke
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      github.repository == 'openai/openai-ruby' &&
+      inputs.include_x509
+    runs-on: ubuntu-latest
+    environment: x509-live-smoke
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
+        with:
+          ruby-version: "4.0"
+          bundler-cache: true
       - name: Smoke-test enrolled X.509 workload identity
-        if: ${{ inputs.include_x509 }}
         env:
           OPENAI_X509_CLIENT_CERTIFICATE_CHAIN_PEM: ${{ secrets.OPENAI_X509_CLIENT_CERTIFICATE_CHAIN_PEM }}
           OPENAI_X509_CLIENT_PRIVATE_KEY_PEM: ${{ secrets.OPENAI_X509_CLIENT_PRIVATE_KEY_PEM }}
@@ -50,7 +72,7 @@ jobs:
              [ -z "$OPENAI_X509_CLIENT_PRIVATE_KEY_PEM" ] ||
              [ -z "$OPENAI_X509_IDENTITY_PROVIDER_ID" ] ||
              [ -z "$OPENAI_X509_SERVICE_ACCOUNT_ID" ]; then
-            echo "The protected ci environment is missing required X.509 smoke-test secrets." >&2
+            echo "The protected x509-live-smoke environment is missing required X.509 secrets." >&2
             exit 1
           fi
 

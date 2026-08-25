@@ -164,25 +164,49 @@ class LiveSmokeTest < Minitest::Test
     path = File.expand_path("../../.github/workflows/live-smoke.yml", __dir__)
     workflow = YAML.safe_load_file(path, aliases: false)
     trigger = workflow.fetch("on", workflow[true])
-    job = workflow.fetch("jobs").fetch("live-smoke")
-    steps = job.fetch("steps")
-    api_step = steps.find { _1["name"] == "Smoke-test authenticated API requests and streaming" }
-    x509_step = steps.find { _1["name"] == "Smoke-test enrolled X.509 workload identity" }
+    jobs = workflow.fetch("jobs")
+    api_job = jobs.fetch("live-smoke")
+    x509_job = jobs.fetch("x509-live-smoke")
+    api_steps = api_job.fetch("steps")
+    x509_steps = x509_job.fetch("steps")
+    api_step = api_steps.find { _1["name"] == "Smoke-test authenticated API requests and streaming" }
+    x509_step = x509_steps.find { _1["name"] == "Smoke-test enrolled X.509 workload identity" }
 
     assert_equal(["workflow_dispatch"], trigger.keys)
     inputs = trigger.fetch("workflow_dispatch").fetch("inputs")
     assert_equal(["include_x509"], inputs.keys)
     assert_equal(false, inputs.fetch("include_x509").fetch("default"))
     assert_equal({}, workflow.fetch("permissions"))
-    assert_equal({"contents" => "read"}, job.fetch("permissions"))
-    assert_equal("ci", job.fetch("environment"))
-    assert_includes(job.fetch("if"), "github.ref == 'refs/heads/main'")
-    assert_includes(job.fetch("if"), "github.repository == 'openai/openai-ruby'")
-    assert_equal(false, steps.fetch(0).fetch("with").fetch("persist-credentials"))
-    assert_equal("${{ github.sha }}", steps.fetch(0).fetch("with").fetch("ref"))
+    assert_equal(%w[live-smoke x509-live-smoke], jobs.keys)
+    assert_equal("ci", api_job.fetch("environment"))
+    assert_equal("x509-live-smoke", x509_job.fetch("environment"))
+    assert_equal("live-smoke", x509_job.fetch("needs"))
+    assert_includes(x509_job.fetch("if"), "inputs.include_x509")
+
+    [api_job, x509_job].each do |job|
+      assert_equal({"contents" => "read"}, job.fetch("permissions"))
+      assert_includes(job.fetch("if"), "github.ref == 'refs/heads/main'")
+      assert_includes(job.fetch("if"), "github.repository == 'openai/openai-ruby'")
+      steps = job.fetch("steps")
+      assert_equal(false, steps.fetch(0).fetch("with").fetch("persist-credentials"))
+      assert_equal("${{ github.sha }}", steps.fetch(0).fetch("with").fetch("ref"))
+      assert(steps.none? { _1["uses"].to_s.include?("upload-artifact") })
+      steps.filter_map { _1["uses"] }.each { assert_match(%r{@[0-9a-f]{40}\z}, _1) }
+    end
+
     assert_equal(["OPENAI_API_KEY"], api_step.fetch("env").keys)
     refute(x509_step.fetch("env").key?("OPENAI_API_KEY"))
-    assert_equal("${{ inputs.include_x509 }}", x509_step.fetch("if"))
+    assert_equal(
+      %w[
+        OPENAI_CLIENT_KEY_PASSPHRASE
+        OPENAI_X509_CLIENT_CERTIFICATE_CHAIN_PEM
+        OPENAI_X509_CLIENT_PRIVATE_KEY_PEM
+        OPENAI_X509_IDENTITY_PROVIDER_ID
+        OPENAI_X509_PROXY_MODE
+        OPENAI_X509_SERVICE_ACCOUNT_ID
+      ],
+      x509_step.fetch("env").keys.sort
+    )
     assert_equal("direct", x509_step.fetch("env").fetch("OPENAI_X509_PROXY_MODE"))
     assert_includes(x509_step.fetch("run"), "umask 077")
     assert_includes(x509_step.fetch("run"), "trap 'rm -f")
@@ -190,7 +214,5 @@ class LiveSmokeTest < Minitest::Test
       x509_step.fetch("run"),
       "unset OPENAI_X509_CLIENT_CERTIFICATE_CHAIN_PEM OPENAI_X509_CLIENT_PRIVATE_KEY_PEM"
     )
-    assert(steps.none? { _1["uses"].to_s.include?("upload-artifact") })
-    steps.filter_map { _1["uses"] }.each { assert_match(%r{@[0-9a-f]{40}\z}, _1) }
   end
 end

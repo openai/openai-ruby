@@ -195,8 +195,10 @@ $ OPENAI_LIVE_SMOKE_X509=1 bundle exec rake test:live:smoke
 ```
 
 GitHub Actions exposes the same checks through the optional, manually dispatched
-`Live Smoke` workflow. Its X.509 check is disabled by default and requires the
-following secrets in the protected `ci` environment:
+`Live Smoke` workflow. Its standard smoke runs in the existing `ci` environment.
+The optional X.509 job runs only after the standard smoke succeeds, is disabled
+by default, and requires the following secrets in the separate, protected
+`x509-live-smoke` environment:
 
 - `OPENAI_X509_CLIENT_CERTIFICATE_CHAIN_PEM`
 - `OPENAI_X509_CLIENT_PRIVATE_KEY_PEM`
@@ -204,12 +206,13 @@ following secrets in the protected `ci` environment:
 - `OPENAI_X509_SERVICE_ACCOUNT_ID`
 - `OPENAI_X509_CLIENT_KEY_PASSPHRASE` when the private key is encrypted.
 
-The protected environment requires independent SDK-team approval, runs only on
-the protected default branch, and exposes X.509 secrets only to the explicitly
-selected X.509 step. Certificate files are mode-restricted, short-lived runner
-files, raw PEM variables are removed before the SDK starts, and credential
-files are never uploaded as artifacts. The GitHub-hosted runner always uses a
-direct X.509 connection. Local runs may set
+The X.509 environment requires independent SDK-team approval, prevents
+self-review, disables administrator bypasses, and runs only on the protected
+default branch. X.509 secrets are available only to the explicitly selected
+X.509 job. Certificate files are mode-restricted, short-lived runner files, raw
+PEM variables are removed before the SDK starts, and credential files are never
+uploaded as artifacts. The GitHub-hosted runner always uses a direct X.509
+connection. Local runs may set
 `OPENAI_X509_PROXY_MODE=http_connect` when an explicitly approved HTTP CONNECT
 proxy is configured. Live smoke tests are not required pull-request checks.
 
