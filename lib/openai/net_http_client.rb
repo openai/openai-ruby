@@ -160,7 +160,7 @@ module OpenAI
           end
         end
 
-        blk.call(pooled_connection.connection)
+        blk.call(pooled_connection.connection, pooled_connection)
       end
 
       return pool.with(timeout: remaining_timeout(deadline), &checkout) if deadline
@@ -236,8 +236,9 @@ module OpenAI
     # Executes a request using a pooled Net::HTTP connection.
     #
     # @param request [OpenAI::HTTPClient::Request]
+    # @yieldparam connection [Net::HTTP] configured connection, before any network I/O
     # @return [OpenAI::HTTPClient::Response]
-    def execute(request)
+    def execute(request, &connection_validator)
       url = request.url
       deadline = request.timeout&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
 
@@ -248,7 +249,29 @@ module OpenAI
       enum = Enumerator.new do |y|
         next if finished
 
-        with_pool(url, deadline: deadline) do |conn|
+        with_pool(url, deadline: deadline) do |conn, pooled_connection|
+          previously_started = conn.started?
+          validation_complete = false
+          begin
+            connection_validator&.call(conn)
+
+            if !previously_started && conn.started?
+              raise ArgumentError, "connection validation must leave the connection unstarted"
+            end
+
+            expected_ssl = %w[https wss].include?(url.scheme)
+            unless conn.use_ssl? == expected_ssl
+              raise ArgumentError, "connection validation must preserve TLS for the requested URL"
+            end
+
+            validation_complete = true
+          ensure
+            unless validation_complete
+              close_connection(conn)
+              pooled_connection.connection = nil
+            end
+          end
+
           eof = false
           closing = nil
           ::Thread.handle_interrupt(Object => :never) do

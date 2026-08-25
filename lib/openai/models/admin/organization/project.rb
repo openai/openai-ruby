@@ -42,13 +42,19 @@ module OpenAI
           #   @return [String, nil]
           optional :name, String, nil?: true
 
+          # @!attribute residency
+          #   The residency configuration for the project.
+          #
+          #   @return [Symbol, OpenAI::Models::Admin::Organization::ProjectResidency, nil]
+          optional :residency, enum: -> { OpenAI::Admin::Organization::ProjectResidency }
+
           # @!attribute status
           #   `active` or `archived`
           #
           #   @return [String, nil]
           optional :status, String, nil?: true
 
-          # @!method initialize(id:, created_at:, archived_at: nil, external_key_id: nil, name: nil, status: nil, object: :"organization.project")
+          # @!method initialize(id:, created_at:, archived_at: nil, external_key_id: nil, name: nil, residency: nil, status: nil, object: :"organization.project")
           #   Represents an individual project.
           #
           #   @param id [String] The identifier, which can be referenced in API endpoints
@@ -60,6 +66,8 @@ module OpenAI
           #   @param external_key_id [String, nil] The external key associated with the project.
           #
           #   @param name [String, nil] The name of the project. This appears in reporting.
+          #
+          #   @param residency [Symbol, OpenAI::Models::Admin::Organization::ProjectResidency] The residency configuration for the project.
           #
           #   @param status [String, nil] `active` or `archived`
           #

@@ -18,7 +18,7 @@ module OpenAI
       URI::Generic url,
       deadline: Float?
     ) {
-      (top arg0) -> void
+      (top arg0, top arg1) -> void
     } -> void
 
     private def configure_connection: (
@@ -33,7 +33,9 @@ module OpenAI
 
     def execute: (
       OpenAI::HTTPClient::Request request
-    ) -> OpenAI::HTTPClient::Response
+    ) ?{
+      (Net::HTTP connection) -> void
+    } -> OpenAI::HTTPClient::Response
 
     def initialize: (?size: Integer) ?{ (Net::HTTP) -> void } -> void
   end

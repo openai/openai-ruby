@@ -127,7 +127,8 @@ multitask(:"format:rbs") do
 end
 
 desc("Format everything")
-multitask(format: [:"format:rb", :"format:rbs"])
+# RuboCop temporarily changes cwd; RBS discovery must not run alongside it.
+task(format: [:"format:rb", :"format:rbs"])
 
 desc("Validate `*.rbs`")
 multitask(:"validate:rbs") do
@@ -154,6 +155,17 @@ end
 desc("Run covered Ruby examples end-to-end against the live API")
 task("test:examples:e2e") do
   ruby(*%w[scripts/examples-e2e.rb])
+end
+
+desc("Smoke-test live API authentication, responses, streaming, and optionally X.509")
+task("test:live:smoke") do
+  x509 = ENV.fetch("OPENAI_LIVE_SMOKE_X509", "0")
+  unless %w[0 1].include?(x509)
+    abort("OPENAI_LIVE_SMOKE_X509 must be 0 or 1")
+  end
+
+  ruby(*%w[scripts/live-smoke.rb])
+  ruby(*%w[examples/x509_workload_identity.rb]) if x509 == "1"
 end
 
 desc("Lint and typecheck")

@@ -967,7 +967,20 @@ module OpenAI
                 #   @return [Float, nil]
                 optional :quantity, Float, nil?: true
 
-                # @!method initialize(amount: nil, api_key_id: nil, line_item: nil, project_id: nil, quantity: nil, object: :"organization.costs.result")
+                # @!attribute quantity_unit
+                #   The unit of the `quantity` value. If no single supported unit applies to the
+                #   result, this field is `null`.
+                #
+                #   @return [String, Symbol, OpenAI::Models::Admin::Organization::CostQuantityUnit, nil]
+                optional(
+                  :quantity_unit,
+                  union: -> {
+                    OpenAI::Admin::Organization::CostQuantityUnit
+                  },
+                  nil?: true
+                )
+
+                # @!method initialize(amount: nil, api_key_id: nil, line_item: nil, project_id: nil, quantity: nil, quantity_unit: nil, object: :"organization.costs.result")
                 #   Some parameter documentations has been truncated, see
                 #   {OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data::Result::OrganizationCostsResult}
                 #   for more details.
@@ -983,6 +996,8 @@ module OpenAI
                 #   @param project_id [String, nil] When `group_by=project_id`, this field provides the project ID of the grouped co
                 #
                 #   @param quantity [Float, nil] When `group_by=line_item`, this field provides the quantity of the grouped costs
+                #
+                #   @param quantity_unit [String, Symbol, OpenAI::Models::Admin::Organization::CostQuantityUnit, nil] The unit of the `quantity` value. If no single supported unit applies to the res
                 #
                 #   @param object [Symbol, :"organization.costs.result"]
 

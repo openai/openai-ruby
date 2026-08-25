@@ -52,6 +52,7 @@ module OpenAI
               name: String,
               external_key_id: T.nilable(String),
               geography: T.nilable(String),
+              residency: T.nilable(OpenAI::Admin::Organization::ProjectResidency::OrSymbol),
               request_options: OpenAI::RequestOptions::OrHash
             )
               .returns(OpenAI::Admin::Organization::Project)
@@ -64,8 +65,15 @@ module OpenAI
             # Create the project with the specified data residency region. Your organization
             # must have access to Data residency functionality in order to use. See
             # [data residency controls](https://platform.openai.com/docs/guides/your-data#data-residency-controls)
-            # to review the functionality and limitations of setting this field.
+            # to review the functionality and limitations of setting this field. Deprecated:
+            # use `residency` instead. Do not provide both `geography` and `residency`.
             geography: nil,
+            # Create the project with the specified residency configuration. Your organization
+            # must have access to the requested residency configuration in order to use it.
+            # See
+            # [data residency controls](https://platform.openai.com/docs/guides/your-data#data-residency-controls)
+            # to review the functionality and limitations of setting this field.
+            residency: nil,
             request_options: {}
           )
           end
@@ -99,7 +107,8 @@ module OpenAI
             project_id,
             # External key ID to associate with the project.
             external_key_id: nil,
-            # Geography for the project.
+            # Geography for the project. Deprecated: use `residency` when creating a project
+            # to configure data residency. This field is retained for backward compatibility.
             geography: nil,
             # The updated name of the project, this name appears in reports.
             name: nil,

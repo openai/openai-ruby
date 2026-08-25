@@ -391,6 +391,96 @@ For secure, automated environments like cloud-managed Kubernetes, Azure, and GCP
 
 `client_id` remains available as an optional parameter for token exchange setups that require an explicit OAuth client ID.
 
+### X.509 Workload Identity (Preview)
+
+Organizations enrolled in the X.509 workload identity preview can exchange a
+client certificate for a short-lived OpenAI bearer credential. Both the token
+exchange and subsequent API request use the same caller-attested mTLS transport.
+The bearer is not cryptographically bound to the certificate; the API separately
+requires an accepted client certificate.
+
+```ruby
+require "openai"
+
+certificates = OpenSSL::X509::Certificate.load(
+  File.binread(ENV.fetch("OPENAI_CLIENT_CERTIFICATE_CHAIN"))
+)
+raise "Expected an enrolled client certificate" if certificates.empty?
+
+client_certificate, *intermediate_certificates = certificates
+client_private_key = OpenSSL::PKey.read(
+  File.binread(ENV.fetch("OPENAI_CLIENT_KEY")),
+  ENV["OPENAI_CLIENT_KEY_PASSPHRASE"]
+)
+unless client_certificate.check_private_key(client_private_key)
+  raise "The enrolled certificate and private key do not match"
+end
+
+api_origin = ENV.fetch("OPENAI_X509_API_ORIGIN", "https://mtls.api.openai.com")
+api_host = URI(api_origin).host&.downcase
+approved_hosts = ["mtls.auth.openai.com", api_host].freeze
+native_http_client = OpenAI::NetHTTPClient.new do |connection|
+  unless connection.use_ssl? && connection.port == 443 && approved_hosts.include?(connection.address.downcase)
+    raise "Refusing to present the enrolled certificate to an unexpected destination"
+  end
+
+  connection.cert = client_certificate
+  connection.extra_chain_cert = intermediate_certificates
+  connection.key = client_private_key
+end
+
+transport = OpenAI::Auth::X509Transport.new(
+  http_client: native_http_client,
+  certificate_identity: :static,
+  proxy: :direct,
+  api_origin: api_origin
+)
+
+identity = OpenAI::Auth::X509WorkloadIdentity.new(
+  identity_provider_id: ENV.fetch("IDENTITY_PROVIDER_ID"),
+  service_account_id: ENV.fetch("SERVICE_ACCOUNT_ID")
+)
+
+client = OpenAI::Client.new(
+  api_key: nil,
+  workload_identity: identity,
+  http_client: transport,
+  base_url: "#{transport.api_origin}/v1"
+)
+
+model = client.models.list.data.first
+```
+
+The application owns its certificate, key, trust settings, and native HTTP
+client. Keep the selected certificate identity static, configure only the
+approved issuer and API destinations, and create a fresh native client and
+transport when rotating credentials. Direct mode rejects ambient proxies; use
+`proxy: :http_connect` only when an HTTP CONNECT proxy is configured. HTTPS
+proxies are rejected before proxy credentials can be transmitted. Arbitrary
+custom transports, Azure/Bedrock providers, and Realtime WebSockets are not
+supported. Preview access must be enabled for the organization, and mTLS can be
+configured for the enrolled organization or project.
+
+See the complete [X.509 workload identity live smoke
+example](examples/x509_workload_identity.rb). It performs a real token exchange
+and API request only when an enrolled certificate, private key, identity-provider
+ID, and mapped service-account ID are explicitly supplied.
+
+Keep these values in a private environment file outside your checkout or in a
+secret manager, then run the example without an API key:
+
+```sh
+export OPENAI_CLIENT_CERTIFICATE_CHAIN=/secure/path/client-chain.pem
+export OPENAI_CLIENT_KEY=/secure/path/client-key.pem
+export IDENTITY_PROVIDER_ID=idp_example
+export SERVICE_ACCOUNT_ID=svc_acct_example
+
+ruby examples/x509_workload_identity.rb
+```
+
+Set `OPENAI_X509_PROXY_MODE=http_connect` only when an approved HTTP CONNECT
+proxy is configured. Encrypted keys can use `OPENAI_CLIENT_KEY_PASSPHRASE`.
+
 ### Kubernetes Service Account
 
 ```ruby

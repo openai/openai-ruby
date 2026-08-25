@@ -1,0 +1,14 @@
+module OpenAI
+  module Auth
+    class X509TokenExchange
+      def initialize: (
+        OpenAI::Auth::X509WorkloadIdentity config,
+        transport: OpenAI::Auth::X509Transport
+      ) -> void
+
+      def inspect: -> String
+
+      def fetch: (?deadline: Float?) -> ::Hash[Symbol, (String | Float)]
+    end
+  end
+end
