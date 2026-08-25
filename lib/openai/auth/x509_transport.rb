@@ -15,7 +15,7 @@ module OpenAI
       ISSUER_PATH = "/oauth/token"
       API_HOSTS = %w[mtls.api.openai.com mtls-us.api.openai.com mtls-eu.api.openai.com].freeze
       PROXY_MODES = [:direct, :http_connect].freeze
-      FORBIDDEN_HEADERS = %w[api-key x-api-key proxy-authorization].freeze
+      FORBIDDEN_HEADERS = %w[api-key x-api-key proxy-authorization content-length transfer-encoding].freeze
       EXCHANGE_FORBIDDEN_HEADERS = %w[authorization cookie openai-organization openai-project].freeze
       HEADER_NAME_PATTERN = /\A[!#$%&'*+.^_`|~0-9A-Za-z-]+\z/
       BEARER_PATTERN = /\ABearer [A-Za-z0-9\-._~+\/]+=*\z/
@@ -197,7 +197,7 @@ module OpenAI
           end
 
           if FORBIDDEN_HEADERS.include?(key) || (exchange && EXCHANGE_FORBIDDEN_HEADERS.include?(key))
-            raise ArgumentError, "X.509 request contains an unsupported credential header"
+            raise ArgumentError, "X.509 request contains an unsupported credential or framing header"
           end
 
           if key == "host" && !allowed_authority?(safe_value, url)
