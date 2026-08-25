@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   ] +
     [
       "examples/mtls_custom_http_client.rb",
+      "examples/x509_workload_identity.rb",
       "examples/realtime/README.md",
       "examples/realtime/function_calling.rb",
       "examples/realtime/image_input.rb",

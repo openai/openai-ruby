@@ -148,12 +148,24 @@ module OpenAI
     private def prepare_request(request, redirect_count:, retry_count:)
     end
 
+    # @api private
+    sig do
+      override
+        .params(
+          request: OpenAI::Internal::Transport::BaseClient::RequestInput,
+          original_request: OpenAI::Internal::Transport::BaseClient::RequestInput
+        )
+        .returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
+    end
+    private def validate_prepared_request(request, original_request:)
+    end
+
     # Returns a new client with the supplied options overridden.
     sig do
       params(
         api_key: T.nilable(String),
         admin_api_key: T.nilable(String),
-        workload_identity: T.nilable(OpenAI::Auth::WorkloadIdentity),
+        workload_identity: T.nilable(T.any(OpenAI::Auth::WorkloadIdentity, OpenAI::Auth::X509WorkloadIdentity)),
         organization: T.nilable(String),
         project: T.nilable(String),
         webhook_secret: T.nilable(String),
@@ -201,7 +213,7 @@ module OpenAI
         api_key: T.nilable(String),
 
         admin_api_key: T.nilable(String),
-        workload_identity: T.nilable(OpenAI::Auth::WorkloadIdentity),
+        workload_identity: T.nilable(T.any(OpenAI::Auth::WorkloadIdentity, OpenAI::Auth::X509WorkloadIdentity)),
         organization: T.nilable(String),
 
         project: T.nilable(String),
