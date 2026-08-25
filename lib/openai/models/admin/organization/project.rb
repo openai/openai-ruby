@@ -45,8 +45,8 @@ module OpenAI
           # @!attribute residency
           #   The residency configuration for the project.
           #
-          #   @return [Symbol, OpenAI::Models::Admin::Organization::Project::Residency, nil]
-          optional :residency, enum: -> { OpenAI::Admin::Organization::Project::Residency }
+          #   @return [Symbol, OpenAI::Models::Admin::Organization::ProjectResidency, nil]
+          optional :residency, enum: -> { OpenAI::Admin::Organization::ProjectResidency }
 
           # @!attribute status
           #   `active` or `archived`
@@ -67,34 +67,11 @@ module OpenAI
           #
           #   @param name [String, nil] The name of the project. This appears in reporting.
           #
-          #   @param residency [Symbol, OpenAI::Models::Admin::Organization::Project::Residency] The residency configuration for the project.
+          #   @param residency [Symbol, OpenAI::Models::Admin::Organization::ProjectResidency] The residency configuration for the project.
           #
           #   @param status [String, nil] `active` or `archived`
           #
           #   @param object [Symbol, :"organization.project"] The object type, which is always `organization.project`
-
-          # The residency configuration for the project.
-          #
-          # @see OpenAI::Models::Admin::Organization::Project#residency
-          module Residency
-            extend OpenAI::Internal::Type::Enum
-
-            GLOBAL = :GLOBAL
-            US_STORAGE_PROCESSING = :US_STORAGE_PROCESSING
-            EU_STORAGE_PROCESSING = :EU_STORAGE_PROCESSING
-            JP_STORAGE = :JP_STORAGE
-            KR_STORAGE = :KR_STORAGE
-            CA_STORAGE = :CA_STORAGE
-            SG_STORAGE = :SG_STORAGE
-            IN_STORAGE = :IN_STORAGE
-            AU_STORAGE = :AU_STORAGE
-            GB_STORAGE = :GB_STORAGE
-            AE_STORAGE = :AE_STORAGE
-            AE_STORAGE_PROCESSING = :AE_STORAGE_PROCESSING
-
-            # @!method self.values
-            #   @return [Array<Symbol>]
-          end
         end
       end
     end

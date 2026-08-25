@@ -40,7 +40,7 @@ module OpenAI
           # See
           # [data residency controls](https://platform.openai.com/docs/guides/your-data#data-residency-controls)
           # to review the functionality and limitations of setting this field.
-          sig { returns(T.nilable(OpenAI::Admin::Organization::ProjectCreateParams::Residency::OrSymbol)) }
+          sig { returns(T.nilable(OpenAI::Admin::Organization::ProjectResidency::OrSymbol)) }
           attr_accessor :residency
 
           sig do
@@ -52,7 +52,7 @@ module OpenAI
 
               geography: T.nilable(String),
 
-              residency: T.nilable(OpenAI::Admin::Organization::ProjectCreateParams::Residency::OrSymbol),
+              residency: T.nilable(OpenAI::Admin::Organization::ProjectResidency::OrSymbol),
 
               request_options: OpenAI::RequestOptions::OrHash
             )
@@ -90,52 +90,12 @@ module OpenAI
                 name: String,
                 external_key_id: T.nilable(String),
                 geography: T.nilable(String),
-                residency: T.nilable(OpenAI::Admin::Organization::ProjectCreateParams::Residency::OrSymbol),
+                residency: T.nilable(OpenAI::Admin::Organization::ProjectResidency::OrSymbol),
                 request_options: OpenAI::RequestOptions
               }
             )
           end
           def to_hash
-          end
-
-          # Create the project with the specified residency configuration. Your organization
-          # must have access to the requested residency configuration in order to use it.
-          # See
-          # [data residency controls](https://platform.openai.com/docs/guides/your-data#data-residency-controls)
-          # to review the functionality and limitations of setting this field.
-          module Residency
-            extend OpenAI::Internal::Type::Enum
-
-            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Admin::Organization::ProjectCreateParams::Residency) }
-            OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-            GLOBAL = T.let(:GLOBAL, OpenAI::Admin::Organization::ProjectCreateParams::Residency::TaggedSymbol)
-            US_STORAGE_PROCESSING = T.let(
-              :US_STORAGE_PROCESSING,
-              OpenAI::Admin::Organization::ProjectCreateParams::Residency::TaggedSymbol
-            )
-            EU_STORAGE_PROCESSING = T.let(
-              :EU_STORAGE_PROCESSING,
-              OpenAI::Admin::Organization::ProjectCreateParams::Residency::TaggedSymbol
-            )
-            JP_STORAGE = T.let(:JP_STORAGE, OpenAI::Admin::Organization::ProjectCreateParams::Residency::TaggedSymbol)
-            KR_STORAGE = T.let(:KR_STORAGE, OpenAI::Admin::Organization::ProjectCreateParams::Residency::TaggedSymbol)
-            CA_STORAGE = T.let(:CA_STORAGE, OpenAI::Admin::Organization::ProjectCreateParams::Residency::TaggedSymbol)
-            SG_STORAGE = T.let(:SG_STORAGE, OpenAI::Admin::Organization::ProjectCreateParams::Residency::TaggedSymbol)
-            IN_STORAGE = T.let(:IN_STORAGE, OpenAI::Admin::Organization::ProjectCreateParams::Residency::TaggedSymbol)
-            AU_STORAGE = T.let(:AU_STORAGE, OpenAI::Admin::Organization::ProjectCreateParams::Residency::TaggedSymbol)
-            GB_STORAGE = T.let(:GB_STORAGE, OpenAI::Admin::Organization::ProjectCreateParams::Residency::TaggedSymbol)
-            AE_STORAGE = T.let(:AE_STORAGE, OpenAI::Admin::Organization::ProjectCreateParams::Residency::TaggedSymbol)
-            AE_STORAGE_PROCESSING = T.let(
-              :AE_STORAGE_PROCESSING,
-              OpenAI::Admin::Organization::ProjectCreateParams::Residency::TaggedSymbol
-            )
-
-            sig {
-              override.returns(T::Array[OpenAI::Admin::Organization::ProjectCreateParams::Residency::TaggedSymbol])
-            }
-            def self.values
-            end
           end
 
         end

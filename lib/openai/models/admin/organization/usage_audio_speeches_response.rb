@@ -973,11 +973,11 @@ module OpenAI
                 #   The unit of the `quantity` value. If no single supported unit applies to the
                 #   result, this field is `null`.
                 #
-                #   @return [String, Symbol, OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::Result::OrganizationCostsResult::QuantityUnit, nil]
+                #   @return [String, Symbol, OpenAI::Models::Admin::Organization::CostQuantityUnit, nil]
                 optional(
                   :quantity_unit,
                   union: -> {
-                    OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::Result::OrganizationCostsResult::QuantityUnit
+                    OpenAI::Admin::Organization::CostQuantityUnit
                   },
                   nil?: true
                 )
@@ -999,7 +999,7 @@ module OpenAI
                 #
                 #   @param quantity [Float, nil] When `group_by=line_item`, this field provides the quantity of the grouped costs
                 #
-                #   @param quantity_unit [String, Symbol, OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::Result::OrganizationCostsResult::QuantityUnit, nil] The unit of the `quantity` value. If no single supported unit applies to the res
+                #   @param quantity_unit [String, Symbol, OpenAI::Models::Admin::Organization::CostQuantityUnit, nil] The unit of the `quantity` value. If no single supported unit applies to the res
                 #
                 #   @param object [Symbol, :"organization.costs.result"]
 
@@ -1023,89 +1023,6 @@ module OpenAI
                   #   @param currency [String] Lowercase ISO-4217 currency e.g. "usd"
                   #
                   #   @param value [Float] The numeric value of the cost.
-                end
-
-                # The unit of the `quantity` value. If no single supported unit applies to the
-                # result, this field is `null`.
-                #
-                # @see OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::Result::OrganizationCostsResult#quantity_unit
-                module QuantityUnit
-                  extend OpenAI::Internal::Type::Union
-
-                  variant String
-
-                  variant(
-                    const: -> {
-                      OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::Result::OrganizationCostsResult::QuantityUnit::TOKENS
-                    }
-                  )
-
-                  variant(
-                    const: -> {
-                      OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::Result::OrganizationCostsResult::QuantityUnit::QUANTITY_UNIT_1000_TOKENS
-                    }
-                  )
-
-                  variant(
-                    const: -> {
-                      OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::Result::OrganizationCostsResult::QuantityUnit::DURATION_SECONDS
-                    }
-                  )
-
-                  variant(
-                    const: -> {
-                      OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::Result::OrganizationCostsResult::QuantityUnit::DURATION_MINUTES
-                    }
-                  )
-
-                  variant(
-                    const: -> {
-                      OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::Result::OrganizationCostsResult::QuantityUnit::DURATION_HOURS
-                    }
-                  )
-
-                  variant(
-                    const: -> {
-                      OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::Result::OrganizationCostsResult::QuantityUnit::GIBIBYTE_HOURS
-                    }
-                  )
-
-                  variant(
-                    const: -> {
-                      OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::Result::OrganizationCostsResult::QuantityUnit::IMAGES
-                    }
-                  )
-
-                  variant(
-                    const: -> {
-                      OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::Result::OrganizationCostsResult::QuantityUnit::CHARACTERS
-                    }
-                  )
-
-                  # @!method self.variants
-                  #   @return [Array(String, Symbol)]
-
-                  define_sorbet_constant!(:Variants) do
-                    T.type_alias do
-                      T.any(
-                        String,
-                        OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data::Result::OrganizationCostsResult::QuantityUnit::TaggedSymbol
-                      )
-                    end
-                  end
-
-                  # @!group
-
-                  TOKENS = :tokens
-                  QUANTITY_UNIT_1000_TOKENS = :"1000_tokens"
-                  DURATION_SECONDS = :duration_seconds
-                  DURATION_MINUTES = :duration_minutes
-                  DURATION_HOURS = :duration_hours
-                  GIBIBYTE_HOURS = :gibibyte_hours
-                  IMAGES = :images
-                  CHARACTERS = :characters
-
-                  # @!endgroup
                 end
               end
 

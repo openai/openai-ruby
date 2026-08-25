@@ -55,7 +55,7 @@ module OpenAI
           #
           # @param geography [String, nil] Create the project with the specified data residency region. Your organization m
           #
-          # @param residency [Symbol, OpenAI::Models::Admin::Organization::ProjectCreateParams::Residency, nil] Create the project with the specified residency configuration. Your organization
+          # @param residency [Symbol, OpenAI::Models::Admin::Organization::ProjectResidency, nil] Create the project with the specified residency configuration. Your organization
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

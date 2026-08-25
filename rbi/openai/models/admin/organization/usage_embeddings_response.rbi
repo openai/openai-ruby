@@ -1394,13 +1394,7 @@ module OpenAI
 
                 # The unit of the `quantity` value. If no single supported unit applies to the
                 # result, this field is `null`.
-                sig {
-                  returns(
-                    T.nilable(
-                      OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::QuantityUnit::Variants
-                    )
-                  )
-                }
+                sig { returns(T.nilable(T.any(String, OpenAI::Admin::Organization::CostQuantityUnit::OrSymbol))) }
                 attr_accessor :quantity_unit
 
                 # The aggregated costs details of the specific time bucket.
@@ -1417,12 +1411,7 @@ module OpenAI
 
                     quantity: T.nilable(Float),
 
-                    quantity_unit: T.nilable(
-                      T.any(
-                        String,
-                        OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::QuantityUnit::OrSymbol
-                      )
-                    ),
+                    quantity_unit: T.nilable(T.any(String, OpenAI::Admin::Organization::CostQuantityUnit::OrSymbol)),
 
                     object: Symbol
                   )
@@ -1466,9 +1455,7 @@ module OpenAI
                       line_item: T.nilable(String),
                       project_id: T.nilable(String),
                       quantity: T.nilable(Float),
-                      quantity_unit: T.nilable(
-                        OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::QuantityUnit::Variants
-                      )
+                      quantity_unit: T.nilable(T.any(String, OpenAI::Admin::Organization::CostQuantityUnit::OrSymbol))
                     }
                   )
                 end
@@ -1525,72 +1512,6 @@ module OpenAI
                   end
                   def to_hash
                   end
-
-                end
-
-                # The unit of the `quantity` value. If no single supported unit applies to the
-                # result, this field is `null`.
-                module QuantityUnit
-                  extend OpenAI::Internal::Type::Union
-
-                  Variants = T.type_alias {
-                    T.any(
-                      String,
-                      OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::QuantityUnit::TaggedSymbol
-                    )
-                  }
-
-                  sig {
-                    override.returns(
-                      T::Array[
-                        OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::QuantityUnit::Variants
-                      ]
-                    )
-                  }
-                  def self.variants
-                  end
-
-                  TaggedSymbol = T.type_alias do
-                    T.all(
-                      Symbol,
-                      OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::QuantityUnit
-                    )
-                  end
-
-                  OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-                  TOKENS = T.let(
-                    :tokens,
-                    OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::QuantityUnit::TaggedSymbol
-                  )
-                  QUANTITY_UNIT_1000_TOKENS = T.let(
-                    :"1000_tokens",
-                    OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::QuantityUnit::TaggedSymbol
-                  )
-                  DURATION_SECONDS = T.let(
-                    :duration_seconds,
-                    OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::QuantityUnit::TaggedSymbol
-                  )
-                  DURATION_MINUTES = T.let(
-                    :duration_minutes,
-                    OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::QuantityUnit::TaggedSymbol
-                  )
-                  DURATION_HOURS = T.let(
-                    :duration_hours,
-                    OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::QuantityUnit::TaggedSymbol
-                  )
-                  GIBIBYTE_HOURS = T.let(
-                    :gibibyte_hours,
-                    OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::QuantityUnit::TaggedSymbol
-                  )
-                  IMAGES = T.let(
-                    :images,
-                    OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::QuantityUnit::TaggedSymbol
-                  )
-                  CHARACTERS = T.let(
-                    :characters,
-                    OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::QuantityUnit::TaggedSymbol
-                  )
 
                 end
               end

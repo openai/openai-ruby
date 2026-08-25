@@ -52,7 +52,7 @@ module OpenAI
               name: String,
               external_key_id: T.nilable(String),
               geography: T.nilable(String),
-              residency: T.nilable(OpenAI::Admin::Organization::ProjectCreateParams::Residency::OrSymbol),
+              residency: T.nilable(OpenAI::Admin::Organization::ProjectResidency::OrSymbol),
               request_options: OpenAI::RequestOptions::OrHash
             )
               .returns(OpenAI::Admin::Organization::Project)

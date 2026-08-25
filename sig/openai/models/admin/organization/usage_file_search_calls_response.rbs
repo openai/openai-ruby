@@ -627,7 +627,7 @@ module OpenAI
                   line_item: String?,
                   project_id: String?,
                   quantity: Float?,
-                  quantity_unit: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationCostsResult::quantity_unit?
+                  quantity_unit: OpenAI::Models::Admin::Organization::cost_quantity_unit?
                 }
 
               class OrganizationCostsResult < OpenAI::Internal::Type::BaseModel
@@ -647,7 +647,7 @@ module OpenAI
 
                 attr_accessor quantity: Float?
 
-                attr_accessor quantity_unit: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationCostsResult::quantity_unit?
+                attr_accessor quantity_unit: OpenAI::Models::Admin::Organization::cost_quantity_unit?
 
                 def initialize: (
                   ?amount: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationCostsResult::Amount,
@@ -655,7 +655,7 @@ module OpenAI
                   ?line_item: String?,
                   ?project_id: String?,
                   ?quantity: Float?,
-                  ?quantity_unit: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationCostsResult::quantity_unit?,
+                  ?quantity_unit: OpenAI::Models::Admin::Organization::cost_quantity_unit?,
                   ?object: :"organization.costs.result"
                 ) -> void
 
@@ -666,7 +666,7 @@ module OpenAI
                   line_item: String?,
                   project_id: String?,
                   quantity: Float?,
-                  quantity_unit: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationCostsResult::quantity_unit?
+                  quantity_unit: OpenAI::Models::Admin::Organization::cost_quantity_unit?
                 }
 
                 type amount = { currency: String, value: Float }
@@ -683,32 +683,6 @@ module OpenAI
                   def initialize: (?currency: String, ?value: Float) -> void
 
                   def to_hash: -> { currency: String, value: Float }
-                end
-
-                type quantity_unit =
-                  String
-                  | :tokens
-                  | :"1000_tokens"
-                  | :duration_seconds
-                  | :duration_minutes
-                  | :duration_hours
-                  | :gibibyte_hours
-                  | :images
-                  | :characters
-
-                module QuantityUnit
-                  extend OpenAI::Internal::Type::Union
-
-                  def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationCostsResult::quantity_unit]
-
-                  TOKENS: :tokens
-                  QUANTITY_UNIT_1000_TOKENS: :"1000_tokens"
-                  DURATION_SECONDS: :duration_seconds
-                  DURATION_MINUTES: :duration_minutes
-                  DURATION_HOURS: :duration_hours
-                  GIBIBYTE_HOURS: :gibibyte_hours
-                  IMAGES: :images
-                  CHARACTERS: :characters
                 end
               end
 
