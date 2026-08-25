@@ -23,6 +23,7 @@ chat_completion = client.chat.completions.create(
   tool_choice: {type: :function, function: {name: "GetWeather"}}
 )
 
+parsed_tool_call_count = 0
 chat_completion
   .choices
   .reject { _1.message.refusal }
@@ -31,8 +32,12 @@ chat_completion
     case tool_call
     when OpenAI::Chat::ChatCompletionMessageFunctionToolCall
       # parsed is an instance of `GetWeather`
-      pp(tool_call.function.parsed)
-    else
-      puts("Unexpected tool call type: #{tool_call.type}")
+      parsed = tool_call.function.parsed
+      next unless GetWeather === parsed
+
+      parsed_tool_call_count += 1
+      pp(parsed)
     end
   end
+
+abort("The chat completion did not contain a parsed GetWeather tool call") if parsed_tool_call_count.zero?

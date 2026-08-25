@@ -127,7 +127,8 @@ multitask(:"format:rbs") do
 end
 
 desc("Format everything")
-multitask(format: [:"format:rb", :"format:rbs"])
+# RuboCop temporarily changes cwd; RBS discovery must not run alongside it.
+task(format: [:"format:rb", :"format:rbs"])
 
 desc("Validate `*.rbs`")
 multitask(:"validate:rbs") do

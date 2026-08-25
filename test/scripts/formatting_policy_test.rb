@@ -260,4 +260,28 @@ class FormattingPolicyTest < Minitest::Test
     assert_includes(prerequisites, "lint:rubyfmt")
     assert_includes(prerequisites, "lint:rbs_format")
   end
+
+  def test_format_runs_ruby_and_rbs_on_the_calling_thread
+    # RuboCop's process-wide chdir must not overlap RBS discovery or file I/O.
+    source = <<~RUBY
+      require "json"
+      require "rake"
+      load "Rakefile"
+      Rake.application.options.thread_pool_size = 2
+      calling_thread = Thread.current
+      calls = []
+      %w[format:rb format:rbs].each do |name|
+        task = Rake::Task[name]
+        task.clear
+        task.enhance do
+          calls << [name, Thread.current == calling_thread]
+        end
+      end
+      Rake::Task["format"].invoke
+      puts JSON.generate(calls)
+    RUBY
+    stdout, stderr, status = Open3.capture3("bundle", "exec", "ruby", "-e", source, chdir: ROOT)
+    assert(status.success?, "#{stdout}\n#{stderr}")
+    assert_equal([["format:rb", true], ["format:rbs", true]], JSON.parse(stdout))
+  end
 end
