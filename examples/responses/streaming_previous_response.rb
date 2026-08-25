@@ -39,6 +39,9 @@ begin
     end
   end
 
+  abort("The initial stream completed without events") if events.empty?
+  abort("The initial stream did not include a response ID") if response_id.empty?
+
   puts("Collected #{events.length} events")
   puts("Response ID: #{response_id}")
   puts("Last event sequence number: #{events.last.sequence_number}.\n")
@@ -120,6 +123,9 @@ begin
       break
     end
   end
+
+  abort("The structured initial stream completed without events") if events.empty?
+  abort("The structured initial stream did not include a response ID") if response_id.empty?
 
   puts("Waiting for the background response to complete...\n")
   sleep(3)
