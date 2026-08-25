@@ -40,8 +40,9 @@ module OpenAILiveSmoke
     error_output.puts("[live-smoke] #{error.message}")
     false
   rescue StandardError => error
-    status = error.respond_to?(:status) && error.status ? " (HTTP #{error.status})" : ""
-    error_output.puts("[live-smoke] #{error.class}#{status}")
+    status = error.respond_to?(:status) ? error.status : nil
+    status_message = status.is_a?(Integer) ? " (HTTP #{status})" : ""
+    error_output.puts("[live-smoke] #{error.class}#{status_message}")
     false
   end
 end

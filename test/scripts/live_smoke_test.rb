@@ -143,6 +143,30 @@ class LiveSmokeTest < Minitest::Test
     [client, models].each(&:verify)
   end
 
+  def test_untrusted_status_values_cannot_leak_secrets_or_inject_log_lines
+    sensitive_status = "403\nfake-sensitive-status-token"
+    failure = StandardError.new("fake-sensitive-exception-message")
+    failure.define_singleton_method(:status) { sensitive_status }
+    models = Minitest::Mock.new
+    models.expect(:list, nil) { raise failure }
+    client = Minitest::Mock.new
+    client.expect(:models, models)
+    error_output = StringIO.new
+
+    refute(
+      OpenAILiveSmoke.run_cli(
+        client: client,
+        model: MODEL,
+        output: StringIO.new,
+        error_output: error_output
+      )
+    )
+
+    assert_equal("[live-smoke] StandardError\n", error_output.string)
+    refute_includes(error_output.string, "fake-sensitive")
+    [client, models].each(&:verify)
+  end
+
   def test_client_initialization_errors_never_print_sensitive_base_urls
     sensitive_base_url = "https://[fake-sensitive-base-url-token"
     environment = {

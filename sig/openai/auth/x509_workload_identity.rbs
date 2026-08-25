@@ -12,6 +12,8 @@ module OpenAI
         ?service_account_id: (String | Symbol)?,
         ?refresh_buffer_seconds: Integer
       ) -> void
+
+      def inspect: -> String
     end
   end
 end

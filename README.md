@@ -400,7 +400,30 @@ The bearer is not cryptographically bound to the certificate; the API separately
 requires an accepted client certificate.
 
 ```ruby
+require "openai"
+
+certificates = OpenSSL::X509::Certificate.load(
+  File.binread(ENV.fetch("OPENAI_CLIENT_CERTIFICATE_CHAIN"))
+)
+raise "Expected an enrolled client certificate" if certificates.empty?
+
+client_certificate, *intermediate_certificates = certificates
+client_private_key = OpenSSL::PKey.read(
+  File.binread(ENV.fetch("OPENAI_CLIENT_KEY")),
+  ENV["OPENAI_CLIENT_KEY_PASSPHRASE"]
+)
+unless client_certificate.check_private_key(client_private_key)
+  raise "The enrolled certificate and private key do not match"
+end
+
+api_origin = ENV.fetch("OPENAI_X509_API_ORIGIN", "https://mtls.api.openai.com")
+api_host = URI(api_origin).host&.downcase
+approved_hosts = ["mtls.auth.openai.com", api_host].freeze
 native_http_client = OpenAI::NetHTTPClient.new do |connection|
+  unless connection.use_ssl? && connection.port == 443 && approved_hosts.include?(connection.address.downcase)
+    raise "Refusing to present the enrolled certificate to an unexpected destination"
+  end
+
   connection.cert = client_certificate
   connection.extra_chain_cert = intermediate_certificates
   connection.key = client_private_key
@@ -409,7 +432,8 @@ end
 transport = OpenAI::Auth::X509Transport.new(
   http_client: native_http_client,
   certificate_identity: :static,
-  proxy: :direct
+  proxy: :direct,
+  api_origin: api_origin
 )
 
 identity = OpenAI::Auth::X509WorkloadIdentity.new(
@@ -434,7 +458,8 @@ transport when rotating credentials. Direct mode rejects ambient proxies; use
 `proxy: :http_connect` only when an HTTP CONNECT proxy is configured. HTTPS
 proxies are rejected before proxy credentials can be transmitted. Arbitrary
 custom transports, Azure/Bedrock providers, and Realtime WebSockets are not
-supported. Preview access must be enabled for the enrolled organization.
+supported. Preview access must be enabled for the organization, and mTLS can be
+configured for the enrolled organization or project.
 
 See the complete [X.509 workload identity live smoke
 example](examples/x509_workload_identity.rb). It performs a real token exchange

@@ -6,6 +6,8 @@ module OpenAI
         transport: OpenAI::Auth::X509Transport
       ) -> void
 
+      def inspect: -> String
+
       def fetch: (?deadline: Float?) -> ::Hash[Symbol, (String | Float)]
     end
   end

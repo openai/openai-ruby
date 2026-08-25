@@ -29,6 +29,13 @@ module OpenAI
         freeze
       end
 
+      # Avoid exposing provider or service-account identifiers in diagnostics.
+      #
+      # @return [String]
+      def inspect
+        "#<#{self.class.name}:0x#{object_id.to_s(16)}>"
+      end
+
       private def validate_identifier(value, name)
         identifier = String.new(value.to_s)
         unless identifier.valid_encoding?

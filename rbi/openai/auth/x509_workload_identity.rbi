@@ -26,6 +26,10 @@ module OpenAI
         refresh_buffer_seconds: 1200
       )
       end
+
+      sig { returns(String) }
+      def inspect
+      end
     end
   end
 end
