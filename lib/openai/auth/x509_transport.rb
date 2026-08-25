@@ -108,8 +108,18 @@ module OpenAI
           raise sanitized, cause: nil
         end
 
-        body = OpenAI::Internal::Util.chain_fused(response.body) do |chunks|
+        stream = Enumerator.new do |chunks|
           response.body.each { |chunk| chunks << chunk }
+
+        rescue OpenAI::Errors::APIConnectionError => error
+          sanitized = sanitized_connection_error(error, url: url, headers: headers, body: safe_request.body)
+          raise unless sanitized
+
+          raise sanitized, cause: nil
+        end
+
+        body = OpenAI::Internal::Util.fused_enum(stream) do
+          OpenAI::Internal::Util.close_fused!(response.body)
 
         rescue OpenAI::Errors::APIConnectionError => error
           sanitized = sanitized_connection_error(error, url: url, headers: headers, body: safe_request.body)
@@ -284,9 +294,39 @@ module OpenAI
       private def sanitized_connection_error(error, url:, headers:, body:)
         sensitive_request = !body.nil? ||
           headers.any? { |name, _value| OpenAI::Internal::Logging.credential_header?(name) }
-        return if !sensitive_request && error.url.query.nil? && error.url.fragment.nil?
+        if !sensitive_request &&
+            !sensitive_protocol_error?(error) &&
+            error.url.query.nil? &&
+            error.url.fragment.nil?
+          return
+        end
 
         error.class.new(url: sanitized_url(url))
+      end
+
+      private def sensitive_protocol_error?(error)
+        seen = {}
+        cause = error
+        loop do
+          begin
+            cause = cause.cause
+          rescue StandardError
+            return true
+          end
+
+          return false if cause.nil?
+
+          identity = cause.object_id
+          return true if seen.key?(identity)
+
+          seen[identity] = true
+          if cause.is_a?(Net::HTTPBadResponse) ||
+              cause.is_a?(Net::HTTPHeaderSyntaxError) ||
+              cause.is_a?(Net::ProtocolError) ||
+              (defined?(Zlib::Error) && cause.is_a?(Zlib::Error))
+            return true
+          end
+        end
       end
 
       private def reject_redirect!(response, url:)
