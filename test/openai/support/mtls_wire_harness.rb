@@ -235,6 +235,11 @@ module OpenAI::Test::MTLSWireHarness
         headers[name.downcase] = value.to_s.strip
       end
 
+      body_length = Integer(headers.fetch("content-length", "0"))
+      if body_length.positive? && connection.read(body_length)&.bytesize != body_length
+        raise IOError, "test request body ended before its declared Content-Length"
+      end
+
       [request_line, headers.freeze]
     end
   end
@@ -348,6 +353,18 @@ module OpenAI::Test::MTLSWireHarness
     ALL_PROXY
     NO_PROXY
   ].freeze
+
+  def self.configure_http_connect_proxy(connection, proxy_uri)
+    unless proxy_uri.scheme == "http"
+      raise ArgumentError, "mTLS wire fixtures support only HTTP CONNECT proxies"
+    end
+
+    connection.proxy_from_env = false
+    connection.proxy_address = proxy_uri.hostname
+    connection.proxy_port = proxy_uri.port
+    connection.proxy_user = URI.decode_www_form_component(proxy_uri.user.to_s)
+    connection.proxy_pass = URI.decode_www_form_component(proxy_uri.password.to_s)
+  end
 
   def self.with_proxy_environment(proxy_uri)
     previous = PROXY_ENV_KEYS.to_h { [_1, ENV[_1]] }

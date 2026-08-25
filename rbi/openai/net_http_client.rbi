@@ -28,7 +28,7 @@ module OpenAI
       params(
         url: URI::Generic,
         deadline: T.nilable(Float),
-        blk: T.proc.params(arg0: Net::HTTP).void
+        blk: T.proc.params(arg0: Net::HTTP, arg1: T.untyped).void
       )
         .void
     end
@@ -55,11 +55,13 @@ module OpenAI
     end
 
     sig do
-      params(request: OpenAI::HTTPClient::Request).returns(
-        OpenAI::HTTPClient::Response
+      params(
+        request: OpenAI::HTTPClient::Request,
+        connection_validator: T.nilable(T.proc.params(connection: Net::HTTP).void)
       )
+        .returns(OpenAI::HTTPClient::Response)
     end
-    def execute(request)
+    def execute(request, &connection_validator)
     end
 
     sig do

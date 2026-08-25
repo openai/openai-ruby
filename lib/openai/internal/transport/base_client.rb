@@ -352,6 +352,13 @@ module OpenAI
           request
         end
 
+        # Validate the effective request after all per-attempt preparation hooks.
+        #
+        # @api private
+        private def validate_prepared_request(request, **_context)
+          request
+        end
+
         # @api private
         #
         # @return [String]
@@ -588,10 +595,13 @@ module OpenAI
               headers: encoded_headers.transform_values(&:dup),
               body: encoded_body
             )
-            prepared_request = prepare_request(
-              attempt_request,
-              redirect_count: redirect_count,
-              retry_count: retry_count
+            prepared_request = validate_prepared_request(
+              prepare_request(
+                attempt_request,
+                redirect_count: redirect_count,
+                retry_count: retry_count
+              ),
+              original_request: request
             )
 
             prepared_url = prepared_request.fetch(:url)

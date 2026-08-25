@@ -1,0 +1,17 @@
+module OpenAI
+  module Auth
+    class X509WorkloadIdentity
+      attr_reader identity_provider_id: String
+
+      attr_reader service_account_id: String
+
+      attr_reader refresh_buffer_seconds: Integer
+
+      def initialize: (
+        ?identity_provider_id: (String | Symbol)?,
+        ?service_account_id: (String | Symbol)?,
+        ?refresh_buffer_seconds: Integer
+      ) -> void
+    end
+  end
+end
