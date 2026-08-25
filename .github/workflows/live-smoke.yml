@@ -1,0 +1,70 @@
+name: Live Smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      include_x509:
+        description: Also verify enrolled X.509 workload identity
+        required: true
+        default: false
+        type: boolean
+
+permissions: {}
+
+jobs:
+  live-smoke:
+    name: live Ruby library smoke
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      github.repository == 'openai/openai-ruby'
+    runs-on: ubuntu-latest
+    environment: ci
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
+        with:
+          ruby-version: "4.0"
+          bundler-cache: true
+      - name: Smoke-test authenticated API requests and streaming
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: bundle exec rake test:live:smoke
+      - name: Smoke-test enrolled X.509 workload identity
+        if: ${{ inputs.include_x509 }}
+        env:
+          OPENAI_X509_CLIENT_CERTIFICATE_CHAIN_PEM: ${{ secrets.OPENAI_X509_CLIENT_CERTIFICATE_CHAIN_PEM }}
+          OPENAI_X509_CLIENT_PRIVATE_KEY_PEM: ${{ secrets.OPENAI_X509_CLIENT_PRIVATE_KEY_PEM }}
+          OPENAI_X509_IDENTITY_PROVIDER_ID: ${{ secrets.OPENAI_X509_IDENTITY_PROVIDER_ID }}
+          OPENAI_X509_SERVICE_ACCOUNT_ID: ${{ secrets.OPENAI_X509_SERVICE_ACCOUNT_ID }}
+          OPENAI_CLIENT_KEY_PASSPHRASE: ${{ secrets.OPENAI_X509_CLIENT_KEY_PASSPHRASE }}
+          OPENAI_X509_PROXY_MODE: direct
+        run: |
+          if [ -z "$OPENAI_X509_CLIENT_CERTIFICATE_CHAIN_PEM" ] ||
+             [ -z "$OPENAI_X509_CLIENT_PRIVATE_KEY_PEM" ] ||
+             [ -z "$OPENAI_X509_IDENTITY_PROVIDER_ID" ] ||
+             [ -z "$OPENAI_X509_SERVICE_ACCOUNT_ID" ]; then
+            echo "The protected ci environment is missing required X.509 smoke-test secrets." >&2
+            exit 1
+          fi
+
+          umask 077
+          chain_file="$(mktemp "$RUNNER_TEMP/openai-x509-chain.XXXXXX")"
+          key_file="$(mktemp "$RUNNER_TEMP/openai-x509-key.XXXXXX")"
+          trap 'rm -f "$chain_file" "$key_file"' EXIT
+          printf '%s' "$OPENAI_X509_CLIENT_CERTIFICATE_CHAIN_PEM" > "$chain_file"
+          printf '%s' "$OPENAI_X509_CLIENT_PRIVATE_KEY_PEM" > "$key_file"
+
+          export OPENAI_CLIENT_CERTIFICATE_CHAIN="$chain_file"
+          export OPENAI_CLIENT_KEY="$key_file"
+          export IDENTITY_PROVIDER_ID="$OPENAI_X509_IDENTITY_PROVIDER_ID"
+          export SERVICE_ACCOUNT_ID="$OPENAI_X509_SERVICE_ACCOUNT_ID"
+          unset OPENAI_X509_CLIENT_CERTIFICATE_CHAIN_PEM OPENAI_X509_CLIENT_PRIVATE_KEY_PEM
+          unset OPENAI_X509_IDENTITY_PROVIDER_ID OPENAI_X509_SERVICE_ACCOUNT_ID
+          bundle exec ruby examples/x509_workload_identity.rb
