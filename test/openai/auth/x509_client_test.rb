@@ -189,6 +189,36 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
     end
   end
 
+  def test_adopting_x509_identity_preserves_a_matching_custom_mtls_base_path
+    custom_base_url = "https://mtls.api.openai.com/v2/custom"
+    api_key_client = OpenAI::Client.new(
+      api_key: "fake-api-key",
+      base_url: custom_base_url,
+      http_client: @transport
+    )
+
+    copied = api_key_client.with_options(workload_identity: @identity)
+
+    assert_equal(custom_base_url, copied.base_url.to_s)
+    assert_same(@transport, copied.requester)
+    refute_nil(copied.workload_identity_auth)
+    assert_equal(custom_base_url, api_key_client.base_url.to_s)
+  end
+
+  def test_adopting_x509_identity_discards_a_mismatched_base_on_the_existing_transport
+    api_key_client = OpenAI::Client.new(
+      api_key: "fake-api-key",
+      base_url: "https://ordinary.example.invalid/v2/custom",
+      http_client: @transport
+    )
+
+    copied = api_key_client.with_options(workload_identity: @identity)
+
+    assert_equal("https://mtls.api.openai.com/v1", copied.base_url.to_s)
+    assert_same(@transport, copied.requester)
+    refute_nil(copied.workload_identity_auth)
+  end
+
   def test_x509_data_residency_uses_only_the_matching_attested_mtls_origin
     origins = {
       global: "https://mtls.api.openai.com",
