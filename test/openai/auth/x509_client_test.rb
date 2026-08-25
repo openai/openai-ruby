@@ -368,6 +368,172 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
     end
   end
 
+  def test_x509_client_retries_transient_issuer_statuses_before_dispatching_the_api_request
+    [408, 409, 429, 500, 503].each do |status|
+      client = OpenAI::Client.new(
+        api_key: nil,
+        workload_identity: @identity,
+        http_client: @transport,
+        max_retries: 2,
+        initial_retry_delay: 0,
+        max_retry_delay: 0
+      )
+      issuer_attempts = 0
+      api_attempts = 0
+      dispatch = lambda do |request|
+        if request.url.host == "mtls.auth.openai.com"
+          issuer_attempts += 1
+          issuer_attempts == 1 ? x509_issuer_failure(status) : x509_issuer_success
+        else
+          api_attempts += 1
+          x509_model_response
+        end
+      end
+
+      @native.stub(:execute, dispatch) do
+        assert_equal("fake-model", client.models.retrieve("fake-model").id)
+      end
+
+      assert_equal(2, issuer_attempts)
+      assert_equal(1, api_attempts)
+    end
+  end
+
+  def test_x509_issuer_retries_honor_configured_budget_and_explicit_server_opt_out
+    cases = [
+      [503, {}, 2, 3, OpenAI::Errors::APIError],
+      [503, {"x-should-retry" => "false"}, 2, 1, OpenAI::Errors::APIError],
+      [400, {"retry-after" => "0"}, 2, 1, OpenAI::Errors::OAuthError],
+      [401, {"retry-after" => "0"}, 2, 1, OpenAI::Errors::OAuthError],
+      [403, {"retry-after" => "0"}, 2, 1, OpenAI::Errors::OAuthError],
+      [404, {"x-should-retry" => "true"}, 2, 1, OpenAI::Errors::APIError]
+    ]
+
+    cases.each do |status, headers, retries, expected_attempts, expected_error|
+      client = OpenAI::Client.new(
+        api_key: nil,
+        workload_identity: @identity,
+        http_client: @transport,
+        max_retries: retries,
+        initial_retry_delay: 0,
+        max_retry_delay: 0
+      )
+      attempts = 0
+      dispatch = lambda do |_request|
+        attempts += 1
+        x509_issuer_failure(status, headers: headers)
+      end
+
+      @native.stub(:execute, dispatch) do
+        error = assert_raises(expected_error) { client.models.retrieve("fake-model") }
+        assert_equal(status, error.status)
+      end
+
+      assert_equal(expected_attempts, attempts)
+    end
+  end
+
+  def test_x509_issuer_retries_honor_per_request_retry_budget
+    client = OpenAI::Client.new(
+      api_key: nil,
+      workload_identity: @identity,
+      http_client: @transport,
+      max_retries: 0,
+      initial_retry_delay: 0,
+      max_retry_delay: 0
+    )
+    issuer_attempts = 0
+    dispatch = lambda do |request|
+      if request.url.host == "mtls.auth.openai.com"
+        issuer_attempts += 1
+        issuer_attempts == 1 ? x509_issuer_failure(503) : x509_issuer_success
+      else
+        x509_model_response
+      end
+    end
+
+    @native.stub(:execute, dispatch) do
+      result = client.models.retrieve("fake-model", request_options: {max_retries: 1})
+      assert_equal("fake-model", result.id)
+    end
+
+    assert_equal(2, issuer_attempts)
+  end
+
+  def test_x509_issuer_retries_honor_safe_seconds_and_millisecond_headers
+    delays = [
+      [{"retry-after" => "0.25"}, 0.25],
+      [{"retry-after-ms" => "125", "retry-after" => "2"}, 0.125],
+      [{"retry-after" => "NaN"}, 0.0],
+      [{"retry-after" => "-10"}, 0.0],
+      [{"retry-after" => "999999999999999999999"}, 5.0],
+      [{"retry-after-ms" => "Infinity", "retry-after" => "0.2"}, 0.2]
+    ]
+
+    delays.each do |headers, expected_delay|
+      client = OpenAI::Client.new(
+        api_key: nil,
+        workload_identity: @identity,
+        http_client: @transport,
+        max_retries: 1,
+        initial_retry_delay: 0,
+        max_retry_delay: 5
+      )
+      issuer_attempts = 0
+      dispatch = lambda do |request|
+        if request.url.host == "mtls.auth.openai.com"
+          issuer_attempts += 1
+          issuer_attempts == 1 ? x509_issuer_failure(429, headers: headers) : x509_issuer_success
+        else
+          x509_model_response
+        end
+      end
+
+      sleeps = []
+      previous_sleep = Thread.current.thread_variable_get(:mock_sleep)
+      Thread.current.thread_variable_set(:mock_sleep, sleeps)
+
+      @native.stub(:execute, dispatch) do
+        assert_equal("fake-model", client.models.retrieve("fake-model").id)
+      end
+
+      assert_equal([expected_delay], sleeps)
+      assert_equal(2, issuer_attempts)
+    ensure
+      Thread.current.thread_variable_set(:mock_sleep, previous_sleep)
+    end
+  end
+
+  def test_x509_issuer_retry_after_cannot_exceed_the_original_request_deadline
+    client = OpenAI::Client.new(
+      api_key: nil,
+      workload_identity: @identity,
+      http_client: @transport,
+      max_retries: 2,
+      timeout: 0.05,
+      initial_retry_delay: 0,
+      max_retry_delay: 5
+    )
+    attempts = 0
+    sleeps = []
+    previous_sleep = Thread.current.thread_variable_get(:mock_sleep)
+    Thread.current.thread_variable_set(:mock_sleep, sleeps)
+    dispatch = lambda do |_request|
+      attempts += 1
+      x509_issuer_failure(429, headers: {"retry-after" => "1"})
+    end
+
+    @native.stub(:execute, dispatch) do
+      error = assert_raises(OpenAI::Errors::APITimeoutError) { client.models.retrieve("fake-model") }
+      assert_match(/timed out during workload identity authentication/, error.message)
+    end
+
+    assert_equal(1, attempts)
+    assert_empty(sleeps)
+  ensure
+    Thread.current.thread_variable_set(:mock_sleep, previous_sleep)
+  end
+
   def test_public_client_completes_real_mtls_exchange_and_model_request
     unless ENV[WIRE_SUBPROCESS] == "1"
       output, status = Open3.capture2e(
@@ -442,5 +608,34 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
     proxy&.close
     issuer&.close
     api&.close
+  end
+
+  private def x509_issuer_success
+    OpenAI::HTTPClient::Response.new(
+      status: 200,
+      headers: {"content-type" => "application/json"},
+      body: JSON.generate(
+        access_token: "fake-issued-token",
+        issued_token_type: "urn:ietf:params:oauth:token-type:access_token",
+        token_type: "Bearer",
+        expires_in: 120
+      )
+    )
+  end
+
+  private def x509_issuer_failure(status, headers: {})
+    OpenAI::HTTPClient::Response.new(
+      status: status,
+      headers: {"x-request-id" => "req_fake"}.merge(headers),
+      body: ""
+    )
+  end
+
+  private def x509_model_response
+    OpenAI::HTTPClient::Response.new(
+      status: 200,
+      headers: {"content-type" => "application/json"},
+      body: JSON.generate(id: "fake-model", created: 1, object: "model", owned_by: "openai")
+    )
   end
 end

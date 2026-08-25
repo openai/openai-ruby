@@ -297,6 +297,11 @@ module OpenAI
           raise
         end
       end
+
+    rescue Timeout::Error => error
+      raise unless x509_request
+
+      raise OpenAI::Errors::APITimeoutError.new(url: request.fetch(:url), message: error.message), cause: nil
     end
 
     private def workload_identity_request?(request)
@@ -308,7 +313,30 @@ module OpenAI
 
     private def prepare_workload_identity_request(request)
       deadline = request[:workload_identity_deadline]
-      token = @workload_identity_auth.get_token(deadline: deadline)
+      attempts = 0
+      begin
+        token = @workload_identity_auth.get_token(deadline: deadline)
+      rescue OpenAI::Errors::APIError => error
+        status = error.status
+        retryable_status = [408, 409, 429].include?(status) ||
+          (status.is_a?(Integer) && (500..599).cover?(status))
+        unless @requester.instance_of?(OpenAI::Auth::X509Transport) &&
+            retryable_status &&
+            attempts < request.fetch(:max_retries) &&
+            self.class.should_retry?(status, headers: error.headers || {})
+          raise
+        end
+
+        delay = retry_delay(error.headers || {}, retry_count: attempts)
+        if deadline && delay >= deadline - OpenAI::Internal::Util.monotonic_secs
+          raise Timeout::Error, "request timed out during workload identity authentication"
+        end
+
+        sleep(delay)
+        attempts += 1
+        retry
+      end
+
       if (context = request[:x509_request_context])
         context[:token] = token.dup.freeze
         context.freeze
@@ -320,6 +348,8 @@ module OpenAI
         deadline
       )
     rescue Timeout::Error => e
+      raise if @requester.instance_of?(OpenAI::Auth::X509Transport)
+
       raise OpenAI::Errors::APITimeoutError.new(url: request.fetch(:url), message: e.message)
     end
 
