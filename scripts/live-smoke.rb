@@ -33,7 +33,7 @@ module OpenAILiveSmoke
   end
 
   def self.run_cli(model:, output:, error_output:, client: nil)
-    client ||= OpenAI::Client.new
+    client ||= OpenAI::Client.new(log_level: :off)
     Runner.new(client: client, model: model, output: output).run
     true
   rescue Failure => error

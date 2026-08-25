@@ -160,6 +160,53 @@ class LiveSmokeTest < Minitest::Test
     refute_includes(error_output, environment.fetch("OPENAI_API_KEY"))
   end
 
+  def test_cli_disables_sdk_debug_logs_even_when_enabled_in_the_environment
+    sensitive_body = "fake-sensitive-response-body"
+    response = OpenAI::HTTPClient::Response.new(
+      status: 400,
+      headers: {"content-type" => "application/json"},
+      body: JSON.generate(error: {message: sensitive_body})
+    )
+    transport = OpenAI::NetHTTPClient.new
+    requests = []
+    dispatch = lambda do |request|
+      requests << request
+      response
+    end
+
+    constructor = OpenAI::Client.method(:new)
+    constructed = nil
+    factory = lambda do |**options|
+      constructed = constructor.call(
+        api_key: "sk-fake-live-smoke-test",
+        http_client: transport,
+        max_retries: 0,
+        **options
+      )
+    end
+
+    previous_log_level = ENV["OPENAI_LOG"]
+    ENV["OPENAI_LOG"] = "debug"
+
+    output, error_output = capture_io do
+      transport.stub(:execute, dispatch) do
+        OpenAI::Client.stub(:new, factory) do
+          refute(OpenAILiveSmoke.run_cli(model: MODEL, output: $stdout, error_output: $stderr))
+        end
+      end
+    end
+
+    assert_equal("", output)
+    assert_equal("[live-smoke] OpenAI::Errors::BadRequestError (HTTP 400)\n", error_output)
+    refute_includes(error_output, sensitive_body)
+    assert_equal(:off, constructed.log_level)
+    assert_nil(constructed.logger)
+    assert_instance_of(OpenAI::HTTPClient::Request, requests.fetch(0))
+  ensure
+    transport&.close
+    previous_log_level.nil? ? ENV.delete("OPENAI_LOG") : ENV["OPENAI_LOG"] = previous_log_level
+  end
+
   def test_manual_workflow_preserves_protected_environment_and_secret_isolation
     path = File.expand_path("../../.github/workflows/live-smoke.yml", __dir__)
     workflow = YAML.safe_load_file(path, aliases: false)
