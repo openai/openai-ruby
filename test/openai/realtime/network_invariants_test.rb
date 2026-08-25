@@ -9,6 +9,7 @@ require "traces/backend/capture"
 require "traces"
 
 Traces.extend(Traces::Backend::Capture::Interface)
+require "traces/provider/async/pool/controller"
 require "traces/provider/protocol/http1"
 
 require_relative "../test_helper"
@@ -67,7 +68,7 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
     refute_includes(traced_target, "signature")
   end
 
-  def test_sideband_traces_include_the_resource_identifier_but_redact_credentials
+  def test_sideband_traces_redact_call_identifiers_and_credentials
     wire_headers = nil
     wire_target = nil
     Traces::Backend::Capture.spans.clear
@@ -96,12 +97,20 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
     end
 
     assert_equal("/v1/realtime?call_id=rtc_resource_identifier", wire_target)
-    assert_equal(wire_target, traced_request_target(method: "GET"))
+    assert_equal(
+      "/v1/realtime?call_id=[REDACTED]",
+      traced_request_target(method: "GET")
+    )
     assert_equal("Bearer origin-secret", Array(wire_headers.fetch("authorization")).first)
     assert_equal("azure-secret", Array(wire_headers.fetch("api-key")).first)
     traced_headers = traced_request_headers(method: "GET")
     assert_equal("[REDACTED]", traced_headers.fetch("authorization"))
     assert_equal("[REDACTED]", traced_headers.fetch("api-key"))
+    Traces::Backend::Capture.spans.each do |span|
+      refute_includes(span.attributes.to_s, "rtc_resource_identifier")
+      refute_includes(span.attributes.to_s, "origin-secret")
+      refute_includes(span.attributes.to_s, "azure-secret")
+    end
   end
 
   def test_binary_encoded_json_is_sent_as_a_text_frame
@@ -122,6 +131,59 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
     end
 
     assert_equal(Protocol::WebSocket::TextMessage, message_class)
+  end
+
+  def test_sideband_traces_redact_encoded_and_repeated_call_identifier_keys
+    handler = -> (_connection) { nil }
+
+    with_server(handler) do |url|
+      transport = OpenAI::Realtime::Transports::AsyncWebSocket.new
+      queries = {
+        "call%5Fid=rtc_encoded_identifier" => "call%5Fid=[REDACTED]",
+        "call_id=rtc_first_identifier&call_id=rtc_second_identifier" => "call_id=[REDACTED]&call_id=[REDACTED]"
+      }
+
+      queries.each do |wire_query, trace_query|
+        Traces::Backend::Capture.spans.clear
+        target = url.dup
+        target.query = wire_query
+
+        transport.open(url: target, headers: {}, timeout: 2) { |_socket| nil }
+
+        assert_equal("/v1/realtime?#{trace_query}", traced_request_target(method: "GET"))
+        Traces::Backend::Capture.spans.each do |span|
+          refute_includes(span.attributes.to_s, "rtc_encoded_identifier")
+          refute_includes(span.attributes.to_s, "rtc_first_identifier")
+          refute_includes(span.attributes.to_s, "rtc_second_identifier")
+        end
+      end
+    end
+  end
+
+  def test_transport_normalizes_empty_paths_for_standard_and_sideband_connections
+    request_targets = []
+    handler = -> (_connection) { nil }
+
+    with_server(
+      handler,
+      wrap: lambda { |websocket|
+        lambda do |request|
+          request_targets << request.path
+          websocket.call(request)
+        end
+      }
+    ) do |url|
+      transport = OpenAI::Realtime::Transports::AsyncWebSocket.new
+
+      ["model=gpt-realtime", "call_id=rtc_example"].each do |query|
+        target = url.dup
+        target.path = ""
+        target.query = query
+        transport.open(url: target, headers: {}, timeout: 2) { |_socket| nil }
+      end
+    end
+
+    assert_equal(["/?model=gpt-realtime", "/?call_id=rtc_example"], request_targets)
   end
 
   def test_ipv6_websocket_handshake_uses_a_bracketed_authority
@@ -240,6 +302,72 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
         message = transport.open(url: url, headers: {}, timeout: 2, &:read)
         assert_equal("{\"type\":\"session.created\"}", message.to_str)
       end
+    end
+  end
+
+  def test_sideband_proxy_keeps_call_ids_and_both_credentials_out_of_traces
+    Traces::Backend::Capture.spans.clear
+    wire_target = nil
+    handler = -> (_connection) { nil }
+
+    with_server(
+      handler,
+      wrap: lambda { |websocket|
+        lambda do |request|
+          wire_target = request.path
+          websocket.call(request)
+        end
+      }
+    ) do |target_url|
+      proxy = TCPServer.new("127.0.0.1", 0)
+      proxy_thread = Thread.new do
+        downstream = proxy.accept
+        read_http_headers(downstream)
+        upstream = TCPSocket.new("127.0.0.1", target_url.port)
+        downstream.write("HTTP/1.1 200 Connection Established\r\n\r\n")
+        relay(downstream, upstream)
+      ensure
+        downstream&.close
+        upstream&.close
+      end
+
+      with_env(
+        "http_proxy" => "http://proxy-user:proxy-pass@127.0.0.1:#{proxy.local_address.ip_port}",
+        "HTTP_PROXY" => nil,
+        "no_proxy" => "",
+        "NO_PROXY" => ""
+      ) do
+        client = OpenAI::Client.new(
+          api_key: "origin-secret",
+          base_url: "http://realtime-proxy-test.invalid:#{target_url.port}/v1",
+          timeout: 2
+        )
+
+        client.realtime.connect_to_call(call_id: "rtc_proxied_identifier") do |_connection|
+          nil
+        end
+      end
+
+      proxy_thread.join(2)
+      refute_predicate(proxy_thread, :alive?)
+      assert_equal("/v1/realtime?call_id=rtc_proxied_identifier", wire_target)
+      assert_equal("/v1/realtime?call_id=[REDACTED]", traced_request_target(method: "GET"))
+      assert_equal("[REDACTED]", traced_request_headers(method: "GET").fetch("authorization"))
+      assert_equal(
+        "[REDACTED]",
+        traced_request_headers(method: "CONNECT").fetch("proxy-authorization")
+      )
+
+      Traces::Backend::Capture.spans.each do |span|
+        refute_includes(span.attributes.to_s, "rtc_proxied_identifier")
+        refute_includes(span.attributes.to_s, "origin-secret")
+        refute_includes(span.attributes.to_s, "proxy-pass")
+      end
+
+    ensure
+      proxy&.close
+      proxy_thread&.kill
+      proxy_thread&.join
     end
   end
 

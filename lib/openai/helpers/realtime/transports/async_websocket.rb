@@ -44,6 +44,74 @@ module OpenAI
 
         private_constant :TraceSafeHeaders
 
+        # HTTP/1 tracing observes the request target passed to #write_request.
+        # Keep that target redacted while restoring the real call ID only at the
+        # private connection's first serialized request-line boundary.
+        class TraceSafeRequestStream
+          def initialize(stream, trace_request_line:, wire_request_line:)
+            @stream = stream
+            @trace_request_line = trace_request_line
+            @wire_request_line = wire_request_line
+            @first_write = true
+          end
+
+          def write(data)
+            if @first_write
+              @first_write = false
+              unless data == @trace_request_line
+                raise IOError, "Unexpected Realtime WebSocket request-line serialization."
+              end
+
+              data = @wire_request_line
+            end
+
+            @stream.write(data)
+          end
+        end
+
+        private_constant :TraceSafeRequestStream
+
+        module TraceSafeRequestWriter
+          def write_request(authority, method, target, version, headers)
+            trace_target = target.gsub(/([?&])([^&=]+)(?:=[^&]*)?/) do |parameter|
+              separator = Regexp.last_match(1)
+              name = Regexp.last_match(2)
+              if URI.decode_www_form_component(name) == "call_id"
+                "#{separator}#{name}=[REDACTED]"
+              else
+                parameter
+              end
+            end
+
+            original_stream = @stream
+            @stream = TraceSafeRequestStream.new(
+              original_stream,
+              trace_request_line: "#{method} #{trace_target} #{version}\r\n",
+              wire_request_line: "#{method} #{target} #{version}\r\n"
+            )
+
+            super(authority, method, trace_target, version, headers)
+          ensure
+            @stream = original_stream
+          end
+        end
+
+        private_constant :TraceSafeRequestWriter
+
+        class TraceSafeProtocol
+          def initialize(protocol)
+            @protocol = protocol
+          end
+
+          def client(peer, **options)
+            @protocol.client(peer, **options).extend(TraceSafeRequestWriter)
+          end
+
+          def to_s = @protocol.to_s
+        end
+
+        private_constant :TraceSafeProtocol
+
         # Async's ordinary framer close flushes buffered output. Exceptional cleanup
         # must instead close the raw socket first, then release the acquired pool slot.
         module AbortableFramer
@@ -134,10 +202,16 @@ module OpenAI
             options[:ssl_context] = build_tls_context(url)
           end
 
+          sideband = sideband_call?(url)
+          endpoint_url = url.dup
+          endpoint_url.query = nil if sideband
+
           endpoint = ::Async::HTTP::Endpoint.parse(
-            url.to_s,
+            endpoint_url.to_s,
             **options
           )
+          request_target = endpoint.path
+          request_target = "#{request_target}?#{url.query}" if sideband
           proxy_client = nil
           if (proxy = proxy_uri(url))
             proxy_endpoint = ::Async::HTTP::Endpoint.parse(proxy_url(proxy).to_s)
@@ -155,11 +229,18 @@ module OpenAI
           # remain installed on the socket and would otherwise terminate healthy idle
           # Realtime sessions after the ordinary HTTP request timeout.
           ::Kernel.Sync() do
-            client = ::Async::WebSocket::Client.open(endpoint)
+            client_options = sideband ? {protocol: TraceSafeProtocol.new(endpoint.protocol)} : {}
+            client = ::Async::WebSocket::Client.open(endpoint, **client_options)
             connection = nil
             socket = nil
             begin
-              connection = negotiate(client, endpoint, headers: headers, timeout: timeout)
+              connection = negotiate(
+                client,
+                endpoint,
+                request_target: request_target,
+                headers: headers,
+                timeout: timeout
+              )
               socket = Socket.new(connection, url: url)
               begin
                 yield(socket)
@@ -193,15 +274,21 @@ module OpenAI
           )
         end
 
-        private def negotiate(client, endpoint, headers:, timeout:)
+        private def negotiate(client, endpoint, request_target:, headers:, timeout:)
           safe_headers = trace_safe_headers(headers)
           operation = lambda do
-            client.connect(authority(endpoint.url), endpoint.path, headers: safe_headers)
+            client.connect(authority(endpoint.url), request_target, headers: safe_headers)
           end
 
           return operation.call if timeout.nil?
 
           ::Async::Task.current.with_timeout(timeout, &operation)
+        end
+
+        private def sideband_call?(url)
+          return false unless url.query
+
+          URI.decode_www_form(url.query).any? { |name, _value| name == "call_id" }
         end
 
         private def build_tls_context(url)

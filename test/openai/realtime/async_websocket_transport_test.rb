@@ -36,6 +36,19 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     end
   end
 
+  def test_sideband_connections_work_without_loading_a_trace_provider
+    handler = lambda do |connection|
+      write_event(connection, **JSON.parse(text_delta("sideband connected"), symbolize_names: true))
+    end
+
+    with_websocket_server(handler) do |client|
+      event = client.realtime.connect_to_call(call_id: "rtc_example", &:receive)
+
+      assert_instance_of(OpenAI::Realtime::ResponseTextDeltaEvent, event)
+      assert_equal("sideband connected", event.delta)
+    end
+  end
+
   def test_default_tls_rejects_an_untrusted_certificate
     key = OpenSSL::PKey::RSA.new(2_048)
     certificate = issue_certificate(
@@ -101,6 +114,15 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
 
       assert_instance_of(OpenAI::Realtime::ResponseTextDeltaEvent, event)
       assert_equal("mutual TLS connected", event.delta)
+
+      sideband_event = client.realtime.connect_to_call(
+        call_id: "rtc_example",
+        transport: transport,
+        &:receive
+      )
+
+      assert_instance_of(OpenAI::Realtime::ResponseTextDeltaEvent, sideband_event)
+      assert_equal("mutual TLS connected", sideband_event.delta)
     end
   end
 
