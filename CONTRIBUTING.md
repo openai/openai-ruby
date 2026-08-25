@@ -171,6 +171,51 @@ Every `examples/**/*.rb` file must be classified as covered or explicitly
 excluded with a reason. In GitHub Actions, live execution is available only
 through the manually dispatched `Examples E2E` workflow.
 
+### Optional live library smoke tests
+
+Run a short, optional smoke test against the real API with an API key in your
+environment:
+
+```bash
+$ OPENAI_API_KEY=sk-example bundle exec rake test:live:smoke
+```
+
+The test verifies model discovery, a normal Responses API request, and a
+completed streaming response. Override the default `gpt-4o-mini` model with
+`OPENAI_LIVE_SMOKE_MODEL` when needed. It emits only pass/fail diagnostics,
+never API response content, request bodies, or credentials.
+
+To also verify a real X.509 issuer exchange and a certificate-authenticated API
+request, keep `OPENAI_API_KEY` available for the standard smoke checks and
+provide the enrolled certificate/key paths and mapped provider/account IDs
+documented in the README, then run:
+
+```bash
+$ OPENAI_LIVE_SMOKE_X509=1 bundle exec rake test:live:smoke
+```
+
+GitHub Actions exposes the same checks through the optional, manually dispatched
+`Live Smoke` workflow. Its standard smoke runs in the existing `ci` environment.
+The optional X.509 job runs only after the standard smoke succeeds, is disabled
+by default, and requires the following secrets in the separate, protected
+`x509-live-smoke` environment:
+
+- `OPENAI_X509_CLIENT_CERTIFICATE_CHAIN_PEM`
+- `OPENAI_X509_CLIENT_PRIVATE_KEY_PEM`
+- `OPENAI_X509_IDENTITY_PROVIDER_ID`
+- `OPENAI_X509_SERVICE_ACCOUNT_ID`
+- `OPENAI_X509_CLIENT_KEY_PASSPHRASE` when the private key is encrypted.
+
+The X.509 environment requires independent SDK-team approval, prevents
+self-review, disables administrator bypasses, and runs only on the protected
+default branch. X.509 secrets are available only to the explicitly selected
+X.509 job. Certificate files are mode-restricted, short-lived runner files, raw
+PEM variables are removed before the SDK starts, and credential files are never
+uploaded as artifacts. The GitHub-hosted runner always uses a direct X.509
+connection. Local runs may set
+`OPENAI_X509_PROXY_MODE=http_connect` when an explicitly approved HTTP CONNECT
+proxy is configured. Live smoke tests are not required pull-request checks.
+
 ## Linting and formatting
 
 [rubyfmt](https://github.com/fables-tales/rubyfmt) owns Ruby source and `*.rbi` signature layout. The `scripts/rubyfmt` launcher uses version 0.14.1 and downloads a checksum-verified release into your user cache when needed. To use an existing installation, set `RUBYFMT` to an executable of that exact version.
