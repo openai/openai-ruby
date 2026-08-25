@@ -2,9 +2,10 @@
 
 The Ruby SDK provides a typed, block-scoped WebSocket client for server-side
 Realtime text sessions, committed-turn transcription, and one-turn voice
-workflows. The implementation stays at one cohesive boundary: authenticated
-WebSocket connection setup, protocol event validation, deterministic cleanup,
-and synchronous event flow.
+workflows, plus sideband control of existing WebRTC or SIP calls. The
+implementation stays at one cohesive boundary: authenticated WebSocket
+connection setup, protocol event validation, deterministic cleanup, and
+synchronous event flow.
 
 ## Installation
 
@@ -63,7 +64,8 @@ internally:
 
 - `session.update(type:, output_modalities:, instructions:, ...)`
 - `conversation.items.create(type:, role:, content:, ...)`
-- `conversation.items.retrieve(item_id:)` and `delete(item_id:)`
+- `conversation.items.retrieve(item_id:)`, `delete(item_id:)`, and
+  `truncate(item_id:, content_index:, audio_end_ms:)`
 - `response.create(...)` and `response.cancel(...)`
 - `input_audio_buffer.append(audio:)`, `append_bytes(bytes)`, `commit`, and
   `clear`
@@ -272,6 +274,62 @@ causes. The example deliberately leaves output filenames, overwrite policy,
 and filesystem durability to the caller rather than claiming a portable secure
 file-publication contract.
 
+## Control an existing WebRTC or SIP call
+
+Use `connect_to_call` to attach a server-side control WebSocket to an existing
+WebRTC or SIP call. Obtain its call ID from a trusted application-owned WebRTC
+session or a verified `realtime.call.incoming` webhook, and authorize the
+application's access to that call before connecting:
+
+```ruby
+instructions = "Apply server-side application policy."
+
+client.realtime.connect_to_call(call_id: call_id) do |connection|
+  connection.session.update(
+    type: :realtime,
+    instructions: instructions
+  )
+
+  connection.each do |event|
+    next unless event.is_a?(OpenAI::Realtime::SessionUpdatedEvent)
+
+    break if event.session.instructions == instructions
+  end
+end
+```
+
+The block receives an `OpenAI::Realtime::SidebandConnection`, which inherits
+the ordinary typed session, response, conversation, and event-stream helpers.
+Only sideband connections expose `output_audio_buffer.clear`, the
+WebRTC/SIP-specific control for discarding queued response audio. To interrupt
+an active response without leaving unheard audio in the conversation, preserve
+the protocol order:
+
+```ruby
+connection.response.cancel
+connection.conversation.items.truncate(
+  item_id: assistant_item_id,
+  content_index: 0,
+  audio_end_ms: played_audio_ms
+)
+connection.output_audio_buffer.clear
+```
+
+The SDK owns and URL-encodes the `call_id` handshake query parameter. The real
+call ID remains in the connection URL and is sent on the wire; the default
+transport redacts it from optional HTTP request-target and endpoint traces,
+and `RealtimeConnectionError#url` also redacts it. API keys and other
+sensitive headers remain redacted. Sideband connections inherit the same
+authentication, endpoint override, proxy, TLS, timeout, block-lifetime, and
+exceptional-abort behavior as standard Realtime WebSockets.
+Closing the sideband connection does not hang up the existing call: call
+lifetime and explicit `client.realtime.calls.hangup(call_id)` remain the
+application owner's responsibility.
+
+The runnable [`sideband.rb`](examples/realtime/sideband.rb) example applies
+server-side session instructions, requires a typed `session.updated` event
+confirming those instructions, and emits metadata-only diagnostics.
+
 ## Event compatibility
 
 Known events are validated against the SDK's generated Realtime event unions.
@@ -399,9 +457,8 @@ handshake.
 ## Current scope
 
 The examples in this guide cover local function calling, image input, and MCP
-approval through the generic Realtime connection API. They do not add
-workflow-specific convenience methods or change production runtime behavior.
-Continuous microphone capture, concurrent live captioning, live response-audio playback,
-WebRTC/SDP lifecycle helpers, SIP or sideband helpers, and translation
-connections remain out of scope. Existing generated HTTP resources remain
-generated-code-owned.
+approval through the generic Realtime connection API, alongside sideband
+control of existing WebRTC and SIP calls. Continuous microphone capture,
+concurrent live captioning, full-duplex conversation, WebRTC/SDP call-creation
+helpers, SIP call-ownership orchestration, and translation connections remain
+out of scope. Existing generated HTTP resources remain generated-code-owned.

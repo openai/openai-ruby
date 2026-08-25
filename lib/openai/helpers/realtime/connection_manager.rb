@@ -25,7 +25,8 @@ module OpenAI
         websocket_base_url:,
         transport:,
         request_options:,
-        transport_options:
+        transport_options:,
+        connection_class: OpenAI::Realtime::Connection
       )
         @client = client
         @query = query
@@ -37,6 +38,7 @@ module OpenAI
         @websocket_base_url = websocket_base_url&.to_s&.dup&.freeze
         @transport = transport
         @request_options = request_options
+        @connection_class = connection_class
         transport_options = transport_options.dup.freeze
         reserved_options = transport_options.keys.select do |key|
           (key.is_a?(String) || key.is_a?(Symbol)) && RESERVED_TRANSPORT_OPTIONS.include?(key.to_sym)
@@ -81,7 +83,7 @@ module OpenAI
                 **@transport_options
               ) do |socket|
                 mark_handshake_completed.call
-                connection = OpenAI::Realtime::Connection.new(socket: socket, url: request.fetch(:url))
+                connection = @connection_class.new(socket: socket, url: request.fetch(:url))
                 begin
                   yield(connection)
                 ensure

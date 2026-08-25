@@ -76,6 +76,35 @@ class OpenAI::Test::RealtimeAuthRetryTest < Minitest::Test
     assert_equal(1, deadlines.uniq.length)
   end
 
+  def test_sideband_workload_identity_refreshes_once_without_changing_call_ownership
+    client = workload_identity_client
+    transport = RejectOnceTransport.new
+    tokens = ["stale-token", "fresh-token"]
+    invalidations = 0
+
+    get_token = lambda do |deadline:|
+      refute_nil(deadline)
+      tokens.shift
+    end
+
+    client.workload_identity_auth.stub(:get_token, get_token) do
+      client.workload_identity_auth.stub(:invalidate_token, -> { invalidations += 1 }) do
+        client.realtime.connect_to_call(call_id: "rtc_123", transport: transport) do |connection|
+          assert_instance_of(OpenAI::Realtime::SidebandConnection, connection)
+        end
+      end
+    end
+
+    assert_equal(1, invalidations)
+    assert_equal(2, transport.attempts.length)
+    assert_equal("Bearer stale-token", transport.attempts.fetch(0).dig(:headers, "authorization"))
+    assert_equal("Bearer fresh-token", transport.attempts.fetch(1).dig(:headers, "authorization"))
+    assert_equal(
+      ["wss://example.com/v1/realtime?call_id=rtc_123"] * 2,
+      transport.attempts.map { _1.fetch(:url).to_s }
+    )
+  end
+
   def test_workload_identity_does_not_retry_a_second_upgrade_401
     client = workload_identity_client
     transport = RejectOnceTransport.new(reject_every_attempt: true)

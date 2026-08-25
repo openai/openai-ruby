@@ -33,6 +33,16 @@ module OpenAI
           def create: (**untyped params) -> nil
           def delete: (item_id: String, ?event_id: String?) -> nil
           def retrieve: (item_id: String, ?event_id: String?) -> nil
+          def truncate: (
+            item_id: String,
+            content_index: Integer,
+            audio_end_ms: Integer,
+            ?event_id: String?
+          ) -> nil
+        end
+
+        class OutputAudioBuffer < Base
+          def clear: (?event_id: String?) -> nil
         end
       end
     end

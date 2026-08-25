@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
       "examples/realtime/function_calling.rb",
       "examples/realtime/image_input.rb",
       "examples/realtime/mcp_approval.rb",
+      "examples/realtime/sideband.rb",
       "examples/realtime/websocket_transcription.rb",
       "examples/realtime/websocket_text.rb",
       "examples/realtime/websocket_voice_turn.rb"

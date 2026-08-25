@@ -104,6 +104,26 @@ module OpenAI
             compact_event(type: :"conversation.item.retrieve", item_id: item_id, event_id: event_id)
           )
         end
+
+        def truncate(item_id:, content_index:, audio_end_ms:, event_id: nil)
+          @connection.send_event(
+            compact_event(
+              type: :"conversation.item.truncate",
+              item_id: item_id,
+              content_index: content_index,
+              audio_end_ms: audio_end_ms,
+              event_id: event_id
+            )
+          )
+        end
+      end
+
+      class OutputAudioBuffer < Base
+        def clear(event_id: nil)
+          @connection.send_event(
+            compact_event(type: :"output_audio_buffer.clear", event_id: event_id)
+          )
+        end
       end
     end
   end

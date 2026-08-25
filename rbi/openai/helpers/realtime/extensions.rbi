@@ -121,6 +121,30 @@ module OpenAI
 
       sig do
         params(
+          call_id: String,
+          websocket_base_url: T.nilable(String),
+          request_options: T.nilable(OpenAI::RequestOptions::OrHash),
+          transport: T.untyped,
+          transport_options: T::Hash[Symbol, T.untyped],
+          block: T
+            .proc
+            .params(connection: OpenAI::Realtime::SidebandConnection)
+            .returns(T.untyped)
+        )
+          .returns(T.untyped)
+      end
+      def connect_to_call(
+        call_id:,
+        websocket_base_url: nil,
+        request_options: nil,
+        transport: nil,
+        transport_options: {},
+        &block
+      )
+      end
+
+      sig do
+        params(
           websocket_base_url: T.nilable(String),
           request_options: T.nilable(OpenAI::RequestOptions::OrHash),
           transport: T.untyped,
