@@ -420,10 +420,11 @@ identity = OpenAI::Auth::X509WorkloadIdentity.new(
 client = OpenAI::Client.new(
   api_key: nil,
   workload_identity: identity,
-  http_client: transport
+  http_client: transport,
+  base_url: "#{transport.api_origin}/v1"
 )
 
-model = client.models.list.first
+model = client.models.list.data.first
 ```
 
 The application owns its certificate, key, trust settings, and native HTTP
@@ -439,6 +440,21 @@ See the complete [X.509 workload identity live smoke
 example](examples/x509_workload_identity.rb). It performs a real token exchange
 and API request only when an enrolled certificate, private key, identity-provider
 ID, and mapped service-account ID are explicitly supplied.
+
+Keep these values in a private environment file outside your checkout or in a
+secret manager, then run the example without an API key:
+
+```sh
+export OPENAI_CLIENT_CERTIFICATE_CHAIN=/secure/path/client-chain.pem
+export OPENAI_CLIENT_KEY=/secure/path/client-key.pem
+export IDENTITY_PROVIDER_ID=idp_example
+export SERVICE_ACCOUNT_ID=svc_acct_example
+
+ruby examples/x509_workload_identity.rb
+```
+
+Set `OPENAI_X509_PROXY_MODE=http_connect` only when an approved HTTP CONNECT
+proxy is configured. Encrypted keys can use `OPENAI_CLIENT_KEY_PASSPHRASE`.
 
 ### Kubernetes Service Account
 

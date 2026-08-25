@@ -65,6 +65,15 @@ class OpenAI::Test::GemPackagingTest < Minitest::Test
       environment = {
         "GEM_HOME" => install_directory,
         "GEM_PATH" => ([install_directory] + Gem.path).join(File::PATH_SEPARATOR),
+        "OPENAI_X509_EXPECTED_GEM_ROOT" => install_directory,
+        "OPENAI_API_KEY" => nil,
+        "OPENAI_ADMIN_KEY" => nil,
+        "OPENAI_BASE_URL" => nil,
+        "OPENAI_CUSTOM_HEADERS" => nil,
+        "OPENAI_LOG" => nil,
+        "OPENAI_ORG_ID" => nil,
+        "OPENAI_PROJECT_ID" => nil,
+        "OPENAI_WEBHOOK_SECRET" => nil,
         "BUNDLE_GEMFILE" => nil,
         "RUBYOPT" => nil,
         "RUBYLIB" => nil

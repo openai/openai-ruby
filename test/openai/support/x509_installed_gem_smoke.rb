@@ -2,7 +2,22 @@
 
 # This runs in an isolated Ruby process with only the built gem on its SDK load
 # path. The source checkout supplies ephemeral test PKI, never SDK classes.
+expected_root = File.realpath(ENV.fetch("OPENAI_X509_EXPECTED_GEM_ROOT"))
+installed_specifications = Gem::Specification.find_all_by_name("openai").select do |specification|
+  File.realpath(specification.base_dir) == expected_root
+end
+
+unless installed_specifications.one?
+  raise "Expected exactly one OpenAI gem in the isolated installation"
+end
+
+installed_specifications.fetch(0).activate
 require "openai"
+
+loaded_root = File.realpath(Gem.loaded_specs.fetch("openai").full_gem_path)
+unless loaded_root.start_with?("#{expected_root}#{File::SEPARATOR}")
+  raise "The smoke process loaded an openai gem outside its isolated installation"
+end
 
 module OpenAI
   module Test
@@ -27,7 +42,10 @@ issuer = harness::MTLSServer.new(
 api = harness::MTLSServer.new(
   hostname: hostnames.fetch(1),
   pki: pki,
-  body: {id: "fake-packaged-model", created: 1, object: "model", owned_by: "openai"}
+  body: {
+    object: "list",
+    data: [{id: "fake-packaged-model", created: 1, object: "model", owned_by: "openai"}]
+  }
 )
 proxy = harness::ConnectProxy.new(
   authority_ports: {
@@ -58,7 +76,7 @@ client = OpenAI::Client.new(api_key: nil, workload_identity: identity, http_clie
 
 begin
   harness.with_proxy_environment(proxy.uri) do
-    result = client.models.retrieve("fake-packaged-model")
+    result = client.models.list.data.first
     raise "Unexpected installed-gem API result" unless result.id == "fake-packaged-model"
   end
 

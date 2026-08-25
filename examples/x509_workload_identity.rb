@@ -28,10 +28,10 @@ raise ArgumentError, "The enrolled certificate is not yet valid" if now < leaf.n
 raise ArgumentError, "The enrolled certificate has expired" if now > leaf.not_after
 
 api_origin = ENV.fetch("OPENAI_X509_API_ORIGIN", "https://mtls.api.openai.com")
-api_host = URI(api_origin).host
+api_host = URI(api_origin).host&.downcase
 approved_hosts = ["mtls.auth.openai.com", api_host].freeze
 native_http_client = OpenAI::NetHTTPClient.new do |connection|
-  unless connection.use_ssl? && connection.port == 443 && approved_hosts.include?(connection.address)
+  unless connection.use_ssl? && connection.port == 443 && approved_hosts.include?(connection.address.downcase)
     raise ArgumentError, "Refusing to present the enrolled certificate to an unexpected destination"
   end
 
@@ -50,10 +50,15 @@ identity = OpenAI::Auth::X509WorkloadIdentity.new(
   identity_provider_id: ENV.fetch("IDENTITY_PROVIDER_ID"),
   service_account_id: ENV.fetch("SERVICE_ACCOUNT_ID")
 )
-client = OpenAI::Client.new(api_key: nil, workload_identity: identity, http_client: transport)
+client = OpenAI::Client.new(
+  api_key: nil,
+  workload_identity: identity,
+  http_client: transport,
+  base_url: "#{transport.api_origin}/v1"
+)
 
 begin
-  model = client.models.list.first
+  model = client.models.list.data.first
   raise "The enrolled service account cannot access any models" if model.nil?
 
   puts("[x509] real issuer exchange and mTLS API request succeeded")
