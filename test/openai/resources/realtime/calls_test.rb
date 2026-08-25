@@ -3,6 +3,14 @@
 require_relative "../../test_helper"
 
 class OpenAI::Test::Resources::Realtime::CallsTest < OpenAI::Test::ResourceTest
+  def test_create_required_params
+    response = @openai.realtime.calls.create(sdp: "sdp")
+
+    assert_pattern do
+      response => Object
+    end
+  end
+
   def test_accept_required_params
     response = @openai.realtime.calls.accept("call_id", type: :realtime)
 

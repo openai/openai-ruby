@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    module Realtime
+      type call_create_params =
+        { sdp: String, session: OpenAI::Realtime::RealtimeSessionCreateRequest }
+        & OpenAI::Internal::Type::request_parameters
+
+      class CallCreateParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor sdp: String
+
+        attr_reader session: OpenAI::Realtime::RealtimeSessionCreateRequest?
+
+        def session=: (
+          OpenAI::Realtime::RealtimeSessionCreateRequest
+        ) -> OpenAI::Realtime::RealtimeSessionCreateRequest
+
+        def initialize: (
+          sdp: String,
+          ?session: OpenAI::Realtime::RealtimeSessionCreateRequest,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          sdp: String,
+          session: OpenAI::Realtime::RealtimeSessionCreateRequest,
+          request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end
