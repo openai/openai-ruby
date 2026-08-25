@@ -1388,6 +1388,11 @@ module OpenAI
                 sig { returns(T.nilable(Float)) }
                 attr_accessor :quantity
 
+                # The unit of the `quantity` value. If no single supported unit applies to the
+                # result, this field is `null`.
+                sig { returns(T.nilable(T.any(String, OpenAI::Admin::Organization::CostQuantityUnit::OrSymbol))) }
+                attr_accessor :quantity_unit
+
                 # The aggregated costs details of the specific time bucket.
                 sig do
                   params(
@@ -1401,6 +1406,8 @@ module OpenAI
                     project_id: T.nilable(String),
 
                     quantity: T.nilable(Float),
+
+                    quantity_unit: T.nilable(T.any(String, OpenAI::Admin::Organization::CostQuantityUnit::OrSymbol)),
 
                     object: Symbol
                   )
@@ -1427,6 +1434,10 @@ module OpenAI
                   # result.
                   quantity: nil,
 
+                  # The unit of the `quantity` value. If no single supported unit applies to the
+                  # result, this field is `null`.
+                  quantity_unit: nil,
+
                   object: :"organization.costs.result"
                 )
                 end
@@ -1439,7 +1450,8 @@ module OpenAI
                       api_key_id: T.nilable(String),
                       line_item: T.nilable(String),
                       project_id: T.nilable(String),
-                      quantity: T.nilable(Float)
+                      quantity: T.nilable(Float),
+                      quantity_unit: T.nilable(T.any(String, OpenAI::Admin::Organization::CostQuantityUnit::OrSymbol))
                     }
                   )
                 end

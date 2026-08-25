@@ -3,7 +3,12 @@ module OpenAI
     module Admin
       module Organization
         type project_create_params =
-          { name: String, external_key_id: String?, geography: String? }
+          {
+            name: String,
+            external_key_id: String?,
+            geography: String?,
+            residency: OpenAI::Models::Admin::Organization::project_residency?
+          }
           & OpenAI::Internal::Type::request_parameters
 
         class ProjectCreateParams < OpenAI::Internal::Type::BaseModel
@@ -16,10 +21,13 @@ module OpenAI
 
           attr_accessor geography: String?
 
+          attr_accessor residency: OpenAI::Models::Admin::Organization::project_residency?
+
           def initialize: (
             name: String,
             ?external_key_id: String?,
             ?geography: String?,
+            ?residency: OpenAI::Models::Admin::Organization::project_residency?,
             ?request_options: OpenAI::request_opts
           ) -> void
 
@@ -27,6 +35,7 @@ module OpenAI
             name: String,
             external_key_id: String?,
             geography: String?,
+            residency: OpenAI::Models::Admin::Organization::project_residency?,
             request_options: OpenAI::RequestOptions
           }
         end

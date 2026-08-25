@@ -40,6 +40,13 @@ module OpenAI
           sig { returns(T.nilable(String)) }
           attr_accessor :name
 
+          # The residency configuration for the project.
+          sig { returns(T.nilable(OpenAI::Admin::Organization::ProjectResidency::TaggedSymbol)) }
+          attr_reader :residency
+
+          sig { params(residency: OpenAI::Admin::Organization::ProjectResidency::OrSymbol).void }
+          attr_writer :residency
+
           # `active` or `archived`
           sig { returns(T.nilable(String)) }
           attr_accessor :status
@@ -57,6 +64,8 @@ module OpenAI
               external_key_id: T.nilable(String),
 
               name: T.nilable(String),
+
+              residency: OpenAI::Admin::Organization::ProjectResidency::OrSymbol,
 
               status: T.nilable(String),
 
@@ -81,6 +90,9 @@ module OpenAI
             # The name of the project. This appears in reporting.
             name: nil,
 
+            # The residency configuration for the project.
+            residency: nil,
+
             # `active` or `archived`
             status: nil,
 
@@ -99,6 +111,7 @@ module OpenAI
                 archived_at: T.nilable(Integer),
                 external_key_id: T.nilable(String),
                 name: T.nilable(String),
+                residency: OpenAI::Admin::Organization::ProjectResidency::TaggedSymbol,
                 status: T.nilable(String)
               }
             )
