@@ -318,13 +318,58 @@ class OpenAI::Test::X509TokenExchangeTest < Minitest::Test
     end
 
     assert_equal("https://mtls.auth.openai.com/oauth/token", error.url.to_s)
+    assert_equal(:invalid_grant, error.error_code)
     assert_equal({error: "invalid_grant"}, error.body)
     assert_equal({"x-request-id" => "req_fake"}, error.headers)
     refute_match(/secret|diagnostics/, error.inspect)
   end
 
+  def test_oauth_failures_preserve_only_allowlisted_nested_issuer_error_codes
+    codes = {
+      "invalid_grant" => :invalid_grant,
+      "invalid_subject_token" => :invalid_subject_token,
+      "token_exchange_server_error" => "token_exchange_server_error"
+    }
+
+    codes.each do |code, expected_error_code|
+      response = OpenAI::HTTPClient::Response.new(
+        status: 401,
+        headers: {"x-request-id" => "req_fake", "set-cookie" => "session=fake-cookie-secret"},
+        body: JSON.generate(
+          error: {
+            code: code,
+            message: "fake-sensitive-issuer-message",
+            description: "fake-sensitive-issuer-description"
+          },
+          error_description: "fake-sensitive-top-level-description"
+        )
+      )
+
+      error = @http_client.stub(:execute, -> (_request) { response }) do
+        assert_raises(OpenAI::Errors::OAuthError) { @exchange.fetch }
+      end
+
+      assert_equal(expected_error_code, error.error_code)
+      assert_equal({error: code}, error.body)
+      assert_equal({"x-request-id" => "req_fake"}, error.headers)
+      assert_equal(code, error.message)
+      refute_includes(error.full_message(highlight: false), "fake-sensitive")
+      refute_includes(error.full_message(highlight: false), "fake-cookie-secret")
+    end
+  end
+
   def test_oauth_failures_discard_nested_and_unknown_error_details
-    [{message: "fake-secret"}, ["fake-secret"], "fake-secret"].each do |error_value|
+    error_values = [
+      {message: "fake-secret"},
+      {code: "fake-secret", description: "fake-secret-details"},
+      {code: nil, message: "fake-secret"},
+      {code: {nested: "fake-secret"}},
+      {code: ["invalid_grant", "fake-secret"]},
+      ["fake-secret"],
+      "fake-secret"
+    ]
+
+    error_values.each do |error_value|
       response = OpenAI::HTTPClient::Response.new(
         status: 400,
         headers: {},
@@ -336,6 +381,7 @@ class OpenAI::Test::X509TokenExchangeTest < Minitest::Test
       end
 
       assert_nil(error.body)
+      assert_nil(error.error_code)
       refute_match(/fake-secret/, error.inspect)
     end
   end
