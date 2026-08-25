@@ -451,6 +451,11 @@ module OpenAI
         !@copy_options.fetch(:workload_identity).instance_of?(OpenAI::Auth::X509WorkloadIdentity)
       previous_origin = previous_transport.api_origin if previous_transport.instance_of?(OpenAI::Auth::X509Transport)
       selected_origin = transport.api_origin if transport.instance_of?(OpenAI::Auth::X509Transport)
+      if adopted_identity && selected_origin
+        inherited_origin = OpenAI::Internal::Util.uri_origin(URI(options.fetch(:base_url).to_s))
+        adopted_identity = !inherited_origin.casecmp?(selected_origin)
+      end
+
       if (adopted_identity || previous_origin != selected_origin) &&
           !overrides.key?(:base_url) &&
           !overrides[:data_residency]
