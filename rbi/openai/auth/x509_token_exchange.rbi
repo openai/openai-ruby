@@ -9,6 +9,10 @@ module OpenAI
       def initialize(config, transport:)
       end
 
+      sig { returns(String) }
+      def inspect
+      end
+
       sig { params(deadline: T.nilable(Float)).returns(T::Hash[Symbol, T.any(String, Float)]) }
       def fetch(deadline: nil)
       end

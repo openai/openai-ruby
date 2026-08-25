@@ -38,6 +38,13 @@ module OpenAI
         @transport = transport
       end
 
+      # Avoid exposing nested workload identity configuration in diagnostics.
+      #
+      # @return [String]
+      def inspect
+        "#<#{self.class.name}:0x#{object_id.to_s(16)}>"
+      end
+
       # @param deadline [Float, nil] absolute monotonic request deadline
       # @return [Hash{Symbol=>String, Float}]
       def fetch(deadline: nil)

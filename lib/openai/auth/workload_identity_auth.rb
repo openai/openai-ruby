@@ -45,6 +45,7 @@ module OpenAI
           action = nil
           token = nil
           generation = nil
+          previous_token = nil
 
           # Installing refresh cleanup is part of the state transition. No async
           # exception may observe @refreshing after it changes but before the ensure.
@@ -59,6 +60,7 @@ module OpenAI
                   action = :return
                 end
               elsif token_unusable? || needs_refresh?
+                previous_token = @cached_token
                 @refreshing = true
                 generation = {complete: false, error: nil, token: nil, expires_at: nil}
                 @refresh_generation = generation
@@ -76,12 +78,21 @@ module OpenAI
                 end
 
               rescue StandardError => error
+                fallback = false
                 @mutex.synchronize do
-                  @refresh_error = error unless @token_exchange.nil?
-                  generation[:error] = error
+                  now = OpenAI::Internal::Util.monotonic_secs unless @token_exchange.nil?
+                  if now && proactive_refresh_fallback?(error, previous_token, deadline, now)
+                    remaining = @cached_token_expires_at_monotonic - now
+                    @cached_token_refresh_at_monotonic = now + [5.0, remaining / 2].min
+                    @refresh_error = nil
+                    fallback = true
+                  else
+                    @refresh_error = error unless @token_exchange.nil?
+                    generation[:error] = error
+                  end
                 end
 
-                raise
+                raise unless fallback
               ensure
                 @mutex.synchronize do
                   if generation[:error].nil?
@@ -134,6 +145,18 @@ module OpenAI
 
           @cached_token
         end
+      end
+
+      private def proactive_refresh_fallback?(error, previous_token, deadline, now)
+        return false if @token_exchange.nil? || previous_token.nil? || !@cached_token.equal?(previous_token)
+        expires_at = @cached_token_expires_at_monotonic
+        return false if expires_at.nil? || now >= expires_at
+        return false if deadline && now >= deadline
+        return true if error.is_a?(OpenAI::Errors::APIConnectionError)
+        return false unless error.is_a?(OpenAI::Errors::APIError)
+
+        status = error.status
+        [408, 409, 429].include?(status) || (status.is_a?(Integer) && (500..599).cover?(status))
       end
 
       private def wait_for_refresh(deadline, generation)

@@ -330,10 +330,14 @@ module OpenAI
         end
       end
 
-    rescue Timeout::Error => error
+    rescue Timeout::Error
       raise unless x509_request
 
-      raise OpenAI::Errors::APITimeoutError.new(url: request.fetch(:url), message: error.message), cause: nil
+      url = request.fetch(:url).dup
+      url.query = nil
+      url.fragment = nil
+      message = "request timed out during workload identity authentication"
+      raise OpenAI::Errors::APITimeoutError.new(url: url, message: message), cause: nil
     end
 
     private def workload_identity_request?(request)
