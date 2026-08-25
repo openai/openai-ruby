@@ -742,6 +742,50 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
     end
   end
 
+  def test_x509_refreshes_rejected_credentials_once_after_an_api_retry
+    cases = [
+      [1, [503, 401, 200], nil],
+      [1, [503, 401, 401], 401]
+    ]
+
+    cases.each do |max_retries, statuses, expected_error_status|
+      client = OpenAI::Client.new(
+        api_key: nil,
+        workload_identity: @identity,
+        http_client: @transport,
+        max_retries: max_retries,
+        initial_retry_delay: 0,
+        max_retry_delay: 0
+      )
+      issuer_attempts = 0
+      api_authorizations = []
+      dispatch = lambda do |request|
+        if request.url.host == "mtls.auth.openai.com"
+          issuer_attempts += 1
+          x509_issuer_success(token: "fake-issued-token-#{issuer_attempts}")
+        else
+          api_authorizations << request.headers.fetch("authorization")
+          status = statuses.fetch(api_authorizations.length - 1)
+          status == 200 ? x509_model_response : x509_issuer_failure(status)
+        end
+      end
+
+      @native.stub(:execute, dispatch) do
+        if expected_error_status
+          error = assert_raises(OpenAI::Errors::APIError) { client.models.retrieve("fake-model") }
+          assert_equal(expected_error_status, error.status)
+        else
+          assert_equal("fake-model", client.models.retrieve("fake-model").id)
+        end
+      end
+
+      assert_equal(2, issuer_attempts)
+      assert_equal(statuses.length, api_authorizations.length)
+      assert_equal("Bearer fake-issued-token-1", api_authorizations.first)
+      assert_equal("Bearer fake-issued-token-2", api_authorizations.last)
+    end
+  end
+
   def test_nonreplayable_request_retries_issuer_without_replaying_or_reading_its_body
     cases = [
       [2, nil, 408, true, 2, 1],
@@ -989,12 +1033,12 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
     api&.close
   end
 
-  private def x509_issuer_success
+  private def x509_issuer_success(token: "fake-issued-token")
     OpenAI::HTTPClient::Response.new(
       status: 200,
       headers: {"content-type" => "application/json"},
       body: JSON.generate(
-        access_token: "fake-issued-token",
+        access_token: token,
         issued_token_type: "urn:ietf:params:oauth:token-type:access_token",
         token_type: "Bearer",
         expires_in: 120

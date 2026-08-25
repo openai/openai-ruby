@@ -292,8 +292,8 @@ module OpenAI
         )
       rescue OpenAI::Errors::AuthenticationError
         @workload_identity_auth.invalidate_token(context.fetch(:token)) if x509_request
-        replay_allowed = retry_count.zero? && request_replayable?(request)
-        replay_allowed &&= replay_state.empty? if x509_request
+        replay_allowed = request_replayable?(request)
+        replay_allowed &&= x509_request ? replay_state.empty? : retry_count.zero?
         raise unless replay_allowed
 
         if x509_request
