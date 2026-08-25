@@ -155,6 +155,39 @@ class OpenAI::Test::X509TransportSecurityTest < Minitest::Test
     end
   end
 
+  def test_unrecognized_custom_credential_headers_never_survive_transport_failures
+    destination = URI("https://mtls.api.openai.com/v1/models")
+    classes = [OpenAI::Errors::APIConnectionError, OpenAI::Errors::APITimeoutError]
+
+    classes.product([false, true]).each do |error_class, deferred|
+      retained = Net::HTTP::Get.new(destination)
+      retained["x-client-assertion"] = "fake-custom-credential-secret"
+      original = error_class.new(url: destination, request: retained, message: "fake-error-secret")
+      failure = -> { raise original, cause: IOError.new("fake-cause-secret") }
+      dispatch = if deferred
+        -> (_request) {
+          OpenAI::HTTPClient::Response.new(status: 200, headers: {}, body: Enumerator.new { failure.call })
+        }
+      else
+        -> (_request) { failure.call }
+      end
+
+      error = @http_client.stub(:execute, dispatch) do
+        assert_raises(error_class) do
+          response = @transport.execute(
+            request(url: destination, headers: {"x-client-assertion" => "fake-custom-credential-secret"})
+          )
+          response.body.to_a
+        end
+      end
+
+      assert_equal(destination.to_s, error.url.to_s)
+      assert_nil(error.instance_variable_get(:@request))
+      assert_nil(error.cause)
+      refute_match(/fake-custom-credential-secret|fake-error-secret|fake-cause-secret/, error.inspect)
+    end
+  end
+
   private def request(url: URI("https://mtls.api.openai.com/v1/models"), headers: {})
     OpenAI::HTTPClient::Request.new(
       method: :get,

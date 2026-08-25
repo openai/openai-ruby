@@ -353,7 +353,7 @@ class OpenAI::Test::X509TransportTest < Minitest::Test
     end
   end
 
-  def test_deferred_credential_free_transport_errors_preserve_safe_causes
+  def test_deferred_credential_free_transport_errors_do_not_retain_causes
     capability = capability_for(@http_client)
     destination = URI("https://mtls.api.openai.com/v1/models")
     original = OpenAI::Errors::APIConnectionError.new(url: destination)
@@ -366,8 +366,8 @@ class OpenAI::Test::X509TransportTest < Minitest::Test
     end
 
     error = assert_raises(OpenAI::Errors::APIConnectionError) { response.body.to_a }
-    assert_same(original, error)
-    assert_same(safe_cause, error.cause)
+    refute_same(original, error)
+    assert_nil(error.cause)
   end
 
   def test_closing_wrapped_response_closes_the_original_stream
@@ -449,7 +449,7 @@ class OpenAI::Test::X509TransportTest < Minitest::Test
     end
   end
 
-  def test_transport_errors_preserve_safe_causes_when_no_query_is_present
+  def test_transport_errors_do_not_retain_causes_when_no_query_is_present
     capability = capability_for(@http_client)
     destination = URI("https://mtls.api.openai.com/v1/models")
     original = OpenAI::Errors::APIConnectionError.new(url: destination)
@@ -462,8 +462,8 @@ class OpenAI::Test::X509TransportTest < Minitest::Test
       end
     end
 
-    assert_same(original, error)
-    assert_same(safe_cause, error.cause)
+    refute_same(original, error)
+    assert_nil(error.cause)
   end
 
   def test_real_wire_issuer_and_api_share_attested_client_identity
