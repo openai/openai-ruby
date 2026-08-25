@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "rubygems/package"
+require "open3"
+require "rbconfig"
 require "tmpdir"
 require "uri"
 
@@ -35,6 +37,50 @@ class OpenAI::Test::GemPackagingTest < Minitest::Test
 
       linked_guides = relative_links.select { File.extname(_1) == ".md" }
       assert_empty(linked_guides - package.spec.extra_rdoc_files, "README guides are missing from RDoc")
+    end
+  end
+
+  def test_installed_gem_completes_real_x509_issuer_and_api_handshakes
+    specification = Gem::Specification.load(File.expand_path("../../openai.gemspec", __dir__))
+    smoke_script = File.expand_path("support/x509_installed_gem_smoke.rb", __dir__)
+
+    Dir.mktmpdir("openai-x509-installed-gem") do |directory|
+      gem_file = File.join(directory, "openai.gem")
+      install_directory = File.join(directory, "install")
+      Gem::Package.build(specification, false, false, gem_file)
+      install_output, install_status = Open3.capture2e(
+        RbConfig.ruby,
+        "-S",
+        "gem",
+        "install",
+        "--local",
+        "--ignore-dependencies",
+        "--no-document",
+        "--install-dir",
+        install_directory,
+        gem_file
+      )
+      assert_predicate(install_status, :success?, install_output)
+
+      environment = {
+        "GEM_HOME" => install_directory,
+        "GEM_PATH" => ([install_directory] + Gem.path).join(File::PATH_SEPARATOR),
+        "OPENAI_X509_EXPECTED_GEM_ROOT" => install_directory,
+        "OPENAI_API_KEY" => nil,
+        "OPENAI_ADMIN_KEY" => nil,
+        "OPENAI_BASE_URL" => nil,
+        "OPENAI_CUSTOM_HEADERS" => nil,
+        "OPENAI_LOG" => nil,
+        "OPENAI_ORG_ID" => nil,
+        "OPENAI_PROJECT_ID" => nil,
+        "OPENAI_WEBHOOK_SECRET" => nil,
+        "BUNDLE_GEMFILE" => nil,
+        "RUBYOPT" => nil,
+        "RUBYLIB" => nil
+      }
+      output, status = Open3.capture2e(environment, RbConfig.ruby, smoke_script, chdir: directory)
+      assert_predicate(status, :success?, output)
+      assert_includes(output, "installed gem X.509 issuer/API mTLS verification passed")
     end
   end
 end
