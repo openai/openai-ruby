@@ -58,8 +58,12 @@ module OpenAI
       def get_token(deadline: nil)
       end
 
-      sig { void }
-      def invalidate_token
+      sig { params(rejected_token: T.nilable(String)).void }
+      def invalidate_token(rejected_token = nil)
+      end
+
+      sig { returns(String) }
+      def inspect
       end
     end
   end

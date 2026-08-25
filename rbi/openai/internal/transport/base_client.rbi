@@ -222,6 +222,18 @@ module OpenAI
         end
 
         # @api private
+        sig do
+          overridable
+            .params(
+              request: OpenAI::Internal::Transport::BaseClient::RequestInput,
+              original_request: OpenAI::Internal::Transport::BaseClient::RequestInput
+            )
+            .returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
+        end
+        private def validate_prepared_request(request, original_request:)
+        end
+
+        # @api private
         sig { returns(String) }
         private def user_agent
         end
