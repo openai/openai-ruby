@@ -11,57 +11,76 @@
 
 require_relative "../lib/openai"
 
-chain = OpenSSL::X509::Certificate.load(
-  File.binread(ENV.fetch("OPENAI_CLIENT_CERTIFICATE_CHAIN"))
-)
-raise ArgumentError, "Expected an enrolled client certificate" if chain.empty?
-
-leaf, *intermediates = chain
-key = OpenSSL::PKey.read(
-  File.binread(ENV.fetch("OPENAI_CLIENT_KEY")),
-  ENV["OPENAI_CLIENT_KEY_PASSPHRASE"]
-)
-raise ArgumentError, "The enrolled certificate and private key do not match" unless leaf.check_private_key(key)
-
-now = Time.now
-raise ArgumentError, "The enrolled certificate is not yet valid" if now < leaf.not_before
-raise ArgumentError, "The enrolled certificate has expired" if now > leaf.not_after
-
-api_origin = ENV.fetch("OPENAI_X509_API_ORIGIN", "https://mtls.api.openai.com")
-api_host = URI(api_origin).host&.downcase
-approved_hosts = ["mtls.auth.openai.com", api_host].freeze
-native_http_client = OpenAI::NetHTTPClient.new do |connection|
-  unless connection.use_ssl? && connection.port == 443 && approved_hosts.include?(connection.address.downcase)
-    raise ArgumentError, "Refusing to present the enrolled certificate to an unexpected destination"
-  end
-
-  connection.cert = leaf
-  connection.extra_chain_cert = intermediates
-  connection.key = key
-end
-
-transport = OpenAI::Auth::X509Transport.new(
-  http_client: native_http_client,
-  certificate_identity: :static,
-  proxy: ENV.fetch("OPENAI_X509_PROXY_MODE", "direct").to_sym,
-  api_origin: api_origin
-)
-identity = OpenAI::Auth::X509WorkloadIdentity.new(
-  identity_provider_id: ENV.fetch("IDENTITY_PROVIDER_ID"),
-  service_account_id: ENV.fetch("SERVICE_ACCOUNT_ID")
-)
-client = OpenAI::Client.new(
-  api_key: nil,
-  workload_identity: identity,
-  http_client: transport,
-  base_url: "#{transport.api_origin}/v1"
-)
+native_http_client = nil
+failure = nil
 
 begin
+  chain = OpenSSL::X509::Certificate.load(
+    File.binread(ENV.fetch("OPENAI_CLIENT_CERTIFICATE_CHAIN"))
+  )
+  raise ArgumentError, "Expected an enrolled client certificate" if chain.empty?
+
+  leaf, *intermediates = chain
+  key = OpenSSL::PKey.read(
+    File.binread(ENV.fetch("OPENAI_CLIENT_KEY")),
+    ENV["OPENAI_CLIENT_KEY_PASSPHRASE"]
+  )
+  unless leaf.check_private_key(key)
+    raise ArgumentError, "The enrolled certificate and private key do not match"
+  end
+
+  now = Time.now
+  raise ArgumentError, "The enrolled certificate is not yet valid" if now < leaf.not_before
+  raise ArgumentError, "The enrolled certificate has expired" if now > leaf.not_after
+
+  api_origin = ENV.fetch("OPENAI_X509_API_ORIGIN", "https://mtls.api.openai.com")
+  api_host = URI(api_origin).host&.downcase
+  approved_hosts = ["mtls.auth.openai.com", api_host].freeze
+  native_http_client = OpenAI::NetHTTPClient.new do |connection|
+    unless connection.use_ssl? && connection.port == 443 && approved_hosts.include?(connection.address.downcase)
+      raise ArgumentError, "Refusing to present the enrolled certificate to an unexpected destination"
+    end
+
+    connection.cert = leaf
+    connection.extra_chain_cert = intermediates
+    connection.key = key
+  end
+
+  transport = OpenAI::Auth::X509Transport.new(
+    http_client: native_http_client,
+    certificate_identity: :static,
+    proxy: ENV.fetch("OPENAI_X509_PROXY_MODE", "direct").to_sym,
+    api_origin: api_origin
+  )
+  identity = OpenAI::Auth::X509WorkloadIdentity.new(
+    identity_provider_id: ENV.fetch("IDENTITY_PROVIDER_ID"),
+    service_account_id: ENV.fetch("SERVICE_ACCOUNT_ID")
+  )
+  client = OpenAI::Client.new(
+    api_key: nil,
+    workload_identity: identity,
+    http_client: transport,
+    base_url: "#{transport.api_origin}/v1",
+    log_level: :off
+  )
+
   model = client.models.list.data.first
   raise "The enrolled service account cannot access any models" if model.nil?
-
-  puts("[x509] real issuer exchange and mTLS API request succeeded")
+rescue StandardError => error
+  failure = error
 ensure
-  native_http_client.close
+  begin
+    native_http_client&.close
+  rescue StandardError => error
+    failure ||= error
+  end
 end
+
+if failure
+  status = failure.respond_to?(:status) ? failure.status : nil
+  status_message = status.is_a?(Integer) ? " (HTTP #{status})" : ""
+  warn("[x509] #{failure.class}#{status_message}")
+  exit(1)
+end
+
+puts("[x509] real issuer exchange and mTLS API request succeeded")
