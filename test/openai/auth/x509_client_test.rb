@@ -504,6 +504,103 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
     end
   end
 
+  def test_nonreplayable_request_retries_issuer_without_replaying_or_reading_its_body
+    cases = [
+      [2, nil, 408, true, 2, 1],
+      [2, nil, 429, true, 2, 1],
+      [2, nil, 503, true, 2, 1],
+      [2, 0, 503, false, 1, 0],
+      [0, 1, 503, true, 2, 1]
+    ]
+    reader_class = Class.new do
+      def initialize(source) = @source = source
+      def read(*) = @source.read(*)
+    end
+
+    cases.each do |configured_retries, request_retries, status, succeeds, expected_issuer, expected_api|
+      client = OpenAI::Client.new(
+        api_key: nil,
+        workload_identity: @identity,
+        http_client: @transport,
+        max_retries: configured_retries,
+        initial_retry_delay: 0,
+        max_retry_delay: 0
+      )
+      source = StringIO.new("fake-nonreplayable-upload")
+      issuer_attempts = 0
+      api_attempts = 0
+      dispatch = lambda do |request|
+        if request.url.host == "mtls.auth.openai.com"
+          issuer_attempts += 1
+          issuer_attempts == 1 ? x509_issuer_failure(status) : x509_issuer_success
+        else
+          api_attempts += 1
+          x509_model_response
+        end
+      end
+
+      options = {}
+      options[:max_retries] = request_retries unless request_retries.nil?
+
+      @native.stub(:execute, dispatch) do
+        if succeeds
+          result = client.request(method: :post, path: "/v1/upload", body: reader_class.new(source), options: options)
+          assert_equal("fake-model", result.fetch(:id))
+        else
+          error = assert_raises(OpenAI::Errors::APIError) do
+            client.request(method: :post, path: "/v1/upload", body: reader_class.new(source), options: options)
+          end
+
+          assert_equal(status, error.status)
+        end
+      end
+
+      assert_equal(expected_issuer, issuer_attempts)
+      assert_equal(expected_api, api_attempts)
+      assert_equal(0, source.pos)
+    end
+  end
+
+  def test_nonreplayable_request_never_retries_api_after_safe_issuer_retry
+    client = OpenAI::Client.new(
+      api_key: nil,
+      workload_identity: @identity,
+      http_client: @transport,
+      max_retries: 2,
+      initial_retry_delay: 0,
+      max_retry_delay: 0
+    )
+    reader = Class.new do
+      def initialize(source) = @source = source
+      def read(*) = @source.read(*)
+    end
+
+    source = StringIO.new("fake-nonreplayable-upload")
+    issuer_attempts = 0
+    api_attempts = 0
+    dispatch = lambda do |request|
+      if request.url.host == "mtls.auth.openai.com"
+        issuer_attempts += 1
+        issuer_attempts == 1 ? x509_issuer_failure(503) : x509_issuer_success
+      else
+        api_attempts += 1
+        x509_issuer_failure(503)
+      end
+    end
+
+    @native.stub(:execute, dispatch) do
+      error = assert_raises(OpenAI::Errors::APIError) do
+        client.request(method: :post, path: "/v1/upload", body: reader.new(source))
+      end
+
+      assert_equal(503, error.status)
+    end
+
+    assert_equal(2, issuer_attempts)
+    assert_equal(1, api_attempts)
+    assert_equal(0, source.pos)
+  end
+
   def test_x509_issuer_retries_honor_safe_seconds_and_millisecond_headers
     delays = [
       [{"retry-after" => "0.25"}, 0.25],

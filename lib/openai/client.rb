@@ -199,7 +199,8 @@ module OpenAI
         raise OpenAI::Errors::Error, "X.509 requests cannot override the selected authorization credential"
       end
 
-      built.merge(headers: canonical_headers)
+      auth_max_retries = options.fetch(:max_retries, @max_retries)
+      built.merge(headers: canonical_headers, x509_auth_max_retries: auth_max_retries)
     end
 
     # @api private
@@ -267,7 +268,14 @@ module OpenAI
       if x509_request
         replay_state = previous_context&.fetch(:replay_state) || []
         issuer_retries = previous_context&.fetch(:issuer_retries, 0) || 0
-        context = {deadline: deadline, replay_state: replay_state, issuer_retries: issuer_retries, token: nil}
+        auth_max_retries = previous_context&.fetch(:auth_max_retries) || request.fetch(:x509_auth_max_retries)
+        context = {
+          deadline: deadline,
+          replay_state: replay_state,
+          issuer_retries: issuer_retries,
+          auth_max_retries: auth_max_retries,
+          token: nil
+        }
         request = request.merge(x509_request_context: context)
       end
 
@@ -288,7 +296,14 @@ module OpenAI
           replay_state << true
           replay_state.freeze
           issuer_retries = context.fetch(:issuer_retries)
-          context = {deadline: deadline, replay_state: replay_state, issuer_retries: issuer_retries, token: nil}
+          auth_max_retries = context.fetch(:auth_max_retries)
+          context = {
+            deadline: deadline,
+            replay_state: replay_state,
+            issuer_retries: issuer_retries,
+            auth_max_retries: auth_max_retries,
+            token: nil
+          }
           request = request.merge(x509_request_context: context)
         else
           @workload_identity_auth.invalidate_token
@@ -333,7 +348,7 @@ module OpenAI
         consumed_retries = attempts + previous_issuer_retries + retry_count
         unless @requester.instance_of?(OpenAI::Auth::X509Transport) &&
             retryable_status &&
-            consumed_retries < request.fetch(:max_retries) &&
+            consumed_retries < request.fetch(:x509_request_context).fetch(:auth_max_retries) &&
             self.class.should_retry?(status, headers: error.headers || {})
           raise
         end
@@ -356,11 +371,11 @@ module OpenAI
 
       updated_headers = request[:headers].merge("authorization" => "Bearer #{token}")
       updated_request = request
-        .except(:workload_identity_deadline, :x509_request_context)
+        .except(:workload_identity_deadline, :x509_request_context, :x509_auth_max_retries)
         .merge(headers: updated_headers)
       if context
         updated_request = updated_request.merge(
-          max_retries: request.fetch(:max_retries) - context.fetch(:issuer_retries)
+          max_retries: [request.fetch(:max_retries) - context.fetch(:issuer_retries), 0].max
         )
       end
 

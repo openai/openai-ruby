@@ -374,6 +374,96 @@ class OpenAI::Test::X509LifecycleTest < Minitest::Test
     waiter&.kill&.join if waiter&.alive?
   end
 
+  def test_unsent_nonreplayable_waiter_reacquires_a_concurrently_invalidated_token
+    auth = @client.workload_identity_auth
+    condition = auth.instance_variable_get(:@cond_var)
+    original_wait = condition.method(:wait)
+    first_exchange_started = Queue.new
+    release_first_exchange = Queue.new
+    waiter_joined = Queue.new
+    waiter_awakened = Queue.new
+    release_waiter = Queue.new
+    issuer_attempts = 0
+    api_requests = []
+    leader = nil
+    waiter = nil
+    reader = Class.new do
+      def initialize(source) = @source = source
+      def read(*) = @source.read(*)
+    end
+
+    first_source = StringIO.new("fake-first-upload")
+    second_source = StringIO.new("fake-second-upload")
+    dispatch = lambda do |request|
+      if request.url.host == "mtls.auth.openai.com"
+        issuer_attempts += 1
+        if issuer_attempts == 1
+          first_exchange_started << true
+          release_first_exchange.pop
+        end
+
+        token_response("fake-token-#{issuer_attempts}")
+      else
+        api_requests << request
+        api_requests.length == 1 ? unauthorized_response : model_response
+      end
+    end
+
+    wait = lambda do |mutex, *arguments|
+      is_waiter = Thread.current[:x509_unsent_waiter]
+      waiter_joined << true if is_waiter
+      result = original_wait.call(mutex, *arguments)
+      if is_waiter
+        mutex.unlock
+        begin
+          waiter_awakened << true
+          release_waiter.pop
+        ensure
+          mutex.lock
+        end
+      end
+
+      result
+    end
+
+    @native.stub(:execute, dispatch) do
+      condition.stub(:wait, wait) do
+        leader = Thread.new do
+          @client.request(method: :post, path: "/v1/upload-first", body: reader.new(first_source))
+        end
+
+        leader.report_on_exception = false
+        Timeout.timeout(2) { first_exchange_started.pop }
+
+        waiter = Thread.new do
+          Thread.current[:x509_unsent_waiter] = true
+          @client.request(method: :post, path: "/v1/upload-second", body: reader.new(second_source))
+        end
+
+        waiter.report_on_exception = false
+        Timeout.timeout(2) { waiter_joined.pop }
+        release_first_exchange << true
+        Timeout.timeout(2) { waiter_awakened.pop }
+
+        assert_raises(OpenAI::Errors::AuthenticationError) { leader.value }
+        release_waiter << true
+        assert_equal("fake-model", Timeout.timeout(2) { waiter.value }.fetch(:id))
+      end
+    end
+
+    assert_equal(2, issuer_attempts)
+    assert_equal(2, api_requests.length)
+    assert_equal(["Bearer fake-token-1", "Bearer fake-token-2"], api_requests.map { _1.headers["authorization"] })
+    assert_equal(0, first_source.pos)
+    assert_equal(0, second_source.pos)
+
+  ensure
+    release_first_exchange&.push(true) if leader&.alive?
+    release_waiter&.push(true) if waiter&.alive?
+    leader&.kill&.join if leader&.alive?
+    waiter&.kill&.join if waiter&.alive?
+  end
+
   def test_aborted_refresh_attributes_waiter_authentication_failure_to_mtls_issuer
     auth = @client.workload_identity_auth
     refresh_started = Queue.new
