@@ -82,6 +82,11 @@ module OpenAI
       retry_count: Integer
     ) -> OpenAI::Internal::Transport::BaseClient::request_input
 
+    private def validate_prepared_request: (
+      OpenAI::Internal::Transport::BaseClient::request_input request,
+      original_request: OpenAI::Internal::Transport::BaseClient::request_input
+    ) -> OpenAI::Internal::Transport::BaseClient::request_input
+
     def with_options: (
       ?api_key: String?,
       ?admin_api_key: String?,

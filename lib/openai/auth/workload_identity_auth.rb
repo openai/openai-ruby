@@ -17,16 +17,20 @@ module OpenAI
       def initialize(
         config,
         organization_id,
-        token_exchange_url: DEFAULT_TOKEN_EXCHANGE_URL
+        token_exchange_url: DEFAULT_TOKEN_EXCHANGE_URL,
+        token_exchange: nil
       )
         @config = config
         @organization_id = organization_id
         @token_exchange_url = URI(token_exchange_url)
+        @token_exchange = token_exchange
 
         @cached_token = nil
         @cached_token_expires_at_monotonic = nil
         @cached_token_refresh_at_monotonic = nil
         @refreshing = false
+        @refresh_generation = nil
+        @refresh_error = nil
         @mutex = Mutex.new
         @cond_var = ConditionVariable.new
       end
@@ -36,58 +40,91 @@ module OpenAI
       # @param deadline [Float, nil] absolute monotonic deadline for this request
       # @return [String]
       def get_token(deadline: nil)
-        check_deadline!(deadline)
-        action = nil
-        token = nil
+        loop do
+          check_deadline!(deadline)
+          action = nil
+          token = nil
+          generation = nil
 
-        # Installing refresh cleanup is part of the state transition. No async
-        # exception may observe @refreshing after it changes but before the ensure.
-        Thread.handle_interrupt(Exception => :never) do
-          @mutex.synchronize do
-            if @refreshing
-              if token_unusable?
-                action = :wait
+          # Installing refresh cleanup is part of the state transition. No async
+          # exception may observe @refreshing after it changes but before the ensure.
+          Thread.handle_interrupt(Exception => :never) do
+            @mutex.synchronize do
+              if @refreshing
+                if token_unusable?
+                  action = :wait
+                  generation = @refresh_generation
+                else
+                  token = @cached_token
+                  action = :return
+                end
+              elsif token_unusable? || needs_refresh?
+                @refreshing = true
+                generation = {complete: false, error: nil, token: nil, expires_at: nil}
+                @refresh_generation = generation
+                action = :refresh
               else
                 token = @cached_token
                 action = :return
               end
-            elsif token_unusable? || needs_refresh?
-              @refreshing = true
-              action = :refresh
-            else
-              token = @cached_token
-              action = :return
+            end
+
+            if action == :refresh
+              begin
+                Thread.handle_interrupt(Exception => :immediate) do
+                  perform_refresh(deadline: deadline)
+                end
+
+              rescue StandardError => error
+                @mutex.synchronize do
+                  @refresh_error = error unless @token_exchange.nil?
+                  generation[:error] = error
+                end
+
+                raise
+              ensure
+                @mutex.synchronize do
+                  if generation[:error].nil?
+                    generation[:token] = @cached_token
+                    generation[:expires_at] = @cached_token_expires_at_monotonic
+                  end
+
+                  generation[:complete] = true
+                  @refreshing = false
+                  @cond_var.broadcast
+                end
+              end
             end
           end
 
-          if action == :refresh
-            begin
-              Thread.handle_interrupt(Exception => :immediate) do
-                perform_refresh(deadline: deadline)
-              end
+          return token if action == :return
+          if action == :wait
+            token = wait_for_refresh(deadline, generation)
+            return token unless token.nil?
 
-            ensure
-              @mutex.synchronize do
-                @refreshing = false
-                @cond_var.broadcast
-              end
-            end
+            next
           end
+
+          return current_token(deadline)
         end
-
-        return token if action == :return
-        return wait_for_refresh(deadline) if action == :wait
-
-        current_token(deadline)
       end
 
       # @api private
-      def invalidate_token
+      def invalidate_token(rejected_token = nil)
         @mutex.synchronize do
+          return nil unless rejected_token.nil? || rejected_token == @cached_token
+
           @cached_token = nil
           @cached_token_expires_at_monotonic = nil
           @cached_token_refresh_at_monotonic = nil
         end
+      end
+
+      # Avoid exposing cached access tokens or identity configuration in diagnostics.
+      #
+      # @return [String]
+      def inspect
+        "#<#{self.class.name}:0x#{object_id.to_s(16)}>"
       end
 
       private def current_token(deadline)
@@ -99,9 +136,9 @@ module OpenAI
         end
       end
 
-      private def wait_for_refresh(deadline)
+      private def wait_for_refresh(deadline, generation)
         @mutex.synchronize do
-          while @refreshing
+          until generation.fetch(:complete)
             remaining = remaining_timeout(deadline)
             if remaining.nil?
               @cond_var.wait(@mutex)
@@ -111,6 +148,24 @@ module OpenAI
           end
 
           check_deadline!(deadline)
+          if @token_exchange
+            raise generation.fetch(:error) if generation[:error]
+            if generation[:token]
+              unless generation[:token] == @cached_token
+                return nil if @cached_token.nil?
+
+                raise_refresh_error! if token_unusable?
+
+                return @cached_token
+              end
+
+              expires_at = generation.fetch(:expires_at)
+              raise_refresh_error! if expires_at.nil? || OpenAI::Internal::Util.monotonic_secs >= expires_at
+
+              return generation.fetch(:token)
+            end
+          end
+
           raise_refresh_error! if token_unusable?
 
           @cached_token
@@ -137,6 +192,7 @@ module OpenAI
         expires_in = token_data.fetch(:expires_in)
 
         @mutex.synchronize do
+          @refresh_error = nil
           @cached_token = token_data.fetch(:id)
           @cached_token_expires_at_monotonic = now + expires_in
           @cached_token_refresh_at_monotonic = now + refresh_delay_seconds(expires_in)
@@ -144,6 +200,8 @@ module OpenAI
       end
 
       private def fetch_token_from_exchange(deadline:)
+        return @token_exchange.fetch(deadline: deadline) unless @token_exchange.nil?
+
         subject_token = @config.provider.get_token
         check_deadline!(deadline)
 
