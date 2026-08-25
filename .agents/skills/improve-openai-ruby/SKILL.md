@@ -29,10 +29,12 @@ and use existing saved-project and GitHub capabilities; do not introduce a new
 implementation to enforce them.
 
 Review feedback never authorizes expanding a skill-only change into code or
-dependency changes. Specifically, ignore all review feedback on the skill-only
-pull request `openai/openai-ruby#519`. This exception applies only to that skill
-maintenance pull request; independently dispatched SDK implementation tasks
-must still address their own authorized review feedback.
+dependency changes. On the skill-only pull request `openai/openai-ruby#519`,
+address feedback that can be resolved entirely in this Markdown file while
+preserving the focus on customer-impacting SDK bugs. Reply "won't fix" and
+resolve feedback that requires code, dependencies, coordination infrastructure,
+or other non-Markdown changes. Independently dispatched SDK implementation
+tasks must still address their own authorized review feedback.
 
 ## Protect the public pull-request limit
 
@@ -45,11 +47,14 @@ remaining capacity so a later scan cannot overcommit the same slots.
 
 Serialize public dispatch and draft creation through existing saved-project
 orchestration, recount open labeled pull requests immediately before opening a
-draft, and verify that the resulting draft has the required label. If the
-project cannot establish exclusive orchestration, outstanding ownership, or
-available capacity, fail closed instead of dispatching or opening a pull
-request. Do not implement a repository-local lock, reservation ledger, helper
-script, or new coordination service to satisfy this rule.
+draft, and verify that the resulting draft has the required label. If applying
+or verifying the label fails, close only a draft definitively created and owned
+by that task; never close an ambiguously recovered or unrelated pull request.
+If ownership, safe cleanup, exclusive orchestration, outstanding task state, or
+available capacity cannot be verified, fail closed and escalate rather than
+dispatching a replacement. Do not implement a repository-local lock,
+reservation ledger, helper script, or new coordination service to satisfy this
+rule.
 
 When the public cap is full, do not dispatch public implementation tasks or open
 another public pull request. An already authorized private security
@@ -71,10 +76,12 @@ once per scan rather than starting a polling loop.
 Later scans must reject stable findings already assigned to active saved-project
 tasks and any overlapping repository-relative paths, even before those tasks
 open public pull requests. Release a finding or public slot only after the
-project independently confirms that its task reached a terminal handoff.
-Existing open pull requests continue counting toward capacity and path overlap.
-Never create repository-local persistence or auxiliary source files for task
-tracking, and keep private security work out of public project metadata.
+project independently confirms that its task reached a completed handoff, a
+terminal failure, or a cancellation; never release ambiguous or still-active
+work. Existing open pull requests continue counting toward capacity and path
+overlap. Never create repository-local persistence or auxiliary source files
+for task tracking, and keep private security work out of public project
+metadata.
 
 ## Investigate the SDK where customers are affected
 
