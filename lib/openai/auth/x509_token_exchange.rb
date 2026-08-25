@@ -139,7 +139,7 @@ module OpenAI
       private def raise_error(response, body)
         headers = response.headers.slice("x-request-id")
         if [400, 401, 403].include?(response.status)
-          error_code = body[:error] if body.is_a?(Hash)
+          error_code = body.is_a?(Hash) ? body[:error] : nil
           error_code = error_code[:code] if error_code.is_a?(Hash)
           safe_body = {error: error_code} if OAUTH_ERROR_CODES.include?(error_code)
           error = OpenAI::Errors::OAuthError.new(status: response.status, body: safe_body, headers: headers)
