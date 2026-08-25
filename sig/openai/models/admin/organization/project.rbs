@@ -10,6 +10,7 @@ module OpenAI
             archived_at: Integer?,
             external_key_id: String?,
             name: String?,
+            residency: OpenAI::Models::Admin::Organization::project_residency,
             status: String?
           }
 
@@ -26,6 +27,12 @@ module OpenAI
 
           attr_accessor name: String?
 
+          attr_reader residency: OpenAI::Models::Admin::Organization::project_residency?
+
+          def residency=: (
+            OpenAI::Models::Admin::Organization::project_residency
+          ) -> OpenAI::Models::Admin::Organization::project_residency
+
           attr_accessor status: String?
 
           def initialize: (
@@ -34,6 +41,7 @@ module OpenAI
             ?archived_at: Integer?,
             ?external_key_id: String?,
             ?name: String?,
+            ?residency: OpenAI::Models::Admin::Organization::project_residency,
             ?status: String?,
             ?object: :"organization.project"
           ) -> void
@@ -45,6 +53,7 @@ module OpenAI
             archived_at: Integer?,
             external_key_id: String?,
             name: String?,
+            residency: OpenAI::Models::Admin::Organization::project_residency,
             status: String?
           }
         end

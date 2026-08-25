@@ -1,0 +1,33 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type cost_quantity_unit =
+          String
+          | :tokens
+          | :"1000_tokens"
+          | :duration_seconds
+          | :duration_minutes
+          | :duration_hours
+          | :gibibyte_hours
+          | :images
+          | :characters
+
+        module CostQuantityUnit
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::cost_quantity_unit]
+
+          TOKENS: :tokens
+          COST_QUANTITY_UNIT_1000_TOKENS: :"1000_tokens"
+          DURATION_SECONDS: :duration_seconds
+          DURATION_MINUTES: :duration_minutes
+          DURATION_HOURS: :duration_hours
+          GIBIBYTE_HOURS: :gibibyte_hours
+          IMAGES: :images
+          CHARACTERS: :characters
+        end
+      end
+    end
+  end
+end
