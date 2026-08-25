@@ -287,6 +287,64 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
     end
   end
 
+  def test_prepared_x509_requests_dispatch_the_immutable_validated_header_snapshot
+    mutable_header = Class.new(String) do
+      attr_reader(:comparisons)
+
+      def to_s = self
+
+      def ==(other)
+        @comparisons = (@comparisons || 0) + 1
+        matches = super
+        replace("Bearer fake-mutated-after-validation") if matches
+        matches
+      end
+    end
+
+    retained_headers = []
+    client_class = Class.new(OpenAI::Client) do
+      define_method(:prepare_request) do |request, redirect_count:, retry_count:|
+        prepared = super(request, redirect_count: redirect_count, retry_count: retry_count)
+        retained = mutable_header.new(prepared.fetch(:headers).fetch("authorization"))
+        retained_headers << retained
+        prepared.merge(headers: prepared.fetch(:headers).merge("authorization" => retained))
+      end
+
+      private(:prepare_request)
+    end
+
+    client = client_class.new(api_key: nil, workload_identity: @identity, http_client: @transport)
+    observed = nil
+    dispatch = lambda do |request|
+      payload = if request.url.host == "mtls.auth.openai.com"
+        {
+          access_token: "fake-issued-token",
+          issued_token_type: "urn:ietf:params:oauth:token-type:access_token",
+          token_type: "Bearer",
+          expires_in: 120
+        }
+      else
+        observed = request
+        {id: "fake-model", created: 1, object: "model", owned_by: "openai"}
+      end
+
+      OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "application/json"},
+        body: [JSON.generate(payload)]
+      )
+    end
+
+    @native.stub(:execute, dispatch) do
+      assert_equal("fake-model", client.models.retrieve("fake-model").id)
+    end
+
+    assert_equal("Bearer fake-issued-token", observed.headers.fetch("authorization"))
+    assert_instance_of(String, observed.headers.fetch("authorization"))
+    assert_predicate(observed.headers, :frozen?)
+    assert_nil(retained_headers.fetch(0).comparisons)
+  end
+
   def test_realtime_is_rejected_before_any_x509_exchange
     client = OpenAI::Client.new(api_key: nil, workload_identity: @identity, http_client: @transport)
 
