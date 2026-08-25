@@ -188,12 +188,42 @@ class OpenAI::Test::X509TransportSecurityTest < Minitest::Test
     end
   end
 
-  private def request(url: URI("https://mtls.api.openai.com/v1/models"), headers: {})
+  def test_rejects_caller_controlled_http_framing_before_issuer_or_api_dispatch
+    framing_headers = %w[content-length Content-Length CONTENT_LENGTH transfer-encoding Transfer_Encoding]
+    destinations = ["https://mtls.auth.openai.com/oauth/token", "https://mtls.api.openai.com/v1/models"]
+    reader, writer = IO.pipe
+    writer.write("fake-smuggled-request")
+    writer.close
+    bodies = ["fake-smuggled-request", StringIO.new("fake-smuggled-request"), reader]
+
+    @http_client.stub(:execute, -> (_request) { flunk("framing must be rejected before native dispatch") }) do
+      framing_headers.product(destinations, bodies).each do |name, destination, body|
+        error = assert_raises(ArgumentError) do
+          @transport.execute(request(url: URI(destination), headers: {name => "0"}, method: :post, body: body))
+        end
+
+        assert_match(/framing/, error.message)
+      end
+    end
+
+    assert_raises(ArgumentError) do
+      @transport.validate_api_request!(
+        url: URI("https://mtls.api.openai.com/v1/models"),
+        headers: {"TRANSFER_ENCODING" => "chunked"}
+      )
+    end
+
+  ensure
+    reader&.close
+    writer&.close unless writer&.closed?
+  end
+
+  private def request(url: URI("https://mtls.api.openai.com/v1/models"), headers: {}, method: :get, body: nil)
     OpenAI::HTTPClient::Request.new(
-      method: :get,
+      method: method,
       url: url,
       headers: headers,
-      body: nil,
+      body: body,
       timeout: 2.0
     )
   end
