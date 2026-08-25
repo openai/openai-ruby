@@ -3,6 +3,8 @@
 require_relative "../test_helper"
 
 class OpenAI::Test::X509ProactiveRefreshTest < Minitest::Test
+  extend Minitest::Serial
+
   def setup
     super
     @native = OpenAI::NetHTTPClient.new
@@ -59,7 +61,7 @@ class OpenAI::Test::X509ProactiveRefreshTest < Minitest::Test
 
   def test_proactive_refresh_cooldown_is_bounded_and_never_extends_token_lifetime
     client = new_client
-    now = 100.0
+    clock = {now: 100.0}
     issuer_attempts = 0
     dispatch = lambda do |request|
       if request.url.host == "mtls.auth.openai.com"
@@ -70,19 +72,19 @@ class OpenAI::Test::X509ProactiveRefreshTest < Minitest::Test
       end
     end
 
-    OpenAI::Internal::Util.stub(:monotonic_secs, -> { now }) do
+    OpenAI::Internal::Util.stub(:monotonic_secs, -> { clock.fetch(:now) }) do
       @native.stub(:execute, dispatch) do
         assert_equal("fake-model", client.models.retrieve("first").id)
-        now = 191.0
+        clock[:now] = 191.0
         assert_equal("fake-model", client.models.retrieve("second").id)
         assert_equal(2, issuer_attempts)
-        now = 195.9
+        clock[:now] = 195.9
         assert_equal("fake-model", client.models.retrieve("third").id)
         assert_equal(2, issuer_attempts)
-        now = 196.0
+        clock[:now] = 196.0
         assert_equal("fake-model", client.models.retrieve("fourth").id)
         assert_equal(3, issuer_attempts)
-        now = 220.0
+        clock[:now] = 220.0
         error = assert_raises(OpenAI::Errors::APIError) { client.models.retrieve("expired") }
         assert_equal(503, error.status)
       end
@@ -221,6 +223,33 @@ class OpenAI::Test::X509ProactiveRefreshTest < Minitest::Test
       :<=,
       auth.instance_variable_get(:@cached_token_expires_at_monotonic)
     )
+  end
+
+  def test_token_expiring_after_fallback_acceptance_preserves_the_original_issuer_failure
+    client = new_client
+    auth = client.workload_identity_auth
+    failure = OpenAI::Errors::APIError.new(
+      url: URI("https://mtls.auth.openai.com/oauth/token"),
+      status: 503,
+      message: "issuer temporarily unavailable"
+    )
+
+    OpenAI::Internal::Util.stub(:monotonic_secs, -> { 100.0 }) do
+      @native.stub(:execute, -> (_request) { token_response }) do
+        assert_equal("fake-valid-token", auth.get_token)
+      end
+    end
+
+    clock = {ticks: [191.0, 191.0, 219.9, 220.1]}
+    OpenAI::Internal::Util.stub(:monotonic_secs, -> { clock.fetch(:ticks).shift || 220.1 }) do
+      auth.stub(:fetch_token_from_exchange, -> (**_options) { raise failure }) do
+        error = assert_raises(OpenAI::Errors::APIError) { auth.get_token }
+        assert_same(failure, error)
+        assert_equal(503, error.status)
+      end
+    end
+
+    assert_same(failure, auth.instance_variable_get(:@refresh_error))
   end
 
   private def new_client

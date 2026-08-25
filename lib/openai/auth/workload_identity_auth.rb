@@ -84,7 +84,7 @@ module OpenAI
                   if now && proactive_refresh_fallback?(error, previous_token, deadline, now)
                     remaining = @cached_token_expires_at_monotonic - now
                     @cached_token_refresh_at_monotonic = now + [5.0, remaining / 2].min
-                    @refresh_error = nil
+                    @refresh_error = error
                     fallback = true
                   else
                     @refresh_error = error unless @token_exchange.nil?
@@ -196,6 +196,8 @@ module OpenAI
       end
 
       private def raise_refresh_error!
+        raise @refresh_error if @token_exchange && @refresh_error
+
         raise(
           OpenAI::Errors::AuthenticationError.new(
             url: @token_exchange_url,
