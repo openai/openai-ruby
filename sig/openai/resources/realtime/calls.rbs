@@ -2,6 +2,12 @@ module OpenAI
   module Resources
     class Realtime
       class Calls
+        def create: (
+          sdp: String,
+          ?session: OpenAI::Realtime::RealtimeSessionCreateRequest,
+          ?request_options: OpenAI::request_opts
+        ) -> StringIO
+
         def accept: (
           String call_id,
           ?audio: OpenAI::Realtime::RealtimeAudioConfig,
