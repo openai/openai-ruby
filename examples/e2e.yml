@@ -100,3 +100,6 @@ examples:
   examples/structured_outputs_responses_function_calling.rb:
     status: covered
     expected_output: GetWeather
+  examples/x509_workload_identity.rb:
+    status: excluded
+    reason: Requires an enrolled X.509 certificate and key, an enabled organization, and mapped identity-provider and service-account IDs.
