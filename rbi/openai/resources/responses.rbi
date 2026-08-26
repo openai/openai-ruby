@@ -872,6 +872,8 @@ module OpenAI
           include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
           include_obfuscation: T::Boolean,
           starting_after: Integer,
+          text: T.nilable(OpenAI::StructuredOutput::JsonSchemaConverter::Input),
+          tools: T.nilable(T::Array[OpenAI::StructuredOutput::JsonSchemaConverter::Input]),
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
         )
@@ -892,6 +894,12 @@ module OpenAI
         include_obfuscation: nil,
         # The sequence number of the event after which to start streaming.
         starting_after: nil,
+        # The structured-output model used to parse retrieved text output. This is a
+        # local parsing hint and is not sent to the API.
+        text: nil,
+        # Structured-output models used to parse retrieved function tool calls. These
+        # are local parsing hints and are not sent to the API.
+        tools: nil,
         # There is no need to provide `stream:`. Instead, use `#retrieve_streaming` or
         # `#retrieve` for streaming and non-streaming use cases, respectively.
         stream: false,
