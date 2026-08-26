@@ -333,6 +333,117 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     assert_empty(response.output)
   end
 
+  def test_background_retrieve_keeps_string_keyed_parsing_hints_local
+    stub_request(:get, "http://localhost/responses/resp_string_hints").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_string_hints",
+        status: "completed",
+        output: [
+          {
+            id: "msg_string_hints",
+            content: [
+              {
+                annotations: [],
+                text: "{\"displayName\":\"Ada\",\"middleName\":null}",
+                type: "output_text"
+              }
+            ],
+            role: "assistant",
+            status: "completed",
+            type: "message"
+          },
+          {
+            arguments: "{\"profileId\":7}",
+            call_id: "call_string_hints",
+            name: "AliasedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve(
+      "resp_string_hints",
+      {"text" => AliasedProfile, "tools" => [AliasedLookup]}
+    )
+
+    assert_requested(:get, "http://localhost/responses/resp_string_hints") do |request|
+      assert_nil(request.uri.query)
+    end
+
+    assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
+    assert_instance_of(AliasedLookup, response.output.fetch(1).parsed)
+  end
+
+  def test_background_retrieve_accepts_response_retrieve_params
+    stub_request(:get, "http://localhost/responses/resp_params").to_return_json(
+      status: 200,
+      body: {id: "resp_params", status: "in_progress", output: []}
+    )
+
+    params = OpenAI::Responses::ResponseRetrieveParams.new
+    response = @client.responses.retrieve("resp_params", params)
+
+    assert_requested(:get, "http://localhost/responses/resp_params") do |request|
+      assert_nil(request.uri.query)
+    end
+
+    assert_empty(response.output)
+  end
+
+  def test_typed_text_config_has_create_and_retrieve_parity
+    output = [
+      {
+        id: "msg_text_config",
+        content: [
+          {
+            annotations: [],
+            text: "{\"displayName\":\"Ada\",\"middleName\":null}",
+            type: "output_text"
+          }
+        ],
+        role: "assistant",
+        status: "completed",
+        type: "message"
+      }
+    ]
+    stub_request(:post, "http://localhost/responses").to_return_json(
+      status: 200,
+      body: {id: "resp_created_text_config", status: "completed", output: output}
+    )
+    stub_request(:get, "http://localhost/responses/resp_text_config").to_return_json(
+      status: 200,
+      body: {id: "resp_text_config", status: "completed", output: output}
+    )
+
+    config = OpenAI::Responses::ResponseTextConfig.new(format_: AliasedProfile)
+    created = @client.responses.create(input: "Create a profile", model: "gpt-4o-mini", text: config)
+    retrieved = @client.responses.retrieve("resp_text_config", text: config)
+
+    created_parsed = created.output.fetch(0).content.fetch(0).parsed
+    retrieved_parsed = retrieved.output.fetch(0).content.fetch(0).parsed
+
+    assert_instance_of(AliasedProfile, created_parsed)
+    assert_instance_of(AliasedProfile, retrieved_parsed)
+    assert_equal(created_parsed.display_name, retrieved_parsed.display_name)
+  end
+
+  def test_background_retrieve_without_hints_skips_structured_output_parsing
+    stub_request(:get, "http://localhost/responses/resp_partial_tool").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_partial_tool",
+        status: "in_progress",
+        output: [{type: "function_call"}]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_partial_tool")
+
+    assert_equal(1, response.output.length)
+  end
+
   def test_public_structured_output_endpoints_materialize_nested_models
     profile = {displayName: "Ada", middleName: nil}
     content = {primaryProfile: profile, profiles: [profile]}.to_json

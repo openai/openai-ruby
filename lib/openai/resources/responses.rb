@@ -378,12 +378,10 @@ module OpenAI
       #
       # @see OpenAI::Models::Responses::ResponseRetrieveParams
       def retrieve(response_id, params = {})
-        structured_output_params = duplicate_structured_output_params(params.slice(:text, :tools))
-        request_params = params.dup
-        request_params.delete(:text)
-        request_params.delete(:tools)
-
-        parsed, options = OpenAI::Responses::ResponseRetrieveParams.dump_request(request_params)
+        parsed, options = OpenAI::Responses::ResponseRetrieveParams.dump_request(params)
+        structured_output_params = duplicate_structured_output_params(parsed.slice(:text, :tools))
+        parsed.delete(:text)
+        parsed.delete(:tools)
         query = OpenAI::Internal::Util.encode_query_params(parsed)
         if parsed[:stream]
           message = "Please use `#retrieve_streaming` for the streaming use case."
@@ -392,8 +390,10 @@ module OpenAI
 
         model, tool_models = get_structured_output_models(structured_output_params)
 
-        unwrap = -> (raw) do
-          parse_structured_outputs!(raw, model, tool_models)
+        unwrap = if model || !tool_models.empty?
+          -> (raw) do
+            parse_structured_outputs!(raw, model, tool_models)
+          end
         end
 
         @client.request(
