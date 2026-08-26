@@ -1,9 +1,40 @@
 module OpenAI
   module Auth
+    module SubjectTokenProvider
+      def token_type: -> Symbol
+
+      def get_token: -> String
+    end
+
+    class WorkloadIdentity
+      attr_reader client_id: String?
+
+      attr_reader identity_provider_id: String
+
+      attr_reader service_account_id: String
+
+      attr_reader provider: OpenAI::Auth::SubjectTokenProvider
+
+      attr_reader refresh_buffer_seconds: Integer
+
+      def initialize: (
+        provider: OpenAI::Auth::SubjectTokenProvider,
+        ?identity_provider_id: (String | Symbol)?,
+        ?service_account_id: (String | Symbol)?,
+        ?client_id: (String | Symbol)?,
+        ?refresh_buffer_seconds: Integer
+      ) -> void
+    end
+
     class WorkloadIdentityAuth
       def get_token: (?deadline: Float?) -> String
 
       def invalidate_token: (?String? rejected_token) -> void
+
+      def bound_to?: (
+        OpenAI::Auth::X509WorkloadIdentity identity,
+        transport: OpenAI::Auth::X509Transport
+      ) -> bool
 
       def inspect: -> String
     end

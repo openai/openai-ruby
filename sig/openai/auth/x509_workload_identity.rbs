@@ -7,10 +7,15 @@ module OpenAI
 
       attr_reader refresh_buffer_seconds: Integer
 
+      attr_reader transport: OpenAI::Auth::X509Transport?
+
       def initialize: (
         ?identity_provider_id: (String | Symbol)?,
         ?service_account_id: (String | Symbol)?,
-        ?refresh_buffer_seconds: Integer
+        ?refresh_buffer_seconds: Integer,
+        ?http_client: OpenAI::NetHTTPClient?,
+        ?proxy: Symbol,
+        ?api_origin: String
       ) -> void
 
       def inspect: -> String

@@ -131,6 +131,11 @@ module OpenAI
           retry_count: Integer
         ) -> Float
 
+        private def validate_retry_delay!: (
+          OpenAI::Internal::Transport::BaseClient::request_input request,
+          delay: Float
+        ) -> void
+
         private def raise_status_error!: (
           url: URI::Generic,
           status: Integer,

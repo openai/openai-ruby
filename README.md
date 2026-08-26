@@ -433,37 +433,40 @@ native_http_client = OpenAI::NetHTTPClient.new do |connection|
   connection.key = client_private_key
 end
 
-transport = OpenAI::Auth::X509Transport.new(
-  http_client: native_http_client,
-  certificate_identity: :static,
-  proxy: :direct,
-  api_origin: api_origin
-)
-
 identity = OpenAI::Auth::X509WorkloadIdentity.new(
   identity_provider_id: ENV.fetch("IDENTITY_PROVIDER_ID"),
-  service_account_id: ENV.fetch("SERVICE_ACCOUNT_ID")
+  service_account_id: ENV.fetch("SERVICE_ACCOUNT_ID"),
+  http_client: native_http_client,
+  api_origin: api_origin
 )
 
 client = OpenAI::Client.new(
   api_key: nil,
-  workload_identity: identity,
-  http_client: transport,
-  base_url: "#{transport.api_origin}/v1"
+  workload_identity: identity
 )
 
 model = client.models.list.data.first
 ```
 
-The application owns its certificate, key, trust settings, and native HTTP
-client. Keep the selected certificate identity static, configure only the
-approved issuer and API destinations, and create a fresh native client and
-transport when rotating credentials. Direct mode rejects ambient proxies; use
-`proxy: :http_connect` only when an HTTP CONNECT proxy is configured. HTTPS
-proxies are rejected before proxy credentials can be transmitted. Arbitrary
-custom transports, Azure/Bedrock providers, and Realtime WebSockets are not
-supported. Preview access must be enabled for the organization, and mTLS can be
-configured for the enrolled organization or project.
+The identity creates its guarded transport internally and selects the matching
+mTLS API endpoint automatically. The application still owns its certificate,
+key, trust settings, and native HTTP client. Keep the selected certificate
+identity static, configure only the approved issuer and API destinations, and
+create a fresh native client and identity when rotating credentials. Clients
+derived with `with_options` share the original identity's cached token when
+their transport is unchanged.
+
+The supported X.509 API regions are global, US, and EU. Set `api_origin:` to
+`https://mtls.api.openai.com`, `https://mtls-us.api.openai.com`, or
+`https://mtls-eu.api.openai.com`; an optional `data_residency:` on the client
+must match. Direct mode rejects ambient proxies; pass `proxy: :http_connect` to
+the identity only when an HTTP CONNECT proxy is configured. HTTPS proxies are
+rejected before proxy credentials can be transmitted. Arbitrary custom
+transports, Azure/Bedrock providers, and Realtime WebSockets are not supported.
+The normal client or per-request timeout covers both token exchange and the API
+request; `timeout: nil` disables both deadlines. Preview access must be enabled
+for the organization, and mTLS can be configured for the enrolled organization
+or project.
 
 See the complete [X.509 workload identity live smoke
 example](examples/x509_workload_identity.rb). It performs a real token exchange
