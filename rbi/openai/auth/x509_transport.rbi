@@ -42,6 +42,11 @@ module OpenAI
       end
       def validate_api_request!(url:, headers:)
       end
+
+      # @api private
+      sig { params(residency: T.any(Symbol, String)).returns(T::Boolean) }
+      def supports_data_residency?(residency)
+      end
     end
   end
 end

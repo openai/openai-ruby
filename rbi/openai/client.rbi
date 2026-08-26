@@ -16,6 +16,10 @@ module OpenAI
     sig { returns(T.nilable(String)) }
     attr_reader :admin_api_key
 
+    # @api private
+    sig { returns(T.nilable(OpenAI::Auth::WorkloadIdentityAuth)) }
+    attr_reader :workload_identity_auth
+
     sig { returns(T.nilable(String)) }
     attr_reader :organization
 
@@ -158,6 +162,28 @@ module OpenAI
         .returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
     end
     private def validate_prepared_request(request, original_request:)
+    end
+
+    # @api private
+    sig do
+      override
+        .params(
+          request: OpenAI::Internal::Transport::BaseClient::RequestInput,
+          delay: Float
+        )
+        .void
+    end
+    private def validate_retry_delay!(request, delay:)
+    end
+
+    # @api private
+    sig { params(options: T::Hash[Symbol, T.untyped]).returns(T.self_type) }
+    private def copy_with_workload_identity_auth(options)
+    end
+
+    # @api private
+    sig { params(authenticator: OpenAI::Auth::WorkloadIdentityAuth).void }
+    def adopt_workload_identity_auth!(authenticator)
     end
 
     # Returns a new client with the supplied options overridden.

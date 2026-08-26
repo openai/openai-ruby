@@ -523,6 +523,14 @@ module OpenAI
           delay * jitter
         end
 
+        # Allow authentication strategies to enforce a shared request deadline
+        # before publishing or sleeping for an API retry.
+        #
+        # @api private
+        private def validate_retry_delay!(_request, **_context)
+          nil
+        end
+
         # @api private
         private def raise_status_error!(url:, status:, headers:, response:, stream:)
           decoded = Kernel.then do
@@ -718,6 +726,7 @@ module OpenAI
             self.class.reap_connection!(status, stream: stream)
 
             delay = retry_delay(headers, retry_count: retry_count)
+            validate_retry_delay!(request, delay: delay)
             log_context.retry_scheduled(
               status,
               delay: delay,

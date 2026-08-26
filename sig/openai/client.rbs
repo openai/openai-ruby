@@ -12,7 +12,7 @@ module OpenAI
 
     attr_reader admin_api_key: String?
 
-    attr_reader workload_identity_auth: untyped?
+    attr_reader workload_identity_auth: OpenAI::Auth::WorkloadIdentityAuth?
 
     attr_reader organization: String?
 
@@ -87,10 +87,24 @@ module OpenAI
       original_request: OpenAI::Internal::Transport::BaseClient::request_input
     ) -> OpenAI::Internal::Transport::BaseClient::request_input
 
+    private def validate_retry_delay!: (
+      OpenAI::Internal::Transport::BaseClient::request_input request,
+      delay: Float
+    ) -> void
+
+    private def copy_with_workload_identity_auth: (
+      ::Hash[Symbol, untyped] options
+    ) -> self
+
+    def adopt_workload_identity_auth!: (
+      OpenAI::Auth::WorkloadIdentityAuth authenticator
+    ) -> void
+
     def with_options: (
       ?api_key: String?,
       ?admin_api_key: String?,
-      ?workload_identity: untyped?,
+      ?workload_identity: (OpenAI::Auth::WorkloadIdentity
+      | OpenAI::Auth::X509WorkloadIdentity)?,
       ?organization: String?,
       ?project: String?,
       ?webhook_secret: String?,
@@ -111,7 +125,8 @@ module OpenAI
     def initialize: (
       ?api_key: String?,
       ?admin_api_key: String?,
-      ?workload_identity: untyped?,
+      ?workload_identity: (OpenAI::Auth::WorkloadIdentity
+      | OpenAI::Auth::X509WorkloadIdentity)?,
       ?organization: String?,
       ?project: String?,
       ?webhook_secret: String?,

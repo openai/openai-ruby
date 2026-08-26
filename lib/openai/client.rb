@@ -237,6 +237,16 @@ module OpenAI
     end
 
     # @api private
+    private def validate_retry_delay!(request, delay:)
+      deadline = request[:x509_request_context]&.fetch(:deadline)
+      if deadline && delay >= deadline - OpenAI::Internal::Util.monotonic_secs
+        raise Timeout::Error, "request timed out during workload identity authentication"
+      end
+
+      super
+    end
+
+    # @api private
     private def send_request(request, redirect_count:, retry_count:, send_retry_header:)
       if @workload_identity_auth && @requester.instance_of?(OpenAI::Auth::X509Transport)
         canonical_headers = @requester.validate_api_request!(
@@ -447,7 +457,7 @@ module OpenAI
         residency = overrides.fetch(:data_residency)
         options = OpenAI::Internal::ClientOptions.copy(@copy_options, overrides.except(:data_residency))
         options.delete(:base_url) unless overrides.key?(:base_url)
-        return self.class.new(**options, data_residency: residency)
+        return copy_with_workload_identity_auth(options.merge(data_residency: residency))
       end
 
       options = OpenAI::Internal::ClientOptions.copy(@copy_options, overrides)
@@ -466,7 +476,25 @@ module OpenAI
         options.delete(:base_url)
       end
 
-      self.class.new(**options)
+      copy_with_workload_identity_auth(options)
+    end
+
+    # @api private
+    private def copy_with_workload_identity_auth(options)
+      copied = self.class.new(**options)
+      identity = @copy_options.fetch(:workload_identity)
+      if identity.instance_of?(OpenAI::Auth::X509WorkloadIdentity) &&
+          identity.equal?(options.fetch(:workload_identity)) &&
+          copied.requester.equal?(@requester)
+        copied.adopt_workload_identity_auth!(@workload_identity_auth)
+      end
+
+      copied
+    end
+
+    # @api private
+    def adopt_workload_identity_auth!(authenticator)
+      @workload_identity_auth = authenticator
     end
 
     # Creates and returns a new client for interacting with the API.
@@ -537,7 +565,20 @@ module OpenAI
       log_level: nil,
       on_retry: nil
     )
+      if workload_identity.is_a?(OpenAI::Auth::X509WorkloadIdentity) &&
+          !workload_identity.instance_of?(OpenAI::Auth::X509WorkloadIdentity)
+        raise ArgumentError, "X509WorkloadIdentity subclasses are not supported"
+      end
+
       x509_identity = workload_identity.instance_of?(OpenAI::Auth::X509WorkloadIdentity)
+      if x509_identity && (configured_transport = workload_identity.transport)
+        if !http_client.nil? && !http_client.equal?(configured_transport)
+          raise ArgumentError, "X.509 workload identity must use its configured X.509 transport"
+        end
+
+        http_client = configured_transport
+      end
+
       if x509_identity && !http_client.instance_of?(OpenAI::Auth::X509Transport)
         raise ArgumentError, "X.509 workload identity requires an attested X509Transport"
       end
@@ -548,12 +589,7 @@ module OpenAI
         provider: provider
       )
       if http_client.instance_of?(OpenAI::Auth::X509Transport) && !data_residency.nil?
-        regional_origins = {
-          "global" => "https://mtls.api.openai.com",
-          "us" => "https://mtls-us.api.openai.com",
-          "eu" => "https://mtls-eu.api.openai.com"
-        }
-        unless regional_origins[data_residency.to_s] == http_client.api_origin
+        unless http_client.supports_data_residency?(data_residency)
           raise ArgumentError, "X.509 data residency must match its attested OpenAI mTLS API origin"
         end
 

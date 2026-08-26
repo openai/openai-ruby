@@ -13,7 +13,12 @@ module OpenAI
     class X509Transport
       ISSUER_ORIGIN = "https://mtls.auth.openai.com"
       ISSUER_PATH = "/oauth/token"
-      API_HOSTS = %w[mtls.api.openai.com mtls-us.api.openai.com mtls-eu.api.openai.com].freeze
+      REGIONAL_API_ORIGINS = {
+        "global" => "https://mtls.api.openai.com",
+        "us" => "https://mtls-us.api.openai.com",
+        "eu" => "https://mtls-eu.api.openai.com"
+      }.freeze
+      API_HOSTS = REGIONAL_API_ORIGINS.values.map { URI(_1).host }.freeze
       PROXY_MODES = [:direct, :http_connect].freeze
       FORBIDDEN_HEADERS = %w[api-key x-api-key proxy-authorization content-length transfer-encoding].freeze
       EXCHANGE_FORBIDDEN_HEADERS = %w[authorization cookie openai-organization openai-project].freeze
@@ -22,6 +27,7 @@ module OpenAI
       GuardedVerificationCallback = Class.new(Proc)
       private_constant(
         :ISSUER_PATH,
+        :REGIONAL_API_ORIGINS,
         :API_HOSTS,
         :PROXY_MODES,
         :FORBIDDEN_HEADERS,
@@ -132,6 +138,13 @@ module OpenAI
         end
 
         validated_headers(headers, url: destination, exchange: false)
+      end
+
+      # @param residency [Symbol, String]
+      # @return [Boolean]
+      # @api private
+      def supports_data_residency?(residency)
+        REGIONAL_API_ORIGINS[residency.to_s] == @api_origin
       end
 
       private def normalize_api_origin(value)
