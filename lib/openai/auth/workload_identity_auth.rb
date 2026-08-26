@@ -30,6 +30,7 @@ module OpenAI
         @cached_token = nil
         @cached_token_expires_at_monotonic = nil
         @cached_token_refresh_at_monotonic = nil
+        @issued_token_expirations = {}
         @rejected_tokens = {}
         @refreshing = false
         @refresh_generation = nil
@@ -126,11 +127,12 @@ module OpenAI
       # @api private
       def invalidate_token(rejected_token = nil)
         @mutex.synchronize do
-          return nil unless rejected_token.nil? || rejected_token == @cached_token
-
           if @token_exchange && rejected_token
-            @rejected_tokens[rejected_token] = @cached_token_expires_at_monotonic || Float::INFINITY
+            expires_at = @issued_token_expirations[rejected_token]
+            @rejected_tokens[rejected_token] = expires_at unless expires_at.nil?
           end
+
+          return nil unless rejected_token.nil? || rejected_token == @cached_token
 
           @cached_token = nil
           @cached_token_expires_at_monotonic = nil
@@ -235,12 +237,15 @@ module OpenAI
           token = token_data.fetch(:id)
 
           published = @mutex.synchronize do
+            @issued_token_expirations.delete_if { |_issued, expires_at| expires_at <= now }
             @rejected_tokens.delete_if { |_rejected, expires_at| expires_at <= now }
             unless @token_exchange && @rejected_tokens.key?(token)
+              expires_at = now + expires_in
               @refresh_error = nil
               @cached_token = token
-              @cached_token_expires_at_monotonic = now + expires_in
+              @cached_token_expires_at_monotonic = expires_at
               @cached_token_refresh_at_monotonic = now + refresh_delay_seconds(expires_in)
+              @issued_token_expirations[token] = expires_at if @token_exchange
               true
             end
           end

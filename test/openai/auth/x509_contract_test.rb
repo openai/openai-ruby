@@ -201,6 +201,13 @@ class OpenAI::Test::X509ContractTest < Minitest::Test
     assert_equal(4, issuer_attempts)
     assert_equal("https://mtls.auth.openai.com/oauth/token", error.url.to_s)
     refute_match(/fake-rejected-token/, error.message)
+
+    @native.stub(:execute, dispatch) do
+      assert_raises(OpenAI::Errors::AuthenticationError) { client.models.retrieve("second") }
+    end
+
+    assert_equal(["Bearer fake-rejected-token"], api_headers)
+    assert_equal(7, issuer_attempts, "issuer authentication failures must not trigger API replay")
   end
 
   def test_scoped_waiters_share_one_bounded_rejected_token_refresh
@@ -291,6 +298,39 @@ class OpenAI::Test::X509ContractTest < Minitest::Test
   ensure
     release_late&.push(true) if late_request&.alive?
     late_request&.kill&.join if late_request&.alive?
+  end
+
+  def test_first_late_rejection_after_proactive_rotation_stays_tombstoned
+    identity = OpenAI::Auth::X509WorkloadIdentity.new(**@identity_options, http_client: @native)
+    client = OpenAI::Client.new(api_key: nil, workload_identity: identity)
+    auth = client.workload_identity_auth
+    monotonic = 100.0
+    issued = [
+      {id: "fake-first-token", expires_in: 120},
+      {id: "fake-rotated-token", expires_in: 10},
+      {id: "fake-first-token", expires_in: 120},
+      {id: "fake-fresh-token", expires_in: 120}
+    ]
+    fetch = lambda do |deadline:|
+      assert_nil(deadline)
+      issued.shift
+    end
+
+    OpenAI::Internal::Util.stub(:monotonic_secs, -> { monotonic }) do
+      auth.stub(:fetch_token_from_exchange, fetch) do
+        assert_equal("fake-first-token", auth.get_token)
+        monotonic = 161.0
+        assert_equal("fake-rotated-token", auth.get_token)
+
+        auth.invalidate_token("fake-first-token")
+        assert_equal("fake-rotated-token", auth.get_token)
+
+        monotonic = 167.0
+        assert_equal("fake-fresh-token", auth.get_token)
+      end
+    end
+
+    assert_empty(issued)
   end
 
   def test_scoped_regional_copies_preserve_the_same_token_cache
