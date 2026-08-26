@@ -650,9 +650,9 @@ module OpenAI
               raise TypeError, "`http_client#execute` must return an OpenAI::HTTPClient::Response"
             end
 
+            http_response = log_context.response_received(http_response)
             status = http_response.status
             headers = http_response.headers
-            http_response = log_context.response_received(http_response)
             stream = http_response.body
           rescue OpenAI::Errors::APIConnectionError => e
             status = e
@@ -789,7 +789,7 @@ module OpenAI
         #
         # @param req [Hash{Symbol=>Object}]
         # @return [Array(URI::Generic, OpenAI::HTTPClient::Response, OpenAI::Internal::Logging::Context)]
-        private def perform_request(req)
+        private def perform_request(req, &response_observer)
           self.class.validate!(req)
           opts = req[:options].to_h
           OpenAI::RequestOptions.validate!(opts)
@@ -800,7 +800,12 @@ module OpenAI
             log_level: @log_level,
             on_retry: @on_retry,
             method: request.fetch(:method),
-            url: url
+            url: url,
+            on_response: if response_observer
+              lambda do |received_response, trusted_url, received_url|
+                response_observer.call(received_response, trusted_url, received_url)
+              end
+            end
           )
 
           # Don't send the current retry count in the headers if the caller modified the header defaults.
@@ -811,6 +816,7 @@ module OpenAI
             retry_count: 0,
             send_retry_header: send_retry_header
           ) { log_context }
+
           [url, response, log_context]
         rescue StandardError => e
           log_context&.request_failed(e)

@@ -80,6 +80,28 @@ class OpenAI::Test::RealtimeCallCreationTest < Minitest::Test
     assert_mock(http)
   end
 
+  def test_create_consumes_and_closes_successful_responses_with_hostless_http_locations
+    ["http:/foo", "https:/foo", "http:foo", "https:foo"].each do |location|
+      released = false
+      body = OpenAI::Internal::Util.fused_enum(["v=0\r\n"]) { released = true }
+      response = OpenAI::HTTPClient::Response.new(
+        status: 201,
+        headers: {"Content-Type" => "application/sdp", "Location" => location},
+        body: body
+      )
+      http = Minitest::Mock.new(Object.new)
+      http.expect(:execute, response) { |request| request.url.path == "/v1/realtime/calls" }
+
+      result = client(http_client: http).realtime.calls.create(sdp: "v=0\r\n")
+
+      assert_instance_of(OpenAI::HTTPClient::Response, result)
+      assert_equal(location, result.headers.fetch("location"))
+      assert_equal("v=0\r\n", result.body.to_a.join)
+      assert(released, "#{location.inspect} must not leak the transport response body")
+      assert_mock(http)
+    end
+  end
+
   def test_create_releases_transport_resources_before_returning_the_response
     released = false
     source = OpenAI::Internal::Util.fused_enum(["v=0\r\n"]) { released = true }
@@ -133,21 +155,16 @@ class OpenAI::Test::RealtimeCallCreationTest < Minitest::Test
     assert_mock(http)
   end
 
-  def test_create_preserves_routing_and_uses_the_normal_hangup_retry_policy
+  def test_create_preserves_routing_for_its_bounded_hangup
     call_id = "rtc_routed_123"
     creation_response = interrupted_call_response(
       location: "https://example.com/v1/realtime/calls/#{call_id}?location_only=ignored"
-    )
-    failed_hangup = OpenAI::HTTPClient::Response.new(
-      status: 500,
-      headers: {"Content-Type" => "application/json"},
-      body: JSON.generate(error: {message: "fake transient hangup failure"})
     )
     successful_hangup = OpenAI::HTTPClient::Response.new(status: 200, headers: {}, body: "")
     expected_query = [["tenant", "fake-tenant"]]
     requests = []
     http = Minitest::Mock.new(Object.new)
-    [creation_response, failed_hangup, successful_hangup].each do |response|
+    [creation_response, successful_hangup].each do |response|
       http.expect(:execute, response) do |request|
         requests << request
         true
@@ -174,7 +191,7 @@ class OpenAI::Test::RealtimeCallCreationTest < Minitest::Test
     end
 
     assert_equal("synthetic SDP response interrupted", error.message)
-    assert_equal(3, requests.length)
+    assert_equal(2, requests.length)
     requests.each do |request|
       assert_equal(expected_query, URI.decode_www_form(request.url.query))
       assert_equal("Bearer test-key", request.headers.fetch("authorization"))
@@ -186,9 +203,179 @@ class OpenAI::Test::RealtimeCallCreationTest < Minitest::Test
 
     assert_equal("/v1/realtime/calls", requests.fetch(0).url.path)
     assert_equal("/v1/realtime/calls/#{call_id}/hangup", requests.fetch(1).url.path)
-    assert_equal("/v1/realtime/calls/#{call_id}/hangup", requests.fetch(2).url.path)
     assert_equal("0", requests.fetch(1).headers.fetch("x-stainless-retry-count"))
-    assert_equal("1", requests.fetch(2).headers.fetch("x-stainless-retry-count"))
+    assert_mock(http)
+  end
+
+  def test_create_hangs_up_calls_allocated_at_a_trusted_prepared_origin
+    call_id = "rtc_prepared_origin_123"
+    creation_response = interrupted_call_response(
+      location: "https://prepared.example/v1/realtime/calls/#{call_id}"
+    )
+    hangup_response = OpenAI::HTTPClient::Response.new(status: 200, headers: {}, body: "")
+    http = Minitest::Mock.new(Object.new)
+    http.expect(:execute, creation_response) do |request|
+      request.url.host == "prepared.example" && request.url.path == "/v1/realtime/calls"
+    end
+
+    http.expect(:execute, hangup_response) do |request|
+      request.url.host == "prepared.example" &&
+        request.url.path == "/v1/realtime/calls/#{call_id}/hangup"
+    end
+
+    prepared_client = Class.new(OpenAI::Client) do
+      private def prepare_request(request, redirect_count:, retry_count:)
+        prepared = super
+        rewritten_url = prepared.fetch(:url).dup
+        rewritten_url.host = "prepared.example"
+        prepared.merge(url: rewritten_url)
+      end
+    end
+
+    configured = prepared_client.new(
+      api_key: "test-key",
+      base_url: "https://example.com/v1",
+      http_client: http
+    )
+
+    error = assert_raises(IOError) do
+      configured.realtime.calls.create(sdp: "v=0\r\n")
+    end
+
+    assert_equal("synthetic SDP response interrupted", error.message)
+    assert_mock(http)
+  end
+
+  def test_interrupted_call_cleanup_uses_a_bounded_timeout_and_retry_budget
+    call_id = "rtc_bounded_cleanup_123"
+    creation_response = interrupted_call_response(location: "/v1/realtime/calls/#{call_id}")
+    failed_hangup = OpenAI::HTTPClient::Response.new(
+      status: 500,
+      headers: {"Content-Type" => "application/json"},
+      body: JSON.generate(error: {message: "fake cleanup failure"})
+    )
+    requests = []
+    http = Minitest::Mock.new(Object.new)
+    [creation_response, failed_hangup].each do |response|
+      http.expect(:execute, response) do |request|
+        requests << request
+        true
+      end
+    end
+
+    error = assert_raises(IOError) do
+      client(http_client: http, timeout: nil, max_retries: 3, initial_retry_delay: 0, max_retry_delay: 0)
+        .realtime
+        .calls
+        .create(sdp: "v=0\r\n")
+    end
+
+    assert_equal("synthetic SDP response interrupted", error.message)
+    assert_equal(2, requests.length)
+    assert_nil(requests.fetch(0).timeout)
+    assert_operator(requests.fetch(1).timeout, :>, 0)
+    assert_operator(requests.fetch(1).timeout, :<=, 5)
+    assert_equal("/v1/realtime/calls/#{call_id}/hangup", requests.fetch(1).url.path)
+    assert_mock(http)
+  end
+
+  def test_interrupted_call_cleanup_bounds_the_entire_operation_across_redirects
+    call_id = "rtc_cleanup_deadline_123"
+    creation_response = interrupted_call_response(location: "/v1/realtime/calls/#{call_id}")
+    redirect = OpenAI::HTTPClient::Response.new(
+      status: 307,
+      headers: {"Location" => "/v1/realtime/calls/#{call_id}/hangup"},
+      body: ""
+    )
+    requests = []
+    http = Minitest::Mock.new(Object.new)
+    http.expect(:execute, creation_response) do |request|
+      requests << request
+      true
+    end
+
+    20.times do
+      http.expect(:execute, redirect) do |request|
+        requests << request
+        sleep(0.01)
+        true
+      end
+    end
+
+    started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    error = assert_raises(IOError) do
+      client(http_client: http, timeout: 0.025).realtime.calls.create(sdp: "v=0\r\n")
+    end
+
+    elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - started_at
+
+    assert_equal("synthetic SDP response interrupted", error.message)
+    assert_operator(elapsed, :<, 0.15)
+    assert_operator(requests.length, :<, 20)
+  end
+
+  def test_interrupted_call_cleanup_uses_a_positive_deadline_for_zero_caller_timeouts
+    call_id = "rtc_zero_timeout_cleanup_123"
+    creation_response = interrupted_call_response(location: "/v1/realtime/calls/#{call_id}")
+    hangup_response = OpenAI::HTTPClient::Response.new(status: 200, headers: {}, body: "")
+    requests = []
+    http = Minitest::Mock.new(Object.new)
+    [creation_response, hangup_response].each do |response|
+      http.expect(:execute, response) do |request|
+        requests << request
+        true
+      end
+    end
+
+    error = assert_raises(IOError) do
+      client(http_client: http, timeout: 0).realtime.calls.create(sdp: "v=0\r\n")
+    end
+
+    assert_equal("synthetic SDP response interrupted", error.message)
+    assert_equal(0, requests.fetch(0).timeout)
+    assert_operator(requests.fetch(1).timeout, :>, 0)
+    assert_operator(requests.fetch(1).timeout, :<=, 5)
+    assert_mock(http)
+  end
+
+  def test_create_preserves_cancellation_and_hangs_up_when_closing_the_response_fails
+    call_id = "rtc_close_failure_123"
+    cancellation = Async::Stop.new("synthetic response logging cancelled")
+    body = OpenAI::Internal::Util.fused_enum(["v=0\r\n"]) do
+      raise IOError, "synthetic response close failed"
+    end
+
+    response = OpenAI::HTTPClient::Response.new(
+      status: 201,
+      headers: {
+        "Content-Type" => "application/sdp",
+        "Location" => "/v1/realtime/calls/#{call_id}"
+      },
+      body: body
+    )
+    hangup_response = OpenAI::HTTPClient::Response.new(status: 200, headers: {}, body: "")
+    http = Minitest::Mock.new(Object.new)
+    http.expect(:execute, response) { |request| request.url.path == "/v1/realtime/calls" }
+    http.expect(:execute, hangup_response) do |request|
+      request.url.path == "/v1/realtime/calls/#{call_id}/hangup"
+    end
+
+    logger = Logger.new(StringIO.new)
+    log_response = lambda do |message|
+      raise cancellation if message.include?("response received") && message.include?("status=201")
+    end
+
+    logger.stub(:debug, log_response) do
+      error = assert_raises(Async::Stop) do
+        client(http_client: http, logger: logger, log_level: :debug)
+          .realtime
+          .calls
+          .create(sdp: "v=0\r\n")
+      end
+
+      assert_same(cancellation, error)
+    end
+
     assert_mock(http)
   end
 
@@ -342,6 +529,48 @@ class OpenAI::Test::RealtimeCallCreationTest < Minitest::Test
     assert_mock(http)
   end
 
+  def test_create_hangs_up_when_cancellation_interrupts_response_received_logging
+    call_id = "rtc_response_logging_cancelled_123"
+    released = false
+    body = OpenAI::Internal::Util.fused_enum(["v=0\r\n"]) { released = true }
+    response = OpenAI::HTTPClient::Response.new(
+      status: 201,
+      headers: {
+        "Content-Type" => "application/sdp",
+        "Location" => "/v1/realtime/calls/#{call_id}"
+      },
+      body: body
+    )
+    hangup_response = OpenAI::HTTPClient::Response.new(status: 200, headers: {}, body: "")
+    http = Minitest::Mock.new(Object.new)
+    http.expect(:execute, response) { |request| request.url.path == "/v1/realtime/calls" }
+    http.expect(:execute, hangup_response) do |request|
+      released && request.url.path == "/v1/realtime/calls/#{call_id}/hangup"
+    end
+
+    cancellation = Async::Stop.new("synthetic response logging cancelled")
+    logger = Logger.new(StringIO.new)
+    log_response = lambda do |message|
+      if message.include?("response received") && message.include?("status=201")
+        raise cancellation
+      end
+    end
+
+    logger.stub(:debug, log_response) do
+      error = assert_raises(Async::Stop) do
+        client(http_client: http, logger: logger, log_level: :debug)
+          .realtime
+          .calls
+          .create(sdp: "v=0\r\n")
+      end
+
+      assert_same(cancellation, error)
+    end
+
+    assert(released, "response cancellation must release the pooled connection before hangup")
+    assert_mock(http)
+  end
+
   def test_interrupted_call_cleanup_redacts_sensitive_request_and_location_data
     call_id = "rtc_fake_private_call_identifier"
     location_secret = "fake-private-location-token"
@@ -402,6 +631,42 @@ class OpenAI::Test::RealtimeCallCreationTest < Minitest::Test
       assert_equal("synthetic SDP response interrupted", error.message)
       assert_mock(http)
     end
+  end
+
+  def test_create_never_trusts_allocations_received_after_a_cross_origin_redirect
+    call_id = "rtc_attacker_selected_123"
+    redirect = OpenAI::HTTPClient::Response.new(
+      status: 303,
+      headers: {"Location" => "https://evil.example/v1/realtime/calls"},
+      body: ""
+    )
+    response = interrupted_call_response(location: "/v1/realtime/calls/#{call_id}")
+    http = Minitest::Mock.new(Object.new)
+    http.expect(:execute, redirect) do |request|
+      request.url.host == "example.com" && request.headers.key?("authorization")
+    end
+
+    http.expect(:execute, response) do |request|
+      request.url.host == "evil.example" && !request.headers.key?("authorization")
+    end
+
+    configured = client(http_client: http)
+    hangup_attempted = false
+    unexpected_hangup = lambda do |*_args, **_options|
+      hangup_attempted = true
+      nil
+    end
+
+    configured.realtime.calls.stub(:hangup, unexpected_hangup) do
+      error = assert_raises(IOError) do
+        configured.realtime.calls.create(sdp: "v=0\r\n")
+      end
+
+      assert_equal("synthetic SDP response interrupted", error.message)
+    end
+
+    refute(hangup_attempted, "an untrusted redirect must never trigger an authenticated hangup")
+    assert_mock(http)
   end
 
   def test_create_recognizes_equivalent_ipv6_origins_without_trusting_other_addresses
@@ -580,6 +845,33 @@ class OpenAI::Test::RealtimeCallCreationTest < Minitest::Test
 
     assert_instance_of(StringIO, result)
     assert_equal(binary, result.read)
+    assert_mock(http)
+  end
+
+  def test_existing_zero_argument_transport_context_callbacks_remain_compatible
+    response = OpenAI::HTTPClient::Response.new(
+      status: 200,
+      headers: {"Content-Type" => "application/octet-stream"},
+      body: "synthetic binary response"
+    )
+    http = Minitest::Mock.new(Object.new)
+    http.expect(:execute, response) { |request| request.url.path == "/v1/files/file_existing_123/content" }
+    strict_client = Class.new(OpenAI::Client) do
+      private def send_request(request, redirect_count:, retry_count:, send_retry_header:, &context_provider)
+        strict_context = -> { context_provider.call }
+        super(request, redirect_count:, retry_count:, send_retry_header:, &strict_context)
+      end
+    end
+
+    configured = strict_client.new(
+      api_key: "test-key",
+      base_url: "https://example.com/v1",
+      http_client: http
+    )
+
+    result = configured.files.content("file_existing_123")
+
+    assert_equal("synthetic binary response", result.read)
     assert_mock(http)
   end
 

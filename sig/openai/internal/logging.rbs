@@ -16,7 +16,12 @@ module OpenAI
           log_level: Symbol,
           on_retry: (^(OpenAI::RetryEvent) -> void)?,
           method: Symbol,
-          url: URI::Generic
+          url: URI::Generic,
+          ?on_response: (^(
+            OpenAI::HTTPClient::Response,
+            URI::Generic,
+            URI::Generic
+          ) -> void)?
         ) -> void
         def request_started: (
           OpenAI::HTTPClient::Request request,

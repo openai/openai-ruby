@@ -5,6 +5,9 @@ module OpenAI
     module Realtime
       # Realtime request integration kept outside the generated client implementation.
       module ClientExtension
+        MAX_CALL_CLEANUP_SECONDS = 5.0
+        private_constant :MAX_CALL_CLEANUP_SECONDS
+
         # A generated WebRTC allocation belongs to the SDK until its complete raw
         # response can be returned. Keep this lifecycle outside generated resources.
         def request(req)
@@ -15,13 +18,23 @@ module OpenAI
             return super
           end
 
-          url, response, log_context = perform_request(req)
-          call_id = if response.status == 201
-            realtime_call_id_from_location(response.headers["location"], request_url: url)
-          end
-
           delivered = false
+          allocated_response = nil
+          call_id = nil
           begin
+            url, response, log_context = perform_request(req) do |received_response, request_url, response_url|
+              if received_response.status == 201
+                allocated_response = received_response
+                if response_url.path == request_url.path &&
+                    realtime_call_origin(response_url).casecmp?(realtime_call_origin(request_url))
+                  call_id = realtime_call_id_from_location(
+                    received_response.headers["location"],
+                    request_url: request_url
+                  )
+                end
+              end
+            end
+
             result = finish_request(log_context, response) do
               parse_response(req, url: url, response: response)
             end
@@ -29,7 +42,15 @@ module OpenAI
             delivered = true
             result
           ensure
-            cleanup_created_realtime_call(call_id, options: req[:options]) if call_id && !delivered
+            unless delivered
+              begin
+                OpenAI::Internal::Util.close_fused!(allocated_response.body) if allocated_response
+              rescue StandardError, *(defined?(::Async::Stop) ? [::Async::Stop] : [])
+                nil
+              ensure
+                cleanup_created_realtime_call(call_id, options: req[:options]) if call_id
+              end
+            end
           end
         end
 
@@ -37,18 +58,14 @@ module OpenAI
           return if location.nil? || location.empty?
 
           call_url = URI.join(request_url.to_s, location)
-          return unless call_url.is_a?(URI::HTTP) && call_url.userinfo.nil? && call_url.fragment.nil?
-
-          expected_origin, actual_origin = [request_url, call_url].map do |url|
-            origin = OpenAI::Internal::Util.uri_origin(url)
-            if url.host.start_with?("[") && !url.hostname.start_with?("v", "V")
-              origin = origin.sub(url.host, "[#{IPAddr.new(url.hostname)}]")
-            end
-
-            origin
+          unless call_url.is_a?(URI::HTTP) &&
+              !call_url.host.to_s.empty? &&
+              call_url.userinfo.nil? &&
+              call_url.fragment.nil?
+            return
           end
 
-          return unless expected_origin.casecmp?(actual_origin)
+          return unless realtime_call_origin(request_url).casecmp?(realtime_call_origin(call_url))
 
           prefix = "#{request_url.path}/"
           return unless call_url.path.start_with?(prefix)
@@ -59,10 +76,27 @@ module OpenAI
           nil
         end
 
+        private def realtime_call_origin(url)
+          origin = OpenAI::Internal::Util.uri_origin(url)
+          if url.host.start_with?("[") && !url.hostname.start_with?("v", "V")
+            origin = origin.sub(url.host, "[#{IPAddr.new(url.hostname)}]")
+          end
+
+          origin
+        end
+
         private def cleanup_created_realtime_call(call_id, options:)
           cleanup_options = options.to_h.slice(:extra_headers, :extra_query, :timeout)
+          timeout = cleanup_options.fetch(:timeout, @timeout)
+          timeout = MAX_CALL_CLEANUP_SECONDS unless timeout&.positive?
+          cleanup_options[:timeout] = [timeout, MAX_CALL_CLEANUP_SECONDS].min
+          cleanup_options[:max_retries] = 0
           task = ::Async::Task.current? if defined?(::Async::Task)
-          cleanup = -> { realtime.calls.hangup(call_id, request_options: cleanup_options) }
+          cleanup = lambda do
+            Timeout.timeout(cleanup_options.fetch(:timeout)) do
+              realtime.calls.hangup(call_id, request_options: cleanup_options)
+            end
+          end
 
           if task
             if task.respond_to?(:defer_cancel)

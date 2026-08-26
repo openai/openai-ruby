@@ -169,7 +169,13 @@ module OpenAI
 
         private def perform_request: (
           OpenAI::Internal::Transport::BaseClient::request_components req
-        ) -> [URI::Generic, OpenAI::HTTPClient::Response, OpenAI::Internal::Logging::Context]
+        ) ?{
+          (
+            OpenAI::HTTPClient::Response response,
+            URI::Generic url,
+            URI::Generic response_url
+          ) -> void
+        } -> [URI::Generic, OpenAI::HTTPClient::Response, OpenAI::Internal::Logging::Context]
 
         private def finish_request: (
           OpenAI::Internal::Logging::Context log_context,
