@@ -24,11 +24,11 @@ module OpenAI
       )
 
       def initialize(config, transport:)
-        unless config.instance_of?(X509WorkloadIdentity)
+        unless X509Transport.exact_instance?(config, X509WorkloadIdentity)
           raise ArgumentError, "X.509 exchange requires an X509WorkloadIdentity"
         end
 
-        unless transport.instance_of?(X509Transport)
+        unless X509Transport.exact_instance?(transport, X509Transport)
           raise ArgumentError, "X.509 exchange requires an attested X509Transport"
         end
 
@@ -41,6 +41,11 @@ module OpenAI
       # @return [String]
       def inspect
         "#<#{self.class.name}:0x#{object_id.to_s(16)}>"
+      end
+
+      # @api private
+      def bound_to?(identity, transport:)
+        @config.equal?(identity) && @transport.equal?(transport)
       end
 
       # @param deadline [Float, nil] absolute monotonic request deadline

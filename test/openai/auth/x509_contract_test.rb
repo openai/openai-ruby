@@ -50,7 +50,14 @@ class OpenAI::Test::X509ContractTest < Minitest::Test
   end
 
   def test_identity_rejects_unapproved_native_clients_and_origins
-    invalid_clients = [Object.new, Class.new(OpenAI::NetHTTPClient).new]
+    spoofed_client = Class
+      .new(OpenAI::NetHTTPClient) do
+        def instance_of?(expected_class)
+          expected_class == OpenAI::NetHTTPClient || super
+        end
+      end
+      .new
+    invalid_clients = [Object.new, false, Class.new(OpenAI::NetHTTPClient).new, spoofed_client]
     invalid_clients.each do |http_client|
       error = assert_raises(ArgumentError) do
         OpenAI::Auth::X509WorkloadIdentity.new(**@identity_options, http_client: http_client)
@@ -92,14 +99,29 @@ class OpenAI::Test::X509ContractTest < Minitest::Test
   end
 
   def test_identity_subclasses_fail_at_client_construction
-    identity = Class.new(OpenAI::Auth::X509WorkloadIdentity).new(**@identity_options)
     transport = OpenAI::Auth::X509Transport.new(http_client: @native, certificate_identity: :static)
+    identities = [
+      Class.new(OpenAI::Auth::X509WorkloadIdentity).new(**@identity_options),
+      Class
+        .new(OpenAI::Auth::X509WorkloadIdentity) do
+          def instance_of?(expected_class)
+            expected_class == OpenAI::Auth::X509WorkloadIdentity || super
+          end
 
-    error = assert_raises(ArgumentError) do
-      OpenAI::Client.new(api_key: nil, workload_identity: identity, http_client: transport)
+          def is_a?(expected_class)
+            expected_class != OpenAI::Auth::X509WorkloadIdentity && super
+          end
+        end
+        .new(**@identity_options)
+    ]
+
+    identities.each do |identity|
+      error = assert_raises(ArgumentError) do
+        OpenAI::Client.new(api_key: nil, workload_identity: identity, http_client: transport)
+      end
+
+      assert_match(/X509WorkloadIdentity subclasses/, error.message)
     end
-
-    assert_match(/X509WorkloadIdentity subclasses/, error.message)
   end
 
   def test_scoped_copies_share_the_token_cache_and_refresh_coordinator
@@ -160,6 +182,70 @@ class OpenAI::Test::X509ContractTest < Minitest::Test
       original.workload_identity_auth,
       original.with_options(http_client: other_transport).workload_identity_auth
     )
+  end
+
+  def test_authenticator_adoption_rejects_different_identity_and_transport
+    identity = OpenAI::Auth::X509WorkloadIdentity.new(**@identity_options, http_client: @native)
+    original = OpenAI::Client.new(api_key: nil, workload_identity: identity)
+    other_native = OpenAI::NetHTTPClient.new
+    other_identity = OpenAI::Auth::X509WorkloadIdentity.new(
+      identity_provider_id: "idp_other",
+      service_account_id: "svc_acct_other",
+      http_client: other_native
+    )
+    other = OpenAI::Client.new(api_key: nil, workload_identity: other_identity)
+    original_authenticator = original.workload_identity_auth
+
+    error = assert_raises(ArgumentError) do
+      original.adopt_workload_identity_auth!(other.workload_identity_auth)
+    end
+
+    assert_match(/identity and attested transport/, error.message)
+    assert_same(original_authenticator, original.workload_identity_auth)
+
+    same_identity = OpenAI::Auth::X509WorkloadIdentity.new(**@identity_options)
+    first_transport = OpenAI::Auth::X509Transport.new(http_client: @native, certificate_identity: :static)
+    second_transport = OpenAI::Auth::X509Transport.new(http_client: @native, certificate_identity: :static)
+    first = OpenAI::Client.new(api_key: nil, workload_identity: same_identity, http_client: first_transport)
+    second = OpenAI::Client.new(api_key: nil, workload_identity: same_identity, http_client: second_transport)
+
+    assert_raises(ArgumentError) { first.adopt_workload_identity_auth!(second.workload_identity_auth) }
+  ensure
+    other_native&.close
+  end
+
+  def test_with_options_adopts_a_configured_identity_and_its_transport
+    client = OpenAI::Client.new(api_key: nil, admin_api_key: "fake-admin-key")
+    identity = OpenAI::Auth::X509WorkloadIdentity.new(**@identity_options, http_client: @native)
+
+    adopted = client.with_options(workload_identity: identity)
+
+    assert_same(identity.transport, adopted.requester)
+    assert_equal("https://mtls.api.openai.com/v1", adopted.base_url.to_s)
+    assert_raises(ArgumentError) do
+      client.with_options(workload_identity: identity, http_client: @native)
+    end
+  end
+
+  def test_with_options_rotates_configured_identity_and_regional_transport
+    identity = OpenAI::Auth::X509WorkloadIdentity.new(**@identity_options, http_client: @native)
+    original = OpenAI::Client.new(api_key: nil, workload_identity: identity)
+    other_native = OpenAI::NetHTTPClient.new
+    replacement = OpenAI::Auth::X509WorkloadIdentity.new(
+      identity_provider_id: "idp_rotated",
+      service_account_id: "svc_acct_rotated",
+      http_client: other_native,
+      api_origin: "https://mtls-eu.api.openai.com"
+    )
+
+    rotated = original.with_options(workload_identity: replacement)
+
+    assert_same(replacement.transport, rotated.requester)
+    assert_equal("https://mtls-eu.api.openai.com/v1", rotated.base_url.to_s)
+    refute_same(original.workload_identity_auth, rotated.workload_identity_auth)
+    assert_same(identity.transport, original.requester)
+  ensure
+    other_native&.close
   end
 
   def test_issuer_exchange_honors_configured_and_disabled_request_timeouts

@@ -31,6 +31,11 @@ module OpenAI
 
       def invalidate_token: (?String? rejected_token) -> void
 
+      def bound_to?: (
+        OpenAI::Auth::X509WorkloadIdentity identity,
+        transport: OpenAI::Auth::X509Transport
+      ) -> bool
+
       def inspect: -> String
     end
   end

@@ -131,6 +131,13 @@ module OpenAI
         end
       end
 
+      # @api private
+      def bound_to?(identity, transport:)
+        @config.equal?(identity) &&
+          X509Transport.exact_instance?(@token_exchange, X509TokenExchange) &&
+          @token_exchange.bound_to?(identity, transport: transport)
+      end
+
       # Avoid exposing cached access tokens or identity configuration in diagnostics.
       #
       # @return [String]

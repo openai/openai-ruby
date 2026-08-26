@@ -11,6 +11,11 @@ module OpenAI
       sig { returns(Symbol) }
       attr_reader :proxy_mode
 
+      # @api private
+      sig { params(candidate: T.untyped, expected_class: T.class_of(BasicObject)).returns(T::Boolean) }
+      def self.exact_instance?(candidate, expected_class)
+      end
+
       sig do
         params(
           http_client: OpenAI::NetHTTPClient,

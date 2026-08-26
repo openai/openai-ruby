@@ -177,6 +177,16 @@ module OpenAI
     end
 
     # @api private
+    sig { params(identity: T.untyped).returns(T::Boolean) }
+    private def x509_identity?(identity)
+    end
+
+    # @api private
+    sig { params(transport: T.untyped).returns(T::Boolean) }
+    private def x509_transport?(transport)
+    end
+
+    # @api private
     sig { params(options: T::Hash[Symbol, T.untyped]).returns(T.self_type) }
     private def copy_with_workload_identity_auth(options)
     end

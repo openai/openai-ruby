@@ -62,6 +62,14 @@ module OpenAI
       def invalidate_token(rejected_token = nil)
       end
 
+      # @api private
+      sig do
+        params(identity: OpenAI::Auth::X509WorkloadIdentity, transport: OpenAI::Auth::X509Transport)
+          .returns(T::Boolean)
+      end
+      def bound_to?(identity, transport:)
+      end
+
       sig { returns(String) }
       def inspect
       end

@@ -43,7 +43,7 @@ module OpenAI
           raise ArgumentError, "X.509 transport configuration requires http_client:"
         end
 
-        @transport = if http_client
+        @transport = unless http_client.nil?
           X509Transport.new(
             http_client: http_client,
             certificate_identity: :static,

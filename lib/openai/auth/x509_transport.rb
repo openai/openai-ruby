@@ -47,6 +47,14 @@ module OpenAI
       # @return [Symbol]
       attr_reader :proxy_mode
 
+      # Checks an exact security-boundary class without dispatching through a
+      # potentially overridden predicate on the untrusted candidate.
+      #
+      # @api private
+      def self.exact_instance?(candidate, expected_class)
+        Object.instance_method(:instance_of?).bind_call(candidate, expected_class)
+      end
+
       # @param http_client [OpenAI::NetHTTPClient] caller-owned configured native transport
       # @param certificate_identity [Symbol] must explicitly be :static
       # @param proxy [Symbol] either :direct or :http_connect
@@ -57,7 +65,7 @@ module OpenAI
         proxy: :direct,
         api_origin: "https://mtls.api.openai.com"
       )
-        unless http_client.instance_of?(OpenAI::NetHTTPClient)
+        unless X509Transport.exact_instance?(http_client, OpenAI::NetHTTPClient)
           raise ArgumentError, "X.509 transport requires a caller-owned OpenAI::NetHTTPClient"
         end
 

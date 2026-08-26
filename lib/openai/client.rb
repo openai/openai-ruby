@@ -168,6 +168,16 @@ module OpenAI
       {"authorization" => "Bearer #{@admin_api_key}"}
     end
 
+    # @api private
+    private def x509_identity?(identity)
+      OpenAI::Auth::X509Transport.exact_instance?(identity, OpenAI::Auth::X509WorkloadIdentity)
+    end
+
+    # @api private
+    private def x509_transport?(transport)
+      OpenAI::Auth::X509Transport.exact_instance?(transport, OpenAI::Auth::X509Transport)
+    end
+
     # Creates and returns a new client for interacting with the API.
     #
     # @param api_key [String, nil] Defaults to `ENV["OPENAI_API_KEY"]`.
@@ -176,7 +186,7 @@ module OpenAI
 
     # @api private
     private def build_request(request, options)
-      unless @workload_identity_auth && @requester.instance_of?(OpenAI::Auth::X509Transport)
+      unless @workload_identity_auth && x509_transport?(@requester)
         return super
       end
 
@@ -217,7 +227,7 @@ module OpenAI
     # @api private
     private def validate_prepared_request(request, original_request:)
       prepared_request = super
-      return prepared_request unless @workload_identity_auth && @requester.instance_of?(OpenAI::Auth::X509Transport)
+      return prepared_request unless @workload_identity_auth && x509_transport?(@requester)
 
       canonical_headers = @requester.validate_api_request!(
         url: prepared_request.fetch(:url),
@@ -248,7 +258,7 @@ module OpenAI
 
     # @api private
     private def send_request(request, redirect_count:, retry_count:, send_retry_header:)
-      if @workload_identity_auth && @requester.instance_of?(OpenAI::Auth::X509Transport)
+      if @workload_identity_auth && x509_transport?(@requester)
         canonical_headers = @requester.validate_api_request!(
           url: request.fetch(:url),
           headers: request.fetch(:headers)
@@ -264,7 +274,7 @@ module OpenAI
 
       return super unless workload_identity_request?(request)
 
-      x509_request = @requester.instance_of?(OpenAI::Auth::X509Transport)
+      x509_request = x509_transport?(@requester)
       previous_context = request[:x509_request_context]
       deadline = if x509_request
         previous_context&.fetch(:deadline) ||
@@ -370,7 +380,7 @@ module OpenAI
           [408, 409, 429].include?(status) ||
           (status.is_a?(Integer) && (500..599).cover?(status))
         consumed_retries = attempts + previous_issuer_retries + retry_count
-        unless @requester.instance_of?(OpenAI::Auth::X509Transport) &&
+        unless x509_transport?(@requester) &&
             retryable_status &&
             consumed_retries < request.fetch(:x509_request_context).fetch(:auth_max_retries) &&
             (connection_failure || self.class.should_retry?(status, headers: error.headers || {}))
@@ -422,7 +432,7 @@ module OpenAI
         deadline
       )
     rescue Timeout::Error => e
-      raise if @requester.instance_of?(OpenAI::Auth::X509Transport)
+      raise if x509_transport?(@requester)
 
       raise OpenAI::Errors::APITimeoutError.new(url: request.fetch(:url), message: e.message)
     end
@@ -451,9 +461,16 @@ module OpenAI
     # @param overrides [Hash{Symbol=>Object}] Options accepted by {#initialize}.
     # @return [self]
     def with_options(**overrides)
+      if overrides.key?(:workload_identity) && !overrides.key?(:http_client)
+        selected_identity = overrides.fetch(:workload_identity)
+        if x509_identity?(selected_identity) && (configured_transport = selected_identity.transport)
+          overrides = overrides.merge(http_client: configured_transport)
+        end
+      end
+
       previous_transport = @copy_options.fetch(:http_client)
       transport = overrides.fetch(:http_client, previous_transport)
-      if overrides[:data_residency] && transport.instance_of?(OpenAI::Auth::X509Transport)
+      if overrides[:data_residency] && x509_transport?(transport)
         residency = overrides.fetch(:data_residency)
         options = OpenAI::Internal::ClientOptions.copy(@copy_options, overrides.except(:data_residency))
         options.delete(:base_url) unless overrides.key?(:base_url)
@@ -461,10 +478,10 @@ module OpenAI
       end
 
       options = OpenAI::Internal::ClientOptions.copy(@copy_options, overrides)
-      adopted_identity = options.fetch(:workload_identity).instance_of?(OpenAI::Auth::X509WorkloadIdentity) &&
-        !@copy_options.fetch(:workload_identity).instance_of?(OpenAI::Auth::X509WorkloadIdentity)
-      previous_origin = previous_transport.api_origin if previous_transport.instance_of?(OpenAI::Auth::X509Transport)
-      selected_origin = transport.api_origin if transport.instance_of?(OpenAI::Auth::X509Transport)
+      adopted_identity = x509_identity?(options.fetch(:workload_identity)) &&
+        !x509_identity?(@copy_options.fetch(:workload_identity))
+      previous_origin = previous_transport.api_origin if x509_transport?(previous_transport)
+      selected_origin = transport.api_origin if x509_transport?(transport)
       if adopted_identity && selected_origin
         inherited_origin = OpenAI::Internal::Util.uri_origin(URI(options.fetch(:base_url).to_s))
         adopted_identity = !inherited_origin.casecmp?(selected_origin)
@@ -483,7 +500,7 @@ module OpenAI
     private def copy_with_workload_identity_auth(options)
       copied = self.class.new(**options)
       identity = @copy_options.fetch(:workload_identity)
-      if identity.instance_of?(OpenAI::Auth::X509WorkloadIdentity) &&
+      if x509_identity?(identity) &&
           identity.equal?(options.fetch(:workload_identity)) &&
           copied.requester.equal?(@requester)
         copied.adopt_workload_identity_auth!(@workload_identity_auth)
@@ -494,6 +511,14 @@ module OpenAI
 
     # @api private
     def adopt_workload_identity_auth!(authenticator)
+      identity = @copy_options.fetch(:workload_identity)
+      unless x509_identity?(identity) &&
+          x509_transport?(@requester) &&
+          OpenAI::Auth::X509Transport.exact_instance?(authenticator, OpenAI::Auth::WorkloadIdentityAuth) &&
+          authenticator.bound_to?(identity, transport: @requester)
+        raise ArgumentError, "X.509 authenticator must match its workload identity and attested transport"
+      end
+
       @workload_identity_auth = authenticator
     end
 
@@ -565,12 +590,12 @@ module OpenAI
       log_level: nil,
       on_retry: nil
     )
-      if workload_identity.is_a?(OpenAI::Auth::X509WorkloadIdentity) &&
-          !workload_identity.instance_of?(OpenAI::Auth::X509WorkloadIdentity)
+      if Object.instance_method(:is_a?).bind_call(workload_identity, OpenAI::Auth::X509WorkloadIdentity) &&
+          !x509_identity?(workload_identity)
         raise ArgumentError, "X509WorkloadIdentity subclasses are not supported"
       end
 
-      x509_identity = workload_identity.instance_of?(OpenAI::Auth::X509WorkloadIdentity)
+      x509_identity = x509_identity?(workload_identity)
       if x509_identity && (configured_transport = workload_identity.transport)
         if !http_client.nil? && !http_client.equal?(configured_transport)
           raise ArgumentError, "X.509 workload identity must use its configured X.509 transport"
@@ -579,7 +604,7 @@ module OpenAI
         http_client = configured_transport
       end
 
-      if x509_identity && !http_client.instance_of?(OpenAI::Auth::X509Transport)
+      if x509_identity && !x509_transport?(http_client)
         raise ArgumentError, "X.509 workload identity requires an attested X509Transport"
       end
 
@@ -588,7 +613,7 @@ module OpenAI
         base_url: base_url,
         provider: provider
       )
-      if http_client.instance_of?(OpenAI::Auth::X509Transport) && !data_residency.nil?
+      if x509_transport?(http_client) && !data_residency.nil?
         unless http_client.supports_data_residency?(data_residency)
           raise ArgumentError, "X.509 data residency must match its attested OpenAI mTLS API origin"
         end
@@ -638,7 +663,7 @@ module OpenAI
       webhook_secret = nil if webhook_secret.equal?(OpenAI::Internal::OMIT)
       base_url = provider_runtime.base_url if provider_runtime
       base_url = nil if base_url.equal?(OpenAI::Internal::OMIT)
-      base_url ||= if http_client.instance_of?(OpenAI::Auth::X509Transport)
+      base_url ||= if x509_transport?(http_client)
         "#{http_client.api_origin}/v1"
       else
         "https://api.openai.com/v1"

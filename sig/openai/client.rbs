@@ -92,6 +92,10 @@ module OpenAI
       delay: Float
     ) -> void
 
+    private def x509_identity?: (untyped identity) -> bool
+
+    private def x509_transport?: (untyped transport) -> bool
+
     private def copy_with_workload_identity_auth: (
       ::Hash[Symbol, untyped] options
     ) -> self
