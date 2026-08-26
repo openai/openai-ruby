@@ -71,7 +71,8 @@ module OpenAI
         ?truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
         ?user: String,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Internal::Stream[OpenAI::Models::Responses::response_stream_event]
+      ) -> OpenAI::Internal::Stream[(OpenAI::Models::Responses::response_stream_event
+      | OpenAI::Streaming::UnknownStreamEvent)]
 
       def stream: (
         ?background: bool?,
@@ -99,7 +100,8 @@ module OpenAI
         ?truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
         ?user: String,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Internal::Stream[OpenAI::Models::Responses::response_stream_event]
+      ) -> OpenAI::Internal::Stream[(OpenAI::Models::Responses::response_stream_event
+      | OpenAI::Streaming::UnknownStreamEvent)]
 
       def retrieve: (
         String response_id,
@@ -115,7 +117,8 @@ module OpenAI
         ?include_obfuscation: bool,
         ?starting_after: Integer,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Internal::Stream[OpenAI::Models::Responses::response_stream_event]
+      ) -> OpenAI::Internal::Stream[(OpenAI::Models::Responses::response_stream_event
+      | OpenAI::Streaming::UnknownStreamEvent)]
 
       def delete: (
         String response_id,

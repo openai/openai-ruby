@@ -6,6 +6,7 @@ module OpenAI
     ResponseTextDoneEvent = OpenAI::Helpers::Streaming::ResponseTextDoneEvent
     ResponseFunctionCallArgumentsDeltaEvent = OpenAI::Helpers::Streaming::ResponseFunctionCallArgumentsDeltaEvent
     ResponseCompletedEvent = OpenAI::Helpers::Streaming::ResponseCompletedEvent
+    UnknownStreamEvent = OpenAI::Helpers::Streaming::UnknownStreamEvent
 
     ChatChunkEvent = OpenAI::Helpers::Streaming::ChatChunkEvent
     ChatContentDeltaEvent = OpenAI::Helpers::Streaming::ChatContentDeltaEvent

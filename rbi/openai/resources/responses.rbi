@@ -396,7 +396,7 @@ module OpenAI
         )
           .returns(
             OpenAI::Internal::Stream[
-              OpenAI::Responses::ResponseStreamEvent::Variants
+              T.any(OpenAI::Responses::ResponseStreamEvent::Variants, OpenAI::Streaming::UnknownStreamEvent)
             ]
           )
       end
@@ -917,7 +917,7 @@ module OpenAI
         )
           .returns(
             OpenAI::Internal::Stream[
-              OpenAI::Responses::ResponseStreamEvent::Variants
+              T.any(OpenAI::Responses::ResponseStreamEvent::Variants, OpenAI::Streaming::UnknownStreamEvent)
             ]
           )
       end
