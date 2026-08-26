@@ -222,11 +222,13 @@ module OpenAI
             [field.name, hydrate(field.node, value.fetch(keys.first), path: field_path)]
           end
 
-          model.new(**attributes)
-        rescue TypeError, ArgumentError => e
-          raise if e.is_a?(HydrationError)
-
-          raise HydrationError, "#{path}: invalid #{model.name} structured output", cause: nil
+          begin
+            model.new(**attributes)
+          rescue HydrationError
+            raise
+          rescue TypeError, ArgumentError
+            raise HydrationError, "#{path}: invalid #{model.name} structured output", cause: nil
+          end
         end
 
         private def fail_hydration(path, expected:, actual:)

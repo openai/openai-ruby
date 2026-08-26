@@ -259,6 +259,19 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
       end
     end
 
+    def test_constructor_hydration_errors_are_preserved
+      expected = OpenAI::StructuredOutput::SorbetAdapter::HydrationError.new("application hydration failed")
+      rejecting_constructor = -> (**_attributes) { raise expected }
+
+      CalendarEvent.stub(:new, rejecting_constructor) do
+        actual = assert_raises(OpenAI::StructuredOutput::SorbetAdapter::HydrationError) do
+          OpenAI::Internal::Type::Converter.coerce(@adapter, event_payload)
+        end
+
+        assert_same(expected, actual)
+      end
+    end
+
     def test_nullable_booleans_arrays_and_defaults_remain_required
       adapter = OpenAI::StructuredOutput.from_sorbet(NullableContainers)
       schema = adapter.to_json_schema
