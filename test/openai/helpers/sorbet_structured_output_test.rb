@@ -318,8 +318,8 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
       end
     end
 
-    def test_constructor_hydration_errors_are_preserved
-      expected = OpenAI::StructuredOutput::SorbetAdapter::HydrationError.new("application hydration failed")
+    def test_constructor_hydration_errors_do_not_expose_response_values
+      expected = OpenAI::StructuredOutput::SorbetAdapter::HydrationError.new("secret-constructor-value")
       rejecting_constructor = -> (**_attributes) { raise expected }
 
       CalendarEvent.stub(:new, rejecting_constructor) do
@@ -327,7 +327,10 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
           OpenAI::Internal::Type::Converter.coerce(@adapter, event_payload)
         end
 
-        assert_same(expected, actual)
+        refute_same(expected, actual)
+        assert_includes(actual.message, "CalendarEvent")
+        refute_includes(actual.full_message, "secret-constructor-value")
+        assert_nil(actual.cause)
       end
     end
 
@@ -417,6 +420,19 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
 
       assert_instance_of(CalendarEvent, parsed)
       assert_same(Attendance::CONFIRMED, parsed.participants.first.attendance)
+    end
+
+    def test_chat_completions_streaming_rejects_sorbet_before_sending_a_request
+      error = assert_raises(ArgumentError) do
+        @client.chat.completions.stream(
+          messages: [{content: "Generate an event", role: :user}],
+          model: "gpt-4o-mini",
+          response_format: @adapter
+        )
+      end
+
+      assert_includes(error.message, "class-based structured-output model")
+      assert_not_requested(:post, "http://localhost/chat/completions")
     end
 
     def test_responses_public_boundary_hydrates_sorbet_models

@@ -236,8 +236,6 @@ module OpenAI
 
           begin
             model.new(**attributes)
-          rescue HydrationError
-            raise
           rescue StandardError
             raise HydrationError, "#{path}: invalid #{model.name} structured output", cause: nil
           end
