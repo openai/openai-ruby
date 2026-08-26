@@ -7,6 +7,8 @@ require "rbconfig"
 require "tmpdir"
 
 class TestWorkflowTest < Minitest::Test
+  extend Minitest::Serial if defined?(Minitest::Serial)
+
   ROOT = File.expand_path("../..", __dir__)
 
   def setup

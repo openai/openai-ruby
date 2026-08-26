@@ -22,6 +22,7 @@ module OpenAI
       OPAQUE_STRING_BYTES = 1_024
       SENSITIVE_BODY_KEY = /(?:api[-_]?key|authorization|credential|password|secret|signature|token)/i
       SENSITIVE_QUERY_KEY = /(?:(?:\A|[-_\[])(?:key|sig)|(?-i:K)ey|api[-_]?key|authorization|credentials?|password|secret|signature|token)(?:\[|\]|\z)/i
+      CALL_ID_ALIASES = %w[callid call-id call_id].freeze
       URL_HEADER_KEY = /(?:\A|[-_])(?:location|url|uri)\z|\A(?:link|refresh)\z/i
 
       class Context
@@ -274,7 +275,9 @@ module OpenAI
         # @api private
         def sensitive_header?(name)
           normalized_name = name.to_s.downcase
-          REDACTED_HEADERS.include?(normalized_name) || SENSITIVE_QUERY_KEY.match?(normalized_name)
+          REDACTED_HEADERS.include?(normalized_name) ||
+            SENSITIVE_QUERY_KEY.match?(normalized_name) ||
+            sensitive_call_id?(normalized_name)
         end
 
         # @api private
@@ -339,20 +342,111 @@ module OpenAI
           uri.user = nil
           uri.password = nil
           uri.fragment = nil
+          realtime_route = sanitize_realtime_path!(uri)
           return uri if uri.query.nil?
 
-          uri.query = sanitized_query(uri.query)
+          uri.query = sanitized_query(uri.query, redact_call_ids: realtime_route)
           uri
         end
 
-        private def sanitized_query(query)
+        private def sanitize_realtime_path!(uri)
+          segments = uri.path.split("/", -1)
+          normalized = segments.map { URI::RFC2396_PARSER.unescape(_1) }
+          effective_indexes = []
+          normalized.each_with_index do |segment, index|
+            next if segment.empty? || segment == "."
+
+            segment == ".." ? effective_indexes.pop : effective_indexes << index
+          end
+
+          realtime_route = redact_realtime_segments!(segments, normalized, normalized.each_index)
+          effective_route = redact_realtime_segments!(segments, normalized, effective_indexes)
+          realtime_route ||= effective_route
+
+          uri.path = segments.join("/") if realtime_route
+          realtime_route
+        end
+
+        private def redact_realtime_segments!(segments, normalized, indexes)
+          realtime_route = false
+          expecting_calls = false
+          expecting_call_id = false
+
+          indexes.each do |index|
+            segment = normalized[index]
+            next if segment.empty? || %w[. ..].include?(segment)
+
+            if expecting_call_id
+              segments[index] = "%5BREDACTED%5D"
+              expecting_call_id = false
+            end
+
+            if segment == "realtime"
+              realtime_route = true
+              expecting_calls = true
+            elsif expecting_calls
+              expecting_call_id = segment == "calls"
+              expecting_calls = false
+            end
+          end
+
+          realtime_route
+        end
+
+        private def sanitized_query(query, redact_call_ids: false)
           pairs = URI.decode_www_form(query).map do |name, value|
-            [name, SENSITIVE_QUERY_KEY.match?(name) ? "[REDACTED]" : value]
+            sensitive = SENSITIVE_QUERY_KEY.match?(name) ||
+              (redact_call_ids && sensitive_call_id?(name))
+            [name, sensitive ? "[REDACTED]" : value]
           end
 
           URI.encode_www_form(pairs)
         rescue ArgumentError
           nil
+        end
+
+        private def sensitive_call_id?(name)
+          normalized = name.to_s.downcase
+          bytes = normalized.b
+          bracket = bytes.index("[")
+          identifier = bracket.nil? ? normalized : normalized.byteslice(0, bracket)
+          recognized = CALL_ID_ALIASES.any? do |candidate|
+            identifier == candidate || identifier.end_with?("-#{candidate}", "_#{candidate}")
+          end
+
+          unless recognized
+            return false if bracket.nil?
+
+            return nested_call_id_alias?(bytes, bracket)
+          end
+
+          return true if bracket.nil?
+
+          first_bracket = bracket
+          while bracket < bytes.bytesize
+            unless bytes.getbyte(bracket) == "[".ord
+              return nested_call_id_alias?(bytes, first_bracket)
+            end
+
+            closing = bytes.index("]", bracket + 1)
+            return nested_call_id_alias?(bytes, first_bracket) if closing.nil?
+
+            bracket = closing + 1
+          end
+
+          true
+        end
+
+        private def nested_call_id_alias?(bytes, bracket)
+          terminal_alias = CALL_ID_ALIASES.any? do |candidate|
+            bytes.end_with?("-#{candidate}", "_#{candidate}")
+          end
+
+          return false unless bytes.end_with?("]") || terminal_alias
+
+          CALL_ID_ALIASES.any? do |candidate|
+            bytes.index("-#{candidate}", bracket) || bytes.index("_#{candidate}", bracket)
+          end
         end
 
         private def sanitized_header_url(value)
