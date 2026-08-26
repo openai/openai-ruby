@@ -34,6 +34,11 @@ module OpenAI
       @request_id = @headers["x-request-id"]
       freeze
     end
+
+    # Inspect metadata without exposing sensitive response headers.
+    #
+    # @return [String]
+    def inspect = "#<#{self.class} status=#{@status} request_id=#{@request_id.inspect}>"
   end
 
   # Details about an API request retry that is about to run.
@@ -171,6 +176,11 @@ module OpenAI
 
         freeze
       end
+
+      # Inspect response metadata without exposing sensitive headers or body content.
+      #
+      # @return [String]
+      def inspect = "#<#{self.class} status=#{@status} request_id=#{@metadata.request_id.inspect}>"
     end
 
     # Executes one SDK-prepared HTTP request.

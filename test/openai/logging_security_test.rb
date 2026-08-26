@@ -136,6 +136,243 @@ class LoggingSecurityTest < Minitest::Test
     refute_includes(output, "user:password@")
   end
 
+  def test_realtime_call_identifiers_are_redacted_from_http_paths_and_location_headers
+    call_id = "rtc_fake_sensitive_call_identifier"
+    location = "https://example.com/v1/realtime/calls/#{call_id}?safe=visible"
+    request_url = URI("https://example.com/v1/realtime/calls/#{call_id}/hangup?safe=visible")
+
+    formatted_url = OpenAI::Internal::Logging.safe_url(request_url)
+    formatted_path = OpenAI::Internal::Logging.safe_path(request_url)
+    formatted_headers = OpenAI::Internal::Logging.format_headers("Location" => location)
+
+    [formatted_url, formatted_path, formatted_headers].each do |diagnostic|
+      assert_includes(diagnostic, "/realtime/calls/%5BREDACTED%5D")
+      assert_includes(diagnostic, "safe=visible")
+      refute_includes(diagnostic, call_id)
+    end
+
+    assert_equal("https://example.com/v1/realtime/calls/#{call_id}/hangup?safe=visible", request_url.to_s)
+  end
+
+  def test_realtime_call_identifiers_are_redacted_from_query_parameters
+    call_id = "rtc_fake_sensitive_call_identifier"
+    realtime_url = URI(
+      "https://example.com/v1/realtime?call_id=#{call_id}&call%5Fid=#{call_id}&safe=visible"
+    )
+
+    [
+      OpenAI::Internal::Logging.safe_url(realtime_url),
+      OpenAI::Internal::Logging.safe_path(realtime_url),
+      OpenAI::Internal::Logging.format_headers("Location" => realtime_url.to_s)
+    ].each do |diagnostic|
+      assert_includes(diagnostic, "call_id=%5BREDACTED%5D")
+      assert_includes(diagnostic, "safe=visible")
+      refute_includes(diagnostic, call_id)
+    end
+
+    assert_includes(realtime_url.to_s, call_id)
+  end
+
+  def test_encoded_realtime_routes_and_call_identifier_aliases_are_redacted
+    call_id = "rtc_fake_sensitive_call_identifier"
+    routes = [
+      "/v1/%72ealtime/calls/#{call_id}",
+      "/v1/realtime/%63alls/#{call_id}",
+      "/v1/realtime/calls//./#{call_id}",
+      "/v1/realtime/%2e/calls/#{call_id}",
+      "/v1/realtime/other/../calls/#{call_id}",
+      "/v1/realtime/calls/decoy/../#{call_id}",
+      "/v1/realtime/other/%2e%2e/calls/#{call_id}",
+      "/v1/realtime/calls/#{call_id}/../replacement",
+      "/v1/%72ealtime?CALL_ID=#{call_id}&call_id%5B%5D=#{call_id}&safe=visible"
+    ]
+
+    routes.each do |route|
+      url = URI("https://example.com#{route}")
+      diagnostics = [
+        OpenAI::Internal::Logging.safe_url(url),
+        OpenAI::Internal::Logging.safe_path(url),
+        OpenAI::Internal::Logging.format_headers("Location" => url.to_s)
+      ]
+
+      diagnostics.each do |diagnostic|
+        assert_includes(diagnostic, "%5BREDACTED%5D", "#{route}: #{diagnostic}")
+        refute_includes(diagnostic, call_id, "#{route}: #{diagnostic}")
+      end
+
+      assert_includes(url.to_s, call_id)
+    end
+  end
+
+  def test_raw_realtime_response_inspection_omits_sensitive_headers
+    call_id = "rtc_fake_sensitive_call_identifier"
+    response = OpenAI::HTTPClient::Response.new(
+      status: 201,
+      headers: {
+        "Location" => "/v1/realtime/calls/#{call_id}",
+        "Authorization" => "Bearer fake-sensitive-token",
+        "Set-Cookie" => "session=fake-sensitive-cookie",
+        "X-Request-ID" => "req_safe_realtime_call"
+      },
+      body: "fake private SDP answer"
+    )
+
+    assert_includes(response.inspect, "OpenAI::HTTPClient::Response")
+    assert_includes(response.metadata.inspect, "OpenAI::ResponseMetadata")
+    [response.inspect, response.metadata.inspect].each do |diagnostic|
+      assert_includes(diagnostic, "status=201")
+      assert_includes(diagnostic, "req_safe_realtime_call")
+      refute_includes(diagnostic, call_id)
+      refute_includes(diagnostic, "fake-sensitive-token")
+      refute_includes(diagnostic, "fake-sensitive-cookie")
+      refute_includes(diagnostic, "fake private SDP answer")
+    end
+
+    assert_equal("/v1/realtime/calls/#{call_id}", response.headers.fetch("location"))
+  end
+
+  def test_call_identifier_response_headers_are_redacted
+    call_id = "rtc_fake_sensitive_call_identifier"
+    headers = OpenAI::Internal::Logging.format_headers(
+      "Call-Id" => call_id,
+      "X-Call-Id" => call_id,
+      "OpenAI-Call-ID" => call_id,
+      "Content-Type" => "application/sdp"
+    )
+
+    assert_equal(
+      {
+        "Call-Id" => "[REDACTED]",
+        "Content-Type" => "application/sdp",
+        "OpenAI-Call-ID" => "[REDACTED]",
+        "X-Call-Id" => "[REDACTED]"
+      },
+      JSON.parse(headers)
+    )
+    refute_includes(headers, call_id)
+  end
+
+  def test_call_identifier_detection_handles_adversarial_untrusted_names
+    aliases = [
+      "callid",
+      "call-id",
+      "call_id",
+      "X-Call-Id",
+      "OpenAI-Call-ID",
+      "call_id[]",
+      "call_id[tenant][nested]",
+      "call_id[é]",
+      "call_id[🐛][nested]",
+      "é-call_id[]"
+    ]
+    aliases.each do |name|
+      assert(OpenAI::Internal::Logging.sensitive_header?(name), "#{name} must be recognized")
+    end
+
+    ["callback_id", "othercall_id", "foo-callid-extra", "call_id[missing"].each do |name|
+      refute(OpenAI::Internal::Logging.sensitive_header?(name), "#{name} is not a call identifier")
+    end
+
+    adversarial = "callid#{"[-callid[]" * 4_096}"
+
+    assert(OpenAI::Internal::Logging.sensitive_header?(adversarial))
+    refute(OpenAI::Internal::Logging.sensitive_header?("#{adversarial}!"))
+  end
+
+  def test_unicode_call_identifier_aliases_are_redacted
+    call_id = "rtc_fake_sensitive_call_identifier"
+
+    ["call_id[é]", "call_id[🐛][nested]", "é-call_id[]"].each do |name|
+      url = URI("https://example.com/v1/realtime?#{URI.encode_www_form(name => call_id)}")
+      diagnostics = [
+        OpenAI::Internal::Logging.safe_url(url),
+        OpenAI::Internal::Logging.safe_path(url),
+        OpenAI::Internal::Logging.format_headers(name => call_id),
+        OpenAI::Internal::Logging.format_headers("Location" => url.to_s)
+      ]
+
+      diagnostics.each do |diagnostic|
+        refute_includes(diagnostic, call_id, "#{name}: #{diagnostic}")
+      end
+    end
+
+    malformed = URI("https://example.com/v1/realtime?call_id%5B%FF%5D=#{call_id}")
+    [
+      OpenAI::Internal::Logging.safe_url(malformed),
+      OpenAI::Internal::Logging.safe_path(malformed),
+      OpenAI::Internal::Logging.format_headers("Location" => malformed.to_s)
+    ].each do |diagnostic|
+      refute_includes(diagnostic, call_id)
+    end
+  end
+
+  def test_nested_call_identifier_aliases_remain_redacted
+    call_id = "rtc_fake_sensitive_call_identifier"
+    aliases = [
+      "callback_id[-callid[]",
+      "metadata[-call_id[]",
+      "safe[other][x-call-id[]",
+      "safe[-callid[][tenant]",
+      "callid[]-call_id[]",
+      "call_id[é]-call_id[]",
+      "callid[x]-CALL_ID[]",
+      "call_id[x]![-callid[]"
+    ]
+
+    aliases.each do |name|
+      url = URI("https://example.com/v1/realtime?#{URI.encode_www_form(name => call_id)}")
+      diagnostics = [
+        OpenAI::Internal::Logging.safe_url(url),
+        OpenAI::Internal::Logging.safe_path(url),
+        OpenAI::Internal::Logging.format_headers(name => call_id),
+        OpenAI::Internal::Logging.format_headers("Location" => url.to_s)
+      ]
+
+      diagnostics.each do |diagnostic|
+        refute_includes(diagnostic, call_id, "#{name}: #{diagnostic}")
+      end
+    end
+  end
+
+  def test_realtime_call_creation_diagnostics_preserve_identifiers_on_the_wire_only
+    call_id = "rtc_fake_sensitive_call_identifier"
+    output = StringIO.new
+    response = OpenAI::HTTPClient::Response.new(
+      status: 201,
+      headers: {
+        "content-type" => "application/sdp",
+        "location" => "/v1/realtime/calls/#{call_id}",
+        "x-request-id" => "req_realtime_call"
+      },
+      body: "v=0\r\no=- fake private SDP answer\r\n"
+    )
+    http = Minitest::Mock.new(Object.new)
+    http.expect(:execute, response) { |request| request.url.path == "/v1/realtime/calls" }
+    http.expect(:execute, OpenAI::HTTPClient::Response.new(status: 200, headers: {}, body: "")) do |request|
+      request.url.path == "/v1/realtime/calls/#{call_id}/hangup"
+    end
+
+    client = OpenAI::Client.new(
+      api_key: "fake-secret-api-key",
+      base_url: "https://example.com/v1",
+      http_client: http,
+      logger: Logger.new(output),
+      log_level: :debug
+    )
+
+    result = client.realtime.calls.create(sdp: "v=0\r\no=- fake private SDP offer\r\n")
+
+    assert_equal("/v1/realtime/calls/#{call_id}", result.headers.fetch("location"))
+    assert_includes(result.body.to_a.join, "fake private SDP answer")
+    client.realtime.calls.hangup(call_id)
+    assert_includes(output.string, "/realtime/calls/%5BREDACTED%5D")
+    refute_includes(output.string, call_id)
+    refute_includes(output.string, "fake-secret-api-key")
+    refute_includes(output.string, "fake private SDP offer")
+    refute_includes(output.string, "fake private SDP answer")
+    assert_mock(http)
+  end
+
   def test_debug_redirect_logs_remove_fragments_without_changing_transport_urls
     location = "/v1/redirected?safe=visible&access_token=fake-redirect-query-secret" \
       "#access%5Ftoken%3Dfake-redirect-fragment-secret"

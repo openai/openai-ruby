@@ -6,7 +6,7 @@ module OpenAI
           sdp: String,
           ?session: OpenAI::Realtime::RealtimeSessionCreateRequest,
           ?request_options: OpenAI::request_opts
-        ) -> StringIO
+        ) -> OpenAI::HTTPClient::Response
 
         def accept: (
           String call_id,

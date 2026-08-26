@@ -131,8 +131,10 @@ Optional environment variables:
 
 ## Control an existing WebRTC or SIP call
 
-Start an application-authorized WebRTC call or obtain the call ID from a
-verified `realtime.call.incoming` webhook, then attach the Ruby control plane:
+Create a WebRTC call with `client.realtime.calls.create`, read its SDP answer
+from `response.body`, and extract its application-authorized call ID from
+`response.headers.fetch("location")`; alternatively, obtain the call ID from a
+verified `realtime.call.incoming` webhook. Then attach the Ruby control plane:
 
 ```sh
 OPENAI_REALTIME_CALL_ID=rtc_example \

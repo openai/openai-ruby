@@ -53,9 +53,10 @@ end
 ### Realtime WebSockets
 
 The SDK supports block-scoped, typed Realtime WebSocket sessions for
-server-side text, committed-turn transcription, one-turn voice, and sideband
-control of existing WebRTC or SIP calls. Add the optional `async-websocket`
-gem, then use `client.realtime.connect`:
+server-side text, committed-turn transcription, one-turn voice, WebRTC call
+creation, and sideband control of existing WebRTC or SIP calls. Add the
+optional `async-websocket` gem for WebSocket connections, then use
+`client.realtime.connect`:
 
 ```ruby
 client.realtime.connect(model: "gpt-realtime-2.1") do |connection|
@@ -74,7 +75,9 @@ client.realtime.connect(model: "gpt-realtime-2.1") do |connection|
 end
 ```
 
-See the [Realtime WebSocket guide](realtime.md) and the runnable
+WebRTC calls can be created with `client.realtime.calls.create`; its HTTP
+response preserves the SDP answer and the `Location` header needed to attach a
+sideband connection. See the [Realtime WebSocket guide](realtime.md) and the runnable
 [text, transcription, voice, and sideband examples](examples/realtime/README.md)
 for lifecycle, authentication, proxy, TLS, and custom transport details.
 

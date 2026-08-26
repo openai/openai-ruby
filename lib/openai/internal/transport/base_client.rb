@@ -843,6 +843,14 @@ module OpenAI
         # @return [Object]
         private def parse_response(req, url:, response:)
           model = req.fetch(:model) { OpenAI::Internal::Type::Unknown }
+          if model == OpenAI::HTTPClient::Response
+            return OpenAI::HTTPClient::Response.new(
+              status: response.status,
+              headers: response.headers,
+              body: response.body.to_a.join
+            )
+          end
+
           unwrap = req[:unwrap]
           response_metadata = response.metadata
 
