@@ -7,7 +7,7 @@ class OpenAI::Test::Resources::Realtime::CallsTest < OpenAI::Test::ResourceTest
     response = @openai.realtime.calls.create(sdp: "sdp")
 
     assert_pattern do
-      response => Object
+      response => OpenAI::HTTPClient::Response
     end
   end
 

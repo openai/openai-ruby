@@ -15,7 +15,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [StringIO]
+        # @return [OpenAI::HTTPClient::Response]
         #
         # @see OpenAI::Models::Realtime::CallCreateParams
         def create(params)
@@ -52,8 +52,9 @@ module OpenAI
             path: "realtime/calls",
             headers: {"content-type" => "multipart/form-data", "accept" => "application/sdp"},
             body: multipart_body,
+            model: OpenAI::HTTPClient::Response,
             security: {bearer_auth: true},
-            options: options
+            options: {**options, max_retries: options[:max_retries] || 0}
           )
         end
 
