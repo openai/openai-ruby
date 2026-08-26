@@ -872,7 +872,12 @@ module OpenAI
           include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
           include_obfuscation: T::Boolean,
           starting_after: Integer,
-          text: T.nilable(OpenAI::StructuredOutput::JsonSchemaConverter::Input),
+          text: T.nilable(
+            T.any(
+              OpenAI::Responses::ResponseTextConfig::OrHash,
+              OpenAI::StructuredOutput::JsonSchemaConverter::Input
+            )
+          ),
           tools: T.nilable(T::Array[OpenAI::StructuredOutput::JsonSchemaConverter::Input]),
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
