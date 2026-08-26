@@ -32,6 +32,8 @@ Gem::Specification.new do |s|
       "examples/realtime/image_input.rb",
       "examples/realtime/mcp_approval.rb",
       "examples/realtime/sideband.rb",
+      "examples/realtime/webrtc_conversation.html",
+      "examples/realtime/webrtc_conversation.rb",
       "examples/realtime/websocket_transcription.rb",
       "examples/realtime/websocket_text.rb",
       "examples/realtime/websocket_voice_turn.rb"

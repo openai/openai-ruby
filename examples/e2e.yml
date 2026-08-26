@@ -61,6 +61,9 @@ examples:
   examples/realtime/sideband.rb:
     status: excluded
     reason: Requires an existing, application-authorized WebRTC or SIP call ID and live Realtime access.
+  examples/realtime/webrtc_conversation.rb:
+    status: excluded
+    reason: Requires an authenticated interactive browser, microphone permission, and live Realtime WebRTC access.
   examples/realtime/websocket_text.rb:
     status: covered
     expected_output: "[realtime] smoke test passed"

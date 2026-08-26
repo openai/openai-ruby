@@ -1,6 +1,6 @@
-# Realtime WebSocket examples
+# Realtime WebSocket and WebRTC examples
 
-This directory contains runnable examples for the Realtime WebSocket surface:
+This directory contains runnable examples for the Realtime WebSocket and WebRTC surfaces:
 
 - `websocket_text.rb` creates a typed text session, sends one user message,
   streams assistant text, verifies a completed response, and exits.
@@ -12,6 +12,9 @@ This directory contains runnable examples for the Realtime WebSocket surface:
   its transcript to embedded callers, verifies a completed response, and exits.
 - `sideband.rb` attaches to an existing, application-authorized WebRTC or SIP
   call, updates its session policy, verifies the typed update event, and exits.
+- `webrtc_conversation.rb` authenticates and authorizes browser requests,
+  issues short-lived Realtime client secrets, and serves a browser-owned WebRTC
+  microphone and playback example.
 - `function_calling.rb` forces one local function call, validates and executes
   it, submits a generic `function_call_output` item, and requires completed
   tool and final-text responses.
@@ -21,7 +24,9 @@ This directory contains runnable examples for the Realtime WebSocket surface:
   tool, submits an approval response, waits for tool completion, and requires
   completed follow-up text.
 
-Add the optional transport dependency and set an API key:
+For the Ruby-owned WebSocket examples, add the optional transport dependency
+and set an API key. The browser-owned WebRTC example below requires only
+`async-http` instead of the WebSocket adapter.
 
 ```sh
 bundle add async-websocket
@@ -46,6 +51,52 @@ Optional environment variables:
   echoed to diagnostic output.
 - `OPENAI_REALTIME_TIMEOUT` — overall example deadline in seconds; defaults to
   `30`.
+
+## Run a browser-owned WebRTC conversation
+
+The browser-owned example needs a standard OpenAI API key and an optional Ruby
+HTTP server, not the WebSocket adapter. Install `async-http` directly if your
+application does not already include it, then choose an application authorization
+token with at least 32 characters and the trusted identity it is permitted to
+represent:
+
+```sh
+bundle add async-http
+export OPENAI_API_KEY="your-key"
+
+REALTIME_DEMO_AUTH_TOKEN='replace-with-a-random-32-character-or-longer-value' \
+REALTIME_DEMO_USER_ID='authorized-local-user' \
+  bundle exec ruby examples/realtime/webrtc_conversation.rb
+```
+
+Open `http://127.0.0.1:4567`, enter the same application authorization token,
+click **Start conversation**, and allow microphone access. The server exchanges
+the standard API key for a client secret with a 60-second issuance lifetime.
+The browser uses that delegated credential to negotiate SDP directly with
+OpenAI and owns microphone capture, echo cancellation, playback, the data
+channel, and peer teardown. Ruby never creates or owns the browser's call, so
+an interrupted token response cannot orphan a server-owned call.
+
+This local demonstration binds only to `127.0.0.1` or `::1`; validates Host,
+request authority, exact Origin, a per-process CSRF token, and application
+authorization; limits each authorized identity to five credentials per minute;
+and serves all responses with `Cache-Control: no-store` and a nonce-based
+content-security policy. The standard API key, application token, Realtime
+client secret, SDP, instructions, and service error details never appear in
+diagnostics. Replace the example's local bearer-token policy with your
+application's authenticated user, tenant authorization, CSRF protection, and
+distributed rate limiter before deploying behind an existing HTTPS application
+server. Session defaults attached to a client secret are client-overridable;
+the secret can create multiple sessions until it expires and is not an
+immutable policy boundary or single-use grant.
+
+Optional environment variables:
+
+- `REALTIME_DEMO_HOST` — loopback bind address; defaults to `127.0.0.1`.
+- `REALTIME_DEMO_PORT` — loopback HTTP port; defaults to `4567`.
+- `OPENAI_REALTIME_MODEL` — defaults to `gpt-realtime-2.1`.
+- `OPENAI_REALTIME_VOICE` — defaults to `marin`.
+- `OPENAI_REALTIME_INSTRUCTIONS` — optional initial session instructions.
 
 ## Call one deterministic local function
 

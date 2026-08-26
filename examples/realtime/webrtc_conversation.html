@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ruby Realtime WebRTC conversation</title>
+    <style nonce="__CSP_NONCE__">
+      :root { color-scheme: light dark; font-family: ui-sans-serif, system-ui, sans-serif; }
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #111827; color: #f9fafb; }
+      main { width: min(42rem, calc(100vw - 2rem)); padding: 2rem; border: 1px solid #374151; border-radius: 1rem; }
+      label, input { display: block; }
+      input { box-sizing: border-box; width: 100%; margin: 0.5rem 0 1.25rem; padding: 0.75rem; }
+      button { padding: 0.75rem 1rem; margin-right: 0.5rem; border: 0; border-radius: 0.5rem; }
+      #status { min-height: 1.5rem; margin-top: 1rem; color: #93c5fd; }
+      #transcript { max-height: 16rem; overflow-y: auto; white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Realtime conversation</h1>
+      <p>Your browser owns the microphone, audio playback, WebRTC peer, and conversation.</p>
+      <label for="application-token">Application authorization token</label>
+      <input id="application-token" type="password" autocomplete="off" spellcheck="false">
+      <button id="start" type="button">Start conversation</button>
+      <button id="stop" type="button" disabled>Stop</button>
+      <p id="status" role="status" aria-live="polite">Ready</p>
+      <div id="transcript" aria-live="polite" aria-label="Assistant transcript"></div>
+      <audio id="remote-audio" autoplay></audio>
+    </main>
+
+    <script nonce="__CSP_NONCE__">
+      const applicationToken = document.querySelector("#application-token");
+      const startButton = document.querySelector("#start");
+      const stopButton = document.querySelector("#stop");
+      const statusElement = document.querySelector("#status");
+      const transcriptElement = document.querySelector("#transcript");
+      const remoteAudio = document.querySelector("#remote-audio");
+      const csrfToken = "__CSRF_TOKEN__";
+
+      let peerConnection;
+      let dataChannel;
+      let microphoneStream;
+      let startupController;
+      let startupGeneration = 0;
+
+      function setStatus(message) {
+        statusElement.textContent = message;
+      }
+
+      function handleEvent(message) {
+        try {
+          const event = JSON.parse(message.data);
+          switch (event.type) {
+            case "input_audio_buffer.speech_started":
+              setStatus("Listening — interrupting the model…");
+              break;
+            case "input_audio_buffer.speech_stopped":
+              setStatus("Thinking…");
+              break;
+            case "response.output_audio_transcript.delta":
+              transcriptElement.append(document.createTextNode(event.delta));
+              transcriptElement.scrollTop = transcriptElement.scrollHeight;
+              break;
+            case "response.output_audio_transcript.done":
+              transcriptElement.append(document.createTextNode("\n"));
+              setStatus("Listening…");
+              break;
+            case "error":
+              setStatus("Realtime service error.");
+          }
+        } catch (_error) {
+          setStatus("Invalid Realtime event.");
+        }
+      }
+
+      async function startConversation() {
+        const authorization = applicationToken.value;
+        if (!authorization) {
+          setStatus("Enter your application authorization token.");
+          return;
+        }
+
+        const generation = ++startupGeneration;
+        const controller = new AbortController();
+        startupController = controller;
+        startButton.disabled = true;
+        stopButton.disabled = false;
+        transcriptElement.replaceChildren();
+        setStatus("Requesting microphone access…");
+
+        try {
+          const connection = new RTCPeerConnection();
+          peerConnection = connection;
+          connection.addEventListener("track", (event) => {
+            remoteAudio.srcObject = event.streams[0];
+            remoteAudio.play().catch(() => setStatus("Click the page to enable audio playback."));
+          });
+          connection.addEventListener("connectionstatechange", () => {
+            if (generation !== startupGeneration) return;
+
+            if (connection.connectionState === "connected") setStatus("Listening…");
+            if (connection.connectionState === "disconnected") setStatus("Connection interrupted; reconnecting…");
+            if (connection.connectionState === "failed") stopConversation("Connection failed.");
+          });
+
+          const stream = await navigator.mediaDevices.getUserMedia({
+            audio: {echoCancellation: true, noiseSuppression: true, autoGainControl: true}
+          });
+          if (generation !== startupGeneration) {
+            stream.getTracks().forEach((track) => track.stop());
+            return;
+          }
+          microphoneStream = stream;
+          connection.addTrack(stream.getAudioTracks()[0], stream);
+
+          dataChannel = connection.createDataChannel("oai-events");
+          dataChannel.addEventListener("message", handleEvent);
+          dataChannel.addEventListener("open", () => setStatus("Listening…"));
+
+          await connection.setLocalDescription(await connection.createOffer());
+          const tokenResponse = await fetch("/token", {
+            method: "POST",
+            signal: controller.signal,
+            cache: "no-store",
+            credentials: "same-origin",
+            headers: {
+              "Authorization": `Bearer ${authorization}`,
+              "X-Realtime-CSRF": csrfToken
+            }
+          });
+          if (!tokenResponse.ok) throw new Error("Application authorization or token issuance failed.");
+          const token = await tokenResponse.json();
+          if (typeof token.value !== "string" || !token.value) {
+            throw new Error("Realtime credential was unavailable.");
+          }
+
+          const response = await fetch("https://api.openai.com/v1/realtime/calls", {
+            method: "POST",
+            signal: controller.signal,
+            cache: "no-store",
+            headers: {
+              "Authorization": `Bearer ${token.value}`,
+              "Content-Type": "application/sdp"
+            },
+            body: connection.localDescription.sdp
+          });
+          if (!response.ok) throw new Error("Realtime connection could not be established.");
+
+          const answer = await response.text();
+          if (generation !== startupGeneration) return;
+          await connection.setRemoteDescription({type: "answer", sdp: answer});
+        } catch (error) {
+          if (generation !== startupGeneration || error.name === "AbortError") return;
+
+          stopConversation("Unable to start the conversation.");
+        } finally {
+          if (generation === startupGeneration) startupController = undefined;
+        }
+      }
+
+      function stopConversation(status = "Stopped") {
+        startupGeneration += 1;
+        startupController?.abort();
+        startupController = undefined;
+        dataChannel?.close();
+        peerConnection?.close();
+        microphoneStream?.getTracks().forEach((track) => track.stop());
+        remoteAudio.srcObject = null;
+        dataChannel = undefined;
+        peerConnection = undefined;
+        microphoneStream = undefined;
+        startButton.disabled = false;
+        stopButton.disabled = true;
+        setStatus(status);
+      }
+
+      startButton.addEventListener("click", startConversation);
+      stopButton.addEventListener("click", () => stopConversation());
+      window.addEventListener("pagehide", () => stopConversation());
+    </script>
+  </body>
+</html>
