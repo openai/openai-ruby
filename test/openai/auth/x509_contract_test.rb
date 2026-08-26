@@ -150,6 +150,149 @@ class OpenAI::Test::X509ContractTest < Minitest::Test
     assert_equal(1, exchange_count)
   end
 
+  def test_scoped_clients_never_republish_a_rejected_bearer
+    identity = OpenAI::Auth::X509WorkloadIdentity.new(**@identity_options, http_client: @native)
+    original = OpenAI::Client.new(api_key: nil, workload_identity: identity, max_retries: 0)
+    scoped = original.with_options(timeout: 30.0)
+    issued = ["fake-rejected-token", "fake-rejected-token", "fake-fresh-token"]
+    api_headers = []
+    dispatch = lambda do |request|
+      if request.url.host == "mtls.auth.openai.com"
+        token_response(issued.shift)
+      else
+        authorization = request.headers.fetch("authorization")
+        api_headers << authorization
+        authorization == "Bearer fake-rejected-token" ? unauthorized_response : model_response
+      end
+    end
+
+    @native.stub(:execute, dispatch) do
+      assert_equal("fake-model", original.models.retrieve("first").id)
+      assert_equal("fake-model", scoped.models.retrieve("second").id)
+    end
+
+    assert_equal(
+      ["Bearer fake-rejected-token", "Bearer fake-fresh-token", "Bearer fake-fresh-token"],
+      api_headers
+    )
+    assert_empty(issued)
+  end
+
+  def test_reissued_rejected_bearers_fail_closed_after_a_bounded_shared_refresh
+    identity = OpenAI::Auth::X509WorkloadIdentity.new(**@identity_options, http_client: @native)
+    client = OpenAI::Client.new(api_key: nil, workload_identity: identity, max_retries: 0)
+    issuer_attempts = 0
+    api_headers = []
+    dispatch = lambda do |request|
+      if request.url.host == "mtls.auth.openai.com"
+        issuer_attempts += 1
+        token_response("fake-rejected-token")
+      else
+        api_headers << request.headers.fetch("authorization")
+        unauthorized_response
+      end
+    end
+
+    error = @native.stub(:execute, dispatch) do
+      assert_raises(OpenAI::Errors::AuthenticationError) { client.models.retrieve("first") }
+    end
+
+    assert_equal(["Bearer fake-rejected-token"], api_headers)
+    assert_equal(4, issuer_attempts)
+    assert_equal("https://mtls.auth.openai.com/oauth/token", error.url.to_s)
+    refute_match(/fake-rejected-token/, error.message)
+  end
+
+  def test_scoped_waiters_share_one_bounded_rejected_token_refresh
+    identity = OpenAI::Auth::X509WorkloadIdentity.new(**@identity_options, http_client: @native)
+    original = OpenAI::Client.new(api_key: nil, workload_identity: identity)
+    scoped = original.with_options(timeout: 30.0)
+    auth = original.workload_identity_auth
+    issuer_attempts = 0
+    refresh_started = Queue.new
+    release_refresh = Queue.new
+    leader = nil
+    waiter = nil
+    dispatch = lambda do |_request|
+      issuer_attempts += 1
+      if issuer_attempts == 2
+        refresh_started << true
+        release_refresh.pop
+      end
+
+      token_response("fake-rejected-token")
+    end
+
+    @native.stub(:execute, dispatch) do
+      rejected = auth.get_token
+      auth.invalidate_token(rejected)
+      leader = Thread.new { auth.get_token }
+      leader.report_on_exception = false
+      Timeout.timeout(2) { refresh_started.pop }
+
+      waiter = Thread.new { scoped.workload_identity_auth.get_token }
+      waiter.report_on_exception = false
+      Timeout.timeout(2) { Thread.pass until waiter.status == "sleep" }
+      release_refresh << true
+
+      leader_error = assert_raises(OpenAI::Errors::AuthenticationError) { leader.value }
+      waiter_error = assert_raises(OpenAI::Errors::AuthenticationError) { waiter.value }
+      assert_same(leader_error, waiter_error)
+    end
+
+    assert_equal(4, issuer_attempts)
+
+  ensure
+    release_refresh&.push(true) if leader&.alive?
+    leader&.kill&.join if leader&.alive?
+    waiter&.kill&.join if waiter&.alive?
+  end
+
+  def test_late_scoped_client_rejections_cannot_invalidate_a_newer_bearer
+    identity = OpenAI::Auth::X509WorkloadIdentity.new(**@identity_options, http_client: @native)
+    original = OpenAI::Client.new(api_key: nil, workload_identity: identity, max_retries: 0)
+    scoped = original.with_options(timeout: 30.0)
+    issuer_attempts = 0
+    api_headers = []
+    late_started = Queue.new
+    release_late = Queue.new
+    late_request = nil
+    dispatch = lambda do |request|
+      if request.url.host == "mtls.auth.openai.com"
+        issuer_attempts += 1
+        token_response(issuer_attempts <= 2 ? "fake-rejected-token" : "fake-fresh-token")
+      else
+        authorization = request.headers.fetch("authorization")
+        api_headers << authorization
+        if request.url.path.end_with?("/late") && authorization == "Bearer fake-rejected-token"
+          late_started << true
+          release_late.pop
+        end
+
+        authorization == "Bearer fake-rejected-token" ? unauthorized_response : model_response
+      end
+    end
+
+    @native.stub(:execute, dispatch) do
+      assert_equal("fake-rejected-token", original.workload_identity_auth.get_token)
+      late_request = Thread.new { scoped.models.retrieve("late") }
+      late_request.report_on_exception = false
+      Timeout.timeout(2) { late_started.pop }
+
+      assert_equal("fake-model", original.models.retrieve("first").id)
+      release_late << true
+      assert_equal("fake-model", Timeout.timeout(2) { late_request.value }.id)
+    end
+
+    assert_equal(3, issuer_attempts)
+    assert_equal(2, api_headers.count("Bearer fake-rejected-token"))
+    assert_equal(2, api_headers.count("Bearer fake-fresh-token"))
+
+  ensure
+    release_late&.push(true) if late_request&.alive?
+    late_request&.kill&.join if late_request&.alive?
+  end
+
   def test_scoped_regional_copies_preserve_the_same_token_cache
     identity = OpenAI::Auth::X509WorkloadIdentity.new(
       **@identity_options,
@@ -330,16 +473,24 @@ class OpenAI::Test::X509ContractTest < Minitest::Test
     Thread.current.thread_variable_set(:mock_sleep, nil)
   end
 
-  private def token_response
+  private def token_response(token = "fake-issued-token")
     OpenAI::HTTPClient::Response.new(
       status: 200,
       headers: {},
       body: JSON.generate(
-        access_token: "fake-issued-token",
+        access_token: token,
         issued_token_type: "urn:ietf:params:oauth:token-type:access_token",
         token_type: "Bearer",
         expires_in: 120
       )
+    )
+  end
+
+  private def unauthorized_response
+    OpenAI::HTTPClient::Response.new(
+      status: 401,
+      headers: {"content-type" => "application/json"},
+      body: JSON.generate(error: {message: "invalid authentication"})
     )
   end
 
