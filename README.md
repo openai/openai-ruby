@@ -711,6 +711,22 @@ response
   end
 ```
 
+For a stored or background response, pass the same structured-output model again
+when retrieving it. The model is used locally to populate `content.parsed`; it is
+not sent as a retrieval query parameter. A response that is still queued or in
+progress can be retrieved the same way and will be parsed once output is present.
+
+```ruby
+pending = client.responses.create(
+  model: "gpt-5.2",
+  input: "Extract the event information.",
+  text: CalendarEvent,
+  background: true
+)
+
+response = client.responses.retrieve(pending.id, text: CalendarEvent)
+```
+
 </details>
 
 See the [examples](https://github.com/openai/openai-ruby/tree/main/examples) directory for more usage examples for helper usage.

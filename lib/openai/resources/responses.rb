@@ -356,7 +356,7 @@ module OpenAI
       #
       # Retrieves a model response with the given ID.
       #
-      # @overload retrieve(response_id, include: nil, include_obfuscation: nil, starting_after: nil, request_options: {})
+      # @overload retrieve(response_id, include: nil, include_obfuscation: nil, starting_after: nil, text: nil, tools: nil, request_options: {})
       #
       # @param response_id [String] The ID of the response to retrieve.
       #
@@ -366,23 +366,41 @@ module OpenAI
       #
       # @param starting_after [Integer] The sequence number of the event after which to start streaming.
       #
+      # @param text [OpenAI::StructuredOutput::JsonSchemaConverter, nil] The structured-output model used to parse retrieved text output. This is a
+      #   local parsing hint and is not sent to the API.
+      #
+      # @param tools [Array<OpenAI::StructuredOutput::JsonSchemaConverter>, nil] Structured-output models used to parse retrieved function tool calls. These
+      #   are local parsing hints and are not sent to the API.
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::Responses::Response]
       #
       # @see OpenAI::Models::Responses::ResponseRetrieveParams
       def retrieve(response_id, params = {})
-        parsed, options = OpenAI::Responses::ResponseRetrieveParams.dump_request(params)
+        structured_output_params = duplicate_structured_output_params(params.slice(:text, :tools))
+        request_params = params.dup
+        request_params.delete(:text)
+        request_params.delete(:tools)
+
+        parsed, options = OpenAI::Responses::ResponseRetrieveParams.dump_request(request_params)
         query = OpenAI::Internal::Util.encode_query_params(parsed)
         if parsed[:stream]
           message = "Please use `#retrieve_streaming` for the streaming use case."
           raise ArgumentError.new(message)
         end
 
+        model, tool_models = get_structured_output_models(structured_output_params)
+
+        unwrap = -> (raw) do
+          parse_structured_outputs!(raw, model, tool_models)
+        end
+
         @client.request(
           method: :get,
           path: ["responses/%1$s", response_id],
           query: query,
+          unwrap: unwrap,
           model: OpenAI::Responses::Response,
           security: {bearer_auth: true},
           options: options
@@ -554,6 +572,17 @@ module OpenAI
 
       def get_structured_output_models(parsed)
         OpenAI::Helpers::StructuredOutput::ResponseParser.get_models(parsed)
+      end
+
+      def duplicate_structured_output_params(value)
+        case value
+        when Array
+          value.map { |item| duplicate_structured_output_params(item) }
+        when Hash
+          value.to_h { |key, item| [key, duplicate_structured_output_params(item)] }
+        else
+          value
+        end
       end
     end
   end

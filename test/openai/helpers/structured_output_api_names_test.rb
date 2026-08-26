@@ -21,6 +21,10 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     required :profiles, OpenAI::ArrayOf[AliasedProfile]
   end
 
+  class AliasedLookup < OpenAI::BaseModel
+    required :profile_id, Integer, api_name: :profileId
+  end
+
   class AliasedNameCollision < OpenAI::BaseModel
     required :display_name, String, api_name: :displayName
     required :displayName, String, api_name: :legacyDisplayName
@@ -260,6 +264,73 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     assert_instance_of(AliasedProfile, parsed)
     assert_equal("Ada", parsed.display_name)
     assert_nil(parsed.middle_name)
+  end
+
+  def test_background_retrieve_parses_text_and_tool_models_locally
+    stub_request(:get, "http://localhost/responses/resp_background").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_background",
+        status: "completed",
+        output: [
+          {
+            id: "msg_background",
+            content: [
+              {
+                annotations: [],
+                text: "{\"displayName\":\"Ada\",\"middleName\":null}",
+                type: "output_text"
+              }
+            ],
+            role: "assistant",
+            status: "completed",
+            type: "message"
+          },
+          {
+            arguments: "{\"profileId\":7}",
+            call_id: "call_background",
+            name: "AliasedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    tools = [AliasedLookup]
+    response = @client.responses.retrieve(
+      "resp_background",
+      text: AliasedProfile,
+      tools: tools
+    )
+
+    assert_requested(:get, "http://localhost/responses/resp_background") do |request|
+      assert_nil(request.uri.query)
+    end
+
+    parsed_text = response.output.fetch(0).content.fetch(0).parsed
+    parsed_tool = response.output.fetch(1).parsed
+
+    assert_instance_of(AliasedProfile, parsed_text)
+    assert_equal("Ada", parsed_text.display_name)
+    assert_nil(parsed_text.middle_name)
+    assert_instance_of(AliasedLookup, parsed_tool)
+    assert_equal(7, parsed_tool.profile_id)
+    assert_equal([AliasedLookup], tools)
+  end
+
+  def test_background_retrieve_accepts_a_model_before_output_is_complete
+    stub_request(:get, "http://localhost/responses/resp_pending").to_return_json(
+      status: 200,
+      body: {id: "resp_pending", status: "in_progress", output: []}
+    )
+
+    response = @client.responses.retrieve("resp_pending", text: AliasedProfile)
+
+    assert_requested(:get, "http://localhost/responses/resp_pending") do |request|
+      assert_nil(request.uri.query)
+    end
+
+    assert_empty(response.output)
   end
 
   def test_public_structured_output_endpoints_materialize_nested_models
