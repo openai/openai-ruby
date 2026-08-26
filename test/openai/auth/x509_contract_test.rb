@@ -304,7 +304,7 @@ class OpenAI::Test::X509ContractTest < Minitest::Test
     identity = OpenAI::Auth::X509WorkloadIdentity.new(**@identity_options, http_client: @native)
     client = OpenAI::Client.new(api_key: nil, workload_identity: identity)
     auth = client.workload_identity_auth
-    monotonic = 100.0
+    clock = {now: 100.0}
     issued = [
       {id: "fake-first-token", expires_in: 120},
       {id: "fake-rotated-token", expires_in: 10},
@@ -316,16 +316,16 @@ class OpenAI::Test::X509ContractTest < Minitest::Test
       issued.shift
     end
 
-    OpenAI::Internal::Util.stub(:monotonic_secs, -> { monotonic }) do
+    OpenAI::Internal::Util.stub(:monotonic_secs, -> { clock.fetch(:now) }) do
       auth.stub(:fetch_token_from_exchange, fetch) do
         assert_equal("fake-first-token", auth.get_token)
-        monotonic = 161.0
+        clock[:now] = 161.0
         assert_equal("fake-rotated-token", auth.get_token)
 
         auth.invalidate_token("fake-first-token")
         assert_equal("fake-rotated-token", auth.get_token)
 
-        monotonic = 167.0
+        clock[:now] = 167.0
         assert_equal("fake-fresh-token", auth.get_token)
       end
     end

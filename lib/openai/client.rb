@@ -312,7 +312,7 @@ module OpenAI
         )
       rescue OpenAI::Errors::AuthenticationError
         if x509_request
-          rejected_token = context.fetch(:token)
+          rejected_token = request.fetch(:x509_request_context).fetch(:token)
           raise if rejected_token.nil?
 
           @workload_identity_auth.invalidate_token(rejected_token)
@@ -351,7 +351,7 @@ module OpenAI
             send_retry_header: send_retry_header
           )
         rescue OpenAI::Errors::AuthenticationError
-          if x509_request && (rejected_token = context.fetch(:token))
+          if x509_request && (rejected_token = request.fetch(:x509_request_context).fetch(:token))
             @workload_identity_auth.invalidate_token(rejected_token)
           end
 
