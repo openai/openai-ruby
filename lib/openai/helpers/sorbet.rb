@@ -192,7 +192,7 @@ module OpenAI
           in :scalar
             value = value.to_f if node.value == Float && value.is_a?(Integer)
 
-            unless value.is_a?(node.value)
+            unless value.is_a?(node.value) && (node.value != Float || value.finite?)
               fail_hydration(path, expected: node.value.name, actual: value)
             end
 
@@ -226,7 +226,7 @@ module OpenAI
             model.new(**attributes)
           rescue HydrationError
             raise
-          rescue TypeError, ArgumentError
+          rescue StandardError
             raise HydrationError, "#{path}: invalid #{model.name} structured output", cause: nil
           end
         end

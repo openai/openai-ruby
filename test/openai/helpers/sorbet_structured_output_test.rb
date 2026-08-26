@@ -211,6 +211,21 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
       assert_equal(2.0, parsed.duration)
     end
 
+    def test_float_fields_reject_overflow_and_nonfinite_values
+      [10 ** 400, Float::INFINITY, Float::NAN].each do |number|
+        payload = event_payload
+        payload[:duration] = number
+
+        error = assert_raises(OpenAI::StructuredOutput::SorbetAdapter::HydrationError) do
+          OpenAI::Internal::Type::Converter.coerce(@adapter, payload)
+        end
+
+        assert_includes(error.message, "duration")
+        refute_includes(error.message, number.to_s)
+        assert_nil(error.cause)
+      end
+    end
+
     def test_rejects_unsupported_model_shapes_before_sending_requests
       [String, UnsupportedUnion, UnsupportedHash, DuplicateWireNames, UnsupportedEnum, RecursiveModel].each do |model|
         error = assert_raises(ArgumentError) { OpenAI::StructuredOutput.from_sorbet(model) }
@@ -246,16 +261,18 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
     end
 
     def test_constructor_failures_do_not_expose_response_values_in_exception_causes
-      rejecting_constructor = -> (**_attributes) { raise ArgumentError, "secret-constructor-value" }
+      [ArgumentError, RuntimeError].each do |error_type|
+        rejecting_constructor = -> (**_attributes) { raise error_type, "secret-constructor-value" }
 
-      CalendarEvent.stub(:new, rejecting_constructor) do
-        error = assert_raises(OpenAI::StructuredOutput::SorbetAdapter::HydrationError) do
-          OpenAI::Internal::Type::Converter.coerce(@adapter, event_payload)
+        CalendarEvent.stub(:new, rejecting_constructor) do
+          error = assert_raises(OpenAI::StructuredOutput::SorbetAdapter::HydrationError) do
+            OpenAI::Internal::Type::Converter.coerce(@adapter, event_payload)
+          end
+
+          assert_includes(error.message, "CalendarEvent")
+          refute_includes(error.full_message, "secret-constructor-value")
+          assert_nil(error.cause)
         end
-
-        assert_includes(error.message, "CalendarEvent")
-        refute_includes(error.full_message, "secret-constructor-value")
-        assert_nil(error.cause)
       end
     end
 
