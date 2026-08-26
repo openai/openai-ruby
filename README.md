@@ -761,6 +761,53 @@ response = client.responses.create(
 
 </details>
 
+#### Sorbet structured-output models
+
+Applications that use Sorbet can provide their own `T::Struct` models instead of
+subclassing `OpenAI::BaseModel`. Add `sorbet-runtime` to your application's
+dependencies and explicitly load the optional integration:
+
+```ruby
+require "openai"
+require "openai/helpers/sorbet"
+
+class Participant < T::Struct
+  const :name, String
+  const :email, T.nilable(String)
+end
+
+class CalendarEvent < T::Struct
+  const :title, String
+  const :participants, T::Array[Participant]
+end
+
+schema = OpenAI::StructuredOutput.from_sorbet(CalendarEvent)
+
+response = client.responses.create(
+  model: "gpt-5.2",
+  input: "Extract the event information.",
+  text: schema
+)
+
+event = T.cast(response.output.first.content.first.parsed, CalendarEvent)
+event.participants.first.name
+
+completion = client.chat.completions.create(
+  model: "gpt-5.2",
+  messages: [{role: :user, content: "Extract the event information."}],
+  response_format: schema
+)
+
+T.cast(completion.choices.first.message.parsed, CalendarEvent)
+```
+
+The integration supports nested structs, arrays, nullable values, boolean and
+numeric fields, application-defined `T::Enum` values, and Sorbet's `name:` field
+aliases. All structured-output fields are required, including nullable fields.
+Unsupported unions, hashes, recursive models, and enum values that do not
+serialize to strings are rejected. `sorbet-runtime` remains optional and is not
+loaded by ordinary SDK usage.
+
 ### Handling errors
 
 When the library is unable to connect to the API, or if the API returns a non-success status code (i.e., 4xx or 5xx response), a subclass of `OpenAI::Errors::APIError` will be thrown:

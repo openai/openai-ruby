@@ -1,0 +1,28 @@
+module OpenAI
+  module Helpers
+    module StructuredOutput
+      class SorbetAdapter
+        include OpenAI::Internal::Type::Converter
+
+        class HydrationError < ::TypeError
+        end
+
+        attr_reader name: String
+
+        def initialize: (::Class model) -> void
+
+        def to_json_schema: -> ::Hash[Symbol, untyped]
+
+        # @api private
+        def to_json_schema_inner: (
+          state: ::Hash[Symbol, untyped]
+        ) -> ::Hash[Symbol, untyped]
+
+        # @api private
+        def coerce: (untyped value, state: ::Hash[Symbol, untyped]) -> untyped
+      end
+
+      def self.from_sorbet: (::Class model) -> SorbetAdapter
+    end
+  end
+end
