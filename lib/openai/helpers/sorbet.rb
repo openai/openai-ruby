@@ -38,14 +38,15 @@ module OpenAI
           end
 
           @name = model.name
+          @compiled_structs = {}
           @node = compile_struct(model, path: @name, ancestors: [])
         end
 
         # @return [Hash{Symbol=>Object}]
-        def to_json_schema = schema_for(@node)
+        def to_json_schema = OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.to_json_schema(self)
 
         # @api private
-        def to_json_schema_inner(**) = to_json_schema
+        def to_json_schema_inner(state:) = schema_for(@node, state: state)
 
         # @api private
         def coerce(value, state:)
@@ -61,6 +62,8 @@ module OpenAI
             raise ArgumentError, "#{path}: recursive Sorbet models are not supported"
           end
 
+          return @compiled_structs.fetch(model) if @compiled_structs.key?(model)
+
           fields = model.props.map do |field_name, rules|
             wire_name = rules.fetch(:serialized_form)
             type = rules.fetch(:type_object)
@@ -73,7 +76,7 @@ module OpenAI
             raise ArgumentError, "#{path}: duplicate serialized field name #{duplicate.first.inspect}"
           end
 
-          Node.new(kind: :object, value: [model, fields], nullable: false)
+          @compiled_structs.store(model, Node.new(kind: :object, value: [model, fields], nullable: false))
         end
 
         private def compile_type(type, path:, ancestors:)
@@ -129,18 +132,27 @@ module OpenAI
           end
         end
 
-        private def schema_for(node)
+        private def schema_for(node, state:)
           schema = case node.kind
           in :object
-            _model, fields = node.value
-            {
-              type: "object",
-              properties: fields.to_h { [_1.wire_name.to_sym, schema_for(_1.node)] },
-              required: fields.map(&:wire_name),
-              additionalProperties: false
-            }
+            model, fields = node.value
+            OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.cache_def!(state, type: model) do
+              properties = fields.to_h do |field|
+                child_state = {**state, path: [*state.fetch(:path), ".#{field.wire_name}"]}
+
+                [field.wire_name.to_sym, schema_for(field.node, state: child_state)]
+              end
+
+              {
+                type: "object",
+                properties: properties,
+                required: fields.map(&:wire_name),
+                additionalProperties: false
+              }
+            end
+
           in :array
-            {type: "array", items: schema_for(node.value)}
+            {type: "array", items: schema_for(node.value, state: state)}
           in :boolean
             {type: "boolean"}
           in :enum

@@ -55,14 +55,18 @@ else
 
         schema = OpenAI::StructuredOutput.from_sorbet(TypedEvent)
         client = OpenAI::Client.new(api_key: "test-key")
-        client.responses.create(model: "gpt-4o-mini", input: "test", text: schema)
-        client.chat.completions.create(
+        response = client.responses.create(model: "gpt-4o-mini", input: "test", text: schema)
+        message = response.output.grep(OpenAI::Responses::ResponseOutputMessage).fetch(0)
+        output_text = message.content.grep(OpenAI::Responses::ResponseOutputText).fetch(0)
+        event = T.cast(output_text.parsed, TypedEvent)
+        T.assert_type!(event.participants.fetch(0).name, String)
+
+        completion = client.chat.completions.create(
           model: "gpt-4o-mini",
           messages: [{role: :user, content: "test"}],
           response_format: schema
         )
-        event = T.cast(T.unsafe(nil), TypedEvent)
-        T.assert_type!(event.participants.fetch(0).name, String)
+        T.cast(completion.choices.fetch(0).message.parsed, TypedEvent)
       RUBY
 
       Tempfile.create(["sorbet-structured-output", ".rb"]) do |file|
@@ -107,6 +111,16 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
       const :alternates, T::Array[T.nilable(Participant)]
       const :capacity, Integer
       const :duration, Float
+    end
+
+    class ReusedParticipants < T::Struct
+      const :primary, Participant
+      const :backup, Participant
+    end
+
+    class ReusedParticipantGroups < T::Struct
+      const :first, ReusedParticipants
+      const :second, ReusedParticipants
     end
 
     class UnsupportedUnion < T::Struct
@@ -166,7 +180,8 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
 
     def test_strict_schema_preserves_nested_types_aliases_nullability_and_enums
       schema = @adapter.to_json_schema
-      participant = schema.dig(:properties, :participants, :items)
+      participant_reference = schema.dig(:properties, :participants, :items)
+      participant = schema.fetch(:$defs).fetch(".participants")
       alternate = schema.dig(:properties, :alternates, :items)
 
       assert_equal("CalendarEvent", @adapter.name.split("::").last)
@@ -182,8 +197,35 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
       assert_equal({type: %w[string null]}, participant.dig(:properties, :email))
       assert_equal({type: "string", enum: %w[confirmed tentative]}, participant.dig(:properties, :attendance))
       assert_equal({type: "boolean"}, participant.dig(:properties, :active))
-      assert_equal([participant, {type: "null"}], alternate.fetch(:anyOf))
+      assert_equal({:$ref => "#/$defs/.participants"}, participant_reference)
+      assert_equal([participant_reference, {type: "null"}], alternate.fetch(:anyOf))
       assert_equal(schema, OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.to_json_schema(@adapter))
+    end
+
+    def test_repeated_nested_structs_are_compiled_once_and_share_schema_definitions
+      original_properties = Participant.props
+      compilations = 0
+      properties = -> {
+        compilations += 1
+        original_properties
+      }
+
+      adapter = Participant.stub(:props, properties) do
+        OpenAI::StructuredOutput.from_sorbet(ReusedParticipantGroups)
+      end
+
+      assert_equal(1, compilations)
+
+      schema = adapter.to_json_schema
+      definitions = schema.fetch(:$defs)
+      group = definitions.fetch(".first")
+      participant_reference = {:$ref => "#/$defs/.first~1.primary"}
+
+      assert_equal([".first", ".first/.primary"], definitions.keys.sort)
+      assert_equal({:$ref => "#/$defs/.first"}, schema.dig(:properties, :first))
+      assert_equal({:$ref => "#/$defs/.first"}, schema.dig(:properties, :second))
+      assert_equal(participant_reference, group.dig(:properties, :primary))
+      assert_equal(participant_reference, group.dig(:properties, :backup))
     end
 
     def test_hydrates_nested_application_models_and_actual_enum_values

@@ -790,8 +790,10 @@ response = client.responses.create(
   text: schema
 )
 
-event = T.cast(response.output.first.content.first.parsed, CalendarEvent)
-event.participants.first.name
+message = response.output.grep(OpenAI::Responses::ResponseOutputMessage).fetch(0)
+output_text = message.content.grep(OpenAI::Responses::ResponseOutputText).fetch(0)
+event = T.cast(output_text.parsed, CalendarEvent)
+event.participants.fetch(0).name
 
 completion = client.chat.completions.create(
   model: "gpt-5.2",
@@ -799,7 +801,7 @@ completion = client.chat.completions.create(
   response_format: schema
 )
 
-T.cast(completion.choices.first.message.parsed, CalendarEvent)
+T.cast(completion.choices.fetch(0).message.parsed, CalendarEvent)
 ```
 
 The integration supports nested structs, arrays, nullable values, boolean and
