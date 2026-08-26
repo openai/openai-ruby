@@ -7,7 +7,6 @@ module OpenAI
     # @api private
     class X509TokenExchange
       MAX_TOKEN_LIFETIME = 3600
-      DEFAULT_TIMEOUT = 5.0
       TOKEN_URL = "#{X509Transport::ISSUER_ORIGIN}/oauth/token".freeze
       GRANT_TYPE = "urn:ietf:params:oauth:grant-type:token-exchange"
       SUBJECT_TOKEN_TYPE = "urn:openai:params:oauth:token-type:x509"
@@ -16,7 +15,6 @@ module OpenAI
       OAUTH_ERROR_CODES = %w[invalid_grant invalid_subject_token token_exchange_server_error].freeze
       private_constant(
         :MAX_TOKEN_LIFETIME,
-        :DEFAULT_TIMEOUT,
         :TOKEN_URL,
         :GRANT_TYPE,
         :SUBJECT_TOKEN_TYPE,
@@ -26,11 +24,11 @@ module OpenAI
       )
 
       def initialize(config, transport:)
-        unless config.instance_of?(X509WorkloadIdentity)
+        unless X509Transport.exact_instance?(config, X509WorkloadIdentity)
           raise ArgumentError, "X.509 exchange requires an X509WorkloadIdentity"
         end
 
-        unless transport.instance_of?(X509Transport)
+        unless X509Transport.exact_instance?(transport, X509Transport)
           raise ArgumentError, "X.509 exchange requires an attested X509Transport"
         end
 
@@ -43,6 +41,11 @@ module OpenAI
       # @return [String]
       def inspect
         "#<#{self.class.name}:0x#{object_id.to_s(16)}>"
+      end
+
+      # @api private
+      def bound_to?(identity, transport:)
+        @config.equal?(identity) && @transport.equal?(transport)
       end
 
       # @param deadline [Float, nil] absolute monotonic request deadline
@@ -75,14 +78,14 @@ module OpenAI
       end
 
       private def remaining_timeout(deadline)
-        return DEFAULT_TIMEOUT if deadline.nil?
+        return if deadline.nil?
 
         remaining = deadline - OpenAI::Internal::Util.monotonic_secs
         unless remaining.positive?
           raise Timeout::Error, "request timed out during workload identity authentication"
         end
 
-        [remaining, DEFAULT_TIMEOUT].min
+        remaining
       end
 
       private def parse_response(response, deadline:, strict:)

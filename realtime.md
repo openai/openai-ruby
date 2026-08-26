@@ -413,6 +413,10 @@ workload-identity token rejected with a definitive upgrade `401` is invalidated
 and retried exactly once before the connection is yielded. Exceptions from the
 application block never trigger a reconnect or block replay.
 
+X.509 workload identities are HTTP-only and cannot open Realtime WebSocket
+connections. The workload-identity behavior above applies to supported
+subject-token providers such as Kubernetes, Azure, and GCP.
+
 The WebSocket URL normally derives from `base_url`. A gateway that has a
 different WebSocket origin can set a separate, validated endpoint:
 

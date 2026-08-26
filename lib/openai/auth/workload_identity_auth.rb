@@ -13,6 +13,8 @@ module OpenAI
       TOKEN_EXCHANGE_GRANT_TYPE = "urn:ietf:params:oauth:grant-type:token-exchange"
       DEFAULT_TOKEN_EXCHANGE_URL = "https://auth.openai.com/oauth/token"
       DEFAULT_REFRESH_BUFFER_SECONDS = 1200
+      MAX_REJECTED_TOKEN_REFRESH_ATTEMPTS = 3
+      private_constant :MAX_REJECTED_TOKEN_REFRESH_ATTEMPTS
 
       def initialize(
         config,
@@ -28,6 +30,8 @@ module OpenAI
         @cached_token = nil
         @cached_token_expires_at_monotonic = nil
         @cached_token_refresh_at_monotonic = nil
+        @issued_token_expirations = {}
+        @rejected_tokens = {}
         @refreshing = false
         @refresh_generation = nil
         @refresh_error = nil
@@ -123,12 +127,24 @@ module OpenAI
       # @api private
       def invalidate_token(rejected_token = nil)
         @mutex.synchronize do
+          if @token_exchange && rejected_token
+            expires_at = @issued_token_expirations[rejected_token]
+            @rejected_tokens[rejected_token] = expires_at unless expires_at.nil?
+          end
+
           return nil unless rejected_token.nil? || rejected_token == @cached_token
 
           @cached_token = nil
           @cached_token_expires_at_monotonic = nil
           @cached_token_refresh_at_monotonic = nil
         end
+      end
+
+      # @api private
+      def bound_to?(identity, transport:)
+        @config.equal?(identity) &&
+          X509Transport.exact_instance?(@token_exchange, X509TokenExchange) &&
+          @token_exchange.bound_to?(identity, transport: transport)
       end
 
       # Avoid exposing cached access tokens or identity configuration in diagnostics.
@@ -212,15 +228,46 @@ module OpenAI
       end
 
       private def perform_refresh(deadline:)
-        token_data = fetch_token_from_exchange(deadline: deadline)
-        now = OpenAI::Internal::Util.monotonic_secs
-        expires_in = token_data.fetch(:expires_in)
+        rejected_attempts = 0
 
-        @mutex.synchronize do
-          @refresh_error = nil
-          @cached_token = token_data.fetch(:id)
-          @cached_token_expires_at_monotonic = now + expires_in
-          @cached_token_refresh_at_monotonic = now + refresh_delay_seconds(expires_in)
+        loop do
+          token_data = fetch_token_from_exchange(deadline: deadline)
+          now = OpenAI::Internal::Util.monotonic_secs
+          expires_in = token_data.fetch(:expires_in)
+          token = token_data.fetch(:id)
+
+          published = @mutex.synchronize do
+            @issued_token_expirations.delete_if { |_issued, expires_at| expires_at <= now }
+            @rejected_tokens.delete_if { |_rejected, expires_at| expires_at <= now }
+            unless @token_exchange && @rejected_tokens.key?(token)
+              expires_at = now + expires_in
+              @refresh_error = nil
+              @cached_token = token
+              @cached_token_expires_at_monotonic = expires_at
+              @cached_token_refresh_at_monotonic = now + refresh_delay_seconds(expires_in)
+              @issued_token_expirations[token] = expires_at if @token_exchange
+              true
+            end
+          end
+
+          return if published
+
+          rejected_attempts += 1
+          if rejected_attempts >= MAX_REJECTED_TOKEN_REFRESH_ATTEMPTS
+            raise(
+              OpenAI::Errors::AuthenticationError.new(
+                url: @token_exchange_url,
+                status: 401,
+                headers: nil,
+                body: nil,
+                request: nil,
+                response: nil,
+                message: "Token issuer repeatedly returned a rejected access token"
+              )
+            )
+          end
+
+          check_deadline!(deadline)
         end
       end
 

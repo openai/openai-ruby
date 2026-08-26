@@ -63,16 +63,13 @@ native = OpenAI::NetHTTPClient.new(size: 1) do |connection|
   connection.key = certificate.key
 end
 
-transport = OpenAI::Auth::X509Transport.new(
-  http_client: native,
-  certificate_identity: :static,
-  proxy: :http_connect
-)
 identity = OpenAI::Auth::X509WorkloadIdentity.new(
   identity_provider_id: "idp_fake_packaged",
-  service_account_id: "svc_acct_fake_packaged"
+  service_account_id: "svc_acct_fake_packaged",
+  http_client: native,
+  proxy: :http_connect
 )
-client = OpenAI::Client.new(api_key: nil, workload_identity: identity, http_client: transport)
+client = OpenAI::Client.new(api_key: nil, workload_identity: identity)
 
 begin
   harness.with_proxy_environment(proxy.uri) do

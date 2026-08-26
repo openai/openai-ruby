@@ -7,6 +7,11 @@ module OpenAI
 
       attr_reader proxy_mode: Symbol
 
+      def self.exact_instance?: (
+        untyped candidate,
+        Class expected_class
+      ) -> bool
+
       def initialize: (
         http_client: OpenAI::NetHTTPClient,
         certificate_identity: Symbol,
@@ -22,6 +27,8 @@ module OpenAI
         url: URI::Generic,
         headers: ::Hash[String, String]
       ) -> ::Hash[String, String]
+
+      def supports_data_residency?: (Symbol | String residency) -> bool
     end
   end
 end

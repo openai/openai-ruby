@@ -278,6 +278,18 @@ module OpenAI
 
         # @api private
         sig do
+          overridable
+            .params(
+              request: OpenAI::Internal::Transport::BaseClient::RequestInput,
+              delay: Float
+            )
+            .void
+        end
+        private def validate_retry_delay!(request, delay:)
+        end
+
+        # @api private
+        sig do
           params(
             url: URI::Generic,
             status: Integer,

@@ -46,21 +46,16 @@ begin
     connection.key = key
   end
 
-  transport = OpenAI::Auth::X509Transport.new(
-    http_client: native_http_client,
-    certificate_identity: :static,
-    proxy: ENV.fetch("OPENAI_X509_PROXY_MODE", "direct").to_sym,
-    api_origin: api_origin
-  )
   identity = OpenAI::Auth::X509WorkloadIdentity.new(
     identity_provider_id: ENV.fetch("IDENTITY_PROVIDER_ID"),
-    service_account_id: ENV.fetch("SERVICE_ACCOUNT_ID")
+    service_account_id: ENV.fetch("SERVICE_ACCOUNT_ID"),
+    http_client: native_http_client,
+    proxy: ENV.fetch("OPENAI_X509_PROXY_MODE", "direct").to_sym,
+    api_origin: api_origin
   )
   client = OpenAI::Client.new(
     api_key: nil,
     workload_identity: identity,
-    http_client: transport,
-    base_url: "#{transport.api_origin}/v1",
     log_level: :off
   )
 

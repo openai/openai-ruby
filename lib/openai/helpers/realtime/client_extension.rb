@@ -64,7 +64,7 @@ module OpenAI
           options:,
           deadline: nil
         )
-          if @copy_options.fetch(:workload_identity).instance_of?(OpenAI::Auth::X509WorkloadIdentity)
+          if x509_identity?(@copy_options.fetch(:workload_identity))
             raise OpenAI::Errors::Error, "X.509 workload identity does not support Realtime WebSocket connections"
           end
 
