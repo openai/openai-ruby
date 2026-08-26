@@ -223,7 +223,10 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
       cases = [
         [event_payload.tap { _1.fetch(:participants).first.delete(:email) }, "participants[0].email"],
         [event_payload.tap { _1.fetch(:participants).first[:active] = "yes" }, "participants[0].active"],
-        [event_payload.tap { _1.fetch(:participants).first[:attendance] = "unknown" }, "participants[0].attendance"],
+        [
+          event_payload.tap { _1.fetch(:participants).first[:attendance] = "secret-enum-value" },
+          "participants[0].attendance"
+        ],
         [event_payload.tap { _1[:participants] = {} }, "participants"],
         [event_payload.tap { _1.fetch(:participants).first[:unknown] = "secret" }, "participants[0]"],
         [event_payload.tap { _1.fetch(:participants).first["email"] = nil }, "participants[0].email"]
@@ -237,6 +240,22 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
         assert_includes(error.message, path)
         refute_includes(error.message, "Ada")
         refute_includes(error.message, "secret")
+        refute_includes(error.full_message, "secret")
+        assert_nil(error.cause)
+      end
+    end
+
+    def test_constructor_failures_do_not_expose_response_values_in_exception_causes
+      rejecting_constructor = -> (**_attributes) { raise ArgumentError, "secret-constructor-value" }
+
+      CalendarEvent.stub(:new, rejecting_constructor) do
+        error = assert_raises(OpenAI::StructuredOutput::SorbetAdapter::HydrationError) do
+          OpenAI::Internal::Type::Converter.coerce(@adapter, event_payload)
+        end
+
+        assert_includes(error.message, "CalendarEvent")
+        refute_includes(error.full_message, "secret-constructor-value")
+        assert_nil(error.cause)
       end
     end
 

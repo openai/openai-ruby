@@ -226,11 +226,11 @@ module OpenAI
         rescue TypeError, ArgumentError => e
           raise if e.is_a?(HydrationError)
 
-          raise HydrationError, "#{path}: invalid #{model.name} structured output"
+          raise HydrationError, "#{path}: invalid #{model.name} structured output", cause: nil
         end
 
         private def fail_hydration(path, expected:, actual:)
-          raise HydrationError, "#{path}: expected #{expected}, got #{actual.class}"
+          raise HydrationError, "#{path}: expected #{expected}, got #{actual.class}", cause: nil
         end
       end
 

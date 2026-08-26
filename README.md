@@ -782,6 +782,7 @@ class CalendarEvent < T::Struct
 end
 
 schema = OpenAI::StructuredOutput.from_sorbet(CalendarEvent)
+client = OpenAI::Client.new
 
 response = client.responses.create(
   model: "gpt-5.2",
@@ -806,7 +807,9 @@ numeric fields, application-defined `T::Enum` values, and Sorbet's `name:` field
 aliases. All structured-output fields are required, including nullable fields.
 Unsupported unions, hashes, recursive models, and enum values that do not
 serialize to strings are rejected. `sorbet-runtime` remains optional and is not
-loaded by ordinary SDK usage.
+loaded by ordinary SDK usage. This integration supports non-streaming
+`responses.create` and `chat.completions.create` requests only; streaming
+structured outputs and function-tool schemas are not supported.
 
 ### Handling errors
 
