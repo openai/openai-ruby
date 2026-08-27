@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.82.0](https://github.com/openai/openai-ruby/compare/v0.81.0...v0.82.0) (2026-08-27)
+
+
+### Features
+
+* add optional Sorbet structured-output models ([#537](https://github.com/openai/openai-ruby/issues/537)) ([53ccf39](https://github.com/openai/openai-ruby/commit/53ccf39b464d8b2052456fa78aaea4dcdee8158c))
+* **api:** make function call output call IDs optional ([#539](https://github.com/openai/openai-ruby/issues/539)) ([81d385b](https://github.com/openai/openai-ruby/commit/81d385be58ece0c5db798ed79d01c0fd4c458f60))
+
+
+### Bug Fixes
+
+* **streaming:** preserve unknown Responses stream events ([#538](https://github.com/openai/openai-ruby/issues/538)) ([1d728f7](https://github.com/openai/openai-ruby/commit/1d728f74649c039ad29ca55986f9f5f48436d9f0))
+
 ## [0.81.0](https://github.com/openai/openai-ruby/compare/v0.80.0...v0.81.0) (2026-08-26)
 
 
