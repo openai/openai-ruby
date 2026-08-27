@@ -110,10 +110,6 @@ module OpenAI
           else
           end
 
-          if parsed[:stream] && model && !model.is_a?(Class)
-            raise ArgumentError, "Chat Completions streaming requires a class-based structured-output model"
-          end
-
           [model, tool_models]
         end
 

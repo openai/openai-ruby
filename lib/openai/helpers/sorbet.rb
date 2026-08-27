@@ -191,7 +191,7 @@ module OpenAI
 
             begin
               node.value.deserialize(value)
-            rescue KeyError
+            rescue StandardError
               fail_hydration(path, expected: node.value.name, actual: value)
             end
 
@@ -220,7 +220,7 @@ module OpenAI
 
           expected_names = fields.map(&:wire_name).to_set
           unless value.keys.all? { (_1.is_a?(Symbol) || _1.is_a?(String)) && expected_names.include?(_1.to_s) }
-            raise HydrationError, "#{path}: unexpected structured-output field"
+            raise HydrationError, "#{path}: unexpected structured-output field", cause: nil
           end
 
           attributes = fields.to_h do |field|
@@ -228,7 +228,7 @@ module OpenAI
             field_path = "#{path}.#{field.name}"
             unless keys.one?
               reason = keys.empty? ? "missing required field" : "duplicate field"
-              raise HydrationError, "#{field_path}: #{reason}"
+              raise HydrationError, "#{field_path}: #{reason}", cause: nil
             end
 
             [field.name, hydrate(field.node, value.fetch(keys.first), path: field_path)]
@@ -249,6 +249,76 @@ module OpenAI
       # @param model [Class<T::Struct>]
       # @return [OpenAI::Helpers::StructuredOutput::SorbetAdapter]
       def self.from_sorbet(model) = OpenAI::Helpers::StructuredOutput::SorbetAdapter.new(model)
+
+      # Reject unsupported Sorbet request shapes before generated resources dispatch requests.
+      #
+      # @api private
+      module SorbetRequestGuard
+        def create(...)
+          reject_sorbet_function_tools!(...)
+          super
+        end
+
+        def stream(params)
+          reject_sorbet_streaming_formats!(params)
+          super
+        end
+
+        def stream_raw(...)
+          reject_sorbet_streaming_formats!(...)
+          super
+        end
+
+        private def reject_sorbet_streaming_formats!(params = {})
+          formats = [params[:text], params[:response_format], *Array(params[:tools])]
+          if params.is_a?(Hash)
+            formats.concat([params["text"], params["response_format"], *Array(params["tools"])])
+          end
+
+          if formats.any? { sorbet_adapter?(_1) }
+            raise ArgumentError, "Sorbet structured-output models are not supported for streaming"
+          end
+        end
+
+        private def reject_sorbet_function_tools!(params = {})
+          tools = Array(params[:tools])
+          tools.concat(Array(params["tools"])) if params.is_a?(Hash)
+
+          if tools.any? { sorbet_adapter?(_1) }
+            raise ArgumentError, "Sorbet structured-output function tools are not supported"
+          end
+        end
+
+        private def sorbet_adapter?(format)
+          return true if format.is_a?(SorbetAdapter)
+          format = format.to_h if format.is_a?(OpenAI::Internal::Type::BaseModel)
+          return false unless format.is_a?(Hash)
+
+          keys = [
+            :format,
+            "format",
+            :format_,
+            "format_",
+            :json_schema,
+            "json_schema",
+            :schema,
+            "schema",
+            :parameters,
+            "parameters",
+            :function,
+            "function"
+          ]
+          format.values_at(*keys).any? do |nested|
+            nested = nested.to_h if nested.is_a?(OpenAI::Internal::Type::BaseModel)
+            nested.is_a?(SorbetAdapter) ||
+              (nested.is_a?(Hash) && nested.values_at(:schema, "schema", :parameters, "parameters").any?(SorbetAdapter))
+          end
+        end
+      end
+
+      private_constant :SorbetRequestGuard
+      OpenAI::Resources::Responses.prepend(SorbetRequestGuard)
+      OpenAI::Resources::Chat::Completions.prepend(SorbetRequestGuard)
     end
   end
 end

@@ -25,4 +25,30 @@ module OpenAI
       def self.from_sorbet: (::Class model) -> SorbetAdapter
     end
   end
+
+  module Resources
+    class Responses
+      def create:
+        (
+          text: OpenAI::Helpers::StructuredOutput::SorbetAdapter,
+          ?model: OpenAI::Models::responses_model,
+          ?input: OpenAI::Models::Responses::ResponseCreateParams::input,
+          **untyped
+        ) -> OpenAI::Responses::Response
+        | ...
+    end
+
+    class Chat
+      class Completions
+        def create:
+          (
+            model: OpenAI::Models::Chat::CompletionCreateParams::model,
+            messages: ::Array[OpenAI::Models::Chat::chat_completion_message_param],
+            response_format: OpenAI::Helpers::StructuredOutput::SorbetAdapter,
+            **untyped
+          ) -> OpenAI::Chat::ChatCompletion
+          | ...
+      end
+    end
+  end
 end

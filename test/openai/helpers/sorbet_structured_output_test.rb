@@ -83,6 +83,31 @@ else
         assert_predicate(status, :success?, "#{stdout}\n#{stderr}")
       end
     end
+
+    def test_shipped_rbs_types_both_structured_output_entry_points
+      root = File.expand_path("../../..", __dir__)
+      resources = {
+        "OpenAI::Resources::Responses" => "text",
+        "OpenAI::Resources::Chat::Completions" => "response_format"
+      }
+
+      resources.each do |resource, keyword|
+        stdout, stderr, status = Open3.capture3(
+          "rbs",
+          "-I",
+          "sig",
+          "-r",
+          "net-http",
+          "method",
+          resource,
+          "create",
+          chdir: root
+        )
+
+        assert_predicate(status, :success?, "#{stdout}\n#{stderr}")
+        assert_match(/#{keyword}: ::OpenAI::Helpers::StructuredOutput::SorbetAdapter/, stdout)
+      end
+    end
   end
 end
 
@@ -155,6 +180,14 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
       const :values, T.nilable(T::Array[Integer])
       const :attendance, T.nilable(Attendance)
       const :count, Integer, default: 1
+    end
+
+    class ExistingInstanceFormat
+      include OpenAI::Helpers::StructuredOutput::JsonSchemaConverter
+
+      def name = "ExistingInstanceFormat"
+
+      def to_json_schema = {type: "object", properties: {}, required: [], additionalProperties: false}
     end
 
     def before_all
@@ -318,6 +351,28 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
       end
     end
 
+    def test_field_hydration_errors_do_not_capture_active_sensitive_exception_causes
+      cases = [
+        event_payload.tap { _1.fetch(:participants).first.delete(:email) },
+        event_payload.tap { _1.fetch(:participants).first["email"] = nil },
+        event_payload.tap { _1.fetch(:participants).first[:unknown] = "secret-field-value" }
+      ]
+
+      begin
+        raise RuntimeError, "secret-active-cause"
+      rescue RuntimeError
+        cases.each do |payload|
+          error = assert_raises(OpenAI::StructuredOutput::SorbetAdapter::HydrationError) do
+            OpenAI::Internal::Type::Converter.coerce(@adapter, payload)
+          end
+
+          refute_includes(error.full_message, "secret-active-cause")
+          refute_includes(error.full_message, "secret-field-value")
+          assert_nil(error.cause)
+        end
+      end
+    end
+
     def test_constructor_hydration_errors_do_not_expose_response_values
       expected = OpenAI::StructuredOutput::SorbetAdapter::HydrationError.new("secret-constructor-value")
       rejecting_constructor = -> (**_attributes) { raise expected }
@@ -331,6 +386,29 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
         assert_includes(actual.message, "CalendarEvent")
         refute_includes(actual.full_message, "secret-constructor-value")
         assert_nil(actual.cause)
+      end
+    end
+
+    def test_enum_deserializer_failures_do_not_expose_response_values
+      errors = [
+        RuntimeError.new("secret-enum-value"),
+        ArgumentError.new("secret-enum-value"),
+        OpenAI::StructuredOutput::SorbetAdapter::HydrationError.new("secret-enum-value")
+      ]
+
+      errors.each do |original|
+        rejecting_deserializer = -> (_value) { raise original }
+
+        Attendance.stub(:deserialize, rejecting_deserializer) do
+          actual = assert_raises(OpenAI::StructuredOutput::SorbetAdapter::HydrationError) do
+            OpenAI::Internal::Type::Converter.coerce(@adapter, event_payload)
+          end
+
+          refute_same(original, actual)
+          assert_includes(actual.message, "participants[0].attendance")
+          refute_includes(actual.full_message, "secret-enum-value")
+          assert_nil(actual.cause)
+        end
       end
     end
 
@@ -431,8 +509,232 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
         )
       end
 
-      assert_includes(error.message, "class-based structured-output model")
+      assert_includes(error.message, "Sorbet structured-output models")
       assert_not_requested(:post, "http://localhost/chat/completions")
+    end
+
+    def test_chat_completions_reject_unsupported_sorbet_function_tools_before_sending_a_request
+      tools = [
+        @adapter,
+        {type: :function, function: {name: "event", parameters: @adapter}},
+        {"type" => "function", "function" => {"name" => "event", "parameters" => @adapter}}
+      ]
+
+      tools.each do |tool|
+        error = assert_raises(ArgumentError) do
+          @client.chat.completions.create(
+            messages: [{content: "Generate an event", role: :user}],
+            model: "gpt-4o-mini",
+            tools: [tool]
+          )
+        end
+
+        assert_includes(error.message, "function tools are not supported")
+        assert_not_requested(:post, "http://localhost/chat/completions")
+      end
+    end
+
+    def test_chat_completions_streaming_rejects_sorbet_function_tools_before_sending_a_request
+      tools = [
+        @adapter,
+        {type: :function, function: {name: "event", parameters: @adapter}},
+        {"type" => "function", "function" => {"name" => "event", "parameters" => @adapter}}
+      ]
+
+      tools.each do |tool|
+        error = assert_raises(ArgumentError) do
+          @client.chat.completions.stream(
+            messages: [{content: "Generate an event", role: :user}],
+            model: "gpt-4o-mini",
+            tools: [tool]
+          )
+        end
+
+        assert_includes(error.message, "Sorbet structured-output models")
+        assert_not_requested(:post, "http://localhost/chat/completions")
+      end
+    end
+
+    def test_chat_completions_raw_streaming_rejects_sorbet_before_sending_a_request
+      formats = [{response_format: @adapter}, {tools: [@adapter]}]
+
+      formats.each do |format|
+        error = assert_raises(ArgumentError) do
+          @client.chat.completions.stream_raw(
+            messages: [{content: "Generate an event", role: :user}],
+            model: "gpt-4o-mini",
+            **format
+          )
+        end
+
+        assert_includes(error.message, "Sorbet structured-output models")
+        assert_not_requested(:post, "http://localhost/chat/completions")
+      end
+    end
+
+    def test_chat_completions_streaming_preserves_existing_instance_based_formats
+      stub_request(:post, "http://localhost/chat/completions").to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: "data: [DONE]\n\n"
+      )
+
+      stream = @client.chat.completions.stream(
+        messages: [{content: "Generate an event", role: :user}],
+        model: "gpt-4o-mini",
+        response_format: {
+          type: :json_schema,
+          json_schema: {name: "ExistingInstanceFormat", schema: ExistingInstanceFormat.new}
+        }
+      )
+
+      assert_instance_of(OpenAI::Helpers::Streaming::ChatCompletionStream, stream)
+      assert_requested(:post, "http://localhost/chat/completions")
+    end
+
+    def test_chat_completions_streaming_rejects_string_keyed_sorbet_formats
+      params = {
+        "messages" => [{"content" => "Generate an event", "role" => "user"}],
+        "model" => "gpt-4o-mini",
+        "response_format" => {
+          "type" => "json_schema",
+          "json_schema" => {"name" => "event", "schema" => @adapter}
+        }
+      }
+
+      error = assert_raises(ArgumentError) { @client.chat.completions.stream(params) }
+
+      assert_includes(error.message, "Sorbet structured-output models")
+      assert_not_requested(:post, "http://localhost/chat/completions")
+    end
+
+    def test_chat_completions_streaming_rejects_sorbet_inside_typed_request_models
+      schema = OpenAI::ResponseFormatJSONSchema::JSONSchema.new(name: "event", schema: @adapter)
+      formats = [
+        OpenAI::ResponseFormatJSONSchema.new(json_schema: schema),
+        {type: :json_schema, json_schema: schema}
+      ]
+
+      formats.each do |format|
+        error = assert_raises(ArgumentError) do
+          @client.chat.completions.stream(
+            messages: [{content: "Generate an event", role: :user}],
+            model: "gpt-4o-mini",
+            response_format: format
+          )
+        end
+
+        assert_includes(error.message, "Sorbet structured-output models")
+        assert_not_requested(:post, "http://localhost/chat/completions")
+      end
+    end
+
+    def test_responses_streaming_rejects_sorbet_formats_before_sending_a_request
+      formats = [
+        @adapter,
+        {format: @adapter},
+        {format: {type: :json_schema, name: "event", schema: @adapter}},
+        {"format" => {"type" => "json_schema", "name" => "event", "schema" => @adapter}}
+      ]
+
+      formats.each do |format|
+        error = assert_raises(ArgumentError) do
+          @client.responses.stream(model: "gpt-4o-mini", input: "Generate an event", text: format)
+        end
+
+        assert_includes(error.message, "Sorbet structured-output models")
+        assert_not_requested(:post, "http://localhost/responses")
+      end
+    end
+
+    def test_responses_reject_unsupported_sorbet_function_tools_before_sending_a_request
+      tools = [
+        @adapter,
+        {type: :function, name: "event", parameters: @adapter},
+        {type: :function, function: {name: "event", parameters: @adapter}},
+        {"type" => "function", "function" => {"name" => "event", "parameters" => @adapter}},
+        OpenAI::Responses::FunctionTool.new(name: "event", parameters: @adapter, strict: true)
+      ]
+
+      tools.each do |tool|
+        error = assert_raises(ArgumentError) do
+          @client.responses.create(model: "gpt-4o-mini", input: "Generate an event", tools: [tool])
+        end
+
+        assert_includes(error.message, "function tools are not supported")
+        assert_not_requested(:post, "http://localhost/responses")
+      end
+    end
+
+    def test_responses_streaming_rejects_sorbet_function_tools_before_sending_a_request
+      tools = [
+        @adapter,
+        {type: :function, name: "event", parameters: @adapter},
+        {type: :function, function: {name: "event", parameters: @adapter}},
+        {"type" => "function", "function" => {"name" => "event", "parameters" => @adapter}},
+        OpenAI::Responses::FunctionTool.new(name: "event", parameters: @adapter, strict: true)
+      ]
+
+      tools.each do |tool|
+        error = assert_raises(ArgumentError) do
+          @client.responses.stream(model: "gpt-4o-mini", input: "Generate an event", tools: [tool])
+        end
+
+        assert_includes(error.message, "Sorbet structured-output models")
+        assert_not_requested(:post, "http://localhost/responses")
+      end
+    end
+
+    def test_responses_raw_streaming_rejects_sorbet_before_sending_a_request
+      formats = [{text: @adapter}, {tools: [@adapter]}]
+
+      formats.each do |format|
+        error = assert_raises(ArgumentError) do
+          @client.responses.stream_raw(model: "gpt-4o-mini", input: "Generate an event", **format)
+        end
+
+        assert_includes(error.message, "Sorbet structured-output models")
+        assert_not_requested(:post, "http://localhost/responses")
+      end
+    end
+
+    def test_responses_streaming_rejects_sorbet_before_retrieving_a_response
+      error = assert_raises(ArgumentError) do
+        @client.responses.stream(response_id: "resp_secret", text: @adapter)
+      end
+
+      assert_includes(error.message, "Sorbet structured-output models")
+      assert_not_requested(:get, "http://localhost/responses/resp_secret")
+    end
+
+    def test_responses_streaming_rejects_string_keyed_sorbet_before_dispatch
+      create = {
+        "model" => "gpt-4o-mini",
+        "input" => "Generate an event",
+        "tools" => [{"type" => "function", "parameters" => @adapter}]
+      }
+      retrieve = {"response_id" => "resp_secret", "text" => @adapter}
+
+      [create, retrieve].each do |params|
+        error = assert_raises(ArgumentError) { @client.responses.stream(params) }
+
+        assert_includes(error.message, "Sorbet structured-output models")
+      end
+
+      assert_not_requested(:post, "http://localhost/responses")
+      assert_not_requested(:get, "http://localhost/responses/resp_secret")
+    end
+
+    def test_responses_streaming_rejects_sorbet_inside_typed_request_models
+      schema = OpenAI::Responses::ResponseFormatTextJSONSchemaConfig.new(name: "event", schema: @adapter)
+      format = OpenAI::Responses::ResponseTextConfig.new(format_: schema)
+
+      error = assert_raises(ArgumentError) do
+        @client.responses.stream(model: "gpt-4o-mini", input: "Generate an event", text: format)
+      end
+
+      assert_includes(error.message, "Sorbet structured-output models")
+      assert_not_requested(:post, "http://localhost/responses")
     end
 
     def test_responses_public_boundary_hydrates_sorbet_models
