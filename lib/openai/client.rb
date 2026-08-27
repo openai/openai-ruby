@@ -362,9 +362,12 @@ module OpenAI
 
     rescue Timeout::Error => error
       unless x509_request
-        raise unless request.key?(:workload_identity_deadline)
+        raise if request[:workload_identity_deadline].nil?
 
-        raise OpenAI::Errors::APITimeoutError.new(url: request.fetch(:url), message: error.message)
+        url = request.fetch(:url).dup
+        url.query = nil
+        url.fragment = nil
+        raise OpenAI::Errors::APITimeoutError.new(url: url, message: error.message)
       end
 
       url = request.fetch(:url).dup
@@ -448,7 +451,10 @@ module OpenAI
     rescue Timeout::Error => e
       raise if x509_transport?(@requester)
 
-      raise OpenAI::Errors::APITimeoutError.new(url: request.fetch(:url), message: e.message)
+      url = request.fetch(:url).dup
+      url.query = nil
+      url.fragment = nil
+      raise OpenAI::Errors::APITimeoutError.new(url: url, message: e.message)
     end
 
     # @api private

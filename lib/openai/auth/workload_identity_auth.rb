@@ -15,6 +15,12 @@ module OpenAI
       DEFAULT_REFRESH_BUFFER_SECONDS = 1200
       MAX_REJECTED_TOKEN_REFRESH_ATTEMPTS = 3
       private_constant :MAX_REJECTED_TOKEN_REFRESH_ATTEMPTS
+      # Provider implementations wrap StandardError, but scheduler deadlines
+      # must cross that boundary before normalization to Timeout::Error.
+      # rubocop:disable Lint/InheritException
+      PROVIDER_DEADLINE_ERROR = Class.new(Exception)
+      # rubocop:enable Lint/InheritException
+      private_constant :PROVIDER_DEADLINE_ERROR
 
       def initialize(
         config,
@@ -274,14 +280,19 @@ module OpenAI
       private def fetch_token_from_exchange(deadline:)
         return @token_exchange.fetch(deadline: deadline) unless @token_exchange.nil?
 
-        timeout = remaining_timeout(deadline)
-        subject_token = Timeout.timeout(timeout, nil, "request timed out during workload identity authentication") do
-          @config.provider.get_token
+        message = "request timed out during workload identity authentication"
+        subject_token, token_type = begin
+          timeout = remaining_timeout(deadline)
+          Timeout.timeout(timeout, PROVIDER_DEADLINE_ERROR, message) do
+            [@config.provider.get_token, @config.provider.token_type]
+          end
+
+        rescue PROVIDER_DEADLINE_ERROR
+          raise Timeout::Error, message
         end
 
         check_deadline!(deadline)
 
-        token_type = @config.provider.token_type
         subject_token_type = SUBJECT_TOKEN_TYPES.fetch(token_type) do
           raise(
             ArgumentError,

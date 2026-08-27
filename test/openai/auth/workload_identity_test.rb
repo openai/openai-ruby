@@ -276,6 +276,104 @@ class WorkloadIdentityTest < Minitest::Test
     refute(auth.instance_variable_get(:@refreshing))
   end
 
+  def test_workload_identity_provider_deadline_bounds_token_type_resolution
+    provider = Class
+      .new do
+        attr_reader(:completed)
+
+        def get_token = "fake-subject-token"
+
+        def token_type
+          sleep(0.1)
+          @completed = true
+          OpenAI::Auth::TokenType::JWT
+        rescue StandardError => error
+          raise(
+            OpenAI::Errors::SubjectTokenProviderError.new(
+              message: "provider failed",
+              provider: "fake",
+              cause: error
+            )
+          )
+        end
+      end
+      .new
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: "idp-123",
+      service_account_id: "sa-456",
+      provider: provider
+    )
+    auth = OpenAI::Auth::WorkloadIdentityAuth.new(config, "org-123")
+    deadline = OpenAI::Internal::Util.monotonic_secs + 0.01
+
+    assert_raises(Timeout::Error) { auth.get_token(deadline: deadline) }
+    refute(provider.completed)
+    refute(auth.instance_variable_get(:@refreshing))
+  end
+
+  def test_workload_identity_provider_deadline_survives_fiber_scheduler_wrapping
+    scheduler = Class
+      .new do
+        def fiber(&block) = Fiber.new(blocking: false, &block).tap(&:resume)
+        def block(*) = false
+        def unblock(*) = nil
+        def io_wait(*) = 0
+        def fiber_interrupt(fiber, exception) = fiber.raise exception
+
+        def timeout_after(_duration, exception_class, message)
+          @exception_class = exception_class
+          @message = message
+          yield
+        ensure
+          @exception_class = nil
+          @message = nil
+        end
+
+        def kernel_sleep(*)
+          raise @exception_class, @message
+        end
+      end
+      .new
+    provider = Class
+      .new do
+        def get_token
+          sleep(0.1)
+          "fake-subject-token"
+        rescue StandardError => error
+          raise(
+            OpenAI::Errors::SubjectTokenProviderError.new(
+              message: "provider failed",
+              provider: "fake",
+              cause: error
+            )
+          )
+        end
+
+        def token_type = OpenAI::Auth::TokenType::JWT
+      end
+      .new
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: "idp-123",
+      service_account_id: "sa-456",
+      provider: provider
+    )
+    auth = OpenAI::Auth::WorkloadIdentityAuth.new(config, "org-123")
+    error = nil
+    Fiber.set_scheduler(scheduler)
+    Fiber.schedule do
+      deadline = OpenAI::Internal::Util.monotonic_secs + 1
+      auth.get_token(deadline: deadline)
+    rescue StandardError => exception
+      error = exception
+    end
+
+    assert_instance_of(Timeout::Error, error)
+    refute(auth.instance_variable_get(:@refreshing))
+
+  ensure
+    Fiber.set_scheduler(nil)
+  end
+
   def test_workload_identity_provider_timeout_releases_concurrent_refresh_waiters
     provider_started = Queue.new
     release_provider = Queue.new
