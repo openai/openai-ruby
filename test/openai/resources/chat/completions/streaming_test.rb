@@ -652,6 +652,64 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
     end
   end
 
+  def test_structured_output_and_typed_tool_streaming_preserve_both_parsed_results
+    chunk = {id: "chatcmpl-combined", object: "chat.completion.chunk", created: 1, model: "test"}
+    choices = [
+      {
+        index: 0,
+        delta: {
+          role: "assistant",
+          content: JSON.generate(name: "John", age: 30),
+          tool_calls: [
+            {
+              index: 0,
+              id: "call_test",
+              type: "function",
+              function: {
+                name: "WeatherToolModel",
+                arguments: JSON.generate(location: "Paris", units: "celsius")
+              }
+            }
+          ]
+        },
+        finish_reason: nil
+      },
+      {index: 0, delta: {}, finish_reason: "tool_calls"}
+    ]
+    events_body = choices.map { |choice| "data: #{JSON.generate(chunk.merge(choices: [choice]))}\n\n" }
+    stub_streaming_response(events_body.join + "data: [DONE]\n\n")
+
+    stream = @client.chat.completions.stream(
+      **basic_params,
+      response_format: PersonModel,
+      tools: [WeatherToolModel]
+    )
+    events = stream.to_a
+
+    assert_requested(:post, "http://localhost/chat/completions") do |request|
+      body = JSON.parse(request.body)
+
+      assert_equal("PersonModel", body.dig("response_format", "json_schema", "name"))
+      assert_equal("function", body.dig("tools", 0, "type"))
+      assert_equal("WeatherToolModel", body.dig("tools", 0, "function", "name"))
+      assert_equal("object", body.dig("tools", 0, "function", "parameters", "type"))
+    end
+
+    content_done = events.find { |event| event.type == :"content.done" }
+    assert_instance_of(PersonModel, content_done.parsed)
+    assert_equal("John", content_done.parsed.name)
+
+    tool_done = events.find { |event| event.type == :"tool_calls.function.arguments.done" }
+    assert_instance_of(WeatherToolModel, tool_done.parsed)
+    assert_equal("Paris", tool_done.parsed.location)
+
+    message = stream.get_final_completion.choices.first.message
+    assert_instance_of(PersonModel, message.parsed)
+    assert_equal(30, message.parsed.age)
+    assert_instance_of(WeatherToolModel, message.tool_calls.first.function.parsed)
+    assert_equal("celsius", message.tool_calls.first.function.parsed.units)
+  end
+
   private
 
   def weather_tool
