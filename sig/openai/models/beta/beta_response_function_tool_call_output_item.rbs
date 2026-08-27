@@ -6,11 +6,11 @@ module OpenAI
       type beta_response_function_tool_call_output_item =
         {
           id: String,
-          call_id: String,
           output: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::output,
           status: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::status,
           type: :function_call_output,
           agent: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Agent?,
+          call_id: String,
           caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::caller_?,
           created_by: String,
           name: String,
@@ -20,8 +20,6 @@ module OpenAI
       class BetaResponseFunctionToolCallOutputItem < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
-        attr_accessor call_id: String
-
         attr_accessor output: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::output
 
         attr_accessor status: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::status
@@ -29,6 +27,10 @@ module OpenAI
         attr_accessor type: :function_call_output
 
         attr_accessor agent: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Agent?
+
+        attr_reader call_id: String?
+
+        def call_id=: (String) -> String
 
         attr_accessor caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::caller_?
 
@@ -46,10 +48,10 @@ module OpenAI
 
         def initialize: (
           id: String,
-          call_id: String,
           output: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::output,
           status: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::status,
           ?agent: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Agent?,
+          ?call_id: String,
           ?caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::caller_?,
           ?created_by: String,
           ?name: String,
@@ -59,11 +61,11 @@ module OpenAI
 
         def to_hash: -> {
           id: String,
-          call_id: String,
           output: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::output,
           status: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::status,
           type: :function_call_output,
           agent: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Agent?,
+          call_id: String,
           caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem::caller_?,
           created_by: String,
           name: String,
