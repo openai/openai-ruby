@@ -83,12 +83,23 @@ class OpenAI::Test::ResponseParserTest < Minitest::Test
     assert_same(ToolModel, tool[:parameters])
   end
 
-  def test_flat_converter_without_function_preserves_key_error
-    error = assert_raises(KeyError) do
-      ResponsesProbe.allocate.prepare(tools: [{type: :function, parameters: ToolModel}])
-    end
+  def test_flat_converter_preserves_tool_fields_and_infers_missing_names
+    [nil, "explicit"].each do |name|
+      tool = {type: :function, strict: false, description: "A tool", parameters: ToolModel}
+      tool[:name] = name unless name.nil?
+      tools = [tool]
 
-    assert_equal(:function, error.key)
+      model, tool_models = ResponsesProbe.allocate.prepare(tools: tools)
+
+      assert_nil(model)
+      assert_equal({(name || "ToolModel") => ToolModel}, tool_models)
+      assert_same(tool, tools.first)
+      assert_equal(name || "ToolModel", tool[:name])
+      assert_equal(false, tool[:strict])
+      assert_equal("A tool", tool[:description])
+      assert_equal(ToolModel.to_json_schema, tool[:parameters])
+      refute(tool.key?(:function))
+    end
   end
 
   def test_parse_updates_known_outputs_in_place_and_leaves_other_types_alone
