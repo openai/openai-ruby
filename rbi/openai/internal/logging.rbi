@@ -19,11 +19,21 @@ module OpenAI
             log_level: Symbol,
             on_retry: T.nilable(T.proc.params(event: OpenAI::RetryEvent).void),
             method: Symbol,
-            url: URI::Generic
+            url: URI::Generic,
+            on_response: T.nilable(
+              T
+                .proc
+                .params(
+                  response: OpenAI::HTTPClient::Response,
+                  trusted_url: URI::Generic,
+                  response_url: URI::Generic
+                )
+                .void
+            )
           )
             .returns(T.attached_class)
         end
-        def self.new(logger:, log_level:, on_retry:, method:, url:)
+        def self.new(logger:, log_level:, on_retry:, method:, url:, on_response: nil)
         end
 
         sig do

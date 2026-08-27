@@ -401,7 +401,17 @@ module OpenAI
         # @api private
         sig do
           params(
-            req: OpenAI::Internal::Transport::BaseClient::RequestComponents
+            req: OpenAI::Internal::Transport::BaseClient::RequestComponents,
+            response_observer: T.nilable(
+              T
+                .proc
+                .params(
+                  response: OpenAI::HTTPClient::Response,
+                  url: URI::Generic,
+                  response_url: URI::Generic
+                )
+                .void
+            )
           )
             .returns(
               [
@@ -411,7 +421,7 @@ module OpenAI
               ]
             )
         end
-        private def perform_request(req)
+        private def perform_request(req, &response_observer)
         end
 
         # @api private

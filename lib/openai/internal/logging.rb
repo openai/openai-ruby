@@ -26,19 +26,24 @@ module OpenAI
       URL_HEADER_KEY = /(?:\A|[-_])(?:location|url|uri)\z|\A(?:link|refresh)\z/i
 
       class Context
-        def initialize(logger:, log_level:, on_retry:, method:, url:)
+        def initialize(logger:, log_level:, on_retry:, method:, url:, on_response: nil)
           @logger = logger
           @log_level = log_level
           @on_retry = on_retry
+          @on_response = on_response
           @id = nil
           @method = method.to_s.upcase
           @url = url
+          @request_url = url
+          @first_request_url = nil
           @started_at = OpenAI::Internal::Util.monotonic_secs
           @attempt_started_at = @started_at
           @attempts = 0
         end
 
         def request_started(request, redirect_count:)
+          @request_url = request.url
+          @first_request_url ||= request.url
           @attempts += 1
           log(:debug) do
             "[openai] request started log_id=#{id} attempt=#{@attempts} " \
@@ -52,6 +57,7 @@ module OpenAI
         end
 
         def response_received(response)
+          @on_response&.call(response, @first_request_url || @url, @request_url)
           log(:debug) do
             "[openai] response received log_id=#{id} attempt=#{@attempts} " \
               "status=#{response.status} request_id=#{safe_field(response.headers["x-request-id"])} " \
