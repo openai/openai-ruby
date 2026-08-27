@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.83.0](https://github.com/openai/openai-ruby/compare/v0.82.0...v0.83.0) (2026-08-27)
+
+
+### Features
+
+* **api:** add compute_units to Responses and Chat Completions usage ([#543](https://github.com/openai/openai-ruby/issues/543)) ([b128f89](https://github.com/openai/openai-ruby/commit/b128f89672416a083addeb0e2bbc337f8ddb7f9f))
+* expose opt-in raw response bodies on response metadata ([#544](https://github.com/openai/openai-ruby/issues/544)) ([1529e96](https://github.com/openai/openai-ruby/commit/1529e96781c217828915ed3f69faa61bf6605129))
+
+
+### Bug Fixes
+
+* **realtime:** clean up interrupted WebRTC call allocations ([#534](https://github.com/openai/openai-ruby/issues/534)) ([2057039](https://github.com/openai/openai-ruby/commit/205703935bafe5e78b90b5424cc43d3b7b978772))
+
+
+### Chores
+
+* **deps:** bump the codeql group with 2 updates ([#541](https://github.com/openai/openai-ruby/issues/541)) ([b15451c](https://github.com/openai/openai-ruby/commit/b15451c0df8ba890f136c86dc7f5299876bb9b5d))
+
 ## [0.82.0](https://github.com/openai/openai-ruby/compare/v0.81.0...v0.82.0) (2026-08-27)
 
 
