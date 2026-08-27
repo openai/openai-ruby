@@ -13,6 +13,7 @@ module OpenAI
             OpenAI::Streaming::ResponseTextDoneEvent,
             OpenAI::Streaming::ResponseCompletedEvent,
             OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent,
+            OpenAI::Streaming::UnknownStreamEvent,
             # Pass through other raw events
             OpenAI::Models::Responses::ResponseStreamEvent::Variants
           )
@@ -66,6 +67,10 @@ module OpenAI
 
         sig { returns(T.untyped) }
         def iterator
+        end
+
+        sig { params(event: ResponseStreamEvent).returns(T::Boolean) }
+        def after_starting_event?(event)
         end
       end
 

@@ -28,6 +28,27 @@ See an example of streaming helpers in action in [`examples/responses/streaming.
 
 The events listed here are just the event types that the SDK extends, for a full list of the events returned by the API, see [these docs](https://platform.openai.com/docs/api-reference/responses/streaming).
 
+When the API introduces a Responses event that your installed SDK does not yet
+recognize, both raw and helper streams yield an
+`OpenAI::Streaming::UnknownStreamEvent`. Its `type` preserves the original event
+name as a symbol, `data` and `to_h` expose the complete immutable JSON payload,
+and `sequence_number` exposes an integer sequence when one was supplied. Unknown
+events never modify the helper's accumulated response. Resumed helper streams
+apply `starting_after` to unknown events with sequence numbers and preserve
+unknown events without sequence numbers because they cannot be ordered against
+the requested cursor. Transport-only `keepalive` events remain filtered.
+
+```ruby
+stream.each do |event|
+  case event
+  when OpenAI::Streaming::UnknownStreamEvent
+    handle_new_event(event.type, event.data)
+  when OpenAI::Streaming::ResponseTextDeltaEvent
+    print(event.delta)
+  end
+end
+```
+
 ```ruby
 require "openai"
 

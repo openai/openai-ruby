@@ -63,12 +63,17 @@ module OpenAI
             @raw_stream.each do |raw_event|
               events_to_yield = @state.handle_event(raw_event)
               events_to_yield.each do |event|
-                if @starting_after.nil? || event.sequence_number > @starting_after
-                  y << event
-                end
+                y << event if after_starting_event?(event)
               end
             end
           end
+        end
+
+        def after_starting_event?(event)
+          return true if @starting_after.nil?
+          return true if event.is_a?(UnknownStreamEvent) && event.sequence_number.nil?
+
+          event.sequence_number > @starting_after
         end
       end
 
@@ -82,6 +87,8 @@ module OpenAI
         end
 
         def handle_event(event)
+          return [event] if event.is_a?(UnknownStreamEvent)
+
           @current_snapshot = accumulate_event(
             event: event,
             current_snapshot: @current_snapshot

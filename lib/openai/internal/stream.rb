@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../helpers/streaming/response_event_decoder"
+
 module OpenAI
   module Internal
     # @generic Elem
@@ -18,6 +20,7 @@ module OpenAI
         # rubocop:disable Metrics/BlockLength
         @iterator ||= OpenAI::Internal::Util.chain_fused(@stream) do |y|
           consume = false
+          decoder = OpenAI::Helpers::Streaming::ResponseEventDecoder.new(model: @model)
 
           @stream.each do |msg|
             next if consume
@@ -53,7 +56,7 @@ module OpenAI
                 # Some providers emit transport heartbeats as JSON events. They are not
                 # part of the API's typed streaming event surface.
                 next if unwrapped in {type: "keepalive"}
-                y << OpenAI::Internal::Type::Converter.coerce(@model, unwrapped)
+                y << decoder.decode(unwrapped)
               end
             else
             end
