@@ -248,6 +248,20 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     assert_equal(1, transport.requests.length)
   end
 
+  def test_bounded_workload_identity_preserves_an_inner_timeout_error
+    transport = scripted_transport { raise Timeout::Error, "inner timeout" }
+    auth = ScriptedWorkloadIdentityAuth.new(slow_token_requests: [])
+    client = build_workload_identity_client(transport, auth)
+
+    error = assert_raises(Timeout::Error) do
+      client.files.retrieve("file_123", request_options: {timeout: 1})
+    end
+
+    assert_equal("inner timeout", error.message)
+    assert_instance_of(Float, auth.deadlines.fetch(0))
+    assert_equal(1, transport.requests.length)
+  end
+
   def test_workload_identity_authentication_consumes_the_request_timeout
     transport = scripted_transport { flunk("request should not be sent") }
     auth = Class

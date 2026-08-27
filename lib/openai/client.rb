@@ -18,6 +18,8 @@ module OpenAI
     DEFAULT_MAX_RETRY_DELAY = 8.0
 
     WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER = "workload-identity-auth"
+    WORKLOAD_IDENTITY_DEADLINE_ERROR = Class.new(Timeout::Error)
+    private_constant :WORKLOAD_IDENTITY_DEADLINE_ERROR
 
     # @return [String, nil]
     attr_reader :api_key
@@ -250,7 +252,7 @@ module OpenAI
     private def validate_retry_delay!(request, delay:)
       deadline = request[:x509_request_context]&.fetch(:deadline) || request[:workload_identity_deadline]
       if deadline && delay >= deadline - OpenAI::Internal::Util.monotonic_secs
-        raise Timeout::Error, "request timed out during workload identity authentication"
+        raise WORKLOAD_IDENTITY_DEADLINE_ERROR, "request timed out during workload identity authentication"
       end
 
       super
@@ -362,12 +364,13 @@ module OpenAI
 
     rescue Timeout::Error => error
       unless x509_request
-        raise if request[:workload_identity_deadline].nil?
+        raise unless error.is_a?(WORKLOAD_IDENTITY_DEADLINE_ERROR)
 
         url = request.fetch(:url).dup
         url.query = nil
         url.fragment = nil
-        raise OpenAI::Errors::APITimeoutError.new(url: url, message: error.message)
+        cause = Timeout::Error.new(error.message)
+        raise OpenAI::Errors::APITimeoutError.new(url: url, message: error.message), cause: cause
       end
 
       url = request.fetch(:url).dup
