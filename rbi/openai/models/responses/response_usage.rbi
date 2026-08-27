@@ -40,6 +40,10 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :total_tokens
 
+        # Compute units for the request. Currently null when available.
+        sig { returns(T.nilable(Integer)) }
+        attr_accessor :compute_units
+
         # Represents token usage details including input tokens, output tokens, a
         # breakdown of output tokens, and the total tokens used.
         sig do
@@ -53,7 +57,9 @@ module OpenAI
 
             output_tokens_details: OpenAI::Responses::ResponseUsage::OutputTokensDetails::OrHash,
 
-            total_tokens: Integer
+            total_tokens: Integer,
+
+            compute_units: T.nilable(Integer)
           )
             .returns(T.attached_class)
         end
@@ -72,8 +78,11 @@ module OpenAI
           output_tokens_details:,
 
           # The total number of tokens used.
+          total_tokens:,
 
-          total_tokens:
+          # Compute units for the request. Currently null when available.
+
+          compute_units: nil
         )
         end
 
@@ -84,7 +93,8 @@ module OpenAI
               input_tokens_details: OpenAI::Responses::ResponseUsage::InputTokensDetails,
               output_tokens: Integer,
               output_tokens_details: OpenAI::Responses::ResponseUsage::OutputTokensDetails,
-              total_tokens: Integer
+              total_tokens: Integer,
+              compute_units: T.nilable(Integer)
             }
           )
         end

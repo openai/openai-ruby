@@ -386,7 +386,11 @@ module OpenAI
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
         )
-          .returns(OpenAI::Internal::Stream[OpenAI::Responses::ResponseStreamEvent::Variants])
+          .returns(
+            OpenAI::Internal::Stream[
+              T.any(OpenAI::Responses::ResponseStreamEvent::Variants, OpenAI::Streaming::UnknownStreamEvent)
+            ]
+          )
       }
       def stream_raw(
         # Whether to run the model response in the background.
@@ -655,7 +659,11 @@ module OpenAI
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
         )
-          .returns(OpenAI::Internal::Stream[OpenAI::Responses::ResponseStreamEvent::Variants])
+          .returns(
+            OpenAI::Internal::Stream[
+              T.any(OpenAI::Responses::ResponseStreamEvent::Variants, OpenAI::Streaming::UnknownStreamEvent)
+            ]
+          )
       }
       def retrieve_streaming(
         # The ID of the response to retrieve.

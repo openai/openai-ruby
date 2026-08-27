@@ -76,7 +76,8 @@ module OpenAI
           ?user: String,
           ?betas: ::Array[OpenAI::Models::Beta::ResponseCreateParams::beta],
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Internal::Stream[OpenAI::Models::Beta::beta_response_stream_event]
+        ) -> OpenAI::Internal::Stream[(OpenAI::Models::Beta::beta_response_stream_event
+        | OpenAI::Streaming::UnknownStreamEvent)]
 
         def retrieve: (
           String response_id,
@@ -94,7 +95,8 @@ module OpenAI
           ?starting_after: Integer,
           ?betas: ::Array[OpenAI::Models::Beta::ResponseRetrieveParams::beta],
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Internal::Stream[OpenAI::Models::Beta::beta_response_stream_event]
+        ) -> OpenAI::Internal::Stream[(OpenAI::Models::Beta::beta_response_stream_event
+        | OpenAI::Streaming::UnknownStreamEvent)]
 
         def delete: (
           String response_id,
