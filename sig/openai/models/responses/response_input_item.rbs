@@ -187,10 +187,10 @@ module OpenAI
 
         type function_call_output =
           {
-            call_id: String,
             output: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::output,
             type: :function_call_output,
             id: String?,
+            call_id: String?,
             caller_: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::caller_?,
             name: String?,
             namespace: String?,
@@ -198,13 +198,13 @@ module OpenAI
           }
 
         class FunctionCallOutput < OpenAI::Internal::Type::BaseModel
-          attr_accessor call_id: String
-
           attr_accessor output: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::output
 
           attr_accessor type: :function_call_output
 
           attr_accessor id: String?
+
+          attr_accessor call_id: String?
 
           attr_accessor caller_: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::caller_?
 
@@ -215,9 +215,9 @@ module OpenAI
           attr_accessor status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?
 
           def initialize: (
-            call_id: String,
             output: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::output,
             ?id: String?,
+            ?call_id: String?,
             ?caller_: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::caller_?,
             ?name: String?,
             ?namespace: String?,
@@ -226,10 +226,10 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            call_id: String,
             output: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::output,
             type: :function_call_output,
             id: String?,
+            call_id: String?,
             caller_: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::caller_?,
             name: String?,
             namespace: String?,

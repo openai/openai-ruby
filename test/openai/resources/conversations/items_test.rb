@@ -53,9 +53,9 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
           } | {
             type: :function_call_output,
             id: String,
-            call_id: String,
             output: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Output,
             status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status,
+            call_id: String | nil,
             caller_: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Caller | nil,
             created_by: String | nil,
             name: String | nil,
@@ -263,9 +263,9 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
           } | {
             type: :function_call_output,
             id: String,
-            call_id: String,
             output: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Output,
             status: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Status,
+            call_id: String | nil,
             caller_: OpenAI::Responses::ResponseFunctionToolCallOutputItem::Caller | nil,
             created_by: String | nil,
             name: String | nil,

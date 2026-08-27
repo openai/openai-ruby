@@ -4,10 +4,10 @@ module OpenAI
       type response_function_tool_call_output_item =
         {
           id: String,
-          call_id: String,
           output: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::output,
           status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
           type: :function_call_output,
+          call_id: String,
           caller_: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::caller_?,
           created_by: String,
           name: String,
@@ -17,13 +17,15 @@ module OpenAI
       class ResponseFunctionToolCallOutputItem < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
-        attr_accessor call_id: String
-
         attr_accessor output: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::output
 
         attr_accessor status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
 
         attr_accessor type: :function_call_output
+
+        attr_reader call_id: String?
+
+        def call_id=: (String) -> String
 
         attr_accessor caller_: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::caller_?
 
@@ -41,9 +43,9 @@ module OpenAI
 
         def initialize: (
           id: String,
-          call_id: String,
           output: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::output,
           status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
+          ?call_id: String,
           ?caller_: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::caller_?,
           ?created_by: String,
           ?name: String,
@@ -53,10 +55,10 @@ module OpenAI
 
         def to_hash: -> {
           id: String,
-          call_id: String,
           output: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::output,
           status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
           type: :function_call_output,
+          call_id: String,
           caller_: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::caller_?,
           created_by: String,
           name: String,

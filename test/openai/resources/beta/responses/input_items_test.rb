@@ -82,10 +82,10 @@ class OpenAI::Test::Resources::Beta::Responses::InputItemsTest < OpenAI::Test::R
           } | {
             type: :function_call_output,
             id: String,
-            call_id: String,
             output: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Output,
             status: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Status,
             agent: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Agent | nil,
+            call_id: String | nil,
             caller_: OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::Caller | nil,
             created_by: String | nil,
             name: String | nil,
