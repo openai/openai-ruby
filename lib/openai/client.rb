@@ -248,7 +248,7 @@ module OpenAI
 
     # @api private
     private def validate_retry_delay!(request, delay:)
-      deadline = request[:x509_request_context]&.fetch(:deadline)
+      deadline = request[:x509_request_context]&.fetch(:deadline) || request[:workload_identity_deadline]
       if deadline && delay >= deadline - OpenAI::Internal::Util.monotonic_secs
         raise Timeout::Error, "request timed out during workload identity authentication"
       end
@@ -281,7 +281,8 @@ module OpenAI
           request[:workload_identity_deadline] ||
           request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
       else
-        request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
+        request[:workload_identity_deadline] ||
+          request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
       end
 
       request = request.merge(workload_identity_deadline: deadline)
@@ -359,8 +360,12 @@ module OpenAI
         end
       end
 
-    rescue Timeout::Error
-      raise unless x509_request
+    rescue Timeout::Error => error
+      unless x509_request
+        raise unless request.key?(:workload_identity_deadline)
+
+        raise OpenAI::Errors::APITimeoutError.new(url: request.fetch(:url), message: error.message)
+      end
 
       url = request.fetch(:url).dup
       url.query = nil

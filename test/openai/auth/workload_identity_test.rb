@@ -241,6 +241,110 @@ class WorkloadIdentityTest < Minitest::Test
     assert_equal("oauth-access-token", token)
   end
 
+  def test_workload_identity_provider_deadline_interrupts_provider_error_wrapping
+    provider = Class
+      .new do
+        attr_reader(:completed)
+
+        def get_token
+          sleep(0.1)
+          @completed = true
+          "fake-subject-token"
+        rescue StandardError => error
+          raise(
+            OpenAI::Errors::SubjectTokenProviderError.new(
+              message: "provider failed",
+              provider: "fake",
+              cause: error
+            )
+          )
+        end
+
+        def token_type = OpenAI::Auth::TokenType::JWT
+      end
+      .new
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: "idp-123",
+      service_account_id: "sa-456",
+      provider: provider
+    )
+    auth = OpenAI::Auth::WorkloadIdentityAuth.new(config, "org-123")
+    deadline = OpenAI::Internal::Util.monotonic_secs + 0.01
+
+    assert_raises(Timeout::Error) { auth.get_token(deadline: deadline) }
+    refute(provider.completed)
+    refute(auth.instance_variable_get(:@refreshing))
+  end
+
+  def test_workload_identity_provider_timeout_releases_concurrent_refresh_waiters
+    provider_started = Queue.new
+    release_provider = Queue.new
+    provider = Class
+      .new do
+        attr_reader(:calls, :completed_calls)
+
+        def initialize(started, release)
+          @started = started
+          @release = release
+          @calls = 0
+          @completed_calls = 0
+        end
+
+        def get_token
+          @calls += 1
+          if @calls == 1
+            Thread.handle_interrupt(Exception => :never) do
+              @started << true
+              @release.pop
+            end
+
+            sleep(0.1)
+          end
+
+          @completed_calls += 1
+          "fake-subject-token"
+        end
+
+        def token_type = OpenAI::Auth::TokenType::JWT
+      end
+      .new(provider_started, release_provider)
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: "idp-123",
+      service_account_id: "sa-456",
+      provider: provider
+    )
+    auth = OpenAI::Auth::WorkloadIdentityAuth.new(config, "org-123")
+    stub_request(:post, "https://auth.openai.com/oauth/token")
+      .to_return(
+        status: 200,
+        body: JSON.generate({"access_token" => "recovered-token", "expires_in" => 3600})
+      )
+
+    refresher = Thread.new do
+      deadline = OpenAI::Internal::Util.monotonic_secs + 0.03
+      auth.get_token(deadline: deadline)
+    end
+
+    refresher.report_on_exception = false
+    Timeout.timeout(1) { provider_started.pop }
+    waiter = Thread.new { auth.get_token }
+    waiter.report_on_exception = false
+    Timeout.timeout(1) { Thread.pass until waiter.status == "sleep" }
+    release_provider << true
+
+    assert_raises(Timeout::Error) { refresher.value }
+    assert_raises(OpenAI::Errors::AuthenticationError) { waiter.value }
+    refute(auth.instance_variable_get(:@refreshing))
+    assert_equal("recovered-token", auth.get_token)
+    assert_equal(2, provider.calls)
+    assert_equal(1, provider.completed_calls)
+
+  ensure
+    release_provider&.push(true) if refresher&.alive?
+    refresher&.kill&.join if refresher&.alive?
+    waiter&.kill&.join if waiter&.alive?
+  end
+
   def test_workload_identity_refresh_cleanup_is_installed_before_interrupts_resume
     config = OpenAI::Auth::WorkloadIdentity.new(
       identity_provider_id: "idp-123",

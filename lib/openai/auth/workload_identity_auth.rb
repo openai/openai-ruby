@@ -274,7 +274,11 @@ module OpenAI
       private def fetch_token_from_exchange(deadline:)
         return @token_exchange.fetch(deadline: deadline) unless @token_exchange.nil?
 
-        subject_token = @config.provider.get_token
+        timeout = remaining_timeout(deadline)
+        subject_token = Timeout.timeout(timeout, nil, "request timed out during workload identity authentication") do
+          @config.provider.get_token
+        end
+
         check_deadline!(deadline)
 
         token_type = @config.provider.token_type
