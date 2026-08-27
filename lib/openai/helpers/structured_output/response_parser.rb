@@ -109,7 +109,7 @@ module OpenAI
                   parameters: tool.to_json_schema
                 }
               in {type: :function, parameters: OpenAI::StructuredOutput::JsonSchemaConverter => params}
-                func = tool.fetch(:function)
+                func = tool.fetch(:function, tool)
                 name = func[:name] ||= params.name.split("::").last
                 tool_models.store(name, params)
                 func.update(parameters: params.to_json_schema)
