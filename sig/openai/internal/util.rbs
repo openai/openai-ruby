@@ -146,7 +146,9 @@ module OpenAI
         ::Hash[String, String] headers,
         stream: Enumerable[String],
         ?suppress_error: bool
-      ) -> top
+      ) ?{
+        (String body) -> void
+      } -> top
 
       def self?.fused_enum: (
         Enumerable[top] enum,

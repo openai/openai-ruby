@@ -47,6 +47,10 @@ module OpenAI
     sig { returns(T.nilable(Float)) }
     attr_accessor :timeout
 
+    # Retain the exact successful response body on `last_response.body`.
+    sig { returns(T.nilable(T::Boolean)) }
+    attr_accessor :include_raw_body
+
     # Returns a new instance of RequestOptions.
     sig { params(values: OpenAI::Internal::AnyHash).returns(T.attached_class) }
     def self.new(values = {})

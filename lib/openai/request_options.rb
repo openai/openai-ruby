@@ -65,6 +65,14 @@ module OpenAI
     #   @return [Float, nil]
     optional :timeout, Float
 
+    # @!attribute include_raw_body
+    #   Retain the exact successful HTTP response body on the returned model or
+    #   page through `last_response.body`. Body retention is disabled by default
+    #   and cannot be enabled for streaming responses.
+    #
+    #   @return [Boolean, nil]
+    optional :include_raw_body, OpenAI::Internal::Type::Boolean
+
     # @!method initialize(values = {})
     #   Returns a new instance of RequestOptions.
     #

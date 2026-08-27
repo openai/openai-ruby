@@ -785,6 +785,8 @@ module OpenAI
         #
         #   @option options [Float, nil] :timeout
         #
+        #   @option options [Boolean, nil] :include_raw_body
+        #
         # @raise [OpenAI::Errors::APIError]
         # @return [Object]
         def request(req)
@@ -802,6 +804,10 @@ module OpenAI
           self.class.validate!(req)
           opts = req[:options].to_h
           OpenAI::RequestOptions.validate!(opts)
+          if req[:stream] && opts[:include_raw_body] == true
+            raise ArgumentError, "`include_raw_body` is not supported for streaming responses"
+          end
+
           request = build_request(req.except(:options), opts)
           url = request.fetch(:url)
           log_context = OpenAI::Internal::Logging::Context.new(
@@ -868,8 +874,27 @@ module OpenAI
 
           unwrap = req[:unwrap]
           response_metadata = response.metadata
+          include_raw_body = req[:options].to_h[:include_raw_body] == true &&
+            (req[:page] ||
+              (model.is_a?(Class) && model <= OpenAI::Internal::Type::BaseModel) ||
+              model.is_a?(OpenAI::Internal::Type::Union))
+          raw_body = nil
+          decoded = if include_raw_body
+            OpenAI::Internal::Util.decode_content(response.headers, stream: response.body) do |body|
+              raw_body = body
+            end
+          else
+            OpenAI::Internal::Util.decode_content(response.headers, stream: response.body)
+          end
 
-          decoded = OpenAI::Internal::Util.decode_content(response.headers, stream: response.body)
+          if include_raw_body && !decoded.is_a?(StringIO)
+            response_metadata = OpenAI::ResponseMetadata.new(
+              status: response.status,
+              headers: response.headers,
+              body: raw_body&.freeze
+            )
+          end
+
           case req
           in {stream: Class => st}
             st.new(

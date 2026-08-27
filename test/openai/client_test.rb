@@ -338,6 +338,7 @@ class OpenAITest < Minitest::Test
     assert_equal(200, response.last_response.status)
     assert_equal("req_success", response.last_response.request_id)
     assert_equal("req_success", response.last_response.headers["x-request-id"])
+    assert_nil(response.last_response.body)
     assert_nil(response.choices.first.last_response)
     refute_includes(response.to_h, :_request_id)
     refute_includes(response.to_h, :last_response)
@@ -378,6 +379,148 @@ class OpenAITest < Minitest::Test
     assert_equal("req_page", response._request_id)
     assert_equal(200, response.last_response.status)
     assert_equal("req_page", response.last_response.request_id)
+    assert_nil(response.last_response.body)
+  end
+
+  def test_raw_response_body_is_opt_in_and_preserves_exact_bytes
+    body = "{\n  \"id\": \"model_123\", \"object\": \"model\", " \
+      "\"created\": 123, \"owned_by\": \"sensitive-owner\"\n}\n"
+    stub_request(:get, "http://localhost/models/model_123").to_return(
+      status: 200,
+      headers: {"content-type" => "application/json", "x-request-id" => "req_raw"},
+      body: body
+    )
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+    response = openai.models.retrieve("model_123", request_options: {include_raw_body: true})
+
+    assert_instance_of(OpenAI::Model, response)
+    assert_equal(body, response.last_response.body)
+    assert_equal("req_raw", response.last_response.request_id)
+    assert_predicate(response.last_response.body, :frozen?)
+    refute_includes(response.last_response.inspect, "sensitive-owner")
+    refute_includes(YAML.dump(response), "@last_response")
+    refute_includes(Marshal.dump(response), body)
+  end
+
+  def test_raw_response_body_accepts_request_options_objects
+    body = "{\"id\":\"model_123\",\"object\":\"model\",\"created\":123,\"owned_by\":\"openai\"}"
+    stub_request(:get, "http://localhost/models/model_123").to_return(
+      status: 200,
+      headers: {"content-type" => "application/json"},
+      body: body
+    )
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+    options = OpenAI::RequestOptions.new(include_raw_body: true)
+    response = openai.models.retrieve("model_123", request_options: options)
+
+    assert_equal(body, response.last_response.body)
+  end
+
+  def test_raw_response_body_captures_only_the_final_successful_attempt
+    error_body = "{\"error\":{\"message\":\"sensitive retry body\"}}"
+    successful_body = "{ \"id\": \"model_123\", \"object\": \"model\", " \
+      "\"created\": 123, \"owned_by\": \"openai\" }\n"
+    stub_request(:get, "http://localhost/models/model_123").to_return(
+      {status: 500, headers: {"content-type" => "application/json"}, body: error_body},
+      {status: 200, headers: {"content-type" => "application/json"}, body: successful_body}
+    )
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key", max_retries: 1)
+    response = openai.models.retrieve("model_123", request_options: {include_raw_body: true})
+
+    assert_equal(successful_body, response.last_response.body)
+    refute_includes(response.last_response.body, "sensitive retry body")
+    assert_requested(:get, "http://localhost/models/model_123", times: 2)
+  end
+
+  def test_raw_response_body_is_available_on_union_backed_models
+    body = "{\n  \"text\": \"transcribed audio\"\n}\n"
+    stub_request(:post, "http://localhost/audio/transcriptions").to_return(
+      status: 200,
+      headers: {"content-type" => "application/json"},
+      body: body
+    )
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+    response = openai.audio.transcriptions.create(
+      file: StringIO.new("synthetic audio"),
+      model: "gpt-4o-transcribe",
+      request_options: {include_raw_body: true}
+    )
+
+    assert_instance_of(OpenAI::Models::Audio::Transcription, response)
+    assert_equal(body, response.last_response.body)
+  end
+
+  def test_raw_response_body_requires_an_explicit_boolean_true
+    body = "{\"id\":\"model_123\",\"object\":\"model\",\"created\":123,\"owned_by\":\"openai\"}"
+    stub_request(:get, "http://localhost/models/model_123").to_return(
+      status: 200,
+      headers: {"content-type" => "application/json"},
+      body: body
+    )
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+
+    ["false", 0, false, nil].each do |value|
+      response = openai.models.retrieve("model_123", request_options: {include_raw_body: value})
+
+      assert_nil(response.last_response.body)
+    end
+  end
+
+  def test_raw_response_body_does_not_freeze_union_backed_text_responses
+    stub_request(:post, "http://localhost/audio/transcriptions").to_return(
+      status: 200,
+      headers: {"content-type" => "text/plain"},
+      body: "transcribed audio"
+    )
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+    response = openai.audio.transcriptions.create(
+      file: StringIO.new("synthetic audio"),
+      model: "gpt-4o-transcribe",
+      response_format: :text,
+      request_options: {include_raw_body: true}
+    )
+
+    assert_instance_of(StringIO, response)
+    assert_equal("transcribed audio", response.read)
+    assert_equal(1, response.write("!"))
+  end
+
+  def test_raw_response_body_is_available_on_paginated_responses
+    body = "{\n  \"data\": [],\n  \"object\": \"list\", " \
+      "\"ignored_secret\": \"raw-page-only-secret\"\n}\n"
+    stub_request(:get, "http://localhost/models").to_return(
+      status: 200,
+      headers: {"content-type" => "application/json", "x-request-id" => "req_page_raw"},
+      body: body
+    )
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+    response = openai.models.list(request_options: {include_raw_body: true})
+
+    assert_equal(body, response.last_response.body)
+    assert_equal("req_page_raw", response.last_response.request_id)
+    refute_includes(YAML.dump(response), "raw-page-only-secret")
+  end
+
+  def test_raw_response_body_rejects_streaming_without_starting_a_request
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+
+    error = assert_raises(ArgumentError) do
+      openai.responses.stream_raw(
+        model: "gpt-4.1",
+        input: "hello",
+        request_options: {include_raw_body: true}
+      )
+    end
+
+    assert_match(/include_raw_body.*streaming/, error.message)
+    assert_not_requested(:post, "http://localhost/responses")
   end
 
   def test_each_paginated_response_has_its_own_metadata
@@ -453,6 +596,24 @@ class OpenAITest < Minitest::Test
 
     assert_instance_of(StringIO, content)
     assert_equal("file contents", content.read)
+    refute_respond_to(content, :last_response)
+    assert_nil(result)
+  end
+
+  def test_raw_response_body_does_not_change_non_model_results
+    stub_request(:get, "http://localhost/files/file_123/content")
+      .to_return(status: 200, body: "file contents")
+    stub_request(:delete, "http://localhost/responses/resp_123")
+      .to_return(status: 204, body: "")
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+
+    content = openai.files.content("file_123", request_options: {include_raw_body: true})
+    result = openai.responses.delete("resp_123", request_options: {include_raw_body: true})
+
+    assert_instance_of(StringIO, content)
+    assert_equal("file contents", content.read)
+    assert_equal(1, content.write("!"))
     refute_respond_to(content, :last_response)
     assert_nil(result)
   end
