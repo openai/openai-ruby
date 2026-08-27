@@ -1369,6 +1369,14 @@ module OpenAI
               :"tenant.project_api_key.created",
               OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
             )
+            TENANT_TRUSTED_ACCESS_BUSINESS_VERIFICATION_STARTED = T.let(
+              :"tenant.trusted_access.business_verification.started",
+              OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+            )
+            TENANT_TRUSTED_ACCESS_APPLICATION_SUBMITTED = T.let(
+              :"tenant.trusted_access.application.submitted",
+              OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+            )
             TENANT_CHATGPT_ACCESS_TOKEN_REVOKED = T.let(
               :"tenant.chatgpt_access_token.revoked",
               OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol

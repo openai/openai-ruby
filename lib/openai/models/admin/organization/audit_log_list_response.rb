@@ -788,6 +788,8 @@ module OpenAI
             TENANT_ADMIN_API_KEY_UPDATED = :"tenant.admin_api_key.updated"
             TENANT_ADMIN_API_KEY_DELETED = :"tenant.admin_api_key.deleted"
             TENANT_PROJECT_API_KEY_CREATED = :"tenant.project_api_key.created"
+            TENANT_TRUSTED_ACCESS_BUSINESS_VERIFICATION_STARTED = :"tenant.trusted_access.business_verification.started"
+            TENANT_TRUSTED_ACCESS_APPLICATION_SUBMITTED = :"tenant.trusted_access.application.submitted"
             TENANT_CHATGPT_ACCESS_TOKEN_REVOKED = :"tenant.chatgpt_access_token.revoked"
             TENANT_MIGRATION_COMPLETED = :"tenant.migration.completed"
             TENANT_SSO_MIGRATED = :"tenant.sso.migrated"

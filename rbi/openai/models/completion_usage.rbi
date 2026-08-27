@@ -31,6 +31,10 @@ module OpenAI
       sig { params(completion_tokens_details: OpenAI::CompletionUsage::CompletionTokensDetails::OrHash).void }
       attr_writer :completion_tokens_details
 
+      # Compute units for the request. Currently null when available.
+      sig { returns(T.nilable(Integer)) }
+      attr_accessor :compute_units
+
       # Breakdown of tokens used in the prompt.
       sig { returns(T.nilable(OpenAI::CompletionUsage::PromptTokensDetails)) }
       attr_reader :prompt_tokens_details
@@ -50,6 +54,8 @@ module OpenAI
 
           completion_tokens_details: OpenAI::CompletionUsage::CompletionTokensDetails::OrHash,
 
+          compute_units: T.nilable(Integer),
+
           prompt_tokens_details: OpenAI::CompletionUsage::PromptTokensDetails::OrHash
         )
           .returns(T.attached_class)
@@ -68,6 +74,9 @@ module OpenAI
         # Breakdown of tokens used in a completion.
         completion_tokens_details: nil,
 
+        # Compute units for the request. Currently null when available.
+        compute_units: nil,
+
         # Breakdown of tokens used in the prompt.
 
         prompt_tokens_details: nil
@@ -81,6 +90,7 @@ module OpenAI
             prompt_tokens: Integer,
             total_tokens: Integer,
             completion_tokens_details: OpenAI::CompletionUsage::CompletionTokensDetails,
+            compute_units: T.nilable(Integer),
             prompt_tokens_details: OpenAI::CompletionUsage::PromptTokensDetails
           }
         )
