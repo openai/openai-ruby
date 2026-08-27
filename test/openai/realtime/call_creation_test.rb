@@ -288,30 +288,42 @@ class OpenAI::Test::RealtimeCallCreationTest < Minitest::Test
       body: ""
     )
     requests = []
+    cleanup_deadlines = []
     http = Minitest::Mock.new(Object.new)
     http.expect(:execute, creation_response) do |request|
       requests << request
       true
     end
 
-    20.times do
+    20.times do |attempt|
       http.expect(:execute, redirect) do |request|
         requests << request
-        sleep(0.01)
+        raise Timeout::Error if attempt == 2
+
         true
       end
     end
 
-    started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-    error = assert_raises(IOError) do
-      client(http_client: http, timeout: 0.025).realtime.calls.create(sdp: "v=0\r\n")
+    original_timeout = Timeout.method(:timeout)
+    test_thread = Thread.current
+    deadline = lambda do |duration, *arguments, &operation|
+      unless Thread.current == test_thread
+        next original_timeout.call(duration, *arguments, &operation)
+      end
+
+      cleanup_deadlines << duration
+      operation.call
     end
 
-    elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - started_at
+    error = Timeout.stub(:timeout, deadline) do
+      assert_raises(IOError) do
+        client(http_client: http, timeout: 0.025).realtime.calls.create(sdp: "v=0\r\n")
+      end
+    end
 
     assert_equal("synthetic SDP response interrupted", error.message)
-    assert_operator(elapsed, :<, 0.15)
-    assert_operator(requests.length, :<, 20)
+    assert_equal([0.025], cleanup_deadlines)
+    assert_equal([0.025, 0.025, 0.025], requests.drop(1).map(&:timeout))
   end
 
   def test_interrupted_call_cleanup_uses_a_positive_deadline_for_zero_caller_timeouts
