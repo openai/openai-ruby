@@ -20,11 +20,18 @@ module OpenAI
     # @return [String, nil]
     attr_reader :request_id
 
+    # The exact response body when `include_raw_body: true` was requested.
+    # Bodies are never retained by default or for streaming responses.
+    #
+    # @return [String, nil]
+    attr_reader :body
+
     # @api private
     #
     # @param status [Integer]
     # @param headers [Hash{String=>String}]
-    def initialize(status:, headers:)
+    # @param body [String, nil]
+    def initialize(status:, headers:, body: nil)
       @status = Integer(status)
       @headers = headers
         .to_h do |name, value|
@@ -32,6 +39,7 @@ module OpenAI
         end
         .freeze
       @request_id = @headers["x-request-id"]
+      @body = body.nil? || body.frozen? ? body : body.dup.freeze
       freeze
     end
 
@@ -39,6 +47,37 @@ module OpenAI
     #
     # @return [String]
     def inspect = "#<#{self.class} status=#{@status} request_id=#{@request_id.inspect}>"
+
+    # Keep retained response bodies out of Psych object serialization.
+    #
+    # @api private
+    # @param coder [Psych::Coder]
+    # @return [void]
+    def encode_with(coder)
+      coder["status"] = @status
+      coder["headers"] = @headers
+    end
+
+    # @api private
+    # @param coder [Psych::Coder]
+    # @return [void]
+    def init_with(coder)
+      initialize(status: coder["status"], headers: coder["headers"])
+    end
+
+    # Keep retained response bodies out of Marshal object serialization.
+    #
+    # @api private
+    # @return [Array(Integer, Hash{String=>String})]
+    def marshal_dump = [@status, @headers]
+
+    # @api private
+    # @param values [Array(Integer, Hash{String=>String})]
+    # @return [void]
+    def marshal_load(values)
+      status, headers = values
+      initialize(status: status, headers: headers)
+    end
   end
 
   # Details about an API request retry that is about to run.

@@ -10,8 +10,21 @@ module OpenAI
     attr_reader status: Integer
     attr_reader headers: ::Hash[String, String]
     attr_reader request_id: String?
+    attr_reader body: String?
 
-    def initialize: (status: Integer, headers: ::Hash[String, String]) -> void
+    def initialize: (
+      status: Integer,
+      headers: ::Hash[String, String],
+      ?body: String?
+    ) -> void
+
+    def encode_with: (top coder) -> void
+
+    def init_with: (top coder) -> void
+
+    def marshal_dump: -> [Integer, ::Hash[String, String]]
+
+    def marshal_load: ([Integer, ::Hash[String, String]] values) -> void
   end
 
   class RetryEvent

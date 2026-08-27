@@ -11,13 +11,36 @@ module OpenAI
     sig { returns(T.nilable(String)) }
     attr_reader :request_id
 
+    sig { returns(T.nilable(String)) }
+    attr_reader :body
+
     # @api private
     sig do
-      params(status: Integer, headers: T::Hash[String, String]).returns(
+      params(status: Integer, headers: T::Hash[String, String], body: T.nilable(String)).returns(
         T.attached_class
       )
     end
-    def self.new(status:, headers:)
+    def self.new(status:, headers:, body: nil)
+    end
+
+    # @api private
+    sig { params(coder: T.untyped).void }
+    def encode_with(coder)
+    end
+
+    # @api private
+    sig { params(coder: T.untyped).void }
+    def init_with(coder)
+    end
+
+    # @api private
+    sig { returns(T::Array[T.any(Integer, T::Hash[String, String])]) }
+    def marshal_dump
+    end
+
+    # @api private
+    sig { params(values: T::Array[T.any(Integer, T::Hash[String, String])]).void }
+    def marshal_load(values)
     end
   end
 

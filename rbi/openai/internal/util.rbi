@@ -374,11 +374,12 @@ module OpenAI
           params(
             headers: T::Hash[String, String],
             stream: T::Enumerable[String],
-            suppress_error: T::Boolean
+            suppress_error: T::Boolean,
+            body_observer: T.nilable(T.proc.params(body: String).void)
           )
             .returns(T.anything)
         end
-        def decode_content(headers, stream:, suppress_error: false)
+        def decode_content(headers, stream:, suppress_error: false, &body_observer)
         end
       end
 

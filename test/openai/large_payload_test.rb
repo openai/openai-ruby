@@ -30,6 +30,24 @@ class OpenAI::Test::LargePayloadTest < Minitest::Test
     end
   end
 
+  def test_blocking_response_preserves_large_raw_body_when_explicitly_requested
+    text = large_text
+    body = JSON.generate(response_with_text(text))
+
+    with_http_body(body, content_type: "application/json") do |client|
+      response = client.responses.create(
+        model: "gpt-4.1",
+        input: "Synthetic payload test",
+        request_options: {include_raw_body: true}
+      )
+
+      assert_large_text(text, response.output_text)
+      assert_equal(body.bytesize, response.last_response.body.bytesize)
+      assert_equal(Digest::SHA256.hexdigest(body), Digest::SHA256.hexdigest(response.last_response.body))
+      assert_predicate(response.last_response.body, :frozen?)
+    end
+  end
+
   def test_response_stream_preserves_large_delta_snapshot_and_final_output_text
     text = large_text
     response = response_with_text(text)

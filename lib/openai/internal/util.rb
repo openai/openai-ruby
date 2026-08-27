@@ -673,13 +673,16 @@ module OpenAI
         # @param headers [Hash{String=>String}]
         # @param stream [Enumerable<String>]
         # @param suppress_error [Boolean]
+        # @yieldparam [String] The buffered response body before decoding.
         #
         # @raise [JSON::ParserError]
         # @return [Object]
-        def decode_content(headers, stream:, suppress_error: false)
+        def decode_content(headers, stream:, suppress_error: false, &body_observer)
           case (content_type = headers["content-type"])
           in OpenAI::Internal::Util::JSON_CONTENT
-            return nil if (json = stream.to_a.join).empty?
+            json = stream.to_a.join
+            body_observer&.call(json)
+            return nil if json.empty?
 
             begin
               JSON.parse(json, symbolize_names: true)
@@ -703,6 +706,7 @@ module OpenAI
             decode_sse(lines)
           else
             text = stream.to_a.join
+            body_observer&.call(text)
             force_charset!(content_type, text: text)
             StringIO.new(text)
           end

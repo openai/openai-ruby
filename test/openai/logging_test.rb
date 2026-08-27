@@ -300,6 +300,30 @@ class LoggingTest < Minitest::Test
     refute_includes(debug_log, "response-secret")
   end
 
+  def test_opt_in_raw_response_body_never_appears_in_debug_logs
+    logger = CapturingLogger.new
+    body = JSON.generate(
+      id: "model_123",
+      object: "model",
+      created: 123,
+      owned_by: "sensitive-response-owner"
+    )
+    http_client = StubHTTPClient.new do |_request|
+      OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "application/json"},
+        body: body
+      )
+    end
+
+    client = diagnostic_client(http_client: http_client, logger: logger, log_level: :debug)
+    response = client.models.retrieve("model_123", request_options: {include_raw_body: true})
+
+    assert_equal(body, response.last_response.body)
+    refute_includes(logger.events.map(&:last).join("\n"), "sensitive-response-owner")
+    refute_includes(response.last_response.inspect, "sensitive-response-owner")
+  end
+
   def test_redaction_is_case_insensitive_for_headers_and_credential_query_parameters
     headers = OpenAI::Internal::Logging.format_headers(
       "Authorization" => "authorization-secret",

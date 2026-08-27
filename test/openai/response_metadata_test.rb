@@ -29,5 +29,44 @@ class OpenAI::Test::ResponseMetadataTest < Minitest::Test
     response = OpenAI::ResponseMetadata.new(status: 204, headers: {})
 
     assert_nil(response.request_id)
+    assert_nil(response.body)
+  end
+
+  def test_optional_response_body_is_immutable_and_redacted_from_inspection
+    source = +"sensitive response body"
+    response = OpenAI::ResponseMetadata.new(status: 200, headers: {}, body: source)
+
+    source.replace("changed")
+
+    assert_equal("sensitive response body", response.body)
+    assert_predicate(response.body, :frozen?)
+    assert_raises(FrozenError) { response.body.replace("changed") }
+    refute_includes(response.inspect, "sensitive response body")
+  end
+
+  def test_frozen_response_body_is_retained_without_copying
+    body = "large response body".b.freeze
+    response = OpenAI::ResponseMetadata.new(status: 200, headers: {}, body: body)
+
+    assert_same(body, response.body)
+  end
+
+  def test_serialization_omits_retained_response_bodies
+    response = OpenAI::ResponseMetadata.new(
+      status: 200,
+      headers: {"x-request-id" => "req_serialized"},
+      body: "sensitive response body"
+    )
+
+    [YAML.dump(response), Marshal.dump(response)].each do |serialized|
+      refute_includes(serialized, "sensitive response body")
+    end
+
+    [YAML.unsafe_load(YAML.dump(response)), Marshal.load(Marshal.dump(response))].each do |copy|
+      assert_equal(200, copy.status)
+      assert_equal("req_serialized", copy.request_id)
+      assert_nil(copy.body)
+      assert_predicate(copy, :frozen?)
+    end
   end
 end
