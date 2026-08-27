@@ -465,10 +465,9 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     events = stream.to_a
 
     assert_instance_of(OpenAI::Models::Responses::ResponseOutputItemAddedEvent, events.first)
-    assert_text_delta_events(
+    assert_incremental_text_delta_events(
       events,
-      expected_deltas: ["Hello there! ", "How can I help you ", "today?"],
-      expected_snapshot: "Hello there! How can I help you today?"
+      expected_deltas: ["Hello there! ", "How can I help you ", "today?"]
     )
     assert_equal("Hello there! How can I help you today?", stream.get_output_text)
   ensure
@@ -486,11 +485,26 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     stream = @client.responses.stream(response_id: "msg_001", starting_after: 5)
     events = stream.to_a
 
-    assert_text_delta_events(
+    assert_incremental_text_delta_events(
       events,
-      expected_deltas: ["How can I help you ", "today?"],
-      expected_snapshot: "How can I help you today?"
+      expected_deltas: ["How can I help you ", "today?"]
     )
+    assert_equal("Hello there! How can I help you today?", stream.get_output_text)
+  ensure
+    stream&.close
+  end
+
+  def test_incrementally_resumed_text_method
+    stub_request(:get, "http://localhost/responses/msg_001?starting_after=5&stream=true")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: incremental_sse_response(basic_text_sse_response, starting_after: 5)
+      )
+
+    stream = @client.responses.stream(response_id: "msg_001", starting_after: 5)
+
+    assert_equal(["How can I help you ", "today?"], stream.text.to_a)
     assert_equal("Hello there! How can I help you today?", stream.get_output_text)
   ensure
     stream&.close
@@ -558,10 +572,9 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     )
     events = stream.to_a
 
-    assert_function_delta_events(
+    assert_incremental_function_delta_events(
       events,
-      expected_deltas: ["{\"first_name\":\"Ada\",", "\"last_name\":\"Lovelace\"}"],
-      expected_snapshot: "{\"first_name\":\"Ada\",\"last_name\":\"Lovelace\"}"
+      expected_deltas: ["{\"first_name\":\"Ada\",", "\"last_name\":\"Lovelace\"}"]
     )
     assert_pattern do
       stream.get_final_response.output.last.parsed => LookupCalendar(
@@ -782,6 +795,26 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     assert_equal(expected_deltas.length, function_deltas.length, "Incorrect number of function delta events")
     assert_equal(expected_deltas, function_deltas.map(&:delta), "Incorrect delta values")
     assert_equal(expected_snapshot, function_deltas.last.snapshot, "Incorrect final snapshot")
+  end
+
+  def assert_incremental_text_delta_events(events, expected_deltas:)
+    text_deltas = events.select { |event| event.type == :"response.output_text.delta" }
+
+    assert_equal(expected_deltas, text_deltas.map(&:delta))
+    text_deltas.each do |event|
+      assert_instance_of(OpenAI::Models::Responses::ResponseTextDeltaEvent, event)
+      refute_respond_to(event, :snapshot)
+    end
+  end
+
+  def assert_incremental_function_delta_events(events, expected_deltas:)
+    function_deltas = events.select { |event| event.type == :"response.function_call_arguments.delta" }
+
+    assert_equal(expected_deltas, function_deltas.map(&:delta))
+    function_deltas.each do |event|
+      assert_instance_of(OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent, event)
+      refute_respond_to(event, :snapshot)
+    end
   end
 
   def basic_text_sse_response

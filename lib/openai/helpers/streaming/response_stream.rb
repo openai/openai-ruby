@@ -27,7 +27,7 @@ module OpenAI
           OpenAI::Internal::Util.chain_fused(@iterator) do |yielder|
             @iterator.each do |event|
               case event
-              when OpenAI::Streaming::ResponseTextDeltaEvent
+              when OpenAI::Models::Responses::ResponseTextDeltaEvent
                 yielder << event.delta
               end
             end
@@ -86,7 +86,6 @@ module OpenAI
           @completed_response = nil
           @text_format = text_format
           @resumed = !starting_after.nil?
-          @resumed_snapshots = {}
         end
 
         def handle_event(event)
@@ -101,28 +100,28 @@ module OpenAI
 
           case event
           when OpenAI::Models::Responses::ResponseTextDeltaEvent
-            snapshot = if @current_snapshot
+            if @current_snapshot
               output = @current_snapshot.output[event.output_index]
               assert_type(output, :message)
 
               content = output.content[event.content_index]
               assert_type(content, :output_text)
-              content.text
+              events_to_yield <<
+                OpenAI::Streaming::ResponseTextDeltaEvent.new(
+                  content_index: event.content_index,
+                  delta: event.delta,
+                  item_id: event.item_id,
+                  output_index: event.output_index,
+                  sequence_number: event.sequence_number,
+                  type: event.type,
+                  snapshot: content.text
+                )
             else
-              key = [:text, event.output_index, event.content_index]
-              (@resumed_snapshots[key] ||= +"").concat(event.delta).dup
+              # A server-directed resumed stream may begin after response.created.
+              # Without the omitted prefix, a snapshot would be incomplete and
+              # materializing every partial prefix would make streaming quadratic.
+              events_to_yield << event
             end
-
-            events_to_yield <<
-              OpenAI::Streaming::ResponseTextDeltaEvent.new(
-                content_index: event.content_index,
-                delta: event.delta,
-                item_id: event.item_id,
-                output_index: event.output_index,
-                sequence_number: event.sequence_number,
-                type: event.type,
-                snapshot: snapshot
-              )
 
           when OpenAI::Models::Responses::ResponseTextDoneEvent
             text = if @current_snapshot
@@ -150,24 +149,23 @@ module OpenAI
               )
 
           when OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent
-            snapshot = if @current_snapshot
+            if @current_snapshot
               output = @current_snapshot.output[event.output_index]
               assert_type(output, :function_call)
-              output.arguments
+              events_to_yield <<
+                OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent.new(
+                  delta: event.delta,
+                  item_id: event.item_id,
+                  output_index: event.output_index,
+                  sequence_number: event.sequence_number,
+                  type: event.type,
+                  snapshot: output.arguments
+                )
             else
-              key = [:function, event.output_index]
-              (@resumed_snapshots[key] ||= +"").concat(event.delta).dup
+              # See the text-delta branch above: a partial server resume has no
+              # complete argument prefix from which to build a truthful snapshot.
+              events_to_yield << event
             end
-
-            events_to_yield <<
-              OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent.new(
-                delta: event.delta,
-                item_id: event.item_id,
-                output_index: event.output_index,
-                sequence_number: event.sequence_number,
-                type: event.type,
-                snapshot: snapshot
-              )
 
           when OpenAI::Models::Responses::ResponseCompletedEvent
             events_to_yield <<
