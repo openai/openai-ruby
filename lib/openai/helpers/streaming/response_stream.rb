@@ -13,7 +13,8 @@ module OpenAI
           @last_response = raw_stream.last_response
           @iterator = iterator
           @state = ResponseStreamState.new(
-            text_format: text_format
+            text_format: text_format,
+            starting_after: starting_after
           )
         end
 
@@ -80,10 +81,12 @@ module OpenAI
       class ResponseStreamState
         attr_reader :completed_response
 
-        def initialize(text_format:)
+        def initialize(text_format:, starting_after: nil)
           @current_snapshot = nil
           @completed_response = nil
           @text_format = text_format
+          @resumed = !starting_after.nil?
+          @resumed_snapshots = {}
         end
 
         def handle_event(event)
@@ -98,11 +101,17 @@ module OpenAI
 
           case event
           when OpenAI::Models::Responses::ResponseTextDeltaEvent
-            output = @current_snapshot.output[event.output_index]
-            assert_type(output, :message)
+            snapshot = if @current_snapshot
+              output = @current_snapshot.output[event.output_index]
+              assert_type(output, :message)
 
-            content = output.content[event.content_index]
-            assert_type(content, :output_text)
+              content = output.content[event.content_index]
+              assert_type(content, :output_text)
+              content.text
+            else
+              key = [:text, event.output_index, event.content_index]
+              (@resumed_snapshots[key] ||= +"").concat(event.delta).dup
+            end
 
             events_to_yield <<
               OpenAI::Streaming::ResponseTextDeltaEvent.new(
@@ -112,17 +121,22 @@ module OpenAI
                 output_index: event.output_index,
                 sequence_number: event.sequence_number,
                 type: event.type,
-                snapshot: content.text
+                snapshot: snapshot
               )
 
           when OpenAI::Models::Responses::ResponseTextDoneEvent
-            output = @current_snapshot.output[event.output_index]
-            assert_type(output, :message)
+            text = if @current_snapshot
+              output = @current_snapshot.output[event.output_index]
+              assert_type(output, :message)
 
-            content = output.content[event.content_index]
-            assert_type(content, :output_text)
+              content = output.content[event.content_index]
+              assert_type(content, :output_text)
+              content.text
+            else
+              event.text
+            end
 
-            parsed = parse_structured_text(content.text)
+            parsed = parse_structured_text(text)
 
             events_to_yield <<
               OpenAI::Streaming::ResponseTextDoneEvent.new(
@@ -136,8 +150,14 @@ module OpenAI
               )
 
           when OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent
-            output = @current_snapshot.output[event.output_index]
-            assert_type(output, :function_call)
+            snapshot = if @current_snapshot
+              output = @current_snapshot.output[event.output_index]
+              assert_type(output, :function_call)
+              output.arguments
+            else
+              key = [:function, event.output_index]
+              (@resumed_snapshots[key] ||= +"").concat(event.delta).dup
+            end
 
             events_to_yield <<
               OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent.new(
@@ -146,7 +166,7 @@ module OpenAI
                 output_index: event.output_index,
                 sequence_number: event.sequence_number,
                 type: event.type,
-                snapshot: output.arguments
+                snapshot: snapshot
               )
 
           when OpenAI::Models::Responses::ResponseCompletedEvent
@@ -167,16 +187,25 @@ module OpenAI
 
         def accumulate_event(event:, current_snapshot:)
           if current_snapshot.nil?
-            unless event.is_a?(OpenAI::Models::Responses::ResponseCreatedEvent)
+            if event.is_a?(OpenAI::Models::Responses::ResponseCreatedEvent)
+              # Use the converter to create a new, isolated copy of the response object.
+              # This ensures proper type validation and prevents shared object references.
+              return OpenAI::Internal::Type::Converter.coerce(
+                OpenAI::Models::Responses::Response,
+                event.response
+              )
+            end
+
+            unless @resumed
               raise "Expected first event to be response.created"
             end
 
-            # Use the converter to create a new, isolated copy of the response object.
-            # This ensures proper type validation and prevents shared object references.
-            return OpenAI::Internal::Type::Converter.coerce(
-              OpenAI::Models::Responses::Response,
-              event.response
-            )
+            if event.is_a?(OpenAI::Models::Responses::ResponseCompletedEvent)
+              @completed_response = event.response
+              return event.response
+            end
+
+            return nil
           end
 
           case event
