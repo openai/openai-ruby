@@ -9,7 +9,8 @@ module OpenAI
           input_tokens_details: OpenAI::Beta::BetaResponseUsage::InputTokensDetails,
           output_tokens: Integer,
           output_tokens_details: OpenAI::Beta::BetaResponseUsage::OutputTokensDetails,
-          total_tokens: Integer
+          total_tokens: Integer,
+          compute_units: Integer?
         }
 
       class BetaResponseUsage < OpenAI::Internal::Type::BaseModel
@@ -23,12 +24,15 @@ module OpenAI
 
         attr_accessor total_tokens: Integer
 
+        attr_accessor compute_units: Integer?
+
         def initialize: (
           input_tokens: Integer,
           input_tokens_details: OpenAI::Beta::BetaResponseUsage::InputTokensDetails,
           output_tokens: Integer,
           output_tokens_details: OpenAI::Beta::BetaResponseUsage::OutputTokensDetails,
-          total_tokens: Integer
+          total_tokens: Integer,
+          ?compute_units: Integer?
         ) -> void
 
         def to_hash: -> {
@@ -36,7 +40,8 @@ module OpenAI
           input_tokens_details: OpenAI::Beta::BetaResponseUsage::InputTokensDetails,
           output_tokens: Integer,
           output_tokens_details: OpenAI::Beta::BetaResponseUsage::OutputTokensDetails,
-          total_tokens: Integer
+          total_tokens: Integer,
+          compute_units: Integer?
         }
 
         type input_tokens_details =

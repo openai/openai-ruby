@@ -27,13 +27,22 @@ module OpenAI
       #   @return [OpenAI::Models::CompletionUsage::CompletionTokensDetails, nil]
       optional :completion_tokens_details, -> { OpenAI::CompletionUsage::CompletionTokensDetails }
 
+      # @!attribute compute_units
+      #   Compute units for the request. Currently null when available.
+      #
+      #   @return [Integer, nil]
+      optional :compute_units, Integer, nil?: true
+
       # @!attribute prompt_tokens_details
       #   Breakdown of tokens used in the prompt.
       #
       #   @return [OpenAI::Models::CompletionUsage::PromptTokensDetails, nil]
       optional :prompt_tokens_details, -> { OpenAI::CompletionUsage::PromptTokensDetails }
 
-      # @!method initialize(completion_tokens:, prompt_tokens:, total_tokens:, completion_tokens_details: nil, prompt_tokens_details: nil)
+      # @!method initialize(completion_tokens:, prompt_tokens:, total_tokens:, completion_tokens_details: nil, compute_units: nil, prompt_tokens_details: nil)
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::CompletionUsage} for more details.
+      #
       #   Usage statistics for the completion request.
       #
       #   @param completion_tokens [Integer] Number of tokens in the generated completion.
@@ -43,6 +52,8 @@ module OpenAI
       #   @param total_tokens [Integer] Total number of tokens used in the request (prompt + completion).
       #
       #   @param completion_tokens_details [OpenAI::Models::CompletionUsage::CompletionTokensDetails] Breakdown of tokens used in a completion.
+      #
+      #   @param compute_units [Integer, nil] Compute units for the request. Currently null when available.
       #
       #   @param prompt_tokens_details [OpenAI::Models::CompletionUsage::PromptTokensDetails] Breakdown of tokens used in the prompt.
 
