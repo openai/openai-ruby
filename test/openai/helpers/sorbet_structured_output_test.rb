@@ -53,6 +53,10 @@ else
           const :participants, T::Array[TypedParticipant]
         end
 
+        class LookupModel < OpenAI::BaseModel
+          required :participant_id, Integer
+        end
+
         schema = OpenAI::StructuredOutput.from_sorbet(TypedEvent)
         client = OpenAI::Client.new(api_key: "test-key")
         response = client.responses.create(model: "gpt-4o-mini", input: "test", text: schema)
@@ -67,6 +71,12 @@ else
           response_format: schema
         )
         T.cast(completion.choices.fetch(0).message.parsed, TypedEvent)
+
+        retrieved = client.responses.retrieve(
+          "resp_123",
+          tools: [{type: :function, function: {name: "custom_lookup", parameters: LookupModel}}]
+        )
+        T.assert_type!(retrieved, OpenAI::Responses::Response)
       RUBY
 
       Tempfile.create(["sorbet-structured-output", ".rb"]) do |file|
@@ -772,6 +782,40 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
 
       assert_instance_of(CalendarEvent, parsed)
       assert_equal("Ada", parsed.participants.first.display_name)
+    end
+
+    def test_responses_retrieve_hydrates_sorbet_text_models
+      stub_request(:get, "http://localhost/responses/resp_sorbet_retrieve").to_return_json(
+        status: 200,
+        body: {
+          id: "resp_sorbet_retrieve",
+          status: "completed",
+          output: [
+            {
+              id: "msg_sorbet_retrieve",
+              content: [{annotations: [], text: event_payload.to_json, type: "output_text"}],
+              role: "assistant",
+              status: "completed",
+              type: "message"
+            }
+          ]
+        }
+      )
+
+      response = @client.responses.retrieve("resp_sorbet_retrieve", text: @adapter)
+      parsed = response.output.first.content.first.parsed
+
+      assert_instance_of(CalendarEvent, parsed)
+      assert_equal("Ada", parsed.participants.first.display_name)
+    end
+
+    def test_responses_retrieve_rejects_unsupported_sorbet_function_tools_before_sending_a_request
+      error = assert_raises(ArgumentError) do
+        @client.responses.retrieve("resp_secret", tools: [@adapter])
+      end
+
+      assert_includes(error.message, "function tools are not supported")
+      assert_not_requested(:get, "http://localhost/responses/resp_secret")
     end
 
     def test_ordinary_sdk_loading_does_not_load_sorbet_runtime

@@ -318,10 +318,53 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     assert_equal([AliasedLookup], tools)
   end
 
-  def test_background_retrieve_accepts_a_model_before_output_is_complete
+  def test_background_retrieve_parses_explicitly_named_tool_models_locally
+    stub_request(:get, "http://localhost/responses/resp_named_tool").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_named_tool",
+        status: "completed",
+        output: [
+          {
+            arguments: "{\"profileId\":7}",
+            call_id: "call_named_tool",
+            name: "custom_lookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    tools = [{type: :function, function: {name: "custom_lookup", parameters: AliasedLookup}}]
+    response = @client.responses.retrieve("resp_named_tool", tools: tools)
+
+    assert_requested(:get, "http://localhost/responses/resp_named_tool") do |request|
+      assert_nil(request.uri.query)
+    end
+
+    parsed = response.output.fetch(0).parsed
+
+    assert_instance_of(AliasedLookup, parsed)
+    assert_equal(7, parsed.profile_id)
+    assert_equal(AliasedLookup, tools.dig(0, :function, :parameters))
+  end
+
+  def test_background_retrieve_defers_partial_text_parsing_while_in_progress
     stub_request(:get, "http://localhost/responses/resp_pending").to_return_json(
       status: 200,
-      body: {id: "resp_pending", status: "in_progress", output: []}
+      body: {
+        id: "resp_pending",
+        status: "in_progress",
+        output: [
+          {
+            id: "msg_pending",
+            content: [{annotations: [], text: "{\"displayName\":", type: "output_text"}],
+            role: "assistant",
+            status: "in_progress",
+            type: "message"
+          }
+        ]
+      }
     )
 
     response = @client.responses.retrieve("resp_pending", text: AliasedProfile)
@@ -330,7 +373,50 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
       assert_nil(request.uri.query)
     end
 
-    assert_empty(response.output)
+    content = response.output.fetch(0).content.fetch(0)
+
+    assert_equal("{\"displayName\":", content.text)
+    assert_nil(content.parsed)
+  end
+
+  def test_background_retrieve_defers_partial_tool_parsing_while_queued
+    stub_request(:get, "http://localhost/responses/resp_queued").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_queued",
+        status: "queued",
+        output: [
+          {
+            arguments: "{\"profileId\":",
+            call_id: "call_queued",
+            name: "AliasedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_queued", tools: [AliasedLookup])
+    tool_call = response.output.fetch(0)
+
+    assert_equal("{\"profileId\":", tool_call.arguments)
+    assert_nil(tool_call.parsed)
+  end
+
+  def test_background_retrieve_defers_unfinished_tool_items_with_a_text_hint
+    stub_request(:get, "http://localhost/responses/resp_unfinished_tool").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_unfinished_tool",
+        status: "in_progress",
+        output: [{type: "function_call"}]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_unfinished_tool", text: AliasedProfile)
+
+    assert_equal(1, response.output.length)
+    assert_equal(:function_call, response.output.fetch(0).type)
   end
 
   def test_background_retrieve_keeps_string_keyed_parsing_hints_local

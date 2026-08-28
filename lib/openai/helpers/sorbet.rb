@@ -259,6 +259,11 @@ module OpenAI
           super
         end
 
+        def retrieve(response_id, params = {})
+          reject_sorbet_function_tools!(params)
+          super
+        end
+
         def stream(params)
           reject_sorbet_streaming_formats!(params)
           super

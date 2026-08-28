@@ -878,7 +878,14 @@ module OpenAI
               OpenAI::StructuredOutput::JsonSchemaConverter::Input
             )
           ),
-          tools: T.nilable(T::Array[OpenAI::StructuredOutput::JsonSchemaConverter::Input]),
+          tools: T.nilable(
+            T::Array[
+              T.any(
+                OpenAI::Responses::FunctionTool::OrHash,
+                OpenAI::StructuredOutput::JsonSchemaConverter::Input
+              )
+            ]
+          ),
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
         )
