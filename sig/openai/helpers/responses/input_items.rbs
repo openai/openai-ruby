@@ -1,0 +1,20 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_history_item =
+        OpenAI::Models::Responses::response_input_item
+        | OpenAI::Models::Responses::response_output_item
+        | OpenAI::Models::Responses::response_item
+        | ::Hash[String | Symbol, untyped]
+
+      def self.to_input_items: (
+        ::Enumerable[OpenAI::Models::Responses::response_history_item]
+        | OpenAI::Models::Responses::ResponseItemList items
+      ) -> ::Array[OpenAI::Models::Responses::response_input_item]
+
+      def self.to_input_item: (
+        OpenAI::Models::Responses::response_history_item item
+      ) -> OpenAI::Models::Responses::response_input_item?
+    end
+  end
+end
