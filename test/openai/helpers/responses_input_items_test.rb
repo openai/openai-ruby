@@ -433,6 +433,22 @@ class OpenAI::Test::ResponsesInputItemsTest < Minitest::Test
     end
   end
 
+  def test_redacts_unsupported_hash_keys_from_errors
+    secret = "sk-do-not-echo"
+    key = Object.new
+    metadata = Object.new
+    key.define_singleton_method(:inspect) { secret }
+    metadata.define_singleton_method(:name) { secret }
+    key.define_singleton_method(:class) { metadata }
+
+    error = assert_raises(TypeError) {
+      OpenAI::Responses.to_input_item(:role => "user", :content => "Continue", key => "bad")
+    }
+
+    assert_equal("Unsupported response item hash key type", error.message)
+    refute_includes(error.message, secret)
+  end
+
   def test_preserves_type_less_item_references
     model = OpenAI::Responses::ResponseInputItem::ItemReference.new(id: "item_123")
 
@@ -451,7 +467,6 @@ class OpenAI::Test::ResponsesInputItemsTest < Minitest::Test
   def test_rejects_invalid_type_less_message_hashes
     invalid_items = [
       {role: "bogus", content: "Continue"},
-      {role: "user", content: []},
       {role: "user", content: [{type: "input_text"}]},
       {role: "user", content: [{type: "input_image"}]},
       {
@@ -470,6 +485,19 @@ class OpenAI::Test::ResponsesInputItemsTest < Minitest::Test
 
       assert_equal("Unsupported response item without a type", error.message)
     end
+  end
+
+  def test_preserves_empty_input_messages
+    type_less = {role: "user", content: []}
+    typed = {type: :message, role: :user, content: []}
+
+    normalized_type_less = OpenAI::Responses.to_input_item(type_less)
+    normalized_typed = OpenAI::Responses.to_input_item(typed)
+
+    assert_instance_of(OpenAI::Responses::EasyInputMessage, normalized_type_less)
+    assert_instance_of(OpenAI::Responses::EasyInputMessage, normalized_typed)
+    assert_empty(normalized_type_less.content)
+    assert_empty(normalized_typed.content)
   end
 
   def test_preserves_persisted_assistant_output_phase_and_extensions

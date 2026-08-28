@@ -175,7 +175,7 @@ module OpenAI
           in Hash
             value.each_with_object({}) do |(key, nested), normalized|
               unless key.is_a?(String) || key.is_a?(Symbol)
-                raise TypeError.new("Unsupported response item hash key: #{key.inspect}")
+                raise TypeError.new("Unsupported response item hash key type")
               end
 
               normalized_key = key.is_a?(String) ? key.to_sym : key
@@ -208,7 +208,7 @@ module OpenAI
               return OpenAI::Responses::ResponseOutputMessage
             end
 
-            content_family = message_content_family(value[:content])
+            content_family = value[:content] == [] ? :input : message_content_family(value[:content])
             raise TypeError.new("Unsupported response message content") unless content_family
             unless valid_message_content?(value.fetch(:content), content_family)
               raise TypeError.new("Unsupported response message content")
@@ -314,7 +314,8 @@ module OpenAI
 
         def easy_input_content?(content)
           return true if content.is_a?(String)
-          return false unless content.is_a?(Array) && !content.empty?
+          return false unless content.is_a?(Array)
+          return true if content.empty?
 
           message_content_family(content) == :input && valid_message_content?(content, :input)
         end
