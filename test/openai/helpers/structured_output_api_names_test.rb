@@ -432,6 +432,45 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     assert_nil(tool_call.parsed)
   end
 
+  def test_background_retrieve_defers_partial_outputs_when_incomplete
+    stub_request(:get, "http://localhost/responses/resp_incomplete").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_incomplete",
+        status: "incomplete",
+        output: [
+          {
+            id: "msg_incomplete",
+            content: [{annotations: [], text: "{\"displayName\":", type: "output_text"}],
+            role: "assistant",
+            status: "incomplete",
+            type: "message"
+          },
+          {
+            arguments: "{\"profileId\":",
+            call_id: "call_incomplete",
+            name: "AliasedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve(
+      "resp_incomplete",
+      text: AliasedProfile,
+      tools: [AliasedLookup]
+    )
+
+    content = response.output.fetch(0).content.fetch(0)
+    tool_call = response.output.fetch(1)
+
+    assert_equal("{\"displayName\":", content.text)
+    assert_nil(content.parsed)
+    assert_equal("{\"profileId\":", tool_call.arguments)
+    assert_nil(tool_call.parsed)
+  end
+
   def test_background_retrieve_defers_unfinished_tool_items_with_a_text_hint
     stub_request(:get, "http://localhost/responses/resp_unfinished_tool").to_return_json(
       status: 200,
@@ -471,16 +510,19 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
           {
             arguments: "{\"profileId\":7}",
             call_id: "call_string_hints",
-            name: "AliasedLookup",
+            name: "custom_lookup",
             type: "function_call"
           }
         ]
       }
     )
 
+    tools = [
+      {"type" => "function", "function" => {"name" => "custom_lookup", "parameters" => AliasedLookup}}
+    ]
     response = @client.responses.retrieve(
       "resp_string_hints",
-      {"text" => AliasedProfile, "tools" => [AliasedLookup]}
+      {"text" => AliasedProfile, "tools" => tools}
     )
 
     assert_requested(:get, "http://localhost/responses/resp_string_hints") do |request|
@@ -489,6 +531,7 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
 
     assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
     assert_instance_of(AliasedLookup, response.output.fetch(1).parsed)
+    assert_equal(AliasedLookup, tools.dig(0, "function", "parameters"))
   end
 
   def test_background_retrieve_accepts_response_retrieve_params

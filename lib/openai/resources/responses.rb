@@ -392,7 +392,7 @@ module OpenAI
 
         unwrap = if model || !tool_models.empty?
           -> (raw) do
-            next raw if ["in_progress", "queued"].include?(raw[:status])
+            next raw unless [nil, "completed"].include?(raw[:status])
 
             parse_structured_outputs!(raw, model, tool_models)
           end
@@ -581,7 +581,10 @@ module OpenAI
         when Array
           value.map { |item| duplicate_structured_output_params(item) }
         when Hash
-          value.to_h { |key, item| [key, duplicate_structured_output_params(item)] }
+          value.to_h do |key, item|
+            normalized_key = key.is_a?(String) ? key.to_sym : key
+            [normalized_key, duplicate_structured_output_params(item)]
+          end
         else
           value
         end
