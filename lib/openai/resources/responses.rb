@@ -392,7 +392,7 @@ module OpenAI
 
         unwrap = if model || !tool_models.empty?
           -> (raw) do
-            next raw unless [nil, "completed"].include?(raw[:status])
+            next raw unless structured_output_response_complete?(raw)
 
             parse_structured_outputs!(raw, model, tool_models)
           end
@@ -576,6 +576,14 @@ module OpenAI
         OpenAI::Helpers::StructuredOutput::ResponseParser.get_models(parsed)
       end
 
+      def structured_output_response_complete?(raw)
+        return raw[:status] == "completed" unless raw[:status].nil?
+
+        raw[:output].to_a.none? do |output|
+          ["queued", "in_progress", "incomplete"].include?(output[:status])
+        end
+      end
+
       def duplicate_structured_output_params(value)
         case value
         when Array
@@ -583,8 +591,11 @@ module OpenAI
         when Hash
           value.to_h do |key, item|
             normalized_key = key.is_a?(String) ? key.to_sym : key
+            normalized_key = :format if normalized_key == :format_
             normalized_item = duplicate_structured_output_params(item)
-            normalized_item = :function if normalized_key == :type && normalized_item == "function"
+            if normalized_key == :type && ["function", "json_schema"].include?(normalized_item)
+              normalized_item = normalized_item.to_sym
+            end
             [normalized_key, normalized_item]
           end
         else

@@ -347,6 +347,37 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
   end
 
+  def test_background_retrieve_defers_item_status_without_top_level_status
+    stub_request(:get, "http://localhost/responses/resp_item_pending").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_item_pending",
+        output: [
+          {
+            id: "msg_item_pending",
+            content: [{annotations: [], text: "{\"displayName\":", type: "output_text"}],
+            role: "assistant",
+            status: "in_progress",
+            type: "message"
+          },
+          {type: "function_call"}
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve(
+      "resp_item_pending",
+      text: AliasedProfile,
+      tools: [AliasedLookup]
+    )
+
+    assert_nil(response.status)
+    content = response.output.fetch(0).content.fetch(0)
+    assert_equal("{\"displayName\":", content.text)
+    assert_nil(content.parsed)
+    assert_equal(:function_call, response.output.fetch(1).type)
+  end
+
   def test_background_retrieve_parses_explicitly_named_tool_models_locally
     stub_request(:get, "http://localhost/responses/resp_named_tool").to_return_json(
       status: 200,
@@ -565,6 +596,85 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     assert_equal(AliasedLookup, tools.dig(0, "parameters"))
   end
 
+  def test_background_retrieve_parses_format_underscore_hash_hints
+    hints = [{format_: AliasedProfile}, {"format_" => AliasedProfile}]
+
+    hints.each_with_index do |text, index|
+      response_id = "resp_format_underscore_#{index}"
+      stub_request(:get, "http://localhost/responses/#{response_id}").to_return_json(
+        status: 200,
+        body: {
+          id: response_id,
+          status: "completed",
+          output: [
+            {
+              id: "msg_format_underscore_#{index}",
+              content: [
+                {
+                  annotations: [],
+                  text: "{\"displayName\":\"Ada\",\"middleName\":null}",
+                  type: "output_text"
+                }
+              ],
+              role: "assistant",
+              status: "completed",
+              type: "message"
+            }
+          ]
+        }
+      )
+
+      response = @client.responses.retrieve(response_id, text: text)
+
+      assert_requested(:get, "http://localhost/responses/#{response_id}") do |request|
+        assert_nil(request.uri.query)
+      end
+      assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
+      assert_equal(AliasedProfile, text.values.fetch(0))
+    end
+  end
+
+  def test_background_retrieve_parses_string_keyed_json_schema_hint
+    stub_request(:get, "http://localhost/responses/resp_json_schema_hint").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_json_schema_hint",
+        status: "completed",
+        output: [
+          {
+            id: "msg_json_schema_hint",
+            content: [
+              {
+                annotations: [],
+                text: "{\"displayName\":\"Ada\",\"middleName\":null}",
+                type: "output_text"
+              }
+            ],
+            role: "assistant",
+            status: "completed",
+            type: "message"
+          }
+        ]
+      }
+    )
+
+    text = {
+      "format" => {
+        "type" => "json_schema",
+        "name" => "result",
+        "schema" => AliasedProfile
+      }
+    }
+    response = @client.responses.retrieve("resp_json_schema_hint", text: text)
+
+    assert_requested(:get, "http://localhost/responses/resp_json_schema_hint") do |request|
+      assert_nil(request.uri.query)
+    end
+    assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
+    assert_equal("json_schema", text.dig("format", "type"))
+    assert_equal(AliasedProfile, text.dig("format", "schema"))
+  end
+
   def test_background_retrieve_accepts_response_retrieve_params
     stub_request(:get, "http://localhost/responses/resp_params").to_return_json(
       status: 200,
@@ -631,6 +741,13 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     response = @client.responses.retrieve("resp_partial_tool")
 
     assert_equal(1, response.output.length)
+  end
+
+  def test_readme_states_retrieval_parsing_waits_for_completion
+    readme = File.read(File.expand_path("../../../README.md", __dir__))
+
+    assert_match(/parsed only after\s+a later retrieval reports it completed/, readme)
+    refute_includes(readme, "parsed once output is present")
   end
 
   def test_public_structured_output_endpoints_materialize_nested_models

@@ -714,7 +714,8 @@ response
 For a stored or background response, pass the same structured-output model again
 when retrieving it. The model is used locally to populate `content.parsed`; it is
 not sent as a retrieval query parameter. A response that is still queued or in
-progress can be retrieved the same way and will be parsed once output is present.
+progress can be retrieved the same way, but structured output is parsed only after
+a later retrieval reports it completed.
 
 ```ruby
 pending = client.responses.create(
