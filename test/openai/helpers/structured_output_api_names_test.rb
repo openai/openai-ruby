@@ -318,6 +318,35 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     assert_equal([AliasedLookup], tools)
   end
 
+  def test_background_retrieve_parses_completed_text_when_response_status_is_omitted
+    stub_request(:get, "http://localhost/responses/resp_without_status").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_without_status",
+        output: [
+          {
+            id: "msg_without_status",
+            content: [
+              {
+                annotations: [],
+                text: "{\"displayName\":\"Ada\",\"middleName\":null}",
+                type: "output_text"
+              }
+            ],
+            role: "assistant",
+            status: "completed",
+            type: "message"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_without_status", text: AliasedProfile)
+
+    assert_nil(response.status)
+    assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
+  end
+
   def test_background_retrieve_parses_explicitly_named_tool_models_locally
     stub_request(:get, "http://localhost/responses/resp_named_tool").to_return_json(
       status: 200,

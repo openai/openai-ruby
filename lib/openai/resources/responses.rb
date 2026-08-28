@@ -392,7 +392,7 @@ module OpenAI
 
         unwrap = if model || !tool_models.empty?
           -> (raw) do
-            next raw unless raw[:status] == "completed"
+            next raw if ["in_progress", "queued"].include?(raw[:status])
 
             parse_structured_outputs!(raw, model, tool_models)
           end
