@@ -10,17 +10,19 @@ module OpenAI
         # Existing valid input models are reused when no normalization is necessary.
         #
         # @api public
-        # @param items [Enumerable<OpenAI::Models::Responses::ResponseInputItem, OpenAI::Models::Responses::ResponseOutputItem, OpenAI::Models::Responses::ResponseItem, Hash>, OpenAI::Models::Responses::ResponseItemList]
+        # @param items [Enumerable<OpenAI::Models::Responses::ResponseInputItem, OpenAI::Models::Responses::ResponseOutputItem, OpenAI::Models::Responses::ResponseItem, Hash>, OpenAI::Models::Responses::ResponseItemList, OpenAI::Internal::CursorPage<OpenAI::Models::Responses::ResponseItem>]
         # @return [Array<OpenAI::Models::Responses::ResponseInputItem>]
         def to_input_items(items)
-          collection = if items.is_a?(OpenAI::Responses::ResponseItemList)
+          collection = if OpenAI::Responses::ResponseItemList === items
             items.data
+          elsif OpenAI::Internal::CursorPage === items
+            items.to_enum
           else
             items
           end
 
-          unless collection.is_a?(Enumerable)
-            raise TypeError.new("Response items must be enumerable or a response item list, got #{items.class}")
+          unless Enumerable === collection
+            raise TypeError.new("Response items must be enumerable or a response item list")
           end
 
           collection.filter_map { |item| to_input_item(item) }
@@ -38,14 +40,14 @@ module OpenAI
           serialized = case item
           in OpenAI::Internal::Type::BaseModel
             unless supported_response_history_model?(item)
-              raise TypeError.new("Response item must be a Responses model or hash, got #{item.class}")
+              raise TypeError.new("Response item must be a Responses model or hash")
             end
 
             OpenAI::Internal::Type::Converter.dump(item.class, item)
           in Hash
             item
           else
-            raise TypeError.new("Response item must be a model or hash, got #{item.class}")
+            raise TypeError.new("Response item must be a model or hash")
           end
 
           value = normalize_response_history_value(serialized)
@@ -180,13 +182,22 @@ module OpenAI
           case value
           in Hash
             value.each_with_object({}) do |(key, nested), normalized|
-              unless key.is_a?(String) || key.is_a?(Symbol)
+              unless String === key || Symbol === key
                 raise TypeError.new("Unsupported response item hash key type")
               end
 
-              normalized_key = key.is_a?(String) ? key.to_sym : key
+              normalized_key = if String === key
+                unless String.instance_method(:valid_encoding?).bind_call(key)
+                  raise TypeError.new("Unsupported response item hash key type")
+                end
+
+                String.instance_method(:to_sym).bind_call(key)
+              else
+                key
+              end
+
               if normalized.key?(normalized_key)
-                raise TypeError.new("Conflicting response item hash keys: #{normalized_key}")
+                raise TypeError.new("Conflicting response item hash keys")
               end
 
               normalized.store(normalized_key, normalize_response_history_value(nested))

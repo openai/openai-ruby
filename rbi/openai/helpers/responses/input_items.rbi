@@ -14,7 +14,8 @@ module OpenAI
                 T::Hash[T.any(String, Symbol), T.anything]
               )
             ],
-            OpenAI::Responses::ResponseItemList
+            OpenAI::Responses::ResponseItemList,
+            OpenAI::Internal::CursorPage[OpenAI::Responses::ResponseItem::Variants]
           )
         )
           .returns(T::Array[OpenAI::Responses::ResponseInputItem::Variants])

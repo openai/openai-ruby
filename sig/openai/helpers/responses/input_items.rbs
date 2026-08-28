@@ -9,7 +9,8 @@ module OpenAI
 
       def self.to_input_items: (
         ::Enumerable[OpenAI::Models::Responses::response_history_item]
-        | OpenAI::Models::Responses::ResponseItemList items
+        | OpenAI::Models::Responses::ResponseItemList
+        | OpenAI::Internal::CursorPage[OpenAI::Models::Responses::response_item] items
       ) -> ::Array[OpenAI::Models::Responses::response_input_item]
 
       def self.to_input_item: (

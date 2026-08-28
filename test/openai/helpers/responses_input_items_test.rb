@@ -401,11 +401,26 @@ class OpenAI::Test::ResponsesInputItemsTest < Minitest::Test
     [nil, "bad", 7].each do |items|
       error = assert_raises(TypeError) { OpenAI::Responses.to_input_items(items) }
 
-      assert_equal(
-        "Response items must be enumerable or a response item list, got #{items.class}",
-        error.message
-      )
+      assert_equal("Response items must be enumerable or a response item list", error.message)
     end
+  end
+
+  def test_redacts_hostile_scalar_and_collection_types_from_errors
+    secret = "sk-do-not-echo"
+    metadata = Object.new
+    metadata.define_singleton_method(:name) { secret }
+    scalar = Object.new
+    collection = Object.new
+    scalar.define_singleton_method(:class) { metadata }
+    collection.define_singleton_method(:class) { metadata }
+
+    scalar_error = assert_raises(TypeError) { OpenAI::Responses.to_input_item(scalar) }
+    collection_error = assert_raises(TypeError) { OpenAI::Responses.to_input_items(collection) }
+
+    assert_equal("Response item must be a model or hash", scalar_error.message)
+    assert_equal("Response items must be enumerable or a response item list", collection_error.message)
+    refute_includes(scalar_error.message, secret)
+    refute_includes(collection_error.message, secret)
   end
 
   def test_rejects_unrelated_sdk_models
@@ -413,10 +428,7 @@ class OpenAI::Test::ResponsesInputItemsTest < Minitest::Test
 
     error = assert_raises(TypeError) { OpenAI::Responses.to_input_item(item) }
 
-    assert_equal(
-      "Response item must be a Responses model or hash, got OpenAI::Models::Chat::ChatCompletionUserMessageParam",
-      error.message
-    )
+    assert_equal("Response item must be a Responses model or hash", error.message)
   end
 
   def test_rejects_ambiguous_type_less_references_and_key_collisions
@@ -447,6 +459,33 @@ class OpenAI::Test::ResponsesInputItemsTest < Minitest::Test
 
     assert_equal("Unsupported response item hash key type", error.message)
     refute_includes(error.message, secret)
+  end
+
+  def test_redacts_recursive_conflicting_hash_keys_from_errors
+    secret = "sk-do-not-echo"
+    item = {
+      role: "user",
+      content: "Continue",
+      metadata: [{secret => "string", secret.to_sym => "symbol"}]
+    }
+
+    error = assert_raises(TypeError) { OpenAI::Responses.to_input_item(item) }
+
+    assert_equal("Conflicting response item hash keys", error.message)
+    refute_includes(error.message, secret)
+
+    key = Class.new(String).new(secret)
+    key.define_singleton_method(:to_sym) { raise secret }
+    hostile_item = {
+      role: "user",
+      content: "Continue",
+      metadata: [{key => "string", secret.to_sym => "symbol"}]
+    }
+
+    hostile_error = assert_raises(TypeError) { OpenAI::Responses.to_input_item(hostile_item) }
+
+    assert_equal("Conflicting response item hash keys", hostile_error.message)
+    refute_includes(hostile_error.message, secret)
   end
 
   def test_preserves_type_less_item_references
@@ -778,6 +817,34 @@ class OpenAI::Test::ResponsesInputItemsTest < Minitest::Test
     assert_equal("msg_123", normalized[:id])
     assert_equal(:completed, normalized[:status])
     assert_equal([normalized], normalized_list)
+  end
+
+  def test_normalizes_resource_cursor_pages
+    stub_request(:get, "http://localhost/responses/response_123/input_items").to_return_json(
+      status: 200,
+      body: {
+        data: [
+          {
+            type: "message",
+            id: "msg_123",
+            role: "user",
+            content: [{type: "input_text", text: "Continue"}],
+            status: "completed"
+          }
+        ],
+        first_id: "msg_123",
+        last_id: "msg_123",
+        has_more: false
+      }
+    )
+    page = @client.responses.input_items.list("response_123")
+
+    normalized = OpenAI::Responses.to_input_items(page)
+
+    assert_instance_of(OpenAI::Internal::CursorPage, page)
+    assert_equal(1, normalized.length)
+    assert_instance_of(OpenAI::Responses::EasyInputMessage, normalized.fetch(0))
+    assert_equal("msg_123", normalized.fetch(0)[:id])
   end
 
   def test_rejects_malformed_supported_item_shapes
