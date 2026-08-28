@@ -724,7 +724,29 @@ class OpenAI::Test::ResponsesInputItemsTest < Minitest::Test
       OpenAI::Responses.to_input_item(type: "future_response_item", value: "unknown")
     end
 
-    assert_equal("Unsupported response item type: future_response_item", error.message)
+    assert_equal("Unsupported response item type", error.message)
+  end
+
+  def test_redacts_unsupported_item_types_from_errors
+    secret = "sk-do-not-echo"
+
+    error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(type: secret, value: "unknown")
+    end
+
+    assert_equal("Unsupported response item type", error.message)
+    refute_includes(error.message, secret)
+  end
+
+  def test_redacts_invalid_encoding_unsupported_item_types_from_errors
+    secret = [0xFF].pack("C").force_encoding(Encoding::UTF_8) + "sk-do-not-echo"
+
+    error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(type: secret, value: "unknown")
+    end
+
+    assert_equal("Unsupported response item type", error.message)
+    refute_includes(error.message, "sk-do-not-echo")
   end
 
   def test_rejects_false_item_type
@@ -732,7 +754,7 @@ class OpenAI::Test::ResponsesInputItemsTest < Minitest::Test
       OpenAI::Responses.to_input_item(type: false, role: "user", content: "Continue")
     end
 
-    assert_equal("Unsupported response item type: false", error.message)
+    assert_equal("Unsupported response item type", error.message)
   end
 
   def test_normalizes_input_items_list_models

@@ -50,7 +50,13 @@ module OpenAI
 
           value = normalize_response_history_value(serialized)
           type = value[:type]
-          type = type.to_sym if type.is_a?(String)
+          if String === type
+            unless String.instance_method(:valid_encoding?).bind_call(type)
+              raise TypeError.new("Unsupported response item type")
+            end
+
+            type = String.instance_method(:to_sym).bind_call(type)
+          end
 
           typed_item_reference = item.is_a?(OpenAI::Responses::ResponseInputItem::ItemReference)
           if type.nil? && !easy_input_message?(value) && !item_reference?(value) && !typed_item_reference
@@ -58,7 +64,7 @@ module OpenAI
           end
 
           if !type.nil? && !supported_response_input_type?(type)
-            raise TypeError.new("Unsupported response item type: #{type}")
+            raise TypeError.new("Unsupported response item type")
           end
 
           unless valid_replay_links?(value, type)
