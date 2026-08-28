@@ -4,7 +4,7 @@ module OpenAI
   module Helpers
     module Streaming
       class ResponseTextDeltaEvent < OpenAI::Models::Responses::ResponseTextDeltaEvent
-        sig { returns(String) }
+        sig { returns(T.nilable(String)) }
         def snapshot
         end
       end
@@ -16,7 +16,7 @@ module OpenAI
       end
 
       class ResponseFunctionCallArgumentsDeltaEvent < OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent
-        sig { returns(String) }
+        sig { returns(T.nilable(String)) }
         def snapshot
         end
       end

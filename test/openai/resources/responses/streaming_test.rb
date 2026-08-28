@@ -415,6 +415,21 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     end
   end
 
+  def test_resume_stream_with_string_keyed_starting_after
+    stub_request(:get, "http://localhost/responses/msg_456?starting_after=7&stream=true")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: resume_stream_with_starting_after_sse_response
+      )
+
+    stream = @client.responses.stream("response_id" => "msg_456", "starting_after" => 7)
+
+    assert(stream.to_a.all? { |event| event.sequence_number > 7 })
+  ensure
+    stream&.close
+  end
+
   def test_resume_stream_with_response_id_and_starting_after
     # Stub the GET request to retrieve the response.
     stub_request(:get, "http://localhost/responses/msg_456?starting_after=7&stream=true")
@@ -489,6 +504,9 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       events,
       expected_deltas: ["How can I help you ", "today?"]
     )
+    text_delta = events.find { |event| event.sequence_number == 6 }
+    assert_equal(["How"], text_delta.logprobs.map(&:token))
+    assert_equal("msg_001", text_delta[:response_id])
     assert_equal("Hello there! How can I help you today?", stream.get_output_text)
   ensure
     stream&.close
@@ -576,6 +594,8 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       events,
       expected_deltas: ["{\"first_name\":\"Ada\",", "\"last_name\":\"Lovelace\"}"]
     )
+    function_delta = events.find { |event| event.sequence_number == 10 }
+    assert_equal("resp_stream_001", function_delta[:response_id])
     assert_pattern do
       stream.get_final_response.output.last.parsed => LookupCalendar(
           first_name: "Ada",
@@ -798,22 +818,24 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
   end
 
   def assert_incremental_text_delta_events(events, expected_deltas:)
-    text_deltas = events.select { |event| event.type == :"response.output_text.delta" }
+    text_deltas = events.select do |event|
+      event.is_a?(OpenAI::Streaming::ResponseTextDeltaEvent)
+    end
 
     assert_equal(expected_deltas, text_deltas.map(&:delta))
     text_deltas.each do |event|
-      assert_instance_of(OpenAI::Models::Responses::ResponseTextDeltaEvent, event)
-      refute_respond_to(event, :snapshot)
+      assert_nil(event.snapshot)
     end
   end
 
   def assert_incremental_function_delta_events(events, expected_deltas:)
-    function_deltas = events.select { |event| event.type == :"response.function_call_arguments.delta" }
+    function_deltas = events.select do |event|
+      event.is_a?(OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent)
+    end
 
     assert_equal(expected_deltas, function_deltas.map(&:delta))
     function_deltas.each do |event|
-      assert_instance_of(OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent, event)
-      refute_respond_to(event, :snapshot)
+      assert_nil(event.snapshot)
     end
   end
 
@@ -835,7 +857,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       data: {"type":"response.output_text.delta","sequence_number":5,"response_id":"msg_001","item_id":"item_001","output_index":0,"content_index":0,"delta":"Hello there! "}
 
       event: response.output_text.delta
-      data: {"type":"response.output_text.delta","sequence_number":6,"response_id":"msg_001","item_id":"item_001","output_index":0,"content_index":0,"delta":"How can I help you "}
+      data: {"type":"response.output_text.delta","sequence_number":6,"response_id":"msg_001","item_id":"item_001","output_index":0,"content_index":0,"delta":"How can I help you ","logprobs":[{"token":"How","logprob":-0.5,"top_logprobs":[]}]}
 
       event: response.output_text.delta
       data: {"type":"response.output_text.delta","sequence_number":7,"response_id":"msg_001","item_id":"item_001","output_index":0,"content_index":0,"delta":"today?"}
@@ -1136,7 +1158,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       data: {"type":"response.output_item.added","sequence_number":9,"response_id":"resp_stream_001","output_index":1,"item":{"id":"call_001","object":"realtime.item","type":"function_call","status":"in_progress","name":"LookupCalendar","arguments":"","call_id":"call_001"}}
 
       event: response.function_call_arguments.delta
-      data: {"type":"response.function_call_arguments.delta","sequence_number":10,"item_id":"call_001","output_index":1,"delta":"{\\"first_name\\":\\"Ada\\","}
+      data: {"type":"response.function_call_arguments.delta","sequence_number":10,"response_id":"resp_stream_001","item_id":"call_001","output_index":1,"delta":"{\\"first_name\\":\\"Ada\\","}
 
       event: response.function_call_arguments.delta
       data: {"type":"response.function_call_arguments.delta","sequence_number":11,"item_id":"call_001","output_index":1,"delta":"\\"last_name\\":\\"Lovelace\\"}"}

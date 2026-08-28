@@ -120,7 +120,8 @@ module OpenAI
               # A server-directed resumed stream may begin after response.created.
               # Without the omitted prefix, a snapshot would be incomplete and
               # materializing every partial prefix would make streaming quadratic.
-              events_to_yield << event
+              events_to_yield <<
+                OpenAI::Streaming::ResponseTextDeltaEvent.new(event.to_h.merge(snapshot: nil))
             end
 
           when OpenAI::Models::Responses::ResponseTextDoneEvent
@@ -164,7 +165,10 @@ module OpenAI
             else
               # See the text-delta branch above: a partial server resume has no
               # complete argument prefix from which to build a truthful snapshot.
-              events_to_yield << event
+              events_to_yield <<
+                OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent.new(
+                  event.to_h.merge(snapshot: nil)
+                )
             end
 
           when OpenAI::Models::Responses::ResponseCompletedEvent
