@@ -53,16 +53,18 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
   end
 
   class SlowSubjectTokenProvider
-    attr_reader :calls
+    attr_reader :calls, :completed_calls
 
     def initialize(delay:)
       @delay = delay
       @calls = 0
+      @completed_calls = 0
     end
 
     def get_token
       @calls += 1
       sleep(@delay)
+      @completed_calls += 1
       "subject-token"
     end
 
@@ -232,6 +234,34 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     assert_nil(transport.requests.fetch(0).timeout)
   end
 
+  def test_unbounded_workload_identity_preserves_an_inner_timeout_error
+    transport = scripted_transport { raise Timeout::Error, "inner timeout" }
+    auth = ScriptedWorkloadIdentityAuth.new(slow_token_requests: [])
+    client = build_workload_identity_client(transport, auth)
+
+    error = assert_raises(Timeout::Error) do
+      client.files.retrieve("file_123", request_options: {timeout: nil})
+    end
+
+    assert_equal("inner timeout", error.message)
+    assert_nil(auth.deadlines.fetch(0))
+    assert_equal(1, transport.requests.length)
+  end
+
+  def test_bounded_workload_identity_preserves_an_inner_timeout_error
+    transport = scripted_transport { raise Timeout::Error, "inner timeout" }
+    auth = ScriptedWorkloadIdentityAuth.new(slow_token_requests: [])
+    client = build_workload_identity_client(transport, auth)
+
+    error = assert_raises(Timeout::Error) do
+      client.files.retrieve("file_123", request_options: {timeout: 1})
+    end
+
+    assert_equal("inner timeout", error.message)
+    assert_instance_of(Float, auth.deadlines.fetch(0))
+    assert_equal(1, transport.requests.length)
+  end
+
   def test_workload_identity_authentication_consumes_the_request_timeout
     transport = scripted_transport { flunk("request should not be sent") }
     auth = Class
@@ -259,9 +289,49 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     assert_empty(transport.requests)
   end
 
+  def test_workload_identity_api_retries_preserve_the_original_authentication_deadline
+    responses = [
+      [429, {"retry-after" => "0"}, {error: {message: "retry", type: "rate_limit_error"}}],
+      [200, {}, file_object(status: "processed")]
+    ]
+    transport = scripted_transport { responses.shift }
+    auth = ScriptedWorkloadIdentityAuth.new(slow_token_requests: [])
+    client = build_workload_identity_client(transport, auth)
+
+    result = client.files.retrieve("file_123", request_options: {timeout: 1})
+
+    assert_equal(:processed, result.status)
+    assert_equal(2, transport.requests.length)
+    assert_equal(2, auth.token_requests)
+    assert_equal(1, auth.deadlines.uniq.length)
+    assert_instance_of(Float, auth.deadlines.fetch(0))
+  end
+
+  def test_workload_identity_retry_deadline_redacts_the_timeout_error_url
+    transport = scripted_transport do
+      [429, {"retry-after" => "1"}, {error: {message: "retry", type: "rate_limit_error"}}]
+    end
+
+    auth = ScriptedWorkloadIdentityAuth.new(slow_token_requests: [])
+    client = build_workload_identity_client(transport, auth)
+
+    error = assert_raises(OpenAI::Errors::APITimeoutError) do
+      client.files.retrieve(
+        "file_123",
+        request_options: {timeout: 0.01, extra_query: {"signature" => "fake-sensitive-query"}}
+      )
+    end
+
+    assert_nil(error.url.query)
+    assert_nil(error.url.fragment)
+    refute_match(/fake-sensitive-query/, error.inspect)
+    assert_equal(1, transport.requests.length)
+  end
+
   def test_workload_identity_timeout_uses_the_sdk_error_and_retry_contract
     transport = scripted_transport { flunk("request should not be sent") }
-    provider = SlowSubjectTokenProvider.new(delay: 0.02)
+    provider = SlowSubjectTokenProvider.new(delay: 0.1)
+    retries = []
     config = OpenAI::Auth::WorkloadIdentity.new(
       identity_provider_id: "idp-123",
       service_account_id: "sa-456",
@@ -275,15 +345,24 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       http_client: transport,
       max_retries: 2,
       initial_retry_delay: 0,
-      max_retry_delay: 0
+      max_retry_delay: 0,
+      on_retry: -> (event) { retries << event }
     )
 
     error = assert_raises(OpenAI::Errors::APITimeoutError) do
-      client.files.retrieve("file_123", request_options: {timeout: 0.005})
+      client.files.retrieve(
+        "file_123",
+        request_options: {timeout: 0.005, extra_query: {"signature" => "fake-sensitive-query"}}
+      )
     end
 
     assert_instance_of(Timeout::Error, error.cause)
-    assert_equal(3, provider.calls)
+    assert_nil(error.url.query)
+    assert_nil(error.url.fragment)
+    refute_match(/fake-sensitive-query/, error.inspect)
+    assert_equal(1, provider.calls)
+    assert_equal(0, provider.completed_calls)
+    assert_empty(retries)
     assert_empty(transport.requests)
   end
 
