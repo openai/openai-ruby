@@ -378,6 +378,38 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     assert_equal(:function_call, response.output.fetch(1).type)
   end
 
+  def test_background_retrieve_defers_incomplete_items_when_response_is_completed
+    stub_request(:get, "http://localhost/responses/resp_completed_with_incomplete_item").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_completed_with_incomplete_item",
+        status: "completed",
+        output: [
+          {
+            id: "msg_completed_with_incomplete_item",
+            content: [{annotations: [], text: "{\"displayName\":", type: "output_text"}],
+            role: "assistant",
+            status: "incomplete",
+            type: "message"
+          },
+          {status: "incomplete", type: "function_call"}
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve(
+      "resp_completed_with_incomplete_item",
+      text: AliasedProfile,
+      tools: [AliasedLookup]
+    )
+
+    assert_equal(:completed, response.status)
+    content = response.output.fetch(0).content.fetch(0)
+    assert_equal("{\"displayName\":", content.text)
+    assert_nil(content.parsed)
+    assert_equal(:function_call, response.output.fetch(1).type)
+  end
+
   def test_background_retrieve_parses_explicitly_named_tool_models_locally
     stub_request(:get, "http://localhost/responses/resp_named_tool").to_return_json(
       status: 200,
@@ -629,6 +661,7 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
       assert_requested(:get, "http://localhost/responses/#{response_id}") do |request|
         assert_nil(request.uri.query)
       end
+
       assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
       assert_equal(AliasedProfile, text.values.fetch(0))
     end
@@ -670,6 +703,7 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     assert_requested(:get, "http://localhost/responses/resp_json_schema_hint") do |request|
       assert_nil(request.uri.query)
     end
+
     assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
     assert_equal("json_schema", text.dig("format", "type"))
     assert_equal(AliasedProfile, text.dig("format", "schema"))

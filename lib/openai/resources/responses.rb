@@ -577,7 +577,7 @@ module OpenAI
       end
 
       def structured_output_response_complete?(raw)
-        return raw[:status] == "completed" unless raw[:status].nil?
+        return false unless [nil, "completed"].include?(raw[:status])
 
         raw[:output].to_a.none? do |output|
           ["queued", "in_progress", "incomplete"].include?(output[:status])
@@ -596,6 +596,7 @@ module OpenAI
             if normalized_key == :type && ["function", "json_schema"].include?(normalized_item)
               normalized_item = normalized_item.to_sym
             end
+
             [normalized_key, normalized_item]
           end
         else
