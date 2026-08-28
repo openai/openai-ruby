@@ -534,6 +534,37 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     assert_equal(AliasedLookup, tools.dig(0, "function", "parameters"))
   end
 
+  def test_background_retrieve_parses_flattened_string_keyed_tool_hint
+    stub_request(:get, "http://localhost/responses/resp_flat_string_hint").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_flat_string_hint",
+        status: "completed",
+        output: [
+          {
+            arguments: "{\"profileId\":7}",
+            call_id: "call_flat_string_hint",
+            name: "custom_flat_lookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    tools = [
+      {"type" => "function", "name" => "custom_flat_lookup", "parameters" => AliasedLookup}
+    ]
+    response = @client.responses.retrieve("resp_flat_string_hint", {"tools" => tools})
+
+    assert_requested(:get, "http://localhost/responses/resp_flat_string_hint") do |request|
+      assert_nil(request.uri.query)
+    end
+
+    assert_instance_of(AliasedLookup, response.output.fetch(0).parsed)
+    assert_equal("function", tools.dig(0, "type"))
+    assert_equal(AliasedLookup, tools.dig(0, "parameters"))
+  end
+
   def test_background_retrieve_accepts_response_retrieve_params
     stub_request(:get, "http://localhost/responses/resp_params").to_return_json(
       status: 200,

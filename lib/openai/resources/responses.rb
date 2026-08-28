@@ -583,7 +583,9 @@ module OpenAI
         when Hash
           value.to_h do |key, item|
             normalized_key = key.is_a?(String) ? key.to_sym : key
-            [normalized_key, duplicate_structured_output_params(item)]
+            normalized_item = duplicate_structured_output_params(item)
+            normalized_item = :function if normalized_key == :type && normalized_item == "function"
+            [normalized_key, normalized_item]
           end
         else
           value
