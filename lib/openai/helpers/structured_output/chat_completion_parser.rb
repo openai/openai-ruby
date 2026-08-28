@@ -81,6 +81,10 @@ module OpenAI
                 }
             }
             parsed.dig(:response_format, :json_schema).store(:schema, model.to_json_schema)
+          else
+          end
+
+          case parsed
           in {tools: Array => tools}
             mapped = tools.map do |tool|
               case tool

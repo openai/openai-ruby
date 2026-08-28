@@ -15,11 +15,29 @@ class OpenAI::Test::ChatCompletionParserTest < Minitest::Test
     def request(**options) = options
   end
 
+  class RecordingTransport < OpenAI::HTTPClient
+    attr_reader :request
+
+    def initialize(response)
+      super()
+      @response = response
+    end
+
+    def execute(request)
+      @request = request
+      OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "application/json"},
+        body: JSON.generate(@response)
+      )
+    end
+  end
+
   class CombinedModels < OpenAI::Resources::Chat::Completions
     def get_structured_output_models(_parsed) = [TextModel, {"known" => ToolModel}]
   end
 
-  def test_response_format_forms_keep_their_precedence_over_tools
+  def test_response_format_forms_and_tools_are_processed_independently
     forms = [
       {response_format: TextModel},
       {response_format: {type: :json_schema, json_schema: TextModel}},
@@ -33,7 +51,10 @@ class OpenAI::Test::ChatCompletionParserTest < Minitest::Test
     resource = OpenAI::Resources::Chat::Completions.allocate
 
     forms.each do |params|
-      tools = [ToolModel]
+      function = {name: "explicit_tool", parameters: ToolModel, strict: true}
+      nested = {type: :function, function: function}
+      untouched = {type: :custom, custom: {name: "other"}}
+      tools = [ToolModel, nested, untouched]
       params[:tools] = tools
       original = params[:response_format]
       original_schema = original[:json_schema] if original.is_a?(Hash)
@@ -41,9 +62,19 @@ class OpenAI::Test::ChatCompletionParserTest < Minitest::Test
       model, tool_models = resource.get_structured_output_models(params)
 
       assert_same(TextModel, model)
-      assert_empty(tool_models)
+      assert_equal({"ToolModel" => ToolModel, "explicit_tool" => ToolModel}, tool_models)
       assert_same(tools, params[:tools])
-      assert_same(ToolModel, tools.first)
+      assert_equal(
+        {
+          type: :function,
+          function: {strict: true, name: "ToolModel", parameters: ToolModel.to_json_schema}
+        },
+        tools.first
+      )
+      assert_same(nested, tools[1])
+      assert_same(function, nested[:function])
+      assert_equal(ToolModel.to_json_schema, function[:parameters])
+      assert_same(untouched, tools.last)
       schema = params.fetch(:response_format).fetch(:json_schema)
       assert_equal(TextModel.to_json_schema, schema[:schema])
       assert_same(original, params[:response_format]) if original.is_a?(Hash)
@@ -55,6 +86,63 @@ class OpenAI::Test::ChatCompletionParserTest < Minitest::Test
         assert_equal("TextModel", schema[:name])
         assert_equal(true, schema[:strict])
       end
+    end
+  end
+
+  def test_public_create_serializes_and_hydrates_structured_text_and_function_tools
+    [
+      [ToolModel, "ToolModel"],
+      [{type: :function, function: {name: "lookup", parameters: ToolModel, strict: true}}, "lookup"]
+    ].each do |tool, name|
+      transport = RecordingTransport.new(
+        id: "chatcmpl_test",
+        object: "chat.completion",
+        created: 0,
+        model: "test",
+        choices: [
+          {
+            index: 0,
+            finish_reason: "tool_calls",
+            message: {
+              role: "assistant",
+              content: JSON.generate(value: "hello"),
+              tool_calls: [
+                {
+                  id: "call_test",
+                  type: "function",
+                  function: {name: name, arguments: JSON.generate(argument: 7)}
+                }
+              ]
+            }
+          }
+        ]
+      )
+      client = OpenAI::Client.new(
+        api_key: "fake-key",
+        base_url: "http://example.test",
+        http_client: transport
+      )
+
+      completion = client.chat.completions.create(
+        model: "test",
+        messages: [{role: "user", content: "hi"}],
+        response_format: TextModel,
+        tools: [tool]
+      )
+
+      request = JSON.parse(transport.request.body)
+      assert_equal("json_schema", request.dig("response_format", "type"))
+      assert_equal("TextModel", request.dig("response_format", "json_schema", "name"))
+      assert_equal("function", request.dig("tools", 0, "type"))
+      assert_equal(name, request.dig("tools", 0, "function", "name"))
+      assert_equal("object", request.dig("tools", 0, "function", "parameters", "type"))
+
+      message = completion.choices.first.message
+      assert_instance_of(TextModel, message.parsed)
+      assert_equal("hello", message.parsed.value)
+      arguments = message.tool_calls.first.function.parsed
+      assert_instance_of(ToolModel, arguments)
+      assert_equal(7, arguments.argument)
     end
   end
 
