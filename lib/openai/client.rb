@@ -18,6 +18,8 @@ module OpenAI
     DEFAULT_MAX_RETRY_DELAY = 8.0
 
     WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER = "workload-identity-auth"
+    WORKLOAD_IDENTITY_DEADLINE_ERROR = Class.new(Timeout::Error)
+    private_constant :WORKLOAD_IDENTITY_DEADLINE_ERROR
 
     # @return [String, nil]
     attr_reader :api_key
@@ -248,9 +250,9 @@ module OpenAI
 
     # @api private
     private def validate_retry_delay!(request, delay:)
-      deadline = request[:x509_request_context]&.fetch(:deadline)
+      deadline = request[:x509_request_context]&.fetch(:deadline) || request[:workload_identity_deadline]
       if deadline && delay >= deadline - OpenAI::Internal::Util.monotonic_secs
-        raise Timeout::Error, "request timed out during workload identity authentication"
+        raise WORKLOAD_IDENTITY_DEADLINE_ERROR, "request timed out during workload identity authentication"
       end
 
       super
@@ -281,7 +283,8 @@ module OpenAI
           request[:workload_identity_deadline] ||
           request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
       else
-        request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
+        request[:workload_identity_deadline] ||
+          request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
       end
 
       request = request.merge(workload_identity_deadline: deadline)
@@ -359,8 +362,16 @@ module OpenAI
         end
       end
 
-    rescue Timeout::Error
-      raise unless x509_request
+    rescue Timeout::Error => error
+      unless x509_request
+        raise unless error.is_a?(WORKLOAD_IDENTITY_DEADLINE_ERROR)
+
+        url = request.fetch(:url).dup
+        url.query = nil
+        url.fragment = nil
+        cause = Timeout::Error.new(error.message)
+        raise OpenAI::Errors::APITimeoutError.new(url: url, message: error.message), cause: cause
+      end
 
       url = request.fetch(:url).dup
       url.query = nil
@@ -443,7 +454,10 @@ module OpenAI
     rescue Timeout::Error => e
       raise if x509_transport?(@requester)
 
-      raise OpenAI::Errors::APITimeoutError.new(url: request.fetch(:url), message: e.message)
+      url = request.fetch(:url).dup
+      url.query = nil
+      url.fragment = nil
+      raise OpenAI::Errors::APITimeoutError.new(url: url, message: e.message)
     end
 
     # @api private
