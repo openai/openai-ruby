@@ -3,7 +3,7 @@
 module OpenAI
   module Errors
     class Error < StandardError
-      # @!attribute cause
+      # @!attribute [r] cause
       #
       #   @return [StandardError, nil]
     end

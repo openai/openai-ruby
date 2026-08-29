@@ -4,7 +4,7 @@ module OpenAI
   module Errors
     class Error < StandardError
       sig { returns(T.nilable(StandardError)) }
-      attr_accessor :cause
+      attr_reader :cause
     end
 
     class PollingError < OpenAI::Errors::Error
