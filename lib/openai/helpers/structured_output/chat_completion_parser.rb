@@ -28,6 +28,8 @@ module OpenAI
 
             raw[:choices]&.each do |choice|
               choice.dig(:message, :tool_calls)&.each do |tool_call|
+                next if tool_call[:type] == "custom"
+
                 func = tool_call.fetch(:function)
                 next if (model = tool_models[func.fetch(:name)]).nil?
 

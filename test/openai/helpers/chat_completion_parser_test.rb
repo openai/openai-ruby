@@ -246,6 +246,47 @@ class OpenAI::Test::ChatCompletionParserTest < Minitest::Test
     refute(third_message.key?(:parsed))
   end
 
+  def test_unwrap_preserves_custom_tool_calls
+    transport = RecordingTransport.new(
+      id: "chatcmpl_test",
+      object: "chat.completion",
+      created: 0,
+      model: "test",
+      choices: [
+        {
+          index: 0,
+          finish_reason: "tool_calls",
+          message: {
+            role: "assistant",
+            content: nil,
+            tool_calls: [
+              {
+                id: "call_custom",
+                type: "custom",
+                custom: {name: "code_exec", input: "puts 'hello'"}
+              }
+            ]
+          }
+        }
+      ]
+    )
+    client = OpenAI::Client.new(
+      api_key: "fake-key",
+      base_url: "http://example.test",
+      http_client: transport
+    )
+
+    completion = client.chat.completions.create(
+      model: "test",
+      messages: [{role: "user", content: "hi"}]
+    )
+
+    tool_call = completion.choices.first.message.tool_calls.first
+    assert_instance_of(OpenAI::Chat::ChatCompletionMessageCustomToolCall, tool_call)
+    assert_equal("code_exec", tool_call.custom.name)
+    assert_equal("puts 'hello'", tool_call.custom.input)
+  end
+
   def test_unwrap_preserves_nil_malformed_json_and_missing_key_behavior
     [nil, "not json"].each do |value|
       function = {name: "known", arguments: value}
