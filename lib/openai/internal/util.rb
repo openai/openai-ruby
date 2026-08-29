@@ -630,7 +630,7 @@ module OpenAI
           in [OpenAI::Internal::Util::JSON_CONTENT, Hash | Array | -> { primitive?(_1) }]
             [headers, JSON.generate(body)]
           in [OpenAI::Internal::Util::JSONL_CONTENT, Enumerable] unless OpenAI::Internal::Type::FileInput === body
-            [headers, body.lazy.map { JSON.generate(_1) }]
+            [headers, body.lazy.map { "#{JSON.generate(_1)}\n" }]
           in [%r{^multipart/form-data}, Hash | OpenAI::Internal::Type::FileInput]
             boundary, strio = encode_multipart_streaming(body)
             headers = {**headers, "content-type" => "#{content_type}; boundary=#{boundary}"}
