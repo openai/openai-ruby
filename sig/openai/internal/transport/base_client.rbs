@@ -154,22 +154,7 @@ module OpenAI
         } -> OpenAI::HTTPClient::Response
 
         def request: (
-          Symbol method,
-          String | ::Array[String] path,
-          ?query: ::Hash[String, (::Array[String] | String)?]?,
-          ?headers: ::Hash[String, (String
-          | Integer
-          | ::Array[(String | Integer)?])?]?,
-          ?body: top?,
-          ?unwrap: (Symbol
-          | Integer
-          | ::Array[(Symbol | Integer)]
-          | (^(top arg0) -> top))?,
-          ?page: Class?,
-          ?stream: Class?,
-          ?model: OpenAI::Internal::Type::Converter::input?,
-          ?security: { :bearer_auth? => bool, :admin_api_key_auth? => bool }?,
-          ?options: OpenAI::request_opts?
+          OpenAI::Internal::Transport::BaseClient::request_components req
         ) -> top
 
         private def perform_request: (
