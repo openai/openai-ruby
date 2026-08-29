@@ -13,7 +13,8 @@ module OpenAI
           @last_response = raw_stream.last_response
           @iterator = iterator
           @state = ResponseStreamState.new(
-            text_format: text_format
+            text_format: text_format,
+            starting_after: starting_after
           )
         end
 
@@ -26,7 +27,7 @@ module OpenAI
           OpenAI::Internal::Util.chain_fused(@iterator) do |yielder|
             @iterator.each do |event|
               case event
-              when OpenAI::Streaming::ResponseTextDeltaEvent
+              when OpenAI::Models::Responses::ResponseTextDeltaEvent
                 yielder << event.delta
               end
             end
@@ -80,10 +81,11 @@ module OpenAI
       class ResponseStreamState
         attr_reader :completed_response
 
-        def initialize(text_format:)
+        def initialize(text_format:, starting_after: nil)
           @current_snapshot = nil
           @completed_response = nil
           @text_format = text_format
+          @resumed = !starting_after.nil?
         end
 
         def handle_event(event)
@@ -98,31 +100,43 @@ module OpenAI
 
           case event
           when OpenAI::Models::Responses::ResponseTextDeltaEvent
-            output = @current_snapshot.output[event.output_index]
-            assert_type(output, :message)
+            if @current_snapshot
+              output = @current_snapshot.output[event.output_index]
+              assert_type(output, :message)
 
-            content = output.content[event.content_index]
-            assert_type(content, :output_text)
-
-            events_to_yield <<
-              OpenAI::Streaming::ResponseTextDeltaEvent.new(
-                content_index: event.content_index,
-                delta: event.delta,
-                item_id: event.item_id,
-                output_index: event.output_index,
-                sequence_number: event.sequence_number,
-                type: event.type,
-                snapshot: content.text
-              )
+              content = output.content[event.content_index]
+              assert_type(content, :output_text)
+              events_to_yield <<
+                OpenAI::Streaming::ResponseTextDeltaEvent.new(
+                  content_index: event.content_index,
+                  delta: event.delta,
+                  item_id: event.item_id,
+                  output_index: event.output_index,
+                  sequence_number: event.sequence_number,
+                  type: event.type,
+                  snapshot: content.text
+                )
+            else
+              # A server-directed resumed stream may begin after response.created.
+              # Without the omitted prefix, a snapshot would be incomplete and
+              # materializing every partial prefix would make streaming quadratic.
+              events_to_yield <<
+                OpenAI::Streaming::ResponseTextDeltaEvent.new(event.to_h.merge(snapshot: nil))
+            end
 
           when OpenAI::Models::Responses::ResponseTextDoneEvent
-            output = @current_snapshot.output[event.output_index]
-            assert_type(output, :message)
+            text = if @current_snapshot
+              output = @current_snapshot.output[event.output_index]
+              assert_type(output, :message)
 
-            content = output.content[event.content_index]
-            assert_type(content, :output_text)
+              content = output.content[event.content_index]
+              assert_type(content, :output_text)
+              content.text
+            else
+              event.text
+            end
 
-            parsed = parse_structured_text(content.text)
+            parsed = parse_structured_text(text)
 
             events_to_yield <<
               OpenAI::Streaming::ResponseTextDoneEvent.new(
@@ -136,18 +150,26 @@ module OpenAI
               )
 
           when OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent
-            output = @current_snapshot.output[event.output_index]
-            assert_type(output, :function_call)
-
-            events_to_yield <<
-              OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent.new(
-                delta: event.delta,
-                item_id: event.item_id,
-                output_index: event.output_index,
-                sequence_number: event.sequence_number,
-                type: event.type,
-                snapshot: output.arguments
-              )
+            if @current_snapshot
+              output = @current_snapshot.output[event.output_index]
+              assert_type(output, :function_call)
+              events_to_yield <<
+                OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent.new(
+                  delta: event.delta,
+                  item_id: event.item_id,
+                  output_index: event.output_index,
+                  sequence_number: event.sequence_number,
+                  type: event.type,
+                  snapshot: output.arguments
+                )
+            else
+              # See the text-delta branch above: a partial server resume has no
+              # complete argument prefix from which to build a truthful snapshot.
+              events_to_yield <<
+                OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent.new(
+                  event.to_h.merge(snapshot: nil)
+                )
+            end
 
           when OpenAI::Models::Responses::ResponseCompletedEvent
             events_to_yield <<
@@ -167,16 +189,25 @@ module OpenAI
 
         def accumulate_event(event:, current_snapshot:)
           if current_snapshot.nil?
-            unless event.is_a?(OpenAI::Models::Responses::ResponseCreatedEvent)
+            if event.is_a?(OpenAI::Models::Responses::ResponseCreatedEvent)
+              # Use the converter to create a new, isolated copy of the response object.
+              # This ensures proper type validation and prevents shared object references.
+              return OpenAI::Internal::Type::Converter.coerce(
+                OpenAI::Models::Responses::Response,
+                event.response
+              )
+            end
+
+            unless @resumed
               raise "Expected first event to be response.created"
             end
 
-            # Use the converter to create a new, isolated copy of the response object.
-            # This ensures proper type validation and prevents shared object references.
-            return OpenAI::Internal::Type::Converter.coerce(
-              OpenAI::Models::Responses::Response,
-              event.response
-            )
+            if event.is_a?(OpenAI::Models::Responses::ResponseCompletedEvent)
+              @completed_response = event.response
+              return event.response
+            end
+
+            return nil
           end
 
           case event

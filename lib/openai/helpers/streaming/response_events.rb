@@ -4,7 +4,7 @@ module OpenAI
   module Helpers
     module Streaming
       class ResponseTextDeltaEvent < OpenAI::Models::Responses::ResponseTextDeltaEvent
-        required :snapshot, String
+        optional :snapshot, String, nil?: true
       end
 
       class ResponseTextDoneEvent < OpenAI::Models::Responses::ResponseTextDoneEvent
@@ -12,7 +12,7 @@ module OpenAI
       end
 
       class ResponseFunctionCallArgumentsDeltaEvent < OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent
-        required :snapshot, String
+        optional :snapshot, String, nil?: true
       end
 
       class ResponseCompletedEvent < OpenAI::Models::Responses::ResponseCompletedEvent

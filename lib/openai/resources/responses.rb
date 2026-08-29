@@ -220,7 +220,8 @@ module OpenAI
         end
 
         if response_id
-          retrieve_params = params.slice(:include, :request_options)
+          retrieve_params = parsed.slice(:include, :starting_after)
+          retrieve_params[:request_options] = options
 
           raw_stream = retrieve_streaming_internal(
             response_id,

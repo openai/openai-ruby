@@ -415,9 +415,24 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     end
   end
 
+  def test_resume_stream_with_string_keyed_starting_after
+    stub_request(:get, "http://localhost/responses/msg_456?starting_after=7&stream=true")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: resume_stream_with_starting_after_sse_response
+      )
+
+    stream = @client.responses.stream("response_id" => "msg_456", "starting_after" => 7)
+
+    assert(stream.to_a.all? { |event| event.sequence_number > 7 })
+  ensure
+    stream&.close
+  end
+
   def test_resume_stream_with_response_id_and_starting_after
     # Stub the GET request to retrieve the response.
-    stub_request(:get, "http://localhost/responses/msg_456?stream=true")
+    stub_request(:get, "http://localhost/responses/msg_456?starting_after=7&stream=true")
       .to_return(
         status: 200,
         headers: {"Content-Type" => "text/event-stream"},
@@ -451,6 +466,156 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     completed = events.find { |e| e.type == :"response.completed" }
     assert_equal("msg_456", completed.response[:id])
     assert_equal(11, completed.sequence_number)
+  end
+
+  def test_incrementally_resume_stream_from_output_item
+    stub_request(:get, "http://localhost/responses/msg_001?starting_after=2&stream=true")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: incremental_sse_response(basic_text_sse_response, starting_after: 2)
+      )
+
+    stream = @client.responses.stream(response_id: "msg_001", starting_after: 2)
+    events = stream.to_a
+
+    assert_instance_of(OpenAI::Models::Responses::ResponseOutputItemAddedEvent, events.first)
+    assert_incremental_text_delta_events(
+      events,
+      expected_deltas: ["Hello there! ", "How can I help you ", "today?"]
+    )
+    assert_equal("Hello there! How can I help you today?", stream.get_output_text)
+  ensure
+    stream&.close
+  end
+
+  def test_incrementally_resume_stream_from_text_delta
+    stub_request(:get, "http://localhost/responses/msg_001?starting_after=5&stream=true")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: incremental_sse_response(basic_text_sse_response, starting_after: 5)
+      )
+
+    stream = @client.responses.stream(response_id: "msg_001", starting_after: 5)
+    events = stream.to_a
+
+    assert_incremental_text_delta_events(
+      events,
+      expected_deltas: ["How can I help you ", "today?"]
+    )
+    text_delta = events.find { |event| event.sequence_number == 6 }
+    assert_equal(["How"], text_delta.logprobs.map(&:token))
+    assert_equal("msg_001", text_delta[:response_id])
+    assert_equal("Hello there! How can I help you today?", stream.get_output_text)
+  ensure
+    stream&.close
+  end
+
+  def test_incrementally_resumed_text_method
+    stub_request(:get, "http://localhost/responses/msg_001?starting_after=5&stream=true")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: incremental_sse_response(basic_text_sse_response, starting_after: 5)
+      )
+
+    stream = @client.responses.stream(response_id: "msg_001", starting_after: 5)
+
+    assert_equal(["How can I help you ", "today?"], stream.text.to_a)
+    assert_equal("Hello there! How can I help you today?", stream.get_output_text)
+  ensure
+    stream&.close
+  end
+
+  def test_incrementally_resume_stream_from_completed_event
+    stub_request(:get, "http://localhost/responses/msg_001?starting_after=10&stream=true")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: incremental_sse_response(basic_text_sse_response, starting_after: 10)
+      )
+
+    stream = @client.responses.stream(response_id: "msg_001", starting_after: 10)
+    events = stream.to_a
+
+    assert_equal(1, events.length)
+    assert_instance_of(OpenAI::Streaming::ResponseCompletedEvent, events.first)
+    assert_equal("Hello there! How can I help you today?", stream.get_output_text)
+  ensure
+    stream&.close
+  end
+
+  def test_incrementally_resume_stream_with_structured_output
+    stub_request(:get, "http://localhost/responses/msg_structured?starting_after=3&stream=true")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: incremental_sse_response(resume_stream_structured_output_sse_response, starting_after: 3)
+      )
+
+    stream = @client.responses.stream(response_id: "msg_structured", starting_after: 3, text: WeatherModel)
+    events = stream.to_a
+
+    assert_pattern do
+      events.first => OpenAI::Streaming::ResponseTextDoneEvent(
+          parsed: WeatherModel(location: "San Francisco", temperature: 72)
+        )
+    end
+
+    assert_pattern do
+      stream.get_final_response.output.first.content.first.parsed => WeatherModel(
+          location: "San Francisco",
+          temperature: 72
+        )
+    end
+
+  ensure
+    stream&.close
+  end
+
+  def test_incrementally_resume_stream_with_typed_function_arguments
+    stub_request(:get, "http://localhost/responses/resp_stream_001?starting_after=9&stream=true")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: incremental_sse_response(text_and_tools_sse_response, starting_after: 9)
+      )
+
+    stream = @client.responses.stream(
+      response_id: "resp_stream_001",
+      starting_after: 9,
+      text: CalendarEvent,
+      tools: [LookupCalendar]
+    )
+    events = stream.to_a
+
+    assert_incremental_function_delta_events(
+      events,
+      expected_deltas: ["{\"first_name\":\"Ada\",", "\"last_name\":\"Lovelace\"}"]
+    )
+    function_delta = events.find { |event| event.sequence_number == 10 }
+    assert_equal("resp_stream_001", function_delta[:response_id])
+    assert_pattern do
+      stream.get_final_response.output.last.parsed => LookupCalendar(
+          first_name: "Ada",
+          last_name: "Lovelace"
+        )
+    end
+
+  ensure
+    stream&.close
+  end
+
+  def test_non_resumed_stream_still_requires_response_created
+    stub_streaming_response(incremental_sse_response(basic_text_sse_response, starting_after: 5))
+
+    stream = @client.responses.stream(**basic_params)
+    error = assert_raises(RuntimeError) { stream.to_a }
+
+    assert_equal("Expected first event to be response.created", error.message)
+  ensure
+    stream&.close
   end
 
   def test_resume_stream_with_structured_output
@@ -607,6 +772,17 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
   private
 
+  def incremental_sse_response(response, starting_after:)
+    response
+      .split("\n\n")
+      .select do |event|
+        data = event.lines.find { |line| line.start_with?("data: ") }
+        JSON.parse(data.delete_prefix("data: ")).fetch("sequence_number") > starting_after
+      end
+      .join("\n\n") +
+      "\n\n"
+  end
+
   def function_tool_params
     basic_params.merge(
       tools: [
@@ -641,6 +817,28 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     assert_equal(expected_snapshot, function_deltas.last.snapshot, "Incorrect final snapshot")
   end
 
+  def assert_incremental_text_delta_events(events, expected_deltas:)
+    text_deltas = events.select do |event|
+      event.is_a?(OpenAI::Streaming::ResponseTextDeltaEvent)
+    end
+
+    assert_equal(expected_deltas, text_deltas.map(&:delta))
+    text_deltas.each do |event|
+      assert_nil(event.snapshot)
+    end
+  end
+
+  def assert_incremental_function_delta_events(events, expected_deltas:)
+    function_deltas = events.select do |event|
+      event.is_a?(OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent)
+    end
+
+    assert_equal(expected_deltas, function_deltas.map(&:delta))
+    function_deltas.each do |event|
+      assert_nil(event.snapshot)
+    end
+  end
+
   def basic_text_sse_response
     <<~SSE
       event: response.created
@@ -659,7 +857,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       data: {"type":"response.output_text.delta","sequence_number":5,"response_id":"msg_001","item_id":"item_001","output_index":0,"content_index":0,"delta":"Hello there! "}
 
       event: response.output_text.delta
-      data: {"type":"response.output_text.delta","sequence_number":6,"response_id":"msg_001","item_id":"item_001","output_index":0,"content_index":0,"delta":"How can I help you "}
+      data: {"type":"response.output_text.delta","sequence_number":6,"response_id":"msg_001","item_id":"item_001","output_index":0,"content_index":0,"delta":"How can I help you ","logprobs":[{"token":"How","logprob":-0.5,"top_logprobs":[]}]}
 
       event: response.output_text.delta
       data: {"type":"response.output_text.delta","sequence_number":7,"response_id":"msg_001","item_id":"item_001","output_index":0,"content_index":0,"delta":"today?"}
@@ -960,7 +1158,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       data: {"type":"response.output_item.added","sequence_number":9,"response_id":"resp_stream_001","output_index":1,"item":{"id":"call_001","object":"realtime.item","type":"function_call","status":"in_progress","name":"LookupCalendar","arguments":"","call_id":"call_001"}}
 
       event: response.function_call_arguments.delta
-      data: {"type":"response.function_call_arguments.delta","sequence_number":10,"item_id":"call_001","output_index":1,"delta":"{\\"first_name\\":\\"Ada\\","}
+      data: {"type":"response.function_call_arguments.delta","sequence_number":10,"response_id":"resp_stream_001","item_id":"call_001","output_index":1,"delta":"{\\"first_name\\":\\"Ada\\","}
 
       event: response.function_call_arguments.delta
       data: {"type":"response.function_call_arguments.delta","sequence_number":11,"item_id":"call_001","output_index":1,"delta":"\\"last_name\\":\\"Lovelace\\"}"}

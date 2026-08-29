@@ -157,12 +157,11 @@ class OpenAI::Test::UnknownResponseStreamEventTest < Minitest::Test
       :get,
       "/responses/resp_unknown",
       events: [
-        lifecycle_event("response.created", 1),
         unknown_event(sequence_number: 6),
         unknown_event(sequence_number: 8),
         completed_event(9)
       ],
-      query: {"stream" => "true"}
+      query: {"starting_after" => "7", "stream" => "true"}
     )
 
     stream = @client.responses.stream(response_id: "resp_unknown", starting_after: 7)
@@ -183,8 +182,8 @@ class OpenAI::Test::UnknownResponseStreamEventTest < Minitest::Test
     stub_stream(
       :get,
       "/responses/resp_unknown",
-      events: [lifecycle_event("response.created", 1), unknown_event(sequence_number: nil), completed_event(9)],
-      query: {"stream" => "true"}
+      events: [unknown_event(sequence_number: nil), completed_event(9)],
+      query: {"starting_after" => "7", "stream" => "true"}
     )
 
     stream = @client.responses.stream(response_id: "resp_unknown", starting_after: 7)

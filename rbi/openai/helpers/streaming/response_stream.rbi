@@ -78,8 +78,8 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Models::Responses::Response)) }
         attr_reader :completed_response
 
-        sig { params(text_format: T.untyped).void }
-        def initialize(text_format:)
+        sig { params(text_format: T.untyped, starting_after: T.nilable(Integer)).void }
+        def initialize(text_format:, starting_after: nil)
         end
 
         sig { params(event: T.untyped).returns(T::Array[T.untyped]) }
@@ -91,7 +91,7 @@ module OpenAI
             event: T.untyped,
             current_snapshot: T.nilable(OpenAI::Models::Responses::Response)
           )
-            .returns(OpenAI::Models::Responses::Response)
+            .returns(T.nilable(OpenAI::Models::Responses::Response))
         end
         def accumulate_event(event:, current_snapshot:)
         end
