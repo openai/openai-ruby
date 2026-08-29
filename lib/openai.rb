@@ -14,6 +14,7 @@ require "securerandom"
 require "stringio"
 require "time"
 require "uri"
+require "yaml"
 
 # We already ship the preferred sorbet manifests in the package itself.
 # `tapioca` currently does not offer us a way to opt out of unnecessary compilation.
