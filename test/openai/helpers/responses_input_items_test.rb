@@ -423,6 +423,602 @@ class OpenAI::Test::ResponsesInputItemsTest < Minitest::Test
     refute_includes(collection_error.message, secret)
   end
 
+  def test_rejects_hostile_discriminator_conversions_without_leaking
+    secret = "sk-do-not-echo"
+    calls = 0
+    role = Object.new
+    nested_type = Object.new
+    execution = Object.new
+    [role, nested_type, execution].each do |value|
+      value.define_singleton_method(:nil?) do
+        calls += 1
+        raise secret
+      end
+
+      value.define_singleton_method(:to_s) do
+        calls += 1
+        raise secret
+      end
+
+      value.define_singleton_method(:to_sym) do
+        calls += 1
+        raise secret
+      end
+    end
+
+    role_error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(role: role, content: "Continue")
+    end
+
+    nested_error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(type: :function_call_output, output: [{type: nested_type}])
+    end
+
+    execution_error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(type: :tool_search_call, arguments: {}, execution: execution)
+    end
+
+    assert_equal("Invalid response item type", role_error.message)
+    assert_equal("Invalid response item type", nested_error.message)
+    assert_equal("Invalid response item type", execution_error.message)
+    refute_includes(role_error.message, secret)
+    refute_includes(nested_error.message, secret)
+    refute_includes(execution_error.message, secret)
+
+    fatal_secret = Class.new(NoMemoryError)
+    fatal_calls = 0
+    fatal_execution = Object.new
+    fatal_execution.define_singleton_method(:class) do
+      fatal_calls += 1
+      raise fatal_secret, secret
+    end
+
+    fatal_execution.define_singleton_method(:nil?) do
+      fatal_calls += 1
+      raise fatal_secret, secret
+    end
+
+    fatal_execution_error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(type: :tool_search_call, arguments: {}, execution: fatal_execution)
+    end
+
+    assert_equal("Invalid response item type", fatal_execution_error.message)
+    assert_equal(0, fatal_calls)
+    refute_includes(fatal_execution_error.message, secret)
+
+    hostile_status = Object.new
+    hostile_status.define_singleton_method(:class) { raise secret }
+    hostile_status.define_singleton_method(:to_s) { raise secret }
+    hostile_status.define_singleton_method(:to_sym) { raise secret }
+    status_error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(
+        type: :computer_call_output,
+        call_id: "call_123",
+        output: {type: :computer_screenshot, image_url: "https://example.test/image.png"},
+        status: hostile_status
+      )
+    end
+
+    assert_equal("Invalid response item type", status_error.message)
+    refute_includes(status_error.message, secret)
+
+    hostile_action = Object.new
+    hostile_action.define_singleton_method(:class) { raise secret }
+    hostile_action.define_singleton_method(:to_sym) { raise secret }
+    action_error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(
+        type: :additional_tools,
+        role: :developer,
+        tools: [{type: :image_generation, action: hostile_action}]
+      )
+    end
+
+    assert_equal("Invalid response item type", action_error.message)
+    refute_includes(action_error.message, secret)
+
+    hostile_inspect = Object.new
+    hostile_inspect.define_singleton_method(:inspect) { raise secret }
+    structured_type_error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(
+        type: :code_interpreter_call,
+        id: "ci_123",
+        code: nil,
+        container_id: "cntr_123",
+        outputs: [{type: {secret: hostile_inspect}, logs: "ok"}],
+        status: :completed
+      )
+    end
+
+    assert_equal("Invalid response item type", structured_type_error.message)
+    refute_includes(structured_type_error.message, secret)
+
+    content_calls = 0
+    hostile_content = Object.new
+    hostile_content.define_singleton_method(:==) do |_other|
+      content_calls += 1
+      raise secret
+    end
+
+    content_error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(type: :message, role: :user, content: hostile_content)
+    end
+
+    assert_equal("Unsupported response message content", content_error.message)
+    assert_equal(0, content_calls)
+
+    annotations_calls = 0
+    hostile_annotations = Class.new(Array).new([Object.new])
+    hostile_annotations.define_singleton_method(:all?) do |&_block|
+      annotations_calls += 1
+      raise secret
+    end
+
+    annotations_error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(
+        type: :message,
+        role: :assistant,
+        content: [
+          {
+            type: :output_text,
+            text: "Answer",
+            input_schema: {},
+            annotations: hostile_annotations
+          }
+        ]
+      )
+    end
+
+    assert_equal("Unsupported response message content", annotations_error.message)
+    assert_equal(0, annotations_calls)
+    refute_includes(annotations_error.message, secret)
+
+    calls = 0
+    hostile_array = Class.new(Array).new
+    hostile_hash = Class.new(Hash).new
+    hostile_array.define_singleton_method(:each) do |&_block|
+      calls += 1
+      raise secret
+    end
+
+    hostile_array.define_singleton_method(:map) do |&_block|
+      calls += 1
+      raise secret
+    end
+
+    hostile_hash.define_singleton_method(:each) do |&_block|
+      calls += 1
+      raise secret
+    end
+
+    hostile_hash.define_singleton_method(:each_with_object) do |_memo, &_block|
+      calls += 1
+      raise secret
+    end
+
+    hostile_hash.define_singleton_method(:[]) do |_key|
+      calls += 1
+      raise secret
+    end
+
+    hostile_hash.define_singleton_method(:key?) do |_key|
+      calls += 1
+      raise secret
+    end
+
+    array_error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(role: hostile_array, content: "Continue")
+    end
+
+    hash_error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(role: hostile_hash, content: "Continue")
+    end
+
+    assert_equal("Invalid response item type", array_error.message)
+    assert_equal("Invalid response item type", hash_error.message)
+    assert_equal(0, calls)
+
+    default_calls = 0
+    message_with_default = Hash.new do
+      default_calls += 1
+      raise secret
+    end
+
+    message_with_default[:role] = :user
+    message_with_default[:content] = "Continue"
+    tool_search_with_default = Hash.new do
+      default_calls += 1
+      raise secret
+    end
+
+    tool_search_with_default["type"] = "tool_search_call"
+    tool_search_with_default[:arguments] = {}
+
+    normalized_message = OpenAI::Responses.to_input_item(message_with_default)
+    normalized_tool_search = OpenAI::Responses.to_input_item(tool_search_with_default)
+
+    assert_instance_of(OpenAI::Responses::EasyInputMessage, normalized_message)
+    assert_equal(:tool_search_call, normalized_tool_search.type)
+    assert_equal(0, default_calls)
+  end
+
+  def test_normalizes_hostile_string_discriminators_without_dispatch
+    secret = "sk-do-not-echo"
+    discriminator = Class.new(String)
+    type = discriminator.new("message")
+    role = discriminator.new("user")
+    nested_type = discriminator.new("input_text")
+    [type, role, nested_type].each do |value|
+      value.define_singleton_method(:==) { raise secret }
+      value.define_singleton_method(:nil?) { raise secret }
+      value.define_singleton_method(:to_s) { raise secret }
+      value.define_singleton_method(:to_sym) { raise secret }
+    end
+
+    normalized = OpenAI::Responses.to_input_item(
+      type: type,
+      role: role,
+      content: [{type: nested_type, text: "Continue"}]
+    )
+
+    assert_instance_of(OpenAI::Responses::EasyInputMessage, normalized)
+    assert_equal(:user, normalized.role)
+    assert_equal(:input_text, normalized.content.fetch(0).type)
+
+    execution = discriminator.new("server")
+    execution.define_singleton_method(:==) { raise secret }
+    execution.define_singleton_method(:nil?) { raise secret }
+    execution.define_singleton_method(:to_s) { raise secret }
+    execution.define_singleton_method(:to_sym) { raise secret }
+
+    normalized_tool_search = OpenAI::Responses.to_input_item(
+      type: :tool_search_call,
+      arguments: {},
+      execution: execution
+    )
+
+    assert_equal(:server, normalized_tool_search.execution)
+
+    output_type = discriminator.new("logs")
+    container_type = discriminator.new("auto")
+    network_policy_type = discriminator.new("disabled")
+    [output_type, container_type, network_policy_type].each do |value|
+      value.define_singleton_method(:==) { raise secret }
+      value.define_singleton_method(:nil?) { raise secret }
+      value.define_singleton_method(:to_s) { raise secret }
+      value.define_singleton_method(:to_sym) { raise secret }
+    end
+
+    normalized_code_interpreter = OpenAI::Responses.to_input_item(
+      type: :code_interpreter_call,
+      id: "ci_123",
+      code: nil,
+      container_id: "cntr_123",
+      outputs: [{type: output_type, logs: "ok"}],
+      status: :completed
+    )
+    normalized_additional_tools = OpenAI::Responses.to_input_item(
+      type: :additional_tools,
+      role: :developer,
+      tools: [
+        {
+          type: :code_interpreter,
+          container: {
+            type: container_type,
+            network_policy: {type: network_policy_type}
+          }
+        }
+      ]
+    )
+
+    assert_equal(:logs, normalized_code_interpreter.outputs.fetch(0).type)
+    assert_equal(:auto, normalized_additional_tools.tools.fetch(0).container.type)
+    assert_equal(:disabled, normalized_additional_tools.tools.fetch(0).container.network_policy.type)
+
+    image_action = discriminator.new("auto")
+    image_model = discriminator.new("gpt-image-1")
+    image_size = discriminator.new("1024x1024")
+    skill_type = discriminator.new("skill_reference")
+    format_type = discriminator.new("text")
+    filter_type = discriminator.new("eq")
+    source_type = discriminator.new("base64")
+    media_type = discriminator.new("application/zip")
+    user_location_type = discriminator.new("approximate")
+    memory_limit = discriminator.new("1g")
+    ranker = discriminator.new("auto")
+    breakpoint_mode = discriminator.new("explicit")
+    [
+      image_action,
+      image_model,
+      image_size,
+      skill_type,
+      format_type,
+      filter_type,
+      source_type,
+      media_type,
+      user_location_type,
+      memory_limit,
+      ranker,
+      breakpoint_mode
+    ].each do |value|
+      value.define_singleton_method(:==) { raise secret }
+      value.define_singleton_method(:nil?) { raise secret }
+      value.define_singleton_method(:to_s) { raise secret }
+      value.define_singleton_method(:to_sym) { raise secret }
+    end
+
+    normalized_nested_tools = OpenAI::Responses.to_input_item(
+      type: :additional_tools,
+      role: :developer,
+      tools: [
+        {type: :image_generation, action: image_action, model: image_model, size: image_size},
+        {
+          type: :shell,
+          environment: {
+            type: :container_auto,
+            network_policy: {type: network_policy_type},
+            skills: [
+              {type: skill_type, skill_id: "skill_123"},
+              {
+                type: :inline,
+                name: "inline",
+                description: "Inline skill",
+                source: {type: source_type, media_type: media_type, data: "UEsDBA=="}
+              }
+            ]
+          }
+        },
+        {
+          type: :code_interpreter,
+          container: {type: :auto, memory_limit: memory_limit}
+        },
+        {type: :custom, name: "lookup", format: {type: format_type}},
+        {
+          type: :file_search,
+          vector_store_ids: ["vs_123"],
+          ranking_options: {type: "opaque-extension", ranker: ranker},
+          filters: {
+            type: :and,
+            filters: [{type: filter_type, key: "kind", value: "reference"}]
+          }
+        },
+        {type: :web_search, user_location: {type: user_location_type}},
+        {type: :web_search_2025_08_26, user_location: {type: user_location_type}},
+        {type: :web_search_preview_2025_03_11, user_location: {type: user_location_type}}
+      ]
+    )
+
+    assert_equal(:auto, normalized_nested_tools.tools.fetch(0).action)
+    assert_equal("gpt-image-1", normalized_nested_tools.tools.fetch(0).model)
+    assert_equal("1024x1024", normalized_nested_tools.tools.fetch(0).size)
+    assert_equal(:skill_reference, normalized_nested_tools.tools.fetch(1).environment.skills.fetch(0).type)
+    assert_equal(:disabled, normalized_nested_tools.tools.fetch(1).environment.network_policy.type)
+    assert_equal(:base64, normalized_nested_tools.tools.fetch(1).environment.skills.fetch(1).source.type)
+    assert_equal(
+      :"application/zip",
+      normalized_nested_tools.tools.fetch(1).environment.skills.fetch(1).source.media_type
+    )
+    assert_equal(:"1g", normalized_nested_tools.tools.fetch(2).container.memory_limit)
+    assert_equal(:text, normalized_nested_tools.tools.fetch(3).format_.type)
+    assert_equal(:auto, normalized_nested_tools.tools.fetch(4).ranking_options.ranker)
+    assert_equal(:eq, normalized_nested_tools.tools.fetch(4).filters.filters.fetch(0).type)
+    assert_equal(:approximate, normalized_nested_tools.tools.fetch(5).user_location.type)
+    assert_equal(:approximate, normalized_nested_tools.tools.fetch(6).user_location.type)
+    assert_equal(:approximate, normalized_nested_tools.tools.fetch(7).user_location.type)
+
+    normalized_breakpoint = OpenAI::Responses.to_input_item(
+      type: :message,
+      role: :user,
+      content: [
+        {
+          type: :input_text,
+          text: "Continue",
+          prompt_cache_breakpoint: {type: "opaque-extension", mode: breakpoint_mode}
+        }
+      ]
+    )
+
+    assert_equal(:explicit, normalized_breakpoint.content.fetch(0).prompt_cache_breakpoint.mode)
+
+    namespace_tool_type = discriminator.new("function")
+    tool_search_output_type = discriminator.new("function")
+    web_action_type = discriminator.new("search")
+    web_source_type = discriminator.new("url")
+    [namespace_tool_type, tool_search_output_type, web_action_type, web_source_type].each do |value|
+      value.define_singleton_method(:to_s) { raise secret }
+      value.define_singleton_method(:to_sym) { raise secret }
+    end
+
+    normalized_namespace = OpenAI::Responses.to_input_item(
+      type: :additional_tools,
+      role: :developer,
+      tools: [
+        {
+          type: :namespace,
+          name: "crm",
+          description: "CRM tools",
+          tools: [{type: namespace_tool_type, name: "lookup"}]
+        }
+      ]
+    )
+    normalized_tool_search_output = OpenAI::Responses.to_input_item(
+      type: :tool_search_output,
+      tools: [{type: tool_search_output_type, name: "lookup", parameters: {}, strict: true}]
+    )
+    normalized_web_search = OpenAI::Responses.to_input_item(
+      type: :web_search_call,
+      id: "ws_123",
+      status: :completed,
+      action: {
+        type: web_action_type,
+        sources: [{type: web_source_type, url: "https://example.test"}]
+      }
+    )
+
+    assert_equal(:function, normalized_namespace.tools.fetch(0).tools.fetch(0).type)
+    assert_equal(:function, normalized_tool_search_output.tools.fetch(0).type)
+    assert_equal(:search, normalized_web_search.action.type)
+    assert_equal(:url, normalized_web_search.action.sources.fetch(0).type)
+
+    shell_environment_type = discriminator.new("local")
+    shell_environment_type.define_singleton_method(:to_s) { raise secret }
+    shell_environment_type.define_singleton_method(:to_sym) { raise secret }
+    normalized_shell_call = OpenAI::Responses.to_input_item(
+      type: :shell_call,
+      call_id: "call_123",
+      action: {commands: ["pwd"]},
+      status: :completed,
+      environment: {type: shell_environment_type}
+    )
+
+    assert_equal(:local, normalized_shell_call.environment.type)
+
+    malformed_source_type = discriminator.new("url")
+    malformed_source_type.define_singleton_method(:to_s) { raise secret }
+    malformed_source_type.define_singleton_method(:to_sym) { raise secret }
+    malformed_web_search_error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(
+        type: :web_search_call,
+        id: "ws_123",
+        status: :completed,
+        action: {sources: [{type: malformed_source_type, url: "https://example.test"}]}
+      )
+    end
+
+    refute_includes(malformed_web_search_error.message, secret)
+
+    outcome_type = discriminator.new("exit")
+    outcome_type.define_singleton_method(:to_s) { raise secret }
+    outcome_type.define_singleton_method(:to_sym) { raise secret }
+    normalized_shell_output = OpenAI::Responses.to_input_item(
+      type: :shell_call_output,
+      call_id: "call_123",
+      output: [
+        {
+          stdout: "done",
+          stderr: "",
+          outcome: {type: outcome_type, exit_code: 0}
+        }
+      ]
+    )
+
+    assert_equal(:exit, normalized_shell_output.output.fetch(0).outcome.type)
+
+    malformed_outcome_type = discriminator.new("exit")
+    malformed_outcome_type.define_singleton_method(:to_s) { raise secret }
+    malformed_outcome_type.define_singleton_method(:to_sym) { raise secret }
+    malformed_outcome_error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(
+        type: :shell_call_output,
+        call_id: "call_123",
+        output: [{type: "opaque-extension", stdout: "", outcome: {type: malformed_outcome_type, exit_code: 0}}]
+      )
+    end
+
+    refute_includes(malformed_outcome_error.message, secret)
+
+    allowed_caller = discriminator.new("direct")
+    allowed_caller.define_singleton_method(:to_s) { raise secret }
+    allowed_caller.define_singleton_method(:to_sym) { raise secret }
+    normalized_allowed_callers = OpenAI::Responses.to_input_item(
+      type: :additional_tools,
+      role: :developer,
+      tools: [
+        {
+          type: :function,
+          name: "lookup",
+          parameters: {},
+          strict: true,
+          allowed_callers: [allowed_caller]
+        }
+      ]
+    )
+
+    assert_equal([:direct], normalized_allowed_callers.tools.fetch(0).allowed_callers)
+
+    hostile_caller = Object.new
+    hostile_caller.define_singleton_method(:to_s) { raise secret }
+    hostile_caller.define_singleton_method(:to_sym) { raise secret }
+    caller_error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(
+        type: :additional_tools,
+        role: :developer,
+        tools: [
+          {
+            type: :function,
+            name: "lookup",
+            parameters: {},
+            strict: true,
+            allowed_callers: [hostile_caller]
+          }
+        ]
+      )
+    end
+
+    assert_equal("Invalid response item type", caller_error.message)
+    refute_includes(caller_error.message, secret)
+
+    hostile_caller_collection = Object.new
+    hostile_caller_collection.define_singleton_method(:is_a?) { raise secret }
+    hostile_caller_collection.define_singleton_method(:map) { raise secret }
+    hostile_caller_collection.define_singleton_method(:class) { raise secret }
+    caller_collection_error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(
+        type: :additional_tools,
+        role: :developer,
+        tools: [
+          {
+            type: :function,
+            name: "lookup",
+            parameters: {},
+            strict: true,
+            allowed_callers: hostile_caller_collection
+          }
+        ]
+      )
+    end
+
+    assert_equal("Invalid response item type", caller_collection_error.message)
+    refute_includes(caller_collection_error.message, secret)
+
+    invalid_type = "sk-secret".b.prepend(0xFF.chr).force_encoding(Encoding::UTF_8)
+    invalid_type_error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(
+        type: :code_interpreter_call,
+        id: "ci_123",
+        code: nil,
+        container_id: "cntr_123",
+        outputs: [{type: invalid_type, logs: "ok"}],
+        status: :completed
+      )
+    end
+
+    assert_equal("Invalid response item type", invalid_type_error.message)
+    refute_includes(invalid_type_error.message, "sk-secret")
+
+    summary_type = discriminator.new("summary_text")
+    summary_type.define_singleton_method(:to_s) { raise secret }
+    summary_type.define_singleton_method(:to_sym) { raise secret }
+    normalized_reasoning = OpenAI::Responses.to_input_item(
+      type: :reasoning,
+      id: "rs_123",
+      summary: [{type: summary_type, text: "Continue"}]
+    )
+
+    assert_equal(:summary_text, normalized_reasoning.summary.fetch(0).type)
+
+    exact_role = String.new("user")
+    exact_role.define_singleton_method(:to_s) { raise secret }
+    exact_role.define_singleton_method(:to_sym) { raise secret }
+    discriminator.define_singleton_method(:==) { |_other| raise secret }
+    class_role = discriminator.new("user")
+
+    normalized_exact_role = OpenAI::Responses.to_input_item(role: exact_role, content: "Continue")
+    normalized_class_role = OpenAI::Responses.to_input_item(role: class_role, content: "Continue")
+
+    assert_equal(:user, normalized_exact_role.role)
+    assert_equal(:user, normalized_class_role.role)
+  end
+
   def test_rejects_unrelated_sdk_models
     item = OpenAI::Chat::ChatCompletionUserMessageParam.new(content: "Hello")
 
@@ -784,7 +1380,7 @@ class OpenAI::Test::ResponsesInputItemsTest < Minitest::Test
       OpenAI::Responses.to_input_item(type: secret, value: "unknown")
     end
 
-    assert_equal("Unsupported response item type", error.message)
+    assert_equal("Invalid response item type", error.message)
     refute_includes(error.message, "sk-do-not-echo")
   end
 
@@ -845,6 +1441,280 @@ class OpenAI::Test::ResponsesInputItemsTest < Minitest::Test
     assert_equal(1, normalized.length)
     assert_instance_of(OpenAI::Responses::EasyInputMessage, normalized.fetch(0))
     assert_equal("msg_123", normalized.fetch(0)[:id])
+  end
+
+  def test_preserves_opaque_unknown_payloads
+    schema = {
+      "type" => "object",
+      "properties" => {"status" => {"type" => "string"}}
+    }
+    annotations = {"status" => {"type" => "string"}}
+    mcp_list = {
+      type: :mcp_list_tools,
+      id: "mcp_list_123",
+      server_label: "server",
+      tools: [{name: "lookup", input_schema: schema, annotations: annotations}]
+    }
+    tool_search = {type: :tool_search_call, arguments: schema}
+
+    normalized_mcp_list = OpenAI::Responses.to_input_item(mcp_list)
+    normalized_tool_search = OpenAI::Responses.to_input_item(tool_search)
+
+    assert_equal(schema, normalized_mcp_list.tools.fetch(0).input_schema)
+    assert_equal(annotations, normalized_mcp_list.tools.fetch(0).annotations)
+    assert_equal(schema, normalized_tool_search.arguments)
+
+    mcp_call = {
+      type: :mcp_call,
+      id: "mcp_call_123",
+      arguments: "{}",
+      name: "lookup",
+      server_label: "server",
+      error: {type: :mcp_tool_execution_error, content: schema}
+    }
+    additional_tools = {
+      type: :additional_tools,
+      role: :developer,
+      tools: [
+        {
+          type: :function,
+          name: "lookup",
+          parameters: schema,
+          strict: true,
+          output_schema: schema
+        }
+      ]
+    }
+
+    normalized_mcp_call = OpenAI::Responses.to_input_item(mcp_call)
+    normalized_additional_tools = OpenAI::Responses.to_input_item(additional_tools)
+    tool_schema = {type: "object", properties: {"status" => {"type" => "string"}}}
+
+    assert_equal(schema, normalized_mcp_call.error.content)
+    assert_equal(tool_schema, normalized_additional_tools.tools.fetch(0).parameters)
+    assert_equal(tool_schema, normalized_additional_tools.tools.fetch(0).output_schema)
+
+    local_shell = {
+      type: :local_shell_call,
+      id: "shell_123",
+      call_id: "call_123",
+      status: :completed,
+      action: {type: :exec, command: ["pwd"], env: {"type" => "production"}}
+    }
+    mcp_tools = {
+      type: :additional_tools,
+      role: :developer,
+      tools: [{type: :mcp, server_label: "server", headers: {"status" => "ok"}}]
+    }
+
+    normalized_local_shell = OpenAI::Responses.to_input_item(local_shell)
+    normalized_mcp_tools = OpenAI::Responses.to_input_item(mcp_tools)
+
+    assert_equal("production", normalized_local_shell.action.env.fetch(:type))
+    assert_equal("ok", normalized_mcp_tools.tools.fetch(0).headers.fetch(:status))
+
+    opaque_object = Object.new
+    opaque_arguments = OpenAI::Responses.to_input_item(type: :tool_search_call, arguments: opaque_object)
+    extension_item = {
+      type: :function_call_output,
+      call_id: "call_123",
+      output: "done",
+      future_extension: opaque_object
+    }
+    normalized_extension = OpenAI::Responses.to_input_item(extension_item)
+
+    assert_same(opaque_object, opaque_arguments.arguments)
+    assert_same(opaque_object, normalized_extension[:future_extension])
+
+    opaque_string = Class.new(String).new("opaque")
+    string_arguments = OpenAI::Responses.to_input_item(type: :tool_search_call, arguments: opaque_string)
+    string_extension = extension_item.merge(future_extension: opaque_string)
+    normalized_string_extension = OpenAI::Responses.to_input_item(string_extension)
+
+    assert_same(opaque_string, string_arguments.arguments)
+    assert_same(opaque_string, normalized_string_extension[:future_extension])
+
+    nested_parameters_extension = extension_item.merge(future_extension: {parameters: opaque_object})
+    normalized_nested_parameters_extension = OpenAI::Responses.to_input_item(nested_parameters_extension)
+
+    assert_same(opaque_object, normalized_nested_parameters_extension[:future_extension].fetch(:parameters))
+
+    opaque_array = Class.new(Array).new([{type: "opaque"}])
+    opaque_array.define_singleton_method(:zip) { raise "sk-opaque-zip" }
+    array_arguments = OpenAI::Responses.to_input_item(type: :tool_search_call, arguments: opaque_array)
+
+    assert_same(opaque_array, array_arguments.arguments)
+
+    hostile_schema_key = Class.new(String).new("type")
+    hostile_schema_key.define_singleton_method(:to_sym) { raise "sk-schema-key" }
+    schema_key_item = {
+      type: :additional_tools,
+      role: :developer,
+      tools: [
+        {
+          type: :function,
+          name: "lookup",
+          parameters: {hostile_schema_key => "object"},
+          strict: true
+        }
+      ]
+    }
+    normalized_schema_key = OpenAI::Responses.to_input_item(schema_key_item)
+
+    assert_equal("object", normalized_schema_key.tools.fetch(0).parameters.fetch(:type))
+
+    tool_search_schema = {properties: {7 => "opaque"}}
+    normalized_tool_search_schema = OpenAI::Responses.to_input_item(
+      type: :tool_search_output,
+      tools: [{type: :function, name: "lookup", parameters: tool_search_schema, strict: true}]
+    )
+
+    assert_equal(
+      "opaque",
+      normalized_tool_search_schema.tools.fetch(0).parameters.fetch(:properties).fetch(7)
+    )
+
+    conflicting_schema_keys = schema_key_item.merge(
+      tools: [
+        {
+          type: :function,
+          name: "lookup",
+          parameters: {"type" => "first", :type => "second"},
+          strict: true
+        }
+      ]
+    )
+    conflicting_schema_error = assert_raises(TypeError) do
+      OpenAI::Responses.to_input_item(conflicting_schema_keys)
+    end
+
+    assert_equal("Conflicting response item hash keys", conflicting_schema_error.message)
+  end
+
+  def test_preserves_unknown_extension_discriminator_looking_values
+    extension = {
+      type: "future_kind",
+      status: "opaque",
+      summary: {type: "future_summary", status: "opaque"}
+    }
+    item = {type: :function_call_output, call_id: "call_123", output: "done", future_extension: extension}
+
+    normalized = OpenAI::Responses.to_input_item(item)
+
+    assert_equal(extension, normalized[:future_extension])
+
+    opaque_type = Class.new(String).new("future_kind")
+    opaque_extension = {type: opaque_type, status: "opaque"}
+    opaque_item = item.merge(future_extension: opaque_extension)
+    normalized_opaque = OpenAI::Responses.to_input_item(opaque_item)
+
+    assert_same(opaque_type, normalized_opaque[:future_extension].fetch(:type))
+
+    colliding_extension = {type: "future_summary", status: "opaque"}
+    colliding_item = {
+      type: :function_call_output,
+      call_id: "call_123",
+      output: "done",
+      summary: colliding_extension
+    }
+
+    normalized_colliding = OpenAI::Responses.to_input_item(colliding_item)
+
+    assert_equal(colliding_extension, normalized_colliding[:summary])
+
+    opaque_role = Class.new(String).new("opaque-role")
+    opaque_status = Class.new(String).new("opaque-status")
+    message_with_extension = {
+      type: :message,
+      role: :user,
+      content: [{type: :input_text, text: "Continue", role: opaque_role, status: opaque_status}]
+    }
+    normalized_message = OpenAI::Responses.to_input_item(message_with_extension)
+
+    assert_same(opaque_role, normalized_message.content.fetch(0)[:role])
+    assert_same(opaque_status, normalized_message.content.fetch(0)[:status])
+
+    function_status = Class.new(String).new("opaque-status")
+    additional_tools_with_extension = {
+      type: :additional_tools,
+      role: :developer,
+      tools: [
+        {
+          type: :function,
+          name: "lookup",
+          parameters: {},
+          strict: true,
+          status: function_status
+        }
+      ]
+    }
+    normalized_additional_tools = OpenAI::Responses.to_input_item(additional_tools_with_extension)
+
+    assert_same(function_status, normalized_additional_tools.tools.fetch(0)[:status])
+
+    opaque_source_type = Class.new(String).new("opaque-source")
+    file_search_with_extension = {
+      type: :additional_tools,
+      role: :developer,
+      tools: [
+        {
+          type: :file_search,
+          vector_store_ids: ["vs_123"],
+          ranking_options: {sources: {type: opaque_source_type}}
+        }
+      ]
+    }
+    normalized_file_search = OpenAI::Responses.to_input_item(file_search_with_extension)
+
+    assert_same(opaque_source_type, normalized_file_search.tools.fetch(0).ranking_options[:sources].fetch(:type))
+
+    opaque_ranking_type = Class.new(String).new("opaque-ranking")
+    ranking_type_extension = {
+      type: :additional_tools,
+      role: :developer,
+      tools: [
+        {
+          type: :file_search,
+          vector_store_ids: ["vs_123"],
+          ranking_options: {type: opaque_ranking_type}
+        }
+      ]
+    }
+    normalized_ranking_type = OpenAI::Responses.to_input_item(ranking_type_extension)
+
+    assert_same(opaque_ranking_type, normalized_ranking_type.tools.fetch(0).ranking_options[:type])
+
+    opaque_nested_type = Object.new
+    typed_extension = item.merge(future_extension: {type: :message, content: [{type: opaque_nested_type}]})
+    normalized_typed_extension = OpenAI::Responses.to_input_item(typed_extension)
+
+    assert_same(opaque_nested_type, normalized_typed_extension[:future_extension].fetch(:content).fetch(0).fetch(:type))
+
+    shell_action_type = Object.new
+    shell_with_action_extension = {
+      type: :shell_call,
+      call_id: "call_123",
+      action: {commands: ["pwd"], type: shell_action_type},
+      environment: {type: :local}
+    }
+    normalized_shell_extension = OpenAI::Responses.to_input_item(shell_with_action_extension)
+
+    assert_same(shell_action_type, normalized_shell_extension.action[:type])
+
+    filter_status = Object.new
+    web_search_with_filter_extension = {
+      type: :additional_tools,
+      role: :developer,
+      tools: [
+        {
+          type: :web_search,
+          filters: {allowed_domains: ["example.test"], type: :message, status: filter_status}
+        }
+      ]
+    }
+    normalized_web_filter_extension = OpenAI::Responses.to_input_item(web_search_with_filter_extension)
+
+    assert_same(filter_status, normalized_web_filter_extension.tools.fetch(0).filters[:status])
   end
 
   def test_rejects_malformed_supported_item_shapes
