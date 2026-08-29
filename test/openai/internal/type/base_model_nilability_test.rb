@@ -9,6 +9,11 @@ class OpenAI::Test::BaseModelNilabilityTest < Minitest::Test
     optional :optional_nullable, Integer, nil?: true
   end
 
+  class UnknownFields < OpenAI::Internal::Type::BaseModel
+    required :required_value, OpenAI::Internal::Type::Unknown
+    optional :optional_value, OpenAI::Internal::Type::Unknown, nil?: true
+  end
+
   def test_constructor_accepts_explicit_nil_only_for_nullable_fields
     model = Fields.new(nullable: nil, optional_nullable: nil)
 
@@ -73,5 +78,40 @@ class OpenAI::Test::BaseModelNilabilityTest < Minitest::Test
     assert_nil(model.optional)
     assert_nil(state.fetch(:error))
     assert_equal({yes: 3, no: 0, maybe: 1}, state.fetch(:exactness))
+  end
+
+  def test_response_coercion_does_not_dispatch_nil_query_for_unknown_values
+    calls = 0
+    value = Object.new
+    value.define_singleton_method(:nil?) do
+      calls += 1
+      raise "should not dispatch nil?"
+    end
+
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+    model = OpenAI::Internal::Type::Converter.coerce(
+      UnknownFields,
+      {required_value: value, optional_value: value},
+      state: state
+    )
+
+    assert_same(value, model.required_value)
+    assert_same(value, model.optional_value)
+    assert_equal(0, calls)
+    assert_nil(state.fetch(:error))
+  end
+
+  def test_nil_class_coercion_does_not_dispatch_nil_query
+    calls = 0
+    value = Object.new
+    value.define_singleton_method(:nil?) do
+      calls += 1
+      raise "should not dispatch nil?"
+    end
+
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+    assert_nil(OpenAI::Internal::Type::Converter.coerce(NilClass, value, state: state))
+    assert_equal(0, calls)
+    assert_equal({yes: 0, no: 0, maybe: 1}, state.fetch(:exactness))
   end
 end

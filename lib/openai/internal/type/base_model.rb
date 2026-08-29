@@ -119,7 +119,7 @@ module OpenAI
                 Kernel.then do
                   value = @data.fetch(name_sym) { const == OpenAI::Internal::OMIT ? nil : const }
                   state = OpenAI::Internal::Type::Converter.new_coerce_state(translate_names: false)
-                  if (nilable || !required) && value.nil?
+                  if (nilable || !required) && nil.equal?(value)
                     nil
                   else
                     OpenAI::Internal::Type::Converter.coerce(
@@ -321,7 +321,7 @@ module OpenAI
               keys.delete(src_name)
 
               state[:error] = nil
-              converted = if item.nil? && (nilable || !required)
+              converted = if nil.equal?(item) && (nilable || !required)
                 exactness[nilable ? :yes : :maybe] += 1
                 nil
               else

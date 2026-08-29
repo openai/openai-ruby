@@ -199,7 +199,7 @@ module OpenAI
 
               case target
               in -> { _1 <= NilClass }
-                exactness[value.nil? ? :yes : :maybe] += 1
+                exactness[nil.equal?(value) ? :yes : :maybe] += 1
                 return nil
               in -> { _1 <= Integer }
                 case value
