@@ -6,6 +6,26 @@ require "rbconfig"
 require_relative "test_helper"
 
 class OpenAI::Test::LoadOrderTest < Minitest::Test
+  def test_to_yaml_works_after_normal_require
+    script = <<~RUBY
+      require "openai"
+
+      yaml = OpenAI::StructuredOutput::BaseModel.new.to_yaml
+      raise "unexpected YAML output" unless yaml == "--- {}\n"
+    RUBY
+
+    _, stderr, status = Open3.capture3(
+      {"RUBYOPT" => nil},
+      RbConfig.ruby,
+      "-I",
+      File.expand_path("../../lib", __dir__),
+      "-e",
+      script
+    )
+
+    assert_predicate(status, :success?, stderr)
+  end
+
   def test_skips_auto_require_during_tapioca_gem
     script = <<~RUBY
       module Tapioca
