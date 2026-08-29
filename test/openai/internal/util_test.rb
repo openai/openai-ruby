@@ -314,6 +314,22 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
     end
   end
 
+  def test_multipart_string_io_uses_current_position
+    sensitive_prefix = "fake-sensitive-prefix"
+    file = StringIO.new("#{sensitive_prefix}safe-payload")
+    file.pos = sensitive_prefix.bytesize
+
+    encoded = OpenAI::Internal::Util.encode_content(
+      {"content-type" => "multipart/form-data"},
+      {file: OpenAI::FilePart.new(file, filename: "upload")}
+    )
+    uploaded = FakeCGI.new(*encoded)["file"].read
+
+    assert_equal("safe-payload", uploaded)
+    refute_includes(uploaded, sensitive_prefix)
+    assert_equal(sensitive_prefix.bytesize, file.pos)
+  end
+
   def test_multipart_filename_quoting
     file = OpenAI::FilePart.new(StringIO.new("x"), filename: "a \"b\"\r\nEvil: 1.md")
     _headers, stream = OpenAI::Internal::Util.encode_content(

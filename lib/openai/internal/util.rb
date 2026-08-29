@@ -510,7 +510,7 @@ module OpenAI
             IO.copy_stream(val, y)
           in StringIO
             y << format(content_line, content_type || "application/octet-stream")
-            y << val.string
+            y << (val.string.byteslice(val.pos..) || "")
           in -> { primitive?(_1) }
             y << format(content_line, content_type || "text/plain")
             y << val.to_s
