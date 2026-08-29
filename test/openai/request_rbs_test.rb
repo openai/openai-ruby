@@ -14,9 +14,22 @@ class OpenAI::Test::RequestRBSTest < Minitest::Test
       client.request(
         method: :post,
         path: "/undocumented/endpoint",
+        query: {dog: "woof"},
+        headers: {useful_header: "interesting-value"},
+        body: {"hello" => "world"},
+        security: {bearer_auth: true}
+      )
+      client.request(
+        method: :post,
+        path: "/undocumented/endpoint",
         query: {"dog" => "woof"},
         headers: {"useful-header" => "interesting-value"},
         body: {"hello" => "world"}
+      )
+      client.request(
+        method: :post,
+        path: "/undocumented/endpoint",
+        security: {admin_api_key_auth: true}
       )
     RUBY
 
