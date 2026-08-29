@@ -63,7 +63,16 @@ class OpenAI::Test::ContentTypeDispatchTest < Minitest::Test
       [{id: 1}, {id: 2}]
     )
 
-    assert_equal(["{\"id\":1}", "{\"id\":2}"], encoded.to_a)
+    assert_equal(["{\"id\":1}\n", "{\"id\":2}\n"], encoded.to_a)
+  end
+
+  def test_jsonl_multi_record_byte_stream_is_newline_delimited
+    _headers, encoded = OpenAI::Internal::Util.encode_content(
+      {"content-type" => "application/jsonl"},
+      [{id: 1}, {id: 2}]
+    )
+
+    assert_equal("{\"id\":1}\n{\"id\":2}\n".b, encoded.to_a.join.b)
   end
 
   def test_mixed_case_jsonl_is_decoded_as_individual_records
