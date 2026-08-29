@@ -87,9 +87,14 @@ run_rubyfmt = lambda do |mode|
   abort(violations.join("\n")) unless violations.empty?
   unless paths.empty?
     Tempfile.create("rubyfmt-paths") do |file|
-      file.write(paths.join("\n") + "\n")
+      file.binmode
+      paths.each do |path|
+        file.write(path)
+        file.write("\0")
+      end
+
       file.flush
-      sh("./scripts/rubyfmt", mode, "@#{file.path}")
+      abort("rubyfmt failed") unless system("xargs", "-0", "./scripts/rubyfmt", mode, "--", in: file.path)
     end
   end
 end
