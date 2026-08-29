@@ -1,7 +1,7 @@
 module OpenAI
   module Errors
     class Error < StandardError
-      attr_accessor cause: StandardError?
+      attr_reader cause: StandardError?
     end
 
     class PollingError < OpenAI::Errors::Error

@@ -2,10 +2,61 @@
 
 require "logger"
 require "minitest/mock"
+require "open3"
+require "tempfile"
 
 require_relative "test_helper"
 
 class OpenAI::Test::ErrorsTest < Minitest::Test
+  def test_error_cause_is_read_only
+    error = OpenAI::Errors::Error.new("boom")
+
+    assert_respond_to(error, :cause)
+    refute_respond_to(error, :cause=)
+  end
+
+  def test_shipped_rbi_does_not_type_cause_writer
+    root = File.expand_path("../..", __dir__)
+    source = <<~RUBY
+      # typed: strict
+
+      OpenAI::Errors::Error.new("boom").cause = RuntimeError.new("cause")
+    RUBY
+
+    Tempfile.create(["openai-error-cause-writer", ".rb"]) do |file|
+      file.write(source)
+      file.flush
+      stdout, stderr, status = Open3.capture3(
+        {"SRB_SKIP_GEM_RBIS" => "1"},
+        "srb",
+        "typecheck",
+        file.path,
+        chdir: root
+      )
+
+      refute_predicate(status, :success?, "#{stdout}\n#{stderr}")
+      assert_match(/cause=/, "#{stdout}\n#{stderr}")
+    end
+  end
+
+  def test_shipped_rbs_does_not_type_cause_writer
+    root = File.expand_path("../..", __dir__)
+    stdout, stderr, status = Open3.capture3(
+      "rbs",
+      "-I",
+      "sig",
+      "-r",
+      "net-http",
+      "method",
+      "OpenAI::Errors::Error",
+      "cause=",
+      chdir: root
+    )
+
+    refute_predicate(status, :success?, "#{stdout}\n#{stderr}")
+    assert_match(/Cannot find method: cause=/, "#{stdout}\n#{stderr}")
+  end
+
   def test_nested_api_errors_include_safe_diagnostics_without_disclosing_the_response
     url = URI("https://example.com/v1/responses")
     headers = {"x-request-id" => "req_nested", "set-cookie" => "fake-session-cookie"}
