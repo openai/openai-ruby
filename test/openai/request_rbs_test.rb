@@ -8,7 +8,6 @@ require_relative "test_helper"
 
 class OpenAI::Test::RequestRBSTest < Minitest::Test
   def test_shipped_rbs_types_documented_custom_request_call
-    root = File.expand_path("../..", __dir__)
     source = <<~RUBY
       client = OpenAI::Client.new(api_key: "test-key")
       client.request(
@@ -33,6 +32,32 @@ class OpenAI::Test::RequestRBSTest < Minitest::Test
       )
     RUBY
 
+    stdout, stderr, status = steep_check(source)
+
+    assert_predicate(status, :success?, "#{stdout}\n#{stderr}")
+  end
+
+  def test_shipped_rbs_rejects_invalid_custom_request_security
+    source = <<~RUBY
+      client = OpenAI::Client.new(api_key: "test-key")
+      client.request(
+        method: :post,
+        path: "/undocumented/endpoint",
+        security: {bearer_auth: true, admin_api_key_auth: "false"}
+      )
+    RUBY
+
+    stdout, stderr, status = steep_check(source)
+
+    refute_predicate(status, :success?, "#{stdout}\n#{stderr}")
+    assert_includes(stdout, "Ruby::ArgumentTypeMismatch")
+  end
+
+  private
+
+  def steep_check(source)
+    root = File.expand_path("../..", __dir__)
+
     Dir.mktmpdir("custom-request-rbs") do |directory|
       FileUtils.cp_r(File.join(root, "sig"), directory)
       File.write(File.join(directory, "probe.rb"), source)
@@ -46,7 +71,7 @@ class OpenAI::Test::RequestRBSTest < Minitest::Test
           end
         RUBY
       )
-      stdout, stderr, status = Open3.capture3(
+      Open3.capture3(
         "steep",
         "check",
         "--no-daemon",
@@ -54,8 +79,6 @@ class OpenAI::Test::RequestRBSTest < Minitest::Test
         "--validate=skip",
         chdir: directory
       )
-
-      assert_predicate(status, :success?, "#{stdout}\n#{stderr}")
     end
   end
 end
