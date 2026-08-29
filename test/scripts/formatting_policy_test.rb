@@ -56,6 +56,47 @@ class FormattingPolicyTest < Minitest::Test
     assert_rubyfmt_enforced("rbi")
   end
 
+  def test_rubyfmt_preserves_newlines_in_discovered_paths
+    Dir.mktmpdir do |directory|
+      source_directory = File.join(directory, "source")
+      Dir.mkdir(source_directory)
+      path = File.join(source_directory, "example\nwith newline.rb")
+      File.write(path, "value = 1\n")
+      paths = File.join(directory, "paths")
+      File.write(paths, "#{source_directory}\n")
+      arguments = File.join(directory, "rubyfmt-arguments")
+      rubyfmt = File.join(directory, "rubyfmt")
+      File.write(
+        rubyfmt,
+        <<~RUBY
+          #!#{RbConfig.ruby}
+          if ARGV == ["--version"]
+            puts "rubyfmt 0.14.1"
+          else
+            File.binwrite(ENV.fetch("RUBYFMT_ARGUMENTS"), ARGV.join("\0"))
+          end
+        RUBY
+      )
+      File.chmod(0o755, rubyfmt)
+
+      stdout, stderr, status = Open3.capture3(
+        {"RUBYFMT" => rubyfmt, "RUBYFMT_ARGUMENTS" => arguments},
+        "bundle",
+        "exec",
+        "rake",
+        "lint:rubyfmt",
+        "FORMAT_FILE=#{paths}",
+        chdir: ROOT
+      )
+
+      assert(status.success?, "#{stdout}\n#{stderr}")
+      assert_equal(
+        ["--fail-fast", "--header-opt-out", "--check", "--", path],
+        File.binread(arguments).split("\0")
+      )
+    end
+  end
+
   def assert_rubyfmt_enforced(extension)
     Dir.mktmpdir do |directory|
       path = File.join(directory, "example with spaces.#{extension}")
