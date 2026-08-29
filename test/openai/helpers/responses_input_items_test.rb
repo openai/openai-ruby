@@ -1464,6 +1464,32 @@ class OpenAI::Test::ResponsesInputItemsTest < Minitest::Test
     assert_equal(annotations, normalized_mcp_list.tools.fetch(0).annotations)
     assert_equal(schema, normalized_tool_search.arguments)
 
+    mcp_extension_role = Object.new
+    mcp_extension_content_type = Object.new
+    mcp_list_with_extensions = {
+      type: :mcp_list_tools,
+      id: "mcp_list_456",
+      server_label: "server",
+      tools: [
+        {
+          name: "lookup",
+          input_schema: schema,
+          type: :additional_tools,
+          role: mcp_extension_role
+        },
+        {
+          name: "search",
+          input_schema: schema,
+          type: :message,
+          content: [{type: mcp_extension_content_type}]
+        }
+      ]
+    }
+    normalized_mcp_extensions = OpenAI::Responses.to_input_item(mcp_list_with_extensions)
+
+    assert_same(mcp_extension_role, normalized_mcp_extensions.tools.fetch(0)[:role])
+    assert_same(mcp_extension_content_type, normalized_mcp_extensions.tools.fetch(1)[:content].fetch(0).fetch(:type))
+
     mcp_call = {
       type: :mcp_call,
       id: "mcp_call_123",
@@ -1525,6 +1551,15 @@ class OpenAI::Test::ResponsesInputItemsTest < Minitest::Test
 
     assert_same(opaque_object, opaque_arguments.arguments)
     assert_same(opaque_object, normalized_extension[:future_extension])
+
+    hostile_argument = Object.new
+    hostile_argument.define_singleton_method(:nil?) { raise "sk-opaque-arguments" }
+    normalized_hostile_argument = OpenAI::Responses.to_input_item(
+      type: :tool_search_call,
+      arguments: hostile_argument
+    )
+
+    assert_same(hostile_argument, normalized_hostile_argument.arguments)
 
     opaque_string = Class.new(String).new("opaque")
     string_arguments = OpenAI::Responses.to_input_item(type: :tool_search_call, arguments: opaque_string)

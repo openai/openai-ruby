@@ -159,7 +159,12 @@ module OpenAI
           validate_tool_search_execution!(value, type)
           target = response_input_target(value, type)
           state = OpenAI::Internal::Type::Converter.new_coerce_state
-          normalized = OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
+          shield_tool_search_arguments = type == :tool_search_call && value.key?(:arguments)
+          # Arguments are intentionally Unknown, but BaseModel checks nil? before it
+          # reaches Unknown.coerce. Validate with a safe placeholder, then restore the
+          # untouched opaque value after the rest of the item has passed validation.
+          coercion_value = shield_tool_search_arguments ? value.merge(arguments: nil) : value
+          normalized = OpenAI::Internal::Type::Converter.coerce(target, coercion_value, state: state)
 
           if missing_nested_discriminator?(value, normalized)
             raise TypeError.new("Unsupported nested response item discriminator")
@@ -180,6 +185,8 @@ module OpenAI
           unless OpenAI::Responses::ResponseInputItem === normalized
             raise TypeError.new("Unsupported response item type: #{type}")
           end
+
+          normalized.arguments = value.fetch(:arguments) if shield_tool_search_arguments
 
           return item if !changed && OpenAI::Responses::ResponseInputItem === item
 
@@ -373,8 +380,8 @@ module OpenAI
 
         def typed_child_context(container, key, context)
           return unless context
-          return if %i[mcp_require_approval shell_call_action web_search_filters].include?(context)
           return :typed if context == :shell_output_chunk && key == :outcome
+          return unless typed_discriminator_context?(context)
 
           type = safe_symbol(existing_hash_value(container, :type) || existing_hash_value(container, "type"))
           if NilClass === type
@@ -463,7 +470,7 @@ module OpenAI
         def discriminator_key?(container, key, context)
           return key == :ranker if context == :ranking_options
           return key == :mode if context == :prompt_cache_breakpoint
-          return false if %i[mcp_require_approval shell_call_action web_search_filters].include?(context)
+          return false unless typed_discriminator_context?(context)
 
           type = safe_symbol(existing_hash_value(container, :type) || existing_hash_value(container, "type"))
           if key == :type
@@ -541,7 +548,8 @@ module OpenAI
           end
         end
 
-        def discriminator_collection_key?(container, key, _context)
+        def discriminator_collection_key?(container, key, context)
+          return false unless typed_discriminator_context?(context)
           return false unless DISCRIMINATOR_COLLECTION_KEYS.include?(key)
 
           type = safe_symbol(existing_hash_value(container, :type) || existing_hash_value(container, "type"))
@@ -550,6 +558,18 @@ module OpenAI
           end
 
           %i[web_search_preview web_search_preview_2025_03_11].include?(type)
+        end
+
+        def typed_discriminator_context?(context)
+          %i[
+            item
+            message_content
+            namespace_tool
+            response_tool
+            tool_search_tool
+            typed
+            web_search_action
+          ].include?(context)
         end
 
         def unsupported_discriminator_value?(key, value)
