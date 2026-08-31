@@ -582,44 +582,37 @@ module OpenAI
         raw[:output].to_a.none? do |output|
           case output[:type]
           when "message"
-            model && unfinished_structured_output_message?(output)
+            model && unfinished_structured_output_message?(output, response_status: raw[:status])
           when "function_call"
-            unfinished_structured_output_function_call?(output, tool_models)
+            unfinished_structured_output_function_call?(
+              output,
+              tool_models,
+              response_status: raw[:status]
+            )
           else
             false
           end
         end
       end
 
-      def unfinished_structured_output_message?(output)
+      def unfinished_structured_output_message?(output, response_status:)
         return true if structured_output_pending_status?(output[:status])
-        return false unless output[:status].nil?
+        return false unless response_status.nil? && output[:status].nil?
 
-        output[:content].to_a.any? do |content|
-          content[:type] == "output_text" &&
-            (!content.key?(:text) || !valid_structured_output_json?(content[:text]))
-        end
+        output[:content].to_a.any? { |content| content[:type] == "output_text" }
       end
 
-      def unfinished_structured_output_function_call?(output, tool_models)
+      def unfinished_structured_output_function_call?(output, tool_models, response_status:)
         return false if tool_models.empty?
-        return true unless output.key?(:name)
+        return false unless output.key?(:name)
         return false unless tool_models.key?(output[:name])
         return true if structured_output_pending_status?(output[:status])
-        return true unless output.key?(:arguments)
 
-        output[:status].nil? && !valid_structured_output_json?(output[:arguments])
+        response_status.nil? && output[:status].nil?
       end
 
       def structured_output_pending_status?(status)
         ["queued", "in_progress", "incomplete"].include?(status)
-      end
-
-      def valid_structured_output_json?(value)
-        JSON.parse(value)
-        true
-      rescue JSON::ParserError, TypeError
-        false
       end
 
       def duplicate_structured_output_params(value)

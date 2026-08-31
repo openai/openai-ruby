@@ -38,7 +38,8 @@ module OpenAI
           unless tool_models.empty?
             raw[:output]&.each do |output|
               next unless output[:type] == "function_call"
-              next if (model = tool_models[output.fetch(:name)]).nil?
+              next unless (name = output[:name])
+              next if (model = tool_models[name]).nil?
               begin
                 parsed = JSON.parse(output.fetch(:arguments), symbolize_names: true)
               rescue JSON::ParserError => e

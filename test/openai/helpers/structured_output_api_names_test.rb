@@ -444,15 +444,109 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     assert_nil(content.parsed)
   end
 
-  def test_background_retrieve_parses_text_with_an_unhinted_partial_tool_call
-    stub_request(:get, "http://localhost/responses/resp_text_with_unhinted_tool").to_return_json(
+  def test_background_retrieve_defers_statusless_schema_incomplete_arguments
+    stub_request(:get, "http://localhost/responses/resp_statusless_incomplete_arguments").to_return_json(
       status: 200,
       body: {
-        id: "resp_text_with_unhinted_tool",
+        id: "resp_statusless_incomplete_arguments",
+        output: [
+          {
+            arguments: "{}",
+            call_id: "call_statusless_incomplete_arguments",
+            name: "AliasedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve(
+      "resp_statusless_incomplete_arguments",
+      tools: [AliasedLookup]
+    )
+
+    assert_nil(response.output.fetch(0).parsed)
+  end
+
+  def test_background_retrieve_defers_statusless_schema_incomplete_text
+    stub_request(:get, "http://localhost/responses/resp_statusless_incomplete_text").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_statusless_incomplete_text",
+        output: [
+          {
+            id: "msg_statusless_incomplete_text",
+            content: [{annotations: [], text: "{}", type: "output_text"}],
+            role: "assistant",
+            type: "message"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_statusless_incomplete_text", text: AliasedProfile)
+
+    assert_nil(response.output.fetch(0).content.fetch(0).parsed)
+  end
+
+  def test_background_retrieve_parses_malformed_statusless_arguments_after_completion
+    stub_request(:get, "http://localhost/responses/resp_completed_malformed_arguments").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_completed_malformed_arguments",
         status: "completed",
         output: [
           {
-            id: "msg_text_with_unhinted_tool",
+            arguments: "{\"profileId\":",
+            call_id: "call_completed_malformed_arguments",
+            name: "AliasedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve(
+      "resp_completed_malformed_arguments",
+      tools: [AliasedLookup]
+    )
+
+    assert_raises(OpenAI::Errors::ConversionError) { response.output.fetch(0).parsed }
+  end
+
+  def test_background_retrieve_parses_malformed_statusless_text_after_completion
+    stub_request(:get, "http://localhost/responses/resp_completed_malformed_text").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_completed_malformed_text",
+        status: "completed",
+        output: [
+          {
+            id: "msg_completed_malformed_text",
+            content: [{annotations: [], text: "{\"displayName\":", type: "output_text"}],
+            role: "assistant",
+            type: "message"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_completed_malformed_text", text: AliasedProfile)
+
+    assert_raises(OpenAI::Errors::ConversionError) do
+      response.output.fetch(0).content.fetch(0).parsed
+    end
+  end
+
+  def test_background_retrieve_parses_text_with_a_nameless_tool_call
+    stub_request(:get, "http://localhost/responses/resp_text_with_nameless_tool").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_text_with_nameless_tool",
+        status: "completed",
+        output: [
+          {
+            id: "msg_text_with_nameless_tool",
             content: [
               {
                 annotations: [],
@@ -467,14 +561,17 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
           {
             arguments: "{\"unused\":",
             call_id: "call_unhinted",
-            name: "UnhintedLookup",
             type: "function_call"
           }
         ]
       }
     )
 
-    response = @client.responses.retrieve("resp_text_with_unhinted_tool", text: AliasedProfile)
+    response = @client.responses.retrieve(
+      "resp_text_with_nameless_tool",
+      text: AliasedProfile,
+      tools: [AliasedLookup]
+    )
 
     assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
     assert_nil(response.output.fetch(1).parsed)
