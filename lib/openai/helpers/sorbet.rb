@@ -286,7 +286,7 @@ module OpenAI
         end
 
         private def reject_sorbet_function_tools!(params = {})
-          tools = Array(params[:tools])
+          tools = Array(params[:tools]).dup
           tools.concat(Array(params["tools"])) if params.is_a?(Hash)
 
           if tools.any? { sorbet_adapter?(_1) }

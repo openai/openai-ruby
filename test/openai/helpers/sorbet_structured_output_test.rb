@@ -809,6 +809,19 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
       assert_equal("Ada", parsed.participants.first.display_name)
     end
 
+    def test_responses_retrieve_accepts_frozen_ordinary_tool_hints
+      stub_request(:get, "http://localhost/responses/resp_frozen_tools").to_return_json(
+        status: 200,
+        body: {id: "resp_frozen_tools", status: "completed", output: []}
+      )
+
+      tools = [ExistingInstanceFormat.new].freeze
+      response = @client.responses.retrieve("resp_frozen_tools", tools: tools)
+
+      assert_empty(response.output)
+      assert_equal(1, tools.length)
+    end
+
     def test_responses_retrieve_rejects_unsupported_sorbet_function_tools_before_sending_a_request
       error = assert_raises(ArgumentError) do
         @client.responses.retrieve("resp_secret", tools: [@adapter])
