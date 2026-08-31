@@ -12,8 +12,19 @@ module OpenAI
         end
 
         def open(url:, headers:, timeout:, **options, &block)
-          @transport.open(url: url, headers: headers, timeout: timeout, **options, &block)
+          return @transport.open(url: url, headers: headers, timeout: timeout, **options) unless block
+
+          callback_error = nil
+          @transport.open(url: url, headers: headers, timeout: timeout, **options) do |socket|
+            block.call(socket)
+          rescue OpenAI::Errors::RealtimeConnectionError => e
+            callback_error = e
+            raise
+          end
+
         rescue OpenAI::Errors::RealtimeConnectionError => e
+          raise if e.equal?(callback_error)
+
           message = if e.cause.is_a?(LoadError)
             "Responses WebSockets require the async-websocket gem. Add it to your Gemfile."
           end

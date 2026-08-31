@@ -5,6 +5,11 @@ require_relative "connection_test_support"
 class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
   include OpenAI::Test::ResponsesWebSocketConnectionTestSupport
 
+  class SerializerMetadataProbe < OpenAI::Internal::Type::BaseModel
+    required :type, const: :future
+    optional :ruby_name, String, api_name: :apiName
+  end
+
   def test_connect_opens_a_block_scoped_connection_and_sends_response_create
     socket = FakeSocket.new(text_delta("hello", stream_id: "turn_1"))
     transport = FakeTransport.new(socket)
@@ -116,6 +121,45 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     end
 
     refute_includes(error.full_message, secret)
+    assert_empty(socket.writes)
+  end
+
+  def test_nested_generated_models_keep_serializer_metadata
+    socket = FakeSocket.new
+    nested = SerializerMetadataProbe.new(ruby_name: "kept")
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      connection.send_event(type: "response.create", future: nested)
+    end
+
+    assert_equal(
+      {"type" => "future", "apiName" => "kept"},
+      JSON.parse(socket.writes.fetch(0)).fetch("future")
+    )
+  end
+
+  def test_raw_hash_without_type_is_rejected_before_write
+    socket = FakeSocket.new
+
+    assert_raises(OpenAI::Errors::ResponsesClientEventError) do
+      client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+        connection.send_event(model: "gpt-5.2")
+      end
+    end
+
+    assert_empty(socket.writes)
+  end
+
+  def test_nested_generated_model_rejects_api_name_collision_before_write
+    socket = FakeSocket.new
+    nested = SerializerMetadataProbe.new(ruby_name: "good", apiName: "bad")
+
+    assert_raises(OpenAI::Errors::ResponsesClientEventError) do
+      client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+        connection.send_event(type: "response.create", future: nested)
+      end
+    end
+
     assert_empty(socket.writes)
   end
 
@@ -596,5 +640,23 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     )
     assert_nil(error.cause)
     refute_includes(error.full_message, "secret-load-path")
+  end
+
+  def test_default_transport_preserves_realtime_errors_from_the_callback
+    transport = OpenAI::Responses::Transports::AsyncWebSocket.allocate
+    callback_error = OpenAI::Errors::RealtimeConnectionError.new(
+      url: URI("wss://example.com/v1/responses")
+    )
+    delegate = Object.new
+    delegate.define_singleton_method(:open) { |**_kwargs, &callback| callback.call(Object.new) }
+    transport.instance_variable_set(:@transport, delegate)
+
+    error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
+      transport.open(url: URI("wss://example.com/v1/responses"), headers: {}, timeout: 1) do
+        raise callback_error
+      end
+    end
+
+    assert_same(callback_error, error)
   end
 end

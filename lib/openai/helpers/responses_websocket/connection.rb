@@ -162,12 +162,9 @@ module OpenAI
       end
 
       private def encode_client_event(event)
-        if event.is_a?(OpenAI::Internal::Type::BaseModel)
-          normalize_event_keys(event)
-        end
-
+        validate_event_tree!(event)
         normalized = if event.is_a?(Hash)
-          event.dup
+          OpenAI::Internal::Type::Unknown.dump(event, state: {can_retry: true})
         else
           OpenAI::Internal::Type::Converter.dump(OpenAI::Responses::ResponsesClientEvent, event)
         end
@@ -286,12 +283,14 @@ module OpenAI
         @named_stream_ids[stream_id] = true
       end
 
-      private def normalize_event_keys(value, active = {}.compare_by_identity)
+      private def validate_event_tree!(value, active = {}.compare_by_identity)
         case value
         when OpenAI::Internal::Type::BaseModel
           guard_cycle!(value, active)
           begin
-            normalize_event_keys(value.to_h, active)
+            data = value.to_h
+            reject_duplicate_serialized_model_keys!(value.class, data)
+            validate_event_tree!(data, active)
           ensure
             active.delete(value)
           end
@@ -300,11 +299,7 @@ module OpenAI
           guard_cycle!(value, active)
           reject_duplicate_semantic_keys!(value)
           begin
-            value.to_h do |key, item|
-              normalized_key = key.is_a?(String) ? key.to_sym : key
-              [normalized_key, normalize_event_keys(item, active)]
-            end
-
+            value.each_value { |item| validate_event_tree!(item, active) }
           ensure
             active.delete(value)
           end
@@ -312,10 +307,37 @@ module OpenAI
         when Array
           guard_cycle!(value, active)
           begin
-            value.map { |item| normalize_event_keys(item, active) }
+            value.each { |item| validate_event_tree!(item, active) }
           ensure
             active.delete(value)
           end
+        end
+
+        nil
+      end
+
+      private def reject_duplicate_serialized_model_keys!(model, data)
+        serialized_keys = data.keys.map do |key|
+          name = key.is_a?(String) ? key.to_sym : key
+          field = model.known_fields[name]
+          field ? field.fetch(:api_name) : name
+        end
+
+        return if serialized_keys.map(&:to_s).uniq.length == serialized_keys.length
+
+        raise OpenAI::Errors::ResponsesClientEventError.new
+      end
+
+      private def normalize_event_keys(value)
+        case value
+        when Hash
+          value.to_h do |key, item|
+            normalized_key = key.is_a?(String) ? key.to_sym : key
+            [normalized_key, normalize_event_keys(item)]
+          end
+
+        when Array
+          value.map { |item| normalize_event_keys(item) }
         else
           value
         end
