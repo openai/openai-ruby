@@ -378,6 +378,137 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     assert_equal(:function_call, response.output.fetch(1).type)
   end
 
+  def test_background_retrieve_defers_statusless_unfinished_function_calls
+    stub_request(:get, "http://localhost/responses/resp_statusless_function_call").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_statusless_function_call",
+        output: [{type: "function_call"}]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_statusless_function_call", text: AliasedProfile)
+
+    assert_nil(response.status)
+    assert_equal(:function_call, response.output.fetch(0).type)
+  end
+
+  def test_background_retrieve_defers_statusless_partial_function_arguments
+    stub_request(:get, "http://localhost/responses/resp_statusless_partial_arguments").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_statusless_partial_arguments",
+        output: [
+          {
+            arguments: "{\"profileId\":",
+            call_id: "call_statusless_partial_arguments",
+            name: "AliasedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve(
+      "resp_statusless_partial_arguments",
+      tools: [AliasedLookup]
+    )
+    tool_call = response.output.fetch(0)
+
+    assert_nil(response.status)
+    assert_equal("{\"profileId\":", tool_call.arguments)
+    assert_nil(tool_call.parsed)
+  end
+
+  def test_background_retrieve_defers_statusless_partial_text
+    stub_request(:get, "http://localhost/responses/resp_statusless_partial_text").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_statusless_partial_text",
+        output: [
+          {
+            id: "msg_statusless_partial_text",
+            content: [{annotations: [], text: "{\"displayName\":", type: "output_text"}],
+            role: "assistant",
+            type: "message"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_statusless_partial_text", text: AliasedProfile)
+    content = response.output.fetch(0).content.fetch(0)
+
+    assert_nil(response.status)
+    assert_equal("{\"displayName\":", content.text)
+    assert_nil(content.parsed)
+  end
+
+  def test_background_retrieve_parses_text_with_an_unhinted_partial_tool_call
+    stub_request(:get, "http://localhost/responses/resp_text_with_unhinted_tool").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_text_with_unhinted_tool",
+        status: "completed",
+        output: [
+          {
+            id: "msg_text_with_unhinted_tool",
+            content: [
+              {
+                annotations: [],
+                text: "{\"displayName\":\"Ada\",\"middleName\":null}",
+                type: "output_text"
+              }
+            ],
+            role: "assistant",
+            status: "completed",
+            type: "message"
+          },
+          {
+            arguments: "{\"unused\":",
+            call_id: "call_unhinted",
+            name: "UnhintedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_text_with_unhinted_tool", text: AliasedProfile)
+
+    assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
+    assert_nil(response.output.fetch(1).parsed)
+  end
+
+  def test_background_retrieve_parses_tools_with_unhinted_partial_text
+    stub_request(:get, "http://localhost/responses/resp_tool_with_unhinted_text").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_tool_with_unhinted_text",
+        status: "completed",
+        output: [
+          {
+            id: "msg_unhinted_text",
+            content: [{annotations: [], text: "{\"unused\":", type: "output_text"}],
+            role: "assistant",
+            type: "message"
+          },
+          {
+            arguments: "{\"profileId\":7}",
+            call_id: "call_hinted",
+            name: "AliasedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_tool_with_unhinted_text", tools: [AliasedLookup])
+
+    assert_nil(response.output.fetch(0).content.fetch(0).parsed)
+    assert_instance_of(AliasedLookup, response.output.fetch(1).parsed)
+  end
+
   def test_background_retrieve_defers_incomplete_items_when_response_is_completed
     stub_request(:get, "http://localhost/responses/resp_completed_with_incomplete_item").to_return_json(
       status: 200,

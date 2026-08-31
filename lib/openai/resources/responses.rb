@@ -392,7 +392,7 @@ module OpenAI
 
         unwrap = if model || !tool_models.empty?
           -> (raw) do
-            next raw unless structured_output_response_complete?(raw)
+            next raw unless structured_output_response_complete?(raw, model, tool_models)
 
             parse_structured_outputs!(raw, model, tool_models)
           end
@@ -576,12 +576,50 @@ module OpenAI
         OpenAI::Helpers::StructuredOutput::ResponseParser.get_models(parsed)
       end
 
-      def structured_output_response_complete?(raw)
+      def structured_output_response_complete?(raw, model, tool_models)
         return false unless [nil, "completed"].include?(raw[:status])
 
         raw[:output].to_a.none? do |output|
-          ["queued", "in_progress", "incomplete"].include?(output[:status])
+          case output[:type]
+          when "message"
+            model && unfinished_structured_output_message?(output)
+          when "function_call"
+            unfinished_structured_output_function_call?(output, tool_models)
+          else
+            false
+          end
         end
+      end
+
+      def unfinished_structured_output_message?(output)
+        return true if structured_output_pending_status?(output[:status])
+        return false unless output[:status].nil?
+
+        output[:content].to_a.any? do |content|
+          content[:type] == "output_text" &&
+            (!content.key?(:text) || !valid_structured_output_json?(content[:text]))
+        end
+      end
+
+      def unfinished_structured_output_function_call?(output, tool_models)
+        return false if tool_models.empty?
+        return true unless output.key?(:name)
+        return false unless tool_models.key?(output[:name])
+        return true if structured_output_pending_status?(output[:status])
+        return true unless output.key?(:arguments)
+
+        output[:status].nil? && !valid_structured_output_json?(output[:arguments])
+      end
+
+      def structured_output_pending_status?(status)
+        ["queued", "in_progress", "incomplete"].include?(status)
+      end
+
+      def valid_structured_output_json?(value)
+        JSON.parse(value)
+        true
+      rescue JSON::ParserError, TypeError
+        false
       end
 
       def duplicate_structured_output_params(value)

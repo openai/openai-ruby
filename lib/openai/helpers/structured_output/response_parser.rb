@@ -35,17 +35,19 @@ module OpenAI
               end
           end
 
-          raw[:output]&.each do |output|
-            next unless output[:type] == "function_call"
-            next if (model = tool_models[output.fetch(:name)]).nil?
-            begin
-              parsed = JSON.parse(output.fetch(:arguments), symbolize_names: true)
-            rescue JSON::ParserError => e
-              parsed = e
-            end
+          unless tool_models.empty?
+            raw[:output]&.each do |output|
+              next unless output[:type] == "function_call"
+              next if (model = tool_models[output.fetch(:name)]).nil?
+              begin
+                parsed = JSON.parse(output.fetch(:arguments), symbolize_names: true)
+              rescue JSON::ParserError => e
+                parsed = e
+              end
 
-            coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
-            output.store(:parsed, coerced)
+              coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
+              output.store(:parsed, coerced)
+            end
           end
 
           raw
