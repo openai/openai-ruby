@@ -81,6 +81,37 @@ sideband connection. See the [Realtime WebSocket guide](realtime.md) and the run
 [text, transcription, voice, and sideband examples](examples/realtime/README.md)
 for lifecycle, authentication, proxy, TLS, and custom transport details.
 
+### Responses WebSockets
+
+The Responses API also supports a persistent, block-scoped WebSocket for
+sequential and multiplexed response creation. Add the optional
+`async-websocket` gem, then send `response.create` events through
+`client.responses.connect`:
+
+```ruby
+client.responses.connect do |connection|
+  connection.response.create(
+    model: "gpt-5.2",
+    input: "Say hello.",
+    stream_id: "turn_1"
+  )
+
+  connection.each do |event|
+    print(event.delta) if event.type == :"response.output_text.delta"
+    break if event.type == :"response.completed"
+  end
+end
+```
+
+The connection is intentionally single-owner: callers serialize writes and
+use one reader (`receive` or `each`). `stream_id` is optional; a connection
+accepts at most 32 distinct named IDs, and requests on the same ID are FIFO.
+The SDK does not automatically reconnect or replay an ambiguous write. When
+the server closes a connection or reports its 60-minute limit, open a new
+connection and continue with `previous_response_id` when the response was
+stored. WebSocket mode does not support `background`, `stream`, or
+`stream_options`; `generate: false` warmups are supported.
+
 ### Pagination
 
 List methods in the OpenAI API are paginated.

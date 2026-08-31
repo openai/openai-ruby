@@ -1,0 +1,40 @@
+module OpenAI
+  module Models
+    module Responses
+      type connection_server_event =
+        OpenAI::Models::Responses::responses_server_event
+        | OpenAI::Responses::UnknownServerEvent
+
+      type connection_client_event =
+        OpenAI::Responses::ResponsesClientEvent
+        | ::Hash[Symbol | String, untyped]
+
+      class Connection
+        include Enumerable[OpenAI::Models::Responses::connection_server_event]
+
+        attr_reader url: URI::Generic
+        attr_reader response: OpenAI::Responses::ConnectionResources::Response
+
+        # @api private
+        def initialize: (socket: untyped, url: URI::Generic) -> void
+        def each:
+          -> Enumerator[OpenAI::Models::Responses::connection_server_event, self]
+          | {
+            (OpenAI::Models::Responses::connection_server_event event) -> void
+          } -> self
+        def receive: -> OpenAI::Models::Responses::connection_server_event?
+        def send_event: (
+          OpenAI::Models::Responses::connection_client_event event
+        ) -> nil
+        def close: (?code: Integer, ?reason: String) -> nil
+
+        # @api private
+        def abort: -> nil
+        def closed?: -> bool
+
+        # @api private
+        def poisoned?: -> bool
+      end
+    end
+  end
+end

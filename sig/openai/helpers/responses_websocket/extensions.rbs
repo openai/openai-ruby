@@ -1,0 +1,55 @@
+module OpenAI
+  class Client
+    # @api private
+    def with_responses_websocket_connection_request: (
+      ?websocket_base_url: String?,
+      ?options: OpenAI::request_opts?
+    ) {
+      (
+        OpenAI::Internal::Transport::BaseClient::request_input request,
+        ^-> void mark_handshake_completed
+      ) -> top
+    } -> top
+  end
+
+  module Errors
+    class ResponsesConnectionError < OpenAI::Errors::Error
+      attr_reader url: URI::Generic
+      attr_reader http_status: Integer?
+      def cause: -> Exception?
+      def initialize: (
+        url: URI::Generic,
+        ?message: String?,
+        ?http_status: Integer?
+      ) -> void
+    end
+
+    class ResponsesProtocolError < OpenAI::Errors::Error
+      def cause: -> Exception?
+      def initialize: -> void
+    end
+
+    class ResponsesClientEventError < OpenAI::Errors::Error
+      def cause: -> Exception?
+      def initialize: -> void
+    end
+
+    class ResponsesSendError < ResponsesConnectionError
+      attr_reader outcome: Symbol
+      def initialize: (url: URI::Generic) -> void
+    end
+  end
+
+  module Resources
+    class Responses
+      def connect: (
+        ?websocket_base_url: String?,
+        ?request_options: OpenAI::request_opts?,
+        ?transport: untyped?,
+        ?transport_options: ::Hash[Symbol, untyped]
+      ) {
+        (OpenAI::Responses::Connection connection) -> top
+      } -> top
+    end
+  end
+end
