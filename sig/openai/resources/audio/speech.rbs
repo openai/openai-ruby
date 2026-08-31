@@ -11,7 +11,7 @@ module OpenAI
           ?speed: Float,
           ?stream_format: OpenAI::Models::Audio::SpeechCreateParams::stream_format,
           ?request_options: OpenAI::request_opts
-        ) -> StringIO
+        ) -> (StringIO & OpenAI::ResponseCarrier)
 
         def initialize: (client: OpenAI::Client) -> void
       end

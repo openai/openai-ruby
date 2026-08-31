@@ -876,7 +876,8 @@ module OpenAI
           response_metadata = response.metadata
           include_raw_body = req[:options].to_h[:include_raw_body] == true &&
             (req[:page] ||
-              (model.is_a?(Class) && model <= OpenAI::Internal::Type::BaseModel) ||
+              (model.is_a?(Class) &&
+                (model <= OpenAI::Internal::Type::BaseModel || model <= StringIO)) ||
               model.is_a?(OpenAI::Internal::Type::Union))
           raw_body = nil
           decoded = if include_raw_body
@@ -887,11 +888,11 @@ module OpenAI
             OpenAI::Internal::Util.decode_content(response.headers, stream: response.body)
           end
 
-          if include_raw_body && !decoded.is_a?(StringIO)
+          if include_raw_body
             response_metadata = OpenAI::ResponseMetadata.new(
               status: response.status,
               headers: response.headers,
-              body: raw_body&.freeze
+              body: decoded.is_a?(StringIO) ? raw_body&.dup&.freeze : raw_body&.freeze
             )
           end
 
@@ -912,6 +913,8 @@ module OpenAI
             OpenAI::Internal::Type::Converter.coerce(model, unwrapped).tap do |result|
               if result.is_a?(OpenAI::Internal::Type::BaseModel)
                 result._set_last_response(response_metadata)
+              elsif result.is_a?(StringIO)
+                result.extend(OpenAI::ResponseCarrier)._set_last_response(response_metadata)
               end
             end
           end

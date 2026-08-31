@@ -114,7 +114,10 @@ module OpenAI
       end
 
       # Returns a response containing the contents of the specified file.
-      sig { params(file_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(StringIO) }
+      sig do
+        params(file_id: String, request_options: OpenAI::RequestOptions::OrHash)
+          .returns(T.all(StringIO, OpenAI::ResponseCarrier))
+      end
       def content(
         # The ID of the file to use for this request.
         file_id,

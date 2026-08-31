@@ -8,6 +8,8 @@ module OpenAI
 
         attr_reader headers: ::Hash[String, String]
 
+        def _request_id: -> String?
+
         attr_reader last_response: OpenAI::ResponseMetadata
 
         def close: -> void
