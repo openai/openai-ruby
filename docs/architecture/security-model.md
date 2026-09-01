@@ -23,7 +23,7 @@ requests, then parses remote responses into typed Ruby values
 | Streaming and Realtime helpers | Parse SSE and WebSocket JSON into typed events | `lib/openai/internal/stream.rb:19-60`, `lib/openai/helpers/realtime/connection.rb:47-100` |
 | Webhook helper | Verify timestamp and HMAC before parsing webhook events | `lib/openai/resources/webhooks.rb:15-119` |
 | Providers and workload identity | Azure, Bedrock, subject-token, and X.509 credential paths | `lib/openai/providers/azure.rb:40-58`, `lib/openai/auth/workload_identity_auth.rb:280-330` |
-| CI and release workflows | Run repository code, live checks, and protected publishing | `.github/workflows/ci.yml:18-32`, `.github/workflows/create-releases.yml:14-79` |
+| CI and release workflows | Run repository code, publish trusted Castiron results, live checks, and protected releases | `.github/workflows/ci.yml:18-32`, `.github/workflows/castiron-custom-code-comment.yml:4-38`, `.github/workflows/create-releases.yml:14-79` |
 
 ```mermaid
 flowchart LR
@@ -34,6 +34,8 @@ flowchart LR
   Webhook[Webhook sender] --> Verify[HMAC + timestamp verifier]
   Verify --> Caller
   PR[Candidate checkout] --> CI[Ordinary read-only CI]
+  CI --> Trusted[Main-sourced workflow_run publisher]
+  Trusted --> GitHub[Statuses and PR comments]
   Main[Protected main revision] --> Live[Live / release workflows]
   Live --> Secrets[Protected credentials and publishing authority]
 ```
@@ -47,6 +49,7 @@ flowchart LR
 | Bedrock provider | Bearer token or SigV4 authority | Explicit mode, environment, then AWS credential chain | Credential/signature to configured Bedrock origin | Configured Bedrock endpoint | Origin and endpoint/region validation; SigV4 disables redirects | `lib/openai/providers/bedrock.rb:105-168`, `lib/openai/providers/bedrock.rb:398-427` |
 | Diagnostic logging | Request/response diagnostics | Explicit log level, then `OPENAI_LOG`; supplied logger or stderr | Sanitized metadata and structural body summaries | Caller logger or stderr | Credential/query redaction; multipart, streaming, binary, and large JSON bodies omitted | `lib/openai/internal/logging.rb:10-26`, `lib/openai/internal/logging.rb:299-343` |
 | Ordinary PR CI | Candidate checkout execution | Checked-out PR revision runs lint, typecheck, build, and tests | Candidate code executes with repository-code authority | Ephemeral CI runner | `permissions: {}`, `contents: read`, `persist-credentials: false` | `.github/workflows/ci.yml:18-32`, `.github/workflows/ci-checks.yml:100-120` |
+| Trusted Castiron workflow-run publisher | Commit-status and PR-comment writes | Candidate-associated `workflow_run` metadata -> main-sourced reporter recomputes from current Git objects for statuses and successful report comments; fallback failure comments use event/path, current-head, and monotonic-replacement checks | `statuses: write` and `pull-requests: write` only in publisher jobs | GitHub commit statuses and PR comments | Status path: no candidate artifact, run identity validation, exact head/base checks; successful comment path: trusted report artifact; fallback failure-comment path: main-sourced code, event/path filtering, current-head matching, monotonic replacement | `.github/workflows/castiron-custom-code-comment.yml:4-38`, `.github/workflows/castiron-custom-code-comment.yml:40-98`, `.github/workflows/castiron-custom-code-comment.yml:116-171`, `.github/workflows/castiron-custom-code-comment.yml:174-237` |
 | Live/release workflows | API keys, X.509 material, GitHub App token, RubyGems OIDC | Main-only conditions plus protected environments | Protected secrets and short-lived publishing authority | Main revision, OpenAI API, GitHub, RubyGems | Repository/ref conditions, separate environments, least privilege, OIDC only for publishing | `.github/workflows/live-smoke.yml:17-92`, `.github/workflows/create-releases.yml:17-79` |
 
 ## 2. Threat Model, Trust Boundaries, and Assumptions
@@ -90,6 +93,16 @@ Important boundaries:
   write/publishing authority is a genuine boundary
   (`.github/workflows/live-smoke.yml:17-92`,
   `.github/workflows/create-releases.yml:17-79`).
+- Candidate-associated `workflow_run` metadata and Git objects crossing into
+  the trusted Castiron publisher are a genuine write-capable boundary. The
+  status path must preserve run-identity and exact-head/base checks; successful
+  report comments must remain bound to the trusted report artifact. The
+  fallback failure-comment path has narrower main-sourced event/path,
+  current-head, and monotonic-replacement checks that scans must assess
+  independently
+  (`.github/workflows/castiron-custom-code-comment.yml:34-98`,
+  `.github/workflows/castiron-custom-code-comment.yml:116-171`,
+  `.github/workflows/castiron-custom-code-comment.yml:174-237`).
 
 Checked-in executable source has repository-code authority. Reviewed tracked
 examples, tests, fixtures, Rake tasks, build scripts, generators, and other
@@ -125,6 +138,7 @@ The following are hypotheses and review guidance, not confirmed findings.
 | --- | --- | --- | --- | --- | --- | --- |
 | High | Redirect or destination confusion sends credentials or a body to an unintended origin | Remote endpoint controls redirect or caller/provider origin handling is bypassed | Credential or payload disclosure | Cross-origin credential stripping, body rejection, HTTPS downgrade rejection, provider origin validation | Preserve origin validation and redirect controls | `lib/openai/internal/transport/base_client.rb:153-215`, `lib/openai/providers/azure.rb:141-147` |
 | High | Candidate PR code reaches live/release credentials or publishing authority | Privileged workflow executes candidate code or exposes secrets/write tokens | Credential theft or release compromise | Main-only conditions, protected environments, least-privilege permissions, trusted publisher separation | Keep candidate and protected workflows isolated | `.github/workflows/live-smoke.yml:17-92`, `.github/workflows/create-releases.yml:17-79` |
+| High | Candidate-associated workflow metadata or Git objects influence the write-capable Castiron publisher without the path-specific trusted validation | Attacker controls a PR head or associated workflow metadata and a status, successful-comment, or fallback-comment check regresses | Forged or stale commit statuses and PR comments | Statuses use main-sourced recomputation plus run/head/base checks; successful comments use a trusted report artifact; fallback comments rely on main-sourced event/path, current-head, and monotonic-replacement checks | Preserve each path's distinct recomputation, freshness, artifact-binding, or fallback-isolation checks before its write | `.github/workflows/castiron-custom-code-comment.yml:34-98`, `.github/workflows/castiron-custom-code-comment.yml:116-171`, `.github/workflows/castiron-custom-code-comment.yml:174-237` |
 | High | Workload/provider token is sent to an unintended issuer or origin | Lower-trust configuration or response can alter a protected destination | Credential disclosure or forged authentication | Fixed/default issuer paths, origin checks, X.509 destination restrictions | Preserve strict destination and proxy/redirect handling | `lib/openai/auth/workload_identity_auth.rb:303-330`, `lib/openai/providers/bedrock.rb:398-427` |
 | Medium | Malformed or adversarial API/SSE/WebSocket data causes sensitive leakage, type confusion, or availability failure | Victim consumes untrusted remote data | Data exposure, incorrect application behavior, or DoS | JSON parsing, typed coercion, protocol errors, safe unknown events | Keep parsers data-only, incremental where applicable, and redact errors/logs | `lib/openai/internal/stream.rb:21-60`, `lib/openai/helpers/realtime/connection.rb:61-84` |
 | Medium | Forged webhook, or replay of a captured valid webhook, becomes an accepted typed event | For forgery, attacker lacks the webhook secret; for replay, attacker can resend a valid signed payload within the tolerance window | Application accepts an unauthentic or repeated event | Required headers, HMAC, and timing-safe comparison reject forgery; timestamp validation bounds replay age but does not deduplicate `webhook-id` | Verify before parsing; callers that need replay prevention must deduplicate `webhook-id` | `lib/openai/resources/webhooks.rb:15-119` |
