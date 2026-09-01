@@ -9,9 +9,9 @@ module OpenAI
         include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute model
-        #   Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a
-        #   wide range of models with different capabilities, performance characteristics,
-        #   and price points. Refer to the
+        #   Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+        #   range of models with different capabilities, performance characteristics, and
+        #   price points. Refer to the
         #   [model guide](https://platform.openai.com/docs/models) to browse and compare
         #   available models.
         #
@@ -102,7 +102,7 @@ module OpenAI
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCompactParams} for more details.
         #
-        #   @param model [Symbol, String, OpenAI::Models::Responses::ResponseCompactParams::Model, nil] Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a wi
+        #   @param model [Symbol, String, OpenAI::Models::Responses::ResponseCompactParams::Model, nil] Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
         #
         #   @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>, nil] Text, image, or file inputs to the model, used to generate a response
         #
@@ -120,9 +120,9 @@ module OpenAI
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
-        # Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a
-        # wide range of models with different capabilities, performance characteristics,
-        # and price points. Refer to the
+        # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+        # range of models with different capabilities, performance characteristics, and
+        # price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
         module Model

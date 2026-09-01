@@ -47,7 +47,7 @@ module OpenAI
         #
         # @param metadata [Hash{Symbol=>String}, nil] Body param: Set of 16 key-value pairs that can be attached to an object. This ca
         #
-        # @param model [Symbol, String, OpenAI::Models::Beta::ResponseCreateParams::Model] Body param: Model ID used to generate the response, like `gpt-4o` or `o3`. OpenA
+        # @param model [Symbol, String, OpenAI::Models::Beta::ResponseCreateParams::Model] Body param: Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI
         #
         # @param moderation [OpenAI::Models::Beta::ResponseCreateParams::Moderation, nil] Body param: Configuration for running moderation on the input and output of this
         #
@@ -65,7 +65,7 @@ module OpenAI
         #
         # @param prompt_cache_retention [Symbol, OpenAI::Models::Beta::ResponseCreateParams::PromptCacheRetention, nil] Body param: Deprecated. Use `prompt_cache_options.ttl` instead.
         #
-        # @param reasoning [OpenAI::Models::Beta::ResponseCreateParams::Reasoning, nil] Body param: **gpt-5 and o-series models only**
+        # @param reasoning [OpenAI::Models::Beta::ResponseCreateParams::Reasoning, nil] Body param: Configuration options for
         #
         # @param safety_identifier [String, nil] Body param: A stable identifier used to help detect users of your application th
         #
@@ -154,7 +154,7 @@ module OpenAI
         #
         # @param metadata [Hash{Symbol=>String}, nil] Body param: Set of 16 key-value pairs that can be attached to an object. This ca
         #
-        # @param model [Symbol, String, OpenAI::Models::Beta::ResponseCreateParams::Model] Body param: Model ID used to generate the response, like `gpt-4o` or `o3`. OpenA
+        # @param model [Symbol, String, OpenAI::Models::Beta::ResponseCreateParams::Model] Body param: Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI
         #
         # @param moderation [OpenAI::Models::Beta::ResponseCreateParams::Moderation, nil] Body param: Configuration for running moderation on the input and output of this
         #
@@ -172,7 +172,7 @@ module OpenAI
         #
         # @param prompt_cache_retention [Symbol, OpenAI::Models::Beta::ResponseCreateParams::PromptCacheRetention, nil] Body param: Deprecated. Use `prompt_cache_options.ttl` instead.
         #
-        # @param reasoning [OpenAI::Models::Beta::ResponseCreateParams::Reasoning, nil] Body param: **gpt-5 and o-series models only**
+        # @param reasoning [OpenAI::Models::Beta::ResponseCreateParams::Reasoning, nil] Body param: Configuration options for
         #
         # @param safety_identifier [String, nil] Body param: A stable identifier used to help detect users of your application th
         #
@@ -393,7 +393,7 @@ module OpenAI
         #
         # @overload compact(model:, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, service_tier: nil, betas: nil, request_options: {})
         #
-        # @param model [Symbol, String, OpenAI::Models::Beta::ResponseCompactParams::Model, nil] Body param: Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI
+        # @param model [Symbol, String, OpenAI::Models::Beta::ResponseCompactParams::Model, nil] Body param: Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI o
         #
         # @param input [String, Array<OpenAI::Models::Beta::BetaEasyInputMessage, OpenAI::Models::Beta::BetaResponseInputItem::Message, OpenAI::Models::Beta::BetaResponseOutputMessage, OpenAI::Models::Beta::BetaResponseFileSearchToolCall, OpenAI::Models::Beta::BetaResponseComputerToolCall, OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput, OpenAI::Models::Beta::BetaResponseFunctionWebSearch, OpenAI::Models::Beta::BetaResponseFunctionToolCall, OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall, OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam, OpenAI::Models::Beta::BetaResponseInputItem::AdditionalTools, OpenAI::Models::Beta::BetaResponseReasoningItem, OpenAI::Models::Beta::BetaResponseCompactionItemParam, OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall, OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ShellCall, OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::McpListTools, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalRequest, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalResponse, OpenAI::Models::Beta::BetaResponseInputItem::McpCall, OpenAI::Models::Beta::BetaResponseCustomToolCallOutput, OpenAI::Models::Beta::BetaResponseCustomToolCall, OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger, OpenAI::Models::Beta::BetaResponseInputItem::ItemReference, OpenAI::Models::Beta::BetaResponseInputItem::Program, OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput>, nil] Body param: Text, image, or file inputs to the model, used to generate a respons
         #

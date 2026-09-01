@@ -114,9 +114,9 @@ module OpenAI
           sig { returns(T.nilable(T::Hash[Symbol, String])) }
           attr_accessor :metadata
 
-          # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
-          # wide range of models with different capabilities, performance characteristics,
-          # and price points. Refer to the
+          # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+          # range of models with different capabilities, performance characteristics, and
+          # price points. Refer to the
           # [model guide](https://platform.openai.com/docs/models) to browse and compare
           # available models.
           sig {
@@ -216,8 +216,6 @@ module OpenAI
           }
           attr_accessor :prompt_cache_retention
 
-          # **gpt-5 and o-series models only**
-          #
           # Configuration options for
           # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
           sig { returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning)) }
@@ -654,9 +652,9 @@ module OpenAI
             # a maximum length of 512 characters.
             metadata: nil,
 
-            # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
-            # wide range of models with different capabilities, performance characteristics,
-            # and price points. Refer to the
+            # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+            # range of models with different capabilities, performance characteristics, and
+            # price points. Refer to the
             # [model guide](https://platform.openai.com/docs/models) to browse and compare
             # available models.
             model: nil,
@@ -715,8 +713,6 @@ module OpenAI
             #   `prompt_cache_retention` is not specified.
             prompt_cache_retention: nil,
 
-            # **gpt-5 and o-series models only**
-            #
             # Configuration options for
             # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
             reasoning: nil,
@@ -1008,9 +1004,9 @@ module OpenAI
 
           end
 
-          # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
-          # wide range of models with different capabilities, performance characteristics,
-          # and price points. Refer to the
+          # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+          # range of models with different capabilities, performance characteristics, and
+          # price points. Refer to the
           # [model guide](https://platform.openai.com/docs/models) to browse and compare
           # available models.
           module Model
@@ -1998,8 +1994,6 @@ module OpenAI
             }
             attr_accessor :summary
 
-            # **gpt-5 and o-series models only**
-            #
             # Configuration options for
             # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
             sig do
