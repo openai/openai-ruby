@@ -1,5 +1,15 @@
 # Security Policy
 
+## Threat model authority
+
+This file governs vulnerability disclosure and reportability. The repository's
+canonical detailed threat model, trust boundaries, security invariants, and
+severity calibration are defined in
+[docs/architecture/security-model.md](docs/architecture/security-model.md).
+Codex Security scans and reviewers should use that document from the scanned
+revision rather than maintaining a second pasted threat model here or in scan
+configuration.
+
 ## Reporting a vulnerability
 
 Please report potential security vulnerabilities through OpenAI's
