@@ -152,9 +152,9 @@ module OpenAI
         # Keys are strings with a maximum length of 64 characters. Values are strings with
         # a maximum length of 512 characters.
         metadata: nil,
-        # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
-        # wide range of models with different capabilities, performance characteristics,
-        # and price points. Refer to the
+        # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+        # range of models with different capabilities, performance characteristics, and
+        # price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
         model: nil,
@@ -202,8 +202,6 @@ module OpenAI
         # - Organizations with ZDR enabled default to `in_memory` when
         #   `prompt_cache_retention` is not specified.
         prompt_cache_retention: nil,
-        # **gpt-5 and o-series models only**
-        #
         # Configuration options for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
         reasoning: nil,
@@ -454,9 +452,9 @@ module OpenAI
         # Keys are strings with a maximum length of 64 characters. Values are strings with
         # a maximum length of 512 characters.
         metadata: nil,
-        # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
-        # wide range of models with different capabilities, performance characteristics,
-        # and price points. Refer to the
+        # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+        # range of models with different capabilities, performance characteristics, and
+        # price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
         model: nil,
@@ -504,8 +502,6 @@ module OpenAI
         # - Organizations with ZDR enabled default to `in_memory` when
         #   `prompt_cache_retention` is not specified.
         prompt_cache_retention: nil,
-        # **gpt-5 and o-series models only**
-        #
         # Configuration options for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
         reasoning: nil,
@@ -732,9 +728,9 @@ module OpenAI
           .returns(OpenAI::Responses::CompactedResponse)
       }
       def compact(
-        # Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a
-        # wide range of models with different capabilities, performance characteristics,
-        # and price points. Refer to the
+        # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+        # range of models with different capabilities, performance characteristics, and
+        # price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
         model:,

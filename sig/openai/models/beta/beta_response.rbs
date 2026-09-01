@@ -222,12 +222,13 @@ module OpenAI
             reason: OpenAI::Models::Beta::BetaResponse::IncompleteDetails::reason
           }
 
-          type reason = :max_output_tokens | :content_filter
+          type reason = :max_output_tokens | :max_messages | :content_filter
 
           module Reason
             extend OpenAI::Internal::Type::Enum
 
             MAX_OUTPUT_TOKENS: :max_output_tokens
+            MAX_MESSAGES: :max_messages
             CONTENT_FILTER: :content_filter
 
             def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::IncompleteDetails::reason]

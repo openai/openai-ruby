@@ -34,16 +34,7 @@ module OpenAI
         #   @return [Integer]
         required :total_tokens, Integer
 
-        # @!attribute compute_units
-        #   Compute units for the request. Currently null when available.
-        #
-        #   @return [Integer, nil]
-        optional :compute_units, Integer, nil?: true
-
-        # @!method initialize(input_tokens:, input_tokens_details:, output_tokens:, output_tokens_details:, total_tokens:, compute_units: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseUsage} for more details.
-        #
+        # @!method initialize(input_tokens:, input_tokens_details:, output_tokens:, output_tokens_details:, total_tokens:)
         #   Represents token usage details including input tokens, output tokens, a
         #   breakdown of output tokens, and the total tokens used.
         #
@@ -56,8 +47,6 @@ module OpenAI
         #   @param output_tokens_details [OpenAI::Models::Beta::BetaResponseUsage::OutputTokensDetails] A detailed breakdown of the output tokens.
         #
         #   @param total_tokens [Integer] The total number of tokens used.
-        #
-        #   @param compute_units [Integer, nil] Compute units for the request. Currently null when available.
 
         # @see OpenAI::Models::Beta::BetaResponseUsage#input_tokens_details
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel

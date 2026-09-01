@@ -4,7 +4,10 @@ require_relative "../../test_helper"
 
 class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTest
   def test_create_required_params
-    response = @openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-5.4")
+    response = @openai.chat.completions.create(
+      messages: [{content: "string", role: :developer}],
+      model: :"gpt-5.6-sol"
+    )
 
     assert_pattern do
       response => OpenAI::Chat::ChatCompletion

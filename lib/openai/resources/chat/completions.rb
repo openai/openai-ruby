@@ -41,7 +41,7 @@ module OpenAI
         #
         # @param messages [Array<OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam>] A list of messages comprising the conversation so far. Depending on the
         #
-        # @param model [String, Symbol, OpenAI::Models::ChatModel] Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
+        # @param model [String, Symbol, OpenAI::Models::ChatModel] Model ID used to generate the response, like `gpt-5.6-sol` or `o3`. OpenAI
         #
         # @param audio [OpenAI::Models::Chat::ChatCompletionAudioParam, nil] Parameters for audio output. Required when audio output is requested with
         #
@@ -163,7 +163,7 @@ module OpenAI
         #
         # @param messages [Array<OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam>] A list of messages comprising the conversation so far. Depending on the
         #
-        # @param model [String, Symbol, OpenAI::Models::ChatModel] Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
+        # @param model [String, Symbol, OpenAI::Models::ChatModel] Model ID used to generate the response, like `gpt-5.6-sol` or `o3`. OpenAI
         #
         # @param audio [OpenAI::Models::Chat::ChatCompletionAudioParam, nil] Parameters for audio output. Required when audio output is requested with
         #

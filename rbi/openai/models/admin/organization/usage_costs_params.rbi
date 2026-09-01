@@ -61,6 +61,14 @@ module OpenAI
           sig { params(limit: Integer).void }
           attr_writer :limit
 
+          # Return only costs for these exact line item names. Each value must match the
+          # complete `line_item` value, for example `gpt-5.6-sol, input_tokens`.
+          sig { returns(T.nilable(T::Array[String])) }
+          attr_reader :line_items
+
+          sig { params(line_items: T::Array[String]).void }
+          attr_writer :line_items
+
           # A cursor for use in pagination. Corresponding to the `next_page` field from the
           # previous response.
           sig { returns(T.nilable(String)) }
@@ -90,6 +98,8 @@ module OpenAI
               group_by: T::Array[OpenAI::Admin::Organization::UsageCostsParams::GroupBy::OrSymbol],
 
               limit: Integer,
+
+              line_items: T::Array[String],
 
               page: String,
 
@@ -122,6 +132,10 @@ module OpenAI
             # 180, and the default is 7.
             limit: nil,
 
+            # Return only costs for these exact line item names. Each value must match the
+            # complete `line_item` value, for example `gpt-5.6-sol, input_tokens`.
+            line_items: nil,
+
             # A cursor for use in pagination. Corresponding to the `next_page` field from the
             # previous response.
             page: nil,
@@ -142,6 +156,7 @@ module OpenAI
                 end_time: Integer,
                 group_by: T::Array[OpenAI::Admin::Organization::UsageCostsParams::GroupBy::OrSymbol],
                 limit: Integer,
+                line_items: T::Array[String],
                 page: String,
                 project_ids: T::Array[String],
                 request_options: OpenAI::RequestOptions

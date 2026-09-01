@@ -210,6 +210,7 @@ module OpenAI
               end_time: Integer,
               group_by: T::Array[OpenAI::Admin::Organization::UsageCostsParams::GroupBy::OrSymbol],
               limit: Integer,
+              line_items: T::Array[String],
               page: String,
               project_ids: T::Array[String],
               request_options: OpenAI::RequestOptions::OrHash
@@ -232,6 +233,9 @@ module OpenAI
             # A limit on the number of buckets to be returned. Limit can range between 1 and
             # 180, and the default is 7.
             limit: nil,
+            # Return only costs for these exact line item names. Each value must match the
+            # complete `line_item` value, for example `gpt-5.6-sol, input_tokens`.
+            line_items: nil,
             # A cursor for use in pagination. Corresponding to the `next_page` field from the
             # previous response.
             page: nil,

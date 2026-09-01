@@ -116,9 +116,9 @@ module OpenAI
       optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
       # @!attribute model
-      #   Model ID used to process the batch, like `gpt-5-2025-08-07`. OpenAI offers a
-      #   wide range of models with different capabilities, performance characteristics,
-      #   and price points. Refer to the
+      #   Model ID used to process the batch, like `gpt-5.6-sol`. OpenAI offers a wide
+      #   range of models with different capabilities, performance characteristics, and
+      #   price points. Refer to the
       #   [model guide](https://platform.openai.com/docs/models) to browse and compare
       #   available models.
       #
@@ -183,7 +183,7 @@ module OpenAI
       #
       #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #
-      #   @param model [String] Model ID used to process the batch, like `gpt-5-2025-08-07`. OpenAI
+      #   @param model [String] Model ID used to process the batch, like `gpt-5.6-sol`. OpenAI
       #
       #   @param output_file_id [String] The ID of the file containing the outputs of successfully executed requests.
       #

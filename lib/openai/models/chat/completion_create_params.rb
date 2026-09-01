@@ -25,9 +25,9 @@ module OpenAI
         )
 
         # @!attribute model
-        #   Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
-        #   wide range of models with different capabilities, performance characteristics,
-        #   and price points. Refer to the
+        #   Model ID used to generate the response, like `gpt-5.6-sol` or `o3`. OpenAI
+        #   offers a wide range of models with different capabilities, performance
+        #   characteristics, and price points. Refer to the
         #   [model guide](https://platform.openai.com/docs/models) to browse and compare
         #   available models.
         #
@@ -428,7 +428,7 @@ module OpenAI
         #
         #   @param messages [Array<OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam>] A list of messages comprising the conversation so far. Depending on the
         #
-        #   @param model [String, Symbol, OpenAI::Models::ChatModel] Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
+        #   @param model [String, Symbol, OpenAI::Models::ChatModel] Model ID used to generate the response, like `gpt-5.6-sol` or `o3`. OpenAI
         #
         #   @param audio [OpenAI::Models::Chat::ChatCompletionAudioParam, nil] Parameters for audio output. Required when audio output is requested with
         #
@@ -500,9 +500,9 @@ module OpenAI
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
-        # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
-        # wide range of models with different capabilities, performance characteristics,
-        # and price points. Refer to the
+        # Model ID used to generate the response, like `gpt-5.6-sol` or `o3`. OpenAI
+        # offers a wide range of models with different capabilities, performance
+        # characteristics, and price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
         module Model
@@ -510,7 +510,7 @@ module OpenAI
 
           variant String
 
-          # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
+          # Model ID used to generate the response, like `gpt-5.6-sol` or `o3`. OpenAI
           # offers a wide range of models with different capabilities, performance
           # characteristics, and price points. Refer to the [model guide](https://platform.openai.com/docs/models)
           # to browse and compare available models.

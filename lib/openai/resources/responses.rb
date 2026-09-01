@@ -46,7 +46,7 @@ module OpenAI
       #
       # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #
-      # @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel] Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
+      # @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel] Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI
       #
       # @param moderation [OpenAI::Models::Responses::ResponseCreateParams::Moderation, nil] Configuration for running moderation on the input and output of this response.
       #
@@ -62,7 +62,7 @@ module OpenAI
       #
       # @param prompt_cache_retention [Symbol, OpenAI::Models::Responses::ResponseCreateParams::PromptCacheRetention, nil] Deprecated. Use `prompt_cache_options.ttl` instead.
       #
-      # @param reasoning [OpenAI::Models::Reasoning, nil] **gpt-5 and o-series models only**
+      # @param reasoning [OpenAI::Models::Reasoning, nil] Configuration options for
       #
       # @param safety_identifier [String, nil] A stable identifier used to help detect users of your application that may be vi
       #
@@ -147,7 +147,7 @@ module OpenAI
       #
       # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #
-      # @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel] Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
+      # @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel] Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI
       #
       # @param moderation [OpenAI::Models::Responses::ResponseCreateParams::Moderation, nil] Configuration for running moderation on the input and output of this response.
       #
@@ -163,7 +163,7 @@ module OpenAI
       #
       # @param prompt_cache_retention [Symbol, OpenAI::Models::Responses::ResponseCreateParams::PromptCacheRetention, nil] Deprecated. Use `prompt_cache_options.ttl` instead.
       #
-      # @param reasoning [OpenAI::Models::Reasoning, nil] **gpt-5 and o-series models only**
+      # @param reasoning [OpenAI::Models::Reasoning, nil] Configuration options for
       #
       # @param safety_identifier [String, nil] A stable identifier used to help detect users of your application that may be vi
       #
@@ -353,7 +353,7 @@ module OpenAI
       #
       # @overload compact(model:, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, service_tier: nil, request_options: {})
       #
-      # @param model [Symbol, String, OpenAI::Models::Responses::ResponseCompactParams::Model, nil] Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a wi
+      # @param model [Symbol, String, OpenAI::Models::Responses::ResponseCompactParams::Model, nil] Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
       #
       # @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>, nil] Text, image, or file inputs to the model, used to generate a response
       #

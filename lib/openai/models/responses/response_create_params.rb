@@ -124,9 +124,9 @@ module OpenAI
         optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
         # @!attribute model
-        #   Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
-        #   wide range of models with different capabilities, performance characteristics,
-        #   and price points. Refer to the
+        #   Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+        #   range of models with different capabilities, performance characteristics, and
+        #   price points. Refer to the
         #   [model guide](https://platform.openai.com/docs/models) to browse and compare
         #   available models.
         #
@@ -212,8 +212,6 @@ module OpenAI
         )
 
         # @!attribute reasoning
-        #   **gpt-5 and o-series models only**
-        #
         #   Configuration options for
         #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
         #
@@ -389,7 +387,7 @@ module OpenAI
         #
         #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
-        #   @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel] Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
+        #   @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel] Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI
         #
         #   @param moderation [OpenAI::Models::Responses::ResponseCreateParams::Moderation, nil] Configuration for running moderation on the input and output of this response.
         #
@@ -405,7 +403,7 @@ module OpenAI
         #
         #   @param prompt_cache_retention [Symbol, OpenAI::Models::Responses::ResponseCreateParams::PromptCacheRetention, nil] Deprecated. Use `prompt_cache_options.ttl` instead.
         #
-        #   @param reasoning [OpenAI::Models::Reasoning, nil] **gpt-5 and o-series models only**
+        #   @param reasoning [OpenAI::Models::Reasoning, nil] Configuration options for
         #
         #   @param safety_identifier [String, nil] A stable identifier used to help detect users of your application that may be vi
         #

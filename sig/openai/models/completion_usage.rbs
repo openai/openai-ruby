@@ -6,7 +6,6 @@ module OpenAI
         prompt_tokens: Integer,
         total_tokens: Integer,
         completion_tokens_details: OpenAI::CompletionUsage::CompletionTokensDetails,
-        compute_units: Integer?,
         prompt_tokens_details: OpenAI::CompletionUsage::PromptTokensDetails
       }
 
@@ -23,8 +22,6 @@ module OpenAI
         OpenAI::CompletionUsage::CompletionTokensDetails
       ) -> OpenAI::CompletionUsage::CompletionTokensDetails
 
-      attr_accessor compute_units: Integer?
-
       attr_reader prompt_tokens_details: OpenAI::CompletionUsage::PromptTokensDetails?
 
       def prompt_tokens_details=: (
@@ -36,7 +33,6 @@ module OpenAI
         prompt_tokens: Integer,
         total_tokens: Integer,
         ?completion_tokens_details: OpenAI::CompletionUsage::CompletionTokensDetails,
-        ?compute_units: Integer?,
         ?prompt_tokens_details: OpenAI::CompletionUsage::PromptTokensDetails
       ) -> void
 
@@ -45,7 +41,6 @@ module OpenAI
         prompt_tokens: Integer,
         total_tokens: Integer,
         completion_tokens_details: OpenAI::CompletionUsage::CompletionTokensDetails,
-        compute_units: Integer?,
         prompt_tokens_details: OpenAI::CompletionUsage::PromptTokensDetails
       }
 
