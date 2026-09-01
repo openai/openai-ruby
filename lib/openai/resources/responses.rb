@@ -366,11 +366,13 @@ module OpenAI
       #
       # @param starting_after [Integer] The sequence number of the event after which to start streaming.
       #
-      # @param text [OpenAI::StructuredOutput::JsonSchemaConverter, nil] The structured-output model used to parse retrieved text output. This is a
-      #   local parsing hint and is not sent to the API.
+      # @param text [OpenAI::Responses::ResponseTextConfig, OpenAI::StructuredOutput::JsonSchemaConverter, Hash, nil] The structured-output model,
+      #   or the same typed/hash text configuration accepted by creation, used to parse retrieved text output. This is a local parsing hint and is not
+      #   sent to the API.
       #
-      # @param tools [Array<OpenAI::StructuredOutput::JsonSchemaConverter>, nil] Structured-output models used to parse retrieved function tool calls. These
-      #   are local parsing hints and are not sent to the API.
+      # @param tools [Array<OpenAI::Responses::FunctionTool, OpenAI::StructuredOutput::JsonSchemaConverter, Hash>, nil] Structured-output models, or
+      #   the same typed/hash function-tool definitions accepted by creation, used to parse retrieved function tool calls. These are local parsing hints
+      #   and are not sent to the API.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -379,7 +381,7 @@ module OpenAI
       # @see OpenAI::Models::Responses::ResponseRetrieveParams
       def retrieve(response_id, params = {})
         parsed, options = OpenAI::Responses::ResponseRetrieveParams.dump_request(params)
-        structured_output_params = duplicate_structured_output_params(parsed.slice(:text, :tools))
+        structured_output_params = parsed.slice(:text, :tools)
         parsed.delete(:text)
         parsed.delete(:tools)
         query = OpenAI::Internal::Util.encode_query_params(parsed)
@@ -388,12 +390,10 @@ module OpenAI
           raise ArgumentError.new(message)
         end
 
-        model, tool_models = get_structured_output_models(structured_output_params)
+        model, tool_models = get_retrieval_structured_output_models(structured_output_params)
 
         unwrap = if model || !tool_models.empty?
           -> (raw) do
-            next raw unless structured_output_response_complete?(raw, model, tool_models)
-
             parse_retrieved_structured_outputs!(raw, model, tool_models)
           end
         end
@@ -573,90 +573,15 @@ module OpenAI
       end
 
       def parse_retrieved_structured_outputs!(raw, model, tool_models)
-        parsable_output = raw[:output].to_a.reject do |output|
-          output[:type] == "function_call" && !output.key?(:name)
-        end
-
-        parse_structured_outputs!(raw.merge(output: parsable_output), model, tool_models)
-        raw
+        OpenAI::Helpers::StructuredOutput::ResponseParser.parse_retrieved!(raw, model, tool_models)
       end
 
       def get_structured_output_models(parsed)
         OpenAI::Helpers::StructuredOutput::ResponseParser.get_models(parsed)
       end
 
-      def structured_output_response_complete?(raw, model, tool_models)
-        return false unless [nil, "completed"].include?(raw[:status])
-
-        raw[:output].to_a.none? do |output|
-          case output[:type]
-          when "message"
-            model && unfinished_structured_output_message?(output, model, response_status: raw[:status])
-          when "function_call"
-            unfinished_structured_output_function_call?(
-              output,
-              tool_models,
-              response_status: raw[:status]
-            )
-          else
-            false
-          end
-        end
-      end
-
-      def unfinished_structured_output_message?(output, model, response_status:)
-        return true if structured_output_pending_status?(output[:status])
-        return false unless response_status.nil? && output[:status].nil?
-
-        output[:content].to_a.any? do |content|
-          content[:type] == "output_text" &&
-            (!content.key?(:text) || !structured_output_value_ready?(content[:text], model))
-        end
-      end
-
-      def unfinished_structured_output_function_call?(output, tool_models, response_status:)
-        return false if tool_models.empty?
-        return false unless output.key?(:name)
-        return false unless tool_models.key?(output[:name])
-        return true if structured_output_pending_status?(output[:status])
-        return false unless response_status.nil? && output[:status].nil?
-
-        !output.key?(:arguments) ||
-          !structured_output_value_ready?(output[:arguments], tool_models.fetch(output[:name]))
-      end
-
-      def structured_output_pending_status?(status)
-        ["queued", "in_progress", "incomplete"].include?(status)
-      end
-
-      def structured_output_value_ready?(value, model)
-        parsed = JSON.parse(value, symbolize_names: true)
-        state = OpenAI::Internal::Type::Converter.new_coerce_state
-        OpenAI::Internal::Type::Converter.coerce(model, parsed, state: state)
-        exactness = state.fetch(:exactness)
-        exactness.fetch(:no).zero? && exactness.fetch(:maybe).zero?
-      rescue JSON::ParserError, TypeError
-        false
-      end
-
-      def duplicate_structured_output_params(value)
-        case value
-        when Array
-          value.map { |item| duplicate_structured_output_params(item) }
-        when Hash
-          value.to_h do |key, item|
-            normalized_key = key.is_a?(String) ? key.to_sym : key
-            normalized_key = :format if normalized_key == :format_
-            normalized_item = duplicate_structured_output_params(item)
-            if normalized_key == :type && ["function", "json_schema"].include?(normalized_item)
-              normalized_item = normalized_item.to_sym
-            end
-
-            [normalized_key, normalized_item]
-          end
-        else
-          value
-        end
+      def get_retrieval_structured_output_models(parsed)
+        OpenAI::Helpers::StructuredOutput::ResponseParser.get_retrieval_models(parsed)
       end
     end
   end
