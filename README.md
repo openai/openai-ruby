@@ -937,11 +937,12 @@ HTTP response that opened the stream. Higher-level streaming helpers expose the
 same metadata as their underlying stream; models assembled from stream events
 do not.
 
-`last_response` and `_request_id` are only populated on top-level values returned
-by the client. They are `nil` on constructed or nested models and are not
-included in `to_h`, JSON, or YAML output. Endpoints returning `nil` have no
-object that can carry metadata. Unlike other properties that begin with an
-underscore, `_request_id` is public.
+`last_response` and `_request_id` are only populated on top-level models,
+pages, streams, and direct binary `StringIO` responses returned by the client.
+They are `nil` on constructed or nested models, unavailable on primitive or
+union-backed plain-text fallbacks, and are not included in `to_h`, JSON, or
+YAML output. Endpoints returning `nil` have no object that can carry metadata.
+Unlike other properties that begin with an underscore, `_request_id` is public.
 
 For failed HTTP requests, catch `OpenAI::Errors::APIStatusError` and use
 `request_id`:

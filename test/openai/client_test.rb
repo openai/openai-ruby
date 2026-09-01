@@ -471,7 +471,7 @@ class OpenAITest < Minitest::Test
     end
   end
 
-  def test_raw_response_body_does_not_freeze_union_backed_text_responses
+  def test_union_backed_text_responses_remain_plain_string_io
     stub_request(:post, "http://localhost/audio/transcriptions").to_return(
       status: 200,
       headers: {"content-type" => "text/plain", "x-request-id" => "req_text"},
@@ -489,9 +489,8 @@ class OpenAITest < Minitest::Test
     assert_instance_of(StringIO, response)
     assert_equal("transcribed audio", response.read)
     assert_equal(1, response.write("!"))
-    assert_equal("req_text", response._request_id)
-    assert_equal("req_text", response.last_response.request_id)
-    assert_equal("transcribed audio", response.last_response.body)
+    refute_respond_to(response, :_request_id)
+    refute_respond_to(response, :last_response)
   end
 
   def test_raw_response_body_is_available_on_paginated_responses
