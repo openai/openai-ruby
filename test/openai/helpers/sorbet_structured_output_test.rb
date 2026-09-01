@@ -809,6 +809,27 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
       assert_equal("Ada", parsed.participants.first.display_name)
     end
 
+    def test_statusless_retrieve_surfaces_sorbet_hydration_errors_for_complete_json
+      stub_request(:get, "http://localhost/responses/resp_statusless_invalid_sorbet").to_return_json(
+        status: 200,
+        body: {
+          id: "resp_statusless_invalid_sorbet",
+          output: [
+            {
+              id: "msg_statusless_invalid_sorbet",
+              content: [{annotations: [], text: "{}", type: "output_text"}],
+              role: "assistant",
+              type: "message"
+            }
+          ]
+        }
+      )
+
+      assert_raises(OpenAI::StructuredOutput::SorbetAdapter::HydrationError) do
+        @client.responses.retrieve("resp_statusless_invalid_sorbet", text: @adapter)
+      end
+    end
+
     def test_responses_retrieve_accepts_frozen_ordinary_tool_hints
       stub_request(:get, "http://localhost/responses/resp_frozen_tools").to_return_json(
         status: 200,

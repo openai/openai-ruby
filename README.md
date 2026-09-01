@@ -716,7 +716,7 @@ when retrieving it. The model is used locally to populate `content.parsed`; it i
 not sent as a retrieval query parameter. A response that is still queued or in
 progress can be retrieved the same way, but structured output is parsed only after
 a later retrieval reports it completed when status is present. Compatible
-statusless responses parse once their hinted output is complete and schema-valid.
+statusless responses parse once their hinted output is syntactically complete JSON.
 For structured function tools, pass the same model again with
 `tools: [ToolArguments]`; matching retrieved function calls expose typed arguments
 through `output.parsed`.

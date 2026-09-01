@@ -16,23 +16,6 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     required :backup_profile, AliasedProfile, api_name: :backupProfile
   end
 
-  class NullableAliasedEnvelope < OpenAI::BaseModel
-    required :profile, AliasedProfile, nil?: true
-  end
-
-  class StatuslessUnionEnvelope < OpenAI::BaseModel
-    required :kind, OpenAI::UnionOf[:draft, :final]
-  end
-
-  class MixedStatuslessUnionEnvelope < OpenAI::BaseModel
-    required :value, OpenAI::UnionOf[AliasedProfile, :pending]
-  end
-
-  class AllOfAliasedEnvelope < OpenAI::BaseModel
-    required :primary_profile, AliasedProfile, api_name: :primaryProfile, doc: "Primary profile"
-    required :backup_profile, AliasedProfile, api_name: :backupProfile
-  end
-
   class AliasedProfileCollection < OpenAI::BaseModel
     required :primary_profile, AliasedProfile, api_name: :primaryProfile
     required :profiles, OpenAI::ArrayOf[AliasedProfile]
@@ -512,7 +495,7 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     assert_nil(content.parsed)
   end
 
-  def test_background_retrieve_defers_statusless_schema_incomplete_arguments
+  def test_background_retrieve_parses_syntactically_complete_schema_invalid_arguments
     stub_request(:get, "http://localhost/responses/resp_statusless_incomplete_arguments").to_return_json(
       status: 200,
       body: {
@@ -533,10 +516,13 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
       tools: [AliasedLookup]
     )
 
-    assert_nil(response.output.fetch(0).parsed)
+    parsed = response.output.fetch(0).parsed
+
+    assert_instance_of(AliasedLookup, parsed)
+    assert_nil(parsed.profile_id)
   end
 
-  def test_background_retrieve_defers_statusless_schema_incomplete_text
+  def test_background_retrieve_parses_syntactically_complete_schema_invalid_text
     stub_request(:get, "http://localhost/responses/resp_statusless_incomplete_text").to_return_json(
       status: 200,
       body: {
@@ -554,184 +540,10 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
 
     response = @client.responses.retrieve("resp_statusless_incomplete_text", text: AliasedProfile)
 
-    assert_nil(response.output.fetch(0).content.fetch(0).parsed)
-  end
+    parsed = response.output.fetch(0).content.fetch(0).parsed
 
-  def test_background_retrieve_defers_statusless_text_missing_required_nullable_field
-    stub_request(:get, "http://localhost/responses/resp_statusless_missing_nullable").to_return_json(
-      status: 200,
-      body: {
-        id: "resp_statusless_missing_nullable",
-        output: [
-          {
-            id: "msg_statusless_missing_nullable",
-            content: [{annotations: [], text: "{\"displayName\":\"Ada\"}", type: "output_text"}],
-            role: "assistant",
-            type: "message"
-          }
-        ]
-      }
-    )
-
-    response = @client.responses.retrieve("resp_statusless_missing_nullable", text: AliasedProfile)
-
-    assert_nil(response.output.fetch(0).content.fetch(0).parsed)
-  end
-
-  def test_background_retrieve_defers_statusless_text_with_nested_extra_property
-    stub_request(:get, "http://localhost/responses/resp_statusless_extra_property").to_return_json(
-      status: 200,
-      body: {
-        id: "resp_statusless_extra_property",
-        output: [
-          {
-            id: "msg_statusless_extra_property",
-            content: [
-              {
-                annotations: [],
-                text: "{\"primaryProfile\":{\"displayName\":\"Ada\",\"middleName\":null,\"extra\":true},\"backupProfile\":{\"displayName\":\"Grace\",\"middleName\":null}}",
-                type: "output_text"
-              }
-            ],
-            role: "assistant",
-            type: "message"
-          }
-        ]
-      }
-    )
-
-    response = @client.responses.retrieve("resp_statusless_extra_property", text: AliasedEnvelope)
-
-    assert_nil(response.output.fetch(0).content.fetch(0).parsed)
-  end
-
-  def test_background_retrieve_defers_statusless_nullable_text_with_nested_extra_property
-    stub_request(:get, "http://localhost/responses/resp_statusless_nullable_extra").to_return_json(
-      status: 200,
-      body: {
-        id: "resp_statusless_nullable_extra",
-        output: [
-          {
-            id: "msg_statusless_nullable_extra",
-            content: [
-              {
-                annotations: [],
-                text: "{\"profile\":{\"displayName\":\"Ada\",\"middleName\":null,\"extra\":true}}",
-                type: "output_text"
-              }
-            ],
-            role: "assistant",
-            type: "message"
-          }
-        ]
-      }
-    )
-
-    response = @client.responses.retrieve("resp_statusless_nullable_extra", text: NullableAliasedEnvelope)
-
-    assert_nil(response.output.fetch(0).content.fetch(0).parsed)
-  end
-
-  def test_background_retrieve_parses_statusless_text_with_escaped_definition_paths
-    stub_request(:get, "http://localhost/responses/resp_statusless_escaped_defs").to_return_json(
-      status: 200,
-      body: {
-        id: "resp_statusless_escaped_defs",
-        output: [
-          {
-            id: "msg_statusless_escaped_defs",
-            content: [
-              {
-                annotations: [],
-                text: "{\"primary/name~value\":{\"displayName\":\"Ada\",\"middleName\":null},\"backup~name/value\":{\"displayName\":\"Grace\",\"middleName\":null}}",
-                type: "output_text"
-              }
-            ],
-            role: "assistant",
-            type: "message"
-          }
-        ]
-      }
-    )
-
-    response = @client.responses.retrieve("resp_statusless_escaped_defs", text: EscapedAliasEnvelope)
-
-    assert_instance_of(EscapedAliasEnvelope, response.output.fetch(0).content.fetch(0).parsed)
-  end
-
-  def test_background_retrieve_parses_statusless_text_with_constant_union
-    stub_request(:get, "http://localhost/responses/resp_statusless_constant_union").to_return_json(
-      status: 200,
-      body: {
-        id: "resp_statusless_constant_union",
-        output: [
-          {
-            id: "msg_statusless_constant_union",
-            content: [{annotations: [], text: "{\"kind\":\"draft\"}", type: "output_text"}],
-            role: "assistant",
-            type: "message"
-          }
-        ]
-      }
-    )
-
-    response = @client.responses.retrieve("resp_statusless_constant_union", text: StatuslessUnionEnvelope)
-
-    assert_instance_of(StatuslessUnionEnvelope, response.output.fetch(0).content.fetch(0).parsed)
-  end
-
-  def test_background_retrieve_defers_statusless_mixed_union_with_nested_extra_property
-    stub_request(:get, "http://localhost/responses/resp_statusless_mixed_union_extra").to_return_json(
-      status: 200,
-      body: {
-        id: "resp_statusless_mixed_union_extra",
-        output: [
-          {
-            id: "msg_statusless_mixed_union_extra",
-            content: [
-              {
-                annotations: [],
-                text: "{\"value\":{\"displayName\":\"Ada\",\"middleName\":null,\"extra\":true}}",
-                type: "output_text"
-              }
-            ],
-            role: "assistant",
-            type: "message"
-          }
-        ]
-      }
-    )
-
-    response = @client.responses.retrieve("resp_statusless_mixed_union_extra", text: MixedStatuslessUnionEnvelope)
-
-    assert_nil(response.output.fetch(0).content.fetch(0).parsed)
-  end
-
-  def test_background_retrieve_defers_statusless_all_of_ref_with_nested_extra_property
-    stub_request(:get, "http://localhost/responses/resp_statusless_all_of_extra").to_return_json(
-      status: 200,
-      body: {
-        id: "resp_statusless_all_of_extra",
-        output: [
-          {
-            id: "msg_statusless_all_of_extra",
-            content: [
-              {
-                annotations: [],
-                text: "{\"primaryProfile\":{\"displayName\":\"Ada\",\"middleName\":null,\"extra\":true},\"backupProfile\":{\"displayName\":\"Grace\",\"middleName\":null}}",
-                type: "output_text"
-              }
-            ],
-            role: "assistant",
-            type: "message"
-          }
-        ]
-      }
-    )
-
-    response = @client.responses.retrieve("resp_statusless_all_of_extra", text: AllOfAliasedEnvelope)
-
-    assert_nil(response.output.fetch(0).content.fetch(0).parsed)
+    assert_instance_of(AliasedProfile, parsed)
+    assert_nil(parsed.display_name)
   end
 
   def test_background_retrieve_parses_malformed_statusless_arguments_after_completion
