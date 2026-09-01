@@ -156,6 +156,7 @@ module OpenAI
             insert_choice_snapshot!(completion_snapshot.choices, choice_snapshot)
           else
             update_existing_choice_snapshot(choice, choice_snapshot)
+            accumulate_logprobs!(choice.logprobs, choice_snapshot)
           end
 
           tool_calls_by_index = index_choice_snapshot!(choice_snapshot)
@@ -166,8 +167,6 @@ module OpenAI
           end
 
           parse_tool_calls!(choice.delta.tool_calls, tool_calls_by_index)
-
-          accumulate_logprobs!(choice.logprobs, choice_snapshot)
         end
 
         def create_new_choice_snapshot(choice)

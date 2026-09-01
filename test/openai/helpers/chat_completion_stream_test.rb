@@ -169,7 +169,80 @@ class OpenAI::Test::ChatCompletionStreamTest < Minitest::Test
     assert_equal([0, 1, 2], state.current_completion_snapshot.choices.map(&:index))
   end
 
+  def test_late_choice_content_logprobs_are_accumulated_once_per_chunk
+    state = OpenAI::Helpers::Streaming::ChatCompletionStreamState.new
+    state.handle_chunk(build_chunk(choice_index: 0, delta: {role: :assistant, content: "zero"}))
+
+    first_events = state.handle_chunk(
+      build_chunk_with_choices(
+        [
+          {
+            index: 1,
+            delta: {role: :assistant, content: "one"},
+            finish_reason: nil,
+            logprobs: {content: [logprob("one")]}
+          }
+        ]
+      )
+    )
+
+    first_delta = first_events.find { |event| event.type == :"logprobs.content.delta" }
+    assert_equal(["one"], first_delta.snapshot.map(&:token))
+    assert_equal(["one"], state.get_final_completion.choices.last.logprobs.content.map(&:token))
+
+    second_events = state.handle_chunk(
+      build_chunk_with_choices(
+        [
+          {
+            index: 1,
+            delta: {content: "one"},
+            finish_reason: nil,
+            logprobs: {content: [logprob("one")]}
+          }
+        ]
+      )
+    )
+
+    second_delta = second_events.find { |event| event.type == :"logprobs.content.delta" }
+    choice = state.get_final_completion.choices.last
+    assert_equal(["one", "one"], second_delta.snapshot.map(&:token))
+    assert_equal(["one", "one"], choice.logprobs.content.map(&:token))
+    assert_equal("oneone", choice.message.content)
+  end
+
+  def test_late_choice_refusal_logprobs_are_accumulated_once
+    state = OpenAI::Helpers::Streaming::ChatCompletionStreamState.new
+    state.handle_chunk(build_chunk(choice_index: 0, delta: {role: :assistant, content: "zero"}))
+
+    events = state.handle_chunk(
+      build_chunk_with_choices(
+        [
+          {
+            index: 1,
+            delta: {role: :assistant, refusal: "no"},
+            finish_reason: nil,
+            logprobs: {refusal: [logprob("no")]}
+          }
+        ]
+      )
+    )
+
+    delta = events.find { |event| event.type == :"logprobs.refusal.delta" }
+    choice = state.get_final_completion.choices.last
+    assert_equal(["no"], delta.snapshot.map(&:token))
+    assert_equal(["no"], choice.logprobs.refusal.map(&:token))
+  end
+
   private
+
+  def logprob(token)
+    {
+      token: token,
+      logprob: -0.1,
+      bytes: token.bytes,
+      top_logprobs: []
+    }
+  end
 
   def count_choice_snapshot_index_reads
     reads = 0
