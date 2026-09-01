@@ -150,6 +150,12 @@ class OpenAI::Test::ResponseParserTest < Minitest::Test
 
       assert_equal(key, error.key)
     end
+
+    error = assert_raises(KeyError) do
+      ResponsesProbe.allocate.parse({output: [{type: "function_call"}]}, nil, {})
+    end
+
+    assert_equal(:name, error.key)
   end
 
   def test_empty_outputs_and_private_delegate_visibility_are_preserved

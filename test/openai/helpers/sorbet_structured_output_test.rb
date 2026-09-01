@@ -831,6 +831,17 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
       assert_not_requested(:get, "http://localhost/responses/resp_secret")
     end
 
+    def test_responses_retrieve_rejects_string_keyed_sorbet_tools_in_typed_params
+      params = OpenAI::Responses::ResponseRetrieveParams.new("tools" => [@adapter])
+
+      error = assert_raises(ArgumentError) do
+        @client.responses.retrieve("resp_secret", params)
+      end
+
+      assert_includes(error.message, "function tools are not supported")
+      assert_not_requested(:get, "http://localhost/responses/resp_secret")
+    end
+
     def test_ordinary_sdk_loading_does_not_load_sorbet_runtime
       root = File.expand_path("../../..", __dir__)
       code = "require \"openai\"; abort(\"Sorbet was loaded\") if defined?(T)"

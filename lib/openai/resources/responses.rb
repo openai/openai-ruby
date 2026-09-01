@@ -394,7 +394,7 @@ module OpenAI
           -> (raw) do
             next raw unless structured_output_response_complete?(raw, model, tool_models)
 
-            parse_structured_outputs!(raw, model, tool_models)
+            parse_retrieved_structured_outputs!(raw, model, tool_models)
           end
         end
 
@@ -572,6 +572,15 @@ module OpenAI
         OpenAI::Helpers::StructuredOutput::ResponseParser.parse!(raw, model, tool_models)
       end
 
+      def parse_retrieved_structured_outputs!(raw, model, tool_models)
+        parsable_output = raw[:output].to_a.reject do |output|
+          output[:type] == "function_call" && !output.key?(:name)
+        end
+
+        parse_structured_outputs!(raw.merge(output: parsable_output), model, tool_models)
+        raw
+      end
+
       def get_structured_output_models(parsed)
         OpenAI::Helpers::StructuredOutput::ResponseParser.get_models(parsed)
       end
@@ -582,7 +591,7 @@ module OpenAI
         raw[:output].to_a.none? do |output|
           case output[:type]
           when "message"
-            model && unfinished_structured_output_message?(output, response_status: raw[:status])
+            model && unfinished_structured_output_message?(output, model, response_status: raw[:status])
           when "function_call"
             unfinished_structured_output_function_call?(
               output,
@@ -595,11 +604,14 @@ module OpenAI
         end
       end
 
-      def unfinished_structured_output_message?(output, response_status:)
+      def unfinished_structured_output_message?(output, model, response_status:)
         return true if structured_output_pending_status?(output[:status])
         return false unless response_status.nil? && output[:status].nil?
 
-        output[:content].to_a.any? { |content| content[:type] == "output_text" }
+        output[:content].to_a.any? do |content|
+          content[:type] == "output_text" &&
+            (!content.key?(:text) || !structured_output_value_ready?(content[:text], model))
+        end
       end
 
       def unfinished_structured_output_function_call?(output, tool_models, response_status:)
@@ -607,12 +619,24 @@ module OpenAI
         return false unless output.key?(:name)
         return false unless tool_models.key?(output[:name])
         return true if structured_output_pending_status?(output[:status])
+        return false unless response_status.nil? && output[:status].nil?
 
-        response_status.nil? && output[:status].nil?
+        !output.key?(:arguments) ||
+          !structured_output_value_ready?(output[:arguments], tool_models.fetch(output[:name]))
       end
 
       def structured_output_pending_status?(status)
         ["queued", "in_progress", "incomplete"].include?(status)
+      end
+
+      def structured_output_value_ready?(value, model)
+        parsed = JSON.parse(value, symbolize_names: true)
+        state = OpenAI::Internal::Type::Converter.new_coerce_state
+        OpenAI::Internal::Type::Converter.coerce(model, parsed, state: state)
+        exactness = state.fetch(:exactness)
+        exactness.fetch(:no).zero? && exactness.fetch(:maybe).zero?
+      rescue JSON::ParserError, TypeError
+        false
       end
 
       def duplicate_structured_output_params(value)

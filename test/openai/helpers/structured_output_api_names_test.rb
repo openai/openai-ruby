@@ -347,6 +347,57 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
   end
 
+  def test_background_retrieve_parses_schema_valid_statusless_text
+    stub_request(:get, "http://localhost/responses/resp_statusless_valid_text").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_statusless_valid_text",
+        output: [
+          {
+            id: "msg_statusless_valid_text",
+            content: [
+              {
+                annotations: [],
+                text: "{\"displayName\":\"Ada\",\"middleName\":null}",
+                type: "output_text"
+              }
+            ],
+            role: "assistant",
+            type: "message"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_statusless_valid_text", text: AliasedProfile)
+
+    assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
+  end
+
+  def test_background_retrieve_parses_schema_valid_statusless_arguments
+    stub_request(:get, "http://localhost/responses/resp_statusless_valid_arguments").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_statusless_valid_arguments",
+        output: [
+          {
+            arguments: "{\"profileId\":7}",
+            call_id: "call_statusless_valid_arguments",
+            name: "AliasedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve(
+      "resp_statusless_valid_arguments",
+      tools: [AliasedLookup]
+    )
+
+    assert_instance_of(AliasedLookup, response.output.fetch(0).parsed)
+  end
+
   def test_background_retrieve_defers_item_status_without_top_level_status
     stub_request(:get, "http://localhost/responses/resp_item_pending").to_return_json(
       status: 200,
@@ -485,6 +536,27 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     )
 
     response = @client.responses.retrieve("resp_statusless_incomplete_text", text: AliasedProfile)
+
+    assert_nil(response.output.fetch(0).content.fetch(0).parsed)
+  end
+
+  def test_background_retrieve_defers_statusless_text_missing_required_nullable_field
+    stub_request(:get, "http://localhost/responses/resp_statusless_missing_nullable").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_statusless_missing_nullable",
+        output: [
+          {
+            id: "msg_statusless_missing_nullable",
+            content: [{annotations: [], text: "{\"displayName\":\"Ada\"}", type: "output_text"}],
+            role: "assistant",
+            type: "message"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_statusless_missing_nullable", text: AliasedProfile)
 
     assert_nil(response.output.fetch(0).content.fetch(0).parsed)
   end
