@@ -35,8 +35,18 @@ module OpenAI
         def receive
         end
 
+        # @api private
+        sig { returns(T.nilable(String)) }
+        def receive_raw
+        end
+
         sig { params(event: ClientEvent).void }
         def send_event(event)
+        end
+
+        # @api private
+        sig { params(data: String).void }
+        def send_raw(data)
         end
 
         sig { params(code: Integer, reason: String).void }

@@ -20,9 +20,17 @@ module OpenAI
             (OpenAI::Models::Responses::connection_server_event event) -> void
           } -> self
         def receive: -> OpenAI::Models::Responses::connection_server_event?
+
+        # @api private
+        def receive_raw: -> String?
+
         def send_event: (
           OpenAI::Models::Responses::connection_client_event event
         ) -> nil
+
+        # @api private
+        def send_raw: (String data) -> nil
+
         def close: (?code: Integer, ?reason: String) -> nil
 
         # @api private

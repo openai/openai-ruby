@@ -50,6 +50,35 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     assert_equal("A block is required to open a Responses WebSocket.", error.message)
   end
 
+  def test_raw_io_helpers_remain_public_private_sdk_plumbing
+    socket = FakeSocket.new("raw server message")
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      assert_equal("raw server message", connection.receive_raw)
+      assert_nil(connection.send_raw(JSON.generate(type: "response.create")))
+    end
+
+    assert_equal({"type" => "response.create"}, JSON.parse(socket.writes.fetch(0)))
+  end
+
+  def test_response_create_keeps_its_fixed_discriminator
+    socket = FakeSocket.new
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      connection.response.create(type: :"response.cancel", model: "gpt-5.2")
+      connection.response.create(**{"type" => :"response.cancel", :model => "gpt-5.2"})
+    end
+
+    assert_equal(
+      {"type" => "response.create", "model" => "gpt-5.2"},
+      JSON.parse(socket.writes.fetch(0))
+    )
+    assert_equal(
+      {"type" => "response.create", "model" => "gpt-5.2"},
+      JSON.parse(socket.writes.fetch(1))
+    )
+  end
+
   def test_unknown_event_is_observable_without_exposing_payload_in_inspect
     secret = "secret-event-payload"
     socket = FakeSocket.new(JSON.generate(type: "response.future", stream_id: "turn_1", secret: secret))

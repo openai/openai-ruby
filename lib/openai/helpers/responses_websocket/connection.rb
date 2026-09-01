@@ -249,7 +249,6 @@ module OpenAI
         OpenAI::Errors::ResponsesConnectionError.new(url: @url, message: message)
       end
 
-      private :receive_raw, :send_raw
     end
   end
 end

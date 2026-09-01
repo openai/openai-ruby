@@ -37,12 +37,16 @@ module OpenAI
       end
 
       # Receive the next raw WebSocket message.
+      #
+      # @api private
       def receive_raw
         message = @socket.read
         message&.to_str
       end
 
       # Send an already encoded text message.
+      #
+      # @api private
       def send_raw(data)
         raise connection_error(closed_send_message) if closed?
 
