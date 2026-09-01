@@ -10,7 +10,7 @@ module OpenAI
           def self.new(connection)
           end
 
-          sig { params(params: T.untyped).void }
+          sig { params(params: T::Hash[Symbol, T.anything]).void }
           def create(**params)
           end
         end

@@ -5,6 +5,8 @@ module OpenAI
     module Realtime
       # Realtime request integration kept outside the generated client implementation.
       module ClientExtension
+        include OpenAI::WebSocket::ClientRequest
+
         MAX_CALL_CLEANUP_SECONDS = 5.0
         private_constant :MAX_CALL_CLEANUP_SECONDS
 
@@ -140,28 +142,20 @@ module OpenAI
         #
         # @api private
         def with_realtime_connection_request(path:, query:, websocket_base_url: nil, options: nil)
-          request, deadline = build_realtime_connection_request(
-            path: path,
-            query: query,
-            websocket_base_url: websocket_base_url,
-            options: options
-          )
-          handshake_completed = false
-          mark_handshake_completed = -> { handshake_completed = true }
-          yield(request, mark_handshake_completed)
-        rescue OpenAI::Errors::RealtimeConnectionError => e
-          raise if handshake_completed
-          raise unless e.http_status == 401 && @workload_identity_auth
+          build = lambda do |deadline|
+            build_realtime_connection_request(
+              path: path,
+              query: query,
+              websocket_base_url: websocket_base_url,
+              options: options,
+              deadline: deadline
+            )
+          end
 
-          @workload_identity_auth.invalidate_token
-          refreshed, = build_realtime_connection_request(
-            path: path,
-            query: query,
-            websocket_base_url: websocket_base_url,
-            options: options,
-            deadline: deadline
-          )
-          yield(refreshed, mark_handshake_completed)
+          with_websocket_connection_retry(
+            error_class: OpenAI::Errors::RealtimeConnectionError,
+            build: build
+          ) { |request, marker| yield(request, marker) }
         end
 
         private def build_realtime_connection_request(

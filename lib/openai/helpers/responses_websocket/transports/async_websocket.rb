@@ -3,39 +3,24 @@
 module OpenAI
   module Responses
     module Transports
-      # Responses-specific adapter over the SDK's optional async WebSocket transport.
+      # Responses facade for the shared optional async WebSocket transport.
       #
       # @api private
-      class AsyncWebSocket
+      class AsyncWebSocket < OpenAI::WebSocket::AsyncWebSocketTransport
         def initialize
-          @transport = OpenAI::Realtime::Transports::AsyncWebSocket.new
-        end
-
-        def open(url:, headers:, timeout:, **options, &block)
-          return @transport.open(url: url, headers: headers, timeout: timeout, **options) unless block
-
-          callback_error = nil
-          @transport.open(url: url, headers: headers, timeout: timeout, **options) do |socket|
-            block.call(socket)
-          rescue OpenAI::Errors::RealtimeConnectionError => e
-            callback_error = e
-            raise
-          end
-
-        rescue OpenAI::Errors::RealtimeConnectionError => e
-          raise if e.equal?(callback_error)
-
-          message = if e.cause.is_a?(LoadError)
-            "Responses WebSockets require the async-websocket gem. Add it to your Gemfile."
-          end
-
-          raise(
+          error_factory = lambda do |url:, message: nil, http_status: nil, **_options|
             OpenAI::Errors::ResponsesConnectionError.new(
-              url: e.url,
+              url: url,
               message: message,
-              http_status: e.http_status
-            ),
-            cause: nil
+              http_status: http_status
+            )
+          end
+
+          super(
+            product_name: "Responses",
+            error_class: OpenAI::Errors::ResponsesConnectionError,
+            error_factory: error_factory,
+            dependency_message: "Responses WebSockets require the async-websocket gem. Add it to your Gemfile."
           )
         end
       end

@@ -13,9 +13,9 @@ module OpenAI
             request: OpenAI::Internal::Transport::BaseClient::RequestInput,
             mark_handshake_completed: T.proc.void
           )
-          .returns(T.untyped)
+          .returns(T.anything)
       )
-        .returns(T.untyped)
+        .returns(T.anything)
     end
     def with_responses_websocket_connection_request(
       websocket_base_url: nil,
@@ -26,7 +26,7 @@ module OpenAI
   end
 
   module Errors
-    class ResponsesConnectionError < OpenAI::Errors::Error
+    class ResponsesConnectionError < OpenAI::Errors::WebSocketConnectionError
       sig { returns(URI::Generic) }
       attr_reader :url
 
@@ -50,7 +50,7 @@ module OpenAI
       end
     end
 
-    class ResponsesProtocolError < OpenAI::Errors::Error
+    class ResponsesProtocolError < OpenAI::Errors::WebSocketProtocolError
       sig { returns(T.nilable(Exception)) }
       def cause
       end
@@ -89,11 +89,11 @@ module OpenAI
         params(
           websocket_base_url: T.nilable(String),
           request_options: T.nilable(OpenAI::RequestOptions::OrHash),
-          transport: T.untyped,
-          transport_options: T::Hash[Symbol, T.untyped],
-          block: T.proc.params(connection: OpenAI::Responses::Connection).returns(T.untyped)
+          transport: T.anything,
+          transport_options: T::Hash[Symbol, T.anything],
+          block: T.proc.params(connection: OpenAI::Responses::Connection).returns(T.anything)
         )
-          .returns(T.untyped)
+          .returns(T.anything)
       end
       def connect(
         websocket_base_url: nil,

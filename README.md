@@ -104,13 +104,13 @@ end
 ```
 
 The connection is intentionally single-owner: callers serialize writes and
-use one reader (`receive` or `each`). `stream_id` is optional; a connection
-accepts at most 32 distinct named IDs, and requests on the same ID are FIFO.
-The SDK does not automatically reconnect or replay an ambiguous write. When
-the server closes a connection or reports its 60-minute limit, open a new
-connection and continue with `previous_response_id` when the response was
-stored. WebSocket mode does not support `background`, `stream`, or
-`stream_options`; `generate: false` warmups are supported.
+use one reader (`receive` or `each`). The SDK forwards response fields and
+`stream_id` values without imposing additional client-side policy. Known
+server events are decoded into generated models on a best-effort basis, while
+newer event types remain observable as `UnknownServerEvent` values. The SDK
+does not automatically reconnect or replay an ambiguous write. When the server
+closes a connection, open a new connection and continue with
+`previous_response_id` when the response was stored.
 
 ### Pagination
 

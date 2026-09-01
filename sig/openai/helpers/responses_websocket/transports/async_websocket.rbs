@@ -8,9 +8,9 @@ module OpenAI
             url: URI::Generic,
             headers: ::Hash[String, String],
             timeout: Float?,
-            **untyped options
+            **top options
           ) {
-            (untyped socket) -> top
+            (top socket) -> top
           } -> top
         end
       end

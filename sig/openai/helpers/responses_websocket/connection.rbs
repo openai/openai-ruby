@@ -1,13 +1,10 @@
 module OpenAI
   module Models
     module Responses
-      type connection_server_event =
-        OpenAI::Models::Responses::responses_server_event
-        | OpenAI::Responses::UnknownServerEvent
+      type connection_server_event = top
 
       type connection_client_event =
-        OpenAI::Responses::ResponsesClientEvent
-        | ::Hash[Symbol | String, untyped]
+        OpenAI::Responses::ResponsesClientEvent | ::Hash[Symbol | String, top]
 
       class Connection
         include Enumerable[OpenAI::Models::Responses::connection_server_event]
@@ -16,7 +13,7 @@ module OpenAI
         attr_reader response: OpenAI::Responses::ConnectionResources::Response
 
         # @api private
-        def initialize: (socket: untyped, url: URI::Generic) -> void
+        def initialize: (socket: top, url: URI::Generic) -> void
         def each:
           -> Enumerator[OpenAI::Models::Responses::connection_server_event, self]
           | {

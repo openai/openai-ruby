@@ -9,9 +9,9 @@ module OpenAI
           params(
             client: OpenAI::Client,
             websocket_base_url: T.nilable(String),
-            transport: T.untyped,
+            transport: T.anything,
             request_options: T.nilable(OpenAI::RequestOptions::OrHash),
-            transport_options: T::Hash[Symbol, T.untyped]
+            transport_options: T::Hash[Symbol, T.anything]
           )
             .returns(T.attached_class)
         end
@@ -27,9 +27,9 @@ module OpenAI
         # @api private
         sig do
           params(
-            block: T.proc.params(connection: OpenAI::Responses::Connection).returns(T.untyped)
+            block: T.proc.params(connection: OpenAI::Responses::Connection).returns(T.anything)
           )
-            .returns(T.untyped)
+            .returns(T.anything)
         end
         def open(&block)
         end

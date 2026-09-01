@@ -5,7 +5,7 @@ module OpenAI
         class Response
           # @api private
           def initialize: (OpenAI::Responses::Connection connection) -> void
-          def create: (**untyped params) -> nil
+          def create: (**top params) -> nil
         end
       end
     end

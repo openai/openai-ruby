@@ -23,7 +23,7 @@ module OpenAI
   end
 
   module Errors
-    class RealtimeConnectionError < OpenAI::Errors::Error
+    class RealtimeConnectionError < OpenAI::Errors::WebSocketConnectionError
       attr_reader url: URI::Generic
 
       # @api private
@@ -39,7 +39,7 @@ module OpenAI
       ) -> void
     end
 
-    class RealtimeProtocolError < OpenAI::Errors::Error
+    class RealtimeProtocolError < OpenAI::Errors::WebSocketProtocolError
       attr_reader data: String
       def cause: -> StandardError?
 

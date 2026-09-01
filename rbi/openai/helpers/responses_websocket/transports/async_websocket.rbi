@@ -14,10 +14,10 @@ module OpenAI
               url: URI::Generic,
               headers: T::Hash[String, String],
               timeout: T.nilable(Float),
-              options: T.untyped,
-              block: T.proc.params(socket: T.untyped).returns(T.untyped)
+              options: T.anything,
+              block: T.proc.params(socket: T.anything).returns(T.anything)
             )
-              .returns(T.untyped)
+              .returns(T.anything)
           end
           def open(url:, headers:, timeout:, **options, &block)
           end

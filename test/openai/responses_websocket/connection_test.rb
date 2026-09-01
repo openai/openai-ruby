@@ -63,6 +63,74 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     refute_includes(event.inspect, secret)
   end
 
+  def test_function_call_output_item_without_computed_parsed_is_received
+    socket = FakeSocket.new(
+      JSON.generate(
+        type: "response.output_item.added",
+        sequence_number: 1,
+        output_index: 0,
+        item: {
+          type: "function_call",
+          id: "fc_1",
+          call_id: "call_1",
+          name: "lookup",
+          arguments: "{}"
+        }
+      )
+    )
+    event = nil
+
+    client.responses.connect(transport: FakeTransport.new(socket)) { |connection| event = connection.receive }
+
+    assert_instance_of(OpenAI::Responses::ResponsesServerEvent::ResponseOutputItemWsAdded, event)
+    assert_instance_of(OpenAI::Responses::ResponseFunctionToolCall, event.item)
+    assert_equal("call_1", event.item.call_id)
+  end
+
+  def test_replayed_function_call_without_computed_parsed_is_sent
+    socket = FakeSocket.new
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      connection.response.create(
+        model: "gpt-5.2",
+        input: [
+          {
+            type: "function_call",
+            id: "fc_1",
+            call_id: "call_1",
+            name: "lookup",
+            arguments: "{}"
+          }
+        ]
+      )
+    end
+
+    item = JSON.parse(socket.writes.fetch(0)).fetch("input").fetch(0)
+    assert_equal("function_call", item.fetch("type"))
+    assert_equal("call_1", item.fetch("call_id"))
+    refute(item.key?("parsed"))
+  end
+
+  def test_partial_known_event_is_best_effort_typed_without_poisoning
+    socket = FakeSocket.new(
+      JSON.generate(
+        type: "response.content_part.added",
+        sequence_number: 1,
+        item_id: "item_1",
+        output_index: 0,
+        content_index: 0,
+        part: {type: "output_text", text: ""}
+      ),
+      text_delta("still-readable")
+    )
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      event = connection.receive
+      assert_instance_of(OpenAI::Responses::ResponsesServerEvent::ResponseContentPartWsAdded, event)
+      assert_equal("still-readable", connection.receive.delta)
+    end
+  end
+
   def test_parse_failures_are_payload_free
     secret = "secret-invalid-json"
     socket = FakeSocket.new("{#{secret}")
@@ -74,21 +142,6 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     assert_equal("Invalid Responses WebSocket event.", error.message)
     refute_includes(error.full_message, secret)
     assert_nil(error.cause)
-  end
-
-  def test_outbound_validation_is_payload_free_and_happens_before_write
-    secret = "secret-prompt-value"
-    socket = FakeSocket.new
-
-    error = assert_raises(OpenAI::Errors::ResponsesClientEventError) do
-      client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
-        connection.response.create(model: secret, stream: true)
-      end
-    end
-
-    assert_equal("Invalid Responses WebSocket client event.", error.message)
-    refute_includes(error.full_message, secret)
-    assert_empty(socket.writes)
   end
 
   def test_failed_write_poisons_connection_and_reports_unknown_outcome
@@ -110,18 +163,19 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     end
   end
 
-  def test_generated_event_validation_stays_payload_free
-    secret = "secret-invalid-model"
-    socket = FakeSocket.new
+  def test_close_aborts_after_ambiguous_write
+    socket = FailingWriteSocket.new
 
-    error = assert_raises(OpenAI::Errors::ResponsesClientEventError) do
-      client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
-        connection.response.create(model: [secret])
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      assert_raises(OpenAI::Errors::ResponsesSendError) do
+        connection.response.create(model: "gpt-5.2")
       end
+
+      assert_nil(connection.close)
     end
 
-    refute_includes(error.full_message, secret)
-    assert_empty(socket.writes)
+    assert_predicate(socket, :aborted?)
+    assert_nil(socket.close_args)
   end
 
   def test_nested_generated_models_keep_serializer_metadata
@@ -138,18 +192,6 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     )
   end
 
-  def test_raw_hash_without_type_is_rejected_before_write
-    socket = FakeSocket.new
-
-    assert_raises(OpenAI::Errors::ResponsesClientEventError) do
-      client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
-        connection.send_event(model: "gpt-5.2")
-      end
-    end
-
-    assert_empty(socket.writes)
-  end
-
   def test_nested_generated_model_rejects_api_name_collision_before_write
     socket = FakeSocket.new
     nested = SerializerMetadataProbe.new(ruby_name: "good", apiName: "bad")
@@ -163,36 +205,14 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     assert_empty(socket.writes)
   end
 
-  def test_string_keyed_known_fields_still_receive_generated_validation
-    secret = "secret-invalid-string-model"
+  def test_raw_hash_without_type_is_forwarded
     socket = FakeSocket.new
 
-    error = assert_raises(OpenAI::Errors::ResponsesClientEventError) do
-      client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
-        connection.send_event("type" => "response.create", "model" => [secret])
-      end
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      connection.send_event(model: "gpt-5.2")
     end
 
-    refute_includes(error.full_message, secret)
-    assert_empty(socket.writes)
-  end
-
-  def test_nested_string_keys_receive_generated_validation
-    secret = "secret-invalid-nested-mode"
-    socket = FakeSocket.new
-
-    error = assert_raises(OpenAI::Errors::ResponsesClientEventError) do
-      client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
-        connection.send_event(
-          "type" => "response.create",
-          "model" => "gpt-5.2",
-          "prompt_cache_options" => {"mode" => [secret]}
-        )
-      end
-    end
-
-    refute_includes(error.full_message, secret)
-    assert_empty(socket.writes)
+    assert_equal({"model" => "gpt-5.2"}, JSON.parse(socket.writes.fetch(0)))
   end
 
   def test_nested_mixed_keys_are_rejected_before_write
@@ -223,68 +243,16 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     assert_empty(socket.writes)
   end
 
-  def test_mixed_discriminators_and_beta_fields_are_rejected_before_write
+  def test_newer_fields_are_forwarded
     socket = FakeSocket.new
 
     client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
-      assert_raises(OpenAI::Errors::ResponsesClientEventError) do
-        connection.send_event(:type => "response.create", "type" => "response.inject", :model => "gpt-5.2")
-      end
-
-      assert_raises(OpenAI::Errors::ResponsesClientEventError) do
-        connection.response.create(model: "gpt-5.2", multi_agent: true)
-      end
+      connection.response.create(model: "gpt-5.2", multi_agent: true, stream_id: 123)
     end
 
-    assert_empty(socket.writes)
-  end
-
-  def test_nested_known_beta_multi_agent_fields_are_rejected_before_write
-    socket = FakeSocket.new
-
-    assert_raises(OpenAI::Errors::ResponsesClientEventError) do
-      client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
-        connection.response.create(
-          model: "gpt-5.2",
-          input: [{type: "message", role: "user", agent: {agent_name: "researcher"}}]
-        )
-      end
-    end
-
-    assert_empty(socket.writes)
-  end
-
-  def test_non_message_input_items_reject_known_beta_agent_fields
-    socket = FakeSocket.new
-
-    assert_raises(OpenAI::Errors::ResponsesClientEventError) do
-      client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
-        connection.response.create(
-          model: "gpt-5.2",
-          input: [{type: "function_call_output", call_id: "call_1", output: "ok", agent: {}}]
-        )
-      end
-    end
-
-    assert_empty(socket.writes)
-  end
-
-  def test_typed_beta_input_items_are_rejected_after_dumping
-    socket = FakeSocket.new
-    item = OpenAI::Beta::BetaResponseInputItem::Message.new(
-      content: [{type: :input_text, text: "hello"}],
-      role: :user,
-      agent: {agent_name: "researcher"},
-      type: :message
-    )
-
-    assert_raises(OpenAI::Errors::ResponsesClientEventError) do
-      client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
-        connection.response.create(model: "gpt-5.2", input: [item])
-      end
-    end
-
-    assert_empty(socket.writes)
+    payload = JSON.parse(socket.writes.fetch(0))
+    assert_equal(true, payload.fetch("multi_agent"))
+    assert_equal(123, payload.fetch("stream_id"))
   end
 
   def test_opaque_input_maps_can_use_beta_looking_names
@@ -318,38 +286,6 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     end
 
     assert_equal("ordinary-tag", JSON.parse(socket.writes.fetch(0)).dig("metadata", "agent"))
-  end
-
-  def test_explicit_nil_websocket_fields_are_rejected_before_write
-    socket = FakeSocket.new
-
-    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
-      assert_raises(OpenAI::Errors::ResponsesClientEventError) do
-        connection.response.create(model: "gpt-5.2", stream_id: nil)
-      end
-
-      assert_raises(OpenAI::Errors::ResponsesClientEventError) do
-        connection.response.create(model: "gpt-5.2", generate: nil)
-      end
-    end
-
-    assert_empty(socket.writes)
-  end
-
-  def test_non_string_stream_ids_and_non_boolean_generate_are_rejected_before_coercion
-    socket = FakeSocket.new
-
-    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
-      assert_raises(OpenAI::Errors::ResponsesClientEventError) do
-        connection.response.create(model: "gpt-5.2", stream_id: 123)
-      end
-
-      assert_raises(OpenAI::Errors::ResponsesClientEventError) do
-        connection.response.create(model: "gpt-5.2", generate: "false")
-      end
-    end
-
-    assert_empty(socket.writes)
   end
 
   def test_cyclic_client_event_data_is_rejected_without_writing
@@ -416,13 +352,12 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     end
   end
 
-  def test_receive_rejects_reads_after_protocol_poisoning
-    socket = FakeSocket.new("{invalid", text_delta("should-not-be-read"))
+  def test_receive_can_continue_after_malformed_json
+    socket = FakeSocket.new("{invalid", text_delta("still-readable"))
 
     client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
       assert_raises(OpenAI::Errors::ResponsesProtocolError) { connection.receive }
-      error = assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive }
-      assert_equal("Cannot read from a poisoned Responses WebSocket.", error.message)
+      assert_equal("still-readable", connection.receive.delta)
     end
   end
 
@@ -465,39 +400,45 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     end
   end
 
-  def test_rejects_invalid_or_too_many_named_stream_ids_before_writing
+  def test_foreign_owner_send_does_not_write
     socket = FakeSocket.new
 
     client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
-      assert_raises(OpenAI::Errors::ResponsesClientEventError) do
-        connection.response.create(model: "gpt-5.2", stream_id: "bad id")
+      thread = Thread.new do
+        assert_raises(OpenAI::Errors::ResponsesConnectionError) do
+          connection.response.create(model: "gpt-5.2")
+        end
       end
 
-      32.times do |index|
+      thread.join
+    end
+
+    assert_empty(socket.writes)
+  end
+
+  def test_stream_ids_are_forwarded_without_client_policy
+    socket = FakeSocket.new
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      connection.response.create(model: "gpt-5.2", stream_id: "bad id")
+      33.times do |index|
         assert_nil(connection.response.create(model: "gpt-5.2", stream_id: "lane_#{index}"))
-      end
-
-      assert_raises(OpenAI::Errors::ResponsesClientEventError) do
-        connection.response.create(model: "gpt-5.2", stream_id: "lane_32")
       end
     end
 
-    assert_equal(32, socket.writes.size)
+    assert_equal(34, socket.writes.size)
   end
 
-  def test_generate_false_is_forwarded_but_http_only_fields_are_rejected
+  def test_response_fields_are_forwarded
     socket = FakeSocket.new
 
     client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
       assert_nil(connection.response.create(model: "gpt-5.2", generate: false))
-
-      assert_raises(OpenAI::Errors::ResponsesClientEventError) do
-        connection.response.create(model: "gpt-5.2", background: true)
-      end
+      assert_nil(connection.response.create(model: "gpt-5.2", background: true))
     end
 
     assert_equal(false, JSON.parse(socket.writes.fetch(0)).fetch("generate"))
-    assert_equal(1, socket.writes.size)
+    assert_equal(true, JSON.parse(socket.writes.fetch(1)).fetch("background"))
   end
 
   def test_explicit_base_url_is_validated_and_proxy_authorization_is_stripped
@@ -586,18 +527,26 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     assert_equal("Bearer fresh-token", transport.attempts.fetch(1).dig(:headers, "authorization"))
   end
 
-  def test_inbound_invalid_stream_id_is_a_payload_free_protocol_error
+  def test_inbound_stream_ids_are_forward_compatible
     secret = "secret-stream-id"
     socket = FakeSocket.new(JSON.generate(type: "response.future", stream_id: "bad #{secret}"))
 
-    error = assert_raises(OpenAI::Errors::ResponsesProtocolError) do
-      client.responses.connect(transport: FakeTransport.new(socket)) { |connection| connection.receive }
-    end
+    event = nil
+    client.responses.connect(transport: FakeTransport.new(socket)) { |connection| event = connection.receive }
 
-    refute_includes(error.full_message, secret)
+    assert_equal("bad #{secret}", event.stream_id)
   end
 
-  def test_connection_limit_event_is_yielded_and_then_rejects_sends
+  def test_unknown_event_preserves_non_string_stream_id
+    socket = FakeSocket.new(JSON.generate(type: "response.future", stream_id: 123))
+    event = nil
+
+    client.responses.connect(transport: FakeTransport.new(socket)) { |connection| event = connection.receive }
+
+    assert_equal(123, event.stream_id)
+  end
+
+  def test_error_event_is_yielded_without_poisoning_connection
     limit = JSON.generate(
       type: "error",
       error: {
@@ -612,21 +561,24 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
       event = connection.receive
       assert_instance_of(OpenAI::Responses::ResponsesServerEvent::ResponseWsError, event)
-      assert_raises(OpenAI::Errors::ResponsesConnectionError) do
-        connection.response.create(model: "gpt-5.2")
-      end
+      assert_nil(connection.response.create(model: "gpt-5.2"))
     end
   end
 
   def test_default_transport_preserves_missing_dependency_guidance_without_cause
-    transport = OpenAI::Responses::Transports::AsyncWebSocket.allocate
-    missing = OpenAI::Errors::RealtimeConnectionError.new(
-      url: URI("wss://example.com/v1/responses"),
-      cause: LoadError.new("secret-load-path")
-    )
-    delegate = Object.new
-    delegate.define_singleton_method(:open) { |**_kwargs| raise missing }
-    transport.instance_variable_set(:@transport, delegate)
+    transport_class = Class.new(OpenAI::Responses::Transports::AsyncWebSocket) do
+      private def load_dependencies(url)
+        raise(
+          @error_factory.call(
+            url: url,
+            message: @dependency_message,
+            cause: LoadError.new("secret-load-path")
+          )
+        )
+      end
+    end
+
+    transport = transport_class.new
 
     error = assert_raises(OpenAI::Errors::ResponsesConnectionError) do
       transport.open(url: URI("wss://example.com/v1/responses"), headers: {}, timeout: 1) do
@@ -640,23 +592,5 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     )
     assert_nil(error.cause)
     refute_includes(error.full_message, "secret-load-path")
-  end
-
-  def test_default_transport_preserves_realtime_errors_from_the_callback
-    transport = OpenAI::Responses::Transports::AsyncWebSocket.allocate
-    callback_error = OpenAI::Errors::RealtimeConnectionError.new(
-      url: URI("wss://example.com/v1/responses")
-    )
-    delegate = Object.new
-    delegate.define_singleton_method(:open) { |**_kwargs, &callback| callback.call(Object.new) }
-    transport.instance_variable_set(:@transport, delegate)
-
-    error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
-      transport.open(url: URI("wss://example.com/v1/responses"), headers: {}, timeout: 1) do
-        raise callback_error
-      end
-    end
-
-    assert_same(callback_error, error)
   end
 end

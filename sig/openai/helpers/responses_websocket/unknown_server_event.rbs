@@ -3,12 +3,12 @@ module OpenAI
     module Responses
       class UnknownServerEvent
         # @api private
-        def initialize: (data: ::Hash[Symbol, untyped]) -> void
+        def initialize: (data: ::Hash[Symbol, top]) -> void
 
         attr_reader type: Symbol
-        attr_reader data: ::Hash[Symbol, untyped]
-        attr_reader stream_id: String?
-        def to_h: -> ::Hash[Symbol, untyped]
+        attr_reader data: ::Hash[Symbol, top]
+        attr_reader stream_id: top
+        def to_h: -> ::Hash[Symbol, top]
       end
     end
   end

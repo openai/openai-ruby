@@ -10,7 +10,7 @@ module OpenAI
       # @return [Hash{Symbol=>Object}]
       attr_reader :data
 
-      # @return [String, nil]
+      # @return [Object]
       attr_reader :stream_id
 
       # @api private

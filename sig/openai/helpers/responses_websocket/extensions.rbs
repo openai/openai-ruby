@@ -13,7 +13,7 @@ module OpenAI
   end
 
   module Errors
-    class ResponsesConnectionError < OpenAI::Errors::Error
+    class ResponsesConnectionError < OpenAI::Errors::WebSocketConnectionError
       attr_reader url: URI::Generic
       attr_reader http_status: Integer?
       def cause: -> Exception?
@@ -24,7 +24,7 @@ module OpenAI
       ) -> void
     end
 
-    class ResponsesProtocolError < OpenAI::Errors::Error
+    class ResponsesProtocolError < OpenAI::Errors::WebSocketProtocolError
       def cause: -> Exception?
       def initialize: -> void
     end
@@ -45,8 +45,8 @@ module OpenAI
       def connect: (
         ?websocket_base_url: String?,
         ?request_options: OpenAI::request_opts?,
-        ?transport: untyped?,
-        ?transport_options: ::Hash[Symbol, untyped]
+        ?transport: top?,
+        ?transport_options: ::Hash[Symbol, top]
       ) {
         (OpenAI::Responses::Connection connection) -> top
       } -> top

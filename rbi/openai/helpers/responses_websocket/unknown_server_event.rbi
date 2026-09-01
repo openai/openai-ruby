@@ -6,7 +6,7 @@ module OpenAI
       class UnknownServerEvent
         # @api private
         sig do
-          params(data: T::Hash[Symbol, T.untyped]).returns(T.attached_class)
+          params(data: T::Hash[Symbol, T.anything]).returns(T.attached_class)
         end
         def self.new(data:)
         end
@@ -14,13 +14,13 @@ module OpenAI
         sig { returns(Symbol) }
         attr_reader :type
 
-        sig { returns(T::Hash[Symbol, T.untyped]) }
+        sig { returns(T::Hash[Symbol, T.anything]) }
         attr_reader :data
 
-        sig { returns(T.nilable(String)) }
+        sig { returns(T.anything) }
         attr_reader :stream_id
 
-        sig { returns(T::Hash[Symbol, T.untyped]) }
+        sig { returns(T::Hash[Symbol, T.anything]) }
         def to_h
         end
       end

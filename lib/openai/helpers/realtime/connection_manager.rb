@@ -5,19 +5,7 @@ module OpenAI
     # Internal block-scoped lifecycle manager for Realtime WebSocket connections.
     #
     # @api private
-    class ConnectionManager
-      RESERVED_TRANSPORT_OPTIONS = [
-        :alpn_protocols,
-        :headers,
-        :hostname,
-        :port,
-        :protocol,
-        :scheme,
-        :ssl_context,
-        :timeout,
-        :url
-      ].freeze
-
+    class ConnectionManager < OpenAI::WebSocket::ConnectionManager
       # @api private
       def initialize(
         client:,
@@ -28,79 +16,36 @@ module OpenAI
         transport_options:,
         connection_class: OpenAI::Realtime::Connection
       )
-        @client = client
-        @query = query
+        query = query
           .to_h
           .to_h do |key, value|
             [key.to_s.dup.freeze, value.to_s.dup.freeze]
           end
           .freeze
-        @websocket_base_url = websocket_base_url&.to_s&.dup&.freeze
-        @transport = transport
-        @request_options = request_options
-        @connection_class = connection_class
-        transport_options = transport_options.dup.freeze
-        reserved_options = transport_options.keys.select do |key|
-          (key.is_a?(String) || key.is_a?(Symbol)) && RESERVED_TRANSPORT_OPTIONS.include?(key.to_sym)
-        end
-
-        unless reserved_options.empty?
-          raise(
-            ArgumentError,
-            "`transport_options` cannot include #{reserved_options.map(&:inspect).join(", ")}"
+        base_url = websocket_base_url&.to_s&.dup&.freeze
+        request = lambda do |&request_block|
+          client.with_realtime_connection_request(
+            path: "realtime",
+            query: query,
+            websocket_base_url: base_url,
+            options: request_options,
+            &request_block
           )
         end
 
-        @transport_options = transport_options
-      end
-
-      # Open the WebSocket and yield a typed connection for the lifetime of the block.
-      #
-      # @api private
-      #
-      # @yieldparam connection [OpenAI::Realtime::Connection]
-      # @return [Object]
-      def open
-        raise ArgumentError, "A block is required to open a Realtime WebSocket." unless block_given?
-
-        transport = @transport || OpenAI::Realtime::Transports::AsyncWebSocket.new
-        unless transport.respond_to?(:open)
-          raise ArgumentError, "`transport` must respond to `open`"
-        end
-
-        @client
-          .with_realtime_connection_request(
-            path: "realtime",
-            query: @query,
-            websocket_base_url: @websocket_base_url,
-            options: @request_options
-          ) do |request, mark_handshake_completed|
-            transport
-              .open(
-                url: request.fetch(:url),
-                headers: request.fetch(:headers),
-                timeout: request.fetch(:timeout),
-                **@transport_options
-              ) do |socket|
-                mark_handshake_completed.call
-                connection = @connection_class.new(socket: socket, url: request.fetch(:url))
-                begin
-                  yield(connection)
-                ensure
-                  pending_error = $ERROR_INFO
-                  begin
-                    if pending_error
-                      connection.abort unless connection.closed?
-                    else
-                      connection.close unless connection.closed?
-                    end
-
-                  rescue StandardError
-                    raise if pending_error.nil?
-                  end
-                end
-              end
+        super(
+          transport: transport,
+          transport_options: transport_options,
+          default_transport: -> { OpenAI::Realtime::Transports::AsyncWebSocket.new },
+          connection_class: connection_class,
+          request: request,
+          block_error_message: "A block is required to open a Realtime WebSocket.",
+          abort_after_block: -> (_connection, pending_error) { !pending_error.nil? },
+          transport_error_message: "`transport` must respond to `open`",
+          reserved_options_error_message: lambda do |reserved|
+            "`transport_options` cannot include #{reserved.map(&:inspect).join(", ")}"
           end
+        )
       end
     end
   end

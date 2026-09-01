@@ -3,22 +3,11 @@
 module OpenAI
   module Errors
     # Raised when a Responses WebSocket cannot be opened or used.
-    class ResponsesConnectionError < OpenAI::Errors::Error
-      # @return [URI::Generic]
-      attr_reader :url
-
-      # @return [Integer, nil]
-      attr_reader :http_status
-
+    class ResponsesConnectionError < OpenAI::Errors::WebSocketConnectionError
       # @return [Exception, nil]
       def cause = nil
 
-      # @api private
-      def initialize(url:, message: nil, http_status: nil)
-        @url = sanitized_error_url(url)
-        @http_status = http_status
-        super(message || "Responses WebSocket connection error.")
-      end
+      private def default_message = "Responses WebSocket connection error."
 
       private def sanitized_error_url(url)
         sanitized = url.dup
@@ -33,7 +22,7 @@ module OpenAI
     end
 
     # Raised when a Responses WebSocket message is malformed.
-    class ResponsesProtocolError < OpenAI::Errors::Error
+    class ResponsesProtocolError < OpenAI::Errors::WebSocketProtocolError
       def cause = nil
 
       # @api private

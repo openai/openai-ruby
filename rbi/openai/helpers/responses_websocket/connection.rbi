@@ -6,13 +6,9 @@ module OpenAI
       class Connection
         include Enumerable
 
-        ServerEvent = T.type_alias do
-          T.any(OpenAI::Responses::ResponsesServerEvent::Variants, OpenAI::Responses::UnknownServerEvent)
-        end
+        ServerEvent = T.type_alias { T.anything }
 
-        ClientEvent = T.type_alias do
-          T.any(OpenAI::Responses::ResponsesClientEvent, OpenAI::Internal::AnyHash)
-        end
+        ClientEvent = T.type_alias { T.anything }
 
         Elem = type_member { {fixed: ServerEvent} }
 
@@ -23,7 +19,7 @@ module OpenAI
         attr_reader :response
 
         # @api private
-        sig { params(socket: T.untyped, url: URI::Generic).returns(T.attached_class) }
+        sig { params(socket: T.anything, url: URI::Generic).returns(T.attached_class) }
         def self.new(socket:, url:)
         end
 
