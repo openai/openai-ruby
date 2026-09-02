@@ -133,6 +133,12 @@ module OpenAI
               index_choice_snapshot!(choice_snapshot)
             end
 
+            @current_completion_snapshot = completion_snapshot
+
+            chunk.choices.each do |choice|
+              handle_finish_reason(choice.finish_reason, completion_snapshot) if choice.finish_reason
+            end
+
             return completion_snapshot
           end
 
