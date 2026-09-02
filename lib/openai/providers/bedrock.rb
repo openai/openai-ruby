@@ -229,33 +229,41 @@ module OpenAI
 
         private def resolve
           config = Aws.shared_config
-          providers = []
           if config.config_enabled?
-            providers <<
-              config.assume_role_web_identity_credentials_from_config(
-                profile: @profile,
-                region: @region
-              )
-            providers << config.sso_credentials_from_config(profile: @profile)
-            providers << config.assume_role_credentials_from_config(profile: @profile, region: @region)
+            provider = config.assume_role_web_identity_credentials_from_config(
+              profile: @profile,
+              region: @region
+            )
+            return provider if provider&.set?
+
+            provider = config.sso_credentials_from_config(profile: @profile)
+            return provider if provider&.set?
+
+            provider = config.assume_role_credentials_from_config(profile: @profile, region: @region)
+            return provider if provider&.set?
           end
 
           begin
-            providers << Aws::SharedCredentials.new(profile_name: @profile)
+            provider = Aws::SharedCredentials.new(profile_name: @profile)
+            return provider if provider.set?
           rescue Aws::Errors::NoSuchProfileError
             nil
           end
 
           if config.config_enabled?
             if config.respond_to?(:login_credentials_from_config)
-              providers << config.login_credentials_from_config(profile: @profile, region: @region)
+              provider = config.login_credentials_from_config(profile: @profile, region: @region)
+              return provider if provider&.set?
             end
 
             process = config.credential_process(profile: @profile)
-            providers << Aws::ProcessCredentials.new([process]) if process
+            if process
+              provider = Aws::ProcessCredentials.new([process])
+              return provider if provider.set?
+            end
           end
 
-          providers.compact.find(&:set?) || raise(OpenAI::Errors::Error, CREDENTIAL_RESOLUTION_MESSAGE)
+          raise OpenAI::Errors::Error, CREDENTIAL_RESOLUTION_MESSAGE
         end
       end
 

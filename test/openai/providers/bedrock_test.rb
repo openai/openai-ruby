@@ -146,6 +146,102 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     end
   end
 
+  def test_named_profile_does_not_construct_unused_process_credentials
+    File.write(
+      ENV.fetch("AWS_SHARED_CREDENTIALS_FILE"),
+      <<~INI
+        [engineering]
+        aws_access_key_id = profile-access-key
+        aws_secret_access_key = profile-secret-key
+      INI
+    )
+    File.write(
+      ENV.fetch("AWS_CONFIG_FILE"),
+      <<~INI
+        [profile engineering]
+        credential_process = unused-process
+      INI
+    )
+    reset_shared_config
+    url = "https://bedrock-mantle.us-east-1.api.aws/v1/models"
+    stub_request(:get, url).to_return_json(status: 200, body: {})
+    process_calls = 0
+    process_constructor = lambda do |_command|
+      process_calls += 1
+      raise "unused process credentials must not be constructed"
+    end
+
+    Aws::ProcessCredentials.stub(:new, process_constructor) do
+      client = OpenAI::Client.new(
+        provider: OpenAI::Providers.bedrock(region: "us-east-1", profile: "engineering")
+      )
+      client.request({method: :get, path: "models"})
+    end
+
+    assert_equal(0, process_calls)
+    assert_requested(:get, url) do |request|
+      assert_includes(request.headers.fetch("Authorization"), "Credential=profile-access-key/")
+    end
+  end
+
+  def test_named_profile_continues_to_process_credentials_after_unset_candidates
+    File.write(
+      ENV.fetch("AWS_CONFIG_FILE"),
+      <<~INI
+        [profile engineering]
+        credential_process = selected-process
+      INI
+    )
+    reset_shared_config
+    url = "https://bedrock-mantle.us-east-1.api.aws/v1/models"
+    stub_request(:get, url).to_return_json(status: 200, body: {})
+    process_calls = 0
+    process_constructor = lambda do |_command|
+      process_calls += 1
+      Aws::Credentials.new("process-access-key", "process-secret-key")
+    end
+
+    Aws::ProcessCredentials.stub(:new, process_constructor) do
+      client = OpenAI::Client.new(
+        provider: OpenAI::Providers.bedrock(region: "us-east-1", profile: "engineering")
+      )
+      client.request({method: :get, path: "models"})
+    end
+
+    assert_equal(1, process_calls)
+    assert_requested(:get, url) do |request|
+      assert_includes(request.headers.fetch("Authorization"), "Credential=process-access-key/")
+    end
+  end
+
+  def test_named_profile_does_not_downgrade_after_higher_priority_provider_error
+    File.write(
+      ENV.fetch("AWS_SHARED_CREDENTIALS_FILE"),
+      <<~INI
+        [engineering]
+        aws_access_key_id = profile-access-key
+        aws_secret_access_key = profile-secret-key
+      INI
+    )
+    reset_shared_config
+    config = Aws.shared_config
+    failing_web_identity = lambda do |**_options|
+      raise "higher priority provider failed"
+    end
+
+    error = config.stub(:assume_role_web_identity_credentials_from_config, failing_web_identity) do
+      runtime = OpenAI::Internal::Provider.configure(
+        OpenAI::Providers.bedrock(region: "us-east-1", profile: "engineering")
+      )
+      assert_raises(OpenAI::Errors::Error) do
+        runtime.prepare_request.call(bedrock_request)
+      end
+    end
+
+    assert_equal(OpenAI::Providers::Bedrock::CREDENTIAL_RESOLUTION_MESSAGE, error.message)
+    assert_equal("higher priority provider failed", error.cause.message)
+  end
+
   def test_named_profile_reads_shared_credentials_when_config_is_disabled
     ENV["AWS_SDK_CONFIG_OPT_OUT"] = "true"
     File.write(
