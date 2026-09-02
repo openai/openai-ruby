@@ -6,6 +6,14 @@
   purpose is updating or fixing examples, including their dedicated tests. Apply
   the same prefix to pull request titles; do not use `fix:` or `fix(examples):`
   for these changes.
+- Choose Conventional Commit prefixes based on user impact. Reserve `fix:` for
+  changes that materially change the shipped gem's behavior in a way that
+  impacts users. CI-only, workflow-only, build/test infrastructure, and
+  repository-maintenance changes should use an appropriate non-user-facing
+  prefix such as `ci:`. For example, a change like PR #572 should be titled
+  `ci: restore Castiron statuses for fork PRs`, not `fix(ci): restore Castiron
+  statuses for fork PRs`, because it changes CI behavior rather than gem
+  behavior.
 
 ## Ruby implementation guidelines
 
