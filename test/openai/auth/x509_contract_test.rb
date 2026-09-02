@@ -3,6 +3,9 @@
 require_relative "../test_helper"
 
 class OpenAI::Test::X509ContractTest < Minitest::Test
+  # These tests stub the process-wide monotonic clock.
+  extend Minitest::Serial
+
   def setup
     super
     @native = OpenAI::NetHTTPClient.new

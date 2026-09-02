@@ -3,6 +3,9 @@
 require_relative "../test_helper"
 
 class OpenAI::Test::RealtimeAuthRetryTest < Minitest::Test
+  # These tests stub the process-wide monotonic clock.
+  extend Minitest::Serial
+
   class Socket
     def closed? = @closed == true
     def close(code: 1000, reason: "")
