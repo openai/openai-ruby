@@ -286,9 +286,11 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
     string, io_string, io, pathless_io, part, unnamed, io_part, path = observed
     assert_equal(["upload", "text/plain", "string-body"], metadata_and_contents(string))
     assert_equal(
-      ["upload", "application/octet-stream", "string-io-body"],
+      ["upload", "application/octet-stream", "g-io-body"],
       metadata_and_contents(io_string)
     )
+    assert_equal(5, string_io.pos)
+    refute_predicate(string_io, :closed?)
     assert_equal(
       [File.basename(tempfile.path), "application/octet-stream", "file-body"],
       metadata_and_contents(io)
@@ -314,6 +316,37 @@ class OpenAI::Test::VectorStoreFileUploaderTest < Minitest::Test
     source_file&.close
     part_source_file&.close
     tempfile&.close!
+  end
+
+  def test_upload_stages_string_io_from_its_byte_cursor_without_consuming_it
+    prefix = "π-prefix|".b
+    payload = "payload-\x00\xFF".b
+    bare = StringIO.new(prefix + payload).tap { _1.seek(prefix.bytesize) }
+    wrapped = StringIO.new(prefix + payload).tap { _1.seek(prefix.bytesize) }
+    eof = StringIO.new("complete").tap { _1.seek(_1.size) }
+    beyond_eof = StringIO.new("complete").tap { _1.seek(_1.size + 4) }
+    resource = FilesResource.new
+
+    2.times do
+      uploader(resource).upload(
+        [
+          bare,
+          OpenAI::FilePart.new(wrapped, filename: "payload.bin", content_type: "application/custom"),
+          eof,
+          beyond_eof
+        ]
+      )
+    end
+
+    assert_equal([payload, payload, "", "", payload, payload, "", ""], resource.contents)
+    assert_equal(prefix.bytesize, bare.pos)
+    assert_equal(prefix.bytesize, wrapped.pos)
+    assert_equal(eof.size, eof.pos)
+    assert_equal(beyond_eof.size + 4, beyond_eof.pos)
+    [bare, wrapped, eof, beyond_eof].each { refute_predicate(_1, :closed?) }
+    wrapped_file = resource.calls.fetch(1).fetch(:file)
+    assert_equal("payload.bin", wrapped_file.filename)
+    assert_equal("application/custom", wrapped_file.content_type)
   end
 
   def test_staged_file_part_io_upload_omits_absolute_local_path
