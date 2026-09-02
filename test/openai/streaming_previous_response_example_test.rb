@@ -107,8 +107,84 @@ class OpenAI::Test::StreamingPreviousResponseExampleTest < Minitest::Test
     assert_empty(stderr)
     assert_equal(4, requests.length)
     assert_equal([3, 3], @sleeps)
-    assert_includes(stdout, "Verified it is greater than the last initial event: 1")
+    assert_includes(stdout, "Verified it is greater than the last usable initial sequence: 1")
     assert_includes(stdout, "-29/8")
+  end
+
+  def test_both_streams_resume_after_last_usable_sequence_with_unknown_events
+    structured_stream = Minitest::Mock.new
+    final_response = Minitest::Mock.new
+    output_message = Minitest::Mock.new
+    output_content = Minitest::Mock.new
+    @mocks.push(structured_stream, final_response, output_message, output_content)
+
+    structured_stream.expect(:each, nil) do |&callback|
+      callback.call(unknown_event)
+      callback.call(in_progress_event(sequence_number: 10))
+      true
+    end
+
+    structured_stream.expect(:get_final_response, final_response)
+    final_response.expect(:output, [output_message])
+    output_message.expect(:content, [output_content])
+
+    streams = [
+      {
+        stream: [
+          created_event(id: "resp_plain", sequence_number: 1),
+          unknown_event(sequence_number: 4),
+          unknown_event
+        ]
+      },
+      {
+        stream: [unknown_event, in_progress_event(sequence_number: 5)],
+        check: lambda do |params|
+          assert_equal("resp_plain", params.fetch(:response_id))
+          assert_equal(4, params.fetch(:starting_after))
+        end
+      },
+      {
+        stream: [
+          created_event(id: "resp_structured", sequence_number: 7),
+          unknown_event(sequence_number: 9),
+          unknown_event
+        ]
+      },
+      {
+        stream: structured_stream,
+        check: lambda do |params|
+          assert_equal("resp_structured", params.fetch(:response_id))
+          assert_equal(9, params.fetch(:starting_after))
+
+          math_response = params.fetch(:text).new(steps: [], final_answer: "-29/8")
+          output_content.expect(:parsed, math_response)
+        end
+      }
+    ]
+
+    stdout, stderr, error, requests = run_example(streams)
+
+    assert_nil(error)
+    assert_empty(stderr)
+    assert_equal(4, requests.length)
+    assert_equal([3, 3], @sleeps)
+    assert_includes(stdout, "Event from resumed stream: future.unmodeled.event (seq: )")
+    assert_includes(stdout, "First resumed event sequence: 5")
+    assert_includes(stdout, "Verified it is greater than the last usable initial sequence: 4")
+    assert_includes(stdout, "-29/8")
+  end
+
+  def test_plain_stream_fails_clearly_when_resumed_events_have_no_sequence
+    streams = [
+      {stream: [created_event(id: "resp_plain", sequence_number: 1)]},
+      {stream: [unknown_event]}
+    ]
+
+    _stdout, stderr, error, requests = run_example(streams)
+
+    assert_failure(error, stderr, "The resumed stream did not include an event with a sequence number")
+    assert_equal(2, requests.length)
+    assert_equal([3], @sleeps)
   end
 
   private
@@ -162,6 +238,12 @@ class OpenAI::Test::StreamingPreviousResponseExampleTest < Minitest::Test
 
   def in_progress_event(sequence_number:)
     OpenAI::Models::Responses::ResponseInProgressEvent.new(response: {}, sequence_number: sequence_number)
+  end
+
+  def unknown_event(sequence_number: nil)
+    data = {type: "future.unmodeled.event"}
+    data[:sequence_number] = sequence_number unless sequence_number.nil?
+    OpenAI::Streaming::UnknownStreamEvent.new(data: data)
   end
 
   def assert_failure(error, stderr, message)

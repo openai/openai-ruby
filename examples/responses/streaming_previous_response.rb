@@ -21,9 +21,11 @@ begin
 
   events = []
   response_id = ""
+  last_sequence_number = nil
 
   stream.each do |event|
     events << event
+    last_sequence_number = event.sequence_number unless event.sequence_number.nil?
     puts("Event from initial stream: #{event.type} (seq: #{event.sequence_number})")
     case event
 
@@ -41,10 +43,11 @@ begin
 
   abort("The initial stream completed without events") if events.empty?
   abort("The initial stream did not include a response ID") if response_id.empty?
+  abort("The initial stream did not include a resumable sequence number") if last_sequence_number.nil?
 
   puts("Collected #{events.length} events")
   puts("Response ID: #{response_id}")
-  puts("Last event sequence number: #{events.last.sequence_number}.\n")
+  puts("Last resumable sequence number: #{last_sequence_number}.\n")
 
   # Give the background response some time to process more events.
   puts("Waiting a moment for the background response to progress...\n")
@@ -52,11 +55,11 @@ begin
 
   # Request 2: Resume the stream using the captured response_id.
   puts
-  puts("Resuming stream from sequence #{events.last.sequence_number}...")
+  puts("Resuming stream from sequence #{last_sequence_number}...")
 
   resumed_stream = client.responses.stream(
     response_id: response_id,
-    starting_after: events.last.sequence_number
+    starting_after: last_sequence_number
   )
 
   resumed_events = []
@@ -77,14 +80,15 @@ begin
   # Show that we properly resumed from where we left off.
   abort("The resumed stream completed without events") if resumed_events.empty?
 
-  first_resumed_event = resumed_events.first
-  last_initial_event = events.last
-  unless first_resumed_event.sequence_number > last_initial_event.sequence_number
+  first_resumed_event = resumed_events.find { |event| !event.sequence_number.nil? }
+  abort("The resumed stream did not include an event with a sequence number") if first_resumed_event.nil?
+
+  unless first_resumed_event.sequence_number > last_sequence_number
     abort("The resumed stream repeated an event from the initial stream")
   end
 
   puts("First resumed event sequence: #{first_resumed_event.sequence_number}")
-  puts("Verified it is greater than the last initial event: #{last_initial_event.sequence_number}")
+  puts("Verified it is greater than the last usable initial sequence: #{last_sequence_number}")
 end
 
 begin
@@ -110,9 +114,11 @@ begin
 
   events = []
   response_id = ""
+  last_sequence_number = nil
 
   stream.each do |event|
     events << event
+    last_sequence_number = event.sequence_number unless event.sequence_number.nil?
 
     case event
     when OpenAI::Models::Responses::ResponseCreatedEvent
@@ -126,16 +132,19 @@ begin
 
   abort("The structured initial stream completed without events") if events.empty?
   abort("The structured initial stream did not include a response ID") if response_id.empty?
+  if last_sequence_number.nil?
+    abort("The structured initial stream did not include a resumable sequence number")
+  end
 
   puts("Waiting for the background response to complete...\n")
   sleep(3)
 
   puts
-  puts("Resuming stream from sequence #{events.last.sequence_number}...")
+  puts("Resuming stream from sequence #{last_sequence_number}...")
 
   resumed_stream = client.responses.stream(
     response_id: response_id,
-    starting_after: events.last.sequence_number,
+    starting_after: last_sequence_number,
     # NOTE: You must pass the structured output format when resuming to access parsed
     # outputs in the resumed stream.
     text: MathResponse
