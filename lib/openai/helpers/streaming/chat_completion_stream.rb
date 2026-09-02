@@ -339,8 +339,8 @@ module OpenAI
 
           if choice_snapshot.logprobs.nil?
             choice_snapshot.logprobs = OpenAI::Chat::ChatCompletionChunk::Choice::Logprobs.new(
-              content: choice_logprobs.content,
-              refusal: choice_logprobs.refusal
+              content: choice_logprobs.content&.dup,
+              refusal: choice_logprobs.refusal&.dup
             )
           else
             if choice_logprobs.content
