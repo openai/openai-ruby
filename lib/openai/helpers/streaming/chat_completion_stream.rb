@@ -144,6 +144,7 @@ module OpenAI
 
           completion_snapshot.usage = chunk.usage if chunk.usage
           completion_snapshot.system_fingerprint = chunk.system_fingerprint if chunk.system_fingerprint
+          completion_snapshot.service_tier = chunk.service_tier if chunk.service_tier
 
           completion_snapshot
         end
