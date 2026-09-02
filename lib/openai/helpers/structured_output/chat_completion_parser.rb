@@ -67,7 +67,10 @@ module OpenAI
               }
             )
           in {
-              response_format: {type: :json_schema, json_schema: OpenAI::StructuredOutput::JsonSchemaConverter => model}
+              response_format: {
+                  type: :json_schema | "json_schema",
+                  json_schema: OpenAI::StructuredOutput::JsonSchemaConverter => model
+                }
             }
             parsed.fetch(:response_format).update(
               json_schema: {
@@ -78,7 +81,7 @@ module OpenAI
             )
           in {
               response_format: {
-                  type: :json_schema,
+                  type: :json_schema | "json_schema",
                   json_schema: {schema: OpenAI::StructuredOutput::JsonSchemaConverter => model}
                 }
             }
@@ -124,7 +127,7 @@ module OpenAI
           return [] if tools.nil?
 
           tools.map do |tool|
-            next tool unless tool[:type] == :function
+            next tool unless [:function, "function"].include?(tool[:type])
 
             function_name = tool.dig(:function, :name)
             model = tool_models[function_name]
