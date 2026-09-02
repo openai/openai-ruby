@@ -190,12 +190,7 @@ module OpenAI
         def accumulate_event(event:, current_snapshot:)
           if current_snapshot.nil?
             if event.is_a?(OpenAI::Models::Responses::ResponseCreatedEvent)
-              # Use the converter to create a new, isolated copy of the response object.
-              # This ensures proper type validation and prevents shared object references.
-              return OpenAI::Internal::Type::Converter.coerce(
-                OpenAI::Models::Responses::Response,
-                event.response
-              )
+              return isolated_value(event.response)
             end
 
             unless @resumed
@@ -212,12 +207,12 @@ module OpenAI
 
           case event
           when OpenAI::Models::Responses::ResponseOutputItemAddedEvent
-            current_snapshot.output.push(event.item)
+            current_snapshot.output.push(isolated_value(event.item))
 
           when OpenAI::Models::Responses::ResponseContentPartAddedEvent
             output = current_snapshot.output[event.output_index]
             if output && output.type == :message
-              output.content.push(event.part)
+              output.content.push(isolated_value(event.part))
               current_snapshot.output[event.output_index] = output
             end
 
@@ -247,6 +242,16 @@ module OpenAI
         end
 
         private
+
+        # Materialize fresh containers before snapshot accumulation mutates them.
+        # Coercing an already-typed model returns it unchanged, so first use the
+        # model's recursive raw representation. Unknown union fallbacks stay raw.
+        def isolated_value(value)
+          raw = OpenAI::Internal::Type::BaseModel.recursively_to_h(value, convert: false)
+          return raw unless value.is_a?(OpenAI::Internal::Type::BaseModel)
+
+          OpenAI::Internal::Type::Converter.coerce(value.class, raw)
+        end
 
         def assert_type(object, expected_type)
           return if object && object.type == expected_type
