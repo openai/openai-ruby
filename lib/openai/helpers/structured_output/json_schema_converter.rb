@@ -56,6 +56,8 @@ module OpenAI
                   {type: null}
                 ]
               }
+            in {const: _}
+              {anyOf: [schema, {type: null}]}
             in {anyOf: schemas}
               null = {type: null}
               schemas.any? { _1 == null || _1 == {type: ["null"]} } ? schema : {anyOf: [*schemas, null]}
