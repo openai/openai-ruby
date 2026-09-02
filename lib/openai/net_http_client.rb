@@ -118,7 +118,7 @@ module OpenAI
         req["content-length"] ||= body.bytesize.to_s unless req["transfer-encoding"]
         req.body_stream = OpenAI::Internal::Util::ReadIOAdapter.new(body, &blk)
       in StringIO
-        req["content-length"] ||= body.size.to_s unless req["transfer-encoding"]
+        req["content-length"] ||= [body.size - body.pos, 0].max.to_s unless req["transfer-encoding"]
         req.body_stream = OpenAI::Internal::Util::ReadIOAdapter.new(body, &blk)
       in Pathname | IO | Enumerator
         req["transfer-encoding"] ||= "chunked" unless req["content-length"]

@@ -18,17 +18,18 @@ class OpenAI::Test::ChatCompletionParserTest < Minitest::Test
   class RecordingTransport < OpenAI::HTTPClient
     attr_reader :request
 
-    def initialize(response)
+    def initialize(response = nil, headers: {"content-type" => "application/json"}, **response_keywords)
       super()
-      @response = response
+      @response = response || response_keywords
+      @headers = headers
     end
 
     def execute(request)
       @request = request
       OpenAI::HTTPClient::Response.new(
         status: 200,
-        headers: {"content-type" => "application/json"},
-        body: JSON.generate(@response)
+        headers: @headers,
+        body: @response.is_a?(String) ? @response : JSON.generate(@response)
       )
     end
   end
@@ -44,6 +45,13 @@ class OpenAI::Test::ChatCompletionParserTest < Minitest::Test
       {
         response_format: {
           type: :json_schema,
+          json_schema: {name: "explicit", strict: false, schema: TextModel}
+        }
+      },
+      {response_format: {type: "json_schema", json_schema: TextModel}},
+      {
+        response_format: {
+          type: "json_schema",
           json_schema: {name: "explicit", strict: false, schema: TextModel}
         }
       }
@@ -146,6 +154,121 @@ class OpenAI::Test::ChatCompletionParserTest < Minitest::Test
     end
   end
 
+  def test_public_create_treats_string_json_schema_type_like_symbol
+    forms = [
+      [TextModel, "TextModel", true],
+      [{name: "result", strict: false, schema: TextModel}, "result", false]
+    ]
+
+    [:json_schema, "json_schema"].product(forms).each do |type, (json_schema, name, strict)|
+      transport = RecordingTransport.new(
+        id: "chatcmpl_test",
+        object: "chat.completion",
+        created: 0,
+        model: "test",
+        choices: [
+          {
+            index: 0,
+            finish_reason: "stop",
+            message: {role: "assistant", content: JSON.generate(value: "hello")}
+          }
+        ]
+      )
+      client = OpenAI::Client.new(
+        api_key: "fake-key",
+        base_url: "http://example.test",
+        http_client: transport
+      )
+
+      completion = client.chat.completions.create(
+        model: "test",
+        messages: [{role: "user", content: "hi"}],
+        response_format: {
+          type: type,
+          json_schema: json_schema
+        }
+      )
+
+      request = JSON.parse(transport.request.body)
+      assert_equal("json_schema", request.dig("response_format", "type"))
+      assert_equal(name, request.dig("response_format", "json_schema", "name"))
+      assert_equal(strict, request.dig("response_format", "json_schema", "strict"))
+      assert_equal("object", request.dig("response_format", "json_schema", "schema", "type"))
+      assert_instance_of(TextModel, completion.choices.first.message.parsed)
+    end
+  end
+
+  def test_public_stream_treats_string_function_type_like_symbol
+    chunks = [
+      {
+        id: "chatcmpl_test",
+        object: "chat.completion.chunk",
+        created: 0,
+        model: "test",
+        choices: [{index: 0, delta: {role: "assistant"}, finish_reason: nil}]
+      },
+      {
+        id: "chatcmpl_test",
+        object: "chat.completion.chunk",
+        created: 0,
+        model: "test",
+        choices: [
+          {
+            index: 0,
+            delta: {
+              tool_calls: [
+                {
+                  index: 0,
+                  id: "call_test",
+                  type: "function",
+                  function: {name: "lookup", arguments: JSON.generate(argument: 7)}
+                }
+              ]
+            },
+            finish_reason: nil
+          }
+        ]
+      },
+      {
+        id: "chatcmpl_test",
+        object: "chat.completion.chunk",
+        created: 0,
+        model: "test",
+        choices: [{index: 0, delta: {}, finish_reason: "tool_calls"}]
+      }
+    ]
+    body = chunks.map { |chunk| "data: #{JSON.generate(chunk)}\n\n" }.join + "data: [DONE]\n\n"
+
+    [:function, "function"].each do |type|
+      transport = RecordingTransport.new(body, headers: {"content-type" => "text/event-stream"})
+      client = OpenAI::Client.new(
+        api_key: "fake-key",
+        base_url: "http://example.test",
+        http_client: transport
+      )
+      stream = client.chat.completions.stream(
+        model: "test",
+        messages: [{role: "user", content: "hi"}],
+        tools: [{type: type, function: {name: "lookup", strict: true, parameters: ToolModel}}]
+      )
+
+      request = JSON.parse(transport.request.body)
+      assert_equal("function", request.dig("tools", 0, "type"))
+      assert_equal("lookup", request.dig("tools", 0, "function", "name"))
+      assert_equal(true, request.dig("tools", 0, "function", "strict"))
+      assert_equal("object", request.dig("tools", 0, "function", "parameters", "type"))
+      done = stream.find do |event|
+        event.is_a?(OpenAI::Helpers::Streaming::ChatFunctionToolCallArgumentsDoneEvent)
+      end
+
+      assert_instance_of(ToolModel, done.parsed)
+      assert_equal(7, done.parsed.argument)
+      arguments = stream.get_final_completion.choices.first.message.tool_calls.first.function.parsed
+      assert_instance_of(ToolModel, arguments)
+      assert_equal(7, arguments.argument)
+    end
+  end
+
   def test_tool_conversion_preserves_names_and_input_identity
     [nil, "explicit"].each do |name|
       function = {parameters: ToolModel}
@@ -178,7 +301,7 @@ class OpenAI::Test::ChatCompletionParserTest < Minitest::Test
     end
   end
 
-  def test_build_tools_only_copies_matching_symbol_function_tools
+  def test_build_tools_only_copies_matching_function_tools
     resource = OpenAI::Resources::Chat::Completions.allocate
     known = {type: :function, function: {name: "known"}}
     unknown = {type: :function, function: {name: "unknown"}}
@@ -193,9 +316,11 @@ class OpenAI::Test::ChatCompletionParserTest < Minitest::Test
     refute_same(known, mapped.first)
     assert_equal(known.merge(model: ToolModel), mapped.first)
     refute(known.key?(:model))
-    [unknown, string_type, other].each_with_index do |tool, index|
-      assert_same(tool, mapped[index + 1])
-    end
+    assert_same(unknown, mapped[1])
+    refute_same(string_type, mapped[2])
+    assert_equal(string_type.merge(model: ToolModel), mapped[2])
+    refute(string_type.key?(:model))
+    assert_same(other, mapped[3])
   end
 
   def test_create_preserves_request_shape_and_unwrap_contract

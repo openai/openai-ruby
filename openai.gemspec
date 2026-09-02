@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
     "sig/**/*.rbs",
     "manifest.yaml",
     "SECURITY.md",
+    "docs/architecture/security-model.md",
     "CHANGELOG.md",
     ".ignore"
   ] +
