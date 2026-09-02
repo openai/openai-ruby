@@ -3,6 +3,9 @@
 require_relative "../test_helper"
 
 class OpenAI::Test::X509TokenExchangeTest < Minitest::Test
+  # These tests stub process-wide clock and JSON helpers.
+  extend Minitest::Serial
+
   ISSUED_TOKEN_TYPE = "urn:ietf:params:oauth:token-type:access_token"
 
   def setup
