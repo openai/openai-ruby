@@ -23,6 +23,15 @@ module OpenAI
             end
           end
           .freeze
+        # @api private
+        RECURSIVE = Object
+          .new
+          .tap do
+            _1.define_singleton_method(:inspect) do
+              "#<#{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter}::RECURSIVE>"
+            end
+          end
+          .freeze
 
         # rubocop:disable Lint/UnusedMethodArgument
 
@@ -96,6 +105,10 @@ module OpenAI
             defs, path = state.fetch_values(:defs, :path)
             if (stored = defs[type])
               pointers = stored.fetch(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTERS)
+              if pointers.first.fetch(:$ref).empty?
+                stored[OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::RECURSIVE] = true
+              end
+
               pointers.first.except(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::NO_REF).tap do
                 pointers << _1
               end
@@ -130,27 +143,35 @@ module OpenAI
             )
             reused_defs = {}
             defs.each_value do |acc|
-              sch = acc.except(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTERS)
+              recursive = acc.key?(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::RECURSIVE)
+              sch = acc.except(
+                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTERS,
+                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::RECURSIVE
+              )
               pointers = acc.fetch(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTERS)
 
               no_refs, refs = pointers.partition do
                 _1.delete(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::NO_REF)
               end
 
-              case refs
-              in [ref]
-                ref.replace(ref.except(:$ref).merge(sch))
-              in [_, ref, *]
-                reused_defs.store(ref.fetch(:$ref), sch)
-                refs.each do
-                  unless (meta = _1.except(:$ref)).empty?
-                    _1.replace(allOf: [_1.slice(:$ref), meta])
-                  end
-                end
+              if recursive
+                reused_defs.store(pointers.first.fetch(:$ref), sch)
               else
+                case refs
+                in [ref]
+                  ref.replace(ref.except(:$ref).merge(sch))
+                in [_, ref, *]
+                  reused_defs.store(ref.fetch(:$ref), sch)
+                  refs.each do
+                    unless (meta = _1.except(:$ref)).empty?
+                      _1.replace(allOf: [_1.slice(:$ref), meta])
+                    end
+                  end
+                else
+                end
               end
 
-              no_refs.each { _1.replace(_1.except(:$ref).merge(sch)) }
+              no_refs.each { _1.replace(_1.except(:$ref).merge(sch)) } unless recursive
             end
 
             xformed = reused_defs.transform_keys do
