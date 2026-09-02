@@ -391,9 +391,11 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
   end
 
   def test_files_wait_for_processing_bounds_retrieval_by_polling_deadline
+    # Allow only Float subtraction noise around the deadline.
+    timeout_arithmetic_tolerance = 0.000001
     transport = scripted_transport do |request|
       assert_operator(request.timeout, :positive?)
-      assert_operator(request.timeout, :<=, 0.02)
+      assert_operator(request.timeout, :<=, 0.02 + timeout_arithmetic_tolerance)
       sleep(request.timeout + 0.01)
       raise OpenAI::Errors::APITimeoutError.new(url: URI("http://example.test/v1/files/file_123"))
     end
