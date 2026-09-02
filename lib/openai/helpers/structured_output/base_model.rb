@@ -32,13 +32,27 @@ module OpenAI
             OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.cache_def!(state, type: self) do
               path = state.fetch(:path)
               properties = field_values.to_h do |field|
-                api_name, type, nilable, meta = field.fetch_values(:api_name, :type, :nilable, :meta)
+                api_name, type, nilable, const, meta = field.fetch_values(:api_name, :type, :nilable, :const, :meta)
                 new_state = {**state, path: [*path, ".#{api_name}"]}
 
-                schema = OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.to_json_schema_inner(
-                  type,
-                  state: new_state
-                )
+                literal_const = case const
+                when Integer, TrueClass, FalseClass
+                  true
+                when Float
+                  const.finite?
+                else
+                  false
+                end
+
+                schema = if literal_const
+                  {const: const}
+                else
+                  OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.to_json_schema_inner(
+                    type,
+                    state: new_state
+                  )
+                end
+
                 schema = OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.to_nilable(schema) if nilable
                 OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.assoc_meta!(
                   schema,
