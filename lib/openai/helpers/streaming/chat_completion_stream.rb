@@ -534,7 +534,7 @@ module OpenAI
               model: data[:model],
               choices: choices,
               usage: data[:usage],
-              system_fingerprint: nil,
+              system_fingerprint: data[:system_fingerprint],
               service_tier: data[:service_tier]
             }
           )
