@@ -648,11 +648,6 @@ module OpenAI
 
           if choice_snapshot.finish_reason
             events.concat(content_done_events(choice_snapshot, response_format))
-
-            if @current_tool_call_index && !@done_tool_calls.include?(@current_tool_call_index)
-              event = tool_done_event(tool_calls_by_index, @current_tool_call_index)
-              events << event if event
-            end
           end
 
           Array(choice_chunk.delta.tool_calls).each do |tool_call|
@@ -666,6 +661,13 @@ module OpenAI
             end
 
             @current_tool_call_index = tool_call.index
+          end
+
+          if choice_snapshot.finish_reason &&
+              @current_tool_call_index &&
+              !@done_tool_calls.include?(@current_tool_call_index)
+            event = tool_done_event(tool_calls_by_index, @current_tool_call_index)
+            events << event if event
           end
 
           events
