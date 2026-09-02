@@ -169,7 +169,9 @@ begin
   parsed_output_received = false
   response
     .output
-    .flat_map { _1.content }
+    .grep(OpenAI::Models::Responses::ResponseOutputMessage)
+    .flat_map(&:content)
+    .grep(OpenAI::Models::Responses::ResponseOutputText)
     .each do |content|
       parsed = content.parsed
       next unless parsed.is_a?(MathResponse)

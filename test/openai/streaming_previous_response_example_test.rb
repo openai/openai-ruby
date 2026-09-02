@@ -73,9 +73,8 @@ class OpenAI::Test::StreamingPreviousResponseExampleTest < Minitest::Test
   def test_both_streams_resume_with_captured_ids_and_preserve_structured_output
     structured_stream = Minitest::Mock.new
     final_response = Minitest::Mock.new
-    output_message = Minitest::Mock.new
-    output_content = Minitest::Mock.new
-    @mocks.push(structured_stream, final_response, output_message, output_content)
+    output = []
+    @mocks.push(structured_stream, final_response)
 
     structured_stream.expect(:each, nil) do |&callback|
       callback.call(in_progress_event(sequence_number: 8))
@@ -83,8 +82,7 @@ class OpenAI::Test::StreamingPreviousResponseExampleTest < Minitest::Test
     end
 
     structured_stream.expect(:get_final_response, final_response)
-    final_response.expect(:output, [output_message])
-    output_message.expect(:content, [output_content])
+    final_response.expect(:output, output)
 
     streams = plain_successful_streams +
       [
@@ -96,7 +94,7 @@ class OpenAI::Test::StreamingPreviousResponseExampleTest < Minitest::Test
             assert_equal(7, params.fetch(:starting_after))
 
             math_response = params.fetch(:text).new(steps: [], final_answer: "-29/8")
-            output_content.expect(:parsed, math_response)
+            output << output_message(parsed: math_response)
           end
         }
       ]
@@ -114,9 +112,8 @@ class OpenAI::Test::StreamingPreviousResponseExampleTest < Minitest::Test
   def test_both_streams_resume_after_last_usable_sequence_with_unknown_events
     structured_stream = Minitest::Mock.new
     final_response = Minitest::Mock.new
-    output_message = Minitest::Mock.new
-    output_content = Minitest::Mock.new
-    @mocks.push(structured_stream, final_response, output_message, output_content)
+    output = []
+    @mocks.push(structured_stream, final_response)
 
     structured_stream.expect(:each, nil) do |&callback|
       callback.call(unknown_event)
@@ -125,8 +122,7 @@ class OpenAI::Test::StreamingPreviousResponseExampleTest < Minitest::Test
     end
 
     structured_stream.expect(:get_final_response, final_response)
-    final_response.expect(:output, [output_message])
-    output_message.expect(:content, [output_content])
+    final_response.expect(:output, output)
 
     streams = [
       {
@@ -157,7 +153,7 @@ class OpenAI::Test::StreamingPreviousResponseExampleTest < Minitest::Test
           assert_equal(9, params.fetch(:starting_after))
 
           math_response = params.fetch(:text).new(steps: [], final_answer: "-29/8")
-          output_content.expect(:parsed, math_response)
+          output << output_message(parsed: math_response)
         end
       }
     ]
@@ -244,6 +240,15 @@ class OpenAI::Test::StreamingPreviousResponseExampleTest < Minitest::Test
     data = {type: "future.unmodeled.event"}
     data[:sequence_number] = sequence_number unless sequence_number.nil?
     OpenAI::Streaming::UnknownStreamEvent.new(data: data)
+  end
+
+  def output_message(parsed:)
+    content = OpenAI::Responses::ResponseOutputText.new(text: "{}", annotations: [], parsed: parsed)
+    OpenAI::Responses::ResponseOutputMessage.new(
+      id: "msg_structured",
+      status: :completed,
+      content: [content]
+    )
   end
 
   def assert_failure(error, stderr, message)

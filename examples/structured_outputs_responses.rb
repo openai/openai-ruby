@@ -50,10 +50,13 @@ response = client.responses.create(
 
 response
   .output
-  .flat_map { _1.content }
-  # filter out refusal responses
-  .grep_v(OpenAI::Models::Responses::ResponseOutputRefusal)
+  .grep(OpenAI::Models::Responses::ResponseOutputMessage)
+  .flat_map(&:content)
+  .grep(OpenAI::Models::Responses::ResponseOutputText)
   .each do |content|
     # parsed is an instance of `CalendarEvent`
-    pp(content.parsed)
+    parsed = content.parsed
+    next unless parsed.is_a?(CalendarEvent)
+
+    pp(parsed)
   end
