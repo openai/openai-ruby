@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.84.0](https://github.com/openai/openai-ruby/compare/v0.83.0...v0.84.0) (2026-09-02)
+
+
+### Features
+
+* **api:** update usage APIs and documentation ([#566](https://github.com/openai/openai-ruby/issues/566)) ([caac1f0](https://github.com/openai/openai-ruby/commit/caac1f0d0932dff46e25f5879f5a1410425275e9))
+
+
+### Bug Fixes
+
+* accept custom request hash in RBS ([#554](https://github.com/openai/openai-ruby/issues/554)) ([8d32aa1](https://github.com/openai/openai-ruby/commit/8d32aa1764ecff22d2cb3114fa1a4b6f7faa309b))
+* avoid dispatching nil checks during coercion ([#552](https://github.com/openai/openai-ruby/issues/552)) ([c8d6d32](https://github.com/openai/openai-ruby/commit/c8d6d32e178563e38585d3ad928136e3c6f10ac1))
+* avoid duplicate late-choice stream logprobs ([#564](https://github.com/openai/openai-ruby/issues/564)) ([2359a02](https://github.com/openai/openai-ruby/commit/2359a02dd22fbf599250aaa97e755863562abf53))
+* delimit JSONL request records ([#553](https://github.com/openai/openai-ruby/issues/553)) ([dea0408](https://github.com/openai/openai-ruby/commit/dea04081076da3fde34f4a9b15f445dd92556b0f))
+* enforce workload identity request deadlines ([#547](https://github.com/openai/openai-ruby/issues/547)) ([da421b5](https://github.com/openai/openai-ruby/commit/da421b507c24c35f62ff8679dd5c468ce8a0dab9))
+* handle custom chat completion tool calls ([#556](https://github.com/openai/openai-ruby/issues/556)) ([dd49e31](https://github.com/openai/openai-ruby/commit/dd49e31134cf8dd1442f1b3fb428bab4dbc663d1))
+* load YAML for BaseModel serialization ([#555](https://github.com/openai/openai-ruby/issues/555)) ([5420931](https://github.com/openai/openai-ruby/commit/54209313bca8a7159ad8ee4768678ac61b871d69))
+* make error cause contract read-only ([#557](https://github.com/openai/openai-ruby/issues/557)) ([f3169ca](https://github.com/openai/openai-ruby/commit/f3169caae9a6115c3725c8d4da33e9ffb65085c5))
+* preserve formatter path boundaries ([#559](https://github.com/openai/openai-ruby/issues/559)) ([f8b128c](https://github.com/openai/openai-ruby/commit/f8b128cf0db3198a297caec7e7ca8dfa991f16e8))
+* respect StringIO cursor in multipart uploads ([#558](https://github.com/openai/openai-ruby/issues/558)) ([e8ea7c7](https://github.com/openai/openai-ruby/commit/e8ea7c73e7a233abaf7c919ce10117729918df5e))
+* resume Responses streams from server-side cursors ([#548](https://github.com/openai/openai-ruby/issues/548)) ([3b88261](https://github.com/openai/openai-ruby/commit/3b88261e7cd9a8736028c1867c0c23d21aba54b5))
+* support flattened responses typed function tools ([#550](https://github.com/openai/openai-ruby/issues/550)) ([ab16d33](https://github.com/openai/openai-ruby/commit/ab16d33e18c862608125cf12fac07e72702b8752))
+* support structured chat output with typed function tools ([#546](https://github.com/openai/openai-ruby/issues/546)) ([087d1e2](https://github.com/openai/openai-ruby/commit/087d1e2041099342ed59be211259b81dce14392c))
+
+
+### Chores
+
+* **deps-dev:** bump the development-dependencies group with 3 updates ([#560](https://github.com/openai/openai-ruby/issues/560)) ([f728e07](https://github.com/openai/openai-ruby/commit/f728e072a0d65e2d66b2e647d36843b76fd92606))
+
 ## [0.83.0](https://github.com/openai/openai-ruby/compare/v0.82.0...v0.83.0) (2026-08-27)
 
 
