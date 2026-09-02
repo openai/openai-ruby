@@ -156,6 +156,64 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
     state
   end
 
+  def test_late_service_tier_is_preserved_through_usage_tail
+    stream = make_service_tier_stream(
+      [
+        streaming_chunk(service_tier: nil, content: "Hello"),
+        streaming_chunk(service_tier: "priority", finish_reason: "stop"),
+        streaming_chunk(
+          service_tier: nil,
+          choices: [],
+          usage: {
+            prompt_tokens: 1,
+            completion_tokens: 1,
+            total_tokens: 2
+          }
+        )
+      ]
+    )
+
+    snapshots = []
+    raw_tiers = []
+    stream.each do |event|
+      next unless event.type == :chunk
+
+      raw_tiers << event.chunk.service_tier
+      snapshots << event.snapshot.service_tier
+    end
+
+    completion = stream.get_final_completion
+
+    assert_equal([nil, :priority, nil], raw_tiers)
+    assert_equal([nil, :priority, :priority], snapshots)
+    assert_equal(:priority, completion.service_tier)
+    assert_equal("Hello", completion.choices.first.message.content)
+    assert_equal(2, completion.usage.total_tokens)
+  end
+
+  def test_latest_non_nil_service_tier_wins_without_erasing_initial_tier
+    stream = make_service_tier_stream(
+      [
+        streaming_chunk(service_tier: "priority", content: "Hello"),
+        streaming_chunk(service_tier: nil),
+        streaming_chunk(content: " there"),
+        streaming_chunk(service_tier: "flex", finish_reason: "stop"),
+        streaming_chunk(service_tier: nil, choices: [])
+      ]
+    )
+
+    snapshots = []
+    stream.each do |event|
+      snapshots << event.snapshot.service_tier if event.type == :chunk
+    end
+
+    completion = stream.get_final_completion
+
+    assert_equal([:priority, :priority, :priority, :flex, :flex], snapshots)
+    assert_equal(:flex, completion.service_tier)
+    assert_equal("Hello there", completion.choices.first.message.content)
+  end
+
   def test_parse_nothing
     listener = make_stream_snapshot_request(
       {
@@ -189,6 +247,37 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingSnapshotTest < Minite
           parsed: nil
         )
     end
+  end
+
+  def make_service_tier_stream(chunks)
+    body = chunks.map { |chunk| "data: #{JSON.generate(chunk)}\n\n" }.join
+    body << "data: [DONE]\n\n"
+
+    stub_streaming_response({body: hash_including(model: "gpt-4o-mini", stream: true)}, body)
+    @client.chat.completions.stream(
+      model: "gpt-4o-mini",
+      messages: [{role: "user", content: "Say hello"}]
+    )
+  end
+
+  def streaming_chunk(service_tier: :omitted, content: nil, finish_reason: nil, choices: nil, usage: nil)
+    chunk = {
+      id: "chatcmpl-service-tier",
+      object: "chat.completion.chunk",
+      created: 1,
+      model: "gpt-4o-mini",
+      choices: choices ||
+        [
+          {
+            index: 0,
+            delta: content.nil? ? {} : {content: content},
+            finish_reason: finish_reason
+          }
+        ]
+    }
+    chunk[:service_tier] = service_tier unless service_tier == :omitted
+    chunk[:usage] = usage if usage
+    chunk
   end
 
   def test_parse_basemodel
