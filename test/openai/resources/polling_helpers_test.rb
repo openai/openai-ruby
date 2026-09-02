@@ -809,6 +809,39 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     assert_equal("assistants=v2", batch_request.headers["openai-beta"])
   end
 
+  def test_vector_store_batch_upload_matches_direct_string_io_cursor_wire_content
+    upload_bodies = []
+    transport = scripted_transport do |request|
+      case [request.http_method, request.path]
+      in [:post, "/v1/files"]
+        upload_bodies << request.body
+        [200, {}, file_object(id: "file_uploaded_#{upload_bodies.length}", status: "processed")]
+      in [:post, "/v1/vector_stores/vs_123/file_batches"]
+        [200, {}, vector_batch(status: "in_progress")]
+      in [:get, "/v1/vector_stores/vs_123/file_batches/batch_123"]
+        [200, {}, vector_batch(status: "completed")]
+      else
+        flunk("unexpected request: #{request.http_method} #{request.path}")
+      end
+    end
+
+    input = StringIO.new("skip-prefix|payload").tap { _1.seek(12) }
+    client = build_client(transport)
+
+    client.files.create(file: input, purpose: :assistants)
+    result = client.vector_stores.file_batches.upload_and_poll("vs_123", files: [input])
+
+    assert_equal(:completed, result.status)
+    assert_equal(2, upload_bodies.length)
+    upload_bodies.each do |body|
+      refute_includes(body, "skip-prefix|")
+      assert_includes(body, "payload")
+    end
+
+    assert_equal(12, input.pos)
+    refute_predicate(input, :closed?)
+  end
+
   def test_vector_store_batch_upload_preserves_raw_io_non_retry_semantics
     direct_attempts = 0
     direct_transport = scripted_transport do

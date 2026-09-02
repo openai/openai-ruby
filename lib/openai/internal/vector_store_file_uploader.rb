@@ -132,7 +132,7 @@ module OpenAI
         complete = false
         case content
         in StringIO
-          temporary_file.write(content.string)
+          temporary_file.write(content.string.byteslice(content.pos..) || "")
         in String
           temporary_file.write(content)
         in IO
