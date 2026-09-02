@@ -189,7 +189,7 @@ module OpenAI
           #
           # Get costs details for the organization.
           #
-          # @overload costs(start_time:, api_key_ids: nil, bucket_width: nil, end_time: nil, group_by: nil, limit: nil, page: nil, project_ids: nil, request_options: {})
+          # @overload costs(start_time:, api_key_ids: nil, bucket_width: nil, end_time: nil, group_by: nil, limit: nil, line_items: nil, page: nil, project_ids: nil, request_options: {})
           #
           # @param start_time [Integer] Start time (Unix seconds) of the query time range, inclusive.
           #
@@ -202,6 +202,8 @@ module OpenAI
           # @param group_by [Array<Symbol, OpenAI::Models::Admin::Organization::UsageCostsParams::GroupBy>] Group the costs by the specified fields. Support fields include `project_id`, `l
           #
           # @param limit [Integer] A limit on the number of buckets to be returned. Limit can range between 1 and 1
+          #
+          # @param line_items [Array<String>] Return only costs for these exact line item names. Each value must match the com
           #
           # @param page [String] A cursor for use in pagination. Corresponding to the `next_page` field from the
           #

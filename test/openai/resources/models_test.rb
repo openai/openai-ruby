@@ -4,7 +4,7 @@ require_relative "../test_helper"
 
 class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
   def test_retrieve
-    response = @openai.models.retrieve("gpt-4o-mini")
+    response = @openai.models.retrieve("gpt-5.6-sol")
 
     assert_pattern do
       response => OpenAI::Model

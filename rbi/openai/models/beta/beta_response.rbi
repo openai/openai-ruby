@@ -55,9 +55,9 @@ module OpenAI
         sig { returns(T.nilable(T::Hash[Symbol, String])) }
         attr_accessor :metadata
 
-        # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
-        # wide range of models with different capabilities, performance characteristics,
-        # and price points. Refer to the
+        # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+        # range of models with different capabilities, performance characteristics, and
+        # price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
         sig { returns(OpenAI::Beta::BetaResponse::Model::Variants) }
@@ -212,8 +212,6 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Beta::BetaResponse::PromptCacheRetention::TaggedSymbol)) }
         attr_accessor :prompt_cache_retention
 
-        # **gpt-5 and o-series models only**
-        #
         # Configuration options for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
         sig { returns(T.nilable(OpenAI::Beta::BetaResponse::Reasoning)) }
@@ -477,9 +475,9 @@ module OpenAI
           # a maximum length of 512 characters.
           metadata:,
 
-          # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
-          # wide range of models with different capabilities, performance characteristics,
-          # and price points. Refer to the
+          # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+          # range of models with different capabilities, performance characteristics, and
+          # price points. Refer to the
           # [model guide](https://platform.openai.com/docs/models) to browse and compare
           # available models.
           model:,
@@ -600,8 +598,6 @@ module OpenAI
           #   `prompt_cache_retention` is not specified.
           prompt_cache_retention: nil,
 
-          # **gpt-5 and o-series models only**
-          #
           # Configuration options for
           # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
           reasoning: nil,
@@ -775,6 +771,7 @@ module OpenAI
               :max_output_tokens,
               OpenAI::Beta::BetaResponse::IncompleteDetails::Reason::TaggedSymbol
             )
+            MAX_MESSAGES = T.let(:max_messages, OpenAI::Beta::BetaResponse::IncompleteDetails::Reason::TaggedSymbol)
             CONTENT_FILTER = T.let(:content_filter, OpenAI::Beta::BetaResponse::IncompleteDetails::Reason::TaggedSymbol)
 
             sig { override.returns(T::Array[OpenAI::Beta::BetaResponse::IncompleteDetails::Reason::TaggedSymbol]) }
@@ -804,9 +801,9 @@ module OpenAI
 
         end
 
-        # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
-        # wide range of models with different capabilities, performance characteristics,
-        # and price points. Refer to the
+        # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+        # range of models with different capabilities, performance characteristics, and
+        # price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
         module Model
@@ -1714,8 +1711,6 @@ module OpenAI
           sig { returns(T.nilable(OpenAI::Beta::BetaResponse::Reasoning::Summary::TaggedSymbol)) }
           attr_accessor :summary
 
-          # **gpt-5 and o-series models only**
-          #
           # Configuration options for
           # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
           sig do

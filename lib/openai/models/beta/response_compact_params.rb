@@ -9,9 +9,9 @@ module OpenAI
         include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute model
-        #   Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a
-        #   wide range of models with different capabilities, performance characteristics,
-        #   and price points. Refer to the
+        #   Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+        #   range of models with different capabilities, performance characteristics, and
+        #   price points. Refer to the
         #   [model guide](https://platform.openai.com/docs/models) to browse and compare
         #   available models.
         #
@@ -109,7 +109,7 @@ module OpenAI
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Beta::ResponseCompactParams} for more details.
         #
-        #   @param model [Symbol, String, OpenAI::Models::Beta::ResponseCompactParams::Model, nil] Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a wi
+        #   @param model [Symbol, String, OpenAI::Models::Beta::ResponseCompactParams::Model, nil] Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
         #
         #   @param input [String, Array<OpenAI::Models::Beta::BetaEasyInputMessage, OpenAI::Models::Beta::BetaResponseInputItem::Message, OpenAI::Models::Beta::BetaResponseOutputMessage, OpenAI::Models::Beta::BetaResponseFileSearchToolCall, OpenAI::Models::Beta::BetaResponseComputerToolCall, OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput, OpenAI::Models::Beta::BetaResponseFunctionWebSearch, OpenAI::Models::Beta::BetaResponseFunctionToolCall, OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall, OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam, OpenAI::Models::Beta::BetaResponseInputItem::AdditionalTools, OpenAI::Models::Beta::BetaResponseReasoningItem, OpenAI::Models::Beta::BetaResponseCompactionItemParam, OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall, OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ShellCall, OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::McpListTools, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalRequest, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalResponse, OpenAI::Models::Beta::BetaResponseInputItem::McpCall, OpenAI::Models::Beta::BetaResponseCustomToolCallOutput, OpenAI::Models::Beta::BetaResponseCustomToolCall, OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger, OpenAI::Models::Beta::BetaResponseInputItem::ItemReference, OpenAI::Models::Beta::BetaResponseInputItem::Program, OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput>, nil] Text, image, or file inputs to the model, used to generate a response
         #
@@ -129,9 +129,9 @@ module OpenAI
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
-        # Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a
-        # wide range of models with different capabilities, performance characteristics,
-        # and price points. Refer to the
+        # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+        # range of models with different capabilities, performance characteristics, and
+        # price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
         module Model
