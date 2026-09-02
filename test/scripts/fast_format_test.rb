@@ -20,7 +20,7 @@ class FastFormatTest < Minitest::Test
 
       assert_equal(ROOT, invocation.fetch("directory"))
       assert_equal(
-        ["exec", "rake", "format", "FORMAT_FILE=#{File.join(directory, path_list)}"],
+        ["exec", "rake", "format", "FORMAT_FILE=#{File.join(File.realpath(directory), path_list)}"],
         invocation.fetch("arguments")
       )
     end
