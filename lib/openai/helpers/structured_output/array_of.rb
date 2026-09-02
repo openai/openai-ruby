@@ -24,10 +24,10 @@ module OpenAI
         # @return [Hash{Symbol=>Object}]
         def to_json_schema_inner(state:)
           OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.cache_def!(state, type: self) do
-            state.fetch(:path) << "[]"
+            new_state = {**state, path: [*state.fetch(:path), "[]"]}
             items = OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.to_json_schema_inner(
               item_type,
-              state: state
+              state: new_state
             )
             items = OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.to_nilable(items) if nilable?
             OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.assoc_meta!(items, meta: @meta)
