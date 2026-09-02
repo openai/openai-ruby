@@ -21,7 +21,9 @@ stream.each do |event|
   case event
   when OpenAI::Streaming::ChatChunkEvent
     # Access the full snapshot with all choices:
-    event.snapshot.choices.each_with_index do |choice, index|
+    event.snapshot.choices.each do |choice|
+      index = choice.index
+
       if choice.message.content
         choice_contents[index] = choice.message.content
       end
