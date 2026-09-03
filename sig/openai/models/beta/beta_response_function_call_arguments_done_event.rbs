@@ -7,19 +7,17 @@ module OpenAI
         {
           arguments: String,
           item_id: String,
-          name: String,
           output_index: Integer,
           sequence_number: Integer,
           type: :"response.function_call_arguments.done",
-          agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?
+          agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?,
+          name: String
         }
 
       class BetaResponseFunctionCallArgumentsDoneEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor arguments: String
 
         attr_accessor item_id: String
-
-        attr_accessor name: String
 
         attr_accessor output_index: Integer
 
@@ -29,24 +27,28 @@ module OpenAI
 
         attr_accessor agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?
 
+        attr_reader name: String?
+
+        def name=: (String) -> String
+
         def initialize: (
           arguments: String,
           item_id: String,
-          name: String,
           output_index: Integer,
           sequence_number: Integer,
           ?agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?,
+          ?name: String,
           ?type: :"response.function_call_arguments.done"
         ) -> void
 
         def to_hash: -> {
           arguments: String,
           item_id: String,
-          name: String,
           output_index: Integer,
           sequence_number: Integer,
           type: :"response.function_call_arguments.done",
-          agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?
+          agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?,
+          name: String
         }
 
         type agent = { agent_name: String }

@@ -592,10 +592,10 @@ module OpenAI
           {
             arguments: String,
             item_id: String,
-            name: String,
             output_index: Integer,
             sequence_number: Integer,
             type: :"response.function_call_arguments.done",
+            name: String,
             stream_id: String
           }
 
@@ -607,9 +607,9 @@ module OpenAI
           def initialize: (
             arguments: String,
             item_id: String,
-            name: String,
             output_index: Integer,
             sequence_number: Integer,
+            ?name: String,
             ?stream_id: String,
             ?type: :"response.function_call_arguments.done"
           ) -> void
@@ -617,10 +617,10 @@ module OpenAI
           def to_hash: -> {
             arguments: String,
             item_id: String,
-            name: String,
             output_index: Integer,
             sequence_number: Integer,
             type: :"response.function_call_arguments.done",
+            name: String,
             stream_id: String
           }
         end
