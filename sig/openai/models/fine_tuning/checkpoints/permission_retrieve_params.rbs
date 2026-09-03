@@ -5,12 +5,12 @@ module OpenAI
         type permission_retrieve_params =
           {
             fine_tuned_model_checkpoint: String,
-            after: String,
-            limit: Integer,
-            order: OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::order,
-            project_id: String
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::order,
+            ?project_id: String,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class PermissionRetrieveParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -47,11 +47,11 @@ module OpenAI
 
           def to_hash: -> {
             fine_tuned_model_checkpoint: String,
-            after: String,
-            limit: Integer,
-            order: OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::order,
-            project_id: String,
-            request_options: OpenAI::RequestOptions
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::order,
+            ?project_id: String,
+            ?request_options: OpenAI::RequestOptions
           }
 
           type order = :ascending | :descending

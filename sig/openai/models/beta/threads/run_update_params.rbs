@@ -6,9 +6,9 @@ module OpenAI
           {
             thread_id: String,
             run_id: String,
-            metadata: OpenAI::Models::metadata?
+            ?metadata: OpenAI::Models::metadata?,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class RunUpdateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -30,8 +30,8 @@ module OpenAI
           def to_hash: -> {
             thread_id: String,
             run_id: String,
-            metadata: OpenAI::Models::metadata?,
-            request_options: OpenAI::RequestOptions
+            ?metadata: OpenAI::Models::metadata?,
+            ?request_options: OpenAI::RequestOptions
           }
         end
       end

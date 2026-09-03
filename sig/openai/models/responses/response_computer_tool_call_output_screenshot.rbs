@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Responses
       type response_computer_tool_call_output_screenshot =
-        { type: :computer_screenshot, file_id: String, image_url: String }
+        { ?type: :computer_screenshot, ?file_id: String, ?image_url: String }
 
       class ResponseComputerToolCallOutputScreenshot < OpenAI::Internal::Type::BaseModel
         attr_accessor type: :computer_screenshot
@@ -22,9 +22,9 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :computer_screenshot,
-          file_id: String,
-          image_url: String
+          ?type: :computer_screenshot,
+          ?file_id: String,
+          ?image_url: String
         }
       end
     end

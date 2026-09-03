@@ -1,6 +1,6 @@
 module OpenAI
   module Models
-    type response_format_text_grammar = { grammar: String, type: :grammar }
+    type response_format_text_grammar = { grammar: String, ?type: :grammar }
 
     class ResponseFormatTextGrammar < OpenAI::Internal::Type::BaseModel
       attr_accessor grammar: String
@@ -9,7 +9,7 @@ module OpenAI
 
       def initialize: (grammar: String, ?type: :grammar) -> void
 
-      def to_hash: -> { grammar: String, type: :grammar }
+      def to_hash: -> { grammar: String, ?type: :grammar }
     end
   end
 end

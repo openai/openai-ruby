@@ -1739,6 +1739,11 @@ module OpenAI
               )
             end
 
+            # The ID of a response to compare when diagnosing prompt cache reuse. Supplying
+            # this field requests prompt cache diagnostics when the feature is enabled.
+            sig { returns(T.nilable(String)) }
+            attr_accessor :comparison_response_id
+
             # Controls whether OpenAI automatically creates an implicit cache breakpoint.
             # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
             # and writes up to the latest three explicit breakpoints in the request. With
@@ -1786,6 +1791,8 @@ module OpenAI
             sig do
               params(
 
+                comparison_response_id: T.nilable(String),
+
                 mode: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol,
 
                 ttl: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol
@@ -1793,6 +1800,10 @@ module OpenAI
                 .returns(T.attached_class)
             end
             def self.new(
+
+              # The ID of a response to compare when diagnosing prompt cache reuse. Supplying
+              # this field requests prompt cache diagnostics when the feature is enabled.
+              comparison_response_id: nil,
 
               # Controls whether OpenAI automatically creates an implicit cache breakpoint.
               # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
@@ -1813,6 +1824,7 @@ module OpenAI
             sig do
               override.returns(
                 {
+                  comparison_response_id: T.nilable(String),
                   mode: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol,
                   ttl: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol
                 }

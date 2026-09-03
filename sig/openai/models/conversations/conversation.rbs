@@ -6,7 +6,7 @@ module OpenAI
           id: String,
           created_at: Integer,
           metadata: top,
-          object: :conversation
+          ?object: :conversation
         }
 
       class Conversation < OpenAI::Internal::Type::BaseModel
@@ -29,7 +29,7 @@ module OpenAI
           id: String,
           created_at: Integer,
           metadata: top,
-          object: :conversation
+          ?object: :conversation
         }
       end
     end

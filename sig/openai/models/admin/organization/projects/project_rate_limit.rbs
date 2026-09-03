@@ -11,11 +11,11 @@ module OpenAI
               :max_requests_per_1_minute => Integer,
               :max_tokens_per_1_minute => Integer,
               model: String,
-              object: :"project.rate_limit",
-              :batch_1_day_max_input_tokens => Integer,
-              :max_audio_megabytes_per_1_minute => Integer,
-              :max_images_per_1_minute => Integer,
-              :max_requests_per_1_day => Integer
+              ?object: :"project.rate_limit",
+              ?:batch_1_day_max_input_tokens => Integer,
+              ?:max_audio_megabytes_per_1_minute => Integer,
+              ?:max_images_per_1_minute => Integer,
+              ?:max_requests_per_1_day => Integer
             }
 
           class ProjectRateLimit < OpenAI::Internal::Type::BaseModel
@@ -62,11 +62,11 @@ module OpenAI
               :max_requests_per_1_minute => Integer,
               :max_tokens_per_1_minute => Integer,
               model: String,
-              object: :"project.rate_limit",
-              :batch_1_day_max_input_tokens => Integer,
-              :max_audio_megabytes_per_1_minute => Integer,
-              :max_images_per_1_minute => Integer,
-              :max_requests_per_1_day => Integer
+              ?object: :"project.rate_limit",
+              ?:batch_1_day_max_input_tokens => Integer,
+              ?:max_audio_megabytes_per_1_minute => Integer,
+              ?:max_images_per_1_minute => Integer,
+              ?:max_requests_per_1_day => Integer
             }
           end
         end

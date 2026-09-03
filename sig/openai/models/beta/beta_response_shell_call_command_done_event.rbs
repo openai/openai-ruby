@@ -9,8 +9,8 @@ module OpenAI
           command_index: Integer,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.shell_call_command.done",
-          agent: OpenAI::Beta::BetaResponseShellCallCommandDoneEvent::Agent
+          ?type: :"response.shell_call_command.done",
+          ?agent: OpenAI::Beta::BetaResponseShellCallCommandDoneEvent::Agent
         }
 
       class BetaResponseShellCallCommandDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -44,8 +44,8 @@ module OpenAI
           command_index: Integer,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.shell_call_command.done",
-          agent: OpenAI::Beta::BetaResponseShellCallCommandDoneEvent::Agent
+          ?type: :"response.shell_call_command.done",
+          ?agent: OpenAI::Beta::BetaResponseShellCallCommandDoneEvent::Agent
         }
 
         type agent = { agent_name: String }

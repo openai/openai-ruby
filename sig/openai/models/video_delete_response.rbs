@@ -1,7 +1,7 @@
 module OpenAI
   module Models
     type video_delete_response =
-      { id: String, deleted: bool, object: :"video.deleted" }
+      { id: String, deleted: bool, ?object: :"video.deleted" }
 
     class VideoDeleteResponse < OpenAI::Internal::Type::BaseModel
       attr_accessor id: String
@@ -16,7 +16,7 @@ module OpenAI
         ?object: :"video.deleted"
       ) -> void
 
-      def to_hash: -> { id: String, deleted: bool, object: :"video.deleted" }
+      def to_hash: -> { id: String, deleted: bool, ?object: :"video.deleted" }
     end
   end
 end

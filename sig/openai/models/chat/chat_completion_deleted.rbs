@@ -4,7 +4,7 @@ module OpenAI
 
     module Chat
       type chat_completion_deleted =
-        { id: String, deleted: bool, object: :"chat.completion.deleted" }
+        { id: String, deleted: bool, ?object: :"chat.completion.deleted" }
 
       class ChatCompletionDeleted < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
@@ -22,7 +22,7 @@ module OpenAI
         def to_hash: -> {
           id: String,
           deleted: bool,
-          object: :"chat.completion.deleted"
+          ?object: :"chat.completion.deleted"
         }
       end
     end

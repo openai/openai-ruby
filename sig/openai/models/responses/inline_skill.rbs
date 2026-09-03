@@ -6,7 +6,7 @@ module OpenAI
           description: String,
           name: String,
           source: OpenAI::Responses::InlineSkillSource,
-          type: :inline
+          ?type: :inline
         }
 
       class InlineSkill < OpenAI::Internal::Type::BaseModel
@@ -29,7 +29,7 @@ module OpenAI
           description: String,
           name: String,
           source: OpenAI::Responses::InlineSkillSource,
-          type: :inline
+          ?type: :inline
         }
       end
     end

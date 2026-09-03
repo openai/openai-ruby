@@ -7,7 +7,7 @@ module OpenAI
             id: String,
             description: String?,
             name: String,
-            object: :role,
+            ?object: :role,
             permissions: ::Array[String],
             predefined_role: bool,
             resource_type: String
@@ -42,7 +42,7 @@ module OpenAI
             id: String,
             description: String?,
             name: String,
-            object: :role,
+            ?object: :role,
             permissions: ::Array[String],
             predefined_role: bool,
             resource_type: String

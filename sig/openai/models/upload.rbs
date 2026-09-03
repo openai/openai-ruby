@@ -7,10 +7,10 @@ module OpenAI
         created_at: Integer,
         expires_at: Integer,
         filename: String,
-        object: :upload,
+        ?object: :upload,
         purpose: String,
         status: OpenAI::Models::Upload::status,
-        file: OpenAI::FileObject?
+        ?file: OpenAI::FileObject?
       }
 
     class Upload < OpenAI::Internal::Type::BaseModel
@@ -50,10 +50,10 @@ module OpenAI
         created_at: Integer,
         expires_at: Integer,
         filename: String,
-        object: :upload,
+        ?object: :upload,
         purpose: String,
         status: OpenAI::Models::Upload::status,
-        file: OpenAI::FileObject?
+        ?file: OpenAI::FileObject?
       }
 
       type status = :pending | :completed | :cancelled | :expired

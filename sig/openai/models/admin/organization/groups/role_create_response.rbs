@@ -6,7 +6,7 @@ module OpenAI
           type role_create_response =
             {
               group: OpenAI::Models::Admin::Organization::Groups::RoleCreateResponse::Group,
-              object: :"group.role",
+              ?object: :"group.role",
               role: OpenAI::Admin::Organization::Role
             }
 
@@ -25,7 +25,7 @@ module OpenAI
 
             def to_hash: -> {
               group: OpenAI::Models::Admin::Organization::Groups::RoleCreateResponse::Group,
-              object: :"group.role",
+              ?object: :"group.role",
               role: OpenAI::Admin::Organization::Role
             }
 
@@ -34,7 +34,7 @@ module OpenAI
                 id: String,
                 created_at: Integer,
                 name: String,
-                object: :group,
+                ?object: :group,
                 scim_managed: bool
               }
 
@@ -61,7 +61,7 @@ module OpenAI
                 id: String,
                 created_at: Integer,
                 name: String,
-                object: :group,
+                ?object: :group,
                 scim_managed: bool
               }
             end

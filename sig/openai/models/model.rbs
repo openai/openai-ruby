@@ -4,9 +4,9 @@ module OpenAI
       {
         id: String,
         created: Integer,
-        object: :model,
+        ?object: :model,
         owned_by: String,
-        shutdown_date: Date?
+        ?shutdown_date: Date?
       }
 
     class Model < OpenAI::Internal::Type::BaseModel
@@ -31,9 +31,9 @@ module OpenAI
       def to_hash: -> {
         id: String,
         created: Integer,
-        object: :model,
+        ?object: :model,
         owned_by: String,
-        shutdown_date: Date?
+        ?shutdown_date: Date?
       }
     end
   end

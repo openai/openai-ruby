@@ -6,8 +6,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::EvalRunSucceededWebhookEvent::Data,
-          type: :"eval.run.succeeded",
-          object: OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent::object
+          ?type: :"eval.run.succeeded",
+          ?object: OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent::object
         }
 
       class EvalRunSucceededWebhookEvent < OpenAI::Internal::Type::BaseModel
@@ -37,8 +37,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::EvalRunSucceededWebhookEvent::Data,
-          type: :"eval.run.succeeded",
-          object: OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent::object
+          ?type: :"eval.run.succeeded",
+          ?object: OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent::object
         }
 
         type data = { id: String }

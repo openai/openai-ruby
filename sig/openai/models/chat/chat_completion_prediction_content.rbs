@@ -6,7 +6,7 @@ module OpenAI
       type chat_completion_prediction_content =
         {
           content: OpenAI::Models::Chat::ChatCompletionPredictionContent::content,
-          type: :content
+          ?type: :content
         }
 
       class ChatCompletionPredictionContent < OpenAI::Internal::Type::BaseModel
@@ -21,7 +21,7 @@ module OpenAI
 
         def to_hash: -> {
           content: OpenAI::Models::Chat::ChatCompletionPredictionContent::content,
-          type: :content
+          ?type: :content
         }
 
         type content =

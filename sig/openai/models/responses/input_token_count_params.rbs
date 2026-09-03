@@ -3,20 +3,20 @@ module OpenAI
     module Responses
       type input_token_count_params =
         {
-          conversation: OpenAI::Models::Responses::InputTokenCountParams::conversation?,
-          input: OpenAI::Models::Responses::InputTokenCountParams::input?,
-          instructions: String?,
-          model: String?,
-          parallel_tool_calls: bool?,
-          personality: OpenAI::Models::Responses::InputTokenCountParams::personality,
-          previous_response_id: String?,
-          reasoning: OpenAI::Reasoning?,
-          text: OpenAI::Responses::InputTokenCountParams::Text?,
-          tool_choice: OpenAI::Models::Responses::InputTokenCountParams::tool_choice?,
-          tools: ::Array[OpenAI::Models::Responses::tool]?,
-          truncation: OpenAI::Models::Responses::InputTokenCountParams::truncation
+          ?conversation: OpenAI::Models::Responses::InputTokenCountParams::conversation?,
+          ?input: OpenAI::Models::Responses::InputTokenCountParams::input?,
+          ?instructions: String?,
+          ?model: String?,
+          ?parallel_tool_calls: bool?,
+          ?personality: OpenAI::Models::Responses::InputTokenCountParams::personality,
+          ?previous_response_id: String?,
+          ?reasoning: OpenAI::Reasoning?,
+          ?text: OpenAI::Responses::InputTokenCountParams::Text?,
+          ?tool_choice: OpenAI::Models::Responses::InputTokenCountParams::tool_choice?,
+          ?tools: ::Array[OpenAI::Models::Responses::tool]?,
+          ?truncation: OpenAI::Models::Responses::InputTokenCountParams::truncation,
+          ?request_options: OpenAI::request_opts
         }
-        & OpenAI::Internal::Type::request_parameters
 
       class InputTokenCountParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -71,19 +71,19 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          conversation: OpenAI::Models::Responses::InputTokenCountParams::conversation?,
-          input: OpenAI::Models::Responses::InputTokenCountParams::input?,
-          instructions: String?,
-          model: String?,
-          parallel_tool_calls: bool?,
-          personality: OpenAI::Models::Responses::InputTokenCountParams::personality,
-          previous_response_id: String?,
-          reasoning: OpenAI::Reasoning?,
-          text: OpenAI::Responses::InputTokenCountParams::Text?,
-          tool_choice: OpenAI::Models::Responses::InputTokenCountParams::tool_choice?,
-          tools: ::Array[OpenAI::Models::Responses::tool]?,
-          truncation: OpenAI::Models::Responses::InputTokenCountParams::truncation,
-          request_options: OpenAI::RequestOptions
+          ?conversation: OpenAI::Models::Responses::InputTokenCountParams::conversation?,
+          ?input: OpenAI::Models::Responses::InputTokenCountParams::input?,
+          ?instructions: String?,
+          ?model: String?,
+          ?parallel_tool_calls: bool?,
+          ?personality: OpenAI::Models::Responses::InputTokenCountParams::personality,
+          ?previous_response_id: String?,
+          ?reasoning: OpenAI::Reasoning?,
+          ?text: OpenAI::Responses::InputTokenCountParams::Text?,
+          ?tool_choice: OpenAI::Models::Responses::InputTokenCountParams::tool_choice?,
+          ?tools: ::Array[OpenAI::Models::Responses::tool]?,
+          ?truncation: OpenAI::Models::Responses::InputTokenCountParams::truncation,
+          ?request_options: OpenAI::RequestOptions
         }
 
         type conversation =
@@ -119,8 +119,8 @@ module OpenAI
 
         type text =
           {
-            format_: OpenAI::Models::Responses::response_format_text_config,
-            verbosity: OpenAI::Models::Responses::InputTokenCountParams::Text::verbosity?
+            ?format_: OpenAI::Models::Responses::response_format_text_config,
+            ?verbosity: OpenAI::Models::Responses::InputTokenCountParams::Text::verbosity?
           }
 
         class Text < OpenAI::Internal::Type::BaseModel
@@ -138,8 +138,8 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            format_: OpenAI::Models::Responses::response_format_text_config,
-            verbosity: OpenAI::Models::Responses::InputTokenCountParams::Text::verbosity?
+            ?format_: OpenAI::Models::Responses::response_format_text_config,
+            ?verbosity: OpenAI::Models::Responses::InputTokenCountParams::Text::verbosity?
           }
 
           type verbosity = :low | :medium | :high
@@ -170,14 +170,14 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           type specific_programmatic_tool_calling_param =
-            { type: :programmatic_tool_calling }
+            { ?type: :programmatic_tool_calling }
 
           class SpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :programmatic_tool_calling
 
             def initialize: (?type: :programmatic_tool_calling) -> void
 
-            def to_hash: -> { type: :programmatic_tool_calling }
+            def to_hash: -> { ?type: :programmatic_tool_calling }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Responses::InputTokenCountParams::tool_choice]

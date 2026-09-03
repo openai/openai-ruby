@@ -9,9 +9,9 @@ module OpenAI
           created_at: Integer,
           level: OpenAI::Models::FineTuning::FineTuningJobEvent::level,
           message: String,
-          object: :"fine_tuning.job.event",
-          data: top,
-          type: OpenAI::Models::FineTuning::FineTuningJobEvent::type_
+          ?object: :"fine_tuning.job.event",
+          ?data: top,
+          ?type: OpenAI::Models::FineTuning::FineTuningJobEvent::type_
         }
 
       class FineTuningJobEvent < OpenAI::Internal::Type::BaseModel
@@ -50,9 +50,9 @@ module OpenAI
           created_at: Integer,
           level: OpenAI::Models::FineTuning::FineTuningJobEvent::level,
           message: String,
-          object: :"fine_tuning.job.event",
-          data: top,
-          type: OpenAI::Models::FineTuning::FineTuningJobEvent::type_
+          ?object: :"fine_tuning.job.event",
+          ?data: top,
+          ?type: OpenAI::Models::FineTuning::FineTuningJobEvent::type_
         }
 
         type level = :info | :warn | :error

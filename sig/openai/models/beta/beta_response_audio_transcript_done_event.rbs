@@ -6,8 +6,8 @@ module OpenAI
       type beta_response_audio_transcript_done_event =
         {
           sequence_number: Integer,
-          type: :"response.audio.transcript.done",
-          agent: OpenAI::Beta::BetaResponseAudioTranscriptDoneEvent::Agent?
+          ?type: :"response.audio.transcript.done",
+          ?agent: OpenAI::Beta::BetaResponseAudioTranscriptDoneEvent::Agent?
         }
 
       class BetaResponseAudioTranscriptDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -25,8 +25,8 @@ module OpenAI
 
         def to_hash: -> {
           sequence_number: Integer,
-          type: :"response.audio.transcript.done",
-          agent: OpenAI::Beta::BetaResponseAudioTranscriptDoneEvent::Agent?
+          ?type: :"response.audio.transcript.done",
+          ?agent: OpenAI::Beta::BetaResponseAudioTranscriptDoneEvent::Agent?
         }
 
         type agent = { agent_name: String }

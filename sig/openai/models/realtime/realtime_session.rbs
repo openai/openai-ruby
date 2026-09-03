@@ -3,26 +3,26 @@ module OpenAI
     module Realtime
       type realtime_session =
         {
-          id: String,
-          expires_at: Integer,
-          include: ::Array[OpenAI::Models::Realtime::RealtimeSession::include_]?,
-          input_audio_format: OpenAI::Models::Realtime::RealtimeSession::input_audio_format,
-          input_audio_noise_reduction: OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction,
-          input_audio_transcription: OpenAI::Realtime::AudioTranscription?,
-          instructions: String,
-          max_response_output_tokens: OpenAI::Models::Realtime::RealtimeSession::max_response_output_tokens,
-          modalities: ::Array[OpenAI::Models::Realtime::RealtimeSession::modality],
-          model: OpenAI::Models::Realtime::RealtimeSession::model,
-          object: OpenAI::Models::Realtime::RealtimeSession::object,
-          output_audio_format: OpenAI::Models::Realtime::RealtimeSession::output_audio_format,
-          prompt: OpenAI::Responses::ResponsePrompt?,
-          speed: Float,
-          temperature: Float,
-          tool_choice: String,
-          tools: ::Array[OpenAI::Realtime::RealtimeFunctionTool],
-          tracing: OpenAI::Models::Realtime::RealtimeSession::tracing?,
-          turn_detection: OpenAI::Models::Realtime::RealtimeSession::turn_detection?,
-          voice: OpenAI::Models::Realtime::RealtimeSession::voice
+          ?id: String,
+          ?expires_at: Integer,
+          ?include: ::Array[OpenAI::Models::Realtime::RealtimeSession::include_]?,
+          ?input_audio_format: OpenAI::Models::Realtime::RealtimeSession::input_audio_format,
+          ?input_audio_noise_reduction: OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction,
+          ?input_audio_transcription: OpenAI::Realtime::AudioTranscription?,
+          ?instructions: String,
+          ?max_response_output_tokens: OpenAI::Models::Realtime::RealtimeSession::max_response_output_tokens,
+          ?modalities: ::Array[OpenAI::Models::Realtime::RealtimeSession::modality],
+          ?model: OpenAI::Models::Realtime::RealtimeSession::model,
+          ?object: OpenAI::Models::Realtime::RealtimeSession::object,
+          ?output_audio_format: OpenAI::Models::Realtime::RealtimeSession::output_audio_format,
+          ?prompt: OpenAI::Responses::ResponsePrompt?,
+          ?speed: Float,
+          ?temperature: Float,
+          ?tool_choice: String,
+          ?tools: ::Array[OpenAI::Realtime::RealtimeFunctionTool],
+          ?tracing: OpenAI::Models::Realtime::RealtimeSession::tracing?,
+          ?turn_detection: OpenAI::Models::Realtime::RealtimeSession::turn_detection?,
+          ?voice: OpenAI::Models::Realtime::RealtimeSession::voice
         }
 
       class RealtimeSession < OpenAI::Internal::Type::BaseModel
@@ -138,26 +138,26 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          id: String,
-          expires_at: Integer,
-          include: ::Array[OpenAI::Models::Realtime::RealtimeSession::include_]?,
-          input_audio_format: OpenAI::Models::Realtime::RealtimeSession::input_audio_format,
-          input_audio_noise_reduction: OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction,
-          input_audio_transcription: OpenAI::Realtime::AudioTranscription?,
-          instructions: String,
-          max_response_output_tokens: OpenAI::Models::Realtime::RealtimeSession::max_response_output_tokens,
-          modalities: ::Array[OpenAI::Models::Realtime::RealtimeSession::modality],
-          model: OpenAI::Models::Realtime::RealtimeSession::model,
-          object: OpenAI::Models::Realtime::RealtimeSession::object,
-          output_audio_format: OpenAI::Models::Realtime::RealtimeSession::output_audio_format,
-          prompt: OpenAI::Responses::ResponsePrompt?,
-          speed: Float,
-          temperature: Float,
-          tool_choice: String,
-          tools: ::Array[OpenAI::Realtime::RealtimeFunctionTool],
-          tracing: OpenAI::Models::Realtime::RealtimeSession::tracing?,
-          turn_detection: OpenAI::Models::Realtime::RealtimeSession::turn_detection?,
-          voice: OpenAI::Models::Realtime::RealtimeSession::voice
+          ?id: String,
+          ?expires_at: Integer,
+          ?include: ::Array[OpenAI::Models::Realtime::RealtimeSession::include_]?,
+          ?input_audio_format: OpenAI::Models::Realtime::RealtimeSession::input_audio_format,
+          ?input_audio_noise_reduction: OpenAI::Realtime::RealtimeSession::InputAudioNoiseReduction,
+          ?input_audio_transcription: OpenAI::Realtime::AudioTranscription?,
+          ?instructions: String,
+          ?max_response_output_tokens: OpenAI::Models::Realtime::RealtimeSession::max_response_output_tokens,
+          ?modalities: ::Array[OpenAI::Models::Realtime::RealtimeSession::modality],
+          ?model: OpenAI::Models::Realtime::RealtimeSession::model,
+          ?object: OpenAI::Models::Realtime::RealtimeSession::object,
+          ?output_audio_format: OpenAI::Models::Realtime::RealtimeSession::output_audio_format,
+          ?prompt: OpenAI::Responses::ResponsePrompt?,
+          ?speed: Float,
+          ?temperature: Float,
+          ?tool_choice: String,
+          ?tools: ::Array[OpenAI::Realtime::RealtimeFunctionTool],
+          ?tracing: OpenAI::Models::Realtime::RealtimeSession::tracing?,
+          ?turn_detection: OpenAI::Models::Realtime::RealtimeSession::turn_detection?,
+          ?voice: OpenAI::Models::Realtime::RealtimeSession::voice
         }
 
         type include_ = :"item.input_audio_transcription.logprobs"
@@ -183,7 +183,7 @@ module OpenAI
         end
 
         type input_audio_noise_reduction =
-          { type: OpenAI::Models::Realtime::noise_reduction_type }
+          { ?type: OpenAI::Models::Realtime::noise_reduction_type }
 
         class InputAudioNoiseReduction < OpenAI::Internal::Type::BaseModel
           attr_reader type: OpenAI::Models::Realtime::noise_reduction_type?
@@ -197,7 +197,7 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            type: OpenAI::Models::Realtime::noise_reduction_type
+            ?type: OpenAI::Models::Realtime::noise_reduction_type
           }
         end
 
@@ -292,7 +292,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           type tracing_configuration =
-            { group_id: String, metadata: top, workflow_name: String }
+            { ?group_id: String, ?metadata: top, ?workflow_name: String }
 
           class TracingConfiguration < OpenAI::Internal::Type::BaseModel
             attr_reader group_id: String?
@@ -314,9 +314,9 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              group_id: String,
-              metadata: top,
-              workflow_name: String
+              ?group_id: String,
+              ?metadata: top,
+              ?workflow_name: String
             }
           end
 
@@ -332,13 +332,13 @@ module OpenAI
 
           type server_vad =
             {
-              type: :server_vad,
-              create_response: bool,
-              idle_timeout_ms: Integer?,
-              interrupt_response: bool,
-              prefix_padding_ms: Integer,
-              silence_duration_ms: Integer,
-              threshold: Float
+              ?type: :server_vad,
+              ?create_response: bool,
+              ?idle_timeout_ms: Integer?,
+              ?interrupt_response: bool,
+              ?prefix_padding_ms: Integer,
+              ?silence_duration_ms: Integer,
+              ?threshold: Float
             }
 
           class ServerVad < OpenAI::Internal::Type::BaseModel
@@ -377,22 +377,22 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              type: :server_vad,
-              create_response: bool,
-              idle_timeout_ms: Integer?,
-              interrupt_response: bool,
-              prefix_padding_ms: Integer,
-              silence_duration_ms: Integer,
-              threshold: Float
+              ?type: :server_vad,
+              ?create_response: bool,
+              ?idle_timeout_ms: Integer?,
+              ?interrupt_response: bool,
+              ?prefix_padding_ms: Integer,
+              ?silence_duration_ms: Integer,
+              ?threshold: Float
             }
           end
 
           type semantic_vad =
             {
-              type: :semantic_vad,
-              create_response: bool,
-              eagerness: OpenAI::Models::Realtime::RealtimeSession::TurnDetection::SemanticVad::eagerness,
-              interrupt_response: bool
+              ?type: :semantic_vad,
+              ?create_response: bool,
+              ?eagerness: OpenAI::Models::Realtime::RealtimeSession::TurnDetection::SemanticVad::eagerness,
+              ?interrupt_response: bool
             }
 
           class SemanticVad < OpenAI::Internal::Type::BaseModel
@@ -420,10 +420,10 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              type: :semantic_vad,
-              create_response: bool,
-              eagerness: OpenAI::Models::Realtime::RealtimeSession::TurnDetection::SemanticVad::eagerness,
-              interrupt_response: bool
+              ?type: :semantic_vad,
+              ?create_response: bool,
+              ?eagerness: OpenAI::Models::Realtime::RealtimeSession::TurnDetection::SemanticVad::eagerness,
+              ?interrupt_response: bool
             }
 
             type eagerness = :low | :medium | :high | :auto

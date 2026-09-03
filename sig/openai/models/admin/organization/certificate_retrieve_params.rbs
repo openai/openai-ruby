@@ -5,9 +5,9 @@ module OpenAI
         type certificate_retrieve_params =
           {
             certificate_id: String,
-            include: ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_]
+            ?include: ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_],
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class CertificateRetrieveParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -29,8 +29,8 @@ module OpenAI
 
           def to_hash: -> {
             certificate_id: String,
-            include: ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_],
-            request_options: OpenAI::RequestOptions
+            ?include: ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_],
+            ?request_options: OpenAI::RequestOptions
           }
 
           type include_ = :content

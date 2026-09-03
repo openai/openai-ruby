@@ -7,8 +7,8 @@ module OpenAI
         {
           response: OpenAI::Beta::BetaResponse,
           sequence_number: Integer,
-          type: :"response.failed",
-          agent: OpenAI::Beta::BetaResponseFailedEvent::Agent?
+          ?type: :"response.failed",
+          ?agent: OpenAI::Beta::BetaResponseFailedEvent::Agent?
         }
 
       class BetaResponseFailedEvent < OpenAI::Internal::Type::BaseModel
@@ -30,8 +30,8 @@ module OpenAI
         def to_hash: -> {
           response: OpenAI::Beta::BetaResponse,
           sequence_number: Integer,
-          type: :"response.failed",
-          agent: OpenAI::Beta::BetaResponseFailedEvent::Agent?
+          ?type: :"response.failed",
+          ?agent: OpenAI::Beta::BetaResponseFailedEvent::Agent?
         }
 
         type agent = { agent_name: String }

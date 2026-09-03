@@ -3,7 +3,7 @@ module OpenAI
     module Admin
       module Organization
         type invite_delete_response =
-          { id: String, deleted: bool, object: :"organization.invite.deleted" }
+          { id: String, deleted: bool, ?object: :"organization.invite.deleted" }
 
         class InviteDeleteResponse < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
@@ -21,7 +21,7 @@ module OpenAI
           def to_hash: -> {
             id: String,
             deleted: bool,
-            object: :"organization.invite.deleted"
+            ?object: :"organization.invite.deleted"
           }
         end
       end

@@ -4,7 +4,7 @@ module OpenAI
       module Organization
         module Projects
           type role_delete_response =
-            { id: String, deleted: bool, object: :"role.deleted" }
+            { id: String, deleted: bool, ?object: :"role.deleted" }
 
           class RoleDeleteResponse < OpenAI::Internal::Type::BaseModel
             attr_accessor id: String
@@ -22,7 +22,7 @@ module OpenAI
             def to_hash: -> {
               id: String,
               deleted: bool,
-              object: :"role.deleted"
+              ?object: :"role.deleted"
             }
           end
         end

@@ -10,9 +10,9 @@ module OpenAI
             owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
             redacted_value: String,
             value: String,
-            object: :"organization.admin_api_key",
-            last_used_at: Integer?,
-            name: String?
+            ?object: :"organization.admin_api_key",
+            ?last_used_at: Integer?,
+            ?name: String?
           }
 
         class AdminAPIKeyCreateResponse < OpenAI::Models::Admin::Organization::AdminAPIKey
@@ -39,9 +39,9 @@ module OpenAI
             owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
             redacted_value: String,
             value: String,
-            object: :"organization.admin_api_key",
-            last_used_at: Integer?,
-            name: String?
+            ?object: :"organization.admin_api_key",
+            ?last_used_at: Integer?,
+            ?name: String?
           }
         end
       end

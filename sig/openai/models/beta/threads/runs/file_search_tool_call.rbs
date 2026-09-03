@@ -7,7 +7,7 @@ module OpenAI
             {
               id: String,
               file_search: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch,
-              type: :file_search
+              ?type: :file_search
             }
 
           class FileSearchToolCall < OpenAI::Internal::Type::BaseModel
@@ -26,13 +26,13 @@ module OpenAI
             def to_hash: -> {
               id: String,
               file_search: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch,
-              type: :file_search
+              ?type: :file_search
             }
 
             type file_search =
               {
-                ranking_options: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
-                results: ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
+                ?ranking_options: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
+                ?results: ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
               }
 
             class FileSearch < OpenAI::Internal::Type::BaseModel
@@ -54,8 +54,8 @@ module OpenAI
               ) -> void
 
               def to_hash: -> {
-                ranking_options: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
-                results: ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
+                ?ranking_options: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
+                ?results: ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
               }
 
               type ranking_options =
@@ -96,7 +96,7 @@ module OpenAI
                   file_id: String,
                   file_name: String,
                   score: Float,
-                  content: ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]
+                  ?content: ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]
                 }
 
               class Result < OpenAI::Internal::Type::BaseModel
@@ -123,13 +123,13 @@ module OpenAI
                   file_id: String,
                   file_name: String,
                   score: Float,
-                  content: ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]
+                  ?content: ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]
                 }
 
                 type content =
                   {
-                    text: String,
-                    type: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_
+                    ?text: String,
+                    ?type: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_
                   }
 
                 class Content < OpenAI::Internal::Type::BaseModel
@@ -149,8 +149,8 @@ module OpenAI
                   ) -> void
 
                   def to_hash: -> {
-                    text: String,
-                    type: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_
+                    ?text: String,
+                    ?type: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_
                   }
 
                   type type_ = :text

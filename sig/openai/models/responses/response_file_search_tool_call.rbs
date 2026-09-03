@@ -6,8 +6,8 @@ module OpenAI
           id: String,
           queries: ::Array[String],
           status: OpenAI::Models::Responses::ResponseFileSearchToolCall::status,
-          type: :file_search_call,
-          results: ::Array[OpenAI::Responses::ResponseFileSearchToolCall::Result]?
+          ?type: :file_search_call,
+          ?results: ::Array[OpenAI::Responses::ResponseFileSearchToolCall::Result]?
         }
 
       class ResponseFileSearchToolCall < OpenAI::Internal::Type::BaseModel
@@ -33,8 +33,8 @@ module OpenAI
           id: String,
           queries: ::Array[String],
           status: OpenAI::Models::Responses::ResponseFileSearchToolCall::status,
-          type: :file_search_call,
-          results: ::Array[OpenAI::Responses::ResponseFileSearchToolCall::Result]?
+          ?type: :file_search_call,
+          ?results: ::Array[OpenAI::Responses::ResponseFileSearchToolCall::Result]?
         }
 
         type status =
@@ -54,11 +54,11 @@ module OpenAI
 
         type result =
           {
-            attributes: ::Hash[Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Result::attribute]?,
-            file_id: String,
-            filename: String,
-            score: Float,
-            text: String
+            ?attributes: ::Hash[Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Result::attribute]?,
+            ?file_id: String,
+            ?filename: String,
+            ?score: Float,
+            ?text: String
           }
 
         class Result < OpenAI::Internal::Type::BaseModel
@@ -89,11 +89,11 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            attributes: ::Hash[Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Result::attribute]?,
-            file_id: String,
-            filename: String,
-            score: Float,
-            text: String
+            ?attributes: ::Hash[Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Result::attribute]?,
+            ?file_id: String,
+            ?filename: String,
+            ?score: Float,
+            ?text: String
           }
 
           type attribute = String | Float | bool

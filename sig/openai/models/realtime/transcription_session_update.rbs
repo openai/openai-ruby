@@ -4,8 +4,8 @@ module OpenAI
       type transcription_session_update =
         {
           session: OpenAI::Realtime::TranscriptionSessionUpdate::Session,
-          type: :"transcription_session.update",
-          event_id: String
+          ?type: :"transcription_session.update",
+          ?event_id: String
         }
 
       class TranscriptionSessionUpdate < OpenAI::Internal::Type::BaseModel
@@ -25,17 +25,17 @@ module OpenAI
 
         def to_hash: -> {
           session: OpenAI::Realtime::TranscriptionSessionUpdate::Session,
-          type: :"transcription_session.update",
-          event_id: String
+          ?type: :"transcription_session.update",
+          ?event_id: String
         }
 
         type session =
           {
-            include: ::Array[OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::include_],
-            input_audio_format: OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::input_audio_format,
-            input_audio_noise_reduction: OpenAI::Realtime::TranscriptionSessionUpdate::Session::InputAudioNoiseReduction,
-            input_audio_transcription: OpenAI::Realtime::AudioTranscription,
-            turn_detection: OpenAI::Realtime::TranscriptionSessionUpdate::Session::TurnDetection
+            ?include: ::Array[OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::include_],
+            ?input_audio_format: OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::input_audio_format,
+            ?input_audio_noise_reduction: OpenAI::Realtime::TranscriptionSessionUpdate::Session::InputAudioNoiseReduction,
+            ?input_audio_transcription: OpenAI::Realtime::AudioTranscription,
+            ?turn_detection: OpenAI::Realtime::TranscriptionSessionUpdate::Session::TurnDetection
           }
 
         class Session < OpenAI::Internal::Type::BaseModel
@@ -78,11 +78,11 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            include: ::Array[OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::include_],
-            input_audio_format: OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::input_audio_format,
-            input_audio_noise_reduction: OpenAI::Realtime::TranscriptionSessionUpdate::Session::InputAudioNoiseReduction,
-            input_audio_transcription: OpenAI::Realtime::AudioTranscription,
-            turn_detection: OpenAI::Realtime::TranscriptionSessionUpdate::Session::TurnDetection
+            ?include: ::Array[OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::include_],
+            ?input_audio_format: OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::input_audio_format,
+            ?input_audio_noise_reduction: OpenAI::Realtime::TranscriptionSessionUpdate::Session::InputAudioNoiseReduction,
+            ?input_audio_transcription: OpenAI::Realtime::AudioTranscription,
+            ?turn_detection: OpenAI::Realtime::TranscriptionSessionUpdate::Session::TurnDetection
           }
 
           type include_ = :"item.input_audio_transcription.logprobs"
@@ -108,7 +108,7 @@ module OpenAI
           end
 
           type input_audio_noise_reduction =
-            { type: OpenAI::Models::Realtime::noise_reduction_type }
+            { ?type: OpenAI::Models::Realtime::noise_reduction_type }
 
           class InputAudioNoiseReduction < OpenAI::Internal::Type::BaseModel
             attr_reader type: OpenAI::Models::Realtime::noise_reduction_type?
@@ -122,16 +122,16 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              type: OpenAI::Models::Realtime::noise_reduction_type
+              ?type: OpenAI::Models::Realtime::noise_reduction_type
             }
           end
 
           type turn_detection =
             {
-              prefix_padding_ms: Integer,
-              silence_duration_ms: Integer,
-              threshold: Float,
-              type: OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::TurnDetection::type_
+              ?prefix_padding_ms: Integer,
+              ?silence_duration_ms: Integer,
+              ?threshold: Float,
+              ?type: OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::TurnDetection::type_
             }
 
           class TurnDetection < OpenAI::Internal::Type::BaseModel
@@ -161,10 +161,10 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              prefix_padding_ms: Integer,
-              silence_duration_ms: Integer,
-              threshold: Float,
-              type: OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::TurnDetection::type_
+              ?prefix_padding_ms: Integer,
+              ?silence_duration_ms: Integer,
+              ?threshold: Float,
+              ?type: OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::TurnDetection::type_
             }
 
             type type_ = :server_vad

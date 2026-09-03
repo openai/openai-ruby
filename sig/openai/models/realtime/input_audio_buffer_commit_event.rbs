@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Realtime
       type input_audio_buffer_commit_event =
-        { type: :"input_audio_buffer.commit", event_id: String }
+        { ?type: :"input_audio_buffer.commit", ?event_id: String }
 
       class InputAudioBufferCommitEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor type: :"input_audio_buffer.commit"
@@ -16,7 +16,10 @@ module OpenAI
           ?type: :"input_audio_buffer.commit"
         ) -> void
 
-        def to_hash: -> { type: :"input_audio_buffer.commit", event_id: String }
+        def to_hash: -> {
+          ?type: :"input_audio_buffer.commit",
+          ?event_id: String
+        }
       end
     end
   end

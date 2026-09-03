@@ -4,8 +4,8 @@ module OpenAI
       module Threads
         type image_url_delta =
           {
-            detail: OpenAI::Models::Beta::Threads::ImageURLDelta::detail,
-            url: String
+            ?detail: OpenAI::Models::Beta::Threads::ImageURLDelta::detail,
+            ?url: String
           }
 
         class ImageURLDelta < OpenAI::Internal::Type::BaseModel
@@ -25,8 +25,8 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            detail: OpenAI::Models::Beta::Threads::ImageURLDelta::detail,
-            url: String
+            ?detail: OpenAI::Models::Beta::Threads::ImageURLDelta::detail,
+            ?url: String
           }
 
           type detail = :auto | :low | :high

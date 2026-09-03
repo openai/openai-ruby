@@ -4,9 +4,9 @@ module OpenAI
       type transcription =
         {
           text: String,
-          languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
-          logprobs: ::Array[OpenAI::Audio::Transcription::Logprob],
-          usage: OpenAI::Models::Audio::Transcription::usage
+          ?languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
+          ?logprobs: ::Array[OpenAI::Audio::Transcription::Logprob],
+          ?usage: OpenAI::Models::Audio::Transcription::usage
         }
 
       class Transcription < OpenAI::Internal::Type::BaseModel
@@ -39,12 +39,13 @@ module OpenAI
 
         def to_hash: -> {
           text: String,
-          languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
-          logprobs: ::Array[OpenAI::Audio::Transcription::Logprob],
-          usage: OpenAI::Models::Audio::Transcription::usage
+          ?languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
+          ?logprobs: ::Array[OpenAI::Audio::Transcription::Logprob],
+          ?usage: OpenAI::Models::Audio::Transcription::usage
         }
 
-        type logprob = { token: String, bytes: ::Array[Float], logprob: Float }
+        type logprob =
+          { ?token: String, ?bytes: ::Array[Float], ?logprob: Float }
 
         class Logprob < OpenAI::Internal::Type::BaseModel
           attr_reader token: String?
@@ -66,9 +67,9 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            token: String,
-            bytes: ::Array[Float],
-            logprob: Float
+            ?token: String,
+            ?bytes: ::Array[Float],
+            ?logprob: Float
           }
         end
 
@@ -84,8 +85,8 @@ module OpenAI
               input_tokens: Integer,
               output_tokens: Integer,
               total_tokens: Integer,
-              type: :tokens,
-              input_token_details: OpenAI::Audio::Transcription::Usage::Tokens::InputTokenDetails
+              ?type: :tokens,
+              ?input_token_details: OpenAI::Audio::Transcription::Usage::Tokens::InputTokenDetails
             }
 
           class Tokens < OpenAI::Internal::Type::BaseModel
@@ -115,12 +116,12 @@ module OpenAI
               input_tokens: Integer,
               output_tokens: Integer,
               total_tokens: Integer,
-              type: :tokens,
-              input_token_details: OpenAI::Audio::Transcription::Usage::Tokens::InputTokenDetails
+              ?type: :tokens,
+              ?input_token_details: OpenAI::Audio::Transcription::Usage::Tokens::InputTokenDetails
             }
 
             type input_token_details =
-              { audio_tokens: Integer, text_tokens: Integer }
+              { ?audio_tokens: Integer, ?text_tokens: Integer }
 
             class InputTokenDetails < OpenAI::Internal::Type::BaseModel
               attr_reader audio_tokens: Integer?
@@ -136,11 +137,11 @@ module OpenAI
                 ?text_tokens: Integer
               ) -> void
 
-              def to_hash: -> { audio_tokens: Integer, text_tokens: Integer }
+              def to_hash: -> { ?audio_tokens: Integer, ?text_tokens: Integer }
             end
           end
 
-          type duration = { seconds: Float, type: :duration }
+          type duration = { seconds: Float, ?type: :duration }
 
           class Duration < OpenAI::Internal::Type::BaseModel
             attr_accessor seconds: Float
@@ -149,7 +150,7 @@ module OpenAI
 
             def initialize: (seconds: Float, ?type: :duration) -> void
 
-            def to_hash: -> { seconds: Float, type: :duration }
+            def to_hash: -> { seconds: Float, ?type: :duration }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Audio::Transcription::usage]

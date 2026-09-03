@@ -4,8 +4,8 @@ module OpenAI
       module Threads
         type message_delta =
           {
-            content: ::Array[OpenAI::Models::Beta::Threads::message_content_delta],
-            role: OpenAI::Models::Beta::Threads::MessageDelta::role
+            ?content: ::Array[OpenAI::Models::Beta::Threads::message_content_delta],
+            ?role: OpenAI::Models::Beta::Threads::MessageDelta::role
           }
 
         class MessageDelta < OpenAI::Internal::Type::BaseModel
@@ -27,8 +27,8 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            content: ::Array[OpenAI::Models::Beta::Threads::message_content_delta],
-            role: OpenAI::Models::Beta::Threads::MessageDelta::role
+            ?content: ::Array[OpenAI::Models::Beta::Threads::message_content_delta],
+            ?role: OpenAI::Models::Beta::Threads::MessageDelta::role
           }
 
           type role = :user | :assistant

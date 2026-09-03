@@ -2,7 +2,11 @@ module OpenAI
   module Models
     module Realtime
       type conversation_item_delete_event =
-        { item_id: String, type: :"conversation.item.delete", event_id: String }
+        {
+          item_id: String,
+          ?type: :"conversation.item.delete",
+          ?event_id: String
+        }
 
       class ConversationItemDeleteEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor item_id: String
@@ -21,8 +25,8 @@ module OpenAI
 
         def to_hash: -> {
           item_id: String,
-          type: :"conversation.item.delete",
-          event_id: String
+          ?type: :"conversation.item.delete",
+          ?event_id: String
         }
       end
     end

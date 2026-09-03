@@ -4,9 +4,9 @@ module OpenAI
       {
         prompt: String,
         seconds: OpenAI::Models::video_seconds,
-        video: OpenAI::Models::VideoExtendParams::video
+        video: OpenAI::Models::VideoExtendParams::video,
+        ?request_options: OpenAI::request_opts
       }
-      & OpenAI::Internal::Type::request_parameters
 
     class VideoExtendParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -29,7 +29,7 @@ module OpenAI
         prompt: String,
         seconds: OpenAI::Models::video_seconds,
         video: OpenAI::Models::VideoExtendParams::video,
-        request_options: OpenAI::RequestOptions
+        ?request_options: OpenAI::RequestOptions
       }
 
       type video =

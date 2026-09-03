@@ -6,21 +6,21 @@ module OpenAI
       type realtime_session_create_response =
         {
           id: String,
-          object: :"realtime.session",
-          type: :realtime,
-          audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
-          expires_at: Integer,
-          include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_],
-          instructions: String,
-          max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens,
-          model: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::model,
-          output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality],
-          prompt: OpenAI::Responses::ResponsePrompt?,
-          reasoning: OpenAI::Realtime::RealtimeReasoning,
-          tool_choice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool_choice,
-          tools: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool],
-          tracing: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing?,
-          truncation: OpenAI::Models::Realtime::realtime_truncation
+          ?object: :"realtime.session",
+          ?type: :realtime,
+          ?audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
+          ?expires_at: Integer,
+          ?include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_],
+          ?instructions: String,
+          ?max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens,
+          ?model: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::model,
+          ?output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality],
+          ?prompt: OpenAI::Responses::ResponsePrompt?,
+          ?reasoning: OpenAI::Realtime::RealtimeReasoning,
+          ?tool_choice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool_choice,
+          ?tools: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool],
+          ?tracing: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing?,
+          ?truncation: OpenAI::Models::Realtime::realtime_truncation
         }
 
       class RealtimeSessionCreateResponse < OpenAI::Internal::Type::BaseModel
@@ -117,27 +117,27 @@ module OpenAI
 
         def to_hash: -> {
           id: String,
-          object: :"realtime.session",
-          type: :realtime,
-          audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
-          expires_at: Integer,
-          include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_],
-          instructions: String,
-          max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens,
-          model: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::model,
-          output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality],
-          prompt: OpenAI::Responses::ResponsePrompt?,
-          reasoning: OpenAI::Realtime::RealtimeReasoning,
-          tool_choice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool_choice,
-          tools: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool],
-          tracing: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing?,
-          truncation: OpenAI::Models::Realtime::realtime_truncation
+          ?object: :"realtime.session",
+          ?type: :realtime,
+          ?audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
+          ?expires_at: Integer,
+          ?include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_],
+          ?instructions: String,
+          ?max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens,
+          ?model: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::model,
+          ?output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality],
+          ?prompt: OpenAI::Responses::ResponsePrompt?,
+          ?reasoning: OpenAI::Realtime::RealtimeReasoning,
+          ?tool_choice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool_choice,
+          ?tools: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool],
+          ?tracing: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing?,
+          ?truncation: OpenAI::Models::Realtime::realtime_truncation
         }
 
         type audio =
           {
-            input: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input,
-            output: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output
+            ?input: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input,
+            ?output: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output
           }
 
         class Audio < OpenAI::Internal::Type::BaseModel
@@ -159,16 +159,16 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            input: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input,
-            output: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output
+            ?input: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input,
+            ?output: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output
           }
 
           type input =
             {
-              format_: OpenAI::Models::Realtime::realtime_audio_formats,
-              noise_reduction: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction,
-              transcription: OpenAI::Realtime::AudioTranscription,
-              turn_detection: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::turn_detection?
+              ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
+              ?noise_reduction: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction,
+              ?transcription: OpenAI::Realtime::AudioTranscription,
+              ?turn_detection: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::turn_detection?
             }
 
           class Input < OpenAI::Internal::Type::BaseModel
@@ -200,14 +200,14 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              format_: OpenAI::Models::Realtime::realtime_audio_formats,
-              noise_reduction: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction,
-              transcription: OpenAI::Realtime::AudioTranscription,
-              turn_detection: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::turn_detection?
+              ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
+              ?noise_reduction: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction,
+              ?transcription: OpenAI::Realtime::AudioTranscription,
+              ?turn_detection: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::turn_detection?
             }
 
             type noise_reduction =
-              { type: OpenAI::Models::Realtime::noise_reduction_type }
+              { ?type: OpenAI::Models::Realtime::noise_reduction_type }
 
             class NoiseReduction < OpenAI::Internal::Type::BaseModel
               attr_reader type: OpenAI::Models::Realtime::noise_reduction_type?
@@ -221,7 +221,7 @@ module OpenAI
               ) -> void
 
               def to_hash: -> {
-                type: OpenAI::Models::Realtime::noise_reduction_type
+                ?type: OpenAI::Models::Realtime::noise_reduction_type
               }
             end
 
@@ -234,13 +234,13 @@ module OpenAI
 
               type server_vad =
                 {
-                  type: :server_vad,
-                  create_response: bool,
-                  idle_timeout_ms: Integer?,
-                  interrupt_response: bool,
-                  prefix_padding_ms: Integer,
-                  silence_duration_ms: Integer,
-                  threshold: Float
+                  ?type: :server_vad,
+                  ?create_response: bool,
+                  ?idle_timeout_ms: Integer?,
+                  ?interrupt_response: bool,
+                  ?prefix_padding_ms: Integer,
+                  ?silence_duration_ms: Integer,
+                  ?threshold: Float
                 }
 
               class ServerVad < OpenAI::Internal::Type::BaseModel
@@ -279,22 +279,22 @@ module OpenAI
                 ) -> void
 
                 def to_hash: -> {
-                  type: :server_vad,
-                  create_response: bool,
-                  idle_timeout_ms: Integer?,
-                  interrupt_response: bool,
-                  prefix_padding_ms: Integer,
-                  silence_duration_ms: Integer,
-                  threshold: Float
+                  ?type: :server_vad,
+                  ?create_response: bool,
+                  ?idle_timeout_ms: Integer?,
+                  ?interrupt_response: bool,
+                  ?prefix_padding_ms: Integer,
+                  ?silence_duration_ms: Integer,
+                  ?threshold: Float
                 }
               end
 
               type semantic_vad =
                 {
-                  type: :semantic_vad,
-                  create_response: bool,
-                  eagerness: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::eagerness,
-                  interrupt_response: bool
+                  ?type: :semantic_vad,
+                  ?create_response: bool,
+                  ?eagerness: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::eagerness,
+                  ?interrupt_response: bool
                 }
 
               class SemanticVad < OpenAI::Internal::Type::BaseModel
@@ -322,10 +322,10 @@ module OpenAI
                 ) -> void
 
                 def to_hash: -> {
-                  type: :semantic_vad,
-                  create_response: bool,
-                  eagerness: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::eagerness,
-                  interrupt_response: bool
+                  ?type: :semantic_vad,
+                  ?create_response: bool,
+                  ?eagerness: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::eagerness,
+                  ?interrupt_response: bool
                 }
 
                 type eagerness = :low | :medium | :high | :auto
@@ -348,9 +348,9 @@ module OpenAI
 
           type output =
             {
-              format_: OpenAI::Models::Realtime::realtime_audio_formats,
-              speed: Float,
-              voice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice
+              ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
+              ?speed: Float,
+              ?voice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice
             }
 
           class Output < OpenAI::Internal::Type::BaseModel
@@ -377,9 +377,9 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              format_: OpenAI::Models::Realtime::realtime_audio_formats,
-              speed: Float,
-              voice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice
+              ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
+              ?speed: Float,
+              ?voice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice
             }
 
             type voice =
@@ -512,17 +512,17 @@ module OpenAI
           type mcp_tool =
             {
               server_label: String,
-              type: :mcp,
-              allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_caller]?,
-              allowed_tools: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_tools?,
-              authorization: String,
-              connector_id: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::connector_id,
-              defer_loading: bool,
-              headers: ::Hash[Symbol, String]?,
-              require_approval: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::require_approval?,
-              server_description: String,
-              server_url: String,
-              tunnel_id: String
+              ?type: :mcp,
+              ?allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_caller]?,
+              ?allowed_tools: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_tools?,
+              ?authorization: String,
+              ?connector_id: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::connector_id,
+              ?defer_loading: bool,
+              ?headers: ::Hash[Symbol, String]?,
+              ?require_approval: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::require_approval?,
+              ?server_description: String,
+              ?server_url: String,
+              ?tunnel_id: String
             }
 
           class McpTool < OpenAI::Internal::Type::BaseModel
@@ -581,17 +581,17 @@ module OpenAI
 
             def to_hash: -> {
               server_label: String,
-              type: :mcp,
-              allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_caller]?,
-              allowed_tools: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_tools?,
-              authorization: String,
-              connector_id: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::connector_id,
-              defer_loading: bool,
-              headers: ::Hash[Symbol, String]?,
-              require_approval: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::require_approval?,
-              server_description: String,
-              server_url: String,
-              tunnel_id: String
+              ?type: :mcp,
+              ?allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_caller]?,
+              ?allowed_tools: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_tools?,
+              ?authorization: String,
+              ?connector_id: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::connector_id,
+              ?defer_loading: bool,
+              ?headers: ::Hash[Symbol, String]?,
+              ?require_approval: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::require_approval?,
+              ?server_description: String,
+              ?server_url: String,
+              ?tunnel_id: String
             }
 
             type allowed_caller = :direct | :programmatic
@@ -613,7 +613,7 @@ module OpenAI
               extend OpenAI::Internal::Type::Union
 
               type mcp_tool_filter =
-                { read_only: bool, tool_names: ::Array[String] }
+                { ?read_only: bool, ?tool_names: ::Array[String] }
 
               class McpToolFilter < OpenAI::Internal::Type::BaseModel
                 attr_reader read_only: bool?
@@ -629,7 +629,10 @@ module OpenAI
                   ?tool_names: ::Array[String]
                 ) -> void
 
-                def to_hash: -> { read_only: bool, tool_names: ::Array[String] }
+                def to_hash: -> {
+                  ?read_only: bool,
+                  ?tool_names: ::Array[String]
+                }
               end
 
               def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_tools]
@@ -671,8 +674,8 @@ module OpenAI
 
               type mcp_tool_approval_filter =
                 {
-                  always: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always,
-                  never: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never
+                  ?always: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always,
+                  ?never: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never
                 }
 
               class McpToolApprovalFilter < OpenAI::Internal::Type::BaseModel
@@ -694,11 +697,11 @@ module OpenAI
                 ) -> void
 
                 def to_hash: -> {
-                  always: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always,
-                  never: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never
+                  ?always: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always,
+                  ?never: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never
                 }
 
-                type always = { read_only: bool, tool_names: ::Array[String] }
+                type always = { ?read_only: bool, ?tool_names: ::Array[String] }
 
                 class Always < OpenAI::Internal::Type::BaseModel
                   attr_reader read_only: bool?
@@ -715,12 +718,12 @@ module OpenAI
                   ) -> void
 
                   def to_hash: -> {
-                    read_only: bool,
-                    tool_names: ::Array[String]
+                    ?read_only: bool,
+                    ?tool_names: ::Array[String]
                   }
                 end
 
-                type never = { read_only: bool, tool_names: ::Array[String] }
+                type never = { ?read_only: bool, ?tool_names: ::Array[String] }
 
                 class Never < OpenAI::Internal::Type::BaseModel
                   attr_reader read_only: bool?
@@ -737,8 +740,8 @@ module OpenAI
                   ) -> void
 
                   def to_hash: -> {
-                    read_only: bool,
-                    tool_names: ::Array[String]
+                    ?read_only: bool,
+                    ?tool_names: ::Array[String]
                   }
                 end
               end
@@ -769,7 +772,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           type tracing_configuration =
-            { group_id: String, metadata: top, workflow_name: String }
+            { ?group_id: String, ?metadata: top, ?workflow_name: String }
 
           class TracingConfiguration < OpenAI::Internal::Type::BaseModel
             attr_reader group_id: String?
@@ -791,9 +794,9 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              group_id: String,
-              metadata: top,
-              workflow_name: String
+              ?group_id: String,
+              ?metadata: top,
+              ?workflow_name: String
             }
           end
 

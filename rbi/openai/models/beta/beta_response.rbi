@@ -178,6 +178,23 @@ module OpenAI
         sig { params(prompt: T.nilable(OpenAI::Beta::BetaResponsePrompt::OrHash)).void }
         attr_writer :prompt
 
+        # Prompt cache diagnostics requested for this response.
+        sig { returns(T.nilable(OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::Variants)) }
+        attr_reader :prompt_cache_diagnostics
+
+        sig {
+          params(
+            prompt_cache_diagnostics: T.any(
+              OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::OrHash,
+              OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheHit::OrHash,
+              OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::ComparisonResponseNotFound::OrHash,
+              OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::Unavailable::OrHash
+            )
+          )
+            .void
+        }
+        attr_writer :prompt_cache_diagnostics
+
         # Used by OpenAI to cache responses for similar requests to optimize your cache
         # hit rates. Replaces the `user` field.
         # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
@@ -418,6 +435,13 @@ module OpenAI
 
             prompt: T.nilable(OpenAI::Beta::BetaResponsePrompt::OrHash),
 
+            prompt_cache_diagnostics: T.any(
+              OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::OrHash,
+              OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheHit::OrHash,
+              OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::ComparisonResponseNotFound::OrHash,
+              OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::Unavailable::OrHash
+            ),
+
             prompt_cache_key: T.nilable(String),
 
             prompt_cache_options: OpenAI::Beta::BetaResponse::PromptCacheOptions::OrHash,
@@ -570,6 +594,9 @@ module OpenAI
           # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
           prompt: nil,
 
+          # Prompt cache diagnostics requested for this response.
+          prompt_cache_diagnostics: nil,
+
           # Used by OpenAI to cache responses for similar requests to optimize your cache
           # hit rates. Replaces the `user` field.
           # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
@@ -703,6 +730,7 @@ module OpenAI
               moderation: T.nilable(OpenAI::Beta::BetaResponse::Moderation),
               previous_response_id: T.nilable(String),
               prompt: T.nilable(OpenAI::Beta::BetaResponsePrompt),
+              prompt_cache_diagnostics: OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::Variants,
               prompt_cache_key: T.nilable(String),
               prompt_cache_options: OpenAI::Beta::BetaResponse::PromptCacheOptions,
               prompt_cache_retention: T.nilable(OpenAI::Beta::BetaResponse::PromptCacheRetention::TaggedSymbol),
@@ -1557,6 +1585,252 @@ module OpenAI
           end
         end
 
+        # Prompt cache diagnostics requested for this response.
+        module PromptCacheDiagnostics
+          extend OpenAI::Internal::Type::Union
+
+          Variants = T.type_alias {
+            T.any(
+              OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss,
+              OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheHit,
+              OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::ComparisonResponseNotFound,
+              OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::Unavailable
+            )
+          }
+
+          class CacheMiss < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The estimated number of input tokens affected after the first detected
+            # divergence.
+            sig { returns(Integer) }
+            attr_accessor :cache_missed_tokens
+
+            # The reason prompt cache reuse did not occur.
+            sig { returns(OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::Reason::TaggedSymbol) }
+            attr_accessor :reason
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # The raw token count of the reusable prefix in the compared response.
+            sig { returns(T.nilable(Integer)) }
+            attr_reader :comparison_reusable_tokens
+
+            sig { params(comparison_reusable_tokens: Integer).void }
+            attr_writer :comparison_reusable_tokens
+
+            sig do
+              params(
+
+                cache_missed_tokens: Integer,
+
+                reason: OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::Reason::OrSymbol,
+
+                comparison_reusable_tokens: Integer,
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The estimated number of input tokens affected after the first detected
+              # divergence.
+              cache_missed_tokens:,
+
+              # The reason prompt cache reuse did not occur.
+              reason:,
+
+              # The raw token count of the reusable prefix in the compared response.
+              comparison_reusable_tokens: nil,
+
+              type: :cache_miss
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  cache_missed_tokens: Integer,
+                  reason: OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::Reason::TaggedSymbol,
+                  type: Symbol,
+                  comparison_reusable_tokens: Integer
+                }
+              )
+            end
+            def to_hash
+            end
+
+            # The reason prompt cache reuse did not occur.
+            module Reason
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::Reason)
+              }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              MODEL_CHANGED = T.let(
+                :model_changed,
+                OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::Reason::TaggedSymbol
+              )
+              PROMPT_CACHE_KEY_CHANGED = T.let(
+                :prompt_cache_key_changed,
+                OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::Reason::TaggedSymbol
+              )
+              TOOLS_CHANGED = T.let(
+                :tools_changed,
+                OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::Reason::TaggedSymbol
+              )
+              TEXT_FORMAT_CHANGED = T.let(
+                :text_format_changed,
+                OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::Reason::TaggedSymbol
+              )
+              REASONING_EFFORT_CHANGED = T.let(
+                :reasoning_effort_changed,
+                OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::Reason::TaggedSymbol
+              )
+              VERBOSITY_CHANGED = T.let(
+                :verbosity_changed,
+                OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::Reason::TaggedSymbol
+              )
+              CONTEXT_COMPACTED = T.let(
+                :context_compacted,
+                OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::Reason::TaggedSymbol
+              )
+              INPUT_CHANGED = T.let(
+                :input_changed,
+                OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::Reason::TaggedSymbol
+              )
+              SERVICE_TIER_CHANGED = T.let(
+                :service_tier_changed,
+                OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::Reason::TaggedSymbol
+              )
+
+              sig {
+                override.returns(
+                  T::Array[OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::Reason::TaggedSymbol]
+                )
+              }
+              def self.values
+              end
+            end
+          end
+
+          class CacheHit < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheHit,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              type: :cache_hit
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class ComparisonResponseNotFound < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::ComparisonResponseNotFound,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              type: :comparison_response_not_found
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Unavailable < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::Unavailable,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              type: :unavailable
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          sig { override.returns(T::Array[OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::Variants]) }
+          def self.variants
+          end
+
+        end
+
         class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
           OrHash = T.type_alias do
             T.any(
@@ -1573,6 +1847,10 @@ module OpenAI
           sig { returns(OpenAI::Beta::BetaResponse::PromptCacheOptions::Ttl::TaggedSymbol) }
           attr_accessor :ttl
 
+          # The response ID supplied as the prompt cache diagnostics comparison.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :comparison_response_id
+
           # The prompt-caching options that were applied to the response. Supported for
           # `gpt-5.6` and later models.
           sig do
@@ -1580,7 +1858,9 @@ module OpenAI
 
               mode: OpenAI::Beta::BetaResponse::PromptCacheOptions::Mode::OrSymbol,
 
-              ttl: OpenAI::Beta::BetaResponse::PromptCacheOptions::Ttl::OrSymbol
+              ttl: OpenAI::Beta::BetaResponse::PromptCacheOptions::Ttl::OrSymbol,
+
+              comparison_response_id: T.nilable(String)
             )
               .returns(T.attached_class)
           end
@@ -1590,8 +1870,11 @@ module OpenAI
             mode:,
 
             # The minimum lifetime applied to each cache breakpoint.
+            ttl:,
 
-            ttl:
+            # The response ID supplied as the prompt cache diagnostics comparison.
+
+            comparison_response_id: nil
           )
           end
 
@@ -1599,7 +1882,8 @@ module OpenAI
             override.returns(
               {
                 mode: OpenAI::Beta::BetaResponse::PromptCacheOptions::Mode::TaggedSymbol,
-                ttl: OpenAI::Beta::BetaResponse::PromptCacheOptions::Ttl::TaggedSymbol
+                ttl: OpenAI::Beta::BetaResponse::PromptCacheOptions::Ttl::TaggedSymbol,
+                comparison_response_id: T.nilable(String)
               }
             )
           end

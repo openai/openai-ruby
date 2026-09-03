@@ -4,7 +4,12 @@ module OpenAI
       module Threads
         module Runs
           type file_search_tool_call_delta =
-            { file_search: top, index: Integer, type: :file_search, id: String }
+            {
+              file_search: top,
+              index: Integer,
+              ?type: :file_search,
+              ?id: String
+            }
 
           class FileSearchToolCallDelta < OpenAI::Internal::Type::BaseModel
             attr_accessor file_search: top
@@ -27,8 +32,8 @@ module OpenAI
             def to_hash: -> {
               file_search: top,
               index: Integer,
-              type: :file_search,
-              id: String
+              ?type: :file_search,
+              ?id: String
             }
           end
         end

@@ -6,7 +6,7 @@ module OpenAI
       type chat_completion_named_tool_choice_custom =
         {
           custom: OpenAI::Chat::ChatCompletionNamedToolChoiceCustom::Custom,
-          type: :custom
+          ?type: :custom
         }
 
       class ChatCompletionNamedToolChoiceCustom < OpenAI::Internal::Type::BaseModel
@@ -21,7 +21,7 @@ module OpenAI
 
         def to_hash: -> {
           custom: OpenAI::Chat::ChatCompletionNamedToolChoiceCustom::Custom,
-          type: :custom
+          ?type: :custom
         }
 
         type custom = { name: String }

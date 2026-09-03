@@ -10,8 +10,8 @@ module OpenAI
           output: ::Array[OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output],
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.shell_call_output_content.done",
-          agent: OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent
+          ?type: :"response.shell_call_output_content.done",
+          ?agent: OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent
         }
 
       class BetaResponseShellCallOutputContentDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -49,8 +49,8 @@ module OpenAI
           output: ::Array[OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output],
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.shell_call_output_content.done",
-          agent: OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent
+          ?type: :"response.shell_call_output_content.done",
+          ?agent: OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent
         }
 
         type output =
@@ -58,7 +58,7 @@ module OpenAI
             outcome: OpenAI::Models::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::outcome,
             stderr: String,
             stdout: String,
-            created_by: String
+            ?created_by: String
           }
 
         class Output < OpenAI::Internal::Type::BaseModel
@@ -83,7 +83,7 @@ module OpenAI
             outcome: OpenAI::Models::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::outcome,
             stderr: String,
             stdout: String,
-            created_by: String
+            ?created_by: String
           }
 
           type outcome =
@@ -93,17 +93,17 @@ module OpenAI
           module Outcome
             extend OpenAI::Internal::Type::Union
 
-            type timeout = { type: :timeout }
+            type timeout = { ?type: :timeout }
 
             class Timeout < OpenAI::Internal::Type::BaseModel
               attr_accessor type: :timeout
 
               def initialize: (?type: :timeout) -> void
 
-              def to_hash: -> { type: :timeout }
+              def to_hash: -> { ?type: :timeout }
             end
 
-            type exit_ = { exit_code: Integer, type: :exit }
+            type exit_ = { exit_code: Integer, ?type: :exit }
 
             class Exit < OpenAI::Internal::Type::BaseModel
               attr_accessor exit_code: Integer
@@ -112,7 +112,7 @@ module OpenAI
 
               def initialize: (exit_code: Integer, ?type: :exit) -> void
 
-              def to_hash: -> { exit_code: Integer, type: :exit }
+              def to_hash: -> { exit_code: Integer, ?type: :exit }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::outcome]

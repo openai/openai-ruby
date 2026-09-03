@@ -3,8 +3,8 @@ module OpenAI
     module Realtime
       type realtime_audio_config =
         {
-          input: OpenAI::Realtime::RealtimeAudioConfigInput,
-          output: OpenAI::Realtime::RealtimeAudioConfigOutput
+          ?input: OpenAI::Realtime::RealtimeAudioConfigInput,
+          ?output: OpenAI::Realtime::RealtimeAudioConfigOutput
         }
 
       class RealtimeAudioConfig < OpenAI::Internal::Type::BaseModel
@@ -26,8 +26,8 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          input: OpenAI::Realtime::RealtimeAudioConfigInput,
-          output: OpenAI::Realtime::RealtimeAudioConfigOutput
+          ?input: OpenAI::Realtime::RealtimeAudioConfigInput,
+          ?output: OpenAI::Realtime::RealtimeAudioConfigOutput
         }
       end
     end

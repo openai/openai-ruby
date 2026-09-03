@@ -7,11 +7,11 @@ module OpenAI
         {
           content: String?,
           refusal: String?,
-          role: :assistant,
-          annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
-          audio: OpenAI::Chat::ChatCompletionAudio?,
-          function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
-          tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
+          ?role: :assistant,
+          ?annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
+          ?audio: OpenAI::Chat::ChatCompletionAudio?,
+          ?function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
+          ?tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
         }
 
       class ChatCompletionMessage < OpenAI::Internal::Type::BaseModel
@@ -54,16 +54,16 @@ module OpenAI
         def to_hash: -> {
           content: String?,
           refusal: String?,
-          role: :assistant,
-          annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
-          audio: OpenAI::Chat::ChatCompletionAudio?,
-          function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
-          tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
+          ?role: :assistant,
+          ?annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
+          ?audio: OpenAI::Chat::ChatCompletionAudio?,
+          ?function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
+          ?tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
         }
 
         type annotation =
           {
-            type: :url_citation,
+            ?type: :url_citation,
             url_citation: OpenAI::Chat::ChatCompletionMessage::Annotation::URLCitation
           }
 
@@ -78,7 +78,7 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            type: :url_citation,
+            ?type: :url_citation,
             url_citation: OpenAI::Chat::ChatCompletionMessage::Annotation::URLCitation
           }
 

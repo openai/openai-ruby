@@ -10,8 +10,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.reasoning_text.delta",
-          agent: OpenAI::Beta::BetaResponseReasoningTextDeltaEvent::Agent?
+          ?type: :"response.reasoning_text.delta",
+          ?agent: OpenAI::Beta::BetaResponseReasoningTextDeltaEvent::Agent?
         }
 
       class BetaResponseReasoningTextDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -45,8 +45,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.reasoning_text.delta",
-          agent: OpenAI::Beta::BetaResponseReasoningTextDeltaEvent::Agent?
+          ?type: :"response.reasoning_text.delta",
+          ?agent: OpenAI::Beta::BetaResponseReasoningTextDeltaEvent::Agent?
         }
 
         type agent = { agent_name: String }

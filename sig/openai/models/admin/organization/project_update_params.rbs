@@ -5,11 +5,11 @@ module OpenAI
         type project_update_params =
           {
             project_id: String,
-            external_key_id: String?,
-            geography: String?,
-            name: String?
+            ?external_key_id: String?,
+            ?geography: String?,
+            ?name: String?,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class ProjectUpdateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -33,10 +33,10 @@ module OpenAI
 
           def to_hash: -> {
             project_id: String,
-            external_key_id: String?,
-            geography: String?,
-            name: String?,
-            request_options: OpenAI::RequestOptions
+            ?external_key_id: String?,
+            ?geography: String?,
+            ?name: String?,
+            ?request_options: OpenAI::RequestOptions
           }
         end
       end

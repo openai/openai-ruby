@@ -1,8 +1,11 @@
 module OpenAI
   module Models
     type video_create_character_params =
-      { name: String, video: OpenAI::Internal::file_input }
-      & OpenAI::Internal::Type::request_parameters
+      {
+        name: String,
+        video: OpenAI::Internal::file_input,
+        ?request_options: OpenAI::request_opts
+      }
 
     class VideoCreateCharacterParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -21,7 +24,7 @@ module OpenAI
       def to_hash: -> {
         name: String,
         video: OpenAI::Internal::file_input,
-        request_options: OpenAI::RequestOptions
+        ?request_options: OpenAI::RequestOptions
       }
     end
   end

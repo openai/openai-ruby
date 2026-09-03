@@ -4,7 +4,7 @@ module OpenAI
       module Organization
         module Groups
           type user_delete_response =
-            { deleted: bool, object: :"group.user.deleted" }
+            { deleted: bool, ?object: :"group.user.deleted" }
 
           class UserDeleteResponse < OpenAI::Internal::Type::BaseModel
             attr_accessor deleted: bool
@@ -16,7 +16,7 @@ module OpenAI
               ?object: :"group.user.deleted"
             ) -> void
 
-            def to_hash: -> { deleted: bool, object: :"group.user.deleted" }
+            def to_hash: -> { deleted: bool, ?object: :"group.user.deleted" }
           end
         end
       end

@@ -2,8 +2,11 @@ module OpenAI
   module Models
     module Realtime
       type call_reject_params =
-        { call_id: String, status_code: Integer }
-        & OpenAI::Internal::Type::request_parameters
+        {
+          call_id: String,
+          ?status_code: Integer,
+          ?request_options: OpenAI::request_opts
+        }
 
       class CallRejectParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -23,8 +26,8 @@ module OpenAI
 
         def to_hash: -> {
           call_id: String,
-          status_code: Integer,
-          request_options: OpenAI::RequestOptions
+          ?status_code: Integer,
+          ?request_options: OpenAI::RequestOptions
         }
       end
     end

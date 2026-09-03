@@ -4,21 +4,21 @@ module OpenAI
       module Responses
         type input_token_count_params =
           {
-            conversation: OpenAI::Models::Beta::Responses::InputTokenCountParams::conversation?,
-            input: OpenAI::Models::Beta::Responses::InputTokenCountParams::input?,
-            instructions: String?,
-            model: String?,
-            parallel_tool_calls: bool?,
-            personality: OpenAI::Models::Beta::Responses::InputTokenCountParams::personality,
-            previous_response_id: String?,
-            reasoning: OpenAI::Beta::Responses::InputTokenCountParams::Reasoning?,
-            text: OpenAI::Beta::Responses::InputTokenCountParams::Text?,
-            tool_choice: OpenAI::Models::Beta::Responses::InputTokenCountParams::tool_choice?,
-            tools: ::Array[OpenAI::Models::Beta::beta_tool]?,
-            truncation: OpenAI::Models::Beta::Responses::InputTokenCountParams::truncation,
-            betas: ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::beta]
+            ?conversation: OpenAI::Models::Beta::Responses::InputTokenCountParams::conversation?,
+            ?input: OpenAI::Models::Beta::Responses::InputTokenCountParams::input?,
+            ?instructions: String?,
+            ?model: String?,
+            ?parallel_tool_calls: bool?,
+            ?personality: OpenAI::Models::Beta::Responses::InputTokenCountParams::personality,
+            ?previous_response_id: String?,
+            ?reasoning: OpenAI::Beta::Responses::InputTokenCountParams::Reasoning?,
+            ?text: OpenAI::Beta::Responses::InputTokenCountParams::Text?,
+            ?tool_choice: OpenAI::Models::Beta::Responses::InputTokenCountParams::tool_choice?,
+            ?tools: ::Array[OpenAI::Models::Beta::beta_tool]?,
+            ?truncation: OpenAI::Models::Beta::Responses::InputTokenCountParams::truncation,
+            ?betas: ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::beta],
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class InputTokenCountParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -80,20 +80,20 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            conversation: OpenAI::Models::Beta::Responses::InputTokenCountParams::conversation?,
-            input: OpenAI::Models::Beta::Responses::InputTokenCountParams::input?,
-            instructions: String?,
-            model: String?,
-            parallel_tool_calls: bool?,
-            personality: OpenAI::Models::Beta::Responses::InputTokenCountParams::personality,
-            previous_response_id: String?,
-            reasoning: OpenAI::Beta::Responses::InputTokenCountParams::Reasoning?,
-            text: OpenAI::Beta::Responses::InputTokenCountParams::Text?,
-            tool_choice: OpenAI::Models::Beta::Responses::InputTokenCountParams::tool_choice?,
-            tools: ::Array[OpenAI::Models::Beta::beta_tool]?,
-            truncation: OpenAI::Models::Beta::Responses::InputTokenCountParams::truncation,
-            betas: ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::beta],
-            request_options: OpenAI::RequestOptions
+            ?conversation: OpenAI::Models::Beta::Responses::InputTokenCountParams::conversation?,
+            ?input: OpenAI::Models::Beta::Responses::InputTokenCountParams::input?,
+            ?instructions: String?,
+            ?model: String?,
+            ?parallel_tool_calls: bool?,
+            ?personality: OpenAI::Models::Beta::Responses::InputTokenCountParams::personality,
+            ?previous_response_id: String?,
+            ?reasoning: OpenAI::Beta::Responses::InputTokenCountParams::Reasoning?,
+            ?text: OpenAI::Beta::Responses::InputTokenCountParams::Text?,
+            ?tool_choice: OpenAI::Models::Beta::Responses::InputTokenCountParams::tool_choice?,
+            ?tools: ::Array[OpenAI::Models::Beta::beta_tool]?,
+            ?truncation: OpenAI::Models::Beta::Responses::InputTokenCountParams::truncation,
+            ?betas: ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::beta],
+            ?request_options: OpenAI::RequestOptions
           }
 
           type conversation =
@@ -129,11 +129,11 @@ module OpenAI
 
           type reasoning =
             {
-              context: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::context?,
-              effort: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::effort?,
-              generate_summary: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::generate_summary?,
-              mode: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::mode,
-              summary: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::summary?
+              ?context: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::context?,
+              ?effort: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::effort?,
+              ?generate_summary: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::generate_summary?,
+              ?mode: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::mode,
+              ?summary: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::summary?
             }
 
           class Reasoning < OpenAI::Internal::Type::BaseModel
@@ -160,11 +160,11 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              context: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::context?,
-              effort: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::effort?,
-              generate_summary: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::generate_summary?,
-              mode: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::mode,
-              summary: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::summary?
+              ?context: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::context?,
+              ?effort: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::effort?,
+              ?generate_summary: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::generate_summary?,
+              ?mode: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::mode,
+              ?summary: OpenAI::Models::Beta::Responses::InputTokenCountParams::Reasoning::summary?
             }
 
             type context = :auto | :current_turn | :all_turns
@@ -234,8 +234,8 @@ module OpenAI
 
           type text =
             {
-              format_: OpenAI::Models::Beta::beta_response_format_text_config,
-              verbosity: OpenAI::Models::Beta::Responses::InputTokenCountParams::Text::verbosity?
+              ?format_: OpenAI::Models::Beta::beta_response_format_text_config,
+              ?verbosity: OpenAI::Models::Beta::Responses::InputTokenCountParams::Text::verbosity?
             }
 
           class Text < OpenAI::Internal::Type::BaseModel
@@ -253,8 +253,8 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              format_: OpenAI::Models::Beta::beta_response_format_text_config,
-              verbosity: OpenAI::Models::Beta::Responses::InputTokenCountParams::Text::verbosity?
+              ?format_: OpenAI::Models::Beta::beta_response_format_text_config,
+              ?verbosity: OpenAI::Models::Beta::Responses::InputTokenCountParams::Text::verbosity?
             }
 
             type verbosity = :low | :medium | :high
@@ -285,14 +285,14 @@ module OpenAI
             extend OpenAI::Internal::Type::Union
 
             type beta_specific_programmatic_tool_calling_param =
-              { type: :programmatic_tool_calling }
+              { ?type: :programmatic_tool_calling }
 
             class BetaSpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
               attr_accessor type: :programmatic_tool_calling
 
               def initialize: (?type: :programmatic_tool_calling) -> void
 
-              def to_hash: -> { type: :programmatic_tool_calling }
+              def to_hash: -> { ?type: :programmatic_tool_calling }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::tool_choice]

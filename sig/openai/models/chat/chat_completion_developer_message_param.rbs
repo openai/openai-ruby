@@ -6,8 +6,8 @@ module OpenAI
       type chat_completion_developer_message_param =
         {
           content: OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam::content,
-          role: :developer,
-          name: String
+          ?role: :developer,
+          ?name: String
         }
 
       class ChatCompletionDeveloperMessageParam < OpenAI::Internal::Type::BaseModel
@@ -27,8 +27,8 @@ module OpenAI
 
         def to_hash: -> {
           content: OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam::content,
-          role: :developer,
-          name: String
+          ?role: :developer,
+          ?name: String
         }
 
         type content =

@@ -9,7 +9,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           response_id: String,
-          type: :"response.output_text.delta"
+          ?type: :"response.output_text.delta"
         }
 
       class ResponseTextDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -44,7 +44,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           response_id: String,
-          type: :"response.output_text.delta"
+          ?type: :"response.output_text.delta"
         }
       end
     end

@@ -7,7 +7,7 @@ module OpenAI
         data_source_config: OpenAI::Models::EvalUpdateResponse::data_source_config,
         metadata: OpenAI::Models::metadata?,
         name: String,
-        object: :eval,
+        ?object: :eval,
         testing_criteria: ::Array[OpenAI::Models::EvalUpdateResponse::testing_criterion]
       }
 
@@ -42,7 +42,7 @@ module OpenAI
         data_source_config: OpenAI::Models::EvalUpdateResponse::data_source_config,
         metadata: OpenAI::Models::metadata?,
         name: String,
-        object: :eval,
+        ?object: :eval,
         testing_criteria: ::Array[OpenAI::Models::EvalUpdateResponse::testing_criterion]
       }
 
@@ -57,8 +57,8 @@ module OpenAI
         type logs =
           {
             schema: ::Hash[Symbol, top],
-            type: :logs,
-            metadata: OpenAI::Models::metadata?
+            ?type: :logs,
+            ?metadata: OpenAI::Models::metadata?
           }
 
         class Logs < OpenAI::Internal::Type::BaseModel
@@ -76,8 +76,8 @@ module OpenAI
 
           def to_hash: -> {
             schema: ::Hash[Symbol, top],
-            type: :logs,
-            metadata: OpenAI::Models::metadata?
+            ?type: :logs,
+            ?metadata: OpenAI::Models::metadata?
           }
         end
 
@@ -101,7 +101,7 @@ module OpenAI
             name: String,
             reference: String,
             pass_threshold: Float,
-            type: :text_similarity
+            ?type: :text_similarity
           }
 
         class EvalGraderTextSimilarity < OpenAI::Models::Graders::TextSimilarityGrader
@@ -124,7 +124,7 @@ module OpenAI
             name: String,
             reference: String,
             pass_threshold: Float,
-            type: :text_similarity
+            ?type: :text_similarity
           }
         end
 
@@ -132,9 +132,9 @@ module OpenAI
           {
             name: String,
             source: String,
-            type: :python,
-            image_tag: String,
-            pass_threshold: Float
+            ?type: :python,
+            ?image_tag: String,
+            ?pass_threshold: Float
           }
 
         class EvalGraderPython < OpenAI::Models::Graders::PythonGrader
@@ -153,9 +153,9 @@ module OpenAI
           def to_hash: -> {
             name: String,
             source: String,
-            type: :python,
-            image_tag: String,
-            pass_threshold: Float
+            ?type: :python,
+            ?image_tag: String,
+            ?pass_threshold: Float
           }
         end
 
@@ -164,10 +164,10 @@ module OpenAI
             input: ::Array[OpenAI::Graders::ScoreModelGrader::Input],
             model: String,
             name: String,
-            type: :score_model,
-            range: ::Array[Float],
-            sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams,
-            pass_threshold: Float
+            ?type: :score_model,
+            ?range: ::Array[Float],
+            ?sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams,
+            ?pass_threshold: Float
           }
 
         class EvalGraderScoreModel < OpenAI::Models::Graders::ScoreModelGrader
@@ -189,10 +189,10 @@ module OpenAI
             input: ::Array[OpenAI::Graders::ScoreModelGrader::Input],
             model: String,
             name: String,
-            type: :score_model,
-            range: ::Array[Float],
-            sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams,
-            pass_threshold: Float
+            ?type: :score_model,
+            ?range: ::Array[Float],
+            ?sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams,
+            ?pass_threshold: Float
           }
         end
 

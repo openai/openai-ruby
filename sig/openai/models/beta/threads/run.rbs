@@ -18,7 +18,7 @@ module OpenAI
             max_prompt_tokens: Integer?,
             metadata: OpenAI::Models::metadata?,
             model: String,
-            object: :"thread.run",
+            ?object: :"thread.run",
             parallel_tool_calls: bool,
             required_action: OpenAI::Beta::Threads::Run::RequiredAction?,
             response_format: OpenAI::Models::Beta::assistant_response_format_option?,
@@ -29,8 +29,8 @@ module OpenAI
             tools: ::Array[OpenAI::Models::Beta::assistant_tool],
             truncation_strategy: OpenAI::Beta::Threads::Run::TruncationStrategy?,
             usage: OpenAI::Beta::Threads::Run::Usage?,
-            temperature: Float?,
-            top_p: Float?
+            ?temperature: Float?,
+            ?top_p: Float?
           }
 
         class Run < OpenAI::Internal::Type::BaseModel
@@ -133,7 +133,7 @@ module OpenAI
             max_prompt_tokens: Integer?,
             metadata: OpenAI::Models::metadata?,
             model: String,
-            object: :"thread.run",
+            ?object: :"thread.run",
             parallel_tool_calls: bool,
             required_action: OpenAI::Beta::Threads::Run::RequiredAction?,
             response_format: OpenAI::Models::Beta::assistant_response_format_option?,
@@ -144,13 +144,13 @@ module OpenAI
             tools: ::Array[OpenAI::Models::Beta::assistant_tool],
             truncation_strategy: OpenAI::Beta::Threads::Run::TruncationStrategy?,
             usage: OpenAI::Beta::Threads::Run::Usage?,
-            temperature: Float?,
-            top_p: Float?
+            ?temperature: Float?,
+            ?top_p: Float?
           }
 
           type incomplete_details =
             {
-              reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason
+              ?reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason
             }
 
           class IncompleteDetails < OpenAI::Internal::Type::BaseModel
@@ -165,7 +165,7 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason
+              ?reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason
             }
 
             type reason = :max_completion_tokens | :max_prompt_tokens
@@ -217,7 +217,7 @@ module OpenAI
           type required_action =
             {
               submit_tool_outputs: OpenAI::Beta::Threads::Run::RequiredAction::SubmitToolOutputs,
-              type: :submit_tool_outputs
+              ?type: :submit_tool_outputs
             }
 
           class RequiredAction < OpenAI::Internal::Type::BaseModel
@@ -232,7 +232,7 @@ module OpenAI
 
             def to_hash: -> {
               submit_tool_outputs: OpenAI::Beta::Threads::Run::RequiredAction::SubmitToolOutputs,
-              type: :submit_tool_outputs
+              ?type: :submit_tool_outputs
             }
 
             type submit_tool_outputs =
@@ -256,7 +256,7 @@ module OpenAI
           type truncation_strategy =
             {
               type: OpenAI::Models::Beta::Threads::Run::TruncationStrategy::type_,
-              last_messages: Integer?
+              ?last_messages: Integer?
             }
 
           class TruncationStrategy < OpenAI::Internal::Type::BaseModel
@@ -271,7 +271,7 @@ module OpenAI
 
             def to_hash: -> {
               type: OpenAI::Models::Beta::Threads::Run::TruncationStrategy::type_,
-              last_messages: Integer?
+              ?last_messages: Integer?
             }
 
             type type_ = :auto | :last_messages

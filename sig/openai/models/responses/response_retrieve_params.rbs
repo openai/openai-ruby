@@ -4,11 +4,11 @@ module OpenAI
       type response_retrieve_params =
         {
           response_id: String,
-          include: ::Array[OpenAI::Models::Responses::response_includable],
-          include_obfuscation: bool,
-          starting_after: Integer
+          ?include: ::Array[OpenAI::Models::Responses::response_includable],
+          ?include_obfuscation: bool,
+          ?starting_after: Integer,
+          ?request_options: OpenAI::request_opts
         }
-        & OpenAI::Internal::Type::request_parameters
 
       class ResponseRetrieveParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -40,10 +40,10 @@ module OpenAI
 
         def to_hash: -> {
           response_id: String,
-          include: ::Array[OpenAI::Models::Responses::response_includable],
-          include_obfuscation: bool,
-          starting_after: Integer,
-          request_options: OpenAI::RequestOptions
+          ?include: ::Array[OpenAI::Models::Responses::response_includable],
+          ?include_obfuscation: bool,
+          ?starting_after: Integer,
+          ?request_options: OpenAI::RequestOptions
         }
       end
     end

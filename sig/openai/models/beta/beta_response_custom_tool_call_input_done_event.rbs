@@ -9,8 +9,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.custom_tool_call_input.done",
-          agent: OpenAI::Beta::BetaResponseCustomToolCallInputDoneEvent::Agent?
+          ?type: :"response.custom_tool_call_input.done",
+          ?agent: OpenAI::Beta::BetaResponseCustomToolCallInputDoneEvent::Agent?
         }
 
       class BetaResponseCustomToolCallInputDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -40,8 +40,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.custom_tool_call_input.done",
-          agent: OpenAI::Beta::BetaResponseCustomToolCallInputDoneEvent::Agent?
+          ?type: :"response.custom_tool_call_input.done",
+          ?agent: OpenAI::Beta::BetaResponseCustomToolCallInputDoneEvent::Agent?
         }
 
         type agent = { agent_name: String }

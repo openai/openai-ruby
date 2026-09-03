@@ -7,7 +7,7 @@ module OpenAI
           arguments: String,
           name: String,
           server_label: String,
-          type: :mcp_approval_request
+          ?type: :mcp_approval_request
         }
 
       class RealtimeMcpApprovalRequest < OpenAI::Internal::Type::BaseModel
@@ -34,7 +34,7 @@ module OpenAI
           arguments: String,
           name: String,
           server_label: String,
-          type: :mcp_approval_request
+          ?type: :mcp_approval_request
         }
       end
     end

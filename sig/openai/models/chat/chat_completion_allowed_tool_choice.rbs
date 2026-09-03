@@ -6,7 +6,7 @@ module OpenAI
       type chat_completion_allowed_tool_choice =
         {
           allowed_tools: OpenAI::Chat::ChatCompletionAllowedTools,
-          type: :allowed_tools
+          ?type: :allowed_tools
         }
 
       class ChatCompletionAllowedToolChoice < OpenAI::Internal::Type::BaseModel
@@ -21,7 +21,7 @@ module OpenAI
 
         def to_hash: -> {
           allowed_tools: OpenAI::Chat::ChatCompletionAllowedTools,
-          type: :allowed_tools
+          ?type: :allowed_tools
         }
       end
     end

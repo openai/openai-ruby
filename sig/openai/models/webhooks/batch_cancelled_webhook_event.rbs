@@ -6,8 +6,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::BatchCancelledWebhookEvent::Data,
-          type: :"batch.cancelled",
-          object: OpenAI::Models::Webhooks::BatchCancelledWebhookEvent::object
+          ?type: :"batch.cancelled",
+          ?object: OpenAI::Models::Webhooks::BatchCancelledWebhookEvent::object
         }
 
       class BatchCancelledWebhookEvent < OpenAI::Internal::Type::BaseModel
@@ -37,8 +37,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::BatchCancelledWebhookEvent::Data,
-          type: :"batch.cancelled",
-          object: OpenAI::Models::Webhooks::BatchCancelledWebhookEvent::object
+          ?type: :"batch.cancelled",
+          ?object: OpenAI::Models::Webhooks::BatchCancelledWebhookEvent::object
         }
 
         type data = { id: String }

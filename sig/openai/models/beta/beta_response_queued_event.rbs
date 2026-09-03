@@ -7,8 +7,8 @@ module OpenAI
         {
           response: OpenAI::Beta::BetaResponse,
           sequence_number: Integer,
-          type: :"response.queued",
-          agent: OpenAI::Beta::BetaResponseQueuedEvent::Agent?
+          ?type: :"response.queued",
+          ?agent: OpenAI::Beta::BetaResponseQueuedEvent::Agent?
         }
 
       class BetaResponseQueuedEvent < OpenAI::Internal::Type::BaseModel
@@ -30,8 +30,8 @@ module OpenAI
         def to_hash: -> {
           response: OpenAI::Beta::BetaResponse,
           sequence_number: Integer,
-          type: :"response.queued",
-          agent: OpenAI::Beta::BetaResponseQueuedEvent::Agent?
+          ?type: :"response.queued",
+          ?agent: OpenAI::Beta::BetaResponseQueuedEvent::Agent?
         }
 
         type agent = { agent_name: String }

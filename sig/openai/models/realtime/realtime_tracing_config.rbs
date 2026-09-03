@@ -8,7 +8,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         type tracing_configuration =
-          { group_id: String, metadata: top, workflow_name: String }
+          { ?group_id: String, ?metadata: top, ?workflow_name: String }
 
         class TracingConfiguration < OpenAI::Internal::Type::BaseModel
           attr_reader group_id: String?
@@ -30,9 +30,9 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            group_id: String,
-            metadata: top,
-            workflow_name: String
+            ?group_id: String,
+            ?metadata: top,
+            ?workflow_name: String
           }
         end
 

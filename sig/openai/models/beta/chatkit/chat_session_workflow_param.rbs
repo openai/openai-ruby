@@ -5,9 +5,9 @@ module OpenAI
         type chat_session_workflow_param =
           {
             id: String,
-            state_variables: ::Hash[Symbol, OpenAI::Models::Beta::ChatKit::ChatSessionWorkflowParam::state_variable],
-            tracing: OpenAI::Beta::ChatKit::ChatSessionWorkflowParam::Tracing,
-            version: String
+            ?state_variables: ::Hash[Symbol, OpenAI::Models::Beta::ChatKit::ChatSessionWorkflowParam::state_variable],
+            ?tracing: OpenAI::Beta::ChatKit::ChatSessionWorkflowParam::Tracing,
+            ?version: String
           }
 
         class ChatSessionWorkflowParam < OpenAI::Internal::Type::BaseModel
@@ -38,9 +38,9 @@ module OpenAI
 
           def to_hash: -> {
             id: String,
-            state_variables: ::Hash[Symbol, OpenAI::Models::Beta::ChatKit::ChatSessionWorkflowParam::state_variable],
-            tracing: OpenAI::Beta::ChatKit::ChatSessionWorkflowParam::Tracing,
-            version: String
+            ?state_variables: ::Hash[Symbol, OpenAI::Models::Beta::ChatKit::ChatSessionWorkflowParam::state_variable],
+            ?tracing: OpenAI::Beta::ChatKit::ChatSessionWorkflowParam::Tracing,
+            ?version: String
           }
 
           type state_variable = String | bool | Float
@@ -51,7 +51,7 @@ module OpenAI
             def self?.variants: -> ::Array[OpenAI::Models::Beta::ChatKit::ChatSessionWorkflowParam::state_variable]
           end
 
-          type tracing = { enabled: bool }
+          type tracing = { ?enabled: bool }
 
           class Tracing < OpenAI::Internal::Type::BaseModel
             attr_reader enabled: bool?
@@ -60,7 +60,7 @@ module OpenAI
 
             def initialize: (?enabled: bool) -> void
 
-            def to_hash: -> { enabled: bool }
+            def to_hash: -> { ?enabled: bool }
           end
         end
       end

@@ -3,12 +3,12 @@ module OpenAI
     type video_create_params =
       {
         prompt: String,
-        input_reference: OpenAI::Models::VideoCreateParams::input_reference,
-        model: OpenAI::Models::video_model,
-        seconds: OpenAI::Models::video_seconds,
-        size: OpenAI::Models::video_size
+        ?input_reference: OpenAI::Models::VideoCreateParams::input_reference,
+        ?model: OpenAI::Models::video_model,
+        ?seconds: OpenAI::Models::video_seconds,
+        ?size: OpenAI::Models::video_size,
+        ?request_options: OpenAI::request_opts
       }
-      & OpenAI::Internal::Type::request_parameters
 
     class VideoCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -47,11 +47,11 @@ module OpenAI
 
       def to_hash: -> {
         prompt: String,
-        input_reference: OpenAI::Models::VideoCreateParams::input_reference,
-        model: OpenAI::Models::video_model,
-        seconds: OpenAI::Models::video_seconds,
-        size: OpenAI::Models::video_size,
-        request_options: OpenAI::RequestOptions
+        ?input_reference: OpenAI::Models::VideoCreateParams::input_reference,
+        ?model: OpenAI::Models::video_model,
+        ?seconds: OpenAI::Models::video_seconds,
+        ?size: OpenAI::Models::video_size,
+        ?request_options: OpenAI::RequestOptions
       }
 
       type input_reference =

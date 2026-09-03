@@ -5,7 +5,7 @@ module OpenAI
         {
           id: String,
           created_at: Integer,
-          object: :"response.compaction",
+          ?object: :"response.compaction",
           output: ::Array[OpenAI::Models::Responses::response_output_item],
           usage: OpenAI::Responses::ResponseUsage
         }
@@ -32,7 +32,7 @@ module OpenAI
         def to_hash: -> {
           id: String,
           created_at: Integer,
-          object: :"response.compaction",
+          ?object: :"response.compaction",
           output: ::Array[OpenAI::Models::Responses::response_output_item],
           usage: OpenAI::Responses::ResponseUsage
         }

@@ -3,8 +3,8 @@ module OpenAI
     module Beta
       type file_search_tool =
         {
-          type: :file_search,
-          file_search: OpenAI::Beta::FileSearchTool::FileSearch
+          ?type: :file_search,
+          ?file_search: OpenAI::Beta::FileSearchTool::FileSearch
         }
 
       class FileSearchTool < OpenAI::Internal::Type::BaseModel
@@ -22,14 +22,14 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :file_search,
-          file_search: OpenAI::Beta::FileSearchTool::FileSearch
+          ?type: :file_search,
+          ?file_search: OpenAI::Beta::FileSearchTool::FileSearch
         }
 
         type file_search =
           {
-            max_num_results: Integer,
-            ranking_options: OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions
+            ?max_num_results: Integer,
+            ?ranking_options: OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions
           }
 
         class FileSearch < OpenAI::Internal::Type::BaseModel
@@ -49,14 +49,14 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            max_num_results: Integer,
-            ranking_options: OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions
+            ?max_num_results: Integer,
+            ?ranking_options: OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions
           }
 
           type ranking_options =
             {
               score_threshold: Float,
-              ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
+              ?ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
             }
 
           class RankingOptions < OpenAI::Internal::Type::BaseModel
@@ -75,7 +75,7 @@ module OpenAI
 
             def to_hash: -> {
               score_threshold: Float,
-              ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
+              ?ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
             }
 
             type ranker = :auto | :default_2024_08_21

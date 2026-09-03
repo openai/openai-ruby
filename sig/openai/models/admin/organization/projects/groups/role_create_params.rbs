@@ -5,8 +5,12 @@ module OpenAI
         module Projects
           module Groups
             type role_create_params =
-              { project_id: String, group_id: String, role_id: String }
-              & OpenAI::Internal::Type::request_parameters
+              {
+                project_id: String,
+                group_id: String,
+                role_id: String,
+                ?request_options: OpenAI::request_opts
+              }
 
             class RoleCreateParams < OpenAI::Internal::Type::BaseModel
               extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -29,7 +33,7 @@ module OpenAI
                 project_id: String,
                 group_id: String,
                 role_id: String,
-                request_options: OpenAI::RequestOptions
+                ?request_options: OpenAI::RequestOptions
               }
             end
           end

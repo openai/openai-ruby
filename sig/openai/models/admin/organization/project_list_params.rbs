@@ -3,8 +3,12 @@ module OpenAI
     module Admin
       module Organization
         type project_list_params =
-          { after: String, include_archived: bool, limit: Integer }
-          & OpenAI::Internal::Type::request_parameters
+          {
+            ?after: String,
+            ?include_archived: bool,
+            ?limit: Integer,
+            ?request_options: OpenAI::request_opts
+          }
 
         class ProjectListParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -30,10 +34,10 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            after: String,
-            include_archived: bool,
-            limit: Integer,
-            request_options: OpenAI::RequestOptions
+            ?after: String,
+            ?include_archived: bool,
+            ?limit: Integer,
+            ?request_options: OpenAI::RequestOptions
           }
         end
       end

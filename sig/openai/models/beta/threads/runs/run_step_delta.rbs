@@ -7,7 +7,7 @@ module OpenAI
         module Runs
           type run_step_delta =
             {
-              step_details: OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
+              ?step_details: OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
             }
 
           class RunStepDelta < OpenAI::Internal::Type::BaseModel
@@ -22,7 +22,7 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              step_details: OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
+              ?step_details: OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
             }
 
             type step_details =

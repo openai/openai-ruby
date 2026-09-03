@@ -14,7 +14,7 @@ module OpenAI
       module BetaResponseContent
         extend OpenAI::Internal::Type::Union
 
-        type reasoning_text = { text: String, type: :reasoning_text }
+        type reasoning_text = { text: String, ?type: :reasoning_text }
 
         class ReasoningText < OpenAI::Internal::Type::BaseModel
           attr_accessor text: String
@@ -23,7 +23,7 @@ module OpenAI
 
           def initialize: (text: String, ?type: :reasoning_text) -> void
 
-          def to_hash: -> { text: String, type: :reasoning_text }
+          def to_hash: -> { text: String, ?type: :reasoning_text }
         end
 
         def self?.variants: -> ::Array[OpenAI::Models::Beta::beta_response_content]

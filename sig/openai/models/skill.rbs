@@ -8,7 +8,7 @@ module OpenAI
         description: String,
         latest_version: String,
         name: String,
-        object: :skill
+        ?object: :skill
       }
 
     class Skill < OpenAI::Internal::Type::BaseModel
@@ -43,7 +43,7 @@ module OpenAI
         description: String,
         latest_version: String,
         name: String,
-        object: :skill
+        ?object: :skill
       }
     end
   end

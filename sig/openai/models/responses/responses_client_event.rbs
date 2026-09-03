@@ -10,39 +10,39 @@ module OpenAI
 
         type response_create =
           {
-            type: :"response.create",
-            background: bool?,
-            context_management: ::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]?,
-            conversation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::conversation?,
-            include: ::Array[OpenAI::Models::Responses::response_includable]?,
-            input: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::input,
-            instructions: String?,
-            max_output_tokens: Integer?,
-            max_tool_calls: Integer?,
-            metadata: OpenAI::Models::metadata?,
-            model: OpenAI::Models::responses_model,
-            moderation: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation?,
-            parallel_tool_calls: bool?,
-            previous_response_id: String?,
-            prompt: OpenAI::Responses::ResponsePrompt?,
-            prompt_cache_key: String?,
-            prompt_cache_options: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions,
-            prompt_cache_retention: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::prompt_cache_retention?,
-            reasoning: OpenAI::Reasoning?,
-            safety_identifier: String?,
-            service_tier: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::service_tier?,
-            store: bool?,
-            stream: bool?,
-            stream_id: String,
-            stream_options: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::StreamOptions?,
-            temperature: Float?,
-            text: OpenAI::Responses::ResponseTextConfig,
-            tool_choice: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::tool_choice,
-            tools: ::Array[OpenAI::Models::Responses::tool],
-            top_logprobs: Integer?,
-            top_p: Float?,
-            truncation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::truncation?,
-            user: String
+            ?type: :"response.create",
+            ?background: bool?,
+            ?context_management: ::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]?,
+            ?conversation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::conversation?,
+            ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
+            ?input: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::input,
+            ?instructions: String?,
+            ?max_output_tokens: Integer?,
+            ?max_tool_calls: Integer?,
+            ?metadata: OpenAI::Models::metadata?,
+            ?model: OpenAI::Models::responses_model,
+            ?moderation: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation?,
+            ?parallel_tool_calls: bool?,
+            ?previous_response_id: String?,
+            ?prompt: OpenAI::Responses::ResponsePrompt?,
+            ?prompt_cache_key: String?,
+            ?prompt_cache_options: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions,
+            ?prompt_cache_retention: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::prompt_cache_retention?,
+            ?reasoning: OpenAI::Reasoning?,
+            ?safety_identifier: String?,
+            ?service_tier: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::service_tier?,
+            ?store: bool?,
+            ?stream: bool?,
+            ?stream_id: String,
+            ?stream_options: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::StreamOptions?,
+            ?temperature: Float?,
+            ?text: OpenAI::Responses::ResponseTextConfig,
+            ?tool_choice: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::tool_choice,
+            ?tools: ::Array[OpenAI::Models::Responses::tool],
+            ?top_logprobs: Integer?,
+            ?top_p: Float?,
+            ?truncation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::truncation?,
+            ?user: String
           }
 
         class ResponseCreate < OpenAI::Internal::Type::BaseModel
@@ -177,43 +177,43 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            type: :"response.create",
-            background: bool?,
-            context_management: ::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]?,
-            conversation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::conversation?,
-            include: ::Array[OpenAI::Models::Responses::response_includable]?,
-            input: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::input,
-            instructions: String?,
-            max_output_tokens: Integer?,
-            max_tool_calls: Integer?,
-            metadata: OpenAI::Models::metadata?,
-            model: OpenAI::Models::responses_model,
-            moderation: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation?,
-            parallel_tool_calls: bool?,
-            previous_response_id: String?,
-            prompt: OpenAI::Responses::ResponsePrompt?,
-            prompt_cache_key: String?,
-            prompt_cache_options: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions,
-            prompt_cache_retention: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::prompt_cache_retention?,
-            reasoning: OpenAI::Reasoning?,
-            safety_identifier: String?,
-            service_tier: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::service_tier?,
-            store: bool?,
-            stream: bool?,
-            stream_id: String,
-            stream_options: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::StreamOptions?,
-            temperature: Float?,
-            text: OpenAI::Responses::ResponseTextConfig,
-            tool_choice: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::tool_choice,
-            tools: ::Array[OpenAI::Models::Responses::tool],
-            top_logprobs: Integer?,
-            top_p: Float?,
-            truncation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::truncation?,
-            user: String
+            ?type: :"response.create",
+            ?background: bool?,
+            ?context_management: ::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]?,
+            ?conversation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::conversation?,
+            ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
+            ?input: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::input,
+            ?instructions: String?,
+            ?max_output_tokens: Integer?,
+            ?max_tool_calls: Integer?,
+            ?metadata: OpenAI::Models::metadata?,
+            ?model: OpenAI::Models::responses_model,
+            ?moderation: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation?,
+            ?parallel_tool_calls: bool?,
+            ?previous_response_id: String?,
+            ?prompt: OpenAI::Responses::ResponsePrompt?,
+            ?prompt_cache_key: String?,
+            ?prompt_cache_options: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions,
+            ?prompt_cache_retention: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::prompt_cache_retention?,
+            ?reasoning: OpenAI::Reasoning?,
+            ?safety_identifier: String?,
+            ?service_tier: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::service_tier?,
+            ?store: bool?,
+            ?stream: bool?,
+            ?stream_id: String,
+            ?stream_options: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::StreamOptions?,
+            ?temperature: Float?,
+            ?text: OpenAI::Responses::ResponseTextConfig,
+            ?tool_choice: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::tool_choice,
+            ?tools: ::Array[OpenAI::Models::Responses::tool],
+            ?top_logprobs: Integer?,
+            ?top_p: Float?,
+            ?truncation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::truncation?,
+            ?user: String
           }
 
           type context_management =
-            { type: String, compact_threshold: Integer? }
+            { type: String, ?compact_threshold: Integer? }
 
           class ContextManagement < OpenAI::Internal::Type::BaseModel
             attr_accessor type: String
@@ -222,7 +222,7 @@ module OpenAI
 
             def initialize: (type: String, ?compact_threshold: Integer?) -> void
 
-            def to_hash: -> { type: String, compact_threshold: Integer? }
+            def to_hash: -> { type: String, ?compact_threshold: Integer? }
           end
 
           type conversation =
@@ -245,7 +245,7 @@ module OpenAI
           type moderation =
             {
               model: String,
-              policy: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy?
+              ?policy: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy?
             }
 
           class Moderation < OpenAI::Internal::Type::BaseModel
@@ -260,13 +260,13 @@ module OpenAI
 
             def to_hash: -> {
               model: String,
-              policy: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy?
+              ?policy: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy?
             }
 
             type policy =
               {
-                input: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input?,
-                output: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output?
+                ?input: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input?,
+                ?output: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output?
               }
 
             class Policy < OpenAI::Internal::Type::BaseModel
@@ -280,8 +280,8 @@ module OpenAI
               ) -> void
 
               def to_hash: -> {
-                input: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input?,
-                output: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output?
+                ?input: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input?,
+                ?output: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output?
               }
 
               type input =
@@ -344,11 +344,14 @@ module OpenAI
 
           type prompt_cache_options =
             {
-              mode: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::mode,
-              ttl: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::ttl
+              ?comparison_response_id: String?,
+              ?mode: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::mode,
+              ?ttl: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::ttl
             }
 
           class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+            attr_accessor comparison_response_id: String?
+
             attr_reader mode: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::mode?
 
             def mode=: (
@@ -362,13 +365,15 @@ module OpenAI
             ) -> OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::ttl
 
             def initialize: (
+              ?comparison_response_id: String?,
               ?mode: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::mode,
               ?ttl: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::ttl
             ) -> void
 
             def to_hash: -> {
-              mode: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::mode,
-              ttl: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::ttl
+              ?comparison_response_id: String?,
+              ?mode: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::mode,
+              ?ttl: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::ttl
             }
 
             type mode = :implicit | :explicit
@@ -421,7 +426,7 @@ module OpenAI
             def self?.values: -> ::Array[OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::service_tier]
           end
 
-          type stream_options = { include_obfuscation: bool }
+          type stream_options = { ?include_obfuscation: bool }
 
           class StreamOptions < OpenAI::Internal::Type::BaseModel
             attr_reader include_obfuscation: bool?
@@ -430,7 +435,7 @@ module OpenAI
 
             def initialize: (?include_obfuscation: bool) -> void
 
-            def to_hash: -> { include_obfuscation: bool }
+            def to_hash: -> { ?include_obfuscation: bool }
           end
 
           type tool_choice =
@@ -448,14 +453,14 @@ module OpenAI
             extend OpenAI::Internal::Type::Union
 
             type specific_programmatic_tool_calling_param =
-              { type: :programmatic_tool_calling }
+              { ?type: :programmatic_tool_calling }
 
             class SpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
               attr_accessor type: :programmatic_tool_calling
 
               def initialize: (?type: :programmatic_tool_calling) -> void
 
-              def to_hash: -> { type: :programmatic_tool_calling }
+              def to_hash: -> { ?type: :programmatic_tool_calling }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::tool_choice]

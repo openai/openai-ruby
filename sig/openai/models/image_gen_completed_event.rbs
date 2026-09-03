@@ -8,7 +8,7 @@ module OpenAI
         output_format: OpenAI::Models::ImageGenCompletedEvent::output_format,
         quality: OpenAI::Models::ImageGenCompletedEvent::quality,
         size: OpenAI::Models::ImageGenCompletedEvent::size,
-        type: :"image_generation.completed",
+        ?type: :"image_generation.completed",
         usage: OpenAI::ImageGenCompletedEvent::Usage
       }
 
@@ -47,7 +47,7 @@ module OpenAI
         output_format: OpenAI::Models::ImageGenCompletedEvent::output_format,
         quality: OpenAI::Models::ImageGenCompletedEvent::quality,
         size: OpenAI::Models::ImageGenCompletedEvent::size,
-        type: :"image_generation.completed",
+        ?type: :"image_generation.completed",
         usage: OpenAI::ImageGenCompletedEvent::Usage
       }
 

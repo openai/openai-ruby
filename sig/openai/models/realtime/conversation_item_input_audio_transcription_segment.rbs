@@ -11,7 +11,7 @@ module OpenAI
           speaker: String,
           start: Float,
           text: String,
-          type: :"conversation.item.input_audio_transcription.segment"
+          ?type: :"conversation.item.input_audio_transcription.segment"
         }
 
       class ConversationItemInputAudioTranscriptionSegment < OpenAI::Internal::Type::BaseModel
@@ -54,7 +54,7 @@ module OpenAI
           speaker: String,
           start: Float,
           text: String,
-          type: :"conversation.item.input_audio_transcription.segment"
+          ?type: :"conversation.item.input_audio_transcription.segment"
         }
       end
     end

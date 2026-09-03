@@ -4,7 +4,7 @@ module OpenAI
 
     module Chat
       type chat_completion_function_message_param =
-        { content: String?, name: String, role: :function }
+        { content: String?, name: String, ?role: :function }
 
       class ChatCompletionFunctionMessageParam < OpenAI::Internal::Type::BaseModel
         attr_accessor content: String?
@@ -19,7 +19,7 @@ module OpenAI
           ?role: :function
         ) -> void
 
-        def to_hash: -> { content: String?, name: String, role: :function }
+        def to_hash: -> { content: String?, name: String, ?role: :function }
       end
     end
   end

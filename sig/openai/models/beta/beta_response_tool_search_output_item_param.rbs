@@ -6,12 +6,12 @@ module OpenAI
       type beta_response_tool_search_output_item_param =
         {
           tools: ::Array[OpenAI::Models::Beta::beta_tool],
-          type: :tool_search_output,
-          id: String?,
-          agent: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Agent?,
-          call_id: String?,
-          execution: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::execution,
-          status: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::status?
+          ?type: :tool_search_output,
+          ?id: String?,
+          ?agent: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Agent?,
+          ?call_id: String?,
+          ?execution: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::execution,
+          ?status: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::status?
         }
 
       class BetaResponseToolSearchOutputItemParam < OpenAI::Internal::Type::BaseModel
@@ -45,12 +45,12 @@ module OpenAI
 
         def to_hash: -> {
           tools: ::Array[OpenAI::Models::Beta::beta_tool],
-          type: :tool_search_output,
-          id: String?,
-          agent: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Agent?,
-          call_id: String?,
-          execution: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::execution,
-          status: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::status?
+          ?type: :tool_search_output,
+          ?id: String?,
+          ?agent: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Agent?,
+          ?call_id: String?,
+          ?execution: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::execution,
+          ?status: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::status?
         }
 
         type agent = { agent_name: String }

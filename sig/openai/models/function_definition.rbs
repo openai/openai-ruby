@@ -3,9 +3,9 @@ module OpenAI
     type function_definition =
       {
         name: String,
-        description: String,
-        parameters: OpenAI::Models::function_parameters,
-        strict: bool?
+        ?description: String,
+        ?parameters: OpenAI::Models::function_parameters,
+        ?strict: bool?
       }
 
     class FunctionDefinition < OpenAI::Internal::Type::BaseModel
@@ -32,9 +32,9 @@ module OpenAI
 
       def to_hash: -> {
         name: String,
-        description: String,
-        parameters: OpenAI::Models::function_parameters,
-        strict: bool?
+        ?description: String,
+        ?parameters: OpenAI::Models::function_parameters,
+        ?strict: bool?
       }
     end
   end

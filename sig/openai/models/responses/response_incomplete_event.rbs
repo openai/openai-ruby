@@ -5,7 +5,7 @@ module OpenAI
         {
           response: OpenAI::Responses::Response,
           sequence_number: Integer,
-          type: :"response.incomplete"
+          ?type: :"response.incomplete"
         }
 
       class ResponseIncompleteEvent < OpenAI::Internal::Type::BaseModel
@@ -24,7 +24,7 @@ module OpenAI
         def to_hash: -> {
           response: OpenAI::Responses::Response,
           sequence_number: Integer,
-          type: :"response.incomplete"
+          ?type: :"response.incomplete"
         }
       end
     end

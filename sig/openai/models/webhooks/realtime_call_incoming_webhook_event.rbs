@@ -6,8 +6,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data,
-          type: :"realtime.call.incoming",
-          object: OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent::object
+          ?type: :"realtime.call.incoming",
+          ?object: OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent::object
         }
 
       class RealtimeCallIncomingWebhookEvent < OpenAI::Internal::Type::BaseModel
@@ -37,8 +37,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data,
-          type: :"realtime.call.incoming",
-          object: OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent::object
+          ?type: :"realtime.call.incoming",
+          ?object: OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent::object
         }
 
         type data =

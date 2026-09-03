@@ -2,12 +2,12 @@ module OpenAI
   module Models
     type vector_store_list_params =
       {
-        after: String,
-        before: String,
-        limit: Integer,
-        order: OpenAI::Models::VectorStoreListParams::order
+        ?after: String,
+        ?before: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::VectorStoreListParams::order,
+        ?request_options: OpenAI::request_opts
       }
-      & OpenAI::Internal::Type::request_parameters
 
     class VectorStoreListParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -40,11 +40,11 @@ module OpenAI
       ) -> void
 
       def to_hash: -> {
-        after: String,
-        before: String,
-        limit: Integer,
-        order: OpenAI::Models::VectorStoreListParams::order,
-        request_options: OpenAI::RequestOptions
+        ?after: String,
+        ?before: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::VectorStoreListParams::order,
+        ?request_options: OpenAI::RequestOptions
       }
 
       type order = :asc | :desc

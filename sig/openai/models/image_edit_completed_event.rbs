@@ -8,7 +8,7 @@ module OpenAI
         output_format: OpenAI::Models::ImageEditCompletedEvent::output_format,
         quality: OpenAI::Models::ImageEditCompletedEvent::quality,
         size: OpenAI::Models::ImageEditCompletedEvent::size,
-        type: :"image_edit.completed",
+        ?type: :"image_edit.completed",
         usage: OpenAI::ImageEditCompletedEvent::Usage
       }
 
@@ -47,7 +47,7 @@ module OpenAI
         output_format: OpenAI::Models::ImageEditCompletedEvent::output_format,
         quality: OpenAI::Models::ImageEditCompletedEvent::quality,
         size: OpenAI::Models::ImageEditCompletedEvent::size,
-        type: :"image_edit.completed",
+        ?type: :"image_edit.completed",
         usage: OpenAI::ImageEditCompletedEvent::Usage
       }
 

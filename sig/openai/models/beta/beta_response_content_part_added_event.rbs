@@ -10,8 +10,8 @@ module OpenAI
           output_index: Integer,
           part: OpenAI::Models::Beta::BetaResponseContentPartAddedEvent::part,
           sequence_number: Integer,
-          type: :"response.content_part.added",
-          agent: OpenAI::Beta::BetaResponseContentPartAddedEvent::Agent?
+          ?type: :"response.content_part.added",
+          ?agent: OpenAI::Beta::BetaResponseContentPartAddedEvent::Agent?
         }
 
       class BetaResponseContentPartAddedEvent < OpenAI::Internal::Type::BaseModel
@@ -45,8 +45,8 @@ module OpenAI
           output_index: Integer,
           part: OpenAI::Models::Beta::BetaResponseContentPartAddedEvent::part,
           sequence_number: Integer,
-          type: :"response.content_part.added",
-          agent: OpenAI::Beta::BetaResponseContentPartAddedEvent::Agent?
+          ?type: :"response.content_part.added",
+          ?agent: OpenAI::Beta::BetaResponseContentPartAddedEvent::Agent?
         }
 
         type part =
@@ -57,7 +57,7 @@ module OpenAI
         module Part
           extend OpenAI::Internal::Type::Union
 
-          type reasoning_text = { text: String, type: :reasoning_text }
+          type reasoning_text = { text: String, ?type: :reasoning_text }
 
           class ReasoningText < OpenAI::Internal::Type::BaseModel
             attr_accessor text: String
@@ -66,7 +66,7 @@ module OpenAI
 
             def initialize: (text: String, ?type: :reasoning_text) -> void
 
-            def to_hash: -> { text: String, type: :reasoning_text }
+            def to_hash: -> { text: String, ?type: :reasoning_text }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseContentPartAddedEvent::part]

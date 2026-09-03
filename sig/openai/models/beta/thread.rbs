@@ -6,7 +6,7 @@ module OpenAI
           id: String,
           created_at: Integer,
           metadata: OpenAI::Models::metadata?,
-          object: :thread,
+          ?object: :thread,
           tool_resources: OpenAI::Beta::Thread::ToolResources?
         }
 
@@ -33,14 +33,14 @@ module OpenAI
           id: String,
           created_at: Integer,
           metadata: OpenAI::Models::metadata?,
-          object: :thread,
+          ?object: :thread,
           tool_resources: OpenAI::Beta::Thread::ToolResources?
         }
 
         type tool_resources =
           {
-            code_interpreter: OpenAI::Beta::Thread::ToolResources::CodeInterpreter,
-            file_search: OpenAI::Beta::Thread::ToolResources::FileSearch
+            ?code_interpreter: OpenAI::Beta::Thread::ToolResources::CodeInterpreter,
+            ?file_search: OpenAI::Beta::Thread::ToolResources::FileSearch
           }
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
@@ -62,11 +62,11 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            code_interpreter: OpenAI::Beta::Thread::ToolResources::CodeInterpreter,
-            file_search: OpenAI::Beta::Thread::ToolResources::FileSearch
+            ?code_interpreter: OpenAI::Beta::Thread::ToolResources::CodeInterpreter,
+            ?file_search: OpenAI::Beta::Thread::ToolResources::FileSearch
           }
 
-          type code_interpreter = { file_ids: ::Array[String] }
+          type code_interpreter = { ?file_ids: ::Array[String] }
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             attr_reader file_ids: ::Array[String]?
@@ -75,10 +75,10 @@ module OpenAI
 
             def initialize: (?file_ids: ::Array[String]) -> void
 
-            def to_hash: -> { file_ids: ::Array[String] }
+            def to_hash: -> { ?file_ids: ::Array[String] }
           end
 
-          type file_search = { vector_store_ids: ::Array[String] }
+          type file_search = { ?vector_store_ids: ::Array[String] }
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
             attr_reader vector_store_ids: ::Array[String]?
@@ -87,7 +87,7 @@ module OpenAI
 
             def initialize: (?vector_store_ids: ::Array[String]) -> void
 
-            def to_hash: -> { vector_store_ids: ::Array[String] }
+            def to_hash: -> { ?vector_store_ids: ::Array[String] }
           end
         end
       end

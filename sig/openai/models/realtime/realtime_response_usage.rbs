@@ -3,11 +3,11 @@ module OpenAI
     module Realtime
       type realtime_response_usage =
         {
-          input_token_details: OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails,
-          input_tokens: Integer,
-          output_token_details: OpenAI::Realtime::RealtimeResponseUsageOutputTokenDetails,
-          output_tokens: Integer,
-          total_tokens: Integer
+          ?input_token_details: OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails,
+          ?input_tokens: Integer,
+          ?output_token_details: OpenAI::Realtime::RealtimeResponseUsageOutputTokenDetails,
+          ?output_tokens: Integer,
+          ?total_tokens: Integer
         }
 
       class RealtimeResponseUsage < OpenAI::Internal::Type::BaseModel
@@ -44,11 +44,11 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          input_token_details: OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails,
-          input_tokens: Integer,
-          output_token_details: OpenAI::Realtime::RealtimeResponseUsageOutputTokenDetails,
-          output_tokens: Integer,
-          total_tokens: Integer
+          ?input_token_details: OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails,
+          ?input_tokens: Integer,
+          ?output_token_details: OpenAI::Realtime::RealtimeResponseUsageOutputTokenDetails,
+          ?output_tokens: Integer,
+          ?total_tokens: Integer
         }
       end
     end

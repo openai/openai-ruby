@@ -6,7 +6,7 @@ module OpenAI
           display_height: Integer,
           display_width: Integer,
           environment: OpenAI::Models::Responses::ComputerUsePreviewTool::environment,
-          type: :computer_use_preview
+          ?type: :computer_use_preview
         }
 
       class ComputerUsePreviewTool < OpenAI::Internal::Type::BaseModel
@@ -29,7 +29,7 @@ module OpenAI
           display_height: Integer,
           display_width: Integer,
           environment: OpenAI::Models::Responses::ComputerUsePreviewTool::environment,
-          type: :computer_use_preview
+          ?type: :computer_use_preview
         }
 
         type environment = :windows | :mac | :linux | :ubuntu | :browser

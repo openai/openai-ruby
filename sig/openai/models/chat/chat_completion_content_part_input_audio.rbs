@@ -6,8 +6,8 @@ module OpenAI
       type chat_completion_content_part_input_audio =
         {
           input_audio: OpenAI::Chat::ChatCompletionContentPartInputAudio::InputAudio,
-          type: :input_audio,
-          prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPartInputAudio::PromptCacheBreakpoint
+          ?type: :input_audio,
+          ?prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPartInputAudio::PromptCacheBreakpoint
         }
 
       class ChatCompletionContentPartInputAudio < OpenAI::Internal::Type::BaseModel
@@ -29,8 +29,8 @@ module OpenAI
 
         def to_hash: -> {
           input_audio: OpenAI::Chat::ChatCompletionContentPartInputAudio::InputAudio,
-          type: :input_audio,
-          prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPartInputAudio::PromptCacheBreakpoint
+          ?type: :input_audio,
+          ?prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPartInputAudio::PromptCacheBreakpoint
         }
 
         type input_audio =
@@ -66,14 +66,14 @@ module OpenAI
           end
         end
 
-        type prompt_cache_breakpoint = { mode: :explicit }
+        type prompt_cache_breakpoint = { ?mode: :explicit }
 
         class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
           attr_accessor mode: :explicit
 
           def initialize: (?mode: :explicit) -> void
 
-          def to_hash: -> { mode: :explicit }
+          def to_hash: -> { ?mode: :explicit }
         end
       end
     end

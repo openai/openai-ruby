@@ -10,9 +10,9 @@ module OpenAI
           call_id: String?,
           execution: OpenAI::Models::Beta::BetaResponseToolSearchCall::execution,
           status: OpenAI::Models::Beta::BetaResponseToolSearchCall::status,
-          type: :tool_search_call,
-          agent: OpenAI::Beta::BetaResponseToolSearchCall::Agent,
-          created_by: String
+          ?type: :tool_search_call,
+          ?agent: OpenAI::Beta::BetaResponseToolSearchCall::Agent,
+          ?created_by: String
         }
 
       class BetaResponseToolSearchCall < OpenAI::Internal::Type::BaseModel
@@ -55,9 +55,9 @@ module OpenAI
           call_id: String?,
           execution: OpenAI::Models::Beta::BetaResponseToolSearchCall::execution,
           status: OpenAI::Models::Beta::BetaResponseToolSearchCall::status,
-          type: :tool_search_call,
-          agent: OpenAI::Beta::BetaResponseToolSearchCall::Agent,
-          created_by: String
+          ?type: :tool_search_call,
+          ?agent: OpenAI::Beta::BetaResponseToolSearchCall::Agent,
+          ?created_by: String
         }
 
         type execution = :server | :client

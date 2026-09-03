@@ -7,8 +7,8 @@ module OpenAI
         {
           response_id: String,
           sequence_number: Integer,
-          type: :"response.inject.created",
-          stream_id: String
+          ?type: :"response.inject.created",
+          ?stream_id: String
         }
 
       class BetaResponseInjectCreatedEvent < OpenAI::Internal::Type::BaseModel
@@ -32,8 +32,8 @@ module OpenAI
         def to_hash: -> {
           response_id: String,
           sequence_number: Integer,
-          type: :"response.inject.created",
-          stream_id: String
+          ?type: :"response.inject.created",
+          ?stream_id: String
         }
       end
     end

@@ -5,9 +5,9 @@ module OpenAI
         {
           conversation_id: String,
           items: ::Array[OpenAI::Models::Responses::response_input_item],
-          include: ::Array[OpenAI::Models::Responses::response_includable]
+          ?include: ::Array[OpenAI::Models::Responses::response_includable],
+          ?request_options: OpenAI::request_opts
         }
-        & OpenAI::Internal::Type::request_parameters
 
       class ItemCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -33,8 +33,8 @@ module OpenAI
         def to_hash: -> {
           conversation_id: String,
           items: ::Array[OpenAI::Models::Responses::response_input_item],
-          include: ::Array[OpenAI::Models::Responses::response_includable],
-          request_options: OpenAI::RequestOptions
+          ?include: ::Array[OpenAI::Models::Responses::response_includable],
+          ?request_options: OpenAI::RequestOptions
         }
       end
     end
