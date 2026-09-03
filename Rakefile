@@ -174,7 +174,17 @@ task("test:live:smoke") do
 end
 
 desc("Lint and typecheck")
-multitask(lint: [:"lint:rubocop", :"lint:rubocop_directives", :typecheck])
+# RuboCop temporarily changes cwd; sibling commands must not launch alongside it.
+task(:lint) do
+  failures = []
+  [:"lint:rubocop", :"lint:rubocop_directives", :typecheck].each do |name|
+    Rake::Task[name].invoke
+  rescue SystemExit, StandardError => error
+    failures << error
+  end
+
+  raise failures.first unless failures.empty?
+end
 
 desc("Build yard docs")
 multitask(:"build:docs") do
