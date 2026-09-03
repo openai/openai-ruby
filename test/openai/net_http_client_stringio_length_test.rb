@@ -3,6 +3,8 @@
 require_relative "test_helper"
 
 class OpenAI::Test::NetHTTPClientStringIOLengthTest < Minitest::Test
+  extend Minitest::Serial
+
   include WebMock::API
 
   REQUEST_URL = "https://example.test/probe"
