@@ -8,7 +8,7 @@ module OpenAI
           name: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.function_call_arguments.done"
+          ?type: :"response.function_call_arguments.done"
         }
 
       class ResponseFunctionCallArgumentsDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -39,7 +39,7 @@ module OpenAI
           name: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.function_call_arguments.done"
+          ?type: :"response.function_call_arguments.done"
         }
       end
     end

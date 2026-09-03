@@ -6,8 +6,8 @@ module OpenAI
           audio_end_ms: Integer,
           content_index: Integer,
           item_id: String,
-          type: :"conversation.item.truncate",
-          event_id: String
+          ?type: :"conversation.item.truncate",
+          ?event_id: String
         }
 
       class ConversationItemTruncateEvent < OpenAI::Internal::Type::BaseModel
@@ -35,8 +35,8 @@ module OpenAI
           audio_end_ms: Integer,
           content_index: Integer,
           item_id: String,
-          type: :"conversation.item.truncate",
-          event_id: String
+          ?type: :"conversation.item.truncate",
+          ?event_id: String
         }
       end
     end

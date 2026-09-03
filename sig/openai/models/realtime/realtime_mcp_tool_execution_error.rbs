@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Realtime
       type realtime_mcp_tool_execution_error =
-        { message: String, type: :tool_execution_error }
+        { message: String, ?type: :tool_execution_error }
 
       class RealtimeMcpToolExecutionError < OpenAI::Internal::Type::BaseModel
         attr_accessor message: String
@@ -11,7 +11,7 @@ module OpenAI
 
         def initialize: (message: String, ?type: :tool_execution_error) -> void
 
-        def to_hash: -> { message: String, type: :tool_execution_error }
+        def to_hash: -> { message: String, ?type: :tool_execution_error }
       end
     end
   end

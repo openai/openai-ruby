@@ -3,13 +3,13 @@ module OpenAI
     module Responses
       type response_input_file_content =
         {
-          type: :input_file,
-          detail: OpenAI::Models::Responses::ResponseInputFileContent::detail,
-          file_data: String?,
-          file_id: String?,
-          file_url: String?,
-          filename: String?,
-          prompt_cache_breakpoint: OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint?
+          ?type: :input_file,
+          ?detail: OpenAI::Models::Responses::ResponseInputFileContent::detail,
+          ?file_data: String?,
+          ?file_id: String?,
+          ?file_url: String?,
+          ?filename: String?,
+          ?prompt_cache_breakpoint: OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint?
         }
 
       class ResponseInputFileContent < OpenAI::Internal::Type::BaseModel
@@ -42,13 +42,13 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :input_file,
-          detail: OpenAI::Models::Responses::ResponseInputFileContent::detail,
-          file_data: String?,
-          file_id: String?,
-          file_url: String?,
-          filename: String?,
-          prompt_cache_breakpoint: OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint?
+          ?type: :input_file,
+          ?detail: OpenAI::Models::Responses::ResponseInputFileContent::detail,
+          ?file_data: String?,
+          ?file_id: String?,
+          ?file_url: String?,
+          ?filename: String?,
+          ?prompt_cache_breakpoint: OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint?
         }
 
         type detail = :auto | :low | :high
@@ -63,14 +63,14 @@ module OpenAI
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputFileContent::detail]
         end
 
-        type prompt_cache_breakpoint = { mode: :explicit }
+        type prompt_cache_breakpoint = { ?mode: :explicit }
 
         class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
           attr_accessor mode: :explicit
 
           def initialize: (?mode: :explicit) -> void
 
-          def to_hash: -> { mode: :explicit }
+          def to_hash: -> { ?mode: :explicit }
         end
       end
     end

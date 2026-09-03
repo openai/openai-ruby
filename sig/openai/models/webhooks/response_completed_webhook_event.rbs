@@ -6,8 +6,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::ResponseCompletedWebhookEvent::Data,
-          type: :"response.completed",
-          object: OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent::object
+          ?type: :"response.completed",
+          ?object: OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent::object
         }
 
       class ResponseCompletedWebhookEvent < OpenAI::Internal::Type::BaseModel
@@ -37,8 +37,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::ResponseCompletedWebhookEvent::Data,
-          type: :"response.completed",
-          object: OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent::object
+          ?type: :"response.completed",
+          ?object: OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent::object
         }
 
         type data = { id: String }

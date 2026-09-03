@@ -7,7 +7,7 @@ module OpenAI
           error: OpenAI::Realtime::ConversationItemInputAudioTranscriptionFailedEvent::Error,
           event_id: String,
           item_id: String,
-          type: :"conversation.item.input_audio_transcription.failed"
+          ?type: :"conversation.item.input_audio_transcription.failed"
         }
 
       class ConversationItemInputAudioTranscriptionFailedEvent < OpenAI::Internal::Type::BaseModel
@@ -34,11 +34,11 @@ module OpenAI
           error: OpenAI::Realtime::ConversationItemInputAudioTranscriptionFailedEvent::Error,
           event_id: String,
           item_id: String,
-          type: :"conversation.item.input_audio_transcription.failed"
+          ?type: :"conversation.item.input_audio_transcription.failed"
         }
 
         type error =
-          { code: String, message: String, param: String, type: String }
+          { ?code: String, ?message: String, ?param: String, ?type: String }
 
         class Error < OpenAI::Internal::Type::BaseModel
           attr_reader code: String?
@@ -65,10 +65,10 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            code: String,
-            message: String,
-            param: String,
-            type: String
+            ?code: String,
+            ?message: String,
+            ?param: String,
+            ?type: String
           }
         end
       end

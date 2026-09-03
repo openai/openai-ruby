@@ -7,10 +7,10 @@ module OpenAI
           event_id: String,
           item_id: String,
           transcript: String,
-          type: :"conversation.item.input_audio_transcription.completed",
+          ?type: :"conversation.item.input_audio_transcription.completed",
           usage: OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::usage,
-          languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
-          logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
+          ?languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
+          ?logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
         }
 
       class ConversationItemInputAudioTranscriptionCompletedEvent < OpenAI::Internal::Type::BaseModel
@@ -50,10 +50,10 @@ module OpenAI
           event_id: String,
           item_id: String,
           transcript: String,
-          type: :"conversation.item.input_audio_transcription.completed",
+          ?type: :"conversation.item.input_audio_transcription.completed",
           usage: OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::usage,
-          languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
-          logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
+          ?languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
+          ?logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
         }
 
         type usage =
@@ -68,8 +68,8 @@ module OpenAI
               input_tokens: Integer,
               output_tokens: Integer,
               total_tokens: Integer,
-              type: :tokens,
-              input_token_details: OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails
+              ?type: :tokens,
+              ?input_token_details: OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails
             }
 
           class TranscriptTextUsageTokens < OpenAI::Internal::Type::BaseModel
@@ -99,12 +99,12 @@ module OpenAI
               input_tokens: Integer,
               output_tokens: Integer,
               total_tokens: Integer,
-              type: :tokens,
-              input_token_details: OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails
+              ?type: :tokens,
+              ?input_token_details: OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails
             }
 
             type input_token_details =
-              { audio_tokens: Integer, text_tokens: Integer }
+              { ?audio_tokens: Integer, ?text_tokens: Integer }
 
             class InputTokenDetails < OpenAI::Internal::Type::BaseModel
               attr_reader audio_tokens: Integer?
@@ -120,12 +120,12 @@ module OpenAI
                 ?text_tokens: Integer
               ) -> void
 
-              def to_hash: -> { audio_tokens: Integer, text_tokens: Integer }
+              def to_hash: -> { ?audio_tokens: Integer, ?text_tokens: Integer }
             end
           end
 
           type transcript_text_usage_duration =
-            { seconds: Float, type: :duration }
+            { seconds: Float, ?type: :duration }
 
           class TranscriptTextUsageDuration < OpenAI::Internal::Type::BaseModel
             attr_accessor seconds: Float
@@ -134,7 +134,7 @@ module OpenAI
 
             def initialize: (seconds: Float, ?type: :duration) -> void
 
-            def to_hash: -> { seconds: Float, type: :duration }
+            def to_hash: -> { seconds: Float, ?type: :duration }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::usage]

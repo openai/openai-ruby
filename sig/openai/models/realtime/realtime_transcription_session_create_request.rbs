@@ -3,9 +3,9 @@ module OpenAI
     module Realtime
       type realtime_transcription_session_create_request =
         {
-          type: :transcription,
-          audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio,
-          include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
+          ?type: :transcription,
+          ?audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio,
+          ?include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
         }
 
       class RealtimeTranscriptionSessionCreateRequest < OpenAI::Internal::Type::BaseModel
@@ -30,9 +30,9 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :transcription,
-          audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio,
-          include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
+          ?type: :transcription,
+          ?audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio,
+          ?include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
         }
 
         type include_ = :"item.input_audio_transcription.logprobs"

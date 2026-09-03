@@ -6,7 +6,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.web_search_call.completed"
+          ?type: :"response.web_search_call.completed"
         }
 
       class ResponseWebSearchCallCompletedEvent < OpenAI::Internal::Type::BaseModel
@@ -29,7 +29,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.web_search_call.completed"
+          ?type: :"response.web_search_call.completed"
         }
       end
     end

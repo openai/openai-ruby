@@ -4,10 +4,10 @@ module OpenAI
       {
         data_source_config: OpenAI::Models::EvalCreateParams::data_source_config,
         testing_criteria: ::Array[OpenAI::Models::EvalCreateParams::testing_criterion],
-        metadata: OpenAI::Models::metadata?,
-        name: String
+        ?metadata: OpenAI::Models::metadata?,
+        ?name: String,
+        ?request_options: OpenAI::request_opts
       }
-      & OpenAI::Internal::Type::request_parameters
 
     class EvalCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -34,9 +34,9 @@ module OpenAI
       def to_hash: -> {
         data_source_config: OpenAI::Models::EvalCreateParams::data_source_config,
         testing_criteria: ::Array[OpenAI::Models::EvalCreateParams::testing_criterion],
-        metadata: OpenAI::Models::metadata?,
-        name: String,
-        request_options: OpenAI::RequestOptions
+        ?metadata: OpenAI::Models::metadata?,
+        ?name: String,
+        ?request_options: OpenAI::RequestOptions
       }
 
       type data_source_config =
@@ -50,8 +50,8 @@ module OpenAI
         type custom =
           {
             item_schema: ::Hash[Symbol, top],
-            type: :custom,
-            include_sample_schema: bool
+            ?type: :custom,
+            ?include_sample_schema: bool
           }
 
         class Custom < OpenAI::Internal::Type::BaseModel
@@ -71,12 +71,12 @@ module OpenAI
 
           def to_hash: -> {
             item_schema: ::Hash[Symbol, top],
-            type: :custom,
-            include_sample_schema: bool
+            ?type: :custom,
+            ?include_sample_schema: bool
           }
         end
 
-        type logs = { type: :logs, metadata: ::Hash[Symbol, top] }
+        type logs = { ?type: :logs, ?metadata: ::Hash[Symbol, top] }
 
         class Logs < OpenAI::Internal::Type::BaseModel
           attr_accessor type: :logs
@@ -87,11 +87,11 @@ module OpenAI
 
           def initialize: (?metadata: ::Hash[Symbol, top], ?type: :logs) -> void
 
-          def to_hash: -> { type: :logs, metadata: ::Hash[Symbol, top] }
+          def to_hash: -> { ?type: :logs, ?metadata: ::Hash[Symbol, top] }
         end
 
         type stored_completions =
-          { type: :stored_completions, metadata: ::Hash[Symbol, top] }
+          { ?type: :stored_completions, ?metadata: ::Hash[Symbol, top] }
 
         class StoredCompletions < OpenAI::Internal::Type::BaseModel
           attr_accessor type: :stored_completions
@@ -106,8 +106,8 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            type: :stored_completions,
-            metadata: ::Hash[Symbol, top]
+            ?type: :stored_completions,
+            ?metadata: ::Hash[Symbol, top]
           }
         end
 
@@ -131,7 +131,7 @@ module OpenAI
             model: String,
             name: String,
             passing_labels: ::Array[String],
-            type: :label_model
+            ?type: :label_model
           }
 
         class LabelModel < OpenAI::Internal::Type::BaseModel
@@ -162,7 +162,7 @@ module OpenAI
             model: String,
             name: String,
             passing_labels: ::Array[String],
-            type: :label_model
+            ?type: :label_model
           }
 
           type input =
@@ -188,7 +188,7 @@ module OpenAI
               {
                 content: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content,
                 role: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::role,
-                type: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_
+                ?type: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_
               }
 
             class EvalItem < OpenAI::Internal::Type::BaseModel
@@ -211,7 +211,7 @@ module OpenAI
               def to_hash: -> {
                 content: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content,
                 role: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::role,
-                type: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_
+                ?type: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_
               }
 
               type content =
@@ -225,7 +225,7 @@ module OpenAI
               module Content
                 extend OpenAI::Internal::Type::Union
 
-                type output_text = { text: String, type: :output_text }
+                type output_text = { text: String, ?type: :output_text }
 
                 class OutputText < OpenAI::Internal::Type::BaseModel
                   attr_accessor text: String
@@ -234,11 +234,11 @@ module OpenAI
 
                   def initialize: (text: String, ?type: :output_text) -> void
 
-                  def to_hash: -> { text: String, type: :output_text }
+                  def to_hash: -> { text: String, ?type: :output_text }
                 end
 
                 type input_image =
-                  { image_url: String, type: :input_image, detail: String }
+                  { image_url: String, ?type: :input_image, ?detail: String }
 
                 class InputImage < OpenAI::Internal::Type::BaseModel
                   attr_accessor image_url: String
@@ -257,8 +257,8 @@ module OpenAI
 
                   def to_hash: -> {
                     image_url: String,
-                    type: :input_image,
-                    detail: String
+                    ?type: :input_image,
+                    ?detail: String
                   }
                 end
 
@@ -300,7 +300,7 @@ module OpenAI
             name: String,
             reference: String,
             pass_threshold: Float,
-            type: :text_similarity
+            ?type: :text_similarity
           }
 
         class TextSimilarity < OpenAI::Models::Graders::TextSimilarityGrader
@@ -323,7 +323,7 @@ module OpenAI
             name: String,
             reference: String,
             pass_threshold: Float,
-            type: :text_similarity
+            ?type: :text_similarity
           }
         end
 
@@ -331,9 +331,9 @@ module OpenAI
           {
             name: String,
             source: String,
-            type: :python,
-            image_tag: String,
-            pass_threshold: Float
+            ?type: :python,
+            ?image_tag: String,
+            ?pass_threshold: Float
           }
 
         class Python < OpenAI::Models::Graders::PythonGrader
@@ -352,9 +352,9 @@ module OpenAI
           def to_hash: -> {
             name: String,
             source: String,
-            type: :python,
-            image_tag: String,
-            pass_threshold: Float
+            ?type: :python,
+            ?image_tag: String,
+            ?pass_threshold: Float
           }
         end
 
@@ -363,10 +363,10 @@ module OpenAI
             input: ::Array[OpenAI::Graders::ScoreModelGrader::Input],
             model: String,
             name: String,
-            type: :score_model,
-            range: ::Array[Float],
-            sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams,
-            pass_threshold: Float
+            ?type: :score_model,
+            ?range: ::Array[Float],
+            ?sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams,
+            ?pass_threshold: Float
           }
 
         class ScoreModel < OpenAI::Models::Graders::ScoreModelGrader
@@ -388,10 +388,10 @@ module OpenAI
             input: ::Array[OpenAI::Graders::ScoreModelGrader::Input],
             model: String,
             name: String,
-            type: :score_model,
-            range: ::Array[Float],
-            sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams,
-            pass_threshold: Float
+            ?type: :score_model,
+            ?range: ::Array[Float],
+            ?sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams,
+            ?pass_threshold: Float
           }
         end
 

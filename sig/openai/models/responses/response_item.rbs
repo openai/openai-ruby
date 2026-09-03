@@ -41,7 +41,7 @@ module OpenAI
             id: String,
             role: OpenAI::Models::Responses::ResponseItem::AdditionalTools::role,
             tools: ::Array[OpenAI::Models::Responses::tool],
-            type: :additional_tools
+            ?type: :additional_tools
           }
 
         class AdditionalTools < OpenAI::Internal::Type::BaseModel
@@ -64,7 +64,7 @@ module OpenAI
             id: String,
             role: OpenAI::Models::Responses::ResponseItem::AdditionalTools::role,
             tools: ::Array[OpenAI::Models::Responses::tool],
-            type: :additional_tools
+            ?type: :additional_tools
           }
 
           type role =
@@ -99,7 +99,7 @@ module OpenAI
             call_id: String,
             code: String,
             fingerprint: String,
-            type: :program
+            ?type: :program
           }
 
         class Program < OpenAI::Internal::Type::BaseModel
@@ -126,7 +126,7 @@ module OpenAI
             call_id: String,
             code: String,
             fingerprint: String,
-            type: :program
+            ?type: :program
           }
         end
 
@@ -136,7 +136,7 @@ module OpenAI
             call_id: String,
             result: String,
             status: OpenAI::Models::Responses::ResponseItem::ProgramOutput::status,
-            type: :program_output
+            ?type: :program_output
           }
 
         class ProgramOutput < OpenAI::Internal::Type::BaseModel
@@ -163,7 +163,7 @@ module OpenAI
             call_id: String,
             result: String,
             status: OpenAI::Models::Responses::ResponseItem::ProgramOutput::status,
-            type: :program_output
+            ?type: :program_output
           }
 
           type status = :completed | :incomplete
@@ -183,7 +183,7 @@ module OpenAI
             id: String,
             result: String?,
             status: OpenAI::Models::Responses::ResponseItem::ImageGenerationCall::status,
-            type: :image_generation_call
+            ?type: :image_generation_call
           }
 
         class ImageGenerationCall < OpenAI::Internal::Type::BaseModel
@@ -206,7 +206,7 @@ module OpenAI
             id: String,
             result: String?,
             status: OpenAI::Models::Responses::ResponseItem::ImageGenerationCall::status,
-            type: :image_generation_call
+            ?type: :image_generation_call
           }
 
           type status = :in_progress | :completed | :generating | :failed
@@ -229,7 +229,7 @@ module OpenAI
             action: OpenAI::Responses::ResponseItem::LocalShellCall::Action,
             call_id: String,
             status: OpenAI::Models::Responses::ResponseItem::LocalShellCall::status,
-            type: :local_shell_call
+            ?type: :local_shell_call
           }
 
         class LocalShellCall < OpenAI::Internal::Type::BaseModel
@@ -256,17 +256,17 @@ module OpenAI
             action: OpenAI::Responses::ResponseItem::LocalShellCall::Action,
             call_id: String,
             status: OpenAI::Models::Responses::ResponseItem::LocalShellCall::status,
-            type: :local_shell_call
+            ?type: :local_shell_call
           }
 
           type action =
             {
               command: ::Array[String],
               env: ::Hash[Symbol, String],
-              type: :exec,
-              timeout_ms: Integer?,
-              user: String?,
-              working_directory: String?
+              ?type: :exec,
+              ?timeout_ms: Integer?,
+              ?user: String?,
+              ?working_directory: String?
             }
 
           class Action < OpenAI::Internal::Type::BaseModel
@@ -294,10 +294,10 @@ module OpenAI
             def to_hash: -> {
               command: ::Array[String],
               env: ::Hash[Symbol, String],
-              type: :exec,
-              timeout_ms: Integer?,
-              user: String?,
-              working_directory: String?
+              ?type: :exec,
+              ?timeout_ms: Integer?,
+              ?user: String?,
+              ?working_directory: String?
             }
           end
 
@@ -318,8 +318,8 @@ module OpenAI
           {
             id: String,
             output: String,
-            type: :local_shell_call_output,
-            status: OpenAI::Models::Responses::ResponseItem::LocalShellCallOutput::status?
+            ?type: :local_shell_call_output,
+            ?status: OpenAI::Models::Responses::ResponseItem::LocalShellCallOutput::status?
           }
 
         class LocalShellCallOutput < OpenAI::Internal::Type::BaseModel
@@ -341,8 +341,8 @@ module OpenAI
           def to_hash: -> {
             id: String,
             output: String,
-            type: :local_shell_call_output,
-            status: OpenAI::Models::Responses::ResponseItem::LocalShellCallOutput::status?
+            ?type: :local_shell_call_output,
+            ?status: OpenAI::Models::Responses::ResponseItem::LocalShellCallOutput::status?
           }
 
           type status = :in_progress | :completed | :incomplete
@@ -363,8 +363,8 @@ module OpenAI
             id: String,
             server_label: String,
             tools: ::Array[OpenAI::Responses::ResponseItem::McpListTools::Tool],
-            type: :mcp_list_tools,
-            error: String?
+            ?type: :mcp_list_tools,
+            ?error: String?
           }
 
         class McpListTools < OpenAI::Internal::Type::BaseModel
@@ -390,16 +390,16 @@ module OpenAI
             id: String,
             server_label: String,
             tools: ::Array[OpenAI::Responses::ResponseItem::McpListTools::Tool],
-            type: :mcp_list_tools,
-            error: String?
+            ?type: :mcp_list_tools,
+            ?error: String?
           }
 
           type tool =
             {
               input_schema: top,
               name: String,
-              annotations: top?,
-              description: String?
+              ?annotations: top?,
+              ?description: String?
             }
 
           class Tool < OpenAI::Internal::Type::BaseModel
@@ -421,8 +421,8 @@ module OpenAI
             def to_hash: -> {
               input_schema: top,
               name: String,
-              annotations: top?,
-              description: String?
+              ?annotations: top?,
+              ?description: String?
             }
           end
         end
@@ -433,7 +433,7 @@ module OpenAI
             arguments: String,
             name: String,
             server_label: String,
-            type: :mcp_approval_request
+            ?type: :mcp_approval_request
           }
 
         class McpApprovalRequest < OpenAI::Internal::Type::BaseModel
@@ -460,7 +460,7 @@ module OpenAI
             arguments: String,
             name: String,
             server_label: String,
-            type: :mcp_approval_request
+            ?type: :mcp_approval_request
           }
         end
 
@@ -469,8 +469,8 @@ module OpenAI
             id: String,
             approval_request_id: String,
             approve: bool,
-            type: :mcp_approval_response,
-            reason: String?
+            ?type: :mcp_approval_response,
+            ?reason: String?
           }
 
         class McpApprovalResponse < OpenAI::Internal::Type::BaseModel
@@ -496,8 +496,8 @@ module OpenAI
             id: String,
             approval_request_id: String,
             approve: bool,
-            type: :mcp_approval_response,
-            reason: String?
+            ?type: :mcp_approval_response,
+            ?reason: String?
           }
         end
 
@@ -507,11 +507,11 @@ module OpenAI
             arguments: String,
             name: String,
             server_label: String,
-            type: :mcp_call,
-            approval_request_id: String?,
-            error: OpenAI::Models::Responses::mcp_tool_call_error?,
-            output: String?,
-            status: OpenAI::Models::Responses::ResponseItem::McpCall::status
+            ?type: :mcp_call,
+            ?approval_request_id: String?,
+            ?error: OpenAI::Models::Responses::mcp_tool_call_error?,
+            ?output: String?,
+            ?status: OpenAI::Models::Responses::ResponseItem::McpCall::status
           }
 
         class McpCall < OpenAI::Internal::Type::BaseModel
@@ -554,11 +554,11 @@ module OpenAI
             arguments: String,
             name: String,
             server_label: String,
-            type: :mcp_call,
-            approval_request_id: String?,
-            error: OpenAI::Models::Responses::mcp_tool_call_error?,
-            output: String?,
-            status: OpenAI::Models::Responses::ResponseItem::McpCall::status
+            ?type: :mcp_call,
+            ?approval_request_id: String?,
+            ?error: OpenAI::Models::Responses::mcp_tool_call_error?,
+            ?output: String?,
+            ?status: OpenAI::Models::Responses::ResponseItem::McpCall::status
           }
 
           type status =

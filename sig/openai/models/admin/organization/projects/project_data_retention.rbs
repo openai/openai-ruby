@@ -7,7 +7,7 @@ module OpenAI
         module Projects
           type project_data_retention =
             {
-              object: :"project.data_retention",
+              ?object: :"project.data_retention",
               type: OpenAI::Models::Admin::Organization::Projects::ProjectDataRetention::type_
             }
 
@@ -22,7 +22,7 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              object: :"project.data_retention",
+              ?object: :"project.data_retention",
               type: OpenAI::Models::Admin::Organization::Projects::ProjectDataRetention::type_
             }
 

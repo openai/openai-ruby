@@ -6,11 +6,11 @@ module OpenAI
           type user_list_params =
             {
               group_id: String,
-              after: String,
-              limit: Integer,
-              order: OpenAI::Models::Admin::Organization::Groups::UserListParams::order
+              ?after: String,
+              ?limit: Integer,
+              ?order: OpenAI::Models::Admin::Organization::Groups::UserListParams::order,
+              ?request_options: OpenAI::request_opts
             }
-            & OpenAI::Internal::Type::request_parameters
 
           class UserListParams < OpenAI::Internal::Type::BaseModel
             extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -42,10 +42,10 @@ module OpenAI
 
             def to_hash: -> {
               group_id: String,
-              after: String,
-              limit: Integer,
-              order: OpenAI::Models::Admin::Organization::Groups::UserListParams::order,
-              request_options: OpenAI::RequestOptions
+              ?after: String,
+              ?limit: Integer,
+              ?order: OpenAI::Models::Admin::Organization::Groups::UserListParams::order,
+              ?request_options: OpenAI::RequestOptions
             }
 
             type order = :asc | :desc

@@ -7,10 +7,10 @@ module OpenAI
             thread_id: String,
             content: OpenAI::Models::Beta::Threads::MessageCreateParams::content,
             role: OpenAI::Models::Beta::Threads::MessageCreateParams::role,
-            attachments: ::Array[OpenAI::Beta::Threads::MessageCreateParams::Attachment]?,
-            metadata: OpenAI::Models::metadata?
+            ?attachments: ::Array[OpenAI::Beta::Threads::MessageCreateParams::Attachment]?,
+            ?metadata: OpenAI::Models::metadata?,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class MessageCreateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -39,9 +39,9 @@ module OpenAI
             thread_id: String,
             content: OpenAI::Models::Beta::Threads::MessageCreateParams::content,
             role: OpenAI::Models::Beta::Threads::MessageCreateParams::role,
-            attachments: ::Array[OpenAI::Beta::Threads::MessageCreateParams::Attachment]?,
-            metadata: OpenAI::Models::metadata?,
-            request_options: OpenAI::RequestOptions
+            ?attachments: ::Array[OpenAI::Beta::Threads::MessageCreateParams::Attachment]?,
+            ?metadata: OpenAI::Models::metadata?,
+            ?request_options: OpenAI::RequestOptions
           }
 
           type content =
@@ -69,8 +69,8 @@ module OpenAI
 
           type attachment =
             {
-              file_id: String,
-              tools: ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool]
+              ?file_id: String,
+              ?tools: ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool]
             }
 
           class Attachment < OpenAI::Internal::Type::BaseModel
@@ -90,8 +90,8 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              file_id: String,
-              tools: ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool]
+              ?file_id: String,
+              ?tools: ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool]
             }
 
             type tool =
@@ -101,14 +101,14 @@ module OpenAI
             module Tool
               extend OpenAI::Internal::Type::Union
 
-              type file_search = { type: :file_search }
+              type file_search = { ?type: :file_search }
 
               class FileSearch < OpenAI::Internal::Type::BaseModel
                 attr_accessor type: :file_search
 
                 def initialize: (?type: :file_search) -> void
 
-                def to_hash: -> { type: :file_search }
+                def to_hash: -> { ?type: :file_search }
               end
 
               def self?.variants: -> ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool]

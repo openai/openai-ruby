@@ -8,8 +8,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           response_id: String,
-          type: :"response.mcp_call_arguments.delta",
-          obfuscation: String?
+          ?type: :"response.mcp_call_arguments.delta",
+          ?obfuscation: String?
         }
 
       class ResponseMcpCallArgumentsDelta < OpenAI::Internal::Type::BaseModel
@@ -43,8 +43,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           response_id: String,
-          type: :"response.mcp_call_arguments.delta",
-          obfuscation: String?
+          ?type: :"response.mcp_call_arguments.delta",
+          ?obfuscation: String?
         }
       end
     end

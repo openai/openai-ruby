@@ -2,8 +2,11 @@ module OpenAI
   module Models
     module VectorStores
       type file_content_params =
-        { vector_store_id: String, file_id: String }
-        & OpenAI::Internal::Type::request_parameters
+        {
+          vector_store_id: String,
+          file_id: String,
+          ?request_options: OpenAI::request_opts
+        }
 
       class FileContentParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -22,7 +25,7 @@ module OpenAI
         def to_hash: -> {
           vector_store_id: String,
           file_id: String,
-          request_options: OpenAI::RequestOptions
+          ?request_options: OpenAI::RequestOptions
         }
       end
     end

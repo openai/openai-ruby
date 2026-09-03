@@ -6,12 +6,12 @@ module OpenAI
           {
             id: String,
             created_at: Integer,
-            object: :"organization.project",
-            archived_at: Integer?,
-            external_key_id: String?,
-            name: String?,
-            residency: OpenAI::Models::Admin::Organization::project_residency,
-            status: String?
+            ?object: :"organization.project",
+            ?archived_at: Integer?,
+            ?external_key_id: String?,
+            ?name: String?,
+            ?residency: OpenAI::Models::Admin::Organization::project_residency,
+            ?status: String?
           }
 
         class Project < OpenAI::Internal::Type::BaseModel
@@ -49,12 +49,12 @@ module OpenAI
           def to_hash: -> {
             id: String,
             created_at: Integer,
-            object: :"organization.project",
-            archived_at: Integer?,
-            external_key_id: String?,
-            name: String?,
-            residency: OpenAI::Models::Admin::Organization::project_residency,
-            status: String?
+            ?object: :"organization.project",
+            ?archived_at: Integer?,
+            ?external_key_id: String?,
+            ?name: String?,
+            ?residency: OpenAI::Models::Admin::Organization::project_residency,
+            ?status: String?
           }
         end
       end

@@ -9,8 +9,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.code_interpreter_call_code.done",
-          agent: OpenAI::Beta::BetaResponseCodeInterpreterCallCodeDoneEvent::Agent?
+          ?type: :"response.code_interpreter_call_code.done",
+          ?agent: OpenAI::Beta::BetaResponseCodeInterpreterCallCodeDoneEvent::Agent?
         }
 
       class BetaResponseCodeInterpreterCallCodeDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -40,8 +40,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.code_interpreter_call_code.done",
-          agent: OpenAI::Beta::BetaResponseCodeInterpreterCallCodeDoneEvent::Agent?
+          ?type: :"response.code_interpreter_call_code.done",
+          ?agent: OpenAI::Beta::BetaResponseCodeInterpreterCallCodeDoneEvent::Agent?
         }
 
         type agent = { agent_name: String }

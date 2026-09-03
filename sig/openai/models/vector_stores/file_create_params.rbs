@@ -5,10 +5,10 @@ module OpenAI
         {
           vector_store_id: String,
           file_id: String,
-          attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileCreateParams::attribute]?,
-          chunking_strategy: OpenAI::Models::file_chunking_strategy_param
+          ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileCreateParams::attribute]?,
+          ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+          ?request_options: OpenAI::request_opts
         }
-        & OpenAI::Internal::Type::request_parameters
 
       class FileCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -37,9 +37,9 @@ module OpenAI
         def to_hash: -> {
           vector_store_id: String,
           file_id: String,
-          attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileCreateParams::attribute]?,
-          chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
-          request_options: OpenAI::RequestOptions
+          ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileCreateParams::attribute]?,
+          ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+          ?request_options: OpenAI::RequestOptions
         }
 
         type attribute = String | Float | bool

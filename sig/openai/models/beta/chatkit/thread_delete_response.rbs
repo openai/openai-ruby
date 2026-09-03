@@ -3,7 +3,7 @@ module OpenAI
     module Beta
       module ChatKit
         type thread_delete_response =
-          { id: String, deleted: bool, object: :"chatkit.thread.deleted" }
+          { id: String, deleted: bool, ?object: :"chatkit.thread.deleted" }
 
         class ThreadDeleteResponse < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
@@ -21,7 +21,7 @@ module OpenAI
           def to_hash: -> {
             id: String,
             deleted: bool,
-            object: :"chatkit.thread.deleted"
+            ?object: :"chatkit.thread.deleted"
           }
         end
       end

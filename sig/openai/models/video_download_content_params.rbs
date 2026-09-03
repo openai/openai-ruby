@@ -3,9 +3,9 @@ module OpenAI
     type video_download_content_params =
       {
         video_id: String,
-        variant: OpenAI::Models::VideoDownloadContentParams::variant
+        ?variant: OpenAI::Models::VideoDownloadContentParams::variant,
+        ?request_options: OpenAI::request_opts
       }
-      & OpenAI::Internal::Type::request_parameters
 
     class VideoDownloadContentParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -27,8 +27,8 @@ module OpenAI
 
       def to_hash: -> {
         video_id: String,
-        variant: OpenAI::Models::VideoDownloadContentParams::variant,
-        request_options: OpenAI::RequestOptions
+        ?variant: OpenAI::Models::VideoDownloadContentParams::variant,
+        ?request_options: OpenAI::RequestOptions
       }
 
       type variant = :video | :thumbnail | :spritesheet

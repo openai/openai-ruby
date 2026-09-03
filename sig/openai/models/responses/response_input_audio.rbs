@@ -4,7 +4,7 @@ module OpenAI
       type response_input_audio =
         {
           input_audio: OpenAI::Responses::ResponseInputAudio::InputAudio,
-          type: :input_audio
+          ?type: :input_audio
         }
 
       class ResponseInputAudio < OpenAI::Internal::Type::BaseModel
@@ -19,7 +19,7 @@ module OpenAI
 
         def to_hash: -> {
           input_audio: OpenAI::Responses::ResponseInputAudio::InputAudio,
-          type: :input_audio
+          ?type: :input_audio
         }
 
         type input_audio =

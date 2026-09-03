@@ -7,11 +7,11 @@ module OpenAI
             id: String,
             created_at: Integer,
             expires_at: Integer?,
-            object: :"organization.admin_api_key",
+            ?object: :"organization.admin_api_key",
             owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
             redacted_value: String,
-            last_used_at: Integer?,
-            name: String?
+            ?last_used_at: Integer?,
+            ?name: String?
           }
 
         class AdminAPIKey < OpenAI::Internal::Type::BaseModel
@@ -46,21 +46,21 @@ module OpenAI
             id: String,
             created_at: Integer,
             expires_at: Integer?,
-            object: :"organization.admin_api_key",
+            ?object: :"organization.admin_api_key",
             owner: OpenAI::Admin::Organization::AdminAPIKey::Owner,
             redacted_value: String,
-            last_used_at: Integer?,
-            name: String?
+            ?last_used_at: Integer?,
+            ?name: String?
           }
 
           type owner =
             {
-              id: String,
-              created_at: Integer,
-              name: String,
-              object: String,
-              role: String,
-              type: String
+              ?id: String,
+              ?created_at: Integer,
+              ?name: String,
+              ?object: String,
+              ?role: String,
+              ?type: String
             }
 
           class Owner < OpenAI::Internal::Type::BaseModel
@@ -98,12 +98,12 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              created_at: Integer,
-              name: String,
-              object: String,
-              role: String,
-              type: String
+              ?id: String,
+              ?created_at: Integer,
+              ?name: String,
+              ?object: String,
+              ?role: String,
+              ?type: String
             }
           end
         end

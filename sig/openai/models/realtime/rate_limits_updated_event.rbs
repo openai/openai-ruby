@@ -5,7 +5,7 @@ module OpenAI
         {
           event_id: String,
           rate_limits: ::Array[OpenAI::Realtime::RateLimitsUpdatedEvent::RateLimit],
-          type: :"rate_limits.updated"
+          ?type: :"rate_limits.updated"
         }
 
       class RateLimitsUpdatedEvent < OpenAI::Internal::Type::BaseModel
@@ -24,15 +24,15 @@ module OpenAI
         def to_hash: -> {
           event_id: String,
           rate_limits: ::Array[OpenAI::Realtime::RateLimitsUpdatedEvent::RateLimit],
-          type: :"rate_limits.updated"
+          ?type: :"rate_limits.updated"
         }
 
         type rate_limit =
           {
-            limit: Integer,
-            name: OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit::name_,
-            remaining: Integer,
-            reset_seconds: Float
+            ?limit: Integer,
+            ?name: OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit::name_,
+            ?remaining: Integer,
+            ?reset_seconds: Float
           }
 
         class RateLimit < OpenAI::Internal::Type::BaseModel
@@ -62,10 +62,10 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            limit: Integer,
-            name: OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit::name_,
-            remaining: Integer,
-            reset_seconds: Float
+            ?limit: Integer,
+            ?name: OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit::name_,
+            ?remaining: Integer,
+            ?reset_seconds: Float
           }
 
           type name_ = :requests | :tokens

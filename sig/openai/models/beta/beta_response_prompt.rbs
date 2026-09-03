@@ -6,8 +6,8 @@ module OpenAI
       type beta_response_prompt =
         {
           id: String,
-          variables: ::Hash[Symbol, OpenAI::Models::Beta::BetaResponsePrompt::variable]?,
-          version: String?
+          ?variables: ::Hash[Symbol, OpenAI::Models::Beta::BetaResponsePrompt::variable]?,
+          ?version: String?
         }
 
       class BetaResponsePrompt < OpenAI::Internal::Type::BaseModel
@@ -25,8 +25,8 @@ module OpenAI
 
         def to_hash: -> {
           id: String,
-          variables: ::Hash[Symbol, OpenAI::Models::Beta::BetaResponsePrompt::variable]?,
-          version: String?
+          ?variables: ::Hash[Symbol, OpenAI::Models::Beta::BetaResponsePrompt::variable]?,
+          ?version: String?
         }
 
         type variable =

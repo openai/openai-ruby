@@ -4,7 +4,7 @@ module OpenAI
 
     module Beta
       type beta_local_environment =
-        { type: :local, skills: ::Array[OpenAI::Beta::BetaLocalSkill] }
+        { ?type: :local, ?skills: ::Array[OpenAI::Beta::BetaLocalSkill] }
 
       class BetaLocalEnvironment < OpenAI::Internal::Type::BaseModel
         attr_accessor type: :local
@@ -21,8 +21,8 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :local,
-          skills: ::Array[OpenAI::Beta::BetaLocalSkill]
+          ?type: :local,
+          ?skills: ::Array[OpenAI::Beta::BetaLocalSkill]
         }
       end
     end

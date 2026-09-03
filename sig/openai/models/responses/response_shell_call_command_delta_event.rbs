@@ -7,8 +7,8 @@ module OpenAI
           delta: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.shell_call_command.delta",
-          obfuscation: String
+          ?type: :"response.shell_call_command.delta",
+          ?obfuscation: String
         }
 
       class ResponseShellCallCommandDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -40,8 +40,8 @@ module OpenAI
           delta: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.shell_call_command.delta",
-          obfuscation: String
+          ?type: :"response.shell_call_command.delta",
+          ?obfuscation: String
         }
       end
     end

@@ -3,8 +3,11 @@ module OpenAI
     module Admin
       module Organization
         type admin_api_key_create_params =
-          { name: String, expires_in_seconds: Integer }
-          & OpenAI::Internal::Type::request_parameters
+          {
+            name: String,
+            ?expires_in_seconds: Integer,
+            ?request_options: OpenAI::request_opts
+          }
 
         class AdminAPIKeyCreateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -24,8 +27,8 @@ module OpenAI
 
           def to_hash: -> {
             name: String,
-            expires_in_seconds: Integer,
-            request_options: OpenAI::RequestOptions
+            ?expires_in_seconds: Integer,
+            ?request_options: OpenAI::RequestOptions
           }
         end
       end

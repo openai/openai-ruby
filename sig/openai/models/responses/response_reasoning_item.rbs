@@ -5,10 +5,10 @@ module OpenAI
         {
           id: String,
           summary: ::Array[OpenAI::Responses::ResponseReasoningItem::Summary],
-          type: :reasoning,
-          content: ::Array[OpenAI::Responses::ResponseReasoningItem::Content],
-          encrypted_content: String?,
-          status: OpenAI::Models::Responses::ResponseReasoningItem::status
+          ?type: :reasoning,
+          ?content: ::Array[OpenAI::Responses::ResponseReasoningItem::Content],
+          ?encrypted_content: String?,
+          ?status: OpenAI::Models::Responses::ResponseReasoningItem::status
         }
 
       class ResponseReasoningItem < OpenAI::Internal::Type::BaseModel
@@ -44,13 +44,13 @@ module OpenAI
         def to_hash: -> {
           id: String,
           summary: ::Array[OpenAI::Responses::ResponseReasoningItem::Summary],
-          type: :reasoning,
-          content: ::Array[OpenAI::Responses::ResponseReasoningItem::Content],
-          encrypted_content: String?,
-          status: OpenAI::Models::Responses::ResponseReasoningItem::status
+          ?type: :reasoning,
+          ?content: ::Array[OpenAI::Responses::ResponseReasoningItem::Content],
+          ?encrypted_content: String?,
+          ?status: OpenAI::Models::Responses::ResponseReasoningItem::status
         }
 
-        type summary = { text: String, type: :summary_text }
+        type summary = { text: String, ?type: :summary_text }
 
         class Summary < OpenAI::Internal::Type::BaseModel
           attr_accessor text: String
@@ -59,10 +59,10 @@ module OpenAI
 
           def initialize: (text: String, ?type: :summary_text) -> void
 
-          def to_hash: -> { text: String, type: :summary_text }
+          def to_hash: -> { text: String, ?type: :summary_text }
         end
 
-        type content = { text: String, type: :reasoning_text }
+        type content = { text: String, ?type: :reasoning_text }
 
         class Content < OpenAI::Internal::Type::BaseModel
           attr_accessor text: String
@@ -71,7 +71,7 @@ module OpenAI
 
           def initialize: (text: String, ?type: :reasoning_text) -> void
 
-          def to_hash: -> { text: String, type: :reasoning_text }
+          def to_hash: -> { text: String, ?type: :reasoning_text }
         end
 
         type status = :in_progress | :completed | :incomplete

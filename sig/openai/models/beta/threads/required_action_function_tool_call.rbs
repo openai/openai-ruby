@@ -6,7 +6,7 @@ module OpenAI
           {
             id: String,
             function: OpenAI::Beta::Threads::RequiredActionFunctionToolCall::Function,
-            type: :function
+            ?type: :function
           }
 
         class RequiredActionFunctionToolCall < OpenAI::Internal::Type::BaseModel
@@ -25,7 +25,7 @@ module OpenAI
           def to_hash: -> {
             id: String,
             function: OpenAI::Beta::Threads::RequiredActionFunctionToolCall::Function,
-            type: :function
+            ?type: :function
           }
 
           type function = { arguments: String, name: String }

@@ -8,8 +8,8 @@ module OpenAI
           part: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
           sequence_number: Integer,
           summary_index: Integer,
-          type: :"response.reasoning_summary_part.done",
-          status: OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status
+          ?type: :"response.reasoning_summary_part.done",
+          ?status: OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status
         }
 
       class ResponseReasoningSummaryPartDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -47,11 +47,11 @@ module OpenAI
           part: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
           sequence_number: Integer,
           summary_index: Integer,
-          type: :"response.reasoning_summary_part.done",
-          status: OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status
+          ?type: :"response.reasoning_summary_part.done",
+          ?status: OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status
         }
 
-        type part = { text: String, type: :summary_text }
+        type part = { text: String, ?type: :summary_text }
 
         class Part < OpenAI::Internal::Type::BaseModel
           attr_accessor text: String
@@ -60,7 +60,7 @@ module OpenAI
 
           def initialize: (text: String, ?type: :summary_text) -> void
 
-          def to_hash: -> { text: String, type: :summary_text }
+          def to_hash: -> { text: String, ?type: :summary_text }
         end
 
         type status = :incomplete

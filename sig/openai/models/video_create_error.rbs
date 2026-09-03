@@ -4,7 +4,7 @@ module OpenAI
       {
         code: String,
         message: String,
-        misalignment: OpenAI::VideoCreateError::Misalignment
+        ?misalignment: OpenAI::VideoCreateError::Misalignment
       }
 
     class VideoCreateError < OpenAI::Internal::Type::BaseModel
@@ -27,14 +27,14 @@ module OpenAI
       def to_hash: -> {
         code: String,
         message: String,
-        misalignment: OpenAI::VideoCreateError::Misalignment
+        ?misalignment: OpenAI::VideoCreateError::Misalignment
       }
 
       type misalignment =
         {
-          detailed_explanation: String,
-          error_type: OpenAI::Models::VideoCreateError::Misalignment::error_type,
-          steer: OpenAI::VideoCreateError::Misalignment::Steer
+          ?detailed_explanation: String,
+          ?error_type: OpenAI::Models::VideoCreateError::Misalignment::error_type,
+          ?steer: OpenAI::VideoCreateError::Misalignment::Steer
         }
 
       class Misalignment < OpenAI::Internal::Type::BaseModel
@@ -61,9 +61,9 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          detailed_explanation: String,
-          error_type: OpenAI::Models::VideoCreateError::Misalignment::error_type,
-          steer: OpenAI::VideoCreateError::Misalignment::Steer
+          ?detailed_explanation: String,
+          ?error_type: OpenAI::Models::VideoCreateError::Misalignment::error_type,
+          ?steer: OpenAI::VideoCreateError::Misalignment::Steer
         }
 
         type error_type =

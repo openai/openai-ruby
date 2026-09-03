@@ -4,9 +4,9 @@ module OpenAI
       module Alpha
         type grader_validate_params =
           {
-            grader: OpenAI::Models::FineTuning::Alpha::GraderValidateParams::grader
+            grader: OpenAI::Models::FineTuning::Alpha::GraderValidateParams::grader,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class GraderValidateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -21,7 +21,7 @@ module OpenAI
 
           def to_hash: -> {
             grader: OpenAI::Models::FineTuning::Alpha::GraderValidateParams::grader,
-            request_options: OpenAI::RequestOptions
+            ?request_options: OpenAI::RequestOptions
           }
 
           type grader =

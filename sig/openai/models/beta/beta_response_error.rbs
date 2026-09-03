@@ -7,7 +7,7 @@ module OpenAI
         {
           code: OpenAI::Models::Beta::BetaResponseError::code,
           message: String,
-          misalignment: OpenAI::Beta::BetaResponseError::Misalignment
+          ?misalignment: OpenAI::Beta::BetaResponseError::Misalignment
         }
 
       class BetaResponseError < OpenAI::Internal::Type::BaseModel
@@ -30,7 +30,7 @@ module OpenAI
         def to_hash: -> {
           code: OpenAI::Models::Beta::BetaResponseError::code,
           message: String,
-          misalignment: OpenAI::Beta::BetaResponseError::Misalignment
+          ?misalignment: OpenAI::Beta::BetaResponseError::Misalignment
         }
 
         type code =
@@ -86,9 +86,9 @@ module OpenAI
 
         type misalignment =
           {
-            detailed_explanation: String,
-            error_type: OpenAI::Models::Beta::BetaResponseError::Misalignment::error_type,
-            steer: OpenAI::Beta::BetaResponseError::Misalignment::Steer
+            ?detailed_explanation: String,
+            ?error_type: OpenAI::Models::Beta::BetaResponseError::Misalignment::error_type,
+            ?steer: OpenAI::Beta::BetaResponseError::Misalignment::Steer
           }
 
         class Misalignment < OpenAI::Internal::Type::BaseModel
@@ -115,9 +115,9 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            detailed_explanation: String,
-            error_type: OpenAI::Models::Beta::BetaResponseError::Misalignment::error_type,
-            steer: OpenAI::Beta::BetaResponseError::Misalignment::Steer
+            ?detailed_explanation: String,
+            ?error_type: OpenAI::Models::Beta::BetaResponseError::Misalignment::error_type,
+            ?steer: OpenAI::Beta::BetaResponseError::Misalignment::Steer
           }
 
           type error_type =

@@ -7,9 +7,9 @@ module OpenAI
             {
               project_id: String,
               group_id: String,
-              group_type: OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::group_type
+              ?group_type: OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::group_type,
+              ?request_options: OpenAI::request_opts
             }
-            & OpenAI::Internal::Type::request_parameters
 
           class GroupRetrieveParams < OpenAI::Internal::Type::BaseModel
             extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -35,8 +35,8 @@ module OpenAI
             def to_hash: -> {
               project_id: String,
               group_id: String,
-              group_type: OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::group_type,
-              request_options: OpenAI::RequestOptions
+              ?group_type: OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::group_type,
+              ?request_options: OpenAI::RequestOptions
             }
 
             type group_type = :group | :tenant_group

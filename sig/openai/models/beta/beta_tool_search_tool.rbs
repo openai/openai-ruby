@@ -5,10 +5,10 @@ module OpenAI
     module Beta
       type beta_tool_search_tool =
         {
-          type: :tool_search,
-          description: String?,
-          execution: OpenAI::Models::Beta::BetaToolSearchTool::execution,
-          parameters: top?
+          ?type: :tool_search,
+          ?description: String?,
+          ?execution: OpenAI::Models::Beta::BetaToolSearchTool::execution,
+          ?parameters: top?
         }
 
       class BetaToolSearchTool < OpenAI::Internal::Type::BaseModel
@@ -32,10 +32,10 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :tool_search,
-          description: String?,
-          execution: OpenAI::Models::Beta::BetaToolSearchTool::execution,
-          parameters: top?
+          ?type: :tool_search,
+          ?description: String?,
+          ?execution: OpenAI::Models::Beta::BetaToolSearchTool::execution,
+          ?parameters: top?
         }
 
         type execution = :server | :client

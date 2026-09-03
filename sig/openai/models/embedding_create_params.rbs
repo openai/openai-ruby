@@ -4,11 +4,11 @@ module OpenAI
       {
         input: OpenAI::Models::EmbeddingCreateParams::input,
         model: OpenAI::Models::EmbeddingCreateParams::model,
-        dimensions: Integer,
-        encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
-        user: String
+        ?dimensions: Integer,
+        ?encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
+        ?user: String,
+        ?request_options: OpenAI::request_opts
       }
-      & OpenAI::Internal::Type::request_parameters
 
     class EmbeddingCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -44,10 +44,10 @@ module OpenAI
       def to_hash: -> {
         input: OpenAI::Models::EmbeddingCreateParams::input,
         model: OpenAI::Models::EmbeddingCreateParams::model,
-        dimensions: Integer,
-        encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
-        user: String,
-        request_options: OpenAI::RequestOptions
+        ?dimensions: Integer,
+        ?encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
+        ?user: String,
+        ?request_options: OpenAI::RequestOptions
       }
 
       type input =

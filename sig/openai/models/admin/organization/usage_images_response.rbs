@@ -7,7 +7,7 @@ module OpenAI
             data: ::Array[OpenAI::Models::Admin::Organization::UsageImagesResponse::Data],
             has_more: bool,
             next_page: String?,
-            object: :page
+            ?object: :page
           }
 
         class UsageImagesResponse < OpenAI::Internal::Type::BaseModel
@@ -30,13 +30,13 @@ module OpenAI
             data: ::Array[OpenAI::Models::Admin::Organization::UsageImagesResponse::Data],
             has_more: bool,
             next_page: String?,
-            object: :page
+            ?object: :page
           }
 
           type data =
             {
               end_time: Integer,
-              object: :bucket,
+              ?object: :bucket,
               results: ::Array[OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::result],
               start_time: Integer
             }
@@ -59,7 +59,7 @@ module OpenAI
 
             def to_hash: -> {
               end_time: Integer,
-              object: :bucket,
+              ?object: :bucket,
               results: ::Array[OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::result],
               start_time: Integer
             }
@@ -84,26 +84,26 @@ module OpenAI
                 {
                   input_tokens: Integer,
                   num_model_requests: Integer,
-                  object: :"organization.usage.completions.result",
+                  ?object: :"organization.usage.completions.result",
                   output_tokens: Integer,
-                  api_key_id: String?,
-                  batch: bool?,
-                  input_audio_tokens: Integer,
-                  input_cache_write_tokens: Integer,
-                  input_cached_audio_tokens: Integer,
-                  input_cached_image_tokens: Integer,
-                  input_cached_text_tokens: Integer,
-                  input_cached_tokens: Integer,
-                  input_image_tokens: Integer,
-                  input_text_tokens: Integer,
-                  input_uncached_tokens: Integer,
-                  model: String?,
-                  output_audio_tokens: Integer,
-                  output_image_tokens: Integer,
-                  output_text_tokens: Integer,
-                  project_id: String?,
-                  service_tier: String?,
-                  user_id: String?
+                  ?api_key_id: String?,
+                  ?batch: bool?,
+                  ?input_audio_tokens: Integer,
+                  ?input_cache_write_tokens: Integer,
+                  ?input_cached_audio_tokens: Integer,
+                  ?input_cached_image_tokens: Integer,
+                  ?input_cached_text_tokens: Integer,
+                  ?input_cached_tokens: Integer,
+                  ?input_image_tokens: Integer,
+                  ?input_text_tokens: Integer,
+                  ?input_uncached_tokens: Integer,
+                  ?model: String?,
+                  ?output_audio_tokens: Integer,
+                  ?output_image_tokens: Integer,
+                  ?output_text_tokens: Integer,
+                  ?project_id: String?,
+                  ?service_tier: String?,
+                  ?user_id: String?
                 }
 
               class OrganizationUsageCompletionsResult < OpenAI::Internal::Type::BaseModel
@@ -203,26 +203,26 @@ module OpenAI
                 def to_hash: -> {
                   input_tokens: Integer,
                   num_model_requests: Integer,
-                  object: :"organization.usage.completions.result",
+                  ?object: :"organization.usage.completions.result",
                   output_tokens: Integer,
-                  api_key_id: String?,
-                  batch: bool?,
-                  input_audio_tokens: Integer,
-                  input_cache_write_tokens: Integer,
-                  input_cached_audio_tokens: Integer,
-                  input_cached_image_tokens: Integer,
-                  input_cached_text_tokens: Integer,
-                  input_cached_tokens: Integer,
-                  input_image_tokens: Integer,
-                  input_text_tokens: Integer,
-                  input_uncached_tokens: Integer,
-                  model: String?,
-                  output_audio_tokens: Integer,
-                  output_image_tokens: Integer,
-                  output_text_tokens: Integer,
-                  project_id: String?,
-                  service_tier: String?,
-                  user_id: String?
+                  ?api_key_id: String?,
+                  ?batch: bool?,
+                  ?input_audio_tokens: Integer,
+                  ?input_cache_write_tokens: Integer,
+                  ?input_cached_audio_tokens: Integer,
+                  ?input_cached_image_tokens: Integer,
+                  ?input_cached_text_tokens: Integer,
+                  ?input_cached_tokens: Integer,
+                  ?input_image_tokens: Integer,
+                  ?input_text_tokens: Integer,
+                  ?input_uncached_tokens: Integer,
+                  ?model: String?,
+                  ?output_audio_tokens: Integer,
+                  ?output_image_tokens: Integer,
+                  ?output_text_tokens: Integer,
+                  ?project_id: String?,
+                  ?service_tier: String?,
+                  ?user_id: String?
                 }
               end
 
@@ -230,11 +230,11 @@ module OpenAI
                 {
                   input_tokens: Integer,
                   num_model_requests: Integer,
-                  object: :"organization.usage.embeddings.result",
-                  api_key_id: String?,
-                  model: String?,
-                  project_id: String?,
-                  user_id: String?
+                  ?object: :"organization.usage.embeddings.result",
+                  ?api_key_id: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?user_id: String?
                 }
 
               class OrganizationUsageEmbeddingsResult < OpenAI::Internal::Type::BaseModel
@@ -265,11 +265,11 @@ module OpenAI
                 def to_hash: -> {
                   input_tokens: Integer,
                   num_model_requests: Integer,
-                  object: :"organization.usage.embeddings.result",
-                  api_key_id: String?,
-                  model: String?,
-                  project_id: String?,
-                  user_id: String?
+                  ?object: :"organization.usage.embeddings.result",
+                  ?api_key_id: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?user_id: String?
                 }
               end
 
@@ -277,11 +277,11 @@ module OpenAI
                 {
                   input_tokens: Integer,
                   num_model_requests: Integer,
-                  object: :"organization.usage.moderations.result",
-                  api_key_id: String?,
-                  model: String?,
-                  project_id: String?,
-                  user_id: String?
+                  ?object: :"organization.usage.moderations.result",
+                  ?api_key_id: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?user_id: String?
                 }
 
               class OrganizationUsageModerationsResult < OpenAI::Internal::Type::BaseModel
@@ -312,11 +312,11 @@ module OpenAI
                 def to_hash: -> {
                   input_tokens: Integer,
                   num_model_requests: Integer,
-                  object: :"organization.usage.moderations.result",
-                  api_key_id: String?,
-                  model: String?,
-                  project_id: String?,
-                  user_id: String?
+                  ?object: :"organization.usage.moderations.result",
+                  ?api_key_id: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?user_id: String?
                 }
               end
 
@@ -324,13 +324,13 @@ module OpenAI
                 {
                   images: Integer,
                   num_model_requests: Integer,
-                  object: :"organization.usage.images.result",
-                  api_key_id: String?,
-                  model: String?,
-                  project_id: String?,
-                  size: String?,
-                  source: String?,
-                  user_id: String?
+                  ?object: :"organization.usage.images.result",
+                  ?api_key_id: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?size: String?,
+                  ?source: String?,
+                  ?user_id: String?
                 }
 
               class OrganizationUsageImagesResult < OpenAI::Internal::Type::BaseModel
@@ -367,13 +367,13 @@ module OpenAI
                 def to_hash: -> {
                   images: Integer,
                   num_model_requests: Integer,
-                  object: :"organization.usage.images.result",
-                  api_key_id: String?,
-                  model: String?,
-                  project_id: String?,
-                  size: String?,
-                  source: String?,
-                  user_id: String?
+                  ?object: :"organization.usage.images.result",
+                  ?api_key_id: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?size: String?,
+                  ?source: String?,
+                  ?user_id: String?
                 }
               end
 
@@ -381,11 +381,11 @@ module OpenAI
                 {
                   characters: Integer,
                   num_model_requests: Integer,
-                  object: :"organization.usage.audio_speeches.result",
-                  api_key_id: String?,
-                  model: String?,
-                  project_id: String?,
-                  user_id: String?
+                  ?object: :"organization.usage.audio_speeches.result",
+                  ?api_key_id: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?user_id: String?
                 }
 
               class OrganizationUsageAudioSpeechesResult < OpenAI::Internal::Type::BaseModel
@@ -416,23 +416,23 @@ module OpenAI
                 def to_hash: -> {
                   characters: Integer,
                   num_model_requests: Integer,
-                  object: :"organization.usage.audio_speeches.result",
-                  api_key_id: String?,
-                  model: String?,
-                  project_id: String?,
-                  user_id: String?
+                  ?object: :"organization.usage.audio_speeches.result",
+                  ?api_key_id: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?user_id: String?
                 }
               end
 
               type organization_usage_audio_transcriptions_result =
                 {
                   num_model_requests: Integer,
-                  object: :"organization.usage.audio_transcriptions.result",
+                  ?object: :"organization.usage.audio_transcriptions.result",
                   seconds: Integer,
-                  api_key_id: String?,
-                  model: String?,
-                  project_id: String?,
-                  user_id: String?
+                  ?api_key_id: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?user_id: String?
                 }
 
               class OrganizationUsageAudioTranscriptionsResult < OpenAI::Internal::Type::BaseModel
@@ -462,20 +462,20 @@ module OpenAI
 
                 def to_hash: -> {
                   num_model_requests: Integer,
-                  object: :"organization.usage.audio_transcriptions.result",
+                  ?object: :"organization.usage.audio_transcriptions.result",
                   seconds: Integer,
-                  api_key_id: String?,
-                  model: String?,
-                  project_id: String?,
-                  user_id: String?
+                  ?api_key_id: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?user_id: String?
                 }
               end
 
               type organization_usage_vector_stores_result =
                 {
-                  object: :"organization.usage.vector_stores.result",
+                  ?object: :"organization.usage.vector_stores.result",
                   usage_bytes: Integer,
-                  project_id: String?
+                  ?project_id: String?
                 }
 
               class OrganizationUsageVectorStoresResult < OpenAI::Internal::Type::BaseModel
@@ -492,17 +492,17 @@ module OpenAI
                 ) -> void
 
                 def to_hash: -> {
-                  object: :"organization.usage.vector_stores.result",
+                  ?object: :"organization.usage.vector_stores.result",
                   usage_bytes: Integer,
-                  project_id: String?
+                  ?project_id: String?
                 }
               end
 
               type organization_usage_code_interpreter_sessions_result =
                 {
                   num_sessions: Integer,
-                  object: :"organization.usage.code_interpreter_sessions.result",
-                  project_id: String?
+                  ?object: :"organization.usage.code_interpreter_sessions.result",
+                  ?project_id: String?
                 }
 
               class OrganizationUsageCodeInterpreterSessionsResult < OpenAI::Internal::Type::BaseModel
@@ -520,19 +520,19 @@ module OpenAI
 
                 def to_hash: -> {
                   num_sessions: Integer,
-                  object: :"organization.usage.code_interpreter_sessions.result",
-                  project_id: String?
+                  ?object: :"organization.usage.code_interpreter_sessions.result",
+                  ?project_id: String?
                 }
               end
 
               type organization_usage_file_searches_result =
                 {
                   num_requests: Integer,
-                  object: :"organization.usage.file_searches.result",
-                  api_key_id: String?,
-                  project_id: String?,
-                  user_id: String?,
-                  vector_store_id: String?
+                  ?object: :"organization.usage.file_searches.result",
+                  ?api_key_id: String?,
+                  ?project_id: String?,
+                  ?user_id: String?,
+                  ?vector_store_id: String?
                 }
 
               class OrganizationUsageFileSearchesResult < OpenAI::Internal::Type::BaseModel
@@ -559,11 +559,11 @@ module OpenAI
 
                 def to_hash: -> {
                   num_requests: Integer,
-                  object: :"organization.usage.file_searches.result",
-                  api_key_id: String?,
-                  project_id: String?,
-                  user_id: String?,
-                  vector_store_id: String?
+                  ?object: :"organization.usage.file_searches.result",
+                  ?api_key_id: String?,
+                  ?project_id: String?,
+                  ?user_id: String?,
+                  ?vector_store_id: String?
                 }
               end
 
@@ -571,12 +571,12 @@ module OpenAI
                 {
                   num_model_requests: Integer,
                   num_requests: Integer,
-                  object: :"organization.usage.web_searches.result",
-                  api_key_id: String?,
-                  context_level: String?,
-                  model: String?,
-                  project_id: String?,
-                  user_id: String?
+                  ?object: :"organization.usage.web_searches.result",
+                  ?api_key_id: String?,
+                  ?context_level: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?user_id: String?
                 }
 
               class OrganizationUsageWebSearchesResult < OpenAI::Internal::Type::BaseModel
@@ -610,24 +610,24 @@ module OpenAI
                 def to_hash: -> {
                   num_model_requests: Integer,
                   num_requests: Integer,
-                  object: :"organization.usage.web_searches.result",
-                  api_key_id: String?,
-                  context_level: String?,
-                  model: String?,
-                  project_id: String?,
-                  user_id: String?
+                  ?object: :"organization.usage.web_searches.result",
+                  ?api_key_id: String?,
+                  ?context_level: String?,
+                  ?model: String?,
+                  ?project_id: String?,
+                  ?user_id: String?
                 }
               end
 
               type organization_costs_result =
                 {
-                  object: :"organization.costs.result",
-                  amount: OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult::Amount,
-                  api_key_id: String?,
-                  line_item: String?,
-                  project_id: String?,
-                  quantity: Float?,
-                  quantity_unit: OpenAI::Models::Admin::Organization::cost_quantity_unit?
+                  ?object: :"organization.costs.result",
+                  ?amount: OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult::Amount,
+                  ?api_key_id: String?,
+                  ?line_item: String?,
+                  ?project_id: String?,
+                  ?quantity: Float?,
+                  ?quantity_unit: OpenAI::Models::Admin::Organization::cost_quantity_unit?
                 }
 
               class OrganizationCostsResult < OpenAI::Internal::Type::BaseModel
@@ -660,16 +660,16 @@ module OpenAI
                 ) -> void
 
                 def to_hash: -> {
-                  object: :"organization.costs.result",
-                  amount: OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult::Amount,
-                  api_key_id: String?,
-                  line_item: String?,
-                  project_id: String?,
-                  quantity: Float?,
-                  quantity_unit: OpenAI::Models::Admin::Organization::cost_quantity_unit?
+                  ?object: :"organization.costs.result",
+                  ?amount: OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult::Amount,
+                  ?api_key_id: String?,
+                  ?line_item: String?,
+                  ?project_id: String?,
+                  ?quantity: Float?,
+                  ?quantity_unit: OpenAI::Models::Admin::Organization::cost_quantity_unit?
                 }
 
-                type amount = { currency: String, value: Float }
+                type amount = { ?currency: String, ?value: Float }
 
                 class Amount < OpenAI::Internal::Type::BaseModel
                   attr_reader currency: String?
@@ -682,7 +682,7 @@ module OpenAI
 
                   def initialize: (?currency: String, ?value: Float) -> void
 
-                  def to_hash: -> { currency: String, value: Float }
+                  def to_hash: -> { ?currency: String, ?value: Float }
                 end
               end
 

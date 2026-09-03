@@ -5,10 +5,10 @@ module OpenAI
     module Beta
       type beta_response_configuration_update_item_param =
         {
-          type: :configuration_update,
-          id: String?,
-          agent: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Agent?,
-          reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning
+          ?type: :configuration_update,
+          ?id: String?,
+          ?agent: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Agent?,
+          ?reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning
         }
 
       class BetaResponseConfigurationUpdateItemParam < OpenAI::Internal::Type::BaseModel
@@ -32,10 +32,10 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :configuration_update,
-          id: String?,
-          agent: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Agent?,
-          reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning
+          ?type: :configuration_update,
+          ?id: String?,
+          ?agent: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Agent?,
+          ?reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning
         }
 
         type agent = { agent_name: String }
@@ -50,7 +50,7 @@ module OpenAI
 
         type reasoning =
           {
-            effort: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning::effort?
+            ?effort: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning::effort?
           }
 
         class Reasoning < OpenAI::Internal::Type::BaseModel
@@ -61,7 +61,7 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            effort: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning::effort?
+            ?effort: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning::effort?
           }
 
           type effort =

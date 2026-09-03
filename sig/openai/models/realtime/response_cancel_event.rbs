@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Realtime
       type response_cancel_event =
-        { type: :"response.cancel", event_id: String, response_id: String }
+        { ?type: :"response.cancel", ?event_id: String, ?response_id: String }
 
       class ResponseCancelEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor type: :"response.cancel"
@@ -22,9 +22,9 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :"response.cancel",
-          event_id: String,
-          response_id: String
+          ?type: :"response.cancel",
+          ?event_id: String,
+          ?response_id: String
         }
       end
     end

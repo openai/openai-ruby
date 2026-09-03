@@ -6,8 +6,8 @@ module OpenAI
           error: OpenAI::Responses::ResponseSteerFailedEvent::Error,
           sequence_number: Integer,
           steer: OpenAI::Responses::ResponseSteerFailedEvent::Steer,
-          type: :"response.steer.failed",
-          stream_id: String
+          ?type: :"response.steer.failed",
+          ?stream_id: String
         }
 
       class ResponseSteerFailedEvent < OpenAI::Internal::Type::BaseModel
@@ -35,15 +35,15 @@ module OpenAI
           error: OpenAI::Responses::ResponseSteerFailedEvent::Error,
           sequence_number: Integer,
           steer: OpenAI::Responses::ResponseSteerFailedEvent::Steer,
-          type: :"response.steer.failed",
-          stream_id: String
+          ?type: :"response.steer.failed",
+          ?stream_id: String
         }
 
         type error =
           {
             code: OpenAI::Models::Responses::response_steer_error_code,
             message: String,
-            type: :invalid_request_error
+            ?type: :invalid_request_error
           }
 
         class Error < OpenAI::Internal::Type::BaseModel
@@ -62,7 +62,7 @@ module OpenAI
           def to_hash: -> {
             code: OpenAI::Models::Responses::response_steer_error_code,
             message: String,
-            type: :invalid_request_error
+            ?type: :invalid_request_error
           }
         end
 
@@ -70,7 +70,7 @@ module OpenAI
           {
             input: OpenAI::Models::Responses::response_steer_input,
             previous_response_id: String,
-            id: String
+            ?id: String
           }
 
         class Steer < OpenAI::Internal::Type::BaseModel
@@ -91,7 +91,7 @@ module OpenAI
           def to_hash: -> {
             input: OpenAI::Models::Responses::response_steer_input,
             previous_response_id: String,
-            id: String
+            ?id: String
           }
         end
       end

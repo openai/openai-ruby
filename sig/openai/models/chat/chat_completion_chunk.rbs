@@ -9,12 +9,12 @@ module OpenAI
           choices: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice],
           created: Integer,
           model: String,
-          object: :"chat.completion.chunk",
-          moderation: OpenAI::Chat::ChatCompletionChunk::Moderation?,
-          obfuscation: String,
-          service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
-          system_fingerprint: String,
-          usage: OpenAI::CompletionUsage?
+          ?object: :"chat.completion.chunk",
+          ?moderation: OpenAI::Chat::ChatCompletionChunk::Moderation?,
+          ?obfuscation: String,
+          ?service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
+          ?system_fingerprint: String,
+          ?usage: OpenAI::CompletionUsage?
         }
 
       class ChatCompletionChunk < OpenAI::Internal::Type::BaseModel
@@ -60,12 +60,12 @@ module OpenAI
           choices: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice],
           created: Integer,
           model: String,
-          object: :"chat.completion.chunk",
-          moderation: OpenAI::Chat::ChatCompletionChunk::Moderation?,
-          obfuscation: String,
-          service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
-          system_fingerprint: String,
-          usage: OpenAI::CompletionUsage?
+          ?object: :"chat.completion.chunk",
+          ?moderation: OpenAI::Chat::ChatCompletionChunk::Moderation?,
+          ?obfuscation: String,
+          ?service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
+          ?system_fingerprint: String,
+          ?usage: OpenAI::CompletionUsage?
         }
 
         type choice =
@@ -73,7 +73,7 @@ module OpenAI
             delta: OpenAI::Chat::ChatCompletionChunk::Choice::Delta,
             finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?,
             index: Integer,
-            logprobs: OpenAI::Chat::ChatCompletionChunk::Choice::Logprobs?
+            ?logprobs: OpenAI::Chat::ChatCompletionChunk::Choice::Logprobs?
           }
 
         class Choice < OpenAI::Internal::Type::BaseModel
@@ -96,16 +96,16 @@ module OpenAI
             delta: OpenAI::Chat::ChatCompletionChunk::Choice::Delta,
             finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?,
             index: Integer,
-            logprobs: OpenAI::Chat::ChatCompletionChunk::Choice::Logprobs?
+            ?logprobs: OpenAI::Chat::ChatCompletionChunk::Choice::Logprobs?
           }
 
           type delta =
             {
-              content: String?,
-              function_call: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
-              refusal: String?,
-              role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role,
-              tool_calls: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
+              ?content: String?,
+              ?function_call: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
+              ?refusal: String?,
+              ?role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role,
+              ?tool_calls: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
             }
 
           class Delta < OpenAI::Internal::Type::BaseModel
@@ -140,14 +140,14 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              content: String?,
-              function_call: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
-              refusal: String?,
-              role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role,
-              tool_calls: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
+              ?content: String?,
+              ?function_call: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
+              ?refusal: String?,
+              ?role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role,
+              ?tool_calls: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
             }
 
-            type function_call = { arguments: String, name: String }
+            type function_call = { ?arguments: String, ?name: String }
 
             class FunctionCall < OpenAI::Internal::Type::BaseModel
               attr_reader arguments: String?
@@ -160,7 +160,7 @@ module OpenAI
 
               def initialize: (?arguments: String, ?name: String) -> void
 
-              def to_hash: -> { arguments: String, name: String }
+              def to_hash: -> { ?arguments: String, ?name: String }
             end
 
             type role = :developer | :system | :user | :assistant | :tool
@@ -180,9 +180,9 @@ module OpenAI
             type tool_call =
               {
                 index: Integer,
-                id: String,
-                function: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
-                type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
+                ?id: String,
+                ?function: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
+                ?type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
               }
 
             class ToolCall < OpenAI::Internal::Type::BaseModel
@@ -213,12 +213,12 @@ module OpenAI
 
               def to_hash: -> {
                 index: Integer,
-                id: String,
-                function: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
-                type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
+                ?id: String,
+                ?function: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
+                ?type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
               }
 
-              type function = { arguments: String, name: String }
+              type function = { ?arguments: String, ?name: String }
 
               class Function < OpenAI::Internal::Type::BaseModel
                 attr_reader arguments: String?
@@ -231,7 +231,7 @@ module OpenAI
 
                 def initialize: (?arguments: String, ?name: String) -> void
 
-                def to_hash: -> { arguments: String, name: String }
+                def to_hash: -> { ?arguments: String, ?name: String }
               end
 
               type type_ = :function
@@ -316,7 +316,7 @@ module OpenAI
               {
                 model: String,
                 results: ::Array[OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result],
-                type: :moderation_results
+                ?type: :moderation_results
               }
 
             class ModerationResults < OpenAI::Internal::Type::BaseModel
@@ -335,7 +335,7 @@ module OpenAI
               def to_hash: -> {
                 model: String,
                 results: ::Array[OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result],
-                type: :moderation_results
+                ?type: :moderation_results
               }
 
               type result =
@@ -345,7 +345,7 @@ module OpenAI
                   category_scores: ::Hash[Symbol, Float],
                   flagged: bool,
                   model: String,
-                  type: :moderation_result
+                  ?type: :moderation_result
                 }
 
               class Result < OpenAI::Internal::Type::BaseModel
@@ -376,7 +376,7 @@ module OpenAI
                   category_scores: ::Hash[Symbol, Float],
                   flagged: bool,
                   model: String,
-                  type: :moderation_result
+                  ?type: :moderation_result
                 }
 
                 type category_applied_input_type = :text | :image
@@ -392,7 +392,7 @@ module OpenAI
               end
             end
 
-            type error = { code: String, message: String, type: :error }
+            type error = { code: String, message: String, ?type: :error }
 
             class Error < OpenAI::Internal::Type::BaseModel
               attr_accessor code: String
@@ -407,7 +407,7 @@ module OpenAI
                 ?type: :error
               ) -> void
 
-              def to_hash: -> { code: String, message: String, type: :error }
+              def to_hash: -> { code: String, message: String, ?type: :error }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Moderation::input]
@@ -424,7 +424,7 @@ module OpenAI
               {
                 model: String,
                 results: ::Array[OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result],
-                type: :moderation_results
+                ?type: :moderation_results
               }
 
             class ModerationResults < OpenAI::Internal::Type::BaseModel
@@ -443,7 +443,7 @@ module OpenAI
               def to_hash: -> {
                 model: String,
                 results: ::Array[OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result],
-                type: :moderation_results
+                ?type: :moderation_results
               }
 
               type result =
@@ -453,7 +453,7 @@ module OpenAI
                   category_scores: ::Hash[Symbol, Float],
                   flagged: bool,
                   model: String,
-                  type: :moderation_result
+                  ?type: :moderation_result
                 }
 
               class Result < OpenAI::Internal::Type::BaseModel
@@ -484,7 +484,7 @@ module OpenAI
                   category_scores: ::Hash[Symbol, Float],
                   flagged: bool,
                   model: String,
-                  type: :moderation_result
+                  ?type: :moderation_result
                 }
 
                 type category_applied_input_type = :text | :image
@@ -500,7 +500,7 @@ module OpenAI
               end
             end
 
-            type error = { code: String, message: String, type: :error }
+            type error = { code: String, message: String, ?type: :error }
 
             class Error < OpenAI::Internal::Type::BaseModel
               attr_accessor code: String
@@ -515,7 +515,7 @@ module OpenAI
                 ?type: :error
               ) -> void
 
-              def to_hash: -> { code: String, message: String, type: :error }
+              def to_hash: -> { code: String, message: String, ?type: :error }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Moderation::output]

@@ -1,8 +1,10 @@
 module OpenAI
   module Models
     type skill_create_params =
-      { files: OpenAI::Models::SkillCreateParams::files }
-      & OpenAI::Internal::Type::request_parameters
+      {
+        ?files: OpenAI::Models::SkillCreateParams::files,
+        ?request_options: OpenAI::request_opts
+      }
 
     class SkillCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -20,8 +22,8 @@ module OpenAI
       ) -> void
 
       def to_hash: -> {
-        files: OpenAI::Models::SkillCreateParams::files,
-        request_options: OpenAI::RequestOptions
+        ?files: OpenAI::Models::SkillCreateParams::files,
+        ?request_options: OpenAI::RequestOptions
       }
 
       type files =

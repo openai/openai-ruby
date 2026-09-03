@@ -5,8 +5,8 @@ module OpenAI
         {
           id: String,
           encrypted_content: String,
-          type: :compaction,
-          created_by: String
+          ?type: :compaction,
+          ?created_by: String
         }
 
       class ResponseCompactionItem < OpenAI::Internal::Type::BaseModel
@@ -30,8 +30,8 @@ module OpenAI
         def to_hash: -> {
           id: String,
           encrypted_content: String,
-          type: :compaction,
-          created_by: String
+          ?type: :compaction,
+          ?created_by: String
         }
       end
     end

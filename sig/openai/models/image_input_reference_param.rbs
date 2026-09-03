@@ -1,6 +1,6 @@
 module OpenAI
   module Models
-    type image_input_reference_param = { file_id: String, image_url: String }
+    type image_input_reference_param = { ?file_id: String, ?image_url: String }
 
     class ImageInputReferenceParam < OpenAI::Internal::Type::BaseModel
       attr_reader file_id: String?
@@ -13,7 +13,7 @@ module OpenAI
 
       def initialize: (?file_id: String, ?image_url: String) -> void
 
-      def to_hash: -> { file_id: String, image_url: String }
+      def to_hash: -> { ?file_id: String, ?image_url: String }
     end
   end
 end

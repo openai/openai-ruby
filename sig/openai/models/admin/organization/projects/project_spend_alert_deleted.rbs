@@ -9,7 +9,7 @@ module OpenAI
             {
               id: String,
               deleted: bool,
-              object: :"project.spend_alert.deleted"
+              ?object: :"project.spend_alert.deleted"
             }
 
           class ProjectSpendAlertDeleted < OpenAI::Internal::Type::BaseModel
@@ -28,7 +28,7 @@ module OpenAI
             def to_hash: -> {
               id: String,
               deleted: bool,
-              object: :"project.spend_alert.deleted"
+              ?object: :"project.spend_alert.deleted"
             }
           end
         end

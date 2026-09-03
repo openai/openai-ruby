@@ -1,7 +1,7 @@
 module OpenAI
   module Models
     type batch_error =
-      { code: String, line: Integer?, message: String, param: String? }
+      { ?code: String, ?line: Integer?, ?message: String, ?param: String? }
 
     class BatchError < OpenAI::Internal::Type::BaseModel
       attr_reader code: String?
@@ -24,10 +24,10 @@ module OpenAI
       ) -> void
 
       def to_hash: -> {
-        code: String,
-        line: Integer?,
-        message: String,
-        param: String?
+        ?code: String,
+        ?line: Integer?,
+        ?message: String,
+        ?param: String?
       }
     end
   end

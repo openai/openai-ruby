@@ -45,8 +45,8 @@ module OpenAI
             author: String,
             content: ::Array[OpenAI::Models::Beta::BetaResponseOutputItem::AgentMessage::content],
             recipient: String,
-            type: :agent_message,
-            agent: OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Agent
+            ?type: :agent_message,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Agent
           }
 
         class AgentMessage < OpenAI::Internal::Type::BaseModel
@@ -80,8 +80,8 @@ module OpenAI
             author: String,
             content: ::Array[OpenAI::Models::Beta::BetaResponseOutputItem::AgentMessage::content],
             recipient: String,
-            type: :agent_message,
-            agent: OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Agent
+            ?type: :agent_message,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Agent
           }
 
           type content =
@@ -99,7 +99,7 @@ module OpenAI
           module Content
             extend OpenAI::Internal::Type::Union
 
-            type text = { text: String, type: :text }
+            type text = { text: String, ?type: :text }
 
             class Text < OpenAI::Internal::Type::BaseModel
               attr_accessor text: String
@@ -108,10 +108,10 @@ module OpenAI
 
               def initialize: (text: String, ?type: :text) -> void
 
-              def to_hash: -> { text: String, type: :text }
+              def to_hash: -> { text: String, ?type: :text }
             end
 
-            type summary_text = { text: String, type: :summary_text }
+            type summary_text = { text: String, ?type: :summary_text }
 
             class SummaryText < OpenAI::Internal::Type::BaseModel
               attr_accessor text: String
@@ -120,10 +120,10 @@ module OpenAI
 
               def initialize: (text: String, ?type: :summary_text) -> void
 
-              def to_hash: -> { text: String, type: :summary_text }
+              def to_hash: -> { text: String, ?type: :summary_text }
             end
 
-            type reasoning_text = { text: String, type: :reasoning_text }
+            type reasoning_text = { text: String, ?type: :reasoning_text }
 
             class ReasoningText < OpenAI::Internal::Type::BaseModel
               attr_accessor text: String
@@ -132,7 +132,7 @@ module OpenAI
 
               def initialize: (text: String, ?type: :reasoning_text) -> void
 
-              def to_hash: -> { text: String, type: :reasoning_text }
+              def to_hash: -> { text: String, ?type: :reasoning_text }
             end
 
             type computer_screenshot =
@@ -140,8 +140,8 @@ module OpenAI
                 detail: OpenAI::Models::Beta::BetaResponseOutputItem::AgentMessage::Content::ComputerScreenshot::detail,
                 file_id: String?,
                 image_url: String?,
-                type: :computer_screenshot,
-                prompt_cache_breakpoint: OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint
+                ?type: :computer_screenshot,
+                ?prompt_cache_breakpoint: OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint
               }
 
             class ComputerScreenshot < OpenAI::Internal::Type::BaseModel
@@ -171,8 +171,8 @@ module OpenAI
                 detail: OpenAI::Models::Beta::BetaResponseOutputItem::AgentMessage::Content::ComputerScreenshot::detail,
                 file_id: String?,
                 image_url: String?,
-                type: :computer_screenshot,
-                prompt_cache_breakpoint: OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint
+                ?type: :computer_screenshot,
+                ?prompt_cache_breakpoint: OpenAI::Beta::BetaResponseOutputItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint
               }
 
               type detail = :low | :high | :auto | :original
@@ -188,19 +188,19 @@ module OpenAI
                 def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseOutputItem::AgentMessage::Content::ComputerScreenshot::detail]
               end
 
-              type prompt_cache_breakpoint = { mode: :explicit }
+              type prompt_cache_breakpoint = { ?mode: :explicit }
 
               class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
                 attr_accessor mode: :explicit
 
                 def initialize: (?mode: :explicit) -> void
 
-                def to_hash: -> { mode: :explicit }
+                def to_hash: -> { ?mode: :explicit }
               end
             end
 
             type encrypted_content =
-              { encrypted_content: String, type: :encrypted_content }
+              { encrypted_content: String, ?type: :encrypted_content }
 
             class EncryptedContent < OpenAI::Internal::Type::BaseModel
               attr_accessor encrypted_content: String
@@ -214,7 +214,7 @@ module OpenAI
 
               def to_hash: -> {
                 encrypted_content: String,
-                type: :encrypted_content
+                ?type: :encrypted_content
               }
             end
 
@@ -238,8 +238,8 @@ module OpenAI
             action: OpenAI::Models::Beta::BetaResponseOutputItem::MultiAgentCall::action,
             arguments: String,
             call_id: String,
-            type: :multi_agent_call,
-            agent: OpenAI::Beta::BetaResponseOutputItem::MultiAgentCall::Agent
+            ?type: :multi_agent_call,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::MultiAgentCall::Agent
           }
 
         class MultiAgentCall < OpenAI::Internal::Type::BaseModel
@@ -273,8 +273,8 @@ module OpenAI
             action: OpenAI::Models::Beta::BetaResponseOutputItem::MultiAgentCall::action,
             arguments: String,
             call_id: String,
-            type: :multi_agent_call,
-            agent: OpenAI::Beta::BetaResponseOutputItem::MultiAgentCall::Agent
+            ?type: :multi_agent_call,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::MultiAgentCall::Agent
           }
 
           type action =
@@ -315,8 +315,8 @@ module OpenAI
             action: OpenAI::Models::Beta::BetaResponseOutputItem::MultiAgentCallOutput::action,
             call_id: String,
             output: ::Array[OpenAI::Beta::BetaResponseOutputText],
-            type: :multi_agent_call_output,
-            agent: OpenAI::Beta::BetaResponseOutputItem::MultiAgentCallOutput::Agent
+            ?type: :multi_agent_call_output,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::MultiAgentCallOutput::Agent
           }
 
         class MultiAgentCallOutput < OpenAI::Internal::Type::BaseModel
@@ -350,8 +350,8 @@ module OpenAI
             action: OpenAI::Models::Beta::BetaResponseOutputItem::MultiAgentCallOutput::action,
             call_id: String,
             output: ::Array[OpenAI::Beta::BetaResponseOutputText],
-            type: :multi_agent_call_output,
-            agent: OpenAI::Beta::BetaResponseOutputItem::MultiAgentCallOutput::Agent
+            ?type: :multi_agent_call_output,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::MultiAgentCallOutput::Agent
           }
 
           type action =
@@ -392,8 +392,8 @@ module OpenAI
             call_id: String,
             code: String,
             fingerprint: String,
-            type: :program,
-            agent: OpenAI::Beta::BetaResponseOutputItem::Program::Agent
+            ?type: :program,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::Program::Agent
           }
 
         class Program < OpenAI::Internal::Type::BaseModel
@@ -427,8 +427,8 @@ module OpenAI
             call_id: String,
             code: String,
             fingerprint: String,
-            type: :program,
-            agent: OpenAI::Beta::BetaResponseOutputItem::Program::Agent
+            ?type: :program,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::Program::Agent
           }
 
           type agent = { agent_name: String }
@@ -448,8 +448,8 @@ module OpenAI
             call_id: String,
             result: String,
             status: OpenAI::Models::Beta::BetaResponseOutputItem::ProgramOutput::status,
-            type: :program_output,
-            agent: OpenAI::Beta::BetaResponseOutputItem::ProgramOutput::Agent
+            ?type: :program_output,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::ProgramOutput::Agent
           }
 
         class ProgramOutput < OpenAI::Internal::Type::BaseModel
@@ -483,8 +483,8 @@ module OpenAI
             call_id: String,
             result: String,
             status: OpenAI::Models::Beta::BetaResponseOutputItem::ProgramOutput::status,
-            type: :program_output,
-            agent: OpenAI::Beta::BetaResponseOutputItem::ProgramOutput::Agent
+            ?type: :program_output,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::ProgramOutput::Agent
           }
 
           type status = :completed | :incomplete
@@ -514,8 +514,8 @@ module OpenAI
             id: String,
             role: OpenAI::Models::Beta::BetaResponseOutputItem::AdditionalTools::role,
             tools: ::Array[OpenAI::Models::Beta::beta_tool],
-            type: :additional_tools,
-            agent: OpenAI::Beta::BetaResponseOutputItem::AdditionalTools::Agent
+            ?type: :additional_tools,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::AdditionalTools::Agent
           }
 
         class AdditionalTools < OpenAI::Internal::Type::BaseModel
@@ -545,8 +545,8 @@ module OpenAI
             id: String,
             role: OpenAI::Models::Beta::BetaResponseOutputItem::AdditionalTools::role,
             tools: ::Array[OpenAI::Models::Beta::beta_tool],
-            type: :additional_tools,
-            agent: OpenAI::Beta::BetaResponseOutputItem::AdditionalTools::Agent
+            ?type: :additional_tools,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::AdditionalTools::Agent
           }
 
           type role =
@@ -590,8 +590,8 @@ module OpenAI
             id: String,
             result: String?,
             status: OpenAI::Models::Beta::BetaResponseOutputItem::ImageGenerationCall::status,
-            type: :image_generation_call,
-            agent: OpenAI::Beta::BetaResponseOutputItem::ImageGenerationCall::Agent?
+            ?type: :image_generation_call,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::ImageGenerationCall::Agent?
           }
 
         class ImageGenerationCall < OpenAI::Internal::Type::BaseModel
@@ -617,8 +617,8 @@ module OpenAI
             id: String,
             result: String?,
             status: OpenAI::Models::Beta::BetaResponseOutputItem::ImageGenerationCall::status,
-            type: :image_generation_call,
-            agent: OpenAI::Beta::BetaResponseOutputItem::ImageGenerationCall::Agent?
+            ?type: :image_generation_call,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::ImageGenerationCall::Agent?
           }
 
           type status = :in_progress | :completed | :generating | :failed
@@ -651,8 +651,8 @@ module OpenAI
             action: OpenAI::Beta::BetaResponseOutputItem::LocalShellCall::Action,
             call_id: String,
             status: OpenAI::Models::Beta::BetaResponseOutputItem::LocalShellCall::status,
-            type: :local_shell_call,
-            agent: OpenAI::Beta::BetaResponseOutputItem::LocalShellCall::Agent?
+            ?type: :local_shell_call,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::LocalShellCall::Agent?
           }
 
         class LocalShellCall < OpenAI::Internal::Type::BaseModel
@@ -682,18 +682,18 @@ module OpenAI
             action: OpenAI::Beta::BetaResponseOutputItem::LocalShellCall::Action,
             call_id: String,
             status: OpenAI::Models::Beta::BetaResponseOutputItem::LocalShellCall::status,
-            type: :local_shell_call,
-            agent: OpenAI::Beta::BetaResponseOutputItem::LocalShellCall::Agent?
+            ?type: :local_shell_call,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::LocalShellCall::Agent?
           }
 
           type action =
             {
               command: ::Array[String],
               env: ::Hash[Symbol, String],
-              type: :exec,
-              timeout_ms: Integer?,
-              user: String?,
-              working_directory: String?
+              ?type: :exec,
+              ?timeout_ms: Integer?,
+              ?user: String?,
+              ?working_directory: String?
             }
 
           class Action < OpenAI::Internal::Type::BaseModel
@@ -721,10 +721,10 @@ module OpenAI
             def to_hash: -> {
               command: ::Array[String],
               env: ::Hash[Symbol, String],
-              type: :exec,
-              timeout_ms: Integer?,
-              user: String?,
-              working_directory: String?
+              ?type: :exec,
+              ?timeout_ms: Integer?,
+              ?user: String?,
+              ?working_directory: String?
             }
           end
 
@@ -755,9 +755,9 @@ module OpenAI
           {
             id: String,
             output: String,
-            type: :local_shell_call_output,
-            agent: OpenAI::Beta::BetaResponseOutputItem::LocalShellCallOutput::Agent?,
-            status: OpenAI::Models::Beta::BetaResponseOutputItem::LocalShellCallOutput::status?
+            ?type: :local_shell_call_output,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::LocalShellCallOutput::Agent?,
+            ?status: OpenAI::Models::Beta::BetaResponseOutputItem::LocalShellCallOutput::status?
           }
 
         class LocalShellCallOutput < OpenAI::Internal::Type::BaseModel
@@ -782,9 +782,9 @@ module OpenAI
           def to_hash: -> {
             id: String,
             output: String,
-            type: :local_shell_call_output,
-            agent: OpenAI::Beta::BetaResponseOutputItem::LocalShellCallOutput::Agent?,
-            status: OpenAI::Models::Beta::BetaResponseOutputItem::LocalShellCallOutput::status?
+            ?type: :local_shell_call_output,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::LocalShellCallOutput::Agent?,
+            ?status: OpenAI::Models::Beta::BetaResponseOutputItem::LocalShellCallOutput::status?
           }
 
           type agent = { agent_name: String }
@@ -816,12 +816,12 @@ module OpenAI
             arguments: String,
             name: String,
             server_label: String,
-            type: :mcp_call,
-            agent: OpenAI::Beta::BetaResponseOutputItem::McpCall::Agent?,
-            approval_request_id: String?,
-            error: OpenAI::Models::Beta::beta_mcp_tool_call_error?,
-            output: String?,
-            status: OpenAI::Models::Beta::BetaResponseOutputItem::McpCall::status
+            ?type: :mcp_call,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::McpCall::Agent?,
+            ?approval_request_id: String?,
+            ?error: OpenAI::Models::Beta::beta_mcp_tool_call_error?,
+            ?output: String?,
+            ?status: OpenAI::Models::Beta::BetaResponseOutputItem::McpCall::status
           }
 
         class McpCall < OpenAI::Internal::Type::BaseModel
@@ -867,12 +867,12 @@ module OpenAI
             arguments: String,
             name: String,
             server_label: String,
-            type: :mcp_call,
-            agent: OpenAI::Beta::BetaResponseOutputItem::McpCall::Agent?,
-            approval_request_id: String?,
-            error: OpenAI::Models::Beta::beta_mcp_tool_call_error?,
-            output: String?,
-            status: OpenAI::Models::Beta::BetaResponseOutputItem::McpCall::status
+            ?type: :mcp_call,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::McpCall::Agent?,
+            ?approval_request_id: String?,
+            ?error: OpenAI::Models::Beta::beta_mcp_tool_call_error?,
+            ?output: String?,
+            ?status: OpenAI::Models::Beta::BetaResponseOutputItem::McpCall::status
           }
 
           type agent = { agent_name: String }
@@ -906,9 +906,9 @@ module OpenAI
             id: String,
             server_label: String,
             tools: ::Array[OpenAI::Beta::BetaResponseOutputItem::McpListTools::Tool],
-            type: :mcp_list_tools,
-            agent: OpenAI::Beta::BetaResponseOutputItem::McpListTools::Agent?,
-            error: String?
+            ?type: :mcp_list_tools,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::McpListTools::Agent?,
+            ?error: String?
           }
 
         class McpListTools < OpenAI::Internal::Type::BaseModel
@@ -937,17 +937,17 @@ module OpenAI
             id: String,
             server_label: String,
             tools: ::Array[OpenAI::Beta::BetaResponseOutputItem::McpListTools::Tool],
-            type: :mcp_list_tools,
-            agent: OpenAI::Beta::BetaResponseOutputItem::McpListTools::Agent?,
-            error: String?
+            ?type: :mcp_list_tools,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::McpListTools::Agent?,
+            ?error: String?
           }
 
           type tool =
             {
               input_schema: top,
               name: String,
-              annotations: top?,
-              description: String?
+              ?annotations: top?,
+              ?description: String?
             }
 
           class Tool < OpenAI::Internal::Type::BaseModel
@@ -969,8 +969,8 @@ module OpenAI
             def to_hash: -> {
               input_schema: top,
               name: String,
-              annotations: top?,
-              description: String?
+              ?annotations: top?,
+              ?description: String?
             }
           end
 
@@ -991,8 +991,8 @@ module OpenAI
             arguments: String,
             name: String,
             server_label: String,
-            type: :mcp_approval_request,
-            agent: OpenAI::Beta::BetaResponseOutputItem::McpApprovalRequest::Agent?
+            ?type: :mcp_approval_request,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::McpApprovalRequest::Agent?
           }
 
         class McpApprovalRequest < OpenAI::Internal::Type::BaseModel
@@ -1022,8 +1022,8 @@ module OpenAI
             arguments: String,
             name: String,
             server_label: String,
-            type: :mcp_approval_request,
-            agent: OpenAI::Beta::BetaResponseOutputItem::McpApprovalRequest::Agent?
+            ?type: :mcp_approval_request,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::McpApprovalRequest::Agent?
           }
 
           type agent = { agent_name: String }
@@ -1042,9 +1042,9 @@ module OpenAI
             id: String,
             approval_request_id: String,
             approve: bool,
-            type: :mcp_approval_response,
-            agent: OpenAI::Beta::BetaResponseOutputItem::McpApprovalResponse::Agent?,
-            reason: String?
+            ?type: :mcp_approval_response,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::McpApprovalResponse::Agent?,
+            ?reason: String?
           }
 
         class McpApprovalResponse < OpenAI::Internal::Type::BaseModel
@@ -1073,9 +1073,9 @@ module OpenAI
             id: String,
             approval_request_id: String,
             approve: bool,
-            type: :mcp_approval_response,
-            agent: OpenAI::Beta::BetaResponseOutputItem::McpApprovalResponse::Agent?,
-            reason: String?
+            ?type: :mcp_approval_response,
+            ?agent: OpenAI::Beta::BetaResponseOutputItem::McpApprovalResponse::Agent?,
+            ?reason: String?
           }
 
           type agent = { agent_name: String }

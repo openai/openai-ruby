@@ -13,7 +13,7 @@ module OpenAI
             incomplete_at: Integer?,
             incomplete_details: OpenAI::Beta::Threads::Message::IncompleteDetails?,
             metadata: OpenAI::Models::metadata?,
-            object: :"thread.message",
+            ?object: :"thread.message",
             role: OpenAI::Models::Beta::Threads::Message::role,
             run_id: String?,
             status: OpenAI::Models::Beta::Threads::Message::status,
@@ -76,7 +76,7 @@ module OpenAI
             incomplete_at: Integer?,
             incomplete_details: OpenAI::Beta::Threads::Message::IncompleteDetails?,
             metadata: OpenAI::Models::metadata?,
-            object: :"thread.message",
+            ?object: :"thread.message",
             role: OpenAI::Models::Beta::Threads::Message::role,
             run_id: String?,
             status: OpenAI::Models::Beta::Threads::Message::status,
@@ -85,8 +85,8 @@ module OpenAI
 
           type attachment =
             {
-              file_id: String,
-              tools: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
+              ?file_id: String,
+              ?tools: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
             }
 
           class Attachment < OpenAI::Internal::Type::BaseModel
@@ -106,8 +106,8 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              file_id: String,
-              tools: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
+              ?file_id: String,
+              ?tools: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
             }
 
             type tool =
@@ -118,14 +118,14 @@ module OpenAI
               extend OpenAI::Internal::Type::Union
 
               type assistant_tools_file_search_type_only =
-                { type: :file_search }
+                { ?type: :file_search }
 
               class AssistantToolsFileSearchTypeOnly < OpenAI::Internal::Type::BaseModel
                 attr_accessor type: :file_search
 
                 def initialize: (?type: :file_search) -> void
 
-                def to_hash: -> { type: :file_search }
+                def to_hash: -> { ?type: :file_search }
               end
 
               def self?.variants: -> ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]

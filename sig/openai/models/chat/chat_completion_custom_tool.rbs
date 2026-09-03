@@ -6,7 +6,7 @@ module OpenAI
       type chat_completion_custom_tool =
         {
           custom: OpenAI::Chat::ChatCompletionCustomTool::Custom,
-          type: :custom
+          ?type: :custom
         }
 
       class ChatCompletionCustomTool < OpenAI::Internal::Type::BaseModel
@@ -21,14 +21,14 @@ module OpenAI
 
         def to_hash: -> {
           custom: OpenAI::Chat::ChatCompletionCustomTool::Custom,
-          type: :custom
+          ?type: :custom
         }
 
         type custom =
           {
             name: String,
-            description: String,
-            format_: OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::format_
+            ?description: String,
+            ?format_: OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::format_
           }
 
         class Custom < OpenAI::Internal::Type::BaseModel
@@ -52,8 +52,8 @@ module OpenAI
 
           def to_hash: -> {
             name: String,
-            description: String,
-            format_: OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::format_
+            ?description: String,
+            ?format_: OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::format_
           }
 
           type format_ =
@@ -63,20 +63,20 @@ module OpenAI
           module Format
             extend OpenAI::Internal::Type::Union
 
-            type text = { type: :text }
+            type text = { ?type: :text }
 
             class Text < OpenAI::Internal::Type::BaseModel
               attr_accessor type: :text
 
               def initialize: (?type: :text) -> void
 
-              def to_hash: -> { type: :text }
+              def to_hash: -> { ?type: :text }
             end
 
             type grammar =
               {
                 grammar: OpenAI::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar,
-                type: :grammar
+                ?type: :grammar
               }
 
             class Grammar < OpenAI::Internal::Type::BaseModel
@@ -91,7 +91,7 @@ module OpenAI
 
               def to_hash: -> {
                 grammar: OpenAI::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar,
-                type: :grammar
+                ?type: :grammar
               }
 
               type grammar =

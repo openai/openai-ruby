@@ -8,8 +8,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.file_search_call.searching",
-          agent: OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent::Agent?
+          ?type: :"response.file_search_call.searching",
+          ?agent: OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent::Agent?
         }
 
       class BetaResponseFileSearchCallSearchingEvent < OpenAI::Internal::Type::BaseModel
@@ -35,8 +35,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.file_search_call.searching",
-          agent: OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent::Agent?
+          ?type: :"response.file_search_call.searching",
+          ?agent: OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent::Agent?
         }
 
         type agent = { agent_name: String }

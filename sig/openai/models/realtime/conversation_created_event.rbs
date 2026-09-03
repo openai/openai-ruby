@@ -5,7 +5,7 @@ module OpenAI
         {
           conversation: OpenAI::Realtime::ConversationCreatedEvent::Conversation,
           event_id: String,
-          type: :"conversation.created"
+          ?type: :"conversation.created"
         }
 
       class ConversationCreatedEvent < OpenAI::Internal::Type::BaseModel
@@ -24,13 +24,13 @@ module OpenAI
         def to_hash: -> {
           conversation: OpenAI::Realtime::ConversationCreatedEvent::Conversation,
           event_id: String,
-          type: :"conversation.created"
+          ?type: :"conversation.created"
         }
 
         type conversation =
           {
-            id: String,
-            object: OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation::object
+            ?id: String,
+            ?object: OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation::object
           }
 
         class Conversation < OpenAI::Internal::Type::BaseModel
@@ -50,8 +50,8 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            id: String,
-            object: OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation::object
+            ?id: String,
+            ?object: OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation::object
           }
 
           type object = :"realtime.conversation"

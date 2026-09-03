@@ -9,8 +9,8 @@ module OpenAI
           required_input: ::Array[OpenAI::Models::Beta::beta_response_steer_required_input],
           sequence_number: Integer,
           steer: OpenAI::Beta::BetaResponseSteerPendingEvent::Steer,
-          type: :"response.steer.pending",
-          stream_id: String
+          ?type: :"response.steer.pending",
+          ?stream_id: String
         }
 
       class BetaResponseSteerPendingEvent < OpenAI::Internal::Type::BaseModel
@@ -42,8 +42,8 @@ module OpenAI
           required_input: ::Array[OpenAI::Models::Beta::beta_response_steer_required_input],
           sequence_number: Integer,
           steer: OpenAI::Beta::BetaResponseSteerPendingEvent::Steer,
-          type: :"response.steer.pending",
-          stream_id: String
+          ?type: :"response.steer.pending",
+          ?stream_id: String
         }
 
         type steer = { id: String, previous_response_id: String }

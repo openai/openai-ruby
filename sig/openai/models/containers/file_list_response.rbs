@@ -7,7 +7,7 @@ module OpenAI
           bytes: Integer,
           container_id: String,
           created_at: Integer,
-          object: :"container.file",
+          ?object: :"container.file",
           path: String,
           source: String
         }
@@ -42,7 +42,7 @@ module OpenAI
           bytes: Integer,
           container_id: String,
           created_at: Integer,
-          object: :"container.file",
+          ?object: :"container.file",
           path: String,
           source: String
         }

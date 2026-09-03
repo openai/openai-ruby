@@ -198,6 +198,12 @@ module OpenAI
         #   @return [OpenAI::Models::Responses::ResponsePrompt, nil]
         optional :prompt, -> { OpenAI::Responses::ResponsePrompt }, nil?: true
 
+        # @!attribute prompt_cache_diagnostics
+        #   Prompt cache diagnostics requested for this response.
+        #
+        #   @return [OpenAI::Models::Responses::Response::PromptCacheDiagnostics::CacheMiss, OpenAI::Models::Responses::Response::PromptCacheDiagnostics::CacheHit, OpenAI::Models::Responses::Response::PromptCacheDiagnostics::ComparisonResponseNotFound, OpenAI::Models::Responses::Response::PromptCacheDiagnostics::Unavailable, nil]
+        optional :prompt_cache_diagnostics, union: -> { OpenAI::Responses::Response::PromptCacheDiagnostics }
+
         # @!attribute prompt_cache_key
         #   Used by OpenAI to cache responses for similar requests to optimize your cache
         #   hit rates. Replaces the `user` field.
@@ -344,7 +350,7 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(id:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, completed_at: nil, conversation: nil, max_output_tokens: nil, max_tool_calls: nil, moderation: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
+        # @!method initialize(id:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, completed_at: nil, conversation: nil, max_output_tokens: nil, max_tool_calls: nil, moderation: nil, previous_response_id: nil, prompt: nil, prompt_cache_diagnostics: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::Response} for more details.
         #
@@ -389,6 +395,8 @@ module OpenAI
         #   @param previous_response_id [String, nil] The unique ID of the previous response to the model. Use this to
         #
         #   @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
+        #
+        #   @param prompt_cache_diagnostics [OpenAI::Models::Responses::Response::PromptCacheDiagnostics::CacheMiss, OpenAI::Models::Responses::Response::PromptCacheDiagnostics::CacheHit, OpenAI::Models::Responses::Response::PromptCacheDiagnostics::ComparisonResponseNotFound, OpenAI::Models::Responses::Response::PromptCacheDiagnostics::Unavailable] Prompt cache diagnostics requested for this response.
         #
         #   @param prompt_cache_key [String, nil] Used by OpenAI to cache responses for similar requests to optimize your cache hi
         #
@@ -822,6 +830,118 @@ module OpenAI
           end
         end
 
+        # Prompt cache diagnostics requested for this response.
+        #
+        # @see OpenAI::Models::Responses::Response#prompt_cache_diagnostics
+        module PromptCacheDiagnostics
+          extend OpenAI::Internal::Type::Union
+
+          discriminator :type
+
+          variant :cache_miss, -> { OpenAI::Responses::Response::PromptCacheDiagnostics::CacheMiss }
+
+          variant :cache_hit, -> { OpenAI::Responses::Response::PromptCacheDiagnostics::CacheHit }
+
+          variant(
+            :comparison_response_not_found,
+            -> { OpenAI::Responses::Response::PromptCacheDiagnostics::ComparisonResponseNotFound }
+          )
+
+          variant :unavailable, -> { OpenAI::Responses::Response::PromptCacheDiagnostics::Unavailable }
+
+          class CacheMiss < OpenAI::Internal::Type::BaseModel
+            # @!attribute cache_missed_tokens
+            #   The estimated number of input tokens affected after the first detected
+            #   divergence.
+            #
+            #   @return [Integer]
+            required :cache_missed_tokens, Integer
+
+            # @!attribute reason
+            #   The reason prompt cache reuse did not occur.
+            #
+            #   @return [Symbol, OpenAI::Models::Responses::Response::PromptCacheDiagnostics::CacheMiss::Reason]
+            required :reason, enum: -> { OpenAI::Responses::Response::PromptCacheDiagnostics::CacheMiss::Reason }
+
+            # @!attribute type
+            #
+            #   @return [Symbol, :cache_miss]
+            required :type, const: :cache_miss
+
+            # @!attribute comparison_reusable_tokens
+            #   The raw token count of the reusable prefix in the compared response.
+            #
+            #   @return [Integer, nil]
+            optional :comparison_reusable_tokens, Integer
+
+            # @!method initialize(cache_missed_tokens:, reason:, comparison_reusable_tokens: nil, type: :cache_miss)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Responses::Response::PromptCacheDiagnostics::CacheMiss} for
+            #   more details.
+            #
+            #   @param cache_missed_tokens [Integer] The estimated number of input tokens affected after the first detected divergenc
+            #
+            #   @param reason [Symbol, OpenAI::Models::Responses::Response::PromptCacheDiagnostics::CacheMiss::Reason] The reason prompt cache reuse did not occur.
+            #
+            #   @param comparison_reusable_tokens [Integer] The raw token count of the reusable prefix in the compared response.
+            #
+            #   @param type [Symbol, :cache_miss]
+
+            # The reason prompt cache reuse did not occur.
+            #
+            # @see OpenAI::Models::Responses::Response::PromptCacheDiagnostics::CacheMiss#reason
+            module Reason
+              extend OpenAI::Internal::Type::Enum
+
+              MODEL_CHANGED = :model_changed
+              PROMPT_CACHE_KEY_CHANGED = :prompt_cache_key_changed
+              TOOLS_CHANGED = :tools_changed
+              TEXT_FORMAT_CHANGED = :text_format_changed
+              REASONING_EFFORT_CHANGED = :reasoning_effort_changed
+              VERBOSITY_CHANGED = :verbosity_changed
+              CONTEXT_COMPACTED = :context_compacted
+              INPUT_CHANGED = :input_changed
+              SERVICE_TIER_CHANGED = :service_tier_changed
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
+          end
+
+          class CacheHit < OpenAI::Internal::Type::BaseModel
+            # @!attribute type
+            #
+            #   @return [Symbol, :cache_hit]
+            required :type, const: :cache_hit
+
+            # @!method initialize(type: :cache_hit)
+            #   @param type [Symbol, :cache_hit]
+          end
+
+          class ComparisonResponseNotFound < OpenAI::Internal::Type::BaseModel
+            # @!attribute type
+            #
+            #   @return [Symbol, :comparison_response_not_found]
+            required :type, const: :comparison_response_not_found
+
+            # @!method initialize(type: :comparison_response_not_found)
+            #   @param type [Symbol, :comparison_response_not_found]
+          end
+
+          class Unavailable < OpenAI::Internal::Type::BaseModel
+            # @!attribute type
+            #
+            #   @return [Symbol, :unavailable]
+            required :type, const: :unavailable
+
+            # @!method initialize(type: :unavailable)
+            #   @param type [Symbol, :unavailable]
+          end
+
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Responses::Response::PromptCacheDiagnostics::CacheMiss, OpenAI::Models::Responses::Response::PromptCacheDiagnostics::CacheHit, OpenAI::Models::Responses::Response::PromptCacheDiagnostics::ComparisonResponseNotFound, OpenAI::Models::Responses::Response::PromptCacheDiagnostics::Unavailable)]
+        end
+
         # @see OpenAI::Models::Responses::Response#prompt_cache_options
         class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
           # @!attribute mode
@@ -836,13 +956,21 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Responses::Response::PromptCacheOptions::Ttl]
           required :ttl, enum: -> { OpenAI::Responses::Response::PromptCacheOptions::Ttl }
 
-          # @!method initialize(mode:, ttl:)
+          # @!attribute comparison_response_id
+          #   The response ID supplied as the prompt cache diagnostics comparison.
+          #
+          #   @return [String, nil]
+          optional :comparison_response_id, String, nil?: true
+
+          # @!method initialize(mode:, ttl:, comparison_response_id: nil)
           #   The prompt-caching options that were applied to the response. Supported for
           #   `gpt-5.6` and later models.
           #
           #   @param mode [Symbol, OpenAI::Models::Responses::Response::PromptCacheOptions::Mode] Whether implicit prompt-cache breakpoints were enabled.
           #
           #   @param ttl [Symbol, OpenAI::Models::Responses::Response::PromptCacheOptions::Ttl] The minimum lifetime applied to each cache breakpoint.
+          #
+          #   @param comparison_response_id [String, nil] The response ID supplied as the prompt cache diagnostics comparison.
 
           # Whether implicit prompt-cache breakpoints were enabled.
           #

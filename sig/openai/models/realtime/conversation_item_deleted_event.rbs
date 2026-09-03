@@ -5,7 +5,7 @@ module OpenAI
         {
           event_id: String,
           item_id: String,
-          type: :"conversation.item.deleted"
+          ?type: :"conversation.item.deleted"
         }
 
       class ConversationItemDeletedEvent < OpenAI::Internal::Type::BaseModel
@@ -24,7 +24,7 @@ module OpenAI
         def to_hash: -> {
           event_id: String,
           item_id: String,
-          type: :"conversation.item.deleted"
+          ?type: :"conversation.item.deleted"
         }
       end
     end

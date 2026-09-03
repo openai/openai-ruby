@@ -5,9 +5,9 @@ module OpenAI
         {
           message: String,
           type: String,
-          code: String?,
-          event_id: String?,
-          param: String?
+          ?code: String?,
+          ?event_id: String?,
+          ?param: String?
         }
 
       class RealtimeError < OpenAI::Internal::Type::BaseModel
@@ -32,9 +32,9 @@ module OpenAI
         def to_hash: -> {
           message: String,
           type: String,
-          code: String?,
-          event_id: String?,
-          param: String?
+          ?code: String?,
+          ?event_id: String?,
+          ?param: String?
         }
       end
     end

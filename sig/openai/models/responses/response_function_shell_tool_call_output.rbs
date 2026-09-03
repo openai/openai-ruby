@@ -8,9 +8,9 @@ module OpenAI
           max_output_length: Integer?,
           output: ::Array[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output],
           status: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::status,
-          type: :shell_call_output,
-          caller_: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::caller_?,
-          created_by: String
+          ?type: :shell_call_output,
+          ?caller_: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::caller_?,
+          ?created_by: String
         }
 
       class ResponseFunctionShellToolCallOutput < OpenAI::Internal::Type::BaseModel
@@ -49,9 +49,9 @@ module OpenAI
           max_output_length: Integer?,
           output: ::Array[OpenAI::Responses::ResponseFunctionShellToolCallOutput::Output],
           status: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::status,
-          type: :shell_call_output,
-          caller_: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::caller_?,
-          created_by: String
+          ?type: :shell_call_output,
+          ?caller_: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::caller_?,
+          ?created_by: String
         }
 
         type output =
@@ -59,7 +59,7 @@ module OpenAI
             outcome: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Output::outcome,
             stderr: String,
             stdout: String,
-            created_by: String
+            ?created_by: String
           }
 
         class Output < OpenAI::Internal::Type::BaseModel
@@ -84,7 +84,7 @@ module OpenAI
             outcome: OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Output::outcome,
             stderr: String,
             stdout: String,
-            created_by: String
+            ?created_by: String
           }
 
           type outcome =
@@ -94,17 +94,17 @@ module OpenAI
           module Outcome
             extend OpenAI::Internal::Type::Union
 
-            type timeout = { type: :timeout }
+            type timeout = { ?type: :timeout }
 
             class Timeout < OpenAI::Internal::Type::BaseModel
               attr_accessor type: :timeout
 
               def initialize: (?type: :timeout) -> void
 
-              def to_hash: -> { type: :timeout }
+              def to_hash: -> { ?type: :timeout }
             end
 
-            type exit_ = { exit_code: Integer, type: :exit }
+            type exit_ = { exit_code: Integer, ?type: :exit }
 
             class Exit < OpenAI::Internal::Type::BaseModel
               attr_accessor exit_code: Integer
@@ -113,7 +113,7 @@ module OpenAI
 
               def initialize: (exit_code: Integer, ?type: :exit) -> void
 
-              def to_hash: -> { exit_code: Integer, type: :exit }
+              def to_hash: -> { exit_code: Integer, ?type: :exit }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::Output::outcome]
@@ -139,17 +139,17 @@ module OpenAI
         module Caller
           extend OpenAI::Internal::Type::Union
 
-          type direct = { type: :direct }
+          type direct = { ?type: :direct }
 
           class Direct < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :direct
 
             def initialize: (?type: :direct) -> void
 
-            def to_hash: -> { type: :direct }
+            def to_hash: -> { ?type: :direct }
           end
 
-          type program = { caller_id: String, type: :program }
+          type program = { caller_id: String, ?type: :program }
 
           class Program < OpenAI::Internal::Type::BaseModel
             attr_accessor caller_id: String
@@ -158,7 +158,7 @@ module OpenAI
 
             def initialize: (caller_id: String, ?type: :program) -> void
 
-            def to_hash: -> { caller_id: String, type: :program }
+            def to_hash: -> { caller_id: String, ?type: :program }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput::caller_]

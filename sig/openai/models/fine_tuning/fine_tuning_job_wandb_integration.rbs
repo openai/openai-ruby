@@ -6,9 +6,9 @@ module OpenAI
       type fine_tuning_job_wandb_integration =
         {
           project: String,
-          entity: String?,
-          name: String?,
-          tags: ::Array[String]
+          ?entity: String?,
+          ?name: String?,
+          ?tags: ::Array[String]
         }
 
       class FineTuningJobWandbIntegration < OpenAI::Internal::Type::BaseModel
@@ -31,9 +31,9 @@ module OpenAI
 
         def to_hash: -> {
           project: String,
-          entity: String?,
-          name: String?,
-          tags: ::Array[String]
+          ?entity: String?,
+          ?name: String?,
+          ?tags: ::Array[String]
         }
       end
     end

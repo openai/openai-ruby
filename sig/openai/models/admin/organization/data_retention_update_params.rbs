@@ -4,9 +4,9 @@ module OpenAI
       module Organization
         type data_retention_update_params =
           {
-            retention_type: OpenAI::Models::Admin::Organization::DataRetentionUpdateParams::retention_type
+            retention_type: OpenAI::Models::Admin::Organization::DataRetentionUpdateParams::retention_type,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class DataRetentionUpdateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -21,7 +21,7 @@ module OpenAI
 
           def to_hash: -> {
             retention_type: OpenAI::Models::Admin::Organization::DataRetentionUpdateParams::retention_type,
-            request_options: OpenAI::RequestOptions
+            ?request_options: OpenAI::RequestOptions
           }
 
           type retention_type =

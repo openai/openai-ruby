@@ -3,12 +3,12 @@ module OpenAI
     type images_response =
       {
         created: Integer,
-        background: OpenAI::Models::ImagesResponse::background,
-        data: ::Array[OpenAI::Image],
-        output_format: OpenAI::Models::ImagesResponse::output_format,
-        quality: OpenAI::Models::ImagesResponse::quality,
-        size: OpenAI::Models::ImagesResponse::size,
-        usage: OpenAI::ImagesResponse::Usage
+        ?background: OpenAI::Models::ImagesResponse::background,
+        ?data: ::Array[OpenAI::Image],
+        ?output_format: OpenAI::Models::ImagesResponse::output_format,
+        ?quality: OpenAI::Models::ImagesResponse::quality,
+        ?size: OpenAI::Models::ImagesResponse::size,
+        ?usage: OpenAI::ImagesResponse::Usage
       }
 
     class ImagesResponse < OpenAI::Internal::Type::BaseModel
@@ -60,12 +60,12 @@ module OpenAI
 
       def to_hash: -> {
         created: Integer,
-        background: OpenAI::Models::ImagesResponse::background,
-        data: ::Array[OpenAI::Image],
-        output_format: OpenAI::Models::ImagesResponse::output_format,
-        quality: OpenAI::Models::ImagesResponse::quality,
-        size: OpenAI::Models::ImagesResponse::size,
-        usage: OpenAI::ImagesResponse::Usage
+        ?background: OpenAI::Models::ImagesResponse::background,
+        ?data: ::Array[OpenAI::Image],
+        ?output_format: OpenAI::Models::ImagesResponse::output_format,
+        ?quality: OpenAI::Models::ImagesResponse::quality,
+        ?size: OpenAI::Models::ImagesResponse::size,
+        ?usage: OpenAI::ImagesResponse::Usage
       }
 
       type background = :transparent | :opaque
@@ -121,7 +121,7 @@ module OpenAI
           input_tokens_details: OpenAI::ImagesResponse::Usage::InputTokensDetails,
           output_tokens: Integer,
           total_tokens: Integer,
-          output_tokens_details: OpenAI::ImagesResponse::Usage::OutputTokensDetails
+          ?output_tokens_details: OpenAI::ImagesResponse::Usage::OutputTokensDetails
         }
 
       class Usage < OpenAI::Internal::Type::BaseModel
@@ -152,7 +152,7 @@ module OpenAI
           input_tokens_details: OpenAI::ImagesResponse::Usage::InputTokensDetails,
           output_tokens: Integer,
           total_tokens: Integer,
-          output_tokens_details: OpenAI::ImagesResponse::Usage::OutputTokensDetails
+          ?output_tokens_details: OpenAI::ImagesResponse::Usage::OutputTokensDetails
         }
 
         type input_tokens_details =

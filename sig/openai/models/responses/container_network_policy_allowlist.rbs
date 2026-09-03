@@ -4,8 +4,8 @@ module OpenAI
       type container_network_policy_allowlist =
         {
           allowed_domains: ::Array[String],
-          type: :allowlist,
-          domain_secrets: ::Array[OpenAI::Responses::ContainerNetworkPolicyDomainSecret]
+          ?type: :allowlist,
+          ?domain_secrets: ::Array[OpenAI::Responses::ContainerNetworkPolicyDomainSecret]
         }
 
       class ContainerNetworkPolicyAllowlist < OpenAI::Internal::Type::BaseModel
@@ -27,8 +27,8 @@ module OpenAI
 
         def to_hash: -> {
           allowed_domains: ::Array[String],
-          type: :allowlist,
-          domain_secrets: ::Array[OpenAI::Responses::ContainerNetworkPolicyDomainSecret]
+          ?type: :allowlist,
+          ?domain_secrets: ::Array[OpenAI::Responses::ContainerNetworkPolicyDomainSecret]
         }
       end
     end

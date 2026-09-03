@@ -7,7 +7,7 @@ module OpenAI
             {
               id: String,
               deleted: bool,
-              object: :"organization.project.api_key.deleted"
+              ?object: :"organization.project.api_key.deleted"
             }
 
           class APIKeyDeleteResponse < OpenAI::Internal::Type::BaseModel
@@ -26,7 +26,7 @@ module OpenAI
             def to_hash: -> {
               id: String,
               deleted: bool,
-              object: :"organization.project.api_key.deleted"
+              ?object: :"organization.project.api_key.deleted"
             }
           end
         end

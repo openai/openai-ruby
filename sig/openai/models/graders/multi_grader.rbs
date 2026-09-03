@@ -8,7 +8,7 @@ module OpenAI
           calculate_output: String,
           graders: OpenAI::Models::Graders::MultiGrader::graders,
           name: String,
-          type: :multi
+          ?type: :multi
         }
 
       class MultiGrader < OpenAI::Internal::Type::BaseModel
@@ -31,7 +31,7 @@ module OpenAI
           calculate_output: String,
           graders: OpenAI::Models::Graders::MultiGrader::graders,
           name: String,
-          type: :multi
+          ?type: :multi
         }
 
         type graders =

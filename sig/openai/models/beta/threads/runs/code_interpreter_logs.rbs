@@ -4,7 +4,7 @@ module OpenAI
       module Threads
         module Runs
           type code_interpreter_logs =
-            { index: Integer, type: :logs, logs: String }
+            { index: Integer, ?type: :logs, ?logs: String }
 
           class CodeInterpreterLogs < OpenAI::Internal::Type::BaseModel
             attr_accessor index: Integer
@@ -21,7 +21,7 @@ module OpenAI
               ?type: :logs
             ) -> void
 
-            def to_hash: -> { index: Integer, type: :logs, logs: String }
+            def to_hash: -> { index: Integer, ?type: :logs, ?logs: String }
           end
         end
       end

@@ -4,11 +4,11 @@ module OpenAI
       type realtime_conversation_item_system_message =
         {
           content: ::Array[OpenAI::Realtime::RealtimeConversationItemSystemMessage::Content],
-          role: :system,
-          type: :message,
-          id: String,
-          object: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::object,
-          status: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::status
+          ?role: :system,
+          ?type: :message,
+          ?id: String,
+          ?object: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::object,
+          ?status: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::status
         }
 
       class RealtimeConversationItemSystemMessage < OpenAI::Internal::Type::BaseModel
@@ -45,17 +45,17 @@ module OpenAI
 
         def to_hash: -> {
           content: ::Array[OpenAI::Realtime::RealtimeConversationItemSystemMessage::Content],
-          role: :system,
-          type: :message,
-          id: String,
-          object: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::object,
-          status: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::status
+          ?role: :system,
+          ?type: :message,
+          ?id: String,
+          ?object: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::object,
+          ?status: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::status
         }
 
         type content =
           {
-            text: String,
-            type: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::Content::type_
+            ?text: String,
+            ?type: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::Content::type_
           }
 
         class Content < OpenAI::Internal::Type::BaseModel
@@ -75,8 +75,8 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            text: String,
-            type: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::Content::type_
+            ?text: String,
+            ?type: OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage::Content::type_
           }
 
           type type_ = :input_text

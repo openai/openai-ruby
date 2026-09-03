@@ -9,10 +9,10 @@ module OpenAI
           output: OpenAI::Models::Beta::BetaResponseCustomToolCallOutput::output,
           id: String,
           status: OpenAI::Models::Beta::BetaResponseCustomToolCallOutputItem::status,
-          type: :custom_tool_call_output,
-          agent: OpenAI::Beta::BetaResponseCustomToolCallOutput::Agent?,
-          caller_: OpenAI::Models::Beta::BetaResponseCustomToolCallOutput::caller_?,
-          created_by: String
+          ?type: :custom_tool_call_output,
+          ?agent: OpenAI::Beta::BetaResponseCustomToolCallOutput::Agent?,
+          ?caller_: OpenAI::Models::Beta::BetaResponseCustomToolCallOutput::caller_?,
+          ?created_by: String
         }
 
       class BetaResponseCustomToolCallOutputItem < OpenAI::Models::Beta::BetaResponseCustomToolCallOutput
@@ -46,10 +46,10 @@ module OpenAI
           output: OpenAI::Models::Beta::BetaResponseCustomToolCallOutput::output,
           id: String,
           status: OpenAI::Models::Beta::BetaResponseCustomToolCallOutputItem::status,
-          type: :custom_tool_call_output,
-          agent: OpenAI::Beta::BetaResponseCustomToolCallOutput::Agent?,
-          caller_: OpenAI::Models::Beta::BetaResponseCustomToolCallOutput::caller_?,
-          created_by: String
+          ?type: :custom_tool_call_output,
+          ?agent: OpenAI::Beta::BetaResponseCustomToolCallOutput::Agent?,
+          ?caller_: OpenAI::Models::Beta::BetaResponseCustomToolCallOutput::caller_?,
+          ?created_by: String
         }
 
         type status = :in_progress | :completed | :incomplete

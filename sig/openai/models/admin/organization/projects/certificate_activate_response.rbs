@@ -10,7 +10,7 @@ module OpenAI
               certificate_details: OpenAI::Models::Admin::Organization::Projects::CertificateActivateResponse::CertificateDetails,
               created_at: Integer,
               name: String?,
-              object: :"organization.project.certificate"
+              ?object: :"organization.project.certificate"
             }
 
           class CertificateActivateResponse < OpenAI::Internal::Type::BaseModel
@@ -41,11 +41,11 @@ module OpenAI
               certificate_details: OpenAI::Models::Admin::Organization::Projects::CertificateActivateResponse::CertificateDetails,
               created_at: Integer,
               name: String?,
-              object: :"organization.project.certificate"
+              ?object: :"organization.project.certificate"
             }
 
             type certificate_details =
-              { expires_at: Integer, valid_at: Integer }
+              { ?expires_at: Integer, ?valid_at: Integer }
 
             class CertificateDetails < OpenAI::Internal::Type::BaseModel
               attr_reader expires_at: Integer?
@@ -58,7 +58,7 @@ module OpenAI
 
               def initialize: (?expires_at: Integer, ?valid_at: Integer) -> void
 
-              def to_hash: -> { expires_at: Integer, valid_at: Integer }
+              def to_hash: -> { ?expires_at: Integer, ?valid_at: Integer }
             end
           end
         end

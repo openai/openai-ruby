@@ -6,11 +6,11 @@ module OpenAI
         bytes: Integer,
         created_at: Integer,
         filename: String,
-        object: :file,
+        ?object: :file,
         purpose: OpenAI::Models::FileObject::purpose,
         status: OpenAI::Models::FileObject::status,
-        expires_at: Integer,
-        status_details: String
+        ?expires_at: Integer,
+        ?status_details: String
       }
 
     class FileObject < OpenAI::Internal::Type::BaseModel
@@ -53,11 +53,11 @@ module OpenAI
         bytes: Integer,
         created_at: Integer,
         filename: String,
-        object: :file,
+        ?object: :file,
         purpose: OpenAI::Models::FileObject::purpose,
         status: OpenAI::Models::FileObject::status,
-        expires_at: Integer,
-        status_details: String
+        ?expires_at: Integer,
+        ?status_details: String
       }
 
       type purpose =

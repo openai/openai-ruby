@@ -5,18 +5,18 @@ module OpenAI
         type usage_completions_params =
           {
             start_time: Integer,
-            api_key_ids: ::Array[String],
-            batch: bool,
-            bucket_width: OpenAI::Models::Admin::Organization::UsageCompletionsParams::bucket_width,
-            end_time: Integer,
-            group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCompletionsParams::group_by],
-            limit: Integer,
-            models: ::Array[String],
-            page: String,
-            project_ids: ::Array[String],
-            user_ids: ::Array[String]
+            ?api_key_ids: ::Array[String],
+            ?batch: bool,
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageCompletionsParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCompletionsParams::group_by],
+            ?limit: Integer,
+            ?models: ::Array[String],
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?user_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class UsageCompletionsParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -85,17 +85,17 @@ module OpenAI
 
           def to_hash: -> {
             start_time: Integer,
-            api_key_ids: ::Array[String],
-            batch: bool,
-            bucket_width: OpenAI::Models::Admin::Organization::UsageCompletionsParams::bucket_width,
-            end_time: Integer,
-            group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCompletionsParams::group_by],
-            limit: Integer,
-            models: ::Array[String],
-            page: String,
-            project_ids: ::Array[String],
-            user_ids: ::Array[String],
-            request_options: OpenAI::RequestOptions
+            ?api_key_ids: ::Array[String],
+            ?batch: bool,
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageCompletionsParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCompletionsParams::group_by],
+            ?limit: Integer,
+            ?models: ::Array[String],
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?user_ids: ::Array[String],
+            ?request_options: OpenAI::RequestOptions
           }
 
           type bucket_width = :"1m" | :"1h" | :"1d"

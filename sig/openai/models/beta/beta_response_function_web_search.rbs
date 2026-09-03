@@ -8,8 +8,8 @@ module OpenAI
           id: String,
           action: OpenAI::Models::Beta::BetaResponseFunctionWebSearch::action,
           status: OpenAI::Models::Beta::BetaResponseFunctionWebSearch::status,
-          type: :web_search_call,
-          agent: OpenAI::Beta::BetaResponseFunctionWebSearch::Agent?
+          ?type: :web_search_call,
+          ?agent: OpenAI::Beta::BetaResponseFunctionWebSearch::Agent?
         }
 
       class BetaResponseFunctionWebSearch < OpenAI::Internal::Type::BaseModel
@@ -35,8 +35,8 @@ module OpenAI
           id: String,
           action: OpenAI::Models::Beta::BetaResponseFunctionWebSearch::action,
           status: OpenAI::Models::Beta::BetaResponseFunctionWebSearch::status,
-          type: :web_search_call,
-          agent: OpenAI::Beta::BetaResponseFunctionWebSearch::Agent?
+          ?type: :web_search_call,
+          ?agent: OpenAI::Beta::BetaResponseFunctionWebSearch::Agent?
         }
 
         type action =
@@ -49,10 +49,10 @@ module OpenAI
 
           type search =
             {
-              type: :search,
-              queries: ::Array[String],
-              query: String,
-              sources: ::Array[OpenAI::Beta::BetaResponseFunctionWebSearch::Action::Search::Source]
+              ?type: :search,
+              ?queries: ::Array[String],
+              ?query: String,
+              ?sources: ::Array[OpenAI::Beta::BetaResponseFunctionWebSearch::Action::Search::Source]
             }
 
           class Search < OpenAI::Internal::Type::BaseModel
@@ -80,13 +80,13 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              type: :search,
-              queries: ::Array[String],
-              query: String,
-              sources: ::Array[OpenAI::Beta::BetaResponseFunctionWebSearch::Action::Search::Source]
+              ?type: :search,
+              ?queries: ::Array[String],
+              ?query: String,
+              ?sources: ::Array[OpenAI::Beta::BetaResponseFunctionWebSearch::Action::Search::Source]
             }
 
-            type source = { type: :url, url: String }
+            type source = { ?type: :url, url: String }
 
             class Source < OpenAI::Internal::Type::BaseModel
               attr_accessor type: :url
@@ -95,11 +95,11 @@ module OpenAI
 
               def initialize: (url: String, ?type: :url) -> void
 
-              def to_hash: -> { type: :url, url: String }
+              def to_hash: -> { ?type: :url, url: String }
             end
           end
 
-          type open_page = { type: :open_page, url: String? }
+          type open_page = { ?type: :open_page, ?url: String? }
 
           class OpenPage < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :open_page
@@ -108,11 +108,11 @@ module OpenAI
 
             def initialize: (?url: String?, ?type: :open_page) -> void
 
-            def to_hash: -> { type: :open_page, url: String? }
+            def to_hash: -> { ?type: :open_page, ?url: String? }
           end
 
           type find_in_page =
-            { pattern: String, type: :find_in_page, url: String }
+            { pattern: String, ?type: :find_in_page, url: String }
 
           class FindInPage < OpenAI::Internal::Type::BaseModel
             attr_accessor pattern: String
@@ -129,7 +129,7 @@ module OpenAI
 
             def to_hash: -> {
               pattern: String,
-              type: :find_in_page,
+              ?type: :find_in_page,
               url: String
             }
           end

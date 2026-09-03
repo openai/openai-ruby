@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Beta
       type thread_deleted =
-        { id: String, deleted: bool, object: :"thread.deleted" }
+        { id: String, deleted: bool, ?object: :"thread.deleted" }
 
       class ThreadDeleted < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
@@ -17,7 +17,11 @@ module OpenAI
           ?object: :"thread.deleted"
         ) -> void
 
-        def to_hash: -> { id: String, deleted: bool, object: :"thread.deleted" }
+        def to_hash: -> {
+          id: String,
+          deleted: bool,
+          ?object: :"thread.deleted"
+        }
       end
     end
   end

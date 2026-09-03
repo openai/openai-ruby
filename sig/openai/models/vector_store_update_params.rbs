@@ -3,11 +3,11 @@ module OpenAI
     type vector_store_update_params =
       {
         vector_store_id: String,
-        expires_after: OpenAI::VectorStoreUpdateParams::ExpiresAfter?,
-        metadata: OpenAI::Models::metadata?,
-        name: String?
+        ?expires_after: OpenAI::VectorStoreUpdateParams::ExpiresAfter?,
+        ?metadata: OpenAI::Models::metadata?,
+        ?name: String?,
+        ?request_options: OpenAI::request_opts
       }
-      & OpenAI::Internal::Type::request_parameters
 
     class VectorStoreUpdateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -31,13 +31,13 @@ module OpenAI
 
       def to_hash: -> {
         vector_store_id: String,
-        expires_after: OpenAI::VectorStoreUpdateParams::ExpiresAfter?,
-        metadata: OpenAI::Models::metadata?,
-        name: String?,
-        request_options: OpenAI::RequestOptions
+        ?expires_after: OpenAI::VectorStoreUpdateParams::ExpiresAfter?,
+        ?metadata: OpenAI::Models::metadata?,
+        ?name: String?,
+        ?request_options: OpenAI::RequestOptions
       }
 
-      type expires_after = { anchor: :last_active_at, days: Integer }
+      type expires_after = { ?anchor: :last_active_at, days: Integer }
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
         attr_accessor anchor: :last_active_at
@@ -46,7 +46,7 @@ module OpenAI
 
         def initialize: (days: Integer, ?anchor: :last_active_at) -> void
 
-        def to_hash: -> { anchor: :last_active_at, days: Integer }
+        def to_hash: -> { ?anchor: :last_active_at, days: Integer }
       end
     end
   end

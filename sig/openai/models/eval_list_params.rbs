@@ -2,12 +2,12 @@ module OpenAI
   module Models
     type eval_list_params =
       {
-        after: String,
-        limit: Integer,
-        order: OpenAI::Models::EvalListParams::order,
-        order_by: OpenAI::Models::EvalListParams::order_by
+        ?after: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::EvalListParams::order,
+        ?order_by: OpenAI::Models::EvalListParams::order_by,
+        ?request_options: OpenAI::request_opts
       }
-      & OpenAI::Internal::Type::request_parameters
 
     class EvalListParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -42,11 +42,11 @@ module OpenAI
       ) -> void
 
       def to_hash: -> {
-        after: String,
-        limit: Integer,
-        order: OpenAI::Models::EvalListParams::order,
-        order_by: OpenAI::Models::EvalListParams::order_by,
-        request_options: OpenAI::RequestOptions
+        ?after: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::EvalListParams::order,
+        ?order_by: OpenAI::Models::EvalListParams::order_by,
+        ?request_options: OpenAI::RequestOptions
       }
 
       type order = :asc | :desc

@@ -9,8 +9,8 @@ module OpenAI
           input: ::Array[OpenAI::Models::Beta::beta_response_input_item],
           response_id: String,
           sequence_number: Integer,
-          type: :"response.inject.failed",
-          stream_id: String
+          ?type: :"response.inject.failed",
+          ?stream_id: String
         }
 
       class BetaResponseInjectFailedEvent < OpenAI::Internal::Type::BaseModel
@@ -42,8 +42,8 @@ module OpenAI
           input: ::Array[OpenAI::Models::Beta::beta_response_input_item],
           response_id: String,
           sequence_number: Integer,
-          type: :"response.inject.failed",
-          stream_id: String
+          ?type: :"response.inject.failed",
+          ?stream_id: String
         }
 
         type error =

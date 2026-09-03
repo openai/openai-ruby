@@ -4,13 +4,13 @@ module OpenAI
       module ChatKit
         type thread_list_params =
           {
-            after: String,
-            before: String,
-            limit: Integer,
-            order: OpenAI::Models::Beta::ChatKit::ThreadListParams::order,
-            user: String
+            ?after: String,
+            ?before: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::ChatKit::ThreadListParams::order,
+            ?user: String,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class ThreadListParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -48,12 +48,12 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            after: String,
-            before: String,
-            limit: Integer,
-            order: OpenAI::Models::Beta::ChatKit::ThreadListParams::order,
-            user: String,
-            request_options: OpenAI::RequestOptions
+            ?after: String,
+            ?before: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::ChatKit::ThreadListParams::order,
+            ?user: String,
+            ?request_options: OpenAI::RequestOptions
           }
 
           type order = :asc | :desc

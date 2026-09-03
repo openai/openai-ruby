@@ -43,8 +43,8 @@ module OpenAI
           {
             content: OpenAI::Models::Responses::response_input_message_content_list,
             role: OpenAI::Models::Responses::ResponseInputItem::Message::role,
-            status: OpenAI::Models::Responses::ResponseInputItem::Message::status,
-            type: OpenAI::Models::Responses::ResponseInputItem::Message::type_
+            ?status: OpenAI::Models::Responses::ResponseInputItem::Message::status,
+            ?type: OpenAI::Models::Responses::ResponseInputItem::Message::type_
           }
 
         class Message < OpenAI::Internal::Type::BaseModel
@@ -74,8 +74,8 @@ module OpenAI
           def to_hash: -> {
             content: OpenAI::Models::Responses::response_input_message_content_list,
             role: OpenAI::Models::Responses::ResponseInputItem::Message::role,
-            status: OpenAI::Models::Responses::ResponseInputItem::Message::status,
-            type: OpenAI::Models::Responses::ResponseInputItem::Message::type_
+            ?status: OpenAI::Models::Responses::ResponseInputItem::Message::status,
+            ?type: OpenAI::Models::Responses::ResponseInputItem::Message::type_
           }
 
           type role = :user | :system | :developer
@@ -117,10 +117,10 @@ module OpenAI
           {
             call_id: String,
             output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
-            type: :computer_call_output,
-            id: String?,
-            acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?,
-            status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status?
+            ?type: :computer_call_output,
+            ?id: String?,
+            ?acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status?
           }
 
         class ComputerCallOutput < OpenAI::Internal::Type::BaseModel
@@ -148,14 +148,14 @@ module OpenAI
           def to_hash: -> {
             call_id: String,
             output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
-            type: :computer_call_output,
-            id: String?,
-            acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?,
-            status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status?
+            ?type: :computer_call_output,
+            ?id: String?,
+            ?acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status?
           }
 
           type acknowledged_safety_check =
-            { id: String, code: String?, message: String? }
+            { id: String, ?code: String?, ?message: String? }
 
           class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
             attr_accessor id: String
@@ -170,7 +170,7 @@ module OpenAI
               ?message: String?
             ) -> void
 
-            def to_hash: -> { id: String, code: String?, message: String? }
+            def to_hash: -> { id: String, ?code: String?, ?message: String? }
           end
 
           type status = :in_progress | :completed | :incomplete
@@ -189,13 +189,13 @@ module OpenAI
         type function_call_output =
           {
             output: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::output,
-            type: :function_call_output,
-            id: String?,
-            call_id: String?,
-            caller_: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::caller_?,
-            name: String?,
-            namespace: String?,
-            status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?
+            ?type: :function_call_output,
+            ?id: String?,
+            ?call_id: String?,
+            ?caller_: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::caller_?,
+            ?name: String?,
+            ?namespace: String?,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?
           }
 
         class FunctionCallOutput < OpenAI::Internal::Type::BaseModel
@@ -228,13 +228,13 @@ module OpenAI
 
           def to_hash: -> {
             output: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::output,
-            type: :function_call_output,
-            id: String?,
-            call_id: String?,
-            caller_: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::caller_?,
-            name: String?,
-            namespace: String?,
-            status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?
+            ?type: :function_call_output,
+            ?id: String?,
+            ?call_id: String?,
+            ?caller_: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::caller_?,
+            ?name: String?,
+            ?namespace: String?,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?
           }
 
           type output =
@@ -254,17 +254,17 @@ module OpenAI
           module Caller
             extend OpenAI::Internal::Type::Union
 
-            type direct = { type: :direct }
+            type direct = { ?type: :direct }
 
             class Direct < OpenAI::Internal::Type::BaseModel
               attr_accessor type: :direct
 
               def initialize: (?type: :direct) -> void
 
-              def to_hash: -> { type: :direct }
+              def to_hash: -> { ?type: :direct }
             end
 
-            type program = { caller_id: String, type: :program }
+            type program = { caller_id: String, ?type: :program }
 
             class Program < OpenAI::Internal::Type::BaseModel
               attr_accessor caller_id: String
@@ -273,7 +273,7 @@ module OpenAI
 
               def initialize: (caller_id: String, ?type: :program) -> void
 
-              def to_hash: -> { caller_id: String, type: :program }
+              def to_hash: -> { caller_id: String, ?type: :program }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::caller_]
@@ -295,11 +295,11 @@ module OpenAI
         type tool_search_call =
           {
             arguments: top,
-            type: :tool_search_call,
-            id: String?,
-            call_id: String?,
-            execution: OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::execution,
-            status: OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::status?
+            ?type: :tool_search_call,
+            ?id: String?,
+            ?call_id: String?,
+            ?execution: OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::execution,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::status?
           }
 
         class ToolSearchCall < OpenAI::Internal::Type::BaseModel
@@ -330,11 +330,11 @@ module OpenAI
 
           def to_hash: -> {
             arguments: top,
-            type: :tool_search_call,
-            id: String?,
-            call_id: String?,
-            execution: OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::execution,
-            status: OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::status?
+            ?type: :tool_search_call,
+            ?id: String?,
+            ?call_id: String?,
+            ?execution: OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::execution,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall::status?
           }
 
           type execution = :server | :client
@@ -363,10 +363,10 @@ module OpenAI
 
         type additional_tools =
           {
-            role: :developer,
+            ?role: :developer,
             tools: ::Array[OpenAI::Models::Responses::tool],
-            type: :additional_tools,
-            id: String?
+            ?type: :additional_tools,
+            ?id: String?
           }
 
         class AdditionalTools < OpenAI::Internal::Type::BaseModel
@@ -386,10 +386,10 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            role: :developer,
+            ?role: :developer,
             tools: ::Array[OpenAI::Models::Responses::tool],
-            type: :additional_tools,
-            id: String?
+            ?type: :additional_tools,
+            ?id: String?
           }
         end
 
@@ -398,7 +398,7 @@ module OpenAI
             id: String,
             result: String?,
             status: OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall::status,
-            type: :image_generation_call
+            ?type: :image_generation_call
           }
 
         class ImageGenerationCall < OpenAI::Internal::Type::BaseModel
@@ -421,7 +421,7 @@ module OpenAI
             id: String,
             result: String?,
             status: OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall::status,
-            type: :image_generation_call
+            ?type: :image_generation_call
           }
 
           type status = :in_progress | :completed | :generating | :failed
@@ -444,7 +444,7 @@ module OpenAI
             action: OpenAI::Responses::ResponseInputItem::LocalShellCall::Action,
             call_id: String,
             status: OpenAI::Models::Responses::ResponseInputItem::LocalShellCall::status,
-            type: :local_shell_call
+            ?type: :local_shell_call
           }
 
         class LocalShellCall < OpenAI::Internal::Type::BaseModel
@@ -471,17 +471,17 @@ module OpenAI
             action: OpenAI::Responses::ResponseInputItem::LocalShellCall::Action,
             call_id: String,
             status: OpenAI::Models::Responses::ResponseInputItem::LocalShellCall::status,
-            type: :local_shell_call
+            ?type: :local_shell_call
           }
 
           type action =
             {
               command: ::Array[String],
               env: ::Hash[Symbol, String],
-              type: :exec,
-              timeout_ms: Integer?,
-              user: String?,
-              working_directory: String?
+              ?type: :exec,
+              ?timeout_ms: Integer?,
+              ?user: String?,
+              ?working_directory: String?
             }
 
           class Action < OpenAI::Internal::Type::BaseModel
@@ -509,10 +509,10 @@ module OpenAI
             def to_hash: -> {
               command: ::Array[String],
               env: ::Hash[Symbol, String],
-              type: :exec,
-              timeout_ms: Integer?,
-              user: String?,
-              working_directory: String?
+              ?type: :exec,
+              ?timeout_ms: Integer?,
+              ?user: String?,
+              ?working_directory: String?
             }
           end
 
@@ -533,8 +533,8 @@ module OpenAI
           {
             id: String,
             output: String,
-            type: :local_shell_call_output,
-            status: OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput::status?
+            ?type: :local_shell_call_output,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput::status?
           }
 
         class LocalShellCallOutput < OpenAI::Internal::Type::BaseModel
@@ -556,8 +556,8 @@ module OpenAI
           def to_hash: -> {
             id: String,
             output: String,
-            type: :local_shell_call_output,
-            status: OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput::status?
+            ?type: :local_shell_call_output,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput::status?
           }
 
           type status = :in_progress | :completed | :incomplete
@@ -577,11 +577,11 @@ module OpenAI
           {
             action: OpenAI::Responses::ResponseInputItem::ShellCall::Action,
             call_id: String,
-            type: :shell_call,
-            id: String?,
-            caller_: OpenAI::Models::Responses::ResponseInputItem::ShellCall::caller_?,
-            environment: OpenAI::Models::Responses::ResponseInputItem::ShellCall::environment?,
-            status: OpenAI::Models::Responses::ResponseInputItem::ShellCall::status?
+            ?type: :shell_call,
+            ?id: String?,
+            ?caller_: OpenAI::Models::Responses::ResponseInputItem::ShellCall::caller_?,
+            ?environment: OpenAI::Models::Responses::ResponseInputItem::ShellCall::environment?,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::ShellCall::status?
           }
 
         class ShellCall < OpenAI::Internal::Type::BaseModel
@@ -612,18 +612,18 @@ module OpenAI
           def to_hash: -> {
             action: OpenAI::Responses::ResponseInputItem::ShellCall::Action,
             call_id: String,
-            type: :shell_call,
-            id: String?,
-            caller_: OpenAI::Models::Responses::ResponseInputItem::ShellCall::caller_?,
-            environment: OpenAI::Models::Responses::ResponseInputItem::ShellCall::environment?,
-            status: OpenAI::Models::Responses::ResponseInputItem::ShellCall::status?
+            ?type: :shell_call,
+            ?id: String?,
+            ?caller_: OpenAI::Models::Responses::ResponseInputItem::ShellCall::caller_?,
+            ?environment: OpenAI::Models::Responses::ResponseInputItem::ShellCall::environment?,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::ShellCall::status?
           }
 
           type action =
             {
               commands: ::Array[String],
-              max_output_length: Integer?,
-              timeout_ms: Integer?
+              ?max_output_length: Integer?,
+              ?timeout_ms: Integer?
             }
 
           class Action < OpenAI::Internal::Type::BaseModel
@@ -641,8 +641,8 @@ module OpenAI
 
             def to_hash: -> {
               commands: ::Array[String],
-              max_output_length: Integer?,
-              timeout_ms: Integer?
+              ?max_output_length: Integer?,
+              ?timeout_ms: Integer?
             }
           end
 
@@ -653,17 +653,17 @@ module OpenAI
           module Caller
             extend OpenAI::Internal::Type::Union
 
-            type direct = { type: :direct }
+            type direct = { ?type: :direct }
 
             class Direct < OpenAI::Internal::Type::BaseModel
               attr_accessor type: :direct
 
               def initialize: (?type: :direct) -> void
 
-              def to_hash: -> { type: :direct }
+              def to_hash: -> { ?type: :direct }
             end
 
-            type program = { caller_id: String, type: :program }
+            type program = { caller_id: String, ?type: :program }
 
             class Program < OpenAI::Internal::Type::BaseModel
               attr_accessor caller_id: String
@@ -672,7 +672,7 @@ module OpenAI
 
               def initialize: (caller_id: String, ?type: :program) -> void
 
-              def to_hash: -> { caller_id: String, type: :program }
+              def to_hash: -> { caller_id: String, ?type: :program }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ShellCall::caller_]
@@ -705,11 +705,11 @@ module OpenAI
           {
             call_id: String,
             output: ::Array[OpenAI::Responses::ResponseFunctionShellCallOutputContent],
-            type: :shell_call_output,
-            id: String?,
-            caller_: OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::caller_?,
-            max_output_length: Integer?,
-            status: OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::status?
+            ?type: :shell_call_output,
+            ?id: String?,
+            ?caller_: OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::caller_?,
+            ?max_output_length: Integer?,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::status?
           }
 
         class ShellCallOutput < OpenAI::Internal::Type::BaseModel
@@ -740,11 +740,11 @@ module OpenAI
           def to_hash: -> {
             call_id: String,
             output: ::Array[OpenAI::Responses::ResponseFunctionShellCallOutputContent],
-            type: :shell_call_output,
-            id: String?,
-            caller_: OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::caller_?,
-            max_output_length: Integer?,
-            status: OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::status?
+            ?type: :shell_call_output,
+            ?id: String?,
+            ?caller_: OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::caller_?,
+            ?max_output_length: Integer?,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::status?
           }
 
           type caller_ =
@@ -754,17 +754,17 @@ module OpenAI
           module Caller
             extend OpenAI::Internal::Type::Union
 
-            type direct = { type: :direct }
+            type direct = { ?type: :direct }
 
             class Direct < OpenAI::Internal::Type::BaseModel
               attr_accessor type: :direct
 
               def initialize: (?type: :direct) -> void
 
-              def to_hash: -> { type: :direct }
+              def to_hash: -> { ?type: :direct }
             end
 
-            type program = { caller_id: String, type: :program }
+            type program = { caller_id: String, ?type: :program }
 
             class Program < OpenAI::Internal::Type::BaseModel
               attr_accessor caller_id: String
@@ -773,7 +773,7 @@ module OpenAI
 
               def initialize: (caller_id: String, ?type: :program) -> void
 
-              def to_hash: -> { caller_id: String, type: :program }
+              def to_hash: -> { caller_id: String, ?type: :program }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput::caller_]
@@ -797,9 +797,9 @@ module OpenAI
             call_id: String,
             operation: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::operation,
             status: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::status,
-            type: :apply_patch_call,
-            id: String?,
-            caller_: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::caller_?
+            ?type: :apply_patch_call,
+            ?id: String?,
+            ?caller_: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::caller_?
           }
 
         class ApplyPatchCall < OpenAI::Internal::Type::BaseModel
@@ -828,9 +828,9 @@ module OpenAI
             call_id: String,
             operation: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::operation,
             status: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::status,
-            type: :apply_patch_call,
-            id: String?,
-            caller_: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::caller_?
+            ?type: :apply_patch_call,
+            ?id: String?,
+            ?caller_: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::caller_?
           }
 
           type operation =
@@ -842,7 +842,7 @@ module OpenAI
             extend OpenAI::Internal::Type::Union
 
             type create_file =
-              { diff: String, path: String, type: :create_file }
+              { diff: String, path: String, ?type: :create_file }
 
             class CreateFile < OpenAI::Internal::Type::BaseModel
               attr_accessor diff: String
@@ -857,10 +857,14 @@ module OpenAI
                 ?type: :create_file
               ) -> void
 
-              def to_hash: -> { diff: String, path: String, type: :create_file }
+              def to_hash: -> {
+                diff: String,
+                path: String,
+                ?type: :create_file
+              }
             end
 
-            type delete_file = { path: String, type: :delete_file }
+            type delete_file = { path: String, ?type: :delete_file }
 
             class DeleteFile < OpenAI::Internal::Type::BaseModel
               attr_accessor path: String
@@ -869,11 +873,11 @@ module OpenAI
 
               def initialize: (path: String, ?type: :delete_file) -> void
 
-              def to_hash: -> { path: String, type: :delete_file }
+              def to_hash: -> { path: String, ?type: :delete_file }
             end
 
             type update_file =
-              { diff: String, path: String, type: :update_file }
+              { diff: String, path: String, ?type: :update_file }
 
             class UpdateFile < OpenAI::Internal::Type::BaseModel
               attr_accessor diff: String
@@ -888,7 +892,11 @@ module OpenAI
                 ?type: :update_file
               ) -> void
 
-              def to_hash: -> { diff: String, path: String, type: :update_file }
+              def to_hash: -> {
+                diff: String,
+                path: String,
+                ?type: :update_file
+              }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::operation]
@@ -912,17 +920,17 @@ module OpenAI
           module Caller
             extend OpenAI::Internal::Type::Union
 
-            type direct = { type: :direct }
+            type direct = { ?type: :direct }
 
             class Direct < OpenAI::Internal::Type::BaseModel
               attr_accessor type: :direct
 
               def initialize: (?type: :direct) -> void
 
-              def to_hash: -> { type: :direct }
+              def to_hash: -> { ?type: :direct }
             end
 
-            type program = { caller_id: String, type: :program }
+            type program = { caller_id: String, ?type: :program }
 
             class Program < OpenAI::Internal::Type::BaseModel
               attr_accessor caller_id: String
@@ -931,7 +939,7 @@ module OpenAI
 
               def initialize: (caller_id: String, ?type: :program) -> void
 
-              def to_hash: -> { caller_id: String, type: :program }
+              def to_hash: -> { caller_id: String, ?type: :program }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall::caller_]
@@ -942,10 +950,10 @@ module OpenAI
           {
             call_id: String,
             status: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::status,
-            type: :apply_patch_call_output,
-            id: String?,
-            caller_: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::caller_?,
-            output: String?
+            ?type: :apply_patch_call_output,
+            ?id: String?,
+            ?caller_: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::caller_?,
+            ?output: String?
           }
 
         class ApplyPatchCallOutput < OpenAI::Internal::Type::BaseModel
@@ -973,10 +981,10 @@ module OpenAI
           def to_hash: -> {
             call_id: String,
             status: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::status,
-            type: :apply_patch_call_output,
-            id: String?,
-            caller_: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::caller_?,
-            output: String?
+            ?type: :apply_patch_call_output,
+            ?id: String?,
+            ?caller_: OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::caller_?,
+            ?output: String?
           }
 
           type status = :completed | :failed
@@ -997,17 +1005,17 @@ module OpenAI
           module Caller
             extend OpenAI::Internal::Type::Union
 
-            type direct = { type: :direct }
+            type direct = { ?type: :direct }
 
             class Direct < OpenAI::Internal::Type::BaseModel
               attr_accessor type: :direct
 
               def initialize: (?type: :direct) -> void
 
-              def to_hash: -> { type: :direct }
+              def to_hash: -> { ?type: :direct }
             end
 
-            type program = { caller_id: String, type: :program }
+            type program = { caller_id: String, ?type: :program }
 
             class Program < OpenAI::Internal::Type::BaseModel
               attr_accessor caller_id: String
@@ -1016,7 +1024,7 @@ module OpenAI
 
               def initialize: (caller_id: String, ?type: :program) -> void
 
-              def to_hash: -> { caller_id: String, type: :program }
+              def to_hash: -> { caller_id: String, ?type: :program }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput::caller_]
@@ -1028,8 +1036,8 @@ module OpenAI
             id: String,
             server_label: String,
             tools: ::Array[OpenAI::Responses::ResponseInputItem::McpListTools::Tool],
-            type: :mcp_list_tools,
-            error: String?
+            ?type: :mcp_list_tools,
+            ?error: String?
           }
 
         class McpListTools < OpenAI::Internal::Type::BaseModel
@@ -1055,16 +1063,16 @@ module OpenAI
             id: String,
             server_label: String,
             tools: ::Array[OpenAI::Responses::ResponseInputItem::McpListTools::Tool],
-            type: :mcp_list_tools,
-            error: String?
+            ?type: :mcp_list_tools,
+            ?error: String?
           }
 
           type tool =
             {
               input_schema: top,
               name: String,
-              annotations: top?,
-              description: String?
+              ?annotations: top?,
+              ?description: String?
             }
 
           class Tool < OpenAI::Internal::Type::BaseModel
@@ -1086,8 +1094,8 @@ module OpenAI
             def to_hash: -> {
               input_schema: top,
               name: String,
-              annotations: top?,
-              description: String?
+              ?annotations: top?,
+              ?description: String?
             }
           end
         end
@@ -1098,7 +1106,7 @@ module OpenAI
             arguments: String,
             name: String,
             server_label: String,
-            type: :mcp_approval_request
+            ?type: :mcp_approval_request
           }
 
         class McpApprovalRequest < OpenAI::Internal::Type::BaseModel
@@ -1125,7 +1133,7 @@ module OpenAI
             arguments: String,
             name: String,
             server_label: String,
-            type: :mcp_approval_request
+            ?type: :mcp_approval_request
           }
         end
 
@@ -1133,9 +1141,9 @@ module OpenAI
           {
             approval_request_id: String,
             approve: bool,
-            type: :mcp_approval_response,
-            id: String?,
-            reason: String?
+            ?type: :mcp_approval_response,
+            ?id: String?,
+            ?reason: String?
           }
 
         class McpApprovalResponse < OpenAI::Internal::Type::BaseModel
@@ -1160,9 +1168,9 @@ module OpenAI
           def to_hash: -> {
             approval_request_id: String,
             approve: bool,
-            type: :mcp_approval_response,
-            id: String?,
-            reason: String?
+            ?type: :mcp_approval_response,
+            ?id: String?,
+            ?reason: String?
           }
         end
 
@@ -1172,11 +1180,11 @@ module OpenAI
             arguments: String,
             name: String,
             server_label: String,
-            type: :mcp_call,
-            approval_request_id: String?,
-            error: OpenAI::Models::Responses::mcp_tool_call_error?,
-            output: String?,
-            status: OpenAI::Models::Responses::ResponseInputItem::McpCall::status
+            ?type: :mcp_call,
+            ?approval_request_id: String?,
+            ?error: OpenAI::Models::Responses::mcp_tool_call_error?,
+            ?output: String?,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::McpCall::status
           }
 
         class McpCall < OpenAI::Internal::Type::BaseModel
@@ -1219,11 +1227,11 @@ module OpenAI
             arguments: String,
             name: String,
             server_label: String,
-            type: :mcp_call,
-            approval_request_id: String?,
-            error: OpenAI::Models::Responses::mcp_tool_call_error?,
-            output: String?,
-            status: OpenAI::Models::Responses::ResponseInputItem::McpCall::status
+            ?type: :mcp_call,
+            ?approval_request_id: String?,
+            ?error: OpenAI::Models::Responses::mcp_tool_call_error?,
+            ?output: String?,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::McpCall::status
           }
 
           type status =
@@ -1242,20 +1250,20 @@ module OpenAI
           end
         end
 
-        type compaction_trigger = { type: :compaction_trigger }
+        type compaction_trigger = { ?type: :compaction_trigger }
 
         class CompactionTrigger < OpenAI::Internal::Type::BaseModel
           attr_accessor type: :compaction_trigger
 
           def initialize: (?type: :compaction_trigger) -> void
 
-          def to_hash: -> { type: :compaction_trigger }
+          def to_hash: -> { ?type: :compaction_trigger }
         end
 
         type item_reference =
           {
             id: String,
-            type: OpenAI::Models::Responses::ResponseInputItem::ItemReference::type_?
+            ?type: OpenAI::Models::Responses::ResponseInputItem::ItemReference::type_?
           }
 
         class ItemReference < OpenAI::Internal::Type::BaseModel
@@ -1270,7 +1278,7 @@ module OpenAI
 
           def to_hash: -> {
             id: String,
-            type: OpenAI::Models::Responses::ResponseInputItem::ItemReference::type_?
+            ?type: OpenAI::Models::Responses::ResponseInputItem::ItemReference::type_?
           }
 
           type type_ = :item_reference
@@ -1290,7 +1298,7 @@ module OpenAI
             call_id: String,
             code: String,
             fingerprint: String,
-            type: :program
+            ?type: :program
           }
 
         class Program < OpenAI::Internal::Type::BaseModel
@@ -1317,7 +1325,7 @@ module OpenAI
             call_id: String,
             code: String,
             fingerprint: String,
-            type: :program
+            ?type: :program
           }
         end
 
@@ -1327,7 +1335,7 @@ module OpenAI
             call_id: String,
             result: String,
             status: OpenAI::Models::Responses::ResponseInputItem::ProgramOutput::status,
-            type: :program_output
+            ?type: :program_output
           }
 
         class ProgramOutput < OpenAI::Internal::Type::BaseModel
@@ -1354,7 +1362,7 @@ module OpenAI
             call_id: String,
             result: String,
             status: OpenAI::Models::Responses::ResponseInputItem::ProgramOutput::status,
-            type: :program_output
+            ?type: :program_output
           }
 
           type status = :completed | :incomplete

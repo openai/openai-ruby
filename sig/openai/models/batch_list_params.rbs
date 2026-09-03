@@ -1,8 +1,11 @@
 module OpenAI
   module Models
     type batch_list_params =
-      { after: String, limit: Integer }
-      & OpenAI::Internal::Type::request_parameters
+      {
+        ?after: String,
+        ?limit: Integer,
+        ?request_options: OpenAI::request_opts
+      }
 
     class BatchListParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -23,9 +26,9 @@ module OpenAI
       ) -> void
 
       def to_hash: -> {
-        after: String,
-        limit: Integer,
-        request_options: OpenAI::RequestOptions
+        ?after: String,
+        ?limit: Integer,
+        ?request_options: OpenAI::RequestOptions
       }
     end
   end
