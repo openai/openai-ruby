@@ -85,7 +85,7 @@ module OpenAI
       in Pathname
         content.read(binmode: true)
       in StringIO
-        content.string
+        content.string.byteslice(content.pos..) || ""
       in IO
         content.read
       in String
