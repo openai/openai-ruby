@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module FineTuning
       type supervised_method =
-        { hyperparameters: OpenAI::FineTuning::SupervisedHyperparameters }
+        { ?hyperparameters: OpenAI::FineTuning::SupervisedHyperparameters }
 
       class SupervisedMethod < OpenAI::Internal::Type::BaseModel
         attr_reader hyperparameters: OpenAI::FineTuning::SupervisedHyperparameters?
@@ -16,7 +16,7 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          hyperparameters: OpenAI::FineTuning::SupervisedHyperparameters
+          ?hyperparameters: OpenAI::FineTuning::SupervisedHyperparameters
         }
       end
     end

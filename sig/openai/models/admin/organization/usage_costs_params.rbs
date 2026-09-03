@@ -5,16 +5,16 @@ module OpenAI
         type usage_costs_params =
           {
             start_time: Integer,
-            api_key_ids: ::Array[String],
-            bucket_width: OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width,
-            end_time: Integer,
-            group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by],
-            limit: Integer,
-            line_items: ::Array[String],
-            page: String,
-            project_ids: ::Array[String]
+            ?api_key_ids: ::Array[String],
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by],
+            ?limit: Integer,
+            ?line_items: ::Array[String],
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class UsageCostsParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -73,15 +73,15 @@ module OpenAI
 
           def to_hash: -> {
             start_time: Integer,
-            api_key_ids: ::Array[String],
-            bucket_width: OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width,
-            end_time: Integer,
-            group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by],
-            limit: Integer,
-            line_items: ::Array[String],
-            page: String,
-            project_ids: ::Array[String],
-            request_options: OpenAI::RequestOptions
+            ?api_key_ids: ::Array[String],
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by],
+            ?limit: Integer,
+            ?line_items: ::Array[String],
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?request_options: OpenAI::RequestOptions
           }
 
           type bucket_width = :"1d"

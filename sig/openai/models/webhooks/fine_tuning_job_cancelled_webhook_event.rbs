@@ -6,8 +6,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::FineTuningJobCancelledWebhookEvent::Data,
-          type: :"fine_tuning.job.cancelled",
-          object: OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::object
+          ?type: :"fine_tuning.job.cancelled",
+          ?object: OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::object
         }
 
       class FineTuningJobCancelledWebhookEvent < OpenAI::Internal::Type::BaseModel
@@ -37,8 +37,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::FineTuningJobCancelledWebhookEvent::Data,
-          type: :"fine_tuning.job.cancelled",
-          object: OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::object
+          ?type: :"fine_tuning.job.cancelled",
+          ?object: OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::object
         }
 
         type data = { id: String }

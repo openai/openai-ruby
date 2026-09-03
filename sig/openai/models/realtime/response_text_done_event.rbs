@@ -9,7 +9,7 @@ module OpenAI
           output_index: Integer,
           response_id: String,
           text: String,
-          type: :"response.output_text.done"
+          ?type: :"response.output_text.done"
         }
 
       class ResponseTextDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -44,7 +44,7 @@ module OpenAI
           output_index: Integer,
           response_id: String,
           text: String,
-          type: :"response.output_text.done"
+          ?type: :"response.output_text.done"
         }
       end
     end

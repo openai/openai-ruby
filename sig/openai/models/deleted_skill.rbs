@@ -1,6 +1,7 @@
 module OpenAI
   module Models
-    type deleted_skill = { id: String, deleted: bool, object: :"skill.deleted" }
+    type deleted_skill =
+      { id: String, deleted: bool, ?object: :"skill.deleted" }
 
     class DeletedSkill < OpenAI::Internal::Type::BaseModel
       attr_accessor id: String
@@ -15,7 +16,7 @@ module OpenAI
         ?object: :"skill.deleted"
       ) -> void
 
-      def to_hash: -> { id: String, deleted: bool, object: :"skill.deleted" }
+      def to_hash: -> { id: String, deleted: bool, ?object: :"skill.deleted" }
     end
   end
 end

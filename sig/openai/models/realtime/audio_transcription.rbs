@@ -3,12 +3,12 @@ module OpenAI
     module Realtime
       type audio_transcription =
         {
-          delay: OpenAI::Models::Realtime::AudioTranscription::delay,
-          keywords: ::Array[String],
-          language: String,
-          languages: ::Array[String],
-          model: OpenAI::Models::Realtime::AudioTranscription::model,
-          prompt: String
+          ?delay: OpenAI::Models::Realtime::AudioTranscription::delay,
+          ?keywords: ::Array[String],
+          ?language: String,
+          ?languages: ::Array[String],
+          ?model: OpenAI::Models::Realtime::AudioTranscription::model,
+          ?prompt: String
         }
 
       class AudioTranscription < OpenAI::Internal::Type::BaseModel
@@ -50,12 +50,12 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          delay: OpenAI::Models::Realtime::AudioTranscription::delay,
-          keywords: ::Array[String],
-          language: String,
-          languages: ::Array[String],
-          model: OpenAI::Models::Realtime::AudioTranscription::model,
-          prompt: String
+          ?delay: OpenAI::Models::Realtime::AudioTranscription::delay,
+          ?keywords: ::Array[String],
+          ?language: String,
+          ?languages: ::Array[String],
+          ?model: OpenAI::Models::Realtime::AudioTranscription::model,
+          ?prompt: String
         }
 
         type delay = :minimal | :low | :medium | :high | :xhigh

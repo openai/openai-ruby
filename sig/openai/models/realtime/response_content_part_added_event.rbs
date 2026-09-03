@@ -9,7 +9,7 @@ module OpenAI
           output_index: Integer,
           part: OpenAI::Realtime::ResponseContentPartAddedEvent::Part,
           response_id: String,
-          type: :"response.content_part.added"
+          ?type: :"response.content_part.added"
         }
 
       class ResponseContentPartAddedEvent < OpenAI::Internal::Type::BaseModel
@@ -44,15 +44,15 @@ module OpenAI
           output_index: Integer,
           part: OpenAI::Realtime::ResponseContentPartAddedEvent::Part,
           response_id: String,
-          type: :"response.content_part.added"
+          ?type: :"response.content_part.added"
         }
 
         type part =
           {
-            audio: String,
-            text: String,
-            transcript: String,
-            type: OpenAI::Models::Realtime::ResponseContentPartAddedEvent::Part::type_
+            ?audio: String,
+            ?text: String,
+            ?transcript: String,
+            ?type: OpenAI::Models::Realtime::ResponseContentPartAddedEvent::Part::type_
           }
 
         class Part < OpenAI::Internal::Type::BaseModel
@@ -82,10 +82,10 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            audio: String,
-            text: String,
-            transcript: String,
-            type: OpenAI::Models::Realtime::ResponseContentPartAddedEvent::Part::type_
+            ?audio: String,
+            ?text: String,
+            ?transcript: String,
+            ?type: OpenAI::Models::Realtime::ResponseContentPartAddedEvent::Part::type_
           }
 
           type type_ = :text | :audio

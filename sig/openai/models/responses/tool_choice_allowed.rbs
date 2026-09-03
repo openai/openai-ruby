@@ -5,7 +5,7 @@ module OpenAI
         {
           mode: OpenAI::Models::Responses::ToolChoiceAllowed::mode,
           tools: ::Array[::Hash[Symbol, top]],
-          type: :allowed_tools
+          ?type: :allowed_tools
         }
 
       class ToolChoiceAllowed < OpenAI::Internal::Type::BaseModel
@@ -24,7 +24,7 @@ module OpenAI
         def to_hash: -> {
           mode: OpenAI::Models::Responses::ToolChoiceAllowed::mode,
           tools: ::Array[::Hash[Symbol, top]],
-          type: :allowed_tools
+          ?type: :allowed_tools
         }
 
         type mode = :auto | :required

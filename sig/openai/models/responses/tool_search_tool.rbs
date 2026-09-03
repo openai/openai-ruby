@@ -3,10 +3,10 @@ module OpenAI
     module Responses
       type tool_search_tool =
         {
-          type: :tool_search,
-          description: String?,
-          execution: OpenAI::Models::Responses::ToolSearchTool::execution,
-          parameters: top?
+          ?type: :tool_search,
+          ?description: String?,
+          ?execution: OpenAI::Models::Responses::ToolSearchTool::execution,
+          ?parameters: top?
         }
 
       class ToolSearchTool < OpenAI::Internal::Type::BaseModel
@@ -30,10 +30,10 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :tool_search,
-          description: String?,
-          execution: OpenAI::Models::Responses::ToolSearchTool::execution,
-          parameters: top?
+          ?type: :tool_search,
+          ?description: String?,
+          ?execution: OpenAI::Models::Responses::ToolSearchTool::execution,
+          ?parameters: top?
         }
 
         type execution = :server | :client

@@ -8,7 +8,7 @@ module OpenAI
           output_index: Integer,
           refusal: String,
           sequence_number: Integer,
-          type: :"response.refusal.done"
+          ?type: :"response.refusal.done"
         }
 
       class ResponseRefusalDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -39,7 +39,7 @@ module OpenAI
           output_index: Integer,
           refusal: String,
           sequence_number: Integer,
-          type: :"response.refusal.done"
+          ?type: :"response.refusal.done"
         }
       end
     end

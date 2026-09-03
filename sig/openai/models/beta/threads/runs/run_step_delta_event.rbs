@@ -9,7 +9,7 @@ module OpenAI
             {
               id: String,
               delta: OpenAI::Beta::Threads::Runs::RunStepDelta,
-              object: :"thread.run.step.delta"
+              ?object: :"thread.run.step.delta"
             }
 
           class RunStepDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -28,7 +28,7 @@ module OpenAI
             def to_hash: -> {
               id: String,
               delta: OpenAI::Beta::Threads::Runs::RunStepDelta,
-              object: :"thread.run.step.delta"
+              ?object: :"thread.run.step.delta"
             }
           end
         end

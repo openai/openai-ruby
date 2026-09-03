@@ -5,8 +5,8 @@ module OpenAI
     module Beta
       type beta_response_text_config =
         {
-          format_: OpenAI::Models::Beta::beta_response_format_text_config,
-          verbosity: OpenAI::Models::Beta::BetaResponseTextConfig::verbosity?
+          ?format_: OpenAI::Models::Beta::beta_response_format_text_config,
+          ?verbosity: OpenAI::Models::Beta::BetaResponseTextConfig::verbosity?
         }
 
       class BetaResponseTextConfig < OpenAI::Internal::Type::BaseModel
@@ -24,8 +24,8 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          format_: OpenAI::Models::Beta::beta_response_format_text_config,
-          verbosity: OpenAI::Models::Beta::BetaResponseTextConfig::verbosity?
+          ?format_: OpenAI::Models::Beta::beta_response_format_text_config,
+          ?verbosity: OpenAI::Models::Beta::BetaResponseTextConfig::verbosity?
         }
 
         type verbosity = :low | :medium | :high

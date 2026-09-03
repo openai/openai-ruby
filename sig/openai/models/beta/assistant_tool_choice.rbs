@@ -4,7 +4,7 @@ module OpenAI
       type assistant_tool_choice =
         {
           type: OpenAI::Models::Beta::AssistantToolChoice::type_,
-          function: OpenAI::Beta::AssistantToolChoiceFunction
+          ?function: OpenAI::Beta::AssistantToolChoiceFunction
         }
 
       class AssistantToolChoice < OpenAI::Internal::Type::BaseModel
@@ -23,7 +23,7 @@ module OpenAI
 
         def to_hash: -> {
           type: OpenAI::Models::Beta::AssistantToolChoice::type_,
-          function: OpenAI::Beta::AssistantToolChoiceFunction
+          ?function: OpenAI::Beta::AssistantToolChoiceFunction
         }
 
         type type_ = :function | :code_interpreter | :file_search

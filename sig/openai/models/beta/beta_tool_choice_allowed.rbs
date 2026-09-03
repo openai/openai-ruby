@@ -7,7 +7,7 @@ module OpenAI
         {
           mode: OpenAI::Models::Beta::BetaToolChoiceAllowed::mode,
           tools: ::Array[::Hash[Symbol, top]],
-          type: :allowed_tools
+          ?type: :allowed_tools
         }
 
       class BetaToolChoiceAllowed < OpenAI::Internal::Type::BaseModel
@@ -26,7 +26,7 @@ module OpenAI
         def to_hash: -> {
           mode: OpenAI::Models::Beta::BetaToolChoiceAllowed::mode,
           tools: ::Array[::Hash[Symbol, top]],
-          type: :allowed_tools
+          ?type: :allowed_tools
         }
 
         type mode = :auto | :required

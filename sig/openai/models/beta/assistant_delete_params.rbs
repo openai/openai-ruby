@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Beta
       type assistant_delete_params =
-        { assistant_id: String } & OpenAI::Internal::Type::request_parameters
+        { assistant_id: String, ?request_options: OpenAI::request_opts }
 
       class AssistantDeleteParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -17,7 +17,7 @@ module OpenAI
 
         def to_hash: -> {
           assistant_id: String,
-          request_options: OpenAI::RequestOptions
+          ?request_options: OpenAI::RequestOptions
         }
       end
     end

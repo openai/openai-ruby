@@ -5,9 +5,9 @@ module OpenAI
     module Beta
       type beta_function_shell_tool =
         {
-          type: :shell,
-          allowed_callers: ::Array[OpenAI::Models::Beta::BetaFunctionShellTool::allowed_caller]?,
-          environment: OpenAI::Models::Beta::BetaFunctionShellTool::environment?
+          ?type: :shell,
+          ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaFunctionShellTool::allowed_caller]?,
+          ?environment: OpenAI::Models::Beta::BetaFunctionShellTool::environment?
         }
 
       class BetaFunctionShellTool < OpenAI::Internal::Type::BaseModel
@@ -24,9 +24,9 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :shell,
-          allowed_callers: ::Array[OpenAI::Models::Beta::BetaFunctionShellTool::allowed_caller]?,
-          environment: OpenAI::Models::Beta::BetaFunctionShellTool::environment?
+          ?type: :shell,
+          ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaFunctionShellTool::allowed_caller]?,
+          ?environment: OpenAI::Models::Beta::BetaFunctionShellTool::environment?
         }
 
         type allowed_caller = :direct | :programmatic

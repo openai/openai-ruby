@@ -4,20 +4,20 @@ module OpenAI
       {
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
-        background: OpenAI::Models::ImageEditParams::background?,
-        input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?,
-        mask: OpenAI::Internal::file_input,
-        model: OpenAI::Models::ImageEditParams::model?,
-        n: Integer?,
-        output_compression: Integer?,
-        output_format: OpenAI::Models::ImageEditParams::output_format?,
-        partial_images: Integer?,
-        quality: OpenAI::Models::ImageEditParams::quality?,
-        response_format: OpenAI::Models::ImageEditParams::response_format?,
-        size: OpenAI::Models::ImageEditParams::size?,
-        user: String
+        ?background: OpenAI::Models::ImageEditParams::background?,
+        ?input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?,
+        ?mask: OpenAI::Internal::file_input,
+        ?model: OpenAI::Models::ImageEditParams::model?,
+        ?n: Integer?,
+        ?output_compression: Integer?,
+        ?output_format: OpenAI::Models::ImageEditParams::output_format?,
+        ?partial_images: Integer?,
+        ?quality: OpenAI::Models::ImageEditParams::quality?,
+        ?response_format: OpenAI::Models::ImageEditParams::response_format?,
+        ?size: OpenAI::Models::ImageEditParams::size?,
+        ?user: String,
+        ?request_options: OpenAI::request_opts
       }
-      & OpenAI::Internal::Type::request_parameters
 
     class ImageEditParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -76,19 +76,19 @@ module OpenAI
       def to_hash: -> {
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
-        background: OpenAI::Models::ImageEditParams::background?,
-        input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?,
-        mask: OpenAI::Internal::file_input,
-        model: OpenAI::Models::ImageEditParams::model?,
-        n: Integer?,
-        output_compression: Integer?,
-        output_format: OpenAI::Models::ImageEditParams::output_format?,
-        partial_images: Integer?,
-        quality: OpenAI::Models::ImageEditParams::quality?,
-        response_format: OpenAI::Models::ImageEditParams::response_format?,
-        size: OpenAI::Models::ImageEditParams::size?,
-        user: String,
-        request_options: OpenAI::RequestOptions
+        ?background: OpenAI::Models::ImageEditParams::background?,
+        ?input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?,
+        ?mask: OpenAI::Internal::file_input,
+        ?model: OpenAI::Models::ImageEditParams::model?,
+        ?n: Integer?,
+        ?output_compression: Integer?,
+        ?output_format: OpenAI::Models::ImageEditParams::output_format?,
+        ?partial_images: Integer?,
+        ?quality: OpenAI::Models::ImageEditParams::quality?,
+        ?response_format: OpenAI::Models::ImageEditParams::response_format?,
+        ?size: OpenAI::Models::ImageEditParams::size?,
+        ?user: String,
+        ?request_options: OpenAI::RequestOptions
       }
 
       type image =

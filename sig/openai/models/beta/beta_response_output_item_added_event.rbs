@@ -8,8 +8,8 @@ module OpenAI
           item: OpenAI::Models::Beta::beta_response_output_item,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.output_item.added",
-          agent: OpenAI::Beta::BetaResponseOutputItemAddedEvent::Agent?
+          ?type: :"response.output_item.added",
+          ?agent: OpenAI::Beta::BetaResponseOutputItemAddedEvent::Agent?
         }
 
       class BetaResponseOutputItemAddedEvent < OpenAI::Internal::Type::BaseModel
@@ -35,8 +35,8 @@ module OpenAI
           item: OpenAI::Models::Beta::beta_response_output_item,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.output_item.added",
-          agent: OpenAI::Beta::BetaResponseOutputItemAddedEvent::Agent?
+          ?type: :"response.output_item.added",
+          ?agent: OpenAI::Beta::BetaResponseOutputItemAddedEvent::Agent?
         }
 
         type agent = { agent_name: String }

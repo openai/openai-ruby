@@ -5,7 +5,7 @@ module OpenAI
         {
           event_id: String,
           session: OpenAI::Realtime::RealtimeTranslationSession,
-          type: :"session.created"
+          ?type: :"session.created"
         }
 
       class RealtimeTranslationSessionCreatedEvent < OpenAI::Internal::Type::BaseModel
@@ -24,7 +24,7 @@ module OpenAI
         def to_hash: -> {
           event_id: String,
           session: OpenAI::Realtime::RealtimeTranslationSession,
-          type: :"session.created"
+          ?type: :"session.created"
         }
       end
     end

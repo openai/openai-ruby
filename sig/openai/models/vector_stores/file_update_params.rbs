@@ -5,9 +5,9 @@ module OpenAI
         {
           vector_store_id: String,
           file_id: String,
-          attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileUpdateParams::attribute]?
+          attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileUpdateParams::attribute]?,
+          ?request_options: OpenAI::request_opts
         }
-        & OpenAI::Internal::Type::request_parameters
 
       class FileUpdateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -30,7 +30,7 @@ module OpenAI
           vector_store_id: String,
           file_id: String,
           attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileUpdateParams::attribute]?,
-          request_options: OpenAI::RequestOptions
+          ?request_options: OpenAI::RequestOptions
         }
 
         type attribute = String | Float | bool

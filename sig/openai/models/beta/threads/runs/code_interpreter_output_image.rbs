@@ -6,8 +6,8 @@ module OpenAI
           type code_interpreter_output_image =
             {
               index: Integer,
-              type: :image,
-              image: OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
+              ?type: :image,
+              ?image: OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
             }
 
           class CodeInterpreterOutputImage < OpenAI::Internal::Type::BaseModel
@@ -29,11 +29,11 @@ module OpenAI
 
             def to_hash: -> {
               index: Integer,
-              type: :image,
-              image: OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
+              ?type: :image,
+              ?image: OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
             }
 
-            type image = { file_id: String }
+            type image = { ?file_id: String }
 
             class Image < OpenAI::Internal::Type::BaseModel
               attr_reader file_id: String?
@@ -42,7 +42,7 @@ module OpenAI
 
               def initialize: (?file_id: String) -> void
 
-              def to_hash: -> { file_id: String }
+              def to_hash: -> { ?file_id: String }
             end
           end
         end

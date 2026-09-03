@@ -4,12 +4,12 @@ module OpenAI
       module Organization
         type spend_alert_list_params =
           {
-            after: String,
-            before: String,
-            limit: Integer,
-            order: OpenAI::Models::Admin::Organization::SpendAlertListParams::order
+            ?after: String,
+            ?before: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::SpendAlertListParams::order,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class SpendAlertListParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -42,11 +42,11 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            after: String,
-            before: String,
-            limit: Integer,
-            order: OpenAI::Models::Admin::Organization::SpendAlertListParams::order,
-            request_options: OpenAI::RequestOptions
+            ?after: String,
+            ?before: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::SpendAlertListParams::order,
+            ?request_options: OpenAI::RequestOptions
           }
 
           type order = :asc | :desc

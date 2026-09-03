@@ -1,8 +1,10 @@
 module OpenAI
   module Models
     type content_provenance_check_create_params =
-      { file: OpenAI::Internal::file_input }
-      & OpenAI::Internal::Type::request_parameters
+      {
+        file: OpenAI::Internal::file_input,
+        ?request_options: OpenAI::request_opts
+      }
 
     class ContentProvenanceCheckCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -17,7 +19,7 @@ module OpenAI
 
       def to_hash: -> {
         file: OpenAI::Internal::file_input,
-        request_options: OpenAI::RequestOptions
+        ?request_options: OpenAI::RequestOptions
       }
     end
   end

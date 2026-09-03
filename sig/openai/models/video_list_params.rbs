@@ -2,11 +2,11 @@ module OpenAI
   module Models
     type video_list_params =
       {
-        after: String,
-        limit: Integer,
-        order: OpenAI::Models::VideoListParams::order
+        ?after: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::VideoListParams::order,
+        ?request_options: OpenAI::request_opts
       }
-      & OpenAI::Internal::Type::request_parameters
 
     class VideoListParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -34,10 +34,10 @@ module OpenAI
       ) -> void
 
       def to_hash: -> {
-        after: String,
-        limit: Integer,
-        order: OpenAI::Models::VideoListParams::order,
-        request_options: OpenAI::RequestOptions
+        ?after: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::VideoListParams::order,
+        ?request_options: OpenAI::RequestOptions
       }
 
       type order = :asc | :desc

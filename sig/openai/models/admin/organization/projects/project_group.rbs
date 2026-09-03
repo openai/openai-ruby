@@ -11,7 +11,7 @@ module OpenAI
               group_id: String,
               group_name: String,
               group_type: OpenAI::Models::Admin::Organization::Projects::ProjectGroup::group_type,
-              object: :"project.group",
+              ?object: :"project.group",
               project_id: String
             }
 
@@ -42,7 +42,7 @@ module OpenAI
               group_id: String,
               group_name: String,
               group_type: OpenAI::Models::Admin::Organization::Projects::ProjectGroup::group_type,
-              object: :"project.group",
+              ?object: :"project.group",
               project_id: String
             }
 

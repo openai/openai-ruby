@@ -8,8 +8,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.mcp_list_tools.completed",
-          agent: OpenAI::Beta::BetaResponseMcpListToolsCompletedEvent::Agent?
+          ?type: :"response.mcp_list_tools.completed",
+          ?agent: OpenAI::Beta::BetaResponseMcpListToolsCompletedEvent::Agent?
         }
 
       class BetaResponseMcpListToolsCompletedEvent < OpenAI::Internal::Type::BaseModel
@@ -35,8 +35,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.mcp_list_tools.completed",
-          agent: OpenAI::Beta::BetaResponseMcpListToolsCompletedEvent::Agent?
+          ?type: :"response.mcp_list_tools.completed",
+          ?agent: OpenAI::Beta::BetaResponseMcpListToolsCompletedEvent::Agent?
         }
 
         type agent = { agent_name: String }

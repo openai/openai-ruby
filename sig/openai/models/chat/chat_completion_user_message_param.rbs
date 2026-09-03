@@ -6,8 +6,8 @@ module OpenAI
       type chat_completion_user_message_param =
         {
           content: OpenAI::Models::Chat::ChatCompletionUserMessageParam::content,
-          role: :user,
-          name: String
+          ?role: :user,
+          ?name: String
         }
 
       class ChatCompletionUserMessageParam < OpenAI::Internal::Type::BaseModel
@@ -27,8 +27,8 @@ module OpenAI
 
         def to_hash: -> {
           content: OpenAI::Models::Chat::ChatCompletionUserMessageParam::content,
-          role: :user,
-          name: String
+          ?role: :user,
+          ?name: String
         }
 
         type content =

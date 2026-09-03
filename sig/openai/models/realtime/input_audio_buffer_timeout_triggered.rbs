@@ -7,7 +7,7 @@ module OpenAI
           audio_start_ms: Integer,
           event_id: String,
           item_id: String,
-          type: :"input_audio_buffer.timeout_triggered"
+          ?type: :"input_audio_buffer.timeout_triggered"
         }
 
       class InputAudioBufferTimeoutTriggered < OpenAI::Internal::Type::BaseModel
@@ -34,7 +34,7 @@ module OpenAI
           audio_start_ms: Integer,
           event_id: String,
           item_id: String,
-          type: :"input_audio_buffer.timeout_triggered"
+          ?type: :"input_audio_buffer.timeout_triggered"
         }
       end
     end

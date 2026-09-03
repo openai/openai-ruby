@@ -3,18 +3,18 @@ module OpenAI
     module Realtime
       type realtime_response_create_params =
         {
-          audio: OpenAI::Realtime::RealtimeResponseCreateAudioOutput,
-          conversation: OpenAI::Models::Realtime::RealtimeResponseCreateParams::conversation,
-          input: ::Array[OpenAI::Models::Realtime::conversation_item],
-          instructions: String,
-          max_output_tokens: OpenAI::Models::Realtime::RealtimeResponseCreateParams::max_output_tokens,
-          metadata: OpenAI::Models::metadata?,
-          output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::output_modality],
-          parallel_tool_calls: bool,
-          prompt: OpenAI::Responses::ResponsePrompt?,
-          reasoning: OpenAI::Realtime::RealtimeReasoning,
-          tool_choice: OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool_choice,
-          tools: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool]
+          ?audio: OpenAI::Realtime::RealtimeResponseCreateAudioOutput,
+          ?conversation: OpenAI::Models::Realtime::RealtimeResponseCreateParams::conversation,
+          ?input: ::Array[OpenAI::Models::Realtime::conversation_item],
+          ?instructions: String,
+          ?max_output_tokens: OpenAI::Models::Realtime::RealtimeResponseCreateParams::max_output_tokens,
+          ?metadata: OpenAI::Models::metadata?,
+          ?output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::output_modality],
+          ?parallel_tool_calls: bool,
+          ?prompt: OpenAI::Responses::ResponsePrompt?,
+          ?reasoning: OpenAI::Realtime::RealtimeReasoning,
+          ?tool_choice: OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool_choice,
+          ?tools: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool]
         }
 
       class RealtimeResponseCreateParams < OpenAI::Internal::Type::BaseModel
@@ -94,18 +94,18 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          audio: OpenAI::Realtime::RealtimeResponseCreateAudioOutput,
-          conversation: OpenAI::Models::Realtime::RealtimeResponseCreateParams::conversation,
-          input: ::Array[OpenAI::Models::Realtime::conversation_item],
-          instructions: String,
-          max_output_tokens: OpenAI::Models::Realtime::RealtimeResponseCreateParams::max_output_tokens,
-          metadata: OpenAI::Models::metadata?,
-          output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::output_modality],
-          parallel_tool_calls: bool,
-          prompt: OpenAI::Responses::ResponsePrompt?,
-          reasoning: OpenAI::Realtime::RealtimeReasoning,
-          tool_choice: OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool_choice,
-          tools: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool]
+          ?audio: OpenAI::Realtime::RealtimeResponseCreateAudioOutput,
+          ?conversation: OpenAI::Models::Realtime::RealtimeResponseCreateParams::conversation,
+          ?input: ::Array[OpenAI::Models::Realtime::conversation_item],
+          ?instructions: String,
+          ?max_output_tokens: OpenAI::Models::Realtime::RealtimeResponseCreateParams::max_output_tokens,
+          ?metadata: OpenAI::Models::metadata?,
+          ?output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::output_modality],
+          ?parallel_tool_calls: bool,
+          ?prompt: OpenAI::Responses::ResponsePrompt?,
+          ?reasoning: OpenAI::Realtime::RealtimeReasoning,
+          ?tool_choice: OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool_choice,
+          ?tools: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateParams::tool]
         }
 
         type conversation = String | :auto | :none

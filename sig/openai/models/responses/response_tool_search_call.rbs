@@ -8,8 +8,8 @@ module OpenAI
           call_id: String?,
           execution: OpenAI::Models::Responses::ResponseToolSearchCall::execution,
           status: OpenAI::Models::Responses::ResponseToolSearchCall::status,
-          type: :tool_search_call,
-          created_by: String
+          ?type: :tool_search_call,
+          ?created_by: String
         }
 
       class ResponseToolSearchCall < OpenAI::Internal::Type::BaseModel
@@ -45,8 +45,8 @@ module OpenAI
           call_id: String?,
           execution: OpenAI::Models::Responses::ResponseToolSearchCall::execution,
           status: OpenAI::Models::Responses::ResponseToolSearchCall::status,
-          type: :tool_search_call,
-          created_by: String
+          ?type: :tool_search_call,
+          ?created_by: String
         }
 
         type execution = :server | :client

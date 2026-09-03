@@ -8,11 +8,11 @@ module OpenAI
           :partial_image_b64 => String,
           partial_image_index: Integer,
           sequence_number: Integer,
-          type: :"response.image_generation_call.partial_image",
-          background: String,
-          output_format: String,
-          quality: String,
-          size: String
+          ?type: :"response.image_generation_call.partial_image",
+          ?background: String,
+          ?output_format: String,
+          ?quality: String,
+          ?size: String
         }
 
       class ResponseImageGenCallPartialImageEvent < OpenAI::Internal::Type::BaseModel
@@ -63,11 +63,11 @@ module OpenAI
           :partial_image_b64 => String,
           partial_image_index: Integer,
           sequence_number: Integer,
-          type: :"response.image_generation_call.partial_image",
-          background: String,
-          output_format: String,
-          quality: String,
-          size: String
+          ?type: :"response.image_generation_call.partial_image",
+          ?background: String,
+          ?output_format: String,
+          ?quality: String,
+          ?size: String
         }
       end
     end

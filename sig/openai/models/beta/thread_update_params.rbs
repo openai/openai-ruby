@@ -4,10 +4,10 @@ module OpenAI
       type thread_update_params =
         {
           thread_id: String,
-          metadata: OpenAI::Models::metadata?,
-          tool_resources: OpenAI::Beta::ThreadUpdateParams::ToolResources?
+          ?metadata: OpenAI::Models::metadata?,
+          ?tool_resources: OpenAI::Beta::ThreadUpdateParams::ToolResources?,
+          ?request_options: OpenAI::request_opts
         }
-        & OpenAI::Internal::Type::request_parameters
 
       class ThreadUpdateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -28,15 +28,15 @@ module OpenAI
 
         def to_hash: -> {
           thread_id: String,
-          metadata: OpenAI::Models::metadata?,
-          tool_resources: OpenAI::Beta::ThreadUpdateParams::ToolResources?,
-          request_options: OpenAI::RequestOptions
+          ?metadata: OpenAI::Models::metadata?,
+          ?tool_resources: OpenAI::Beta::ThreadUpdateParams::ToolResources?,
+          ?request_options: OpenAI::RequestOptions
         }
 
         type tool_resources =
           {
-            code_interpreter: OpenAI::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter,
-            file_search: OpenAI::Beta::ThreadUpdateParams::ToolResources::FileSearch
+            ?code_interpreter: OpenAI::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter,
+            ?file_search: OpenAI::Beta::ThreadUpdateParams::ToolResources::FileSearch
           }
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
@@ -58,11 +58,11 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            code_interpreter: OpenAI::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter,
-            file_search: OpenAI::Beta::ThreadUpdateParams::ToolResources::FileSearch
+            ?code_interpreter: OpenAI::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter,
+            ?file_search: OpenAI::Beta::ThreadUpdateParams::ToolResources::FileSearch
           }
 
-          type code_interpreter = { file_ids: ::Array[String] }
+          type code_interpreter = { ?file_ids: ::Array[String] }
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             attr_reader file_ids: ::Array[String]?
@@ -71,10 +71,10 @@ module OpenAI
 
             def initialize: (?file_ids: ::Array[String]) -> void
 
-            def to_hash: -> { file_ids: ::Array[String] }
+            def to_hash: -> { ?file_ids: ::Array[String] }
           end
 
-          type file_search = { vector_store_ids: ::Array[String] }
+          type file_search = { ?vector_store_ids: ::Array[String] }
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
             attr_reader vector_store_ids: ::Array[String]?
@@ -83,7 +83,7 @@ module OpenAI
 
             def initialize: (?vector_store_ids: ::Array[String]) -> void
 
-            def to_hash: -> { vector_store_ids: ::Array[String] }
+            def to_hash: -> { ?vector_store_ids: ::Array[String] }
           end
         end
       end

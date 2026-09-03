@@ -11,7 +11,7 @@ module OpenAI
               created_at: Integer,
               last_used_at: Integer?,
               name: String,
-              object: :"organization.project.api_key",
+              ?object: :"organization.project.api_key",
               owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
               owner_project_access: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::owner_project_access,
               redacted_value: String
@@ -50,7 +50,7 @@ module OpenAI
               created_at: Integer,
               last_used_at: Integer?,
               name: String,
-              object: :"organization.project.api_key",
+              ?object: :"organization.project.api_key",
               owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
               owner_project_access: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::owner_project_access,
               redacted_value: String
@@ -58,9 +58,9 @@ module OpenAI
 
             type owner =
               {
-                service_account: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount,
-                type: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_,
-                user: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::User
+                ?service_account: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount,
+                ?type: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_,
+                ?user: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::User
               }
 
             class Owner < OpenAI::Internal::Type::BaseModel
@@ -89,9 +89,9 @@ module OpenAI
               ) -> void
 
               def to_hash: -> {
-                service_account: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount,
-                type: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_,
-                user: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::User
+                ?service_account: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount,
+                ?type: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_,
+                ?user: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::User
               }
 
               type service_account =

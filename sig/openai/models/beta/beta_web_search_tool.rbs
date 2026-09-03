@@ -6,10 +6,10 @@ module OpenAI
       type beta_web_search_tool =
         {
           type: OpenAI::Models::Beta::BetaWebSearchTool::type_,
-          external_web_access: bool,
-          filters: OpenAI::Beta::BetaWebSearchTool::Filters?,
-          search_context_size: OpenAI::Models::Beta::BetaWebSearchTool::search_context_size,
-          user_location: OpenAI::Beta::BetaWebSearchTool::UserLocation?
+          ?external_web_access: bool,
+          ?filters: OpenAI::Beta::BetaWebSearchTool::Filters?,
+          ?search_context_size: OpenAI::Models::Beta::BetaWebSearchTool::search_context_size,
+          ?user_location: OpenAI::Beta::BetaWebSearchTool::UserLocation?
         }
 
       class BetaWebSearchTool < OpenAI::Internal::Type::BaseModel
@@ -39,10 +39,10 @@ module OpenAI
 
         def to_hash: -> {
           type: OpenAI::Models::Beta::BetaWebSearchTool::type_,
-          external_web_access: bool,
-          filters: OpenAI::Beta::BetaWebSearchTool::Filters?,
-          search_context_size: OpenAI::Models::Beta::BetaWebSearchTool::search_context_size,
-          user_location: OpenAI::Beta::BetaWebSearchTool::UserLocation?
+          ?external_web_access: bool,
+          ?filters: OpenAI::Beta::BetaWebSearchTool::Filters?,
+          ?search_context_size: OpenAI::Models::Beta::BetaWebSearchTool::search_context_size,
+          ?user_location: OpenAI::Beta::BetaWebSearchTool::UserLocation?
         }
 
         type type_ = :web_search | :web_search_2025_08_26
@@ -56,14 +56,14 @@ module OpenAI
           def self?.values: -> ::Array[OpenAI::Models::Beta::BetaWebSearchTool::type_]
         end
 
-        type filters = { allowed_domains: ::Array[String]? }
+        type filters = { ?allowed_domains: ::Array[String]? }
 
         class Filters < OpenAI::Internal::Type::BaseModel
           attr_accessor allowed_domains: ::Array[String]?
 
           def initialize: (?allowed_domains: ::Array[String]?) -> void
 
-          def to_hash: -> { allowed_domains: ::Array[String]? }
+          def to_hash: -> { ?allowed_domains: ::Array[String]? }
         end
 
         type search_context_size = :low | :medium | :high
@@ -80,11 +80,11 @@ module OpenAI
 
         type user_location =
           {
-            city: String?,
-            country: String?,
-            region: String?,
-            timezone: String?,
-            type: OpenAI::Models::Beta::BetaWebSearchTool::UserLocation::type_
+            ?city: String?,
+            ?country: String?,
+            ?region: String?,
+            ?timezone: String?,
+            ?type: OpenAI::Models::Beta::BetaWebSearchTool::UserLocation::type_
           }
 
         class UserLocation < OpenAI::Internal::Type::BaseModel
@@ -111,11 +111,11 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            city: String?,
-            country: String?,
-            region: String?,
-            timezone: String?,
-            type: OpenAI::Models::Beta::BetaWebSearchTool::UserLocation::type_
+            ?city: String?,
+            ?country: String?,
+            ?region: String?,
+            ?timezone: String?,
+            ?type: OpenAI::Models::Beta::BetaWebSearchTool::UserLocation::type_
           }
 
           type type_ = :approximate

@@ -6,7 +6,7 @@ module OpenAI
       type chat_completion_named_tool_choice =
         {
           function: OpenAI::Chat::ChatCompletionNamedToolChoice::Function,
-          type: :function
+          ?type: :function
         }
 
       class ChatCompletionNamedToolChoice < OpenAI::Internal::Type::BaseModel
@@ -21,7 +21,7 @@ module OpenAI
 
         def to_hash: -> {
           function: OpenAI::Chat::ChatCompletionNamedToolChoice::Function,
-          type: :function
+          ?type: :function
         }
 
         type function = { name: String }

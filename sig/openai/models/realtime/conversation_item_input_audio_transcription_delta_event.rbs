@@ -5,10 +5,10 @@ module OpenAI
         {
           event_id: String,
           item_id: String,
-          type: :"conversation.item.input_audio_transcription.delta",
-          content_index: Integer,
-          delta: String,
-          logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
+          ?type: :"conversation.item.input_audio_transcription.delta",
+          ?content_index: Integer,
+          ?delta: String,
+          ?logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
         }
 
       class ConversationItemInputAudioTranscriptionDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -40,10 +40,10 @@ module OpenAI
         def to_hash: -> {
           event_id: String,
           item_id: String,
-          type: :"conversation.item.input_audio_transcription.delta",
-          content_index: Integer,
-          delta: String,
-          logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
+          ?type: :"conversation.item.input_audio_transcription.delta",
+          ?content_index: Integer,
+          ?delta: String,
+          ?logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
         }
       end
     end

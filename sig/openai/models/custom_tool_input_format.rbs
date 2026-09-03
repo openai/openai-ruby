@@ -7,21 +7,21 @@ module OpenAI
     module CustomToolInputFormat
       extend OpenAI::Internal::Type::Union
 
-      type text = { type: :text }
+      type text = { ?type: :text }
 
       class Text < OpenAI::Internal::Type::BaseModel
         attr_accessor type: :text
 
         def initialize: (?type: :text) -> void
 
-        def to_hash: -> { type: :text }
+        def to_hash: -> { ?type: :text }
       end
 
       type grammar =
         {
           definition: String,
           syntax: OpenAI::Models::CustomToolInputFormat::Grammar::syntax,
-          type: :grammar
+          ?type: :grammar
         }
 
       class Grammar < OpenAI::Internal::Type::BaseModel
@@ -40,7 +40,7 @@ module OpenAI
         def to_hash: -> {
           definition: String,
           syntax: OpenAI::Models::CustomToolInputFormat::Grammar::syntax,
-          type: :grammar
+          ?type: :grammar
         }
 
         type syntax = :lark | :regex

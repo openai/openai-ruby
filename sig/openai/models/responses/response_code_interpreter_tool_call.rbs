@@ -8,7 +8,7 @@ module OpenAI
           container_id: String,
           outputs: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::output]?,
           status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status,
-          type: :code_interpreter_call
+          ?type: :code_interpreter_call
         }
 
       class ResponseCodeInterpreterToolCall < OpenAI::Internal::Type::BaseModel
@@ -39,7 +39,7 @@ module OpenAI
           container_id: String,
           outputs: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::output]?,
           status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status,
-          type: :code_interpreter_call
+          ?type: :code_interpreter_call
         }
 
         type output =
@@ -49,7 +49,7 @@ module OpenAI
         module Output
           extend OpenAI::Internal::Type::Union
 
-          type logs = { logs: String, type: :logs }
+          type logs = { logs: String, ?type: :logs }
 
           class Logs < OpenAI::Internal::Type::BaseModel
             attr_accessor logs: String
@@ -58,10 +58,10 @@ module OpenAI
 
             def initialize: (logs: String, ?type: :logs) -> void
 
-            def to_hash: -> { logs: String, type: :logs }
+            def to_hash: -> { logs: String, ?type: :logs }
           end
 
-          type image = { type: :image, url: String }
+          type image = { ?type: :image, url: String }
 
           class Image < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :image
@@ -70,7 +70,7 @@ module OpenAI
 
             def initialize: (url: String, ?type: :image) -> void
 
-            def to_hash: -> { type: :image, url: String }
+            def to_hash: -> { ?type: :image, url: String }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::output]

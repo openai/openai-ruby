@@ -6,8 +6,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::BatchExpiredWebhookEvent::Data,
-          type: :"batch.expired",
-          object: OpenAI::Models::Webhooks::BatchExpiredWebhookEvent::object
+          ?type: :"batch.expired",
+          ?object: OpenAI::Models::Webhooks::BatchExpiredWebhookEvent::object
         }
 
       class BatchExpiredWebhookEvent < OpenAI::Internal::Type::BaseModel
@@ -37,8 +37,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::BatchExpiredWebhookEvent::Data,
-          type: :"batch.expired",
-          object: OpenAI::Models::Webhooks::BatchExpiredWebhookEvent::object
+          ?type: :"batch.expired",
+          ?object: OpenAI::Models::Webhooks::BatchExpiredWebhookEvent::object
         }
 
         type data = { id: String }

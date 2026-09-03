@@ -3,9 +3,9 @@ module OpenAI
     module Realtime
       type realtime_response_status =
         {
-          error: OpenAI::Realtime::RealtimeResponseStatus::Error,
-          reason: OpenAI::Models::Realtime::RealtimeResponseStatus::reason,
-          type: OpenAI::Models::Realtime::RealtimeResponseStatus::type_
+          ?error: OpenAI::Realtime::RealtimeResponseStatus::Error,
+          ?reason: OpenAI::Models::Realtime::RealtimeResponseStatus::reason,
+          ?type: OpenAI::Models::Realtime::RealtimeResponseStatus::type_
         }
 
       class RealtimeResponseStatus < OpenAI::Internal::Type::BaseModel
@@ -34,12 +34,12 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          error: OpenAI::Realtime::RealtimeResponseStatus::Error,
-          reason: OpenAI::Models::Realtime::RealtimeResponseStatus::reason,
-          type: OpenAI::Models::Realtime::RealtimeResponseStatus::type_
+          ?error: OpenAI::Realtime::RealtimeResponseStatus::Error,
+          ?reason: OpenAI::Models::Realtime::RealtimeResponseStatus::reason,
+          ?type: OpenAI::Models::Realtime::RealtimeResponseStatus::type_
         }
 
-        type error = { code: String, type: String }
+        type error = { ?code: String, ?type: String }
 
         class Error < OpenAI::Internal::Type::BaseModel
           attr_reader code: String?
@@ -52,7 +52,7 @@ module OpenAI
 
           def initialize: (?code: String, ?type: String) -> void
 
-          def to_hash: -> { code: String, type: String }
+          def to_hash: -> { ?code: String, ?type: String }
         end
 
         type reason =

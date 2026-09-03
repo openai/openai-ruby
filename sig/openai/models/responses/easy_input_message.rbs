@@ -5,8 +5,8 @@ module OpenAI
         {
           content: OpenAI::Models::Responses::EasyInputMessage::content,
           role: OpenAI::Models::Responses::EasyInputMessage::role,
-          phase: OpenAI::Models::Responses::EasyInputMessage::phase?,
-          type: OpenAI::Models::Responses::EasyInputMessage::type_
+          ?phase: OpenAI::Models::Responses::EasyInputMessage::phase?,
+          ?type: OpenAI::Models::Responses::EasyInputMessage::type_
         }
 
       class EasyInputMessage < OpenAI::Internal::Type::BaseModel
@@ -32,8 +32,8 @@ module OpenAI
         def to_hash: -> {
           content: OpenAI::Models::Responses::EasyInputMessage::content,
           role: OpenAI::Models::Responses::EasyInputMessage::role,
-          phase: OpenAI::Models::Responses::EasyInputMessage::phase?,
-          type: OpenAI::Models::Responses::EasyInputMessage::type_
+          ?phase: OpenAI::Models::Responses::EasyInputMessage::phase?,
+          ?type: OpenAI::Models::Responses::EasyInputMessage::type_
         }
 
         type content =

@@ -6,7 +6,7 @@ module OpenAI
           event_id: String,
           item_id: String,
           output_index: Integer,
-          type: :"response.mcp_call.completed"
+          ?type: :"response.mcp_call.completed"
         }
 
       class ResponseMcpCallCompleted < OpenAI::Internal::Type::BaseModel
@@ -29,7 +29,7 @@ module OpenAI
           event_id: String,
           item_id: String,
           output_index: Integer,
-          type: :"response.mcp_call.completed"
+          ?type: :"response.mcp_call.completed"
         }
       end
     end

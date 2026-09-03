@@ -9,9 +9,9 @@ module OpenAI
             id: String,
             content: ::Array[OpenAI::Beta::ChatKit::ChatKitResponseOutputText],
             created_at: Integer,
-            object: :"chatkit.thread_item",
+            ?object: :"chatkit.thread_item",
             thread_id: String,
-            type: :"chatkit.assistant_message"
+            ?type: :"chatkit.assistant_message"
           }
 
         class ChatKitThreadAssistantMessageItem < OpenAI::Internal::Type::BaseModel
@@ -40,9 +40,9 @@ module OpenAI
             id: String,
             content: ::Array[OpenAI::Beta::ChatKit::ChatKitResponseOutputText],
             created_at: Integer,
-            object: :"chatkit.thread_item",
+            ?object: :"chatkit.thread_item",
             thread_id: String,
-            type: :"chatkit.assistant_message"
+            ?type: :"chatkit.assistant_message"
           }
         end
       end

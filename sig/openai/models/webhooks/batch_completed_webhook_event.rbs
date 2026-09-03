@@ -6,8 +6,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::BatchCompletedWebhookEvent::Data,
-          type: :"batch.completed",
-          object: OpenAI::Models::Webhooks::BatchCompletedWebhookEvent::object
+          ?type: :"batch.completed",
+          ?object: OpenAI::Models::Webhooks::BatchCompletedWebhookEvent::object
         }
 
       class BatchCompletedWebhookEvent < OpenAI::Internal::Type::BaseModel
@@ -37,8 +37,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::BatchCompletedWebhookEvent::Data,
-          type: :"batch.completed",
-          object: OpenAI::Models::Webhooks::BatchCompletedWebhookEvent::object
+          ?type: :"batch.completed",
+          ?object: OpenAI::Models::Webhooks::BatchCompletedWebhookEvent::object
         }
 
         type data = { id: String }

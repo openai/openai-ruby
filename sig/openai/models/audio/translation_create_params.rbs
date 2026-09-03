@@ -5,11 +5,11 @@ module OpenAI
         {
           file: OpenAI::Internal::file_input,
           model: OpenAI::Models::Audio::TranslationCreateParams::model,
-          prompt: String,
-          response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format,
-          temperature: Float
+          ?prompt: String,
+          ?response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format,
+          ?temperature: Float,
+          ?request_options: OpenAI::request_opts
         }
-        & OpenAI::Internal::Type::request_parameters
 
       class TranslationCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -45,10 +45,10 @@ module OpenAI
         def to_hash: -> {
           file: OpenAI::Internal::file_input,
           model: OpenAI::Models::Audio::TranslationCreateParams::model,
-          prompt: String,
-          response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format,
-          temperature: Float,
-          request_options: OpenAI::RequestOptions
+          ?prompt: String,
+          ?response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format,
+          ?temperature: Float,
+          ?request_options: OpenAI::RequestOptions
         }
 
         type model = String | OpenAI::Models::audio_model

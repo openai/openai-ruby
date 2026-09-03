@@ -4,11 +4,11 @@ module OpenAI
       module Organization
         type admin_api_key_list_params =
           {
-            after: String?,
-            limit: Integer,
-            order: OpenAI::Models::Admin::Organization::AdminAPIKeyListParams::order
+            ?after: String?,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::AdminAPIKeyListParams::order,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class AdminAPIKeyListParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -34,10 +34,10 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            after: String?,
-            limit: Integer,
-            order: OpenAI::Models::Admin::Organization::AdminAPIKeyListParams::order,
-            request_options: OpenAI::RequestOptions
+            ?after: String?,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::AdminAPIKeyListParams::order,
+            ?request_options: OpenAI::RequestOptions
           }
 
           type order = :asc | :desc

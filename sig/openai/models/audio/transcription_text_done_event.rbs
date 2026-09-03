@@ -4,10 +4,10 @@ module OpenAI
       type transcription_text_done_event =
         {
           text: String,
-          type: :"transcript.text.done",
-          languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
-          logprobs: ::Array[OpenAI::Audio::TranscriptionTextDoneEvent::Logprob],
-          usage: OpenAI::Audio::TranscriptionTextDoneEvent::Usage
+          ?type: :"transcript.text.done",
+          ?languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
+          ?logprobs: ::Array[OpenAI::Audio::TranscriptionTextDoneEvent::Logprob],
+          ?usage: OpenAI::Audio::TranscriptionTextDoneEvent::Usage
         }
 
       class TranscriptionTextDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -43,14 +43,14 @@ module OpenAI
 
         def to_hash: -> {
           text: String,
-          type: :"transcript.text.done",
-          languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
-          logprobs: ::Array[OpenAI::Audio::TranscriptionTextDoneEvent::Logprob],
-          usage: OpenAI::Audio::TranscriptionTextDoneEvent::Usage
+          ?type: :"transcript.text.done",
+          ?languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
+          ?logprobs: ::Array[OpenAI::Audio::TranscriptionTextDoneEvent::Logprob],
+          ?usage: OpenAI::Audio::TranscriptionTextDoneEvent::Usage
         }
 
         type logprob =
-          { token: String, bytes: ::Array[Integer], logprob: Float }
+          { ?token: String, ?bytes: ::Array[Integer], ?logprob: Float }
 
         class Logprob < OpenAI::Internal::Type::BaseModel
           attr_reader token: String?
@@ -72,9 +72,9 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            token: String,
-            bytes: ::Array[Integer],
-            logprob: Float
+            ?token: String,
+            ?bytes: ::Array[Integer],
+            ?logprob: Float
           }
         end
 
@@ -83,8 +83,8 @@ module OpenAI
             input_tokens: Integer,
             output_tokens: Integer,
             total_tokens: Integer,
-            type: :tokens,
-            input_token_details: OpenAI::Audio::TranscriptionTextDoneEvent::Usage::InputTokenDetails
+            ?type: :tokens,
+            ?input_token_details: OpenAI::Audio::TranscriptionTextDoneEvent::Usage::InputTokenDetails
           }
 
         class Usage < OpenAI::Internal::Type::BaseModel
@@ -114,12 +114,12 @@ module OpenAI
             input_tokens: Integer,
             output_tokens: Integer,
             total_tokens: Integer,
-            type: :tokens,
-            input_token_details: OpenAI::Audio::TranscriptionTextDoneEvent::Usage::InputTokenDetails
+            ?type: :tokens,
+            ?input_token_details: OpenAI::Audio::TranscriptionTextDoneEvent::Usage::InputTokenDetails
           }
 
           type input_token_details =
-            { audio_tokens: Integer, text_tokens: Integer }
+            { ?audio_tokens: Integer, ?text_tokens: Integer }
 
           class InputTokenDetails < OpenAI::Internal::Type::BaseModel
             attr_reader audio_tokens: Integer?
@@ -135,7 +135,7 @@ module OpenAI
               ?text_tokens: Integer
             ) -> void
 
-            def to_hash: -> { audio_tokens: Integer, text_tokens: Integer }
+            def to_hash: -> { ?audio_tokens: Integer, ?text_tokens: Integer }
           end
         end
       end

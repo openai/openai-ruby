@@ -5,8 +5,8 @@ module OpenAI
         {
           annotations: ::Array[OpenAI::Models::Responses::ResponseOutputText::annotation],
           text: String,
-          type: :output_text,
-          logprobs: ::Array[OpenAI::Responses::ResponseOutputText::Logprob]
+          ?type: :output_text,
+          ?logprobs: ::Array[OpenAI::Responses::ResponseOutputText::Logprob]
         }
 
       class ResponseOutputText < OpenAI::Internal::Type::BaseModel
@@ -32,8 +32,8 @@ module OpenAI
         def to_hash: -> {
           annotations: ::Array[OpenAI::Models::Responses::ResponseOutputText::annotation],
           text: String,
-          type: :output_text,
-          logprobs: ::Array[OpenAI::Responses::ResponseOutputText::Logprob]
+          ?type: :output_text,
+          ?logprobs: ::Array[OpenAI::Responses::ResponseOutputText::Logprob]
         }
 
         type annotation =
@@ -50,7 +50,7 @@ module OpenAI
               file_id: String,
               filename: String,
               index: Integer,
-              type: :file_citation
+              ?type: :file_citation
             }
 
           class FileCitation < OpenAI::Internal::Type::BaseModel
@@ -73,7 +73,7 @@ module OpenAI
               file_id: String,
               filename: String,
               index: Integer,
-              type: :file_citation
+              ?type: :file_citation
             }
           end
 
@@ -82,7 +82,7 @@ module OpenAI
               end_index: Integer,
               start_index: Integer,
               title: String,
-              type: :url_citation,
+              ?type: :url_citation,
               url: String
             }
 
@@ -109,7 +109,7 @@ module OpenAI
               end_index: Integer,
               start_index: Integer,
               title: String,
-              type: :url_citation,
+              ?type: :url_citation,
               url: String
             }
           end
@@ -121,7 +121,7 @@ module OpenAI
               file_id: String,
               filename: String,
               start_index: Integer,
-              type: :container_file_citation
+              ?type: :container_file_citation
             }
 
           class ContainerFileCitation < OpenAI::Internal::Type::BaseModel
@@ -152,11 +152,12 @@ module OpenAI
               file_id: String,
               filename: String,
               start_index: Integer,
-              type: :container_file_citation
+              ?type: :container_file_citation
             }
           end
 
-          type file_path = { file_id: String, index: Integer, type: :file_path }
+          type file_path =
+            { file_id: String, index: Integer, ?type: :file_path }
 
           class FilePath < OpenAI::Internal::Type::BaseModel
             attr_accessor file_id: String
@@ -174,7 +175,7 @@ module OpenAI
             def to_hash: -> {
               file_id: String,
               index: Integer,
-              type: :file_path
+              ?type: :file_path
             }
           end
 

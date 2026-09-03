@@ -6,9 +6,9 @@ module OpenAI
           {
             currency: OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::currency,
             interval: OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::interval,
-            threshold_amount: Integer
+            threshold_amount: Integer,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class SpendLimitUpdateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -31,7 +31,7 @@ module OpenAI
             currency: OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::currency,
             interval: OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::interval,
             threshold_amount: Integer,
-            request_options: OpenAI::RequestOptions
+            ?request_options: OpenAI::RequestOptions
           }
 
           type currency = :USD

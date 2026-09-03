@@ -8,13 +8,13 @@ module OpenAI
           arguments: String,
           call_id: String,
           name: String,
-          type: :function_call,
-          id: String,
-          agent: OpenAI::Beta::BetaResponseFunctionToolCall::Agent?,
-          async: bool,
-          caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCall::caller_?,
-          namespace: String,
-          status: OpenAI::Models::Beta::BetaResponseFunctionToolCall::status
+          ?type: :function_call,
+          ?id: String,
+          ?agent: OpenAI::Beta::BetaResponseFunctionToolCall::Agent?,
+          ?async: bool,
+          ?caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCall::caller_?,
+          ?namespace: String,
+          ?status: OpenAI::Models::Beta::BetaResponseFunctionToolCall::status
         }
 
       class BetaResponseFunctionToolCall < OpenAI::Internal::Type::BaseModel
@@ -65,13 +65,13 @@ module OpenAI
           arguments: String,
           call_id: String,
           name: String,
-          type: :function_call,
-          id: String,
-          agent: OpenAI::Beta::BetaResponseFunctionToolCall::Agent?,
-          async: bool,
-          caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCall::caller_?,
-          namespace: String,
-          status: OpenAI::Models::Beta::BetaResponseFunctionToolCall::status
+          ?type: :function_call,
+          ?id: String,
+          ?agent: OpenAI::Beta::BetaResponseFunctionToolCall::Agent?,
+          ?async: bool,
+          ?caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCall::caller_?,
+          ?namespace: String,
+          ?status: OpenAI::Models::Beta::BetaResponseFunctionToolCall::status
         }
 
         type agent = { agent_name: String }
@@ -91,17 +91,17 @@ module OpenAI
         module Caller
           extend OpenAI::Internal::Type::Union
 
-          type direct = { type: :direct }
+          type direct = { ?type: :direct }
 
           class Direct < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :direct
 
             def initialize: (?type: :direct) -> void
 
-            def to_hash: -> { type: :direct }
+            def to_hash: -> { ?type: :direct }
           end
 
-          type program = { caller_id: String, type: :program }
+          type program = { caller_id: String, ?type: :program }
 
           class Program < OpenAI::Internal::Type::BaseModel
             attr_accessor caller_id: String
@@ -110,7 +110,7 @@ module OpenAI
 
             def initialize: (caller_id: String, ?type: :program) -> void
 
-            def to_hash: -> { caller_id: String, type: :program }
+            def to_hash: -> { caller_id: String, ?type: :program }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseFunctionToolCall::caller_]

@@ -4,8 +4,8 @@ module OpenAI
       type response_configuration_update_item =
         {
           id: String,
-          type: :configuration_update,
-          reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning
+          ?type: :configuration_update,
+          ?reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning
         }
 
       class ResponseConfigurationUpdateItem < OpenAI::Internal::Type::BaseModel
@@ -27,18 +27,18 @@ module OpenAI
 
         def to_hash: -> {
           id: String,
-          type: :configuration_update,
-          reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning
+          ?type: :configuration_update,
+          ?reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning
         }
 
-        type reasoning = { effort: OpenAI::Models::reasoning_effort? }
+        type reasoning = { ?effort: OpenAI::Models::reasoning_effort? }
 
         class Reasoning < OpenAI::Internal::Type::BaseModel
           attr_accessor effort: OpenAI::Models::reasoning_effort?
 
           def initialize: (?effort: OpenAI::Models::reasoning_effort?) -> void
 
-          def to_hash: -> { effort: OpenAI::Models::reasoning_effort? }
+          def to_hash: -> { ?effort: OpenAI::Models::reasoning_effort? }
         end
       end
     end

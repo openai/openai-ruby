@@ -9,7 +9,7 @@ module OpenAI
           created_at: Integer,
           description: String,
           name: String,
-          object: :"skill.version",
+          ?object: :"skill.version",
           skill_id: String,
           version: String
         }
@@ -44,7 +44,7 @@ module OpenAI
           created_at: Integer,
           description: String,
           name: String,
-          object: :"skill.version",
+          ?object: :"skill.version",
           skill_id: String,
           version: String
         }

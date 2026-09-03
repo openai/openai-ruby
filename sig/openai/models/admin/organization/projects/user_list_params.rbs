@@ -4,8 +4,12 @@ module OpenAI
       module Organization
         module Projects
           type user_list_params =
-            { project_id: String, after: String, limit: Integer }
-            & OpenAI::Internal::Type::request_parameters
+            {
+              project_id: String,
+              ?after: String,
+              ?limit: Integer,
+              ?request_options: OpenAI::request_opts
+            }
 
           class UserListParams < OpenAI::Internal::Type::BaseModel
             extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -30,9 +34,9 @@ module OpenAI
 
             def to_hash: -> {
               project_id: String,
-              after: String,
-              limit: Integer,
-              request_options: OpenAI::RequestOptions
+              ?after: String,
+              ?limit: Integer,
+              ?request_options: OpenAI::RequestOptions
             }
           end
         end

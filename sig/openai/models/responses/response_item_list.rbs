@@ -9,7 +9,7 @@ module OpenAI
           first_id: String,
           has_more: bool,
           last_id: String,
-          object: :list
+          ?object: :list
         }
 
       class ResponseItemList < OpenAI::Internal::Type::BaseModel
@@ -36,7 +36,7 @@ module OpenAI
           first_id: String,
           has_more: bool,
           last_id: String,
-          object: :list
+          ?object: :list
         }
       end
     end

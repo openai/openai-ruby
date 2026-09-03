@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Responses
       type response_output_audio =
-        { data: String, transcript: String, type: :output_audio }
+        { data: String, transcript: String, ?type: :output_audio }
 
       class ResponseOutputAudio < OpenAI::Internal::Type::BaseModel
         attr_accessor data: String
@@ -20,7 +20,7 @@ module OpenAI
         def to_hash: -> {
           data: String,
           transcript: String,
-          type: :output_audio
+          ?type: :output_audio
         }
       end
     end

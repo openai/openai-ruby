@@ -8,11 +8,11 @@ module OpenAI
           id: String,
           call_id: String,
           status: OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput::status,
-          type: :apply_patch_call_output,
-          agent: OpenAI::Beta::BetaResponseApplyPatchToolCallOutput::Agent,
-          caller_: OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput::caller_?,
-          created_by: String,
-          output: String?
+          ?type: :apply_patch_call_output,
+          ?agent: OpenAI::Beta::BetaResponseApplyPatchToolCallOutput::Agent,
+          ?caller_: OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput::caller_?,
+          ?created_by: String,
+          ?output: String?
         }
 
       class BetaResponseApplyPatchToolCallOutput < OpenAI::Internal::Type::BaseModel
@@ -53,11 +53,11 @@ module OpenAI
           id: String,
           call_id: String,
           status: OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput::status,
-          type: :apply_patch_call_output,
-          agent: OpenAI::Beta::BetaResponseApplyPatchToolCallOutput::Agent,
-          caller_: OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput::caller_?,
-          created_by: String,
-          output: String?
+          ?type: :apply_patch_call_output,
+          ?agent: OpenAI::Beta::BetaResponseApplyPatchToolCallOutput::Agent,
+          ?caller_: OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput::caller_?,
+          ?created_by: String,
+          ?output: String?
         }
 
         type status = :completed | :failed
@@ -88,17 +88,17 @@ module OpenAI
         module Caller
           extend OpenAI::Internal::Type::Union
 
-          type direct = { type: :direct }
+          type direct = { ?type: :direct }
 
           class Direct < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :direct
 
             def initialize: (?type: :direct) -> void
 
-            def to_hash: -> { type: :direct }
+            def to_hash: -> { ?type: :direct }
           end
 
-          type program = { caller_id: String, type: :program }
+          type program = { caller_id: String, ?type: :program }
 
           class Program < OpenAI::Internal::Type::BaseModel
             attr_accessor caller_id: String
@@ -107,7 +107,7 @@ module OpenAI
 
             def initialize: (caller_id: String, ?type: :program) -> void
 
-            def to_hash: -> { caller_id: String, type: :program }
+            def to_hash: -> { caller_id: String, ?type: :program }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput::caller_]

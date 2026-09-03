@@ -10,12 +10,12 @@ module OpenAI
           name: String,
           id: String,
           status: OpenAI::Models::Beta::BetaResponseFunctionToolCallItem::status,
-          type: :function_call,
-          agent: OpenAI::Beta::BetaResponseFunctionToolCall::Agent?,
-          async: bool,
-          caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCall::caller_?,
-          namespace: String,
-          created_by: String
+          ?type: :function_call,
+          ?agent: OpenAI::Beta::BetaResponseFunctionToolCall::Agent?,
+          ?async: bool,
+          ?caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCall::caller_?,
+          ?namespace: String,
+          ?created_by: String
         }
 
       class BetaResponseFunctionToolCallItem < OpenAI::Models::Beta::BetaResponseFunctionToolCall
@@ -53,12 +53,12 @@ module OpenAI
           name: String,
           id: String,
           status: OpenAI::Models::Beta::BetaResponseFunctionToolCallItem::status,
-          type: :function_call,
-          agent: OpenAI::Beta::BetaResponseFunctionToolCall::Agent?,
-          async: bool,
-          caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCall::caller_?,
-          namespace: String,
-          created_by: String
+          ?type: :function_call,
+          ?agent: OpenAI::Beta::BetaResponseFunctionToolCall::Agent?,
+          ?async: bool,
+          ?caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCall::caller_?,
+          ?namespace: String,
+          ?created_by: String
         }
 
         type status = :in_progress | :completed | :incomplete

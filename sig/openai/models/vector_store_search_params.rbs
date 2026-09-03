@@ -4,12 +4,12 @@ module OpenAI
       {
         vector_store_id: String,
         query: OpenAI::Models::VectorStoreSearchParams::query,
-        filters: OpenAI::Models::VectorStoreSearchParams::filters,
-        max_num_results: Integer,
-        ranking_options: OpenAI::VectorStoreSearchParams::RankingOptions,
-        rewrite_query: bool
+        ?filters: OpenAI::Models::VectorStoreSearchParams::filters,
+        ?max_num_results: Integer,
+        ?ranking_options: OpenAI::VectorStoreSearchParams::RankingOptions,
+        ?rewrite_query: bool,
+        ?request_options: OpenAI::request_opts
       }
-      & OpenAI::Internal::Type::request_parameters
 
     class VectorStoreSearchParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -52,11 +52,11 @@ module OpenAI
       def to_hash: -> {
         vector_store_id: String,
         query: OpenAI::Models::VectorStoreSearchParams::query,
-        filters: OpenAI::Models::VectorStoreSearchParams::filters,
-        max_num_results: Integer,
-        ranking_options: OpenAI::VectorStoreSearchParams::RankingOptions,
-        rewrite_query: bool,
-        request_options: OpenAI::RequestOptions
+        ?filters: OpenAI::Models::VectorStoreSearchParams::filters,
+        ?max_num_results: Integer,
+        ?ranking_options: OpenAI::VectorStoreSearchParams::RankingOptions,
+        ?rewrite_query: bool,
+        ?request_options: OpenAI::RequestOptions
       }
 
       type query = String | ::Array[String]
@@ -79,8 +79,8 @@ module OpenAI
 
       type ranking_options =
         {
-          ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker,
-          score_threshold: Float
+          ?ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker,
+          ?score_threshold: Float
         }
 
       class RankingOptions < OpenAI::Internal::Type::BaseModel
@@ -100,8 +100,8 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker,
-          score_threshold: Float
+          ?ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker,
+          ?score_threshold: Float
         }
 
         type ranker = :none | :auto | :"default-2024-11-15"

@@ -4,17 +4,17 @@ module OpenAI
       type realtime_response_create_mcp_tool =
         {
           server_label: String,
-          type: :mcp,
-          allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_caller]?,
-          allowed_tools: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_tools?,
-          authorization: String,
-          connector_id: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id,
-          defer_loading: bool,
-          headers: ::Hash[Symbol, String]?,
-          require_approval: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::require_approval?,
-          server_description: String,
-          server_url: String,
-          tunnel_id: String
+          ?type: :mcp,
+          ?allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_caller]?,
+          ?allowed_tools: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_tools?,
+          ?authorization: String,
+          ?connector_id: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id,
+          ?defer_loading: bool,
+          ?headers: ::Hash[Symbol, String]?,
+          ?require_approval: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::require_approval?,
+          ?server_description: String,
+          ?server_url: String,
+          ?tunnel_id: String
         }
 
       class RealtimeResponseCreateMcpTool < OpenAI::Internal::Type::BaseModel
@@ -73,17 +73,17 @@ module OpenAI
 
         def to_hash: -> {
           server_label: String,
-          type: :mcp,
-          allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_caller]?,
-          allowed_tools: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_tools?,
-          authorization: String,
-          connector_id: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id,
-          defer_loading: bool,
-          headers: ::Hash[Symbol, String]?,
-          require_approval: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::require_approval?,
-          server_description: String,
-          server_url: String,
-          tunnel_id: String
+          ?type: :mcp,
+          ?allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_caller]?,
+          ?allowed_tools: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_tools?,
+          ?authorization: String,
+          ?connector_id: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::connector_id,
+          ?defer_loading: bool,
+          ?headers: ::Hash[Symbol, String]?,
+          ?require_approval: OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::require_approval?,
+          ?server_description: String,
+          ?server_url: String,
+          ?tunnel_id: String
         }
 
         type allowed_caller = :direct | :programmatic
@@ -105,7 +105,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           type mcp_tool_filter =
-            { read_only: bool, tool_names: ::Array[String] }
+            { ?read_only: bool, ?tool_names: ::Array[String] }
 
           class McpToolFilter < OpenAI::Internal::Type::BaseModel
             attr_reader read_only: bool?
@@ -121,7 +121,7 @@ module OpenAI
               ?tool_names: ::Array[String]
             ) -> void
 
-            def to_hash: -> { read_only: bool, tool_names: ::Array[String] }
+            def to_hash: -> { ?read_only: bool, ?tool_names: ::Array[String] }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::allowed_tools]
@@ -163,8 +163,8 @@ module OpenAI
 
           type mcp_tool_approval_filter =
             {
-              always: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always,
-              never: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never
+              ?always: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always,
+              ?never: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never
             }
 
           class McpToolApprovalFilter < OpenAI::Internal::Type::BaseModel
@@ -186,11 +186,11 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              always: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always,
-              never: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never
+              ?always: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always,
+              ?never: OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never
             }
 
-            type always = { read_only: bool, tool_names: ::Array[String] }
+            type always = { ?read_only: bool, ?tool_names: ::Array[String] }
 
             class Always < OpenAI::Internal::Type::BaseModel
               attr_reader read_only: bool?
@@ -206,10 +206,10 @@ module OpenAI
                 ?tool_names: ::Array[String]
               ) -> void
 
-              def to_hash: -> { read_only: bool, tool_names: ::Array[String] }
+              def to_hash: -> { ?read_only: bool, ?tool_names: ::Array[String] }
             end
 
-            type never = { read_only: bool, tool_names: ::Array[String] }
+            type never = { ?read_only: bool, ?tool_names: ::Array[String] }
 
             class Never < OpenAI::Internal::Type::BaseModel
               attr_reader read_only: bool?
@@ -225,7 +225,7 @@ module OpenAI
                 ?tool_names: ::Array[String]
               ) -> void
 
-              def to_hash: -> { read_only: bool, tool_names: ::Array[String] }
+              def to_hash: -> { ?read_only: bool, ?tool_names: ::Array[String] }
             end
           end
 

@@ -5,12 +5,12 @@ module OpenAI
         type user_update_params =
           {
             user_id: String,
-            developer_persona: String?,
-            role: String?,
-            role_id: String?,
-            technical_level: String?
+            ?developer_persona: String?,
+            ?role: String?,
+            ?role_id: String?,
+            ?technical_level: String?,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class UserUpdateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -37,11 +37,11 @@ module OpenAI
 
           def to_hash: -> {
             user_id: String,
-            developer_persona: String?,
-            role: String?,
-            role_id: String?,
-            technical_level: String?,
-            request_options: OpenAI::RequestOptions
+            ?developer_persona: String?,
+            ?role: String?,
+            ?role_id: String?,
+            ?technical_level: String?,
+            ?request_options: OpenAI::RequestOptions
           }
         end
       end

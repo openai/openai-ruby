@@ -8,7 +8,7 @@ module OpenAI
             file_citation: OpenAI::Beta::Threads::FileCitationAnnotation::FileCitation,
             start_index: Integer,
             text: String,
-            type: :file_citation
+            ?type: :file_citation
           }
 
         class FileCitationAnnotation < OpenAI::Internal::Type::BaseModel
@@ -35,7 +35,7 @@ module OpenAI
             file_citation: OpenAI::Beta::Threads::FileCitationAnnotation::FileCitation,
             start_index: Integer,
             text: String,
-            type: :file_citation
+            ?type: :file_citation
           }
 
           type file_citation = { file_id: String }

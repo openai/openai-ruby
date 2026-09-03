@@ -5,11 +5,11 @@ module OpenAI
         {
           delta: String,
           event_id: String,
-          type: :"session.output_audio.delta",
-          channels: Integer,
-          elapsed_ms: Integer?,
-          format_: OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent::format_,
-          sample_rate: Integer
+          ?type: :"session.output_audio.delta",
+          ?channels: Integer,
+          ?elapsed_ms: Integer?,
+          ?format_: OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent::format_,
+          ?sample_rate: Integer
         }
 
       class RealtimeTranslationOutputAudioDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -48,11 +48,11 @@ module OpenAI
         def to_hash: -> {
           delta: String,
           event_id: String,
-          type: :"session.output_audio.delta",
-          channels: Integer,
-          elapsed_ms: Integer?,
-          format_: OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent::format_,
-          sample_rate: Integer
+          ?type: :"session.output_audio.delta",
+          ?channels: Integer,
+          ?elapsed_ms: Integer?,
+          ?format_: OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent::format_,
+          ?sample_rate: Integer
         }
 
         type format_ = :pcm16

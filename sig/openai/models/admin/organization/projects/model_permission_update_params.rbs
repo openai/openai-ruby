@@ -7,9 +7,9 @@ module OpenAI
             {
               project_id: String,
               mode: OpenAI::Models::Admin::Organization::Projects::ModelPermissionUpdateParams::mode,
-              model_ids: ::Array[String]
+              model_ids: ::Array[String],
+              ?request_options: OpenAI::request_opts
             }
-            & OpenAI::Internal::Type::request_parameters
 
           class ModelPermissionUpdateParams < OpenAI::Internal::Type::BaseModel
             extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -32,7 +32,7 @@ module OpenAI
               project_id: String,
               mode: OpenAI::Models::Admin::Organization::Projects::ModelPermissionUpdateParams::mode,
               model_ids: ::Array[String],
-              request_options: OpenAI::RequestOptions
+              ?request_options: OpenAI::RequestOptions
             }
 
             type mode = :allow_list | :deny_list

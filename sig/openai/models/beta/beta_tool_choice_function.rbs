@@ -3,7 +3,7 @@ module OpenAI
     class BetaToolChoiceFunction = Beta::BetaToolChoiceFunction
 
     module Beta
-      type beta_tool_choice_function = { name: String, type: :function }
+      type beta_tool_choice_function = { name: String, ?type: :function }
 
       class BetaToolChoiceFunction < OpenAI::Internal::Type::BaseModel
         attr_accessor name: String
@@ -12,7 +12,7 @@ module OpenAI
 
         def initialize: (name: String, ?type: :function) -> void
 
-        def to_hash: -> { name: String, type: :function }
+        def to_hash: -> { name: String, ?type: :function }
       end
     end
   end

@@ -3,8 +3,8 @@ module OpenAI
     module Responses
       type response_text_config =
         {
-          format_: OpenAI::Models::Responses::response_format_text_config,
-          verbosity: OpenAI::Models::Responses::ResponseTextConfig::verbosity?
+          ?format_: OpenAI::Models::Responses::response_format_text_config,
+          ?verbosity: OpenAI::Models::Responses::ResponseTextConfig::verbosity?
         }
 
       class ResponseTextConfig < OpenAI::Internal::Type::BaseModel
@@ -22,8 +22,8 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          format_: OpenAI::Models::Responses::response_format_text_config,
-          verbosity: OpenAI::Models::Responses::ResponseTextConfig::verbosity?
+          ?format_: OpenAI::Models::Responses::response_format_text_config,
+          ?verbosity: OpenAI::Models::Responses::ResponseTextConfig::verbosity?
         }
 
         type verbosity = :low | :medium | :high

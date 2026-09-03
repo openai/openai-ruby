@@ -9,8 +9,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.mcp_call_arguments.delta",
-          agent: OpenAI::Beta::BetaResponseMcpCallArgumentsDeltaEvent::Agent?
+          ?type: :"response.mcp_call_arguments.delta",
+          ?agent: OpenAI::Beta::BetaResponseMcpCallArgumentsDeltaEvent::Agent?
         }
 
       class BetaResponseMcpCallArgumentsDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -40,8 +40,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.mcp_call_arguments.delta",
-          agent: OpenAI::Beta::BetaResponseMcpCallArgumentsDeltaEvent::Agent?
+          ?type: :"response.mcp_call_arguments.delta",
+          ?agent: OpenAI::Beta::BetaResponseMcpCallArgumentsDeltaEvent::Agent?
         }
 
         type agent = { agent_name: String }

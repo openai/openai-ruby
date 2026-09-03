@@ -8,8 +8,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.mcp_list_tools.failed",
-          agent: OpenAI::Beta::BetaResponseMcpListToolsFailedEvent::Agent?
+          ?type: :"response.mcp_list_tools.failed",
+          ?agent: OpenAI::Beta::BetaResponseMcpListToolsFailedEvent::Agent?
         }
 
       class BetaResponseMcpListToolsFailedEvent < OpenAI::Internal::Type::BaseModel
@@ -35,8 +35,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.mcp_list_tools.failed",
-          agent: OpenAI::Beta::BetaResponseMcpListToolsFailedEvent::Agent?
+          ?type: :"response.mcp_list_tools.failed",
+          ?agent: OpenAI::Beta::BetaResponseMcpListToolsFailedEvent::Agent?
         }
 
         type agent = { agent_name: String }

@@ -4,7 +4,7 @@ module OpenAI
 
     module Chat
       type chat_completion_function_tool =
-        { function: OpenAI::FunctionDefinition, type: :function }
+        { function: OpenAI::FunctionDefinition, ?type: :function }
 
       class ChatCompletionFunctionTool < OpenAI::Internal::Type::BaseModel
         attr_accessor function: OpenAI::FunctionDefinition
@@ -18,7 +18,7 @@ module OpenAI
 
         def to_hash: -> {
           function: OpenAI::FunctionDefinition,
-          type: :function
+          ?type: :function
         }
       end
     end

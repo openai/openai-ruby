@@ -304,6 +304,49 @@ class OpenAI::Test::CollectionModelTest < Minitest::Test
 end
 
 class OpenAI::Test::BaseModelTest < Minitest::Test
+  class HashKeyMatrix < OpenAI::Internal::Type::BaseModel
+    required :required_text, String
+    required :required_nullable, String, nil?: true
+    optional :optional_text, String
+    optional :optional_nullable, String, nil?: true
+  end
+
+  def test_to_hash_distinguishes_omitted_keys_from_explicit_null
+    model = HashKeyMatrix.new(required_text: "present", required_nullable: nil)
+
+    assert_equal({required_text: "present", required_nullable: nil}, model.to_hash)
+    refute(model.to_hash.key?(:optional_text))
+    refute(model.to_hash.key?(:optional_nullable))
+    assert_raises(KeyError) { model.to_hash.fetch(:optional_text) }
+    assert_nil(model.optional_text)
+    refute(model.to_hash.key?(:optional_text))
+
+    model.optional_text = "value"
+    model.optional_nullable = nil
+    assert_equal("value", model.to_hash.fetch(:optional_text))
+    assert_nil(model.to_hash.fetch(:optional_nullable))
+    assert_equal(
+      {"required_text" => "present", "required_nullable" => nil, "optional_text" => "value", "optional_nullable" => nil},
+      JSON.parse(model.to_json)
+    )
+  end
+
+  def test_function_output_hash_can_omit_call_id_in_stable_and_beta_models
+    [
+      OpenAI::Responses::ResponseFunctionToolCallOutputItem,
+      OpenAI::Beta::BetaResponseFunctionToolCallOutputItem
+    ].each do |model_class|
+      model = model_class.new(id: "fc_test", output: "ok", status: :completed)
+
+      assert_nil(model.call_id)
+      refute(model.to_hash.key?(:call_id))
+      assert_raises(KeyError) { model.to_hash.fetch(:call_id) }
+      refute(JSON.parse(model.to_json).key?("call_id"))
+      model.call_id = "call_test"
+      assert_equal("call_test", model.to_hash.fetch(:call_id))
+    end
+  end
+
   class M1 < OpenAI::Internal::Type::BaseModel
     required :a, Integer
   end

@@ -1,7 +1,7 @@
 module OpenAI
   module Models
     module Conversations
-      type summary_text_content = { text: String, type: :summary_text }
+      type summary_text_content = { text: String, ?type: :summary_text }
 
       class SummaryTextContent < OpenAI::Internal::Type::BaseModel
         attr_accessor text: String
@@ -10,7 +10,7 @@ module OpenAI
 
         def initialize: (text: String, ?type: :summary_text) -> void
 
-        def to_hash: -> { text: String, type: :summary_text }
+        def to_hash: -> { text: String, ?type: :summary_text }
       end
     end
   end

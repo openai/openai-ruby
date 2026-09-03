@@ -7,14 +7,14 @@ module OpenAI
             {
               project_id: String,
               rate_limit_id: String,
-              :batch_1_day_max_input_tokens => Integer,
-              :max_audio_megabytes_per_1_minute => Integer,
-              :max_images_per_1_minute => Integer,
-              :max_requests_per_1_day => Integer,
-              :max_requests_per_1_minute => Integer,
-              :max_tokens_per_1_minute => Integer
+              ?:batch_1_day_max_input_tokens => Integer,
+              ?:max_audio_megabytes_per_1_minute => Integer,
+              ?:max_images_per_1_minute => Integer,
+              ?:max_requests_per_1_day => Integer,
+              ?:max_requests_per_1_minute => Integer,
+              ?:max_tokens_per_1_minute => Integer,
+              ?request_options: OpenAI::request_opts
             }
-            & OpenAI::Internal::Type::request_parameters
 
           class RateLimitUpdateRateLimitParams < OpenAI::Internal::Type::BaseModel
             extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -63,13 +63,13 @@ module OpenAI
             def to_hash: -> {
               project_id: String,
               rate_limit_id: String,
-              :batch_1_day_max_input_tokens => Integer,
-              :max_audio_megabytes_per_1_minute => Integer,
-              :max_images_per_1_minute => Integer,
-              :max_requests_per_1_day => Integer,
-              :max_requests_per_1_minute => Integer,
-              :max_tokens_per_1_minute => Integer,
-              request_options: OpenAI::RequestOptions
+              ?:batch_1_day_max_input_tokens => Integer,
+              ?:max_audio_megabytes_per_1_minute => Integer,
+              ?:max_images_per_1_minute => Integer,
+              ?:max_requests_per_1_day => Integer,
+              ?:max_requests_per_1_minute => Integer,
+              ?:max_tokens_per_1_minute => Integer,
+              ?request_options: OpenAI::RequestOptions
             }
           end
         end

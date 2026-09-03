@@ -8,11 +8,11 @@ module OpenAI
           name: String,
           id: String,
           status: OpenAI::Models::Responses::ResponseFunctionToolCallItem::status,
-          type: :function_call,
-          async: bool,
-          caller_: OpenAI::Models::Responses::ResponseFunctionToolCall::caller_?,
-          namespace: String,
-          created_by: String
+          ?type: :function_call,
+          ?async: bool,
+          ?caller_: OpenAI::Models::Responses::ResponseFunctionToolCall::caller_?,
+          ?namespace: String,
+          ?created_by: String
         }
 
       class ResponseFunctionToolCallItem < OpenAI::Models::Responses::ResponseFunctionToolCall
@@ -49,11 +49,11 @@ module OpenAI
           name: String,
           id: String,
           status: OpenAI::Models::Responses::ResponseFunctionToolCallItem::status,
-          type: :function_call,
-          async: bool,
-          caller_: OpenAI::Models::Responses::ResponseFunctionToolCall::caller_?,
-          namespace: String,
-          created_by: String
+          ?type: :function_call,
+          ?async: bool,
+          ?caller_: OpenAI::Models::Responses::ResponseFunctionToolCall::caller_?,
+          ?namespace: String,
+          ?created_by: String
         }
 
         type status = :in_progress | :completed | :incomplete

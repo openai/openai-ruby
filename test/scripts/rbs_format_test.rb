@@ -6,6 +6,28 @@ require "tempfile"
 require_relative "../../scripts/rbs_format"
 
 class RBSFormatTest < Minitest::Test
+  def test_preserves_optional_record_fields_and_their_value_types
+    source = <<~RBS
+      type record = { required: String, nullable: String?, ?optional: String, ?maybe: String?, ?"str-key" => { ?nested: Integer }, ?item_1: bool }
+    RBS
+    formatted = RBSFormat.format(source)
+    before = RBS::Parser.parse_signature(source).last.first.type
+    after = RBS::Parser.parse_signature(formatted).last.first.type
+
+    assert_equal(before, after)
+    assert_equal(formatted, RBSFormat.format(formatted))
+    assert_equal([:required, :nullable], after.fields.keys)
+    assert_equal([:optional, :maybe, "str-key", :item_1], after.optional_fields.keys)
+  end
+
+  def test_preserves_optional_only_records_in_method_returns
+    source = "class Example\n  def to_hash: -> { ?name: String }\nend\n"
+    formatted = RBSFormat.format(source)
+
+    assert_includes(formatted, "?name: String")
+    assert_equal(formatted, RBSFormat.format(formatted))
+  end
+
   def test_preserves_class_alias_with_multiple_spaces
     source = "module Example\n  class   Alias   =   ::String\nend\n"
 

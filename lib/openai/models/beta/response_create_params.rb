@@ -965,6 +965,13 @@ module OpenAI
         end
 
         class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+          # @!attribute comparison_response_id
+          #   The ID of a response to compare when diagnosing prompt cache reuse. Supplying
+          #   this field requests prompt cache diagnostics when the feature is enabled.
+          #
+          #   @return [String, nil]
+          optional :comparison_response_id, String, nil?: true
+
           # @!attribute mode
           #   Controls whether OpenAI automatically creates an implicit cache breakpoint.
           #   Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
@@ -984,7 +991,7 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Beta::ResponseCreateParams::PromptCacheOptions::Ttl, nil]
           optional :ttl, enum: -> { OpenAI::Beta::ResponseCreateParams::PromptCacheOptions::Ttl }
 
-          # @!method initialize(mode: nil, ttl: nil)
+          # @!method initialize(comparison_response_id: nil, mode: nil, ttl: nil)
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Beta::ResponseCreateParams::PromptCacheOptions} for more
           #   details.
@@ -998,6 +1005,8 @@ module OpenAI
           #   `ttl` defaults to `30m`, which is currently the only supported value. See the
           #   [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
           #   for current details.
+          #
+          #   @param comparison_response_id [String, nil] The ID of a response to compare when diagnosing prompt cache reuse. Supplying th
           #
           #   @param mode [Symbol, OpenAI::Models::Beta::ResponseCreateParams::PromptCacheOptions::Mode] Controls whether OpenAI automatically creates an implicit cache breakpoint. Defa
           #

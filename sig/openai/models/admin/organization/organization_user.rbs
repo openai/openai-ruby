@@ -8,20 +8,20 @@ module OpenAI
           {
             id: String,
             added_at: Integer,
-            object: :"organization.user",
-            api_key_last_used_at: Integer?,
-            created: Integer,
-            developer_persona: String?,
-            email: String?,
-            is_default: bool,
-            is_scale_tier_authorized_purchaser: bool?,
-            is_scim_managed: bool,
-            is_service_account: bool,
-            name: String?,
-            projects: OpenAI::Admin::Organization::OrganizationUser::Projects?,
-            role: String?,
-            technical_level: String?,
-            user: OpenAI::Admin::Organization::OrganizationUser::User
+            ?object: :"organization.user",
+            ?api_key_last_used_at: Integer?,
+            ?created: Integer,
+            ?developer_persona: String?,
+            ?email: String?,
+            ?is_default: bool,
+            ?is_scale_tier_authorized_purchaser: bool?,
+            ?is_scim_managed: bool,
+            ?is_service_account: bool,
+            ?name: String?,
+            ?projects: OpenAI::Admin::Organization::OrganizationUser::Projects?,
+            ?role: String?,
+            ?technical_level: String?,
+            ?user: OpenAI::Admin::Organization::OrganizationUser::User
           }
 
         class OrganizationUser < OpenAI::Internal::Type::BaseModel
@@ -91,26 +91,26 @@ module OpenAI
           def to_hash: -> {
             id: String,
             added_at: Integer,
-            object: :"organization.user",
-            api_key_last_used_at: Integer?,
-            created: Integer,
-            developer_persona: String?,
-            email: String?,
-            is_default: bool,
-            is_scale_tier_authorized_purchaser: bool?,
-            is_scim_managed: bool,
-            is_service_account: bool,
-            name: String?,
-            projects: OpenAI::Admin::Organization::OrganizationUser::Projects?,
-            role: String?,
-            technical_level: String?,
-            user: OpenAI::Admin::Organization::OrganizationUser::User
+            ?object: :"organization.user",
+            ?api_key_last_used_at: Integer?,
+            ?created: Integer,
+            ?developer_persona: String?,
+            ?email: String?,
+            ?is_default: bool,
+            ?is_scale_tier_authorized_purchaser: bool?,
+            ?is_scim_managed: bool,
+            ?is_service_account: bool,
+            ?name: String?,
+            ?projects: OpenAI::Admin::Organization::OrganizationUser::Projects?,
+            ?role: String?,
+            ?technical_level: String?,
+            ?user: OpenAI::Admin::Organization::OrganizationUser::User
           }
 
           type projects =
             {
               data: ::Array[OpenAI::Admin::Organization::OrganizationUser::Projects::Data],
-              object: :list
+              ?object: :list
             }
 
           class Projects < OpenAI::Internal::Type::BaseModel
@@ -125,10 +125,10 @@ module OpenAI
 
             def to_hash: -> {
               data: ::Array[OpenAI::Admin::Organization::OrganizationUser::Projects::Data],
-              object: :list
+              ?object: :list
             }
 
-            type data = { id: String?, name: String?, role: String? }
+            type data = { ?id: String?, ?name: String?, ?role: String? }
 
             class Data < OpenAI::Internal::Type::BaseModel
               attr_accessor id: String?
@@ -143,20 +143,20 @@ module OpenAI
                 ?role: String?
               ) -> void
 
-              def to_hash: -> { id: String?, name: String?, role: String? }
+              def to_hash: -> { ?id: String?, ?name: String?, ?role: String? }
             end
           end
 
           type user =
             {
               id: String,
-              object: :user,
-              banned: bool?,
-              banned_at: Integer?,
-              email: String?,
-              enabled: bool?,
-              name: String?,
-              picture: String?
+              ?object: :user,
+              ?banned: bool?,
+              ?banned_at: Integer?,
+              ?email: String?,
+              ?enabled: bool?,
+              ?name: String?,
+              ?picture: String?
             }
 
           class User < OpenAI::Internal::Type::BaseModel
@@ -189,13 +189,13 @@ module OpenAI
 
             def to_hash: -> {
               id: String,
-              object: :user,
-              banned: bool?,
-              banned_at: Integer?,
-              email: String?,
-              enabled: bool?,
-              name: String?,
-              picture: String?
+              ?object: :user,
+              ?banned: bool?,
+              ?banned_at: Integer?,
+              ?email: String?,
+              ?enabled: bool?,
+              ?name: String?,
+              ?picture: String?
             }
           end
         end

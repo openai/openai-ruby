@@ -9,7 +9,7 @@ module OpenAI
             {
               mode: OpenAI::Models::Admin::Organization::Projects::ProjectModelPermissions::mode,
               model_ids: ::Array[String],
-              object: :"project.model_permissions"
+              ?object: :"project.model_permissions"
             }
 
           class ProjectModelPermissions < OpenAI::Internal::Type::BaseModel
@@ -28,7 +28,7 @@ module OpenAI
             def to_hash: -> {
               mode: OpenAI::Models::Admin::Organization::Projects::ProjectModelPermissions::mode,
               model_ids: ::Array[String],
-              object: :"project.model_permissions"
+              ?object: :"project.model_permissions"
             }
 
             type mode = :allow_list | :deny_list

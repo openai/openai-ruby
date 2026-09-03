@@ -3,11 +3,11 @@ module OpenAI
     module Realtime
       type realtime_response_usage_input_token_details =
         {
-          audio_tokens: Integer,
-          cached_tokens: Integer,
-          cached_tokens_details: OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails::CachedTokensDetails,
-          image_tokens: Integer,
-          text_tokens: Integer
+          ?audio_tokens: Integer,
+          ?cached_tokens: Integer,
+          ?cached_tokens_details: OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails::CachedTokensDetails,
+          ?image_tokens: Integer,
+          ?text_tokens: Integer
         }
 
       class RealtimeResponseUsageInputTokenDetails < OpenAI::Internal::Type::BaseModel
@@ -42,15 +42,19 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          audio_tokens: Integer,
-          cached_tokens: Integer,
-          cached_tokens_details: OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails::CachedTokensDetails,
-          image_tokens: Integer,
-          text_tokens: Integer
+          ?audio_tokens: Integer,
+          ?cached_tokens: Integer,
+          ?cached_tokens_details: OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails::CachedTokensDetails,
+          ?image_tokens: Integer,
+          ?text_tokens: Integer
         }
 
         type cached_tokens_details =
-          { audio_tokens: Integer, image_tokens: Integer, text_tokens: Integer }
+          {
+            ?audio_tokens: Integer,
+            ?image_tokens: Integer,
+            ?text_tokens: Integer
+          }
 
         class CachedTokensDetails < OpenAI::Internal::Type::BaseModel
           attr_reader audio_tokens: Integer?
@@ -72,9 +76,9 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            audio_tokens: Integer,
-            image_tokens: Integer,
-            text_tokens: Integer
+            ?audio_tokens: Integer,
+            ?image_tokens: Integer,
+            ?text_tokens: Integer
           }
         end
       end

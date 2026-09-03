@@ -6,9 +6,9 @@ module OpenAI
       type beta_response_configuration_update_item =
         {
           id: String,
-          type: :configuration_update,
-          agent: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Agent,
-          reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Reasoning
+          ?type: :configuration_update,
+          ?agent: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Agent,
+          ?reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Reasoning
         }
 
       class BetaResponseConfigurationUpdateItem < OpenAI::Internal::Type::BaseModel
@@ -37,9 +37,9 @@ module OpenAI
 
         def to_hash: -> {
           id: String,
-          type: :configuration_update,
-          agent: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Agent,
-          reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Reasoning
+          ?type: :configuration_update,
+          ?agent: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Agent,
+          ?reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Reasoning
         }
 
         type agent = { agent_name: String }
@@ -54,7 +54,7 @@ module OpenAI
 
         type reasoning =
           {
-            effort: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Reasoning::effort?
+            ?effort: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Reasoning::effort?
           }
 
         class Reasoning < OpenAI::Internal::Type::BaseModel
@@ -65,7 +65,7 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            effort: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Reasoning::effort?
+            ?effort: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Reasoning::effort?
           }
 
           type effort =

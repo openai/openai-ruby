@@ -1,8 +1,12 @@
 module OpenAI
   module Models
     type eval_update_params =
-      { eval_id: String, metadata: OpenAI::Models::metadata?, name: String }
-      & OpenAI::Internal::Type::request_parameters
+      {
+        eval_id: String,
+        ?metadata: OpenAI::Models::metadata?,
+        ?name: String,
+        ?request_options: OpenAI::request_opts
+      }
 
     class EvalUpdateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -25,9 +29,9 @@ module OpenAI
 
       def to_hash: -> {
         eval_id: String,
-        metadata: OpenAI::Models::metadata?,
-        name: String,
-        request_options: OpenAI::RequestOptions
+        ?metadata: OpenAI::Models::metadata?,
+        ?name: String,
+        ?request_options: OpenAI::RequestOptions
       }
     end
   end

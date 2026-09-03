@@ -4,11 +4,11 @@ module OpenAI
       type version_list_params =
         {
           skill_id: String,
-          after: String,
-          limit: Integer,
-          order: OpenAI::Models::Skills::VersionListParams::order
+          ?after: String,
+          ?limit: Integer,
+          ?order: OpenAI::Models::Skills::VersionListParams::order,
+          ?request_options: OpenAI::request_opts
         }
-        & OpenAI::Internal::Type::request_parameters
 
       class VersionListParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -40,10 +40,10 @@ module OpenAI
 
         def to_hash: -> {
           skill_id: String,
-          after: String,
-          limit: Integer,
-          order: OpenAI::Models::Skills::VersionListParams::order,
-          request_options: OpenAI::RequestOptions
+          ?after: String,
+          ?limit: Integer,
+          ?order: OpenAI::Models::Skills::VersionListParams::order,
+          ?request_options: OpenAI::RequestOptions
         }
 
         type order = :asc | :desc

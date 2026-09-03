@@ -18,10 +18,10 @@ module OpenAI
           type message =
             {
               content: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::Message::content,
-              role: :user,
-              type: :message,
-              id: String?,
-              status: String?
+              ?role: :user,
+              ?type: :message,
+              ?id: String?,
+              ?status: String?
             }
 
           class Message < OpenAI::Internal::Type::BaseModel
@@ -45,10 +45,10 @@ module OpenAI
 
             def to_hash: -> {
               content: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::Message::content,
-              role: :user,
-              type: :message,
-              id: String?,
-              status: String?
+              ?role: :user,
+              ?type: :message,
+              ?id: String?,
+              ?status: String?
             }
 
             type content =
@@ -67,13 +67,13 @@ module OpenAI
           type function_call_output =
             {
               output: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::output,
-              type: :function_call_output,
-              id: String?,
-              call_id: String?,
-              caller_: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::caller_?,
-              name: String?,
-              namespace: String?,
-              status: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::status?
+              ?type: :function_call_output,
+              ?id: String?,
+              ?call_id: String?,
+              ?caller_: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::caller_?,
+              ?name: String?,
+              ?namespace: String?,
+              ?status: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::status?
             }
 
           class FunctionCallOutput < OpenAI::Internal::Type::BaseModel
@@ -106,13 +106,13 @@ module OpenAI
 
             def to_hash: -> {
               output: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::output,
-              type: :function_call_output,
-              id: String?,
-              call_id: String?,
-              caller_: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::caller_?,
-              name: String?,
-              namespace: String?,
-              status: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::status?
+              ?type: :function_call_output,
+              ?id: String?,
+              ?call_id: String?,
+              ?caller_: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::caller_?,
+              ?name: String?,
+              ?namespace: String?,
+              ?status: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::status?
             }
 
             type output =
@@ -132,17 +132,17 @@ module OpenAI
             module Caller
               extend OpenAI::Internal::Type::Union
 
-              type direct = { type: :direct }
+              type direct = { ?type: :direct }
 
               class Direct < OpenAI::Internal::Type::BaseModel
                 attr_accessor type: :direct
 
                 def initialize: (?type: :direct) -> void
 
-                def to_hash: -> { type: :direct }
+                def to_hash: -> { ?type: :direct }
               end
 
-              type program = { caller_id: String, type: :program }
+              type program = { caller_id: String, ?type: :program }
 
               class Program < OpenAI::Internal::Type::BaseModel
                 attr_accessor caller_id: String
@@ -151,7 +151,7 @@ module OpenAI
 
                 def initialize: (caller_id: String, ?type: :program) -> void
 
-                def to_hash: -> { caller_id: String, type: :program }
+                def to_hash: -> { caller_id: String, ?type: :program }
               end
 
               def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::caller_]

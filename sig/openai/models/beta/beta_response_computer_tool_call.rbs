@@ -10,9 +10,9 @@ module OpenAI
           pending_safety_checks: ::Array[OpenAI::Beta::BetaResponseComputerToolCall::PendingSafetyCheck],
           status: OpenAI::Models::Beta::BetaResponseComputerToolCall::status,
           type: OpenAI::Models::Beta::BetaResponseComputerToolCall::type_,
-          action: OpenAI::Models::Beta::beta_computer_action,
-          actions: OpenAI::Models::Beta::beta_computer_action_list,
-          agent: OpenAI::Beta::BetaResponseComputerToolCall::Agent?
+          ?action: OpenAI::Models::Beta::beta_computer_action,
+          ?actions: OpenAI::Models::Beta::beta_computer_action_list,
+          ?agent: OpenAI::Beta::BetaResponseComputerToolCall::Agent?
         }
 
       class BetaResponseComputerToolCall < OpenAI::Internal::Type::BaseModel
@@ -57,13 +57,13 @@ module OpenAI
           pending_safety_checks: ::Array[OpenAI::Beta::BetaResponseComputerToolCall::PendingSafetyCheck],
           status: OpenAI::Models::Beta::BetaResponseComputerToolCall::status,
           type: OpenAI::Models::Beta::BetaResponseComputerToolCall::type_,
-          action: OpenAI::Models::Beta::beta_computer_action,
-          actions: OpenAI::Models::Beta::beta_computer_action_list,
-          agent: OpenAI::Beta::BetaResponseComputerToolCall::Agent?
+          ?action: OpenAI::Models::Beta::beta_computer_action,
+          ?actions: OpenAI::Models::Beta::beta_computer_action_list,
+          ?agent: OpenAI::Beta::BetaResponseComputerToolCall::Agent?
         }
 
         type pending_safety_check =
-          { id: String, code: String?, message: String? }
+          { id: String, ?code: String?, ?message: String? }
 
         class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
@@ -78,7 +78,7 @@ module OpenAI
             ?message: String?
           ) -> void
 
-          def to_hash: -> { id: String, code: String?, message: String? }
+          def to_hash: -> { id: String, ?code: String?, ?message: String? }
         end
 
         type status = :in_progress | :completed | :incomplete

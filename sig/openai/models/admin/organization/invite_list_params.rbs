@@ -3,8 +3,11 @@ module OpenAI
     module Admin
       module Organization
         type invite_list_params =
-          { after: String, limit: Integer }
-          & OpenAI::Internal::Type::request_parameters
+          {
+            ?after: String,
+            ?limit: Integer,
+            ?request_options: OpenAI::request_opts
+          }
 
         class InviteListParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -25,9 +28,9 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            after: String,
-            limit: Integer,
-            request_options: OpenAI::RequestOptions
+            ?after: String,
+            ?limit: Integer,
+            ?request_options: OpenAI::RequestOptions
           }
         end
       end

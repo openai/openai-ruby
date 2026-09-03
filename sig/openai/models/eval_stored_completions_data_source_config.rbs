@@ -3,8 +3,8 @@ module OpenAI
     type eval_stored_completions_data_source_config =
       {
         schema: ::Hash[Symbol, top],
-        type: :stored_completions,
-        metadata: OpenAI::Models::metadata?
+        ?type: :stored_completions,
+        ?metadata: OpenAI::Models::metadata?
       }
 
     class EvalStoredCompletionsDataSourceConfig < OpenAI::Internal::Type::BaseModel
@@ -22,8 +22,8 @@ module OpenAI
 
       def to_hash: -> {
         schema: ::Hash[Symbol, top],
-        type: :stored_completions,
-        metadata: OpenAI::Models::metadata?
+        ?type: :stored_completions,
+        ?metadata: OpenAI::Models::metadata?
       }
     end
   end

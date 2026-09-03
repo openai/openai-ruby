@@ -4,18 +4,18 @@ module OpenAI
       module Organization
         type audit_log_list_params =
           {
-            actor_emails: ::Array[String],
-            actor_ids: ::Array[String],
-            after: String,
-            before: String,
-            effective_at: OpenAI::Admin::Organization::AuditLogListParams::EffectiveAt,
-            event_types: ::Array[OpenAI::Models::Admin::Organization::AuditLogListParams::event_type],
-            limit: Integer,
-            project_ids: ::Array[String],
-            resource_ids: ::Array[String],
-            tenant_only: bool
+            ?actor_emails: ::Array[String],
+            ?actor_ids: ::Array[String],
+            ?after: String,
+            ?before: String,
+            ?effective_at: OpenAI::Admin::Organization::AuditLogListParams::EffectiveAt,
+            ?event_types: ::Array[OpenAI::Models::Admin::Organization::AuditLogListParams::event_type],
+            ?limit: Integer,
+            ?project_ids: ::Array[String],
+            ?resource_ids: ::Array[String],
+            ?tenant_only: bool,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class AuditLogListParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -80,21 +80,21 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            actor_emails: ::Array[String],
-            actor_ids: ::Array[String],
-            after: String,
-            before: String,
-            effective_at: OpenAI::Admin::Organization::AuditLogListParams::EffectiveAt,
-            event_types: ::Array[OpenAI::Models::Admin::Organization::AuditLogListParams::event_type],
-            limit: Integer,
-            project_ids: ::Array[String],
-            resource_ids: ::Array[String],
-            tenant_only: bool,
-            request_options: OpenAI::RequestOptions
+            ?actor_emails: ::Array[String],
+            ?actor_ids: ::Array[String],
+            ?after: String,
+            ?before: String,
+            ?effective_at: OpenAI::Admin::Organization::AuditLogListParams::EffectiveAt,
+            ?event_types: ::Array[OpenAI::Models::Admin::Organization::AuditLogListParams::event_type],
+            ?limit: Integer,
+            ?project_ids: ::Array[String],
+            ?resource_ids: ::Array[String],
+            ?tenant_only: bool,
+            ?request_options: OpenAI::RequestOptions
           }
 
           type effective_at =
-            { gt: Integer, gte: Integer, lt: Integer, lte: Integer }
+            { ?gt: Integer, ?gte: Integer, ?lt: Integer, ?lte: Integer }
 
           class EffectiveAt < OpenAI::Internal::Type::BaseModel
             attr_reader gt: Integer?
@@ -121,10 +121,10 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              gt: Integer,
-              gte: Integer,
-              lt: Integer,
-              lte: Integer
+              ?gt: Integer,
+              ?gte: Integer,
+              ?lt: Integer,
+              ?lte: Integer
             }
           end
 

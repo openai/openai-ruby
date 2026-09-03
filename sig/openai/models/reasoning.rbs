@@ -2,11 +2,11 @@ module OpenAI
   module Models
     type reasoning =
       {
-        context: OpenAI::Models::Reasoning::context?,
-        effort: OpenAI::Models::reasoning_effort?,
-        generate_summary: OpenAI::Models::Reasoning::generate_summary?,
-        mode: OpenAI::Models::Reasoning::mode,
-        summary: OpenAI::Models::Reasoning::summary?
+        ?context: OpenAI::Models::Reasoning::context?,
+        ?effort: OpenAI::Models::reasoning_effort?,
+        ?generate_summary: OpenAI::Models::Reasoning::generate_summary?,
+        ?mode: OpenAI::Models::Reasoning::mode,
+        ?summary: OpenAI::Models::Reasoning::summary?
       }
 
     class Reasoning < OpenAI::Internal::Type::BaseModel
@@ -33,11 +33,11 @@ module OpenAI
       ) -> void
 
       def to_hash: -> {
-        context: OpenAI::Models::Reasoning::context?,
-        effort: OpenAI::Models::reasoning_effort?,
-        generate_summary: OpenAI::Models::Reasoning::generate_summary?,
-        mode: OpenAI::Models::Reasoning::mode,
-        summary: OpenAI::Models::Reasoning::summary?
+        ?context: OpenAI::Models::Reasoning::context?,
+        ?effort: OpenAI::Models::reasoning_effort?,
+        ?generate_summary: OpenAI::Models::Reasoning::generate_summary?,
+        ?mode: OpenAI::Models::Reasoning::mode,
+        ?summary: OpenAI::Models::Reasoning::summary?
       }
 
       type context = :auto | :current_turn | :all_turns

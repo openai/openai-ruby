@@ -5,13 +5,13 @@ module OpenAI
     module Chat
       type chat_completion_assistant_message_param =
         {
-          role: :assistant,
-          audio: OpenAI::Chat::ChatCompletionAssistantMessageParam::Audio?,
-          content: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::content?,
-          function_call: OpenAI::Chat::ChatCompletionAssistantMessageParam::FunctionCall?,
-          name: String,
-          refusal: String?,
-          tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
+          ?role: :assistant,
+          ?audio: OpenAI::Chat::ChatCompletionAssistantMessageParam::Audio?,
+          ?content: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::content?,
+          ?function_call: OpenAI::Chat::ChatCompletionAssistantMessageParam::FunctionCall?,
+          ?name: String,
+          ?refusal: String?,
+          ?tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
         }
 
       class ChatCompletionAssistantMessageParam < OpenAI::Internal::Type::BaseModel
@@ -46,13 +46,13 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          role: :assistant,
-          audio: OpenAI::Chat::ChatCompletionAssistantMessageParam::Audio?,
-          content: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::content?,
-          function_call: OpenAI::Chat::ChatCompletionAssistantMessageParam::FunctionCall?,
-          name: String,
-          refusal: String?,
-          tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
+          ?role: :assistant,
+          ?audio: OpenAI::Chat::ChatCompletionAssistantMessageParam::Audio?,
+          ?content: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::content?,
+          ?function_call: OpenAI::Chat::ChatCompletionAssistantMessageParam::FunctionCall?,
+          ?name: String,
+          ?refusal: String?,
+          ?tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call]
         }
 
         type audio = { id: String }

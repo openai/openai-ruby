@@ -7,11 +7,11 @@ module OpenAI
         {
           id: String,
           content: ::Array[OpenAI::Models::Beta::BetaResponseOutputMessage::content],
-          role: :assistant,
+          ?role: :assistant,
           status: OpenAI::Models::Beta::BetaResponseOutputMessage::status,
-          type: :message,
-          agent: OpenAI::Beta::BetaResponseOutputMessage::Agent?,
-          phase: OpenAI::Models::Beta::BetaResponseOutputMessage::phase?
+          ?type: :message,
+          ?agent: OpenAI::Beta::BetaResponseOutputMessage::Agent?,
+          ?phase: OpenAI::Models::Beta::BetaResponseOutputMessage::phase?
         }
 
       class BetaResponseOutputMessage < OpenAI::Internal::Type::BaseModel
@@ -42,11 +42,11 @@ module OpenAI
         def to_hash: -> {
           id: String,
           content: ::Array[OpenAI::Models::Beta::BetaResponseOutputMessage::content],
-          role: :assistant,
+          ?role: :assistant,
           status: OpenAI::Models::Beta::BetaResponseOutputMessage::status,
-          type: :message,
-          agent: OpenAI::Beta::BetaResponseOutputMessage::Agent?,
-          phase: OpenAI::Models::Beta::BetaResponseOutputMessage::phase?
+          ?type: :message,
+          ?agent: OpenAI::Beta::BetaResponseOutputMessage::Agent?,
+          ?phase: OpenAI::Models::Beta::BetaResponseOutputMessage::phase?
         }
 
         type content =

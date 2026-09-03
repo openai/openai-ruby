@@ -4,7 +4,7 @@ module OpenAI
 
     module Beta
       type beta_inline_skill_source =
-        { data: String, media_type: :"application/zip", type: :base64 }
+        { data: String, ?media_type: :"application/zip", ?type: :base64 }
 
       class BetaInlineSkillSource < OpenAI::Internal::Type::BaseModel
         attr_accessor data: String
@@ -21,8 +21,8 @@ module OpenAI
 
         def to_hash: -> {
           data: String,
-          media_type: :"application/zip",
-          type: :base64
+          ?media_type: :"application/zip",
+          ?type: :base64
         }
       end
     end

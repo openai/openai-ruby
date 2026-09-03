@@ -5,9 +5,9 @@ module OpenAI
         {
           name: String,
           schema: ::Hash[Symbol, top],
-          type: :json_schema,
-          description: String,
-          strict: bool?
+          ?type: :json_schema,
+          ?description: String,
+          ?strict: bool?
         }
 
       class ResponseFormatTextJSONSchemaConfig < OpenAI::Internal::Type::BaseModel
@@ -34,9 +34,9 @@ module OpenAI
         def to_hash: -> {
           name: String,
           schema: ::Hash[Symbol, top],
-          type: :json_schema,
-          description: String,
-          strict: bool?
+          ?type: :json_schema,
+          ?description: String,
+          ?strict: bool?
         }
       end
     end

@@ -3,9 +3,9 @@ module OpenAI
     module Responses
       type function_shell_tool =
         {
-          type: :shell,
-          allowed_callers: ::Array[OpenAI::Models::Responses::FunctionShellTool::allowed_caller]?,
-          environment: OpenAI::Models::Responses::FunctionShellTool::environment?
+          ?type: :shell,
+          ?allowed_callers: ::Array[OpenAI::Models::Responses::FunctionShellTool::allowed_caller]?,
+          ?environment: OpenAI::Models::Responses::FunctionShellTool::environment?
         }
 
       class FunctionShellTool < OpenAI::Internal::Type::BaseModel
@@ -22,9 +22,9 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :shell,
-          allowed_callers: ::Array[OpenAI::Models::Responses::FunctionShellTool::allowed_caller]?,
-          environment: OpenAI::Models::Responses::FunctionShellTool::environment?
+          ?type: :shell,
+          ?allowed_callers: ::Array[OpenAI::Models::Responses::FunctionShellTool::allowed_caller]?,
+          ?environment: OpenAI::Models::Responses::FunctionShellTool::environment?
         }
 
         type allowed_caller = :direct | :programmatic

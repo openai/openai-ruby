@@ -5,11 +5,11 @@ module OpenAI
     module Beta
       type beta_container_auto =
         {
-          type: :container_auto,
-          file_ids: ::Array[String],
-          memory_limit: OpenAI::Models::Beta::BetaContainerAuto::memory_limit?,
-          network_policy: OpenAI::Models::Beta::BetaContainerAuto::network_policy,
-          skills: ::Array[OpenAI::Models::Beta::BetaContainerAuto::skill]
+          ?type: :container_auto,
+          ?file_ids: ::Array[String],
+          ?memory_limit: OpenAI::Models::Beta::BetaContainerAuto::memory_limit?,
+          ?network_policy: OpenAI::Models::Beta::BetaContainerAuto::network_policy,
+          ?skills: ::Array[OpenAI::Models::Beta::BetaContainerAuto::skill]
         }
 
       class BetaContainerAuto < OpenAI::Internal::Type::BaseModel
@@ -42,11 +42,11 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :container_auto,
-          file_ids: ::Array[String],
-          memory_limit: OpenAI::Models::Beta::BetaContainerAuto::memory_limit?,
-          network_policy: OpenAI::Models::Beta::BetaContainerAuto::network_policy,
-          skills: ::Array[OpenAI::Models::Beta::BetaContainerAuto::skill]
+          ?type: :container_auto,
+          ?file_ids: ::Array[String],
+          ?memory_limit: OpenAI::Models::Beta::BetaContainerAuto::memory_limit?,
+          ?network_policy: OpenAI::Models::Beta::BetaContainerAuto::network_policy,
+          ?skills: ::Array[OpenAI::Models::Beta::BetaContainerAuto::skill]
         }
 
         type memory_limit = :"1g" | :"4g" | :"16g" | :"64g"

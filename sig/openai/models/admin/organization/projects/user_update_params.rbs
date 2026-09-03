@@ -4,8 +4,12 @@ module OpenAI
       module Organization
         module Projects
           type user_update_params =
-            { project_id: String, user_id: String, role: String? }
-            & OpenAI::Internal::Type::request_parameters
+            {
+              project_id: String,
+              user_id: String,
+              ?role: String?,
+              ?request_options: OpenAI::request_opts
+            }
 
           class UserUpdateParams < OpenAI::Internal::Type::BaseModel
             extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -27,8 +31,8 @@ module OpenAI
             def to_hash: -> {
               project_id: String,
               user_id: String,
-              role: String?,
-              request_options: OpenAI::RequestOptions
+              ?role: String?,
+              ?request_options: OpenAI::RequestOptions
             }
           end
         end

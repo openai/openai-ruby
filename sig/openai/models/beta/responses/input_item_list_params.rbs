@@ -5,13 +5,13 @@ module OpenAI
         type input_item_list_params =
           {
             response_id: String,
-            after: String,
-            include: ::Array[OpenAI::Models::Beta::beta_response_includable],
-            limit: Integer,
-            order: OpenAI::Models::Beta::Responses::InputItemListParams::order,
-            betas: ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta]
+            ?after: String,
+            ?include: ::Array[OpenAI::Models::Beta::beta_response_includable],
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::Responses::InputItemListParams::order,
+            ?betas: ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta],
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class InputItemListParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -57,12 +57,12 @@ module OpenAI
 
           def to_hash: -> {
             response_id: String,
-            after: String,
-            include: ::Array[OpenAI::Models::Beta::beta_response_includable],
-            limit: Integer,
-            order: OpenAI::Models::Beta::Responses::InputItemListParams::order,
-            betas: ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta],
-            request_options: OpenAI::RequestOptions
+            ?after: String,
+            ?include: ::Array[OpenAI::Models::Beta::beta_response_includable],
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::Responses::InputItemListParams::order,
+            ?betas: ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta],
+            ?request_options: OpenAI::RequestOptions
           }
 
           type order = :asc | :desc

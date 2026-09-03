@@ -1,6 +1,6 @@
 module OpenAI
   module Models
-    type image = { :b64_json => String, revised_prompt: String, url: String }
+    type image = { ?:b64_json => String, ?revised_prompt: String, ?url: String }
 
     class Image < OpenAI::Internal::Type::BaseModel
       attr_reader b64_json: String?
@@ -22,9 +22,9 @@ module OpenAI
       ) -> void
 
       def to_hash: -> {
-        :b64_json => String,
-        revised_prompt: String,
-        url: String
+        ?:b64_json => String,
+        ?revised_prompt: String,
+        ?url: String
       }
     end
   end
