@@ -8,6 +8,7 @@ module OpenAI
           name: String,
           type: :custom,
           allowed_callers: ::Array[OpenAI::Models::Beta::BetaCustomTool::allowed_caller]?,
+          async: bool,
           defer_loading: bool,
           description: String,
           format_: OpenAI::Models::Beta::BetaCustomTool::format_
@@ -19,6 +20,10 @@ module OpenAI
         attr_accessor type: :custom
 
         attr_accessor allowed_callers: ::Array[OpenAI::Models::Beta::BetaCustomTool::allowed_caller]?
+
+        attr_reader async: bool?
+
+        def async=: (bool) -> bool
 
         attr_reader defer_loading: bool?
 
@@ -37,6 +42,7 @@ module OpenAI
         def initialize: (
           name: String,
           ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaCustomTool::allowed_caller]?,
+          ?async: bool,
           ?defer_loading: bool,
           ?description: String,
           ?format_: OpenAI::Models::Beta::BetaCustomTool::format_,
@@ -47,6 +53,7 @@ module OpenAI
           name: String,
           type: :custom,
           allowed_callers: ::Array[OpenAI::Models::Beta::BetaCustomTool::allowed_caller]?,
+          async: bool,
           defer_loading: bool,
           description: String,
           format_: OpenAI::Models::Beta::BetaCustomTool::format_

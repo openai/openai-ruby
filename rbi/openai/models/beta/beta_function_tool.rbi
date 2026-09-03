@@ -36,6 +36,12 @@ module OpenAI
         sig { returns(T.nilable(T::Array[OpenAI::Beta::BetaFunctionTool::AllowedCaller::OrSymbol])) }
         attr_accessor :allowed_callers
 
+        sig { returns(T.nilable(T::Boolean)) }
+        attr_reader :async
+
+        sig { params(async: T::Boolean).void }
+        attr_writer :async
+
         # Whether this function is deferred and loaded via tool search.
         sig { returns(T.nilable(T::Boolean)) }
         attr_reader :defer_loading
@@ -67,6 +73,8 @@ module OpenAI
 
             allowed_callers: T.nilable(T::Array[OpenAI::Beta::BetaFunctionTool::AllowedCaller::OrSymbol]),
 
+            async: T::Boolean,
+
             defer_loading: T::Boolean,
 
             description: T.nilable(String),
@@ -90,6 +98,8 @@ module OpenAI
 
           # The tool invocation context(s).
           allowed_callers: nil,
+
+          async: nil,
 
           # Whether this function is deferred and loaded via tool search.
           defer_loading: nil,
@@ -116,6 +126,7 @@ module OpenAI
               strict: T.nilable(T::Boolean),
               type: Symbol,
               allowed_callers: T.nilable(T::Array[OpenAI::Beta::BetaFunctionTool::AllowedCaller::OrSymbol]),
+              async: T::Boolean,
               defer_loading: T::Boolean,
               description: T.nilable(String),
               output_schema: T.nilable(T::Hash[Symbol, T.anything])

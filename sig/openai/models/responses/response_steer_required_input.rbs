@@ -1,0 +1,159 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_steer_required_input =
+        OpenAI::Responses::ResponseSteerRequiredInput::FunctionCallOutput
+        | OpenAI::Responses::ResponseSteerRequiredInput::CustomToolCallOutput
+        | OpenAI::Responses::ResponseSteerRequiredInput::ComputerCallOutput
+        | OpenAI::Responses::ResponseSteerRequiredInput::ShellCallOutput
+        | OpenAI::Responses::ResponseSteerRequiredInput::ApplyPatchCallOutput
+        | OpenAI::Responses::ResponseSteerRequiredInput::ToolSearchOutput
+        | OpenAI::Responses::ResponseSteerRequiredInput::McpApprovalResponse
+
+      module ResponseSteerRequiredInput
+        extend OpenAI::Internal::Type::Union
+
+        type function_call_output =
+          { call_id: String, name: String, type: :function_call_output }
+
+        class FunctionCallOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor call_id: String
+
+          attr_accessor name: String
+
+          attr_accessor type: :function_call_output
+
+          def initialize: (
+            call_id: String,
+            name: String,
+            ?type: :function_call_output
+          ) -> void
+
+          def to_hash: -> {
+            call_id: String,
+            name: String,
+            type: :function_call_output
+          }
+        end
+
+        type custom_tool_call_output =
+          { call_id: String, type: :custom_tool_call_output }
+
+        class CustomToolCallOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor call_id: String
+
+          attr_accessor type: :custom_tool_call_output
+
+          def initialize: (
+            call_id: String,
+            ?type: :custom_tool_call_output
+          ) -> void
+
+          def to_hash: -> { call_id: String, type: :custom_tool_call_output }
+        end
+
+        type computer_call_output =
+          { call_id: String, type: :computer_call_output }
+
+        class ComputerCallOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor call_id: String
+
+          attr_accessor type: :computer_call_output
+
+          def initialize: (
+            call_id: String,
+            ?type: :computer_call_output
+          ) -> void
+
+          def to_hash: -> { call_id: String, type: :computer_call_output }
+        end
+
+        type shell_call_output = { call_id: String, type: :shell_call_output }
+
+        class ShellCallOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor call_id: String
+
+          attr_accessor type: :shell_call_output
+
+          def initialize: (call_id: String, ?type: :shell_call_output) -> void
+
+          def to_hash: -> { call_id: String, type: :shell_call_output }
+        end
+
+        type apply_patch_call_output =
+          { call_id: String, type: :apply_patch_call_output }
+
+        class ApplyPatchCallOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor call_id: String
+
+          attr_accessor type: :apply_patch_call_output
+
+          def initialize: (
+            call_id: String,
+            ?type: :apply_patch_call_output
+          ) -> void
+
+          def to_hash: -> { call_id: String, type: :apply_patch_call_output }
+        end
+
+        type tool_search_output =
+          {
+            call_id: String,
+            execution: OpenAI::Models::Responses::ResponseSteerRequiredInput::ToolSearchOutput::execution,
+            type: :tool_search_output
+          }
+
+        class ToolSearchOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor call_id: String
+
+          attr_accessor execution: OpenAI::Models::Responses::ResponseSteerRequiredInput::ToolSearchOutput::execution
+
+          attr_accessor type: :tool_search_output
+
+          def initialize: (
+            call_id: String,
+            execution: OpenAI::Models::Responses::ResponseSteerRequiredInput::ToolSearchOutput::execution,
+            ?type: :tool_search_output
+          ) -> void
+
+          def to_hash: -> {
+            call_id: String,
+            execution: OpenAI::Models::Responses::ResponseSteerRequiredInput::ToolSearchOutput::execution,
+            type: :tool_search_output
+          }
+
+          type execution = :client
+
+          module Execution
+            extend OpenAI::Internal::Type::Enum
+
+            CLIENT: :client
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseSteerRequiredInput::ToolSearchOutput::execution]
+          end
+        end
+
+        type mcp_approval_response =
+          { approval_request_id: String, type: :mcp_approval_response }
+
+        class McpApprovalResponse < OpenAI::Internal::Type::BaseModel
+          attr_accessor approval_request_id: String
+
+          attr_accessor type: :mcp_approval_response
+
+          def initialize: (
+            approval_request_id: String,
+            ?type: :mcp_approval_response
+          ) -> void
+
+          def to_hash: -> {
+            approval_request_id: String,
+            type: :mcp_approval_response
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Responses::response_steer_required_input]
+      end
+    end
+  end
+end

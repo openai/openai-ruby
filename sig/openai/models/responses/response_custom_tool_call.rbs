@@ -8,6 +8,7 @@ module OpenAI
           name: String,
           type: :custom_tool_call,
           id: String,
+          async: bool,
           caller_: OpenAI::Models::Responses::ResponseCustomToolCall::caller_?,
           namespace: String
         }
@@ -25,6 +26,10 @@ module OpenAI
 
         def id=: (String) -> String
 
+        attr_reader async: bool?
+
+        def async=: (bool) -> bool
+
         attr_accessor caller_: OpenAI::Models::Responses::ResponseCustomToolCall::caller_?
 
         attr_reader namespace: String?
@@ -36,6 +41,7 @@ module OpenAI
           input: String,
           name: String,
           ?id: String,
+          ?async: bool,
           ?caller_: OpenAI::Models::Responses::ResponseCustomToolCall::caller_?,
           ?namespace: String,
           ?type: :custom_tool_call
@@ -47,6 +53,7 @@ module OpenAI
           name: String,
           type: :custom_tool_call,
           id: String,
+          async: bool,
           caller_: OpenAI::Models::Responses::ResponseCustomToolCall::caller_?,
           namespace: String
         }

@@ -19,6 +19,7 @@ module OpenAI
         | OpenAI::Beta::BetaResponseInputItem::ToolSearchCall
         | OpenAI::Beta::BetaResponseToolSearchOutputItemParam
         | OpenAI::Beta::BetaResponseInputItem::AdditionalTools
+        | OpenAI::Beta::BetaResponseConfigurationUpdateItemParam
         | OpenAI::Beta::BetaResponseReasoningItem
         | OpenAI::Beta::BetaResponseCompactionItemParam
         | OpenAI::Beta::BetaResponseInputItem::ImageGenerationCall

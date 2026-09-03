@@ -3,657 +3,223 @@
 module OpenAI
   module Models
     module Responses
-      class ResponsesClientEvent < OpenAI::Internal::Type::BaseModel
-        # @!attribute type
-        #   The type of the client event. Always `response.create`.
-        #
-        #   @return [Symbol, :"response.create"]
-        required :type, const: :"response.create"
+      # Client events accepted by the Responses WebSocket server.
+      module ResponsesClientEvent
+        extend OpenAI::Internal::Type::Union
 
-        # @!attribute background
-        #   Whether to run the model response in the background.
-        #   [Learn more](https://platform.openai.com/docs/guides/background).
-        #
-        #   @return [Boolean, nil]
-        optional :background, OpenAI::Internal::Type::Boolean, nil?: true
+        discriminator :type
 
-        # @!attribute context_management
-        #   Context management configuration for this request.
+        # Client event for creating a response over a persistent WebSocket connection.
+        # This payload uses the same top-level fields as `POST /v1/responses`, plus
+        # WebSocket-only envelope metadata.
         #
-        #   @return [Array<OpenAI::Models::Responses::ResponsesClientEvent::ContextManagement>, nil]
-        optional(
-          :context_management,
-          -> {
-            OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponsesClientEvent::ContextManagement]
-          },
-          nil?: true
-        )
+        # Notes:
+        # - `stream` is implicit over WebSocket and should not be sent.
+        # - `background` is not supported over WebSocket.
+        # - `stream_id` is WebSocket-only and is not part of `POST /v1/responses`.
+        variant :"response.create", -> { OpenAI::Responses::ResponsesClientEvent::ResponseCreate }
 
-        # @!attribute conversation
-        #   The conversation that this response belongs to. Items from this conversation are
-        #   prepended to `input_items` for this response request. Input items and output
-        #   items from this response are automatically added to this conversation after this
-        #   response completes.
+        # Queues user input to steer a response on this WebSocket connection. Input
+        # can contain text, images, and files. Steering is supported only for
+        # single-agent responses on models and execution modes that support steering.
+        # Responses bound to a conversation or using automatic compaction do not
+        # support steering.
         #
-        #   @return [String, OpenAI::Models::Responses::ResponseConversationParam, nil]
-        optional(
-          :conversation,
-          union: -> {
-            OpenAI::Responses::ResponsesClientEvent::Conversation
-          },
-          nil?: true
-        )
+        # A `response.steer.accepted` event acknowledges that the server owns the
+        # queued input, not that it has been applied. The successor's `response.created`
+        # event is the commit point. Input that cannot be committed is returned in
+        # `response.steer.failed`.
+        #
+        # Steering may cause the active response to finish at a safe output boundary
+        # with `response.incomplete` and `incomplete_details.reason` set to `steered`,
+        # followed automatically by a successor `response.created`. Normal completion
+        # can also be followed by an automatic successor. Automatic successors inherit
+        # the previous response's settings and continue from it with the queued input.
+        #
+        # If the response stops for client-owned tool output or approval, accepted
+        # steering input remains queued and `response.steer.pending` is emitted after
+        # `response.completed`. Fill the `required_input` stubs from that event with
+        # saved tool results or approval decisions, and send one explicit
+        # `response.create` per parent with the same `previous_response_id` and
+        # WebSocket lane. Do not rerun tools or resend accepted steering input. The
+        # queued input is prepended in submission order to that request's input, and
+        # the explicit request retains its own settings.
+        #
+        # This event accepts only `type`, `previous_response_id`, and `input`. Do not
+        # send `stream_id`; the target response determines the WebSocket lane.
+        variant :"response.steer", -> { OpenAI::Responses::ResponseSteerEvent }
 
-        # @!attribute include
-        #   Specify additional output data to include in the model response. Currently
-        #   supported values are:
-        #
-        #   - `web_search_call.action.sources`: Include the sources of the web search tool
-        #     call.
-        #   - `code_interpreter_call.outputs`: Includes the outputs of python code execution
-        #     in code interpreter tool call items.
-        #   - `computer_call_output.output.image_url`: Include image urls from the computer
-        #     call output.
-        #   - `file_search_call.results`: Include the search results of the file search tool
-        #     call.
-        #   - `message.input_image.image_url`: Include image urls from the input message.
-        #   - `message.output_text.logprobs`: Include logprobs with assistant messages.
-        #   - `reasoning.encrypted_content`: Includes an encrypted version of reasoning
-        #     tokens in reasoning item outputs. This enables reasoning items to be used in
-        #     multi-turn conversations when using the Responses API statelessly (like when
-        #     the `store` parameter is set to `false`, or when an organization is enrolled
-        #     in the zero data retention program).
-        #
-        #   @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
-        optional(
-          :include,
-          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::ResponseIncludable] },
-          nil?: true
-        )
-
-        # @!attribute input
-        #   Text, image, or file inputs to the model, used to generate a response.
-        #
-        #   Learn more:
-        #
-        #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        #   - [Image inputs](https://platform.openai.com/docs/guides/images)
-        #   - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
-        #   - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
-        #   - [Function calling](https://platform.openai.com/docs/guides/function-calling)
-        #
-        #   @return [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>, nil]
-        optional :input, union: -> { OpenAI::Responses::ResponsesClientEvent::Input }
-
-        # @!attribute instructions
-        #   A system (or developer) message inserted into the model's context.
-        #
-        #   When using along with `previous_response_id`, the instructions from a previous
-        #   response will not be carried over to the next response. This makes it simple to
-        #   swap out system (or developer) messages in new responses.
-        #
-        #   @return [String, nil]
-        optional :instructions, String, nil?: true
-
-        # @!attribute max_output_tokens
-        #   An upper bound for the number of tokens that can be generated for a response,
-        #   including visible output tokens and
-        #   [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
-        #
-        #   @return [Integer, nil]
-        optional :max_output_tokens, Integer, nil?: true
-
-        # @!attribute max_tool_calls
-        #   The maximum number of total calls to built-in tools that can be processed in a
-        #   response. This maximum number applies across all built-in tool calls, not per
-        #   individual tool. Any further attempts to call a tool by the model will be
-        #   ignored.
-        #
-        #   @return [Integer, nil]
-        optional :max_tool_calls, Integer, nil?: true
-
-        # @!attribute metadata
-        #   Set of 16 key-value pairs that can be attached to an object. This can be useful
-        #   for storing additional information about the object in a structured format, and
-        #   querying for objects via API or the dashboard.
-        #
-        #   Keys are strings with a maximum length of 64 characters. Values are strings with
-        #   a maximum length of 512 characters.
-        #
-        #   @return [Hash{Symbol=>String}, nil]
-        optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
-
-        # @!attribute model
-        #   Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
-        #   range of models with different capabilities, performance characteristics, and
-        #   price points. Refer to the
-        #   [model guide](https://platform.openai.com/docs/models) to browse and compare
-        #   available models.
-        #
-        #   @return [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel, nil]
-        optional :model, union: -> { OpenAI::ResponsesModel }
-
-        # @!attribute moderation
-        #   Configuration for running moderation on the input and output of this response.
-        #
-        #   @return [OpenAI::Models::Responses::ResponsesClientEvent::Moderation, nil]
-        optional :moderation, -> { OpenAI::Responses::ResponsesClientEvent::Moderation }, nil?: true
-
-        # @!attribute parallel_tool_calls
-        #   Whether to allow the model to run tool calls in parallel.
-        #
-        #   @return [Boolean, nil]
-        optional :parallel_tool_calls, OpenAI::Internal::Type::Boolean, nil?: true
-
-        # @!attribute previous_response_id
-        #   The unique ID of the previous response to the model. Use this to create
-        #   multi-turn conversations. Learn more about
-        #   [conversation state](https://platform.openai.com/docs/guides/conversation-state).
-        #   Cannot be used in conjunction with `conversation`.
-        #
-        #   @return [String, nil]
-        optional :previous_response_id, String, nil?: true
-
-        # @!attribute prompt
-        #   Reference to a prompt template and its variables.
-        #   [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
-        #
-        #   @return [OpenAI::Models::Responses::ResponsePrompt, nil]
-        optional :prompt, -> { OpenAI::Responses::ResponsePrompt }, nil?: true
-
-        # @!attribute prompt_cache_key
-        #   Used by OpenAI to cache responses for similar requests to optimize your cache
-        #   hit rates. Replaces the `user` field.
-        #   [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
-        #
-        #   @return [String, nil]
-        optional :prompt_cache_key, String, nil?: true
-
-        # @!attribute prompt_cache_options
-        #   Options for prompt caching. Supported for `gpt-5.6` and later models. By
-        #   default, OpenAI automatically chooses one implicit cache breakpoint. You can add
-        #   explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
-        #   request can write up to four breakpoints. For cache matching, OpenAI considers
-        #   up to the latest 80 breakpoints in the conversation, without a content-block
-        #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-        #   `ttl` defaults to `30m`, which is currently the only supported value. See the
-        #   [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
-        #   for current details.
-        #
-        #   @return [OpenAI::Models::Responses::ResponsesClientEvent::PromptCacheOptions, nil]
-        optional :prompt_cache_options, -> { OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions }
-
-        # @!attribute prompt_cache_retention
-        #   @deprecated
-        #
-        #   Deprecated. Use `prompt_cache_options.ttl` instead.
-        #
-        #   The retention policy for the prompt cache. Set to `24h` to enable extended
-        #   prompt caching, which keeps cached prefixes active for longer, up to a maximum
-        #   of 24 hours.
-        #   [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
-        #   This field expresses a maximum retention policy, while
-        #   `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
-        #   are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
-        #   models, only `24h` is supported.
-        #
-        #   For older models that support both `in_memory` and `24h`, the default depends on
-        #   your organization's data retention policy:
-        #
-        #   - Organizations without ZDR enabled default to `24h`.
-        #   - Organizations with ZDR enabled default to `in_memory` when
-        #     `prompt_cache_retention` is not specified.
-        #
-        #   @return [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::PromptCacheRetention, nil]
-        optional(
-          :prompt_cache_retention,
-          enum: -> { OpenAI::Responses::ResponsesClientEvent::PromptCacheRetention },
-          nil?: true
-        )
-
-        # @!attribute reasoning
-        #   Configuration options for
-        #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
-        #
-        #   @return [OpenAI::Models::Reasoning, nil]
-        optional :reasoning, -> { OpenAI::Reasoning }, nil?: true
-
-        # @!attribute safety_identifier
-        #   A stable identifier used to help detect users of your application that may be
-        #   violating OpenAI's usage policies. The IDs should be a string that uniquely
-        #   identifies each user, with a maximum length of 64 characters. We recommend
-        #   hashing their username or email address, in order to avoid sending us any
-        #   identifying information.
-        #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
-        #
-        #   @return [String, nil]
-        optional :safety_identifier, String, nil?: true
-
-        # @!attribute service_tier
-        #   Specifies the processing type used for serving the request.
-        #
-        #   - If set to 'auto', then the request will be processed with the service tier
-        #     configured in the Project settings. Unless otherwise configured, the Project
-        #     will use 'default'.
-        #   - If set to 'default', then the request will be processed with the standard
-        #     pricing and performance for the selected model.
-        #   - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)',
-        #     then the request will be processed with the Flex Processing service tier.
-        #   - To opt-in to [Fast mode](/api/docs/guides/fast-mode) at the request level,
-        #     include the `service_tier=fast` or `service_tier=priority` parameter for
-        #     Responses or Chat Completions. The response will show `service_tier=priority`
-        #     regardless of if you specify `service_tier=fast` or `priority` in your
-        #     request.
-        #   - If set to 'ultrafast', then the request will be processed with the
-        #     access-controlled Ultrafast Processing service tier. This tier is currently
-        #     available for `gpt-5.6-sol`; a response served through it will show
-        #     `service_tier=ultrafast`.
-        #   - When not set, the default behavior is 'auto'.
-        #
-        #   When the `service_tier` parameter is set, the response body will include the
-        #   `service_tier` value based on the processing mode actually used to serve the
-        #   request. This response value may be different from the value set in the
-        #   parameter.
-        #
-        #   @return [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ServiceTier, nil]
-        optional :service_tier, enum: -> { OpenAI::Responses::ResponsesClientEvent::ServiceTier }, nil?: true
-
-        # @!attribute store
-        #   Whether to store the generated model response for later retrieval via API.
-        #
-        #   @return [Boolean, nil]
-        optional :store, OpenAI::Internal::Type::Boolean, nil?: true
-
-        # @!attribute stream
-        #   If set to true, the model response data will be streamed to the client as it is
-        #   generated using
-        #   [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).
-        #   See the
-        #   [Streaming section below](https://platform.openai.com/docs/api-reference/responses-streaming)
-        #   for more information.
-        #
-        #   @return [Boolean, nil]
-        optional :stream, OpenAI::Internal::Type::Boolean, nil?: true
-
-        # @!attribute stream_id
-        #   The WebSocket lane for this response. Requests with the same `stream_id` are
-        #   processed FIFO, and events for the response echo the same `stream_id`.
-        #
-        #   `stream_id` controls routing; `previous_response_id` controls conversation
-        #   lineage, so a new lane can fork from a response created on another lane.
-        #
-        #   @return [String, nil]
-        optional :stream_id, String
-
-        # @!attribute stream_options
-        #   Options for streaming responses. Only set this when you set `stream: true`.
-        #
-        #   @return [OpenAI::Models::Responses::ResponsesClientEvent::StreamOptions, nil]
-        optional :stream_options, -> { OpenAI::Responses::ResponsesClientEvent::StreamOptions }, nil?: true
-
-        # @!attribute temperature
-        #   What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
-        #   make the output more random, while lower values like 0.2 will make it more
-        #   focused and deterministic. We generally recommend altering this or `top_p` but
-        #   not both.
-        #
-        #   @return [Float, nil]
-        optional :temperature, Float, nil?: true
-
-        # @!attribute text
-        #   Configuration options for a text response from the model. Can be plain text or
-        #   structured JSON data. Learn more:
-        #
-        #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
-        #
-        #   @return [OpenAI::Models::Responses::ResponseTextConfig, nil]
-        optional :text, -> { OpenAI::Responses::ResponseTextConfig }
-
-        # @!attribute tool_choice
-        #   How the model should select which tool (or tools) to use when generating a
-        #   response. See the `tools` parameter to see how to specify which tools the model
-        #   can call.
-        #
-        #   @return [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom, OpenAI::Models::Responses::ResponsesClientEvent::ToolChoice::SpecificProgrammaticToolCallingParam, OpenAI::Models::Responses::ToolChoiceApplyPatch, OpenAI::Models::Responses::ToolChoiceShell, nil]
-        optional :tool_choice, union: -> { OpenAI::Responses::ResponsesClientEvent::ToolChoice }
-
-        # @!attribute tools
-        #   An array of tools the model may call while generating a response. You can
-        #   specify which tool to use by setting the `tool_choice` parameter.
-        #
-        #   We support the following categories of tools:
-        #
-        #   - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
-        #     capabilities, like
-        #     [web search](https://platform.openai.com/docs/guides/tools-web-search) or
-        #     [file search](https://platform.openai.com/docs/guides/tools-file-search).
-        #     Learn more about
-        #     [built-in tools](https://platform.openai.com/docs/guides/tools).
-        #   - **MCP Tools**: Integrations with third-party systems via custom MCP servers or
-        #     predefined connectors such as Google Drive and SharePoint. Learn more about
-        #     [MCP Tools](https://platform.openai.com/docs/guides/tools-connectors-mcp).
-        #   - **Function calls (custom tools)**: Functions that are defined by you, enabling
-        #     the model to call your own code with strongly typed arguments and outputs.
-        #     Learn more about
-        #     [function calling](https://platform.openai.com/docs/guides/function-calling).
-        #     You can also use custom tools to call your own code.
-        #
-        #   @return [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ProgrammaticToolCalling, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>, nil]
-        optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool] }
-
-        # @!attribute top_logprobs
-        #   An integer between 0 and 20 specifying the maximum number of most likely tokens
-        #   to return at each token position, each with an associated log probability. In
-        #   some cases, the number of returned tokens may be fewer than requested.
-        #
-        #   @return [Integer, nil]
-        optional :top_logprobs, Integer, nil?: true
-
-        # @!attribute top_p
-        #   An alternative to sampling with temperature, called nucleus sampling, where the
-        #   model considers the results of the tokens with top_p probability mass. So 0.1
-        #   means only the tokens comprising the top 10% probability mass are considered.
-        #
-        #   We generally recommend altering this or `temperature` but not both.
-        #
-        #   @return [Float, nil]
-        optional :top_p, Float, nil?: true
-
-        # @!attribute truncation
-        #   @deprecated
-        #
-        #   The truncation strategy to use for the model response.
-        #
-        #   - `auto`: If the input to this Response exceeds the model's context window size,
-        #     the model will truncate the response to fit the context window by dropping
-        #     items from the beginning of the conversation.
-        #   - `disabled` (default): If the input size will exceed the context window size
-        #     for a model, the request will fail with a 400 error.
-        #
-        #   @return [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::Truncation, nil]
-        optional :truncation, enum: -> { OpenAI::Responses::ResponsesClientEvent::Truncation }, nil?: true
-
-        # @!attribute user
-        #   @deprecated
-        #
-        #   This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
-        #   `prompt_cache_key` instead to maintain caching optimizations. A stable
-        #   identifier for your end-users. Used to boost cache hit rates by better bucketing
-        #   similar requests and to help OpenAI detect and prevent abuse.
-        #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
-        #
-        #   @return [String, nil]
-        optional :user, String
-
-        # @!method initialize(background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream: nil, stream_id: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, type: :"response.create")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponsesClientEvent} for more details.
-        #
-        #   @param background [Boolean, nil] Whether to run the model response in the background.
-        #
-        #   @param context_management [Array<OpenAI::Models::Responses::ResponsesClientEvent::ContextManagement>, nil] Context management configuration for this request.
-        #
-        #   @param conversation [String, OpenAI::Models::Responses::ResponseConversationParam, nil] The conversation that this response belongs to. Items from this conversation are
-        #
-        #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil] Specify additional output data to include in the model response. Currently suppo
-        #
-        #   @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>] Text, image, or file inputs to the model, used to generate a response.
-        #
-        #   @param instructions [String, nil] A system (or developer) message inserted into the model's context.
-        #
-        #   @param max_output_tokens [Integer, nil] An upper bound for the number of tokens that can be generated for a response, in
-        #
-        #   @param max_tool_calls [Integer, nil] The maximum number of total calls to built-in tools that can be processed in a r
-        #
-        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
-        #
-        #   @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel] Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI
-        #
-        #   @param moderation [OpenAI::Models::Responses::ResponsesClientEvent::Moderation, nil] Configuration for running moderation on the input and output of this response.
-        #
-        #   @param parallel_tool_calls [Boolean, nil] Whether to allow the model to run tool calls in parallel.
-        #
-        #   @param previous_response_id [String, nil] The unique ID of the previous response to the model. Use this to
-        #
-        #   @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
-        #
-        #   @param prompt_cache_key [String, nil] Used by OpenAI to cache responses for similar requests to optimize your cache hi
-        #
-        #   @param prompt_cache_options [OpenAI::Models::Responses::ResponsesClientEvent::PromptCacheOptions] Options for prompt caching. Supported for `gpt-5.6` and later models. By default
-        #
-        #   @param prompt_cache_retention [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::PromptCacheRetention, nil] Deprecated. Use `prompt_cache_options.ttl` instead.
-        #
-        #   @param reasoning [OpenAI::Models::Reasoning, nil] Configuration options for
-        #
-        #   @param safety_identifier [String, nil] A stable identifier used to help detect users of your application that may be vi
-        #
-        #   @param service_tier [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ServiceTier, nil] Specifies the processing type used for serving the request.
-        #
-        #   @param store [Boolean, nil] Whether to store the generated model response for later retrieval via
-        #
-        #   @param stream [Boolean, nil] If set to true, the model response data will be streamed to the client
-        #
-        #   @param stream_id [String] The WebSocket lane for this response. Requests with the same
-        #
-        #   @param stream_options [OpenAI::Models::Responses::ResponsesClientEvent::StreamOptions, nil] Options for streaming responses. Only set this when you set `stream: true`.
-        #
-        #   @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
-        #
-        #   @param text [OpenAI::Models::Responses::ResponseTextConfig] Configuration options for a text response from the model. Can be plain
-        #
-        #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom, OpenAI::Models::Responses::ResponsesClientEvent::ToolChoice::SpecificProgrammaticToolCallingParam, OpenAI::Models::Responses::ToolChoiceApplyPatch, OpenAI::Models::Responses::ToolChoiceShell] How the model should select which tool (or tools) to use when generating
-        #
-        #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ProgrammaticToolCalling, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>] An array of tools the model may call while generating a response. You
-        #
-        #   @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the maximum number of most likely
-        #
-        #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling,
-        #
-        #   @param truncation [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::Truncation, nil] The truncation strategy to use for the model response.
-        #
-        #   @param user [String] This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
-        #
-        #   @param type [Symbol, :"response.create"] The type of the client event. Always `response.create`.
-
-        class ContextManagement < OpenAI::Internal::Type::BaseModel
+        class ResponseCreate < OpenAI::Internal::Type::BaseModel
           # @!attribute type
-          #   The context management entry type. Currently only 'compaction' is supported.
+          #   The type of the client event. Always `response.create`.
           #
-          #   @return [String]
-          required :type, String
+          #   @return [Symbol, :"response.create"]
+          required :type, const: :"response.create"
 
-          # @!attribute compact_threshold
-          #   Token threshold at which compaction should be triggered for this entry.
+          # @!attribute background
+          #   Whether to run the model response in the background.
+          #   [Learn more](https://platform.openai.com/docs/guides/background).
+          #
+          #   @return [Boolean, nil]
+          optional :background, OpenAI::Internal::Type::Boolean, nil?: true
+
+          # @!attribute context_management
+          #   Context management configuration for this request.
+          #
+          #   @return [Array<OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement>, nil]
+          optional(
+            :context_management,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement
+              ]
+            },
+            nil?: true
+          )
+
+          # @!attribute conversation
+          #   The conversation that this response belongs to. Items from this conversation are
+          #   prepended to `input_items` for this response request. Input items and output
+          #   items from this response are automatically added to this conversation after this
+          #   response completes.
+          #
+          #   @return [String, OpenAI::Models::Responses::ResponseConversationParam, nil]
+          optional(
+            :conversation,
+            union: -> { OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Conversation },
+            nil?: true
+          )
+
+          # @!attribute include
+          #   Specify additional output data to include in the model response. Currently
+          #   supported values are:
+          #
+          #   - `web_search_call.action.sources`: Include the sources of the web search tool
+          #     call.
+          #   - `code_interpreter_call.outputs`: Includes the outputs of python code execution
+          #     in code interpreter tool call items.
+          #   - `computer_call_output.output.image_url`: Include image urls from the computer
+          #     call output.
+          #   - `file_search_call.results`: Include the search results of the file search tool
+          #     call.
+          #   - `message.input_image.image_url`: Include image urls from the input message.
+          #   - `message.output_text.logprobs`: Include logprobs with assistant messages.
+          #   - `reasoning.encrypted_content`: Includes an encrypted version of reasoning
+          #     tokens in reasoning item outputs. This enables reasoning items to be used in
+          #     multi-turn conversations when using the Responses API statelessly (like when
+          #     the `store` parameter is set to `false`, or when an organization is enrolled
+          #     in the zero data retention program).
+          #
+          #   @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
+          optional(
+            :include,
+            -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::ResponseIncludable] },
+            nil?: true
+          )
+
+          # @!attribute input
+          #   Text, image, or file inputs to the model, used to generate a response.
+          #
+          #   Learn more:
+          #
+          #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+          #   - [Image inputs](https://platform.openai.com/docs/guides/images)
+          #   - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
+          #   - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
+          #   - [Function calling](https://platform.openai.com/docs/guides/function-calling)
+          #
+          #   @return [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseConfigurationUpdateItemParam, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>, nil]
+          optional :input, union: -> { OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Input }
+
+          # @!attribute instructions
+          #   A system (or developer) message inserted into the model's context.
+          #
+          #   When using along with `previous_response_id`, the instructions from a previous
+          #   response will not be carried over to the next response. This makes it simple to
+          #   swap out system (or developer) messages in new responses.
+          #
+          #   @return [String, nil]
+          optional :instructions, String, nil?: true
+
+          # @!attribute max_output_tokens
+          #   An upper bound for the number of tokens that can be generated for a response,
+          #   including visible output tokens and
+          #   [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
           #
           #   @return [Integer, nil]
-          optional :compact_threshold, Integer, nil?: true
+          optional :max_output_tokens, Integer, nil?: true
 
-          # @!method initialize(type:, compact_threshold: nil)
-          #   @param type [String] The context management entry type. Currently only 'compaction' is supported.
+          # @!attribute max_tool_calls
+          #   The maximum number of total calls to built-in tools that can be processed in a
+          #   response. This maximum number applies across all built-in tool calls, not per
+          #   individual tool. Any further attempts to call a tool by the model will be
+          #   ignored.
           #
-          #   @param compact_threshold [Integer, nil] Token threshold at which compaction should be triggered for this entry.
-        end
+          #   @return [Integer, nil]
+          optional :max_tool_calls, Integer, nil?: true
 
-        # The conversation that this response belongs to. Items from this conversation are
-        # prepended to `input_items` for this response request. Input items and output
-        # items from this response are automatically added to this conversation after this
-        # response completes.
-        #
-        # @see OpenAI::Models::Responses::ResponsesClientEvent#conversation
-        module Conversation
-          extend OpenAI::Internal::Type::Union
+          # @!attribute metadata
+          #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+          #   for storing additional information about the object in a structured format, and
+          #   querying for objects via API or the dashboard.
+          #
+          #   Keys are strings with a maximum length of 64 characters. Values are strings with
+          #   a maximum length of 512 characters.
+          #
+          #   @return [Hash{Symbol=>String}, nil]
+          optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-          # The unique ID of the conversation.
-          variant String
-
-          # The conversation that this response belongs to.
-          variant -> { OpenAI::Responses::ResponseConversationParam }
-
-          # @!method self.variants
-          #   @return [Array(String, OpenAI::Models::Responses::ResponseConversationParam)]
-        end
-
-        # Text, image, or file inputs to the model, used to generate a response.
-        #
-        # Learn more:
-        #
-        # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        # - [Image inputs](https://platform.openai.com/docs/guides/images)
-        # - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
-        # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
-        # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
-        #
-        # @see OpenAI::Models::Responses::ResponsesClientEvent#input
-        module Input
-          extend OpenAI::Internal::Type::Union
-
-          # A text input to the model, equivalent to a text input with the
-          # `user` role.
-          variant String
-
-          # A list of one or many input items to the model, containing
-          # different content types.
-          variant -> { OpenAI::Responses::ResponseInput }
-
-          # @!method self.variants
-          #   @return [Array(String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>)]
-        end
-
-        # @see OpenAI::Models::Responses::ResponsesClientEvent#moderation
-        class Moderation < OpenAI::Internal::Type::BaseModel
           # @!attribute model
-          #   The moderation model to use for moderated completions, e.g.
-          #   'omni-moderation-latest'.
+          #   Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
+          #   range of models with different capabilities, performance characteristics, and
+          #   price points. Refer to the
+          #   [model guide](https://platform.openai.com/docs/models) to browse and compare
+          #   available models.
           #
-          #   @return [String]
-          required :model, String
+          #   @return [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel, nil]
+          optional :model, union: -> { OpenAI::ResponsesModel }
 
-          # @!attribute policy
-          #   The policy to apply to moderated response input and output.
-          #
-          #   @return [OpenAI::Models::Responses::ResponsesClientEvent::Moderation::Policy, nil]
-          optional :policy, -> { OpenAI::Responses::ResponsesClientEvent::Moderation::Policy }, nil?: true
-
-          # @!method initialize(model:, policy: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Responses::ResponsesClientEvent::Moderation} for more details.
-          #
+          # @!attribute moderation
           #   Configuration for running moderation on the input and output of this response.
           #
-          #   @param model [String] The moderation model to use for moderated completions, e.g. 'omni-moderation-lat
+          #   @return [OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation, nil]
+          optional(
+            :moderation,
+            -> { OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation },
+            nil?: true
+          )
+
+          # @!attribute parallel_tool_calls
+          #   Whether to allow the model to run tool calls in parallel.
           #
-          #   @param policy [OpenAI::Models::Responses::ResponsesClientEvent::Moderation::Policy, nil] The policy to apply to moderated response input and output.
+          #   @return [Boolean, nil]
+          optional :parallel_tool_calls, OpenAI::Internal::Type::Boolean, nil?: true
 
-          # @see OpenAI::Models::Responses::ResponsesClientEvent::Moderation#policy
-          class Policy < OpenAI::Internal::Type::BaseModel
-            # @!attribute input
-            #   The moderation policy for the response input.
-            #
-            #   @return [OpenAI::Models::Responses::ResponsesClientEvent::Moderation::Policy::Input, nil]
-            optional(
-              :input,
-              -> {
-                OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input
-              },
-              nil?: true
-            )
-
-            # @!attribute output
-            #   The moderation policy for the response output.
-            #
-            #   @return [OpenAI::Models::Responses::ResponsesClientEvent::Moderation::Policy::Output, nil]
-            optional(
-              :output,
-              -> {
-                OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output
-              },
-              nil?: true
-            )
-
-            # @!method initialize(input: nil, output: nil)
-            #   The policy to apply to moderated response input and output.
-            #
-            #   @param input [OpenAI::Models::Responses::ResponsesClientEvent::Moderation::Policy::Input, nil] The moderation policy for the response input.
-            #
-            #   @param output [OpenAI::Models::Responses::ResponsesClientEvent::Moderation::Policy::Output, nil] The moderation policy for the response output.
-
-            # @see OpenAI::Models::Responses::ResponsesClientEvent::Moderation::Policy#input
-            class Input < OpenAI::Internal::Type::BaseModel
-              # @!attribute mode
-              #
-              #   @return [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::Moderation::Policy::Input::Mode]
-              required :mode, enum: -> { OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::Mode }
-
-              # @!method initialize(mode:)
-              #   The moderation policy for the response input.
-              #
-              #   @param mode [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::Moderation::Policy::Input::Mode]
-
-              # @see OpenAI::Models::Responses::ResponsesClientEvent::Moderation::Policy::Input#mode
-              module Mode
-                extend OpenAI::Internal::Type::Enum
-
-                SCORE = :score
-                BLOCK = :block
-
-                # @!method self.values
-                #   @return [Array<Symbol>]
-              end
-            end
-
-            # @see OpenAI::Models::Responses::ResponsesClientEvent::Moderation::Policy#output
-            class Output < OpenAI::Internal::Type::BaseModel
-              # @!attribute mode
-              #
-              #   @return [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::Moderation::Policy::Output::Mode]
-              required :mode, enum: -> { OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::Mode }
-
-              # @!method initialize(mode:)
-              #   The moderation policy for the response output.
-              #
-              #   @param mode [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::Moderation::Policy::Output::Mode]
-
-              # @see OpenAI::Models::Responses::ResponsesClientEvent::Moderation::Policy::Output#mode
-              module Mode
-                extend OpenAI::Internal::Type::Enum
-
-                SCORE = :score
-                BLOCK = :block
-
-                # @!method self.values
-                #   @return [Array<Symbol>]
-              end
-            end
-          end
-        end
-
-        # @see OpenAI::Models::Responses::ResponsesClientEvent#prompt_cache_options
-        class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
-          # @!attribute mode
-          #   Controls whether OpenAI automatically creates an implicit cache breakpoint.
-          #   Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
-          #   and writes up to the latest three explicit breakpoints in the request. With
-          #   `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
-          #   latest four explicit breakpoints. If there are no explicit breakpoints, the
-          #   request does not use prompt caching.
+          # @!attribute previous_response_id
+          #   The unique ID of the previous response to the model. Use this to create
+          #   multi-turn conversations. Learn more about
+          #   [conversation state](https://platform.openai.com/docs/guides/conversation-state).
+          #   Cannot be used in conjunction with `conversation`.
           #
-          #   @return [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::PromptCacheOptions::Mode, nil]
-          optional :mode, enum: -> { OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Mode }
+          #   @return [String, nil]
+          optional :previous_response_id, String, nil?: true
 
-          # @!attribute ttl
-          #   The minimum lifetime applied to every implicit and explicit cache breakpoint
-          #   written by the request. Defaults to `30m`, which is currently the only supported
-          #   value. The backend may retain cache entries for longer.
+          # @!attribute prompt
+          #   Reference to a prompt template and its variables.
+          #   [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
           #
-          #   @return [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::PromptCacheOptions::Ttl, nil]
-          optional :ttl, enum: -> { OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Ttl }
+          #   @return [OpenAI::Models::Responses::ResponsePrompt, nil]
+          optional :prompt, -> { OpenAI::Responses::ResponsePrompt }, nil?: true
 
-          # @!method initialize(mode: nil, ttl: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Responses::ResponsesClientEvent::PromptCacheOptions} for more
-          #   details.
+          # @!attribute prompt_cache_key
+          #   Used by OpenAI to cache responses for similar requests to optimize your cache
+          #   hit rates. Replaces the `user` field.
+          #   [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
           #
+          #   @return [String, nil]
+          optional :prompt_cache_key, String, nil?: true
+
+          # @!attribute prompt_cache_options
           #   Options for prompt caching. Supported for `gpt-5.6` and later models. By
           #   default, OpenAI automatically chooses one implicit cache breakpoint. You can add
           #   explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
@@ -664,215 +230,752 @@ module OpenAI
           #   [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
           #   for current details.
           #
-          #   @param mode [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::PromptCacheOptions::Mode] Controls whether OpenAI automatically creates an implicit cache breakpoint. Defa
+          #   @return [OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions, nil]
+          optional(
+            :prompt_cache_options,
+            -> { OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions }
+          )
+
+          # @!attribute prompt_cache_retention
+          #   @deprecated
           #
-          #   @param ttl [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::PromptCacheOptions::Ttl] The minimum lifetime applied to every implicit and explicit cache breakpoint wri
-
-          # Controls whether OpenAI automatically creates an implicit cache breakpoint.
-          # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
-          # and writes up to the latest three explicit breakpoints in the request. With
-          # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
-          # latest four explicit breakpoints. If there are no explicit breakpoints, the
-          # request does not use prompt caching.
+          #   Deprecated. Use `prompt_cache_options.ttl` instead.
           #
-          # @see OpenAI::Models::Responses::ResponsesClientEvent::PromptCacheOptions#mode
-          module Mode
-            extend OpenAI::Internal::Type::Enum
-
-            IMPLICIT = :implicit
-            EXPLICIT = :explicit
-
-            # @!method self.values
-            #   @return [Array<Symbol>]
-          end
-
-          # The minimum lifetime applied to every implicit and explicit cache breakpoint
-          # written by the request. Defaults to `30m`, which is currently the only supported
-          # value. The backend may retain cache entries for longer.
+          #   The retention policy for the prompt cache. Set to `24h` to enable extended
+          #   prompt caching, which keeps cached prefixes active for longer, up to a maximum
+          #   of 24 hours.
+          #   [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+          #   This field expresses a maximum retention policy, while
+          #   `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+          #   are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+          #   models, only `24h` is supported.
           #
-          # @see OpenAI::Models::Responses::ResponsesClientEvent::PromptCacheOptions#ttl
-          module Ttl
-            extend OpenAI::Internal::Type::Enum
+          #   For older models that support both `in_memory` and `24h`, the default depends on
+          #   your organization's data retention policy:
+          #
+          #   - Organizations without ZDR enabled default to `24h`.
+          #   - Organizations with ZDR enabled default to `in_memory` when
+          #     `prompt_cache_retention` is not specified.
+          #
+          #   @return [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheRetention, nil]
+          optional(
+            :prompt_cache_retention,
+            enum: -> { OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheRetention },
+            nil?: true
+          )
 
-            TTL_30M = :"30m"
+          # @!attribute reasoning
+          #   Configuration options for
+          #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+          #
+          #   @return [OpenAI::Models::Reasoning, nil]
+          optional :reasoning, -> { OpenAI::Reasoning }, nil?: true
 
-            # @!method self.values
-            #   @return [Array<Symbol>]
-          end
-        end
+          # @!attribute safety_identifier
+          #   A stable identifier used to help detect users of your application that may be
+          #   violating OpenAI's usage policies. The IDs should be a string that uniquely
+          #   identifies each user, with a maximum length of 64 characters. We recommend
+          #   hashing their username or email address, in order to avoid sending us any
+          #   identifying information.
+          #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
+          #
+          #   @return [String, nil]
+          optional :safety_identifier, String, nil?: true
 
-        # @deprecated
-        #
-        # Deprecated. Use `prompt_cache_options.ttl` instead.
-        #
-        # The retention policy for the prompt cache. Set to `24h` to enable extended
-        # prompt caching, which keeps cached prefixes active for longer, up to a maximum
-        # of 24 hours.
-        # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
-        # This field expresses a maximum retention policy, while
-        # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
-        # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
-        # models, only `24h` is supported.
-        #
-        # For older models that support both `in_memory` and `24h`, the default depends on
-        # your organization's data retention policy:
-        #
-        # - Organizations without ZDR enabled default to `24h`.
-        # - Organizations with ZDR enabled default to `in_memory` when
-        #   `prompt_cache_retention` is not specified.
-        #
-        # @see OpenAI::Models::Responses::ResponsesClientEvent#prompt_cache_retention
-        module PromptCacheRetention
-          extend OpenAI::Internal::Type::Enum
+          # @!attribute service_tier
+          #   Specifies the processing type used for serving the request.
+          #
+          #   - If set to 'auto', then the request will be processed with the service tier
+          #     configured in the Project settings. Unless otherwise configured, the Project
+          #     will use 'default'.
+          #   - If set to 'default', then the request will be processed with the standard
+          #     pricing and performance for the selected model.
+          #   - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)',
+          #     then the request will be processed with the Flex Processing service tier.
+          #   - To opt-in to [Fast mode](/api/docs/guides/fast-mode) at the request level,
+          #     include the `service_tier=fast` or `service_tier=priority` parameter for
+          #     Responses or Chat Completions. The response will show `service_tier=priority`
+          #     regardless of if you specify `service_tier=fast` or `priority` in your
+          #     request.
+          #   - If set to 'ultrafast', then the request will be processed with the
+          #     access-controlled Ultrafast Processing service tier. This tier is currently
+          #     available for `gpt-5.6-sol`; a response served through it will show
+          #     `service_tier=ultrafast`.
+          #   - When not set, the default behavior is 'auto'.
+          #
+          #   When the `service_tier` parameter is set, the response body will include the
+          #   `service_tier` value based on the processing mode actually used to serve the
+          #   request. This response value may be different from the value set in the
+          #   parameter.
+          #
+          #   @return [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::ServiceTier, nil]
+          optional(
+            :service_tier,
+            enum: -> { OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ServiceTier },
+            nil?: true
+          )
 
-          IN_MEMORY = :in_memory
-          PROMPT_CACHE_RETENTION_24H = :"24h"
-
-          # @!method self.values
-          #   @return [Array<Symbol>]
-        end
-
-        # Specifies the processing type used for serving the request.
-        #
-        # - If set to 'auto', then the request will be processed with the service tier
-        #   configured in the Project settings. Unless otherwise configured, the Project
-        #   will use 'default'.
-        # - If set to 'default', then the request will be processed with the standard
-        #   pricing and performance for the selected model.
-        # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)',
-        #   then the request will be processed with the Flex Processing service tier.
-        # - To opt-in to [Fast mode](/api/docs/guides/fast-mode) at the request level,
-        #   include the `service_tier=fast` or `service_tier=priority` parameter for
-        #   Responses or Chat Completions. The response will show `service_tier=priority`
-        #   regardless of if you specify `service_tier=fast` or `priority` in your
-        #   request.
-        # - If set to 'ultrafast', then the request will be processed with the
-        #   access-controlled Ultrafast Processing service tier. This tier is currently
-        #   available for `gpt-5.6-sol`; a response served through it will show
-        #   `service_tier=ultrafast`.
-        # - When not set, the default behavior is 'auto'.
-        #
-        # When the `service_tier` parameter is set, the response body will include the
-        # `service_tier` value based on the processing mode actually used to serve the
-        # request. This response value may be different from the value set in the
-        # parameter.
-        #
-        # @see OpenAI::Models::Responses::ResponsesClientEvent#service_tier
-        module ServiceTier
-          extend OpenAI::Internal::Type::Enum
-
-          AUTO = :auto
-          DEFAULT = :default
-          FLEX = :flex
-          SCALE = :scale
-          PRIORITY = :priority
-          FAST = :fast
-          ULTRAFAST = :ultrafast
-
-          # @!method self.values
-          #   @return [Array<Symbol>]
-        end
-
-        # @see OpenAI::Models::Responses::ResponsesClientEvent#stream_options
-        class StreamOptions < OpenAI::Internal::Type::BaseModel
-          # @!attribute include_obfuscation
-          #   When true, stream obfuscation will be enabled. Stream obfuscation adds random
-          #   characters to an `obfuscation` field on streaming delta events to normalize
-          #   payload sizes as a mitigation to certain side-channel attacks. These obfuscation
-          #   fields are included by default, but add a small amount of overhead to the data
-          #   stream. You can set `include_obfuscation` to false to optimize for bandwidth if
-          #   you trust the network links between your application and the OpenAI API.
+          # @!attribute store
+          #   Whether to store the generated model response for later retrieval via API.
           #
           #   @return [Boolean, nil]
-          optional :include_obfuscation, OpenAI::Internal::Type::Boolean
+          optional :store, OpenAI::Internal::Type::Boolean, nil?: true
 
-          # @!method initialize(include_obfuscation: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Responses::ResponsesClientEvent::StreamOptions} for more
-          #   details.
+          # @!attribute stream
+          #   If set to true, the model response data will be streamed to the client as it is
+          #   generated using
+          #   [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).
+          #   See the
+          #   [Streaming section below](https://platform.openai.com/docs/api-reference/responses-streaming)
+          #   for more information.
           #
+          #   @return [Boolean, nil]
+          optional :stream, OpenAI::Internal::Type::Boolean, nil?: true
+
+          # @!attribute stream_id
+          #   The WebSocket lane for this response. Requests with the same `stream_id` are
+          #   processed FIFO, and events for the response echo the same `stream_id`.
+          #
+          #   `stream_id` controls routing; `previous_response_id` controls conversation
+          #   lineage, so a new lane can fork from a response created on another lane.
+          #
+          #   @return [String, nil]
+          optional :stream_id, String
+
+          # @!attribute stream_options
           #   Options for streaming responses. Only set this when you set `stream: true`.
           #
-          #   @param include_obfuscation [Boolean] When true, stream obfuscation will be enabled. Stream obfuscation adds
-        end
+          #   @return [OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::StreamOptions, nil]
+          optional(
+            :stream_options,
+            -> { OpenAI::Responses::ResponsesClientEvent::ResponseCreate::StreamOptions },
+            nil?: true
+          )
 
-        # How the model should select which tool (or tools) to use when generating a
-        # response. See the `tools` parameter to see how to specify which tools the model
-        # can call.
-        #
-        # @see OpenAI::Models::Responses::ResponsesClientEvent#tool_choice
-        module ToolChoice
-          extend OpenAI::Internal::Type::Union
-
-          # Controls which (if any) tool is called by the model.
+          # @!attribute temperature
+          #   What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+          #   make the output more random, while lower values like 0.2 will make it more
+          #   focused and deterministic. We generally recommend altering this or `top_p` but
+          #   not both.
           #
-          # `none` means the model will not call any tool and instead generates a message.
+          #   @return [Float, nil]
+          optional :temperature, Float, nil?: true
+
+          # @!attribute text
+          #   Configuration options for a text response from the model. Can be plain text or
+          #   structured JSON data. Learn more:
           #
-          # `auto` means the model can pick between generating a message or calling one or
-          # more tools.
+          #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+          #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
           #
-          # `required` means the model must call one or more tools.
-          variant enum: -> { OpenAI::Responses::ToolChoiceOptions }
+          #   @return [OpenAI::Models::Responses::ResponseTextConfig, nil]
+          optional :text, -> { OpenAI::Responses::ResponseTextConfig }
 
-          # Constrains the tools available to the model to a pre-defined set.
-          variant -> { OpenAI::Responses::ToolChoiceAllowed }
+          # @!attribute tool_choice
+          #   How the model should select which tool (or tools) to use when generating a
+          #   response. See the `tools` parameter to see how to specify which tools the model
+          #   can call.
+          #
+          #   @return [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::ToolChoice::SpecificProgrammaticToolCallingParam, OpenAI::Models::Responses::ToolChoiceApplyPatch, OpenAI::Models::Responses::ToolChoiceShell, nil]
+          optional :tool_choice, union: -> { OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ToolChoice }
 
-          # Indicates that the model should use a built-in tool to generate a response.
-          # [Learn more about built-in tools](https://platform.openai.com/docs/guides/tools).
-          variant -> { OpenAI::Responses::ToolChoiceTypes }
+          # @!attribute tools
+          #   An array of tools the model may call while generating a response. You can
+          #   specify which tool to use by setting the `tool_choice` parameter.
+          #
+          #   We support the following categories of tools:
+          #
+          #   - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
+          #     capabilities, like
+          #     [web search](https://platform.openai.com/docs/guides/tools-web-search) or
+          #     [file search](https://platform.openai.com/docs/guides/tools-file-search).
+          #     Learn more about
+          #     [built-in tools](https://platform.openai.com/docs/guides/tools).
+          #   - **MCP Tools**: Integrations with third-party systems via custom MCP servers or
+          #     predefined connectors such as Google Drive and SharePoint. Learn more about
+          #     [MCP Tools](https://platform.openai.com/docs/guides/tools-connectors-mcp).
+          #   - **Function calls (custom tools)**: Functions that are defined by you, enabling
+          #     the model to call your own code with strongly typed arguments and outputs.
+          #     Learn more about
+          #     [function calling](https://platform.openai.com/docs/guides/function-calling).
+          #     You can also use custom tools to call your own code.
+          #
+          #   @return [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ProgrammaticToolCalling, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>, nil]
+          optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool] }
 
-          # Use this option to force the model to call a specific function.
-          variant -> { OpenAI::Responses::ToolChoiceFunction }
+          # @!attribute top_logprobs
+          #   An integer between 0 and 20 specifying the maximum number of most likely tokens
+          #   to return at each token position, each with an associated log probability. In
+          #   some cases, the number of returned tokens may be fewer than requested.
+          #
+          #   @return [Integer, nil]
+          optional :top_logprobs, Integer, nil?: true
 
-          # Use this option to force the model to call a specific tool on a remote MCP server.
-          variant -> { OpenAI::Responses::ToolChoiceMcp }
+          # @!attribute top_p
+          #   An alternative to sampling with temperature, called nucleus sampling, where the
+          #   model considers the results of the tokens with top_p probability mass. So 0.1
+          #   means only the tokens comprising the top 10% probability mass are considered.
+          #
+          #   We generally recommend altering this or `temperature` but not both.
+          #
+          #   @return [Float, nil]
+          optional :top_p, Float, nil?: true
 
-          # Use this option to force the model to call a specific custom tool.
-          variant -> { OpenAI::Responses::ToolChoiceCustom }
+          # @!attribute truncation
+          #   @deprecated
+          #
+          #   The truncation strategy to use for the model response.
+          #
+          #   - `auto`: If the input to this Response exceeds the model's context window size,
+          #     the model will truncate the response to fit the context window by dropping
+          #     items from the beginning of the conversation.
+          #   - `disabled` (default): If the input size will exceed the context window size
+          #     for a model, the request will fail with a 400 error.
+          #
+          #   @return [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Truncation, nil]
+          optional(
+            :truncation,
+            enum: -> { OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Truncation },
+            nil?: true
+          )
 
-          variant -> { OpenAI::Responses::ResponsesClientEvent::ToolChoice::SpecificProgrammaticToolCallingParam }
+          # @!attribute user
+          #   @deprecated
+          #
+          #   This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
+          #   `prompt_cache_key` instead to maintain caching optimizations. A stable
+          #   identifier for your end-users. Used to boost cache hit rates by better bucketing
+          #   similar requests and to help OpenAI detect and prevent abuse.
+          #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
+          #
+          #   @return [String, nil]
+          optional :user, String
 
-          # Forces the model to call the apply_patch tool when executing a tool call.
-          variant -> { OpenAI::Responses::ToolChoiceApplyPatch }
+          # @!method initialize(background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream: nil, stream_id: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, type: :"response.create")
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate} for more
+          #   details.
+          #
+          #   Client event for creating a response over a persistent WebSocket connection.
+          #   This payload uses the same top-level fields as `POST /v1/responses`, plus
+          #   WebSocket-only envelope metadata.
+          #
+          #   Notes:
+          #
+          #   - `stream` is implicit over WebSocket and should not be sent.
+          #   - `background` is not supported over WebSocket.
+          #   - `stream_id` is WebSocket-only and is not part of `POST /v1/responses`.
+          #
+          #   @param background [Boolean, nil] Whether to run the model response in the background.
+          #
+          #   @param context_management [Array<OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement>, nil] Context management configuration for this request.
+          #
+          #   @param conversation [String, OpenAI::Models::Responses::ResponseConversationParam, nil] The conversation that this response belongs to. Items from this conversation are
+          #
+          #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil] Specify additional output data to include in the model response. Currently suppo
+          #
+          #   @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseConfigurationUpdateItemParam, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>] Text, image, or file inputs to the model, used to generate a response.
+          #
+          #   @param instructions [String, nil] A system (or developer) message inserted into the model's context.
+          #
+          #   @param max_output_tokens [Integer, nil] An upper bound for the number of tokens that can be generated for a response, in
+          #
+          #   @param max_tool_calls [Integer, nil] The maximum number of total calls to built-in tools that can be processed in a r
+          #
+          #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+          #
+          #   @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel] Model ID used to generate the response, like `gpt-6-astra`. OpenAI
+          #
+          #   @param moderation [OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation, nil] Configuration for running moderation on the input and output of this response.
+          #
+          #   @param parallel_tool_calls [Boolean, nil] Whether to allow the model to run tool calls in parallel.
+          #
+          #   @param previous_response_id [String, nil] The unique ID of the previous response to the model. Use this to
+          #
+          #   @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
+          #
+          #   @param prompt_cache_key [String, nil] Used by OpenAI to cache responses for similar requests to optimize your cache hi
+          #
+          #   @param prompt_cache_options [OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions] Options for prompt caching. Supported for `gpt-5.6` and later models. By default
+          #
+          #   @param prompt_cache_retention [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheRetention, nil] Deprecated. Use `prompt_cache_options.ttl` instead.
+          #
+          #   @param reasoning [OpenAI::Models::Reasoning, nil] Configuration options for
+          #
+          #   @param safety_identifier [String, nil] A stable identifier used to help detect users of your application that may be vi
+          #
+          #   @param service_tier [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::ServiceTier, nil] Specifies the processing type used for serving the request.
+          #
+          #   @param store [Boolean, nil] Whether to store the generated model response for later retrieval via
+          #
+          #   @param stream [Boolean, nil] If set to true, the model response data will be streamed to the client
+          #
+          #   @param stream_id [String] The WebSocket lane for this response. Requests with the same
+          #
+          #   @param stream_options [OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::StreamOptions, nil] Options for streaming responses. Only set this when you set `stream: true`.
+          #
+          #   @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
+          #
+          #   @param text [OpenAI::Models::Responses::ResponseTextConfig] Configuration options for a text response from the model. Can be plain
+          #
+          #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::ToolChoice::SpecificProgrammaticToolCallingParam, OpenAI::Models::Responses::ToolChoiceApplyPatch, OpenAI::Models::Responses::ToolChoiceShell] How the model should select which tool (or tools) to use when generating
+          #
+          #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ProgrammaticToolCalling, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>] An array of tools the model may call while generating a response. You
+          #
+          #   @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the maximum number of most likely
+          #
+          #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling,
+          #
+          #   @param truncation [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Truncation, nil] The truncation strategy to use for the model response.
+          #
+          #   @param user [String] This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
+          #
+          #   @param type [Symbol, :"response.create"] The type of the client event. Always `response.create`.
 
-          # Forces the model to call the shell tool when a tool call is required.
-          variant -> { OpenAI::Responses::ToolChoiceShell }
-
-          class SpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
+          class ContextManagement < OpenAI::Internal::Type::BaseModel
             # @!attribute type
-            #   The tool to call. Always `programmatic_tool_calling`.
+            #   The context management entry type. Currently only 'compaction' is supported.
             #
-            #   @return [Symbol, :programmatic_tool_calling]
-            required :type, const: :programmatic_tool_calling
+            #   @return [String]
+            required :type, String
 
-            # @!method initialize(type: :programmatic_tool_calling)
-            #   @param type [Symbol, :programmatic_tool_calling] The tool to call. Always `programmatic_tool_calling`.
+            # @!attribute compact_threshold
+            #   Token threshold at which compaction should be triggered for this entry.
+            #
+            #   @return [Integer, nil]
+            optional :compact_threshold, Integer, nil?: true
+
+            # @!method initialize(type:, compact_threshold: nil)
+            #   @param type [String] The context management entry type. Currently only 'compaction' is supported.
+            #
+            #   @param compact_threshold [Integer, nil] Token threshold at which compaction should be triggered for this entry.
           end
 
-          # @!method self.variants
-          #   @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom, OpenAI::Models::Responses::ResponsesClientEvent::ToolChoice::SpecificProgrammaticToolCallingParam, OpenAI::Models::Responses::ToolChoiceApplyPatch, OpenAI::Models::Responses::ToolChoiceShell)]
+          # The conversation that this response belongs to. Items from this conversation are
+          # prepended to `input_items` for this response request. Input items and output
+          # items from this response are automatically added to this conversation after this
+          # response completes.
+          #
+          # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate#conversation
+          module Conversation
+            extend OpenAI::Internal::Type::Union
+
+            # The unique ID of the conversation.
+            variant String
+
+            # The conversation that this response belongs to.
+            variant -> { OpenAI::Responses::ResponseConversationParam }
+
+            # @!method self.variants
+            #   @return [Array(String, OpenAI::Models::Responses::ResponseConversationParam)]
+          end
+
+          # Text, image, or file inputs to the model, used to generate a response.
+          #
+          # Learn more:
+          #
+          # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+          # - [Image inputs](https://platform.openai.com/docs/guides/images)
+          # - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
+          # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
+          # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
+          #
+          # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate#input
+          module Input
+            extend OpenAI::Internal::Type::Union
+
+            # A text input to the model, equivalent to a text input with the
+            # `user` role.
+            variant String
+
+            # A list of one or many input items to the model, containing
+            # different content types.
+            variant -> { OpenAI::Responses::ResponseInput }
+
+            # @!method self.variants
+            #   @return [Array(String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseConfigurationUpdateItemParam, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>)]
+          end
+
+          # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate#moderation
+          class Moderation < OpenAI::Internal::Type::BaseModel
+            # @!attribute model
+            #   The moderation model to use for moderated completions, e.g.
+            #   'omni-moderation-latest'.
+            #
+            #   @return [String]
+            required :model, String
+
+            # @!attribute policy
+            #   The policy to apply to moderated response input and output.
+            #
+            #   @return [OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy, nil]
+            optional(
+              :policy,
+              -> { OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy },
+              nil?: true
+            )
+
+            # @!method initialize(model:, policy: nil)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation}
+            #   for more details.
+            #
+            #   Configuration for running moderation on the input and output of this response.
+            #
+            #   @param model [String] The moderation model to use for moderated completions, e.g. 'omni-moderation-lat
+            #
+            #   @param policy [OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy, nil] The policy to apply to moderated response input and output.
+
+            # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation#policy
+            class Policy < OpenAI::Internal::Type::BaseModel
+              # @!attribute input
+              #   The moderation policy for the response input.
+              #
+              #   @return [OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input, nil]
+              optional(
+                :input,
+                -> {
+                  OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input
+                },
+                nil?: true
+              )
+
+              # @!attribute output
+              #   The moderation policy for the response output.
+              #
+              #   @return [OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output, nil]
+              optional(
+                :output,
+                -> {
+                  OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output
+                },
+                nil?: true
+              )
+
+              # @!method initialize(input: nil, output: nil)
+              #   The policy to apply to moderated response input and output.
+              #
+              #   @param input [OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input, nil] The moderation policy for the response input.
+              #
+              #   @param output [OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output, nil] The moderation policy for the response output.
+
+              # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy#input
+              class Input < OpenAI::Internal::Type::BaseModel
+                # @!attribute mode
+                #
+                #   @return [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode]
+                required(
+                  :mode,
+                  enum: -> { OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode }
+                )
+
+                # @!method initialize(mode:)
+                #   The moderation policy for the response input.
+                #
+                #   @param mode [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode]
+
+                # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input#mode
+                module Mode
+                  extend OpenAI::Internal::Type::Enum
+
+                  SCORE = :score
+                  BLOCK = :block
+
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
+                end
+              end
+
+              # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy#output
+              class Output < OpenAI::Internal::Type::BaseModel
+                # @!attribute mode
+                #
+                #   @return [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode]
+                required(
+                  :mode,
+                  enum: -> {
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode
+                  }
+                )
+
+                # @!method initialize(mode:)
+                #   The moderation policy for the response output.
+                #
+                #   @param mode [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode]
+
+                # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output#mode
+                module Mode
+                  extend OpenAI::Internal::Type::Enum
+
+                  SCORE = :score
+                  BLOCK = :block
+
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
+                end
+              end
+            end
+          end
+
+          # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate#prompt_cache_options
+          class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+            # @!attribute mode
+            #   Controls whether OpenAI automatically creates an implicit cache breakpoint.
+            #   Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+            #   and writes up to the latest three explicit breakpoints in the request. With
+            #   `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+            #   latest four explicit breakpoints. If there are no explicit breakpoints, the
+            #   request does not use prompt caching.
+            #
+            #   @return [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode, nil]
+            optional(
+              :mode,
+              enum: -> { OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode }
+            )
+
+            # @!attribute ttl
+            #   The minimum lifetime applied to every implicit and explicit cache breakpoint
+            #   written by the request. Defaults to `30m`, which is currently the only supported
+            #   value. The backend may retain cache entries for longer.
+            #
+            #   @return [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl, nil]
+            optional(
+              :ttl,
+              enum: -> { OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl }
+            )
+
+            # @!method initialize(mode: nil, ttl: nil)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions}
+            #   for more details.
+            #
+            #   Options for prompt caching. Supported for `gpt-5.6` and later models. By
+            #   default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+            #   explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+            #   request can write up to four breakpoints. For cache matching, OpenAI considers
+            #   up to the latest 80 breakpoints in the conversation, without a content-block
+            #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+            #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+            #   [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+            #   for current details.
+            #
+            #   @param mode [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode] Controls whether OpenAI automatically creates an implicit cache breakpoint. Defa
+            #
+            #   @param ttl [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl] The minimum lifetime applied to every implicit and explicit cache breakpoint wri
+
+            # Controls whether OpenAI automatically creates an implicit cache breakpoint.
+            # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+            # and writes up to the latest three explicit breakpoints in the request. With
+            # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+            # latest four explicit breakpoints. If there are no explicit breakpoints, the
+            # request does not use prompt caching.
+            #
+            # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions#mode
+            module Mode
+              extend OpenAI::Internal::Type::Enum
+
+              IMPLICIT = :implicit
+              EXPLICIT = :explicit
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
+
+            # The minimum lifetime applied to every implicit and explicit cache breakpoint
+            # written by the request. Defaults to `30m`, which is currently the only supported
+            # value. The backend may retain cache entries for longer.
+            #
+            # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions#ttl
+            module Ttl
+              extend OpenAI::Internal::Type::Enum
+
+              TTL_30M = :"30m"
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
+          end
+
+          # @deprecated
+          #
+          # Deprecated. Use `prompt_cache_options.ttl` instead.
+          #
+          # The retention policy for the prompt cache. Set to `24h` to enable extended
+          # prompt caching, which keeps cached prefixes active for longer, up to a maximum
+          # of 24 hours.
+          # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+          # This field expresses a maximum retention policy, while
+          # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+          # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+          # models, only `24h` is supported.
+          #
+          # For older models that support both `in_memory` and `24h`, the default depends on
+          # your organization's data retention policy:
+          #
+          # - Organizations without ZDR enabled default to `24h`.
+          # - Organizations with ZDR enabled default to `in_memory` when
+          #   `prompt_cache_retention` is not specified.
+          #
+          # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate#prompt_cache_retention
+          module PromptCacheRetention
+            extend OpenAI::Internal::Type::Enum
+
+            IN_MEMORY = :in_memory
+            PROMPT_CACHE_RETENTION_24H = :"24h"
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+
+          # Specifies the processing type used for serving the request.
+          #
+          # - If set to 'auto', then the request will be processed with the service tier
+          #   configured in the Project settings. Unless otherwise configured, the Project
+          #   will use 'default'.
+          # - If set to 'default', then the request will be processed with the standard
+          #   pricing and performance for the selected model.
+          # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)',
+          #   then the request will be processed with the Flex Processing service tier.
+          # - To opt-in to [Fast mode](/api/docs/guides/fast-mode) at the request level,
+          #   include the `service_tier=fast` or `service_tier=priority` parameter for
+          #   Responses or Chat Completions. The response will show `service_tier=priority`
+          #   regardless of if you specify `service_tier=fast` or `priority` in your
+          #   request.
+          # - If set to 'ultrafast', then the request will be processed with the
+          #   access-controlled Ultrafast Processing service tier. This tier is currently
+          #   available for `gpt-5.6-sol`; a response served through it will show
+          #   `service_tier=ultrafast`.
+          # - When not set, the default behavior is 'auto'.
+          #
+          # When the `service_tier` parameter is set, the response body will include the
+          # `service_tier` value based on the processing mode actually used to serve the
+          # request. This response value may be different from the value set in the
+          # parameter.
+          #
+          # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate#service_tier
+          module ServiceTier
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO = :auto
+            DEFAULT = :default
+            FLEX = :flex
+            SCALE = :scale
+            PRIORITY = :priority
+            FAST = :fast
+            ULTRAFAST = :ultrafast
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+
+          # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate#stream_options
+          class StreamOptions < OpenAI::Internal::Type::BaseModel
+            # @!attribute include_obfuscation
+            #   When true, stream obfuscation will be enabled. Stream obfuscation adds random
+            #   characters to an `obfuscation` field on streaming delta events to normalize
+            #   payload sizes as a mitigation to certain side-channel attacks. These obfuscation
+            #   fields are included by default, but add a small amount of overhead to the data
+            #   stream. You can set `include_obfuscation` to false to optimize for bandwidth if
+            #   you trust the network links between your application and the OpenAI API.
+            #
+            #   @return [Boolean, nil]
+            optional :include_obfuscation, OpenAI::Internal::Type::Boolean
+
+            # @!method initialize(include_obfuscation: nil)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::StreamOptions}
+            #   for more details.
+            #
+            #   Options for streaming responses. Only set this when you set `stream: true`.
+            #
+            #   @param include_obfuscation [Boolean] When true, stream obfuscation will be enabled. Stream obfuscation adds
+          end
+
+          # How the model should select which tool (or tools) to use when generating a
+          # response. See the `tools` parameter to see how to specify which tools the model
+          # can call.
+          #
+          # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate#tool_choice
+          module ToolChoice
+            extend OpenAI::Internal::Type::Union
+
+            # Controls which (if any) tool is called by the model.
+            #
+            # `none` means the model will not call any tool and instead generates a message.
+            #
+            # `auto` means the model can pick between generating a message or calling one or
+            # more tools.
+            #
+            # `required` means the model must call one or more tools.
+            variant enum: -> { OpenAI::Responses::ToolChoiceOptions }
+
+            # Constrains the tools available to the model to a pre-defined set.
+            variant -> { OpenAI::Responses::ToolChoiceAllowed }
+
+            # Indicates that the model should use a built-in tool to generate a response.
+            # [Learn more about built-in tools](https://platform.openai.com/docs/guides/tools).
+            variant -> { OpenAI::Responses::ToolChoiceTypes }
+
+            # Use this option to force the model to call a specific function.
+            variant -> { OpenAI::Responses::ToolChoiceFunction }
+
+            # Use this option to force the model to call a specific tool on a remote MCP server.
+            variant -> { OpenAI::Responses::ToolChoiceMcp }
+
+            # Use this option to force the model to call a specific custom tool.
+            variant -> { OpenAI::Responses::ToolChoiceCustom }
+
+            variant(
+              -> {
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ToolChoice::SpecificProgrammaticToolCallingParam
+              }
+            )
+
+            # Forces the model to call the apply_patch tool when executing a tool call.
+            variant -> { OpenAI::Responses::ToolChoiceApplyPatch }
+
+            # Forces the model to call the shell tool when a tool call is required.
+            variant -> { OpenAI::Responses::ToolChoiceShell }
+
+            class SpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
+              # @!attribute type
+              #   The tool to call. Always `programmatic_tool_calling`.
+              #
+              #   @return [Symbol, :programmatic_tool_calling]
+              required :type, const: :programmatic_tool_calling
+
+              # @!method initialize(type: :programmatic_tool_calling)
+              #   @param type [Symbol, :programmatic_tool_calling] The tool to call. Always `programmatic_tool_calling`.
+            end
+
+            # @!method self.variants
+            #   @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::ToolChoice::SpecificProgrammaticToolCallingParam, OpenAI::Models::Responses::ToolChoiceApplyPatch, OpenAI::Models::Responses::ToolChoiceShell)]
+          end
+
+          # @deprecated
+          #
+          # The truncation strategy to use for the model response.
+          #
+          # - `auto`: If the input to this Response exceeds the model's context window size,
+          #   the model will truncate the response to fit the context window by dropping
+          #   items from the beginning of the conversation.
+          # - `disabled` (default): If the input size will exceed the context window size
+          #   for a model, the request will fail with a 400 error.
+          #
+          # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate#truncation
+          module Truncation
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO = :auto
+            DISABLED = :disabled
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
         end
 
-        # @deprecated
-        #
-        # The truncation strategy to use for the model response.
-        #
-        # - `auto`: If the input to this Response exceeds the model's context window size,
-        #   the model will truncate the response to fit the context window by dropping
-        #   items from the beginning of the conversation.
-        # - `disabled` (default): If the input size will exceed the context window size
-        #   for a model, the request will fail with a 400 error.
-        #
-        # @see OpenAI::Models::Responses::ResponsesClientEvent#truncation
-        module Truncation
-          extend OpenAI::Internal::Type::Enum
-
-          AUTO = :auto
-          DISABLED = :disabled
-
-          # @!method self.values
-          #   @return [Array<Symbol>]
-        end
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate, OpenAI::Models::Responses::ResponseSteerEvent)]
       end
     end
   end

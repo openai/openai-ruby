@@ -46,6 +46,8 @@ module OpenAI
 
             status: OpenAI::Responses::ResponseFunctionToolCallItem::Status::OrSymbol,
 
+            async: T::Boolean,
+
             caller_: T.nilable(
               T.any(
                 OpenAI::Responses::ResponseFunctionToolCall::Caller::Direct::OrHash,
@@ -79,6 +81,9 @@ module OpenAI
           # Populated when items are returned via API.
           status:,
 
+          # Whether the function tool call runs asynchronously.
+          async: nil,
+
           # The execution context that produced this tool call.
           caller_: nil,
 
@@ -103,6 +108,7 @@ module OpenAI
               id: String,
               status: OpenAI::Responses::ResponseFunctionToolCallItem::Status::TaggedSymbol,
               type: Symbol,
+              async: T::Boolean,
               caller_: T.nilable(
                 T.any(
                   OpenAI::Responses::ResponseFunctionToolCall::Caller::Direct,

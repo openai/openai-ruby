@@ -27,6 +27,7 @@ module OpenAI
             OpenAI::Beta::BetaResponseToolSearchCall,
             OpenAI::Beta::BetaResponseToolSearchOutputItem,
             OpenAI::Beta::BetaResponseItem::AdditionalTools,
+            OpenAI::Beta::BetaResponseConfigurationUpdateItem,
             OpenAI::Beta::BetaResponseReasoningItem,
             OpenAI::Beta::BetaResponseItem::Program,
             OpenAI::Beta::BetaResponseItem::ProgramOutput,

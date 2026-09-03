@@ -153,7 +153,7 @@ class OpenAI::Test::Resources::Beta::ResponsesTest < OpenAI::Test::ResourceTest
   end
 
   def test_compact_required_params
-    response = @openai.beta.responses.compact(model: :"gpt-5.6-sol")
+    response = @openai.beta.responses.compact(model: :"gpt-6-astra")
 
     assert_pattern do
       response => OpenAI::Beta::BetaCompactedResponse

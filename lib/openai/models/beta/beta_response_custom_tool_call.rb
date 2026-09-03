@@ -40,6 +40,12 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::BetaResponseCustomToolCall::Agent, nil]
         optional :agent, -> { OpenAI::Beta::BetaResponseCustomToolCall::Agent }, nil?: true
 
+        # @!attribute async
+        #   Whether the custom tool call runs asynchronously.
+        #
+        #   @return [Boolean, nil]
+        optional :async, OpenAI::Internal::Type::Boolean
+
         # @!attribute caller_
         #   The execution context that produced this tool call.
         #
@@ -57,7 +63,7 @@ module OpenAI
         #   @return [String, nil]
         optional :namespace, String
 
-        # @!method initialize(call_id:, input:, name:, id: nil, agent: nil, caller_: nil, namespace: nil, type: :custom_tool_call)
+        # @!method initialize(call_id:, input:, name:, id: nil, agent: nil, async: nil, caller_: nil, namespace: nil, type: :custom_tool_call)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Beta::BetaResponseCustomToolCall} for more details.
         #
@@ -72,6 +78,8 @@ module OpenAI
         #   @param id [String] The unique ID of the custom tool call in the OpenAI platform.
         #
         #   @param agent [OpenAI::Models::Beta::BetaResponseCustomToolCall::Agent, nil] The agent that produced this item.
+        #
+        #   @param async [Boolean] Whether the custom tool call runs asynchronously.
         #
         #   @param caller_ [OpenAI::Models::Beta::BetaResponseCustomToolCall::Caller::Direct, OpenAI::Models::Beta::BetaResponseCustomToolCall::Caller::Program, nil] The execution context that produced this tool call.
         #

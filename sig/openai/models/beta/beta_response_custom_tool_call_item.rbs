@@ -12,6 +12,7 @@ module OpenAI
           status: OpenAI::Models::Beta::BetaResponseCustomToolCallItem::status,
           type: :custom_tool_call,
           agent: OpenAI::Beta::BetaResponseCustomToolCall::Agent?,
+          async: bool,
           caller_: OpenAI::Models::Beta::BetaResponseCustomToolCall::caller_?,
           namespace: String,
           created_by: String
@@ -39,6 +40,7 @@ module OpenAI
           id: String,
           status: OpenAI::Models::Beta::BetaResponseCustomToolCallItem::status,
           ?agent: OpenAI::Beta::BetaResponseCustomToolCall::Agent?,
+          ?async: bool,
           ?caller_: OpenAI::Models::Beta::BetaResponseCustomToolCall::caller_?,
           ?namespace: String,
           ?created_by: String,
@@ -53,6 +55,7 @@ module OpenAI
           status: OpenAI::Models::Beta::BetaResponseCustomToolCallItem::status,
           type: :custom_tool_call,
           agent: OpenAI::Beta::BetaResponseCustomToolCall::Agent?,
+          async: bool,
           caller_: OpenAI::Models::Beta::BetaResponseCustomToolCall::caller_?,
           namespace: String,
           created_by: String

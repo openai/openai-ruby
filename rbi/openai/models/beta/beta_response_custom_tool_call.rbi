@@ -46,6 +46,13 @@ module OpenAI
         sig { params(agent: T.nilable(OpenAI::Beta::BetaResponseCustomToolCall::Agent::OrHash)).void }
         attr_writer :agent
 
+        # Whether the custom tool call runs asynchronously.
+        sig { returns(T.nilable(T::Boolean)) }
+        attr_reader :async
+
+        sig { params(async: T::Boolean).void }
+        attr_writer :async
+
         # The execution context that produced this tool call.
         sig {
           returns(
@@ -80,6 +87,8 @@ module OpenAI
 
             agent: T.nilable(OpenAI::Beta::BetaResponseCustomToolCall::Agent::OrHash),
 
+            async: T::Boolean,
+
             caller_: T.nilable(
               T.any(
                 OpenAI::Beta::BetaResponseCustomToolCall::Caller::Direct::OrHash,
@@ -110,6 +119,9 @@ module OpenAI
           # The agent that produced this item.
           agent: nil,
 
+          # Whether the custom tool call runs asynchronously.
+          async: nil,
+
           # The execution context that produced this tool call.
           caller_: nil,
 
@@ -131,6 +143,7 @@ module OpenAI
               type: Symbol,
               id: String,
               agent: T.nilable(OpenAI::Beta::BetaResponseCustomToolCall::Agent),
+              async: T::Boolean,
               caller_: T.nilable(
                 T.any(
                   OpenAI::Beta::BetaResponseCustomToolCall::Caller::Direct,

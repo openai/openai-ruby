@@ -26,6 +26,14 @@ module OpenAI
         sig { returns(T.nilable(T::Array[OpenAI::Responses::CustomTool::AllowedCaller::OrSymbol])) }
         attr_accessor :allowed_callers
 
+        # Whether the tool response can be returned asynchronously versus immediately
+        # returned on next response creation.
+        sig { returns(T.nilable(T::Boolean)) }
+        attr_reader :async
+
+        sig { params(async: T::Boolean).void }
+        attr_writer :async
+
         # Whether this tool should be deferred and discovered via tool search.
         sig { returns(T.nilable(T::Boolean)) }
         attr_reader :defer_loading
@@ -61,6 +69,8 @@ module OpenAI
 
             allowed_callers: T.nilable(T::Array[OpenAI::Responses::CustomTool::AllowedCaller::OrSymbol]),
 
+            async: T::Boolean,
+
             defer_loading: T::Boolean,
 
             description: String,
@@ -78,6 +88,10 @@ module OpenAI
 
           # The tool invocation context(s).
           allowed_callers: nil,
+
+          # Whether the tool response can be returned asynchronously versus immediately
+          # returned on next response creation.
+          async: nil,
 
           # Whether this tool should be deferred and discovered via tool search.
           defer_loading: nil,
@@ -100,6 +114,7 @@ module OpenAI
               name: String,
               type: Symbol,
               allowed_callers: T.nilable(T::Array[OpenAI::Responses::CustomTool::AllowedCaller::OrSymbol]),
+              async: T::Boolean,
               defer_loading: T::Boolean,
               description: String,
               format_: T.any(OpenAI::CustomToolInputFormat::Text, OpenAI::CustomToolInputFormat::Grammar)

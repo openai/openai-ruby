@@ -12,6 +12,46 @@ module OpenAI
         # Emitted when an error occurs while processing a Responses WebSocket request.
         variant :error, -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError }
 
+        # Emitted when steering input has been validated and queued. Acceptance means
+        # the server owns the input, not that it has been applied. The successor's
+        # `response.created` event is the commit point. If accepted input cannot be
+        # committed, `response.steer.failed` returns it with the same steering ID.
+        #
+        # When the response stops for client-owned tool output or approval, the input
+        # remains queued and `response.steer.pending` is emitted after
+        # `response.completed`. Fill the pending event's `required_input` stubs with
+        # saved results and send one matching explicit `response.create` per parent.
+        # Do not resend accepted input while it is still queued.
+        variant :"response.steer.accepted", -> { OpenAI::Beta::BetaResponseSteerAcceptedEvent }
+
+        # Emitted when accepted steering input remains queued after the target
+        # response completes. The server still owns the input. Do not resend it.
+        # The successor's `response.created` event is the commit point.
+        #
+        # When `reason` is `waiting_for_required_input`, this event follows
+        # `response.completed` while the response waits for the tool results or
+        # approval decisions identified by `required_input`. Copy those stubs, fill
+        # their result fields using the ordinary `response.create` input schemas,
+        # and submit one continuation per parent with the same `previous_response_id`
+        # and WebSocket lane. Use saved results without rerunning tools. The queued
+        # steering input is prepended in submission order to the continuation's
+        # input. That explicit request retains its own settings.
+        #
+        # This notification is emitted at most once per steering submission. Multiple
+        # submissions for the same parent can report the same required inputs; they
+        # do not each require a separate continuation.
+        variant :"response.steer.pending", -> { OpenAI::Beta::BetaResponseSteerPendingEvent }
+
+        # Emitted when steering input is rejected or cannot be committed to a
+        # successor response. Returns the original, uncommitted input so the client
+        # can carry it into `response.create` when appropriate. Invalid input must
+        # be corrected before retrying.
+        #
+        # Failures after acceptance include the same steering ID. Failures before an
+        # ID is allocated omit `steer.id`. A lost connection or missing acknowledgement
+        # leaves the outcome unknown; it is not proof that the input was rejected.
+        variant :"response.steer.failed", -> { OpenAI::Beta::BetaResponseSteerFailedEvent }
+
         # Emitted when all injected input items were validated and committed to the
         # active response.
         variant :"response.inject.created", -> { OpenAI::Beta::BetaResponseInjectCreatedEvent }
@@ -154,6 +194,10 @@ module OpenAI
         variant :"response.failed", -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsFailed }
 
         # An event that is emitted when a response finishes as incomplete.
+        #
+        # Over WebSocket, steering can finish a response with
+        # `response.incomplete_details.reason` set to `steered`, followed automatically
+        # by a successor `response.created` that commits the queued steering input.
         variant :"response.incomplete", -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsIncomplete }
 
         # Emitted when a new output item is added.
@@ -1064,6 +1108,10 @@ module OpenAI
           #   more details.
           #
           #   An event that is emitted when a response finishes as incomplete.
+          #
+          #   Over WebSocket, steering can finish a response with
+          #   `response.incomplete_details.reason` set to `steered`, followed automatically by
+          #   a successor `response.created` that commits the queued steering input.
           #
           #   @param response [OpenAI::Models::Beta::BetaResponse] The response that was incomplete.
           #
@@ -2113,7 +2161,15 @@ module OpenAI
             #   @return [Hash{Symbol=>String}, nil]
             optional :headers, OpenAI::Internal::Type::HashOf[String]
 
-            # @!method initialize(code:, message:, param:, type:, headers: nil)
+            # @!attribute misalignment
+            #
+            #   @return [OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment, nil]
+            optional(
+              :misalignment,
+              -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment }
+            )
+
+            # @!method initialize(code:, message:, param:, type:, headers: nil, misalignment: nil)
             #   Details about the error.
             #
             #   @param code [String, nil] The error code that was emitted, if any.
@@ -2125,6 +2181,112 @@ module OpenAI
             #   @param type [String] The error type that was emitted.
             #
             #   @param headers [Hash{Symbol=>String}] The response headers that were emitted with the error, if any.
+            #
+            #   @param misalignment [OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment]
+
+            # @see OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error#misalignment
+            class Misalignment < OpenAI::Internal::Type::BaseModel
+              # @!attribute detailed_explanation
+              #   The public explanation for this block.
+              #
+              #   @return [String, nil]
+              optional :detailed_explanation, String
+
+              # @!attribute error_type
+              #   An optional classification; clients must accept additional values.
+              #
+              #   @return [String, Symbol, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType, nil]
+              optional(
+                :error_type,
+                union: -> {
+                  OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType
+                }
+              )
+
+              # @!attribute steer
+              #   An optional public continuation instruction.
+              #
+              #   @return [OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer, nil]
+              optional(
+                :steer,
+                -> { OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer }
+              )
+
+              # @!method initialize(detailed_explanation: nil, error_type: nil, steer: nil)
+              #   @param detailed_explanation [String] The public explanation for this block.
+              #
+              #   @param error_type [String, Symbol, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType] An optional classification; clients must accept additional values.
+              #
+              #   @param steer [OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer] An optional public continuation instruction.
+
+              # An optional classification; clients must accept additional values.
+              #
+              # @see OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment#error_type
+              module ErrorType
+                extend OpenAI::Internal::Type::Union
+
+                variant String
+
+                variant(
+                  const: -> {
+                    OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::POTENTIALLY_UNINTENDED_DATA_TRANSFER
+                  }
+                )
+
+                variant(
+                  const: -> {
+                    OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::POTENTIALLY_UNINTENDED_DATA_ACCESS
+                  }
+                )
+
+                variant(
+                  const: -> {
+                    OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::POTENTIALLY_UNINTENDED_DESTRUCTIVE_ACTIVITY
+                  }
+                )
+
+                variant(
+                  const: -> {
+                    OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::OTHER
+                  }
+                )
+
+                # @!method self.variants
+                #   @return [Array(String, Symbol)]
+
+                define_sorbet_constant!(:Variants) do
+                  T.type_alias do
+                    T.any(
+                      String,
+                      OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::TaggedSymbol
+                    )
+                  end
+                end
+
+                # @!group
+
+                POTENTIALLY_UNINTENDED_DATA_TRANSFER = :potentially_unintended_data_transfer
+                POTENTIALLY_UNINTENDED_DATA_ACCESS = :potentially_unintended_data_access
+                POTENTIALLY_UNINTENDED_DESTRUCTIVE_ACTIVITY = :potentially_unintended_destructive_activity
+                OTHER = :other
+
+                # @!endgroup
+              end
+
+              # @see OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment#steer
+              class Steer < OpenAI::Internal::Type::BaseModel
+                # @!attribute message
+                #   The public continuation instruction.
+                #
+                #   @return [String]
+                required :message, String
+
+                # @!method initialize(message:)
+                #   An optional public continuation instruction.
+                #
+                #   @param message [String] The public continuation instruction.
+              end
+            end
           end
 
           # @see OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError#agent
@@ -2143,7 +2305,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError, OpenAI::Models::Beta::BetaResponseInjectCreatedEvent, OpenAI::Models::Beta::BetaResponseInjectFailedEvent, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseAudioWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseAudioWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseAudioTranscriptWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseAudioTranscriptWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallCodeWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallCodeWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsInterpreting, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsCreated, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsSearching, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseShellCallOutputContentWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseShellCallOutputContentWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsFailed, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsIncomplete, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseOutputItemWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseOutputItemWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryPartWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryPartWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryTextWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryTextWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningTextWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningTextWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseRefusalWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseRefusalWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseTextWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseTextWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallWsSearching, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallWsGenerating, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallPartialWsImage, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallArgumentsWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallArgumentsWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallWsFailed, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsWsFailed, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseOutputTextAnnotationWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsQueued, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCustomToolCallInputWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCustomToolCallInputWsDone)]
+        #   @return [Array(OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError, OpenAI::Models::Beta::BetaResponseSteerAcceptedEvent, OpenAI::Models::Beta::BetaResponseSteerPendingEvent, OpenAI::Models::Beta::BetaResponseSteerFailedEvent, OpenAI::Models::Beta::BetaResponseInjectCreatedEvent, OpenAI::Models::Beta::BetaResponseInjectFailedEvent, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseAudioWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseAudioWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseAudioTranscriptWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseAudioTranscriptWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallCodeWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallCodeWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsInterpreting, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsCreated, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFileSearchCallWsSearching, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseShellCallCommandWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseShellCallOutputContentWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseShellCallOutputContentWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsFailed, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsIncomplete, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseOutputItemWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseOutputItemWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryPartWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryPartWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryTextWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningSummaryTextWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningTextWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseReasoningTextWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseRefusalWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseRefusalWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseTextWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseTextWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWebSearchCallWsSearching, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallWsGenerating, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseImageGenCallPartialWsImage, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallArgumentsWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallArgumentsWsDone, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallWsFailed, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpCallInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsWsCompleted, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsWsFailed, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseMcpListToolsInWsProgress, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseOutputTextAnnotationWsAdded, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsQueued, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCustomToolCallInputWsDelta, OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseCustomToolCallInputWsDone)]
       end
     end
 

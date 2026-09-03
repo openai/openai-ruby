@@ -320,7 +320,7 @@ module OpenAI
             sig { returns(T.nilable(T::Hash[Symbol, String])) }
             attr_accessor :metadata
 
-            # An optional model to filter by (e.g., 'gpt-5.6-sol').
+            # An optional model to filter by (e.g., 'gpt-6-astra').
             sig { returns(T.nilable(String)) }
             attr_accessor :model
 
@@ -361,7 +361,7 @@ module OpenAI
               # a maximum length of 512 characters.
               metadata: nil,
 
-              # An optional model to filter by (e.g., 'gpt-5.6-sol').
+              # An optional model to filter by (e.g., 'gpt-6-astra').
               model: nil,
 
               # The type of source. Always `stored_completions`.
