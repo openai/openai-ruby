@@ -889,7 +889,6 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
       [{"retry-after-ms" => "125", "retry-after" => "2"}, 0.125],
       [{"retry-after" => "NaN"}, 0.0],
       [{"retry-after" => "-10"}, 0.0],
-      [{"retry-after" => "999999999999999999999"}, 5.0],
       [{"retry-after-ms" => "Infinity", "retry-after" => "0.2"}, 0.2]
     ]
 
@@ -955,6 +954,49 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
     assert_empty(sleeps)
   ensure
     Thread.current.thread_variable_set(:mock_sleep, previous_sleep)
+  end
+
+  def test_x509_excessive_retry_after_preserves_status_and_deadline_error_precedence
+    [:issuer, :api].product([429, 503], [1, 60]).each do |failure_stage, status, timeout|
+      events = []
+      client = OpenAI::Client.new(
+        api_key: nil,
+        workload_identity: @identity,
+        http_client: @transport,
+        max_retries: 1,
+        max_retry_delay: 5,
+        timeout: timeout,
+        on_retry: -> (event) { events << event }
+      )
+      attempts = []
+      headers = {"retry-after" => "90", "x-request-id" => "req_fake"}
+      dispatch = lambda do |request|
+        stage = request.url.host == "mtls.auth.openai.com" ? :issuer : :api
+        attempts << stage
+        stage == :issuer && failure_stage == :api ? x509_issuer_success : x509_issuer_failure(status, headers: headers)
+      end
+
+      sleeps = []
+      previous_sleep = Thread.current.thread_variable_get(:mock_sleep)
+      Thread.current.thread_variable_set(:mock_sleep, sleeps)
+
+      @native.stub(:execute, dispatch) do
+        if timeout == 1
+          assert_raises(OpenAI::Errors::APITimeoutError) { client.models.retrieve("fake-model") }
+        else
+          error = assert_raises(OpenAI::Errors::APIError) { client.models.retrieve("fake-model") }
+          assert_equal(status, error.status)
+          assert_equal(headers, error.headers)
+          assert_equal("req_fake", error.request_id)
+        end
+      end
+
+      assert_equal(failure_stage == :issuer ? [:issuer] : [:issuer, :api], attempts)
+      assert_empty(sleeps)
+      assert_empty(events)
+    ensure
+      Thread.current.thread_variable_set(:mock_sleep, previous_sleep)
+    end
   end
 
   def test_public_client_completes_real_mtls_exchange_and_model_request

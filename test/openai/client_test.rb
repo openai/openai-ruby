@@ -718,7 +718,7 @@ class OpenAITest < Minitest::Test
     now = Time.at(1_700_000_000)
     stub_request(:post, "http://localhost/chat/completions").to_return_json(
       status: 500,
-      headers: {"retry-after" => (now + 10).httpdate},
+      headers: {"retry-after" => (now + 8).httpdate},
       body: {}
     )
 

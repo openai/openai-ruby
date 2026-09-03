@@ -411,9 +411,11 @@ module OpenAI
         end
 
         delay = retry_delay(error.headers || {}, retry_count: attempts)
-        if deadline && delay >= deadline - OpenAI::Internal::Util.monotonic_secs
+        if deadline && [delay, @max_retry_delay].min >= deadline - OpenAI::Internal::Util.monotonic_secs
           raise Timeout::Error, "request timed out during workload identity authentication"
         end
+
+        raise if delay > @max_retry_delay
 
         context = request.fetch(:x509_request_context)
         response = if connection_failure

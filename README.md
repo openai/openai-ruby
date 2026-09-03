@@ -959,6 +959,12 @@ Certain errors will be automatically retried 2 times by default, with a short ex
 
 Connection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict, 429 Rate Limit, >=500 Internal errors, and timeouts will all be retried by default.
 
+When the server supplies a valid `Retry-After` or `Retry-After-Ms` delay, the SDK
+waits at least that long before retrying. If the delay exceeds `max_retry_delay`
+(8 seconds by default), automatic retries stop and the original error is raised
+with its body and headers available. Increase `max_retry_delay` when longer
+server-directed waits are acceptable. Existing request deadlines still apply.
+
 You can use the `max_retries` option to configure or disable this:
 
 ```ruby

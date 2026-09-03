@@ -516,7 +516,7 @@ module OpenAI
             end
           ]
           server_delay = delays.find { _1&.finite? && !_1.negative? }
-          return [server_delay, @max_retry_delay].min if server_delay
+          return server_delay if server_delay
 
           delay = (@initial_retry_delay * (2 ** retry_count)).clamp(0, @max_retry_delay)
           jitter = 1 - (0.25 * rand)
@@ -723,9 +723,18 @@ module OpenAI
           in OpenAI::Errors::APIConnectionError if retry_count >= max_retries
             raise status
           in (400..) | OpenAI::Errors::APIConnectionError
-            self.class.reap_connection!(status, stream: stream)
-
             delay = retry_delay(headers, retry_count: retry_count)
+            if delay > @max_retry_delay
+              begin
+                raise_status_error!(url: url, status: status, headers: headers, response: http_response, stream: stream)
+              rescue OpenAI::Errors::APIStatusError
+                # Preserve deadline-error precedence after releasing the response.
+                validate_retry_delay!(request, delay: @max_retry_delay)
+                raise
+              end
+            end
+
+            self.class.reap_connection!(status, stream: stream)
             validate_retry_delay!(request, delay: delay)
             log_context.retry_scheduled(
               status,
