@@ -150,9 +150,9 @@ The Responses API supports structured outputs via the `text` parameter:
 
 ```ruby
 class Haiku < OpenAI::BaseModel
-  field :first_line, String
-  field :second_line, String
-  field :third_line, String
+  required :first_line, String
+  required :second_line, String
+  required :third_line, String
 end
 
 stream = client.responses.stream(
@@ -391,9 +391,9 @@ The Chat Completions API supports structured outputs via the `response_format` p
 
 ```ruby
 class Haiku < OpenAI::BaseModel
-  field :first_line, String
-  field :second_line, String
-  field :third_line, String
+  required :first_line, String
+  required :second_line, String
+  required :third_line, String
 end
 
 stream = client.chat.completions.stream(
