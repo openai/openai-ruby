@@ -14,6 +14,9 @@ module OpenAI
         Variants = T.type_alias do
           T.any(
             OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError,
+            OpenAI::Beta::BetaResponseSteerAcceptedEvent,
+            OpenAI::Beta::BetaResponseSteerPendingEvent,
+            OpenAI::Beta::BetaResponseSteerFailedEvent,
             OpenAI::Beta::BetaResponseInjectCreatedEvent,
             OpenAI::Beta::BetaResponseInjectFailedEvent,
             OpenAI::Beta::BetaResponsesServerEvent::BetaResponseAudioWsDelta,
@@ -2020,6 +2023,10 @@ module OpenAI
           attr_writer :stream_id
 
           # An event that is emitted when a response finishes as incomplete.
+          #
+          # Over WebSocket, steering can finish a response with
+          # `response.incomplete_details.reason` set to `steered`, followed automatically by
+          # a successor `response.created` that commits the queued steering input.
           sig do
             params(
 
@@ -4826,6 +4833,19 @@ module OpenAI
             sig { params(headers: T::Hash[Symbol, String]).void }
             attr_writer :headers
 
+            sig {
+              returns(T.nilable(OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment))
+            }
+            attr_reader :misalignment
+
+            sig {
+              params(
+                misalignment: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::OrHash
+              )
+                .void
+            }
+            attr_writer :misalignment
+
             # Details about the error.
             sig do
               params(
@@ -4838,7 +4858,9 @@ module OpenAI
 
                 type: String,
 
-                headers: T::Hash[Symbol, String]
+                headers: T::Hash[Symbol, String],
+
+                misalignment: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::OrHash
               )
                 .returns(T.attached_class)
             end
@@ -4857,8 +4879,9 @@ module OpenAI
               type:,
 
               # The response headers that were emitted with the error, if any.
+              headers: nil,
 
-              headers: nil
+              misalignment: nil
             )
             end
 
@@ -4869,13 +4892,193 @@ module OpenAI
                   message: String,
                   param: T.nilable(String),
                   type: String,
-                  headers: T::Hash[Symbol, String]
+                  headers: T::Hash[Symbol, String],
+                  misalignment: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment
                 }
               )
             end
             def to_hash
             end
 
+            class Misalignment < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # The public explanation for this block.
+              sig { returns(T.nilable(String)) }
+              attr_reader :detailed_explanation
+
+              sig { params(detailed_explanation: String).void }
+              attr_writer :detailed_explanation
+
+              # An optional classification; clients must accept additional values.
+              sig {
+                returns(
+                  T.nilable(
+                    OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::Variants
+                  )
+                )
+              }
+              attr_reader :error_type
+
+              sig {
+                params(
+                  error_type: T.any(
+                    String,
+                    OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::OrSymbol
+                  )
+                )
+                  .void
+              }
+              attr_writer :error_type
+
+              # An optional public continuation instruction.
+              sig {
+                returns(
+                  T.nilable(OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer)
+                )
+              }
+              attr_reader :steer
+
+              sig {
+                params(
+                  steer: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer::OrHash
+                )
+                  .void
+              }
+              attr_writer :steer
+
+              sig do
+                params(
+
+                  detailed_explanation: String,
+
+                  error_type: T.any(
+                    String,
+                    OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::OrSymbol
+                  ),
+
+                  steer: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer::OrHash
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # The public explanation for this block.
+                detailed_explanation: nil,
+
+                # An optional classification; clients must accept additional values.
+                error_type: nil,
+
+                # An optional public continuation instruction.
+
+                steer: nil
+              )
+              end
+
+              sig do
+                override.returns(
+                  {
+                    detailed_explanation: String,
+                    error_type: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::Variants,
+                    steer: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer
+                  }
+                )
+              end
+              def to_hash
+              end
+
+              # An optional classification; clients must accept additional values.
+              module ErrorType
+                extend OpenAI::Internal::Type::Union
+
+                Variants = T.type_alias {
+                  T.any(
+                    String,
+                    OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::TaggedSymbol
+                  )
+                }
+
+                sig {
+                  override.returns(
+                    T::Array[
+                      OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::Variants
+                    ]
+                  )
+                }
+                def self.variants
+                end
+
+                TaggedSymbol = T.type_alias do
+                  T.all(
+                    Symbol,
+                    OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType
+                  )
+                end
+
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                POTENTIALLY_UNINTENDED_DATA_TRANSFER = T.let(
+                  :potentially_unintended_data_transfer,
+                  OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::TaggedSymbol
+                )
+                POTENTIALLY_UNINTENDED_DATA_ACCESS = T.let(
+                  :potentially_unintended_data_access,
+                  OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::TaggedSymbol
+                )
+                POTENTIALLY_UNINTENDED_DESTRUCTIVE_ACTIVITY = T.let(
+                  :potentially_unintended_destructive_activity,
+                  OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::TaggedSymbol
+                )
+                OTHER = T.let(
+                  :other,
+                  OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::TaggedSymbol
+                )
+
+              end
+
+              class Steer < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # The public continuation instruction.
+                sig { returns(String) }
+                attr_accessor :message
+
+                # An optional public continuation instruction.
+                sig do
+                  params(
+
+                    message: String
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # The public continuation instruction.
+
+                  message:
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {message: String}
+                  )
+                end
+                def to_hash
+                end
+
+              end
+            end
           end
 
           class Agent < OpenAI::Internal::Type::BaseModel

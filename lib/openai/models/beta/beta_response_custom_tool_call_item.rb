@@ -23,7 +23,7 @@ module OpenAI
         #   @return [String, nil]
         optional :created_by, String
 
-        # @!method initialize(call_id:, input:, name:, id:, status:, agent: nil, caller_: nil, namespace: nil, created_by: nil, type: :custom_tool_call)
+        # @!method initialize(call_id:, input:, name:, id:, status:, agent: nil, async: nil, caller_: nil, namespace: nil, created_by: nil, type: :custom_tool_call)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Beta::BetaResponseCustomToolCallItem} for more details.
         #
@@ -40,6 +40,8 @@ module OpenAI
         #   @param status [Symbol, OpenAI::Models::Beta::BetaResponseCustomToolCallItem::Status] The status of the item. One of `in_progress`, `completed`, or
         #
         #   @param agent [OpenAI::Models::Beta::BetaResponseCustomToolCall::Agent, nil] The agent that produced this item.
+        #
+        #   @param async [Boolean] Whether the custom tool call runs asynchronously.
         #
         #   @param caller_ [OpenAI::Models::Beta::BetaResponseCustomToolCall::Caller::Direct, OpenAI::Models::Beta::BetaResponseCustomToolCall::Caller::Program, nil] The execution context that produced this tool call.
         #

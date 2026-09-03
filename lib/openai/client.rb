@@ -78,6 +78,9 @@ module OpenAI
     # @return [OpenAI::Resources::VectorStores]
     attr_reader :vector_stores
 
+    # @return [OpenAI::Resources::Safety]
+    attr_reader :safety
+
     # @return [OpenAI::Resources::Webhooks]
     attr_reader :webhooks
 
@@ -254,6 +257,7 @@ module OpenAI
       @fine_tuning = OpenAI::Resources::FineTuning.new(client: self)
       @graders = OpenAI::Resources::Graders.new(client: self)
       @vector_stores = OpenAI::Resources::VectorStores.new(client: self)
+      @safety = OpenAI::Resources::Safety.new(client: self)
       @webhooks = OpenAI::Resources::Webhooks.new(client: self)
       @beta = OpenAI::Resources::Beta.new(client: self)
       @batches = OpenAI::Resources::Batches.new(client: self)

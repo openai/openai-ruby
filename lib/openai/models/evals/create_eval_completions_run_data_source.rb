@@ -168,7 +168,7 @@ module OpenAI
             optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
             # @!attribute model
-            #   An optional model to filter by (e.g., 'gpt-5.6-sol').
+            #   An optional model to filter by (e.g., 'gpt-6-astra').
             #
             #   @return [String, nil]
             optional :model, String, nil?: true
@@ -188,7 +188,7 @@ module OpenAI
             #
             #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
             #
-            #   @param model [String, nil] An optional model to filter by (e.g., 'gpt-5.6-sol').
+            #   @param model [String, nil] An optional model to filter by (e.g., 'gpt-6-astra').
             #
             #   @param type [Symbol, :stored_completions] The type of source. Always `stored_completions`.
           end

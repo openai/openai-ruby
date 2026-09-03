@@ -10,6 +10,7 @@ module OpenAI
           strict: bool?,
           type: :function,
           allowed_callers: ::Array[OpenAI::Models::Beta::BetaFunctionTool::allowed_caller]?,
+          async: bool,
           defer_loading: bool,
           description: String?,
           output_schema: ::Hash[Symbol, top]?
@@ -26,6 +27,10 @@ module OpenAI
 
         attr_accessor allowed_callers: ::Array[OpenAI::Models::Beta::BetaFunctionTool::allowed_caller]?
 
+        attr_reader async: bool?
+
+        def async=: (bool) -> bool
+
         attr_reader defer_loading: bool?
 
         def defer_loading=: (bool) -> bool
@@ -39,6 +44,7 @@ module OpenAI
           parameters: ::Hash[Symbol, top]?,
           strict: bool?,
           ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaFunctionTool::allowed_caller]?,
+          ?async: bool,
           ?defer_loading: bool,
           ?description: String?,
           ?output_schema: ::Hash[Symbol, top]?,
@@ -51,6 +57,7 @@ module OpenAI
           strict: bool?,
           type: :function,
           allowed_callers: ::Array[OpenAI::Models::Beta::BetaFunctionTool::allowed_caller]?,
+          async: bool,
           defer_loading: bool,
           description: String?,
           output_schema: ::Hash[Symbol, top]?

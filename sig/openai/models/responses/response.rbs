@@ -220,7 +220,8 @@ module OpenAI
             reason: OpenAI::Models::Responses::Response::IncompleteDetails::reason
           }
 
-          type reason = :max_output_tokens | :max_messages | :content_filter
+          type reason =
+            :max_output_tokens | :max_messages | :content_filter | :steered
 
           module Reason
             extend OpenAI::Internal::Type::Enum
@@ -228,6 +229,7 @@ module OpenAI
             MAX_OUTPUT_TOKENS: :max_output_tokens
             MAX_MESSAGES: :max_messages
             CONTENT_FILTER: :content_filter
+            STEERED: :steered
 
             def self?.values: -> ::Array[OpenAI::Models::Responses::Response::IncompleteDetails::reason]
           end

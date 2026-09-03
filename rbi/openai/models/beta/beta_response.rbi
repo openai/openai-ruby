@@ -55,7 +55,7 @@ module OpenAI
         sig { returns(T.nilable(T::Hash[Symbol, String])) }
         attr_accessor :metadata
 
-        # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+        # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
         # range of models with different capabilities, performance characteristics, and
         # price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -475,7 +475,7 @@ module OpenAI
           # a maximum length of 512 characters.
           metadata:,
 
-          # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+          # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
           # range of models with different capabilities, performance characteristics, and
           # price points. Refer to the
           # [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -729,7 +729,9 @@ module OpenAI
             )
           end
 
-          # The reason why the response is incomplete.
+          # The reason why the response is incomplete. `steered` means the response stopped
+          # at a safe output boundary after a WebSocket `response.steer` event. The server
+          # can then create a successor response automatically with the queued input.
           sig { returns(T.nilable(OpenAI::Beta::BetaResponse::IncompleteDetails::Reason::TaggedSymbol)) }
           attr_reader :reason
 
@@ -746,7 +748,9 @@ module OpenAI
           end
           def self.new(
 
-            # The reason why the response is incomplete.
+            # The reason why the response is incomplete. `steered` means the response stopped
+            # at a safe output boundary after a WebSocket `response.steer` event. The server
+            # can then create a successor response automatically with the queued input.
 
             reason: nil
           )
@@ -760,7 +764,9 @@ module OpenAI
           def to_hash
           end
 
-          # The reason why the response is incomplete.
+          # The reason why the response is incomplete. `steered` means the response stopped
+          # at a safe output boundary after a WebSocket `response.steer` event. The server
+          # can then create a successor response automatically with the queued input.
           module Reason
             extend OpenAI::Internal::Type::Enum
 
@@ -773,6 +779,7 @@ module OpenAI
             )
             MAX_MESSAGES = T.let(:max_messages, OpenAI::Beta::BetaResponse::IncompleteDetails::Reason::TaggedSymbol)
             CONTENT_FILTER = T.let(:content_filter, OpenAI::Beta::BetaResponse::IncompleteDetails::Reason::TaggedSymbol)
+            STEERED = T.let(:steered, OpenAI::Beta::BetaResponse::IncompleteDetails::Reason::TaggedSymbol)
 
             sig { override.returns(T::Array[OpenAI::Beta::BetaResponse::IncompleteDetails::Reason::TaggedSymbol]) }
             def self.values
@@ -801,7 +808,7 @@ module OpenAI
 
         end
 
-        # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+        # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
         # range of models with different capabilities, performance characteristics, and
         # price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -821,6 +828,7 @@ module OpenAI
 
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
+          GPT_6_ASTRA = T.let(:"gpt-6-astra", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
           GPT_5_6_SOL = T.let(:"gpt-5.6-sol", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
           GPT_5_6_TERRA = T.let(:"gpt-5.6-terra", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
           GPT_5_6_LUNA = T.let(:"gpt-5.6-luna", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)

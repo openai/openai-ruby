@@ -9,6 +9,7 @@ module OpenAI
           id: String,
           status: OpenAI::Models::Responses::ResponseCustomToolCallItem::status,
           type: :custom_tool_call,
+          async: bool,
           caller_: OpenAI::Models::Responses::ResponseCustomToolCall::caller_?,
           namespace: String,
           created_by: String
@@ -35,6 +36,7 @@ module OpenAI
           name: String,
           id: String,
           status: OpenAI::Models::Responses::ResponseCustomToolCallItem::status,
+          ?async: bool,
           ?caller_: OpenAI::Models::Responses::ResponseCustomToolCall::caller_?,
           ?namespace: String,
           ?created_by: String,
@@ -48,6 +50,7 @@ module OpenAI
           id: String,
           status: OpenAI::Models::Responses::ResponseCustomToolCallItem::status,
           type: :custom_tool_call,
+          async: bool,
           caller_: OpenAI::Models::Responses::ResponseCustomToolCall::caller_?,
           namespace: String,
           created_by: String

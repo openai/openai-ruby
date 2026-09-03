@@ -38,6 +38,11 @@ module OpenAI
           nil?: true
         )
 
+        # @!attribute async
+        #
+        #   @return [Boolean, nil]
+        optional :async, OpenAI::Internal::Type::Boolean
+
         # @!attribute defer_loading
         #   Whether this function is deferred and loaded via tool search.
         #
@@ -58,7 +63,7 @@ module OpenAI
         #   @return [Hash{Symbol=>Object}, nil]
         optional :output_schema, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown], nil?: true
 
-        # @!method initialize(name:, parameters:, strict:, allowed_callers: nil, defer_loading: nil, description: nil, output_schema: nil, type: :function)
+        # @!method initialize(name:, parameters:, strict:, allowed_callers: nil, async: nil, defer_loading: nil, description: nil, output_schema: nil, type: :function)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::FunctionTool} for more details.
         #
@@ -73,6 +78,8 @@ module OpenAI
         #   @param strict [Boolean, nil] Whether strict parameter validation is enforced for this function tool.
         #
         #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::FunctionTool::AllowedCaller>, nil] The tool invocation context(s).
+        #
+        #   @param async [Boolean]
         #
         #   @param defer_loading [Boolean] Whether this function is deferred and loaded via tool search.
         #

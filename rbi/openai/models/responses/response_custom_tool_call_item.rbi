@@ -44,6 +44,8 @@ module OpenAI
 
             status: OpenAI::Responses::ResponseCustomToolCallItem::Status::OrSymbol,
 
+            async: T::Boolean,
+
             caller_: T.nilable(
               T.any(
                 OpenAI::Responses::ResponseCustomToolCall::Caller::Direct::OrHash,
@@ -77,6 +79,9 @@ module OpenAI
           # Populated when items are returned via API.
           status:,
 
+          # Whether the custom tool call runs asynchronously.
+          async: nil,
+
           # The execution context that produced this tool call.
           caller_: nil,
 
@@ -101,6 +106,7 @@ module OpenAI
               id: String,
               status: OpenAI::Responses::ResponseCustomToolCallItem::Status::TaggedSymbol,
               type: Symbol,
+              async: T::Boolean,
               caller_: T.nilable(
                 T.any(
                   OpenAI::Responses::ResponseCustomToolCall::Caller::Direct,

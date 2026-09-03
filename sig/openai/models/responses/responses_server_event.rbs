@@ -3,6 +3,9 @@ module OpenAI
     module Responses
       type responses_server_event =
         OpenAI::Responses::ResponsesServerEvent::ResponseWsError
+        | OpenAI::Responses::ResponseSteerAcceptedEvent
+        | OpenAI::Responses::ResponseSteerPendingEvent
+        | OpenAI::Responses::ResponseSteerFailedEvent
         | OpenAI::Responses::ResponsesServerEvent::ResponseAudioWsDelta
         | OpenAI::Responses::ResponsesServerEvent::ResponseAudioWsDone
         | OpenAI::Responses::ResponsesServerEvent::ResponseAudioTranscriptWsDelta
@@ -2002,7 +2005,8 @@ module OpenAI
               message: String,
               param: String?,
               type: String,
-              headers: ::Hash[Symbol, String]
+              headers: ::Hash[Symbol, String],
+              misalignment: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment
             }
 
           class Error < OpenAI::Internal::Type::BaseModel
@@ -2018,12 +2022,19 @@ module OpenAI
 
             def headers=: (::Hash[Symbol, String]) -> ::Hash[Symbol, String]
 
+            attr_reader misalignment: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment?
+
+            def misalignment=: (
+              OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment
+            ) -> OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment
+
             def initialize: (
               code: String?,
               message: String,
               param: String?,
               type: String,
-              ?headers: ::Hash[Symbol, String]
+              ?headers: ::Hash[Symbol, String],
+              ?misalignment: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment
             ) -> void
 
             def to_hash: -> {
@@ -2031,8 +2042,74 @@ module OpenAI
               message: String,
               param: String?,
               type: String,
-              headers: ::Hash[Symbol, String]
+              headers: ::Hash[Symbol, String],
+              misalignment: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment
             }
+
+            type misalignment =
+              {
+                detailed_explanation: String,
+                error_type: OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::error_type,
+                steer: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::Steer
+              }
+
+            class Misalignment < OpenAI::Internal::Type::BaseModel
+              attr_reader detailed_explanation: String?
+
+              def detailed_explanation=: (String) -> String
+
+              attr_reader error_type: OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::error_type?
+
+              def error_type=: (
+                OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::error_type
+              ) -> OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::error_type
+
+              attr_reader steer: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::Steer?
+
+              def steer=: (
+                OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::Steer
+              ) -> OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::Steer
+
+              def initialize: (
+                ?detailed_explanation: String,
+                ?error_type: OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::error_type,
+                ?steer: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::Steer
+              ) -> void
+
+              def to_hash: -> {
+                detailed_explanation: String,
+                error_type: OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::error_type,
+                steer: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::Steer
+              }
+
+              type error_type =
+                String
+                | :potentially_unintended_data_transfer
+                | :potentially_unintended_data_access
+                | :potentially_unintended_destructive_activity
+                | :other
+
+              module ErrorType
+                extend OpenAI::Internal::Type::Union
+
+                def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::error_type]
+
+                POTENTIALLY_UNINTENDED_DATA_TRANSFER: :potentially_unintended_data_transfer
+                POTENTIALLY_UNINTENDED_DATA_ACCESS: :potentially_unintended_data_access
+                POTENTIALLY_UNINTENDED_DESTRUCTIVE_ACTIVITY: :potentially_unintended_destructive_activity
+                OTHER: :other
+              end
+
+              type steer = { message: String }
+
+              class Steer < OpenAI::Internal::Type::BaseModel
+                attr_accessor message: String
+
+                def initialize: (message: String) -> void
+
+                def to_hash: -> { message: String }
+              end
+            end
           end
         end
 

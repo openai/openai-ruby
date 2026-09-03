@@ -5,6 +5,7 @@ module OpenAI
     module Beta
       type beta_responses_client_event =
         OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate
+        | OpenAI::Beta::BetaResponseSteerEvent
         | OpenAI::Beta::BetaResponseInjectEvent
 
       module BetaResponsesClientEvent
@@ -250,7 +251,8 @@ module OpenAI
           end
 
           type model =
-            :"gpt-5.6-sol"
+            :"gpt-6-astra"
+            | :"gpt-5.6-sol"
             | :"gpt-5.6-terra"
             | :"gpt-5.6-luna"
             | :"gpt-5.5"
@@ -359,6 +361,7 @@ module OpenAI
 
             def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::model]
 
+            GPT_6_ASTRA: :"gpt-6-astra"
             GPT_5_6_SOL: :"gpt-5.6-sol"
             GPT_5_6_TERRA: :"gpt-5.6-terra"
             GPT_5_6_LUNA: :"gpt-5.6-luna"

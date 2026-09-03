@@ -40,6 +40,12 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::BetaResponseFunctionToolCall::Agent, nil]
         optional :agent, -> { OpenAI::Beta::BetaResponseFunctionToolCall::Agent }, nil?: true
 
+        # @!attribute async
+        #   Whether the function tool call runs asynchronously.
+        #
+        #   @return [Boolean, nil]
+        optional :async, OpenAI::Internal::Type::Boolean
+
         # @!attribute caller_
         #   The execution context that produced this tool call.
         #
@@ -64,7 +70,7 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Beta::BetaResponseFunctionToolCall::Status, nil]
         optional :status, enum: -> { OpenAI::Beta::BetaResponseFunctionToolCall::Status }
 
-        # @!method initialize(arguments:, call_id:, name:, id: nil, agent: nil, caller_: nil, namespace: nil, status: nil, type: :function_call)
+        # @!method initialize(arguments:, call_id:, name:, id: nil, agent: nil, async: nil, caller_: nil, namespace: nil, status: nil, type: :function_call)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Beta::BetaResponseFunctionToolCall} for more details.
         #
@@ -81,6 +87,8 @@ module OpenAI
         #   @param id [String] The unique ID of the function tool call.
         #
         #   @param agent [OpenAI::Models::Beta::BetaResponseFunctionToolCall::Agent, nil] The agent that produced this item.
+        #
+        #   @param async [Boolean] Whether the function tool call runs asynchronously.
         #
         #   @param caller_ [OpenAI::Models::Beta::BetaResponseFunctionToolCall::Caller::Direct, OpenAI::Models::Beta::BetaResponseFunctionToolCall::Caller::Program, nil] The execution context that produced this tool call.
         #

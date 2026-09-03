@@ -1,0 +1,16 @@
+module OpenAI
+  module Models
+    module BetaResponseSteerPendingReason = Beta::BetaResponseSteerPendingReason
+
+    module Beta
+      type beta_response_steer_pending_reason =
+        :waiting_for_required_input | String
+
+      module BetaResponseSteerPendingReason
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::beta_response_steer_pending_reason]
+      end
+    end
+  end
+end

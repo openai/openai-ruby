@@ -132,6 +132,9 @@ module OpenAI
       module Runs
       end
 
+      module Safety
+      end
+
       module ServiceAccounts
       end
 

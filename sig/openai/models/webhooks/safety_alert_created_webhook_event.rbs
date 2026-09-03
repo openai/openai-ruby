@@ -1,0 +1,52 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type safety_alert_created_webhook_event =
+        {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::SafetyAlertCreatedWebhookEvent::Data,
+          object: :event,
+          type: :"safety.alert.created"
+        }
+
+      class SafetyAlertCreatedWebhookEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor data: OpenAI::Webhooks::SafetyAlertCreatedWebhookEvent::Data
+
+        attr_accessor object: :event
+
+        attr_accessor type: :"safety.alert.created"
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::SafetyAlertCreatedWebhookEvent::Data,
+          ?object: :event,
+          ?type: :"safety.alert.created"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::SafetyAlertCreatedWebhookEvent::Data,
+          object: :event,
+          type: :"safety.alert.created"
+        }
+
+        type data = { id: String }
+
+        class Data < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          def initialize: (id: String) -> void
+
+          def to_hash: -> { id: String }
+        end
+      end
+    end
+  end
+end

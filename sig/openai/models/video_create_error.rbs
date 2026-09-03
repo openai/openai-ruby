@@ -1,15 +1,99 @@
 module OpenAI
   module Models
-    type video_create_error = { code: String, message: String }
+    type video_create_error =
+      {
+        code: String,
+        message: String,
+        misalignment: OpenAI::VideoCreateError::Misalignment
+      }
 
     class VideoCreateError < OpenAI::Internal::Type::BaseModel
       attr_accessor code: String
 
       attr_accessor message: String
 
-      def initialize: (code: String, message: String) -> void
+      attr_reader misalignment: OpenAI::VideoCreateError::Misalignment?
 
-      def to_hash: -> { code: String, message: String }
+      def misalignment=: (
+        OpenAI::VideoCreateError::Misalignment
+      ) -> OpenAI::VideoCreateError::Misalignment
+
+      def initialize: (
+        code: String,
+        message: String,
+        ?misalignment: OpenAI::VideoCreateError::Misalignment
+      ) -> void
+
+      def to_hash: -> {
+        code: String,
+        message: String,
+        misalignment: OpenAI::VideoCreateError::Misalignment
+      }
+
+      type misalignment =
+        {
+          detailed_explanation: String,
+          error_type: OpenAI::Models::VideoCreateError::Misalignment::error_type,
+          steer: OpenAI::VideoCreateError::Misalignment::Steer
+        }
+
+      class Misalignment < OpenAI::Internal::Type::BaseModel
+        attr_reader detailed_explanation: String?
+
+        def detailed_explanation=: (String) -> String
+
+        attr_reader error_type: OpenAI::Models::VideoCreateError::Misalignment::error_type?
+
+        def error_type=: (
+          OpenAI::Models::VideoCreateError::Misalignment::error_type
+        ) -> OpenAI::Models::VideoCreateError::Misalignment::error_type
+
+        attr_reader steer: OpenAI::VideoCreateError::Misalignment::Steer?
+
+        def steer=: (
+          OpenAI::VideoCreateError::Misalignment::Steer
+        ) -> OpenAI::VideoCreateError::Misalignment::Steer
+
+        def initialize: (
+          ?detailed_explanation: String,
+          ?error_type: OpenAI::Models::VideoCreateError::Misalignment::error_type,
+          ?steer: OpenAI::VideoCreateError::Misalignment::Steer
+        ) -> void
+
+        def to_hash: -> {
+          detailed_explanation: String,
+          error_type: OpenAI::Models::VideoCreateError::Misalignment::error_type,
+          steer: OpenAI::VideoCreateError::Misalignment::Steer
+        }
+
+        type error_type =
+          String
+          | :potentially_unintended_data_transfer
+          | :potentially_unintended_data_access
+          | :potentially_unintended_destructive_activity
+          | :other
+
+        module ErrorType
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::VideoCreateError::Misalignment::error_type]
+
+          POTENTIALLY_UNINTENDED_DATA_TRANSFER: :potentially_unintended_data_transfer
+          POTENTIALLY_UNINTENDED_DATA_ACCESS: :potentially_unintended_data_access
+          POTENTIALLY_UNINTENDED_DESTRUCTIVE_ACTIVITY: :potentially_unintended_destructive_activity
+          OTHER: :other
+        end
+
+        type steer = { message: String }
+
+        class Steer < OpenAI::Internal::Type::BaseModel
+          attr_accessor message: String
+
+          def initialize: (message: String) -> void
+
+          def to_hash: -> { message: String }
+        end
+      end
     end
   end
 end

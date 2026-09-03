@@ -37,6 +37,13 @@ module OpenAI
         sig { params(id: String).void }
         attr_writer :id
 
+        # Whether the function tool call runs asynchronously.
+        sig { returns(T.nilable(T::Boolean)) }
+        attr_reader :async
+
+        sig { params(async: T::Boolean).void }
+        attr_writer :async
+
         # The execution context that produced this tool call.
         sig {
           returns(
@@ -79,6 +86,8 @@ module OpenAI
 
             id: String,
 
+            async: T::Boolean,
+
             caller_: T.nilable(
               T.any(
                 OpenAI::Responses::ResponseFunctionToolCall::Caller::Direct::OrHash,
@@ -108,6 +117,9 @@ module OpenAI
           # The unique ID of the function tool call.
           id: nil,
 
+          # Whether the function tool call runs asynchronously.
+          async: nil,
+
           # The execution context that produced this tool call.
           caller_: nil,
 
@@ -132,6 +144,7 @@ module OpenAI
               name: String,
               type: Symbol,
               id: String,
+              async: T::Boolean,
               caller_: T.nilable(
                 T.any(
                   OpenAI::Responses::ResponseFunctionToolCall::Caller::Direct,

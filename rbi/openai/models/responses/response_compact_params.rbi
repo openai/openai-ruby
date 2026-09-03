@@ -17,7 +17,7 @@ module OpenAI
           )
         end
 
-        # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+        # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
         # range of models with different capabilities, performance characteristics, and
         # price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -112,7 +112,7 @@ module OpenAI
         end
         def self.new(
 
-          # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+          # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
           # range of models with different capabilities, performance characteristics, and
           # price points. Refer to the
           # [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -192,7 +192,7 @@ module OpenAI
         def to_hash
         end
 
-        # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+        # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
         # range of models with different capabilities, performance characteristics, and
         # price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -212,6 +212,7 @@ module OpenAI
 
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
+          GPT_6_ASTRA = T.let(:"gpt-6-astra", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
           GPT_5_6_SOL = T.let(:"gpt-5.6-sol", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
           GPT_5_6_TERRA = T.let(:"gpt-5.6-terra", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
           GPT_5_6_LUNA = T.let(:"gpt-5.6-luna", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)

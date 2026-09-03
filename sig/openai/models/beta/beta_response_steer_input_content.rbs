@@ -1,0 +1,18 @@
+module OpenAI
+  module Models
+    module BetaResponseSteerInputContent = Beta::BetaResponseSteerInputContent
+
+    module Beta
+      type beta_response_steer_input_content =
+        OpenAI::Beta::BetaResponseInputTextContent
+        | OpenAI::Beta::BetaResponseInputImageContent
+        | OpenAI::Beta::BetaResponseInputFileContent
+
+      module BetaResponseSteerInputContent
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::beta_response_steer_input_content]
+      end
+    end
+  end
+end

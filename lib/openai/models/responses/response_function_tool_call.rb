@@ -34,6 +34,12 @@ module OpenAI
         #   @return [String, nil]
         optional :id, String
 
+        # @!attribute async
+        #   Whether the function tool call runs asynchronously.
+        #
+        #   @return [Boolean, nil]
+        optional :async, OpenAI::Internal::Type::Boolean
+
         # @!attribute caller_
         #   The execution context that produced this tool call.
         #
@@ -58,7 +64,7 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall::Status, nil]
         optional :status, enum: -> { OpenAI::Responses::ResponseFunctionToolCall::Status }
 
-        # @!method initialize(arguments:, call_id:, name:, id: nil, caller_: nil, namespace: nil, status: nil, type: :function_call)
+        # @!method initialize(arguments:, call_id:, name:, id: nil, async: nil, caller_: nil, namespace: nil, status: nil, type: :function_call)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseFunctionToolCall} for more details.
         #
@@ -73,6 +79,8 @@ module OpenAI
         #   @param name [String] The name of the function to run.
         #
         #   @param id [String] The unique ID of the function tool call.
+        #
+        #   @param async [Boolean] Whether the function tool call runs asynchronously.
         #
         #   @param caller_ [OpenAI::Models::Responses::ResponseFunctionToolCall::Caller::Direct, OpenAI::Models::Responses::ResponseFunctionToolCall::Caller::Program, nil] The execution context that produced this tool call.
         #

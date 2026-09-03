@@ -73,6 +73,13 @@ module OpenAI
               nil?: true
             )
 
+            # @!attribute async
+            #   Whether the tool response can be returned asynchronously versus immediately
+            #   returned on next response creation.
+            #
+            #   @return [Boolean, nil]
+            optional :async, OpenAI::Internal::Type::Boolean
+
             # @!attribute defer_loading
             #   Whether this function should be deferred and discovered via tool search.
             #
@@ -108,13 +115,15 @@ module OpenAI
             #   @return [Boolean, nil]
             optional :strict, OpenAI::Internal::Type::Boolean, nil?: true
 
-            # @!method initialize(name:, allowed_callers: nil, defer_loading: nil, description: nil, output_schema: nil, parameters: nil, strict: nil, type: :function)
+            # @!method initialize(name:, allowed_callers: nil, async: nil, defer_loading: nil, description: nil, output_schema: nil, parameters: nil, strict: nil, type: :function)
             #   Some parameter documentations has been truncated, see
             #   {OpenAI::Models::Beta::BetaNamespaceTool::Tool::Function} for more details.
             #
             #   @param name [String]
             #
             #   @param allowed_callers [Array<Symbol, OpenAI::Models::Beta::BetaNamespaceTool::Tool::Function::AllowedCaller>, nil] The tool invocation context(s).
+            #
+            #   @param async [Boolean] Whether the tool response can be returned asynchronously versus immediately retu
             #
             #   @param defer_loading [Boolean] Whether this function should be deferred and discovered via tool search.
             #

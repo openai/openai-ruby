@@ -26,6 +26,13 @@ module OpenAI
           nil?: true
         )
 
+        # @!attribute async
+        #   Whether the tool response can be returned asynchronously versus immediately
+        #   returned on next response creation.
+        #
+        #   @return [Boolean, nil]
+        optional :async, OpenAI::Internal::Type::Boolean
+
         # @!attribute defer_loading
         #   Whether this tool should be deferred and discovered via tool search.
         #
@@ -44,13 +51,18 @@ module OpenAI
         #   @return [OpenAI::Models::CustomToolInputFormat::Text, OpenAI::Models::CustomToolInputFormat::Grammar, nil]
         optional :format_, union: -> { OpenAI::CustomToolInputFormat }, api_name: :format
 
-        # @!method initialize(name:, allowed_callers: nil, defer_loading: nil, description: nil, format_: nil, type: :custom)
+        # @!method initialize(name:, allowed_callers: nil, async: nil, defer_loading: nil, description: nil, format_: nil, type: :custom)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::CustomTool} for more details.
+        #
         #   A custom tool that processes input using a specified format. Learn more about
         #   [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
         #
         #   @param name [String] The name of the custom tool, used to identify it in tool calls.
         #
         #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::CustomTool::AllowedCaller>, nil] The tool invocation context(s).
+        #
+        #   @param async [Boolean] Whether the tool response can be returned asynchronously versus immediately retu
         #
         #   @param defer_loading [Boolean] Whether this tool should be deferred and discovered via tool search.
         #

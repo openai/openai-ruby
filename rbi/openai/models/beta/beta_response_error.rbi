@@ -24,13 +24,21 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :message
 
+        sig { returns(T.nilable(OpenAI::Beta::BetaResponseError::Misalignment)) }
+        attr_reader :misalignment
+
+        sig { params(misalignment: OpenAI::Beta::BetaResponseError::Misalignment::OrHash).void }
+        attr_writer :misalignment
+
         # An error object returned when the model fails to generate a Response.
         sig do
           params(
 
             code: OpenAI::Beta::BetaResponseError::Code::OrSymbol,
 
-            message: String
+            message: String,
+
+            misalignment: OpenAI::Beta::BetaResponseError::Misalignment::OrHash
           )
             .returns(T.attached_class)
         end
@@ -40,14 +48,19 @@ module OpenAI
           code:,
 
           # A human-readable description of the error.
+          message:,
 
-          message:
+          misalignment: nil
         )
         end
 
         sig do
           override.returns(
-            {code: OpenAI::Beta::BetaResponseError::Code::TaggedSymbol, message: String}
+            {
+              code: OpenAI::Beta::BetaResponseError::Code::TaggedSymbol,
+              message: String,
+              misalignment: OpenAI::Beta::BetaResponseError::Misalignment
+            }
           )
         end
         def to_hash
@@ -65,6 +78,10 @@ module OpenAI
           INVALID_PROMPT = T.let(:invalid_prompt, OpenAI::Beta::BetaResponseError::Code::TaggedSymbol)
           DATA_RESIDENCY_MISMATCH = T.let(:data_residency_mismatch, OpenAI::Beta::BetaResponseError::Code::TaggedSymbol)
           BIO_POLICY = T.let(:bio_policy, OpenAI::Beta::BetaResponseError::Code::TaggedSymbol)
+          MISALIGNMENT_POLICY_VIOLATION = T.let(
+            :misalignment_policy_violation,
+            OpenAI::Beta::BetaResponseError::Code::TaggedSymbol
+          )
           VECTOR_STORE_TIMEOUT = T.let(:vector_store_timeout, OpenAI::Beta::BetaResponseError::Code::TaggedSymbol)
           INVALID_IMAGE = T.let(:invalid_image, OpenAI::Beta::BetaResponseError::Code::TaggedSymbol)
           INVALID_IMAGE_FORMAT = T.let(:invalid_image_format, OpenAI::Beta::BetaResponseError::Code::TaggedSymbol)
@@ -92,6 +109,147 @@ module OpenAI
 
           sig { override.returns(T::Array[OpenAI::Beta::BetaResponseError::Code::TaggedSymbol]) }
           def self.values
+          end
+        end
+
+        class Misalignment < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaResponseError::Misalignment,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The public explanation for this block.
+          sig { returns(T.nilable(String)) }
+          attr_reader :detailed_explanation
+
+          sig { params(detailed_explanation: String).void }
+          attr_writer :detailed_explanation
+
+          # An optional classification; clients must accept additional values.
+          sig { returns(T.nilable(OpenAI::Beta::BetaResponseError::Misalignment::ErrorType::Variants)) }
+          attr_reader :error_type
+
+          sig {
+            params(error_type: T.any(String, OpenAI::Beta::BetaResponseError::Misalignment::ErrorType::OrSymbol)).void
+          }
+          attr_writer :error_type
+
+          # An optional public continuation instruction.
+          sig { returns(T.nilable(OpenAI::Beta::BetaResponseError::Misalignment::Steer)) }
+          attr_reader :steer
+
+          sig { params(steer: OpenAI::Beta::BetaResponseError::Misalignment::Steer::OrHash).void }
+          attr_writer :steer
+
+          sig do
+            params(
+
+              detailed_explanation: String,
+
+              error_type: T.any(String, OpenAI::Beta::BetaResponseError::Misalignment::ErrorType::OrSymbol),
+
+              steer: OpenAI::Beta::BetaResponseError::Misalignment::Steer::OrHash
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # The public explanation for this block.
+            detailed_explanation: nil,
+
+            # An optional classification; clients must accept additional values.
+            error_type: nil,
+
+            # An optional public continuation instruction.
+
+            steer: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                detailed_explanation: String,
+                error_type: OpenAI::Beta::BetaResponseError::Misalignment::ErrorType::Variants,
+                steer: OpenAI::Beta::BetaResponseError::Misalignment::Steer
+              }
+            )
+          end
+          def to_hash
+          end
+
+          # An optional classification; clients must accept additional values.
+          module ErrorType
+            extend OpenAI::Internal::Type::Union
+
+            Variants = T.type_alias {
+              T.any(String, OpenAI::Beta::BetaResponseError::Misalignment::ErrorType::TaggedSymbol)
+            }
+
+            sig { override.returns(T::Array[OpenAI::Beta::BetaResponseError::Misalignment::ErrorType::Variants]) }
+            def self.variants
+            end
+
+            TaggedSymbol = T.type_alias do
+              T.all(Symbol, OpenAI::Beta::BetaResponseError::Misalignment::ErrorType)
+            end
+
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            POTENTIALLY_UNINTENDED_DATA_TRANSFER = T.let(
+              :potentially_unintended_data_transfer,
+              OpenAI::Beta::BetaResponseError::Misalignment::ErrorType::TaggedSymbol
+            )
+            POTENTIALLY_UNINTENDED_DATA_ACCESS = T.let(
+              :potentially_unintended_data_access,
+              OpenAI::Beta::BetaResponseError::Misalignment::ErrorType::TaggedSymbol
+            )
+            POTENTIALLY_UNINTENDED_DESTRUCTIVE_ACTIVITY = T.let(
+              :potentially_unintended_destructive_activity,
+              OpenAI::Beta::BetaResponseError::Misalignment::ErrorType::TaggedSymbol
+            )
+            OTHER = T.let(:other, OpenAI::Beta::BetaResponseError::Misalignment::ErrorType::TaggedSymbol)
+
+          end
+
+          class Steer < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponseError::Misalignment::Steer,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The public continuation instruction.
+            sig { returns(String) }
+            attr_accessor :message
+
+            # An optional public continuation instruction.
+            sig do
+              params(
+
+                message: String
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The public continuation instruction.
+
+              message:
+            )
+            end
+
+            sig do
+              override.returns(
+                {message: String}
+              )
+            end
+            def to_hash
+            end
+
           end
         end
 

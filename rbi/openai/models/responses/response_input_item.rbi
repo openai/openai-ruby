@@ -27,6 +27,7 @@ module OpenAI
             OpenAI::Responses::ResponseInputItem::ToolSearchCall,
             OpenAI::Responses::ResponseToolSearchOutputItemParam,
             OpenAI::Responses::ResponseInputItem::AdditionalTools,
+            OpenAI::Responses::ResponseConfigurationUpdateItemParam,
             OpenAI::Responses::ResponseReasoningItem,
             OpenAI::Responses::ResponseCompactionItemParam,
             OpenAI::Responses::ResponseInputItem::ImageGenerationCall,
