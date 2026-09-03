@@ -6,9 +6,12 @@ require "fileutils"
 require "open3"
 require "tmpdir"
 
+require_relative "../openai/test_helper"
 require_relative "../../scripts/rubocop_directive_guard"
 
 class ValidateRuboCopDirectivesTest < Minitest::Test
+  extend Minitest::Serial
+
   def test_allows_narrow_disable_directives
     assert_empty(violations("disable Lint/EmptyBlock"))
   end
