@@ -114,6 +114,7 @@ module OpenAI
                   output_index: event.output_index,
                   sequence_number: event.sequence_number,
                   type: event.type,
+                  **event.to_h.slice(:logprobs),
                   snapshot: content.text
                 )
             else
@@ -146,6 +147,7 @@ module OpenAI
                 sequence_number: event.sequence_number,
                 text: event.text,
                 type: event.type,
+                **event.to_h.slice(:logprobs),
                 parsed: parsed
               )
 
