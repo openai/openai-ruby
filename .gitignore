@@ -10,3 +10,5 @@ Brewfile.lock.json
 doc/
 sorbet/tapioca/*
 tmp/
+
+/scripts/steady/.cache/
