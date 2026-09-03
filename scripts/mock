@@ -83,12 +83,14 @@ require_lsof() {
   fi
 }
 
+if [ "$1" == "--daemon" ]; then
+  require_lsof
+fi
+
 ./scripts/steady/install
 
 # Run steady mock on the given spec
 if [ "$1" == "--daemon" ]; then
-  require_lsof
-
   # Check the local launcher before starting the readiness timeout
   ./scripts/run-steady --version
 
