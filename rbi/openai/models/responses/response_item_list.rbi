@@ -53,6 +53,7 @@ module OpenAI
                 OpenAI::Responses::ResponseToolSearchCall::OrHash,
                 OpenAI::Responses::ResponseToolSearchOutputItem::OrHash,
                 OpenAI::Responses::ResponseItem::AdditionalTools::OrHash,
+                OpenAI::Responses::ResponseConfigurationUpdateItem::OrHash,
                 OpenAI::Responses::ResponseReasoningItem::OrHash,
                 OpenAI::Responses::ResponseItem::Program::OrHash,
                 OpenAI::Responses::ResponseItem::ProgramOutput::OrHash,

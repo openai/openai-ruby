@@ -16,7 +16,12 @@ module OpenAI
         #   @return [String]
         required :message, String
 
-        # @!method initialize(code:, message:)
+        # @!attribute misalignment
+        #
+        #   @return [OpenAI::Models::Responses::ResponseError::Misalignment, nil]
+        optional :misalignment, -> { OpenAI::Responses::ResponseError::Misalignment }
+
+        # @!method initialize(code:, message:, misalignment: nil)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseError} for more details.
         #
@@ -25,6 +30,8 @@ module OpenAI
         #   @param code [Symbol, OpenAI::Models::Responses::ResponseError::Code] The error code for the response.
         #
         #   @param message [String] A human-readable description of the error.
+        #
+        #   @param misalignment [OpenAI::Models::Responses::ResponseError::Misalignment]
 
         # The error code for the response.
         #
@@ -37,6 +44,7 @@ module OpenAI
           INVALID_PROMPT = :invalid_prompt
           DATA_RESIDENCY_MISMATCH = :data_residency_mismatch
           BIO_POLICY = :bio_policy
+          MISALIGNMENT_POLICY_VIOLATION = :misalignment_policy_violation
           VECTOR_STORE_TIMEOUT = :vector_store_timeout
           INVALID_IMAGE = :invalid_image
           INVALID_IMAGE_FORMAT = :invalid_image_format
@@ -55,6 +63,93 @@ module OpenAI
 
           # @!method self.values
           #   @return [Array<Symbol>]
+        end
+
+        # @see OpenAI::Models::Responses::ResponseError#misalignment
+        class Misalignment < OpenAI::Internal::Type::BaseModel
+          # @!attribute detailed_explanation
+          #   The public explanation for this block.
+          #
+          #   @return [String, nil]
+          optional :detailed_explanation, String
+
+          # @!attribute error_type
+          #   An optional classification; clients must accept additional values.
+          #
+          #   @return [String, Symbol, OpenAI::Models::Responses::ResponseError::Misalignment::ErrorType, nil]
+          optional :error_type, union: -> { OpenAI::Responses::ResponseError::Misalignment::ErrorType }
+
+          # @!attribute steer
+          #   An optional public continuation instruction.
+          #
+          #   @return [OpenAI::Models::Responses::ResponseError::Misalignment::Steer, nil]
+          optional :steer, -> { OpenAI::Responses::ResponseError::Misalignment::Steer }
+
+          # @!method initialize(detailed_explanation: nil, error_type: nil, steer: nil)
+          #   @param detailed_explanation [String] The public explanation for this block.
+          #
+          #   @param error_type [String, Symbol, OpenAI::Models::Responses::ResponseError::Misalignment::ErrorType] An optional classification; clients must accept additional values.
+          #
+          #   @param steer [OpenAI::Models::Responses::ResponseError::Misalignment::Steer] An optional public continuation instruction.
+
+          # An optional classification; clients must accept additional values.
+          #
+          # @see OpenAI::Models::Responses::ResponseError::Misalignment#error_type
+          module ErrorType
+            extend OpenAI::Internal::Type::Union
+
+            variant String
+
+            variant(
+              const: -> {
+                OpenAI::Models::Responses::ResponseError::Misalignment::ErrorType::POTENTIALLY_UNINTENDED_DATA_TRANSFER
+              }
+            )
+
+            variant(
+              const: -> {
+                OpenAI::Models::Responses::ResponseError::Misalignment::ErrorType::POTENTIALLY_UNINTENDED_DATA_ACCESS
+              }
+            )
+
+            variant(
+              const: -> {
+                OpenAI::Models::Responses::ResponseError::Misalignment::ErrorType::POTENTIALLY_UNINTENDED_DESTRUCTIVE_ACTIVITY
+              }
+            )
+
+            variant const: -> { OpenAI::Models::Responses::ResponseError::Misalignment::ErrorType::OTHER }
+
+            # @!method self.variants
+            #   @return [Array(String, Symbol)]
+
+            define_sorbet_constant!(:Variants) do
+              T.type_alias { T.any(String, OpenAI::Responses::ResponseError::Misalignment::ErrorType::TaggedSymbol) }
+            end
+
+            # @!group
+
+            POTENTIALLY_UNINTENDED_DATA_TRANSFER = :potentially_unintended_data_transfer
+            POTENTIALLY_UNINTENDED_DATA_ACCESS = :potentially_unintended_data_access
+            POTENTIALLY_UNINTENDED_DESTRUCTIVE_ACTIVITY = :potentially_unintended_destructive_activity
+            OTHER = :other
+
+            # @!endgroup
+          end
+
+          # @see OpenAI::Models::Responses::ResponseError::Misalignment#steer
+          class Steer < OpenAI::Internal::Type::BaseModel
+            # @!attribute message
+            #   The public continuation instruction.
+            #
+            #   @return [String]
+            required :message, String
+
+            # @!method initialize(message:)
+            #   An optional public continuation instruction.
+            #
+            #   @param message [String] The public continuation instruction.
+          end
         end
       end
     end

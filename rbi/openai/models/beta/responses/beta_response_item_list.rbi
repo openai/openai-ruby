@@ -56,6 +56,7 @@ module OpenAI
                   OpenAI::Beta::BetaResponseToolSearchCall::OrHash,
                   OpenAI::Beta::BetaResponseToolSearchOutputItem::OrHash,
                   OpenAI::Beta::BetaResponseItem::AdditionalTools::OrHash,
+                  OpenAI::Beta::BetaResponseConfigurationUpdateItem::OrHash,
                   OpenAI::Beta::BetaResponseReasoningItem::OrHash,
                   OpenAI::Beta::BetaResponseItem::Program::OrHash,
                   OpenAI::Beta::BetaResponseItem::ProgramOutput::OrHash,

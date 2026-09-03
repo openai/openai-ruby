@@ -1,0 +1,87 @@
+module OpenAI
+  module Models
+    class BetaResponseConfigurationUpdateItemParam = Beta::BetaResponseConfigurationUpdateItemParam
+
+    module Beta
+      type beta_response_configuration_update_item_param =
+        {
+          type: :configuration_update,
+          id: String?,
+          agent: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Agent?,
+          reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning
+        }
+
+      class BetaResponseConfigurationUpdateItemParam < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :configuration_update
+
+        attr_accessor id: String?
+
+        attr_accessor agent: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Agent?
+
+        attr_reader reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning?
+
+        def reasoning=: (
+          OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning
+        ) -> OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning
+
+        def initialize: (
+          ?id: String?,
+          ?agent: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Agent?,
+          ?reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning,
+          ?type: :configuration_update
+        ) -> void
+
+        def to_hash: -> {
+          type: :configuration_update,
+          id: String?,
+          agent: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Agent?,
+          reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning
+        }
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+
+        type reasoning =
+          {
+            effort: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning::effort?
+          }
+
+        class Reasoning < OpenAI::Internal::Type::BaseModel
+          attr_accessor effort: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning::effort?
+
+          def initialize: (
+            ?effort: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning::effort?
+          ) -> void
+
+          def to_hash: -> {
+            effort: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning::effort?
+          }
+
+          type effort =
+            :none | :minimal | :low | :medium | :high | :xhigh | :max
+
+          module Effort
+            extend OpenAI::Internal::Type::Enum
+
+            NONE: :none
+            MINIMAL: :minimal
+            LOW: :low
+            MEDIUM: :medium
+            HIGH: :high
+            XHIGH: :xhigh
+            MAX: :max
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning::effort]
+          end
+        end
+      end
+    end
+  end
+end

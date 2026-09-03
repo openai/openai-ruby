@@ -4,21 +4,33 @@ module OpenAI
 
     module Beta
       type beta_response_error =
-        { code: OpenAI::Models::Beta::BetaResponseError::code, message: String }
+        {
+          code: OpenAI::Models::Beta::BetaResponseError::code,
+          message: String,
+          misalignment: OpenAI::Beta::BetaResponseError::Misalignment
+        }
 
       class BetaResponseError < OpenAI::Internal::Type::BaseModel
         attr_accessor code: OpenAI::Models::Beta::BetaResponseError::code
 
         attr_accessor message: String
 
+        attr_reader misalignment: OpenAI::Beta::BetaResponseError::Misalignment?
+
+        def misalignment=: (
+          OpenAI::Beta::BetaResponseError::Misalignment
+        ) -> OpenAI::Beta::BetaResponseError::Misalignment
+
         def initialize: (
           code: OpenAI::Models::Beta::BetaResponseError::code,
-          message: String
+          message: String,
+          ?misalignment: OpenAI::Beta::BetaResponseError::Misalignment
         ) -> void
 
         def to_hash: -> {
           code: OpenAI::Models::Beta::BetaResponseError::code,
-          message: String
+          message: String,
+          misalignment: OpenAI::Beta::BetaResponseError::Misalignment
         }
 
         type code =
@@ -27,6 +39,7 @@ module OpenAI
           | :invalid_prompt
           | :data_residency_mismatch
           | :bio_policy
+          | :misalignment_policy_violation
           | :vector_store_timeout
           | :invalid_image
           | :invalid_image_format
@@ -51,6 +64,7 @@ module OpenAI
           INVALID_PROMPT: :invalid_prompt
           DATA_RESIDENCY_MISMATCH: :data_residency_mismatch
           BIO_POLICY: :bio_policy
+          MISALIGNMENT_POLICY_VIOLATION: :misalignment_policy_violation
           VECTOR_STORE_TIMEOUT: :vector_store_timeout
           INVALID_IMAGE: :invalid_image
           INVALID_IMAGE_FORMAT: :invalid_image_format
@@ -68,6 +82,71 @@ module OpenAI
           IMAGE_FILE_NOT_FOUND: :image_file_not_found
 
           def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseError::code]
+        end
+
+        type misalignment =
+          {
+            detailed_explanation: String,
+            error_type: OpenAI::Models::Beta::BetaResponseError::Misalignment::error_type,
+            steer: OpenAI::Beta::BetaResponseError::Misalignment::Steer
+          }
+
+        class Misalignment < OpenAI::Internal::Type::BaseModel
+          attr_reader detailed_explanation: String?
+
+          def detailed_explanation=: (String) -> String
+
+          attr_reader error_type: OpenAI::Models::Beta::BetaResponseError::Misalignment::error_type?
+
+          def error_type=: (
+            OpenAI::Models::Beta::BetaResponseError::Misalignment::error_type
+          ) -> OpenAI::Models::Beta::BetaResponseError::Misalignment::error_type
+
+          attr_reader steer: OpenAI::Beta::BetaResponseError::Misalignment::Steer?
+
+          def steer=: (
+            OpenAI::Beta::BetaResponseError::Misalignment::Steer
+          ) -> OpenAI::Beta::BetaResponseError::Misalignment::Steer
+
+          def initialize: (
+            ?detailed_explanation: String,
+            ?error_type: OpenAI::Models::Beta::BetaResponseError::Misalignment::error_type,
+            ?steer: OpenAI::Beta::BetaResponseError::Misalignment::Steer
+          ) -> void
+
+          def to_hash: -> {
+            detailed_explanation: String,
+            error_type: OpenAI::Models::Beta::BetaResponseError::Misalignment::error_type,
+            steer: OpenAI::Beta::BetaResponseError::Misalignment::Steer
+          }
+
+          type error_type =
+            String
+            | :potentially_unintended_data_transfer
+            | :potentially_unintended_data_access
+            | :potentially_unintended_destructive_activity
+            | :other
+
+          module ErrorType
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseError::Misalignment::error_type]
+
+            POTENTIALLY_UNINTENDED_DATA_TRANSFER: :potentially_unintended_data_transfer
+            POTENTIALLY_UNINTENDED_DATA_ACCESS: :potentially_unintended_data_access
+            POTENTIALLY_UNINTENDED_DESTRUCTIVE_ACTIVITY: :potentially_unintended_destructive_activity
+            OTHER: :other
+          end
+
+          type steer = { message: String }
+
+          class Steer < OpenAI::Internal::Type::BaseModel
+            attr_accessor message: String
+
+            def initialize: (message: String) -> void
+
+            def to_hash: -> { message: String }
+          end
         end
       end
     end

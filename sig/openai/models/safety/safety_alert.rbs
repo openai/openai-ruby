@@ -1,0 +1,81 @@
+module OpenAI
+  module Models
+    class SafetyAlert = Safety::SafetyAlert
+
+    module Safety
+      type safety_alert =
+        {
+          id: String,
+          created_at: Integer,
+          error_type: OpenAI::Models::Safety::SafetyAlert::error_type,
+          model: String,
+          object: :"safety.alert",
+          reason: String?,
+          request_id: String,
+          request_paused: bool,
+          response_id: String
+        }
+
+      class SafetyAlert < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor error_type: OpenAI::Models::Safety::SafetyAlert::error_type
+
+        attr_accessor model: String
+
+        attr_accessor object: :"safety.alert"
+
+        attr_accessor reason: String?
+
+        attr_accessor request_id: String
+
+        attr_accessor request_paused: bool
+
+        attr_accessor response_id: String
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          error_type: OpenAI::Models::Safety::SafetyAlert::error_type,
+          model: String,
+          reason: String?,
+          request_id: String,
+          request_paused: bool,
+          response_id: String,
+          ?object: :"safety.alert"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          error_type: OpenAI::Models::Safety::SafetyAlert::error_type,
+          model: String,
+          object: :"safety.alert",
+          reason: String?,
+          request_id: String,
+          request_paused: bool,
+          response_id: String
+        }
+
+        type error_type =
+          :potentially_unintended_data_transfer
+          | :potentially_unintended_data_access
+          | :potentially_unintended_destructive_activity
+          | :other
+
+        module ErrorType
+          extend OpenAI::Internal::Type::Enum
+
+          POTENTIALLY_UNINTENDED_DATA_TRANSFER: :potentially_unintended_data_transfer
+          POTENTIALLY_UNINTENDED_DATA_ACCESS: :potentially_unintended_data_access
+          POTENTIALLY_UNINTENDED_DESTRUCTIVE_ACTIVITY: :potentially_unintended_destructive_activity
+          OTHER: :other
+
+          def self?.values: -> ::Array[OpenAI::Models::Safety::SafetyAlert::error_type]
+        end
+      end
+    end
+  end
+end

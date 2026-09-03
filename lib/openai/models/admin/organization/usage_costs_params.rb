@@ -53,7 +53,7 @@ module OpenAI
 
           # @!attribute line_items
           #   Return only costs for these exact line item names. Each value must match the
-          #   complete `line_item` value, for example `gpt-5.6-sol, input_tokens`.
+          #   complete `line_item` value, for example `gpt-6-astra, input_tokens`.
           #
           #   @return [Array<String>, nil]
           optional :line_items, OpenAI::Internal::Type::ArrayOf[String]

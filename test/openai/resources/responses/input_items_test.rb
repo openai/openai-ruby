@@ -20,7 +20,7 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
     assert_pattern do
       case row
       in (
-        OpenAI::Responses::ResponseInputMessageItem | OpenAI::Responses::ResponseOutputMessage | OpenAI::Responses::ResponseFileSearchToolCall | OpenAI::Responses::ResponseComputerToolCall | OpenAI::Responses::ResponseComputerToolCallOutputItem | OpenAI::Responses::ResponseFunctionWebSearch | OpenAI::Responses::ResponseFunctionToolCallItem | OpenAI::Responses::ResponseFunctionToolCallOutputItem | OpenAI::Responses::ResponseToolSearchCall | OpenAI::Responses::ResponseToolSearchOutputItem | OpenAI::Responses::ResponseItem::AdditionalTools | OpenAI::Responses::ResponseReasoningItem | OpenAI::Responses::ResponseItem::Program | OpenAI::Responses::ResponseItem::ProgramOutput | OpenAI::Responses::ResponseCompactionItem | OpenAI::Responses::ResponseItem::ImageGenerationCall | OpenAI::Responses::ResponseCodeInterpreterToolCall | OpenAI::Responses::ResponseItem::LocalShellCall | OpenAI::Responses::ResponseItem::LocalShellCallOutput | OpenAI::Responses::ResponseFunctionShellToolCall | OpenAI::Responses::ResponseFunctionShellToolCallOutput | OpenAI::Responses::ResponseApplyPatchToolCall | OpenAI::Responses::ResponseApplyPatchToolCallOutput | OpenAI::Responses::ResponseItem::McpListTools | OpenAI::Responses::ResponseItem::McpApprovalRequest | OpenAI::Responses::ResponseItem::McpApprovalResponse | OpenAI::Responses::ResponseItem::McpCall | OpenAI::Responses::ResponseCustomToolCallItem | OpenAI::Responses::ResponseCustomToolCallOutputItem
+        OpenAI::Responses::ResponseInputMessageItem | OpenAI::Responses::ResponseOutputMessage | OpenAI::Responses::ResponseFileSearchToolCall | OpenAI::Responses::ResponseComputerToolCall | OpenAI::Responses::ResponseComputerToolCallOutputItem | OpenAI::Responses::ResponseFunctionWebSearch | OpenAI::Responses::ResponseFunctionToolCallItem | OpenAI::Responses::ResponseFunctionToolCallOutputItem | OpenAI::Responses::ResponseToolSearchCall | OpenAI::Responses::ResponseToolSearchOutputItem | OpenAI::Responses::ResponseItem::AdditionalTools | OpenAI::Responses::ResponseConfigurationUpdateItem | OpenAI::Responses::ResponseReasoningItem | OpenAI::Responses::ResponseItem::Program | OpenAI::Responses::ResponseItem::ProgramOutput | OpenAI::Responses::ResponseCompactionItem | OpenAI::Responses::ResponseItem::ImageGenerationCall | OpenAI::Responses::ResponseCodeInterpreterToolCall | OpenAI::Responses::ResponseItem::LocalShellCall | OpenAI::Responses::ResponseItem::LocalShellCallOutput | OpenAI::Responses::ResponseFunctionShellToolCall | OpenAI::Responses::ResponseFunctionShellToolCallOutput | OpenAI::Responses::ResponseApplyPatchToolCall | OpenAI::Responses::ResponseApplyPatchToolCallOutput | OpenAI::Responses::ResponseItem::McpListTools | OpenAI::Responses::ResponseItem::McpApprovalRequest | OpenAI::Responses::ResponseItem::McpApprovalResponse | OpenAI::Responses::ResponseItem::McpCall | OpenAI::Responses::ResponseCustomToolCallItem | OpenAI::Responses::ResponseCustomToolCallOutputItem
       )
         nil
       end
@@ -104,6 +104,10 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
             id: String,
             role: OpenAI::Responses::ResponseItem::AdditionalTools::Role,
             tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool])
+          } | {
+            type: :configuration_update,
+            id: String,
+            reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning | nil
           } | {
             type: :reasoning,
             id: String,

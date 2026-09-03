@@ -195,6 +195,8 @@ module OpenAI
 
   module ResponsesModel = OpenAI::Models::ResponsesModel
 
+  module Safety = OpenAI::Models::Safety
+
   class Skill = OpenAI::Models::Skill
 
   class SkillCreateParams = OpenAI::Models::SkillCreateParams

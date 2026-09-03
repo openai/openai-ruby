@@ -1,0 +1,182 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_steer_input =
+        String
+        | ::Array[OpenAI::Models::Responses::ResponseSteerInput::response_steer_input_item_list]
+
+      module ResponseSteerInput
+        extend OpenAI::Internal::Type::Union
+
+        type response_steer_input_item_list =
+          OpenAI::Responses::ResponseSteerInput::ResponseSteerInputItemList::Message
+          | OpenAI::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput
+
+        module ResponseSteerInputItemList
+          extend OpenAI::Internal::Type::Union
+
+          type message =
+            {
+              content: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::Message::content,
+              role: :user,
+              type: :message,
+              id: String?,
+              status: String?
+            }
+
+          class Message < OpenAI::Internal::Type::BaseModel
+            attr_accessor content: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::Message::content
+
+            attr_accessor role: :user
+
+            attr_accessor type: :message
+
+            attr_accessor id: String?
+
+            attr_accessor status: String?
+
+            def initialize: (
+              content: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::Message::content,
+              ?id: String?,
+              ?status: String?,
+              ?role: :user,
+              ?type: :message
+            ) -> void
+
+            def to_hash: -> {
+              content: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::Message::content,
+              role: :user,
+              type: :message,
+              id: String?,
+              status: String?
+            }
+
+            type content =
+              ::Array[OpenAI::Models::Responses::response_steer_input_content]
+              | String
+
+            module Content
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::Message::content]
+
+              ResponseSteerInputContentArray: OpenAI::Internal::Type::Converter
+            end
+          end
+
+          type function_call_output =
+            {
+              output: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::output,
+              type: :function_call_output,
+              id: String?,
+              call_id: String?,
+              caller_: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::caller_?,
+              name: String?,
+              namespace: String?,
+              status: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::status?
+            }
+
+          class FunctionCallOutput < OpenAI::Internal::Type::BaseModel
+            attr_accessor output: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::output
+
+            attr_accessor type: :function_call_output
+
+            attr_accessor id: String?
+
+            attr_accessor call_id: String?
+
+            attr_accessor caller_: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::caller_?
+
+            attr_accessor name: String?
+
+            attr_accessor namespace: String?
+
+            attr_accessor status: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::status?
+
+            def initialize: (
+              output: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::output,
+              ?id: String?,
+              ?call_id: String?,
+              ?caller_: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::caller_?,
+              ?name: String?,
+              ?namespace: String?,
+              ?status: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::status?,
+              ?type: :function_call_output
+            ) -> void
+
+            def to_hash: -> {
+              output: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::output,
+              type: :function_call_output,
+              id: String?,
+              call_id: String?,
+              caller_: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::caller_?,
+              name: String?,
+              namespace: String?,
+              status: OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::status?
+            }
+
+            type output =
+              String
+              | OpenAI::Models::Responses::response_function_call_output_item_list
+
+            module Output
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::output]
+            end
+
+            type caller_ =
+              OpenAI::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::Caller::Direct
+              | OpenAI::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::Caller::Program
+
+            module Caller
+              extend OpenAI::Internal::Type::Union
+
+              type direct = { type: :direct }
+
+              class Direct < OpenAI::Internal::Type::BaseModel
+                attr_accessor type: :direct
+
+                def initialize: (?type: :direct) -> void
+
+                def to_hash: -> { type: :direct }
+              end
+
+              type program = { caller_id: String, type: :program }
+
+              class Program < OpenAI::Internal::Type::BaseModel
+                attr_accessor caller_id: String
+
+                attr_accessor type: :program
+
+                def initialize: (caller_id: String, ?type: :program) -> void
+
+                def to_hash: -> { caller_id: String, type: :program }
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::caller_]
+            end
+
+            type status = :in_progress | :completed | :incomplete
+
+            module Status
+              extend OpenAI::Internal::Type::Enum
+
+              IN_PROGRESS: :in_progress
+              COMPLETED: :completed
+              INCOMPLETE: :incomplete
+
+              def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseSteerInput::ResponseSteerInputItemList::FunctionCallOutput::status]
+            end
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseSteerInput::response_steer_input_item_list]
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Responses::response_steer_input]
+
+        ResponseSteerInputItemListArray: OpenAI::Internal::Type::Converter
+      end
+    end
+  end
+end

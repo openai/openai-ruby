@@ -34,7 +34,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
     assert_pattern do
       case response
       in (
-        OpenAI::Conversations::Message | OpenAI::Responses::ResponseFunctionToolCallItem | OpenAI::Responses::ResponseFunctionToolCallOutputItem | OpenAI::Responses::ResponseFileSearchToolCall | OpenAI::Responses::ResponseFunctionWebSearch | OpenAI::Conversations::ConversationItem::ImageGenerationCall | OpenAI::Responses::ResponseComputerToolCall | OpenAI::Responses::ResponseComputerToolCallOutputItem | OpenAI::Responses::ResponseToolSearchCall | OpenAI::Responses::ResponseToolSearchOutputItem | OpenAI::Conversations::ConversationItem::AdditionalTools | OpenAI::Responses::ResponseReasoningItem | OpenAI::Conversations::ConversationItem::Program | OpenAI::Conversations::ConversationItem::ProgramOutput | OpenAI::Responses::ResponseCompactionItem | OpenAI::Responses::ResponseCodeInterpreterToolCall | OpenAI::Conversations::ConversationItem::LocalShellCall | OpenAI::Conversations::ConversationItem::LocalShellCallOutput | OpenAI::Responses::ResponseFunctionShellToolCall | OpenAI::Responses::ResponseFunctionShellToolCallOutput | OpenAI::Responses::ResponseApplyPatchToolCall | OpenAI::Responses::ResponseApplyPatchToolCallOutput | OpenAI::Conversations::ConversationItem::McpListTools | OpenAI::Conversations::ConversationItem::McpApprovalRequest | OpenAI::Conversations::ConversationItem::McpApprovalResponse | OpenAI::Conversations::ConversationItem::McpCall | OpenAI::Responses::ResponseCustomToolCall | OpenAI::Responses::ResponseCustomToolCallOutput
+        OpenAI::Conversations::Message | OpenAI::Responses::ResponseFunctionToolCallItem | OpenAI::Responses::ResponseFunctionToolCallOutputItem | OpenAI::Responses::ResponseFileSearchToolCall | OpenAI::Responses::ResponseFunctionWebSearch | OpenAI::Conversations::ConversationItem::ImageGenerationCall | OpenAI::Responses::ResponseComputerToolCall | OpenAI::Responses::ResponseComputerToolCallOutputItem | OpenAI::Responses::ResponseToolSearchCall | OpenAI::Responses::ResponseToolSearchOutputItem | OpenAI::Conversations::ConversationItem::AdditionalTools | OpenAI::Responses::ResponseConfigurationUpdateItem | OpenAI::Responses::ResponseReasoningItem | OpenAI::Conversations::ConversationItem::Program | OpenAI::Conversations::ConversationItem::ProgramOutput | OpenAI::Responses::ResponseCompactionItem | OpenAI::Responses::ResponseCodeInterpreterToolCall | OpenAI::Conversations::ConversationItem::LocalShellCall | OpenAI::Conversations::ConversationItem::LocalShellCallOutput | OpenAI::Responses::ResponseFunctionShellToolCall | OpenAI::Responses::ResponseFunctionShellToolCallOutput | OpenAI::Responses::ResponseApplyPatchToolCall | OpenAI::Responses::ResponseApplyPatchToolCallOutput | OpenAI::Conversations::ConversationItem::McpListTools | OpenAI::Conversations::ConversationItem::McpApprovalRequest | OpenAI::Conversations::ConversationItem::McpApprovalResponse | OpenAI::Conversations::ConversationItem::McpCall | OpenAI::Responses::ResponseCustomToolCall | OpenAI::Responses::ResponseCustomToolCallOutput
       )
         nil
       end
@@ -118,6 +118,10 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
             role: OpenAI::Conversations::ConversationItem::AdditionalTools::Role,
             tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool])
           } | {
+            type: :configuration_update,
+            id: String,
+            reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning | nil
+          } | {
             type: :reasoning,
             id: String,
             summary: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseReasoningItem::Summary]),
@@ -212,6 +216,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
             input: String,
             name: String,
             id: String | nil,
+            async: OpenAI::Internal::Type::Boolean | nil,
             caller_: OpenAI::Responses::ResponseCustomToolCall::Caller | nil,
             namespace: String | nil
           } | {
@@ -244,7 +249,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
     assert_pattern do
       case row
       in (
-        OpenAI::Conversations::Message | OpenAI::Responses::ResponseFunctionToolCallItem | OpenAI::Responses::ResponseFunctionToolCallOutputItem | OpenAI::Responses::ResponseFileSearchToolCall | OpenAI::Responses::ResponseFunctionWebSearch | OpenAI::Conversations::ConversationItem::ImageGenerationCall | OpenAI::Responses::ResponseComputerToolCall | OpenAI::Responses::ResponseComputerToolCallOutputItem | OpenAI::Responses::ResponseToolSearchCall | OpenAI::Responses::ResponseToolSearchOutputItem | OpenAI::Conversations::ConversationItem::AdditionalTools | OpenAI::Responses::ResponseReasoningItem | OpenAI::Conversations::ConversationItem::Program | OpenAI::Conversations::ConversationItem::ProgramOutput | OpenAI::Responses::ResponseCompactionItem | OpenAI::Responses::ResponseCodeInterpreterToolCall | OpenAI::Conversations::ConversationItem::LocalShellCall | OpenAI::Conversations::ConversationItem::LocalShellCallOutput | OpenAI::Responses::ResponseFunctionShellToolCall | OpenAI::Responses::ResponseFunctionShellToolCallOutput | OpenAI::Responses::ResponseApplyPatchToolCall | OpenAI::Responses::ResponseApplyPatchToolCallOutput | OpenAI::Conversations::ConversationItem::McpListTools | OpenAI::Conversations::ConversationItem::McpApprovalRequest | OpenAI::Conversations::ConversationItem::McpApprovalResponse | OpenAI::Conversations::ConversationItem::McpCall | OpenAI::Responses::ResponseCustomToolCall | OpenAI::Responses::ResponseCustomToolCallOutput
+        OpenAI::Conversations::Message | OpenAI::Responses::ResponseFunctionToolCallItem | OpenAI::Responses::ResponseFunctionToolCallOutputItem | OpenAI::Responses::ResponseFileSearchToolCall | OpenAI::Responses::ResponseFunctionWebSearch | OpenAI::Conversations::ConversationItem::ImageGenerationCall | OpenAI::Responses::ResponseComputerToolCall | OpenAI::Responses::ResponseComputerToolCallOutputItem | OpenAI::Responses::ResponseToolSearchCall | OpenAI::Responses::ResponseToolSearchOutputItem | OpenAI::Conversations::ConversationItem::AdditionalTools | OpenAI::Responses::ResponseConfigurationUpdateItem | OpenAI::Responses::ResponseReasoningItem | OpenAI::Conversations::ConversationItem::Program | OpenAI::Conversations::ConversationItem::ProgramOutput | OpenAI::Responses::ResponseCompactionItem | OpenAI::Responses::ResponseCodeInterpreterToolCall | OpenAI::Conversations::ConversationItem::LocalShellCall | OpenAI::Conversations::ConversationItem::LocalShellCallOutput | OpenAI::Responses::ResponseFunctionShellToolCall | OpenAI::Responses::ResponseFunctionShellToolCallOutput | OpenAI::Responses::ResponseApplyPatchToolCall | OpenAI::Responses::ResponseApplyPatchToolCallOutput | OpenAI::Conversations::ConversationItem::McpListTools | OpenAI::Conversations::ConversationItem::McpApprovalRequest | OpenAI::Conversations::ConversationItem::McpApprovalResponse | OpenAI::Conversations::ConversationItem::McpCall | OpenAI::Responses::ResponseCustomToolCall | OpenAI::Responses::ResponseCustomToolCallOutput
       )
         nil
       end
@@ -328,6 +333,10 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
             role: OpenAI::Conversations::ConversationItem::AdditionalTools::Role,
             tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool])
           } | {
+            type: :configuration_update,
+            id: String,
+            reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning | nil
+          } | {
             type: :reasoning,
             id: String,
             summary: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseReasoningItem::Summary]),
@@ -422,6 +431,7 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
             input: String,
             name: String,
             id: String | nil,
+            async: OpenAI::Internal::Type::Boolean | nil,
             caller_: OpenAI::Responses::ResponseCustomToolCall::Caller | nil,
             namespace: String | nil
           } | {

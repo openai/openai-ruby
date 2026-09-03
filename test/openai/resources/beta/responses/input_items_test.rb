@@ -20,7 +20,7 @@ class OpenAI::Test::Resources::Beta::Responses::InputItemsTest < OpenAI::Test::R
     assert_pattern do
       case row
       in (
-        OpenAI::Beta::BetaResponseInputMessageItem | OpenAI::Beta::BetaResponseOutputMessage | OpenAI::Beta::BetaResponseFileSearchToolCall | OpenAI::Beta::BetaResponseComputerToolCall | OpenAI::Beta::BetaResponseComputerToolCallOutputItem | OpenAI::Beta::BetaResponseFunctionWebSearch | OpenAI::Beta::BetaResponseFunctionToolCallItem | OpenAI::Beta::BetaResponseFunctionToolCallOutputItem | OpenAI::Beta::BetaResponseItem::AgentMessage | OpenAI::Beta::BetaResponseItem::MultiAgentCall | OpenAI::Beta::BetaResponseItem::MultiAgentCallOutput | OpenAI::Beta::BetaResponseToolSearchCall | OpenAI::Beta::BetaResponseToolSearchOutputItem | OpenAI::Beta::BetaResponseItem::AdditionalTools | OpenAI::Beta::BetaResponseReasoningItem | OpenAI::Beta::BetaResponseItem::Program | OpenAI::Beta::BetaResponseItem::ProgramOutput | OpenAI::Beta::BetaResponseCompactionItem | OpenAI::Beta::BetaResponseItem::ImageGenerationCall | OpenAI::Beta::BetaResponseCodeInterpreterToolCall | OpenAI::Beta::BetaResponseItem::LocalShellCall | OpenAI::Beta::BetaResponseItem::LocalShellCallOutput | OpenAI::Beta::BetaResponseFunctionShellToolCall | OpenAI::Beta::BetaResponseFunctionShellToolCallOutput | OpenAI::Beta::BetaResponseApplyPatchToolCall | OpenAI::Beta::BetaResponseApplyPatchToolCallOutput | OpenAI::Beta::BetaResponseItem::McpListTools | OpenAI::Beta::BetaResponseItem::McpApprovalRequest | OpenAI::Beta::BetaResponseItem::McpApprovalResponse | OpenAI::Beta::BetaResponseItem::McpCall | OpenAI::Beta::BetaResponseCustomToolCallItem | OpenAI::Beta::BetaResponseCustomToolCallOutputItem
+        OpenAI::Beta::BetaResponseInputMessageItem | OpenAI::Beta::BetaResponseOutputMessage | OpenAI::Beta::BetaResponseFileSearchToolCall | OpenAI::Beta::BetaResponseComputerToolCall | OpenAI::Beta::BetaResponseComputerToolCallOutputItem | OpenAI::Beta::BetaResponseFunctionWebSearch | OpenAI::Beta::BetaResponseFunctionToolCallItem | OpenAI::Beta::BetaResponseFunctionToolCallOutputItem | OpenAI::Beta::BetaResponseItem::AgentMessage | OpenAI::Beta::BetaResponseItem::MultiAgentCall | OpenAI::Beta::BetaResponseItem::MultiAgentCallOutput | OpenAI::Beta::BetaResponseToolSearchCall | OpenAI::Beta::BetaResponseToolSearchOutputItem | OpenAI::Beta::BetaResponseItem::AdditionalTools | OpenAI::Beta::BetaResponseConfigurationUpdateItem | OpenAI::Beta::BetaResponseReasoningItem | OpenAI::Beta::BetaResponseItem::Program | OpenAI::Beta::BetaResponseItem::ProgramOutput | OpenAI::Beta::BetaResponseCompactionItem | OpenAI::Beta::BetaResponseItem::ImageGenerationCall | OpenAI::Beta::BetaResponseCodeInterpreterToolCall | OpenAI::Beta::BetaResponseItem::LocalShellCall | OpenAI::Beta::BetaResponseItem::LocalShellCallOutput | OpenAI::Beta::BetaResponseFunctionShellToolCall | OpenAI::Beta::BetaResponseFunctionShellToolCallOutput | OpenAI::Beta::BetaResponseApplyPatchToolCall | OpenAI::Beta::BetaResponseApplyPatchToolCallOutput | OpenAI::Beta::BetaResponseItem::McpListTools | OpenAI::Beta::BetaResponseItem::McpApprovalRequest | OpenAI::Beta::BetaResponseItem::McpApprovalResponse | OpenAI::Beta::BetaResponseItem::McpCall | OpenAI::Beta::BetaResponseCustomToolCallItem | OpenAI::Beta::BetaResponseCustomToolCallOutputItem
       )
         nil
       end
@@ -135,6 +135,11 @@ class OpenAI::Test::Resources::Beta::Responses::InputItemsTest < OpenAI::Test::R
             role: OpenAI::Beta::BetaResponseItem::AdditionalTools::Role,
             tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaTool]),
             agent: OpenAI::Beta::BetaResponseItem::AdditionalTools::Agent | nil
+          } | {
+            type: :configuration_update,
+            id: String,
+            agent: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Agent | nil,
+            reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Reasoning | nil
           } | {
             type: :reasoning,
             id: String,

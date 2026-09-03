@@ -6,7 +6,7 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
   def test_create_required_params
     response = @openai.chat.completions.create(
       messages: [{content: "string", role: :developer}],
-      model: :"gpt-5.6-sol"
+      model: :"gpt-6-astra"
     )
 
     assert_pattern do

@@ -106,6 +106,14 @@ module OpenAI
             }
             attr_accessor :allowed_callers
 
+            # Whether the tool response can be returned asynchronously versus immediately
+            # returned on next response creation.
+            sig { returns(T.nilable(T::Boolean)) }
+            attr_reader :async
+
+            sig { params(async: T::Boolean).void }
+            attr_writer :async
+
             # Whether this function should be deferred and discovered via tool search.
             sig { returns(T.nilable(T::Boolean)) }
             attr_reader :defer_loading
@@ -139,6 +147,8 @@ module OpenAI
                   T::Array[OpenAI::Beta::BetaNamespaceTool::Tool::Function::AllowedCaller::OrSymbol]
                 ),
 
+                async: T::Boolean,
+
                 defer_loading: T::Boolean,
 
                 description: T.nilable(String),
@@ -159,6 +169,10 @@ module OpenAI
 
               # The tool invocation context(s).
               allowed_callers: nil,
+
+              # Whether the tool response can be returned asynchronously versus immediately
+              # returned on next response creation.
+              async: nil,
 
               # Whether this function should be deferred and discovered via tool search.
               defer_loading: nil,
@@ -188,6 +202,7 @@ module OpenAI
                   allowed_callers: T.nilable(
                     T::Array[OpenAI::Beta::BetaNamespaceTool::Tool::Function::AllowedCaller::OrSymbol]
                   ),
+                  async: T::Boolean,
                   defer_loading: T::Boolean,
                   description: T.nilable(String),
                   output_schema: T.nilable(T::Hash[Symbol, T.anything]),

@@ -1,0 +1,46 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_configuration_update_item =
+        {
+          id: String,
+          type: :configuration_update,
+          reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning
+        }
+
+      class ResponseConfigurationUpdateItem < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor type: :configuration_update
+
+        attr_reader reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning?
+
+        def reasoning=: (
+          OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning
+        ) -> OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning
+
+        def initialize: (
+          id: String,
+          ?reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning,
+          ?type: :configuration_update
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          type: :configuration_update,
+          reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning
+        }
+
+        type reasoning = { effort: OpenAI::Models::reasoning_effort? }
+
+        class Reasoning < OpenAI::Internal::Type::BaseModel
+          attr_accessor effort: OpenAI::Models::reasoning_effort?
+
+          def initialize: (?effort: OpenAI::Models::reasoning_effort?) -> void
+
+          def to_hash: -> { effort: OpenAI::Models::reasoning_effort? }
+        end
+      end
+    end
+  end
+end

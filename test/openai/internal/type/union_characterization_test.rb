@@ -25,6 +25,7 @@ class OpenAI::Test::UnionCharacterizationTest < Minitest::Test
       [
         "OpenAI::Models::Responses::EasyInputMessage",
         "OpenAI::Models::Responses::ResponseInputItem::Message",
+        "OpenAI::Models::Responses::ResponseConfigurationUpdateItemParam",
         "OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger"
       ],
       observation.fetch("exact_candidates")

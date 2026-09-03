@@ -1,0 +1,102 @@
+module OpenAI
+  module Models
+    class BetaResponseSteerFailedEvent = Beta::BetaResponseSteerFailedEvent
+
+    module Beta
+      type beta_response_steer_failed_event =
+        {
+          error: OpenAI::Beta::BetaResponseSteerFailedEvent::Error,
+          sequence_number: Integer,
+          steer: OpenAI::Beta::BetaResponseSteerFailedEvent::Steer,
+          type: :"response.steer.failed",
+          stream_id: String
+        }
+
+      class BetaResponseSteerFailedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor error: OpenAI::Beta::BetaResponseSteerFailedEvent::Error
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor steer: OpenAI::Beta::BetaResponseSteerFailedEvent::Steer
+
+        attr_accessor type: :"response.steer.failed"
+
+        attr_reader stream_id: String?
+
+        def stream_id=: (String) -> String
+
+        def initialize: (
+          error: OpenAI::Beta::BetaResponseSteerFailedEvent::Error,
+          sequence_number: Integer,
+          steer: OpenAI::Beta::BetaResponseSteerFailedEvent::Steer,
+          ?stream_id: String,
+          ?type: :"response.steer.failed"
+        ) -> void
+
+        def to_hash: -> {
+          error: OpenAI::Beta::BetaResponseSteerFailedEvent::Error,
+          sequence_number: Integer,
+          steer: OpenAI::Beta::BetaResponseSteerFailedEvent::Steer,
+          type: :"response.steer.failed",
+          stream_id: String
+        }
+
+        type error =
+          {
+            code: OpenAI::Models::Beta::beta_response_steer_error_code,
+            message: String,
+            type: :invalid_request_error
+          }
+
+        class Error < OpenAI::Internal::Type::BaseModel
+          attr_accessor code: OpenAI::Models::Beta::beta_response_steer_error_code
+
+          attr_accessor message: String
+
+          attr_accessor type: :invalid_request_error
+
+          def initialize: (
+            code: OpenAI::Models::Beta::beta_response_steer_error_code,
+            message: String,
+            ?type: :invalid_request_error
+          ) -> void
+
+          def to_hash: -> {
+            code: OpenAI::Models::Beta::beta_response_steer_error_code,
+            message: String,
+            type: :invalid_request_error
+          }
+        end
+
+        type steer =
+          {
+            input: OpenAI::Models::Beta::beta_response_steer_input,
+            previous_response_id: String,
+            id: String
+          }
+
+        class Steer < OpenAI::Internal::Type::BaseModel
+          attr_accessor input: OpenAI::Models::Beta::beta_response_steer_input
+
+          attr_accessor previous_response_id: String
+
+          attr_reader id: String?
+
+          def id=: (String) -> String
+
+          def initialize: (
+            input: OpenAI::Models::Beta::beta_response_steer_input,
+            previous_response_id: String,
+            ?id: String
+          ) -> void
+
+          def to_hash: -> {
+            input: OpenAI::Models::Beta::beta_response_steer_input,
+            previous_response_id: String,
+            id: String
+          }
+        end
+      end
+    end
+  end
+end

@@ -22,6 +22,7 @@ module OpenAI
             OpenAI::Responses::ResponseToolSearchCall,
             OpenAI::Responses::ResponseToolSearchOutputItem,
             OpenAI::Responses::ResponseItem::AdditionalTools,
+            OpenAI::Responses::ResponseConfigurationUpdateItem,
             OpenAI::Responses::ResponseReasoningItem,
             OpenAI::Responses::ResponseItem::Program,
             OpenAI::Responses::ResponseItem::ProgramOutput,

@@ -8,6 +8,7 @@ module OpenAI
           name: String,
           type: :function_call,
           id: String,
+          async: bool,
           caller_: OpenAI::Models::Responses::ResponseFunctionToolCall::caller_?,
           namespace: String,
           status: OpenAI::Models::Responses::ResponseFunctionToolCall::status
@@ -26,6 +27,10 @@ module OpenAI
 
         def id=: (String) -> String
 
+        attr_reader async: bool?
+
+        def async=: (bool) -> bool
+
         attr_accessor caller_: OpenAI::Models::Responses::ResponseFunctionToolCall::caller_?
 
         attr_reader namespace: String?
@@ -43,6 +48,7 @@ module OpenAI
           call_id: String,
           name: String,
           ?id: String,
+          ?async: bool,
           ?caller_: OpenAI::Models::Responses::ResponseFunctionToolCall::caller_?,
           ?namespace: String,
           ?status: OpenAI::Models::Responses::ResponseFunctionToolCall::status,
@@ -55,6 +61,7 @@ module OpenAI
           name: String,
           type: :function_call,
           id: String,
+          async: bool,
           caller_: OpenAI::Models::Responses::ResponseFunctionToolCall::caller_?,
           namespace: String,
           status: OpenAI::Models::Responses::ResponseFunctionToolCall::status

@@ -124,6 +124,10 @@ module OpenAI
         variant :"response.failed", -> { OpenAI::Responses::ResponseFailedEvent }
 
         # An event that is emitted when a response finishes as incomplete.
+        #
+        # Over WebSocket, steering can finish a response with
+        # `response.incomplete_details.reason` set to `steered`, followed automatically
+        # by a successor `response.created` that commits the queued steering input.
         variant :"response.incomplete", -> { OpenAI::Responses::ResponseIncompleteEvent }
 
         # Emitted when a new output item is added.

@@ -11,6 +11,7 @@ module OpenAI
           type: :custom_tool_call,
           id: String,
           agent: OpenAI::Beta::BetaResponseCustomToolCall::Agent?,
+          async: bool,
           caller_: OpenAI::Models::Beta::BetaResponseCustomToolCall::caller_?,
           namespace: String
         }
@@ -30,6 +31,10 @@ module OpenAI
 
         attr_accessor agent: OpenAI::Beta::BetaResponseCustomToolCall::Agent?
 
+        attr_reader async: bool?
+
+        def async=: (bool) -> bool
+
         attr_accessor caller_: OpenAI::Models::Beta::BetaResponseCustomToolCall::caller_?
 
         attr_reader namespace: String?
@@ -42,6 +47,7 @@ module OpenAI
           name: String,
           ?id: String,
           ?agent: OpenAI::Beta::BetaResponseCustomToolCall::Agent?,
+          ?async: bool,
           ?caller_: OpenAI::Models::Beta::BetaResponseCustomToolCall::caller_?,
           ?namespace: String,
           ?type: :custom_tool_call
@@ -54,6 +60,7 @@ module OpenAI
           type: :custom_tool_call,
           id: String,
           agent: OpenAI::Beta::BetaResponseCustomToolCall::Agent?,
+          async: bool,
           caller_: OpenAI::Models::Beta::BetaResponseCustomToolCall::caller_?,
           namespace: String
         }

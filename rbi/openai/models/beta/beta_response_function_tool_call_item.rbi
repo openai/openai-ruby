@@ -50,6 +50,8 @@ module OpenAI
 
             agent: T.nilable(OpenAI::Beta::BetaResponseFunctionToolCall::Agent::OrHash),
 
+            async: T::Boolean,
+
             caller_: T.nilable(
               T.any(
                 OpenAI::Beta::BetaResponseFunctionToolCall::Caller::Direct::OrHash,
@@ -86,6 +88,9 @@ module OpenAI
           # The agent that produced this item.
           agent: nil,
 
+          # Whether the function tool call runs asynchronously.
+          async: nil,
+
           # The execution context that produced this tool call.
           caller_: nil,
 
@@ -111,6 +116,7 @@ module OpenAI
               status: OpenAI::Beta::BetaResponseFunctionToolCallItem::Status::TaggedSymbol,
               type: Symbol,
               agent: T.nilable(OpenAI::Beta::BetaResponseFunctionToolCall::Agent),
+              async: T::Boolean,
               caller_: T.nilable(
                 T.any(
                   OpenAI::Beta::BetaResponseFunctionToolCall::Caller::Direct,

@@ -23,7 +23,7 @@ module OpenAI
         #   @return [String, nil]
         optional :created_by, String
 
-        # @!method initialize(arguments:, call_id:, name:, id:, status:, caller_: nil, namespace: nil, created_by: nil, type: :function_call)
+        # @!method initialize(arguments:, call_id:, name:, id:, status:, async: nil, caller_: nil, namespace: nil, created_by: nil, type: :function_call)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseFunctionToolCallItem} for more details.
         #
@@ -40,6 +40,8 @@ module OpenAI
         #   @param id [String] The unique ID of the function tool call.
         #
         #   @param status [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCallItem::Status] The status of the item. One of `in_progress`, `completed`, or
+        #
+        #   @param async [Boolean] Whether the function tool call runs asynchronously.
         #
         #   @param caller_ [OpenAI::Models::Responses::ResponseFunctionToolCall::Caller::Direct, OpenAI::Models::Responses::ResponseFunctionToolCall::Caller::Program, nil] The execution context that produced this tool call.
         #

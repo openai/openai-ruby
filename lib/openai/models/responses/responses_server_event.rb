@@ -12,6 +12,46 @@ module OpenAI
         # Emitted when an error occurs while processing a Responses WebSocket request.
         variant :error, -> { OpenAI::Responses::ResponsesServerEvent::ResponseWsError }
 
+        # Emitted when steering input has been validated and queued. Acceptance means
+        # the server owns the input, not that it has been applied. The successor's
+        # `response.created` event is the commit point. If accepted input cannot be
+        # committed, `response.steer.failed` returns it with the same steering ID.
+        #
+        # When the response stops for client-owned tool output or approval, the input
+        # remains queued and `response.steer.pending` is emitted after
+        # `response.completed`. Fill the pending event's `required_input` stubs with
+        # saved results and send one matching explicit `response.create` per parent.
+        # Do not resend accepted input while it is still queued.
+        variant :"response.steer.accepted", -> { OpenAI::Responses::ResponseSteerAcceptedEvent }
+
+        # Emitted when accepted steering input remains queued after the target
+        # response completes. The server still owns the input. Do not resend it.
+        # The successor's `response.created` event is the commit point.
+        #
+        # When `reason` is `waiting_for_required_input`, this event follows
+        # `response.completed` while the response waits for the tool results or
+        # approval decisions identified by `required_input`. Copy those stubs, fill
+        # their result fields using the ordinary `response.create` input schemas,
+        # and submit one continuation per parent with the same `previous_response_id`
+        # and WebSocket lane. Use saved results without rerunning tools. The queued
+        # steering input is prepended in submission order to the continuation's
+        # input. That explicit request retains its own settings.
+        #
+        # This notification is emitted at most once per steering submission. Multiple
+        # submissions for the same parent can report the same required inputs; they
+        # do not each require a separate continuation.
+        variant :"response.steer.pending", -> { OpenAI::Responses::ResponseSteerPendingEvent }
+
+        # Emitted when steering input is rejected or cannot be committed to a
+        # successor response. Returns the original, uncommitted input so the client
+        # can carry it into `response.create` when appropriate. Invalid input must
+        # be corrected before retrying.
+        #
+        # Failures after acceptance include the same steering ID. Failures before an
+        # ID is allocated omit `steer.id`. A lost connection or missing acknowledgement
+        # leaves the outcome unknown; it is not proof that the input was rejected.
+        variant :"response.steer.failed", -> { OpenAI::Responses::ResponseSteerFailedEvent }
+
         # Emitted when there is a partial audio response.
         variant :"response.audio.delta", -> { OpenAI::Responses::ResponsesServerEvent::ResponseAudioWsDelta }
 
@@ -145,6 +185,10 @@ module OpenAI
         variant :"response.failed", -> { OpenAI::Responses::ResponsesServerEvent::ResponseWsFailed }
 
         # An event that is emitted when a response finishes as incomplete.
+        #
+        # Over WebSocket, steering can finish a response with
+        # `response.incomplete_details.reason` set to `steered`, followed automatically
+        # by a successor `response.created` that commits the queued steering input.
         variant :"response.incomplete", -> { OpenAI::Responses::ResponsesServerEvent::ResponseWsIncomplete }
 
         # Emitted when a new output item is added.
@@ -996,6 +1040,10 @@ module OpenAI
           #   details.
           #
           #   An event that is emitted when a response finishes as incomplete.
+          #
+          #   Over WebSocket, steering can finish a response with
+          #   `response.incomplete_details.reason` set to `steered`, followed automatically by
+          #   a successor `response.created` that commits the queued steering input.
           #
           #   @param response [OpenAI::Models::Responses::Response] The response that was incomplete.
           #
@@ -1967,7 +2015,15 @@ module OpenAI
             #   @return [Hash{Symbol=>String}, nil]
             optional :headers, OpenAI::Internal::Type::HashOf[String]
 
-            # @!method initialize(code:, message:, param:, type:, headers: nil)
+            # @!attribute misalignment
+            #
+            #   @return [OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment, nil]
+            optional(
+              :misalignment,
+              -> { OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment }
+            )
+
+            # @!method initialize(code:, message:, param:, type:, headers: nil, misalignment: nil)
             #   Details about the error.
             #
             #   @param code [String, nil] The error code that was emitted, if any.
@@ -1979,11 +2035,115 @@ module OpenAI
             #   @param type [String] The error type that was emitted.
             #
             #   @param headers [Hash{Symbol=>String}] The response headers that were emitted with the error, if any.
+            #
+            #   @param misalignment [OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment]
+
+            # @see OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error#misalignment
+            class Misalignment < OpenAI::Internal::Type::BaseModel
+              # @!attribute detailed_explanation
+              #   The public explanation for this block.
+              #
+              #   @return [String, nil]
+              optional :detailed_explanation, String
+
+              # @!attribute error_type
+              #   An optional classification; clients must accept additional values.
+              #
+              #   @return [String, Symbol, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::ErrorType, nil]
+              optional(
+                :error_type,
+                union: -> { OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::ErrorType }
+              )
+
+              # @!attribute steer
+              #   An optional public continuation instruction.
+              #
+              #   @return [OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::Steer, nil]
+              optional(
+                :steer,
+                -> { OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::Steer }
+              )
+
+              # @!method initialize(detailed_explanation: nil, error_type: nil, steer: nil)
+              #   @param detailed_explanation [String] The public explanation for this block.
+              #
+              #   @param error_type [String, Symbol, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::ErrorType] An optional classification; clients must accept additional values.
+              #
+              #   @param steer [OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::Steer] An optional public continuation instruction.
+
+              # An optional classification; clients must accept additional values.
+              #
+              # @see OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment#error_type
+              module ErrorType
+                extend OpenAI::Internal::Type::Union
+
+                variant String
+
+                variant(
+                  const: -> {
+                    OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::ErrorType::POTENTIALLY_UNINTENDED_DATA_TRANSFER
+                  }
+                )
+
+                variant(
+                  const: -> {
+                    OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::ErrorType::POTENTIALLY_UNINTENDED_DATA_ACCESS
+                  }
+                )
+
+                variant(
+                  const: -> {
+                    OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::ErrorType::POTENTIALLY_UNINTENDED_DESTRUCTIVE_ACTIVITY
+                  }
+                )
+
+                variant(
+                  const: -> {
+                    OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::ErrorType::OTHER
+                  }
+                )
+
+                # @!method self.variants
+                #   @return [Array(String, Symbol)]
+
+                define_sorbet_constant!(:Variants) do
+                  T.type_alias do
+                    T.any(
+                      String,
+                      OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::ErrorType::TaggedSymbol
+                    )
+                  end
+                end
+
+                # @!group
+
+                POTENTIALLY_UNINTENDED_DATA_TRANSFER = :potentially_unintended_data_transfer
+                POTENTIALLY_UNINTENDED_DATA_ACCESS = :potentially_unintended_data_access
+                POTENTIALLY_UNINTENDED_DESTRUCTIVE_ACTIVITY = :potentially_unintended_destructive_activity
+                OTHER = :other
+
+                # @!endgroup
+              end
+
+              # @see OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment#steer
+              class Steer < OpenAI::Internal::Type::BaseModel
+                # @!attribute message
+                #   The public continuation instruction.
+                #
+                #   @return [String]
+                required :message, String
+
+                # @!method initialize(message:)
+                #   An optional public continuation instruction.
+                #
+                #   @param message [String] The public continuation instruction.
+              end
+            end
           end
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError, OpenAI::Models::Responses::ResponsesServerEvent::ResponseAudioWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseAudioWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseAudioTranscriptWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseAudioTranscriptWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallCodeWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallCodeWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallWsInterpreting, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseContentPartWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseContentPartWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsCreated, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFileSearchCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFileSearchCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFileSearchCallWsSearching, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFunctionCallArgumentsWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFunctionCallArgumentsWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseShellCallCommandWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseShellCallCommandWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseShellCallCommandWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseShellCallOutputContentWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseShellCallOutputContentWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsFailed, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsIncomplete, OpenAI::Models::Responses::ResponsesServerEvent::ResponseOutputItemWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseOutputItemWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningSummaryPartWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningSummaryPartWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningSummaryTextWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningSummaryTextWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningTextWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningTextWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseRefusalWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseRefusalWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseTextWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseTextWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWebSearchCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWebSearchCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWebSearchCallWsSearching, OpenAI::Models::Responses::ResponsesServerEvent::ResponseImageGenCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseImageGenCallWsGenerating, OpenAI::Models::Responses::ResponsesServerEvent::ResponseImageGenCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseImageGenCallPartialWsImage, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallArgumentsWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallArgumentsWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallWsFailed, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpListToolsWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpListToolsWsFailed, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpListToolsInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseOutputTextAnnotationWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsQueued, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCustomToolCallInputWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCustomToolCallInputWsDone)]
+        #   @return [Array(OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError, OpenAI::Models::Responses::ResponseSteerAcceptedEvent, OpenAI::Models::Responses::ResponseSteerPendingEvent, OpenAI::Models::Responses::ResponseSteerFailedEvent, OpenAI::Models::Responses::ResponsesServerEvent::ResponseAudioWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseAudioWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseAudioTranscriptWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseAudioTranscriptWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallCodeWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallCodeWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallWsInterpreting, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseContentPartWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseContentPartWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsCreated, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFileSearchCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFileSearchCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFileSearchCallWsSearching, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFunctionCallArgumentsWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseFunctionCallArgumentsWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseShellCallCommandWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseShellCallCommandWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseShellCallCommandWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseShellCallOutputContentWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseShellCallOutputContentWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsFailed, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsIncomplete, OpenAI::Models::Responses::ResponsesServerEvent::ResponseOutputItemWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseOutputItemWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningSummaryPartWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningSummaryPartWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningSummaryTextWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningSummaryTextWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningTextWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseReasoningTextWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseRefusalWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseRefusalWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseTextWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseTextWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWebSearchCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWebSearchCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWebSearchCallWsSearching, OpenAI::Models::Responses::ResponsesServerEvent::ResponseImageGenCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseImageGenCallWsGenerating, OpenAI::Models::Responses::ResponsesServerEvent::ResponseImageGenCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseImageGenCallPartialWsImage, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallArgumentsWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallArgumentsWsDone, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallWsFailed, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpCallInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpListToolsWsCompleted, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpListToolsWsFailed, OpenAI::Models::Responses::ResponsesServerEvent::ResponseMcpListToolsInWsProgress, OpenAI::Models::Responses::ResponsesServerEvent::ResponseOutputTextAnnotationWsAdded, OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsQueued, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCustomToolCallInputWsDelta, OpenAI::Models::Responses::ResponsesServerEvent::ResponseCustomToolCallInputWsDone)]
       end
     end
   end

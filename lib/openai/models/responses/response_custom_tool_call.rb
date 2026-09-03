@@ -34,6 +34,12 @@ module OpenAI
         #   @return [String, nil]
         optional :id, String
 
+        # @!attribute async
+        #   Whether the custom tool call runs asynchronously.
+        #
+        #   @return [Boolean, nil]
+        optional :async, OpenAI::Internal::Type::Boolean
+
         # @!attribute caller_
         #   The execution context that produced this tool call.
         #
@@ -51,7 +57,7 @@ module OpenAI
         #   @return [String, nil]
         optional :namespace, String
 
-        # @!method initialize(call_id:, input:, name:, id: nil, caller_: nil, namespace: nil, type: :custom_tool_call)
+        # @!method initialize(call_id:, input:, name:, id: nil, async: nil, caller_: nil, namespace: nil, type: :custom_tool_call)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCustomToolCall} for more details.
         #
@@ -64,6 +70,8 @@ module OpenAI
         #   @param name [String] The name of the custom tool being called.
         #
         #   @param id [String] The unique ID of the custom tool call in the OpenAI platform.
+        #
+        #   @param async [Boolean] Whether the custom tool call runs asynchronously.
         #
         #   @param caller_ [OpenAI::Models::Responses::ResponseCustomToolCall::Caller::Direct, OpenAI::Models::Responses::ResponseCustomToolCall::Caller::Program, nil] The execution context that produced this tool call.
         #

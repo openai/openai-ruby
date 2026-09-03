@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    class BetaResponseSteerEvent = Beta::BetaResponseSteerEvent
+
+    module Beta
+      type beta_response_steer_event =
+        {
+          input: OpenAI::Models::Beta::beta_response_steer_input,
+          previous_response_id: String,
+          type: :"response.steer"
+        }
+
+      class BetaResponseSteerEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor input: OpenAI::Models::Beta::beta_response_steer_input
+
+        attr_accessor previous_response_id: String
+
+        attr_accessor type: :"response.steer"
+
+        def initialize: (
+          input: OpenAI::Models::Beta::beta_response_steer_input,
+          previous_response_id: String,
+          ?type: :"response.steer"
+        ) -> void
+
+        def to_hash: -> {
+          input: OpenAI::Models::Beta::beta_response_steer_input,
+          previous_response_id: String,
+          type: :"response.steer"
+        }
+      end
+    end
+  end
+end

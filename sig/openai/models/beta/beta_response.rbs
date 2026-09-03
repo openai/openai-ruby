@@ -222,7 +222,8 @@ module OpenAI
             reason: OpenAI::Models::Beta::BetaResponse::IncompleteDetails::reason
           }
 
-          type reason = :max_output_tokens | :max_messages | :content_filter
+          type reason =
+            :max_output_tokens | :max_messages | :content_filter | :steered
 
           module Reason
             extend OpenAI::Internal::Type::Enum
@@ -230,6 +231,7 @@ module OpenAI
             MAX_OUTPUT_TOKENS: :max_output_tokens
             MAX_MESSAGES: :max_messages
             CONTENT_FILTER: :content_filter
+            STEERED: :steered
 
             def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::IncompleteDetails::reason]
           end
@@ -247,7 +249,8 @@ module OpenAI
         end
 
         type model =
-          :"gpt-5.6-sol"
+          :"gpt-6-astra"
+          | :"gpt-5.6-sol"
           | :"gpt-5.6-terra"
           | :"gpt-5.6-luna"
           | :"gpt-5.5"
@@ -356,6 +359,7 @@ module OpenAI
 
           def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponse::model]
 
+          GPT_6_ASTRA: :"gpt-6-astra"
           GPT_5_6_SOL: :"gpt-5.6-sol"
           GPT_5_6_TERRA: :"gpt-5.6-terra"
           GPT_5_6_LUNA: :"gpt-5.6-luna"

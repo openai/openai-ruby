@@ -11,6 +11,7 @@ module OpenAI
           type: :function_call,
           id: String,
           agent: OpenAI::Beta::BetaResponseFunctionToolCall::Agent?,
+          async: bool,
           caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCall::caller_?,
           namespace: String,
           status: OpenAI::Models::Beta::BetaResponseFunctionToolCall::status
@@ -31,6 +32,10 @@ module OpenAI
 
         attr_accessor agent: OpenAI::Beta::BetaResponseFunctionToolCall::Agent?
 
+        attr_reader async: bool?
+
+        def async=: (bool) -> bool
+
         attr_accessor caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCall::caller_?
 
         attr_reader namespace: String?
@@ -49,6 +54,7 @@ module OpenAI
           name: String,
           ?id: String,
           ?agent: OpenAI::Beta::BetaResponseFunctionToolCall::Agent?,
+          ?async: bool,
           ?caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCall::caller_?,
           ?namespace: String,
           ?status: OpenAI::Models::Beta::BetaResponseFunctionToolCall::status,
@@ -62,6 +68,7 @@ module OpenAI
           type: :function_call,
           id: String,
           agent: OpenAI::Beta::BetaResponseFunctionToolCall::Agent?,
+          async: bool,
           caller_: OpenAI::Models::Beta::BetaResponseFunctionToolCall::caller_?,
           namespace: String,
           status: OpenAI::Models::Beta::BetaResponseFunctionToolCall::status

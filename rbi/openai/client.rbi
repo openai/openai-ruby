@@ -75,6 +75,9 @@ module OpenAI
     sig { returns(OpenAI::Resources::VectorStores) }
     attr_reader :vector_stores
 
+    sig { returns(OpenAI::Resources::Safety) }
+    attr_reader :safety
+
     sig { returns(OpenAI::Resources::Webhooks) }
     attr_reader :webhooks
 

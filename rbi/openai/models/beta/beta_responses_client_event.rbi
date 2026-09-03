@@ -14,6 +14,7 @@ module OpenAI
         Variants = T.type_alias do
           T.any(
             OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate,
+            OpenAI::Beta::BetaResponseSteerEvent,
             OpenAI::Beta::BetaResponseInjectEvent
           )
         end
@@ -114,7 +115,7 @@ module OpenAI
           sig { returns(T.nilable(T::Hash[Symbol, String])) }
           attr_accessor :metadata
 
-          # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+          # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
           # range of models with different capabilities, performance characteristics, and
           # price points. Refer to the
           # [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -652,7 +653,7 @@ module OpenAI
             # a maximum length of 512 characters.
             metadata: nil,
 
-            # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+            # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
             # range of models with different capabilities, performance characteristics, and
             # price points. Refer to the
             # [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -1004,7 +1005,7 @@ module OpenAI
 
           end
 
-          # Model ID used to generate the response, like `gpt-5.6-sol`. OpenAI offers a wide
+          # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
           # range of models with different capabilities, performance characteristics, and
           # price points. Refer to the
           # [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -1026,6 +1027,10 @@ module OpenAI
 
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
+            GPT_6_ASTRA = T.let(
+              :"gpt-6-astra",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
             GPT_5_6_SOL = T.let(
               :"gpt-5.6-sol",
               OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
