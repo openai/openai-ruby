@@ -1381,13 +1381,13 @@ module OpenAI
 
               item_id: String,
 
-              name: String,
-
               output_index: Integer,
 
               sequence_number: Integer,
 
               agent: T.nilable(OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent::OrHash),
+
+              name: String,
 
               stream_id: String,
 
@@ -1403,9 +1403,6 @@ module OpenAI
             # The ID of the item.
             item_id:,
 
-            # The name of the function that was called.
-            name:,
-
             # The index of the output item.
             output_index:,
 
@@ -1414,6 +1411,9 @@ module OpenAI
 
             # The agent that owns this multi-agent streaming event.
             agent: nil,
+
+            # The name of the function that was called.
+            name: nil,
 
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
@@ -1428,11 +1428,11 @@ module OpenAI
               {
                 arguments: String,
                 item_id: String,
-                name: String,
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent),
+                name: String,
                 stream_id: String
               }
             )

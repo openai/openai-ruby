@@ -22,10 +22,6 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :item_id
 
-        # The name of the function that was called.
-        sig { returns(String) }
-        attr_accessor :name
-
         # The index of the output item.
         sig { returns(Integer) }
         attr_accessor :output_index
@@ -37,6 +33,13 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # The name of the function that was called.
+        sig { returns(T.nilable(String)) }
+        attr_reader :name
+
+        sig { params(name: String).void }
+        attr_writer :name
+
         # Emitted when function-call arguments are finalized.
         sig do
           params(
@@ -45,11 +48,11 @@ module OpenAI
 
             item_id: String,
 
-            name: String,
-
             output_index: Integer,
 
             sequence_number: Integer,
+
+            name: String,
 
             type: Symbol
           )
@@ -63,14 +66,14 @@ module OpenAI
           # The ID of the item.
           item_id:,
 
-          # The name of the function that was called.
-          name:,
-
           # The index of the output item.
           output_index:,
 
           # The sequence number of this event.
           sequence_number:,
+
+          # The name of the function that was called.
+          name: nil,
 
           type: :"response.function_call_arguments.done"
         )
@@ -81,10 +84,10 @@ module OpenAI
             {
               arguments: String,
               item_id: String,
-              name: String,
               output_index: Integer,
               sequence_number: Integer,
-              type: Symbol
+              type: Symbol,
+              name: String
             }
           )
         end

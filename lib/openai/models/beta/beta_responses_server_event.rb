@@ -818,7 +818,7 @@ module OpenAI
           #   @return [String, nil]
           optional :stream_id, String
 
-          # @!method initialize(arguments:, item_id:, name:, output_index:, sequence_number:, agent: nil, stream_id: nil, type: :"response.function_call_arguments.done")
+          # @!method initialize(arguments:, item_id:, output_index:, sequence_number:, agent: nil, name: nil, stream_id: nil, type: :"response.function_call_arguments.done")
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseFunctionCallArgumentsWsDone}
           #   for more details.
@@ -829,13 +829,13 @@ module OpenAI
           #
           #   @param item_id [String] The ID of the item.
           #
-          #   @param name [String] The name of the function that was called.
-          #
           #   @param output_index [Integer] The index of the output item.
           #
           #   @param sequence_number [Integer] The sequence number of this event.
           #
           #   @param agent [OpenAI::Models::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+          #
+          #   @param name [String] The name of the function that was called.
           #
           #   @param stream_id [String] The WebSocket lane that emitted this event. This field is present
           #

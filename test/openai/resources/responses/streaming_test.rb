@@ -745,6 +745,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
     function_done = events.find { |e| e.type == :"response.function_call_arguments.done" }
     assert_equal("{\"first_name\":\"Ada\",\"last_name\":\"Lovelace\"}", function_done.arguments)
+    assert_nil(function_done.name)
 
     final_response = stream.get_final_response
 

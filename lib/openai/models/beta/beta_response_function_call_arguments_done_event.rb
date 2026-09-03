@@ -16,12 +16,6 @@ module OpenAI
         #   @return [String]
         required :item_id, String
 
-        # @!attribute name
-        #   The name of the function that was called.
-        #
-        #   @return [String]
-        required :name, String
-
         # @!attribute output_index
         #   The index of the output item.
         #
@@ -45,20 +39,26 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent, nil]
         optional :agent, -> { OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent }, nil?: true
 
-        # @!method initialize(arguments:, item_id:, name:, output_index:, sequence_number:, agent: nil, type: :"response.function_call_arguments.done")
+        # @!attribute name
+        #   The name of the function that was called.
+        #
+        #   @return [String, nil]
+        optional :name, String
+
+        # @!method initialize(arguments:, item_id:, output_index:, sequence_number:, agent: nil, name: nil, type: :"response.function_call_arguments.done")
         #   Emitted when function-call arguments are finalized.
         #
         #   @param arguments [String] The function-call arguments.
         #
         #   @param item_id [String] The ID of the item.
         #
-        #   @param name [String] The name of the function that was called.
-        #
         #   @param output_index [Integer] The index of the output item.
         #
         #   @param sequence_number [Integer] The sequence number of this event.
         #
         #   @param agent [OpenAI::Models::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #
+        #   @param name [String] The name of the function that was called.
         #
         #   @param type [Symbol, :"response.function_call_arguments.done"]
 

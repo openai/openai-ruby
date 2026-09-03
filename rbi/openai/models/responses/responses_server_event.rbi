@@ -1211,11 +1211,11 @@ module OpenAI
 
               item_id: String,
 
-              name: String,
-
               output_index: Integer,
 
               sequence_number: Integer,
+
+              name: String,
 
               stream_id: String,
 
@@ -1231,14 +1231,14 @@ module OpenAI
             # The ID of the item.
             item_id:,
 
-            # The name of the function that was called.
-            name:,
-
             # The index of the output item.
             output_index:,
 
             # The sequence number of this event.
             sequence_number:,
+
+            # The name of the function that was called.
+            name: nil,
 
             # The WebSocket lane that emitted this event. This field is present when the
             # originating `response.create` event supplied a `stream_id`.
@@ -1253,10 +1253,10 @@ module OpenAI
               {
                 arguments: String,
                 item_id: String,
-                name: String,
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
+                name: String,
                 stream_id: String
               }
             )
