@@ -86,7 +86,7 @@ module OpenAI::Test::ResponsesWebSocketConnectionTestSupport
     )
   end
 
-  private def workload_identity_client
+  private def workload_identity_client(timeout: 600)
     provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(
       token_path: "/not-read-by-this-test"
     )
@@ -99,7 +99,8 @@ module OpenAI::Test::ResponsesWebSocketConnectionTestSupport
       api_key: nil,
       workload_identity: config,
       organization: "org_123",
-      base_url: "https://example.com/v1"
+      base_url: "https://example.com/v1",
+      timeout: timeout
     )
   end
 

@@ -556,6 +556,29 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     assert_equal("Bearer fresh-token", transport.attempts.fetch(1).dig(:headers, "authorization"))
   end
 
+  def test_workload_identity_timeout_stays_payload_free
+    configured = workload_identity_client(timeout: 0.01)
+    transport = FakeTransport.new(FakeSocket.new)
+    clock = [100.0, 100.02]
+
+    error = OpenAI::Internal::Util.stub(:monotonic_secs, -> { clock.shift || 100.02 }) do
+      get_token = -> (deadline:) {
+        assert_equal(100.01, deadline)
+        "fresh-token"
+      }
+
+      configured.workload_identity_auth.stub(:get_token, get_token) do
+        assert_raises(OpenAI::Errors::ResponsesConnectionError) do
+          configured.responses.connect(transport: transport) { |_connection| nil }
+        end
+      end
+    end
+
+    assert_nil(error.cause)
+    refute_includes(error.full_message, "Timeout::Error")
+    assert_nil(transport.open_args)
+  end
+
   def test_inbound_stream_ids_are_forward_compatible
     secret = "secret-stream-id"
     socket = FakeSocket.new(JSON.generate(type: "response.future", stream_id: "bad #{secret}"))
