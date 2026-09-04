@@ -26,7 +26,7 @@ module OpenAI
             stream_format: OpenAI::Audio::SpeechCreateParams::StreamFormat::OrSymbol,
             request_options: OpenAI::RequestOptions::OrHash
           )
-            .returns(StringIO)
+            .returns(T.all(StringIO, OpenAI::ResponseCarrier))
         }
         def create(
           # The text to generate audio for. The maximum length is 4096 characters.
