@@ -351,6 +351,7 @@ module OpenAI
           SEARCHING = T.let(:searching, OpenAI::Responses::ResponseFunctionWebSearch::Status::TaggedSymbol)
           COMPLETED = T.let(:completed, OpenAI::Responses::ResponseFunctionWebSearch::Status::TaggedSymbol)
           FAILED = T.let(:failed, OpenAI::Responses::ResponseFunctionWebSearch::Status::TaggedSymbol)
+          INCOMPLETE = T.let(:incomplete, OpenAI::Responses::ResponseFunctionWebSearch::Status::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Responses::ResponseFunctionWebSearch::Status::TaggedSymbol]) }
           def self.values

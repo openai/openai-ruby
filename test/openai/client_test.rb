@@ -302,6 +302,18 @@ class OpenAITest < Minitest::Test
     assert_requested(:get, "http://localhost/responses/resp_123?stream=true", times: 1)
   end
 
+  def test_response_web_search_statuses
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+
+    assert_web_search_statuses(openai.responses, "http://localhost/responses")
+  end
+
+  def test_beta_response_web_search_statuses
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+
+    assert_web_search_statuses(openai.beta.responses, "http://localhost/responses?beta=true")
+  end
+
   def test_request_id_on_successful_response
     stub_request(:post, "http://localhost/chat/completions").to_return_json(
       status: 200,
@@ -1133,5 +1145,36 @@ class OpenAITest < Minitest::Test
       expected = req.body.nil? ? ["accept"] : %w[accept content-type]
       headers.fetch_values(*expected).each { refute_empty(_1) }
     end
+  end
+
+  private
+
+  def assert_web_search_statuses(resource, url)
+    wire_statuses = %w[failed incomplete future_web_search_status]
+    stub_request(:post, url).to_return_json(
+      status: 200,
+      body: {
+        id: "resp_web_search",
+        object: "response",
+        created_at: 1_700_000_000,
+        model: "gpt-4o",
+        output: wire_statuses.map do |status|
+          {
+            id: "ws_#{status}",
+            type: "web_search_call",
+            status: status,
+            action: {type: "search", query: "synthetic query"}
+          }
+        end,
+        parallel_tool_calls: true,
+        tool_choice: "auto",
+        tools: []
+      }
+    )
+
+    response = resource.create(input: "synthetic input", model: "gpt-4o")
+
+    assert_equal([:failed, :incomplete, "future_web_search_status"], response.output.map(&:status))
+    assert_equal(wire_statuses, JSON.parse(response.to_json).fetch("output").map { _1.fetch("status") })
   end
 end
