@@ -1147,6 +1147,20 @@ class OpenAITest < Minitest::Test
     end
   end
 
+  def test_binary_content_honors_quoted_response_charset
+    stub_request(:get, "http://localhost/files/file_quoted_charset/content")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/plain; charset=\"UTF-8\""},
+        body: "\xC3\xA9".b
+      )
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+    content = openai.files.content("file_quoted_charset")
+
+    assert_equal(Encoding::UTF_8, content.read.encoding)
+  end
+
   private
 
   def assert_web_search_statuses(resource, url)

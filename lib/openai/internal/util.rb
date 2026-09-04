@@ -654,7 +654,8 @@ module OpenAI
         # @param content_type [String]
         # @param text [String]
         def force_charset!(content_type, text:)
-          charset = /charset=([^;\s]+)/.match(content_type)&.captures&.first
+          match = /(?:\A|;)\s*charset\s*=\s*(?:"([^"]+)"|([^;\s]+))/i.match(content_type)
+          charset = match&.captures&.compact&.first
 
           return unless charset
 
