@@ -822,6 +822,114 @@ class OpenAI::Test::X509ProactiveRefreshTest < Minitest::Test
     follower&.kill&.join if follower&.alive?
   end
 
+  def test_waiter_inherits_issuer_minimum_when_fallback_is_invalidated_before_completion
+    client = new_client.with_options(max_retry_delay: 5, max_retries: 2)
+    auth = client.workload_identity_auth
+    mutex = auth.instance_variable_get(:@mutex)
+    synchronize = mutex.method(:synchronize)
+    condition = auth.instance_variable_get(:@cond_var)
+    wait = condition.method(:wait)
+    now = 100.0
+    issuer_times = []
+    sleeps = []
+    published = Queue.new
+    release_leader = Queue.new
+    follower_sent = Queue.new
+    release_follower = Queue.new
+    waiter_entered = Queue.new
+    leader = nil
+    follower = nil
+    paused = false
+    pause_after_publication = lambda do |&block|
+      result = synchronize.call(&block)
+      if Thread.current == leader && !paused && auth.instance_variable_get(:@refresh_generation)&.[](:issuer_retry)
+        paused = true
+        published << true
+        release_leader.pop
+      end
+
+      result
+    end
+
+    observe_wait = lambda do |*args|
+      waiter_entered << true if Thread.current == follower
+      wait.call(*args)
+    end
+
+    dispatch = lambda do |request|
+      if request.url.host == "mtls.auth.openai.com"
+        issuer_times << now
+        if issuer_times.length == 2
+          body = Enumerator.new do |_output|
+            raise OpenAI::Errors::APIConnectionError.new(url: request.url, message: "fake-body-failure")
+          end
+
+          OpenAI::HTTPClient::Response.new(status: 503, headers: {"retry-after" => "2"}, body: body)
+        elsif issuer_times.length > 2
+          OpenAI::HTTPClient::Response.new(
+            status: 200,
+            headers: {},
+            body: JSON.generate(
+              access_token: "fake-recovered-token",
+              issued_token_type: "urn:ietf:params:oauth:token-type:access_token",
+              token_type: "Bearer",
+              expires_in: 120
+            )
+          )
+        else
+          token_response
+        end
+      elsif request.url.path.end_with?("/follower") && issuer_times.length == 1
+        follower_sent << true
+        release_follower.pop
+        failure_response(401)
+      else
+        model_response
+      end
+    end
+
+    OpenAI::Internal::Util.stub(:monotonic_secs, -> { now }) do
+      client.stub(
+        :sleep,
+        -> (delay) {
+          sleeps << delay
+          now += delay
+        }
+      ) do
+        @native.stub(:execute, dispatch) do
+          assert_equal("fake-model", client.models.retrieve("prime").id)
+          follower = Thread.new { client.models.retrieve("follower") }
+          Timeout.timeout(1) { follower_sent.pop }
+          now = 191.0
+          mutex.stub(:synchronize, pause_after_publication) do
+            condition.stub(:wait, observe_wait) do
+              leader = Thread.new do
+                client.models.retrieve("leader", request_options: {max_retries: 0})
+              rescue OpenAI::Errors::APIConnectionError => error
+                error
+              end
+
+              Timeout.timeout(1) { published.pop }
+              release_follower << true
+              Timeout.timeout(1) { waiter_entered.pop }
+              release_leader << true
+              Timeout.timeout(1) { leader.value }
+              assert_equal("fake-model", Timeout.timeout(1) { follower.value }.id)
+            end
+          end
+        end
+      end
+    end
+
+    assert_operator(issuer_times.fetch(2), :>=, 193.0)
+    assert_operator(sleeps.sum, :>=, 2.0)
+  ensure
+    release_leader&.push(true)
+    release_follower&.push(true)
+    leader&.kill&.join if leader&.alive?
+    follower&.kill&.join if follower&.alive?
+  end
+
   def test_waiting_participant_preserves_an_earlier_stronger_issuer_minimum
     now = 100.0
     events = []

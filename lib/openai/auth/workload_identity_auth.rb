@@ -220,14 +220,12 @@ module OpenAI
 
           check_deadline!(deadline)
           if @token_exchange
-            if generation[:error]
-              # Participating requests inherit timing without adding metadata to the sanitized error.
-              if retry_state && generation[:issuer_retry]
-                retain_issuer_retry(retry_state, generation.fetch(:issuer_retry))
-              end
-
-              raise generation.fetch(:error)
+            # Participating requests inherit timing even if fallback was invalidated before completion.
+            if retry_state && generation[:issuer_retry]
+              retain_issuer_retry(retry_state, generation.fetch(:issuer_retry))
             end
+
+            raise generation.fetch(:error) if generation[:error]
 
             if generation[:token]
               unless generation[:token] == @cached_token
