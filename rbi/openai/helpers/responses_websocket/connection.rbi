@@ -6,9 +6,19 @@ module OpenAI
       class Connection
         include Enumerable
 
-        ServerEvent = T.type_alias { T.anything }
+        ServerEvent = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponsesServerEvent::Variants,
+            OpenAI::Responses::UnknownServerEvent
+          )
+        end
 
-        ClientEvent = T.type_alias { T.anything }
+        ClientEvent = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponsesClientEvent::Variants,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         Elem = type_member { {fixed: ServerEvent} }
 

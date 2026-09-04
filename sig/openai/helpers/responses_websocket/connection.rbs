@@ -1,9 +1,13 @@
 module OpenAI
   module Models
     module Responses
-      type connection_server_event = top
+      type connection_server_event =
+        OpenAI::Models::Responses::responses_server_event
+        | OpenAI::Responses::UnknownServerEvent
 
-      type connection_client_event = top
+      type connection_client_event =
+        OpenAI::Models::Responses::responses_client_event
+        | ::Hash[Symbol | String, untyped]
 
       class Connection
         include Enumerable[OpenAI::Models::Responses::connection_server_event]

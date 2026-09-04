@@ -158,12 +158,18 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
 
     url = URI("wss://example.com/v1/realtime?model=gpt-realtime-2.1")
 
+    socket = nil
     Async::HTTP::Endpoint.stub(:parse, parser) do
       Async::WebSocket::Client.stub(:open, client) do
-        transport.open(url: url, headers: {}, timeout: nil) { |_socket| nil }
+        transport.open(url: url, headers: {}, timeout: nil) { |value| socket = value }
       end
     end
 
+    assert_instance_of(OpenAI::Realtime::Transports::AsyncWebSocket::Socket, socket)
+    assert_instance_of(
+      OpenAI::Realtime::Transports::AsyncWebSocket::Socket,
+      OpenAI::Realtime::Transports::AsyncWebSocket::Socket.new(connection, url: url)
+    )
     assert_equal(OpenSSL::SSL::VERIFY_PEER, parsed_endpoint.ssl_context.verify_mode)
     assert_predicate(parsed_endpoint.ssl_context, :verify_hostname)
     assert_predicate(client, :closed)

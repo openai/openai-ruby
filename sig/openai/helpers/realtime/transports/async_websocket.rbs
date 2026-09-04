@@ -7,13 +7,28 @@ module OpenAI
             (OpenSSL::SSL::SSLContext context) -> void
           } -> void
 
+          class Socket
+            # @api private
+            def initialize: (untyped connection, url: URI::Generic) -> void
+            def read: -> untyped
+            def write: (String message) -> void
+            def close: (?code: Integer, ?reason: String) -> void
+
+            # @api private
+            def abort: -> void
+
+            # @api private
+            def aborted?: -> bool
+            def closed?: -> bool
+          end
+
           def open: (
             url: URI::Generic,
             headers: ::Hash[String, String],
             timeout: Float?,
-            **top endpoint_options
+            **untyped endpoint_options
           ) {
-            (top socket) -> top
+            (Socket socket) -> top
           } -> top
         end
       end

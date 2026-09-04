@@ -271,7 +271,7 @@ module OpenAI
               headers: headers,
               timeout: timeout
             )
-            socket = Socket.new(connection, url: url, error_factory: @error_factory)
+            socket = build_socket(connection, url: url)
             begin
               yield(socket)
             rescue StandardError => e
@@ -306,6 +306,10 @@ module OpenAI
         return operation.call if timeout.nil?
 
         ::Async::Task.current.with_timeout(timeout, &operation)
+      end
+
+      private def build_socket(connection, url:)
+        Socket.new(connection, url: url, error_factory: @error_factory)
       end
 
       private def sensitive_query?(url)
