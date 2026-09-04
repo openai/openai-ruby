@@ -12,6 +12,8 @@ require "yaml"
 require_relative "../../scripts/examples-e2e"
 
 class ExamplesE2ETimeoutTest < Minitest::Test
+  extend Minitest::Serial if defined?(Minitest::Serial)
+
   CLI_TEST_MUTEX = Mutex.new
 
   def test_rejects_invalid_effective_environment_timeouts_before_runner_or_report
@@ -188,6 +190,7 @@ class ExamplesE2ETimeoutTest < Minitest::Test
   end
 
   def with_environment(values)
+    previous = {}
     previous = values.to_h { |name, _value| [name, ENV[name]] }
     values.each { |name, value| ENV[name] = value }
     yield
