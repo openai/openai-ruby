@@ -279,6 +279,7 @@ module OpenAI
 
       return super unless workload_identity_request?(request)
 
+      retry_state = request[:workload_identity_retry_state] || {}
       x509_request = x509_transport?(@requester)
       previous_context = request[:x509_request_context]
       deadline = if x509_request
@@ -290,7 +291,7 @@ module OpenAI
           request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
       end
 
-      request = request.merge(workload_identity_deadline: deadline)
+      request = request.merge(workload_identity_deadline: deadline, workload_identity_retry_state: retry_state)
       if x509_request
         replay_state = previous_context&.fetch(:replay_state) || []
         issuer_retries = previous_context&.fetch(:issuer_retries, 0) || 0
@@ -324,7 +325,7 @@ module OpenAI
           @workload_identity_auth.invalidate_token(rejected_token)
         end
 
-        replay_allowed = request_replayable?(request)
+        replay_allowed = !retry_state[:delay_exceeded] && request_replayable?(request)
         replay_allowed &&= x509_request ? replay_state.empty? : retry_count.zero?
         raise unless replay_allowed
 

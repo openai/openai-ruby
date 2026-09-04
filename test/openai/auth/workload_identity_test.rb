@@ -880,6 +880,42 @@ class WorkloadIdentityTest < Minitest::Test
     assert_requested(:post, "http://localhost/chat/completions", times: 2)
   end
 
+  def test_401_exceeding_retry_delay_does_not_refresh_or_replay
+    [false, true].each do |retry_first|
+      WebMock.reset!
+      File.write(@token_path, "fake-subject-token")
+      identity = OpenAI::Auth::WorkloadIdentity.new(
+        identity_provider_id: "idp-fake",
+        service_account_id: "sa-fake",
+        provider: OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(token_path: @token_path)
+      )
+      stub_request(:post, "https://auth.openai.com/oauth/token")
+        .to_return(status: 200, body: JSON.generate(access_token: "fake-access-token", expires_in: 3600))
+      responses = []
+      responses << {status: 503, headers: {"retry-after" => "0"}, body: ""} if retry_first
+      responses << {
+        status: 401,
+        headers: {"content-type" => "application/json", "x-should-retry" => "true",
+                  "retry-after" => "90", "x-request-id" => "req_fake"},
+        body: JSON.generate(error: {message: "Try later"})
+      }
+      stub_request(:get, "http://localhost/probe").to_return(*responses)
+      events = []
+      client = OpenAI::Client.new(
+        base_url: "http://localhost", api_key: nil, workload_identity: identity,
+        max_retries: 2, on_retry: -> (event) { events << event }
+      )
+
+      error = assert_raises(OpenAI::Errors::AuthenticationError) { client.request(method: :get, path: "probe") }
+      assert_equal({error: {message: "Try later"}}, error.body)
+      assert_equal("90", error.headers["retry-after"])
+      assert_equal("req_fake", error.request_id)
+      assert_equal(retry_first ? [0] : [], events.map(&:delay))
+      assert_requested(:get, "http://localhost/probe", times: retry_first ? 2 : 1)
+      assert_requested(:post, "https://auth.openai.com/oauth/token", times: 1)
+    end
+  end
+
   def test_workload_identity_token_caching
     File.write(@token_path, "k8s-jwt-token")
     provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(

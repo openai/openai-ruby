@@ -956,6 +956,45 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
     Thread.current.thread_variable_set(:mock_sleep, previous_sleep)
   end
 
+  def test_x509_401_exceeding_retry_delay_does_not_refresh_or_replay
+    now = Time.at(1_700_000_000)
+    previous_time = Thread.current.thread_variable_get(:time_now)
+    ["90", (now + 90).httpdate].each do |hint|
+      Thread.current.thread_variable_set(:time_now, now)
+      client = OpenAI::Client.new(
+        api_key: nil, workload_identity: @identity, http_client: @transport,
+        max_retries: 1, timeout: 60, max_retry_delay: 5
+      )
+      attempts = []
+      headers = {"content-type" => "application/json", "retry-after" => hint,
+                 "x-should-retry" => "true", "x-request-id" => "req_fake"}
+      error_body = {error: {message: "Try later"}}
+      dispatch = lambda do |request|
+        stage = request.url.host == "mtls.auth.openai.com" ? :issuer : :api
+        attempts << stage
+        next x509_issuer_success if stage == :issuer
+
+        body = Enumerator.new do |output|
+          # The original cutoff must survive even when decoding makes the date fall within the cap.
+          Thread.current.thread_variable_set(:time_now, now + 88)
+          output << JSON.generate(error_body)
+        end
+        OpenAI::HTTPClient::Response.new(status: 401, headers: headers, body: body)
+      end
+
+      @native.stub(:execute, dispatch) do
+        error = assert_raises(OpenAI::Errors::AuthenticationError) { client.models.retrieve("fake-model") }
+        assert_equal(401, error.status)
+        assert_equal(error_body, error.body)
+        assert_equal(headers, error.headers)
+        assert_equal("req_fake", error.request_id)
+      end
+      assert_equal([:issuer, :api], attempts)
+    end
+  ensure
+    Thread.current.thread_variable_set(:time_now, previous_time)
+  end
+
   def test_x509_excessive_retry_after_preserves_status_and_deadline_error_precedence
     [:issuer, :api].product([429, 503], [1, 60]).each do |failure_stage, status, timeout|
       events = []
