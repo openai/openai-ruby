@@ -48,9 +48,10 @@ module OpenAI
       # @api private
       #
       # @param deadline [Float, nil] absolute monotonic deadline for this request
-      # @yield [refresh] optional request-local coordination around an actual refresh
+      # @yield [refresh] request-local coordination; nil prepares observers before refresh ownership
       # @return [String]
       def get_token(deadline: nil, retry_state: nil)
+        refresh_prepared = false
         loop do
           check_deadline!(deadline)
           action = nil
@@ -82,11 +83,15 @@ module OpenAI
               elsif token_unusable? ||
                   (needs_refresh? &&
                     (issuer_not_before.nil? || OpenAI::Internal::Util.monotonic_secs >= issuer_not_before))
-                previous_token = @cached_token
-                @refreshing = true
-                generation = {complete: false, error: nil, token: nil, expires_at: nil}
-                @refresh_generation = generation
-                action = :refresh
+                if block_given? && retry_state&.[](:issuer_retry) && !refresh_prepared
+                  action = :prepare
+                else
+                  previous_token = @cached_token
+                  @refreshing = true
+                  generation = {complete: false, error: nil, token: nil, expires_at: nil}
+                  @refresh_generation = generation
+                  action = :refresh
+                end
               else
                 token = @cached_token
                 action = :return
@@ -117,7 +122,11 @@ module OpenAI
                     @refresh_error = error unless @token_exchange.nil?
                     generation[:error] = error
                   end
+                end
 
+                raise unless fallback
+              ensure
+                @mutex.synchronize do
                   if (issuer_retry = retry_state&.[](:issuer_retry)) &&
                       (issuer_retry.fetch(:error).equal?(error) || !issuer_retry.equal?(previous_issuer_retry))
                     generation[:issuer_retry] = issuer_retry
@@ -127,8 +136,6 @@ module OpenAI
                   end
                 end
 
-                raise unless fallback
-              ensure
                 @mutex.synchronize do
                   if generation[:error].nil?
                     generation[:token] = @cached_token
@@ -142,6 +149,12 @@ module OpenAI
                 end
               end
             end
+          end
+
+          if action == :prepare
+            yield nil
+            refresh_prepared = true
+            next
           end
 
           return token if action == :return

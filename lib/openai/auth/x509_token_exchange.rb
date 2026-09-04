@@ -65,9 +65,14 @@ module OpenAI
         )
         response = @transport.execute(request)
         successful = (200..299).cover?(response.status)
-        # Let the request retain retry minima before response decoding and cleanup.
-        yield response if block_given? && !successful
-        body = parse_response(response, deadline: deadline, strict: successful)
+        begin
+          # Let the request retain retry minima before response decoding and cleanup.
+          yield response if block_given? && !successful
+          body = parse_response(response, deadline: deadline, strict: successful)
+        ensure
+          OpenAI::Internal::Util.close_fused!(response.body)
+        end
+
         if successful
           token = validate_token_response(body, response: response)
           remaining_timeout(deadline)
@@ -111,8 +116,6 @@ module OpenAI
         return nil unless strict
 
         raise invalid_response("response must be a complete JSON object", response: response), cause: nil
-      ensure
-        OpenAI::Internal::Util.close_fused!(response.body)
       end
 
       private def validate_token_response(body, response:)

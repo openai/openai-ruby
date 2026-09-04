@@ -441,7 +441,7 @@ module OpenAI
             raise refusal.fetch(:error) if !refusal.fetch(:delay).finite? || refusal.fetch(:delay) > @max_retry_delay
 
             # Direct issuer retries already emit their event in the rescue below.
-            if delay.positive? && attempts.zero? && (context = request[:x509_request_context])
+            if refresh.nil? && delay.positive? && attempts.zero? && (context = request[:x509_request_context])
               issuer_error = refusal.fetch(:error)
               connection_failure = issuer_error.is_a?(OpenAI::Errors::APIConnectionError)
               issuer_response = unless connection_failure
@@ -458,6 +458,10 @@ module OpenAI
                 max_retries: [context.fetch(:auth_max_retries), resumed_retry_count].max
               )
             end
+
+            # Observer callbacks may refresh or invalidate the cache; get_token rechecks
+            # shared state before claiming ownership and this block recomputes the delay.
+            next if refresh.nil?
 
             sleep(delay)
             retry_state.delete(:issuer_retry)
@@ -480,13 +484,14 @@ module OpenAI
               end
             end
 
-          rescue OpenAI::Errors::APIError, Timeout::Error => error
-            if observed_retry
-              # An owner's body-read timeout does not cancel the observed issuer minimum for other callers.
-              retry_state[:issuer_retry] = error.is_a?(OpenAI::Errors::APIError) ? observed_retry.merge(error: error) : observed_retry
-            end
-
+          rescue OpenAI::Errors::APIError => error
+            observed_retry = observed_retry.merge(error: error) if observed_retry
             raise
+          ensure
+            # Body-read failure or interruption cannot cancel an already observed issuer minimum.
+            Thread.handle_interrupt(Exception => :never) do
+              retry_state[:issuer_retry] = observed_retry if observed_retry
+            end
           end
         end
 

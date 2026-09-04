@@ -28,6 +28,19 @@ class OpenAI::Test::X509TokenExchangeTest < Minitest::Test
     super
   end
 
+  def test_closes_response_when_retry_notification_raises
+    [RuntimeError, Interrupt].each do |error_class|
+      closed = false
+      body = OpenAI::Internal::Util.fused_enum(["{}"].each) { closed = true }
+      response = OpenAI::HTTPClient::Response.new(status: 503, headers: {"retry-after" => "1"}, body: body)
+      @http_client.stub(:execute, -> (_request) { response }) do
+        assert_raises(error_class) { @exchange.fetch { raise error_class, "synthetic interruption" } }
+      end
+
+      assert(closed, "issuer response must close when notification fails")
+    end
+  end
+
   def test_configuration_is_immutable_and_validates_identifiers_and_refresh_buffer
     assert_predicate(@identity, :frozen?)
     assert_predicate(@identity.identity_provider_id, :frozen?)

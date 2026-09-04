@@ -59,7 +59,7 @@ module OpenAI
         params(
           deadline: T.nilable(Float),
           retry_state: T.nilable(T::Hash[Symbol, T.untyped]),
-          block: T.nilable(T.proc.params(refresh: Proc).void)
+          block: T.nilable(T.proc.params(refresh: T.nilable(Proc)).void)
         )
           .returns(String)
       end

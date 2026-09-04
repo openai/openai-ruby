@@ -616,14 +616,14 @@ class OpenAI::Test::X509ProactiveRefreshTest < Minitest::Test
     end
   end
 
-  def test_cached_participant_preserves_issuer_minimum_when_refresh_owner_times_out_reading_body
+  def test_cached_participant_preserves_issuer_minimum_when_refresh_owner_aborts_reading_body
     hints = [
       {"retry-after" => "2"},
       {"retry-after" => "90"},
       {"retry-after" => "1e999"},
       {"retry-after-ms" => "1e999", "retry-after" => "0"}
     ]
-    hints.product([10, 1.5]).each do |hint, follower_timeout|
+    hints.product([10, 1.5], [:timeout, :kill, :interrupt]).each do |hint, follower_timeout, interruption|
       now = 100.0
       events = []
       sleeps = []
@@ -689,13 +689,25 @@ class OpenAI::Test::X509ProactiveRefreshTest < Minitest::Test
             assert_equal("fake-model", client.models.retrieve("prime").id)
             now = 191.0
             leader = Thread.new { call.call("leader", 1) }
+            leader.report_on_exception = false
             Timeout.timeout(1) { body_started.pop }
             follower = Thread.new { call.call("follower", follower_timeout) }
             Timeout.timeout(1) { follower_sent.pop }
-            release_body << true
-            owner_error = Timeout.timeout(1) { leader.value }
-            assert_instance_of(OpenAI::Errors::APITimeoutError, owner_error)
-            assert_nil(owner_error.cause)
+            if interruption == :timeout
+              release_body << true
+              owner_error = Timeout.timeout(1) { leader.value }
+              assert_instance_of(OpenAI::Errors::APITimeoutError, owner_error)
+              assert_nil(owner_error.cause)
+            elsif interruption == :kill
+              now = 192.1
+              leader.kill
+              assert_nil(Timeout.timeout(1) { leader.value })
+            else
+              now = 192.1
+              leader.raise Interrupt, "fake interruption"
+              assert_raises(Interrupt) { Timeout.timeout(1) { leader.value } }
+            end
+
             release_follower << true
             result = Timeout.timeout(1) { follower.value }
 
@@ -1023,6 +1035,79 @@ class OpenAI::Test::X509ProactiveRefreshTest < Minitest::Test
     release_issuer&.push(true)
     first&.kill&.join if first&.alive?
     second&.kill&.join if second&.alive?
+  end
+
+  def test_retry_observers_can_make_a_nested_request_after_fallback_is_rejected
+    [:callback, :logger].each do |observer|
+      now = 100.0
+      issuer_times = []
+      events = []
+      nested_ids = []
+      client = nil
+      nested_request = lambda do
+        nested_ids << client.models.retrieve("nested").id
+        now += 0.5
+      end
+
+      options = {
+        timeout: nil,
+        max_retry_delay: 5,
+        on_retry: -> (event) {
+          events << event
+          nested_request.call if observer == :callback
+        }
+      }
+      if observer == :logger
+        sink = StringIO.new
+        sink.define_singleton_method(:write) do |message|
+          nested_request.call if message.include?("status=503")
+          super(message)
+        end
+
+        options.merge!(logger: Logger.new(sink), log_level: :warn)
+      end
+
+      client = new_client.with_options(**options)
+      dispatch = lambda do |request|
+        if request.url.host == "mtls.auth.openai.com"
+          issuer_times << now
+          if issuer_times.length == 2
+            OpenAI::HTTPClient::Response.new(status: 503, headers: {"retry-after" => "2"}, body: "")
+          elsif issuer_times.length > 2
+            OpenAI::HTTPClient::Response.new(
+              status: 200,
+              headers: {},
+              body: JSON.generate(
+                access_token: "fake-recovered-token",
+                token_type: "Bearer",
+                expires_in: 120,
+                issued_token_type: "urn:ietf:params:oauth:token-type:access_token"
+              )
+            )
+          else
+            token_response
+          end
+        elsif request.url.path.end_with?("/outer") && issuer_times.length == 2
+          failure_response(401)
+        else
+          model_response
+        end
+      end
+
+      OpenAI::Internal::Util.stub(:monotonic_secs, -> { now }) do
+        client.stub(:sleep, -> (delay) { now += delay }) do
+          @native.stub(:execute, dispatch) do
+            assert_equal("fake-model", client.models.retrieve("prime").id)
+            now = 191.0
+            assert_equal("fake-model", Timeout.timeout(1) { client.models.retrieve("outer").id })
+          end
+        end
+      end
+
+      assert_equal(["fake-model"], nested_ids)
+      assert_equal([503], events.map(&:status))
+      assert_equal(3, issuer_times.length)
+    end
   end
 
   private def new_client
