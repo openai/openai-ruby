@@ -40,6 +40,35 @@ class RBSFormatTest < Minitest::Test
     assert_equal("module Example\n  module Alias = ::Enumerable\nend\n", RBSFormat.format(source))
   end
 
+  def test_preserves_trailing_comments_on_top_level_and_nested_aliases
+    source = <<~RBS
+      class   TopClass   =   ::String # top-level class note
+      module\tTopModule\t=\t::Enumerable # top-level module note
+      module Example
+        class   NestedClass   =   ::String # nested class note
+        module\tNestedModule\t=\t::Enumerable # nested module note
+      end
+    RBS
+
+    expected = <<~RBS
+      class TopClass = ::String # top-level class note
+
+      module TopModule = ::Enumerable # top-level module note
+
+      module Example
+        class NestedClass = ::String # nested class note
+
+        module NestedModule = ::Enumerable # nested module note
+      end
+    RBS
+
+    formatted = RBSFormat.format(source)
+
+    assert_equal(expected, formatted)
+    assert_equal(formatted, RBSFormat.format(formatted))
+    RBS::Parser.parse_signature(formatted)
+  end
+
   def test_does_not_treat_commented_declarations_as_aliases
     source = <<~RBS
       # class Alias = ::String
@@ -114,6 +143,21 @@ class RBSFormatTest < Minitest::Test
         assert_empty(RBSFormat.run([file.path], check: false))
         assert_equal(source, File.read(file.path))
       end
+    end
+  end
+
+  def test_check_and_write_modes_preserve_trailing_alias_comments
+    source = "class   Alias   =   ::String # compatibility note\n"
+    expected = "class Alias = ::String # compatibility note\n"
+
+    Tempfile.create(["rbs-format", ".rbs"]) do |file|
+      file.write(source)
+      file.flush
+
+      assert_equal([file.path], RBSFormat.run([file.path], check: true))
+      assert_equal(source, File.read(file.path))
+      assert_equal([file.path], RBSFormat.run([file.path], check: false))
+      assert_equal(expected, File.read(file.path))
     end
   end
 

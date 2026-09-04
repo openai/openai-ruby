@@ -12,7 +12,7 @@ module OpenAI
           # Retrieve Container File Content
           sig {
             params(file_id: String, container_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
-              StringIO
+              T.all(StringIO, OpenAI::ResponseCarrier)
             )
           }
           def retrieve(file_id, container_id:, request_options: {})

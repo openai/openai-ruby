@@ -18,6 +18,10 @@ module OpenAI
         sig { returns(T::Hash[String, String]) }
         attr_reader :headers
 
+        sig { returns(T.nilable(String)) }
+        def _request_id
+        end
+
         sig { returns(OpenAI::ResponseMetadata) }
         attr_reader :last_response
 

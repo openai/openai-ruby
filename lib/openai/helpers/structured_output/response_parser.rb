@@ -85,7 +85,7 @@ module OpenAI
           in {
               text: {
                   format: {
-                      type: :json_schema,
+                      type: :json_schema | "json_schema",
                       schema: OpenAI::StructuredOutput::JsonSchemaConverter => model
                     }
                 }
@@ -108,7 +108,7 @@ module OpenAI
                   name: name,
                   parameters: tool.to_json_schema
                 }
-              in {type: :function, parameters: OpenAI::StructuredOutput::JsonSchemaConverter => params}
+              in {type: :function | "function", parameters: OpenAI::StructuredOutput::JsonSchemaConverter => params}
                 func = tool.fetch(:function, tool)
                 name = func[:name] ||= params.name.split("::").last
                 tool_models.store(name, params)

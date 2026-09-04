@@ -22,17 +22,18 @@ module OpenAI
       #
       # Emitted as the assistant's text response is being generated. Each event
       # contains the new text fragment (delta) and the complete accumulated
-      # text so far (snapshot).
+      # text so far (snapshot). Use these string values while content is
+      # streaming; when using structured outputs, typed parsed content is
+      # available from the done event or final completion.
       #
       # @example
       #   event.delta    # => "Hello"        (new fragment)
       #   event.snapshot # => "Hello world"  (accumulated text)
-      #   event.parsed   # => {name: "John"} (if using structured outputs)
       class ChatContentDeltaEvent < OpenAI::Internal::Type::BaseModel
         required :type, const: :"content.delta"
         required :delta, String
         required :snapshot, String
-        # Partially parsed structured output
+        # Parsed content for structured outputs is available from done/final results.
         optional :parsed, Object
       end
 
@@ -81,14 +82,15 @@ module OpenAI
       # Incremental function tool call arguments update.
       #
       # Emitted as function arguments are being streamed. Provides both the
-      # raw JSON fragments and incrementally parsed arguments for strict tools.
+      # raw JSON fragments and, for strict tools, parsed arguments once the
+      # accumulated arguments are complete, valid JSON.
       #
       # @example
       #   event.name            # => "get_weather"
       #   event.index           # => 0 (tool call index in array)
-      #   event.arguments_delta # => '{"location": "San'  (new fragment)
-      #   event.arguments       # => '{"location": "San Francisco"'  (accumulated JSON)
-      #   event.parsed # => {location: "San Francisco"}  (if strict: true)
+      #   event.arguments_delta # => ' Francisco"}'  (new fragment)
+      #   event.arguments       # => '{"location": "San Francisco"}'  (accumulated JSON)
+      #   event.parsed # => {location: "San Francisco"}  (for a strict tool)
       class ChatFunctionToolCallArgumentsDeltaEvent < OpenAI::Internal::Type::BaseModel
         required :type, const: :"tool_calls.function.arguments.delta"
         required :name, String

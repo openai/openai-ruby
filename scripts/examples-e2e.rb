@@ -361,7 +361,7 @@ module OpenAIExamplesE2E
       options = {
         inventory_only: false,
         report_dir: Pathname(ENV.fetch("EXAMPLES_E2E_REPORT_DIR", @root.join("tmp/examples-e2e").to_s)),
-        timeout: Integer(ENV.fetch("EXAMPLES_E2E_TIMEOUT", DEFAULT_TIMEOUT.to_s), 10)
+        timeout: nil
       }
       OptionParser
         .new do |parser|
@@ -383,7 +383,21 @@ module OpenAIExamplesE2E
           end
         end
         .parse!(arguments)
+      options[:timeout] = effective_timeout(options[:timeout])
       options
+    end
+
+    def effective_timeout(explicit_timeout)
+      timeout = explicit_timeout.nil? ? environment_timeout : explicit_timeout
+      return timeout if timeout.positive?
+
+      raise ConfigurationError, "timeout must be a positive integer number of seconds"
+    end
+
+    def environment_timeout
+      Integer(ENV.fetch("EXAMPLES_E2E_TIMEOUT", DEFAULT_TIMEOUT.to_s), 10)
+    rescue ArgumentError
+      raise ConfigurationError, "timeout must be a positive integer number of seconds"
     end
 
     def ensure_api_key!
