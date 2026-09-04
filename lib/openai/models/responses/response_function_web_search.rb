@@ -208,6 +208,7 @@ module OpenAI
           SEARCHING = :searching
           COMPLETED = :completed
           FAILED = :failed
+          INCOMPLETE = :incomplete
 
           # @!method self.values
           #   @return [Array<Symbol>]
