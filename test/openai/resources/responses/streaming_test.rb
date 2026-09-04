@@ -137,6 +137,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     stream = @client.responses.stream_raw(**basic_params)
 
     assert_equal(200, stream.last_response.status)
+    assert_equal("req_stream", stream._request_id)
     assert_equal("req_stream", stream.last_response.request_id)
     assert_equal("text/event-stream", stream.last_response.headers["content-type"])
     assert_same(stream.last_response.headers, stream.headers)

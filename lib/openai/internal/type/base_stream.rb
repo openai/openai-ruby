@@ -19,6 +19,14 @@ module OpenAI
         # @return [Hash{String=>String}]
         def headers = last_response.headers
 
+        # The ID of the API request, returned via the x-request-id response
+        # header.
+        #
+        # @api public
+        #
+        # @return [String, nil]
+        def _request_id = last_response.request_id
+
         # Metadata from the HTTP response that opened this stream.
         #
         # @api public
