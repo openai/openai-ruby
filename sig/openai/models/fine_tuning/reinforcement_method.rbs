@@ -4,7 +4,7 @@ module OpenAI
       type reinforcement_method =
         {
           grader: OpenAI::Models::FineTuning::ReinforcementMethod::grader,
-          hyperparameters: OpenAI::FineTuning::ReinforcementHyperparameters
+          ?hyperparameters: OpenAI::FineTuning::ReinforcementHyperparameters
         }
 
       class ReinforcementMethod < OpenAI::Internal::Type::BaseModel
@@ -23,7 +23,7 @@ module OpenAI
 
         def to_hash: -> {
           grader: OpenAI::Models::FineTuning::ReinforcementMethod::grader,
-          hyperparameters: OpenAI::FineTuning::ReinforcementHyperparameters
+          ?hyperparameters: OpenAI::FineTuning::ReinforcementHyperparameters
         }
 
         type grader =

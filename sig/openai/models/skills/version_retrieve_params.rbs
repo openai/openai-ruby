@@ -2,8 +2,11 @@ module OpenAI
   module Models
     module Skills
       type version_retrieve_params =
-        { skill_id: String, version: String }
-        & OpenAI::Internal::Type::request_parameters
+        {
+          skill_id: String,
+          version: String,
+          ?request_options: OpenAI::request_opts
+        }
 
       class VersionRetrieveParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -22,7 +25,7 @@ module OpenAI
         def to_hash: -> {
           skill_id: String,
           version: String,
-          request_options: OpenAI::RequestOptions
+          ?request_options: OpenAI::RequestOptions
         }
       end
     end

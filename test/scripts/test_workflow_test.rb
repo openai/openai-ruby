@@ -42,7 +42,7 @@ class TestWorkflowTest < Minitest::Test
   end
 
   def test_failed_mock_start_leaves_preexisting_listener_running
-    listener_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60")
+    listener_pid = spawn_waiting_process
     stdout, stderr, status = run_test_script(
       curl_mode: "http_error",
       mock_mode: "fail"
@@ -71,8 +71,8 @@ class TestWorkflowTest < Minitest::Test
   end
 
   def test_cleanup_stops_only_the_mock_owned_by_this_invocation
-    owned_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60", pgroup: true)
-    preexisting_ipv6_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60", pgroup: true)
+    owned_pid = spawn_waiting_process(pgroup: true)
+    preexisting_ipv6_pid = spawn_waiting_process(pgroup: true)
     stdout, stderr, status = run_test_script(
       curl_mode: "unavailable_until_mock",
       mock_owned_pid: owned_pid.to_s
@@ -99,7 +99,7 @@ class TestWorkflowTest < Minitest::Test
   end
 
   def test_failed_mock_readiness_cleans_up_the_owned_process_group
-    owned_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60", pgroup: true)
+    owned_pid = spawn_waiting_process(pgroup: true)
     stdout, stderr, status = run_test_script(
       curl_mode: "unavailable_until_mock",
       mock_mode: "fail",
@@ -271,8 +271,8 @@ class TestWorkflowTest < Minitest::Test
   end
 
   def test_cleanup_leaves_non_listening_connections_running
-    listener_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60", pgroup: true)
-    client_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60")
+    listener_pid = spawn_waiting_process(pgroup: true)
+    client_pid = spawn_waiting_process
     stdout, stderr, status = run_test_script(
       curl_mode: "unavailable_until_mock",
       mock_owned_pid: listener_pid.to_s
@@ -316,6 +316,12 @@ class TestWorkflowTest < Minitest::Test
   end
 
   private
+
+  def spawn_waiting_process(pgroup: false)
+    # Ruby can lose TERM during interpreter startup. These fixtures only need
+    # to wait for cleanup, so use a process with the native signal disposition.
+    Process.spawn("sleep", "60", pgroup: pgroup)
+  end
 
   def assert_bundle_ran
     assert_equal(["exec rake test"], calls(@bundle_calls))
@@ -383,6 +389,8 @@ class TestWorkflowTest < Minitest::Test
     FileUtils.mkdir_p(bin)
     File.symlink(File.join(ROOT, "scripts/mock"), File.join(project, "scripts/mock"))
     File.write(spec, "openapi: 3.0.0\n")
+    FileUtils.mkdir_p(File.join(project, "scripts/steady"))
+    write_executable(File.join(project, "scripts/steady/install"), "#!/usr/bin/env bash\nexit 0\n")
     write_executable(
       File.join(bin, "curl"),
       <<~BASH
@@ -418,18 +426,18 @@ class TestWorkflowTest < Minitest::Test
       BASH
     )
     write_executable(
-      File.join(bin, "npm"),
+      File.join(project, "scripts/run-steady"),
       <<~BASH
         #!/usr/bin/env bash
         if [[ " $* " == *" --version "* ]]; then
           exit 0
         fi
-        if [ "$MOCK_NPM_MODE" = "delayed_start" ]; then
+        if [ "$MOCK_STEADY_MODE" = "delayed_start" ]; then
           "$RUBY" -e 'sleep 0.2'
         fi
         printf '%s\n' "$$" > "$MOCK_PID_RECORD"
         trap ': > "$MOCK_EXITED_RECORD"' EXIT
-        if [ "$MOCK_NPM_MODE" = "crash" ]; then
+        if [ "$MOCK_STEADY_MODE" = "crash" ]; then
           exit 42
         fi
         exec "$RUBY" -e 'sleep 60'
@@ -442,7 +450,7 @@ class TestWorkflowTest < Minitest::Test
       "MOCK_LISTENER_MODE" => listener_mode,
       "MOCK_LSOF_CALLS" => lsof_calls,
       "MOCK_LSOF_MODE" => lsof_mode,
-      "MOCK_NPM_MODE" => mode,
+      "MOCK_STEADY_MODE" => mode,
       "MOCK_PID_RECORD" => pid_record,
       "PATH" => [bin, ENV.fetch("PATH")].join(File::PATH_SEPARATOR),
       "RUBY" => RbConfig.ruby,

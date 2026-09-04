@@ -3,8 +3,11 @@ module OpenAI
     module Containers
       module Files
         type content_retrieve_params =
-          { container_id: String, file_id: String }
-          & OpenAI::Internal::Type::request_parameters
+          {
+            container_id: String,
+            file_id: String,
+            ?request_options: OpenAI::request_opts
+          }
 
         class ContentRetrieveParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -23,7 +26,7 @@ module OpenAI
           def to_hash: -> {
             container_id: String,
             file_id: String,
-            request_options: OpenAI::RequestOptions
+            ?request_options: OpenAI::RequestOptions
           }
         end
       end

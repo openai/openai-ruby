@@ -7,7 +7,7 @@ module OpenAI
           item: OpenAI::Models::Realtime::conversation_item,
           output_index: Integer,
           response_id: String,
-          type: :"response.output_item.done"
+          ?type: :"response.output_item.done"
         }
 
       class ResponseOutputItemDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -34,7 +34,7 @@ module OpenAI
           item: OpenAI::Models::Realtime::conversation_item,
           output_index: Integer,
           response_id: String,
-          type: :"response.output_item.done"
+          ?type: :"response.output_item.done"
         }
       end
     end

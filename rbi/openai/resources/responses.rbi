@@ -872,6 +872,20 @@ module OpenAI
           include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
           include_obfuscation: T::Boolean,
           starting_after: Integer,
+          text: T.nilable(
+            T.any(
+              OpenAI::Responses::ResponseTextConfig::OrHash,
+              OpenAI::StructuredOutput::JsonSchemaConverter::Input
+            )
+          ),
+          tools: T.nilable(
+            T::Array[
+              T.any(
+                OpenAI::Responses::FunctionTool::OrHash,
+                OpenAI::StructuredOutput::JsonSchemaConverter::Input
+              )
+            ]
+          ),
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
         )
@@ -892,6 +906,12 @@ module OpenAI
         include_obfuscation: nil,
         # The sequence number of the event after which to start streaming.
         starting_after: nil,
+        # The structured-output model used to parse retrieved text output. This is a
+        # local parsing hint and is not sent to the API.
+        text: nil,
+        # Structured-output models used to parse retrieved function tool calls. These
+        # are local parsing hints and are not sent to the API.
+        tools: nil,
         # There is no need to provide `stream:`. Instead, use `#retrieve_streaming` or
         # `#retrieve` for streaming and non-streaming use cases, respectively.
         stream: false,
@@ -1027,12 +1047,13 @@ module OpenAI
         # request will be processed with the Flex Processing service tier. - To opt-in to
         # [Fast mode](/api/docs/guides/fast-mode) at the request level, include the
         # `service_tier=fast` or `service_tier=priority` parameter for Responses or Chat
-        # Completions. The response will show `service_tier=priority` regardless of if you
-        # specify `service_tier=fast` or `priority` in your request. - When not set, the
-        # default behavior is 'auto'. When the `service_tier` parameter is set, the
-        # response body will include the `service_tier` value based on the processing mode
-        # actually used to serve the request. This response value may be different from
-        # the value set in the parameter.
+        # Completions. For models with a dedicated Fast tier, either value resolves to
+        # `service_tier=fast`; for other models, either value resolves to
+        # `service_tier=priority`. - When not set, the default behavior is 'auto'. When
+        # the `service_tier` parameter is set, the response body will include the
+        # `service_tier` value based on the processing mode actually used to serve the
+        # request. This response value may be different from the value set in the
+        # parameter.
         service_tier: nil,
         request_options: {}
       )

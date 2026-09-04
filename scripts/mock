@@ -83,14 +83,18 @@ require_lsof() {
   fi
 }
 
-# Run steady mock on the given spec
 if [ "$1" == "--daemon" ]; then
   require_lsof
+fi
 
-  # Pre-install the package so the download doesn't eat into the startup timeout
-  npm exec --package=@stdy/cli@0.22.1 -- steady --version
+./scripts/steady/install
 
-  ruby -e 'Process.setpgrp; exec(*ARGV)' npm exec --package=@stdy/cli@0.22.1 -- steady --host 127.0.0.1 -p 4010 --validator-query-array-format=brackets --validator-form-array-format=brackets --validator-query-object-format=brackets --validator-form-object-format=brackets "$URL" &> .stdy.log &
+# Run steady mock on the given spec
+if [ "$1" == "--daemon" ]; then
+  # Check the local launcher before starting the readiness timeout
+  ./scripts/run-steady --version
+
+  ruby -e 'Process.setpgrp; exec(*ARGV)' ./scripts/run-steady --host 127.0.0.1 -p 4010 --validator-query-array-format=brackets --validator-form-array-format=brackets --validator-query-object-format=brackets --validator-form-object-format=brackets "$URL" &> .stdy.log &
   mock_pid=$!
 
   # Until readiness is confirmed, every exit path owns cleanup. Once the
@@ -141,5 +145,5 @@ if [ "$1" == "--daemon" ]; then
   trap - EXIT INT TERM
   echo
 else
-  npm exec --package=@stdy/cli@0.22.1 -- steady --host 127.0.0.1 -p 4010 --validator-query-array-format=brackets --validator-form-array-format=brackets --validator-query-object-format=brackets --validator-form-object-format=brackets "$URL"
+  ./scripts/run-steady --host 127.0.0.1 -p 4010 --validator-query-array-format=brackets --validator-form-array-format=brackets --validator-query-object-format=brackets --validator-form-object-format=brackets "$URL"
 fi

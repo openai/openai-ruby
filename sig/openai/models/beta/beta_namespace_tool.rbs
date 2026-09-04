@@ -8,7 +8,7 @@ module OpenAI
           description: String,
           name: String,
           tools: ::Array[OpenAI::Models::Beta::BetaNamespaceTool::tool],
-          type: :namespace
+          ?type: :namespace
         }
 
       class BetaNamespaceTool < OpenAI::Internal::Type::BaseModel
@@ -31,7 +31,7 @@ module OpenAI
           description: String,
           name: String,
           tools: ::Array[OpenAI::Models::Beta::BetaNamespaceTool::tool],
-          type: :namespace
+          ?type: :namespace
         }
 
         type tool =
@@ -44,14 +44,14 @@ module OpenAI
           type function =
             {
               name: String,
-              type: :function,
-              allowed_callers: ::Array[OpenAI::Models::Beta::BetaNamespaceTool::Tool::Function::allowed_caller]?,
-              async: bool,
-              defer_loading: bool,
-              description: String?,
-              output_schema: ::Hash[Symbol, top]?,
-              parameters: top?,
-              strict: bool?
+              ?type: :function,
+              ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaNamespaceTool::Tool::Function::allowed_caller]?,
+              ?async: bool,
+              ?defer_loading: bool,
+              ?description: String?,
+              ?output_schema: ::Hash[Symbol, top]?,
+              ?parameters: top?,
+              ?strict: bool?
             }
 
           class Function < OpenAI::Internal::Type::BaseModel
@@ -91,14 +91,14 @@ module OpenAI
 
             def to_hash: -> {
               name: String,
-              type: :function,
-              allowed_callers: ::Array[OpenAI::Models::Beta::BetaNamespaceTool::Tool::Function::allowed_caller]?,
-              async: bool,
-              defer_loading: bool,
-              description: String?,
-              output_schema: ::Hash[Symbol, top]?,
-              parameters: top?,
-              strict: bool?
+              ?type: :function,
+              ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaNamespaceTool::Tool::Function::allowed_caller]?,
+              ?async: bool,
+              ?defer_loading: bool,
+              ?description: String?,
+              ?output_schema: ::Hash[Symbol, top]?,
+              ?parameters: top?,
+              ?strict: bool?
             }
 
             type allowed_caller = :direct | :programmatic

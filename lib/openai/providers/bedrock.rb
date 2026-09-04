@@ -602,8 +602,9 @@ module OpenAI
           token_provider
         elsif environment_bearer
           lambda do
-            ENV["AWS_BEARER_TOKEN_BEDROCK"] ||
+            token = ENV["AWS_BEARER_TOKEN_BEDROCK"] ||
               raise(OpenAI::Errors::Error, Bedrock::MISSING_CREDENTIALS_MESSAGE)
+            Bedrock.normalize_optional_string(token) || token
           end
         end
 

@@ -8,10 +8,10 @@ module OpenAI
               {
                 project_id: String,
                 service_account_id: String,
-                name: String,
-                scopes: ::Array[String]
+                ?name: String,
+                ?scopes: ::Array[String],
+                ?request_options: OpenAI::request_opts
               }
-              & OpenAI::Internal::Type::request_parameters
 
             class APIKeyCreateParams < OpenAI::Internal::Type::BaseModel
               extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -40,9 +40,9 @@ module OpenAI
               def to_hash: -> {
                 project_id: String,
                 service_account_id: String,
-                name: String,
-                scopes: ::Array[String],
-                request_options: OpenAI::RequestOptions
+                ?name: String,
+                ?scopes: ::Array[String],
+                ?request_options: OpenAI::RequestOptions
               }
             end
           end

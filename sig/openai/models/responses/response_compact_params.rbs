@@ -4,15 +4,15 @@ module OpenAI
       type response_compact_params =
         {
           model: OpenAI::Models::Responses::ResponseCompactParams::model?,
-          input: OpenAI::Models::Responses::ResponseCompactParams::input?,
-          instructions: String?,
-          previous_response_id: String?,
-          prompt_cache_key: String?,
-          prompt_cache_options: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions?,
-          prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?,
-          service_tier: OpenAI::Models::Responses::ResponseCompactParams::service_tier?
+          ?input: OpenAI::Models::Responses::ResponseCompactParams::input?,
+          ?instructions: String?,
+          ?previous_response_id: String?,
+          ?prompt_cache_key: String?,
+          ?prompt_cache_options: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions?,
+          ?prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?,
+          ?service_tier: OpenAI::Models::Responses::ResponseCompactParams::service_tier?,
+          ?request_options: OpenAI::request_opts
         }
-        & OpenAI::Internal::Type::request_parameters
 
       class ResponseCompactParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -48,14 +48,14 @@ module OpenAI
 
         def to_hash: -> {
           model: OpenAI::Models::Responses::ResponseCompactParams::model?,
-          input: OpenAI::Models::Responses::ResponseCompactParams::input?,
-          instructions: String?,
-          previous_response_id: String?,
-          prompt_cache_key: String?,
-          prompt_cache_options: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions?,
-          prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?,
-          service_tier: OpenAI::Models::Responses::ResponseCompactParams::service_tier?,
-          request_options: OpenAI::RequestOptions
+          ?input: OpenAI::Models::Responses::ResponseCompactParams::input?,
+          ?instructions: String?,
+          ?previous_response_id: String?,
+          ?prompt_cache_key: String?,
+          ?prompt_cache_options: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions?,
+          ?prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?,
+          ?service_tier: OpenAI::Models::Responses::ResponseCompactParams::service_tier?,
+          ?request_options: OpenAI::RequestOptions
         }
 
         type model =
@@ -287,8 +287,8 @@ module OpenAI
 
         type prompt_cache_options =
           {
-            mode: OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::mode,
-            ttl: OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::ttl
+            ?mode: OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::mode,
+            ?ttl: OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::ttl
           }
 
         class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
@@ -310,8 +310,8 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            mode: OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::mode,
-            ttl: OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::ttl
+            ?mode: OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::mode,
+            ?ttl: OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::ttl
           }
 
           type mode = :implicit | :explicit

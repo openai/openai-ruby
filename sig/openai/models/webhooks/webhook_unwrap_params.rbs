@@ -1,8 +1,7 @@
 module OpenAI
   module Models
     module Webhooks
-      type webhook_unwrap_params =
-        {  } & OpenAI::Internal::Type::request_parameters
+      type webhook_unwrap_params = { ?request_options: OpenAI::request_opts }
 
       class WebhookUnwrapParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -10,7 +9,7 @@ module OpenAI
 
         def initialize: (?request_options: OpenAI::request_opts) -> void
 
-        def to_hash: -> { request_options: OpenAI::RequestOptions }
+        def to_hash: -> { ?request_options: OpenAI::RequestOptions }
       end
     end
   end

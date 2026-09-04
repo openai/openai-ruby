@@ -21,6 +21,10 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     required :profiles, OpenAI::ArrayOf[AliasedProfile]
   end
 
+  class AliasedLookup < OpenAI::BaseModel
+    required :profile_id, Integer, api_name: :profileId
+  end
+
   class AliasedNameCollision < OpenAI::BaseModel
     required :display_name, String, api_name: :displayName
     required :displayName, String, api_name: :legacyDisplayName
@@ -260,6 +264,809 @@ class OpenAI::Test::StructuredOutputAPINamesTest < Minitest::Test
     assert_instance_of(AliasedProfile, parsed)
     assert_equal("Ada", parsed.display_name)
     assert_nil(parsed.middle_name)
+  end
+
+  def test_background_retrieve_parses_text_and_tool_models_locally
+    stub_request(:get, "http://localhost/responses/resp_background").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_background",
+        status: "completed",
+        output: [
+          {
+            id: "msg_background",
+            content: [
+              {
+                annotations: [],
+                text: "{\"displayName\":\"Ada\",\"middleName\":null}",
+                type: "output_text"
+              }
+            ],
+            role: "assistant",
+            status: "completed",
+            type: "message"
+          },
+          {
+            arguments: "{\"profileId\":7}",
+            call_id: "call_background",
+            name: "AliasedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    tools = [AliasedLookup]
+    response = @client.responses.retrieve(
+      "resp_background",
+      text: AliasedProfile,
+      tools: tools
+    )
+
+    assert_requested(:get, "http://localhost/responses/resp_background") do |request|
+      assert_nil(request.uri.query)
+    end
+
+    parsed_text = response.output.fetch(0).content.fetch(0).parsed
+    parsed_tool = response.output.fetch(1).parsed
+
+    assert_instance_of(AliasedProfile, parsed_text)
+    assert_equal("Ada", parsed_text.display_name)
+    assert_nil(parsed_text.middle_name)
+    assert_instance_of(AliasedLookup, parsed_tool)
+    assert_equal(7, parsed_tool.profile_id)
+    assert_equal([AliasedLookup], tools)
+  end
+
+  def test_background_retrieve_parses_completed_text_when_response_status_is_omitted
+    stub_request(:get, "http://localhost/responses/resp_without_status").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_without_status",
+        output: [
+          {
+            id: "msg_without_status",
+            content: [
+              {
+                annotations: [],
+                text: "{\"displayName\":\"Ada\",\"middleName\":null}",
+                type: "output_text"
+              }
+            ],
+            role: "assistant",
+            status: "completed",
+            type: "message"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_without_status", text: AliasedProfile)
+
+    assert_nil(response.status)
+    assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
+  end
+
+  def test_background_retrieve_parses_schema_valid_statusless_text
+    stub_request(:get, "http://localhost/responses/resp_statusless_valid_text").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_statusless_valid_text",
+        output: [
+          {
+            id: "msg_statusless_valid_text",
+            content: [
+              {
+                annotations: [],
+                text: "{\"displayName\":\"Ada\",\"middleName\":null}",
+                type: "output_text"
+              }
+            ],
+            role: "assistant",
+            type: "message"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_statusless_valid_text", text: AliasedProfile)
+
+    assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
+  end
+
+  def test_background_retrieve_parses_schema_valid_statusless_arguments
+    stub_request(:get, "http://localhost/responses/resp_statusless_valid_arguments").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_statusless_valid_arguments",
+        output: [
+          {
+            arguments: "{\"profileId\":7}",
+            call_id: "call_statusless_valid_arguments",
+            name: "AliasedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve(
+      "resp_statusless_valid_arguments",
+      tools: [AliasedLookup]
+    )
+
+    assert_instance_of(AliasedLookup, response.output.fetch(0).parsed)
+  end
+
+  def test_background_retrieve_defers_item_status_without_top_level_status
+    stub_request(:get, "http://localhost/responses/resp_item_pending").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_item_pending",
+        output: [
+          {
+            id: "msg_item_pending",
+            content: [{annotations: [], text: "{\"displayName\":", type: "output_text"}],
+            role: "assistant",
+            status: "in_progress",
+            type: "message"
+          },
+          {type: "function_call"}
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve(
+      "resp_item_pending",
+      text: AliasedProfile,
+      tools: [AliasedLookup]
+    )
+
+    assert_nil(response.status)
+    content = response.output.fetch(0).content.fetch(0)
+    assert_equal("{\"displayName\":", content.text)
+    assert_nil(content.parsed)
+    assert_equal(:function_call, response.output.fetch(1).type)
+  end
+
+  def test_background_retrieve_defers_statusless_unfinished_function_calls
+    stub_request(:get, "http://localhost/responses/resp_statusless_function_call").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_statusless_function_call",
+        output: [{type: "function_call"}]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_statusless_function_call", text: AliasedProfile)
+
+    assert_nil(response.status)
+    assert_equal(:function_call, response.output.fetch(0).type)
+  end
+
+  def test_background_retrieve_defers_statusless_partial_function_arguments
+    stub_request(:get, "http://localhost/responses/resp_statusless_partial_arguments").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_statusless_partial_arguments",
+        output: [
+          {
+            arguments: "{\"profileId\":",
+            call_id: "call_statusless_partial_arguments",
+            name: "AliasedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve(
+      "resp_statusless_partial_arguments",
+      tools: [AliasedLookup]
+    )
+    tool_call = response.output.fetch(0)
+
+    assert_nil(response.status)
+    assert_equal("{\"profileId\":", tool_call.arguments)
+    assert_nil(tool_call.parsed)
+  end
+
+  def test_background_retrieve_defers_statusless_partial_text
+    stub_request(:get, "http://localhost/responses/resp_statusless_partial_text").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_statusless_partial_text",
+        output: [
+          {
+            id: "msg_statusless_partial_text",
+            content: [{annotations: [], text: "{\"displayName\":", type: "output_text"}],
+            role: "assistant",
+            type: "message"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_statusless_partial_text", text: AliasedProfile)
+    content = response.output.fetch(0).content.fetch(0)
+
+    assert_nil(response.status)
+    assert_equal("{\"displayName\":", content.text)
+    assert_nil(content.parsed)
+  end
+
+  def test_background_retrieve_parses_syntactically_complete_schema_invalid_arguments
+    stub_request(:get, "http://localhost/responses/resp_statusless_incomplete_arguments").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_statusless_incomplete_arguments",
+        output: [
+          {
+            arguments: "{}",
+            call_id: "call_statusless_incomplete_arguments",
+            name: "AliasedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve(
+      "resp_statusless_incomplete_arguments",
+      tools: [AliasedLookup]
+    )
+
+    parsed = response.output.fetch(0).parsed
+
+    assert_instance_of(AliasedLookup, parsed)
+    assert_nil(parsed.profile_id)
+  end
+
+  def test_background_retrieve_parses_syntactically_complete_schema_invalid_text
+    stub_request(:get, "http://localhost/responses/resp_statusless_incomplete_text").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_statusless_incomplete_text",
+        output: [
+          {
+            id: "msg_statusless_incomplete_text",
+            content: [{annotations: [], text: "{}", type: "output_text"}],
+            role: "assistant",
+            type: "message"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_statusless_incomplete_text", text: AliasedProfile)
+
+    parsed = response.output.fetch(0).content.fetch(0).parsed
+
+    assert_instance_of(AliasedProfile, parsed)
+    assert_nil(parsed.display_name)
+  end
+
+  def test_background_retrieve_parses_malformed_statusless_arguments_after_completion
+    stub_request(:get, "http://localhost/responses/resp_completed_malformed_arguments").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_completed_malformed_arguments",
+        status: "completed",
+        output: [
+          {
+            arguments: "{\"profileId\":",
+            call_id: "call_completed_malformed_arguments",
+            name: "AliasedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve(
+      "resp_completed_malformed_arguments",
+      tools: [AliasedLookup]
+    )
+
+    assert_raises(OpenAI::Errors::ConversionError) { response.output.fetch(0).parsed }
+  end
+
+  def test_background_retrieve_parses_malformed_statusless_text_after_completion
+    stub_request(:get, "http://localhost/responses/resp_completed_malformed_text").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_completed_malformed_text",
+        status: "completed",
+        output: [
+          {
+            id: "msg_completed_malformed_text",
+            content: [{annotations: [], text: "{\"displayName\":", type: "output_text"}],
+            role: "assistant",
+            type: "message"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_completed_malformed_text", text: AliasedProfile)
+
+    assert_raises(OpenAI::Errors::ConversionError) do
+      response.output.fetch(0).content.fetch(0).parsed
+    end
+  end
+
+  def test_background_retrieve_parses_text_with_a_nameless_tool_call
+    stub_request(:get, "http://localhost/responses/resp_text_with_nameless_tool").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_text_with_nameless_tool",
+        status: "completed",
+        output: [
+          {
+            id: "msg_text_with_nameless_tool",
+            content: [
+              {
+                annotations: [],
+                text: "{\"displayName\":\"Ada\",\"middleName\":null}",
+                type: "output_text"
+              }
+            ],
+            role: "assistant",
+            status: "completed",
+            type: "message"
+          },
+          {
+            arguments: "{\"unused\":",
+            call_id: "call_unhinted",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve(
+      "resp_text_with_nameless_tool",
+      text: AliasedProfile,
+      tools: [AliasedLookup]
+    )
+
+    assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
+    assert_nil(response.output.fetch(1).parsed)
+  end
+
+  def test_background_retrieve_parses_tools_with_unhinted_partial_text
+    stub_request(:get, "http://localhost/responses/resp_tool_with_unhinted_text").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_tool_with_unhinted_text",
+        status: "completed",
+        output: [
+          {
+            id: "msg_unhinted_text",
+            content: [{annotations: [], text: "{\"unused\":", type: "output_text"}],
+            role: "assistant",
+            type: "message"
+          },
+          {
+            arguments: "{\"profileId\":7}",
+            call_id: "call_hinted",
+            name: "AliasedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_tool_with_unhinted_text", tools: [AliasedLookup])
+
+    assert_nil(response.output.fetch(0).content.fetch(0).parsed)
+    assert_instance_of(AliasedLookup, response.output.fetch(1).parsed)
+  end
+
+  def test_background_retrieve_defers_incomplete_items_when_response_is_completed
+    stub_request(:get, "http://localhost/responses/resp_completed_with_incomplete_item").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_completed_with_incomplete_item",
+        status: "completed",
+        output: [
+          {
+            id: "msg_completed_with_incomplete_item",
+            content: [{annotations: [], text: "{\"displayName\":", type: "output_text"}],
+            role: "assistant",
+            status: "incomplete",
+            type: "message"
+          },
+          {status: "incomplete", type: "function_call"}
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve(
+      "resp_completed_with_incomplete_item",
+      text: AliasedProfile,
+      tools: [AliasedLookup]
+    )
+
+    assert_equal(:completed, response.status)
+    content = response.output.fetch(0).content.fetch(0)
+    assert_equal("{\"displayName\":", content.text)
+    assert_nil(content.parsed)
+    assert_equal(:function_call, response.output.fetch(1).type)
+  end
+
+  def test_background_retrieve_parses_explicitly_named_tool_models_locally
+    stub_request(:get, "http://localhost/responses/resp_named_tool").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_named_tool",
+        status: "completed",
+        output: [
+          {
+            arguments: "{\"profileId\":7}",
+            call_id: "call_named_tool",
+            name: "custom_lookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    tools = [{type: :function, function: {name: "custom_lookup", parameters: AliasedLookup}}]
+    response = @client.responses.retrieve("resp_named_tool", tools: tools)
+
+    assert_requested(:get, "http://localhost/responses/resp_named_tool") do |request|
+      assert_nil(request.uri.query)
+    end
+
+    parsed = response.output.fetch(0).parsed
+
+    assert_instance_of(AliasedLookup, parsed)
+    assert_equal(7, parsed.profile_id)
+    assert_equal(AliasedLookup, tools.dig(0, :function, :parameters))
+  end
+
+  def test_background_retrieve_defers_partial_text_parsing_while_in_progress
+    stub_request(:get, "http://localhost/responses/resp_pending").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_pending",
+        status: "in_progress",
+        output: [
+          {
+            id: "msg_pending",
+            content: [{annotations: [], text: "{\"displayName\":", type: "output_text"}],
+            role: "assistant",
+            status: "in_progress",
+            type: "message"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_pending", text: AliasedProfile)
+
+    assert_requested(:get, "http://localhost/responses/resp_pending") do |request|
+      assert_nil(request.uri.query)
+    end
+
+    content = response.output.fetch(0).content.fetch(0)
+
+    assert_equal("{\"displayName\":", content.text)
+    assert_nil(content.parsed)
+  end
+
+  def test_background_retrieve_defers_partial_tool_parsing_while_queued
+    stub_request(:get, "http://localhost/responses/resp_queued").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_queued",
+        status: "queued",
+        output: [
+          {
+            arguments: "{\"profileId\":",
+            call_id: "call_queued",
+            name: "AliasedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_queued", tools: [AliasedLookup])
+    tool_call = response.output.fetch(0)
+
+    assert_equal("{\"profileId\":", tool_call.arguments)
+    assert_nil(tool_call.parsed)
+  end
+
+  def test_background_retrieve_defers_partial_outputs_when_incomplete
+    stub_request(:get, "http://localhost/responses/resp_incomplete").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_incomplete",
+        status: "incomplete",
+        output: [
+          {
+            id: "msg_incomplete",
+            content: [{annotations: [], text: "{\"displayName\":", type: "output_text"}],
+            role: "assistant",
+            status: "incomplete",
+            type: "message"
+          },
+          {
+            arguments: "{\"profileId\":",
+            call_id: "call_incomplete",
+            name: "AliasedLookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    response = @client.responses.retrieve(
+      "resp_incomplete",
+      text: AliasedProfile,
+      tools: [AliasedLookup]
+    )
+
+    content = response.output.fetch(0).content.fetch(0)
+    tool_call = response.output.fetch(1)
+
+    assert_equal("{\"displayName\":", content.text)
+    assert_nil(content.parsed)
+    assert_equal("{\"profileId\":", tool_call.arguments)
+    assert_nil(tool_call.parsed)
+  end
+
+  def test_background_retrieve_defers_unfinished_tool_items_with_a_text_hint
+    stub_request(:get, "http://localhost/responses/resp_unfinished_tool").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_unfinished_tool",
+        status: "in_progress",
+        output: [{type: "function_call"}]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_unfinished_tool", text: AliasedProfile)
+
+    assert_equal(1, response.output.length)
+    assert_equal(:function_call, response.output.fetch(0).type)
+  end
+
+  def test_background_retrieve_keeps_string_keyed_parsing_hints_local
+    stub_request(:get, "http://localhost/responses/resp_string_hints").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_string_hints",
+        status: "completed",
+        output: [
+          {
+            id: "msg_string_hints",
+            content: [
+              {
+                annotations: [],
+                text: "{\"displayName\":\"Ada\",\"middleName\":null}",
+                type: "output_text"
+              }
+            ],
+            role: "assistant",
+            status: "completed",
+            type: "message"
+          },
+          {
+            arguments: "{\"profileId\":7}",
+            call_id: "call_string_hints",
+            name: "custom_lookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    tools = [
+      {"type" => "function", "function" => {"name" => "custom_lookup", "parameters" => AliasedLookup}}
+    ]
+    response = @client.responses.retrieve(
+      "resp_string_hints",
+      {"text" => AliasedProfile, "tools" => tools}
+    )
+
+    assert_requested(:get, "http://localhost/responses/resp_string_hints") do |request|
+      assert_nil(request.uri.query)
+    end
+
+    assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
+    assert_instance_of(AliasedLookup, response.output.fetch(1).parsed)
+    assert_equal(AliasedLookup, tools.dig(0, "function", "parameters"))
+  end
+
+  def test_background_retrieve_parses_flattened_string_keyed_tool_hint
+    stub_request(:get, "http://localhost/responses/resp_flat_string_hint").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_flat_string_hint",
+        status: "completed",
+        output: [
+          {
+            arguments: "{\"profileId\":7}",
+            call_id: "call_flat_string_hint",
+            name: "custom_flat_lookup",
+            type: "function_call"
+          }
+        ]
+      }
+    )
+
+    tools = [
+      {"type" => "function", "name" => "custom_flat_lookup", "parameters" => AliasedLookup}
+    ]
+    response = @client.responses.retrieve("resp_flat_string_hint", {"tools" => tools})
+
+    assert_requested(:get, "http://localhost/responses/resp_flat_string_hint") do |request|
+      assert_nil(request.uri.query)
+    end
+
+    assert_instance_of(AliasedLookup, response.output.fetch(0).parsed)
+    assert_equal("function", tools.dig(0, "type"))
+    assert_equal(AliasedLookup, tools.dig(0, "parameters"))
+  end
+
+  def test_background_retrieve_parses_format_underscore_hash_hints
+    hints = [{format_: AliasedProfile}, {"format_" => AliasedProfile}]
+
+    hints.each_with_index do |text, index|
+      response_id = "resp_format_underscore_#{index}"
+      stub_request(:get, "http://localhost/responses/#{response_id}").to_return_json(
+        status: 200,
+        body: {
+          id: response_id,
+          status: "completed",
+          output: [
+            {
+              id: "msg_format_underscore_#{index}",
+              content: [
+                {
+                  annotations: [],
+                  text: "{\"displayName\":\"Ada\",\"middleName\":null}",
+                  type: "output_text"
+                }
+              ],
+              role: "assistant",
+              status: "completed",
+              type: "message"
+            }
+          ]
+        }
+      )
+
+      response = @client.responses.retrieve(response_id, text: text)
+
+      assert_requested(:get, "http://localhost/responses/#{response_id}") do |request|
+        assert_nil(request.uri.query)
+      end
+
+      assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
+      assert_equal(AliasedProfile, text.values.fetch(0))
+    end
+  end
+
+  def test_background_retrieve_parses_string_keyed_json_schema_hint
+    stub_request(:get, "http://localhost/responses/resp_json_schema_hint").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_json_schema_hint",
+        status: "completed",
+        output: [
+          {
+            id: "msg_json_schema_hint",
+            content: [
+              {
+                annotations: [],
+                text: "{\"displayName\":\"Ada\",\"middleName\":null}",
+                type: "output_text"
+              }
+            ],
+            role: "assistant",
+            status: "completed",
+            type: "message"
+          }
+        ]
+      }
+    )
+
+    text = {
+      "format" => {
+        "type" => "json_schema",
+        "name" => "result",
+        "schema" => AliasedProfile
+      }
+    }
+    response = @client.responses.retrieve("resp_json_schema_hint", text: text)
+
+    assert_requested(:get, "http://localhost/responses/resp_json_schema_hint") do |request|
+      assert_nil(request.uri.query)
+    end
+
+    assert_instance_of(AliasedProfile, response.output.fetch(0).content.fetch(0).parsed)
+    assert_equal("json_schema", text.dig("format", "type"))
+    assert_equal(AliasedProfile, text.dig("format", "schema"))
+  end
+
+  def test_background_retrieve_accepts_response_retrieve_params
+    stub_request(:get, "http://localhost/responses/resp_params").to_return_json(
+      status: 200,
+      body: {id: "resp_params", status: "in_progress", output: []}
+    )
+
+    params = OpenAI::Responses::ResponseRetrieveParams.new
+    response = @client.responses.retrieve("resp_params", params)
+
+    assert_requested(:get, "http://localhost/responses/resp_params") do |request|
+      assert_nil(request.uri.query)
+    end
+
+    assert_empty(response.output)
+  end
+
+  def test_typed_text_config_has_create_and_retrieve_parity
+    output = [
+      {
+        id: "msg_text_config",
+        content: [
+          {
+            annotations: [],
+            text: "{\"displayName\":\"Ada\",\"middleName\":null}",
+            type: "output_text"
+          }
+        ],
+        role: "assistant",
+        status: "completed",
+        type: "message"
+      }
+    ]
+    stub_request(:post, "http://localhost/responses").to_return_json(
+      status: 200,
+      body: {id: "resp_created_text_config", status: "completed", output: output}
+    )
+    stub_request(:get, "http://localhost/responses/resp_text_config").to_return_json(
+      status: 200,
+      body: {id: "resp_text_config", status: "completed", output: output}
+    )
+
+    config = OpenAI::Responses::ResponseTextConfig.new(format_: AliasedProfile)
+    created = @client.responses.create(input: "Create a profile", model: "gpt-4o-mini", text: config)
+    retrieved = @client.responses.retrieve("resp_text_config", text: config)
+
+    created_parsed = created.output.fetch(0).content.fetch(0).parsed
+    retrieved_parsed = retrieved.output.fetch(0).content.fetch(0).parsed
+
+    assert_instance_of(AliasedProfile, created_parsed)
+    assert_instance_of(AliasedProfile, retrieved_parsed)
+    assert_equal(created_parsed.display_name, retrieved_parsed.display_name)
+  end
+
+  def test_background_retrieve_without_hints_skips_structured_output_parsing
+    stub_request(:get, "http://localhost/responses/resp_partial_tool").to_return_json(
+      status: 200,
+      body: {
+        id: "resp_partial_tool",
+        status: "in_progress",
+        output: [{type: "function_call"}]
+      }
+    )
+
+    response = @client.responses.retrieve("resp_partial_tool")
+
+    assert_equal(1, response.output.length)
+  end
+
+  def test_readme_states_retrieval_parsing_waits_for_completion
+    readme = File.read(File.expand_path("../../../README.md", __dir__))
+
+    assert_match(/parsed only after\s+a later retrieval reports it completed/, readme)
+    refute_includes(readme, "parsed once output is present")
   end
 
   def test_public_structured_output_endpoints_materialize_nested_models

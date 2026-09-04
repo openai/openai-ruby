@@ -5,7 +5,7 @@ module OpenAI
     # @generic Elem
     #
     # @example
-    #   if next_cursor_page.has_next?
+    #   if next_cursor_page.next_page?
     #     next_cursor_page = next_cursor_page.next_page
     #   end
     #

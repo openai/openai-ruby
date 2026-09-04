@@ -6,7 +6,7 @@ module OpenAI
 
         module Projects
           type project_model_permissions_deleted =
-            { deleted: bool, object: :"project.model_permissions.deleted" }
+            { deleted: bool, ?object: :"project.model_permissions.deleted" }
 
           class ProjectModelPermissionsDeleted < OpenAI::Internal::Type::BaseModel
             attr_accessor deleted: bool
@@ -20,7 +20,7 @@ module OpenAI
 
             def to_hash: -> {
               deleted: bool,
-              object: :"project.model_permissions.deleted"
+              ?object: :"project.model_permissions.deleted"
             }
           end
         end

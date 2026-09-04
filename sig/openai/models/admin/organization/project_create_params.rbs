@@ -5,11 +5,11 @@ module OpenAI
         type project_create_params =
           {
             name: String,
-            external_key_id: String?,
-            geography: String?,
-            residency: OpenAI::Models::Admin::Organization::project_residency?
+            ?external_key_id: String?,
+            ?geography: String?,
+            ?residency: OpenAI::Models::Admin::Organization::project_residency?,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class ProjectCreateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -33,10 +33,10 @@ module OpenAI
 
           def to_hash: -> {
             name: String,
-            external_key_id: String?,
-            geography: String?,
-            residency: OpenAI::Models::Admin::Organization::project_residency?,
-            request_options: OpenAI::RequestOptions
+            ?external_key_id: String?,
+            ?geography: String?,
+            ?residency: OpenAI::Models::Admin::Organization::project_residency?,
+            ?request_options: OpenAI::RequestOptions
           }
         end
       end

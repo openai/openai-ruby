@@ -6,7 +6,7 @@ module OpenAI
           item: OpenAI::Models::Responses::response_output_item,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.output_item.done"
+          ?type: :"response.output_item.done"
         }
 
       class ResponseOutputItemDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -29,7 +29,7 @@ module OpenAI
           item: OpenAI::Models::Responses::response_output_item,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.output_item.done"
+          ?type: :"response.output_item.done"
         }
       end
     end

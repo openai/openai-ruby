@@ -5,7 +5,7 @@ module OpenAI
         {
           error: OpenAI::Realtime::RealtimeError,
           event_id: String,
-          type: :error
+          ?type: :error
         }
 
       class RealtimeErrorEvent < OpenAI::Internal::Type::BaseModel
@@ -24,7 +24,7 @@ module OpenAI
         def to_hash: -> {
           error: OpenAI::Realtime::RealtimeError,
           event_id: String,
-          type: :error
+          ?type: :error
         }
       end
     end

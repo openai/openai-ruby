@@ -4,7 +4,7 @@ module OpenAI
       module Organization
         module Groups
           type user_create_response =
-            { group_id: String, object: :"group.user", user_id: String }
+            { group_id: String, ?object: :"group.user", user_id: String }
 
           class UserCreateResponse < OpenAI::Internal::Type::BaseModel
             attr_accessor group_id: String
@@ -21,7 +21,7 @@ module OpenAI
 
             def to_hash: -> {
               group_id: String,
-              object: :"group.user",
+              ?object: :"group.user",
               user_id: String
             }
           end

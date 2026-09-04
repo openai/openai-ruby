@@ -7,10 +7,10 @@ module OpenAI
         name: String,
         object: String,
         status: String,
-        expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter,
-        last_active_at: Integer,
-        memory_limit: OpenAI::Models::ContainerCreateResponse::memory_limit,
-        network_policy: OpenAI::Models::ContainerCreateResponse::NetworkPolicy
+        ?expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter,
+        ?last_active_at: Integer,
+        ?memory_limit: OpenAI::Models::ContainerCreateResponse::memory_limit,
+        ?network_policy: OpenAI::Models::ContainerCreateResponse::NetworkPolicy
       }
 
     class ContainerCreateResponse < OpenAI::Internal::Type::BaseModel
@@ -64,16 +64,16 @@ module OpenAI
         name: String,
         object: String,
         status: String,
-        expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter,
-        last_active_at: Integer,
-        memory_limit: OpenAI::Models::ContainerCreateResponse::memory_limit,
-        network_policy: OpenAI::Models::ContainerCreateResponse::NetworkPolicy
+        ?expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter,
+        ?last_active_at: Integer,
+        ?memory_limit: OpenAI::Models::ContainerCreateResponse::memory_limit,
+        ?network_policy: OpenAI::Models::ContainerCreateResponse::NetworkPolicy
       }
 
       type expires_after =
         {
-          anchor: OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor,
-          minutes: Integer
+          ?anchor: OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor,
+          ?minutes: Integer
         }
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
@@ -93,8 +93,8 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          anchor: OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor,
-          minutes: Integer
+          ?anchor: OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor,
+          ?minutes: Integer
         }
 
         type anchor = :last_active_at
@@ -124,7 +124,7 @@ module OpenAI
       type network_policy =
         {
           type: OpenAI::Models::ContainerCreateResponse::NetworkPolicy::type_,
-          allowed_domains: ::Array[String]
+          ?allowed_domains: ::Array[String]
         }
 
       class NetworkPolicy < OpenAI::Internal::Type::BaseModel
@@ -141,7 +141,7 @@ module OpenAI
 
         def to_hash: -> {
           type: OpenAI::Models::ContainerCreateResponse::NetworkPolicy::type_,
-          allowed_domains: ::Array[String]
+          ?allowed_domains: ::Array[String]
         }
 
         type type_ = :allowlist | :disabled

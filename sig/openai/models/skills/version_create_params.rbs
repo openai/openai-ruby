@@ -4,10 +4,10 @@ module OpenAI
       type version_create_params =
         {
           skill_id: String,
-          default: bool,
-          files: OpenAI::Models::Skills::VersionCreateParams::files
+          ?default: bool,
+          ?files: OpenAI::Models::Skills::VersionCreateParams::files,
+          ?request_options: OpenAI::request_opts
         }
-        & OpenAI::Internal::Type::request_parameters
 
       class VersionCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -34,9 +34,9 @@ module OpenAI
 
         def to_hash: -> {
           skill_id: String,
-          default: bool,
-          files: OpenAI::Models::Skills::VersionCreateParams::files,
-          request_options: OpenAI::RequestOptions
+          ?default: bool,
+          ?files: OpenAI::Models::Skills::VersionCreateParams::files,
+          ?request_options: OpenAI::RequestOptions
         }
 
         type files =

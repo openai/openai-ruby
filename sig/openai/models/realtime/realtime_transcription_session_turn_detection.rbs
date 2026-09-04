@@ -5,10 +5,10 @@ module OpenAI
     module Realtime
       type realtime_transcription_session_turn_detection =
         {
-          prefix_padding_ms: Integer,
-          silence_duration_ms: Integer,
-          threshold: Float,
-          type: String
+          ?prefix_padding_ms: Integer,
+          ?silence_duration_ms: Integer,
+          ?threshold: Float,
+          ?type: String
         }
 
       class RealtimeTranscriptionSessionTurnDetection < OpenAI::Internal::Type::BaseModel
@@ -36,10 +36,10 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          prefix_padding_ms: Integer,
-          silence_duration_ms: Integer,
-          threshold: Float,
-          type: String
+          ?prefix_padding_ms: Integer,
+          ?silence_duration_ms: Integer,
+          ?threshold: Float,
+          ?type: String
         }
       end
     end

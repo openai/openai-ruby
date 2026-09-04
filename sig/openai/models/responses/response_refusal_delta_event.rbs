@@ -8,7 +8,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.refusal.delta"
+          ?type: :"response.refusal.delta"
         }
 
       class ResponseRefusalDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -39,7 +39,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.refusal.delta"
+          ?type: :"response.refusal.delta"
         }
       end
     end

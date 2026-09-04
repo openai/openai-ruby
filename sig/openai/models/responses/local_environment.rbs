@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Responses
       type local_environment =
-        { type: :local, skills: ::Array[OpenAI::Responses::LocalSkill] }
+        { ?type: :local, ?skills: ::Array[OpenAI::Responses::LocalSkill] }
 
       class LocalEnvironment < OpenAI::Internal::Type::BaseModel
         attr_accessor type: :local
@@ -19,8 +19,8 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :local,
-          skills: ::Array[OpenAI::Responses::LocalSkill]
+          ?type: :local,
+          ?skills: ::Array[OpenAI::Responses::LocalSkill]
         }
       end
     end

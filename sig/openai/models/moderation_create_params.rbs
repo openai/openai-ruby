@@ -3,9 +3,9 @@ module OpenAI
     type moderation_create_params =
       {
         input: OpenAI::Models::ModerationCreateParams::input,
-        model: OpenAI::Models::ModerationCreateParams::model
+        ?model: OpenAI::Models::ModerationCreateParams::model,
+        ?request_options: OpenAI::request_opts
       }
-      & OpenAI::Internal::Type::request_parameters
 
     class ModerationCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -27,8 +27,8 @@ module OpenAI
 
       def to_hash: -> {
         input: OpenAI::Models::ModerationCreateParams::input,
-        model: OpenAI::Models::ModerationCreateParams::model,
-        request_options: OpenAI::RequestOptions
+        ?model: OpenAI::Models::ModerationCreateParams::model,
+        ?request_options: OpenAI::RequestOptions
       }
 
       type input =

@@ -13,40 +13,40 @@ module OpenAI
 
         type response_create =
           {
-            type: :"response.create",
-            background: bool?,
-            context_management: ::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement]?,
-            conversation: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::conversation?,
-            include: ::Array[OpenAI::Models::Beta::beta_response_includable]?,
-            input: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::input,
-            instructions: String?,
-            max_output_tokens: Integer?,
-            max_tool_calls: Integer?,
-            metadata: ::Hash[Symbol, String]?,
-            model: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::model,
-            moderation: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation?,
-            multi_agent: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent?,
-            parallel_tool_calls: bool?,
-            previous_response_id: String?,
-            prompt: OpenAI::Beta::BetaResponsePrompt?,
-            prompt_cache_key: String?,
-            prompt_cache_options: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions,
-            prompt_cache_retention: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::prompt_cache_retention?,
-            reasoning: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning?,
-            safety_identifier: String?,
-            service_tier: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::service_tier?,
-            store: bool?,
-            stream: bool?,
-            stream_id: String,
-            stream_options: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions?,
-            temperature: Float?,
-            text: OpenAI::Beta::BetaResponseTextConfig,
-            tool_choice: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::tool_choice,
-            tools: ::Array[OpenAI::Models::Beta::beta_tool],
-            top_logprobs: Integer?,
-            top_p: Float?,
-            truncation: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::truncation?,
-            user: String
+            ?type: :"response.create",
+            ?background: bool?,
+            ?context_management: ::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement]?,
+            ?conversation: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::conversation?,
+            ?include: ::Array[OpenAI::Models::Beta::beta_response_includable]?,
+            ?input: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::input,
+            ?instructions: String?,
+            ?max_output_tokens: Integer?,
+            ?max_tool_calls: Integer?,
+            ?metadata: ::Hash[Symbol, String]?,
+            ?model: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::model,
+            ?moderation: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation?,
+            ?multi_agent: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent?,
+            ?parallel_tool_calls: bool?,
+            ?previous_response_id: String?,
+            ?prompt: OpenAI::Beta::BetaResponsePrompt?,
+            ?prompt_cache_key: String?,
+            ?prompt_cache_options: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions,
+            ?prompt_cache_retention: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::prompt_cache_retention?,
+            ?reasoning: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning?,
+            ?safety_identifier: String?,
+            ?service_tier: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::service_tier?,
+            ?store: bool?,
+            ?stream: bool?,
+            ?stream_id: String,
+            ?stream_options: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions?,
+            ?temperature: Float?,
+            ?text: OpenAI::Beta::BetaResponseTextConfig,
+            ?tool_choice: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::tool_choice,
+            ?tools: ::Array[OpenAI::Models::Beta::beta_tool],
+            ?top_logprobs: Integer?,
+            ?top_p: Float?,
+            ?truncation: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::truncation?,
+            ?user: String
           }
 
         class ResponseCreate < OpenAI::Internal::Type::BaseModel
@@ -184,44 +184,44 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            type: :"response.create",
-            background: bool?,
-            context_management: ::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement]?,
-            conversation: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::conversation?,
-            include: ::Array[OpenAI::Models::Beta::beta_response_includable]?,
-            input: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::input,
-            instructions: String?,
-            max_output_tokens: Integer?,
-            max_tool_calls: Integer?,
-            metadata: ::Hash[Symbol, String]?,
-            model: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::model,
-            moderation: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation?,
-            multi_agent: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent?,
-            parallel_tool_calls: bool?,
-            previous_response_id: String?,
-            prompt: OpenAI::Beta::BetaResponsePrompt?,
-            prompt_cache_key: String?,
-            prompt_cache_options: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions,
-            prompt_cache_retention: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::prompt_cache_retention?,
-            reasoning: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning?,
-            safety_identifier: String?,
-            service_tier: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::service_tier?,
-            store: bool?,
-            stream: bool?,
-            stream_id: String,
-            stream_options: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions?,
-            temperature: Float?,
-            text: OpenAI::Beta::BetaResponseTextConfig,
-            tool_choice: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::tool_choice,
-            tools: ::Array[OpenAI::Models::Beta::beta_tool],
-            top_logprobs: Integer?,
-            top_p: Float?,
-            truncation: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::truncation?,
-            user: String
+            ?type: :"response.create",
+            ?background: bool?,
+            ?context_management: ::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement]?,
+            ?conversation: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::conversation?,
+            ?include: ::Array[OpenAI::Models::Beta::beta_response_includable]?,
+            ?input: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::input,
+            ?instructions: String?,
+            ?max_output_tokens: Integer?,
+            ?max_tool_calls: Integer?,
+            ?metadata: ::Hash[Symbol, String]?,
+            ?model: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::model,
+            ?moderation: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation?,
+            ?multi_agent: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent?,
+            ?parallel_tool_calls: bool?,
+            ?previous_response_id: String?,
+            ?prompt: OpenAI::Beta::BetaResponsePrompt?,
+            ?prompt_cache_key: String?,
+            ?prompt_cache_options: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions,
+            ?prompt_cache_retention: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::prompt_cache_retention?,
+            ?reasoning: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning?,
+            ?safety_identifier: String?,
+            ?service_tier: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::service_tier?,
+            ?store: bool?,
+            ?stream: bool?,
+            ?stream_id: String,
+            ?stream_options: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions?,
+            ?temperature: Float?,
+            ?text: OpenAI::Beta::BetaResponseTextConfig,
+            ?tool_choice: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::tool_choice,
+            ?tools: ::Array[OpenAI::Models::Beta::beta_tool],
+            ?top_logprobs: Integer?,
+            ?top_p: Float?,
+            ?truncation: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::truncation?,
+            ?user: String
           }
 
           type context_management =
-            { type: String, compact_threshold: Integer? }
+            { type: String, ?compact_threshold: Integer? }
 
           class ContextManagement < OpenAI::Internal::Type::BaseModel
             attr_accessor type: String
@@ -230,7 +230,7 @@ module OpenAI
 
             def initialize: (type: String, ?compact_threshold: Integer?) -> void
 
-            def to_hash: -> { type: String, compact_threshold: Integer? }
+            def to_hash: -> { type: String, ?compact_threshold: Integer? }
           end
 
           type conversation =
@@ -469,7 +469,7 @@ module OpenAI
           type moderation =
             {
               model: String,
-              policy: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy?
+              ?policy: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy?
             }
 
           class Moderation < OpenAI::Internal::Type::BaseModel
@@ -484,13 +484,13 @@ module OpenAI
 
             def to_hash: -> {
               model: String,
-              policy: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy?
+              ?policy: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy?
             }
 
             type policy =
               {
-                input: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input?,
-                output: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output?
+                ?input: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input?,
+                ?output: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output?
               }
 
             class Policy < OpenAI::Internal::Type::BaseModel
@@ -504,8 +504,8 @@ module OpenAI
               ) -> void
 
               def to_hash: -> {
-                input: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input?,
-                output: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output?
+                ?input: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Input?,
+                ?output: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation::Policy::Output?
               }
 
               type input =
@@ -567,7 +567,7 @@ module OpenAI
           end
 
           type multi_agent =
-            { enabled: bool, max_concurrent_subagents: Integer }
+            { enabled: bool, ?max_concurrent_subagents: Integer }
 
           class MultiAgent < OpenAI::Internal::Type::BaseModel
             attr_accessor enabled: bool
@@ -581,16 +581,22 @@ module OpenAI
               ?max_concurrent_subagents: Integer
             ) -> void
 
-            def to_hash: -> { enabled: bool, max_concurrent_subagents: Integer }
+            def to_hash: -> {
+              enabled: bool,
+              ?max_concurrent_subagents: Integer
+            }
           end
 
           type prompt_cache_options =
             {
-              mode: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::mode,
-              ttl: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::ttl
+              ?comparison_response_id: String?,
+              ?mode: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::mode,
+              ?ttl: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::ttl
             }
 
           class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+            attr_accessor comparison_response_id: String?
+
             attr_reader mode: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::mode?
 
             def mode=: (
@@ -604,13 +610,15 @@ module OpenAI
             ) -> OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::ttl
 
             def initialize: (
+              ?comparison_response_id: String?,
               ?mode: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::mode,
               ?ttl: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::ttl
             ) -> void
 
             def to_hash: -> {
-              mode: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::mode,
-              ttl: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::ttl
+              ?comparison_response_id: String?,
+              ?mode: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::mode,
+              ?ttl: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::ttl
             }
 
             type mode = :implicit | :explicit
@@ -648,11 +656,11 @@ module OpenAI
 
           type reasoning =
             {
-              context: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::context?,
-              effort: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::effort?,
-              generate_summary: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::generate_summary?,
-              mode: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::mode,
-              summary: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::summary?
+              ?context: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::context?,
+              ?effort: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::effort?,
+              ?generate_summary: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::generate_summary?,
+              ?mode: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::mode,
+              ?summary: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::summary?
             }
 
           class Reasoning < OpenAI::Internal::Type::BaseModel
@@ -679,11 +687,11 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              context: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::context?,
-              effort: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::effort?,
-              generate_summary: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::generate_summary?,
-              mode: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::mode,
-              summary: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::summary?
+              ?context: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::context?,
+              ?effort: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::effort?,
+              ?generate_summary: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::generate_summary?,
+              ?mode: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::mode,
+              ?summary: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::summary?
             }
 
             type context = :auto | :current_turn | :all_turns
@@ -768,7 +776,7 @@ module OpenAI
             def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::service_tier]
           end
 
-          type stream_options = { include_obfuscation: bool }
+          type stream_options = { ?include_obfuscation: bool }
 
           class StreamOptions < OpenAI::Internal::Type::BaseModel
             attr_reader include_obfuscation: bool?
@@ -777,7 +785,7 @@ module OpenAI
 
             def initialize: (?include_obfuscation: bool) -> void
 
-            def to_hash: -> { include_obfuscation: bool }
+            def to_hash: -> { ?include_obfuscation: bool }
           end
 
           type tool_choice =
@@ -795,14 +803,14 @@ module OpenAI
             extend OpenAI::Internal::Type::Union
 
             type beta_specific_programmatic_tool_calling_param =
-              { type: :programmatic_tool_calling }
+              { ?type: :programmatic_tool_calling }
 
             class BetaSpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
               attr_accessor type: :programmatic_tool_calling
 
               def initialize: (?type: :programmatic_tool_calling) -> void
 
-              def to_hash: -> { type: :programmatic_tool_calling }
+              def to_hash: -> { ?type: :programmatic_tool_calling }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::tool_choice]

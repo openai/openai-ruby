@@ -4,16 +4,16 @@ module OpenAI
       type response_compact_params =
         {
           model: OpenAI::Models::Beta::ResponseCompactParams::model?,
-          input: OpenAI::Models::Beta::ResponseCompactParams::input?,
-          instructions: String?,
-          previous_response_id: String?,
-          prompt_cache_key: String?,
-          prompt_cache_options: OpenAI::Beta::ResponseCompactParams::PromptCacheOptions?,
-          prompt_cache_retention: OpenAI::Models::Beta::ResponseCompactParams::prompt_cache_retention?,
-          service_tier: OpenAI::Models::Beta::ResponseCompactParams::service_tier?,
-          betas: ::Array[OpenAI::Models::Beta::ResponseCompactParams::beta]
+          ?input: OpenAI::Models::Beta::ResponseCompactParams::input?,
+          ?instructions: String?,
+          ?previous_response_id: String?,
+          ?prompt_cache_key: String?,
+          ?prompt_cache_options: OpenAI::Beta::ResponseCompactParams::PromptCacheOptions?,
+          ?prompt_cache_retention: OpenAI::Models::Beta::ResponseCompactParams::prompt_cache_retention?,
+          ?service_tier: OpenAI::Models::Beta::ResponseCompactParams::service_tier?,
+          ?betas: ::Array[OpenAI::Models::Beta::ResponseCompactParams::beta],
+          ?request_options: OpenAI::request_opts
         }
-        & OpenAI::Internal::Type::request_parameters
 
       class ResponseCompactParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -56,15 +56,15 @@ module OpenAI
 
         def to_hash: -> {
           model: OpenAI::Models::Beta::ResponseCompactParams::model?,
-          input: OpenAI::Models::Beta::ResponseCompactParams::input?,
-          instructions: String?,
-          previous_response_id: String?,
-          prompt_cache_key: String?,
-          prompt_cache_options: OpenAI::Beta::ResponseCompactParams::PromptCacheOptions?,
-          prompt_cache_retention: OpenAI::Models::Beta::ResponseCompactParams::prompt_cache_retention?,
-          service_tier: OpenAI::Models::Beta::ResponseCompactParams::service_tier?,
-          betas: ::Array[OpenAI::Models::Beta::ResponseCompactParams::beta],
-          request_options: OpenAI::RequestOptions
+          ?input: OpenAI::Models::Beta::ResponseCompactParams::input?,
+          ?instructions: String?,
+          ?previous_response_id: String?,
+          ?prompt_cache_key: String?,
+          ?prompt_cache_options: OpenAI::Beta::ResponseCompactParams::PromptCacheOptions?,
+          ?prompt_cache_retention: OpenAI::Models::Beta::ResponseCompactParams::prompt_cache_retention?,
+          ?service_tier: OpenAI::Models::Beta::ResponseCompactParams::service_tier?,
+          ?betas: ::Array[OpenAI::Models::Beta::ResponseCompactParams::beta],
+          ?request_options: OpenAI::RequestOptions
         }
 
         type model =
@@ -296,8 +296,8 @@ module OpenAI
 
         type prompt_cache_options =
           {
-            mode: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::mode,
-            ttl: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::ttl
+            ?mode: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::mode,
+            ?ttl: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::ttl
           }
 
         class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
@@ -319,8 +319,8 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            mode: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::mode,
-            ttl: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::ttl
+            ?mode: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::mode,
+            ?ttl: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::ttl
           }
 
           type mode = :implicit | :explicit

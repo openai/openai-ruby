@@ -6,9 +6,9 @@ module OpenAI
           {
             data: ::Array[OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data],
             has_more: bool,
-            object: :list,
-            first_id: String?,
-            last_id: String?
+            ?object: :list,
+            ?first_id: String?,
+            ?last_id: String?
           }
 
         class PermissionRetrieveResponse < OpenAI::Internal::Type::BaseModel
@@ -33,16 +33,16 @@ module OpenAI
           def to_hash: -> {
             data: ::Array[OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data],
             has_more: bool,
-            object: :list,
-            first_id: String?,
-            last_id: String?
+            ?object: :list,
+            ?first_id: String?,
+            ?last_id: String?
           }
 
           type data =
             {
               id: String,
               created_at: Integer,
-              object: :"checkpoint.permission",
+              ?object: :"checkpoint.permission",
               project_id: String
             }
 
@@ -65,7 +65,7 @@ module OpenAI
             def to_hash: -> {
               id: String,
               created_at: Integer,
-              object: :"checkpoint.permission",
+              ?object: :"checkpoint.permission",
               project_id: String
             }
           end

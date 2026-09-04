@@ -5,7 +5,7 @@ module OpenAI
     module FineTuning
       type fine_tuning_job_wandb_integration_object =
         {
-          type: :wandb,
+          ?type: :wandb,
           wandb: OpenAI::FineTuning::FineTuningJobWandbIntegration
         }
 
@@ -20,7 +20,7 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :wandb,
+          ?type: :wandb,
           wandb: OpenAI::FineTuning::FineTuningJobWandbIntegration
         }
       end

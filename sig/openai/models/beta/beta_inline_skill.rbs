@@ -8,7 +8,7 @@ module OpenAI
           description: String,
           name: String,
           source: OpenAI::Beta::BetaInlineSkillSource,
-          type: :inline
+          ?type: :inline
         }
 
       class BetaInlineSkill < OpenAI::Internal::Type::BaseModel
@@ -31,7 +31,7 @@ module OpenAI
           description: String,
           name: String,
           source: OpenAI::Beta::BetaInlineSkillSource,
-          type: :inline
+          ?type: :inline
         }
       end
     end

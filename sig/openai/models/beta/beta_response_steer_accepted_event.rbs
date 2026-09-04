@@ -7,8 +7,8 @@ module OpenAI
         {
           sequence_number: Integer,
           steer: OpenAI::Beta::BetaResponseSteerAcceptedEvent::Steer,
-          type: :"response.steer.accepted",
-          stream_id: String
+          ?type: :"response.steer.accepted",
+          ?stream_id: String
         }
 
       class BetaResponseSteerAcceptedEvent < OpenAI::Internal::Type::BaseModel
@@ -32,8 +32,8 @@ module OpenAI
         def to_hash: -> {
           sequence_number: Integer,
           steer: OpenAI::Beta::BetaResponseSteerAcceptedEvent::Steer,
-          type: :"response.steer.accepted",
-          stream_id: String
+          ?type: :"response.steer.accepted",
+          ?stream_id: String
         }
 
         type steer = { id: String, previous_response_id: String }

@@ -1,7 +1,7 @@
 module OpenAI
   module Models
     module Responses
-      type tool_choice_function = { name: String, type: :function }
+      type tool_choice_function = { name: String, ?type: :function }
 
       class ToolChoiceFunction < OpenAI::Internal::Type::BaseModel
         attr_accessor name: String
@@ -10,7 +10,7 @@ module OpenAI
 
         def initialize: (name: String, ?type: :function) -> void
 
-        def to_hash: -> { name: String, type: :function }
+        def to_hash: -> { name: String, ?type: :function }
       end
     end
   end

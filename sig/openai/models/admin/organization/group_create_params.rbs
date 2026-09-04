@@ -3,7 +3,7 @@ module OpenAI
     module Admin
       module Organization
         type group_create_params =
-          { name: String } & OpenAI::Internal::Type::request_parameters
+          { name: String, ?request_options: OpenAI::request_opts }
 
         class GroupCreateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -18,7 +18,7 @@ module OpenAI
 
           def to_hash: -> {
             name: String,
-            request_options: OpenAI::RequestOptions
+            ?request_options: OpenAI::RequestOptions
           }
         end
       end

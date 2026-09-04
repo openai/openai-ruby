@@ -3,14 +3,14 @@ module OpenAI
     class BetaToolChoiceShell = Beta::BetaToolChoiceShell
 
     module Beta
-      type beta_tool_choice_shell = { type: :shell }
+      type beta_tool_choice_shell = { ?type: :shell }
 
       class BetaToolChoiceShell < OpenAI::Internal::Type::BaseModel
         attr_accessor type: :shell
 
         def initialize: (?type: :shell) -> void
 
-        def to_hash: -> { type: :shell }
+        def to_hash: -> { ?type: :shell }
       end
     end
   end

@@ -9,8 +9,8 @@ module OpenAI
           message: String,
           param: String?,
           sequence_number: Integer,
-          type: :error,
-          agent: OpenAI::Beta::BetaResponseErrorEvent::Agent?
+          ?type: :error,
+          ?agent: OpenAI::Beta::BetaResponseErrorEvent::Agent?
         }
 
       class BetaResponseErrorEvent < OpenAI::Internal::Type::BaseModel
@@ -40,8 +40,8 @@ module OpenAI
           message: String,
           param: String?,
           sequence_number: Integer,
-          type: :error,
-          agent: OpenAI::Beta::BetaResponseErrorEvent::Agent?
+          ?type: :error,
+          ?agent: OpenAI::Beta::BetaResponseErrorEvent::Agent?
         }
 
         type agent = { agent_name: String }

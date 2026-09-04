@@ -6,7 +6,7 @@ module OpenAI
           {
             id: String,
             created_at: Integer,
-            object: :"checkpoint.permission",
+            ?object: :"checkpoint.permission",
             project_id: String
           }
 
@@ -29,7 +29,7 @@ module OpenAI
           def to_hash: -> {
             id: String,
             created_at: Integer,
-            object: :"checkpoint.permission",
+            ?object: :"checkpoint.permission",
             project_id: String
           }
         end

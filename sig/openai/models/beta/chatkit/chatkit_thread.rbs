@@ -8,7 +8,7 @@ module OpenAI
           {
             id: String,
             created_at: Integer,
-            object: :"chatkit.thread",
+            ?object: :"chatkit.thread",
             status: OpenAI::Models::Beta::ChatKit::ChatKitThread::status,
             title: String?,
             user: String
@@ -39,7 +39,7 @@ module OpenAI
           def to_hash: -> {
             id: String,
             created_at: Integer,
-            object: :"chatkit.thread",
+            ?object: :"chatkit.thread",
             status: OpenAI::Models::Beta::ChatKit::ChatKitThread::status,
             title: String?,
             user: String
@@ -53,17 +53,17 @@ module OpenAI
           module Status
             extend OpenAI::Internal::Type::Union
 
-            type active = { type: :active }
+            type active = { ?type: :active }
 
             class Active < OpenAI::Internal::Type::BaseModel
               attr_accessor type: :active
 
               def initialize: (?type: :active) -> void
 
-              def to_hash: -> { type: :active }
+              def to_hash: -> { ?type: :active }
             end
 
-            type locked = { reason: String?, type: :locked }
+            type locked = { reason: String?, ?type: :locked }
 
             class Locked < OpenAI::Internal::Type::BaseModel
               attr_accessor reason: String?
@@ -72,10 +72,10 @@ module OpenAI
 
               def initialize: (reason: String?, ?type: :locked) -> void
 
-              def to_hash: -> { reason: String?, type: :locked }
+              def to_hash: -> { reason: String?, ?type: :locked }
             end
 
-            type closed = { reason: String?, type: :closed }
+            type closed = { reason: String?, ?type: :closed }
 
             class Closed < OpenAI::Internal::Type::BaseModel
               attr_accessor reason: String?
@@ -84,7 +84,7 @@ module OpenAI
 
               def initialize: (reason: String?, ?type: :closed) -> void
 
-              def to_hash: -> { reason: String?, type: :closed }
+              def to_hash: -> { reason: String?, ?type: :closed }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThread::status]

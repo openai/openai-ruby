@@ -10,10 +10,10 @@ module OpenAI
           call_id: String,
           environment: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::environment?,
           status: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::status,
-          type: :shell_call,
-          agent: OpenAI::Beta::BetaResponseFunctionShellToolCall::Agent,
-          caller_: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::caller_?,
-          created_by: String
+          ?type: :shell_call,
+          ?agent: OpenAI::Beta::BetaResponseFunctionShellToolCall::Agent,
+          ?caller_: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::caller_?,
+          ?created_by: String
         }
 
       class BetaResponseFunctionShellToolCall < OpenAI::Internal::Type::BaseModel
@@ -59,10 +59,10 @@ module OpenAI
           call_id: String,
           environment: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::environment?,
           status: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::status,
-          type: :shell_call,
-          agent: OpenAI::Beta::BetaResponseFunctionShellToolCall::Agent,
-          caller_: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::caller_?,
-          created_by: String
+          ?type: :shell_call,
+          ?agent: OpenAI::Beta::BetaResponseFunctionShellToolCall::Agent,
+          ?caller_: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::caller_?,
+          ?created_by: String
         }
 
         type action =
@@ -131,17 +131,17 @@ module OpenAI
         module Caller
           extend OpenAI::Internal::Type::Union
 
-          type direct = { type: :direct }
+          type direct = { ?type: :direct }
 
           class Direct < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :direct
 
             def initialize: (?type: :direct) -> void
 
-            def to_hash: -> { type: :direct }
+            def to_hash: -> { ?type: :direct }
           end
 
-          type program = { caller_id: String, type: :program }
+          type program = { caller_id: String, ?type: :program }
 
           class Program < OpenAI::Internal::Type::BaseModel
             attr_accessor caller_id: String
@@ -150,7 +150,7 @@ module OpenAI
 
             def initialize: (caller_id: String, ?type: :program) -> void
 
-            def to_hash: -> { caller_id: String, type: :program }
+            def to_hash: -> { caller_id: String, ?type: :program }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::caller_]

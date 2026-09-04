@@ -9,8 +9,9 @@ require "uri"
 require_relative "test_helper"
 
 class OpenAI::Test::GemPackagingTest < Minitest::Test
+  ROOT = File.expand_path("../..", __dir__)
+
   def test_packages_every_relative_readme_link
-    specification = Gem::Specification.load(File.expand_path("../../openai.gemspec", __dir__))
     readme = File.read(File.expand_path("../../README.md", __dir__))
     relative_links = readme.scan(/\[[^\]]+\]\(([^\s)]+)(?:\s+[^)]*)?\)/).flatten.filter_map do |target|
       uri = URI.parse(target)
@@ -19,7 +20,7 @@ class OpenAI::Test::GemPackagingTest < Minitest::Test
 
     Dir.mktmpdir("openai-gem-packaging-test") do |directory|
       gem_file = File.join(directory, "openai.gem")
-      Gem::Package.build(specification, false, false, gem_file)
+      build_gem(gem_file)
       package = Gem::Package.new(gem_file)
 
       assert_empty(relative_links - package.contents, "README links are missing from the built gem")
@@ -46,13 +47,12 @@ class OpenAI::Test::GemPackagingTest < Minitest::Test
   end
 
   def test_installed_gem_completes_real_x509_issuer_and_api_handshakes
-    specification = Gem::Specification.load(File.expand_path("../../openai.gemspec", __dir__))
     smoke_script = File.expand_path("support/x509_installed_gem_smoke.rb", __dir__)
 
     Dir.mktmpdir("openai-x509-installed-gem") do |directory|
       gem_file = File.join(directory, "openai.gem")
       install_directory = File.join(directory, "install")
-      Gem::Package.build(specification, false, false, gem_file)
+      build_gem(gem_file)
       install_output, install_status = Open3.capture2e(
         RbConfig.ruby,
         "-S",
@@ -87,5 +87,24 @@ class OpenAI::Test::GemPackagingTest < Minitest::Test
       assert_predicate(status, :success?, output)
       assert_includes(output, "installed gem X.509 issuer/API mTLS verification passed")
     end
+  end
+
+  private
+
+  def build_gem(gem_file)
+    # RubyGems reads gemspec paths relative to the process-wide working
+    # directory. Build in a child process so parallel tests that temporarily
+    # change directory cannot corrupt the archive.
+    output, status = Open3.capture2e(
+      RbConfig.ruby,
+      "-S",
+      "gem",
+      "build",
+      "openai.gemspec",
+      "--output",
+      gem_file,
+      chdir: ROOT
+    )
+    assert_predicate(status, :success?, output)
   end
 end

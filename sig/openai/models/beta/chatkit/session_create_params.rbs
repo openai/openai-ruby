@@ -6,11 +6,11 @@ module OpenAI
           {
             user: String,
             workflow: OpenAI::Beta::ChatKit::ChatSessionWorkflowParam,
-            chatkit_configuration: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam,
-            expires_after: OpenAI::Beta::ChatKit::ChatSessionExpiresAfterParam,
-            rate_limits: OpenAI::Beta::ChatKit::ChatSessionRateLimitsParam
+            ?chatkit_configuration: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam,
+            ?expires_after: OpenAI::Beta::ChatKit::ChatSessionExpiresAfterParam,
+            ?rate_limits: OpenAI::Beta::ChatKit::ChatSessionRateLimitsParam,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class SessionCreateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -50,10 +50,10 @@ module OpenAI
           def to_hash: -> {
             user: String,
             workflow: OpenAI::Beta::ChatKit::ChatSessionWorkflowParam,
-            chatkit_configuration: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam,
-            expires_after: OpenAI::Beta::ChatKit::ChatSessionExpiresAfterParam,
-            rate_limits: OpenAI::Beta::ChatKit::ChatSessionRateLimitsParam,
-            request_options: OpenAI::RequestOptions
+            ?chatkit_configuration: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam,
+            ?expires_after: OpenAI::Beta::ChatKit::ChatSessionExpiresAfterParam,
+            ?rate_limits: OpenAI::Beta::ChatKit::ChatSessionRateLimitsParam,
+            ?request_options: OpenAI::RequestOptions
           }
         end
       end

@@ -5,7 +5,7 @@ module OpenAI
         type image_file =
           {
             file_id: String,
-            detail: OpenAI::Models::Beta::Threads::ImageFile::detail
+            ?detail: OpenAI::Models::Beta::Threads::ImageFile::detail
           }
 
         class ImageFile < OpenAI::Internal::Type::BaseModel
@@ -24,7 +24,7 @@ module OpenAI
 
           def to_hash: -> {
             file_id: String,
-            detail: OpenAI::Models::Beta::Threads::ImageFile::detail
+            ?detail: OpenAI::Models::Beta::Threads::ImageFile::detail
           }
 
           type detail = :auto | :low | :high

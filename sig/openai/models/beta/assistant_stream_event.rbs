@@ -33,8 +33,8 @@ module OpenAI
         type thread_created =
           {
             data: OpenAI::Beta::Thread,
-            event: :"thread.created",
-            enabled: bool
+            ?event: :"thread.created",
+            ?enabled: bool
           }
 
         class ThreadCreated < OpenAI::Internal::Type::BaseModel
@@ -54,13 +54,13 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Thread,
-            event: :"thread.created",
-            enabled: bool
+            ?event: :"thread.created",
+            ?enabled: bool
           }
         end
 
         type thread_run_created =
-          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.created" }
+          { data: OpenAI::Beta::Threads::Run, ?event: :"thread.run.created" }
 
         class ThreadRunCreated < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Beta::Threads::Run
@@ -74,12 +74,12 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Run,
-            event: :"thread.run.created"
+            ?event: :"thread.run.created"
           }
         end
 
         type thread_run_queued =
-          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.queued" }
+          { data: OpenAI::Beta::Threads::Run, ?event: :"thread.run.queued" }
 
         class ThreadRunQueued < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Beta::Threads::Run
@@ -93,12 +93,15 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Run,
-            event: :"thread.run.queued"
+            ?event: :"thread.run.queued"
           }
         end
 
         type thread_run_in_progress =
-          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.in_progress" }
+          {
+            data: OpenAI::Beta::Threads::Run,
+            ?event: :"thread.run.in_progress"
+          }
 
         class ThreadRunInProgress < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Beta::Threads::Run
@@ -112,14 +115,14 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Run,
-            event: :"thread.run.in_progress"
+            ?event: :"thread.run.in_progress"
           }
         end
 
         type thread_run_requires_action =
           {
             data: OpenAI::Beta::Threads::Run,
-            event: :"thread.run.requires_action"
+            ?event: :"thread.run.requires_action"
           }
 
         class ThreadRunRequiresAction < OpenAI::Internal::Type::BaseModel
@@ -134,12 +137,12 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Run,
-            event: :"thread.run.requires_action"
+            ?event: :"thread.run.requires_action"
           }
         end
 
         type thread_run_completed =
-          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.completed" }
+          { data: OpenAI::Beta::Threads::Run, ?event: :"thread.run.completed" }
 
         class ThreadRunCompleted < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Beta::Threads::Run
@@ -153,12 +156,12 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Run,
-            event: :"thread.run.completed"
+            ?event: :"thread.run.completed"
           }
         end
 
         type thread_run_incomplete =
-          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.incomplete" }
+          { data: OpenAI::Beta::Threads::Run, ?event: :"thread.run.incomplete" }
 
         class ThreadRunIncomplete < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Beta::Threads::Run
@@ -172,12 +175,12 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Run,
-            event: :"thread.run.incomplete"
+            ?event: :"thread.run.incomplete"
           }
         end
 
         type thread_run_failed =
-          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.failed" }
+          { data: OpenAI::Beta::Threads::Run, ?event: :"thread.run.failed" }
 
         class ThreadRunFailed < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Beta::Threads::Run
@@ -191,12 +194,12 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Run,
-            event: :"thread.run.failed"
+            ?event: :"thread.run.failed"
           }
         end
 
         type thread_run_cancelling =
-          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.cancelling" }
+          { data: OpenAI::Beta::Threads::Run, ?event: :"thread.run.cancelling" }
 
         class ThreadRunCancelling < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Beta::Threads::Run
@@ -210,12 +213,12 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Run,
-            event: :"thread.run.cancelling"
+            ?event: :"thread.run.cancelling"
           }
         end
 
         type thread_run_cancelled =
-          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.cancelled" }
+          { data: OpenAI::Beta::Threads::Run, ?event: :"thread.run.cancelled" }
 
         class ThreadRunCancelled < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Beta::Threads::Run
@@ -229,12 +232,12 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Run,
-            event: :"thread.run.cancelled"
+            ?event: :"thread.run.cancelled"
           }
         end
 
         type thread_run_expired =
-          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.expired" }
+          { data: OpenAI::Beta::Threads::Run, ?event: :"thread.run.expired" }
 
         class ThreadRunExpired < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Beta::Threads::Run
@@ -248,14 +251,14 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Run,
-            event: :"thread.run.expired"
+            ?event: :"thread.run.expired"
           }
         end
 
         type thread_run_step_created =
           {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.created"
+            ?event: :"thread.run.step.created"
           }
 
         class ThreadRunStepCreated < OpenAI::Internal::Type::BaseModel
@@ -270,14 +273,14 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.created"
+            ?event: :"thread.run.step.created"
           }
         end
 
         type thread_run_step_in_progress =
           {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.in_progress"
+            ?event: :"thread.run.step.in_progress"
           }
 
         class ThreadRunStepInProgress < OpenAI::Internal::Type::BaseModel
@@ -292,14 +295,14 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.in_progress"
+            ?event: :"thread.run.step.in_progress"
           }
         end
 
         type thread_run_step_delta =
           {
             data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent,
-            event: :"thread.run.step.delta"
+            ?event: :"thread.run.step.delta"
           }
 
         class ThreadRunStepDelta < OpenAI::Internal::Type::BaseModel
@@ -314,14 +317,14 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent,
-            event: :"thread.run.step.delta"
+            ?event: :"thread.run.step.delta"
           }
         end
 
         type thread_run_step_completed =
           {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.completed"
+            ?event: :"thread.run.step.completed"
           }
 
         class ThreadRunStepCompleted < OpenAI::Internal::Type::BaseModel
@@ -336,14 +339,14 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.completed"
+            ?event: :"thread.run.step.completed"
           }
         end
 
         type thread_run_step_failed =
           {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.failed"
+            ?event: :"thread.run.step.failed"
           }
 
         class ThreadRunStepFailed < OpenAI::Internal::Type::BaseModel
@@ -358,14 +361,14 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.failed"
+            ?event: :"thread.run.step.failed"
           }
         end
 
         type thread_run_step_cancelled =
           {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.cancelled"
+            ?event: :"thread.run.step.cancelled"
           }
 
         class ThreadRunStepCancelled < OpenAI::Internal::Type::BaseModel
@@ -380,14 +383,14 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.cancelled"
+            ?event: :"thread.run.step.cancelled"
           }
         end
 
         type thread_run_step_expired =
           {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.expired"
+            ?event: :"thread.run.step.expired"
           }
 
         class ThreadRunStepExpired < OpenAI::Internal::Type::BaseModel
@@ -402,14 +405,14 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.expired"
+            ?event: :"thread.run.step.expired"
           }
         end
 
         type thread_message_created =
           {
             data: OpenAI::Beta::Threads::Message,
-            event: :"thread.message.created"
+            ?event: :"thread.message.created"
           }
 
         class ThreadMessageCreated < OpenAI::Internal::Type::BaseModel
@@ -424,14 +427,14 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Message,
-            event: :"thread.message.created"
+            ?event: :"thread.message.created"
           }
         end
 
         type thread_message_in_progress =
           {
             data: OpenAI::Beta::Threads::Message,
-            event: :"thread.message.in_progress"
+            ?event: :"thread.message.in_progress"
           }
 
         class ThreadMessageInProgress < OpenAI::Internal::Type::BaseModel
@@ -446,14 +449,14 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Message,
-            event: :"thread.message.in_progress"
+            ?event: :"thread.message.in_progress"
           }
         end
 
         type thread_message_delta =
           {
             data: OpenAI::Beta::Threads::MessageDeltaEvent,
-            event: :"thread.message.delta"
+            ?event: :"thread.message.delta"
           }
 
         class ThreadMessageDelta < OpenAI::Internal::Type::BaseModel
@@ -468,14 +471,14 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::MessageDeltaEvent,
-            event: :"thread.message.delta"
+            ?event: :"thread.message.delta"
           }
         end
 
         type thread_message_completed =
           {
             data: OpenAI::Beta::Threads::Message,
-            event: :"thread.message.completed"
+            ?event: :"thread.message.completed"
           }
 
         class ThreadMessageCompleted < OpenAI::Internal::Type::BaseModel
@@ -490,14 +493,14 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Message,
-            event: :"thread.message.completed"
+            ?event: :"thread.message.completed"
           }
         end
 
         type thread_message_incomplete =
           {
             data: OpenAI::Beta::Threads::Message,
-            event: :"thread.message.incomplete"
+            ?event: :"thread.message.incomplete"
           }
 
         class ThreadMessageIncomplete < OpenAI::Internal::Type::BaseModel
@@ -512,11 +515,11 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Message,
-            event: :"thread.message.incomplete"
+            ?event: :"thread.message.incomplete"
           }
         end
 
-        type error_event = { data: OpenAI::ErrorObject, event: :error }
+        type error_event = { data: OpenAI::ErrorObject, ?event: :error }
 
         class ErrorEvent < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::ErrorObject
@@ -525,7 +528,7 @@ module OpenAI
 
           def initialize: (data: OpenAI::ErrorObject, ?event: :error) -> void
 
-          def to_hash: -> { data: OpenAI::ErrorObject, event: :error }
+          def to_hash: -> { data: OpenAI::ErrorObject, ?event: :error }
         end
 
         def self?.variants: -> ::Array[OpenAI::Models::Beta::assistant_stream_event]

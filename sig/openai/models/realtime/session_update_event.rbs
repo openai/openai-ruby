@@ -4,8 +4,8 @@ module OpenAI
       type session_update_event =
         {
           session: OpenAI::Models::Realtime::SessionUpdateEvent::session,
-          type: :"session.update",
-          event_id: String
+          ?type: :"session.update",
+          ?event_id: String
         }
 
       class SessionUpdateEvent < OpenAI::Internal::Type::BaseModel
@@ -25,8 +25,8 @@ module OpenAI
 
         def to_hash: -> {
           session: OpenAI::Models::Realtime::SessionUpdateEvent::session,
-          type: :"session.update",
-          event_id: String
+          ?type: :"session.update",
+          ?event_id: String
         }
 
         type session =

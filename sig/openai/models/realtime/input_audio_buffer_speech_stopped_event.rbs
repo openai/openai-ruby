@@ -6,7 +6,7 @@ module OpenAI
           audio_end_ms: Integer,
           event_id: String,
           item_id: String,
-          type: :"input_audio_buffer.speech_stopped"
+          ?type: :"input_audio_buffer.speech_stopped"
         }
 
       class InputAudioBufferSpeechStoppedEvent < OpenAI::Internal::Type::BaseModel
@@ -29,7 +29,7 @@ module OpenAI
           audio_end_ms: Integer,
           event_id: String,
           item_id: String,
-          type: :"input_audio_buffer.speech_stopped"
+          ?type: :"input_audio_buffer.speech_stopped"
         }
       end
     end

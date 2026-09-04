@@ -5,11 +5,11 @@ module OpenAI
     module Beta
       type beta_file_search_tool =
         {
-          type: :file_search,
+          ?type: :file_search,
           vector_store_ids: ::Array[String],
-          filters: OpenAI::Models::Beta::BetaFileSearchTool::filters?,
-          max_num_results: Integer,
-          ranking_options: OpenAI::Beta::BetaFileSearchTool::RankingOptions
+          ?filters: OpenAI::Models::Beta::BetaFileSearchTool::filters?,
+          ?max_num_results: Integer,
+          ?ranking_options: OpenAI::Beta::BetaFileSearchTool::RankingOptions
         }
 
       class BetaFileSearchTool < OpenAI::Internal::Type::BaseModel
@@ -38,11 +38,11 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :file_search,
+          ?type: :file_search,
           vector_store_ids: ::Array[String],
-          filters: OpenAI::Models::Beta::BetaFileSearchTool::filters?,
-          max_num_results: Integer,
-          ranking_options: OpenAI::Beta::BetaFileSearchTool::RankingOptions
+          ?filters: OpenAI::Models::Beta::BetaFileSearchTool::filters?,
+          ?max_num_results: Integer,
+          ?ranking_options: OpenAI::Beta::BetaFileSearchTool::RankingOptions
         }
 
         type filters =
@@ -232,9 +232,9 @@ module OpenAI
 
         type ranking_options =
           {
-            hybrid_search: OpenAI::Beta::BetaFileSearchTool::RankingOptions::HybridSearch,
-            ranker: OpenAI::Models::Beta::BetaFileSearchTool::RankingOptions::ranker,
-            score_threshold: Float
+            ?hybrid_search: OpenAI::Beta::BetaFileSearchTool::RankingOptions::HybridSearch,
+            ?ranker: OpenAI::Models::Beta::BetaFileSearchTool::RankingOptions::ranker,
+            ?score_threshold: Float
           }
 
         class RankingOptions < OpenAI::Internal::Type::BaseModel
@@ -261,9 +261,9 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            hybrid_search: OpenAI::Beta::BetaFileSearchTool::RankingOptions::HybridSearch,
-            ranker: OpenAI::Models::Beta::BetaFileSearchTool::RankingOptions::ranker,
-            score_threshold: Float
+            ?hybrid_search: OpenAI::Beta::BetaFileSearchTool::RankingOptions::HybridSearch,
+            ?ranker: OpenAI::Models::Beta::BetaFileSearchTool::RankingOptions::ranker,
+            ?score_threshold: Float
           }
 
           type hybrid_search = { embedding_weight: Float, text_weight: Float }

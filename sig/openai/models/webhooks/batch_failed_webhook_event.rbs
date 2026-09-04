@@ -6,8 +6,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::BatchFailedWebhookEvent::Data,
-          type: :"batch.failed",
-          object: OpenAI::Models::Webhooks::BatchFailedWebhookEvent::object
+          ?type: :"batch.failed",
+          ?object: OpenAI::Models::Webhooks::BatchFailedWebhookEvent::object
         }
 
       class BatchFailedWebhookEvent < OpenAI::Internal::Type::BaseModel
@@ -37,8 +37,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::BatchFailedWebhookEvent::Data,
-          type: :"batch.failed",
-          object: OpenAI::Models::Webhooks::BatchFailedWebhookEvent::object
+          ?type: :"batch.failed",
+          ?object: OpenAI::Models::Webhooks::BatchFailedWebhookEvent::object
         }
 
         type data = { id: String }

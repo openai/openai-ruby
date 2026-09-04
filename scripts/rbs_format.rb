@@ -4,6 +4,37 @@ require "securerandom"
 require "syntax_tree/rbs"
 
 module RBSFormat
+  # Syntax Tree currently visits only Record#fields, which excludes optional
+  # keys. Keep the full record and format its value types with the normal visitor.
+  class Format < SyntaxTree::RBS::Format
+    def visit_record_type(node)
+      separator = lambda do
+        q.text(",")
+        q.breakable
+      end
+
+      q.group do
+        q.text("{")
+        q.indent do
+          q.breakable
+          q.seplist(node.all_fields, separator, :each_pair) do |key, (type, required)|
+            q.text("?") unless required
+            if key.is_a?(Symbol) && key.match?(/\A[A-Za-z_][A-Za-z_]*\z/)
+              q.text("#{key}: ")
+            else
+              q.text("#{key.inspect} => ")
+            end
+
+            visit(type)
+          end
+        end
+
+        q.breakable
+        q.text("}")
+      end
+    end
+  end
+
   module_function
 
   def format(source)
@@ -23,7 +54,10 @@ module RBSFormat
       protected_source[location.start_pos...location.end_pos] = "# #{kind} #{marker}-#{location.start_pos}\n#{declaration.new_name}: #{declaration.old_name}"
     end
 
-    SyntaxTree::RBS.format(protected_source).gsub(
+    formatter = SyntaxTree::RBS::Formatter.new(protected_source, [], 80)
+    Format.new(formatter).visit(SyntaxTree::RBS.parse(protected_source))
+    formatter.flush
+    formatter.output.join.gsub(
       /# (?:class|module) #{Regexp.escape(marker)}-(\d+)\n *[^\n]+$/
     ) do
       restorations.fetch(Regexp.last_match(1).to_i)

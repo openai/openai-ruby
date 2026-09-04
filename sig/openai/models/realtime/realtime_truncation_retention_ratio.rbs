@@ -4,8 +4,8 @@ module OpenAI
       type realtime_truncation_retention_ratio =
         {
           retention_ratio: Float,
-          type: :retention_ratio,
-          token_limits: OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits
+          ?type: :retention_ratio,
+          ?token_limits: OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits
         }
 
       class RealtimeTruncationRetentionRatio < OpenAI::Internal::Type::BaseModel
@@ -27,11 +27,11 @@ module OpenAI
 
         def to_hash: -> {
           retention_ratio: Float,
-          type: :retention_ratio,
-          token_limits: OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits
+          ?type: :retention_ratio,
+          ?token_limits: OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits
         }
 
-        type token_limits = { post_instructions: Integer }
+        type token_limits = { ?post_instructions: Integer }
 
         class TokenLimits < OpenAI::Internal::Type::BaseModel
           attr_reader post_instructions: Integer?
@@ -40,7 +40,7 @@ module OpenAI
 
           def initialize: (?post_instructions: Integer) -> void
 
-          def to_hash: -> { post_instructions: Integer }
+          def to_hash: -> { ?post_instructions: Integer }
         end
       end
     end

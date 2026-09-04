@@ -3,10 +3,10 @@ module OpenAI
     module Realtime
       type realtime_transcription_session_audio_input =
         {
-          format_: OpenAI::Models::Realtime::realtime_audio_formats,
-          noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction,
-          transcription: OpenAI::Realtime::AudioTranscription,
-          turn_detection: OpenAI::Models::Realtime::realtime_transcription_session_audio_input_turn_detection?
+          ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
+          ?noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction,
+          ?transcription: OpenAI::Realtime::AudioTranscription,
+          ?turn_detection: OpenAI::Models::Realtime::realtime_transcription_session_audio_input_turn_detection?
         }
 
       class RealtimeTranscriptionSessionAudioInput < OpenAI::Internal::Type::BaseModel
@@ -38,14 +38,14 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          format_: OpenAI::Models::Realtime::realtime_audio_formats,
-          noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction,
-          transcription: OpenAI::Realtime::AudioTranscription,
-          turn_detection: OpenAI::Models::Realtime::realtime_transcription_session_audio_input_turn_detection?
+          ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
+          ?noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput::NoiseReduction,
+          ?transcription: OpenAI::Realtime::AudioTranscription,
+          ?turn_detection: OpenAI::Models::Realtime::realtime_transcription_session_audio_input_turn_detection?
         }
 
         type noise_reduction =
-          { type: OpenAI::Models::Realtime::noise_reduction_type }
+          { ?type: OpenAI::Models::Realtime::noise_reduction_type }
 
         class NoiseReduction < OpenAI::Internal::Type::BaseModel
           attr_reader type: OpenAI::Models::Realtime::noise_reduction_type?
@@ -59,7 +59,7 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            type: OpenAI::Models::Realtime::noise_reduction_type
+            ?type: OpenAI::Models::Realtime::noise_reduction_type
           }
         end
       end

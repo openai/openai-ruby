@@ -6,8 +6,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::FineTuningJobSucceededWebhookEvent::Data,
-          type: :"fine_tuning.job.succeeded",
-          object: OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent::object
+          ?type: :"fine_tuning.job.succeeded",
+          ?object: OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent::object
         }
 
       class FineTuningJobSucceededWebhookEvent < OpenAI::Internal::Type::BaseModel
@@ -37,8 +37,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::FineTuningJobSucceededWebhookEvent::Data,
-          type: :"fine_tuning.job.succeeded",
-          object: OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent::object
+          ?type: :"fine_tuning.job.succeeded",
+          ?object: OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent::object
         }
 
         type data = { id: String }

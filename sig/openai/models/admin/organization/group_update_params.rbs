@@ -3,8 +3,11 @@ module OpenAI
     module Admin
       module Organization
         type group_update_params =
-          { group_id: String, name: String }
-          & OpenAI::Internal::Type::request_parameters
+          {
+            group_id: String,
+            name: String,
+            ?request_options: OpenAI::request_opts
+          }
 
         class GroupUpdateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -23,7 +26,7 @@ module OpenAI
           def to_hash: -> {
             group_id: String,
             name: String,
-            request_options: OpenAI::RequestOptions
+            ?request_options: OpenAI::RequestOptions
           }
         end
       end

@@ -11,8 +11,8 @@ module OpenAI
           logprobs: ::Array[OpenAI::Beta::BetaResponseTextDeltaEvent::Logprob],
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.output_text.delta",
-          agent: OpenAI::Beta::BetaResponseTextDeltaEvent::Agent?
+          ?type: :"response.output_text.delta",
+          ?agent: OpenAI::Beta::BetaResponseTextDeltaEvent::Agent?
         }
 
       class BetaResponseTextDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -50,15 +50,15 @@ module OpenAI
           logprobs: ::Array[OpenAI::Beta::BetaResponseTextDeltaEvent::Logprob],
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.output_text.delta",
-          agent: OpenAI::Beta::BetaResponseTextDeltaEvent::Agent?
+          ?type: :"response.output_text.delta",
+          ?agent: OpenAI::Beta::BetaResponseTextDeltaEvent::Agent?
         }
 
         type logprob =
           {
             token: String,
             logprob: Float,
-            top_logprobs: ::Array[OpenAI::Beta::BetaResponseTextDeltaEvent::Logprob::TopLogprob]
+            ?top_logprobs: ::Array[OpenAI::Beta::BetaResponseTextDeltaEvent::Logprob::TopLogprob]
           }
 
         class Logprob < OpenAI::Internal::Type::BaseModel
@@ -81,10 +81,10 @@ module OpenAI
           def to_hash: -> {
             token: String,
             logprob: Float,
-            top_logprobs: ::Array[OpenAI::Beta::BetaResponseTextDeltaEvent::Logprob::TopLogprob]
+            ?top_logprobs: ::Array[OpenAI::Beta::BetaResponseTextDeltaEvent::Logprob::TopLogprob]
           }
 
-          type top_logprob = { token: String, logprob: Float }
+          type top_logprob = { ?token: String, ?logprob: Float }
 
           class TopLogprob < OpenAI::Internal::Type::BaseModel
             attr_reader token: String?
@@ -97,7 +97,7 @@ module OpenAI
 
             def initialize: (?token: String, ?logprob: Float) -> void
 
-            def to_hash: -> { token: String, logprob: Float }
+            def to_hash: -> { ?token: String, ?logprob: Float }
           end
         end
 

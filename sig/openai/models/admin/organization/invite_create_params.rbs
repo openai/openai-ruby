@@ -6,9 +6,9 @@ module OpenAI
           {
             email: String,
             role: OpenAI::Models::Admin::Organization::InviteCreateParams::role,
-            projects: ::Array[OpenAI::Admin::Organization::InviteCreateParams::Project]
+            ?projects: ::Array[OpenAI::Admin::Organization::InviteCreateParams::Project],
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class InviteCreateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -34,8 +34,8 @@ module OpenAI
           def to_hash: -> {
             email: String,
             role: OpenAI::Models::Admin::Organization::InviteCreateParams::role,
-            projects: ::Array[OpenAI::Admin::Organization::InviteCreateParams::Project],
-            request_options: OpenAI::RequestOptions
+            ?projects: ::Array[OpenAI::Admin::Organization::InviteCreateParams::Project],
+            ?request_options: OpenAI::RequestOptions
           }
 
           type role = :reader | :owner

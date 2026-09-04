@@ -10,7 +10,7 @@ module OpenAI
               currency: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::currency,
               enforcement: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement,
               interval: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::interval,
-              object: :"project.spend_limit",
+              ?object: :"project.spend_limit",
               threshold_amount: Integer
             }
 
@@ -37,7 +37,7 @@ module OpenAI
               currency: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::currency,
               enforcement: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement,
               interval: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::interval,
-              object: :"project.spend_limit",
+              ?object: :"project.spend_limit",
               threshold_amount: Integer
             }
 

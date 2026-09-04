@@ -11,7 +11,7 @@ module OpenAI
           metadata: OpenAI::Models::metadata?,
           model: String,
           name: String,
-          object: :"eval.run",
+          ?object: :"eval.run",
           per_model_usage: ::Array[OpenAI::Models::Evals::RunCancelResponse::PerModelUsage],
           per_testing_criteria_results: ::Array[OpenAI::Models::Evals::RunCancelResponse::PerTestingCriteriaResult],
           report_url: String,
@@ -74,7 +74,7 @@ module OpenAI
           metadata: OpenAI::Models::metadata?,
           model: String,
           name: String,
-          object: :"eval.run",
+          ?object: :"eval.run",
           per_model_usage: ::Array[OpenAI::Models::Evals::RunCancelResponse::PerModelUsage],
           per_testing_criteria_results: ::Array[OpenAI::Models::Evals::RunCancelResponse::PerTestingCriteriaResult],
           report_url: String,
@@ -93,10 +93,10 @@ module OpenAI
           type responses =
             {
               source: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::source,
-              type: :responses,
-              input_messages: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::input_messages,
-              model: String,
-              sampling_params: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::SamplingParams
+              ?type: :responses,
+              ?input_messages: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::input_messages,
+              ?model: String,
+              ?sampling_params: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::SamplingParams
             }
 
           class Responses < OpenAI::Internal::Type::BaseModel
@@ -130,10 +130,10 @@ module OpenAI
 
             def to_hash: -> {
               source: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::source,
-              type: :responses,
-              input_messages: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::input_messages,
-              model: String,
-              sampling_params: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::SamplingParams
+              ?type: :responses,
+              ?input_messages: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::input_messages,
+              ?model: String,
+              ?sampling_params: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::SamplingParams
             }
 
             type source =
@@ -147,7 +147,7 @@ module OpenAI
               type file_content =
                 {
                   content: ::Array[OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::Source::FileContent::Content],
-                  type: :file_content
+                  ?type: :file_content
                 }
 
               class FileContent < OpenAI::Internal::Type::BaseModel
@@ -162,11 +162,11 @@ module OpenAI
 
                 def to_hash: -> {
                   content: ::Array[OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::Source::FileContent::Content],
-                  type: :file_content
+                  ?type: :file_content
                 }
 
                 type content =
-                  { item: ::Hash[Symbol, top], sample: ::Hash[Symbol, top] }
+                  { item: ::Hash[Symbol, top], ?sample: ::Hash[Symbol, top] }
 
                 class Content < OpenAI::Internal::Type::BaseModel
                   attr_accessor item: ::Hash[Symbol, top]
@@ -182,12 +182,12 @@ module OpenAI
 
                   def to_hash: -> {
                     item: ::Hash[Symbol, top],
-                    sample: ::Hash[Symbol, top]
+                    ?sample: ::Hash[Symbol, top]
                   }
                 end
               end
 
-              type file_id = { id: String, type: :file_id }
+              type file_id = { id: String, ?type: :file_id }
 
               class FileID < OpenAI::Internal::Type::BaseModel
                 attr_accessor id: String
@@ -196,22 +196,22 @@ module OpenAI
 
                 def initialize: (id: String, ?type: :file_id) -> void
 
-                def to_hash: -> { id: String, type: :file_id }
+                def to_hash: -> { id: String, ?type: :file_id }
               end
 
               type responses =
                 {
-                  type: :responses,
-                  created_after: Integer?,
-                  created_before: Integer?,
-                  instructions_search: String?,
-                  metadata: top?,
-                  model: String?,
-                  reasoning_effort: OpenAI::Models::reasoning_effort?,
-                  temperature: Float?,
-                  tools: ::Array[String]?,
-                  top_p: Float?,
-                  users: ::Array[String]?
+                  ?type: :responses,
+                  ?created_after: Integer?,
+                  ?created_before: Integer?,
+                  ?instructions_search: String?,
+                  ?metadata: top?,
+                  ?model: String?,
+                  ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+                  ?temperature: Float?,
+                  ?tools: ::Array[String]?,
+                  ?top_p: Float?,
+                  ?users: ::Array[String]?
                 }
 
               class Responses < OpenAI::Internal::Type::BaseModel
@@ -252,17 +252,17 @@ module OpenAI
                 ) -> void
 
                 def to_hash: -> {
-                  type: :responses,
-                  created_after: Integer?,
-                  created_before: Integer?,
-                  instructions_search: String?,
-                  metadata: top?,
-                  model: String?,
-                  reasoning_effort: OpenAI::Models::reasoning_effort?,
-                  temperature: Float?,
-                  tools: ::Array[String]?,
-                  top_p: Float?,
-                  users: ::Array[String]?
+                  ?type: :responses,
+                  ?created_after: Integer?,
+                  ?created_before: Integer?,
+                  ?instructions_search: String?,
+                  ?metadata: top?,
+                  ?model: String?,
+                  ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+                  ?temperature: Float?,
+                  ?tools: ::Array[String]?,
+                  ?top_p: Float?,
+                  ?users: ::Array[String]?
                 }
               end
 
@@ -279,7 +279,7 @@ module OpenAI
               type template =
                 {
                   template: ::Array[OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::template],
-                  type: :template
+                  ?type: :template
                 }
 
               class Template < OpenAI::Internal::Type::BaseModel
@@ -294,7 +294,7 @@ module OpenAI
 
                 def to_hash: -> {
                   template: ::Array[OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::template],
-                  type: :template
+                  ?type: :template
                 }
 
                 type template =
@@ -320,7 +320,7 @@ module OpenAI
                     {
                       content: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::content,
                       role: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::role,
-                      type: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::type_
+                      ?type: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::type_
                     }
 
                   class EvalItem < OpenAI::Internal::Type::BaseModel
@@ -343,7 +343,7 @@ module OpenAI
                     def to_hash: -> {
                       content: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::content,
                       role: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::role,
-                      type: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::type_
+                      ?type: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::type_
                     }
 
                     type content =
@@ -357,7 +357,7 @@ module OpenAI
                     module Content
                       extend OpenAI::Internal::Type::Union
 
-                      type output_text = { text: String, type: :output_text }
+                      type output_text = { text: String, ?type: :output_text }
 
                       class OutputText < OpenAI::Internal::Type::BaseModel
                         attr_accessor text: String
@@ -369,14 +369,14 @@ module OpenAI
                           ?type: :output_text
                         ) -> void
 
-                        def to_hash: -> { text: String, type: :output_text }
+                        def to_hash: -> { text: String, ?type: :output_text }
                       end
 
                       type input_image =
                         {
                           image_url: String,
-                          type: :input_image,
-                          detail: String
+                          ?type: :input_image,
+                          ?detail: String
                         }
 
                       class InputImage < OpenAI::Internal::Type::BaseModel
@@ -396,8 +396,8 @@ module OpenAI
 
                         def to_hash: -> {
                           image_url: String,
-                          type: :input_image,
-                          detail: String
+                          ?type: :input_image,
+                          ?detail: String
                         }
                       end
 
@@ -433,7 +433,7 @@ module OpenAI
               end
 
               type item_reference =
-                { item_reference: String, type: :item_reference }
+                { item_reference: String, ?type: :item_reference }
 
               class ItemReference < OpenAI::Internal::Type::BaseModel
                 attr_accessor item_reference: String
@@ -447,7 +447,7 @@ module OpenAI
 
                 def to_hash: -> {
                   item_reference: String,
-                  type: :item_reference
+                  ?type: :item_reference
                 }
               end
 
@@ -456,13 +456,13 @@ module OpenAI
 
             type sampling_params =
               {
-                max_completion_tokens: Integer,
-                reasoning_effort: OpenAI::Models::reasoning_effort?,
-                seed: Integer,
-                temperature: Float,
-                text: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::SamplingParams::Text,
-                tools: ::Array[OpenAI::Models::Responses::tool],
-                top_p: Float
+                ?max_completion_tokens: Integer,
+                ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+                ?seed: Integer,
+                ?temperature: Float,
+                ?text: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::SamplingParams::Text,
+                ?tools: ::Array[OpenAI::Models::Responses::tool],
+                ?top_p: Float
               }
 
             class SamplingParams < OpenAI::Internal::Type::BaseModel
@@ -507,18 +507,18 @@ module OpenAI
               ) -> void
 
               def to_hash: -> {
-                max_completion_tokens: Integer,
-                reasoning_effort: OpenAI::Models::reasoning_effort?,
-                seed: Integer,
-                temperature: Float,
-                text: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::SamplingParams::Text,
-                tools: ::Array[OpenAI::Models::Responses::tool],
-                top_p: Float
+                ?max_completion_tokens: Integer,
+                ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+                ?seed: Integer,
+                ?temperature: Float,
+                ?text: OpenAI::Models::Evals::RunCancelResponse::DataSource::Responses::SamplingParams::Text,
+                ?tools: ::Array[OpenAI::Models::Responses::tool],
+                ?top_p: Float
               }
 
               type text =
                 {
-                  format_: OpenAI::Models::Responses::response_format_text_config
+                  ?format_: OpenAI::Models::Responses::response_format_text_config
                 }
 
               class Text < OpenAI::Internal::Type::BaseModel
@@ -533,7 +533,7 @@ module OpenAI
                 ) -> void
 
                 def to_hash: -> {
-                  format_: OpenAI::Models::Responses::response_format_text_config
+                  ?format_: OpenAI::Models::Responses::response_format_text_config
                 }
               end
             end

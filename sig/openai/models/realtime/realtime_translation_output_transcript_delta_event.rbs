@@ -5,8 +5,8 @@ module OpenAI
         {
           delta: String,
           event_id: String,
-          type: :"session.output_transcript.delta",
-          elapsed_ms: Integer?
+          ?type: :"session.output_transcript.delta",
+          ?elapsed_ms: Integer?
         }
 
       class RealtimeTranslationOutputTranscriptDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -28,8 +28,8 @@ module OpenAI
         def to_hash: -> {
           delta: String,
           event_id: String,
-          type: :"session.output_transcript.delta",
-          elapsed_ms: Integer?
+          ?type: :"session.output_transcript.delta",
+          ?elapsed_ms: Integer?
         }
       end
     end

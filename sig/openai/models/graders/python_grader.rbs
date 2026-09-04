@@ -4,7 +4,7 @@ module OpenAI
 
     module Graders
       type python_grader =
-        { name: String, source: String, type: :python, image_tag: String }
+        { name: String, source: String, ?type: :python, ?image_tag: String }
 
       class PythonGrader < OpenAI::Internal::Type::BaseModel
         attr_accessor name: String
@@ -27,8 +27,8 @@ module OpenAI
         def to_hash: -> {
           name: String,
           source: String,
-          type: :python,
-          image_tag: String
+          ?type: :python,
+          ?image_tag: String
         }
       end
     end

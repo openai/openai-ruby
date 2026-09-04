@@ -4,11 +4,11 @@ module OpenAI
       module Organization
         type role_list_params =
           {
-            after: String,
-            limit: Integer,
-            order: OpenAI::Models::Admin::Organization::RoleListParams::order
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::RoleListParams::order,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class RoleListParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -36,10 +36,10 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            after: String,
-            limit: Integer,
-            order: OpenAI::Models::Admin::Organization::RoleListParams::order,
-            request_options: OpenAI::RequestOptions
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::RoleListParams::order,
+            ?request_options: OpenAI::RequestOptions
           }
 
           type order = :asc | :desc

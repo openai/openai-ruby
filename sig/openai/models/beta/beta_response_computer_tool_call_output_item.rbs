@@ -9,10 +9,10 @@ module OpenAI
           call_id: String,
           output: OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot,
           status: OpenAI::Models::Beta::BetaResponseComputerToolCallOutputItem::status,
-          type: :computer_call_output,
-          acknowledged_safety_checks: ::Array[OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
-          agent: OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent?,
-          created_by: String
+          ?type: :computer_call_output,
+          ?acknowledged_safety_checks: ::Array[OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
+          ?agent: OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent?,
+          ?created_by: String
         }
 
       class BetaResponseComputerToolCallOutputItem < OpenAI::Internal::Type::BaseModel
@@ -54,10 +54,10 @@ module OpenAI
           call_id: String,
           output: OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot,
           status: OpenAI::Models::Beta::BetaResponseComputerToolCallOutputItem::status,
-          type: :computer_call_output,
-          acknowledged_safety_checks: ::Array[OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
-          agent: OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent?,
-          created_by: String
+          ?type: :computer_call_output,
+          ?acknowledged_safety_checks: ::Array[OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
+          ?agent: OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent?,
+          ?created_by: String
         }
 
         type status = :completed | :incomplete | :failed | :in_progress
@@ -74,7 +74,7 @@ module OpenAI
         end
 
         type acknowledged_safety_check =
-          { id: String, code: String?, message: String? }
+          { id: String, ?code: String?, ?message: String? }
 
         class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
@@ -89,7 +89,7 @@ module OpenAI
             ?message: String?
           ) -> void
 
-          def to_hash: -> { id: String, code: String?, message: String? }
+          def to_hash: -> { id: String, ?code: String?, ?message: String? }
         end
 
         type agent = { agent_name: String }

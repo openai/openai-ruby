@@ -6,7 +6,7 @@ module OpenAI
           type tool_calls_step_details =
             {
               tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call],
-              type: :tool_calls
+              ?type: :tool_calls
             }
 
           class ToolCallsStepDetails < OpenAI::Internal::Type::BaseModel
@@ -21,7 +21,7 @@ module OpenAI
 
             def to_hash: -> {
               tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call],
-              type: :tool_calls
+              ?type: :tool_calls
             }
           end
         end

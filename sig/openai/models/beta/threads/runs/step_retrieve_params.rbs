@@ -8,9 +8,9 @@ module OpenAI
               thread_id: String,
               run_id: String,
               step_id: String,
-              include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include]
+              ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
+              ?request_options: OpenAI::request_opts
             }
-            & OpenAI::Internal::Type::request_parameters
 
           class StepRetrieveParams < OpenAI::Internal::Type::BaseModel
             extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -40,8 +40,8 @@ module OpenAI
               thread_id: String,
               run_id: String,
               step_id: String,
-              include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
-              request_options: OpenAI::RequestOptions
+              ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
+              ?request_options: OpenAI::RequestOptions
             }
           end
         end

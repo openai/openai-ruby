@@ -5,8 +5,8 @@ module OpenAI
         {
           server_label: String,
           tools: ::Array[OpenAI::Realtime::RealtimeMcpListTools::Tool],
-          type: :mcp_list_tools,
-          id: String
+          ?type: :mcp_list_tools,
+          ?id: String
         }
 
       class RealtimeMcpListTools < OpenAI::Internal::Type::BaseModel
@@ -30,16 +30,16 @@ module OpenAI
         def to_hash: -> {
           server_label: String,
           tools: ::Array[OpenAI::Realtime::RealtimeMcpListTools::Tool],
-          type: :mcp_list_tools,
-          id: String
+          ?type: :mcp_list_tools,
+          ?id: String
         }
 
         type tool =
           {
             input_schema: top,
             name: String,
-            annotations: top?,
-            description: String?
+            ?annotations: top?,
+            ?description: String?
           }
 
         class Tool < OpenAI::Internal::Type::BaseModel
@@ -61,8 +61,8 @@ module OpenAI
           def to_hash: -> {
             input_schema: top,
             name: String,
-            annotations: top?,
-            description: String?
+            ?annotations: top?,
+            ?description: String?
           }
         end
       end

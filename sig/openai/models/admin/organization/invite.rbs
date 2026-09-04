@@ -7,12 +7,12 @@ module OpenAI
             id: String,
             created_at: Integer,
             email: String,
-            object: :"organization.invite",
+            ?object: :"organization.invite",
             projects: ::Array[OpenAI::Admin::Organization::Invite::Project],
             role: OpenAI::Models::Admin::Organization::Invite::role,
             status: OpenAI::Models::Admin::Organization::Invite::status,
-            accepted_at: Integer?,
-            expires_at: Integer?
+            ?accepted_at: Integer?,
+            ?expires_at: Integer?
           }
 
         class Invite < OpenAI::Internal::Type::BaseModel
@@ -50,12 +50,12 @@ module OpenAI
             id: String,
             created_at: Integer,
             email: String,
-            object: :"organization.invite",
+            ?object: :"organization.invite",
             projects: ::Array[OpenAI::Admin::Organization::Invite::Project],
             role: OpenAI::Models::Admin::Organization::Invite::role,
             status: OpenAI::Models::Admin::Organization::Invite::status,
-            accepted_at: Integer?,
-            expires_at: Integer?
+            ?accepted_at: Integer?,
+            ?expires_at: Integer?
           }
 
           type project =

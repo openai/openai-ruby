@@ -8,7 +8,7 @@ module OpenAI
           output_index: Integer,
           sequence_number: Integer,
           text: String,
-          type: :"response.reasoning_text.done"
+          ?type: :"response.reasoning_text.done"
         }
 
       class ResponseReasoningTextDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -39,7 +39,7 @@ module OpenAI
           output_index: Integer,
           sequence_number: Integer,
           text: String,
-          type: :"response.reasoning_text.done"
+          ?type: :"response.reasoning_text.done"
         }
       end
     end

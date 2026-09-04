@@ -8,9 +8,9 @@ module OpenAI
             currency: OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::currency,
             interval: OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::interval,
             notification_channel: OpenAI::Admin::Organization::SpendAlertUpdateParams::NotificationChannel,
-            threshold_amount: Integer
+            threshold_amount: Integer,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class SpendAlertUpdateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -41,7 +41,7 @@ module OpenAI
             interval: OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::interval,
             notification_channel: OpenAI::Admin::Organization::SpendAlertUpdateParams::NotificationChannel,
             threshold_amount: Integer,
-            request_options: OpenAI::RequestOptions
+            ?request_options: OpenAI::RequestOptions
           }
 
           type currency = :USD
@@ -67,8 +67,8 @@ module OpenAI
           type notification_channel =
             {
               recipients: ::Array[String],
-              type: :email,
-              subject_prefix: String?
+              ?type: :email,
+              ?subject_prefix: String?
             }
 
           class NotificationChannel < OpenAI::Internal::Type::BaseModel
@@ -86,8 +86,8 @@ module OpenAI
 
             def to_hash: -> {
               recipients: ::Array[String],
-              type: :email,
-              subject_prefix: String?
+              ?type: :email,
+              ?subject_prefix: String?
             }
           end
         end

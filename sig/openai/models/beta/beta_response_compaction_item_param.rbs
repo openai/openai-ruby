@@ -6,9 +6,9 @@ module OpenAI
       type beta_response_compaction_item_param =
         {
           encrypted_content: String,
-          type: :compaction,
-          id: String?,
-          agent: OpenAI::Beta::BetaResponseCompactionItemParam::Agent?
+          ?type: :compaction,
+          ?id: String?,
+          ?agent: OpenAI::Beta::BetaResponseCompactionItemParam::Agent?
         }
 
       class BetaResponseCompactionItemParam < OpenAI::Internal::Type::BaseModel
@@ -29,9 +29,9 @@ module OpenAI
 
         def to_hash: -> {
           encrypted_content: String,
-          type: :compaction,
-          id: String?,
-          agent: OpenAI::Beta::BetaResponseCompactionItemParam::Agent?
+          ?type: :compaction,
+          ?id: String?,
+          ?agent: OpenAI::Beta::BetaResponseCompactionItemParam::Agent?
         }
 
         type agent = { agent_name: String }

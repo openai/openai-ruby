@@ -49,7 +49,7 @@ module OpenAI
             issuer: String?,
             model: String?,
             outcome: OpenAI::Models::ContentProvenanceCheck::Result::C2PA::outcome,
-            type: :c2pa,
+            ?type: :c2pa,
             validation_state: OpenAI::Models::ContentProvenanceCheck::Result::C2PA::validation_state
           }
 
@@ -80,7 +80,7 @@ module OpenAI
             issuer: String?,
             model: String?,
             outcome: OpenAI::Models::ContentProvenanceCheck::Result::C2PA::outcome,
-            type: :c2pa,
+            ?type: :c2pa,
             validation_state: OpenAI::Models::ContentProvenanceCheck::Result::C2PA::validation_state
           }
 
@@ -114,7 +114,7 @@ module OpenAI
             generated_at: String?,
             model: String?,
             outcome: OpenAI::Models::ContentProvenanceCheck::Result::SynthID::outcome,
-            type: :synthid
+            ?type: :synthid
           }
 
         class SynthID < OpenAI::Internal::Type::BaseModel
@@ -137,7 +137,7 @@ module OpenAI
             generated_at: String?,
             model: String?,
             outcome: OpenAI::Models::ContentProvenanceCheck::Result::SynthID::outcome,
-            type: :synthid
+            ?type: :synthid
           }
 
           type outcome = :detected | :not_detected

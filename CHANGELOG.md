@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.85.0](https://github.com/openai/openai-ruby/compare/v0.84.0...v0.85.0) (2026-09-03)
+
+
+### Features
+
+* **api:** add gpt-6-astra and related features ([#596](https://github.com/openai/openai-ruby/issues/596)) ([a08d882](https://github.com/openai/openai-ruby/commit/a08d882c2575e0743a18eb5a4eae7ef3f94b0314))
+
+
+### Bug Fixes
+
+* **ci:** restore Castiron statuses for fork PRs ([#572](https://github.com/openai/openai-ruby/issues/572)) ([b78af5a](https://github.com/openai/openai-ruby/commit/b78af5acf775627c8eddf42da41bef7ea7325235))
+* correct StringIO request content length ([#583](https://github.com/openai/openai-ruby/issues/583)) ([5baeac8](https://github.com/openai/openai-ruby/commit/5baeac8131511141491fc41abdb2e4e4c596f3de))
+* emit done events for terminal chat tool calls ([#573](https://github.com/openai/openai-ruby/issues/573)) ([891936c](https://github.com/openai/openai-ruby/commit/891936ce58db613a61d270792f40da400ea44b97))
+* handle nullable structured-output literals ([#568](https://github.com/openai/openai-ruby/issues/568)) ([c4fee85](https://github.com/openai/openai-ruby/commit/c4fee85338aa283d6cec80538e4524a406fa8b7d))
+* isolate chat stream logprob chunks ([#585](https://github.com/openai/openai-ruby/issues/585)) ([0daedb2](https://github.com/openai/openai-ruby/commit/0daedb2878373da899dac8b029fdb0523a26c6ef))
+* preserve initial chat stream system fingerprint ([#580](https://github.com/openai/openai-ruby/issues/580)) ([a31c1ce](https://github.com/openai/openai-ruby/commit/a31c1cef9ee8e1fc5ed7a9b29f23171260a101e4))
+* preserve late chat completion service tier ([#567](https://github.com/openai/openai-ruby/issues/567)) ([52a0c64](https://github.com/openai/openai-ruby/commit/52a0c64fbb04535d4c1250986a5116298048764e))
+* preserve nested array schema definitions ([#581](https://github.com/openai/openai-ruby/issues/581)) ([bbfbe29](https://github.com/openai/openai-ruby/commit/bbfbe29f53018b4a3a1c61edab355ad901bb0239))
+* preserve recursive structured output refs ([#584](https://github.com/openai/openai-ruby/issues/584)) ([b23fc75](https://github.com/openai/openai-ruby/commit/b23fc752952314de279a32175d98b7ca7fd33f8c))
+* preserve retained Responses stream events ([#577](https://github.com/openai/openai-ruby/issues/577)) ([149e685](https://github.com/openai/openai-ruby/commit/149e685c64f72052d19d9389ba07d40a14c4c070))
+* preserve string-tagged structured output models ([#582](https://github.com/openai/openai-ruby/issues/582)) ([983eaf9](https://github.com/openai/openai-ruby/commit/983eaf9c240f6888d2872abddd555fa3cdd5af95))
+* raise finish errors for initial chat stream chunks ([#579](https://github.com/openai/openai-ruby/issues/579)) ([c923659](https://github.com/openai/openai-ruby/commit/c923659aeddd2ed5e928830babd2f75ea6cbae3d))
+* short-circuit Bedrock profile credentials ([#588](https://github.com/openai/openai-ruby/issues/588)) ([1c7ed46](https://github.com/openai/openai-ruby/commit/1c7ed46782288a882aed9ccedcf69ecc53fd9c6d))
+
+
+### Documentation
+
+* clarify commit prefix user impact ([#575](https://github.com/openai/openai-ruby/issues/575)) ([73752ad](https://github.com/openai/openai-ruby/commit/73752ad281e7d3fde9c4b63bd1efa17b151ff5a6))
+* establish canonical security model ([#565](https://github.com/openai/openai-ruby/issues/565)) ([2ded215](https://github.com/openai/openai-ruby/commit/2ded21565f969d026c93027d1d7264a8081d6242))
+
 ## [0.84.0](https://github.com/openai/openai-ruby/compare/v0.83.0...v0.84.0) (2026-09-02)
 
 

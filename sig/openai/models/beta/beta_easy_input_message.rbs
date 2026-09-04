@@ -7,8 +7,8 @@ module OpenAI
         {
           content: OpenAI::Models::Beta::BetaEasyInputMessage::content,
           role: OpenAI::Models::Beta::BetaEasyInputMessage::role,
-          phase: OpenAI::Models::Beta::BetaEasyInputMessage::phase?,
-          type: OpenAI::Models::Beta::BetaEasyInputMessage::type_
+          ?phase: OpenAI::Models::Beta::BetaEasyInputMessage::phase?,
+          ?type: OpenAI::Models::Beta::BetaEasyInputMessage::type_
         }
 
       class BetaEasyInputMessage < OpenAI::Internal::Type::BaseModel
@@ -34,8 +34,8 @@ module OpenAI
         def to_hash: -> {
           content: OpenAI::Models::Beta::BetaEasyInputMessage::content,
           role: OpenAI::Models::Beta::BetaEasyInputMessage::role,
-          phase: OpenAI::Models::Beta::BetaEasyInputMessage::phase?,
-          type: OpenAI::Models::Beta::BetaEasyInputMessage::type_
+          ?phase: OpenAI::Models::Beta::BetaEasyInputMessage::phase?,
+          ?type: OpenAI::Models::Beta::BetaEasyInputMessage::type_
         }
 
         type content =

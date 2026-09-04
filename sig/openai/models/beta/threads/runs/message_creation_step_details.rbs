@@ -6,7 +6,7 @@ module OpenAI
           type message_creation_step_details =
             {
               message_creation: OpenAI::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation,
-              type: :message_creation
+              ?type: :message_creation
             }
 
           class MessageCreationStepDetails < OpenAI::Internal::Type::BaseModel
@@ -21,7 +21,7 @@ module OpenAI
 
             def to_hash: -> {
               message_creation: OpenAI::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation,
-              type: :message_creation
+              ?type: :message_creation
             }
 
             type message_creation = { message_id: String }

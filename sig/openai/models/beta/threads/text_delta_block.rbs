@@ -5,8 +5,8 @@ module OpenAI
         type text_delta_block =
           {
             index: Integer,
-            type: :text,
-            text: OpenAI::Beta::Threads::TextDelta
+            ?type: :text,
+            ?text: OpenAI::Beta::Threads::TextDelta
           }
 
         class TextDeltaBlock < OpenAI::Internal::Type::BaseModel
@@ -28,8 +28,8 @@ module OpenAI
 
           def to_hash: -> {
             index: Integer,
-            type: :text,
-            text: OpenAI::Beta::Threads::TextDelta
+            ?type: :text,
+            ?text: OpenAI::Beta::Threads::TextDelta
           }
         end
       end

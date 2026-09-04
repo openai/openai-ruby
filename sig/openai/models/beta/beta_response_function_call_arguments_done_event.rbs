@@ -10,8 +10,8 @@ module OpenAI
           name: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.function_call_arguments.done",
-          agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?
+          ?type: :"response.function_call_arguments.done",
+          ?agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?
         }
 
       class BetaResponseFunctionCallArgumentsDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -45,8 +45,8 @@ module OpenAI
           name: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.function_call_arguments.done",
-          agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?
+          ?type: :"response.function_call_arguments.done",
+          ?agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?
         }
 
         type agent = { agent_name: String }

@@ -4,7 +4,7 @@ module OpenAI
       {
         data: ::Array[OpenAI::Embedding],
         model: String,
-        object: :list,
+        ?object: :list,
         usage: OpenAI::CreateEmbeddingResponse::Usage
       }
 
@@ -27,7 +27,7 @@ module OpenAI
       def to_hash: -> {
         data: ::Array[OpenAI::Embedding],
         model: String,
-        object: :list,
+        ?object: :list,
         usage: OpenAI::CreateEmbeddingResponse::Usage
       }
 

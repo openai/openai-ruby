@@ -6,9 +6,9 @@ module OpenAI
           duration: Float,
           language: String,
           text: String,
-          segments: ::Array[OpenAI::Audio::TranscriptionSegment],
-          usage: OpenAI::Audio::TranscriptionVerbose::Usage,
-          words: ::Array[OpenAI::Audio::TranscriptionWord]
+          ?segments: ::Array[OpenAI::Audio::TranscriptionSegment],
+          ?usage: OpenAI::Audio::TranscriptionVerbose::Usage,
+          ?words: ::Array[OpenAI::Audio::TranscriptionWord]
         }
 
       class TranscriptionVerbose < OpenAI::Internal::Type::BaseModel
@@ -49,12 +49,12 @@ module OpenAI
           duration: Float,
           language: String,
           text: String,
-          segments: ::Array[OpenAI::Audio::TranscriptionSegment],
-          usage: OpenAI::Audio::TranscriptionVerbose::Usage,
-          words: ::Array[OpenAI::Audio::TranscriptionWord]
+          ?segments: ::Array[OpenAI::Audio::TranscriptionSegment],
+          ?usage: OpenAI::Audio::TranscriptionVerbose::Usage,
+          ?words: ::Array[OpenAI::Audio::TranscriptionWord]
         }
 
-        type usage = { seconds: Float, type: :duration }
+        type usage = { seconds: Float, ?type: :duration }
 
         class Usage < OpenAI::Internal::Type::BaseModel
           attr_accessor seconds: Float
@@ -63,7 +63,7 @@ module OpenAI
 
           def initialize: (seconds: Float, ?type: :duration) -> void
 
-          def to_hash: -> { seconds: Float, type: :duration }
+          def to_hash: -> { seconds: Float, ?type: :duration }
         end
       end
     end

@@ -8,7 +8,7 @@ module OpenAI
           id: String,
           created_at: Integer,
           file_counts: OpenAI::VectorStores::VectorStoreFileBatch::FileCounts,
-          object: :"vector_store.files_batch",
+          ?object: :"vector_store.files_batch",
           status: OpenAI::Models::VectorStores::VectorStoreFileBatch::status,
           vector_store_id: String
         }
@@ -39,7 +39,7 @@ module OpenAI
           id: String,
           created_at: Integer,
           file_counts: OpenAI::VectorStores::VectorStoreFileBatch::FileCounts,
-          object: :"vector_store.files_batch",
+          ?object: :"vector_store.files_batch",
           status: OpenAI::Models::VectorStores::VectorStoreFileBatch::status,
           vector_store_id: String
         }

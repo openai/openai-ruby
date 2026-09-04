@@ -6,7 +6,7 @@ module OpenAI
       module Organization
         type organization_data_retention =
           {
-            object: :"organization.data_retention",
+            ?object: :"organization.data_retention",
             type: OpenAI::Models::Admin::Organization::OrganizationDataRetention::type_
           }
 
@@ -21,7 +21,7 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            object: :"organization.data_retention",
+            ?object: :"organization.data_retention",
             type: OpenAI::Models::Admin::Organization::OrganizationDataRetention::type_
           }
 

@@ -8,9 +8,9 @@ module OpenAI
           id: String,
           content: OpenAI::Models::Beta::beta_response_input_message_content_list,
           role: OpenAI::Models::Beta::BetaResponseInputMessageItem::role,
-          type: :message,
-          agent: OpenAI::Beta::BetaResponseInputMessageItem::Agent?,
-          status: OpenAI::Models::Beta::BetaResponseInputMessageItem::status
+          ?type: :message,
+          ?agent: OpenAI::Beta::BetaResponseInputMessageItem::Agent?,
+          ?status: OpenAI::Models::Beta::BetaResponseInputMessageItem::status
         }
 
       class BetaResponseInputMessageItem < OpenAI::Internal::Type::BaseModel
@@ -43,9 +43,9 @@ module OpenAI
           id: String,
           content: OpenAI::Models::Beta::beta_response_input_message_content_list,
           role: OpenAI::Models::Beta::BetaResponseInputMessageItem::role,
-          type: :message,
-          agent: OpenAI::Beta::BetaResponseInputMessageItem::Agent?,
-          status: OpenAI::Models::Beta::BetaResponseInputMessageItem::status
+          ?type: :message,
+          ?agent: OpenAI::Beta::BetaResponseInputMessageItem::Agent?,
+          ?status: OpenAI::Models::Beta::BetaResponseInputMessageItem::status
         }
 
         type role = :user | :system | :developer

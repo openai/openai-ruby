@@ -15,7 +15,7 @@ To use this gem, install via Bundler by adding the following to your application
 <!-- x-release-please-start-version -->
 
 ```ruby
-gem "openai", "~> 0.84.0"
+gem "openai", "~> 0.85.0"
 ```
 
 <!-- x-release-please-end -->
@@ -709,6 +709,27 @@ response
     # parsed is an instance of `CalendarEvent`
     pp(content.parsed)
   end
+```
+
+For a stored or background response, pass the same structured-output model again
+when retrieving it. The model is used locally to populate `content.parsed`; it is
+not sent as a retrieval query parameter. A response that is still queued or in
+progress can be retrieved the same way, but structured output is parsed only after
+a later retrieval reports it completed when status is present. Compatible
+statusless responses parse once their hinted output is syntactically complete JSON.
+For structured function tools, pass the same model again with
+`tools: [ToolArguments]`; matching retrieved function calls expose typed arguments
+through `output.parsed`.
+
+```ruby
+pending = client.responses.create(
+  model: "gpt-5.2",
+  input: "Extract the event information.",
+  text: CalendarEvent,
+  background: true
+)
+
+response = client.responses.retrieve(pending.id, text: CalendarEvent)
 ```
 
 </details>

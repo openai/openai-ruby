@@ -6,7 +6,7 @@ module OpenAI
           audio_start_ms: Integer,
           event_id: String,
           item_id: String,
-          type: :"input_audio_buffer.speech_started"
+          ?type: :"input_audio_buffer.speech_started"
         }
 
       class InputAudioBufferSpeechStartedEvent < OpenAI::Internal::Type::BaseModel
@@ -29,7 +29,7 @@ module OpenAI
           audio_start_ms: Integer,
           event_id: String,
           item_id: String,
-          type: :"input_audio_buffer.speech_started"
+          ?type: :"input_audio_buffer.speech_started"
         }
       end
     end

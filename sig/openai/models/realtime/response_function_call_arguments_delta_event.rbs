@@ -9,7 +9,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           response_id: String,
-          type: :"response.function_call_arguments.delta"
+          ?type: :"response.function_call_arguments.delta"
         }
 
       class ResponseFunctionCallArgumentsDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -44,7 +44,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           response_id: String,
-          type: :"response.function_call_arguments.delta"
+          ?type: :"response.function_call_arguments.delta"
         }
       end
     end

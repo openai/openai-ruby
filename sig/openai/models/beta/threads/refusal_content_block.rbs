@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        type refusal_content_block = { refusal: String, type: :refusal }
+        type refusal_content_block = { refusal: String, ?type: :refusal }
 
         class RefusalContentBlock < OpenAI::Internal::Type::BaseModel
           attr_accessor refusal: String
@@ -11,7 +11,7 @@ module OpenAI
 
           def initialize: (refusal: String, ?type: :refusal) -> void
 
-          def to_hash: -> { refusal: String, type: :refusal }
+          def to_hash: -> { refusal: String, ?type: :refusal }
         end
       end
     end

@@ -5,8 +5,8 @@ module OpenAI
     module Beta
       type beta_apply_patch_tool =
         {
-          type: :apply_patch,
-          allowed_callers: ::Array[OpenAI::Models::Beta::BetaApplyPatchTool::allowed_caller]?
+          ?type: :apply_patch,
+          ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaApplyPatchTool::allowed_caller]?
         }
 
       class BetaApplyPatchTool < OpenAI::Internal::Type::BaseModel
@@ -20,8 +20,8 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :apply_patch,
-          allowed_callers: ::Array[OpenAI::Models::Beta::BetaApplyPatchTool::allowed_caller]?
+          ?type: :apply_patch,
+          ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaApplyPatchTool::allowed_caller]?
         }
 
         type allowed_caller = :direct | :programmatic

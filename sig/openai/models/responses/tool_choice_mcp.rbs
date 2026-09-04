@@ -1,7 +1,8 @@
 module OpenAI
   module Models
     module Responses
-      type tool_choice_mcp = { server_label: String, type: :mcp, name: String? }
+      type tool_choice_mcp =
+        { server_label: String, ?type: :mcp, ?name: String? }
 
       class ToolChoiceMcp < OpenAI::Internal::Type::BaseModel
         attr_accessor server_label: String
@@ -16,7 +17,7 @@ module OpenAI
           ?type: :mcp
         ) -> void
 
-        def to_hash: -> { server_label: String, type: :mcp, name: String? }
+        def to_hash: -> { server_label: String, ?type: :mcp, ?name: String? }
       end
     end
   end

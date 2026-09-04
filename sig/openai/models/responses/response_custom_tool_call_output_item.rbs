@@ -7,9 +7,9 @@ module OpenAI
           output: OpenAI::Models::Responses::ResponseCustomToolCallOutput::output,
           id: String,
           status: OpenAI::Models::Responses::ResponseCustomToolCallOutputItem::status,
-          type: :custom_tool_call_output,
-          caller_: OpenAI::Models::Responses::ResponseCustomToolCallOutput::caller_?,
-          created_by: String
+          ?type: :custom_tool_call_output,
+          ?caller_: OpenAI::Models::Responses::ResponseCustomToolCallOutput::caller_?,
+          ?created_by: String
         }
 
       class ResponseCustomToolCallOutputItem < OpenAI::Models::Responses::ResponseCustomToolCallOutput
@@ -42,9 +42,9 @@ module OpenAI
           output: OpenAI::Models::Responses::ResponseCustomToolCallOutput::output,
           id: String,
           status: OpenAI::Models::Responses::ResponseCustomToolCallOutputItem::status,
-          type: :custom_tool_call_output,
-          caller_: OpenAI::Models::Responses::ResponseCustomToolCallOutput::caller_?,
-          created_by: String
+          ?type: :custom_tool_call_output,
+          ?caller_: OpenAI::Models::Responses::ResponseCustomToolCallOutput::caller_?,
+          ?created_by: String
         }
 
         type status = :in_progress | :completed | :incomplete

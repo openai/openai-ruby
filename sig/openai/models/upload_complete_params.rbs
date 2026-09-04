@@ -1,8 +1,12 @@
 module OpenAI
   module Models
     type upload_complete_params =
-      { upload_id: String, part_ids: ::Array[String], :md5 => String }
-      & OpenAI::Internal::Type::request_parameters
+      {
+        upload_id: String,
+        part_ids: ::Array[String],
+        ?:md5 => String,
+        ?request_options: OpenAI::request_opts
+      }
 
     class UploadCompleteParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -26,8 +30,8 @@ module OpenAI
       def to_hash: -> {
         upload_id: String,
         part_ids: ::Array[String],
-        :md5 => String,
-        request_options: OpenAI::RequestOptions
+        ?:md5 => String,
+        ?request_options: OpenAI::RequestOptions
       }
     end
   end

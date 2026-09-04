@@ -10,8 +10,8 @@ module OpenAI
           output_index: Integer,
           sequence_number: Integer,
           text: String,
-          type: :"response.reasoning_text.done",
-          agent: OpenAI::Beta::BetaResponseReasoningTextDoneEvent::Agent?
+          ?type: :"response.reasoning_text.done",
+          ?agent: OpenAI::Beta::BetaResponseReasoningTextDoneEvent::Agent?
         }
 
       class BetaResponseReasoningTextDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -45,8 +45,8 @@ module OpenAI
           output_index: Integer,
           sequence_number: Integer,
           text: String,
-          type: :"response.reasoning_text.done",
-          agent: OpenAI::Beta::BetaResponseReasoningTextDoneEvent::Agent?
+          ?type: :"response.reasoning_text.done",
+          ?agent: OpenAI::Beta::BetaResponseReasoningTextDoneEvent::Agent?
         }
 
         type agent = { agent_name: String }

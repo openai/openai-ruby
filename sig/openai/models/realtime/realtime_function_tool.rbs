@@ -3,10 +3,10 @@ module OpenAI
     module Realtime
       type realtime_function_tool =
         {
-          description: String,
-          name: String,
-          parameters: top,
-          type: OpenAI::Models::Realtime::RealtimeFunctionTool::type_
+          ?description: String,
+          ?name: String,
+          ?parameters: top,
+          ?type: OpenAI::Models::Realtime::RealtimeFunctionTool::type_
         }
 
       class RealtimeFunctionTool < OpenAI::Internal::Type::BaseModel
@@ -36,10 +36,10 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          description: String,
-          name: String,
-          parameters: top,
-          type: OpenAI::Models::Realtime::RealtimeFunctionTool::type_
+          ?description: String,
+          ?name: String,
+          ?parameters: top,
+          ?type: OpenAI::Models::Realtime::RealtimeFunctionTool::type_
         }
 
         type type_ = :function

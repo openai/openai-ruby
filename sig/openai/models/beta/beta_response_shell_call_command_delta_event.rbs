@@ -9,9 +9,9 @@ module OpenAI
           delta: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.shell_call_command.delta",
-          agent: OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent,
-          obfuscation: String
+          ?type: :"response.shell_call_command.delta",
+          ?agent: OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent,
+          ?obfuscation: String
         }
 
       class BetaResponseShellCallCommandDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -50,9 +50,9 @@ module OpenAI
           delta: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.shell_call_command.delta",
-          agent: OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent,
-          obfuscation: String
+          ?type: :"response.shell_call_command.delta",
+          ?agent: OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent,
+          ?obfuscation: String
         }
 
         type agent = { agent_name: String }

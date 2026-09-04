@@ -108,6 +108,8 @@ module OpenAI
         ?include: ::Array[OpenAI::Models::Responses::response_includable],
         ?include_obfuscation: bool,
         ?starting_after: Integer,
+        ?text: top,
+        ?tools: ::Array[top]?,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Responses::Response
 

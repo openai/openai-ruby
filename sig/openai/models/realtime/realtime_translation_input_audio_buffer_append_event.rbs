@@ -4,8 +4,8 @@ module OpenAI
       type realtime_translation_input_audio_buffer_append_event =
         {
           audio: String,
-          type: :"session.input_audio_buffer.append",
-          event_id: String
+          ?type: :"session.input_audio_buffer.append",
+          ?event_id: String
         }
 
       class RealtimeTranslationInputAudioBufferAppendEvent < OpenAI::Internal::Type::BaseModel
@@ -25,8 +25,8 @@ module OpenAI
 
         def to_hash: -> {
           audio: String,
-          type: :"session.input_audio_buffer.append",
-          event_id: String
+          ?type: :"session.input_audio_buffer.append",
+          ?event_id: String
         }
       end
     end

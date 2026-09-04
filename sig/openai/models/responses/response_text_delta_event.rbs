@@ -9,7 +9,7 @@ module OpenAI
           logprobs: ::Array[OpenAI::Responses::ResponseTextDeltaEvent::Logprob],
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.output_text.delta"
+          ?type: :"response.output_text.delta"
         }
 
       class ResponseTextDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -44,14 +44,14 @@ module OpenAI
           logprobs: ::Array[OpenAI::Responses::ResponseTextDeltaEvent::Logprob],
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.output_text.delta"
+          ?type: :"response.output_text.delta"
         }
 
         type logprob =
           {
             token: String,
             logprob: Float,
-            top_logprobs: ::Array[OpenAI::Responses::ResponseTextDeltaEvent::Logprob::TopLogprob]
+            ?top_logprobs: ::Array[OpenAI::Responses::ResponseTextDeltaEvent::Logprob::TopLogprob]
           }
 
         class Logprob < OpenAI::Internal::Type::BaseModel
@@ -74,10 +74,10 @@ module OpenAI
           def to_hash: -> {
             token: String,
             logprob: Float,
-            top_logprobs: ::Array[OpenAI::Responses::ResponseTextDeltaEvent::Logprob::TopLogprob]
+            ?top_logprobs: ::Array[OpenAI::Responses::ResponseTextDeltaEvent::Logprob::TopLogprob]
           }
 
-          type top_logprob = { token: String, logprob: Float }
+          type top_logprob = { ?token: String, ?logprob: Float }
 
           class TopLogprob < OpenAI::Internal::Type::BaseModel
             attr_reader token: String?
@@ -90,7 +90,7 @@ module OpenAI
 
             def initialize: (?token: String, ?logprob: Float) -> void
 
-            def to_hash: -> { token: String, logprob: Float }
+            def to_hash: -> { ?token: String, ?logprob: Float }
           end
         end
       end

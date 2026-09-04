@@ -137,6 +137,9 @@ module OpenAI
 
             chunk.choices.each do |choice|
               handle_finish_reason(choice.finish_reason, completion_snapshot) if choice.finish_reason
+
+              tool_calls_by_index = @tool_call_snapshots_by_choice_index.fetch(choice.index)
+              parse_tool_calls!(choice.delta.tool_calls, tool_calls_by_index)
             end
 
             return completion_snapshot
@@ -511,7 +514,7 @@ module OpenAI
           choices = []
           chunk.choices.each do |choice|
             choice_hash = choice.to_h
-            delta_hash = choice.delta.to_h
+            delta_hash = model_dump(choice.delta)
 
             message_data = delta_hash.dup
             message_data[:role] ||= :assistant

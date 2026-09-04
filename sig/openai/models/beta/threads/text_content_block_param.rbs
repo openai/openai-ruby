@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        type text_content_block_param = { text: String, type: :text }
+        type text_content_block_param = { text: String, ?type: :text }
 
         class TextContentBlockParam < OpenAI::Internal::Type::BaseModel
           attr_accessor text: String
@@ -11,7 +11,7 @@ module OpenAI
 
           def initialize: (text: String, ?type: :text) -> void
 
-          def to_hash: -> { text: String, type: :text }
+          def to_hash: -> { text: String, ?type: :text }
         end
       end
     end

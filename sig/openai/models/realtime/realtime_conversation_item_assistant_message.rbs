@@ -4,11 +4,11 @@ module OpenAI
       type realtime_conversation_item_assistant_message =
         {
           content: ::Array[OpenAI::Realtime::RealtimeConversationItemAssistantMessage::Content],
-          role: :assistant,
-          type: :message,
-          id: String,
-          object: OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::object,
-          status: OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::status
+          ?role: :assistant,
+          ?type: :message,
+          ?id: String,
+          ?object: OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::object,
+          ?status: OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::status
         }
 
       class RealtimeConversationItemAssistantMessage < OpenAI::Internal::Type::BaseModel
@@ -45,19 +45,19 @@ module OpenAI
 
         def to_hash: -> {
           content: ::Array[OpenAI::Realtime::RealtimeConversationItemAssistantMessage::Content],
-          role: :assistant,
-          type: :message,
-          id: String,
-          object: OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::object,
-          status: OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::status
+          ?role: :assistant,
+          ?type: :message,
+          ?id: String,
+          ?object: OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::object,
+          ?status: OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::status
         }
 
         type content =
           {
-            audio: String,
-            text: String,
-            transcript: String,
-            type: OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::Content::type_
+            ?audio: String,
+            ?text: String,
+            ?transcript: String,
+            ?type: OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::Content::type_
           }
 
         class Content < OpenAI::Internal::Type::BaseModel
@@ -87,10 +87,10 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            audio: String,
-            text: String,
-            transcript: String,
-            type: OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::Content::type_
+            ?audio: String,
+            ?text: String,
+            ?transcript: String,
+            ?type: OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage::Content::type_
           }
 
           type type_ = :output_text | :output_audio

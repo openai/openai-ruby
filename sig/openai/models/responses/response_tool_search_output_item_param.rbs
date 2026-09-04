@@ -4,11 +4,11 @@ module OpenAI
       type response_tool_search_output_item_param =
         {
           tools: ::Array[OpenAI::Models::Responses::tool],
-          type: :tool_search_output,
-          id: String?,
-          call_id: String?,
-          execution: OpenAI::Models::Responses::ResponseToolSearchOutputItemParam::execution,
-          status: OpenAI::Models::Responses::ResponseToolSearchOutputItemParam::status?
+          ?type: :tool_search_output,
+          ?id: String?,
+          ?call_id: String?,
+          ?execution: OpenAI::Models::Responses::ResponseToolSearchOutputItemParam::execution,
+          ?status: OpenAI::Models::Responses::ResponseToolSearchOutputItemParam::status?
         }
 
       class ResponseToolSearchOutputItemParam < OpenAI::Internal::Type::BaseModel
@@ -39,11 +39,11 @@ module OpenAI
 
         def to_hash: -> {
           tools: ::Array[OpenAI::Models::Responses::tool],
-          type: :tool_search_output,
-          id: String?,
-          call_id: String?,
-          execution: OpenAI::Models::Responses::ResponseToolSearchOutputItemParam::execution,
-          status: OpenAI::Models::Responses::ResponseToolSearchOutputItemParam::status?
+          ?type: :tool_search_output,
+          ?id: String?,
+          ?call_id: String?,
+          ?execution: OpenAI::Models::Responses::ResponseToolSearchOutputItemParam::execution,
+          ?status: OpenAI::Models::Responses::ResponseToolSearchOutputItemParam::status?
         }
 
         type execution = :server | :client

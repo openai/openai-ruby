@@ -3,11 +3,11 @@ module OpenAI
     module Responses
       type container_auto =
         {
-          type: :container_auto,
-          file_ids: ::Array[String],
-          memory_limit: OpenAI::Models::Responses::ContainerAuto::memory_limit?,
-          network_policy: OpenAI::Models::Responses::ContainerAuto::network_policy,
-          skills: ::Array[OpenAI::Models::Responses::ContainerAuto::skill]
+          ?type: :container_auto,
+          ?file_ids: ::Array[String],
+          ?memory_limit: OpenAI::Models::Responses::ContainerAuto::memory_limit?,
+          ?network_policy: OpenAI::Models::Responses::ContainerAuto::network_policy,
+          ?skills: ::Array[OpenAI::Models::Responses::ContainerAuto::skill]
         }
 
       class ContainerAuto < OpenAI::Internal::Type::BaseModel
@@ -40,11 +40,11 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :container_auto,
-          file_ids: ::Array[String],
-          memory_limit: OpenAI::Models::Responses::ContainerAuto::memory_limit?,
-          network_policy: OpenAI::Models::Responses::ContainerAuto::network_policy,
-          skills: ::Array[OpenAI::Models::Responses::ContainerAuto::skill]
+          ?type: :container_auto,
+          ?file_ids: ::Array[String],
+          ?memory_limit: OpenAI::Models::Responses::ContainerAuto::memory_limit?,
+          ?network_policy: OpenAI::Models::Responses::ContainerAuto::network_policy,
+          ?skills: ::Array[OpenAI::Models::Responses::ContainerAuto::skill]
         }
 
         type memory_limit = :"1g" | :"4g" | :"16g" | :"64g"

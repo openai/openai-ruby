@@ -4,11 +4,11 @@ module OpenAI
       type realtime_conversation_item_user_message =
         {
           content: ::Array[OpenAI::Realtime::RealtimeConversationItemUserMessage::Content],
-          role: :user,
-          type: :message,
-          id: String,
-          object: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::object,
-          status: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::status
+          ?role: :user,
+          ?type: :message,
+          ?id: String,
+          ?object: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::object,
+          ?status: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::status
         }
 
       class RealtimeConversationItemUserMessage < OpenAI::Internal::Type::BaseModel
@@ -45,21 +45,21 @@ module OpenAI
 
         def to_hash: -> {
           content: ::Array[OpenAI::Realtime::RealtimeConversationItemUserMessage::Content],
-          role: :user,
-          type: :message,
-          id: String,
-          object: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::object,
-          status: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::status
+          ?role: :user,
+          ?type: :message,
+          ?id: String,
+          ?object: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::object,
+          ?status: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::status
         }
 
         type content =
           {
-            audio: String,
-            detail: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::detail,
-            image_url: String,
-            text: String,
-            transcript: String,
-            type: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::type_
+            ?audio: String,
+            ?detail: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::detail,
+            ?image_url: String,
+            ?text: String,
+            ?transcript: String,
+            ?type: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::type_
           }
 
         class Content < OpenAI::Internal::Type::BaseModel
@@ -101,12 +101,12 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            audio: String,
-            detail: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::detail,
-            image_url: String,
-            text: String,
-            transcript: String,
-            type: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::type_
+            ?audio: String,
+            ?detail: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::detail,
+            ?image_url: String,
+            ?text: String,
+            ?transcript: String,
+            ?type: OpenAI::Models::Realtime::RealtimeConversationItemUserMessage::Content::type_
           }
 
           type detail = :auto | :low | :high

@@ -7,7 +7,7 @@ module OpenAI
           command_index: Integer,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.shell_call_command.done"
+          ?type: :"response.shell_call_command.done"
         }
 
       class ResponseShellCallCommandDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -34,7 +34,7 @@ module OpenAI
           command_index: Integer,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.shell_call_command.done"
+          ?type: :"response.shell_call_command.done"
         }
       end
     end

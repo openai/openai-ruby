@@ -8,8 +8,8 @@ module OpenAI
           execution: OpenAI::Models::Responses::ResponseToolSearchOutputItem::execution,
           status: OpenAI::Models::Responses::ResponseToolSearchOutputItem::status,
           tools: ::Array[OpenAI::Models::Responses::tool],
-          type: :tool_search_output,
-          created_by: String
+          ?type: :tool_search_output,
+          ?created_by: String
         }
 
       class ResponseToolSearchOutputItem < OpenAI::Internal::Type::BaseModel
@@ -45,8 +45,8 @@ module OpenAI
           execution: OpenAI::Models::Responses::ResponseToolSearchOutputItem::execution,
           status: OpenAI::Models::Responses::ResponseToolSearchOutputItem::status,
           tools: ::Array[OpenAI::Models::Responses::tool],
-          type: :tool_search_output,
-          created_by: String
+          ?type: :tool_search_output,
+          ?created_by: String
         }
 
         type execution = :server | :client

@@ -3,13 +3,13 @@ module OpenAI
     type container_create_params =
       {
         name: String,
-        expires_after: OpenAI::ContainerCreateParams::ExpiresAfter,
-        file_ids: ::Array[String],
-        memory_limit: OpenAI::Models::ContainerCreateParams::memory_limit,
-        network_policy: OpenAI::Models::ContainerCreateParams::network_policy,
-        skills: ::Array[OpenAI::Models::ContainerCreateParams::skill]
+        ?expires_after: OpenAI::ContainerCreateParams::ExpiresAfter,
+        ?file_ids: ::Array[String],
+        ?memory_limit: OpenAI::Models::ContainerCreateParams::memory_limit,
+        ?network_policy: OpenAI::Models::ContainerCreateParams::network_policy,
+        ?skills: ::Array[OpenAI::Models::ContainerCreateParams::skill],
+        ?request_options: OpenAI::request_opts
       }
-      & OpenAI::Internal::Type::request_parameters
 
     class ContainerCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -57,12 +57,12 @@ module OpenAI
 
       def to_hash: -> {
         name: String,
-        expires_after: OpenAI::ContainerCreateParams::ExpiresAfter,
-        file_ids: ::Array[String],
-        memory_limit: OpenAI::Models::ContainerCreateParams::memory_limit,
-        network_policy: OpenAI::Models::ContainerCreateParams::network_policy,
-        skills: ::Array[OpenAI::Models::ContainerCreateParams::skill],
-        request_options: OpenAI::RequestOptions
+        ?expires_after: OpenAI::ContainerCreateParams::ExpiresAfter,
+        ?file_ids: ::Array[String],
+        ?memory_limit: OpenAI::Models::ContainerCreateParams::memory_limit,
+        ?network_policy: OpenAI::Models::ContainerCreateParams::network_policy,
+        ?skills: ::Array[OpenAI::Models::ContainerCreateParams::skill],
+        ?request_options: OpenAI::RequestOptions
       }
 
       type expires_after =

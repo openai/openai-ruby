@@ -3,17 +3,17 @@ module OpenAI
     module Realtime
       type realtime_response =
         {
-          id: String,
-          audio: OpenAI::Realtime::RealtimeResponse::Audio,
-          conversation_id: String,
-          max_output_tokens: OpenAI::Models::Realtime::RealtimeResponse::max_output_tokens,
-          metadata: OpenAI::Models::metadata?,
-          object: OpenAI::Models::Realtime::RealtimeResponse::object,
-          output: ::Array[OpenAI::Models::Realtime::conversation_item],
-          output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponse::output_modality],
-          status: OpenAI::Models::Realtime::RealtimeResponse::status,
-          status_details: OpenAI::Realtime::RealtimeResponseStatus,
-          usage: OpenAI::Realtime::RealtimeResponseUsage
+          ?id: String,
+          ?audio: OpenAI::Realtime::RealtimeResponse::Audio,
+          ?conversation_id: String,
+          ?max_output_tokens: OpenAI::Models::Realtime::RealtimeResponse::max_output_tokens,
+          ?metadata: OpenAI::Models::metadata?,
+          ?object: OpenAI::Models::Realtime::RealtimeResponse::object,
+          ?output: ::Array[OpenAI::Models::Realtime::conversation_item],
+          ?output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponse::output_modality],
+          ?status: OpenAI::Models::Realtime::RealtimeResponse::status,
+          ?status_details: OpenAI::Realtime::RealtimeResponseStatus,
+          ?usage: OpenAI::Realtime::RealtimeResponseUsage
         }
 
       class RealtimeResponse < OpenAI::Internal::Type::BaseModel
@@ -90,21 +90,21 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          id: String,
-          audio: OpenAI::Realtime::RealtimeResponse::Audio,
-          conversation_id: String,
-          max_output_tokens: OpenAI::Models::Realtime::RealtimeResponse::max_output_tokens,
-          metadata: OpenAI::Models::metadata?,
-          object: OpenAI::Models::Realtime::RealtimeResponse::object,
-          output: ::Array[OpenAI::Models::Realtime::conversation_item],
-          output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponse::output_modality],
-          status: OpenAI::Models::Realtime::RealtimeResponse::status,
-          status_details: OpenAI::Realtime::RealtimeResponseStatus,
-          usage: OpenAI::Realtime::RealtimeResponseUsage
+          ?id: String,
+          ?audio: OpenAI::Realtime::RealtimeResponse::Audio,
+          ?conversation_id: String,
+          ?max_output_tokens: OpenAI::Models::Realtime::RealtimeResponse::max_output_tokens,
+          ?metadata: OpenAI::Models::metadata?,
+          ?object: OpenAI::Models::Realtime::RealtimeResponse::object,
+          ?output: ::Array[OpenAI::Models::Realtime::conversation_item],
+          ?output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponse::output_modality],
+          ?status: OpenAI::Models::Realtime::RealtimeResponse::status,
+          ?status_details: OpenAI::Realtime::RealtimeResponseStatus,
+          ?usage: OpenAI::Realtime::RealtimeResponseUsage
         }
 
         type audio =
-          { output: OpenAI::Realtime::RealtimeResponse::Audio::Output }
+          { ?output: OpenAI::Realtime::RealtimeResponse::Audio::Output }
 
         class Audio < OpenAI::Internal::Type::BaseModel
           attr_reader output: OpenAI::Realtime::RealtimeResponse::Audio::Output?
@@ -118,13 +118,13 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            output: OpenAI::Realtime::RealtimeResponse::Audio::Output
+            ?output: OpenAI::Realtime::RealtimeResponse::Audio::Output
           }
 
           type output =
             {
-              format_: OpenAI::Models::Realtime::realtime_audio_formats,
-              voice: OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::voice
+              ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
+              ?voice: OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::voice
             }
 
           class Output < OpenAI::Internal::Type::BaseModel
@@ -146,8 +146,8 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              format_: OpenAI::Models::Realtime::realtime_audio_formats,
-              voice: OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::voice
+              ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
+              ?voice: OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::voice
             }
 
             type voice =

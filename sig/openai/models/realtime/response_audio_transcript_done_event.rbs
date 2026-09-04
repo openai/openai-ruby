@@ -9,7 +9,7 @@ module OpenAI
           output_index: Integer,
           response_id: String,
           transcript: String,
-          type: :"response.output_audio_transcript.done"
+          ?type: :"response.output_audio_transcript.done"
         }
 
       class ResponseAudioTranscriptDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -44,7 +44,7 @@ module OpenAI
           output_index: Integer,
           response_id: String,
           transcript: String,
-          type: :"response.output_audio_transcript.done"
+          ?type: :"response.output_audio_transcript.done"
         }
       end
     end

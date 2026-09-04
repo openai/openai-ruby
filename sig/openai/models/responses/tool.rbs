@@ -25,17 +25,17 @@ module OpenAI
         type mcp =
           {
             server_label: String,
-            type: :mcp,
-            allowed_callers: ::Array[OpenAI::Models::Responses::Tool::Mcp::allowed_caller]?,
-            allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?,
-            authorization: String,
-            connector_id: OpenAI::Models::Responses::Tool::Mcp::connector_id,
-            defer_loading: bool,
-            headers: ::Hash[Symbol, String]?,
-            require_approval: OpenAI::Models::Responses::Tool::Mcp::require_approval?,
-            server_description: String,
-            server_url: String,
-            tunnel_id: String
+            ?type: :mcp,
+            ?allowed_callers: ::Array[OpenAI::Models::Responses::Tool::Mcp::allowed_caller]?,
+            ?allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?,
+            ?authorization: String,
+            ?connector_id: OpenAI::Models::Responses::Tool::Mcp::connector_id,
+            ?defer_loading: bool,
+            ?headers: ::Hash[Symbol, String]?,
+            ?require_approval: OpenAI::Models::Responses::Tool::Mcp::require_approval?,
+            ?server_description: String,
+            ?server_url: String,
+            ?tunnel_id: String
           }
 
         class Mcp < OpenAI::Internal::Type::BaseModel
@@ -94,17 +94,17 @@ module OpenAI
 
           def to_hash: -> {
             server_label: String,
-            type: :mcp,
-            allowed_callers: ::Array[OpenAI::Models::Responses::Tool::Mcp::allowed_caller]?,
-            allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?,
-            authorization: String,
-            connector_id: OpenAI::Models::Responses::Tool::Mcp::connector_id,
-            defer_loading: bool,
-            headers: ::Hash[Symbol, String]?,
-            require_approval: OpenAI::Models::Responses::Tool::Mcp::require_approval?,
-            server_description: String,
-            server_url: String,
-            tunnel_id: String
+            ?type: :mcp,
+            ?allowed_callers: ::Array[OpenAI::Models::Responses::Tool::Mcp::allowed_caller]?,
+            ?allowed_tools: OpenAI::Models::Responses::Tool::Mcp::allowed_tools?,
+            ?authorization: String,
+            ?connector_id: OpenAI::Models::Responses::Tool::Mcp::connector_id,
+            ?defer_loading: bool,
+            ?headers: ::Hash[Symbol, String]?,
+            ?require_approval: OpenAI::Models::Responses::Tool::Mcp::require_approval?,
+            ?server_description: String,
+            ?server_url: String,
+            ?tunnel_id: String
           }
 
           type allowed_caller = :direct | :programmatic
@@ -126,7 +126,7 @@ module OpenAI
             extend OpenAI::Internal::Type::Union
 
             type mcp_tool_filter =
-              { read_only: bool, tool_names: ::Array[String] }
+              { ?read_only: bool, ?tool_names: ::Array[String] }
 
             class McpToolFilter < OpenAI::Internal::Type::BaseModel
               attr_reader read_only: bool?
@@ -142,7 +142,7 @@ module OpenAI
                 ?tool_names: ::Array[String]
               ) -> void
 
-              def to_hash: -> { read_only: bool, tool_names: ::Array[String] }
+              def to_hash: -> { ?read_only: bool, ?tool_names: ::Array[String] }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Responses::Tool::Mcp::allowed_tools]
@@ -184,8 +184,8 @@ module OpenAI
 
             type mcp_tool_approval_filter =
               {
-                always: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
-                never: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never
+                ?always: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
+                ?never: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never
               }
 
             class McpToolApprovalFilter < OpenAI::Internal::Type::BaseModel
@@ -207,11 +207,11 @@ module OpenAI
               ) -> void
 
               def to_hash: -> {
-                always: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
-                never: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never
+                ?always: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
+                ?never: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never
               }
 
-              type always = { read_only: bool, tool_names: ::Array[String] }
+              type always = { ?read_only: bool, ?tool_names: ::Array[String] }
 
               class Always < OpenAI::Internal::Type::BaseModel
                 attr_reader read_only: bool?
@@ -227,10 +227,13 @@ module OpenAI
                   ?tool_names: ::Array[String]
                 ) -> void
 
-                def to_hash: -> { read_only: bool, tool_names: ::Array[String] }
+                def to_hash: -> {
+                  ?read_only: bool,
+                  ?tool_names: ::Array[String]
+                }
               end
 
-              type never = { read_only: bool, tool_names: ::Array[String] }
+              type never = { ?read_only: bool, ?tool_names: ::Array[String] }
 
               class Never < OpenAI::Internal::Type::BaseModel
                 attr_reader read_only: bool?
@@ -246,7 +249,10 @@ module OpenAI
                   ?tool_names: ::Array[String]
                 ) -> void
 
-                def to_hash: -> { read_only: bool, tool_names: ::Array[String] }
+                def to_hash: -> {
+                  ?read_only: bool,
+                  ?tool_names: ::Array[String]
+                }
               end
             end
 
@@ -268,8 +274,8 @@ module OpenAI
         type code_interpreter =
           {
             container: OpenAI::Models::Responses::Tool::CodeInterpreter::container,
-            type: :code_interpreter,
-            allowed_callers: ::Array[OpenAI::Models::Responses::Tool::CodeInterpreter::allowed_caller]?
+            ?type: :code_interpreter,
+            ?allowed_callers: ::Array[OpenAI::Models::Responses::Tool::CodeInterpreter::allowed_caller]?
           }
 
         class CodeInterpreter < OpenAI::Internal::Type::BaseModel
@@ -287,8 +293,8 @@ module OpenAI
 
           def to_hash: -> {
             container: OpenAI::Models::Responses::Tool::CodeInterpreter::container,
-            type: :code_interpreter,
-            allowed_callers: ::Array[OpenAI::Models::Responses::Tool::CodeInterpreter::allowed_caller]?
+            ?type: :code_interpreter,
+            ?allowed_callers: ::Array[OpenAI::Models::Responses::Tool::CodeInterpreter::allowed_caller]?
           }
 
           type container =
@@ -300,10 +306,10 @@ module OpenAI
 
             type code_interpreter_tool_auto =
               {
-                type: :auto,
-                file_ids: ::Array[String],
-                memory_limit: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?,
-                network_policy: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy
+                ?type: :auto,
+                ?file_ids: ::Array[String],
+                ?memory_limit: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?,
+                ?network_policy: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy
               }
 
             class CodeInterpreterToolAuto < OpenAI::Internal::Type::BaseModel
@@ -329,10 +335,10 @@ module OpenAI
               ) -> void
 
               def to_hash: -> {
-                type: :auto,
-                file_ids: ::Array[String],
-                memory_limit: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?,
-                network_policy: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy
+                ?type: :auto,
+                ?file_ids: ::Array[String],
+                ?memory_limit: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?,
+                ?network_policy: OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy
               }
 
               type memory_limit = :"1g" | :"4g" | :"16g" | :"64g"
@@ -374,30 +380,30 @@ module OpenAI
           end
         end
 
-        type programmatic_tool_calling = { type: :programmatic_tool_calling }
+        type programmatic_tool_calling = { ?type: :programmatic_tool_calling }
 
         class ProgrammaticToolCalling < OpenAI::Internal::Type::BaseModel
           attr_accessor type: :programmatic_tool_calling
 
           def initialize: (?type: :programmatic_tool_calling) -> void
 
-          def to_hash: -> { type: :programmatic_tool_calling }
+          def to_hash: -> { ?type: :programmatic_tool_calling }
         end
 
         type image_generation =
           {
-            type: :image_generation,
-            action: OpenAI::Models::Responses::Tool::ImageGeneration::action,
-            background: OpenAI::Models::Responses::Tool::ImageGeneration::background,
-            input_fidelity: OpenAI::Models::Responses::Tool::ImageGeneration::input_fidelity?,
-            input_image_mask: OpenAI::Responses::Tool::ImageGeneration::InputImageMask,
-            model: OpenAI::Models::Responses::Tool::ImageGeneration::model,
-            moderation: OpenAI::Models::Responses::Tool::ImageGeneration::moderation,
-            output_compression: Integer,
-            output_format: OpenAI::Models::Responses::Tool::ImageGeneration::output_format,
-            partial_images: Integer,
-            quality: OpenAI::Models::Responses::Tool::ImageGeneration::quality,
-            size: OpenAI::Models::Responses::Tool::ImageGeneration::size
+            ?type: :image_generation,
+            ?action: OpenAI::Models::Responses::Tool::ImageGeneration::action,
+            ?background: OpenAI::Models::Responses::Tool::ImageGeneration::background,
+            ?input_fidelity: OpenAI::Models::Responses::Tool::ImageGeneration::input_fidelity?,
+            ?input_image_mask: OpenAI::Responses::Tool::ImageGeneration::InputImageMask,
+            ?model: OpenAI::Models::Responses::Tool::ImageGeneration::model,
+            ?moderation: OpenAI::Models::Responses::Tool::ImageGeneration::moderation,
+            ?output_compression: Integer,
+            ?output_format: OpenAI::Models::Responses::Tool::ImageGeneration::output_format,
+            ?partial_images: Integer,
+            ?quality: OpenAI::Models::Responses::Tool::ImageGeneration::quality,
+            ?size: OpenAI::Models::Responses::Tool::ImageGeneration::size
           }
 
         class ImageGeneration < OpenAI::Internal::Type::BaseModel
@@ -477,18 +483,18 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            type: :image_generation,
-            action: OpenAI::Models::Responses::Tool::ImageGeneration::action,
-            background: OpenAI::Models::Responses::Tool::ImageGeneration::background,
-            input_fidelity: OpenAI::Models::Responses::Tool::ImageGeneration::input_fidelity?,
-            input_image_mask: OpenAI::Responses::Tool::ImageGeneration::InputImageMask,
-            model: OpenAI::Models::Responses::Tool::ImageGeneration::model,
-            moderation: OpenAI::Models::Responses::Tool::ImageGeneration::moderation,
-            output_compression: Integer,
-            output_format: OpenAI::Models::Responses::Tool::ImageGeneration::output_format,
-            partial_images: Integer,
-            quality: OpenAI::Models::Responses::Tool::ImageGeneration::quality,
-            size: OpenAI::Models::Responses::Tool::ImageGeneration::size
+            ?type: :image_generation,
+            ?action: OpenAI::Models::Responses::Tool::ImageGeneration::action,
+            ?background: OpenAI::Models::Responses::Tool::ImageGeneration::background,
+            ?input_fidelity: OpenAI::Models::Responses::Tool::ImageGeneration::input_fidelity?,
+            ?input_image_mask: OpenAI::Responses::Tool::ImageGeneration::InputImageMask,
+            ?model: OpenAI::Models::Responses::Tool::ImageGeneration::model,
+            ?moderation: OpenAI::Models::Responses::Tool::ImageGeneration::moderation,
+            ?output_compression: Integer,
+            ?output_format: OpenAI::Models::Responses::Tool::ImageGeneration::output_format,
+            ?partial_images: Integer,
+            ?quality: OpenAI::Models::Responses::Tool::ImageGeneration::quality,
+            ?size: OpenAI::Models::Responses::Tool::ImageGeneration::size
           }
 
           type action = :generate | :edit | :auto
@@ -526,7 +532,7 @@ module OpenAI
             def self?.values: -> ::Array[OpenAI::Models::Responses::Tool::ImageGeneration::input_fidelity]
           end
 
-          type input_image_mask = { file_id: String, image_url: String }
+          type input_image_mask = { ?file_id: String, ?image_url: String }
 
           class InputImageMask < OpenAI::Internal::Type::BaseModel
             attr_reader file_id: String?
@@ -539,7 +545,7 @@ module OpenAI
 
             def initialize: (?file_id: String, ?image_url: String) -> void
 
-            def to_hash: -> { file_id: String, image_url: String }
+            def to_hash: -> { ?file_id: String, ?image_url: String }
           end
 
           type model =
@@ -615,14 +621,14 @@ module OpenAI
           end
         end
 
-        type local_shell = { type: :local_shell }
+        type local_shell = { ?type: :local_shell }
 
         class LocalShell < OpenAI::Internal::Type::BaseModel
           attr_accessor type: :local_shell
 
           def initialize: (?type: :local_shell) -> void
 
-          def to_hash: -> { type: :local_shell }
+          def to_hash: -> { ?type: :local_shell }
         end
 
         def self?.variants: -> ::Array[OpenAI::Models::Responses::tool]

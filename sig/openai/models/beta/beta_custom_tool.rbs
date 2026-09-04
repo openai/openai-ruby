@@ -6,12 +6,12 @@ module OpenAI
       type beta_custom_tool =
         {
           name: String,
-          type: :custom,
-          allowed_callers: ::Array[OpenAI::Models::Beta::BetaCustomTool::allowed_caller]?,
-          async: bool,
-          defer_loading: bool,
-          description: String,
-          format_: OpenAI::Models::Beta::BetaCustomTool::format_
+          ?type: :custom,
+          ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaCustomTool::allowed_caller]?,
+          ?async: bool,
+          ?defer_loading: bool,
+          ?description: String,
+          ?format_: OpenAI::Models::Beta::BetaCustomTool::format_
         }
 
       class BetaCustomTool < OpenAI::Internal::Type::BaseModel
@@ -51,12 +51,12 @@ module OpenAI
 
         def to_hash: -> {
           name: String,
-          type: :custom,
-          allowed_callers: ::Array[OpenAI::Models::Beta::BetaCustomTool::allowed_caller]?,
-          async: bool,
-          defer_loading: bool,
-          description: String,
-          format_: OpenAI::Models::Beta::BetaCustomTool::format_
+          ?type: :custom,
+          ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaCustomTool::allowed_caller]?,
+          ?async: bool,
+          ?defer_loading: bool,
+          ?description: String,
+          ?format_: OpenAI::Models::Beta::BetaCustomTool::format_
         }
 
         type allowed_caller = :direct | :programmatic
@@ -77,21 +77,21 @@ module OpenAI
         module Format
           extend OpenAI::Internal::Type::Union
 
-          type text = { type: :text }
+          type text = { ?type: :text }
 
           class Text < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :text
 
             def initialize: (?type: :text) -> void
 
-            def to_hash: -> { type: :text }
+            def to_hash: -> { ?type: :text }
           end
 
           type grammar =
             {
               definition: String,
               syntax: OpenAI::Models::Beta::BetaCustomTool::Format::Grammar::syntax,
-              type: :grammar
+              ?type: :grammar
             }
 
           class Grammar < OpenAI::Internal::Type::BaseModel
@@ -110,7 +110,7 @@ module OpenAI
             def to_hash: -> {
               definition: String,
               syntax: OpenAI::Models::Beta::BetaCustomTool::Format::Grammar::syntax,
-              type: :grammar
+              ?type: :grammar
             }
 
             type syntax = :lark | :regex
