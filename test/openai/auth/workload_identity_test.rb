@@ -994,11 +994,15 @@ class WorkloadIdentityTest < Minitest::Test
       {"retry-after" => "9" * 400},
       {"retry-after-ms" => "1e999", "retry-after" => "0"},
       {"retry-after-ms" => "9" * 400, "retry-after" => "0"}
-    ]
+    ].map { [_1, 8] }
+    hints += [
+      {"retry-after" => "1e999"},
+      {"retry-after-ms" => "1e999", "retry-after" => "0"}
+    ].map { [_1, Float::INFINITY] }
     [[0, false], [1, true], [2, false], [2, true]].product([nil, "true", "false"], hints).each do |
         configuration,
         retry_header,
-        hint
+        (hint, maximum)
       |
       max_retries, retry_first = configuration
       WebMock.reset!
@@ -1025,19 +1029,26 @@ class WorkloadIdentityTest < Minitest::Test
         }
       stub_request(:get, "http://localhost/probe").to_return(*responses)
       events = []
+      sleeps = []
       client = OpenAI::Client.new(
         base_url: "http://localhost",
         api_key: nil,
         workload_identity: identity,
         max_retries: max_retries,
+        max_retry_delay: maximum,
+        timeout: nil,
         on_retry: -> (event) { events << event }
       )
 
-      error = assert_raises(OpenAI::Errors::AuthenticationError) { client.request(method: :get, path: "probe") }
+      error = client.stub(:sleep, -> (delay) { sleeps << delay }) do
+        assert_raises(OpenAI::Errors::AuthenticationError) { client.request(method: :get, path: "probe") }
+      end
+
       assert_equal({error: {message: "Try later"}}, error.body)
       hint.each { |name, value| assert_equal(value, error.headers[name]) }
       assert_equal("req_fake", error.request_id)
       assert_equal(retry_first ? [0] : [], events.map(&:delay))
+      assert_equal(retry_first ? [0] : [], sleeps)
       assert_requested(:get, "http://localhost/probe", times: retry_first ? 2 : 1)
       assert_requested(:post, "https://auth.openai.com/oauth/token", times: 1)
       assert_raises(OpenAI::Errors::AuthenticationError) { client.request(method: :get, path: "probe") }

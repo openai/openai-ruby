@@ -30,7 +30,9 @@ module OpenAI
       def get_token: (
         ?deadline: Float?,
         ?retry_state: ::Hash[Symbol, untyped]?
-      ) -> String
+      ) ?{
+        (^?{ (OpenAI::HTTPClient::Response) -> void } -> void) -> void
+      } -> String
 
       def invalidate_token: (?String? rejected_token) -> void
 

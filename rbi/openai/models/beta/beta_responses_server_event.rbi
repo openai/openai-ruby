@@ -1384,8 +1384,6 @@ module OpenAI
 
               item_id: String,
 
-              name: String,
-
               output_index: Integer,
 
               sequence_number: Integer,
@@ -1405,9 +1403,6 @@ module OpenAI
 
             # The ID of the item.
             item_id:,
-
-            # The name of the function that was called.
-            name:,
 
             # The index of the output item.
             output_index:,
@@ -1431,7 +1426,6 @@ module OpenAI
               {
                 arguments: String,
                 item_id: String,
-                name: String,
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,

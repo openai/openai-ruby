@@ -62,6 +62,8 @@ module OpenAI
           # exception may observe @refreshing after it changes but before the ensure.
           Thread.handle_interrupt(Exception => :never) do
             @mutex.synchronize do
+              # A retained issuer minimum must not delay use of a valid cached bearer.
+              issuer_not_before = retry_state&.dig(:issuer_retry, :not_before)
               if @refreshing
                 if token_unusable?
                   action = :wait
@@ -70,11 +72,16 @@ module OpenAI
                   token = @cached_token
                   if retry_state && @token_exchange
                     (@refresh_generation[:retry_states] ||= []) << retry_state
+                    if (issuer_retry = @refresh_generation[:issuer_retry])
+                      retain_issuer_retry(retry_state, issuer_retry)
+                    end
                   end
 
                   action = :return
                 end
-              elsif token_unusable? || needs_refresh?
+              elsif token_unusable? ||
+                  (needs_refresh? &&
+                    (issuer_not_before.nil? || OpenAI::Internal::Util.monotonic_secs >= issuer_not_before))
                 previous_token = @cached_token
                 @refreshing = true
                 generation = {complete: false, error: nil, token: nil, expires_at: nil}
@@ -87,6 +94,7 @@ module OpenAI
             end
 
             if action == :refresh
+              previous_issuer_retry = retry_state&.[](:issuer_retry)
               begin
                 Thread.handle_interrupt(Exception => :immediate) do
                   if block_given?
@@ -110,7 +118,8 @@ module OpenAI
                     generation[:error] = error
                   end
 
-                  if (issuer_retry = retry_state&.[](:issuer_retry)) && issuer_retry.fetch(:error).equal?(error)
+                  if (issuer_retry = retry_state&.[](:issuer_retry)) &&
+                      (issuer_retry.fetch(:error).equal?(error) || !issuer_retry.equal?(previous_issuer_retry))
                     generation[:issuer_retry] = issuer_retry
                     generation.fetch(:retry_states, []).each do |participant|
                       retain_issuer_retry(participant, issuer_retry)

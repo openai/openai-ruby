@@ -959,6 +959,49 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
     Thread.current.thread_variable_set(:mock_sleep, previous_sleep)
   end
 
+  def test_x509_issuer_and_delayed_auth_replay_events_share_attempt_counts
+    events = []
+    now = 100.0
+    client = OpenAI::Client.new(
+      api_key: nil,
+      workload_identity: @identity,
+      http_client: @transport,
+      max_retries: 2,
+      initial_retry_delay: 0,
+      max_retry_delay: 5,
+      on_retry: -> (event) { events << event }
+    )
+    issuer_attempts = 0
+    api_attempts = 0
+    dispatch = lambda do |request|
+      if request.url.host == "mtls.auth.openai.com"
+        issuer_attempts += 1
+        if issuer_attempts == 1
+          x509_issuer_failure(503, headers: {"retry-after" => "0"})
+        else
+          x509_issuer_success(token: "fake-token-#{issuer_attempts}")
+        end
+      else
+        api_attempts += 1
+        api_attempts == 1 ? x509_issuer_failure(401, headers: {"retry-after" => "1"}) : x509_model_response
+      end
+    end
+
+    OpenAI::Internal::Util.stub(:monotonic_secs, -> { now }) do
+      client.stub(:sleep, -> (delay) { now += delay }) do
+        @native.stub(:execute, dispatch) do
+          assert_equal("fake-model", client.models.retrieve("fake-model").id)
+        end
+      end
+    end
+
+    assert_equal([503, 401], events.map(&:status))
+    assert_equal([2, 3], events.map(&:attempt))
+    assert_equal([3, 3], events.map(&:max_attempts))
+    assert_equal(3, issuer_attempts)
+    assert_equal(2, api_attempts)
+  end
+
   def test_x509_401_replay_waits_for_the_remaining_server_minimum
     wall_time = Time.at(1_700_000_000)
     cases = [
@@ -1130,46 +1173,61 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
   end
 
   def test_x509_excessive_retry_after_preserves_status_and_deadline_error_precedence
-    ([[:api, 401]] + [:issuer, :api].product([429, 503])).product([1, 60]).each do |(failure_stage, status), timeout|
-      events = []
-      client = OpenAI::Client.new(
-        api_key: nil,
-        workload_identity: @identity,
-        http_client: @transport,
-        max_retries: 1,
-        max_retry_delay: 5,
-        timeout: timeout,
-        on_retry: -> (event) { events << event }
-      )
-      attempts = []
-      headers = {"retry-after" => "90", "x-request-id" => "req_fake"}
-      dispatch = lambda do |request|
-        stage = request.url.host == "mtls.auth.openai.com" ? :issuer : :api
-        attempts << stage
-        stage == :issuer && failure_stage == :api ? x509_issuer_success : x509_issuer_failure(status, headers: headers)
-      end
-
-      sleeps = []
-      previous_sleep = Thread.current.thread_variable_get(:mock_sleep)
-      Thread.current.thread_variable_set(:mock_sleep, sleeps)
-
-      @native.stub(:execute, dispatch) do
-        if timeout == 1
-          assert_raises(OpenAI::Errors::APITimeoutError) { client.models.retrieve("fake-model") }
-        else
-          error = assert_raises(OpenAI::Errors::APIError) { client.models.retrieve("fake-model") }
-          assert_equal(status, error.status)
-          assert_equal(headers, error.headers)
-          assert_equal("req_fake", error.request_id)
+    configurations = [
+      ["retry-after", "90", 5, 1],
+      ["retry-after", "90", 5, 60],
+      ["retry-after", "1e999", Float::INFINITY, nil],
+      ["retry-after-ms", "1e999", Float::INFINITY, nil],
+      ["retry-after", "1e999", Float::INFINITY, 1]
+    ]
+    ([[:api, 401]] + [:issuer, :api].product([429, 503]))
+      .product(configurations)
+      .each do |
+          (failure_stage, status),
+          (header, value, maximum, timeout)
+        |
+        events = []
+        client = OpenAI::Client.new(
+          api_key: nil,
+          workload_identity: @identity,
+          http_client: @transport,
+          max_retries: 1,
+          max_retry_delay: maximum,
+          timeout: timeout,
+          on_retry: -> (event) { events << event }
+        )
+        attempts = []
+        headers = {header => value, "x-request-id" => "req_fake"}
+        dispatch = lambda do |request|
+          stage = request.url.host == "mtls.auth.openai.com" ? :issuer : :api
+          attempts << stage
+          stage == :issuer && failure_stage == :api ? x509_issuer_success : x509_issuer_failure(
+            status,
+            headers: headers
+          )
         end
-      end
 
-      assert_equal(failure_stage == :issuer ? [:issuer] : [:issuer, :api], attempts)
-      assert_empty(sleeps)
-      assert_empty(events)
-    ensure
-      Thread.current.thread_variable_set(:mock_sleep, previous_sleep)
-    end
+        sleeps = []
+        previous_sleep = Thread.current.thread_variable_get(:mock_sleep)
+        Thread.current.thread_variable_set(:mock_sleep, sleeps)
+
+        @native.stub(:execute, dispatch) do
+          if timeout == 1
+            assert_raises(OpenAI::Errors::APITimeoutError) { client.models.retrieve("fake-model") }
+          else
+            error = assert_raises(OpenAI::Errors::APIError) { client.models.retrieve("fake-model") }
+            assert_equal(status, error.status)
+            assert_equal(headers, error.headers)
+            assert_equal("req_fake", error.request_id)
+          end
+        end
+
+        assert_equal(failure_stage == :issuer ? [:issuer] : [:issuer, :api], attempts)
+        assert_empty(sleeps)
+        assert_empty(events)
+      ensure
+        Thread.current.thread_variable_set(:mock_sleep, previous_sleep)
+      end
   end
 
   def test_public_client_completes_real_mtls_exchange_and_model_request

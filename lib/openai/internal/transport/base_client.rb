@@ -692,7 +692,7 @@ module OpenAI
             # Snapshot the server minimum before reading or releasing the response.
             if status == 401 && (retry_state = request[:workload_identity_retry_state])
               delay = server_retry_delay(headers)
-              retry_state[:delay_exceeded] = !delay.nil? && delay > @max_retry_delay
+              retry_state[:delay_exceeded] = !delay.nil? && (!delay.finite? || delay > @max_retry_delay)
               retry_state[:not_before] = delay && (OpenAI::Internal::Util.monotonic_secs + delay)
             end
 
@@ -741,7 +741,7 @@ module OpenAI
             raise status
           in (400..) | OpenAI::Errors::APIConnectionError
             delay = retry_delay(headers, retry_count: retry_count)
-            if delay > @max_retry_delay
+            if !delay.finite? || delay > @max_retry_delay
               begin
                 raise_status_error!(url: url, status: status, headers: headers, response: http_response, stream: stream)
               rescue OpenAI::Errors::APIStatusError

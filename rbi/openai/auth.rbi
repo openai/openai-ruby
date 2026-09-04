@@ -54,10 +54,16 @@ module OpenAI
     end
 
     class WorkloadIdentityAuth
+      # Sorbet cannot express the optional response block accepted by the refresh Proc.
       sig do
-        params(deadline: T.nilable(Float), retry_state: T.nilable(T::Hash[Symbol, T.untyped])).returns(String)
+        params(
+          deadline: T.nilable(Float),
+          retry_state: T.nilable(T::Hash[Symbol, T.untyped]),
+          block: T.nilable(T.proc.params(refresh: Proc).void)
+        )
+          .returns(String)
       end
-      def get_token(deadline: nil, retry_state: nil)
+      def get_token(deadline: nil, retry_state: nil, &block)
       end
 
       sig { params(rejected_token: T.nilable(String)).void }

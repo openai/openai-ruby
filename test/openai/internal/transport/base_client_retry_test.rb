@@ -120,6 +120,8 @@ class OpenAI::Test::BaseClientRetryTest < Minitest::Test
       [{"retry-after" => "9"}, 8],
       [{"retry-after" => "90"}, 8],
       [{"retry-after" => "1e999"}, 8],
+      [{"retry-after" => "1e999"}, Float::INFINITY],
+      [{"retry-after-ms" => "1e999", "retry-after" => "0"}, Float::INFINITY],
       [{"retry-after" => "9" * 400}, 8],
       [{"retry-after-ms" => "1e999", "retry-after" => "0"}, 8],
       [{"retry-after-ms" => "9" * 400, "retry-after" => "0"}, 8],

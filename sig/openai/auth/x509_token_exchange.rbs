@@ -13,7 +13,11 @@ module OpenAI
         transport: OpenAI::Auth::X509Transport
       ) -> bool
 
-      def fetch: (?deadline: Float?) -> ::Hash[Symbol, (String | Float)]
+      def fetch: (
+        ?deadline: Float?
+      ) ?{
+        (OpenAI::HTTPClient::Response) -> void
+      } -> ::Hash[Symbol, (String | Float)]
     end
   end
 end

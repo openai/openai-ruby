@@ -21,8 +21,14 @@ module OpenAI
       def bound_to?(identity, transport:)
       end
 
-      sig { params(deadline: T.nilable(Float)).returns(T::Hash[Symbol, T.any(String, Float)]) }
-      def fetch(deadline: nil)
+      sig do
+        params(
+          deadline: T.nilable(Float),
+          block: T.nilable(T.proc.params(response: OpenAI::HTTPClient::Response).void)
+        )
+          .returns(T::Hash[Symbol, T.any(String, Float)])
+      end
+      def fetch(deadline: nil, &block)
       end
     end
   end
