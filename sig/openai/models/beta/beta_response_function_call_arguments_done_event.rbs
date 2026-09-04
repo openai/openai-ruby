@@ -7,7 +7,6 @@ module OpenAI
         {
           arguments: String,
           item_id: String,
-          name: String,
           output_index: Integer,
           sequence_number: Integer,
           ?type: :"response.function_call_arguments.done",
@@ -18,8 +17,6 @@ module OpenAI
         attr_accessor arguments: String
 
         attr_accessor item_id: String
-
-        attr_accessor name: String
 
         attr_accessor output_index: Integer
 
@@ -32,7 +29,6 @@ module OpenAI
         def initialize: (
           arguments: String,
           item_id: String,
-          name: String,
           output_index: Integer,
           sequence_number: Integer,
           ?agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?,
@@ -42,7 +38,6 @@ module OpenAI
         def to_hash: -> {
           arguments: String,
           item_id: String,
-          name: String,
           output_index: Integer,
           sequence_number: Integer,
           ?type: :"response.function_call_arguments.done",
