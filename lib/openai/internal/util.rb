@@ -638,7 +638,10 @@ module OpenAI
           in [_, Symbol | Numeric]
             [headers, body.to_s]
           in [_, StringIO]
-            [headers, body.string]
+            [headers, body.string.byteslice(body.pos..) || body.string.byteslice(0, 0)]
+          in [_, OpenAI::FilePart] if body.content.is_a?(StringIO)
+            content = body.content
+            [headers, content.string.byteslice(content.pos..) || content.string.byteslice(0, 0)]
           in [_, OpenAI::FilePart]
             [headers, body.content]
           else
