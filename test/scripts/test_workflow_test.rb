@@ -256,6 +256,22 @@ class TestWorkflowTest < Minitest::Test
     end
   end
 
+  def test_wait_for_file_requires_published_content
+    pid_record = File.join(@directory, "publishing-pid")
+    File.write(pid_record, "")
+
+    error = assert_raises(RuntimeError) { wait_for_file(pid_record, timeout: 0) }
+    assert_includes(error.message, "timed out waiting for")
+
+    File.write(pid_record, "42")
+    assert_raises(RuntimeError) { wait_for_file(pid_record, timeout: 0) }
+
+    File.write(pid_record, "4242\n")
+    wait_for_file(pid_record, timeout: 0)
+
+    assert_equal(4242, Integer(File.read(pid_record), 10))
+  end
+
   def test_process_exit_wait_treats_zombie_as_exited
     skip("requires Linux procfs") unless File.directory?("/proc/self")
 
@@ -470,11 +486,17 @@ class TestWorkflowTest < Minitest::Test
 
   def wait_for_file(path, timeout:)
     deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + timeout
-    until File.exist?(path)
+    until published_pid_record?(path)
       raise "timed out waiting for #{path}" if Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
 
       sleep(0.01)
     end
+  end
+
+  def published_pid_record?(path)
+    File.read(path).match?(/\A\d+\n\z/)
+  rescue Errno::ENOENT
+    false
   end
 
   def wait_for_exit(pid, timeout:)
