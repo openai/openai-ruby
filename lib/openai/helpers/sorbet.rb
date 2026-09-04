@@ -259,6 +259,11 @@ module OpenAI
           super
         end
 
+        def retrieve(response_id, params = {})
+          reject_sorbet_function_tools!(params)
+          super
+        end
+
         def stream(params)
           reject_sorbet_streaming_formats!(params)
           super
@@ -281,7 +286,8 @@ module OpenAI
         end
 
         private def reject_sorbet_function_tools!(params = {})
-          tools = Array(params[:tools])
+          params = params.to_h if params.is_a?(OpenAI::Internal::Type::BaseModel)
+          tools = Array(params[:tools]).dup
           tools.concat(Array(params["tools"])) if params.is_a?(Hash)
 
           if tools.any? { sorbet_adapter?(_1) }

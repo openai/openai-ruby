@@ -150,6 +150,12 @@ class OpenAI::Test::ResponseParserTest < Minitest::Test
 
       assert_equal(key, error.key)
     end
+
+    error = assert_raises(KeyError) do
+      ResponsesProbe.allocate.parse({output: [{type: "function_call"}]}, nil, {})
+    end
+
+    assert_equal(:name, error.key)
   end
 
   def test_empty_outputs_and_private_delegate_visibility_are_preserved
@@ -161,5 +167,55 @@ class OpenAI::Test::ResponseParserTest < Minitest::Test
     assert_includes(OpenAI::Resources::Responses.private_instance_methods, :parse_structured_outputs!)
     refute_includes(OpenAI::Resources::Responses.public_instance_methods, :get_structured_output_models)
     refute_includes(OpenAI::Resources::Responses.public_instance_methods, :parse_structured_outputs!)
+  end
+
+  def test_statusless_retrieval_parses_ready_output_once
+    text = {type: "output_text", text: "{\"value\":\"hello\"}"}
+    raw = {output: [{type: "message", content: [text]}]}
+    parse = JSON.method(:parse)
+    calls = 0
+
+    JSON.stub(
+      :parse,
+      -> (*args, **kwargs) {
+        calls += 1
+        parse.call(*args, **kwargs)
+      }
+    ) do
+      result = OpenAI::Helpers::StructuredOutput::ResponseParser.parse_retrieved!(raw, TextModel, {})
+
+      assert_same(raw, result)
+    end
+
+    assert_equal(1, calls)
+    assert_instance_of(TextModel, text.fetch(:parsed))
+  end
+
+  def test_statusless_retrieval_does_not_coerce_before_all_output_is_ready
+    text = {type: "output_text", text: "{\"value\":\"hello\"}"}
+    tool = {type: "function_call", name: "known", arguments: "{\"argument\":"}
+    raw = {output: [{type: "message", content: [text]}, tool]}
+    coerce = OpenAI::Internal::Type::Converter.method(:coerce)
+    calls = 0
+
+    OpenAI::Internal::Type::Converter.stub(
+      :coerce,
+      -> (*args, **kwargs) {
+        calls += 1
+        coerce.call(*args, **kwargs)
+      }
+    ) do
+      result = OpenAI::Helpers::StructuredOutput::ResponseParser.parse_retrieved!(
+        raw,
+        TextModel,
+        {"known" => ToolModel}
+      )
+
+      assert_same(raw, result)
+    end
+
+    assert_equal(0, calls)
+    refute(text.key?(:parsed))
+    refute(tool.key?(:parsed))
   end
 end
