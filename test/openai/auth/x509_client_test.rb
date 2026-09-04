@@ -959,7 +959,7 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
   def test_x509_401_exceeding_retry_delay_does_not_refresh_or_replay
     now = Time.at(1_700_000_000)
     previous_time = Thread.current.thread_variable_get(:time_now)
-    ["90", (now + 90).httpdate].product([0, 1]).each do |hint, max_retries|
+    ["90", (now + 90).httpdate].product([0, 1], [nil, "true", "false"]).each do |hint, max_retries, retry_header|
       Thread.current.thread_variable_set(:time_now, now)
       client = OpenAI::Client.new(
         api_key: nil,
@@ -973,7 +973,7 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
       headers = {
         "content-type" => "application/json",
         "retry-after" => hint,
-        "x-should-retry" => "true",
+        **(retry_header.nil? ? {} : {"x-should-retry" => retry_header}),
         "x-request-id" => "req_fake"
       }
       error_body = {error: {message: "Try later"}}

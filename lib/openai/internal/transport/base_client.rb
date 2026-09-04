@@ -680,9 +680,7 @@ module OpenAI
 
           if terminal_status
             # Authentication may still replay after the HTTP retry budget is exhausted.
-            if status == 401 &&
-                (retry_state = request[:workload_identity_retry_state]) &&
-                self.class.should_retry?(status, headers: headers)
+            if status == 401 && (retry_state = request[:workload_identity_retry_state])
               retry_state[:delay_exceeded] = retry_delay(headers, retry_count: retry_count) > @max_retry_delay
             end
 

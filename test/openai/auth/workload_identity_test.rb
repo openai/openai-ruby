@@ -881,7 +881,8 @@ class WorkloadIdentityTest < Minitest::Test
   end
 
   def test_401_exceeding_retry_delay_does_not_refresh_or_replay
-    [[0, false], [1, true], [2, false], [2, true]].each do |max_retries, retry_first|
+    [[0, false], [1, true], [2, false], [2, true]].product([nil, "true", "false"]).each do |configuration, retry_header|
+      max_retries, retry_first = configuration
       WebMock.reset!
       File.write(@token_path, "fake-subject-token")
       identity = OpenAI::Auth::WorkloadIdentity.new(
@@ -898,7 +899,7 @@ class WorkloadIdentityTest < Minitest::Test
           status: 401,
           headers: {
             "content-type" => "application/json",
-            "x-should-retry" => "true",
+            **(retry_header.nil? ? {} : {"x-should-retry" => retry_header}),
             "retry-after" => "90",
             "x-request-id" => "req_fake"
           },
