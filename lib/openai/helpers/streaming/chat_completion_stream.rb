@@ -154,6 +154,12 @@ module OpenAI
           completion_snapshot.usage = chunk.usage if chunk.usage
           completion_snapshot.system_fingerprint = chunk.system_fingerprint if chunk.system_fingerprint
           completion_snapshot.service_tier = chunk.service_tier if chunk.service_tier
+          if chunk.moderation
+            completion_snapshot.moderation = OpenAI::Internal::Type::Converter.coerce(
+              OpenAI::Chat::ChatCompletion::Moderation,
+              model_dump(chunk.moderation)
+            )
+          end
 
           completion_snapshot
         end
@@ -537,6 +543,7 @@ module OpenAI
               model: data[:model],
               choices: choices,
               usage: data[:usage],
+              moderation: data[:moderation],
               system_fingerprint: data[:system_fingerprint],
               service_tier: data[:service_tier]
             }
