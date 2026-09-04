@@ -336,7 +336,7 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     socket = FakeSocket.new
     cycle = {}
     cycle[:self] = cycle
-    event = OpenAI::Responses::ResponsesClientEvent.new(
+    event = OpenAI::Responses::ResponsesClientEvent::ResponseCreate.new(
       type: :"response.create",
       model: "gpt-5.2",
       future: cycle
