@@ -613,6 +613,18 @@ class OpenAITest < Minitest::Test
     assert_equal("req_binary", content._request_id)
     assert_equal(200, content.last_response.status)
     assert_equal("req_binary", content.last_response.request_id)
+    duplicate = content.dup
+    assert_instance_of(StringIO, duplicate)
+    assert_equal("req_binary", duplicate._request_id)
+    assert_same(content.last_response, duplicate.last_response)
+    repeated_duplicate = duplicate.dup
+    assert_instance_of(StringIO, repeated_duplicate)
+    assert_equal("req_binary", repeated_duplicate._request_id)
+    assert_same(content.last_response, repeated_duplicate.last_response)
+    serialized_duplicate = YAML.dump(duplicate)
+    refute_includes(serialized_duplicate, "last_response")
+    refute_includes(serialized_duplicate, "req_binary")
+    refute_includes(serialized_duplicate, "file contents")
     assert_equal(1, content.write("!"))
     assert_nil(content.last_response.body)
     refute_respond_to(StringIO.new, :last_response)

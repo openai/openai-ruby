@@ -7,6 +7,22 @@ require_relative "../logging"
 module OpenAI
   module Internal
     module Transport
+      # Preserve response metadata behavior when callers duplicate a direct
+      # binary response.
+      #
+      # @api private
+      module DuplicableResponseCarrier
+        # @api private
+        #
+        # @return [StringIO]
+        def dup(...)
+          super.tap do |copy|
+            copy.extend(OpenAI::ResponseCarrier, DuplicableResponseCarrier)
+            copy._set_last_response(last_response)
+          end
+        end
+      end
+
       # @api private
       #
       # @abstract
@@ -919,7 +935,9 @@ module OpenAI
               if result.is_a?(OpenAI::Internal::Type::BaseModel)
                 result._set_last_response(response_metadata)
               elsif result.is_a?(StringIO) && direct_binary_response
-                result.extend(OpenAI::ResponseCarrier)._set_last_response(response_metadata)
+                result
+                  .extend(OpenAI::ResponseCarrier, DuplicableResponseCarrier)
+                  ._set_last_response(response_metadata)
               end
             end
           end
