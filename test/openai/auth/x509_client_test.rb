@@ -915,11 +915,14 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
       previous_sleep = Thread.current.thread_variable_get(:mock_sleep)
       Thread.current.thread_variable_set(:mock_sleep, sleeps)
 
-      @native.stub(:execute, dispatch) do
-        assert_equal("fake-model", client.models.retrieve("fake-model").id)
+      OpenAI::Internal::Util.stub(:monotonic_secs, -> { 100.0 }) do
+        @native.stub(:execute, dispatch) do
+          assert_equal("fake-model", client.models.retrieve("fake-model").id)
+        end
       end
 
-      assert_equal([expected_delay], sleeps)
+      assert_equal(1, sleeps.length)
+      assert_in_delta(expected_delay, sleeps.first, 0.00001)
       assert_equal(2, issuer_attempts)
     ensure
       Thread.current.thread_variable_set(:mock_sleep, previous_sleep)
@@ -956,10 +959,104 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
     Thread.current.thread_variable_set(:mock_sleep, previous_sleep)
   end
 
+  def test_x509_401_replay_waits_for_the_remaining_server_minimum
+    wall_time = Time.at(1_700_000_000)
+    cases = [
+      [{"retry-after" => "1"}, 0.6],
+      [{"retry-after" => (wall_time + 1).httpdate}, 0.6],
+      [{"retry-after-ms" => "1000", "retry-after" => "4"}, 0.6],
+      [{"retry-after-ms" => "invalid", "retry-after" => "1"}, 0.6],
+      [{"retry-after" => "invalid"}, nil],
+      [{}, nil]
+    ]
+    cases.product([0, 1]).each do |(headers, expected_wait), max_retries|
+      now = 100.0
+      client = OpenAI::Client.new(
+        api_key: nil,
+        workload_identity: @identity,
+        http_client: @transport,
+        max_retries: max_retries,
+        initial_retry_delay: 2,
+        max_retry_delay: 5
+      )
+      attempts = []
+      sleeps = []
+      dispatch = lambda do |request|
+        issuer = request.url.host == "mtls.auth.openai.com"
+        attempts << [issuer ? :issuer : :api, now]
+        next x509_issuer_success(token: "fake-token-#{attempts.length}") if issuer
+        next x509_model_response if attempts.length > 2
+
+        body = Enumerator.new do |output|
+          now += 0.4
+          output << JSON.generate(error: {message: "Try later"})
+        end
+
+        OpenAI::HTTPClient::Response.new(status: 401, headers: headers, body: body)
+      end
+
+      OpenAI::Internal::Util.stub(:monotonic_secs, -> { now }) do
+        Time.stub(:now, wall_time) do
+          client.stub(
+            :sleep,
+            -> (delay) {
+              sleeps << delay
+              now += delay
+            }
+          ) do
+            @native.stub(:execute, dispatch) do
+              assert_equal("fake-model", client.models.retrieve("fake-model").id)
+            end
+          end
+        end
+      end
+
+      assert_equal([:issuer, :api, :issuer, :api], attempts.map(&:first))
+      if expected_wait
+        assert_equal(1, sleeps.length)
+        assert_in_delta(expected_wait, sleeps.first, 0.00001)
+        assert_in_delta(101.0, attempts[2][1], 0.00001)
+      else
+        assert_empty(sleeps)
+      end
+    end
+  end
+
+  def test_x509_401_server_minimum_cannot_exceed_the_request_deadline
+    client = OpenAI::Client.new(
+      api_key: nil,
+      workload_identity: @identity,
+      http_client: @transport,
+      max_retries: 0,
+      timeout: 0.5,
+      max_retry_delay: 5
+    )
+    attempts = []
+    dispatch = lambda do |request|
+      issuer = request.url.host == "mtls.auth.openai.com"
+      attempts << (issuer ? :issuer : :api)
+      issuer ? x509_issuer_success : x509_issuer_failure(401, headers: {"retry-after" => "1"})
+    end
+
+    @native.stub(:execute, dispatch) do
+      assert_raises(OpenAI::Errors::APITimeoutError) { client.models.retrieve("fake-model") }
+    end
+
+    assert_equal([:issuer, :api], attempts)
+  end
+
   def test_x509_401_exceeding_retry_delay_does_not_refresh_or_replay
     now = Time.at(1_700_000_000)
     previous_time = Thread.current.thread_variable_get(:time_now)
-    ["90", (now + 90).httpdate].product([0, 1], [nil, "true", "false"]).each do |hint, max_retries, retry_header|
+    hints = [
+      {"retry-after" => "90"},
+      {"retry-after" => (now + 90).httpdate},
+      {"retry-after" => "1e999"},
+      {"retry-after" => "9" * 400},
+      {"retry-after-ms" => "1e999", "retry-after" => "0"},
+      {"retry-after-ms" => "9" * 400, "retry-after" => "0"}
+    ]
+    hints.product([0, 1], [nil, "true", "false"]).each do |hint, max_retries, retry_header|
       Thread.current.thread_variable_set(:time_now, now)
       client = OpenAI::Client.new(
         api_key: nil,
@@ -972,7 +1069,7 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
       attempts = []
       headers = {
         "content-type" => "application/json",
-        "retry-after" => hint,
+        **hint,
         **(retry_header.nil? ? {} : {"x-should-retry" => retry_header}),
         "x-request-id" => "req_fake"
       }

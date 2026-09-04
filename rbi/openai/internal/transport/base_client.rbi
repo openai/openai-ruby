@@ -277,6 +277,11 @@ module OpenAI
         end
 
         # @api private
+        sig { params(headers: T::Hash[String, String]).returns(T.nilable(Float)) }
+        private def server_retry_delay(headers)
+        end
+
+        # @api private
         sig do
           overridable
             .params(

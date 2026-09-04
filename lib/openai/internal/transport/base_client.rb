@@ -505,6 +505,18 @@ module OpenAI
         #
         # @return [Float]
         private def retry_delay(headers, retry_count:)
+          server_delay = server_retry_delay(headers)
+          return server_delay unless server_delay.nil?
+
+          delay = (@initial_retry_delay * (2 ** retry_count)).clamp(0, @max_retry_delay)
+          jitter = 1 - (0.25 * rand)
+          delay * jitter
+        end
+
+        # @api private
+        # @param headers [Hash{String=>String}]
+        # @return [Float, nil]
+        private def server_retry_delay(headers)
           retry_header = headers["retry-after"]
           delays = [
             Float(headers["retry-after-ms"], exception: false)&.then { _1 / 1000 },
@@ -515,12 +527,8 @@ module OpenAI
               nil
             end
           ]
-          server_delay = delays.find { _1&.finite? && !_1.negative? }
-          return server_delay if server_delay
-
-          delay = (@initial_retry_delay * (2 ** retry_count)).clamp(0, @max_retry_delay)
-          jitter = 1 - (0.25 * rand)
-          delay * jitter
+          # Float rejects literal infinity; positive numeric overflow must still exceed the retry cap.
+          delays.find { _1 && _1 >= 0 }
         end
 
         # Allow authentication strategies to enforce a shared request deadline
@@ -680,8 +688,11 @@ module OpenAI
 
           if terminal_status
             # Authentication may still replay after the HTTP retry budget is exhausted.
+            # Snapshot the server minimum before reading or releasing the response.
             if status == 401 && (retry_state = request[:workload_identity_retry_state])
-              retry_state[:delay_exceeded] = retry_delay(headers, retry_count: retry_count) > @max_retry_delay
+              delay = server_retry_delay(headers)
+              retry_state[:delay_exceeded] = !delay.nil? && delay > @max_retry_delay
+              retry_state[:not_before] = delay && (OpenAI::Internal::Util.monotonic_secs + delay)
             end
 
             raise_status_error!(

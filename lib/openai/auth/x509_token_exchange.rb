@@ -65,6 +65,8 @@ module OpenAI
         )
         response = @transport.execute(request)
         successful = (200..299).cover?(response.status)
+        # Let the request retain retry minima before response decoding and cleanup.
+        yield response if block_given? && !successful
         body = parse_response(response, deadline: deadline, strict: successful)
         if successful
           token = validate_token_response(body, response: response)

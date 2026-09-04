@@ -252,6 +252,240 @@ class OpenAI::Test::X509ProactiveRefreshTest < Minitest::Test
     assert_same(failure, auth.instance_variable_get(:@refresh_error))
   end
 
+  def test_cached_fallback_preserves_issuer_minimum_across_auth_replay
+    [
+      {"retry-after" => "2"},
+      {"retry-after" => "90"},
+      {"retry-after" => "1e999"},
+      {"retry-after-ms" => "1e999", "retry-after" => "0"}
+    ].each do |headers|
+      now = 100.0
+      client = new_client.with_options(max_retry_delay: 5)
+      issuer_times = []
+      api_attempts = 0
+      sleeps = []
+      dispatch = lambda do |request|
+        if request.url.host == "mtls.auth.openai.com"
+          issuer_times << now
+          if issuer_times.length == 2
+            body = Enumerator.new do |output|
+              now += 0.5
+              output << ""
+            end
+
+            OpenAI::HTTPClient::Response.new(status: 503, headers: headers, body: body)
+          else
+            response = token_response
+            if issuer_times.length > 2
+              response = OpenAI::HTTPClient::Response.new(
+                status: 200,
+                headers: {},
+                body: JSON.generate(
+                  access_token: "fake-recovered-token",
+                  token_type: "Bearer",
+                  expires_in: 120,
+                  issued_token_type: "urn:ietf:params:oauth:token-type:access_token"
+                )
+              )
+            end
+
+            response
+          end
+        else
+          api_attempts += 1
+          api_attempts == 2 ? failure_response(401) : model_response
+        end
+      end
+
+      OpenAI::Internal::Util.stub(:monotonic_secs, -> { now }) do
+        client.stub(
+          :sleep,
+          -> (delay) {
+            sleeps << delay
+            now += delay
+          }
+        ) do
+          @native.stub(:execute, dispatch) do
+            assert_equal("fake-model", client.models.retrieve("prime").id)
+            now = 191.0
+            if headers["retry-after"] == "2"
+              assert_equal("fake-model", client.models.retrieve("replay").id)
+              assert_equal([100.0, 191.0, 193.0], issuer_times)
+              assert_equal([1.5], sleeps)
+            else
+              error = assert_raises(OpenAI::Errors::APIError) { client.models.retrieve("replay") }
+              assert_equal(503, error.status)
+              assert_equal(headers, error.headers)
+              assert_equal([100.0, 191.0], issuer_times)
+              assert_empty(sleeps)
+              assert_equal("fake-model", client.models.retrieve("new-request").id)
+              assert_equal([100.0, 191.0, 191.5], issuer_times)
+            end
+          end
+        end
+      end
+    end
+  end
+
+  def test_cached_fallback_preserves_issuer_minimum_across_api_retry
+    ["8", "90", "1e999"].each do |hint|
+      client = new_client.with_options(max_retries: 1, max_retry_delay: 10)
+      now = 100.0
+      issuer_times = []
+      api_attempts = 0
+      dispatch = lambda do |request|
+        if request.url.host == "mtls.auth.openai.com"
+          issuer_times << now
+          if issuer_times.length == 2
+            OpenAI::HTTPClient::Response.new(status: 503, headers: {"retry-after" => hint}, body: "")
+          else
+            token_response
+          end
+        else
+          api_attempts += 1
+          if api_attempts == 2
+            OpenAI::HTTPClient::Response.new(status: 503, headers: {"retry-after" => "6"}, body: "")
+          else
+            model_response
+          end
+        end
+      end
+
+      OpenAI::Internal::Util.stub(:monotonic_secs, -> { now }) do
+        client.stub(:sleep, -> (delay) { now += delay }) do
+          @native.stub(:execute, dispatch) do
+            assert_equal("fake-model", client.models.retrieve("prime").id)
+            now = 191.0
+            assert_equal("fake-model", client.models.retrieve("retry").id)
+          end
+        end
+      end
+
+      assert_equal(hint == "8" ? [100.0, 191.0, 199.0] : [100.0, 191.0], issuer_times)
+      assert_equal(3, api_attempts)
+    end
+  end
+
+  def test_cached_fallback_minimum_cannot_exceed_the_request_deadline
+    client = new_client.with_options(timeout: 1, max_retry_delay: 5)
+    now = 100.0
+    issuer_attempts = 0
+    api_attempts = 0
+    dispatch = lambda do |request|
+      if request.url.host == "mtls.auth.openai.com"
+        issuer_attempts += 1
+        if issuer_attempts == 1
+          token_response
+        else
+          OpenAI::HTTPClient::Response.new(status: 503, headers: {"retry-after" => "2"}, body: "")
+        end
+      else
+        api_attempts += 1
+        api_attempts == 1 ? model_response : failure_response(401)
+      end
+    end
+
+    OpenAI::Internal::Util.stub(:monotonic_secs, -> { now }) do
+      @native.stub(:execute, dispatch) do
+        assert_equal("fake-model", client.models.retrieve("prime").id)
+        now = 191.0
+        assert_raises(OpenAI::Errors::APITimeoutError) { client.models.retrieve("replay") }
+      end
+    end
+
+    assert_equal(2, issuer_attempts)
+    assert_equal(2, api_attempts)
+  end
+
+  def test_shared_refresh_waiters_honor_minimum_when_reading_the_issuer_body_fails
+    ["2", "90", "1e999"].each do |hint|
+      now = 100.0
+      issuer_attempts = []
+      sleeps = []
+      body_started = Queue.new
+      release_body = Queue.new
+      release_leader = Queue.new
+      leader = nil
+      waiter = nil
+      client = new_client.with_options(
+        max_retries: 1,
+        initial_retry_delay: 0,
+        max_retry_delay: 5,
+        on_retry: -> (_event) { release_leader.pop if Thread.current == leader }
+      )
+      dispatch = lambda do |request|
+        if request.url.host == "mtls.auth.openai.com"
+          issuer_attempts << [Thread.current, now]
+          if issuer_attempts.length == 1
+            body = Enumerator.new do |_output|
+              body_started << true
+              release_body.pop
+              raise OpenAI::Errors::APIConnectionError.new(url: request.url, message: "fake-private-body")
+            end
+
+            OpenAI::HTTPClient::Response.new(status: 503, headers: {"retry-after" => hint}, body: body)
+          else
+            token_response
+          end
+        else
+          model_response
+        end
+      end
+
+      call = lambda do
+        client.models.retrieve("fake-model")
+      rescue OpenAI::Errors::APIError => error
+        error
+      end
+
+      OpenAI::Internal::Util.stub(:monotonic_secs, -> { now }) do
+        client.stub(
+          :sleep,
+          -> (delay) {
+            sleeps << [Thread.current, delay]
+            now += delay
+          }
+        ) do
+          @native.stub(:execute, dispatch) do
+            leader = Thread.new(&call)
+            Timeout.timeout(1) { body_started.pop }
+            waiter = Thread.new(&call)
+            Timeout.timeout(1) { Thread.pass until waiter.status == "sleep" }
+            release_body << true
+            waiter_result = Timeout.timeout(1) { waiter.value }
+            release_leader << true
+            leader_result = Timeout.timeout(1) { leader.value }
+
+            if hint == "2"
+              assert_equal("fake-model", waiter_result.id)
+              assert_equal("fake-model", leader_result.id)
+              assert_equal([[leader, 100.0], [waiter, 102.0]], issuer_attempts)
+              assert_equal([[waiter, 2.0]], sleeps)
+            else
+              [leader_result, waiter_result].each do |error|
+                assert_instance_of(OpenAI::Errors::APIConnectionError, error)
+                assert_nil(error.headers)
+                assert_nil(error.status)
+                refute_includes(error.message, "fake-private-body")
+              end
+
+              assert_equal([[leader, 100.0]], issuer_attempts)
+              assert_empty(sleeps)
+              assert_equal("fake-model", client.models.retrieve("fresh-request").id)
+              assert_equal([100.0, 100.0], issuer_attempts.map(&:last))
+            end
+          end
+        end
+      end
+
+    ensure
+      release_body << true
+      release_leader << true
+      leader&.kill&.join if leader&.alive?
+      waiter&.kill&.join if waiter&.alive?
+    end
+  end
+
   private def new_client
     OpenAI::Client.new(api_key: nil, workload_identity: @identity, http_client: @transport, max_retries: 0)
   end

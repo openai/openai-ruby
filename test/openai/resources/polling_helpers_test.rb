@@ -40,7 +40,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       @token_requests = 0
     end
 
-    def get_token(deadline: nil)
+    def get_token(deadline: nil, **)
       @token_requests += 1
       @deadlines << deadline
       sleep(5) if @slow_token_requests.include?(@token_requests)
@@ -268,7 +268,7 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       .new do
         attr_reader(:deadline)
 
-        def get_token(deadline:)
+        def get_token(deadline:, **)
           @deadline = deadline
           sleep(0.03)
           "token"

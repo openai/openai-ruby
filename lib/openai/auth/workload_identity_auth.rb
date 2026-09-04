@@ -48,8 +48,9 @@ module OpenAI
       # @api private
       #
       # @param deadline [Float, nil] absolute monotonic deadline for this request
+      # @yield [refresh] optional request-local coordination around an actual refresh
       # @return [String]
-      def get_token(deadline: nil)
+      def get_token(deadline: nil, retry_state: nil)
         loop do
           check_deadline!(deadline)
           action = nil
@@ -84,7 +85,11 @@ module OpenAI
             if action == :refresh
               begin
                 Thread.handle_interrupt(Exception => :immediate) do
-                  perform_refresh(deadline: deadline)
+                  if block_given?
+                    yield -> (&on_response) { perform_refresh(deadline: deadline, &on_response) }
+                  else
+                    perform_refresh(deadline: deadline)
+                  end
                 end
 
               rescue StandardError => error
@@ -99,6 +104,9 @@ module OpenAI
                   else
                     @refresh_error = error unless @token_exchange.nil?
                     generation[:error] = error
+                    if (issuer_retry = retry_state&.[](:issuer_retry)) && issuer_retry.fetch(:error).equal?(error)
+                      generation[:issuer_retry] = issuer_retry
+                    end
                   end
                 end
 
@@ -120,7 +128,7 @@ module OpenAI
 
           return token if action == :return
           if action == :wait
-            token = wait_for_refresh(deadline, generation)
+            token = wait_for_refresh(deadline, generation, retry_state)
             return token unless token.nil?
 
             next
@@ -181,7 +189,7 @@ module OpenAI
         [408, 409, 429].include?(status) || (status.is_a?(Integer) && (500..599).cover?(status))
       end
 
-      private def wait_for_refresh(deadline, generation)
+      private def wait_for_refresh(deadline, generation, retry_state)
         @mutex.synchronize do
           until generation.fetch(:complete)
             remaining = remaining_timeout(deadline)
@@ -194,7 +202,15 @@ module OpenAI
 
           check_deadline!(deadline)
           if @token_exchange
-            raise generation.fetch(:error) if generation[:error]
+            if generation[:error]
+              # Participating requests inherit timing without adding metadata to the sanitized error.
+              if retry_state && generation[:issuer_retry]
+                retry_state[:issuer_retry] = generation.fetch(:issuer_retry)
+              end
+
+              raise generation.fetch(:error)
+            end
+
             if generation[:token]
               unless generation[:token] == @cached_token
                 return nil if @cached_token.nil?
@@ -233,11 +249,11 @@ module OpenAI
         )
       end
 
-      private def perform_refresh(deadline:)
+      private def perform_refresh(deadline:, &on_response)
         rejected_attempts = 0
 
         loop do
-          token_data = fetch_token_from_exchange(deadline: deadline)
+          token_data = fetch_token_from_exchange(deadline: deadline, &on_response)
           now = OpenAI::Internal::Util.monotonic_secs
           expires_in = token_data.fetch(:expires_in)
           token = token_data.fetch(:id)
@@ -277,8 +293,8 @@ module OpenAI
         end
       end
 
-      private def fetch_token_from_exchange(deadline:)
-        return @token_exchange.fetch(deadline: deadline) unless @token_exchange.nil?
+      private def fetch_token_from_exchange(deadline:, &on_response)
+        return @token_exchange.fetch(deadline: deadline, &on_response) unless @token_exchange.nil?
 
         message = "request timed out during workload identity authentication"
         subject_token, token_type = begin

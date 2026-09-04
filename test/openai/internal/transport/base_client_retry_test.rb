@@ -52,10 +52,12 @@ class OpenAI::Test::BaseClientRetryTest < Minitest::Test
     end
   end
 
-  def test_non_finite_retry_after_values_fall_back_to_initial_delay
+  def test_literal_infinity_and_negative_overflow_fall_back_to_initial_delay
     @client.stub(:rand, 0.0) do
-      assert_equal(0.5, @client.calculated_retry_delay({"retry-after" => "1e999"}))
-      assert_equal(0.5, @client.calculated_retry_delay({"retry-after-ms" => "1e999"}))
+      %w[Infinity +Infinity -Infinity NaN -1e999].each do |value|
+        assert_equal(0.5, @client.calculated_retry_delay({"retry-after" => value}))
+        assert_equal(0.5, @client.calculated_retry_delay({"retry-after-ms" => value}))
+      end
     end
   end
 
@@ -101,7 +103,7 @@ class OpenAI::Test::BaseClientRetryTest < Minitest::Test
     )
     assert_equal(
       3.0,
-      @client.calculated_retry_delay({"retry-after-ms" => "1e999", "retry-after" => "3"})
+      @client.calculated_retry_delay({"retry-after-ms" => "-1e999", "retry-after" => "3"})
     )
   end
 
@@ -117,6 +119,10 @@ class OpenAI::Test::BaseClientRetryTest < Minitest::Test
     hints = [
       [{"retry-after" => "9"}, 8],
       [{"retry-after" => "90"}, 8],
+      [{"retry-after" => "1e999"}, 8],
+      [{"retry-after" => "9" * 400}, 8],
+      [{"retry-after-ms" => "1e999", "retry-after" => "0"}, 8],
+      [{"retry-after-ms" => "9" * 400, "retry-after" => "0"}, 8],
       [{"retry-after-ms" => "9000", "retry-after" => "1"}, 8],
       [{"retry-after" => (now + 90).httpdate}, 8],
       [{"retry-after" => "90", "x-should-retry" => "true"}, 8],
@@ -170,7 +176,13 @@ class OpenAI::Test::BaseClientRetryTest < Minitest::Test
       [{"retry-after-ms" => "1250", "retry-after" => "90"}, 8, 1.25],
       [{"retry-after-ms" => "invalid", "retry-after" => "3"}, 8, 3],
       [{"retry-after" => "90"}, 120, 90],
-      [{"retry-after" => "0"}, 0, 0]
+      [{"retry-after" => "0"}, 0, 0],
+      [{"retry-after" => " +2.5e0 "}, 8, 2.5],
+      [{"retry-after" => "0x1p1"}, 8, 2],
+      [{"retry-after" => "1_0"}, 12, 10],
+      [{"retry-after-ms" => "1250", "retry-after" => "1e999"}, 8, 1.25],
+      [{"retry-after-ms" => "Infinity", "retry-after" => "3"}, 8, 3],
+      [{"retry-after-ms" => "-1e999", "retry-after" => "3"}, 8, 3]
     ]
 
     [429, 503].product(hints).each do |status, (headers, maximum, delay)|

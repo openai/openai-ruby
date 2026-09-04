@@ -329,9 +329,13 @@ module OpenAI
         replay_allowed &&= x509_request ? replay_state.empty? : retry_count.zero?
         raise unless replay_allowed
 
-        if retry_state[:delay_exceeded]
-          @workload_identity_auth.invalidate_token unless x509_request
-          raise
+        @workload_identity_auth.invalidate_token unless x509_request
+        raise if retry_state[:delay_exceeded]
+
+        if (not_before = retry_state[:not_before])
+          delay = [not_before - OpenAI::Internal::Util.monotonic_secs, 0.0].max
+          validate_retry_delay!(request, delay: delay)
+          sleep(delay) if delay.positive?
         end
 
         if x509_request
@@ -351,8 +355,6 @@ module OpenAI
             token: nil
           }
           request = request.merge(x509_request_context: context)
-        else
-          @workload_identity_auth.invalidate_token
         end
 
         begin
@@ -400,8 +402,41 @@ module OpenAI
       deadline = request[:workload_identity_deadline]
       previous_issuer_retries = request[:x509_request_context]&.fetch(:issuer_retries, 0) || 0
       attempts = 0
+      retry_state = request.fetch(:workload_identity_retry_state)
       begin
-        token = @workload_identity_auth.get_token(deadline: deadline)
+        # Guard exchanges inside refresh so an issuer minimum never blocks a valid cached bearer.
+        token = @workload_identity_auth.get_token(deadline: deadline, retry_state: retry_state) do |refresh|
+          if (refusal = retry_state[:issuer_retry])
+            delay = if refusal.fetch(:delay) > @max_retry_delay
+              refusal.fetch(:delay)
+            else
+              [refusal.fetch(:not_before) - OpenAI::Internal::Util.monotonic_secs, 0.0].max
+            end
+
+            validate_retry_delay!(request, delay: [delay, @max_retry_delay].min)
+            raise refusal.fetch(:error) if refusal.fetch(:delay) > @max_retry_delay
+
+            sleep(delay)
+            retry_state.delete(:issuer_retry)
+          end
+
+          observed_retry = nil
+          begin
+            refresh.call do |response|
+              if (delay = server_retry_delay(response.headers))
+                observed_retry = {delay: delay, not_before: OpenAI::Internal::Util.monotonic_secs + delay}
+              end
+            end
+
+          rescue OpenAI::Errors::APIError => error
+            if observed_retry
+              retry_state[:issuer_retry] = observed_retry.merge(error: error)
+            end
+
+            raise
+          end
+        end
+
       rescue OpenAI::Errors::APIError => error
         status = error.status
         connection_failure = error.is_a?(OpenAI::Errors::APIConnectionError)
@@ -416,7 +451,17 @@ module OpenAI
           raise
         end
 
-        delay = retry_delay(error.headers || {}, retry_count: attempts)
+        refusal = request.fetch(:workload_identity_retry_state)[:issuer_retry]
+        delay = if refusal && refusal.fetch(:error).equal?(error)
+          original_delay = refusal.fetch(:delay)
+          original_delay > @max_retry_delay ? original_delay : [
+            refusal.fetch(:not_before) - OpenAI::Internal::Util.monotonic_secs,
+            0.0
+          ].max
+        else
+          retry_delay(error.headers || {}, retry_count: attempts)
+        end
+
         if deadline && [delay, @max_retry_delay].min >= deadline - OpenAI::Internal::Util.monotonic_secs
           raise Timeout::Error, "request timed out during workload identity authentication"
         end
@@ -437,7 +482,7 @@ module OpenAI
           retry_count: consumed_retries,
           max_retries: context.fetch(:auth_max_retries)
         )
-        sleep(delay)
+        sleep(delay) unless refusal && refusal.fetch(:error).equal?(error)
         attempts += 1
         retry
       end

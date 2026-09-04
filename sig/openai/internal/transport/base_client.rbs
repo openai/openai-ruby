@@ -131,6 +131,10 @@ module OpenAI
           retry_count: Integer
         ) -> Float
 
+        private def server_retry_delay: (
+          ::Hash[String, String] headers
+        ) -> Float?
+
         private def validate_retry_delay!: (
           OpenAI::Internal::Transport::BaseClient::request_input request,
           delay: Float
