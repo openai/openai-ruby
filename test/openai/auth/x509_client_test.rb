@@ -959,13 +959,13 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
   def test_x509_401_exceeding_retry_delay_does_not_refresh_or_replay
     now = Time.at(1_700_000_000)
     previous_time = Thread.current.thread_variable_get(:time_now)
-    ["90", (now + 90).httpdate].each do |hint|
+    ["90", (now + 90).httpdate].product([0, 1]).each do |hint, max_retries|
       Thread.current.thread_variable_set(:time_now, now)
       client = OpenAI::Client.new(
         api_key: nil,
         workload_identity: @identity,
         http_client: @transport,
-        max_retries: 1,
+        max_retries: max_retries,
         timeout: 60,
         max_retry_delay: 5
       )
