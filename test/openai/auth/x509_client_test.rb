@@ -962,12 +962,20 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
     ["90", (now + 90).httpdate].each do |hint|
       Thread.current.thread_variable_set(:time_now, now)
       client = OpenAI::Client.new(
-        api_key: nil, workload_identity: @identity, http_client: @transport,
-        max_retries: 1, timeout: 60, max_retry_delay: 5
+        api_key: nil,
+        workload_identity: @identity,
+        http_client: @transport,
+        max_retries: 1,
+        timeout: 60,
+        max_retry_delay: 5
       )
       attempts = []
-      headers = {"content-type" => "application/json", "retry-after" => hint,
-                 "x-should-retry" => "true", "x-request-id" => "req_fake"}
+      headers = {
+        "content-type" => "application/json",
+        "retry-after" => hint,
+        "x-should-retry" => "true",
+        "x-request-id" => "req_fake"
+      }
       error_body = {error: {message: "Try later"}}
       dispatch = lambda do |request|
         stage = request.url.host == "mtls.auth.openai.com" ? :issuer : :api
@@ -979,6 +987,7 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
           Thread.current.thread_variable_set(:time_now, now + 88)
           output << JSON.generate(error_body)
         end
+
         OpenAI::HTTPClient::Response.new(status: 401, headers: headers, body: body)
       end
 
@@ -989,8 +998,10 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
         assert_equal(headers, error.headers)
         assert_equal("req_fake", error.request_id)
       end
+
       assert_equal([:issuer, :api], attempts)
     end
+
   ensure
     Thread.current.thread_variable_set(:time_now, previous_time)
   end

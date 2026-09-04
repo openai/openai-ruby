@@ -893,17 +893,25 @@ class WorkloadIdentityTest < Minitest::Test
         .to_return(status: 200, body: JSON.generate(access_token: "fake-access-token", expires_in: 3600))
       responses = []
       responses << {status: 503, headers: {"retry-after" => "0"}, body: ""} if retry_first
-      responses << {
-        status: 401,
-        headers: {"content-type" => "application/json", "x-should-retry" => "true",
-                  "retry-after" => "90", "x-request-id" => "req_fake"},
-        body: JSON.generate(error: {message: "Try later"})
-      }
+      responses <<
+        {
+          status: 401,
+          headers: {
+            "content-type" => "application/json",
+            "x-should-retry" => "true",
+            "retry-after" => "90",
+            "x-request-id" => "req_fake"
+          },
+          body: JSON.generate(error: {message: "Try later"})
+        }
       stub_request(:get, "http://localhost/probe").to_return(*responses)
       events = []
       client = OpenAI::Client.new(
-        base_url: "http://localhost", api_key: nil, workload_identity: identity,
-        max_retries: 2, on_retry: -> (event) { events << event }
+        base_url: "http://localhost",
+        api_key: nil,
+        workload_identity: identity,
+        max_retries: 2,
+        on_retry: -> (event) { events << event }
       )
 
       error = assert_raises(OpenAI::Errors::AuthenticationError) { client.request(method: :get, path: "probe") }

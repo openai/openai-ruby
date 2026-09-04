@@ -733,6 +733,7 @@ module OpenAI
                 if (retry_state = request[:workload_identity_retry_state])
                   retry_state[:delay_exceeded] = true
                 end
+
                 raise
               end
             end
