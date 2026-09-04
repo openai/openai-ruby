@@ -871,7 +871,7 @@ module OpenAI
                 in "id" unless value.include?("\0")
                   current.merge!(id: value)
                 in "retry" if /^\d+$/ =~ value
-                  current.merge!(retry: Integer(value))
+                  current.merge!(retry: Integer(value, 10))
                 else
                 end
               else
