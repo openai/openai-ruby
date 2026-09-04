@@ -1,0 +1,13 @@
+module OpenAI
+  # Shared response metadata interface for SDK values that are not model
+  # objects, such as binary StringIO responses.
+  module ResponseCarrier
+    def _request_id: -> String?
+
+    def last_response: -> OpenAI::ResponseMetadata?
+
+    def _set_last_response: (OpenAI::ResponseMetadata response) -> self
+
+    def encode_with: (top coder) -> void
+  end
+end

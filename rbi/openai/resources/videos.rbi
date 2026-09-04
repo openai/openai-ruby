@@ -109,7 +109,7 @@ module OpenAI
           variant: OpenAI::VideoDownloadContentParams::Variant::OrSymbol,
           request_options: OpenAI::RequestOptions::OrHash
         )
-          .returns(StringIO)
+          .returns(T.all(StringIO, OpenAI::ResponseCarrier))
       }
       def download_content(
         # The identifier of the video whose media to download.
