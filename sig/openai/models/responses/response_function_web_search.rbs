@@ -130,7 +130,8 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseFunctionWebSearch::action]
         end
 
-        type status = :in_progress | :searching | :completed | :failed
+        type status =
+          :in_progress | :searching | :completed | :failed | :incomplete
 
         module Status
           extend OpenAI::Internal::Type::Enum
@@ -139,6 +140,7 @@ module OpenAI
           SEARCHING: :searching
           COMPLETED: :completed
           FAILED: :failed
+          INCOMPLETE: :incomplete
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseFunctionWebSearch::status]
         end
