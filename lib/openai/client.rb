@@ -317,7 +317,7 @@ module OpenAI
           retry_count: retry_count,
           send_retry_header: send_retry_header
         )
-      rescue OpenAI::Errors::AuthenticationError
+      rescue OpenAI::Errors::AuthenticationError => error
         if x509_request
           rejected_token = request.fetch(:x509_request_context).fetch(:token)
           raise if rejected_token.nil?
@@ -330,12 +330,30 @@ module OpenAI
         raise unless replay_allowed
 
         @workload_identity_auth.invalidate_token unless x509_request
-        raise if retry_state[:delay_exceeded]
+        if retry_state[:delay_exceeded]
+          validate_retry_delay!(request, delay: @max_retry_delay)
+          raise
+        end
 
         if (not_before = retry_state[:not_before])
           delay = [not_before - OpenAI::Internal::Util.monotonic_secs, 0.0].max
           validate_retry_delay!(request, delay: delay)
-          sleep(delay) if delay.positive?
+          if delay.positive?
+            max_retries = if x509_request
+              [context.fetch(:api_max_retries) - context.fetch(:issuer_retries), 0].max
+            else
+              request.fetch(:max_retries)
+            end
+
+            (yield).retry_scheduled(
+              401,
+              delay: delay,
+              response: OpenAI::ResponseMetadata.new(status: 401, headers: error.headers || {}),
+              retry_count: retry_count,
+              max_retries: max_retries + 1
+            )
+            sleep(delay)
+          end
         end
 
         if x509_request

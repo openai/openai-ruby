@@ -68,6 +68,10 @@ module OpenAI
                   generation = @refresh_generation
                 else
                   token = @cached_token
+                  if retry_state && @token_exchange
+                    (@refresh_generation[:retry_states] ||= []) << retry_state
+                  end
+
                   action = :return
                 end
               elsif token_unusable? || needs_refresh?
@@ -104,8 +108,12 @@ module OpenAI
                   else
                     @refresh_error = error unless @token_exchange.nil?
                     generation[:error] = error
-                    if (issuer_retry = retry_state&.[](:issuer_retry)) && issuer_retry.fetch(:error).equal?(error)
-                      generation[:issuer_retry] = issuer_retry
+                  end
+
+                  if (issuer_retry = retry_state&.[](:issuer_retry)) && issuer_retry.fetch(:error).equal?(error)
+                    generation[:issuer_retry] = issuer_retry
+                    generation.fetch(:retry_states, []).each do |participant|
+                      retain_issuer_retry(participant, issuer_retry)
                     end
                   end
                 end
@@ -119,6 +127,7 @@ module OpenAI
                   end
 
                   generation[:complete] = true
+                  generation.delete(:retry_states)
                   @refreshing = false
                   @cond_var.broadcast
                 end
@@ -205,7 +214,7 @@ module OpenAI
             if generation[:error]
               # Participating requests inherit timing without adding metadata to the sanitized error.
               if retry_state && generation[:issuer_retry]
-                retry_state[:issuer_retry] = generation.fetch(:issuer_retry)
+                retain_issuer_retry(retry_state, generation.fetch(:issuer_retry))
               end
 
               raise generation.fetch(:error)
@@ -230,6 +239,16 @@ module OpenAI
           raise_refresh_error! if token_unusable?
 
           @cached_token
+        end
+      end
+
+      private def retain_issuer_retry(retry_state, issuer_retry)
+        previous = retry_state[:issuer_retry]
+        retry_state[:issuer_retry] = if previous
+          strongest = previous.fetch(:delay) > issuer_retry.fetch(:delay) ? previous : issuer_retry
+          strongest.merge(not_before: [previous.fetch(:not_before), issuer_retry.fetch(:not_before)].max)
+        else
+          issuer_retry
         end
       end
 

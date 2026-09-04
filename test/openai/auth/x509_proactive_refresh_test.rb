@@ -486,6 +486,193 @@ class OpenAI::Test::X509ProactiveRefreshTest < Minitest::Test
     end
   end
 
+  def test_cached_participants_inherit_proactive_refresh_minima_before_auth_replay
+    ["2", "90", "1e999"].each do |hint|
+      now = 100.0
+      client = new_client.with_options(max_retry_delay: 5)
+      issuer_times = []
+      sleeps = []
+      issuer_started = Queue.new
+      release_issuer = Queue.new
+      follower_started = Queue.new
+      release_follower = Queue.new
+      leader = nil
+      follower = nil
+      dispatch = lambda do |request|
+        if request.url.host == "mtls.auth.openai.com"
+          issuer_times << now
+          if issuer_times.length == 2
+            issuer_started << true
+            release_issuer.pop
+            body = Enumerator.new do |output|
+              now += 0.5
+              output << ""
+            end
+
+            OpenAI::HTTPClient::Response.new(status: 503, headers: {"retry-after" => hint}, body: body)
+          elsif issuer_times.length > 2
+            OpenAI::HTTPClient::Response.new(
+              status: 200,
+              headers: {},
+              body: JSON.generate(
+                access_token: "fake-recovered-token",
+                token_type: "Bearer",
+                expires_in: 120,
+                issued_token_type: "urn:ietf:params:oauth:token-type:access_token"
+              )
+            )
+          else
+            token_response
+          end
+        elsif request.url.path.end_with?("/follower") && request.headers["authorization"] == "Bearer fake-valid-token"
+          follower_started << true
+          release_follower.pop
+          failure_response(401)
+        else
+          model_response
+        end
+      end
+
+      call = lambda do |name|
+        client.models.retrieve(name)
+      rescue OpenAI::Errors::APIError => error
+        error
+      end
+
+      OpenAI::Internal::Util.stub(:monotonic_secs, -> { now }) do
+        client.stub(
+          :sleep,
+          -> (delay) {
+            sleeps << delay
+            now += delay
+          }
+        ) do
+          @native.stub(:execute, dispatch) do
+            assert_equal("fake-model", client.models.retrieve("prime").id)
+            now = 191.0
+            leader = Thread.new { call.call("leader") }
+            Timeout.timeout(1) { issuer_started.pop }
+            follower = Thread.new { call.call("follower") }
+            Timeout.timeout(1) { follower_started.pop }
+            release_issuer << true
+            assert_equal("fake-model", Timeout.timeout(1) { leader.value }.id)
+            release_follower << true
+            result = Timeout.timeout(1) { follower.value }
+
+            if hint == "2"
+              assert_equal("fake-model", result.id)
+              assert_equal([100.0, 191.0, 193.0], issuer_times)
+              assert_equal([1.5], sleeps)
+            else
+              assert_instance_of(OpenAI::Errors::APIError, result)
+              assert_equal(503, result.status)
+              assert_equal({"retry-after" => hint}, result.headers)
+              assert_equal([100.0, 191.0], issuer_times)
+              assert_empty(sleeps)
+              assert_equal("fake-model", client.models.retrieve("independent-request").id)
+              assert_equal([100.0, 191.0, 191.5], issuer_times)
+            end
+          end
+        end
+      end
+
+    ensure
+      release_issuer << true
+      release_follower << true
+      leader&.kill&.join if leader&.alive?
+      follower&.kill&.join if follower&.alive?
+    end
+  end
+
+  def test_waiting_participant_preserves_an_earlier_stronger_issuer_minimum
+    now = 100.0
+    client = new_client.with_options(max_retry_delay: 5, max_retries: 2)
+    issuer_times = []
+    first_wait = Queue.new
+    release_first = Queue.new
+    issuer_started = Queue.new
+    release_issuer = Queue.new
+    first = nil
+    second = nil
+    paused = false
+    dispatch = lambda do |request|
+      if request.url.host == "mtls.auth.openai.com"
+        issuer_times << now
+        case issuer_times.length
+        when 1
+          token_response
+        when 2
+          OpenAI::HTTPClient::Response.new(status: 503, headers: {"retry-after" => "90"}, body: "")
+        when 3
+          issuer_started << true
+          release_issuer.pop
+          OpenAI::HTTPClient::Response.new(status: 503, headers: {"retry-after" => "1"}, body: "")
+        else
+          OpenAI::HTTPClient::Response.new(
+            status: 200,
+            headers: {},
+            body: JSON.generate(
+              access_token: "fake-recovered-token",
+              token_type: "Bearer",
+              expires_in: 120,
+              issued_token_type: "urn:ietf:params:oauth:token-type:access_token"
+            )
+          )
+        end
+      elsif request.url.path.end_with?("/first") && issuer_times.length == 2
+        OpenAI::HTTPClient::Response.new(status: 401, headers: {"retry-after" => "0.1"}, body: "")
+      else
+        model_response
+      end
+    end
+
+    call = lambda do |name, max_retries|
+      client.models.retrieve(name, request_options: {max_retries: max_retries})
+    rescue OpenAI::Errors::APIError => error
+      error
+    end
+
+    OpenAI::Internal::Util.stub(:monotonic_secs, -> { now }) do
+      client.stub(
+        :sleep,
+        -> (delay) {
+          if Thread.current == first && !paused
+            paused = true
+            first_wait << true
+            release_first.pop
+          end
+
+          now += delay
+        }
+      ) do
+        @native.stub(:execute, dispatch) do
+          assert_equal("fake-model", client.models.retrieve("prime").id)
+          now = 191.0
+          first = Thread.new { call.call("first", 2) }
+          Timeout.timeout(1) { first_wait.pop }
+          second = Thread.new { call.call("second", 0) }
+          Timeout.timeout(1) { issuer_started.pop }
+          release_first << true
+          Timeout.timeout(1) { Thread.pass until first.status == "sleep" && now > 191.0 }
+          release_issuer << true
+          first_result = Timeout.timeout(1) { first.value }
+          second_result = Timeout.timeout(1) { second.value }
+          assert_instance_of(OpenAI::Errors::APIError, first_result)
+          assert_equal({"retry-after" => "90"}, first_result.headers)
+          assert_instance_of(OpenAI::Errors::APIError, second_result)
+          assert_equal({"retry-after" => "1"}, second_result.headers)
+          assert_equal([100.0, 191.0, 191.0], issuer_times)
+        end
+      end
+    end
+
+  ensure
+    release_first << true
+    release_issuer << true
+    first&.kill&.join if first&.alive?
+    second&.kill&.join if second&.alive?
+  end
+
   private def new_client
     OpenAI::Client.new(api_key: nil, workload_identity: @identity, http_client: @transport, max_retries: 0)
   end

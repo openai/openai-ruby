@@ -971,13 +971,21 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
     ]
     cases.product([0, 1]).each do |(headers, expected_wait), max_retries|
       now = 100.0
+      events = []
+      log = StringIO.new
       client = OpenAI::Client.new(
         api_key: nil,
         workload_identity: @identity,
         http_client: @transport,
         max_retries: max_retries,
         initial_retry_delay: 2,
-        max_retry_delay: 5
+        max_retry_delay: 5,
+        logger: Logger.new(log),
+        log_level: :warn,
+        on_retry: -> (event) {
+          events << event
+          raise "fake-sensitive-observer-failure"
+        }
       )
       attempts = []
       sleeps = []
@@ -992,7 +1000,11 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
           output << JSON.generate(error: {message: "Try later"})
         end
 
-        OpenAI::HTTPClient::Response.new(status: 401, headers: headers, body: body)
+        OpenAI::HTTPClient::Response.new(
+          status: 401,
+          headers: headers.merge("x-request-id" => "req_fake", "set-cookie" => "fake-sensitive-cookie"),
+          body: body
+        )
       end
 
       OpenAI::Internal::Util.stub(:monotonic_secs, -> { now }) do
@@ -1000,6 +1012,7 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
           client.stub(
             :sleep,
             -> (delay) {
+              assert_equal(1, events.length)
               sleeps << delay
               now += delay
             }
@@ -1014,10 +1027,23 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
       assert_equal([:issuer, :api, :issuer, :api], attempts.map(&:first))
       if expected_wait
         assert_equal(1, sleeps.length)
+        event = events.fetch(0)
+        assert_equal(401, event.status)
+        assert_equal("req_fake", event.request_id)
+        assert_equal(2, event.attempt)
+        assert_equal(max_retries + 2, event.max_attempts)
+        assert_in_delta(expected_wait, event.delay, 0.00001)
+        assert_nil(event.response.body)
+        assert_predicate(event.response, :frozen?)
+        assert_includes(log.string, "status=401")
+        refute_includes(log.string, "fake-sensitive-cookie")
+        refute_includes(log.string, "fake-sensitive-observer-failure")
+        refute_includes(log.string, "Try later")
         assert_in_delta(expected_wait, sleeps.first, 0.00001)
         assert_in_delta(101.0, attempts[2][1], 0.00001)
       else
         assert_empty(sleeps)
+        assert_empty(events)
       end
     end
   end
@@ -1104,7 +1130,7 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
   end
 
   def test_x509_excessive_retry_after_preserves_status_and_deadline_error_precedence
-    [:issuer, :api].product([429, 503], [1, 60]).each do |failure_stage, status, timeout|
+    ([[:api, 401]] + [:issuer, :api].product([429, 503])).product([1, 60]).each do |(failure_stage, status), timeout|
       events = []
       client = OpenAI::Client.new(
         api_key: nil,

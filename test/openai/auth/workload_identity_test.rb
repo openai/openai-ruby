@@ -881,7 +881,7 @@ class WorkloadIdentityTest < Minitest::Test
   end
 
   def test_legacy_401_replay_honors_server_minimum_and_deadline
-    [2.0, 0.5].each do |timeout|
+    [2.0, 0.5, 60.0].product([1000, 90_000]).each do |timeout, delay_ms|
       WebMock.reset!
       File.write(@token_path, "fake-subject-token")
       identity = OpenAI::Auth::WorkloadIdentity.new(
@@ -892,38 +892,58 @@ class WorkloadIdentityTest < Minitest::Test
       stub_request(:post, "https://auth.openai.com/oauth/token")
         .to_return(status: 200, body: JSON.generate(access_token: "fake-access-token", expires_in: 3600))
       stub_request(:get, "http://localhost/probe").to_return(
-        {status: 401, headers: {"retry-after-ms" => "1000", "retry-after" => "4"}, body: ""},
+        {status: 401, headers: {"retry-after-ms" => delay_ms.to_s, "retry-after" => "4"}, body: ""},
         {status: 200, headers: {"content-type" => "application/json"}, body: JSON.generate(ok: true)}
       )
+      events = []
+      log = StringIO.new
       client = OpenAI::Client.new(
         api_key: nil,
         workload_identity: identity,
         base_url: "http://localhost",
         max_retries: 0,
         timeout: timeout,
-        max_retry_delay: 5
+        max_retry_delay: 5,
+        logger: Logger.new(log),
+        log_level: :warn,
+        on_retry: -> (event) {
+          events << event
+          raise "fake observer failure"
+        }
       )
       now = 100.0
       sleeps = []
+      replay = delay_ms == 1000 && timeout > 1
       OpenAI::Internal::Util.stub(:monotonic_secs, -> { now }) do
         client.stub(
           :sleep,
           -> (delay) {
+            assert_equal(1, events.length)
             sleeps << delay
             now += delay
           }
         ) do
-          if timeout > 1
+          if replay
             assert_equal({ok: true}, client.request(method: :get, path: "probe"))
+          elsif timeout > 5
+            assert_raises(OpenAI::Errors::AuthenticationError) { client.request(method: :get, path: "probe") }
           else
             assert_raises(OpenAI::Errors::APITimeoutError) { client.request(method: :get, path: "probe") }
           end
         end
       end
 
-      assert_equal(timeout > 1 ? [1.0] : [], sleeps)
-      assert_requested(:post, "https://auth.openai.com/oauth/token", times: timeout > 1 ? 2 : 1)
-      assert_requested(:get, "http://localhost/probe", times: timeout > 1 ? 2 : 1)
+      assert_equal(replay ? [1.0] : [], sleeps)
+      assert_equal(replay ? [1.0] : [], events.map(&:delay))
+      if replay
+        assert_equal(401, events.first.status)
+        assert_equal(2, events.first.attempt)
+        assert_equal(2, events.first.max_attempts)
+        assert_includes(log.string, "status=401")
+      end
+
+      assert_requested(:post, "https://auth.openai.com/oauth/token", times: replay ? 2 : 1)
+      assert_requested(:get, "http://localhost/probe", times: replay ? 2 : 1)
     end
   end
 
