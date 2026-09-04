@@ -921,6 +921,8 @@ class WorkloadIdentityTest < Minitest::Test
       assert_equal(retry_first ? [0] : [], events.map(&:delay))
       assert_requested(:get, "http://localhost/probe", times: retry_first ? 2 : 1)
       assert_requested(:post, "https://auth.openai.com/oauth/token", times: 1)
+      assert_raises(OpenAI::Errors::AuthenticationError) { client.request(method: :get, path: "probe") }
+      assert_requested(:post, "https://auth.openai.com/oauth/token", times: 2)
     end
   end
 

@@ -325,9 +325,14 @@ module OpenAI
           @workload_identity_auth.invalidate_token(rejected_token)
         end
 
-        replay_allowed = !retry_state[:delay_exceeded] && request_replayable?(request)
+        replay_allowed = request_replayable?(request)
         replay_allowed &&= x509_request ? replay_state.empty? : retry_count.zero?
         raise unless replay_allowed
+
+        if retry_state[:delay_exceeded]
+          @workload_identity_auth.invalidate_token unless x509_request
+          raise
+        end
 
         if x509_request
           replay_state << true
