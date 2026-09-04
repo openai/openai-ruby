@@ -27,7 +27,10 @@ module OpenAI
     end
 
     class WorkloadIdentityAuth
-      def get_token: (?deadline: Float?) -> String
+      def get_token: (
+        ?deadline: Float?,
+        ?retry_state: ::Hash[Symbol, untyped]?
+      ) -> String
 
       def invalidate_token: (?String? rejected_token) -> void
 

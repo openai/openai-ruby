@@ -350,7 +350,7 @@ module OpenAI
               delay: delay,
               response: OpenAI::ResponseMetadata.new(status: 401, headers: error.headers || {}),
               retry_count: retry_count,
-              max_retries: max_retries + 1
+              max_retries: [max_retries, retry_count + 1].max
             )
             sleep(delay)
           end
@@ -470,7 +470,7 @@ module OpenAI
         end
 
         refusal = request.fetch(:workload_identity_retry_state)[:issuer_retry]
-        delay = if refusal && refusal.fetch(:error).equal?(error)
+        delay = if refusal
           original_delay = refusal.fetch(:delay)
           original_delay > @max_retry_delay ? original_delay : [
             refusal.fetch(:not_before) - OpenAI::Internal::Util.monotonic_secs,
@@ -484,7 +484,7 @@ module OpenAI
           raise Timeout::Error, "request timed out during workload identity authentication"
         end
 
-        raise if delay > @max_retry_delay
+        raise refusal ? refusal.fetch(:error) : error if delay > @max_retry_delay
 
         context = request.fetch(:x509_request_context)
         response = if connection_failure
@@ -500,7 +500,7 @@ module OpenAI
           retry_count: consumed_retries,
           max_retries: context.fetch(:auth_max_retries)
         )
-        sleep(delay) unless refusal && refusal.fetch(:error).equal?(error)
+        sleep(delay) unless refusal
         attempts += 1
         retry
       end

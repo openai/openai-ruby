@@ -54,8 +54,10 @@ module OpenAI
     end
 
     class WorkloadIdentityAuth
-      sig { params(deadline: T.nilable(Float)).returns(String) }
-      def get_token(deadline: nil)
+      sig do
+        params(deadline: T.nilable(Float), retry_state: T.nilable(T::Hash[Symbol, T.untyped])).returns(String)
+      end
+      def get_token(deadline: nil, retry_state: nil)
       end
 
       sig { params(rejected_token: T.nilable(String)).void }

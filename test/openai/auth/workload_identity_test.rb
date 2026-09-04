@@ -947,6 +947,46 @@ class WorkloadIdentityTest < Minitest::Test
     end
   end
 
+  def test_delayed_401_replay_reports_the_reachable_attempt_budget
+    [0, 1, 2].each do |max_retries|
+      WebMock.reset!
+      File.write(@token_path, "fake-subject-token")
+      identity = OpenAI::Auth::WorkloadIdentity.new(
+        identity_provider_id: "idp-fake",
+        service_account_id: "sa-fake",
+        provider: OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(token_path: @token_path)
+      )
+      stub_request(:post, "https://auth.openai.com/oauth/token")
+        .to_return(status: 200, body: JSON.generate(access_token: "fake-access-token", expires_in: 3600))
+      stub_request(:get, "http://localhost/probe").to_return(
+        {status: 401, headers: {"retry-after" => "1"}, body: ""},
+        {status: 503, headers: {"retry-after" => "0"}, body: ""}
+      )
+      events = []
+      client = OpenAI::Client.new(
+        api_key: nil,
+        workload_identity: identity,
+        base_url: "http://localhost",
+        max_retries: max_retries,
+        on_retry: -> (event) { events << event }
+      )
+      now = 100.0
+      OpenAI::Internal::Util.stub(:monotonic_secs, -> { now }) do
+        client.stub(:sleep, -> (delay) { now += delay }) do
+          error = assert_raises(OpenAI::Errors::APIError) { client.request(method: :get, path: "probe") }
+          assert_equal(503, error.status)
+        end
+      end
+
+      max_attempts = [max_retries + 1, 2].max
+      assert_requested(:get, "http://localhost/probe", times: max_attempts)
+      assert_requested(:post, "https://auth.openai.com/oauth/token", times: 2)
+      assert_equal(401, events.first.status)
+      assert_equal((2..max_attempts).to_a, events.map(&:attempt))
+      assert_equal([max_attempts] * (max_attempts - 1), events.map(&:max_attempts))
+    end
+  end
+
   def test_401_exceeding_retry_delay_does_not_refresh_or_replay
     hints = [
       {"retry-after" => "90"},

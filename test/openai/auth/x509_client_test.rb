@@ -969,7 +969,7 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
       [{"retry-after" => "invalid"}, nil],
       [{}, nil]
     ]
-    cases.product([0, 1]).each do |(headers, expected_wait), max_retries|
+    cases.product([0, 1, 2]).each do |(headers, expected_wait), max_retries|
       now = 100.0
       events = []
       log = StringIO.new
@@ -1031,7 +1031,7 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
         assert_equal(401, event.status)
         assert_equal("req_fake", event.request_id)
         assert_equal(2, event.attempt)
-        assert_equal(max_retries + 2, event.max_attempts)
+        assert_equal([max_retries + 1, 2].max, event.max_attempts)
         assert_in_delta(expected_wait, event.delay, 0.00001)
         assert_nil(event.response.body)
         assert_predicate(event.response, :frozen?)

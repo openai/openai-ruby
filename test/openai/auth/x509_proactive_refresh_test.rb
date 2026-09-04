@@ -577,8 +577,8 @@ class OpenAI::Test::X509ProactiveRefreshTest < Minitest::Test
       end
 
     ensure
-      release_issuer << true
-      release_follower << true
+      release_issuer&.push(true)
+      release_follower&.push(true)
       leader&.kill&.join if leader&.alive?
       follower&.kill&.join if follower&.alive?
     end
@@ -586,7 +586,9 @@ class OpenAI::Test::X509ProactiveRefreshTest < Minitest::Test
 
   def test_waiting_participant_preserves_an_earlier_stronger_issuer_minimum
     now = 100.0
-    client = new_client.with_options(max_retry_delay: 5, max_retries: 2)
+    events = []
+    sleeps = []
+    client = new_client.with_options(max_retry_delay: 5, max_retries: 2, on_retry: -> (event) { events << event })
     issuer_times = []
     first_wait = Queue.new
     release_first = Queue.new
@@ -636,6 +638,7 @@ class OpenAI::Test::X509ProactiveRefreshTest < Minitest::Test
       client.stub(
         :sleep,
         -> (delay) {
+          sleeps << delay
           if Thread.current == first && !paused
             paused = true
             first_wait << true
@@ -662,13 +665,16 @@ class OpenAI::Test::X509ProactiveRefreshTest < Minitest::Test
           assert_instance_of(OpenAI::Errors::APIError, second_result)
           assert_equal({"retry-after" => "1"}, second_result.headers)
           assert_equal([100.0, 191.0, 191.0], issuer_times)
+          assert_equal([401], events.map(&:status))
+          assert_equal(1, sleeps.length)
+          assert_in_delta(0.1, sleeps.first, 0.00001)
         end
       end
     end
 
   ensure
-    release_first << true
-    release_issuer << true
+    release_first&.push(true)
+    release_issuer&.push(true)
     first&.kill&.join if first&.alive?
     second&.kill&.join if second&.alive?
   end
