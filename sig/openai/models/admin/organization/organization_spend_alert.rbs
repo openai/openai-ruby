@@ -10,7 +10,7 @@ module OpenAI
             currency: OpenAI::Models::Admin::Organization::OrganizationSpendAlert::currency,
             interval: OpenAI::Models::Admin::Organization::OrganizationSpendAlert::interval,
             notification_channel: OpenAI::Admin::Organization::OrganizationSpendAlert::NotificationChannel,
-            object: :"organization.spend_alert",
+            ?object: :"organization.spend_alert",
             threshold_amount: Integer
           }
 
@@ -41,7 +41,7 @@ module OpenAI
             currency: OpenAI::Models::Admin::Organization::OrganizationSpendAlert::currency,
             interval: OpenAI::Models::Admin::Organization::OrganizationSpendAlert::interval,
             notification_channel: OpenAI::Admin::Organization::OrganizationSpendAlert::NotificationChannel,
-            object: :"organization.spend_alert",
+            ?object: :"organization.spend_alert",
             threshold_amount: Integer
           }
 
@@ -68,8 +68,8 @@ module OpenAI
           type notification_channel =
             {
               recipients: ::Array[String],
-              type: :email,
-              subject_prefix: String?
+              ?type: :email,
+              ?subject_prefix: String?
             }
 
           class NotificationChannel < OpenAI::Internal::Type::BaseModel
@@ -87,8 +87,8 @@ module OpenAI
 
             def to_hash: -> {
               recipients: ::Array[String],
-              type: :email,
-              subject_prefix: String?
+              ?type: :email,
+              ?subject_prefix: String?
             }
           end
         end

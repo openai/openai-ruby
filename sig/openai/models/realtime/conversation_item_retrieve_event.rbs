@@ -4,8 +4,8 @@ module OpenAI
       type conversation_item_retrieve_event =
         {
           item_id: String,
-          type: :"conversation.item.retrieve",
-          event_id: String
+          ?type: :"conversation.item.retrieve",
+          ?event_id: String
         }
 
       class ConversationItemRetrieveEvent < OpenAI::Internal::Type::BaseModel
@@ -25,8 +25,8 @@ module OpenAI
 
         def to_hash: -> {
           item_id: String,
-          type: :"conversation.item.retrieve",
-          event_id: String
+          ?type: :"conversation.item.retrieve",
+          ?event_id: String
         }
       end
     end

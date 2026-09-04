@@ -9,7 +9,7 @@ module OpenAI
                 id: String,
                 created_at: Integer,
                 name: String,
-                object: :"organization.project.service_account.api_key",
+                ?object: :"organization.project.service_account.api_key",
                 value: String
               }
 
@@ -36,7 +36,7 @@ module OpenAI
                 id: String,
                 created_at: Integer,
                 name: String,
-                object: :"organization.project.service_account.api_key",
+                ?object: :"organization.project.service_account.api_key",
                 value: String
               }
             end

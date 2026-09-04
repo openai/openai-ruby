@@ -10,8 +10,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.shell_call_output_content.delta",
-          agent: OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent::Agent
+          ?type: :"response.shell_call_output_content.delta",
+          ?agent: OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent::Agent
         }
 
       class BetaResponseShellCallOutputContentDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -49,11 +49,11 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.shell_call_output_content.delta",
-          agent: OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent::Agent
+          ?type: :"response.shell_call_output_content.delta",
+          ?agent: OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent::Agent
         }
 
-        type delta = { stderr: String, stdout: String }
+        type delta = { ?stderr: String, ?stdout: String }
 
         class Delta < OpenAI::Internal::Type::BaseModel
           attr_reader stderr: String?
@@ -66,7 +66,7 @@ module OpenAI
 
           def initialize: (?stderr: String, ?stdout: String) -> void
 
-          def to_hash: -> { stderr: String, stdout: String }
+          def to_hash: -> { ?stderr: String, ?stdout: String }
         end
 
         type agent = { agent_name: String }

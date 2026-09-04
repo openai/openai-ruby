@@ -8,11 +8,11 @@ module OpenAI
               {
                 project_id: String,
                 group_id: String,
-                after: String,
-                limit: Integer,
-                order: OpenAI::Models::Admin::Organization::Projects::Groups::RoleListParams::order
+                ?after: String,
+                ?limit: Integer,
+                ?order: OpenAI::Models::Admin::Organization::Projects::Groups::RoleListParams::order,
+                ?request_options: OpenAI::request_opts
               }
-              & OpenAI::Internal::Type::request_parameters
 
             class RoleListParams < OpenAI::Internal::Type::BaseModel
               extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -48,10 +48,10 @@ module OpenAI
               def to_hash: -> {
                 project_id: String,
                 group_id: String,
-                after: String,
-                limit: Integer,
-                order: OpenAI::Models::Admin::Organization::Projects::Groups::RoleListParams::order,
-                request_options: OpenAI::RequestOptions
+                ?after: String,
+                ?limit: Integer,
+                ?order: OpenAI::Models::Admin::Organization::Projects::Groups::RoleListParams::order,
+                ?request_options: OpenAI::RequestOptions
               }
 
               type order = :asc | :desc

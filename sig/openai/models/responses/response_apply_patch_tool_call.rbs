@@ -7,9 +7,9 @@ module OpenAI
           call_id: String,
           operation: OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation,
           status: OpenAI::Models::Responses::ResponseApplyPatchToolCall::status,
-          type: :apply_patch_call,
-          caller_: OpenAI::Models::Responses::ResponseApplyPatchToolCall::caller_?,
-          created_by: String
+          ?type: :apply_patch_call,
+          ?caller_: OpenAI::Models::Responses::ResponseApplyPatchToolCall::caller_?,
+          ?created_by: String
         }
 
       class ResponseApplyPatchToolCall < OpenAI::Internal::Type::BaseModel
@@ -44,9 +44,9 @@ module OpenAI
           call_id: String,
           operation: OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation,
           status: OpenAI::Models::Responses::ResponseApplyPatchToolCall::status,
-          type: :apply_patch_call,
-          caller_: OpenAI::Models::Responses::ResponseApplyPatchToolCall::caller_?,
-          created_by: String
+          ?type: :apply_patch_call,
+          ?caller_: OpenAI::Models::Responses::ResponseApplyPatchToolCall::caller_?,
+          ?created_by: String
         }
 
         type operation =
@@ -57,7 +57,7 @@ module OpenAI
         module Operation
           extend OpenAI::Internal::Type::Union
 
-          type create_file = { diff: String, path: String, type: :create_file }
+          type create_file = { diff: String, path: String, ?type: :create_file }
 
           class CreateFile < OpenAI::Internal::Type::BaseModel
             attr_accessor diff: String
@@ -72,10 +72,10 @@ module OpenAI
               ?type: :create_file
             ) -> void
 
-            def to_hash: -> { diff: String, path: String, type: :create_file }
+            def to_hash: -> { diff: String, path: String, ?type: :create_file }
           end
 
-          type delete_file = { path: String, type: :delete_file }
+          type delete_file = { path: String, ?type: :delete_file }
 
           class DeleteFile < OpenAI::Internal::Type::BaseModel
             attr_accessor path: String
@@ -84,10 +84,10 @@ module OpenAI
 
             def initialize: (path: String, ?type: :delete_file) -> void
 
-            def to_hash: -> { path: String, type: :delete_file }
+            def to_hash: -> { path: String, ?type: :delete_file }
           end
 
-          type update_file = { diff: String, path: String, type: :update_file }
+          type update_file = { diff: String, path: String, ?type: :update_file }
 
           class UpdateFile < OpenAI::Internal::Type::BaseModel
             attr_accessor diff: String
@@ -102,7 +102,7 @@ module OpenAI
               ?type: :update_file
             ) -> void
 
-            def to_hash: -> { diff: String, path: String, type: :update_file }
+            def to_hash: -> { diff: String, path: String, ?type: :update_file }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseApplyPatchToolCall::operation]
@@ -126,17 +126,17 @@ module OpenAI
         module Caller
           extend OpenAI::Internal::Type::Union
 
-          type direct = { type: :direct }
+          type direct = { ?type: :direct }
 
           class Direct < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :direct
 
             def initialize: (?type: :direct) -> void
 
-            def to_hash: -> { type: :direct }
+            def to_hash: -> { ?type: :direct }
           end
 
-          type program = { caller_id: String, type: :program }
+          type program = { caller_id: String, ?type: :program }
 
           class Program < OpenAI::Internal::Type::BaseModel
             attr_accessor caller_id: String
@@ -145,7 +145,7 @@ module OpenAI
 
             def initialize: (caller_id: String, ?type: :program) -> void
 
-            def to_hash: -> { caller_id: String, type: :program }
+            def to_hash: -> { caller_id: String, ?type: :program }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseApplyPatchToolCall::caller_]

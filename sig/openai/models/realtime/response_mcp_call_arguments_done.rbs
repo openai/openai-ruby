@@ -8,7 +8,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           response_id: String,
-          type: :"response.mcp_call_arguments.done"
+          ?type: :"response.mcp_call_arguments.done"
         }
 
       class ResponseMcpCallArgumentsDone < OpenAI::Internal::Type::BaseModel
@@ -39,7 +39,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           response_id: String,
-          type: :"response.mcp_call_arguments.done"
+          ?type: :"response.mcp_call_arguments.done"
         }
       end
     end

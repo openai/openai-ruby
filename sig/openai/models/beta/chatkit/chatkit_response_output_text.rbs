@@ -8,7 +8,7 @@ module OpenAI
           {
             annotations: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::annotation],
             text: String,
-            type: :output_text
+            ?type: :output_text
           }
 
         class ChatKitResponseOutputText < OpenAI::Internal::Type::BaseModel
@@ -27,7 +27,7 @@ module OpenAI
           def to_hash: -> {
             annotations: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::annotation],
             text: String,
-            type: :output_text
+            ?type: :output_text
           }
 
           type annotation =
@@ -40,7 +40,7 @@ module OpenAI
             type file =
               {
                 source: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::File::Source,
-                type: :file
+                ?type: :file
               }
 
             class File < OpenAI::Internal::Type::BaseModel
@@ -55,10 +55,10 @@ module OpenAI
 
               def to_hash: -> {
                 source: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::File::Source,
-                type: :file
+                ?type: :file
               }
 
-              type source = { filename: String, type: :file }
+              type source = { filename: String, ?type: :file }
 
               class Source < OpenAI::Internal::Type::BaseModel
                 attr_accessor filename: String
@@ -67,14 +67,14 @@ module OpenAI
 
                 def initialize: (filename: String, ?type: :file) -> void
 
-                def to_hash: -> { filename: String, type: :file }
+                def to_hash: -> { filename: String, ?type: :file }
               end
             end
 
             type url =
               {
                 source: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::URL::Source,
-                type: :url
+                ?type: :url
               }
 
             class URL < OpenAI::Internal::Type::BaseModel
@@ -89,10 +89,10 @@ module OpenAI
 
               def to_hash: -> {
                 source: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::URL::Source,
-                type: :url
+                ?type: :url
               }
 
-              type source = { type: :url, url: String }
+              type source = { ?type: :url, url: String }
 
               class Source < OpenAI::Internal::Type::BaseModel
                 attr_accessor type: :url
@@ -101,7 +101,7 @@ module OpenAI
 
                 def initialize: (url: String, ?type: :url) -> void
 
-                def to_hash: -> { type: :url, url: String }
+                def to_hash: -> { ?type: :url, url: String }
               end
             end
 

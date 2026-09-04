@@ -12,33 +12,34 @@ module OpenAI
           instructions: OpenAI::Models::Beta::BetaResponse::instructions?,
           metadata: ::Hash[Symbol, String]?,
           model: OpenAI::Models::Beta::BetaResponse::model,
-          object: :response,
+          ?object: :response,
           output: ::Array[OpenAI::Models::Beta::beta_response_output_item],
           parallel_tool_calls: bool,
           temperature: Float?,
           tool_choice: OpenAI::Models::Beta::BetaResponse::tool_choice,
           tools: ::Array[OpenAI::Models::Beta::beta_tool],
           top_p: Float?,
-          background: bool?,
-          completed_at: Float?,
-          conversation: OpenAI::Beta::BetaResponse::Conversation?,
-          max_output_tokens: Integer?,
-          max_tool_calls: Integer?,
-          moderation: OpenAI::Beta::BetaResponse::Moderation?,
-          previous_response_id: String?,
-          prompt: OpenAI::Beta::BetaResponsePrompt?,
-          prompt_cache_key: String?,
-          prompt_cache_options: OpenAI::Beta::BetaResponse::PromptCacheOptions,
-          prompt_cache_retention: OpenAI::Models::Beta::BetaResponse::prompt_cache_retention?,
-          reasoning: OpenAI::Beta::BetaResponse::Reasoning?,
-          safety_identifier: String?,
-          service_tier: OpenAI::Models::Beta::BetaResponse::service_tier?,
-          status: OpenAI::Models::Beta::beta_response_status,
-          text: OpenAI::Beta::BetaResponseTextConfig,
-          top_logprobs: Integer?,
-          truncation: OpenAI::Models::Beta::BetaResponse::truncation?,
-          usage: OpenAI::Beta::BetaResponseUsage,
-          user: String
+          ?background: bool?,
+          ?completed_at: Float?,
+          ?conversation: OpenAI::Beta::BetaResponse::Conversation?,
+          ?max_output_tokens: Integer?,
+          ?max_tool_calls: Integer?,
+          ?moderation: OpenAI::Beta::BetaResponse::Moderation?,
+          ?previous_response_id: String?,
+          ?prompt: OpenAI::Beta::BetaResponsePrompt?,
+          ?prompt_cache_diagnostics: OpenAI::Models::Beta::BetaResponse::prompt_cache_diagnostics,
+          ?prompt_cache_key: String?,
+          ?prompt_cache_options: OpenAI::Beta::BetaResponse::PromptCacheOptions,
+          ?prompt_cache_retention: OpenAI::Models::Beta::BetaResponse::prompt_cache_retention?,
+          ?reasoning: OpenAI::Beta::BetaResponse::Reasoning?,
+          ?safety_identifier: String?,
+          ?service_tier: OpenAI::Models::Beta::BetaResponse::service_tier?,
+          ?status: OpenAI::Models::Beta::beta_response_status,
+          ?text: OpenAI::Beta::BetaResponseTextConfig,
+          ?top_logprobs: Integer?,
+          ?truncation: OpenAI::Models::Beta::BetaResponse::truncation?,
+          ?usage: OpenAI::Beta::BetaResponseUsage,
+          ?user: String
         }
 
       class BetaResponse < OpenAI::Internal::Type::BaseModel
@@ -85,6 +86,12 @@ module OpenAI
         attr_accessor previous_response_id: String?
 
         attr_accessor prompt: OpenAI::Beta::BetaResponsePrompt?
+
+        attr_reader prompt_cache_diagnostics: OpenAI::Models::Beta::BetaResponse::prompt_cache_diagnostics?
+
+        def prompt_cache_diagnostics=: (
+          OpenAI::Models::Beta::BetaResponse::prompt_cache_diagnostics
+        ) -> OpenAI::Models::Beta::BetaResponse::prompt_cache_diagnostics
 
         attr_accessor prompt_cache_key: String?
 
@@ -150,6 +157,7 @@ module OpenAI
           ?moderation: OpenAI::Beta::BetaResponse::Moderation?,
           ?previous_response_id: String?,
           ?prompt: OpenAI::Beta::BetaResponsePrompt?,
+          ?prompt_cache_diagnostics: OpenAI::Models::Beta::BetaResponse::prompt_cache_diagnostics,
           ?prompt_cache_key: String?,
           ?prompt_cache_options: OpenAI::Beta::BetaResponse::PromptCacheOptions,
           ?prompt_cache_retention: OpenAI::Models::Beta::BetaResponse::prompt_cache_retention?,
@@ -173,38 +181,39 @@ module OpenAI
           instructions: OpenAI::Models::Beta::BetaResponse::instructions?,
           metadata: ::Hash[Symbol, String]?,
           model: OpenAI::Models::Beta::BetaResponse::model,
-          object: :response,
+          ?object: :response,
           output: ::Array[OpenAI::Models::Beta::beta_response_output_item],
           parallel_tool_calls: bool,
           temperature: Float?,
           tool_choice: OpenAI::Models::Beta::BetaResponse::tool_choice,
           tools: ::Array[OpenAI::Models::Beta::beta_tool],
           top_p: Float?,
-          background: bool?,
-          completed_at: Float?,
-          conversation: OpenAI::Beta::BetaResponse::Conversation?,
-          max_output_tokens: Integer?,
-          max_tool_calls: Integer?,
-          moderation: OpenAI::Beta::BetaResponse::Moderation?,
-          previous_response_id: String?,
-          prompt: OpenAI::Beta::BetaResponsePrompt?,
-          prompt_cache_key: String?,
-          prompt_cache_options: OpenAI::Beta::BetaResponse::PromptCacheOptions,
-          prompt_cache_retention: OpenAI::Models::Beta::BetaResponse::prompt_cache_retention?,
-          reasoning: OpenAI::Beta::BetaResponse::Reasoning?,
-          safety_identifier: String?,
-          service_tier: OpenAI::Models::Beta::BetaResponse::service_tier?,
-          status: OpenAI::Models::Beta::beta_response_status,
-          text: OpenAI::Beta::BetaResponseTextConfig,
-          top_logprobs: Integer?,
-          truncation: OpenAI::Models::Beta::BetaResponse::truncation?,
-          usage: OpenAI::Beta::BetaResponseUsage,
-          user: String
+          ?background: bool?,
+          ?completed_at: Float?,
+          ?conversation: OpenAI::Beta::BetaResponse::Conversation?,
+          ?max_output_tokens: Integer?,
+          ?max_tool_calls: Integer?,
+          ?moderation: OpenAI::Beta::BetaResponse::Moderation?,
+          ?previous_response_id: String?,
+          ?prompt: OpenAI::Beta::BetaResponsePrompt?,
+          ?prompt_cache_diagnostics: OpenAI::Models::Beta::BetaResponse::prompt_cache_diagnostics,
+          ?prompt_cache_key: String?,
+          ?prompt_cache_options: OpenAI::Beta::BetaResponse::PromptCacheOptions,
+          ?prompt_cache_retention: OpenAI::Models::Beta::BetaResponse::prompt_cache_retention?,
+          ?reasoning: OpenAI::Beta::BetaResponse::Reasoning?,
+          ?safety_identifier: String?,
+          ?service_tier: OpenAI::Models::Beta::BetaResponse::service_tier?,
+          ?status: OpenAI::Models::Beta::beta_response_status,
+          ?text: OpenAI::Beta::BetaResponseTextConfig,
+          ?top_logprobs: Integer?,
+          ?truncation: OpenAI::Models::Beta::BetaResponse::truncation?,
+          ?usage: OpenAI::Beta::BetaResponseUsage,
+          ?user: String
         }
 
         type incomplete_details =
           {
-            reason: OpenAI::Models::Beta::BetaResponse::IncompleteDetails::reason
+            ?reason: OpenAI::Models::Beta::BetaResponse::IncompleteDetails::reason
           }
 
         class IncompleteDetails < OpenAI::Internal::Type::BaseModel
@@ -219,7 +228,7 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            reason: OpenAI::Models::Beta::BetaResponse::IncompleteDetails::reason
+            ?reason: OpenAI::Models::Beta::BetaResponse::IncompleteDetails::reason
           }
 
           type reason =
@@ -479,14 +488,14 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           type beta_specific_programmatic_tool_calling_param =
-            { type: :programmatic_tool_calling }
+            { ?type: :programmatic_tool_calling }
 
           class BetaSpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :programmatic_tool_calling
 
             def initialize: (?type: :programmatic_tool_calling) -> void
 
-            def to_hash: -> { type: :programmatic_tool_calling }
+            def to_hash: -> { ?type: :programmatic_tool_calling }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponse::tool_choice]
@@ -537,7 +546,7 @@ module OpenAI
                 category_scores: ::Hash[Symbol, Float],
                 flagged: bool,
                 model: String,
-                type: :moderation_result
+                ?type: :moderation_result
               }
 
             class ModerationResult < OpenAI::Internal::Type::BaseModel
@@ -568,7 +577,7 @@ module OpenAI
                 category_scores: ::Hash[Symbol, Float],
                 flagged: bool,
                 model: String,
-                type: :moderation_result
+                ?type: :moderation_result
               }
 
               type category_applied_input_type = :text | :image
@@ -583,7 +592,7 @@ module OpenAI
               end
             end
 
-            type error = { code: String, message: String, type: :error }
+            type error = { code: String, message: String, ?type: :error }
 
             class Error < OpenAI::Internal::Type::BaseModel
               attr_accessor code: String
@@ -598,7 +607,7 @@ module OpenAI
                 ?type: :error
               ) -> void
 
-              def to_hash: -> { code: String, message: String, type: :error }
+              def to_hash: -> { code: String, message: String, ?type: :error }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponse::Moderation::input]
@@ -618,7 +627,7 @@ module OpenAI
                 category_scores: ::Hash[Symbol, Float],
                 flagged: bool,
                 model: String,
-                type: :moderation_result
+                ?type: :moderation_result
               }
 
             class ModerationResult < OpenAI::Internal::Type::BaseModel
@@ -649,7 +658,7 @@ module OpenAI
                 category_scores: ::Hash[Symbol, Float],
                 flagged: bool,
                 model: String,
-                type: :moderation_result
+                ?type: :moderation_result
               }
 
               type category_applied_input_type = :text | :image
@@ -664,7 +673,7 @@ module OpenAI
               end
             end
 
-            type error = { code: String, message: String, type: :error }
+            type error = { code: String, message: String, ?type: :error }
 
             class Error < OpenAI::Internal::Type::BaseModel
               attr_accessor code: String
@@ -679,17 +688,122 @@ module OpenAI
                 ?type: :error
               ) -> void
 
-              def to_hash: -> { code: String, message: String, type: :error }
+              def to_hash: -> { code: String, message: String, ?type: :error }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponse::Moderation::output]
           end
         end
 
+        type prompt_cache_diagnostics =
+          OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss
+          | OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheHit
+          | OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::ComparisonResponseNotFound
+          | OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::Unavailable
+
+        module PromptCacheDiagnostics
+          extend OpenAI::Internal::Type::Union
+
+          type cache_miss =
+            {
+              cache_missed_tokens: Integer,
+              reason: OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::reason,
+              ?type: :cache_miss,
+              ?comparison_reusable_tokens: Integer
+            }
+
+          class CacheMiss < OpenAI::Internal::Type::BaseModel
+            attr_accessor cache_missed_tokens: Integer
+
+            attr_accessor reason: OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::reason
+
+            attr_accessor type: :cache_miss
+
+            attr_reader comparison_reusable_tokens: Integer?
+
+            def comparison_reusable_tokens=: (Integer) -> Integer
+
+            def initialize: (
+              cache_missed_tokens: Integer,
+              reason: OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::reason,
+              ?comparison_reusable_tokens: Integer,
+              ?type: :cache_miss
+            ) -> void
+
+            def to_hash: -> {
+              cache_missed_tokens: Integer,
+              reason: OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::reason,
+              ?type: :cache_miss,
+              ?comparison_reusable_tokens: Integer
+            }
+
+            type reason =
+              :model_changed
+              | :prompt_cache_key_changed
+              | :tools_changed
+              | :text_format_changed
+              | :reasoning_effort_changed
+              | :verbosity_changed
+              | :context_compacted
+              | :input_changed
+              | :service_tier_changed
+
+            module Reason
+              extend OpenAI::Internal::Type::Enum
+
+              MODEL_CHANGED: :model_changed
+              PROMPT_CACHE_KEY_CHANGED: :prompt_cache_key_changed
+              TOOLS_CHANGED: :tools_changed
+              TEXT_FORMAT_CHANGED: :text_format_changed
+              REASONING_EFFORT_CHANGED: :reasoning_effort_changed
+              VERBOSITY_CHANGED: :verbosity_changed
+              CONTEXT_COMPACTED: :context_compacted
+              INPUT_CHANGED: :input_changed
+              SERVICE_TIER_CHANGED: :service_tier_changed
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::reason]
+            end
+          end
+
+          type cache_hit = { ?type: :cache_hit }
+
+          class CacheHit < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :cache_hit
+
+            def initialize: (?type: :cache_hit) -> void
+
+            def to_hash: -> { ?type: :cache_hit }
+          end
+
+          type comparison_response_not_found =
+            { ?type: :comparison_response_not_found }
+
+          class ComparisonResponseNotFound < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :comparison_response_not_found
+
+            def initialize: (?type: :comparison_response_not_found) -> void
+
+            def to_hash: -> { ?type: :comparison_response_not_found }
+          end
+
+          type unavailable = { ?type: :unavailable }
+
+          class Unavailable < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :unavailable
+
+            def initialize: (?type: :unavailable) -> void
+
+            def to_hash: -> { ?type: :unavailable }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponse::prompt_cache_diagnostics]
+        end
+
         type prompt_cache_options =
           {
             mode: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::mode,
-            ttl: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::ttl
+            ttl: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::ttl,
+            ?comparison_response_id: String?
           }
 
         class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
@@ -697,14 +811,18 @@ module OpenAI
 
           attr_accessor ttl: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::ttl
 
+          attr_accessor comparison_response_id: String?
+
           def initialize: (
             mode: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::mode,
-            ttl: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::ttl
+            ttl: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::ttl,
+            ?comparison_response_id: String?
           ) -> void
 
           def to_hash: -> {
             mode: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::mode,
-            ttl: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::ttl
+            ttl: OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::ttl,
+            ?comparison_response_id: String?
           }
 
           type mode = :implicit | :explicit
@@ -742,11 +860,11 @@ module OpenAI
 
         type reasoning =
           {
-            context: OpenAI::Models::Beta::BetaResponse::Reasoning::context?,
-            effort: OpenAI::Models::Beta::BetaResponse::Reasoning::effort?,
-            generate_summary: OpenAI::Models::Beta::BetaResponse::Reasoning::generate_summary?,
-            mode: OpenAI::Models::Beta::BetaResponse::Reasoning::mode,
-            summary: OpenAI::Models::Beta::BetaResponse::Reasoning::summary?
+            ?context: OpenAI::Models::Beta::BetaResponse::Reasoning::context?,
+            ?effort: OpenAI::Models::Beta::BetaResponse::Reasoning::effort?,
+            ?generate_summary: OpenAI::Models::Beta::BetaResponse::Reasoning::generate_summary?,
+            ?mode: OpenAI::Models::Beta::BetaResponse::Reasoning::mode,
+            ?summary: OpenAI::Models::Beta::BetaResponse::Reasoning::summary?
           }
 
         class Reasoning < OpenAI::Internal::Type::BaseModel
@@ -773,11 +891,11 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            context: OpenAI::Models::Beta::BetaResponse::Reasoning::context?,
-            effort: OpenAI::Models::Beta::BetaResponse::Reasoning::effort?,
-            generate_summary: OpenAI::Models::Beta::BetaResponse::Reasoning::generate_summary?,
-            mode: OpenAI::Models::Beta::BetaResponse::Reasoning::mode,
-            summary: OpenAI::Models::Beta::BetaResponse::Reasoning::summary?
+            ?context: OpenAI::Models::Beta::BetaResponse::Reasoning::context?,
+            ?effort: OpenAI::Models::Beta::BetaResponse::Reasoning::effort?,
+            ?generate_summary: OpenAI::Models::Beta::BetaResponse::Reasoning::generate_summary?,
+            ?mode: OpenAI::Models::Beta::BetaResponse::Reasoning::mode,
+            ?summary: OpenAI::Models::Beta::BetaResponse::Reasoning::summary?
           }
 
           type context = :auto | :current_turn | :all_turns

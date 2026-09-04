@@ -8,12 +8,12 @@ module OpenAI
           content: String?,
           refusal: String?,
           id: String,
-          role: :assistant,
-          annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
-          audio: OpenAI::Chat::ChatCompletionAudio?,
-          function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
-          tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call],
-          content_parts: ::Array[OpenAI::Models::Chat::ChatCompletionStoreMessage::content_part]?
+          ?role: :assistant,
+          ?annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
+          ?audio: OpenAI::Chat::ChatCompletionAudio?,
+          ?function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
+          ?tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call],
+          ?content_parts: ::Array[OpenAI::Models::Chat::ChatCompletionStoreMessage::content_part]?
         }
 
       class ChatCompletionStoreMessage < OpenAI::Models::Chat::ChatCompletionMessage
@@ -43,12 +43,12 @@ module OpenAI
           content: String?,
           refusal: String?,
           id: String,
-          role: :assistant,
-          annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
-          audio: OpenAI::Chat::ChatCompletionAudio?,
-          function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
-          tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call],
-          content_parts: ::Array[OpenAI::Models::Chat::ChatCompletionStoreMessage::content_part]?
+          ?role: :assistant,
+          ?annotations: ::Array[OpenAI::Chat::ChatCompletionMessage::Annotation],
+          ?audio: OpenAI::Chat::ChatCompletionAudio?,
+          ?function_call: OpenAI::Chat::ChatCompletionMessage::FunctionCall,
+          ?tool_calls: ::Array[OpenAI::Models::Chat::chat_completion_message_tool_call],
+          ?content_parts: ::Array[OpenAI::Models::Chat::ChatCompletionStoreMessage::content_part]?
         }
 
         type content_part =

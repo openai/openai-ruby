@@ -5,8 +5,8 @@ module OpenAI
         completion_tokens: Integer,
         prompt_tokens: Integer,
         total_tokens: Integer,
-        completion_tokens_details: OpenAI::CompletionUsage::CompletionTokensDetails,
-        prompt_tokens_details: OpenAI::CompletionUsage::PromptTokensDetails
+        ?completion_tokens_details: OpenAI::CompletionUsage::CompletionTokensDetails,
+        ?prompt_tokens_details: OpenAI::CompletionUsage::PromptTokensDetails
       }
 
     class CompletionUsage < OpenAI::Internal::Type::BaseModel
@@ -40,17 +40,17 @@ module OpenAI
         completion_tokens: Integer,
         prompt_tokens: Integer,
         total_tokens: Integer,
-        completion_tokens_details: OpenAI::CompletionUsage::CompletionTokensDetails,
-        prompt_tokens_details: OpenAI::CompletionUsage::PromptTokensDetails
+        ?completion_tokens_details: OpenAI::CompletionUsage::CompletionTokensDetails,
+        ?prompt_tokens_details: OpenAI::CompletionUsage::PromptTokensDetails
       }
 
       type completion_tokens_details =
         {
-          accepted_prediction_tokens: Integer,
-          audio_tokens: Integer,
-          reasoning_tokens: Integer,
-          rejected_prediction_tokens: Integer,
-          text_tokens: Integer
+          ?accepted_prediction_tokens: Integer,
+          ?audio_tokens: Integer,
+          ?reasoning_tokens: Integer,
+          ?rejected_prediction_tokens: Integer,
+          ?text_tokens: Integer
         }
 
       class CompletionTokensDetails < OpenAI::Internal::Type::BaseModel
@@ -83,21 +83,21 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          accepted_prediction_tokens: Integer,
-          audio_tokens: Integer,
-          reasoning_tokens: Integer,
-          rejected_prediction_tokens: Integer,
-          text_tokens: Integer
+          ?accepted_prediction_tokens: Integer,
+          ?audio_tokens: Integer,
+          ?reasoning_tokens: Integer,
+          ?rejected_prediction_tokens: Integer,
+          ?text_tokens: Integer
         }
       end
 
       type prompt_tokens_details =
         {
-          audio_tokens: Integer,
-          cache_write_tokens: Integer,
-          cached_tokens: Integer,
-          image_tokens: Integer,
-          text_tokens: Integer
+          ?audio_tokens: Integer,
+          ?cache_write_tokens: Integer,
+          ?cached_tokens: Integer,
+          ?image_tokens: Integer,
+          ?text_tokens: Integer
         }
 
       class PromptTokensDetails < OpenAI::Internal::Type::BaseModel
@@ -130,11 +130,11 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          audio_tokens: Integer,
-          cache_write_tokens: Integer,
-          cached_tokens: Integer,
-          image_tokens: Integer,
-          text_tokens: Integer
+          ?audio_tokens: Integer,
+          ?cache_write_tokens: Integer,
+          ?cached_tokens: Integer,
+          ?image_tokens: Integer,
+          ?text_tokens: Integer
         }
       end
     end

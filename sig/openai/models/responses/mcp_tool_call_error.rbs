@@ -10,7 +10,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         type mcp_protocol_error =
-          { code: Integer, message: String, type: :mcp_protocol_error }
+          { code: Integer, message: String, ?type: :mcp_protocol_error }
 
         class McpProtocolError < OpenAI::Internal::Type::BaseModel
           attr_accessor code: Integer
@@ -28,12 +28,12 @@ module OpenAI
           def to_hash: -> {
             code: Integer,
             message: String,
-            type: :mcp_protocol_error
+            ?type: :mcp_protocol_error
           }
         end
 
         type mcp_tool_execution_error =
-          { content: top, type: :mcp_tool_execution_error }
+          { content: top, ?type: :mcp_tool_execution_error }
 
         class McpToolExecutionError < OpenAI::Internal::Type::BaseModel
           attr_accessor content: top
@@ -45,10 +45,10 @@ module OpenAI
             ?type: :mcp_tool_execution_error
           ) -> void
 
-          def to_hash: -> { content: top, type: :mcp_tool_execution_error }
+          def to_hash: -> { content: top, ?type: :mcp_tool_execution_error }
         end
 
-        type http_error = { code: Integer, message: String, type: :http_error }
+        type http_error = { code: Integer, message: String, ?type: :http_error }
 
         class HTTPError < OpenAI::Internal::Type::BaseModel
           attr_accessor code: Integer
@@ -63,7 +63,7 @@ module OpenAI
             ?type: :http_error
           ) -> void
 
-          def to_hash: -> { code: Integer, message: String, type: :http_error }
+          def to_hash: -> { code: Integer, message: String, ?type: :http_error }
         end
 
         def self?.variants: -> ::Array[OpenAI::Models::Responses::mcp_tool_call_error]

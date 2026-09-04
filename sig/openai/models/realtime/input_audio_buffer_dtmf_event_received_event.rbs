@@ -5,7 +5,7 @@ module OpenAI
         {
           event: String,
           received_at: Integer,
-          type: :"input_audio_buffer.dtmf_event_received"
+          ?type: :"input_audio_buffer.dtmf_event_received"
         }
 
       class InputAudioBufferDtmfEventReceivedEvent < OpenAI::Internal::Type::BaseModel
@@ -24,7 +24,7 @@ module OpenAI
         def to_hash: -> {
           event: String,
           received_at: Integer,
-          type: :"input_audio_buffer.dtmf_event_received"
+          ?type: :"input_audio_buffer.dtmf_event_received"
         }
       end
     end

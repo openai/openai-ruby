@@ -9,7 +9,7 @@ module OpenAI
             datasource_item: ::Hash[Symbol, top],
             datasource_item_id: Integer,
             eval_id: String,
-            object: :"eval.run.output_item",
+            ?object: :"eval.run.output_item",
             results: ::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Result],
             run_id: String,
             sample: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample,
@@ -56,7 +56,7 @@ module OpenAI
             datasource_item: ::Hash[Symbol, top],
             datasource_item_id: Integer,
             eval_id: String,
-            object: :"eval.run.output_item",
+            ?object: :"eval.run.output_item",
             results: ::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Result],
             run_id: String,
             sample: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample,
@@ -68,8 +68,8 @@ module OpenAI
               name: String,
               passed: bool,
               score: Float,
-              sample: ::Hash[Symbol, top]?,
-              type: String
+              ?sample: ::Hash[Symbol, top]?,
+              ?type: String
             }
 
           class Result < OpenAI::Internal::Type::BaseModel
@@ -97,8 +97,8 @@ module OpenAI
               name: String,
               passed: bool,
               score: Float,
-              sample: ::Hash[Symbol, top]?,
-              type: String
+              ?sample: ::Hash[Symbol, top]?,
+              ?type: String
             }
           end
 
@@ -175,7 +175,7 @@ module OpenAI
               def to_hash: -> { content: String, role: String }
             end
 
-            type output = { content: String, role: String }
+            type output = { ?content: String, ?role: String }
 
             class Output < OpenAI::Internal::Type::BaseModel
               attr_reader content: String?
@@ -188,7 +188,7 @@ module OpenAI
 
               def initialize: (?content: String, ?role: String) -> void
 
-              def to_hash: -> { content: String, role: String }
+              def to_hash: -> { ?content: String, ?role: String }
             end
 
             type usage =

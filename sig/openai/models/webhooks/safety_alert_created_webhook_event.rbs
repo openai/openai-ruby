@@ -6,8 +6,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::SafetyAlertCreatedWebhookEvent::Data,
-          object: :event,
-          type: :"safety.alert.created"
+          ?object: :event,
+          ?type: :"safety.alert.created"
         }
 
       class SafetyAlertCreatedWebhookEvent < OpenAI::Internal::Type::BaseModel
@@ -33,8 +33,8 @@ module OpenAI
           id: String,
           created_at: Integer,
           data: OpenAI::Webhooks::SafetyAlertCreatedWebhookEvent::Data,
-          object: :event,
-          type: :"safety.alert.created"
+          ?object: :event,
+          ?type: :"safety.alert.created"
         }
 
         type data = { id: String }

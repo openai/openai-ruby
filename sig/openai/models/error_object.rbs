@@ -6,7 +6,7 @@ module OpenAI
         message: String,
         param: String?,
         type: String,
-        misalignment: OpenAI::ErrorObject::Misalignment
+        ?misalignment: OpenAI::ErrorObject::Misalignment
       }
 
     class ErrorObject < OpenAI::Internal::Type::BaseModel
@@ -37,14 +37,14 @@ module OpenAI
         message: String,
         param: String?,
         type: String,
-        misalignment: OpenAI::ErrorObject::Misalignment
+        ?misalignment: OpenAI::ErrorObject::Misalignment
       }
 
       type misalignment =
         {
-          detailed_explanation: String,
-          error_type: OpenAI::Models::ErrorObject::Misalignment::error_type,
-          steer: OpenAI::ErrorObject::Misalignment::Steer
+          ?detailed_explanation: String,
+          ?error_type: OpenAI::Models::ErrorObject::Misalignment::error_type,
+          ?steer: OpenAI::ErrorObject::Misalignment::Steer
         }
 
       class Misalignment < OpenAI::Internal::Type::BaseModel
@@ -71,9 +71,9 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          detailed_explanation: String,
-          error_type: OpenAI::Models::ErrorObject::Misalignment::error_type,
-          steer: OpenAI::ErrorObject::Misalignment::Steer
+          ?detailed_explanation: String,
+          ?error_type: OpenAI::Models::ErrorObject::Misalignment::error_type,
+          ?steer: OpenAI::ErrorObject::Misalignment::Steer
         }
 
         type error_type =

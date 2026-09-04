@@ -3,8 +3,12 @@ module OpenAI
     module Evals
       module Runs
         type output_item_retrieve_params =
-          { eval_id: String, run_id: String, output_item_id: String }
-          & OpenAI::Internal::Type::request_parameters
+          {
+            eval_id: String,
+            run_id: String,
+            output_item_id: String,
+            ?request_options: OpenAI::request_opts
+          }
 
         class OutputItemRetrieveParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -27,7 +31,7 @@ module OpenAI
             eval_id: String,
             run_id: String,
             output_item_id: String,
-            request_options: OpenAI::RequestOptions
+            ?request_options: OpenAI::RequestOptions
           }
         end
       end

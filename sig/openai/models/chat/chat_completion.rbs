@@ -9,12 +9,12 @@ module OpenAI
           choices: ::Array[OpenAI::Chat::ChatCompletion::Choice],
           created: Integer,
           model: String,
-          object: :"chat.completion",
-          metadata: OpenAI::Models::metadata?,
-          moderation: OpenAI::Chat::ChatCompletion::Moderation?,
-          service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?,
-          system_fingerprint: String,
-          usage: OpenAI::CompletionUsage
+          ?object: :"chat.completion",
+          ?metadata: OpenAI::Models::metadata?,
+          ?moderation: OpenAI::Chat::ChatCompletion::Moderation?,
+          ?service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?,
+          ?system_fingerprint: String,
+          ?usage: OpenAI::CompletionUsage
         }
 
       class ChatCompletion < OpenAI::Internal::Type::BaseModel
@@ -60,12 +60,12 @@ module OpenAI
           choices: ::Array[OpenAI::Chat::ChatCompletion::Choice],
           created: Integer,
           model: String,
-          object: :"chat.completion",
-          metadata: OpenAI::Models::metadata?,
-          moderation: OpenAI::Chat::ChatCompletion::Moderation?,
-          service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?,
-          system_fingerprint: String,
-          usage: OpenAI::CompletionUsage
+          ?object: :"chat.completion",
+          ?metadata: OpenAI::Models::metadata?,
+          ?moderation: OpenAI::Chat::ChatCompletion::Moderation?,
+          ?service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?,
+          ?system_fingerprint: String,
+          ?usage: OpenAI::CompletionUsage
         }
 
         type choice =
@@ -169,7 +169,7 @@ module OpenAI
               {
                 model: String,
                 results: ::Array[OpenAI::Chat::ChatCompletion::Moderation::Input::ModerationResults::Result],
-                type: :moderation_results
+                ?type: :moderation_results
               }
 
             class ModerationResults < OpenAI::Internal::Type::BaseModel
@@ -188,7 +188,7 @@ module OpenAI
               def to_hash: -> {
                 model: String,
                 results: ::Array[OpenAI::Chat::ChatCompletion::Moderation::Input::ModerationResults::Result],
-                type: :moderation_results
+                ?type: :moderation_results
               }
 
               type result =
@@ -198,7 +198,7 @@ module OpenAI
                   category_scores: ::Hash[Symbol, Float],
                   flagged: bool,
                   model: String,
-                  type: :moderation_result
+                  ?type: :moderation_result
                 }
 
               class Result < OpenAI::Internal::Type::BaseModel
@@ -229,7 +229,7 @@ module OpenAI
                   category_scores: ::Hash[Symbol, Float],
                   flagged: bool,
                   model: String,
-                  type: :moderation_result
+                  ?type: :moderation_result
                 }
 
                 type category_applied_input_type = :text | :image
@@ -245,7 +245,7 @@ module OpenAI
               end
             end
 
-            type error = { code: String, message: String, type: :error }
+            type error = { code: String, message: String, ?type: :error }
 
             class Error < OpenAI::Internal::Type::BaseModel
               attr_accessor code: String
@@ -260,7 +260,7 @@ module OpenAI
                 ?type: :error
               ) -> void
 
-              def to_hash: -> { code: String, message: String, type: :error }
+              def to_hash: -> { code: String, message: String, ?type: :error }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Chat::ChatCompletion::Moderation::input]
@@ -277,7 +277,7 @@ module OpenAI
               {
                 model: String,
                 results: ::Array[OpenAI::Chat::ChatCompletion::Moderation::Output::ModerationResults::Result],
-                type: :moderation_results
+                ?type: :moderation_results
               }
 
             class ModerationResults < OpenAI::Internal::Type::BaseModel
@@ -296,7 +296,7 @@ module OpenAI
               def to_hash: -> {
                 model: String,
                 results: ::Array[OpenAI::Chat::ChatCompletion::Moderation::Output::ModerationResults::Result],
-                type: :moderation_results
+                ?type: :moderation_results
               }
 
               type result =
@@ -306,7 +306,7 @@ module OpenAI
                   category_scores: ::Hash[Symbol, Float],
                   flagged: bool,
                   model: String,
-                  type: :moderation_result
+                  ?type: :moderation_result
                 }
 
               class Result < OpenAI::Internal::Type::BaseModel
@@ -337,7 +337,7 @@ module OpenAI
                   category_scores: ::Hash[Symbol, Float],
                   flagged: bool,
                   model: String,
-                  type: :moderation_result
+                  ?type: :moderation_result
                 }
 
                 type category_applied_input_type = :text | :image
@@ -353,7 +353,7 @@ module OpenAI
               end
             end
 
-            type error = { code: String, message: String, type: :error }
+            type error = { code: String, message: String, ?type: :error }
 
             class Error < OpenAI::Internal::Type::BaseModel
               attr_accessor code: String
@@ -368,7 +368,7 @@ module OpenAI
                 ?type: :error
               ) -> void
 
-              def to_hash: -> { code: String, message: String, type: :error }
+              def to_hash: -> { code: String, message: String, ?type: :error }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Chat::ChatCompletion::Moderation::output]

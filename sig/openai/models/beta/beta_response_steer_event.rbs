@@ -7,7 +7,7 @@ module OpenAI
         {
           input: OpenAI::Models::Beta::beta_response_steer_input,
           previous_response_id: String,
-          type: :"response.steer"
+          ?type: :"response.steer"
         }
 
       class BetaResponseSteerEvent < OpenAI::Internal::Type::BaseModel
@@ -26,7 +26,7 @@ module OpenAI
         def to_hash: -> {
           input: OpenAI::Models::Beta::beta_response_steer_input,
           previous_response_id: String,
-          type: :"response.steer"
+          ?type: :"response.steer"
         }
       end
     end

@@ -3,13 +3,13 @@ module OpenAI
     module Chat
       type completion_list_params =
         {
-          after: String,
-          limit: Integer,
-          metadata: OpenAI::Models::metadata?,
-          model: String,
-          order: OpenAI::Models::Chat::CompletionListParams::order
+          ?after: String,
+          ?limit: Integer,
+          ?metadata: OpenAI::Models::metadata?,
+          ?model: String,
+          ?order: OpenAI::Models::Chat::CompletionListParams::order,
+          ?request_options: OpenAI::request_opts
         }
-        & OpenAI::Internal::Type::request_parameters
 
       class CompletionListParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -45,12 +45,12 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          after: String,
-          limit: Integer,
-          metadata: OpenAI::Models::metadata?,
-          model: String,
-          order: OpenAI::Models::Chat::CompletionListParams::order,
-          request_options: OpenAI::RequestOptions
+          ?after: String,
+          ?limit: Integer,
+          ?metadata: OpenAI::Models::metadata?,
+          ?model: String,
+          ?order: OpenAI::Models::Chat::CompletionListParams::order,
+          ?request_options: OpenAI::RequestOptions
         }
 
         type order = :asc | :desc

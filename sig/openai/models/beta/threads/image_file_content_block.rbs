@@ -3,7 +3,7 @@ module OpenAI
     module Beta
       module Threads
         type image_file_content_block =
-          { image_file: OpenAI::Beta::Threads::ImageFile, type: :image_file }
+          { image_file: OpenAI::Beta::Threads::ImageFile, ?type: :image_file }
 
         class ImageFileContentBlock < OpenAI::Internal::Type::BaseModel
           attr_accessor image_file: OpenAI::Beta::Threads::ImageFile
@@ -17,7 +17,7 @@ module OpenAI
 
           def to_hash: -> {
             image_file: OpenAI::Beta::Threads::ImageFile,
-            type: :image_file
+            ?type: :image_file
           }
         end
       end

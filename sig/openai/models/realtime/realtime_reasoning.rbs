@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Realtime
       type realtime_reasoning =
-        { effort: OpenAI::Models::Realtime::realtime_reasoning_effort }
+        { ?effort: OpenAI::Models::Realtime::realtime_reasoning_effort }
 
       class RealtimeReasoning < OpenAI::Internal::Type::BaseModel
         attr_reader effort: OpenAI::Models::Realtime::realtime_reasoning_effort?
@@ -16,7 +16,7 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          effort: OpenAI::Models::Realtime::realtime_reasoning_effort
+          ?effort: OpenAI::Models::Realtime::realtime_reasoning_effort
         }
       end
     end

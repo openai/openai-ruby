@@ -9,7 +9,7 @@ module OpenAI
         partial_image_index: Integer,
         quality: OpenAI::Models::ImageEditPartialImageEvent::quality,
         size: OpenAI::Models::ImageEditPartialImageEvent::size,
-        type: :"image_edit.partial_image"
+        ?type: :"image_edit.partial_image"
       }
 
     class ImageEditPartialImageEvent < OpenAI::Internal::Type::BaseModel
@@ -48,7 +48,7 @@ module OpenAI
         partial_image_index: Integer,
         quality: OpenAI::Models::ImageEditPartialImageEvent::quality,
         size: OpenAI::Models::ImageEditPartialImageEvent::size,
-        type: :"image_edit.partial_image"
+        ?type: :"image_edit.partial_image"
       }
 
       type background = :transparent | :opaque | :auto

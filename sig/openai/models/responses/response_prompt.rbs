@@ -4,8 +4,8 @@ module OpenAI
       type response_prompt =
         {
           id: String,
-          variables: ::Hash[Symbol, OpenAI::Models::Responses::ResponsePrompt::variable]?,
-          version: String?
+          ?variables: ::Hash[Symbol, OpenAI::Models::Responses::ResponsePrompt::variable]?,
+          ?version: String?
         }
 
       class ResponsePrompt < OpenAI::Internal::Type::BaseModel
@@ -23,8 +23,8 @@ module OpenAI
 
         def to_hash: -> {
           id: String,
-          variables: ::Hash[Symbol, OpenAI::Models::Responses::ResponsePrompt::variable]?,
-          version: String?
+          ?variables: ::Hash[Symbol, OpenAI::Models::Responses::ResponsePrompt::variable]?,
+          ?version: String?
         }
 
         type variable =

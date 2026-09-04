@@ -6,10 +6,10 @@ module OpenAI
       type beta_response_input_image =
         {
           detail: OpenAI::Models::Beta::BetaResponseInputImage::detail,
-          type: :input_image,
-          file_id: String?,
-          image_url: String?,
-          prompt_cache_breakpoint: OpenAI::Beta::BetaResponseInputImage::PromptCacheBreakpoint
+          ?type: :input_image,
+          ?file_id: String?,
+          ?image_url: String?,
+          ?prompt_cache_breakpoint: OpenAI::Beta::BetaResponseInputImage::PromptCacheBreakpoint
         }
 
       class BetaResponseInputImage < OpenAI::Internal::Type::BaseModel
@@ -37,10 +37,10 @@ module OpenAI
 
         def to_hash: -> {
           detail: OpenAI::Models::Beta::BetaResponseInputImage::detail,
-          type: :input_image,
-          file_id: String?,
-          image_url: String?,
-          prompt_cache_breakpoint: OpenAI::Beta::BetaResponseInputImage::PromptCacheBreakpoint
+          ?type: :input_image,
+          ?file_id: String?,
+          ?image_url: String?,
+          ?prompt_cache_breakpoint: OpenAI::Beta::BetaResponseInputImage::PromptCacheBreakpoint
         }
 
         type detail = :low | :high | :auto | :original
@@ -56,14 +56,14 @@ module OpenAI
           def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputImage::detail]
         end
 
-        type prompt_cache_breakpoint = { mode: :explicit }
+        type prompt_cache_breakpoint = { ?mode: :explicit }
 
         class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
           attr_accessor mode: :explicit
 
           def initialize: (?mode: :explicit) -> void
 
-          def to_hash: -> { mode: :explicit }
+          def to_hash: -> { ?mode: :explicit }
         end
       end
     end

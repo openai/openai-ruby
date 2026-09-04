@@ -7,7 +7,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.custom_tool_call_input.delta"
+          ?type: :"response.custom_tool_call_input.delta"
         }
 
       class ResponseCustomToolCallInputDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -34,7 +34,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.custom_tool_call_input.delta"
+          ?type: :"response.custom_tool_call_input.delta"
         }
       end
     end

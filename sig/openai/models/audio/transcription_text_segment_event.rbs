@@ -8,7 +8,7 @@ module OpenAI
           speaker: String,
           start: Float,
           text: String,
-          type: :"transcript.text.segment"
+          ?type: :"transcript.text.segment"
         }
 
       class TranscriptionTextSegmentEvent < OpenAI::Internal::Type::BaseModel
@@ -39,7 +39,7 @@ module OpenAI
           speaker: String,
           start: Float,
           text: String,
-          type: :"transcript.text.segment"
+          ?type: :"transcript.text.segment"
         }
       end
     end

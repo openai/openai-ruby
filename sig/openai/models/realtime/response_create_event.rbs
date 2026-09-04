@@ -3,9 +3,9 @@ module OpenAI
     module Realtime
       type response_create_event =
         {
-          type: :"response.create",
-          event_id: String,
-          response: OpenAI::Realtime::RealtimeResponseCreateParams
+          ?type: :"response.create",
+          ?event_id: String,
+          ?response: OpenAI::Realtime::RealtimeResponseCreateParams
         }
 
       class ResponseCreateEvent < OpenAI::Internal::Type::BaseModel
@@ -28,9 +28,9 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :"response.create",
-          event_id: String,
-          response: OpenAI::Realtime::RealtimeResponseCreateParams
+          ?type: :"response.create",
+          ?event_id: String,
+          ?response: OpenAI::Realtime::RealtimeResponseCreateParams
         }
       end
     end

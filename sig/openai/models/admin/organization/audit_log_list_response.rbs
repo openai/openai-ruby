@@ -7,63 +7,63 @@ module OpenAI
             id: String,
             effective_at: Integer,
             type: OpenAI::Models::Admin::Organization::AuditLogListResponse::type_,
-            actor: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor?,
-            api_key_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated,
-            api_key_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyDeleted,
-            api_key_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated,
-            certificate_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateCreated,
-            certificate_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateDeleted,
-            certificate_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateUpdated,
-            certificates_activated: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated,
-            certificates_deactivated: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated,
-            checkpoint_permission_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated,
-            checkpoint_permission_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted,
-            external_key_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRegistered,
-            external_key_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved,
-            group_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated,
-            group_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted,
-            group_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated,
-            invite_accepted: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteAccepted,
-            invite_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteDeleted,
-            invite_sent: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent,
-            ip_allowlist_config_activated: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated,
-            ip_allowlist_config_deactivated: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated,
-            ip_allowlist_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistCreated,
-            ip_allowlist_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistDeleted,
-            ip_allowlist_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistUpdated,
-            login_failed: OpenAI::Models::Admin::Organization::AuditLogListResponse::LoginFailed,
-            login_succeeded: top,
-            logout_failed: OpenAI::Models::Admin::Organization::AuditLogListResponse::LogoutFailed,
-            logout_succeeded: top,
-            organization_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated,
-            project: OpenAI::Models::Admin::Organization::AuditLogListResponse::Project,
-            project_archived: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectArchived,
-            project_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated,
-            project_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectDeleted,
-            project_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated,
-            rate_limit_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitDeleted,
-            rate_limit_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated,
-            role_assignment_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentCreated,
-            role_assignment_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted,
-            role_bound_to_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource,
-            role_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated,
-            role_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted,
-            role_unbound_from_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource,
-            role_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated,
-            scim_disabled: OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimDisabled,
-            scim_enabled: OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimEnabled,
-            service_account_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated,
-            service_account_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted,
-            service_account_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated,
-            user_added: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded,
-            user_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted,
-            user_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated,
-            workload_identity_provider_mapping_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated,
-            workload_identity_provider_mapping_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted,
-            workload_identity_provider_mapping_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated,
-            workload_identity_provider_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated,
-            workload_identity_provider_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted,
-            workload_identity_provider_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated
+            ?actor: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor?,
+            ?api_key_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated,
+            ?api_key_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyDeleted,
+            ?api_key_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated,
+            ?certificate_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateCreated,
+            ?certificate_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateDeleted,
+            ?certificate_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateUpdated,
+            ?certificates_activated: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated,
+            ?certificates_deactivated: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated,
+            ?checkpoint_permission_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated,
+            ?checkpoint_permission_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted,
+            ?external_key_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRegistered,
+            ?external_key_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved,
+            ?group_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated,
+            ?group_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted,
+            ?group_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated,
+            ?invite_accepted: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteAccepted,
+            ?invite_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteDeleted,
+            ?invite_sent: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent,
+            ?ip_allowlist_config_activated: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated,
+            ?ip_allowlist_config_deactivated: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated,
+            ?ip_allowlist_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistCreated,
+            ?ip_allowlist_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistDeleted,
+            ?ip_allowlist_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistUpdated,
+            ?login_failed: OpenAI::Models::Admin::Organization::AuditLogListResponse::LoginFailed,
+            ?login_succeeded: top,
+            ?logout_failed: OpenAI::Models::Admin::Organization::AuditLogListResponse::LogoutFailed,
+            ?logout_succeeded: top,
+            ?organization_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated,
+            ?project: OpenAI::Models::Admin::Organization::AuditLogListResponse::Project,
+            ?project_archived: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectArchived,
+            ?project_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated,
+            ?project_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectDeleted,
+            ?project_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated,
+            ?rate_limit_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitDeleted,
+            ?rate_limit_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated,
+            ?role_assignment_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentCreated,
+            ?role_assignment_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted,
+            ?role_bound_to_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource,
+            ?role_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated,
+            ?role_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted,
+            ?role_unbound_from_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource,
+            ?role_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated,
+            ?scim_disabled: OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimDisabled,
+            ?scim_enabled: OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimEnabled,
+            ?service_account_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated,
+            ?service_account_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted,
+            ?service_account_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated,
+            ?user_added: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded,
+            ?user_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted,
+            ?user_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated,
+            ?workload_identity_provider_mapping_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated,
+            ?workload_identity_provider_mapping_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted,
+            ?workload_identity_provider_mapping_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated,
+            ?workload_identity_provider_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated,
+            ?workload_identity_provider_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted,
+            ?workload_identity_provider_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated
           }
 
         class AuditLogListResponse < OpenAI::Internal::Type::BaseModel
@@ -474,63 +474,63 @@ module OpenAI
             id: String,
             effective_at: Integer,
             type: OpenAI::Models::Admin::Organization::AuditLogListResponse::type_,
-            actor: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor?,
-            api_key_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated,
-            api_key_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyDeleted,
-            api_key_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated,
-            certificate_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateCreated,
-            certificate_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateDeleted,
-            certificate_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateUpdated,
-            certificates_activated: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated,
-            certificates_deactivated: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated,
-            checkpoint_permission_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated,
-            checkpoint_permission_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted,
-            external_key_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRegistered,
-            external_key_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved,
-            group_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated,
-            group_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted,
-            group_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated,
-            invite_accepted: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteAccepted,
-            invite_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteDeleted,
-            invite_sent: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent,
-            ip_allowlist_config_activated: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated,
-            ip_allowlist_config_deactivated: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated,
-            ip_allowlist_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistCreated,
-            ip_allowlist_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistDeleted,
-            ip_allowlist_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistUpdated,
-            login_failed: OpenAI::Models::Admin::Organization::AuditLogListResponse::LoginFailed,
-            login_succeeded: top,
-            logout_failed: OpenAI::Models::Admin::Organization::AuditLogListResponse::LogoutFailed,
-            logout_succeeded: top,
-            organization_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated,
-            project: OpenAI::Models::Admin::Organization::AuditLogListResponse::Project,
-            project_archived: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectArchived,
-            project_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated,
-            project_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectDeleted,
-            project_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated,
-            rate_limit_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitDeleted,
-            rate_limit_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated,
-            role_assignment_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentCreated,
-            role_assignment_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted,
-            role_bound_to_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource,
-            role_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated,
-            role_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted,
-            role_unbound_from_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource,
-            role_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated,
-            scim_disabled: OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimDisabled,
-            scim_enabled: OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimEnabled,
-            service_account_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated,
-            service_account_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted,
-            service_account_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated,
-            user_added: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded,
-            user_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted,
-            user_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated,
-            workload_identity_provider_mapping_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated,
-            workload_identity_provider_mapping_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted,
-            workload_identity_provider_mapping_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated,
-            workload_identity_provider_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated,
-            workload_identity_provider_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted,
-            workload_identity_provider_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated
+            ?actor: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor?,
+            ?api_key_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated,
+            ?api_key_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyDeleted,
+            ?api_key_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated,
+            ?certificate_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateCreated,
+            ?certificate_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateDeleted,
+            ?certificate_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateUpdated,
+            ?certificates_activated: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated,
+            ?certificates_deactivated: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated,
+            ?checkpoint_permission_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated,
+            ?checkpoint_permission_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted,
+            ?external_key_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRegistered,
+            ?external_key_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved,
+            ?group_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated,
+            ?group_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted,
+            ?group_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated,
+            ?invite_accepted: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteAccepted,
+            ?invite_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteDeleted,
+            ?invite_sent: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent,
+            ?ip_allowlist_config_activated: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated,
+            ?ip_allowlist_config_deactivated: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated,
+            ?ip_allowlist_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistCreated,
+            ?ip_allowlist_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistDeleted,
+            ?ip_allowlist_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistUpdated,
+            ?login_failed: OpenAI::Models::Admin::Organization::AuditLogListResponse::LoginFailed,
+            ?login_succeeded: top,
+            ?logout_failed: OpenAI::Models::Admin::Organization::AuditLogListResponse::LogoutFailed,
+            ?logout_succeeded: top,
+            ?organization_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated,
+            ?project: OpenAI::Models::Admin::Organization::AuditLogListResponse::Project,
+            ?project_archived: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectArchived,
+            ?project_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated,
+            ?project_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectDeleted,
+            ?project_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated,
+            ?rate_limit_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitDeleted,
+            ?rate_limit_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated,
+            ?role_assignment_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentCreated,
+            ?role_assignment_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted,
+            ?role_bound_to_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource,
+            ?role_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated,
+            ?role_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted,
+            ?role_unbound_from_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource,
+            ?role_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated,
+            ?scim_disabled: OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimDisabled,
+            ?scim_enabled: OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimEnabled,
+            ?service_account_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated,
+            ?service_account_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted,
+            ?service_account_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated,
+            ?user_added: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded,
+            ?user_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted,
+            ?user_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated,
+            ?workload_identity_provider_mapping_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated,
+            ?workload_identity_provider_mapping_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted,
+            ?workload_identity_provider_mapping_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated,
+            ?workload_identity_provider_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated,
+            ?workload_identity_provider_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted,
+            ?workload_identity_provider_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated
           }
 
           type type_ =
@@ -838,9 +838,9 @@ module OpenAI
 
           type actor =
             {
-              api_key: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey,
-              session: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session,
-              type: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::type_
+              ?api_key: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey,
+              ?session: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session,
+              ?type: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::type_
             }
 
           class Actor < OpenAI::Internal::Type::BaseModel
@@ -869,17 +869,17 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              api_key: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey,
-              session: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session,
-              type: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::type_
+              ?api_key: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey,
+              ?session: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session,
+              ?type: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::type_
             }
 
             type api_key =
               {
-                id: String,
-                service_account: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::ServiceAccount,
-                type: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::type_,
-                user: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::User
+                ?id: String,
+                ?service_account: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::ServiceAccount,
+                ?type: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::type_,
+                ?user: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::User
               }
 
             class APIKey < OpenAI::Internal::Type::BaseModel
@@ -913,13 +913,13 @@ module OpenAI
               ) -> void
 
               def to_hash: -> {
-                id: String,
-                service_account: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::ServiceAccount,
-                type: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::type_,
-                user: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::User
+                ?id: String,
+                ?service_account: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::ServiceAccount,
+                ?type: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::type_,
+                ?user: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::User
               }
 
-              type service_account = { id: String }
+              type service_account = { ?id: String }
 
               class ServiceAccount < OpenAI::Internal::Type::BaseModel
                 attr_reader id: String?
@@ -928,7 +928,7 @@ module OpenAI
 
                 def initialize: (?id: String) -> void
 
-                def to_hash: -> { id: String }
+                def to_hash: -> { ?id: String }
               end
 
               type type_ = :user | :service_account
@@ -942,7 +942,7 @@ module OpenAI
                 def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::type_]
               end
 
-              type user = { id: String, email: String }
+              type user = { ?id: String, ?email: String }
 
               class User < OpenAI::Internal::Type::BaseModel
                 attr_reader id: String?
@@ -955,14 +955,14 @@ module OpenAI
 
                 def initialize: (?id: String, ?email: String) -> void
 
-                def to_hash: -> { id: String, email: String }
+                def to_hash: -> { ?id: String, ?email: String }
               end
             end
 
             type session =
               {
-                ip_address: String,
-                user: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session::User
+                ?ip_address: String,
+                ?user: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session::User
               }
 
             class Session < OpenAI::Internal::Type::BaseModel
@@ -982,11 +982,11 @@ module OpenAI
               ) -> void
 
               def to_hash: -> {
-                ip_address: String,
-                user: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session::User
+                ?ip_address: String,
+                ?user: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session::User
               }
 
-              type user = { id: String, email: String }
+              type user = { ?id: String, ?email: String }
 
               class User < OpenAI::Internal::Type::BaseModel
                 attr_reader id: String?
@@ -999,7 +999,7 @@ module OpenAI
 
                 def initialize: (?id: String, ?email: String) -> void
 
-                def to_hash: -> { id: String, email: String }
+                def to_hash: -> { ?id: String, ?email: String }
               end
             end
 
@@ -1017,8 +1017,8 @@ module OpenAI
 
           type api_key_created =
             {
-              id: String,
-              data: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated::Data
+              ?id: String,
+              ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated::Data
             }
 
           class APIKeyCreated < OpenAI::Internal::Type::BaseModel
@@ -1038,11 +1038,11 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              data: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated::Data
+              ?id: String,
+              ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated::Data
             }
 
-            type data = { scopes: ::Array[String] }
+            type data = { ?scopes: ::Array[String] }
 
             class Data < OpenAI::Internal::Type::BaseModel
               attr_reader scopes: ::Array[String]?
@@ -1051,11 +1051,11 @@ module OpenAI
 
               def initialize: (?scopes: ::Array[String]) -> void
 
-              def to_hash: -> { scopes: ::Array[String] }
+              def to_hash: -> { ?scopes: ::Array[String] }
             end
           end
 
-          type api_key_deleted = { id: String }
+          type api_key_deleted = { ?id: String }
 
           class APIKeyDeleted < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -1064,13 +1064,13 @@ module OpenAI
 
             def initialize: (?id: String) -> void
 
-            def to_hash: -> { id: String }
+            def to_hash: -> { ?id: String }
           end
 
           type api_key_updated =
             {
-              id: String,
-              changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated::ChangesRequested
+              ?id: String,
+              ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated::ChangesRequested
             }
 
           class APIKeyUpdated < OpenAI::Internal::Type::BaseModel
@@ -1090,11 +1090,11 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated::ChangesRequested
+              ?id: String,
+              ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated::ChangesRequested
             }
 
-            type changes_requested = { scopes: ::Array[String] }
+            type changes_requested = { ?scopes: ::Array[String] }
 
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
               attr_reader scopes: ::Array[String]?
@@ -1103,11 +1103,11 @@ module OpenAI
 
               def initialize: (?scopes: ::Array[String]) -> void
 
-              def to_hash: -> { scopes: ::Array[String] }
+              def to_hash: -> { ?scopes: ::Array[String] }
             end
           end
 
-          type certificate_created = { id: String, name: String }
+          type certificate_created = { ?id: String, ?name: String }
 
           class CertificateCreated < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -1120,11 +1120,11 @@ module OpenAI
 
             def initialize: (?id: String, ?name: String) -> void
 
-            def to_hash: -> { id: String, name: String }
+            def to_hash: -> { ?id: String, ?name: String }
           end
 
           type certificate_deleted =
-            { id: String, certificate: String, name: String }
+            { ?id: String, ?certificate: String, ?name: String }
 
           class CertificateDeleted < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -1145,10 +1145,10 @@ module OpenAI
               ?name: String
             ) -> void
 
-            def to_hash: -> { id: String, certificate: String, name: String }
+            def to_hash: -> { ?id: String, ?certificate: String, ?name: String }
           end
 
-          type certificate_updated = { id: String, name: String }
+          type certificate_updated = { ?id: String, ?name: String }
 
           class CertificateUpdated < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -1161,12 +1161,12 @@ module OpenAI
 
             def initialize: (?id: String, ?name: String) -> void
 
-            def to_hash: -> { id: String, name: String }
+            def to_hash: -> { ?id: String, ?name: String }
           end
 
           type certificates_activated =
             {
-              certificates: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated::Certificate]
+              ?certificates: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated::Certificate]
             }
 
           class CertificatesActivated < OpenAI::Internal::Type::BaseModel
@@ -1181,10 +1181,10 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              certificates: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated::Certificate]
+              ?certificates: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated::Certificate]
             }
 
-            type certificate = { id: String, name: String }
+            type certificate = { ?id: String, ?name: String }
 
             class Certificate < OpenAI::Internal::Type::BaseModel
               attr_reader id: String?
@@ -1197,13 +1197,13 @@ module OpenAI
 
               def initialize: (?id: String, ?name: String) -> void
 
-              def to_hash: -> { id: String, name: String }
+              def to_hash: -> { ?id: String, ?name: String }
             end
           end
 
           type certificates_deactivated =
             {
-              certificates: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated::Certificate]
+              ?certificates: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated::Certificate]
             }
 
           class CertificatesDeactivated < OpenAI::Internal::Type::BaseModel
@@ -1218,10 +1218,10 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              certificates: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated::Certificate]
+              ?certificates: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated::Certificate]
             }
 
-            type certificate = { id: String, name: String }
+            type certificate = { ?id: String, ?name: String }
 
             class Certificate < OpenAI::Internal::Type::BaseModel
               attr_reader id: String?
@@ -1234,14 +1234,14 @@ module OpenAI
 
               def initialize: (?id: String, ?name: String) -> void
 
-              def to_hash: -> { id: String, name: String }
+              def to_hash: -> { ?id: String, ?name: String }
             end
           end
 
           type checkpoint_permission_created =
             {
-              id: String,
-              data: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated::Data
+              ?id: String,
+              ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated::Data
             }
 
           class CheckpointPermissionCreated < OpenAI::Internal::Type::BaseModel
@@ -1261,12 +1261,12 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              data: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated::Data
+              ?id: String,
+              ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated::Data
             }
 
             type data =
-              { fine_tuned_model_checkpoint: String, project_id: String }
+              { ?fine_tuned_model_checkpoint: String, ?project_id: String }
 
             class Data < OpenAI::Internal::Type::BaseModel
               attr_reader fine_tuned_model_checkpoint: String?
@@ -1283,13 +1283,13 @@ module OpenAI
               ) -> void
 
               def to_hash: -> {
-                fine_tuned_model_checkpoint: String,
-                project_id: String
+                ?fine_tuned_model_checkpoint: String,
+                ?project_id: String
               }
             end
           end
 
-          type checkpoint_permission_deleted = { id: String }
+          type checkpoint_permission_deleted = { ?id: String }
 
           class CheckpointPermissionDeleted < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -1298,10 +1298,10 @@ module OpenAI
 
             def initialize: (?id: String) -> void
 
-            def to_hash: -> { id: String }
+            def to_hash: -> { ?id: String }
           end
 
-          type external_key_registered = { id: String, data: top }
+          type external_key_registered = { ?id: String, ?data: top }
 
           class ExternalKeyRegistered < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -1314,10 +1314,10 @@ module OpenAI
 
             def initialize: (?id: String, ?data: top) -> void
 
-            def to_hash: -> { id: String, data: top }
+            def to_hash: -> { ?id: String, ?data: top }
           end
 
-          type external_key_removed = { id: String }
+          type external_key_removed = { ?id: String }
 
           class ExternalKeyRemoved < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -1326,13 +1326,13 @@ module OpenAI
 
             def initialize: (?id: String) -> void
 
-            def to_hash: -> { id: String }
+            def to_hash: -> { ?id: String }
           end
 
           type group_created =
             {
-              id: String,
-              data: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated::Data
+              ?id: String,
+              ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated::Data
             }
 
           class GroupCreated < OpenAI::Internal::Type::BaseModel
@@ -1352,11 +1352,11 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              data: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated::Data
+              ?id: String,
+              ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated::Data
             }
 
-            type data = { group_name: String }
+            type data = { ?group_name: String }
 
             class Data < OpenAI::Internal::Type::BaseModel
               attr_reader group_name: String?
@@ -1365,11 +1365,11 @@ module OpenAI
 
               def initialize: (?group_name: String) -> void
 
-              def to_hash: -> { group_name: String }
+              def to_hash: -> { ?group_name: String }
             end
           end
 
-          type group_deleted = { id: String }
+          type group_deleted = { ?id: String }
 
           class GroupDeleted < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -1378,13 +1378,13 @@ module OpenAI
 
             def initialize: (?id: String) -> void
 
-            def to_hash: -> { id: String }
+            def to_hash: -> { ?id: String }
           end
 
           type group_updated =
             {
-              id: String,
-              changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated::ChangesRequested
+              ?id: String,
+              ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated::ChangesRequested
             }
 
           class GroupUpdated < OpenAI::Internal::Type::BaseModel
@@ -1404,11 +1404,11 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated::ChangesRequested
+              ?id: String,
+              ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated::ChangesRequested
             }
 
-            type changes_requested = { group_name: String }
+            type changes_requested = { ?group_name: String }
 
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
               attr_reader group_name: String?
@@ -1417,11 +1417,11 @@ module OpenAI
 
               def initialize: (?group_name: String) -> void
 
-              def to_hash: -> { group_name: String }
+              def to_hash: -> { ?group_name: String }
             end
           end
 
-          type invite_accepted = { id: String }
+          type invite_accepted = { ?id: String }
 
           class InviteAccepted < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -1430,10 +1430,10 @@ module OpenAI
 
             def initialize: (?id: String) -> void
 
-            def to_hash: -> { id: String }
+            def to_hash: -> { ?id: String }
           end
 
-          type invite_deleted = { id: String }
+          type invite_deleted = { ?id: String }
 
           class InviteDeleted < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -1442,13 +1442,13 @@ module OpenAI
 
             def initialize: (?id: String) -> void
 
-            def to_hash: -> { id: String }
+            def to_hash: -> { ?id: String }
           end
 
           type invite_sent =
             {
-              id: String,
-              data: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent::Data
+              ?id: String,
+              ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent::Data
             }
 
           class InviteSent < OpenAI::Internal::Type::BaseModel
@@ -1468,11 +1468,11 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              data: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent::Data
+              ?id: String,
+              ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent::Data
             }
 
-            type data = { email: String, role: String }
+            type data = { ?email: String, ?role: String }
 
             class Data < OpenAI::Internal::Type::BaseModel
               attr_reader email: String?
@@ -1485,13 +1485,13 @@ module OpenAI
 
               def initialize: (?email: String, ?role: String) -> void
 
-              def to_hash: -> { email: String, role: String }
+              def to_hash: -> { ?email: String, ?role: String }
             end
           end
 
           type ip_allowlist_config_activated =
             {
-              configs: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated::Config]
+              ?configs: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated::Config]
             }
 
           class IPAllowlistConfigActivated < OpenAI::Internal::Type::BaseModel
@@ -1506,10 +1506,10 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              configs: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated::Config]
+              ?configs: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated::Config]
             }
 
-            type config = { id: String, name: String }
+            type config = { ?id: String, ?name: String }
 
             class Config < OpenAI::Internal::Type::BaseModel
               attr_reader id: String?
@@ -1522,13 +1522,13 @@ module OpenAI
 
               def initialize: (?id: String, ?name: String) -> void
 
-              def to_hash: -> { id: String, name: String }
+              def to_hash: -> { ?id: String, ?name: String }
             end
           end
 
           type ip_allowlist_config_deactivated =
             {
-              configs: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated::Config]
+              ?configs: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated::Config]
             }
 
           class IPAllowlistConfigDeactivated < OpenAI::Internal::Type::BaseModel
@@ -1543,10 +1543,10 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              configs: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated::Config]
+              ?configs: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated::Config]
             }
 
-            type config = { id: String, name: String }
+            type config = { ?id: String, ?name: String }
 
             class Config < OpenAI::Internal::Type::BaseModel
               attr_reader id: String?
@@ -1559,12 +1559,12 @@ module OpenAI
 
               def initialize: (?id: String, ?name: String) -> void
 
-              def to_hash: -> { id: String, name: String }
+              def to_hash: -> { ?id: String, ?name: String }
             end
           end
 
           type ip_allowlist_created =
-            { id: String, allowed_ips: ::Array[String], name: String }
+            { ?id: String, ?allowed_ips: ::Array[String], ?name: String }
 
           class IPAllowlistCreated < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -1586,14 +1586,14 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              allowed_ips: ::Array[String],
-              name: String
+              ?id: String,
+              ?allowed_ips: ::Array[String],
+              ?name: String
             }
           end
 
           type ip_allowlist_deleted =
-            { id: String, allowed_ips: ::Array[String], name: String }
+            { ?id: String, ?allowed_ips: ::Array[String], ?name: String }
 
           class IPAllowlistDeleted < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -1615,14 +1615,14 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              allowed_ips: ::Array[String],
-              name: String
+              ?id: String,
+              ?allowed_ips: ::Array[String],
+              ?name: String
             }
           end
 
           type ip_allowlist_updated =
-            { id: String, allowed_ips: ::Array[String] }
+            { ?id: String, ?allowed_ips: ::Array[String] }
 
           class IPAllowlistUpdated < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -1635,10 +1635,10 @@ module OpenAI
 
             def initialize: (?id: String, ?allowed_ips: ::Array[String]) -> void
 
-            def to_hash: -> { id: String, allowed_ips: ::Array[String] }
+            def to_hash: -> { ?id: String, ?allowed_ips: ::Array[String] }
           end
 
-          type login_failed = { error_code: String, error_message: String }
+          type login_failed = { ?error_code: String, ?error_message: String }
 
           class LoginFailed < OpenAI::Internal::Type::BaseModel
             attr_reader error_code: String?
@@ -1654,10 +1654,10 @@ module OpenAI
               ?error_message: String
             ) -> void
 
-            def to_hash: -> { error_code: String, error_message: String }
+            def to_hash: -> { ?error_code: String, ?error_message: String }
           end
 
-          type logout_failed = { error_code: String, error_message: String }
+          type logout_failed = { ?error_code: String, ?error_message: String }
 
           class LogoutFailed < OpenAI::Internal::Type::BaseModel
             attr_reader error_code: String?
@@ -1673,13 +1673,13 @@ module OpenAI
               ?error_message: String
             ) -> void
 
-            def to_hash: -> { error_code: String, error_message: String }
+            def to_hash: -> { ?error_code: String, ?error_message: String }
           end
 
           type organization_updated =
             {
-              id: String,
-              changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated::ChangesRequested
+              ?id: String,
+              ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated::ChangesRequested
             }
 
           class OrganizationUpdated < OpenAI::Internal::Type::BaseModel
@@ -1699,19 +1699,19 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated::ChangesRequested
+              ?id: String,
+              ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated::ChangesRequested
             }
 
             type changes_requested =
               {
-                api_call_logging: String,
-                api_call_logging_project_ids: String,
-                description: String,
-                name: String,
-                threads_ui_visibility: String,
-                title: String,
-                usage_dashboard_visibility: String
+                ?api_call_logging: String,
+                ?api_call_logging_project_ids: String,
+                ?description: String,
+                ?name: String,
+                ?threads_ui_visibility: String,
+                ?title: String,
+                ?usage_dashboard_visibility: String
               }
 
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
@@ -1754,18 +1754,18 @@ module OpenAI
               ) -> void
 
               def to_hash: -> {
-                api_call_logging: String,
-                api_call_logging_project_ids: String,
-                description: String,
-                name: String,
-                threads_ui_visibility: String,
-                title: String,
-                usage_dashboard_visibility: String
+                ?api_call_logging: String,
+                ?api_call_logging_project_ids: String,
+                ?description: String,
+                ?name: String,
+                ?threads_ui_visibility: String,
+                ?title: String,
+                ?usage_dashboard_visibility: String
               }
             end
           end
 
-          type project = { id: String, name: String }
+          type project = { ?id: String, ?name: String }
 
           class Project < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -1778,10 +1778,10 @@ module OpenAI
 
             def initialize: (?id: String, ?name: String) -> void
 
-            def to_hash: -> { id: String, name: String }
+            def to_hash: -> { ?id: String, ?name: String }
           end
 
-          type project_archived = { id: String }
+          type project_archived = { ?id: String }
 
           class ProjectArchived < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -1790,13 +1790,13 @@ module OpenAI
 
             def initialize: (?id: String) -> void
 
-            def to_hash: -> { id: String }
+            def to_hash: -> { ?id: String }
           end
 
           type project_created =
             {
-              id: String,
-              data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated::Data
+              ?id: String,
+              ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated::Data
             }
 
           class ProjectCreated < OpenAI::Internal::Type::BaseModel
@@ -1816,11 +1816,11 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated::Data
+              ?id: String,
+              ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated::Data
             }
 
-            type data = { name: String, title: String }
+            type data = { ?name: String, ?title: String }
 
             class Data < OpenAI::Internal::Type::BaseModel
               attr_reader name: String?
@@ -1833,11 +1833,11 @@ module OpenAI
 
               def initialize: (?name: String, ?title: String) -> void
 
-              def to_hash: -> { name: String, title: String }
+              def to_hash: -> { ?name: String, ?title: String }
             end
           end
 
-          type project_deleted = { id: String }
+          type project_deleted = { ?id: String }
 
           class ProjectDeleted < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -1846,13 +1846,13 @@ module OpenAI
 
             def initialize: (?id: String) -> void
 
-            def to_hash: -> { id: String }
+            def to_hash: -> { ?id: String }
           end
 
           type project_updated =
             {
-              id: String,
-              changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated::ChangesRequested
+              ?id: String,
+              ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated::ChangesRequested
             }
 
           class ProjectUpdated < OpenAI::Internal::Type::BaseModel
@@ -1872,11 +1872,11 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated::ChangesRequested
+              ?id: String,
+              ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated::ChangesRequested
             }
 
-            type changes_requested = { title: String }
+            type changes_requested = { ?title: String }
 
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
               attr_reader title: String?
@@ -1885,11 +1885,11 @@ module OpenAI
 
               def initialize: (?title: String) -> void
 
-              def to_hash: -> { title: String }
+              def to_hash: -> { ?title: String }
             end
           end
 
-          type rate_limit_deleted = { id: String }
+          type rate_limit_deleted = { ?id: String }
 
           class RateLimitDeleted < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -1898,13 +1898,13 @@ module OpenAI
 
             def initialize: (?id: String) -> void
 
-            def to_hash: -> { id: String }
+            def to_hash: -> { ?id: String }
           end
 
           type rate_limit_updated =
             {
-              id: String,
-              changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated::ChangesRequested
+              ?id: String,
+              ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated::ChangesRequested
             }
 
           class RateLimitUpdated < OpenAI::Internal::Type::BaseModel
@@ -1924,18 +1924,18 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated::ChangesRequested
+              ?id: String,
+              ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated::ChangesRequested
             }
 
             type changes_requested =
               {
-                :batch_1_day_max_input_tokens => Integer,
-                :max_audio_megabytes_per_1_minute => Integer,
-                :max_images_per_1_minute => Integer,
-                :max_requests_per_1_day => Integer,
-                :max_requests_per_1_minute => Integer,
-                :max_tokens_per_1_minute => Integer
+                ?:batch_1_day_max_input_tokens => Integer,
+                ?:max_audio_megabytes_per_1_minute => Integer,
+                ?:max_images_per_1_minute => Integer,
+                ?:max_requests_per_1_day => Integer,
+                ?:max_requests_per_1_minute => Integer,
+                ?:max_tokens_per_1_minute => Integer
               }
 
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
@@ -1973,23 +1973,23 @@ module OpenAI
               ) -> void
 
               def to_hash: -> {
-                :batch_1_day_max_input_tokens => Integer,
-                :max_audio_megabytes_per_1_minute => Integer,
-                :max_images_per_1_minute => Integer,
-                :max_requests_per_1_day => Integer,
-                :max_requests_per_1_minute => Integer,
-                :max_tokens_per_1_minute => Integer
+                ?:batch_1_day_max_input_tokens => Integer,
+                ?:max_audio_megabytes_per_1_minute => Integer,
+                ?:max_images_per_1_minute => Integer,
+                ?:max_requests_per_1_day => Integer,
+                ?:max_requests_per_1_minute => Integer,
+                ?:max_tokens_per_1_minute => Integer
               }
             end
           end
 
           type role_assignment_created =
             {
-              id: String,
-              principal_id: String,
-              principal_type: String,
-              resource_id: String,
-              resource_type: String
+              ?id: String,
+              ?principal_id: String,
+              ?principal_type: String,
+              ?resource_id: String,
+              ?resource_type: String
             }
 
           class RoleAssignmentCreated < OpenAI::Internal::Type::BaseModel
@@ -2022,21 +2022,21 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              principal_id: String,
-              principal_type: String,
-              resource_id: String,
-              resource_type: String
+              ?id: String,
+              ?principal_id: String,
+              ?principal_type: String,
+              ?resource_id: String,
+              ?resource_type: String
             }
           end
 
           type role_assignment_deleted =
             {
-              id: String,
-              principal_id: String,
-              principal_type: String,
-              resource_id: String,
-              resource_type: String
+              ?id: String,
+              ?principal_id: String,
+              ?principal_type: String,
+              ?resource_id: String,
+              ?resource_type: String
             }
 
           class RoleAssignmentDeleted < OpenAI::Internal::Type::BaseModel
@@ -2069,26 +2069,26 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              principal_id: String,
-              principal_type: String,
-              resource_id: String,
-              resource_type: String
+              ?id: String,
+              ?principal_id: String,
+              ?principal_type: String,
+              ?resource_id: String,
+              ?resource_type: String
             }
           end
 
           type role_bound_to_resource =
             {
-              id: String,
-              connector_id: String,
-              connector_name: String,
-              enabled: bool,
-              permissions: ::Array[String],
-              resource_id: String,
-              resource_type: String,
-              role_id: String,
-              source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::source,
-              workspace_id: String
+              ?id: String,
+              ?connector_id: String,
+              ?connector_name: String,
+              ?enabled: bool,
+              ?permissions: ::Array[String],
+              ?resource_id: String,
+              ?resource_type: String,
+              ?role_id: String,
+              ?source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::source,
+              ?workspace_id: String
             }
 
           class RoleBoundToResource < OpenAI::Internal::Type::BaseModel
@@ -2148,16 +2148,16 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              connector_id: String,
-              connector_name: String,
-              enabled: bool,
-              permissions: ::Array[String],
-              resource_id: String,
-              resource_type: String,
-              role_id: String,
-              source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::source,
-              workspace_id: String
+              ?id: String,
+              ?connector_id: String,
+              ?connector_name: String,
+              ?enabled: bool,
+              ?permissions: ::Array[String],
+              ?resource_id: String,
+              ?resource_type: String,
+              ?role_id: String,
+              ?source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::source,
+              ?workspace_id: String
             }
 
             type source =
@@ -2182,11 +2182,11 @@ module OpenAI
 
           type role_created =
             {
-              id: String,
-              permissions: ::Array[String],
-              resource_id: String,
-              resource_type: String,
-              role_name: String
+              ?id: String,
+              ?permissions: ::Array[String],
+              ?resource_id: String,
+              ?resource_type: String,
+              ?role_name: String
             }
 
           class RoleCreated < OpenAI::Internal::Type::BaseModel
@@ -2219,15 +2219,15 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              permissions: ::Array[String],
-              resource_id: String,
-              resource_type: String,
-              role_name: String
+              ?id: String,
+              ?permissions: ::Array[String],
+              ?resource_id: String,
+              ?resource_type: String,
+              ?role_name: String
             }
           end
 
-          type role_deleted = { id: String }
+          type role_deleted = { ?id: String }
 
           class RoleDeleted < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -2236,21 +2236,21 @@ module OpenAI
 
             def initialize: (?id: String) -> void
 
-            def to_hash: -> { id: String }
+            def to_hash: -> { ?id: String }
           end
 
           type role_unbound_from_resource =
             {
-              id: String,
-              connector_id: String,
-              connector_name: String,
-              enabled: bool,
-              permissions: ::Array[String],
-              resource_id: String,
-              resource_type: String,
-              role_id: String,
-              source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::source,
-              workspace_id: String
+              ?id: String,
+              ?connector_id: String,
+              ?connector_name: String,
+              ?enabled: bool,
+              ?permissions: ::Array[String],
+              ?resource_id: String,
+              ?resource_type: String,
+              ?role_id: String,
+              ?source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::source,
+              ?workspace_id: String
             }
 
           class RoleUnboundFromResource < OpenAI::Internal::Type::BaseModel
@@ -2310,16 +2310,16 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              connector_id: String,
-              connector_name: String,
-              enabled: bool,
-              permissions: ::Array[String],
-              resource_id: String,
-              resource_type: String,
-              role_id: String,
-              source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::source,
-              workspace_id: String
+              ?id: String,
+              ?connector_id: String,
+              ?connector_name: String,
+              ?enabled: bool,
+              ?permissions: ::Array[String],
+              ?resource_id: String,
+              ?resource_type: String,
+              ?role_id: String,
+              ?source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::source,
+              ?workspace_id: String
             }
 
             type source =
@@ -2344,8 +2344,8 @@ module OpenAI
 
           type role_updated =
             {
-              id: String,
-              changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated::ChangesRequested
+              ?id: String,
+              ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated::ChangesRequested
             }
 
           class RoleUpdated < OpenAI::Internal::Type::BaseModel
@@ -2365,19 +2365,19 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated::ChangesRequested
+              ?id: String,
+              ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated::ChangesRequested
             }
 
             type changes_requested =
               {
-                description: String,
-                metadata: top,
-                permissions_added: ::Array[String],
-                permissions_removed: ::Array[String],
-                resource_id: String,
-                resource_type: String,
-                role_name: String
+                ?description: String,
+                ?metadata: top,
+                ?permissions_added: ::Array[String],
+                ?permissions_removed: ::Array[String],
+                ?resource_id: String,
+                ?resource_type: String,
+                ?role_name: String
               }
 
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
@@ -2420,18 +2420,18 @@ module OpenAI
               ) -> void
 
               def to_hash: -> {
-                description: String,
-                metadata: top,
-                permissions_added: ::Array[String],
-                permissions_removed: ::Array[String],
-                resource_id: String,
-                resource_type: String,
-                role_name: String
+                ?description: String,
+                ?metadata: top,
+                ?permissions_added: ::Array[String],
+                ?permissions_removed: ::Array[String],
+                ?resource_id: String,
+                ?resource_type: String,
+                ?role_name: String
               }
             end
           end
 
-          type scim_disabled = { id: String }
+          type scim_disabled = { ?id: String }
 
           class ScimDisabled < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -2440,10 +2440,10 @@ module OpenAI
 
             def initialize: (?id: String) -> void
 
-            def to_hash: -> { id: String }
+            def to_hash: -> { ?id: String }
           end
 
-          type scim_enabled = { id: String }
+          type scim_enabled = { ?id: String }
 
           class ScimEnabled < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -2452,13 +2452,13 @@ module OpenAI
 
             def initialize: (?id: String) -> void
 
-            def to_hash: -> { id: String }
+            def to_hash: -> { ?id: String }
           end
 
           type service_account_created =
             {
-              id: String,
-              data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated::Data
+              ?id: String,
+              ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated::Data
             }
 
           class ServiceAccountCreated < OpenAI::Internal::Type::BaseModel
@@ -2478,11 +2478,11 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated::Data
+              ?id: String,
+              ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated::Data
             }
 
-            type data = { role: String }
+            type data = { ?role: String }
 
             class Data < OpenAI::Internal::Type::BaseModel
               attr_reader role: String?
@@ -2491,11 +2491,11 @@ module OpenAI
 
               def initialize: (?role: String) -> void
 
-              def to_hash: -> { role: String }
+              def to_hash: -> { ?role: String }
             end
           end
 
-          type service_account_deleted = { id: String }
+          type service_account_deleted = { ?id: String }
 
           class ServiceAccountDeleted < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -2504,13 +2504,13 @@ module OpenAI
 
             def initialize: (?id: String) -> void
 
-            def to_hash: -> { id: String }
+            def to_hash: -> { ?id: String }
           end
 
           type service_account_updated =
             {
-              id: String,
-              changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated::ChangesRequested
+              ?id: String,
+              ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated::ChangesRequested
             }
 
           class ServiceAccountUpdated < OpenAI::Internal::Type::BaseModel
@@ -2530,11 +2530,11 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated::ChangesRequested
+              ?id: String,
+              ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated::ChangesRequested
             }
 
-            type changes_requested = { role: String }
+            type changes_requested = { ?role: String }
 
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
               attr_reader role: String?
@@ -2543,14 +2543,14 @@ module OpenAI
 
               def initialize: (?role: String) -> void
 
-              def to_hash: -> { role: String }
+              def to_hash: -> { ?role: String }
             end
           end
 
           type user_added =
             {
-              id: String,
-              data: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded::Data
+              ?id: String,
+              ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded::Data
             }
 
           class UserAdded < OpenAI::Internal::Type::BaseModel
@@ -2570,11 +2570,11 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              data: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded::Data
+              ?id: String,
+              ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded::Data
             }
 
-            type data = { role: String }
+            type data = { ?role: String }
 
             class Data < OpenAI::Internal::Type::BaseModel
               attr_reader role: String?
@@ -2583,11 +2583,11 @@ module OpenAI
 
               def initialize: (?role: String) -> void
 
-              def to_hash: -> { role: String }
+              def to_hash: -> { ?role: String }
             end
           end
 
-          type user_deleted = { id: String }
+          type user_deleted = { ?id: String }
 
           class UserDeleted < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -2596,13 +2596,13 @@ module OpenAI
 
             def initialize: (?id: String) -> void
 
-            def to_hash: -> { id: String }
+            def to_hash: -> { ?id: String }
           end
 
           type user_updated =
             {
-              id: String,
-              changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated::ChangesRequested
+              ?id: String,
+              ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated::ChangesRequested
             }
 
           class UserUpdated < OpenAI::Internal::Type::BaseModel
@@ -2622,11 +2622,11 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated::ChangesRequested
+              ?id: String,
+              ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated::ChangesRequested
             }
 
-            type changes_requested = { role: String }
+            type changes_requested = { ?role: String }
 
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
               attr_reader role: String?
@@ -2635,12 +2635,12 @@ module OpenAI
 
               def initialize: (?role: String) -> void
 
-              def to_hash: -> { role: String }
+              def to_hash: -> { ?role: String }
             end
           end
 
           type workload_identity_provider_mapping_created =
-            { id: String, data: top, identity_provider_id: String }
+            { ?id: String, ?data: top, ?identity_provider_id: String }
 
           class WorkloadIdentityProviderMappingCreated < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -2662,18 +2662,18 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              data: top,
-              identity_provider_id: String
+              ?id: String,
+              ?data: top,
+              ?identity_provider_id: String
             }
           end
 
           type workload_identity_provider_mapping_deleted =
             {
-              id: String,
-              identity_provider_id: String,
-              project_id: String,
-              service_account_id: String
+              ?id: String,
+              ?identity_provider_id: String,
+              ?project_id: String,
+              ?service_account_id: String
             }
 
           class WorkloadIdentityProviderMappingDeleted < OpenAI::Internal::Type::BaseModel
@@ -2701,15 +2701,19 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              identity_provider_id: String,
-              project_id: String,
-              service_account_id: String
+              ?id: String,
+              ?identity_provider_id: String,
+              ?project_id: String,
+              ?service_account_id: String
             }
           end
 
           type workload_identity_provider_mapping_updated =
-            { id: String, changes_requested: top, identity_provider_id: String }
+            {
+              ?id: String,
+              ?changes_requested: top,
+              ?identity_provider_id: String
+            }
 
           class WorkloadIdentityProviderMappingUpdated < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -2731,13 +2735,13 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              id: String,
-              changes_requested: top,
-              identity_provider_id: String
+              ?id: String,
+              ?changes_requested: top,
+              ?identity_provider_id: String
             }
           end
 
-          type workload_identity_provider_created = { id: String, data: top }
+          type workload_identity_provider_created = { ?id: String, ?data: top }
 
           class WorkloadIdentityProviderCreated < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -2750,10 +2754,11 @@ module OpenAI
 
             def initialize: (?id: String, ?data: top) -> void
 
-            def to_hash: -> { id: String, data: top }
+            def to_hash: -> { ?id: String, ?data: top }
           end
 
-          type workload_identity_provider_deleted = { id: String, name: String }
+          type workload_identity_provider_deleted =
+            { ?id: String, ?name: String }
 
           class WorkloadIdentityProviderDeleted < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -2766,11 +2771,11 @@ module OpenAI
 
             def initialize: (?id: String, ?name: String) -> void
 
-            def to_hash: -> { id: String, name: String }
+            def to_hash: -> { ?id: String, ?name: String }
           end
 
           type workload_identity_provider_updated =
-            { id: String, changes_requested: top }
+            { ?id: String, ?changes_requested: top }
 
           class WorkloadIdentityProviderUpdated < OpenAI::Internal::Type::BaseModel
             attr_reader id: String?
@@ -2783,7 +2788,7 @@ module OpenAI
 
             def initialize: (?id: String, ?changes_requested: top) -> void
 
-            def to_hash: -> { id: String, changes_requested: top }
+            def to_hash: -> { ?id: String, ?changes_requested: top }
           end
         end
       end

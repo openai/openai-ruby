@@ -6,9 +6,9 @@ module OpenAI
       type beta_web_search_preview_tool =
         {
           type: OpenAI::Models::Beta::BetaWebSearchPreviewTool::type_,
-          search_content_types: ::Array[OpenAI::Models::Beta::BetaWebSearchPreviewTool::search_content_type],
-          search_context_size: OpenAI::Models::Beta::BetaWebSearchPreviewTool::search_context_size,
-          user_location: OpenAI::Beta::BetaWebSearchPreviewTool::UserLocation?
+          ?search_content_types: ::Array[OpenAI::Models::Beta::BetaWebSearchPreviewTool::search_content_type],
+          ?search_context_size: OpenAI::Models::Beta::BetaWebSearchPreviewTool::search_context_size,
+          ?user_location: OpenAI::Beta::BetaWebSearchPreviewTool::UserLocation?
         }
 
       class BetaWebSearchPreviewTool < OpenAI::Internal::Type::BaseModel
@@ -37,9 +37,9 @@ module OpenAI
 
         def to_hash: -> {
           type: OpenAI::Models::Beta::BetaWebSearchPreviewTool::type_,
-          search_content_types: ::Array[OpenAI::Models::Beta::BetaWebSearchPreviewTool::search_content_type],
-          search_context_size: OpenAI::Models::Beta::BetaWebSearchPreviewTool::search_context_size,
-          user_location: OpenAI::Beta::BetaWebSearchPreviewTool::UserLocation?
+          ?search_content_types: ::Array[OpenAI::Models::Beta::BetaWebSearchPreviewTool::search_content_type],
+          ?search_context_size: OpenAI::Models::Beta::BetaWebSearchPreviewTool::search_context_size,
+          ?user_location: OpenAI::Beta::BetaWebSearchPreviewTool::UserLocation?
         }
 
         type type_ = :web_search_preview | :web_search_preview_2025_03_11
@@ -78,11 +78,11 @@ module OpenAI
 
         type user_location =
           {
-            type: :approximate,
-            city: String?,
-            country: String?,
-            region: String?,
-            timezone: String?
+            ?type: :approximate,
+            ?city: String?,
+            ?country: String?,
+            ?region: String?,
+            ?timezone: String?
           }
 
         class UserLocation < OpenAI::Internal::Type::BaseModel
@@ -105,11 +105,11 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            type: :approximate,
-            city: String?,
-            country: String?,
-            region: String?,
-            timezone: String?
+            ?type: :approximate,
+            ?city: String?,
+            ?country: String?,
+            ?region: String?,
+            ?timezone: String?
           }
         end
       end

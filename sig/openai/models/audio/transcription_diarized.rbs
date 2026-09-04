@@ -5,9 +5,9 @@ module OpenAI
         {
           duration: Float,
           segments: ::Array[OpenAI::Audio::TranscriptionDiarizedSegment],
-          task: :transcribe,
+          ?task: :transcribe,
           text: String,
-          usage: OpenAI::Models::Audio::TranscriptionDiarized::usage
+          ?usage: OpenAI::Models::Audio::TranscriptionDiarized::usage
         }
 
       class TranscriptionDiarized < OpenAI::Internal::Type::BaseModel
@@ -36,9 +36,9 @@ module OpenAI
         def to_hash: -> {
           duration: Float,
           segments: ::Array[OpenAI::Audio::TranscriptionDiarizedSegment],
-          task: :transcribe,
+          ?task: :transcribe,
           text: String,
-          usage: OpenAI::Models::Audio::TranscriptionDiarized::usage
+          ?usage: OpenAI::Models::Audio::TranscriptionDiarized::usage
         }
 
         type usage =
@@ -53,8 +53,8 @@ module OpenAI
               input_tokens: Integer,
               output_tokens: Integer,
               total_tokens: Integer,
-              type: :tokens,
-              input_token_details: OpenAI::Audio::TranscriptionDiarized::Usage::Tokens::InputTokenDetails
+              ?type: :tokens,
+              ?input_token_details: OpenAI::Audio::TranscriptionDiarized::Usage::Tokens::InputTokenDetails
             }
 
           class Tokens < OpenAI::Internal::Type::BaseModel
@@ -84,12 +84,12 @@ module OpenAI
               input_tokens: Integer,
               output_tokens: Integer,
               total_tokens: Integer,
-              type: :tokens,
-              input_token_details: OpenAI::Audio::TranscriptionDiarized::Usage::Tokens::InputTokenDetails
+              ?type: :tokens,
+              ?input_token_details: OpenAI::Audio::TranscriptionDiarized::Usage::Tokens::InputTokenDetails
             }
 
             type input_token_details =
-              { audio_tokens: Integer, text_tokens: Integer }
+              { ?audio_tokens: Integer, ?text_tokens: Integer }
 
             class InputTokenDetails < OpenAI::Internal::Type::BaseModel
               attr_reader audio_tokens: Integer?
@@ -105,11 +105,11 @@ module OpenAI
                 ?text_tokens: Integer
               ) -> void
 
-              def to_hash: -> { audio_tokens: Integer, text_tokens: Integer }
+              def to_hash: -> { ?audio_tokens: Integer, ?text_tokens: Integer }
             end
           end
 
-          type duration = { seconds: Float, type: :duration }
+          type duration = { seconds: Float, ?type: :duration }
 
           class Duration < OpenAI::Internal::Type::BaseModel
             attr_accessor seconds: Float
@@ -118,7 +118,7 @@ module OpenAI
 
             def initialize: (seconds: Float, ?type: :duration) -> void
 
-            def to_hash: -> { seconds: Float, type: :duration }
+            def to_hash: -> { seconds: Float, ?type: :duration }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Audio::TranscriptionDiarized::usage]

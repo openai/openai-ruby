@@ -6,12 +6,12 @@ module OpenAI
           name: String,
           parameters: ::Hash[Symbol, top]?,
           strict: bool?,
-          type: :function,
-          allowed_callers: ::Array[OpenAI::Models::Responses::FunctionTool::allowed_caller]?,
-          async: bool,
-          defer_loading: bool,
-          description: String?,
-          output_schema: ::Hash[Symbol, top]?
+          ?type: :function,
+          ?allowed_callers: ::Array[OpenAI::Models::Responses::FunctionTool::allowed_caller]?,
+          ?async: bool,
+          ?defer_loading: bool,
+          ?description: String?,
+          ?output_schema: ::Hash[Symbol, top]?
         }
 
       class FunctionTool < OpenAI::Internal::Type::BaseModel
@@ -53,12 +53,12 @@ module OpenAI
           name: String,
           parameters: ::Hash[Symbol, top]?,
           strict: bool?,
-          type: :function,
-          allowed_callers: ::Array[OpenAI::Models::Responses::FunctionTool::allowed_caller]?,
-          async: bool,
-          defer_loading: bool,
-          description: String?,
-          output_schema: ::Hash[Symbol, top]?
+          ?type: :function,
+          ?allowed_callers: ::Array[OpenAI::Models::Responses::FunctionTool::allowed_caller]?,
+          ?async: bool,
+          ?defer_loading: bool,
+          ?description: String?,
+          ?output_schema: ::Hash[Symbol, top]?
         }
 
         type allowed_caller = :direct | :programmatic

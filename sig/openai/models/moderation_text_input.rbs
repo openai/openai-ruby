@@ -1,6 +1,6 @@
 module OpenAI
   module Models
-    type moderation_text_input = { text: String, type: :text }
+    type moderation_text_input = { text: String, ?type: :text }
 
     class ModerationTextInput < OpenAI::Internal::Type::BaseModel
       attr_accessor text: String
@@ -9,7 +9,7 @@ module OpenAI
 
       def initialize: (text: String, ?type: :text) -> void
 
-      def to_hash: -> { text: String, type: :text }
+      def to_hash: -> { text: String, ?type: :text }
     end
   end
 end

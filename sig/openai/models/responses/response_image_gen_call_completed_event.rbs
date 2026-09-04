@@ -6,7 +6,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.image_generation_call.completed"
+          ?type: :"response.image_generation_call.completed"
         }
 
       class ResponseImageGenCallCompletedEvent < OpenAI::Internal::Type::BaseModel
@@ -29,7 +29,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.image_generation_call.completed"
+          ?type: :"response.image_generation_call.completed"
         }
       end
     end

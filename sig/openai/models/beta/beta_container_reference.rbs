@@ -4,7 +4,7 @@ module OpenAI
 
     module Beta
       type beta_container_reference =
-        { container_id: String, type: :container_reference }
+        { container_id: String, ?type: :container_reference }
 
       class BetaContainerReference < OpenAI::Internal::Type::BaseModel
         attr_accessor container_id: String
@@ -16,7 +16,7 @@ module OpenAI
           ?type: :container_reference
         ) -> void
 
-        def to_hash: -> { container_id: String, type: :container_reference }
+        def to_hash: -> { container_id: String, ?type: :container_reference }
       end
     end
   end

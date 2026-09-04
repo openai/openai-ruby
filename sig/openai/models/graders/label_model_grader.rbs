@@ -10,7 +10,7 @@ module OpenAI
           model: String,
           name: String,
           passing_labels: ::Array[String],
-          type: :label_model
+          ?type: :label_model
         }
 
       class LabelModelGrader < OpenAI::Internal::Type::BaseModel
@@ -41,14 +41,14 @@ module OpenAI
           model: String,
           name: String,
           passing_labels: ::Array[String],
-          type: :label_model
+          ?type: :label_model
         }
 
         type input =
           {
             content: OpenAI::Models::Graders::LabelModelGrader::Input::content,
             role: OpenAI::Models::Graders::LabelModelGrader::Input::role,
-            type: OpenAI::Models::Graders::LabelModelGrader::Input::type_
+            ?type: OpenAI::Models::Graders::LabelModelGrader::Input::type_
           }
 
         class Input < OpenAI::Internal::Type::BaseModel
@@ -71,7 +71,7 @@ module OpenAI
           def to_hash: -> {
             content: OpenAI::Models::Graders::LabelModelGrader::Input::content,
             role: OpenAI::Models::Graders::LabelModelGrader::Input::role,
-            type: OpenAI::Models::Graders::LabelModelGrader::Input::type_
+            ?type: OpenAI::Models::Graders::LabelModelGrader::Input::type_
           }
 
           type content =
@@ -85,7 +85,7 @@ module OpenAI
           module Content
             extend OpenAI::Internal::Type::Union
 
-            type output_text = { text: String, type: :output_text }
+            type output_text = { text: String, ?type: :output_text }
 
             class OutputText < OpenAI::Internal::Type::BaseModel
               attr_accessor text: String
@@ -94,11 +94,11 @@ module OpenAI
 
               def initialize: (text: String, ?type: :output_text) -> void
 
-              def to_hash: -> { text: String, type: :output_text }
+              def to_hash: -> { text: String, ?type: :output_text }
             end
 
             type input_image =
-              { image_url: String, type: :input_image, detail: String }
+              { image_url: String, ?type: :input_image, ?detail: String }
 
             class InputImage < OpenAI::Internal::Type::BaseModel
               attr_accessor image_url: String
@@ -117,8 +117,8 @@ module OpenAI
 
               def to_hash: -> {
                 image_url: String,
-                type: :input_image,
-                detail: String
+                ?type: :input_image,
+                ?detail: String
               }
             end
 

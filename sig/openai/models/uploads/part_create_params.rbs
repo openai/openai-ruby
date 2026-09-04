@@ -2,8 +2,11 @@ module OpenAI
   module Models
     module Uploads
       type part_create_params =
-        { upload_id: String, data: OpenAI::Internal::file_input }
-        & OpenAI::Internal::Type::request_parameters
+        {
+          upload_id: String,
+          data: OpenAI::Internal::file_input,
+          ?request_options: OpenAI::request_opts
+        }
 
       class PartCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -22,7 +25,7 @@ module OpenAI
         def to_hash: -> {
           upload_id: String,
           data: OpenAI::Internal::file_input,
-          request_options: OpenAI::RequestOptions
+          ?request_options: OpenAI::RequestOptions
         }
       end
     end

@@ -6,8 +6,8 @@ module OpenAI
           id: String,
           content: OpenAI::Models::Responses::response_input_message_content_list,
           role: OpenAI::Models::Responses::ResponseInputMessageItem::role,
-          type: :message,
-          status: OpenAI::Models::Responses::ResponseInputMessageItem::status
+          ?type: :message,
+          ?status: OpenAI::Models::Responses::ResponseInputMessageItem::status
         }
 
       class ResponseInputMessageItem < OpenAI::Internal::Type::BaseModel
@@ -37,8 +37,8 @@ module OpenAI
           id: String,
           content: OpenAI::Models::Responses::response_input_message_content_list,
           role: OpenAI::Models::Responses::ResponseInputMessageItem::role,
-          type: :message,
-          status: OpenAI::Models::Responses::ResponseInputMessageItem::status
+          ?type: :message,
+          ?status: OpenAI::Models::Responses::ResponseInputMessageItem::status
         }
 
         type role = :user | :system | :developer

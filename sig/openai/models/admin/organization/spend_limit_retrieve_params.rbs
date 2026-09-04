@@ -3,7 +3,7 @@ module OpenAI
     module Admin
       module Organization
         type spend_limit_retrieve_params =
-          {  } & OpenAI::Internal::Type::request_parameters
+          { ?request_options: OpenAI::request_opts }
 
         class SpendLimitRetrieveParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -11,7 +11,7 @@ module OpenAI
 
           def initialize: (?request_options: OpenAI::request_opts) -> void
 
-          def to_hash: -> { request_options: OpenAI::RequestOptions }
+          def to_hash: -> { ?request_options: OpenAI::RequestOptions }
         end
       end
     end

@@ -5,11 +5,11 @@ module OpenAI
         type message_list_params =
           {
             completion_id: String,
-            after: String,
-            limit: Integer,
-            order: OpenAI::Models::Chat::Completions::MessageListParams::order
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Chat::Completions::MessageListParams::order,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class MessageListParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -41,10 +41,10 @@ module OpenAI
 
           def to_hash: -> {
             completion_id: String,
-            after: String,
-            limit: Integer,
-            order: OpenAI::Models::Chat::Completions::MessageListParams::order,
-            request_options: OpenAI::RequestOptions
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Chat::Completions::MessageListParams::order,
+            ?request_options: OpenAI::RequestOptions
           }
 
           type order = :asc | :desc

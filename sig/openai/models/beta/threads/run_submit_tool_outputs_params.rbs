@@ -6,9 +6,9 @@ module OpenAI
           {
             thread_id: String,
             run_id: String,
-            tool_outputs: ::Array[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput]
+            tool_outputs: ::Array[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class RunSubmitToolOutputsParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -31,10 +31,10 @@ module OpenAI
             thread_id: String,
             run_id: String,
             tool_outputs: ::Array[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
-            request_options: OpenAI::RequestOptions
+            ?request_options: OpenAI::RequestOptions
           }
 
-          type tool_output = { output: String, tool_call_id: String }
+          type tool_output = { ?output: String, ?tool_call_id: String }
 
           class ToolOutput < OpenAI::Internal::Type::BaseModel
             attr_reader output: String?
@@ -47,7 +47,7 @@ module OpenAI
 
             def initialize: (?output: String, ?tool_call_id: String) -> void
 
-            def to_hash: -> { output: String, tool_call_id: String }
+            def to_hash: -> { ?output: String, ?tool_call_id: String }
           end
         end
       end

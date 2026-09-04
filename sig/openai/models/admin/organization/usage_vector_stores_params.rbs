@@ -5,14 +5,14 @@ module OpenAI
         type usage_vector_stores_params =
           {
             start_time: Integer,
-            bucket_width: OpenAI::Models::Admin::Organization::UsageVectorStoresParams::bucket_width,
-            end_time: Integer,
-            group_by: ::Array[OpenAI::Models::Admin::Organization::UsageVectorStoresParams::group_by],
-            limit: Integer,
-            page: String,
-            project_ids: ::Array[String]
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageVectorStoresParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageVectorStoresParams::group_by],
+            ?limit: Integer,
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class UsageVectorStoresParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -61,13 +61,13 @@ module OpenAI
 
           def to_hash: -> {
             start_time: Integer,
-            bucket_width: OpenAI::Models::Admin::Organization::UsageVectorStoresParams::bucket_width,
-            end_time: Integer,
-            group_by: ::Array[OpenAI::Models::Admin::Organization::UsageVectorStoresParams::group_by],
-            limit: Integer,
-            page: String,
-            project_ids: ::Array[String],
-            request_options: OpenAI::RequestOptions
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageVectorStoresParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageVectorStoresParams::group_by],
+            ?limit: Integer,
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?request_options: OpenAI::RequestOptions
           }
 
           type bucket_width = :"1m" | :"1h" | :"1d"

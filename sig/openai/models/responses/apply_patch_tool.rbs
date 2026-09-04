@@ -3,8 +3,8 @@ module OpenAI
     module Responses
       type apply_patch_tool =
         {
-          type: :apply_patch,
-          allowed_callers: ::Array[OpenAI::Models::Responses::ApplyPatchTool::allowed_caller]?
+          ?type: :apply_patch,
+          ?allowed_callers: ::Array[OpenAI::Models::Responses::ApplyPatchTool::allowed_caller]?
         }
 
       class ApplyPatchTool < OpenAI::Internal::Type::BaseModel
@@ -18,8 +18,8 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :apply_patch,
-          allowed_callers: ::Array[OpenAI::Models::Responses::ApplyPatchTool::allowed_caller]?
+          ?type: :apply_patch,
+          ?allowed_callers: ::Array[OpenAI::Models::Responses::ApplyPatchTool::allowed_caller]?
         }
 
         type allowed_caller = :direct | :programmatic

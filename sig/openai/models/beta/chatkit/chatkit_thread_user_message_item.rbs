@@ -11,9 +11,9 @@ module OpenAI
             content: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::content],
             created_at: Integer,
             inference_options: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions?,
-            object: :"chatkit.thread_item",
+            ?object: :"chatkit.thread_item",
             thread_id: String,
-            type: :"chatkit.user_message"
+            ?type: :"chatkit.user_message"
           }
 
         class ChatKitThreadUserMessageItem < OpenAI::Internal::Type::BaseModel
@@ -50,9 +50,9 @@ module OpenAI
             content: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::content],
             created_at: Integer,
             inference_options: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions?,
-            object: :"chatkit.thread_item",
+            ?object: :"chatkit.thread_item",
             thread_id: String,
-            type: :"chatkit.user_message"
+            ?type: :"chatkit.user_message"
           }
 
           type content =
@@ -62,7 +62,7 @@ module OpenAI
           module Content
             extend OpenAI::Internal::Type::Union
 
-            type input_text = { text: String, type: :input_text }
+            type input_text = { text: String, ?type: :input_text }
 
             class InputText < OpenAI::Internal::Type::BaseModel
               attr_accessor text: String
@@ -71,10 +71,10 @@ module OpenAI
 
               def initialize: (text: String, ?type: :input_text) -> void
 
-              def to_hash: -> { text: String, type: :input_text }
+              def to_hash: -> { text: String, ?type: :input_text }
             end
 
-            type quoted_text = { text: String, type: :quoted_text }
+            type quoted_text = { text: String, ?type: :quoted_text }
 
             class QuotedText < OpenAI::Internal::Type::BaseModel
               attr_accessor text: String
@@ -83,7 +83,7 @@ module OpenAI
 
               def initialize: (text: String, ?type: :quoted_text) -> void
 
-              def to_hash: -> { text: String, type: :quoted_text }
+              def to_hash: -> { text: String, ?type: :quoted_text }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::content]

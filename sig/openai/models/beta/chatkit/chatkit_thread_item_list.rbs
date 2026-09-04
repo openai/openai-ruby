@@ -10,7 +10,7 @@ module OpenAI
             first_id: String?,
             has_more: bool,
             last_id: String?,
-            object: :list
+            ?object: :list
           }
 
         class ChatKitThreadItemList < OpenAI::Internal::Type::BaseModel
@@ -37,7 +37,7 @@ module OpenAI
             first_id: String?,
             has_more: bool,
             last_id: String?,
-            object: :list
+            ?object: :list
           }
 
           type data =
@@ -58,11 +58,11 @@ module OpenAI
                 call_id: String,
                 created_at: Integer,
                 name: String,
-                object: :"chatkit.thread_item",
+                ?object: :"chatkit.thread_item",
                 output: String?,
                 status: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::status,
                 thread_id: String,
-                type: :"chatkit.client_tool_call"
+                ?type: :"chatkit.client_tool_call"
               }
 
             class ChatKitClientToolCall < OpenAI::Internal::Type::BaseModel
@@ -105,11 +105,11 @@ module OpenAI
                 call_id: String,
                 created_at: Integer,
                 name: String,
-                object: :"chatkit.thread_item",
+                ?object: :"chatkit.thread_item",
                 output: String?,
                 status: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::status,
                 thread_id: String,
-                type: :"chatkit.client_tool_call"
+                ?type: :"chatkit.client_tool_call"
               }
 
               type status = :in_progress | :completed
@@ -129,11 +129,11 @@ module OpenAI
                 id: String,
                 created_at: Integer,
                 heading: String?,
-                object: :"chatkit.thread_item",
+                ?object: :"chatkit.thread_item",
                 summary: String?,
                 task_type: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::task_type,
                 thread_id: String,
-                type: :"chatkit.task"
+                ?type: :"chatkit.task"
               }
 
             class ChatKitTask < OpenAI::Internal::Type::BaseModel
@@ -168,11 +168,11 @@ module OpenAI
                 id: String,
                 created_at: Integer,
                 heading: String?,
-                object: :"chatkit.thread_item",
+                ?object: :"chatkit.thread_item",
                 summary: String?,
                 task_type: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::task_type,
                 thread_id: String,
-                type: :"chatkit.task"
+                ?type: :"chatkit.task"
               }
 
               type task_type = :custom | :thought
@@ -191,10 +191,10 @@ module OpenAI
               {
                 id: String,
                 created_at: Integer,
-                object: :"chatkit.thread_item",
+                ?object: :"chatkit.thread_item",
                 tasks: ::Array[OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task],
                 thread_id: String,
-                type: :"chatkit.task_group"
+                ?type: :"chatkit.task_group"
               }
 
             class ChatKitTaskGroup < OpenAI::Internal::Type::BaseModel
@@ -222,10 +222,10 @@ module OpenAI
               def to_hash: -> {
                 id: String,
                 created_at: Integer,
-                object: :"chatkit.thread_item",
+                ?object: :"chatkit.thread_item",
                 tasks: ::Array[OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task],
                 thread_id: String,
-                type: :"chatkit.task_group"
+                ?type: :"chatkit.task_group"
               }
 
               type task =

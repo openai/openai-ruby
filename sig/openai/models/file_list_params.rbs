@@ -2,12 +2,12 @@ module OpenAI
   module Models
     type file_list_params =
       {
-        after: String,
-        limit: Integer,
-        order: OpenAI::Models::FileListParams::order,
-        purpose: String
+        ?after: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::FileListParams::order,
+        ?purpose: String,
+        ?request_options: OpenAI::request_opts
       }
-      & OpenAI::Internal::Type::request_parameters
 
     class FileListParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -40,11 +40,11 @@ module OpenAI
       ) -> void
 
       def to_hash: -> {
-        after: String,
-        limit: Integer,
-        order: OpenAI::Models::FileListParams::order,
-        purpose: String,
-        request_options: OpenAI::RequestOptions
+        ?after: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::FileListParams::order,
+        ?purpose: String,
+        ?request_options: OpenAI::RequestOptions
       }
 
       type order = :asc | :desc

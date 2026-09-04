@@ -6,7 +6,7 @@ module OpenAI
           module Users
             type role_create_response =
               {
-                object: :"user.role",
+                ?object: :"user.role",
                 role: OpenAI::Admin::Organization::Role,
                 user: OpenAI::Admin::Organization::OrganizationUser
               }
@@ -25,7 +25,7 @@ module OpenAI
               ) -> void
 
               def to_hash: -> {
-                object: :"user.role",
+                ?object: :"user.role",
                 role: OpenAI::Admin::Organization::Role,
                 user: OpenAI::Admin::Organization::OrganizationUser
               }

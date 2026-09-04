@@ -5,11 +5,11 @@ module OpenAI
         {
           arguments: String,
           name: String,
-          type: :function_call,
-          id: String,
-          call_id: String,
-          object: OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::object,
-          status: OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::status
+          ?type: :function_call,
+          ?id: String,
+          ?call_id: String,
+          ?object: OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::object,
+          ?status: OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::status
         }
 
       class RealtimeConversationItemFunctionCall < OpenAI::Internal::Type::BaseModel
@@ -52,11 +52,11 @@ module OpenAI
         def to_hash: -> {
           arguments: String,
           name: String,
-          type: :function_call,
-          id: String,
-          call_id: String,
-          object: OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::object,
-          status: OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::status
+          ?type: :function_call,
+          ?id: String,
+          ?call_id: String,
+          ?object: OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::object,
+          ?status: OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall::status
         }
 
         type object = :"realtime.item"

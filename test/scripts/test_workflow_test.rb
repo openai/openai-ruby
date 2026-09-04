@@ -42,7 +42,7 @@ class TestWorkflowTest < Minitest::Test
   end
 
   def test_failed_mock_start_leaves_preexisting_listener_running
-    listener_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60")
+    listener_pid = spawn_waiting_process
     stdout, stderr, status = run_test_script(
       curl_mode: "http_error",
       mock_mode: "fail"
@@ -71,8 +71,8 @@ class TestWorkflowTest < Minitest::Test
   end
 
   def test_cleanup_stops_only_the_mock_owned_by_this_invocation
-    owned_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60", pgroup: true)
-    preexisting_ipv6_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60", pgroup: true)
+    owned_pid = spawn_waiting_process(pgroup: true)
+    preexisting_ipv6_pid = spawn_waiting_process(pgroup: true)
     stdout, stderr, status = run_test_script(
       curl_mode: "unavailable_until_mock",
       mock_owned_pid: owned_pid.to_s
@@ -99,7 +99,7 @@ class TestWorkflowTest < Minitest::Test
   end
 
   def test_failed_mock_readiness_cleans_up_the_owned_process_group
-    owned_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60", pgroup: true)
+    owned_pid = spawn_waiting_process(pgroup: true)
     stdout, stderr, status = run_test_script(
       curl_mode: "unavailable_until_mock",
       mock_mode: "fail",
@@ -271,8 +271,8 @@ class TestWorkflowTest < Minitest::Test
   end
 
   def test_cleanup_leaves_non_listening_connections_running
-    listener_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60", pgroup: true)
-    client_pid = Process.spawn(RbConfig.ruby, "-e", "sleep 60")
+    listener_pid = spawn_waiting_process(pgroup: true)
+    client_pid = spawn_waiting_process
     stdout, stderr, status = run_test_script(
       curl_mode: "unavailable_until_mock",
       mock_owned_pid: listener_pid.to_s
@@ -316,6 +316,12 @@ class TestWorkflowTest < Minitest::Test
   end
 
   private
+
+  def spawn_waiting_process(pgroup: false)
+    # Ruby can lose TERM during interpreter startup. These fixtures only need
+    # to wait for cleanup, so use a process with the native signal disposition.
+    Process.spawn("sleep", "60", pgroup: pgroup)
+  end
 
   def assert_bundle_ran
     assert_equal(["exec rake test"], calls(@bundle_calls))

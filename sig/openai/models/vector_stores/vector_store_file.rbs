@@ -8,12 +8,12 @@ module OpenAI
           id: String,
           created_at: Integer,
           last_error: OpenAI::VectorStores::VectorStoreFile::LastError?,
-          object: :"vector_store.file",
+          ?object: :"vector_store.file",
           status: OpenAI::Models::VectorStores::VectorStoreFile::status,
           usage_bytes: Integer,
           vector_store_id: String,
-          attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::VectorStoreFile::attribute]?,
-          chunking_strategy: OpenAI::Models::file_chunking_strategy
+          ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::VectorStoreFile::attribute]?,
+          ?chunking_strategy: OpenAI::Models::file_chunking_strategy
         }
 
       class VectorStoreFile < OpenAI::Internal::Type::BaseModel
@@ -55,12 +55,12 @@ module OpenAI
           id: String,
           created_at: Integer,
           last_error: OpenAI::VectorStores::VectorStoreFile::LastError?,
-          object: :"vector_store.file",
+          ?object: :"vector_store.file",
           status: OpenAI::Models::VectorStores::VectorStoreFile::status,
           usage_bytes: Integer,
           vector_store_id: String,
-          attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::VectorStoreFile::attribute]?,
-          chunking_strategy: OpenAI::Models::file_chunking_strategy
+          ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::VectorStoreFile::attribute]?,
+          ?chunking_strategy: OpenAI::Models::file_chunking_strategy
         }
 
         type last_error =

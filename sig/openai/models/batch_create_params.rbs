@@ -5,10 +5,10 @@ module OpenAI
         completion_window: OpenAI::Models::BatchCreateParams::completion_window,
         endpoint: OpenAI::Models::BatchCreateParams::endpoint,
         input_file_id: String,
-        metadata: OpenAI::Models::metadata?,
-        output_expires_after: OpenAI::BatchCreateParams::OutputExpiresAfter
+        ?metadata: OpenAI::Models::metadata?,
+        ?output_expires_after: OpenAI::BatchCreateParams::OutputExpiresAfter,
+        ?request_options: OpenAI::request_opts
       }
-      & OpenAI::Internal::Type::request_parameters
 
     class BatchCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -41,9 +41,9 @@ module OpenAI
         completion_window: OpenAI::Models::BatchCreateParams::completion_window,
         endpoint: OpenAI::Models::BatchCreateParams::endpoint,
         input_file_id: String,
-        metadata: OpenAI::Models::metadata?,
-        output_expires_after: OpenAI::BatchCreateParams::OutputExpiresAfter,
-        request_options: OpenAI::RequestOptions
+        ?metadata: OpenAI::Models::metadata?,
+        ?output_expires_after: OpenAI::BatchCreateParams::OutputExpiresAfter,
+        ?request_options: OpenAI::RequestOptions
       }
 
       type completion_window = :"24h"
@@ -81,7 +81,7 @@ module OpenAI
         def self?.values: -> ::Array[OpenAI::Models::BatchCreateParams::endpoint]
       end
 
-      type output_expires_after = { anchor: :created_at, seconds: Integer }
+      type output_expires_after = { ?anchor: :created_at, seconds: Integer }
 
       class OutputExpiresAfter < OpenAI::Internal::Type::BaseModel
         attr_accessor anchor: :created_at
@@ -90,7 +90,7 @@ module OpenAI
 
         def initialize: (seconds: Integer, ?anchor: :created_at) -> void
 
-        def to_hash: -> { anchor: :created_at, seconds: Integer }
+        def to_hash: -> { ?anchor: :created_at, seconds: Integer }
       end
     end
   end

@@ -6,7 +6,7 @@ module OpenAI
           duration: Float,
           language: String,
           text: String,
-          segments: ::Array[OpenAI::Audio::TranscriptionSegment]
+          ?segments: ::Array[OpenAI::Audio::TranscriptionSegment]
         }
 
       class TranslationVerbose < OpenAI::Internal::Type::BaseModel
@@ -33,7 +33,7 @@ module OpenAI
           duration: Float,
           language: String,
           text: String,
-          segments: ::Array[OpenAI::Audio::TranscriptionSegment]
+          ?segments: ::Array[OpenAI::Audio::TranscriptionSegment]
         }
       end
     end

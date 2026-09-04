@@ -9,8 +9,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.custom_tool_call_input.delta",
-          agent: OpenAI::Beta::BetaResponseCustomToolCallInputDeltaEvent::Agent?
+          ?type: :"response.custom_tool_call_input.delta",
+          ?agent: OpenAI::Beta::BetaResponseCustomToolCallInputDeltaEvent::Agent?
         }
 
       class BetaResponseCustomToolCallInputDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -40,8 +40,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.custom_tool_call_input.delta",
-          agent: OpenAI::Beta::BetaResponseCustomToolCallInputDeltaEvent::Agent?
+          ?type: :"response.custom_tool_call_input.delta",
+          ?agent: OpenAI::Beta::BetaResponseCustomToolCallInputDeltaEvent::Agent?
         }
 
         type agent = { agent_name: String }

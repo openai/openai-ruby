@@ -7,8 +7,8 @@ module OpenAI
         {
           delta: String,
           sequence_number: Integer,
-          type: :"response.audio.delta",
-          agent: OpenAI::Beta::BetaResponseAudioDeltaEvent::Agent?
+          ?type: :"response.audio.delta",
+          ?agent: OpenAI::Beta::BetaResponseAudioDeltaEvent::Agent?
         }
 
       class BetaResponseAudioDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -30,8 +30,8 @@ module OpenAI
         def to_hash: -> {
           delta: String,
           sequence_number: Integer,
-          type: :"response.audio.delta",
-          agent: OpenAI::Beta::BetaResponseAudioDeltaEvent::Agent?
+          ?type: :"response.audio.delta",
+          ?agent: OpenAI::Beta::BetaResponseAudioDeltaEvent::Agent?
         }
 
         type agent = { agent_name: String }

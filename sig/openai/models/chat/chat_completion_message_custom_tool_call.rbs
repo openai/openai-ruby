@@ -7,7 +7,7 @@ module OpenAI
         {
           id: String,
           custom: OpenAI::Chat::ChatCompletionMessageCustomToolCall::Custom,
-          type: :custom
+          ?type: :custom
         }
 
       class ChatCompletionMessageCustomToolCall < OpenAI::Internal::Type::BaseModel
@@ -26,7 +26,7 @@ module OpenAI
         def to_hash: -> {
           id: String,
           custom: OpenAI::Chat::ChatCompletionMessageCustomToolCall::Custom,
-          type: :custom
+          ?type: :custom
         }
 
         type custom = { input: String, name: String }

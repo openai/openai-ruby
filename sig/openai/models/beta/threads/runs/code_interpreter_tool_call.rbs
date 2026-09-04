@@ -7,7 +7,7 @@ module OpenAI
             {
               id: String,
               code_interpreter: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
-              type: :code_interpreter
+              ?type: :code_interpreter
             }
 
           class CodeInterpreterToolCall < OpenAI::Internal::Type::BaseModel
@@ -26,7 +26,7 @@ module OpenAI
             def to_hash: -> {
               id: String,
               code_interpreter: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
-              type: :code_interpreter
+              ?type: :code_interpreter
             }
 
             type code_interpreter =
@@ -57,7 +57,7 @@ module OpenAI
               module Output
                 extend OpenAI::Internal::Type::Union
 
-                type logs = { logs: String, type: :logs }
+                type logs = { logs: String, ?type: :logs }
 
                 class Logs < OpenAI::Internal::Type::BaseModel
                   attr_accessor logs: String
@@ -66,13 +66,13 @@ module OpenAI
 
                   def initialize: (logs: String, ?type: :logs) -> void
 
-                  def to_hash: -> { logs: String, type: :logs }
+                  def to_hash: -> { logs: String, ?type: :logs }
                 end
 
                 type image =
                   {
                     image: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
-                    type: :image
+                    ?type: :image
                   }
 
                 class Image < OpenAI::Internal::Type::BaseModel
@@ -87,7 +87,7 @@ module OpenAI
 
                   def to_hash: -> {
                     image: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
-                    type: :image
+                    ?type: :image
                   }
 
                   type image = { file_id: String }

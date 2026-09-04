@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Safety
       type alert_retrieve_params =
-        { id: String } & OpenAI::Internal::Type::request_parameters
+        { id: String, ?request_options: OpenAI::request_opts }
 
       class AlertRetrieveParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -15,7 +15,7 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> void
 
-        def to_hash: -> { id: String, request_options: OpenAI::RequestOptions }
+        def to_hash: -> { id: String, ?request_options: OpenAI::RequestOptions }
       end
     end
   end

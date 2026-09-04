@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Realtime
       type realtime_response_create_audio_output =
-        { output: OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output }
+        { ?output: OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output }
 
       class RealtimeResponseCreateAudioOutput < OpenAI::Internal::Type::BaseModel
         attr_reader output: OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output?
@@ -16,13 +16,13 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          output: OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output
+          ?output: OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output
         }
 
         type output =
           {
-            format_: OpenAI::Models::Realtime::realtime_audio_formats,
-            voice: OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice
+            ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
+            ?voice: OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice
           }
 
         class Output < OpenAI::Internal::Type::BaseModel
@@ -44,8 +44,8 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            format_: OpenAI::Models::Realtime::realtime_audio_formats,
-            voice: OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice
+            ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
+            ?voice: OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice
           }
 
           type voice =

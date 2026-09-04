@@ -3,7 +3,7 @@ module OpenAI
     module Admin
       module Organization
         type group_delete_response =
-          { id: String, deleted: bool, object: :"group.deleted" }
+          { id: String, deleted: bool, ?object: :"group.deleted" }
 
         class GroupDeleteResponse < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
@@ -21,7 +21,7 @@ module OpenAI
           def to_hash: -> {
             id: String,
             deleted: bool,
-            object: :"group.deleted"
+            ?object: :"group.deleted"
           }
         end
       end

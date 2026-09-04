@@ -7,7 +7,7 @@ module OpenAI
           content_index: Integer,
           event_id: String,
           item_id: String,
-          type: :"conversation.item.truncated"
+          ?type: :"conversation.item.truncated"
         }
 
       class ConversationItemTruncatedEvent < OpenAI::Internal::Type::BaseModel
@@ -34,7 +34,7 @@ module OpenAI
           content_index: Integer,
           event_id: String,
           item_id: String,
-          type: :"conversation.item.truncated"
+          ?type: :"conversation.item.truncated"
         }
       end
     end

@@ -5,10 +5,10 @@ module OpenAI
         {
           id: String,
           content: ::Array[OpenAI::Models::Responses::ResponseOutputMessage::content],
-          role: :assistant,
+          ?role: :assistant,
           status: OpenAI::Models::Responses::ResponseOutputMessage::status,
-          type: :message,
-          phase: OpenAI::Models::Responses::ResponseOutputMessage::phase?
+          ?type: :message,
+          ?phase: OpenAI::Models::Responses::ResponseOutputMessage::phase?
         }
 
       class ResponseOutputMessage < OpenAI::Internal::Type::BaseModel
@@ -36,10 +36,10 @@ module OpenAI
         def to_hash: -> {
           id: String,
           content: ::Array[OpenAI::Models::Responses::ResponseOutputMessage::content],
-          role: :assistant,
+          ?role: :assistant,
           status: OpenAI::Models::Responses::ResponseOutputMessage::status,
-          type: :message,
-          phase: OpenAI::Models::Responses::ResponseOutputMessage::phase?
+          ?type: :message,
+          ?phase: OpenAI::Models::Responses::ResponseOutputMessage::phase?
         }
 
         type content =

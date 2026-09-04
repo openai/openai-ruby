@@ -10,8 +10,8 @@ module OpenAI
           output_index: Integer,
           refusal: String,
           sequence_number: Integer,
-          type: :"response.refusal.done",
-          agent: OpenAI::Beta::BetaResponseRefusalDoneEvent::Agent?
+          ?type: :"response.refusal.done",
+          ?agent: OpenAI::Beta::BetaResponseRefusalDoneEvent::Agent?
         }
 
       class BetaResponseRefusalDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -45,8 +45,8 @@ module OpenAI
           output_index: Integer,
           refusal: String,
           sequence_number: Integer,
-          type: :"response.refusal.done",
-          agent: OpenAI::Beta::BetaResponseRefusalDoneEvent::Agent?
+          ?type: :"response.refusal.done",
+          ?agent: OpenAI::Beta::BetaResponseRefusalDoneEvent::Agent?
         }
 
         type agent = { agent_name: String }

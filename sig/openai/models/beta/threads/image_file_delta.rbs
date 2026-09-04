@@ -4,8 +4,8 @@ module OpenAI
       module Threads
         type image_file_delta =
           {
-            detail: OpenAI::Models::Beta::Threads::ImageFileDelta::detail,
-            file_id: String
+            ?detail: OpenAI::Models::Beta::Threads::ImageFileDelta::detail,
+            ?file_id: String
           }
 
         class ImageFileDelta < OpenAI::Internal::Type::BaseModel
@@ -25,8 +25,8 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            detail: OpenAI::Models::Beta::Threads::ImageFileDelta::detail,
-            file_id: String
+            ?detail: OpenAI::Models::Beta::Threads::ImageFileDelta::detail,
+            ?file_id: String
           }
 
           type detail = :auto | :low | :high

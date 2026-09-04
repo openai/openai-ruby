@@ -5,7 +5,7 @@ module OpenAI
         {
           event_id: String,
           response: OpenAI::Realtime::RealtimeResponse,
-          type: :"response.created"
+          ?type: :"response.created"
         }
 
       class ResponseCreatedEvent < OpenAI::Internal::Type::BaseModel
@@ -24,7 +24,7 @@ module OpenAI
         def to_hash: -> {
           event_id: String,
           response: OpenAI::Realtime::RealtimeResponse,
-          type: :"response.created"
+          ?type: :"response.created"
         }
       end
     end

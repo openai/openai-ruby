@@ -8,7 +8,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.reasoning_text.delta"
+          ?type: :"response.reasoning_text.delta"
         }
 
       class ResponseReasoningTextDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -39,7 +39,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.reasoning_text.delta"
+          ?type: :"response.reasoning_text.delta"
         }
       end
     end

@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Responses
       type response_audio_transcript_done_event =
-        { sequence_number: Integer, type: :"response.audio.transcript.done" }
+        { sequence_number: Integer, ?type: :"response.audio.transcript.done" }
 
       class ResponseAudioTranscriptDoneEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor sequence_number: Integer
@@ -16,7 +16,7 @@ module OpenAI
 
         def to_hash: -> {
           sequence_number: Integer,
-          type: :"response.audio.transcript.done"
+          ?type: :"response.audio.transcript.done"
         }
       end
     end

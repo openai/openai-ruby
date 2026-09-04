@@ -9,8 +9,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.mcp_call_arguments.done",
-          agent: OpenAI::Beta::BetaResponseMcpCallArgumentsDoneEvent::Agent?
+          ?type: :"response.mcp_call_arguments.done",
+          ?agent: OpenAI::Beta::BetaResponseMcpCallArgumentsDoneEvent::Agent?
         }
 
       class BetaResponseMcpCallArgumentsDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -40,8 +40,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.mcp_call_arguments.done",
-          agent: OpenAI::Beta::BetaResponseMcpCallArgumentsDoneEvent::Agent?
+          ?type: :"response.mcp_call_arguments.done",
+          ?agent: OpenAI::Beta::BetaResponseMcpCallArgumentsDoneEvent::Agent?
         }
 
         type agent = { agent_name: String }

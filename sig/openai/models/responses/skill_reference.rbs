@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Responses
       type skill_reference =
-        { skill_id: String, type: :skill_reference, version: String }
+        { skill_id: String, ?type: :skill_reference, ?version: String }
 
       class SkillReference < OpenAI::Internal::Type::BaseModel
         attr_accessor skill_id: String
@@ -21,8 +21,8 @@ module OpenAI
 
         def to_hash: -> {
           skill_id: String,
-          type: :skill_reference,
-          version: String
+          ?type: :skill_reference,
+          ?version: String
         }
       end
     end

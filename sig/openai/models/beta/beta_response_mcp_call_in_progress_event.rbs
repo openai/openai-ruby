@@ -8,8 +8,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.mcp_call.in_progress",
-          agent: OpenAI::Beta::BetaResponseMcpCallInProgressEvent::Agent?
+          ?type: :"response.mcp_call.in_progress",
+          ?agent: OpenAI::Beta::BetaResponseMcpCallInProgressEvent::Agent?
         }
 
       class BetaResponseMcpCallInProgressEvent < OpenAI::Internal::Type::BaseModel
@@ -35,8 +35,8 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.mcp_call.in_progress",
-          agent: OpenAI::Beta::BetaResponseMcpCallInProgressEvent::Agent?
+          ?type: :"response.mcp_call.in_progress",
+          ?agent: OpenAI::Beta::BetaResponseMcpCallInProgressEvent::Agent?
         }
 
         type agent = { agent_name: String }

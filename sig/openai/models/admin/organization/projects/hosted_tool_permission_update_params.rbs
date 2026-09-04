@@ -6,13 +6,13 @@ module OpenAI
           type hosted_tool_permission_update_params =
             {
               project_id: String,
-              code_interpreter: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter?,
-              file_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch?,
-              image_generation: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration?,
-              mcp: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp?,
-              web_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch?
+              ?code_interpreter: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter?,
+              ?file_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch?,
+              ?image_generation: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration?,
+              ?mcp: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp?,
+              ?web_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch?,
+              ?request_options: OpenAI::request_opts
             }
-            & OpenAI::Internal::Type::request_parameters
 
           class HostedToolPermissionUpdateParams < OpenAI::Internal::Type::BaseModel
             extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -42,12 +42,12 @@ module OpenAI
 
             def to_hash: -> {
               project_id: String,
-              code_interpreter: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter?,
-              file_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch?,
-              image_generation: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration?,
-              mcp: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp?,
-              web_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch?,
-              request_options: OpenAI::RequestOptions
+              ?code_interpreter: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter?,
+              ?file_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch?,
+              ?image_generation: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration?,
+              ?mcp: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp?,
+              ?web_search: OpenAI::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch?,
+              ?request_options: OpenAI::RequestOptions
             }
 
             type code_interpreter = { enabled: bool }

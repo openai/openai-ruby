@@ -3,16 +3,16 @@ module OpenAI
     module Realtime
       type conversation_item_with_reference =
         {
-          id: String,
-          arguments: String,
-          call_id: String,
-          content: ::Array[OpenAI::Realtime::ConversationItemWithReference::Content],
-          name: String,
-          object: OpenAI::Models::Realtime::ConversationItemWithReference::object,
-          output: String,
-          role: OpenAI::Models::Realtime::ConversationItemWithReference::role,
-          status: OpenAI::Models::Realtime::ConversationItemWithReference::status,
-          type: OpenAI::Models::Realtime::ConversationItemWithReference::type_
+          ?id: String,
+          ?arguments: String,
+          ?call_id: String,
+          ?content: ::Array[OpenAI::Realtime::ConversationItemWithReference::Content],
+          ?name: String,
+          ?object: OpenAI::Models::Realtime::ConversationItemWithReference::object,
+          ?output: String,
+          ?role: OpenAI::Models::Realtime::ConversationItemWithReference::role,
+          ?status: OpenAI::Models::Realtime::ConversationItemWithReference::status,
+          ?type: OpenAI::Models::Realtime::ConversationItemWithReference::type_
         }
 
       class ConversationItemWithReference < OpenAI::Internal::Type::BaseModel
@@ -80,25 +80,25 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          id: String,
-          arguments: String,
-          call_id: String,
-          content: ::Array[OpenAI::Realtime::ConversationItemWithReference::Content],
-          name: String,
-          object: OpenAI::Models::Realtime::ConversationItemWithReference::object,
-          output: String,
-          role: OpenAI::Models::Realtime::ConversationItemWithReference::role,
-          status: OpenAI::Models::Realtime::ConversationItemWithReference::status,
-          type: OpenAI::Models::Realtime::ConversationItemWithReference::type_
+          ?id: String,
+          ?arguments: String,
+          ?call_id: String,
+          ?content: ::Array[OpenAI::Realtime::ConversationItemWithReference::Content],
+          ?name: String,
+          ?object: OpenAI::Models::Realtime::ConversationItemWithReference::object,
+          ?output: String,
+          ?role: OpenAI::Models::Realtime::ConversationItemWithReference::role,
+          ?status: OpenAI::Models::Realtime::ConversationItemWithReference::status,
+          ?type: OpenAI::Models::Realtime::ConversationItemWithReference::type_
         }
 
         type content =
           {
-            id: String,
-            audio: String,
-            text: String,
-            transcript: String,
-            type: OpenAI::Models::Realtime::ConversationItemWithReference::Content::type_
+            ?id: String,
+            ?audio: String,
+            ?text: String,
+            ?transcript: String,
+            ?type: OpenAI::Models::Realtime::ConversationItemWithReference::Content::type_
           }
 
         class Content < OpenAI::Internal::Type::BaseModel
@@ -133,11 +133,11 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            id: String,
-            audio: String,
-            text: String,
-            transcript: String,
-            type: OpenAI::Models::Realtime::ConversationItemWithReference::Content::type_
+            ?id: String,
+            ?audio: String,
+            ?text: String,
+            ?transcript: String,
+            ?type: OpenAI::Models::Realtime::ConversationItemWithReference::Content::type_
           }
 
           type type_ = :input_text | :input_audio | :item_reference | :text

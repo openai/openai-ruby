@@ -9,7 +9,7 @@ module OpenAI
           name: String,
           operation: OpenAI::Models::Graders::StringCheckGrader::operation,
           reference: String,
-          type: :string_check
+          ?type: :string_check
         }
 
       class StringCheckGrader < OpenAI::Internal::Type::BaseModel
@@ -36,7 +36,7 @@ module OpenAI
           name: String,
           operation: OpenAI::Models::Graders::StringCheckGrader::operation,
           reference: String,
-          type: :string_check
+          ?type: :string_check
         }
 
         type operation = :eq | :ne | :like | :ilike

@@ -7,7 +7,7 @@ module OpenAI
           audio: OpenAI::Realtime::RealtimeTranslationSession::Audio,
           expires_at: Integer,
           model: String,
-          type: :translation
+          ?type: :translation
         }
 
       class RealtimeTranslationSession < OpenAI::Internal::Type::BaseModel
@@ -34,13 +34,13 @@ module OpenAI
           audio: OpenAI::Realtime::RealtimeTranslationSession::Audio,
           expires_at: Integer,
           model: String,
-          type: :translation
+          ?type: :translation
         }
 
         type audio =
           {
-            input: OpenAI::Realtime::RealtimeTranslationSession::Audio::Input,
-            output: OpenAI::Realtime::RealtimeTranslationSession::Audio::Output
+            ?input: OpenAI::Realtime::RealtimeTranslationSession::Audio::Input,
+            ?output: OpenAI::Realtime::RealtimeTranslationSession::Audio::Output
           }
 
         class Audio < OpenAI::Internal::Type::BaseModel
@@ -62,14 +62,14 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            input: OpenAI::Realtime::RealtimeTranslationSession::Audio::Input,
-            output: OpenAI::Realtime::RealtimeTranslationSession::Audio::Output
+            ?input: OpenAI::Realtime::RealtimeTranslationSession::Audio::Input,
+            ?output: OpenAI::Realtime::RealtimeTranslationSession::Audio::Output
           }
 
           type input =
             {
-              noise_reduction: OpenAI::Realtime::RealtimeTranslationSession::Audio::Input::NoiseReduction?,
-              transcription: OpenAI::Realtime::RealtimeTranslationSession::Audio::Input::Transcription?
+              ?noise_reduction: OpenAI::Realtime::RealtimeTranslationSession::Audio::Input::NoiseReduction?,
+              ?transcription: OpenAI::Realtime::RealtimeTranslationSession::Audio::Input::Transcription?
             }
 
           class Input < OpenAI::Internal::Type::BaseModel
@@ -83,8 +83,8 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              noise_reduction: OpenAI::Realtime::RealtimeTranslationSession::Audio::Input::NoiseReduction?,
-              transcription: OpenAI::Realtime::RealtimeTranslationSession::Audio::Input::Transcription?
+              ?noise_reduction: OpenAI::Realtime::RealtimeTranslationSession::Audio::Input::NoiseReduction?,
+              ?transcription: OpenAI::Realtime::RealtimeTranslationSession::Audio::Input::Transcription?
             }
 
             type noise_reduction =
@@ -113,7 +113,7 @@ module OpenAI
             end
           end
 
-          type output = { language: String }
+          type output = { ?language: String }
 
           class Output < OpenAI::Internal::Type::BaseModel
             attr_reader language: String?
@@ -122,7 +122,7 @@ module OpenAI
 
             def initialize: (?language: String) -> void
 
-            def to_hash: -> { language: String }
+            def to_hash: -> { ?language: String }
           end
         end
       end

@@ -6,9 +6,9 @@ module OpenAI
           type data_retention_update_params =
             {
               project_id: String,
-              retention_type: OpenAI::Models::Admin::Organization::Projects::DataRetentionUpdateParams::retention_type
+              retention_type: OpenAI::Models::Admin::Organization::Projects::DataRetentionUpdateParams::retention_type,
+              ?request_options: OpenAI::request_opts
             }
-            & OpenAI::Internal::Type::request_parameters
 
           class DataRetentionUpdateParams < OpenAI::Internal::Type::BaseModel
             extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -27,7 +27,7 @@ module OpenAI
             def to_hash: -> {
               project_id: String,
               retention_type: OpenAI::Models::Admin::Organization::Projects::DataRetentionUpdateParams::retention_type,
-              request_options: OpenAI::RequestOptions
+              ?request_options: OpenAI::RequestOptions
             }
 
             type retention_type =

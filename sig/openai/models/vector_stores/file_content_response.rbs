@@ -1,7 +1,7 @@
 module OpenAI
   module Models
     module VectorStores
-      type file_content_response = { text: String, type: String }
+      type file_content_response = { ?text: String, ?type: String }
 
       class FileContentResponse < OpenAI::Internal::Type::BaseModel
         attr_reader text: String?
@@ -14,7 +14,7 @@ module OpenAI
 
         def initialize: (?text: String, ?type: String) -> void
 
-        def to_hash: -> { text: String, type: String }
+        def to_hash: -> { ?text: String, ?type: String }
       end
     end
   end

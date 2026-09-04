@@ -7,9 +7,9 @@ module OpenAI
           call_id: String,
           output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
           status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status,
-          type: :computer_call_output,
-          acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
-          created_by: String
+          ?type: :computer_call_output,
+          ?acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
+          ?created_by: String
         }
 
       class ResponseComputerToolCallOutputItem < OpenAI::Internal::Type::BaseModel
@@ -48,9 +48,9 @@ module OpenAI
           call_id: String,
           output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
           status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status,
-          type: :computer_call_output,
-          acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
-          created_by: String
+          ?type: :computer_call_output,
+          ?acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
+          ?created_by: String
         }
 
         type status = :completed | :incomplete | :failed | :in_progress
@@ -67,7 +67,7 @@ module OpenAI
         end
 
         type acknowledged_safety_check =
-          { id: String, code: String?, message: String? }
+          { id: String, ?code: String?, ?message: String? }
 
         class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
@@ -82,7 +82,7 @@ module OpenAI
             ?message: String?
           ) -> void
 
-          def to_hash: -> { id: String, code: String?, message: String? }
+          def to_hash: -> { id: String, ?code: String?, ?message: String? }
         end
       end
     end

@@ -8,7 +8,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           response_id: String,
-          type: :"response.output_audio.done"
+          ?type: :"response.output_audio.done"
         }
 
       class ResponseAudioDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -39,7 +39,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           response_id: String,
-          type: :"response.output_audio.done"
+          ?type: :"response.output_audio.done"
         }
       end
     end

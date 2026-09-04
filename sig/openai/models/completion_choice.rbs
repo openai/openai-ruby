@@ -45,10 +45,10 @@ module OpenAI
 
       type logprobs =
         {
-          text_offset: ::Array[Integer],
-          token_logprobs: ::Array[Float],
-          tokens: ::Array[String],
-          top_logprobs: ::Array[::Hash[Symbol, Float]]
+          ?text_offset: ::Array[Integer],
+          ?token_logprobs: ::Array[Float],
+          ?tokens: ::Array[String],
+          ?top_logprobs: ::Array[::Hash[Symbol, Float]]
         }
 
       class Logprobs < OpenAI::Internal::Type::BaseModel
@@ -78,10 +78,10 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          text_offset: ::Array[Integer],
-          token_logprobs: ::Array[Float],
-          tokens: ::Array[String],
-          top_logprobs: ::Array[::Hash[Symbol, Float]]
+          ?text_offset: ::Array[Integer],
+          ?token_logprobs: ::Array[Float],
+          ?tokens: ::Array[String],
+          ?top_logprobs: ::Array[::Hash[Symbol, Float]]
         }
       end
     end

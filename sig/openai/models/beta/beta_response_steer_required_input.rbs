@@ -16,7 +16,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         type function_call_output =
-          { call_id: String, name: String, type: :function_call_output }
+          { call_id: String, name: String, ?type: :function_call_output }
 
         class FunctionCallOutput < OpenAI::Internal::Type::BaseModel
           attr_accessor call_id: String
@@ -34,12 +34,12 @@ module OpenAI
           def to_hash: -> {
             call_id: String,
             name: String,
-            type: :function_call_output
+            ?type: :function_call_output
           }
         end
 
         type custom_tool_call_output =
-          { call_id: String, type: :custom_tool_call_output }
+          { call_id: String, ?type: :custom_tool_call_output }
 
         class CustomToolCallOutput < OpenAI::Internal::Type::BaseModel
           attr_accessor call_id: String
@@ -51,11 +51,11 @@ module OpenAI
             ?type: :custom_tool_call_output
           ) -> void
 
-          def to_hash: -> { call_id: String, type: :custom_tool_call_output }
+          def to_hash: -> { call_id: String, ?type: :custom_tool_call_output }
         end
 
         type computer_call_output =
-          { call_id: String, type: :computer_call_output }
+          { call_id: String, ?type: :computer_call_output }
 
         class ComputerCallOutput < OpenAI::Internal::Type::BaseModel
           attr_accessor call_id: String
@@ -67,10 +67,10 @@ module OpenAI
             ?type: :computer_call_output
           ) -> void
 
-          def to_hash: -> { call_id: String, type: :computer_call_output }
+          def to_hash: -> { call_id: String, ?type: :computer_call_output }
         end
 
-        type shell_call_output = { call_id: String, type: :shell_call_output }
+        type shell_call_output = { call_id: String, ?type: :shell_call_output }
 
         class ShellCallOutput < OpenAI::Internal::Type::BaseModel
           attr_accessor call_id: String
@@ -79,11 +79,11 @@ module OpenAI
 
           def initialize: (call_id: String, ?type: :shell_call_output) -> void
 
-          def to_hash: -> { call_id: String, type: :shell_call_output }
+          def to_hash: -> { call_id: String, ?type: :shell_call_output }
         end
 
         type apply_patch_call_output =
-          { call_id: String, type: :apply_patch_call_output }
+          { call_id: String, ?type: :apply_patch_call_output }
 
         class ApplyPatchCallOutput < OpenAI::Internal::Type::BaseModel
           attr_accessor call_id: String
@@ -95,14 +95,14 @@ module OpenAI
             ?type: :apply_patch_call_output
           ) -> void
 
-          def to_hash: -> { call_id: String, type: :apply_patch_call_output }
+          def to_hash: -> { call_id: String, ?type: :apply_patch_call_output }
         end
 
         type tool_search_output =
           {
             call_id: String,
             execution: OpenAI::Models::Beta::BetaResponseSteerRequiredInput::ToolSearchOutput::execution,
-            type: :tool_search_output
+            ?type: :tool_search_output
           }
 
         class ToolSearchOutput < OpenAI::Internal::Type::BaseModel
@@ -121,7 +121,7 @@ module OpenAI
           def to_hash: -> {
             call_id: String,
             execution: OpenAI::Models::Beta::BetaResponseSteerRequiredInput::ToolSearchOutput::execution,
-            type: :tool_search_output
+            ?type: :tool_search_output
           }
 
           type execution = :client
@@ -136,7 +136,7 @@ module OpenAI
         end
 
         type mcp_approval_response =
-          { approval_request_id: String, type: :mcp_approval_response }
+          { approval_request_id: String, ?type: :mcp_approval_response }
 
         class McpApprovalResponse < OpenAI::Internal::Type::BaseModel
           attr_accessor approval_request_id: String
@@ -150,7 +150,7 @@ module OpenAI
 
           def to_hash: -> {
             approval_request_id: String,
-            type: :mcp_approval_response
+            ?type: :mcp_approval_response
           }
         end
 

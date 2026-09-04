@@ -9,7 +9,7 @@ module OpenAI
             created_at: Integer,
             name: String?,
             object: OpenAI::Models::Admin::Organization::Certificate::object,
-            active: bool
+            ?active: bool
           }
 
         class Certificate < OpenAI::Internal::Type::BaseModel
@@ -42,11 +42,11 @@ module OpenAI
             created_at: Integer,
             name: String?,
             object: OpenAI::Models::Admin::Organization::Certificate::object,
-            active: bool
+            ?active: bool
           }
 
           type certificate_details =
-            { content: String, expires_at: Integer, valid_at: Integer }
+            { ?content: String, ?expires_at: Integer, ?valid_at: Integer }
 
           class CertificateDetails < OpenAI::Internal::Type::BaseModel
             attr_reader content: String?
@@ -68,9 +68,9 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              content: String,
-              expires_at: Integer,
-              valid_at: Integer
+              ?content: String,
+              ?expires_at: Integer,
+              ?valid_at: Integer
             }
           end
 

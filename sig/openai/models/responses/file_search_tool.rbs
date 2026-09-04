@@ -3,11 +3,11 @@ module OpenAI
     module Responses
       type file_search_tool =
         {
-          type: :file_search,
+          ?type: :file_search,
           vector_store_ids: ::Array[String],
-          filters: OpenAI::Models::Responses::FileSearchTool::filters?,
-          max_num_results: Integer,
-          ranking_options: OpenAI::Responses::FileSearchTool::RankingOptions
+          ?filters: OpenAI::Models::Responses::FileSearchTool::filters?,
+          ?max_num_results: Integer,
+          ?ranking_options: OpenAI::Responses::FileSearchTool::RankingOptions
         }
 
       class FileSearchTool < OpenAI::Internal::Type::BaseModel
@@ -36,11 +36,11 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :file_search,
+          ?type: :file_search,
           vector_store_ids: ::Array[String],
-          filters: OpenAI::Models::Responses::FileSearchTool::filters?,
-          max_num_results: Integer,
-          ranking_options: OpenAI::Responses::FileSearchTool::RankingOptions
+          ?filters: OpenAI::Models::Responses::FileSearchTool::filters?,
+          ?max_num_results: Integer,
+          ?ranking_options: OpenAI::Responses::FileSearchTool::RankingOptions
         }
 
         type filters = OpenAI::ComparisonFilter | OpenAI::CompoundFilter
@@ -53,9 +53,9 @@ module OpenAI
 
         type ranking_options =
           {
-            hybrid_search: OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch,
-            ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker,
-            score_threshold: Float
+            ?hybrid_search: OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch,
+            ?ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker,
+            ?score_threshold: Float
           }
 
         class RankingOptions < OpenAI::Internal::Type::BaseModel
@@ -82,9 +82,9 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            hybrid_search: OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch,
-            ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker,
-            score_threshold: Float
+            ?hybrid_search: OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch,
+            ?ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker,
+            ?score_threshold: Float
           }
 
           type hybrid_search = { embedding_weight: Float, text_weight: Float }

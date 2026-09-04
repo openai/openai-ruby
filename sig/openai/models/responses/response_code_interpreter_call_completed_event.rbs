@@ -6,7 +6,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.code_interpreter_call.completed"
+          ?type: :"response.code_interpreter_call.completed"
         }
 
       class ResponseCodeInterpreterCallCompletedEvent < OpenAI::Internal::Type::BaseModel
@@ -29,7 +29,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.code_interpreter_call.completed"
+          ?type: :"response.code_interpreter_call.completed"
         }
       end
     end

@@ -10,13 +10,13 @@ module OpenAI
 
         type server_vad =
           {
-            type: :server_vad,
-            create_response: bool,
-            idle_timeout_ms: Integer?,
-            interrupt_response: bool,
-            prefix_padding_ms: Integer,
-            silence_duration_ms: Integer,
-            threshold: Float
+            ?type: :server_vad,
+            ?create_response: bool,
+            ?idle_timeout_ms: Integer?,
+            ?interrupt_response: bool,
+            ?prefix_padding_ms: Integer,
+            ?silence_duration_ms: Integer,
+            ?threshold: Float
           }
 
         class ServerVad < OpenAI::Internal::Type::BaseModel
@@ -55,22 +55,22 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            type: :server_vad,
-            create_response: bool,
-            idle_timeout_ms: Integer?,
-            interrupt_response: bool,
-            prefix_padding_ms: Integer,
-            silence_duration_ms: Integer,
-            threshold: Float
+            ?type: :server_vad,
+            ?create_response: bool,
+            ?idle_timeout_ms: Integer?,
+            ?interrupt_response: bool,
+            ?prefix_padding_ms: Integer,
+            ?silence_duration_ms: Integer,
+            ?threshold: Float
           }
         end
 
         type semantic_vad =
           {
-            type: :semantic_vad,
-            create_response: bool,
-            eagerness: OpenAI::Models::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::eagerness,
-            interrupt_response: bool
+            ?type: :semantic_vad,
+            ?create_response: bool,
+            ?eagerness: OpenAI::Models::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::eagerness,
+            ?interrupt_response: bool
           }
 
         class SemanticVad < OpenAI::Internal::Type::BaseModel
@@ -98,10 +98,10 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            type: :semantic_vad,
-            create_response: bool,
-            eagerness: OpenAI::Models::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::eagerness,
-            interrupt_response: bool
+            ?type: :semantic_vad,
+            ?create_response: bool,
+            ?eagerness: OpenAI::Models::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::eagerness,
+            ?interrupt_response: bool
           }
 
           type eagerness = :low | :medium | :high | :auto

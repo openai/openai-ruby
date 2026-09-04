@@ -6,9 +6,9 @@ module OpenAI
           type code_interpreter_tool_call_delta =
             {
               index: Integer,
-              type: :code_interpreter,
-              id: String,
-              code_interpreter: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
+              ?type: :code_interpreter,
+              ?id: String,
+              ?code_interpreter: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
             }
 
           class CodeInterpreterToolCallDelta < OpenAI::Internal::Type::BaseModel
@@ -35,15 +35,15 @@ module OpenAI
 
             def to_hash: -> {
               index: Integer,
-              type: :code_interpreter,
-              id: String,
-              code_interpreter: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
+              ?type: :code_interpreter,
+              ?id: String,
+              ?code_interpreter: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
             }
 
             type code_interpreter =
               {
-                input: String,
-                outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
+                ?input: String,
+                ?outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
               }
 
             class CodeInterpreter < OpenAI::Internal::Type::BaseModel
@@ -63,8 +63,8 @@ module OpenAI
               ) -> void
 
               def to_hash: -> {
-                input: String,
-                outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
+                ?input: String,
+                ?outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
               }
 
               type output =

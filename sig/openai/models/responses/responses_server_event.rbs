@@ -71,8 +71,8 @@ module OpenAI
           {
             delta: String,
             sequence_number: Integer,
-            type: :"response.audio.delta",
-            stream_id: String
+            ?type: :"response.audio.delta",
+            ?stream_id: String
           }
 
         class ResponseAudioWsDelta < OpenAI::Models::Responses::ResponseAudioDeltaEvent
@@ -90,16 +90,16 @@ module OpenAI
           def to_hash: -> {
             delta: String,
             sequence_number: Integer,
-            type: :"response.audio.delta",
-            stream_id: String
+            ?type: :"response.audio.delta",
+            ?stream_id: String
           }
         end
 
         type response_audio_ws_done =
           {
             sequence_number: Integer,
-            type: :"response.audio.done",
-            stream_id: String
+            ?type: :"response.audio.done",
+            ?stream_id: String
           }
 
         class ResponseAudioWsDone < OpenAI::Models::Responses::ResponseAudioDoneEvent
@@ -115,8 +115,8 @@ module OpenAI
 
           def to_hash: -> {
             sequence_number: Integer,
-            type: :"response.audio.done",
-            stream_id: String
+            ?type: :"response.audio.done",
+            ?stream_id: String
           }
         end
 
@@ -124,8 +124,8 @@ module OpenAI
           {
             delta: String,
             sequence_number: Integer,
-            type: :"response.audio.transcript.delta",
-            stream_id: String
+            ?type: :"response.audio.transcript.delta",
+            ?stream_id: String
           }
 
         class ResponseAudioTranscriptWsDelta < OpenAI::Models::Responses::ResponseAudioTranscriptDeltaEvent
@@ -143,16 +143,16 @@ module OpenAI
           def to_hash: -> {
             delta: String,
             sequence_number: Integer,
-            type: :"response.audio.transcript.delta",
-            stream_id: String
+            ?type: :"response.audio.transcript.delta",
+            ?stream_id: String
           }
         end
 
         type response_audio_transcript_ws_done =
           {
             sequence_number: Integer,
-            type: :"response.audio.transcript.done",
-            stream_id: String
+            ?type: :"response.audio.transcript.done",
+            ?stream_id: String
           }
 
         class ResponseAudioTranscriptWsDone < OpenAI::Models::Responses::ResponseAudioTranscriptDoneEvent
@@ -168,8 +168,8 @@ module OpenAI
 
           def to_hash: -> {
             sequence_number: Integer,
-            type: :"response.audio.transcript.done",
-            stream_id: String
+            ?type: :"response.audio.transcript.done",
+            ?stream_id: String
           }
         end
 
@@ -179,8 +179,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.code_interpreter_call_code.delta",
-            stream_id: String
+            ?type: :"response.code_interpreter_call_code.delta",
+            ?stream_id: String
           }
 
         class ResponseCodeInterpreterCallCodeWsDelta < OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDeltaEvent
@@ -202,8 +202,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.code_interpreter_call_code.delta",
-            stream_id: String
+            ?type: :"response.code_interpreter_call_code.delta",
+            ?stream_id: String
           }
         end
 
@@ -213,8 +213,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.code_interpreter_call_code.done",
-            stream_id: String
+            ?type: :"response.code_interpreter_call_code.done",
+            ?stream_id: String
           }
 
         class ResponseCodeInterpreterCallCodeWsDone < OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDoneEvent
@@ -236,8 +236,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.code_interpreter_call_code.done",
-            stream_id: String
+            ?type: :"response.code_interpreter_call_code.done",
+            ?stream_id: String
           }
         end
 
@@ -246,8 +246,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.code_interpreter_call.completed",
-            stream_id: String
+            ?type: :"response.code_interpreter_call.completed",
+            ?stream_id: String
           }
 
         class ResponseCodeInterpreterCallWsCompleted < OpenAI::Models::Responses::ResponseCodeInterpreterCallCompletedEvent
@@ -267,8 +267,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.code_interpreter_call.completed",
-            stream_id: String
+            ?type: :"response.code_interpreter_call.completed",
+            ?stream_id: String
           }
         end
 
@@ -277,8 +277,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.code_interpreter_call.in_progress",
-            stream_id: String
+            ?type: :"response.code_interpreter_call.in_progress",
+            ?stream_id: String
           }
 
         class ResponseCodeInterpreterCallInWsProgress < OpenAI::Models::Responses::ResponseCodeInterpreterCallInProgressEvent
@@ -298,8 +298,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.code_interpreter_call.in_progress",
-            stream_id: String
+            ?type: :"response.code_interpreter_call.in_progress",
+            ?stream_id: String
           }
         end
 
@@ -308,8 +308,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.code_interpreter_call.interpreting",
-            stream_id: String
+            ?type: :"response.code_interpreter_call.interpreting",
+            ?stream_id: String
           }
 
         class ResponseCodeInterpreterCallWsInterpreting < OpenAI::Models::Responses::ResponseCodeInterpreterCallInterpretingEvent
@@ -329,8 +329,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.code_interpreter_call.interpreting",
-            stream_id: String
+            ?type: :"response.code_interpreter_call.interpreting",
+            ?stream_id: String
           }
         end
 
@@ -338,8 +338,8 @@ module OpenAI
           {
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            type: :"response.completed",
-            stream_id: String
+            ?type: :"response.completed",
+            ?stream_id: String
           }
 
         class ResponseWsCompleted < OpenAI::Models::Responses::ResponseCompletedEvent
@@ -357,8 +357,8 @@ module OpenAI
           def to_hash: -> {
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            type: :"response.completed",
-            stream_id: String
+            ?type: :"response.completed",
+            ?stream_id: String
           }
         end
 
@@ -369,8 +369,8 @@ module OpenAI
             output_index: Integer,
             part: OpenAI::Models::Responses::ResponseContentPartAddedEvent::part,
             sequence_number: Integer,
-            type: :"response.content_part.added",
-            stream_id: String
+            ?type: :"response.content_part.added",
+            ?stream_id: String
           }
 
         class ResponseContentPartWsAdded < OpenAI::Models::Responses::ResponseContentPartAddedEvent
@@ -394,8 +394,8 @@ module OpenAI
             output_index: Integer,
             part: OpenAI::Models::Responses::ResponseContentPartAddedEvent::part,
             sequence_number: Integer,
-            type: :"response.content_part.added",
-            stream_id: String
+            ?type: :"response.content_part.added",
+            ?stream_id: String
           }
         end
 
@@ -406,8 +406,8 @@ module OpenAI
             output_index: Integer,
             part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part,
             sequence_number: Integer,
-            type: :"response.content_part.done",
-            stream_id: String
+            ?type: :"response.content_part.done",
+            ?stream_id: String
           }
 
         class ResponseContentPartWsDone < OpenAI::Models::Responses::ResponseContentPartDoneEvent
@@ -431,8 +431,8 @@ module OpenAI
             output_index: Integer,
             part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part,
             sequence_number: Integer,
-            type: :"response.content_part.done",
-            stream_id: String
+            ?type: :"response.content_part.done",
+            ?stream_id: String
           }
         end
 
@@ -440,8 +440,8 @@ module OpenAI
           {
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            type: :"response.created",
-            stream_id: String
+            ?type: :"response.created",
+            ?stream_id: String
           }
 
         class ResponseWsCreated < OpenAI::Models::Responses::ResponseCreatedEvent
@@ -459,8 +459,8 @@ module OpenAI
           def to_hash: -> {
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            type: :"response.created",
-            stream_id: String
+            ?type: :"response.created",
+            ?stream_id: String
           }
         end
 
@@ -469,8 +469,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.file_search_call.completed",
-            stream_id: String
+            ?type: :"response.file_search_call.completed",
+            ?stream_id: String
           }
 
         class ResponseFileSearchCallWsCompleted < OpenAI::Models::Responses::ResponseFileSearchCallCompletedEvent
@@ -490,8 +490,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.file_search_call.completed",
-            stream_id: String
+            ?type: :"response.file_search_call.completed",
+            ?stream_id: String
           }
         end
 
@@ -500,8 +500,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.file_search_call.in_progress",
-            stream_id: String
+            ?type: :"response.file_search_call.in_progress",
+            ?stream_id: String
           }
 
         class ResponseFileSearchCallInWsProgress < OpenAI::Models::Responses::ResponseFileSearchCallInProgressEvent
@@ -521,8 +521,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.file_search_call.in_progress",
-            stream_id: String
+            ?type: :"response.file_search_call.in_progress",
+            ?stream_id: String
           }
         end
 
@@ -531,8 +531,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.file_search_call.searching",
-            stream_id: String
+            ?type: :"response.file_search_call.searching",
+            ?stream_id: String
           }
 
         class ResponseFileSearchCallWsSearching < OpenAI::Models::Responses::ResponseFileSearchCallSearchingEvent
@@ -552,8 +552,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.file_search_call.searching",
-            stream_id: String
+            ?type: :"response.file_search_call.searching",
+            ?stream_id: String
           }
         end
 
@@ -563,8 +563,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.function_call_arguments.delta",
-            stream_id: String
+            ?type: :"response.function_call_arguments.delta",
+            ?stream_id: String
           }
 
         class ResponseFunctionCallArgumentsWsDelta < OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent
@@ -586,8 +586,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.function_call_arguments.delta",
-            stream_id: String
+            ?type: :"response.function_call_arguments.delta",
+            ?stream_id: String
           }
         end
 
@@ -598,8 +598,8 @@ module OpenAI
             name: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.function_call_arguments.done",
-            stream_id: String
+            ?type: :"response.function_call_arguments.done",
+            ?stream_id: String
           }
 
         class ResponseFunctionCallArgumentsWsDone < OpenAI::Models::Responses::ResponseFunctionCallArgumentsDoneEvent
@@ -623,8 +623,8 @@ module OpenAI
             name: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.function_call_arguments.done",
-            stream_id: String
+            ?type: :"response.function_call_arguments.done",
+            ?stream_id: String
           }
         end
 
@@ -634,8 +634,8 @@ module OpenAI
             command_index: Integer,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.shell_call_command.added",
-            stream_id: String
+            ?type: :"response.shell_call_command.added",
+            ?stream_id: String
           }
 
         class ResponseShellCallCommandWsAdded < OpenAI::Models::Responses::ResponseShellCallCommandAddedEvent
@@ -657,8 +657,8 @@ module OpenAI
             command_index: Integer,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.shell_call_command.added",
-            stream_id: String
+            ?type: :"response.shell_call_command.added",
+            ?stream_id: String
           }
         end
 
@@ -668,9 +668,9 @@ module OpenAI
             delta: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.shell_call_command.delta",
-            obfuscation: String,
-            stream_id: String
+            ?type: :"response.shell_call_command.delta",
+            ?obfuscation: String,
+            ?stream_id: String
           }
 
         class ResponseShellCallCommandWsDelta < OpenAI::Models::Responses::ResponseShellCallCommandDeltaEvent
@@ -693,9 +693,9 @@ module OpenAI
             delta: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.shell_call_command.delta",
-            obfuscation: String,
-            stream_id: String
+            ?type: :"response.shell_call_command.delta",
+            ?obfuscation: String,
+            ?stream_id: String
           }
         end
 
@@ -705,8 +705,8 @@ module OpenAI
             command_index: Integer,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.shell_call_command.done",
-            stream_id: String
+            ?type: :"response.shell_call_command.done",
+            ?stream_id: String
           }
 
         class ResponseShellCallCommandWsDone < OpenAI::Models::Responses::ResponseShellCallCommandDoneEvent
@@ -728,8 +728,8 @@ module OpenAI
             command_index: Integer,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.shell_call_command.done",
-            stream_id: String
+            ?type: :"response.shell_call_command.done",
+            ?stream_id: String
           }
         end
 
@@ -740,8 +740,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.shell_call_output_content.delta",
-            stream_id: String
+            ?type: :"response.shell_call_output_content.delta",
+            ?stream_id: String
           }
 
         class ResponseShellCallOutputContentWsDelta < OpenAI::Models::Responses::ResponseShellCallOutputContentDeltaEvent
@@ -765,8 +765,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.shell_call_output_content.delta",
-            stream_id: String
+            ?type: :"response.shell_call_output_content.delta",
+            ?stream_id: String
           }
         end
 
@@ -777,8 +777,8 @@ module OpenAI
             output: ::Array[OpenAI::Responses::ResponseShellCallOutputContentDoneEvent::Output],
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.shell_call_output_content.done",
-            stream_id: String
+            ?type: :"response.shell_call_output_content.done",
+            ?stream_id: String
           }
 
         class ResponseShellCallOutputContentWsDone < OpenAI::Models::Responses::ResponseShellCallOutputContentDoneEvent
@@ -802,8 +802,8 @@ module OpenAI
             output: ::Array[OpenAI::Responses::ResponseShellCallOutputContentDoneEvent::Output],
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.shell_call_output_content.done",
-            stream_id: String
+            ?type: :"response.shell_call_output_content.done",
+            ?stream_id: String
           }
         end
 
@@ -811,8 +811,8 @@ module OpenAI
           {
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            type: :"response.in_progress",
-            stream_id: String
+            ?type: :"response.in_progress",
+            ?stream_id: String
           }
 
         class ResponseInWsProgress < OpenAI::Models::Responses::ResponseInProgressEvent
@@ -830,8 +830,8 @@ module OpenAI
           def to_hash: -> {
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            type: :"response.in_progress",
-            stream_id: String
+            ?type: :"response.in_progress",
+            ?stream_id: String
           }
         end
 
@@ -839,8 +839,8 @@ module OpenAI
           {
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            type: :"response.failed",
-            stream_id: String
+            ?type: :"response.failed",
+            ?stream_id: String
           }
 
         class ResponseWsFailed < OpenAI::Models::Responses::ResponseFailedEvent
@@ -858,8 +858,8 @@ module OpenAI
           def to_hash: -> {
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            type: :"response.failed",
-            stream_id: String
+            ?type: :"response.failed",
+            ?stream_id: String
           }
         end
 
@@ -867,8 +867,8 @@ module OpenAI
           {
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            type: :"response.incomplete",
-            stream_id: String
+            ?type: :"response.incomplete",
+            ?stream_id: String
           }
 
         class ResponseWsIncomplete < OpenAI::Models::Responses::ResponseIncompleteEvent
@@ -886,8 +886,8 @@ module OpenAI
           def to_hash: -> {
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            type: :"response.incomplete",
-            stream_id: String
+            ?type: :"response.incomplete",
+            ?stream_id: String
           }
         end
 
@@ -896,8 +896,8 @@ module OpenAI
             item: OpenAI::Models::Responses::response_output_item,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.output_item.added",
-            stream_id: String
+            ?type: :"response.output_item.added",
+            ?stream_id: String
           }
 
         class ResponseOutputItemWsAdded < OpenAI::Models::Responses::ResponseOutputItemAddedEvent
@@ -917,8 +917,8 @@ module OpenAI
             item: OpenAI::Models::Responses::response_output_item,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.output_item.added",
-            stream_id: String
+            ?type: :"response.output_item.added",
+            ?stream_id: String
           }
         end
 
@@ -927,8 +927,8 @@ module OpenAI
             item: OpenAI::Models::Responses::response_output_item,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.output_item.done",
-            stream_id: String
+            ?type: :"response.output_item.done",
+            ?stream_id: String
           }
 
         class ResponseOutputItemWsDone < OpenAI::Models::Responses::ResponseOutputItemDoneEvent
@@ -948,8 +948,8 @@ module OpenAI
             item: OpenAI::Models::Responses::response_output_item,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.output_item.done",
-            stream_id: String
+            ?type: :"response.output_item.done",
+            ?stream_id: String
           }
         end
 
@@ -960,8 +960,8 @@ module OpenAI
             part: OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part,
             sequence_number: Integer,
             summary_index: Integer,
-            type: :"response.reasoning_summary_part.added",
-            stream_id: String
+            ?type: :"response.reasoning_summary_part.added",
+            ?stream_id: String
           }
 
         class ResponseReasoningSummaryPartWsAdded < OpenAI::Models::Responses::ResponseReasoningSummaryPartAddedEvent
@@ -985,8 +985,8 @@ module OpenAI
             part: OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part,
             sequence_number: Integer,
             summary_index: Integer,
-            type: :"response.reasoning_summary_part.added",
-            stream_id: String
+            ?type: :"response.reasoning_summary_part.added",
+            ?stream_id: String
           }
         end
 
@@ -997,9 +997,9 @@ module OpenAI
             part: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
             sequence_number: Integer,
             summary_index: Integer,
-            type: :"response.reasoning_summary_part.done",
-            status: OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status,
-            stream_id: String
+            ?type: :"response.reasoning_summary_part.done",
+            ?status: OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status,
+            ?stream_id: String
           }
 
         class ResponseReasoningSummaryPartWsDone < OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent
@@ -1024,9 +1024,9 @@ module OpenAI
             part: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
             sequence_number: Integer,
             summary_index: Integer,
-            type: :"response.reasoning_summary_part.done",
-            status: OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status,
-            stream_id: String
+            ?type: :"response.reasoning_summary_part.done",
+            ?status: OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent::status,
+            ?stream_id: String
           }
         end
 
@@ -1037,8 +1037,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             summary_index: Integer,
-            type: :"response.reasoning_summary_text.delta",
-            stream_id: String
+            ?type: :"response.reasoning_summary_text.delta",
+            ?stream_id: String
           }
 
         class ResponseReasoningSummaryTextWsDelta < OpenAI::Models::Responses::ResponseReasoningSummaryTextDeltaEvent
@@ -1062,8 +1062,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             summary_index: Integer,
-            type: :"response.reasoning_summary_text.delta",
-            stream_id: String
+            ?type: :"response.reasoning_summary_text.delta",
+            ?stream_id: String
           }
         end
 
@@ -1074,8 +1074,8 @@ module OpenAI
             sequence_number: Integer,
             summary_index: Integer,
             text: String,
-            type: :"response.reasoning_summary_text.done",
-            stream_id: String
+            ?type: :"response.reasoning_summary_text.done",
+            ?stream_id: String
           }
 
         class ResponseReasoningSummaryTextWsDone < OpenAI::Models::Responses::ResponseReasoningSummaryTextDoneEvent
@@ -1099,8 +1099,8 @@ module OpenAI
             sequence_number: Integer,
             summary_index: Integer,
             text: String,
-            type: :"response.reasoning_summary_text.done",
-            stream_id: String
+            ?type: :"response.reasoning_summary_text.done",
+            ?stream_id: String
           }
         end
 
@@ -1111,8 +1111,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.reasoning_text.delta",
-            stream_id: String
+            ?type: :"response.reasoning_text.delta",
+            ?stream_id: String
           }
 
         class ResponseReasoningTextWsDelta < OpenAI::Models::Responses::ResponseReasoningTextDeltaEvent
@@ -1136,8 +1136,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.reasoning_text.delta",
-            stream_id: String
+            ?type: :"response.reasoning_text.delta",
+            ?stream_id: String
           }
         end
 
@@ -1148,8 +1148,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             text: String,
-            type: :"response.reasoning_text.done",
-            stream_id: String
+            ?type: :"response.reasoning_text.done",
+            ?stream_id: String
           }
 
         class ResponseReasoningTextWsDone < OpenAI::Models::Responses::ResponseReasoningTextDoneEvent
@@ -1173,8 +1173,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             text: String,
-            type: :"response.reasoning_text.done",
-            stream_id: String
+            ?type: :"response.reasoning_text.done",
+            ?stream_id: String
           }
         end
 
@@ -1185,8 +1185,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.refusal.delta",
-            stream_id: String
+            ?type: :"response.refusal.delta",
+            ?stream_id: String
           }
 
         class ResponseRefusalWsDelta < OpenAI::Models::Responses::ResponseRefusalDeltaEvent
@@ -1210,8 +1210,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.refusal.delta",
-            stream_id: String
+            ?type: :"response.refusal.delta",
+            ?stream_id: String
           }
         end
 
@@ -1222,8 +1222,8 @@ module OpenAI
             output_index: Integer,
             refusal: String,
             sequence_number: Integer,
-            type: :"response.refusal.done",
-            stream_id: String
+            ?type: :"response.refusal.done",
+            ?stream_id: String
           }
 
         class ResponseRefusalWsDone < OpenAI::Models::Responses::ResponseRefusalDoneEvent
@@ -1247,8 +1247,8 @@ module OpenAI
             output_index: Integer,
             refusal: String,
             sequence_number: Integer,
-            type: :"response.refusal.done",
-            stream_id: String
+            ?type: :"response.refusal.done",
+            ?stream_id: String
           }
         end
 
@@ -1260,8 +1260,8 @@ module OpenAI
             logprobs: ::Array[OpenAI::Responses::ResponseTextDeltaEvent::Logprob],
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.output_text.delta",
-            stream_id: String
+            ?type: :"response.output_text.delta",
+            ?stream_id: String
           }
 
         class ResponseTextWsDelta < OpenAI::Models::Responses::ResponseTextDeltaEvent
@@ -1287,8 +1287,8 @@ module OpenAI
             logprobs: ::Array[OpenAI::Responses::ResponseTextDeltaEvent::Logprob],
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.output_text.delta",
-            stream_id: String
+            ?type: :"response.output_text.delta",
+            ?stream_id: String
           }
         end
 
@@ -1300,8 +1300,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             text: String,
-            type: :"response.output_text.done",
-            stream_id: String
+            ?type: :"response.output_text.done",
+            ?stream_id: String
           }
 
         class ResponseTextWsDone < OpenAI::Models::Responses::ResponseTextDoneEvent
@@ -1327,8 +1327,8 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             text: String,
-            type: :"response.output_text.done",
-            stream_id: String
+            ?type: :"response.output_text.done",
+            ?stream_id: String
           }
         end
 
@@ -1337,8 +1337,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.web_search_call.completed",
-            stream_id: String
+            ?type: :"response.web_search_call.completed",
+            ?stream_id: String
           }
 
         class ResponseWebSearchCallWsCompleted < OpenAI::Models::Responses::ResponseWebSearchCallCompletedEvent
@@ -1358,8 +1358,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.web_search_call.completed",
-            stream_id: String
+            ?type: :"response.web_search_call.completed",
+            ?stream_id: String
           }
         end
 
@@ -1368,8 +1368,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.web_search_call.in_progress",
-            stream_id: String
+            ?type: :"response.web_search_call.in_progress",
+            ?stream_id: String
           }
 
         class ResponseWebSearchCallInWsProgress < OpenAI::Models::Responses::ResponseWebSearchCallInProgressEvent
@@ -1389,8 +1389,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.web_search_call.in_progress",
-            stream_id: String
+            ?type: :"response.web_search_call.in_progress",
+            ?stream_id: String
           }
         end
 
@@ -1399,8 +1399,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.web_search_call.searching",
-            stream_id: String
+            ?type: :"response.web_search_call.searching",
+            ?stream_id: String
           }
 
         class ResponseWebSearchCallWsSearching < OpenAI::Models::Responses::ResponseWebSearchCallSearchingEvent
@@ -1420,8 +1420,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.web_search_call.searching",
-            stream_id: String
+            ?type: :"response.web_search_call.searching",
+            ?stream_id: String
           }
         end
 
@@ -1430,8 +1430,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.image_generation_call.completed",
-            stream_id: String
+            ?type: :"response.image_generation_call.completed",
+            ?stream_id: String
           }
 
         class ResponseImageGenCallWsCompleted < OpenAI::Models::Responses::ResponseImageGenCallCompletedEvent
@@ -1451,8 +1451,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.image_generation_call.completed",
-            stream_id: String
+            ?type: :"response.image_generation_call.completed",
+            ?stream_id: String
           }
         end
 
@@ -1461,8 +1461,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.image_generation_call.generating",
-            stream_id: String
+            ?type: :"response.image_generation_call.generating",
+            ?stream_id: String
           }
 
         class ResponseImageGenCallWsGenerating < OpenAI::Models::Responses::ResponseImageGenCallGeneratingEvent
@@ -1482,8 +1482,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.image_generation_call.generating",
-            stream_id: String
+            ?type: :"response.image_generation_call.generating",
+            ?stream_id: String
           }
         end
 
@@ -1492,8 +1492,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.image_generation_call.in_progress",
-            stream_id: String
+            ?type: :"response.image_generation_call.in_progress",
+            ?stream_id: String
           }
 
         class ResponseImageGenCallInWsProgress < OpenAI::Models::Responses::ResponseImageGenCallInProgressEvent
@@ -1513,8 +1513,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.image_generation_call.in_progress",
-            stream_id: String
+            ?type: :"response.image_generation_call.in_progress",
+            ?stream_id: String
           }
         end
 
@@ -1525,12 +1525,12 @@ module OpenAI
             :partial_image_b64 => String,
             partial_image_index: Integer,
             sequence_number: Integer,
-            type: :"response.image_generation_call.partial_image",
-            background: String,
-            output_format: String,
-            quality: String,
-            size: String,
-            stream_id: String
+            ?type: :"response.image_generation_call.partial_image",
+            ?background: String,
+            ?output_format: String,
+            ?quality: String,
+            ?size: String,
+            ?stream_id: String
           }
 
         class ResponseImageGenCallPartialWsImage < OpenAI::Models::Responses::ResponseImageGenCallPartialImageEvent
@@ -1558,12 +1558,12 @@ module OpenAI
             :partial_image_b64 => String,
             partial_image_index: Integer,
             sequence_number: Integer,
-            type: :"response.image_generation_call.partial_image",
-            background: String,
-            output_format: String,
-            quality: String,
-            size: String,
-            stream_id: String
+            ?type: :"response.image_generation_call.partial_image",
+            ?background: String,
+            ?output_format: String,
+            ?quality: String,
+            ?size: String,
+            ?stream_id: String
           }
         end
 
@@ -1573,8 +1573,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.mcp_call_arguments.delta",
-            stream_id: String
+            ?type: :"response.mcp_call_arguments.delta",
+            ?stream_id: String
           }
 
         class ResponseMcpCallArgumentsWsDelta < OpenAI::Models::Responses::ResponseMcpCallArgumentsDeltaEvent
@@ -1596,8 +1596,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.mcp_call_arguments.delta",
-            stream_id: String
+            ?type: :"response.mcp_call_arguments.delta",
+            ?stream_id: String
           }
         end
 
@@ -1607,8 +1607,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.mcp_call_arguments.done",
-            stream_id: String
+            ?type: :"response.mcp_call_arguments.done",
+            ?stream_id: String
           }
 
         class ResponseMcpCallArgumentsWsDone < OpenAI::Models::Responses::ResponseMcpCallArgumentsDoneEvent
@@ -1630,8 +1630,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.mcp_call_arguments.done",
-            stream_id: String
+            ?type: :"response.mcp_call_arguments.done",
+            ?stream_id: String
           }
         end
 
@@ -1640,8 +1640,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.mcp_call.completed",
-            stream_id: String
+            ?type: :"response.mcp_call.completed",
+            ?stream_id: String
           }
 
         class ResponseMcpCallWsCompleted < OpenAI::Models::Responses::ResponseMcpCallCompletedEvent
@@ -1661,8 +1661,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.mcp_call.completed",
-            stream_id: String
+            ?type: :"response.mcp_call.completed",
+            ?stream_id: String
           }
         end
 
@@ -1671,8 +1671,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.mcp_call.failed",
-            stream_id: String
+            ?type: :"response.mcp_call.failed",
+            ?stream_id: String
           }
 
         class ResponseMcpCallWsFailed < OpenAI::Models::Responses::ResponseMcpCallFailedEvent
@@ -1692,8 +1692,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.mcp_call.failed",
-            stream_id: String
+            ?type: :"response.mcp_call.failed",
+            ?stream_id: String
           }
         end
 
@@ -1702,8 +1702,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.mcp_call.in_progress",
-            stream_id: String
+            ?type: :"response.mcp_call.in_progress",
+            ?stream_id: String
           }
 
         class ResponseMcpCallInWsProgress < OpenAI::Models::Responses::ResponseMcpCallInProgressEvent
@@ -1723,8 +1723,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.mcp_call.in_progress",
-            stream_id: String
+            ?type: :"response.mcp_call.in_progress",
+            ?stream_id: String
           }
         end
 
@@ -1733,8 +1733,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.mcp_list_tools.completed",
-            stream_id: String
+            ?type: :"response.mcp_list_tools.completed",
+            ?stream_id: String
           }
 
         class ResponseMcpListToolsWsCompleted < OpenAI::Models::Responses::ResponseMcpListToolsCompletedEvent
@@ -1754,8 +1754,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.mcp_list_tools.completed",
-            stream_id: String
+            ?type: :"response.mcp_list_tools.completed",
+            ?stream_id: String
           }
         end
 
@@ -1764,8 +1764,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.mcp_list_tools.failed",
-            stream_id: String
+            ?type: :"response.mcp_list_tools.failed",
+            ?stream_id: String
           }
 
         class ResponseMcpListToolsWsFailed < OpenAI::Models::Responses::ResponseMcpListToolsFailedEvent
@@ -1785,8 +1785,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.mcp_list_tools.failed",
-            stream_id: String
+            ?type: :"response.mcp_list_tools.failed",
+            ?stream_id: String
           }
         end
 
@@ -1795,8 +1795,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.mcp_list_tools.in_progress",
-            stream_id: String
+            ?type: :"response.mcp_list_tools.in_progress",
+            ?stream_id: String
           }
 
         class ResponseMcpListToolsInWsProgress < OpenAI::Models::Responses::ResponseMcpListToolsInProgressEvent
@@ -1816,8 +1816,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.mcp_list_tools.in_progress",
-            stream_id: String
+            ?type: :"response.mcp_list_tools.in_progress",
+            ?stream_id: String
           }
         end
 
@@ -1829,8 +1829,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.output_text.annotation.added",
-            stream_id: String
+            ?type: :"response.output_text.annotation.added",
+            ?stream_id: String
           }
 
         class ResponseOutputTextAnnotationWsAdded < OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent
@@ -1856,8 +1856,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.output_text.annotation.added",
-            stream_id: String
+            ?type: :"response.output_text.annotation.added",
+            ?stream_id: String
           }
         end
 
@@ -1865,8 +1865,8 @@ module OpenAI
           {
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            type: :"response.queued",
-            stream_id: String
+            ?type: :"response.queued",
+            ?stream_id: String
           }
 
         class ResponseWsQueued < OpenAI::Models::Responses::ResponseQueuedEvent
@@ -1884,8 +1884,8 @@ module OpenAI
           def to_hash: -> {
             response: OpenAI::Responses::Response,
             sequence_number: Integer,
-            type: :"response.queued",
-            stream_id: String
+            ?type: :"response.queued",
+            ?stream_id: String
           }
         end
 
@@ -1895,8 +1895,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.custom_tool_call_input.delta",
-            stream_id: String
+            ?type: :"response.custom_tool_call_input.delta",
+            ?stream_id: String
           }
 
         class ResponseCustomToolCallInputWsDelta < OpenAI::Models::Responses::ResponseCustomToolCallInputDeltaEvent
@@ -1918,8 +1918,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.custom_tool_call_input.delta",
-            stream_id: String
+            ?type: :"response.custom_tool_call_input.delta",
+            ?stream_id: String
           }
         end
 
@@ -1929,8 +1929,8 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.custom_tool_call_input.done",
-            stream_id: String
+            ?type: :"response.custom_tool_call_input.done",
+            ?stream_id: String
           }
 
         class ResponseCustomToolCallInputWsDone < OpenAI::Models::Responses::ResponseCustomToolCallInputDoneEvent
@@ -1952,18 +1952,18 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             sequence_number: Integer,
-            type: :"response.custom_tool_call_input.done",
-            stream_id: String
+            ?type: :"response.custom_tool_call_input.done",
+            ?stream_id: String
           }
         end
 
         type response_ws_error =
           {
             error: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error,
-            type: :error,
-            sequence_number: Integer,
-            status: Integer,
-            stream_id: String
+            ?type: :error,
+            ?sequence_number: Integer,
+            ?status: Integer,
+            ?stream_id: String
           }
 
         class ResponseWsError < OpenAI::Internal::Type::BaseModel
@@ -1993,10 +1993,10 @@ module OpenAI
 
           def to_hash: -> {
             error: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error,
-            type: :error,
-            sequence_number: Integer,
-            status: Integer,
-            stream_id: String
+            ?type: :error,
+            ?sequence_number: Integer,
+            ?status: Integer,
+            ?stream_id: String
           }
 
           type error =
@@ -2005,8 +2005,8 @@ module OpenAI
               message: String,
               param: String?,
               type: String,
-              headers: ::Hash[Symbol, String],
-              misalignment: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment
+              ?headers: ::Hash[Symbol, String],
+              ?misalignment: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment
             }
 
           class Error < OpenAI::Internal::Type::BaseModel
@@ -2042,15 +2042,15 @@ module OpenAI
               message: String,
               param: String?,
               type: String,
-              headers: ::Hash[Symbol, String],
-              misalignment: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment
+              ?headers: ::Hash[Symbol, String],
+              ?misalignment: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment
             }
 
             type misalignment =
               {
-                detailed_explanation: String,
-                error_type: OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::error_type,
-                steer: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::Steer
+                ?detailed_explanation: String,
+                ?error_type: OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::error_type,
+                ?steer: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::Steer
               }
 
             class Misalignment < OpenAI::Internal::Type::BaseModel
@@ -2077,9 +2077,9 @@ module OpenAI
               ) -> void
 
               def to_hash: -> {
-                detailed_explanation: String,
-                error_type: OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::error_type,
-                steer: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::Steer
+                ?detailed_explanation: String,
+                ?error_type: OpenAI::Models::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::error_type,
+                ?steer: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::Steer
               }
 
               type error_type =

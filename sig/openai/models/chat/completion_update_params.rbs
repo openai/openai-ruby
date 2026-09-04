@@ -2,8 +2,11 @@ module OpenAI
   module Models
     module Chat
       type completion_update_params =
-        { completion_id: String, metadata: OpenAI::Models::metadata? }
-        & OpenAI::Internal::Type::request_parameters
+        {
+          completion_id: String,
+          metadata: OpenAI::Models::metadata?,
+          ?request_options: OpenAI::request_opts
+        }
 
       class CompletionUpdateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -22,7 +25,7 @@ module OpenAI
         def to_hash: -> {
           completion_id: String,
           metadata: OpenAI::Models::metadata?,
-          request_options: OpenAI::RequestOptions
+          ?request_options: OpenAI::RequestOptions
         }
       end
     end
