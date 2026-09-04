@@ -185,7 +185,7 @@ module OpenAI
           in [Hash, Hash, _]
             lhs.merge(rhs) { deep_merge_lr(_2, _3, concat: concat) }
           in [Array, Array, true]
-            lhs.concat(rhs)
+            lhs + rhs
           else
             rhs
           end
