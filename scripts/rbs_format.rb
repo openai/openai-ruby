@@ -61,12 +61,29 @@ module RBSFormat
     formatter = SyntaxTree::RBS::Formatter.new(protected_source, [], 80)
     Format.new(formatter).visit(SyntaxTree::RBS.parse(protected_source))
     formatter.flush
-    formatter.output.join.gsub(
+    formatted = formatter.output.join.gsub(
       /# (?:class|module) #{Regexp.escape(marker)}-(\d+)\n *[^\n]+$/
     ) do
       restorations.fetch(Regexp.last_match(1).to_i)
     end
+
+    ensure_comments_preserved!(source, formatted)
+    formatted
   end
+
+  def ensure_comments_preserved!(source, formatted)
+    return if comments(source) == comments(formatted)
+
+    raise "RBS formatter cannot safely preserve comments; format manually"
+  end
+
+  def comments(source)
+    RBS::Parser.lex(source).value.filter_map do |token|
+      token.value.sub(/[ \t\r]+\z/, "") if token.comment?
+    end
+  end
+
+  private_class_method :ensure_comments_preserved!, :comments
 
   def alias_declarations(declarations)
     declarations.flat_map do |declaration|
