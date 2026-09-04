@@ -29,7 +29,7 @@ module OpenAI
       def content: (
         String file_id,
         ?request_options: OpenAI::request_opts
-      ) -> StringIO
+      ) -> (StringIO & OpenAI::ResponseCarrier)
 
       def wait_for_processing: (
         String file_id,
