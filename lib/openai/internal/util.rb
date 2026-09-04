@@ -655,6 +655,7 @@ module OpenAI
         # @param text [String]
         def force_charset!(content_type, text:)
           charset = /charset=([^;\s]+)/.match(content_type)&.captures&.first
+          charset = charset[1...-1] if charset&.start_with?("\"") && charset.end_with?("\"")
 
           return unless charset
 
