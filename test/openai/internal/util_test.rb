@@ -850,6 +850,14 @@ class OpenAI::Test::UtilContentDecodingTest < Minitest::Test
       assert_equal(encoding, text.encoding)
     end
   end
+
+  def test_quoted_charset
+    text = String.new.force_encoding(Encoding::BINARY)
+
+    OpenAI::Internal::Util.force_charset!("application/json; charset=\"UTF-8\"", text: text)
+
+    assert_equal(Encoding::UTF_8, text.encoding)
+  end
 end
 
 class OpenAI::Test::UtilSseTest < Minitest::Test
