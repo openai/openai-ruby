@@ -12,6 +12,8 @@ require "yaml"
 require_relative "../../scripts/examples-e2e"
 
 class ExamplesE2ETimeoutTest < Minitest::Test
+  CLI_TEST_MUTEX = Mutex.new
+
   def test_rejects_invalid_effective_environment_timeouts_before_runner_or_report
     ["0", "-1", "", "not-a-number"].each do |timeout|
       with_cli(timeout: timeout) do |cli, report_directory, error_output|
@@ -20,7 +22,7 @@ class ExamplesE2ETimeoutTest < Minitest::Test
           runner_started = true
         end
 
-        status = OpenAIExamplesE2E::Runner.stub(:new, factory) { cli.run([]) }
+        status = with_stubbed_runner(factory) { cli.run([]) }
 
         assert_equal(1, status, "timeout #{timeout.inspect}")
         refute(runner_started, "timeout #{timeout.inspect} constructed a runner")
@@ -38,7 +40,7 @@ class ExamplesE2ETimeoutTest < Minitest::Test
           runner_started = true
         end
 
-        status = OpenAIExamplesE2E::Runner.stub(:new, factory) do
+        status = with_stubbed_runner(factory) do
           cli.run(["--timeout", timeout])
         end
 
@@ -57,7 +59,7 @@ class ExamplesE2ETimeoutTest < Minitest::Test
         runner_started = true
       end
 
-      status = OpenAIExamplesE2E::Runner.stub(:new, factory) do
+      status = with_stubbed_runner(factory) do
         cli.run(["--timeout", "not-a-number"])
       end
 
@@ -111,7 +113,7 @@ class ExamplesE2ETimeoutTest < Minitest::Test
         runner_started = true
       end
 
-      status = OpenAIExamplesE2E::Runner.stub(:new, factory) { cli.run(["--inventory-only"]) }
+      status = with_stubbed_runner(factory) { cli.run(["--inventory-only"]) }
 
       assert_equal(0, status, error_output.string)
       refute(runner_started)
@@ -131,7 +133,7 @@ class ExamplesE2ETimeoutTest < Minitest::Test
         runner
       end
 
-      status = OpenAIExamplesE2E::Runner.stub(:new, factory) { cli.run(arguments) }
+      status = with_stubbed_runner(factory) { cli.run(arguments) }
 
       assert_equal(0, status, error_output.string)
       assert_equal(expected_timeout, captured_timeout)
@@ -141,30 +143,32 @@ class ExamplesE2ETimeoutTest < Minitest::Test
   end
 
   def with_cli(timeout: nil, api_key: "sk-fake-timeout-test")
-    Dir.mktmpdir("openai-examples-e2e-timeout-test") do |directory|
-      root = Pathname(directory)
-      example_path = root.join("examples/example.rb")
-      example_path.dirname.mkpath
-      example_path.write("# frozen_string_literal: true\n")
-      root.join("examples/e2e.yml").write(
-        YAML.dump(
-          "version" => 1,
-          "examples" => {
-            "examples/example.rb" => {"status" => "covered", "expected_output" => "synthetic"}
-          }
+    CLI_TEST_MUTEX.synchronize do
+      Dir.mktmpdir("openai-examples-e2e-timeout-test") do |directory|
+        root = Pathname(directory)
+        example_path = root.join("examples/example.rb")
+        example_path.dirname.mkpath
+        example_path.write("# frozen_string_literal: true\n")
+        root.join("examples/e2e.yml").write(
+          YAML.dump(
+            "version" => 1,
+            "examples" => {
+              "examples/example.rb" => {"status" => "covered", "expected_output" => "synthetic"}
+            }
+          )
         )
-      )
-      report_directory = root.join("artifacts")
-      output = StringIO.new
-      error_output = StringIO.new
-      cli = OpenAIExamplesE2E::CLI.new(root: root, output: output, error_output: error_output)
+        report_directory = root.join("artifacts")
+        output = StringIO.new
+        error_output = StringIO.new
+        cli = OpenAIExamplesE2E::CLI.new(root: root, output: output, error_output: error_output)
 
-      with_environment(
-        "EXAMPLES_E2E_TIMEOUT" => timeout,
-        "EXAMPLES_E2E_REPORT_DIR" => report_directory.to_s,
-        "OPENAI_API_KEY" => api_key
-      ) do
-        yield(cli, report_directory, error_output, root)
+        with_environment(
+          "EXAMPLES_E2E_TIMEOUT" => timeout,
+          "EXAMPLES_E2E_REPORT_DIR" => report_directory.to_s,
+          "OPENAI_API_KEY" => api_key
+        ) do
+          yield(cli, report_directory, error_output, root)
+        end
       end
     end
   end
@@ -177,6 +181,10 @@ class ExamplesE2ETimeoutTest < Minitest::Test
       percentage: 100.0
     )
     OpenAIExamplesE2E::Report.new(inventory: inventory, results: [], excluded_examples: [])
+  end
+
+  def with_stubbed_runner(factory, &block)
+    OpenAIExamplesE2E::Runner.stub(:new, factory, &block)
   end
 
   def with_environment(values)
