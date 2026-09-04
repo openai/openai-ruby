@@ -118,6 +118,9 @@ jobs:
           bundler-cache: true
       - name: Check primary dependency bundle
         run: bundle check
+      - name: Check concurrent Steady publication
+        run: node scripts/steady/publication.test.cjs
+
       - name: Run tests
         run: ./scripts/test
 

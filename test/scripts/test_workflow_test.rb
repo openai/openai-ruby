@@ -389,6 +389,8 @@ class TestWorkflowTest < Minitest::Test
     FileUtils.mkdir_p(bin)
     File.symlink(File.join(ROOT, "scripts/mock"), File.join(project, "scripts/mock"))
     File.write(spec, "openapi: 3.0.0\n")
+    FileUtils.mkdir_p(File.join(project, "scripts/steady"))
+    write_executable(File.join(project, "scripts/steady/install"), "#!/usr/bin/env bash\nexit 0\n")
     write_executable(
       File.join(bin, "curl"),
       <<~BASH
@@ -424,18 +426,18 @@ class TestWorkflowTest < Minitest::Test
       BASH
     )
     write_executable(
-      File.join(bin, "npm"),
+      File.join(project, "scripts/run-steady"),
       <<~BASH
         #!/usr/bin/env bash
         if [[ " $* " == *" --version "* ]]; then
           exit 0
         fi
-        if [ "$MOCK_NPM_MODE" = "delayed_start" ]; then
+        if [ "$MOCK_STEADY_MODE" = "delayed_start" ]; then
           "$RUBY" -e 'sleep 0.2'
         fi
         printf '%s\n' "$$" > "$MOCK_PID_RECORD"
         trap ': > "$MOCK_EXITED_RECORD"' EXIT
-        if [ "$MOCK_NPM_MODE" = "crash" ]; then
+        if [ "$MOCK_STEADY_MODE" = "crash" ]; then
           exit 42
         fi
         exec "$RUBY" -e 'sleep 60'
@@ -448,7 +450,7 @@ class TestWorkflowTest < Minitest::Test
       "MOCK_LISTENER_MODE" => listener_mode,
       "MOCK_LSOF_CALLS" => lsof_calls,
       "MOCK_LSOF_MODE" => lsof_mode,
-      "MOCK_NPM_MODE" => mode,
+      "MOCK_STEADY_MODE" => mode,
       "MOCK_PID_RECORD" => pid_record,
       "PATH" => [bin, ENV.fetch("PATH")].join(File::PATH_SEPARATOR),
       "RUBY" => RbConfig.ruby,
