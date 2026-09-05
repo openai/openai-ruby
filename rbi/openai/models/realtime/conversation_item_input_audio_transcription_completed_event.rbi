@@ -135,7 +135,7 @@ module OpenAI
                 OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens,
                 OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration
               ),
-              languages: T::Array[OpenAI::Audio::TranscriptionLanguage],
+              languages: T.nilable(T::Array[OpenAI::Audio::TranscriptionLanguage]),
               logprobs: T.nilable(T::Array[OpenAI::Realtime::LogProbProperties])
             }
           )
@@ -240,7 +240,9 @@ module OpenAI
                   output_tokens: Integer,
                   total_tokens: Integer,
                   type: Symbol,
-                  input_token_details: OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails
+                  input_token_details: T.nilable(
+                    OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails
+                  )
                 }
               )
             end
@@ -292,7 +294,7 @@ module OpenAI
 
               sig do
                 override.returns(
-                  {audio_tokens: Integer, text_tokens: Integer}
+                  {audio_tokens: T.nilable(Integer), text_tokens: T.nilable(Integer)}
                 )
               end
               def to_hash

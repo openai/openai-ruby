@@ -85,7 +85,11 @@ module OpenAI
 
         sig do
           override.returns(
-            {type: Symbol, event_id: String, response: OpenAI::Realtime::RealtimeResponseCreateParams}
+            {
+              type: Symbol,
+              event_id: T.nilable(String),
+              response: T.nilable(OpenAI::Realtime::RealtimeResponseCreateParams)
+            }
           )
         end
         def to_hash

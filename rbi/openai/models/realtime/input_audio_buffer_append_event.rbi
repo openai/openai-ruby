@@ -73,7 +73,7 @@ module OpenAI
 
         sig do
           override.returns(
-            {audio: String, type: Symbol, event_id: String}
+            {audio: String, type: Symbol, event_id: T.nilable(String)}
           )
         end
         def to_hash

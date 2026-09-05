@@ -139,7 +139,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseAudioDeltaEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -202,7 +202,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseAudioDoneEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -271,7 +271,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -334,7 +334,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseAudioTranscriptDoneEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -416,7 +416,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseCodeInterpreterCallCodeDeltaEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -497,7 +497,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseCodeInterpreterCallCodeDoneEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -573,7 +573,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseCodeInterpreterCallCompletedEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -649,7 +649,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseCodeInterpreterCallInProgressEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -725,7 +725,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseCodeInterpreterCallInterpretingEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -794,7 +794,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseCompletedEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -885,7 +885,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseContentPartAddedEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -976,7 +976,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseContentPartDoneEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1045,7 +1045,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseCreatedEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1120,7 +1120,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseFileSearchCallCompletedEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1195,7 +1195,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseFileSearchCallInProgressEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1270,7 +1270,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1351,7 +1351,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseFunctionCallArgumentsDeltaEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1430,7 +1430,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1510,8 +1510,8 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                agent: OpenAI::Beta::BetaResponseShellCallCommandAddedEvent::Agent,
-                stream_id: String
+                agent: T.nilable(OpenAI::Beta::BetaResponseShellCallCommandAddedEvent::Agent),
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1596,9 +1596,9 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                agent: OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent,
-                obfuscation: String,
-                stream_id: String
+                agent: T.nilable(OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent::Agent),
+                obfuscation: T.nilable(String),
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1678,8 +1678,8 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                agent: OpenAI::Beta::BetaResponseShellCallCommandDoneEvent::Agent,
-                stream_id: String
+                agent: T.nilable(OpenAI::Beta::BetaResponseShellCallCommandDoneEvent::Agent),
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1765,8 +1765,8 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                agent: OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent::Agent,
-                stream_id: String
+                agent: T.nilable(OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent::Agent),
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1852,8 +1852,8 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                agent: OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent,
-                stream_id: String
+                agent: T.nilable(OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent),
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1922,7 +1922,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseInProgressEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1991,7 +1991,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseFailedEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2064,7 +2064,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseIncompleteEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2174,7 +2174,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseOutputItemAddedEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2281,7 +2281,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseOutputItemDoneEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2368,7 +2368,7 @@ module OpenAI
                 summary_index: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseReasoningSummaryPartAddedEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2461,8 +2461,8 @@ module OpenAI
                 summary_index: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseReasoningSummaryPartDoneEvent::Agent),
-                status: OpenAI::Beta::BetaResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol,
-                stream_id: String
+                status: T.nilable(OpenAI::Beta::BetaResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol),
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2549,7 +2549,7 @@ module OpenAI
                 summary_index: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseReasoningSummaryTextDeltaEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2636,7 +2636,7 @@ module OpenAI
                 text: String,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseReasoningSummaryTextDoneEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2723,7 +2723,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseReasoningTextDeltaEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2810,7 +2810,7 @@ module OpenAI
                 text: String,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseReasoningTextDoneEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2897,7 +2897,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseRefusalDeltaEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2984,7 +2984,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseRefusalDoneEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -3077,7 +3077,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseTextDeltaEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -3170,7 +3170,7 @@ module OpenAI
                 text: String,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseTextDoneEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -3245,7 +3245,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseWebSearchCallCompletedEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -3320,7 +3320,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseWebSearchCallInProgressEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -3395,7 +3395,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseWebSearchCallSearchingEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -3471,7 +3471,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseImageGenCallCompletedEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -3547,7 +3547,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseImageGenCallGeneratingEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -3622,7 +3622,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseImageGenCallInProgressEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -3730,11 +3730,11 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseImageGenCallPartialImageEvent::Agent),
-                background: String,
-                output_format: String,
-                quality: String,
-                size: String,
-                stream_id: String
+                background: T.nilable(String),
+                output_format: T.nilable(String),
+                quality: T.nilable(String),
+                size: T.nilable(String),
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -3817,7 +3817,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseMcpCallArgumentsDeltaEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -3898,7 +3898,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseMcpCallArgumentsDoneEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -3973,7 +3973,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseMcpCallCompletedEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -4048,7 +4048,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseMcpCallFailedEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -4123,7 +4123,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseMcpCallInProgressEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -4198,7 +4198,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseMcpListToolsCompletedEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -4273,7 +4273,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseMcpListToolsFailedEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -4349,7 +4349,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseMcpListToolsInProgressEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -4449,7 +4449,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -4518,7 +4518,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseQueuedEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -4599,7 +4599,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseCustomToolCallInputDeltaEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -4680,7 +4680,7 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseCustomToolCallInputDoneEvent::Agent),
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -4787,9 +4787,9 @@ module OpenAI
                 error: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent),
-                sequence_number: Integer,
-                status: Integer,
-                stream_id: String
+                sequence_number: T.nilable(Integer),
+                status: T.nilable(Integer),
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -4886,8 +4886,10 @@ module OpenAI
                   message: String,
                   param: T.nilable(String),
                   type: String,
-                  headers: T::Hash[Symbol, String],
-                  misalignment: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment
+                  headers: T.nilable(T::Hash[Symbol, String]),
+                  misalignment: T.nilable(
+                    OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment
+                  )
                 }
               )
             end
@@ -4977,9 +4979,13 @@ module OpenAI
               sig do
                 override.returns(
                   {
-                    detailed_explanation: String,
-                    error_type: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::Variants,
-                    steer: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer
+                    detailed_explanation: T.nilable(String),
+                    error_type: T.nilable(
+                      OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::Variants
+                    ),
+                    steer: T.nilable(
+                      OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer
+                    )
                   }
                 )
               end

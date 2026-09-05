@@ -52,7 +52,7 @@ module OpenAI
 
         sig do
           override.returns(
-            {type: Symbol, event_id: String}
+            {type: Symbol, event_id: T.nilable(String)}
           )
         end
         def to_hash

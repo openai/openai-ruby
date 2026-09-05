@@ -97,7 +97,7 @@ module OpenAI
               sequence_number: Integer,
               steer: OpenAI::Beta::BetaResponseSteerFailedEvent::Steer,
               type: Symbol,
-              stream_id: String
+              stream_id: T.nilable(String)
             }
           )
         end
@@ -251,7 +251,11 @@ module OpenAI
 
           sig do
             override.returns(
-              {input: OpenAI::Beta::BetaResponseSteerInput::Variants, previous_response_id: String, id: String}
+              {
+                input: OpenAI::Beta::BetaResponseSteerInput::Variants,
+                previous_response_id: String,
+                id: T.nilable(String)
+              }
             )
           end
           def to_hash

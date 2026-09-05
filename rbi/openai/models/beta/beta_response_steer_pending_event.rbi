@@ -160,7 +160,7 @@ module OpenAI
               sequence_number: Integer,
               steer: OpenAI::Beta::BetaResponseSteerPendingEvent::Steer,
               type: Symbol,
-              stream_id: String
+              stream_id: T.nilable(String)
             }
           )
         end
