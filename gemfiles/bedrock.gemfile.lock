@@ -12,7 +12,7 @@ PATH
   remote: ..
   specs:
   # x-release-please-start-version
-    openai (0.85.0)
+    openai (0.86.0)
   # x-release-please-end
       connection_pool (>= 2.2.3)
       logger
