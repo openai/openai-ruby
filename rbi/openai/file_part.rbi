@@ -65,5 +65,10 @@ module OpenAI
     end
     def self.new(content, filename: nil, content_type: nil)
     end
+
+    # @api private
+    sig { params(filename: T.any(Pathname, String)).returns(String) }
+    private def strip_directories(filename)
+    end
   end
 end

@@ -26,5 +26,8 @@ module OpenAI
       ?filename: (Pathname | String)?,
       ?content_type: String?
     ) -> void
+
+    # @api private
+    private def strip_directories: (Pathname | String filename) -> String
   end
 end
