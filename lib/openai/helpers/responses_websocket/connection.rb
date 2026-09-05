@@ -149,6 +149,7 @@ module OpenAI
           @poisoned = true
           raise OpenAI::Errors::ResponsesConnectionError.new(url: @url), cause: nil
         end
+
         @state = :closed if data.nil?
         data
       end
