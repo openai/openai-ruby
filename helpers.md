@@ -22,7 +22,7 @@ puts
 
 The stream will be cancelled when the block exits but you can also close it prematurely by calling `stream.close`.
 
-See an example of streaming helpers in action in [`examples/responses/streaming.rb`](examples/responses/streaming.rb).
+See an example of streaming helpers in action in [`examples/responses/streaming_basic.rb`](examples/responses/streaming_basic.rb).
 
 ### Events
 
@@ -199,7 +199,7 @@ puts
 
 The stream will be cancelled when the block exits but you can also close it prematurely by calling `stream.close`.
 
-See an example of streaming helpers in action in [`examples/chat/streaming.rb`](examples/chat/streaming.rb).
+See an example of streaming helpers in action in [`examples/chat/streaming_basic.rb`](examples/chat/streaming_basic.rb).
 
 ### Events
 
@@ -246,14 +246,13 @@ when OpenAI::Streaming::ChatChunkEvent
 
 #### `ChatContentDeltaEvent`
 
-This event is yielded whenever a text content delta is returned by the API & includes the delta and the accumulated snapshot, e.g.
+This event is yielded whenever a text content delta is returned by the API & includes the delta and the accumulated snapshot. Use these string values while content is streaming; when using structured outputs, typed parsed content is available from the done event or final completion.
 
 ```ruby
 when OpenAI::Streaming::ChatContentDeltaEvent
   event.type  # :"content.delta"
   event.delta  # " world"
   event.snapshot  # "Hello world"
-  event.parsed  # Your partially parsed model instance (when using structured outputs)
 ```
 
 #### `ChatContentDoneEvent`
@@ -290,16 +289,16 @@ when OpenAI::Streaming::ChatRefusalDoneEvent
 
 #### `ChatFunctionToolCallArgumentsDeltaEvent`
 
-This event is yielded whenever function call arguments are being streamed & includes the delta and accumulated snapshot, e.g.
+This event is yielded whenever function call arguments are being streamed & includes the delta and accumulated snapshot. For strict tools, `parsed` is populated once the accumulated arguments are complete, valid JSON.
 
 ```ruby
 when OpenAI::Streaming::ChatFunctionToolCallArgumentsDeltaEvent
   event.type  # :"tool_calls.function.arguments.delta"
   event.name  # "get_weather"
   event.index  # 0 (tool call index in array)
-  event.arguments_delta  # '{"location": "San'
-  event.arguments  # '{"location": "San Francisco"'
-  event.parsed  # {location: "San Francisco"} (if strict: true)
+  event.arguments_delta  # ' Francisco"}'
+  event.arguments  # '{"location": "San Francisco"}'
+  event.parsed  # {location: "San Francisco"} (for a strict tool)
 ```
 
 #### `ChatFunctionToolCallArgumentsDoneEvent`
@@ -397,7 +396,7 @@ class Haiku < OpenAI::BaseModel
 end
 
 stream = client.chat.completions.stream(
-  model: "gpt-4",
+  model: "gpt-4o-mini",
   messages: [{role: "user", content: "Write a haiku about Ruby"}],
   response_format: Haiku
 )

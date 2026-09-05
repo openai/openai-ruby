@@ -967,8 +967,9 @@ a supplied logger are isolated and never replace an API result or API error.
 ### Response metadata and request IDs
 
 OpenAI recommends logging request IDs in production so requests can be traced
-during troubleshooting. Top-level models and pages returned by the client expose
-immutable HTTP response metadata through `last_response`:
+during troubleshooting. Top-level models, pages, streams, and binary StringIO
+values returned by the client expose immutable HTTP response metadata through
+`last_response`:
 
 ```ruby
 response = openai.responses.create(model: "gpt-5.2", input: "Say 'this is a test'.")
@@ -976,6 +977,10 @@ puts(response.last_response.status)                 # 200
 puts(response.last_response.headers["x-request-id"]) # req_123
 puts(response.last_response.request_id)             # req_123
 puts(response._request_id)                           # req_123
+
+audio = openai.audio.speech.create(input: "Hello!", model: "tts-1", voice: "alloy")
+puts(audio.last_response.headers["x-request-id"])    # req_456
+puts(audio._request_id)                               # req_456
 ```
 
 Header names and values are normalized to strings, header names are lowercase,
@@ -984,11 +989,12 @@ HTTP response that opened the stream. Higher-level streaming helpers expose the
 same metadata as their underlying stream; models assembled from stream events
 do not.
 
-`last_response` and `_request_id` are only populated on top-level typed models
-and pages returned by the client. They are `nil` on constructed or nested models
-and are not included in `to_h`, JSON, or YAML output. Endpoints returning raw
-primitives, binary data, or `nil` do not expose this metadata. Unlike other
-properties that begin with an underscore, `_request_id` is public.
+`last_response` and `_request_id` are only populated on top-level models,
+pages, streams, and direct binary `StringIO` responses returned by the client.
+They are `nil` on constructed or nested models, unavailable on primitive or
+union-backed plain-text fallbacks, and are not included in `to_h`, JSON, or
+YAML output. Endpoints returning `nil` have no object that can carry metadata.
+Unlike other properties that begin with an underscore, `_request_id` is public.
 
 For failed HTTP requests, catch `OpenAI::Errors::APIStatusError` and use
 `request_id`:

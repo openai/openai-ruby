@@ -39,7 +39,9 @@ module OpenAI
       # Receive the next raw WebSocket message.
       #
       # @api private
-      def receive_raw
+      def receive_raw = read_raw_message
+
+      private def read_raw_message
         message = @socket.read
         message&.to_str
       end
@@ -55,13 +57,12 @@ module OpenAI
         text = text.encode(Encoding::UTF_8) unless text.encoding == Encoding::UTF_8
         raise ArgumentError, invalid_text_message unless text.valid_encoding?
 
-        @socket.write(text)
-        nil
+        write_text(text)
       end
 
       # Close the connection.
       def close(code: 1000, reason: "")
-        return if closed?
+        return if socket_closed?
 
         @socket.close(code: code, reason: reason)
         nil
@@ -71,14 +72,14 @@ module OpenAI
       #
       # @api private
       def abort
-        return if closed?
+        return if socket_closed?
 
         @socket.abort
         nil
       end
 
       # @return [Boolean]
-      def closed? = @socket.closed?
+      def closed? = socket_closed?
 
       private def parse_event(_data)
         raise NotImplementedError
@@ -91,6 +92,13 @@ module OpenAI
       private def closed_send_message = "Cannot send on a closed WebSocket."
 
       private def invalid_text_message = "WebSocket text must contain valid UTF-8"
+
+      private def socket_closed? = @socket.closed?
+
+      private def write_text(text)
+        @socket.write(text)
+        nil
+      end
     end
   end
 end

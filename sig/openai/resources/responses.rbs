@@ -148,3 +148,49 @@ module OpenAI
     end
   end
 end
+
+module OpenAI
+  module Models
+    module Responses
+      module ConnectionResources
+        class Response
+          def create: (
+            ?background: bool?,
+            ?context_management: ::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]?,
+            ?conversation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::conversation?,
+            ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
+            ?input: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::input,
+            ?instructions: String?,
+            ?max_output_tokens: Integer?,
+            ?max_tool_calls: Integer?,
+            ?metadata: OpenAI::Models::metadata?,
+            ?model: OpenAI::Models::responses_model,
+            ?moderation: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation?,
+            ?parallel_tool_calls: bool?,
+            ?previous_response_id: String?,
+            ?prompt: OpenAI::Responses::ResponsePrompt?,
+            ?prompt_cache_key: String?,
+            ?prompt_cache_options: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions,
+            ?prompt_cache_retention: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::prompt_cache_retention?,
+            ?reasoning: OpenAI::Reasoning?,
+            ?safety_identifier: String?,
+            ?service_tier: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::service_tier?,
+            ?store: bool?,
+            ?stream: bool?,
+            ?stream_id: String,
+            ?stream_options: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::StreamOptions?,
+            ?temperature: Float?,
+            ?text: OpenAI::Responses::ResponseTextConfig,
+            ?tool_choice: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::tool_choice,
+            ?tools: ::Array[OpenAI::Models::Responses::tool],
+            ?top_logprobs: Integer?,
+            ?top_p: Float?,
+            ?truncation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::truncation?,
+            ?user: String,
+            **top params
+          ) -> nil
+        end
+      end
+    end
+  end
+end

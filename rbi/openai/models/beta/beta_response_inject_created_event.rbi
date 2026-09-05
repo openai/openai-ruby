@@ -71,7 +71,7 @@ module OpenAI
 
         sig do
           override.returns(
-            {response_id: String, sequence_number: Integer, type: Symbol, stream_id: String}
+            {response_id: String, sequence_number: Integer, type: Symbol, stream_id: T.nilable(String)}
           )
         end
         def to_hash

@@ -41,6 +41,30 @@ module OpenAI::Test::ResponsesWebSocketConnectionTestSupport
     def write(_message) = raise IOError, "write failed with sensitive-body"
   end
 
+  class FailingReadSocket < FakeSocket
+    def read = raise IOError, "read failed with sensitive-body"
+  end
+
+  class FailingConnectionReadSocket < FakeSocket
+    def read
+      raise OpenAI::Errors::ResponsesConnectionError.new(url: URI("wss://example.com/v1/responses"))
+    end
+  end
+
+  class PoisonClosedProbeSocket < FailingWriteSocket
+    attr_reader :closed_checks
+
+    def initialize
+      super
+      @closed_checks = 0
+    end
+
+    def closed?
+      @closed_checks += 1
+      super
+    end
+  end
+
   class FakeTransport
     attr_reader :open_args
 

@@ -302,6 +302,18 @@ class OpenAITest < Minitest::Test
     assert_requested(:get, "http://localhost/responses/resp_123?stream=true", times: 1)
   end
 
+  def test_response_web_search_statuses
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+
+    assert_web_search_statuses(openai.responses, "http://localhost/responses")
+  end
+
+  def test_beta_response_web_search_statuses
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+
+    assert_web_search_statuses(openai.beta.responses, "http://localhost/responses?beta=true")
+  end
+
   def test_request_id_on_successful_response
     stub_request(:post, "http://localhost/chat/completions").to_return_json(
       status: 200,
@@ -471,10 +483,10 @@ class OpenAITest < Minitest::Test
     end
   end
 
-  def test_raw_response_body_does_not_freeze_union_backed_text_responses
+  def test_union_backed_text_responses_remain_plain_string_io
     stub_request(:post, "http://localhost/audio/transcriptions").to_return(
       status: 200,
-      headers: {"content-type" => "text/plain"},
+      headers: {"content-type" => "text/plain", "x-request-id" => "req_text"},
       body: "transcribed audio"
     )
 
@@ -489,6 +501,8 @@ class OpenAITest < Minitest::Test
     assert_instance_of(StringIO, response)
     assert_equal("transcribed audio", response.read)
     assert_equal(1, response.write("!"))
+    refute_respond_to(response, :_request_id)
+    refute_respond_to(response, :last_response)
   end
 
   def test_raw_response_body_is_available_on_paginated_responses
@@ -579,7 +593,7 @@ class OpenAITest < Minitest::Test
     assert_equal("req_error", error.request_id)
   end
 
-  def test_non_model_results_are_not_wrapped_in_response_metadata
+  def test_binary_results_preserve_string_io_behavior_and_expose_response_metadata
     stub_request(:get, "http://localhost/files/file_123/content")
       .to_return(
         status: 200,
@@ -596,26 +610,75 @@ class OpenAITest < Minitest::Test
 
     assert_instance_of(StringIO, content)
     assert_equal("file contents", content.read)
-    refute_respond_to(content, :last_response)
+    assert_equal("req_binary", content._request_id)
+    assert_equal(200, content.last_response.status)
+    assert_equal("req_binary", content.last_response.request_id)
+    duplicate = content.dup
+    assert_instance_of(StringIO, duplicate)
+    assert_equal("req_binary", duplicate._request_id)
+    assert_same(content.last_response, duplicate.last_response)
+    repeated_duplicate = duplicate.dup
+    assert_instance_of(StringIO, repeated_duplicate)
+    assert_equal("req_binary", repeated_duplicate._request_id)
+    assert_same(content.last_response, repeated_duplicate.last_response)
+    serialized_duplicate = YAML.dump(duplicate)
+    refute_includes(serialized_duplicate, "last_response")
+    refute_includes(serialized_duplicate, "req_binary")
+    refute_includes(serialized_duplicate, "file contents")
+    assert_equal(1, content.write("!"))
+    assert_nil(content.last_response.body)
+    refute_respond_to(StringIO.new, :last_response)
     assert_nil(result)
   end
 
-  def test_raw_response_body_does_not_change_non_model_results
+  def test_speech_results_expose_response_metadata
+    stub_request(:post, "http://localhost/audio/speech").to_return(
+      status: 200,
+      headers: {"X-Request-ID" => "req_speech"},
+      body: "synthetic audio"
+    )
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+    audio = openai.audio.speech.create(input: "hello", model: "tts-1", voice: "alloy")
+
+    assert_instance_of(StringIO, audio)
+    assert_equal("synthetic audio", audio.read)
+    assert_equal("req_speech", audio._request_id)
+    assert_equal("req_speech", audio.last_response.request_id)
+  end
+
+  def test_binary_results_ignore_json_content_type
+    stub_request(:get, "http://localhost/files/file_123/content").to_return(
+      status: 200,
+      headers: {"content-type" => "application/json", "x-request-id" => "req_json_binary"},
+      body: "{\"payload\":true}"
+    )
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+    content = openai.files.content("file_123")
+
+    assert_instance_of(StringIO, content)
+    assert_equal("{\"payload\":true}", content.read)
+    assert_equal("req_json_binary", content._request_id)
+  end
+
+  def test_raw_response_body_is_available_on_binary_results
     stub_request(:get, "http://localhost/files/file_123/content")
-      .to_return(status: 200, body: "file contents")
-    stub_request(:delete, "http://localhost/responses/resp_123")
-      .to_return(status: 204, body: "")
+      .to_return(status: 200, headers: {"X-Request-ID" => "req_binary_raw"}, body: "file contents")
 
     openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
 
     content = openai.files.content("file_123", request_options: {include_raw_body: true})
-    result = openai.responses.delete("resp_123", request_options: {include_raw_body: true})
-
     assert_instance_of(StringIO, content)
     assert_equal("file contents", content.read)
     assert_equal(1, content.write("!"))
-    refute_respond_to(content, :last_response)
-    assert_nil(result)
+    assert_equal("req_binary_raw", content._request_id)
+    assert_equal("file contents", content.last_response.body)
+    assert_predicate(content.last_response.body, :frozen?)
+    serialized = YAML.dump(content)
+    refute_includes(serialized, "last_response")
+    refute_includes(serialized, "req_binary_raw")
+    refute_includes(serialized, "file contents")
   end
 
   def test_client_default_request_default_retry_attempts
@@ -1133,5 +1196,36 @@ class OpenAITest < Minitest::Test
       expected = req.body.nil? ? ["accept"] : %w[accept content-type]
       headers.fetch_values(*expected).each { refute_empty(_1) }
     end
+  end
+
+  private
+
+  def assert_web_search_statuses(resource, url)
+    wire_statuses = %w[failed incomplete future_web_search_status]
+    stub_request(:post, url).to_return_json(
+      status: 200,
+      body: {
+        id: "resp_web_search",
+        object: "response",
+        created_at: 1_700_000_000,
+        model: "gpt-4o",
+        output: wire_statuses.map do |status|
+          {
+            id: "ws_#{status}",
+            type: "web_search_call",
+            status: status,
+            action: {type: "search", query: "synthetic query"}
+          }
+        end,
+        parallel_tool_calls: true,
+        tool_choice: "auto",
+        tools: []
+      }
+    )
+
+    response = resource.create(input: "synthetic input", model: "gpt-4o")
+
+    assert_equal([:failed, :incomplete, "future_web_search_status"], response.output.map(&:status))
+    assert_equal(wire_statuses, JSON.parse(response.to_json).fetch("output").map { _1.fetch("status") })
   end
 end

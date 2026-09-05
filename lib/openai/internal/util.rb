@@ -185,7 +185,7 @@ module OpenAI
           in [Hash, Hash, _]
             lhs.merge(rhs) { deep_merge_lr(_2, _3, concat: concat) }
           in [Array, Array, true]
-            lhs.concat(rhs)
+            lhs + rhs
           else
             rhs
           end
@@ -638,7 +638,10 @@ module OpenAI
           in [_, Symbol | Numeric]
             [headers, body.to_s]
           in [_, StringIO]
-            [headers, body.string]
+            [headers, body.string.byteslice(body.pos..) || body.string.byteslice(0, 0)]
+          in [_, OpenAI::FilePart] if body.content.is_a?(StringIO)
+            content = body.content
+            [headers, content.string.byteslice(content.pos..) || content.string.byteslice(0, 0)]
           in [_, OpenAI::FilePart]
             [headers, body.content]
           else
@@ -655,6 +658,7 @@ module OpenAI
         # @param text [String]
         def force_charset!(content_type, text:)
           charset = /charset=([^;\s]+)/.match(content_type)&.captures&.first
+          charset = charset[1...-1] if charset&.start_with?("\"") && charset.end_with?("\"")
 
           return unless charset
 
@@ -777,32 +781,37 @@ module OpenAI
       class << self
         # @api private
         #
-        # Assumes Strings have been forced into having `Encoding::BINARY`.
-        #
-        # This decoder is responsible for reassembling lines split across multiple
-        # fragments.
+        # This decoder is responsible for reassembling bytes split across multiple
+        # String fragments without depending on each fragment's encoding label
+        # while preserving the String encoding callers supplied.
         #
         # @param enum [Enumerable<String>]
         #
         # @return [Enumerable<String>]
         def decode_lines(enum)
           re = /(\r\n|\r|\n)/
-          buffer = String.new
+          buffer = String.new(encoding: Encoding::BINARY)
+          encoding = nil
           cr_seen = nil
 
           chain_fused(enum) do |y|
             enum.each do |row|
+              encoding = row.encoding if !row.empty? && (encoding.nil? || encoding == Encoding::US_ASCII)
               offset = buffer.bytesize
-              buffer << row
+              buffer << (row.encoding == Encoding::BINARY ? row : row.b)
               while (match = re.match(buffer, cr_seen&.to_i || offset))
                 case [match.captures.first, cr_seen]
                 in ["\r", nil]
                   cr_seen = match.end(1)
                   next
                 in ["\r" | "\r\n", Integer]
-                  y << buffer.slice!(..(cr_seen.pred))
+                  line = buffer.slice!(..(cr_seen.pred))
+                  line.force_encoding(encoding) unless encoding.nil?
+                  y << line
                 else
-                  y << buffer.slice!(..(match.end(1).pred))
+                  line = buffer.slice!(..(match.end(1).pred))
+                  line.force_encoding(encoding) unless encoding.nil?
+                  y << line
                 end
 
                 offset = 0
@@ -810,8 +819,16 @@ module OpenAI
               end
             end
 
-            y << buffer.slice!(..(cr_seen.pred)) unless cr_seen.nil?
-            y << buffer unless buffer.empty?
+            unless cr_seen.nil?
+              line = buffer.slice!(..(cr_seen.pred))
+              line.force_encoding(encoding) unless encoding.nil?
+              y << line
+            end
+
+            unless buffer.empty?
+              buffer.force_encoding(encoding) unless encoding.nil?
+              y << buffer
+            end
           end
         end
 
@@ -829,8 +846,14 @@ module OpenAI
           chain_fused(lines) do |y|
             blank = {event: nil, data: nil, id: nil, retry: nil}
             current = {}
+            first_line = true
 
             lines.each do |line|
+              if first_line
+                line = line.byteslice(3..) || "" if line.byteslice(0, 3)&.bytes == [0xEF, 0xBB, 0xBF]
+                first_line = false
+              end
+
               case line.sub(/\R$/, "")
               in ""
                 next if current.empty?
@@ -848,7 +871,7 @@ module OpenAI
                 in "id" unless value.include?("\0")
                   current.merge!(id: value)
                 in "retry" if /^\d+$/ =~ value
-                  current.merge!(retry: Integer(value))
+                  current.merge!(retry: Integer(value, 10))
                 else
                 end
               else

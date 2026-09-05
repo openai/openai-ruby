@@ -125,7 +125,7 @@ module OpenAI
 
           sig do
             override.returns(
-              {delta: String, sequence_number: Integer, type: Symbol, stream_id: String}
+              {delta: String, sequence_number: Integer, type: Symbol, stream_id: T.nilable(String)}
             )
           end
           def to_hash
@@ -178,7 +178,7 @@ module OpenAI
 
           sig do
             override.returns(
-              {sequence_number: Integer, type: Symbol, stream_id: String}
+              {sequence_number: Integer, type: Symbol, stream_id: T.nilable(String)}
             )
           end
           def to_hash
@@ -236,7 +236,7 @@ module OpenAI
 
           sig do
             override.returns(
-              {delta: String, sequence_number: Integer, type: Symbol, stream_id: String}
+              {delta: String, sequence_number: Integer, type: Symbol, stream_id: T.nilable(String)}
             )
           end
           def to_hash
@@ -289,7 +289,7 @@ module OpenAI
 
           sig do
             override.returns(
-              {sequence_number: Integer, type: Symbol, stream_id: String}
+              {sequence_number: Integer, type: Symbol, stream_id: T.nilable(String)}
             )
           end
           def to_hash
@@ -364,7 +364,7 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -439,7 +439,7 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -504,7 +504,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -568,7 +574,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -632,7 +644,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -690,7 +708,12 @@ module OpenAI
 
           sig do
             override.returns(
-              {response: OpenAI::Responses::Response, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                response: OpenAI::Responses::Response,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -774,7 +797,7 @@ module OpenAI
                 part: OpenAI::Responses::ResponseContentPartAddedEvent::Part::Variants,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -859,7 +882,7 @@ module OpenAI
                 part: OpenAI::Responses::ResponseContentPartDoneEvent::Part::Variants,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -918,7 +941,12 @@ module OpenAI
 
           sig do
             override.returns(
-              {response: OpenAI::Responses::Response, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                response: OpenAI::Responses::Response,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -981,7 +1009,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -1044,7 +1078,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -1107,7 +1147,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -1181,7 +1227,7 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1214,8 +1260,6 @@ module OpenAI
 
               item_id: String,
 
-              name: String,
-
               output_index: Integer,
 
               sequence_number: Integer,
@@ -1233,9 +1277,6 @@ module OpenAI
 
             # The ID of the item.
             item_id:,
-
-            # The name of the function that was called.
-            name:,
 
             # The index of the output item.
             output_index:,
@@ -1256,11 +1297,10 @@ module OpenAI
               {
                 arguments: String,
                 item_id: String,
-                name: String,
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1335,7 +1375,7 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1415,8 +1455,8 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                obfuscation: String,
-                stream_id: String
+                obfuscation: T.nilable(String),
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1491,7 +1531,7 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1572,7 +1612,7 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1653,7 +1693,7 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -1712,7 +1752,12 @@ module OpenAI
 
           sig do
             override.returns(
-              {response: OpenAI::Responses::Response, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                response: OpenAI::Responses::Response,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -1770,7 +1815,12 @@ module OpenAI
 
           sig do
             override.returns(
-              {response: OpenAI::Responses::Response, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                response: OpenAI::Responses::Response,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -1832,7 +1882,12 @@ module OpenAI
 
           sig do
             override.returns(
-              {response: OpenAI::Responses::Response, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                response: OpenAI::Responses::Response,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -1932,7 +1987,7 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2030,7 +2085,7 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2111,7 +2166,7 @@ module OpenAI
                 sequence_number: Integer,
                 summary_index: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2198,8 +2253,8 @@ module OpenAI
                 sequence_number: Integer,
                 summary_index: Integer,
                 type: Symbol,
-                status: OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol,
-                stream_id: String
+                status: T.nilable(OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Status::TaggedSymbol),
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2280,7 +2335,7 @@ module OpenAI
                 sequence_number: Integer,
                 summary_index: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2361,7 +2416,7 @@ module OpenAI
                 summary_index: Integer,
                 text: String,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2442,7 +2497,7 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2523,7 +2578,7 @@ module OpenAI
                 sequence_number: Integer,
                 text: String,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2604,7 +2659,7 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2685,7 +2740,7 @@ module OpenAI
                 refusal: String,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2772,7 +2827,7 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2859,7 +2914,7 @@ module OpenAI
                 sequence_number: Integer,
                 text: String,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -2923,7 +2978,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -2986,7 +3047,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -3049,7 +3116,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -3113,7 +3186,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -3177,7 +3256,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -3240,7 +3325,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -3341,11 +3432,11 @@ module OpenAI
                 partial_image_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                background: String,
-                output_format: String,
-                quality: String,
-                size: String,
-                stream_id: String
+                background: T.nilable(String),
+                output_format: T.nilable(String),
+                quality: T.nilable(String),
+                size: T.nilable(String),
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -3422,7 +3513,7 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -3497,7 +3588,7 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -3561,7 +3652,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -3624,7 +3721,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -3687,7 +3790,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -3750,7 +3859,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -3813,7 +3928,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -3877,7 +3998,13 @@ module OpenAI
 
           sig do
             override.returns(
-              {item_id: String, output_index: Integer, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -3970,7 +4097,7 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -4029,7 +4156,12 @@ module OpenAI
 
           sig do
             override.returns(
-              {response: OpenAI::Responses::Response, sequence_number: Integer, type: Symbol, stream_id: String}
+              {
+                response: OpenAI::Responses::Response,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
             )
           end
           def to_hash
@@ -4103,7 +4235,7 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -4178,7 +4310,7 @@ module OpenAI
                 output_index: Integer,
                 sequence_number: Integer,
                 type: Symbol,
-                stream_id: String
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -4270,9 +4402,9 @@ module OpenAI
               {
                 error: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error,
                 type: Symbol,
-                sequence_number: Integer,
-                status: Integer,
-                stream_id: String
+                sequence_number: T.nilable(Integer),
+                status: T.nilable(Integer),
+                stream_id: T.nilable(String)
               }
             )
           end
@@ -4367,8 +4499,8 @@ module OpenAI
                   message: String,
                   param: T.nilable(String),
                   type: String,
-                  headers: T::Hash[Symbol, String],
-                  misalignment: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment
+                  headers: T.nilable(T::Hash[Symbol, String]),
+                  misalignment: T.nilable(OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment)
                 }
               )
             end
@@ -4456,9 +4588,13 @@ module OpenAI
               sig do
                 override.returns(
                   {
-                    detailed_explanation: String,
-                    error_type: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::ErrorType::Variants,
-                    steer: OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::Steer
+                    detailed_explanation: T.nilable(String),
+                    error_type: T.nilable(
+                      OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::ErrorType::Variants
+                    ),
+                    steer: T.nilable(
+                      OpenAI::Responses::ResponsesServerEvent::ResponseWsError::Error::Misalignment::Steer
+                    )
                   }
                 )
               end

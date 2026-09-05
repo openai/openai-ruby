@@ -36,12 +36,20 @@ module OpenAI
         with_read_lease { read_one }
       end
 
+      # Receive the next raw WebSocket message while preserving Responses'
+      # single-owner and one-reader guarantees.
+      #
+      # @api private
+      def receive_raw
+        with_read_lease { read_raw }
+      end
+
       # Validate, encode, and send a Responses client event.
       #
       # @return [nil]
       def send_event(event)
         assert_owner!
-        raise connection_error("Cannot send on a closed Responses WebSocket.") if closed? || poisoned?
+        raise connection_error("Cannot send on a closed Responses WebSocket.") if poisoned? || closed?
 
         write_encoded(JSON.generate(encode_client_event(event)))
       rescue OpenAI::Errors::ResponsesConnectionError,
@@ -52,12 +60,23 @@ module OpenAI
         raise OpenAI::Errors::ResponsesClientEventError.new, cause: nil
       end
 
+      # Send an already encoded text message while preserving Responses'
+      # single-owner and terminal-write guarantees.
+      #
+      # @api private
+      def send_raw(data)
+        assert_owner!
+        raise connection_error("Cannot send on a closed Responses WebSocket.") if poisoned? || closed?
+
+        super
+      end
+
       # @api private
       def poisoned? = @poisoned
 
       def close(code: 1000, reason: "")
         assert_owner!
-        return if closed?
+        return if socket_closed?
         return abort if poisoned?
 
         super
@@ -73,7 +92,7 @@ module OpenAI
       # @api private
       def abort
         assert_owner!
-        return if closed?
+        return if socket_closed?
 
         super
         @state = :closed
@@ -107,20 +126,31 @@ module OpenAI
       end
 
       private def read_one
-        assert_owner!
-        return nil if closed?
-
-        data = receive_raw
-        if data.nil?
-          @state = :closed
-          return nil
-        end
+        data = read_raw
+        return nil if data.nil?
 
         parse_event(data.to_str)
       rescue OpenAI::Errors::ResponsesProtocolError, OpenAI::Errors::ResponsesConnectionError
         raise
       rescue StandardError
         raise OpenAI::Errors::ResponsesConnectionError.new(url: @url), cause: nil
+      end
+
+      private def read_raw
+        assert_owner!
+        return nil if closed?
+
+        data = begin
+          read_raw_message
+        rescue OpenAI::Errors::ResponsesConnectionError
+          @poisoned = true
+          raise
+        rescue StandardError
+          @poisoned = true
+          raise OpenAI::Errors::ResponsesConnectionError.new(url: @url), cause: nil
+        end
+        @state = :closed if data.nil?
+        data
       end
 
       private def encode_client_event(event)
@@ -142,7 +172,10 @@ module OpenAI
 
       private def write_encoded(data)
         send_raw(data)
-        nil
+      end
+
+      private def write_text(text)
+        super
       rescue StandardError
         @poisoned = true
         raise OpenAI::Errors::ResponsesSendError.new(url: @url), cause: nil

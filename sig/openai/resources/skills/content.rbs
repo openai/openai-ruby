@@ -5,7 +5,7 @@ module OpenAI
         def retrieve: (
           String skill_id,
           ?request_options: OpenAI::request_opts
-        ) -> StringIO
+        ) -> (StringIO & OpenAI::ResponseCarrier)
 
         def initialize: (client: OpenAI::Client) -> void
       end

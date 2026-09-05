@@ -190,6 +190,8 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     assert_raises(OpenAI::Errors::ResponsesConnectionError) do
       connection.response.create(model: "gpt-5.2", input: "again")
     end
+
+    assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.send_raw("{}") }
   end
 
   def test_close_aborts_after_ambiguous_write
@@ -205,6 +207,23 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
 
     assert_predicate(socket, :aborted?)
     assert_nil(socket.close_args)
+  end
+
+  def test_failed_raw_write_poisons_connection_and_reports_unknown_outcome
+    socket = PoisonClosedProbeSocket.new
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      error = assert_raises(OpenAI::Errors::ResponsesSendError) { connection.send_raw("{}") }
+
+      assert_equal(:unknown, error.outcome)
+      assert_nil(error.cause)
+      assert_predicate(connection, :poisoned?)
+      closed_checks = socket.closed_checks
+      assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.send_raw("{}") }
+      assert_equal(closed_checks, socket.closed_checks)
+    end
+
+    assert_predicate(socket, :aborted?)
   end
 
   def test_nested_generated_models_keep_serializer_metadata
@@ -427,6 +446,103 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
 
       assert_equal(1, socket.writes.size)
     end
+  end
+
+  def test_foreign_owner_raw_write_does_not_write
+    socket = FakeSocket.new
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      thread = Thread.new do
+        assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.send_raw("{}") }
+      end
+
+      thread.join
+      assert_nil(connection.send_raw("{}"))
+    end
+
+    assert_equal(["{}"], socket.writes)
+  end
+
+  def test_foreign_owner_raw_read_does_not_read
+    socket = FakeSocket.new("raw server message")
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      thread = Thread.new do
+        assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive_raw }
+      end
+
+      thread.join
+      assert_equal("raw server message", connection.receive_raw)
+    end
+  end
+
+  def test_raw_read_rejects_an_active_reader
+    socket = FakeSocket.new(text_delta("hello"), "raw server message")
+
+    error = assert_raises(OpenAI::Errors::ResponsesConnectionError) do
+      client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+        connection.each { |_event| connection.receive_raw }
+      end
+    end
+
+    assert_equal("Responses WebSocket already has an active reader.", error.message)
+  end
+
+  def test_raw_read_returns_nil_after_local_close_without_reading_queued_data
+    socket = FakeSocket.new("should-not-be-read")
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      connection.close
+      assert_nil(connection.receive_raw)
+    end
+  end
+
+  def test_raw_eof_closes_connection_before_a_later_send
+    socket = FakeSocket.new
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      assert_nil(connection.receive_raw)
+      assert_predicate(connection, :closed?)
+      assert_raises(OpenAI::Errors::ResponsesConnectionError) do
+        connection.response.create(model: "gpt-5.2")
+      end
+    end
+
+    assert_empty(socket.writes)
+    assert_predicate(socket, :closed?)
+  end
+
+  def test_raw_read_failures_are_payload_free
+    socket = FailingReadSocket.new
+
+    error = nil
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      error = assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive_raw }
+      assert_predicate(connection, :poisoned?)
+      assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.send_raw("{}") }
+      assert_raises(OpenAI::Errors::ResponsesConnectionError) do
+        connection.response.create(model: "gpt-5.2")
+      end
+    end
+
+    assert_nil(error.cause)
+    refute_includes(error.full_message, "sensitive-body")
+    assert_predicate(socket, :aborted?)
+  end
+
+  def test_wrapped_raw_read_failures_poison_and_abort
+    socket = FailingConnectionReadSocket.new
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive_raw }
+      assert_predicate(connection, :poisoned?)
+      assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.send_raw("{}") }
+      assert_raises(OpenAI::Errors::ResponsesConnectionError) do
+        connection.response.create(model: "gpt-5.2")
+      end
+    end
+
+    assert_predicate(socket, :aborted?)
   end
 
   def test_foreign_owner_send_does_not_write

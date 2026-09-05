@@ -856,19 +856,21 @@ module OpenAI
                 ),
                 conversation: T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam)),
                 include: T.nilable(T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]),
-                input: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Input::Variants,
+                input: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Input::Variants),
                 instructions: T.nilable(String),
                 max_output_tokens: T.nilable(Integer),
                 max_tool_calls: T.nilable(Integer),
                 metadata: T.nilable(T::Hash[Symbol, String]),
-                model: T.any(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::OrSymbol, String),
+                model: T.nilable(T.any(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::OrSymbol, String)),
                 moderation: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Moderation),
                 multi_agent: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::MultiAgent),
                 parallel_tool_calls: T.nilable(T::Boolean),
                 previous_response_id: T.nilable(String),
                 prompt: T.nilable(OpenAI::Beta::BetaResponsePrompt),
                 prompt_cache_key: T.nilable(String),
-                prompt_cache_options: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions,
+                prompt_cache_options: T.nilable(
+                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions
+                ),
                 prompt_cache_retention: T.nilable(
                   OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheRetention::OrSymbol
                 ),
@@ -877,45 +879,49 @@ module OpenAI
                 service_tier: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ServiceTier::OrSymbol),
                 store: T.nilable(T::Boolean),
                 stream: T.nilable(T::Boolean),
-                stream_id: String,
+                stream_id: T.nilable(String),
                 stream_options: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::StreamOptions),
                 temperature: T.nilable(Float),
-                text: OpenAI::Beta::BetaResponseTextConfig,
-                tool_choice: T.any(
-                  OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
-                  OpenAI::Beta::BetaToolChoiceAllowed,
-                  OpenAI::Beta::BetaToolChoiceTypes,
-                  OpenAI::Beta::BetaToolChoiceFunction,
-                  OpenAI::Beta::BetaToolChoiceMcp,
-                  OpenAI::Beta::BetaToolChoiceCustom,
-                  OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ToolChoice::BetaSpecificProgrammaticToolCallingParam,
-                  OpenAI::Beta::BetaToolChoiceApplyPatch,
-                  OpenAI::Beta::BetaToolChoiceShell
-                ),
-                tools: T::Array[
+                text: T.nilable(OpenAI::Beta::BetaResponseTextConfig),
+                tool_choice: T.nilable(
                   T.any(
-                    OpenAI::Beta::BetaFunctionTool,
-                    OpenAI::Beta::BetaFileSearchTool,
-                    OpenAI::Beta::BetaComputerTool,
-                    OpenAI::Beta::BetaComputerUsePreviewTool,
-                    OpenAI::Beta::BetaTool::Mcp,
-                    OpenAI::Beta::BetaTool::CodeInterpreter,
-                    OpenAI::Beta::BetaTool::ProgrammaticToolCalling,
-                    OpenAI::Beta::BetaTool::ImageGeneration,
-                    OpenAI::Beta::BetaTool::LocalShell,
-                    OpenAI::Beta::BetaFunctionShellTool,
-                    OpenAI::Beta::BetaCustomTool,
-                    OpenAI::Beta::BetaNamespaceTool,
-                    OpenAI::Beta::BetaToolSearchTool,
-                    OpenAI::Beta::BetaApplyPatchTool,
-                    OpenAI::Beta::BetaWebSearchTool,
-                    OpenAI::Beta::BetaWebSearchPreviewTool
+                    OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
+                    OpenAI::Beta::BetaToolChoiceAllowed,
+                    OpenAI::Beta::BetaToolChoiceTypes,
+                    OpenAI::Beta::BetaToolChoiceFunction,
+                    OpenAI::Beta::BetaToolChoiceMcp,
+                    OpenAI::Beta::BetaToolChoiceCustom,
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ToolChoice::BetaSpecificProgrammaticToolCallingParam,
+                    OpenAI::Beta::BetaToolChoiceApplyPatch,
+                    OpenAI::Beta::BetaToolChoiceShell
                   )
-                ],
+                ),
+                tools: T.nilable(
+                  T::Array[
+                    T.any(
+                      OpenAI::Beta::BetaFunctionTool,
+                      OpenAI::Beta::BetaFileSearchTool,
+                      OpenAI::Beta::BetaComputerTool,
+                      OpenAI::Beta::BetaComputerUsePreviewTool,
+                      OpenAI::Beta::BetaTool::Mcp,
+                      OpenAI::Beta::BetaTool::CodeInterpreter,
+                      OpenAI::Beta::BetaTool::ProgrammaticToolCalling,
+                      OpenAI::Beta::BetaTool::ImageGeneration,
+                      OpenAI::Beta::BetaTool::LocalShell,
+                      OpenAI::Beta::BetaFunctionShellTool,
+                      OpenAI::Beta::BetaCustomTool,
+                      OpenAI::Beta::BetaNamespaceTool,
+                      OpenAI::Beta::BetaToolSearchTool,
+                      OpenAI::Beta::BetaApplyPatchTool,
+                      OpenAI::Beta::BetaWebSearchTool,
+                      OpenAI::Beta::BetaWebSearchPreviewTool
+                    )
+                  ]
+                ),
                 top_logprobs: T.nilable(Integer),
                 top_p: T.nilable(Float),
                 truncation: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Truncation::OrSymbol),
-                user: String
+                user: T.nilable(String)
               }
             )
           end
@@ -1723,7 +1729,7 @@ module OpenAI
 
             sig do
               override.returns(
-                {enabled: T::Boolean, max_concurrent_subagents: Integer}
+                {enabled: T::Boolean, max_concurrent_subagents: T.nilable(Integer)}
               )
             end
             def to_hash
@@ -1825,8 +1831,12 @@ module OpenAI
               override.returns(
                 {
                   comparison_response_id: T.nilable(String),
-                  mode: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol,
-                  ttl: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol
+                  mode: T.nilable(
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol
+                  ),
+                  ttl: T.nilable(
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol
+                  )
                 }
               )
             end
@@ -2081,7 +2091,9 @@ module OpenAI
                   generate_summary: T.nilable(
                     OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::GenerateSummary::OrSymbol
                   ),
-                  mode: T.any(String, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::OrSymbol),
+                  mode: T.nilable(
+                    T.any(String, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Mode::OrSymbol)
+                  ),
                   summary: T.nilable(
                     OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Reasoning::Summary::OrSymbol
                   )
@@ -2377,7 +2389,7 @@ module OpenAI
 
             sig do
               override.returns(
-                {include_obfuscation: T::Boolean}
+                {include_obfuscation: T.nilable(T::Boolean)}
               )
             end
             def to_hash

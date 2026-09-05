@@ -45,11 +45,15 @@ module RBSFormat
     alias_declarations(RBS::Parser.parse_signature(source).last).reverse_each do |declaration|
       location = declaration.location
       kind = location[:keyword].source
+      line_end = source.index("\n", location.end_pos) || source.length
+      trailing_comment = source[location.end_pos...line_end].match(/\A[ \t]*(#.*)\z/)&.captures&.first
       restorations[location.start_pos] = if location.source.include?("#")
         location.source
       else
         "#{kind} #{declaration.new_name} = #{declaration.old_name}"
       end
+
+      restorations[location.start_pos] += " #{trailing_comment}" if trailing_comment
 
       protected_source[location.start_pos...location.end_pos] = "# #{kind} #{marker}-#{location.start_pos}\n#{declaration.new_name}: #{declaration.old_name}"
     end
@@ -57,12 +61,29 @@ module RBSFormat
     formatter = SyntaxTree::RBS::Formatter.new(protected_source, [], 80)
     Format.new(formatter).visit(SyntaxTree::RBS.parse(protected_source))
     formatter.flush
-    formatter.output.join.gsub(
+    formatted = formatter.output.join.gsub(
       /# (?:class|module) #{Regexp.escape(marker)}-(\d+)\n *[^\n]+$/
     ) do
       restorations.fetch(Regexp.last_match(1).to_i)
     end
+
+    ensure_comments_preserved!(source, formatted)
+    formatted
   end
+
+  def ensure_comments_preserved!(source, formatted)
+    return if comments(source) == comments(formatted)
+
+    raise "RBS formatter cannot safely preserve comments; format manually"
+  end
+
+  def comments(source)
+    RBS::Parser.lex(source).value.filter_map do |token|
+      token.value.sub(/[ \t\r]+\z/, "") if token.comment?
+    end
+  end
+
+  private_class_method :ensure_comments_preserved!, :comments
 
   def alias_declarations(declarations)
     declarations.flat_map do |declaration|

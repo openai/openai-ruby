@@ -90,9 +90,9 @@ module OpenAI
         pending_error = $ERROR_INFO
         begin
           if @abort_after_block.call(connection, pending_error)
-            connection.abort unless connection.closed?
+            connection.abort
           else
-            connection.close unless connection.closed?
+            connection.close
           end
 
         rescue StandardError
