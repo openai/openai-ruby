@@ -8,6 +8,7 @@ module OpenAI
               {
                 project_id: String,
                 service_account_id: String,
+                ?expires_in_seconds: Integer?,
                 ?name: String,
                 ?scopes: ::Array[String],
                 ?request_options: OpenAI::request_opts
@@ -21,6 +22,8 @@ module OpenAI
 
               attr_accessor service_account_id: String
 
+              attr_accessor expires_in_seconds: Integer?
+
               attr_reader name: String?
 
               def name=: (String) -> String
@@ -32,6 +35,7 @@ module OpenAI
               def initialize: (
                 project_id: String,
                 service_account_id: String,
+                ?expires_in_seconds: Integer?,
                 ?name: String,
                 ?scopes: ::Array[String],
                 ?request_options: OpenAI::request_opts
@@ -40,6 +44,7 @@ module OpenAI
               def to_hash: -> {
                 project_id: String,
                 service_account_id: String,
+                ?expires_in_seconds: Integer?,
                 ?name: String,
                 ?scopes: ::Array[String],
                 ?request_options: OpenAI::RequestOptions
