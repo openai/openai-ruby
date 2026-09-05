@@ -42,6 +42,15 @@ class OpenAI::Test::APIErrorMetadataTest < Minitest::Test
   end
 
   def test_top_level_metadata_remains_authoritative_and_malformed_envelopes_are_safe
+    mixed = response_error(
+      status: 400,
+      body: {code: "top_level_code", error: {type: "nested_type", param: 7}}
+    )
+
+    assert_equal("top_level_code", mixed.code)
+    assert_equal("nested_type", mixed.type)
+    assert_equal("7", mixed.param)
+
     body = {
       code: "top_level_code",
       type: nil,
