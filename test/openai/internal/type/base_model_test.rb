@@ -810,10 +810,20 @@ end
 class OpenAI::Test::MetaInfoTest < Minitest::Test
   A1 = OpenAI::Internal::Type::ArrayOf[Integer, nil?: true, doc: "dog"]
   H1 = OpenAI::Internal::Type::HashOf[-> { String }, nil?: true, doc: "dawg"]
+  A2 = OpenAI::Internal::Type::ArrayOf[enum: -> { Integer }, doc: "hash dog"]
+  H2 = OpenAI::Internal::Type::HashOf[enum: -> { String }, doc: "hash dawg"]
 
   class M1 < OpenAI::Internal::Type::BaseModel
     required :a, Integer, doc: "dog"
     optional :b, -> { String }, nil?: true, doc: "dawg"
+  end
+
+  class M2 < OpenAI::Internal::Type::BaseModel
+    required :a, enum: -> { Integer }, doc: "hash dog"
+  end
+
+  class M3 < OpenAI::Internal::Type::BaseModel
+    required :a, {enum: -> { Integer }, doc: "hash dog"}, doc: "spec dog"
   end
 
   module U1
@@ -828,10 +838,14 @@ class OpenAI::Test::MetaInfoTest < Minitest::Test
     m2 = H1.instance_variable_get(:@meta)
     assert_equal({doc: "dog"}, m1)
     assert_equal({doc: "dawg"}, m2)
+    assert_equal({doc: "hash dog"}, A2.instance_variable_get(:@meta))
+    assert_equal({doc: "hash dawg"}, H2.instance_variable_get(:@meta))
 
     ma, mb = M1.fields.fetch_values(:a, :b)
     assert_equal({doc: "dog"}, ma.fetch(:meta))
     assert_equal({doc: "dawg"}, mb.fetch(:meta))
+    assert_equal({doc: "hash dog"}, M2.fields.fetch(:a).fetch(:meta))
+    assert_equal({doc: "spec dog"}, M3.fields.fetch(:a).fetch(:meta))
 
     ua, ub = U1.send(:known_variants).map(&:last)
     assert_equal({doc: "dog"}, ua)
