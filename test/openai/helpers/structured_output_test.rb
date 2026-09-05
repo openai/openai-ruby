@@ -36,6 +36,10 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     required :type, const: :m3, doc: "Model M3"
   end
 
+  class HashFormMetadata < OpenAI::BaseModel
+    required :value, enum: -> { String }, pattern: "^[a-z]+$", doc: "Lowercase value"
+  end
+
   class NestedParticipant < OpenAI::BaseModel
     required :name, String
   end
@@ -77,6 +81,13 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
         optional(:name, String)
       end
     end
+  end
+
+  def test_hash_form_declaration_metadata_reaches_schema
+    assert_equal(
+      {type: "string", pattern: "^[a-z]+$", description: "Lowercase value"},
+      HashFormMetadata.to_json_schema.dig(:properties, :value)
+    )
   end
 
   def test_direct_structured_output_models_preserve_nested_raw_values
@@ -152,13 +163,13 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
         anyOf: [
           {
             type: "object",
-            properties: {type: {const: "m2"}},
+            properties: {type: {const: "m2", description: "Model M2"}},
             required: %w[type],
             additionalProperties: false
           },
           {
             type: "object",
-            properties: {type: {const: "m3"}},
+            properties: {type: {const: "m3", description: "Model M3"}},
             required: %w[type],
             additionalProperties: false
           }
