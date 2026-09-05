@@ -654,10 +654,13 @@ module OpenAI
         #
         # https://www.iana.org/assignments/character-sets/character-sets.xhtml
         #
+        # Media type parameter names are case-insensitive, so `Charset=` and
+        # `CHARSET=` name the same parameter as `charset=`.
+        #
         # @param content_type [String]
         # @param text [String]
         def force_charset!(content_type, text:)
-          charset = /charset=([^;\s]+)/.match(content_type)&.captures&.first
+          charset = /charset=([^;\s]+)/i.match(content_type)&.captures&.first
           charset = charset[1...-1] if charset&.start_with?("\"") && charset.end_with?("\"")
 
           return unless charset

@@ -851,6 +851,23 @@ class OpenAI::Test::UtilContentDecodingTest < Minitest::Test
     end
   end
 
+  def test_charset_parameter_name_is_case_insensitive
+    # Media type parameter names are case-insensitive, so a response labelled
+    # `Charset=` has to decode the same as one labelled `charset=`. Matching only
+    # the lowercase spelling left the body at `Encoding::BINARY`.
+    [
+      "application/json; Charset=utf-8",
+      "application/json; CHARSET=utf-8",
+      "application/json; ChArSeT=\"utf-8\""
+    ].each do |content_type|
+      text = String.new.force_encoding(Encoding::BINARY)
+
+      OpenAI::Internal::Util.force_charset!(content_type, text: text)
+
+      assert_equal(Encoding::UTF_8, text.encoding, content_type)
+    end
+  end
+
   def test_quoted_charset
     text = String.new.force_encoding(Encoding::BINARY)
 
