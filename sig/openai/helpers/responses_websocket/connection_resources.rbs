@@ -1,0 +1,12 @@
+module OpenAI
+  module Models
+    module Responses
+      module ConnectionResources
+        class Response
+          # @api private
+          def initialize: (OpenAI::Responses::Connection connection) -> void
+        end
+      end
+    end
+  end
+end

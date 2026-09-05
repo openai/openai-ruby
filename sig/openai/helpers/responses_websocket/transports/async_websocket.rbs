@@ -1,0 +1,19 @@
+module OpenAI
+  module Models
+    module Responses
+      module Transports
+        class AsyncWebSocket
+          def initialize: -> void
+          def open: (
+            url: URI::Generic,
+            headers: ::Hash[String, String],
+            timeout: Float?,
+            **top options
+          ) {
+            (top socket) -> top
+          } -> top
+        end
+      end
+    end
+  end
+end

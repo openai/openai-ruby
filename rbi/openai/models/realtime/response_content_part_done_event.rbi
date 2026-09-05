@@ -178,10 +178,10 @@ module OpenAI
           sig do
             override.returns(
               {
-                audio: String,
-                text: String,
-                transcript: String,
-                type: OpenAI::Realtime::ResponseContentPartDoneEvent::Part::Type::OrSymbol
+                audio: T.nilable(String),
+                text: T.nilable(String),
+                transcript: T.nilable(String),
+                type: T.nilable(OpenAI::Realtime::ResponseContentPartDoneEvent::Part::Type::OrSymbol)
               }
             )
           end

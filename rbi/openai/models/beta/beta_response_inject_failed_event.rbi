@@ -220,7 +220,7 @@ module OpenAI
               response_id: String,
               sequence_number: Integer,
               type: Symbol,
-              stream_id: String
+              stream_id: T.nilable(String)
             }
           )
         end

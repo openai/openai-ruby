@@ -3,8 +3,8 @@
 module OpenAI
   module Realtime
     # A live, typed Realtime WebSocket connection.
-    class Connection
-      include Enumerable
+    class Connection < OpenAI::WebSocket::Connection
+      include OpenAI::WebSocket::Protocol
 
       # @return [OpenAI::Realtime::ConnectionResources::Session]
       attr_reader :session
@@ -20,42 +20,13 @@ module OpenAI
 
       # @api private
       def initialize(socket:, url:)
-        @socket = socket
-        @url = url
+        super
         @server_event_names = discriminator_values(OpenAI::Realtime::RealtimeServerEvent)
         @client_event_names = discriminator_values(OpenAI::Realtime::RealtimeClientEvent)
         @session = OpenAI::Realtime::ConnectionResources::Session.new(self)
         @response = OpenAI::Realtime::ConnectionResources::Response.new(self)
         @conversation = OpenAI::Realtime::ConnectionResources::Conversation.new(self)
         @input_audio_buffer = OpenAI::Realtime::ConnectionResources::InputAudioBuffer.new(self)
-      end
-
-      # @return [URI::Generic]
-      attr_reader :url
-
-      # Yield server events until the remote peer closes the connection.
-      def each
-        return enum_for(__method__) unless block_given?
-
-        while (event = receive)
-          yield(event)
-        end
-
-        self
-      end
-
-      # Receive and parse the next server event, or return nil after a clean close.
-      def receive
-        data = receive_raw
-        return nil if data.nil?
-
-        parse_event(data)
-      end
-
-      # Receive the next raw WebSocket message.
-      def receive_raw
-        message = @socket.read
-        message&.to_str
       end
 
       # Parse raw JSON as a typed server event. Valid events that are newer than this
@@ -115,65 +86,9 @@ module OpenAI
         raise ArgumentError.new("Invalid Realtime client event."), cause: e
       end
 
-      # Send an already encoded text message.
-      def send_raw(data)
-        if closed?
-          raise(
-            OpenAI::Errors::RealtimeConnectionError.new(
-              url: @url,
-              message: "Cannot send on a closed Realtime WebSocket."
-            )
-          )
-        end
-
-        text = data.dup
-        text.force_encoding(Encoding::UTF_8) if text.encoding == Encoding::BINARY
-        text = text.encode(Encoding::UTF_8) unless text.encoding == Encoding::UTF_8
-        unless text.valid_encoding?
-          raise ArgumentError, "Realtime WebSocket text must contain valid UTF-8"
-        end
-
-        @socket.write(text)
-        nil
-      end
-
-      # Close the connection.
-      def close(code: 1000, reason: "")
-        return if closed?
-
-        @socket.close(code: code, reason: reason)
-        nil
-      end
-
-      # Abort without waiting for the WebSocket close handshake.
-      #
-      # @api private
-      def abort
-        return if closed?
-
-        @socket.abort
-        nil
-      end
-
-      # @return [Boolean]
-      def closed? = @socket.closed?
-
-      private def discriminator_values(union)
-        union.variants.to_h do |variant|
-          value = variant.fields.fetch(:type).fetch(:const)
-          [value.to_s, true]
-        end
-      end
-
       private def event_type(event)
-        unless event.is_a?(Hash)
-          raise ArgumentError, "Realtime server event must be a JSON object"
-        end
-
-        type = event[:type]
-        return type if type.is_a?(String) || type.is_a?(Symbol)
-
-        raise ArgumentError, "Realtime server event type must be a string or symbol"
+        super(event, message: "Realtime server event must be a JSON object") unless event.is_a?(Hash)
+        super(event, message: "Realtime server event type must be a string or symbol")
       end
 
       private def validate_discriminator!(event, allowed, kind:)
@@ -194,6 +109,14 @@ module OpenAI
 
         ArgumentError.new("Realtime event is missing required fields or contains invalid values")
       end
+
+      private def connection_error(message)
+        OpenAI::Errors::RealtimeConnectionError.new(url: @url, message: message)
+      end
+
+      private def closed_send_message = "Cannot send on a closed Realtime WebSocket."
+
+      private def invalid_text_message = "Realtime WebSocket text must contain valid UTF-8"
     end
   end
 end

@@ -158,7 +158,7 @@ module OpenAI
 
           sig do
             override.returns(
-              {code: String, message: String, param: String, type: String}
+              {code: T.nilable(String), message: T.nilable(String), param: T.nilable(String), type: T.nilable(String)}
             )
           end
           def to_hash

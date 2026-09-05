@@ -48,7 +48,7 @@ module OpenAI
   end
 
   module Errors
-    class RealtimeConnectionError < OpenAI::Errors::Error
+    class RealtimeConnectionError < OpenAI::Errors::WebSocketConnectionError
       sig { returns(URI::Generic) }
       attr_reader :url
 
@@ -74,7 +74,7 @@ module OpenAI
       end
     end
 
-    class RealtimeProtocolError < OpenAI::Errors::Error
+    class RealtimeProtocolError < OpenAI::Errors::WebSocketProtocolError
       sig { returns(String) }
       attr_reader :data
 

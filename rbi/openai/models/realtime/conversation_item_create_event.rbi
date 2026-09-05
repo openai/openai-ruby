@@ -128,8 +128,8 @@ module OpenAI
                 OpenAI::Realtime::RealtimeMcpApprovalRequest
               ),
               type: Symbol,
-              event_id: String,
-              previous_item_id: String
+              event_id: T.nilable(String),
+              previous_item_id: T.nilable(String)
             }
           )
         end

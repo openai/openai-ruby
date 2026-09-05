@@ -89,7 +89,7 @@ module OpenAI
                 OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest
               ),
               type: Symbol,
-              event_id: String
+              event_id: T.nilable(String)
             }
           )
         end
