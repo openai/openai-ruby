@@ -59,22 +59,22 @@ class OpenAI::Test::UnionCharacterizationTest < Minitest::Test
     assert_equal({"preserved" => true}, unknown_field_body.dig("input", 0, "future_field"))
   end
 
-  def test_explicitly_unknown_stream_tags_retain_current_fallbacks
-    expected_selections = {
-      "responses_unknown_stream_event" => "OpenAI::Models::Responses::ResponseErrorEvent",
-      "responses_unknown_stream_event_symbols" => "OpenAI::Models::Responses::ResponseImageGenCallPartialImageEvent",
-      "beta_unknown_stream_event" => "OpenAI::Models::Beta::BetaResponseErrorEvent",
-      "beta_unknown_stream_event_symbols" => "OpenAI::Models::Beta::BetaResponseImageGenCallPartialImageEvent"
-    }
+  def test_explicitly_unknown_stream_tags_remain_raw
+    ids = %w[
+      responses_unknown_stream_event
+      responses_unknown_stream_event_symbols
+      beta_unknown_stream_event
+      beta_unknown_stream_event_symbols
+    ]
     observations = OpenAI::Test::UnionCharacterization.observe
 
-    expected_selections.each do |id, selected|
+    ids.each do |id|
       observation = observations.fetch(id)
 
       assert_equal("explicitly_unknown", observation.dig("discriminator_evidence", "state"), id)
       assert_empty(observation.fetch("exact_candidates"), id)
-      assert_equal([selected], observation.fetch("best_ranked_fallbacks"), id)
-      assert_equal(selected, observation.fetch("compatibility_selected"), id)
+      refute_empty(observation.fetch("best_ranked_fallbacks"), id)
+      assert_equal("Hash", observation.fetch("compatibility_selected"), id)
       assert_equal(
         {"type" => "future.unmodeled.event", "sequence_number" => 9},
         observation.fetch("serialized_body"),
