@@ -167,7 +167,7 @@ module OpenAI
           exactness = state.fetch(:exactness)
 
           alternatives = []
-          known_variants.each do |_, variant_fn|
+          known_variants.each_with_index do |(_, variant_fn), index|
             target = variant_fn.call
             exact = state[:exactness] = {yes: 0, no: 0, maybe: 0}
             state[:branched] += 1
@@ -180,7 +180,10 @@ module OpenAI
               state[:error] = error || previous_error
               return coerced
             elsif maybe.positive?
-              alternatives << [[-yes, -maybe, no], exact, coerced, error]
+              # `Array#sort_by!` is not stable, so equally-ranked variants would
+              # otherwise be ordered arbitrarily. Break ties on declaration order
+              # to keep the chosen variant the same across platforms and runs.
+              alternatives << [[-yes, -maybe, no, index], exact, coerced, error]
             end
           end
 
