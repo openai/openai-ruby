@@ -474,7 +474,7 @@ module OpenAI
           in :get | :head | :options | :trace
             nil
           else
-            OpenAI::Internal::Util.deep_merge(*[req[:body], opts[:extra_body]].compact)
+            merge_request_body(req[:body], opts[:extra_body])
           end
 
           # Generated methods always pass `req[:body]` for operations that define a
@@ -492,6 +492,72 @@ module OpenAI
             max_retries: max_retries,
             timeout: timeout
           }
+        end
+
+        # @api private
+        #
+        # Keep extra_body's deep-merge contract when one layer uses Ruby symbol
+        # keys and the other uses JSON-derived string keys for the same wire field.
+        # Do not intern caller-provided strings as symbols while finding matches.
+        private def merge_request_body(body, extra_body)
+          values = [body, extra_body].compact
+          return OpenAI::Internal::Util.deep_merge(*values) unless values.length == 2
+
+          merge_request_body_hashes(values.fetch(0), values.fetch(1))
+        end
+
+        # @api private
+        private def merge_request_body_hashes(body, extra_body)
+          unless body.is_a?(Hash) && extra_body.is_a?(Hash)
+            return OpenAI::Internal::Util.deep_merge(body, extra_body)
+          end
+
+          merged = body.dup
+          string_keys = {}
+          symbol_keys = {}
+          merged.each_key { index_request_body_key(_1, string_keys, symbol_keys) }
+          extra_body.each do |extra_key, extra_value|
+            key = matching_request_body_key(merged, extra_key, string_keys, symbol_keys)
+            merged[key] = if merged.key?(key)
+              body_value = merged.fetch(key)
+              if body_value.is_a?(Hash) && extra_value.is_a?(Hash)
+                merge_request_body_hashes(body_value, extra_value)
+              else
+                extra_value
+              end
+            else
+              extra_value
+            end
+
+            index_request_body_key(key, string_keys, symbol_keys)
+          end
+
+          merged
+        end
+
+        # @api private
+        private def matching_request_body_key(body, extra_key, string_keys, symbol_keys)
+          return extra_key if body.key?(extra_key)
+
+          case extra_key
+          in String
+            symbol_keys.fetch(extra_key, extra_key)
+          in Symbol
+            string_keys.fetch(extra_key.to_s, extra_key)
+          else
+            extra_key
+          end
+        end
+
+        # @api private
+        private def index_request_body_key(key, string_keys, symbol_keys)
+          case key
+          in String
+            string_keys[key] ||= key
+          in Symbol
+            symbol_keys[key.to_s] ||= key
+          else
+          end
         end
 
         # @api private
