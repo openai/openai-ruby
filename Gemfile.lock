@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    openai (0.85.0)
+    openai (0.86.0)
       connection_pool (>= 2.2.3)
       logger
 
