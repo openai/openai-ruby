@@ -15,4 +15,24 @@ class OpenAI::Test::ResponsesWebSocketErrorsTest < Minitest::Test
     refute_includes(error.url.to_s, "fragment-secret")
     assert_nil(error.cause)
   end
+
+  def test_shared_transport_does_not_retain_a_suppressed_responses_cause
+    secret = "synthetic-private-close-reason"
+    connection = Object.new
+    connection.define_singleton_method(:read) { raise IOError, secret }
+    error_factory = lambda do |url:, **_options|
+      OpenAI::Errors::ResponsesConnectionError.new(url: url)
+    end
+
+    socket = OpenAI::WebSocket::AsyncWebSocketTransport::Socket.new(
+      connection,
+      url: URI("wss://example.com/v1/responses"),
+      error_factory: error_factory
+    )
+
+    error = assert_raises(OpenAI::Errors::ResponsesConnectionError) { socket.read }
+
+    assert_nil(error.cause)
+    refute_includes(error.full_message, secret)
+  end
 end
