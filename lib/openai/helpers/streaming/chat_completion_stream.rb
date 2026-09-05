@@ -265,7 +265,10 @@ module OpenAI
 
           choice.delta.tool_calls.each do |tool_call_delta|
             tool_call = tool_calls_by_index[tool_call_delta.index]
-            next unless tool_call&.type == :function && tool_call_delta.function
+            unless tool_call.is_a?(OpenAI::Chat::ChatCompletionMessageFunctionToolCall) &&
+                tool_call_delta.function
+              next
+            end
 
             parsed_args = if tool_call.function.respond_to?(:parsed)
               tool_call.function.parsed
@@ -326,7 +329,7 @@ module OpenAI
 
           delta_tool_calls.each do |tool_call_chunk|
             tool_call_snapshot = tool_calls_by_index[tool_call_chunk.index]
-            next unless tool_call_snapshot&.type == :function
+            next unless tool_call_snapshot.is_a?(OpenAI::Chat::ChatCompletionMessageFunctionToolCall)
 
             input_tool = find_input_tool(tool_call_snapshot.function.name)
             next unless input_tool&.dig(:function, :strict)
@@ -751,7 +754,7 @@ module OpenAI
           @done_tool_calls.add(tool_index)
 
           tool_call = tool_calls_by_index[tool_index]
-          return nil unless tool_call&.type == :function
+          return nil unless tool_call.is_a?(OpenAI::Chat::ChatCompletionMessageFunctionToolCall)
 
           parsed_args = parse_function_tool_arguments(tool_call.function)
 
