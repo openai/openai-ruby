@@ -28,6 +28,10 @@ module OpenAI
       end
 
       class ChatChunkEvent < OpenAI::Internal::Type::BaseModel
+        sig { returns(Symbol) }
+        def type
+        end
+
         sig { returns(T.untyped) }
         def chunk
         end
@@ -38,6 +42,10 @@ module OpenAI
       end
 
       class ChatContentDeltaEvent < OpenAI::Internal::Type::BaseModel
+        sig { returns(Symbol) }
+        def type
+        end
+
         sig { returns(String) }
         def delta
         end
@@ -52,6 +60,10 @@ module OpenAI
       end
 
       class ChatContentDoneEvent < OpenAI::Internal::Type::BaseModel
+        sig { returns(Symbol) }
+        def type
+        end
+
         sig { returns(String) }
         def content
         end
@@ -62,6 +74,10 @@ module OpenAI
       end
 
       class ChatRefusalDeltaEvent < OpenAI::Internal::Type::BaseModel
+        sig { returns(Symbol) }
+        def type
+        end
+
         sig { returns(String) }
         def delta
         end
@@ -72,12 +88,20 @@ module OpenAI
       end
 
       class ChatRefusalDoneEvent < OpenAI::Internal::Type::BaseModel
+        sig { returns(Symbol) }
+        def type
+        end
+
         sig { returns(String) }
         def refusal
         end
       end
 
       class ChatFunctionToolCallArgumentsDeltaEvent < OpenAI::Internal::Type::BaseModel
+        sig { returns(Symbol) }
+        def type
+        end
+
         sig { returns(String) }
         def name
         end
@@ -95,11 +119,15 @@ module OpenAI
         end
 
         sig { returns(T.untyped) }
-        def parsed_arguments
+        def parsed
         end
       end
 
       class ChatFunctionToolCallArgumentsDoneEvent < OpenAI::Internal::Type::BaseModel
+        sig { returns(Symbol) }
+        def type
+        end
+
         sig { returns(String) }
         def name
         end
@@ -113,29 +141,53 @@ module OpenAI
         end
 
         sig { returns(T.untyped) }
-        def parsed_arguments
+        def parsed
         end
       end
 
       class ChatLogprobsContentDeltaEvent < OpenAI::Internal::Type::BaseModel
+        sig { returns(Symbol) }
+        def type
+        end
+
         sig { returns(T.untyped) }
         def content
+        end
+
+        sig { returns(T::Array[OpenAI::Chat::ChatCompletionTokenLogprob]) }
+        def snapshot
         end
       end
 
       class ChatLogprobsContentDoneEvent < OpenAI::Internal::Type::BaseModel
+        sig { returns(Symbol) }
+        def type
+        end
+
         sig { returns(T.untyped) }
         def content
         end
       end
 
       class ChatLogprobsRefusalDeltaEvent < OpenAI::Internal::Type::BaseModel
+        sig { returns(Symbol) }
+        def type
+        end
+
         sig { returns(T.untyped) }
         def refusal
+        end
+
+        sig { returns(T::Array[OpenAI::Chat::ChatCompletionTokenLogprob]) }
+        def snapshot
         end
       end
 
       class ChatLogprobsRefusalDoneEvent < OpenAI::Internal::Type::BaseModel
+        sig { returns(Symbol) }
+        def type
+        end
+
         sig { returns(T.untyped) }
         def refusal
         end
@@ -154,8 +206,13 @@ module OpenAI
         def last_response
         end
 
-        sig { returns(T.untyped) }
-        def each
+        sig do
+          params(
+            blk: T.proc.params(event: ChatCompletionStream::ChatCompletionStreamEvent).void
+          )
+            .void
+        end
+        def each(&blk)
         end
       end
     end
