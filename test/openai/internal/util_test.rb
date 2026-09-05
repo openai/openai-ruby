@@ -330,6 +330,28 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
     assert_equal(sensitive_prefix.bytesize, file.pos)
   end
 
+  def test_multipart_pathless_io_is_sent_without_a_filename
+    # `IO#to_path` returns nil for a pipe or a socket, and `::File.basename(nil)`
+    # raised `TypeError: no implicit conversion of nil into String`, so uploading
+    # from a stream with no backing path failed before a request was made.
+    reader, writer = IO.pipe
+    writer.write("piped-body")
+    writer.close
+
+    _headers, stream = OpenAI::Internal::Util.encode_content(
+      {"content-type" => "multipart/form-data"},
+      {file: reader}
+    )
+    body = stream.respond_to?(:read) ? stream.read : stream.to_a.join
+
+    assert_includes(body, %{Content-Disposition: form-data; name="file"})
+    refute_includes(body, "filename=")
+    assert_includes(body, "piped-body")
+  ensure
+    reader&.close
+    writer&.close
+  end
+
   def test_multipart_filename_quoting
     file = OpenAI::FilePart.new(StringIO.new("x"), filename: "a \"b\"\r\nEvil: 1.md")
     _headers, stream = OpenAI::Internal::Util.encode_content(
