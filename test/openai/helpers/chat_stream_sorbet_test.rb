@@ -28,10 +28,20 @@ class OpenAI::Test::ChatStreamSorbetTest < Minitest::Test
     source = <<~RUBY
       # typed: strict
 
+      class MathResponse < OpenAI::BaseModel
+        required :answer, Integer
+      end
+
+      class MathTool < OpenAI::BaseModel
+        required :x, Integer
+      end
+
       client = OpenAI::Client.new(api_key: "test-key")
       stream = client.chat.completions.stream(
         model: "gpt-4o-mini",
-        messages: [OpenAI::Chat::ChatCompletionUserMessageParam.new(content: "Hello")]
+        messages: [OpenAI::Chat::ChatCompletionUserMessageParam.new(content: "Hello")],
+        response_format: MathResponse,
+        tools: [MathTool]
       )
 
       T.assert_type!(stream, OpenAI::Streaming::ChatCompletionStream)
@@ -39,9 +49,24 @@ class OpenAI::Test::ChatStreamSorbetTest < Minitest::Test
       stream.text.each { |text| T.assert_type!(text, String) }
       stream.each do |event|
         T.assert_type!(event, OpenAI::Helpers::Streaming::ChatCompletionStream::ChatCompletionStreamEvent)
+        T.assert_type!(event.type, Symbol)
+
+        case event
+        when OpenAI::Streaming::ChatLogprobsContentDeltaEvent
+          T.assert_type!(event.snapshot, T::Array[OpenAI::Chat::ChatCompletionTokenLogprob])
+        when OpenAI::Streaming::ChatLogprobsRefusalDeltaEvent
+          T.assert_type!(event.snapshot, T::Array[OpenAI::Chat::ChatCompletionTokenLogprob])
+        end
       end
       T.assert_type!(stream.get_final_completion, OpenAI::Chat::ChatCompletion)
-      T.assert_type!(stream.current_completion_snapshot, T.nilable(OpenAI::Chat::ChatCompletion))
+      snapshot = stream.current_completion_snapshot
+      T.assert_type!(snapshot, T.nilable(OpenAI::Chat::ParsedChatCompletion))
+      if snapshot
+        T.assert_type!(
+          snapshot.choices.fetch(0).finish_reason,
+          T.nilable(OpenAI::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
+        )
+      end
       T.assert_type!(stream.get_output_text, String)
       T.assert_type!(stream.until_done, OpenAI::Streaming::ChatCompletionStream)
       T.assert_type!(stream.status, Integer)
@@ -107,6 +132,28 @@ class OpenAI::Test::ChatStreamSorbetTest < Minitest::Test
     stream&.close
   end
 
+  def test_current_snapshot_keeps_a_nil_finish_reason_before_terminal_chunk
+    stub_request(:post, "http://localhost/chat/completions")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: chat_nonterminal_stream_body
+      )
+    client = OpenAI::Client.new(base_url: "http://localhost", api_key: "test-key")
+    stream = client.chat.completions.stream(
+      model: "gpt-4o-mini",
+      messages: [{role: :user, content: "Synthetic"}]
+    )
+
+    stream.to_a
+
+    snapshot = stream.current_completion_snapshot
+    refute_nil(snapshot)
+    assert_nil(snapshot.choices.first.finish_reason)
+  ensure
+    stream&.close
+  end
+
   private def typecheck(source)
     root = File.expand_path("../../..", __dir__)
     Tempfile.create(["chat-stream-sorbet", ".rb"]) do |file|
@@ -129,6 +176,18 @@ class OpenAI::Test::ChatStreamSorbetTest < Minitest::Test
       created: 1,
       model: "gpt-4o-mini",
       choices: [{index: 0, delta: {role: "assistant", content: "Hello"}, finish_reason: "stop"}]
+    }
+
+    "data: #{JSON.generate(payload)}\n\ndata: [DONE]\n\n"
+  end
+
+  private def chat_nonterminal_stream_body
+    payload = {
+      id: "chatcmpl-sorbet-partial",
+      object: "chat.completion.chunk",
+      created: 1,
+      model: "gpt-4o-mini",
+      choices: [{index: 0, delta: {role: "assistant", content: "Hello"}, finish_reason: nil}]
     }
 
     "data: #{JSON.generate(payload)}\n\ndata: [DONE]\n\n"

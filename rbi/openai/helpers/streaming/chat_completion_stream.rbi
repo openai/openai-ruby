@@ -1,6 +1,20 @@
 # typed: strong
 
 module OpenAI
+  module Models
+    module Chat
+      class ParsedChoice < OpenAI::Models::Chat::ChatCompletion::Choice
+        sig { returns(T.nilable(OpenAI::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)) }
+        attr_accessor :finish_reason
+      end
+
+      class ParsedChatCompletion < OpenAI::Models::Chat::ChatCompletion
+        sig { returns(T::Array[OpenAI::Models::Chat::ParsedChoice]) }
+        attr_accessor :choices
+      end
+    end
+  end
+
   module Helpers
     module Streaming
       class ChatCompletionStream
@@ -37,7 +51,7 @@ module OpenAI
         def until_done
         end
 
-        sig { returns(T.nilable(OpenAI::Chat::ChatCompletion)) }
+        sig { returns(T.nilable(OpenAI::Chat::ParsedChatCompletion)) }
         def current_completion_snapshot
         end
 
@@ -89,6 +103,7 @@ module OpenAI
             response_format: T.any(
               OpenAI::ResponseFormatText::OrHash,
               OpenAI::ResponseFormatJSONSchema::OrHash,
+              OpenAI::StructuredOutput::JsonSchemaConverter,
               OpenAI::ResponseFormatJSONObject::OrHash
             ),
             safety_identifier: T.nilable(String),
@@ -105,7 +120,11 @@ module OpenAI
               OpenAI::Chat::ChatCompletionNamedToolChoiceCustom::OrHash
             ),
             tools: T::Array[
-              T.any(OpenAI::Chat::ChatCompletionFunctionTool::OrHash, OpenAI::Chat::ChatCompletionCustomTool::OrHash)
+              T.any(
+                OpenAI::StructuredOutput::JsonSchemaConverter,
+                OpenAI::Chat::ChatCompletionFunctionTool::OrHash,
+                OpenAI::Chat::ChatCompletionCustomTool::OrHash
+              )
             ],
             top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
