@@ -656,6 +656,8 @@ module OpenAI
           @logprobs_content_done = false
           @logprobs_refusal_done = false
           @done_tool_calls = Set.new
+          @pending_tool_calls = Set.new
+          @deferred_tool_calls = Set.new
           @current_tool_call_index = nil
         end
 
@@ -671,19 +673,27 @@ module OpenAI
               events.concat(content_done_events(choice_snapshot, response_format))
 
               if @current_tool_call_index
-                event = tool_done_event(tool_calls_by_index, @current_tool_call_index)
-                events << event if event
+                if !@deferred_tool_calls.include?(@current_tool_call_index) &&
+                    incomplete_strict_tool_call?(tool_calls_by_index, @current_tool_call_index)
+                  @deferred_tool_calls.add(@current_tool_call_index)
+                end
+
+                unless @deferred_tool_calls.include?(@current_tool_call_index)
+                  event = tool_done_event(tool_calls_by_index, @current_tool_call_index)
+                  events << event if event
+                end
               end
             end
 
+            @pending_tool_calls.add(tool_call.index) unless @done_tool_calls.include?(tool_call.index)
             @current_tool_call_index = tool_call.index
           end
 
-          if choice_snapshot.finish_reason &&
-              @current_tool_call_index &&
-              !@done_tool_calls.include?(@current_tool_call_index)
-            event = tool_done_event(tool_calls_by_index, @current_tool_call_index)
-            events << event if event
+          if choice_snapshot.finish_reason
+            @pending_tool_calls.to_a.each do |tool_index|
+              event = tool_done_event(tool_calls_by_index, tool_index)
+              events << event if event
+            end
           end
 
           events
@@ -749,6 +759,8 @@ module OpenAI
           return nil if @done_tool_calls.include?(tool_index)
 
           @done_tool_calls.add(tool_index)
+          @pending_tool_calls.delete(tool_index)
+          @deferred_tool_calls.delete(tool_index)
 
           tool_call = tool_calls_by_index[tool_index]
           return nil unless tool_call&.type == :function
@@ -766,6 +778,22 @@ module OpenAI
             arguments: tool_call.function.arguments,
             parsed: parsed_args
           )
+        end
+
+        def incomplete_strict_tool_call?(tool_calls_by_index, tool_index)
+          tool_call = tool_calls_by_index[tool_index]
+          return false unless tool_call&.type == :function
+
+          function = tool_call.function
+          tool = find_input_tool(function.name)
+          return false unless tool&.dig(:function, :strict)
+          return false unless function.respond_to?(:parsed) && function.parsed.nil?
+          return false unless function.arguments
+
+          JSON.parse(function.arguments)
+          false
+        rescue JSON::ParserError
+          true
         end
 
         def parse_content(message, response_format)
