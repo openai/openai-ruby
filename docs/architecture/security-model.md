@@ -126,8 +126,21 @@ Important boundaries:
 - Authenticated Realtime handshakes are a transport boundary distinct from
   event parsing. Bearer credentials, caller-selected WebSocket destinations,
   TLS, proxy credentials, and traces must remain bound to their intended
-  origin and diagnostic audience
-  (`lib/openai/helpers/realtime/client_extension.rb:167-280`,
+  origin and diagnostic audience. Bearer credentials, including ephemeral
+  client secrets passed to client apps, authenticate the handshake before any
+  typed event is sent; post-handshake transcription `session.update` events
+  carry configuration rather than a client secret. The legacy generated
+  `TranscriptionSessionUpdatedEvent` model requires a `client_secret` even
+  though its own documentation says WebSocket updates omit it, but that model
+  is not in the helper's active server-event union: the parser treats its
+  `transcription_session.updated` discriminator as unknown, while current
+  transcription updates use `session.updated`
+  (`lib/openai/helpers/websocket/client_request.rb:89-113`,
+  `lib/openai/helpers/realtime/connection_resources.rb:25-31`,
+  `lib/openai/resources/realtime/client_secrets.rb:10-45`,
+  `lib/openai/models/realtime/transcription_session_updated_event.rb:13-49`,
+  `lib/openai/models/realtime/realtime_server_event.rb:192-199`,
+  `lib/openai/helpers/realtime/connection.rb:32-49`,
   `lib/openai/helpers/realtime/transports/async_websocket.rb:185-224`,
   `lib/openai/helpers/realtime/transports/async_websocket.rb:294-378`).
 - Multipart upload serialization is a file-path and header-integrity boundary.
