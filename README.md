@@ -426,6 +426,10 @@ For secure, automated environments like cloud-managed Kubernetes, Azure, and GCP
 
 `client_id` remains available as an optional parameter for token exchange setups that require an explicit OAuth client ID.
 
+If `OPENAI_API_KEY` is already set in your environment, pass `api_key: nil`
+to explicitly opt out of that ambient API key when constructing a workload
+identity client.
+
 ### X.509 Workload Identity (Preview)
 
 Organizations enrolled in the X.509 workload identity preview can exchange a
@@ -534,6 +538,7 @@ workload_identity = OpenAI::Auth::WorkloadIdentity.new(
 )
 
 client = OpenAI::Client.new(
+  api_key: nil,
   workload_identity: workload_identity,
 )
 
@@ -555,6 +560,7 @@ workload_identity = OpenAI::Auth::WorkloadIdentity.new(
 )
 
 client = OpenAI::Client.new(
+  api_key: nil,
   workload_identity: workload_identity,
 )
 ```
@@ -571,6 +577,7 @@ workload_identity = OpenAI::Auth::WorkloadIdentity.new(
 )
 
 client = OpenAI::Client.new(
+  api_key: nil,
   workload_identity: workload_identity,
 )
 ```
@@ -601,6 +608,7 @@ workload_identity = OpenAI::Auth::WorkloadIdentity.new(
 )
 
 client = OpenAI::Client.new(
+  api_key: nil,
   workload_identity: workload_identity,
   organization: ENV["OPENAI_ORG_ID"],
   project: ENV["OPENAI_PROJECT_ID"]
