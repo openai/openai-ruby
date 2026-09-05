@@ -9,11 +9,13 @@ module OpenAI
             class APIKeys
               # Creates an API key for a service account in the project.
               #
-              # @overload create(service_account_id, project_id:, name: nil, scopes: nil, request_options: {})
+              # @overload create(service_account_id, project_id:, expires_in_seconds: nil, name: nil, scopes: nil, request_options: {})
               #
               # @param service_account_id [String] Path param: The ID of the service account.
               #
               # @param project_id [String] Path param: The ID of the project.
+              #
+              # @param expires_in_seconds [Integer, nil] Body param: Number of seconds until the API key expires.
               #
               # @param name [String] Body param: API key name.
               #

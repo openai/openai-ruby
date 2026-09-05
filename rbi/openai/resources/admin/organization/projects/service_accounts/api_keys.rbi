@@ -18,6 +18,7 @@ module OpenAI
                 params(
                   service_account_id: String,
                   project_id: String,
+                  expires_in_seconds: T.nilable(Integer),
                   name: String,
                   scopes: T::Array[String],
                   request_options: OpenAI::RequestOptions::OrHash
@@ -29,6 +30,8 @@ module OpenAI
                 service_account_id,
                 # Path param: The ID of the project.
                 project_id:,
+                # Body param: Number of seconds until the API key expires.
+                expires_in_seconds: nil,
                 # Body param: API key name.
                 name: nil,
                 # Body param: API key scopes.
