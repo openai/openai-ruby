@@ -861,13 +861,17 @@ module OpenAI
                 current = {}
               in /^:/
                 next
-              in /^([^:]+):\s?(.*)$/
+              in /^([^:]+)(?::\s?(.*))?$/
                 field, value = Regexp.last_match.captures
+                # A line with no colon names a field whose value is the empty
+                # string, so a bare `data` line still contributes a blank line to
+                # the data buffer.
+                value = value.to_s
                 case field
                 in "event"
                   current.merge!(event: value)
                 in "data"
-                  (current[:data] ||= String.new) << (value << "\n")
+                  (current[:data] ||= String.new) << value << "\n"
                 in "id" unless value.include?("\0")
                   current.merge!(id: value)
                 in "retry" if /^\d+$/ =~ value
