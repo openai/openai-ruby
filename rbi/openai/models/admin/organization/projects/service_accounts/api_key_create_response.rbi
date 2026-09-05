@@ -40,6 +40,11 @@ module OpenAI
               sig { returns(String) }
               attr_accessor :value
 
+              # The Unix timestamp (in seconds) when the API key expires, or null if it does not
+              # expire.
+              sig { returns(T.nilable(Integer)) }
+              attr_accessor :expires_at
+
               sig do
                 params(
 
@@ -50,6 +55,8 @@ module OpenAI
                   name: String,
 
                   value: String,
+
+                  expires_at: T.nilable(Integer),
 
                   object: Symbol
                 )
@@ -69,6 +76,10 @@ module OpenAI
                 # The unredacted API key value.
                 value:,
 
+                # The Unix timestamp (in seconds) when the API key expires, or null if it does not
+                # expire.
+                expires_at: nil,
+
                 # The object type, which is always `organization.project.service_account.api_key`
 
                 object: :"organization.project.service_account.api_key"
@@ -77,7 +88,14 @@ module OpenAI
 
               sig do
                 override.returns(
-                  {id: String, created_at: Integer, name: String, object: Symbol, value: String}
+                  {
+                    id: String,
+                    created_at: Integer,
+                    name: String,
+                    object: Symbol,
+                    value: String,
+                    expires_at: T.nilable(Integer)
+                  }
                 )
               end
               def to_hash
