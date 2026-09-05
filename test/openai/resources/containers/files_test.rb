@@ -122,6 +122,7 @@ class OpenAI::Test::Resources::Containers::FilesTest < OpenAI::Test::ResourceTes
       request = value
       true
     end
+
     client = OpenAI::Client.new(
       api_key: "test-key",
       base_url: "http://example.test/v1",
