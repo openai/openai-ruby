@@ -132,10 +132,10 @@ module OpenAI
           sig do
             override.returns(
               {
-                limit: Integer,
-                name: OpenAI::Realtime::RateLimitsUpdatedEvent::RateLimit::Name::OrSymbol,
-                remaining: Integer,
-                reset_seconds: Float
+                limit: T.nilable(Integer),
+                name: T.nilable(OpenAI::Realtime::RateLimitsUpdatedEvent::RateLimit::Name::OrSymbol),
+                remaining: T.nilable(Integer),
+                reset_seconds: T.nilable(Float)
               }
             )
           end

@@ -108,7 +108,10 @@ module OpenAI
 
           sig do
             override.returns(
-              {id: String, object: OpenAI::Realtime::ConversationCreatedEvent::Conversation::Object::OrSymbol}
+              {
+                id: T.nilable(String),
+                object: T.nilable(OpenAI::Realtime::ConversationCreatedEvent::Conversation::Object::OrSymbol)
+              }
             )
           end
           def to_hash

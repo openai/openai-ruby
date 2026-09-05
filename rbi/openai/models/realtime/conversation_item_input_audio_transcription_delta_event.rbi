@@ -102,8 +102,8 @@ module OpenAI
               event_id: String,
               item_id: String,
               type: Symbol,
-              content_index: Integer,
-              delta: String,
+              content_index: T.nilable(Integer),
+              delta: T.nilable(String),
               logprobs: T.nilable(T::Array[OpenAI::Realtime::LogProbProperties])
             }
           )
