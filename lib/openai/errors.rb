@@ -264,9 +264,9 @@ module OpenAI
           safe_status_message(url: url, status: status, body: body)
         end
 
-        @code = OpenAI::Internal::Type::Converter.coerce(String, OpenAI::Internal::Util.dig(body, :code))
-        @param = OpenAI::Internal::Type::Converter.coerce(String, OpenAI::Internal::Util.dig(body, :param))
-        @type = OpenAI::Internal::Type::Converter.coerce(String, OpenAI::Internal::Util.dig(body, :type))
+        @code = OpenAI::Internal::Type::Converter.coerce(String, error_metadata(body, :code))
+        @param = OpenAI::Internal::Type::Converter.coerce(String, error_metadata(body, :param))
+        @type = OpenAI::Internal::Type::Converter.coerce(String, error_metadata(body, :type))
         super(
           url: url,
           status: status,
@@ -276,6 +276,14 @@ module OpenAI
           response: response,
           message: message&.to_s
         )
+      end
+
+      private def error_metadata(body, key)
+        missing = Object.new
+        top_level = OpenAI::Internal::Util.dig(body, key) { missing }
+        return top_level unless top_level.equal?(missing)
+
+        OpenAI::Internal::Util.dig(body, [:error, key])
       end
 
       private def safe_status_message(url:, status:, body:)
