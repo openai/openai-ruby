@@ -66,6 +66,26 @@ class OpenAI::Test::FilePartTest < Minitest::Test
     end
   end
 
+  def test_explicit_filename_strips_directories_without_platform_path_rules
+    # `::File.basename` follows the host's path rules, so on Windows it truncates
+    # at a drive separator and turns "report: final.md" into "report". An explicit
+    # filename is sent to the API rather than resolved locally, so the same input
+    # has to produce the same upload name on every platform.
+    cases = {
+      "report: final.md" => "report: final.md",
+      "notes:v2.txt" => "notes:v2.txt",
+      "C:relative.txt" => "C:relative.txt",
+      "plain.txt" => "plain.txt",
+      "nested\\report: final.md" => "report: final.md",
+      "/absolute/report.md" => "report.md"
+    }
+
+    cases.each do |filename, expected|
+      assert_equal(expected, OpenAI::FilePart.new(StringIO.new("x"), filename: filename).filename, filename)
+      assert_equal(expected, OpenAI::FilePart.new(StringIO.new("x"), filename: Pathname(filename)).filename, filename)
+    end
+  end
+
   def test_generated_file_upload_preserves_public_api_and_omits_local_path
     Tempfile.create(["upload-", ".txt"]) do |content|
       content.write("upload-body")

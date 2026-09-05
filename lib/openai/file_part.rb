@@ -30,6 +30,14 @@ module OpenAI
     }nx
     private_constant :MEDIA_TYPE
 
+    # Directory separators recognized on any host, so an upload name is stripped
+    # the same way everywhere.
+    #
+    # @api private
+    # @type [Regexp]
+    SEPARATORS = %r{[/\\]}
+    private_constant :SEPARATORS
+
     # Validate an effective media type before it is written to multipart headers.
     #
     # @api private
@@ -112,7 +120,7 @@ module OpenAI
       @content_type = content_type
       @filename = case [filename, (@content = content)]
       in [String | Pathname, _]
-        ::File.basename(filename)
+        strip_directories(filename)
       in [nil, Pathname]
         content.basename.to_path
       in [nil, IO]
@@ -120,6 +128,23 @@ module OpenAI
       else
         filename
       end
+    end
+
+    # Strip directory components from a caller-supplied upload name.
+    #
+    # `::File.basename` applies the host platform's path rules, so on Windows it
+    # also truncates at a drive separator: the remote name `"report: final.md"`
+    # becomes `"report"`. This name is sent to the API rather than resolved
+    # locally, so drop separators directly and keep every other character, no
+    # matter which platform the SDK runs on.
+    #
+    # @api private
+    #
+    # @param filename [Pathname, String]
+    #
+    # @return [String]
+    private def strip_directories(filename)
+      filename.to_s.split(SEPARATORS).last.to_s
     end
   end
 end
