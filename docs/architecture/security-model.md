@@ -219,6 +219,19 @@ PR CI. A contributor who can modify those tracked files does not gain a new
 privilege merely because CI executes them. Do not report that execution alone
 as a security finding.
 
+Dormant developer helpers are not security controls merely because their names
+suggest compatibility or safety verification. At this revision,
+`scripts/detect-breaking-changes` is not invoked by any tracked workflow or
+tracked required job; when a contributor explicitly runs it, it replaces
+selected tests with historical versions and invokes lint rather than runtime
+assertions.
+That can affect contributor confidence or release-quality review, but without a
+privileged workflow invocation or an independent lower-trust path to a sensitive
+sink, it is not a repository security boundary. Reassess this classification if
+the helper becomes a required or privileged workflow control; otherwise treat
+ordinary compatibility regressions as product/release-quality issues unless they
+independently violate a runtime security invariant.
+
 That rule does not suppress a real finding when independently mutable
 lower-trust input crosses a parser/evaluator boundary, untrusted runtime/API/
 network data reaches a sensitive sink, candidate code can reach sensitive
