@@ -188,7 +188,7 @@ module OpenAI
         def create_new_choice_snapshot(choice)
           OpenAI::Internal::Type::Converter.coerce(
             OpenAI::Models::Chat::ParsedChoice,
-            choice.to_h.except(:delta).merge(message: choice.delta.to_h)
+            choice.to_h.except(:delta).merge(message: model_dump(choice.delta))
           )
         end
 
