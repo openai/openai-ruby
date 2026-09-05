@@ -267,10 +267,10 @@ module OpenAI
           begin
             parsed = JSON.parse(text, symbolize_names: true)
             OpenAI::Internal::Type::Converter.coerce(@text_format, parsed)
-          rescue JSON::ParserError => e
+          rescue JSON::ParserError
             raise(
-              "Failed to parse structured text as JSON for #{@text_format}: #{e.message}. " \
-                "Raw text: #{text.inspect}"
+              "Failed to parse structured text as JSON for #{@text_format}",
+              cause: nil
             )
           end
         end
