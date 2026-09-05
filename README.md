@@ -644,9 +644,9 @@ post '/webhook' do
     event = client.webhooks.unwrap(request_body, request.env)
     
     case event.type
-    when 'response.completed'
+    when :'response.completed'
       puts "Response completed: #{event.data}"
-    when 'response.failed'
+    when :'response.failed'
       puts "Response failed: #{event.data}"
     else
       puts "Unhandled event type: #{event.type}"
