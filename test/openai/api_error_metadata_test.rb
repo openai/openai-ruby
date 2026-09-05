@@ -59,6 +59,16 @@ class OpenAI::Test::APIErrorMetadataTest < Minitest::Test
     assert_nil(malformed.code)
     assert_nil(malformed.type)
     assert_nil(malformed.param)
+
+    absent = response_error(status: 400, body: {error: {}})
+    assert_nil(absent.code)
+    assert_nil(absent.type)
+    assert_nil(absent.param)
+
+    scalar = response_error(status: 400, body: "raw error")
+    assert_nil(scalar.code)
+    assert_nil(scalar.type)
+    assert_nil(scalar.param)
   end
 
   private def response_error(status:, body:)

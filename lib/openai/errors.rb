@@ -279,11 +279,7 @@ module OpenAI
       end
 
       private def error_metadata(body, key)
-        missing = Object.new
-        top_level = OpenAI::Internal::Util.dig(body, key) { missing }
-        return top_level unless top_level.equal?(missing)
-
-        OpenAI::Internal::Util.dig(body, [:error, key])
+        OpenAI::Internal::Util.dig(body, key) { OpenAI::Internal::Util.dig(body, [:error, key]) }
       end
 
       private def safe_status_message(url:, status:, body:)
