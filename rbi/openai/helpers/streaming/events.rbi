@@ -95,7 +95,7 @@ module OpenAI
         end
 
         sig { returns(T.untyped) }
-        def parsed_arguments
+        def parsed
         end
       end
 
@@ -113,7 +113,7 @@ module OpenAI
         end
 
         sig { returns(T.untyped) }
-        def parsed_arguments
+        def parsed
         end
       end
 
@@ -154,8 +154,13 @@ module OpenAI
         def last_response
         end
 
-        sig { returns(T.untyped) }
-        def each
+        sig do
+          params(
+            blk: T.proc.params(event: ChatCompletionStream::ChatCompletionStreamEvent).void
+          )
+            .void
+        end
+        def each(&blk)
         end
       end
     end
