@@ -45,6 +45,8 @@ class OpenAI::Test::ChatStreamSorbetTest < Minitest::Test
       )
 
       T.assert_type!(stream, OpenAI::Streaming::ChatCompletionStream)
+      constructed = OpenAI::Streaming::ChatCompletionStream.new(raw_stream: T.unsafe(nil))
+      T.assert_type!(constructed, OpenAI::Streaming::ChatCompletionStream)
       T.assert_type!(stream.text, T::Enumerator[String])
       stream.text.each { |text| T.assert_type!(text, String) }
       stream.each do |event|
@@ -58,7 +60,24 @@ class OpenAI::Test::ChatStreamSorbetTest < Minitest::Test
           T.assert_type!(event.snapshot, T::Array[OpenAI::Chat::ChatCompletionTokenLogprob])
         end
       end
-      T.assert_type!(stream.get_final_completion, OpenAI::Chat::ChatCompletion)
+      final_completion = stream.get_final_completion
+      T.assert_type!(final_completion, OpenAI::Chat::ParsedChatCompletion)
+      T.assert_type!(
+        final_completion.choices.fetch(0).finish_reason,
+        T.nilable(OpenAI::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
+      )
+      T.assert_type!(final_completion.to_hash, OpenAI::Internal::AnyHash)
+      T.assert_type!(final_completion.choices.fetch(0).to_hash, OpenAI::Internal::AnyHash)
+      parsed_choice = OpenAI::Chat::ParsedChoice.new(
+        index: 0,
+        logprobs: nil,
+        message: T.unsafe(nil)
+      )
+      T.assert_type!(
+        parsed_choice.finish_reason,
+        T.nilable(OpenAI::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
+      )
+      T.assert_type!(parsed_choice.to_hash, OpenAI::Internal::AnyHash)
       snapshot = stream.current_completion_snapshot
       T.assert_type!(snapshot, T.nilable(OpenAI::Chat::ParsedChatCompletion))
       if snapshot
@@ -150,6 +169,14 @@ class OpenAI::Test::ChatStreamSorbetTest < Minitest::Test
     snapshot = stream.current_completion_snapshot
     refute_nil(snapshot)
     assert_nil(snapshot.choices.first.finish_reason)
+    assert(snapshot.choices.first.to_hash.key?(:finish_reason))
+    assert_nil(snapshot.choices.first.to_hash[:finish_reason])
+    omitted_choice = OpenAI::Chat::ParsedChoice.new(
+      index: snapshot.choices.first.index,
+      logprobs: snapshot.choices.first.logprobs,
+      message: snapshot.choices.first.message
+    )
+    refute(omitted_choice.to_hash.key?(:finish_reason))
   ensure
     stream&.close
   end

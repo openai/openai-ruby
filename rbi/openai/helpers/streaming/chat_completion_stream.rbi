@@ -6,11 +6,31 @@ module OpenAI
       class ParsedChoice < OpenAI::Models::Chat::ChatCompletion::Choice
         sig { returns(T.nilable(OpenAI::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)) }
         attr_accessor :finish_reason
+
+        sig do
+          params(
+            index: Integer,
+            logprobs: T.nilable(OpenAI::Chat::ChatCompletion::Choice::Logprobs::OrHash),
+            message: OpenAI::Chat::ChatCompletionMessage::OrHash,
+            finish_reason: T.nilable(OpenAI::Chat::ChatCompletion::Choice::FinishReason::OrSymbol)
+          )
+            .returns(T.attached_class)
+        end
+        def self.new(index:, logprobs:, message:, finish_reason: nil)
+        end
+
+        sig { returns(OpenAI::Internal::AnyHash) }
+        def to_hash
+        end
       end
 
       class ParsedChatCompletion < OpenAI::Models::Chat::ChatCompletion
         sig { returns(T::Array[OpenAI::Models::Chat::ParsedChoice]) }
         attr_accessor :choices
+
+        sig { returns(OpenAI::Internal::AnyHash) }
+        def to_hash
+        end
       end
     end
   end
@@ -39,7 +59,18 @@ module OpenAI
         Message = type_member { {fixed: ChatCompletionStreamEvent} }
         Elem = type_member { {fixed: ChatCompletionStreamEvent} }
 
-        sig { returns(OpenAI::Chat::ChatCompletion) }
+        sig do
+          params(
+            raw_stream: T.untyped,
+            response_format: T.untyped,
+            input_tools: T.untyped
+          )
+            .void
+        end
+        def initialize(raw_stream:, response_format: nil, input_tools: nil)
+        end
+
+        sig { returns(OpenAI::Chat::ParsedChatCompletion) }
         def get_final_completion
         end
 
