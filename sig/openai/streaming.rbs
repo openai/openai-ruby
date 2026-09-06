@@ -1,5 +1,7 @@
 module OpenAI
   module Streaming
+    class ResponseStream = Helpers::Streaming::ResponseStream
+
     class UnknownStreamEvent = Helpers::Streaming::UnknownStreamEvent
   end
 end

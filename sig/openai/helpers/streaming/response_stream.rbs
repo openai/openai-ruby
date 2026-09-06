@@ -1,0 +1,24 @@
+module OpenAI
+  module Helpers
+    module Streaming
+      class ResponseStream
+        include OpenAI::Internal::Type::BaseStream[OpenAI::Models::Responses::response_stream_event
+        | OpenAI::Helpers::Streaming::UnknownStreamEvent, OpenAI::Models::Responses::response_stream_event
+        | OpenAI::Helpers::Streaming::UnknownStreamEvent]
+
+        # @api private
+        def initialize: (
+          raw_stream: OpenAI::Internal::Stream[OpenAI::Models::Responses::response_stream_event
+          | OpenAI::Helpers::Streaming::UnknownStreamEvent],
+          ?text_format: untyped,
+          ?starting_after: Integer?
+        ) -> void
+
+        def until_done: -> self
+        def text: -> Enumerator[String]
+        def get_final_response: -> OpenAI::Responses::Response
+        def get_output_text: -> String
+      end
+    end
+  end
+end
