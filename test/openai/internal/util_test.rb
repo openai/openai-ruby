@@ -344,7 +344,7 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
     )
     body = stream.respond_to?(:read) ? stream.read : stream.to_a.join
 
-    assert_includes(body, %{Content-Disposition: form-data; name="file"})
+    assert_includes(body, "Content-Disposition: form-data; name=\"file\"")
     refute_includes(body, "filename=")
     assert_includes(body, "piped-body")
   ensure
