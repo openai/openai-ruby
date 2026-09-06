@@ -23,6 +23,12 @@ module OpenAI
               #   @return [String]
               required :service_account_id, String
 
+              # @!attribute expires_in_seconds
+              #   Number of seconds until the API key expires.
+              #
+              #   @return [Integer, nil]
+              optional :expires_in_seconds, Integer, nil?: true
+
               # @!attribute name
               #   API key name.
               #
@@ -35,10 +41,12 @@ module OpenAI
               #   @return [Array<String>, nil]
               optional :scopes, OpenAI::Internal::Type::ArrayOf[String]
 
-              # @!method initialize(project_id:, service_account_id:, name: nil, scopes: nil, request_options: {})
+              # @!method initialize(project_id:, service_account_id:, expires_in_seconds: nil, name: nil, scopes: nil, request_options: {})
               #   @param project_id [String] The ID of the project.
               #
               #   @param service_account_id [String] The ID of the service account.
+              #
+              #   @param expires_in_seconds [Integer, nil] Number of seconds until the API key expires.
               #
               #   @param name [String] API key name.
               #

@@ -31,6 +31,10 @@ module OpenAI
               sig { returns(String) }
               attr_accessor :service_account_id
 
+              # Number of seconds until the API key expires.
+              sig { returns(T.nilable(Integer)) }
+              attr_accessor :expires_in_seconds
+
               # API key name.
               sig { returns(T.nilable(String)) }
               attr_reader :name
@@ -52,6 +56,8 @@ module OpenAI
 
                   service_account_id: String,
 
+                  expires_in_seconds: T.nilable(Integer),
+
                   name: String,
 
                   scopes: T::Array[String],
@@ -68,6 +74,9 @@ module OpenAI
                 # The ID of the service account.
                 service_account_id:,
 
+                # Number of seconds until the API key expires.
+                expires_in_seconds: nil,
+
                 # API key name.
                 name: nil,
 
@@ -83,6 +92,7 @@ module OpenAI
                   {
                     project_id: String,
                     service_account_id: String,
+                    expires_in_seconds: T.nilable(Integer),
                     name: String,
                     scopes: T::Array[String],
                     request_options: OpenAI::RequestOptions
