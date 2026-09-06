@@ -315,6 +315,39 @@ class HTTPClientTest < Minitest::Test
     assert_equal(2, attempts)
   end
 
+  def test_public_request_preserves_file_semantics_for_pathless_io
+    captured_body = nil
+    http_client = StubHTTPClient.new do |request|
+      captured_body = request.body.to_a.join
+      OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "application/json"},
+        body: "{\"ok\":true}"
+      )
+    end
+    client = OpenAI::Client.new(api_key: "test-key", http_client: http_client)
+    reader, writer = IO.pipe
+    writer.write("piped-body")
+    writer.close
+
+    response = client.request(
+      method: :post,
+      path: "upload",
+      headers: {"content-type" => "multipart/form-data"},
+      body: {file: reader}
+    )
+
+    assert_equal(true, response[:ok])
+    assert_includes(
+      captured_body,
+      "Content-Disposition: form-data; name=\"file\"; filename=\"upload\""
+    )
+    assert_includes(captured_body, "piped-body")
+  ensure
+    reader&.close
+    writer&.close
+  end
+
   def test_sdk_reencodes_replayable_multipart_bodies_for_each_attempt
     requests = []
     http_client = StubHTTPClient.new do |request|
