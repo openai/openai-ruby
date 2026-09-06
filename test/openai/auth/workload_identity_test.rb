@@ -746,6 +746,40 @@ class WorkloadIdentityTest < Minitest::Test
     refute_nil(client.workload_identity_auth)
   end
 
+  def test_workload_identity_retries_a_pre_dispatch_timeout_for_a_post
+    File.write(@token_path, "k8s-jwt-token")
+    provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(
+      token_path: @token_path
+    )
+    config = OpenAI::Auth::WorkloadIdentity.new(
+      identity_provider_id: "idp-123",
+      service_account_id: "sa-456",
+      provider: provider
+    )
+
+    stub_request(:post, "https://auth.openai.com/oauth/token")
+      .to_timeout
+      .then
+      .to_return(status: 200, body: JSON.generate({"access_token" => "token", "expires_in" => 3600}))
+    stub_request(:post, "http://localhost/probe")
+      .to_return(status: 200, body: JSON.generate({"ok" => true}), headers: {"Content-Type" => "application/json"})
+
+    client = OpenAI::Client.new(
+      base_url: "http://localhost",
+      api_key: nil,
+      workload_identity: config,
+      max_retries: 1,
+      initial_retry_delay: 0,
+      max_retry_delay: 0
+    )
+
+    response = client.request(method: :post, path: "probe", body: {value: "payload"})
+
+    assert_equal(true, response[:ok])
+    assert_requested(:post, "https://auth.openai.com/oauth/token", times: 2)
+    assert_requested(:post, "http://localhost/probe", times: 1)
+  end
+
   def test_workload_identity_mutually_exclusive_with_api_key
     provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new
     config = OpenAI::Auth::WorkloadIdentity.new(

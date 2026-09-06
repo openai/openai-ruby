@@ -107,14 +107,101 @@ class OpenAI::Test::ResponseStreamIsolationTest < Minitest::Test
     refute_same(content_event.part.fetch(:opaque), snapshot_content.fetch(:opaque))
   end
 
+  def test_incremental_events_targeting_unknown_slots_have_nil_snapshots
+    state = state_after_created(
+      response(
+        output: [
+          message_item(content: [{type: "future_content"}, part]),
+          {type: "future_tool", id: "item_future"}
+        ]
+      )
+    )
+
+    unknown_text_delta = state
+      .handle_event(
+        coerce_event(
+          type: "response.output_text.delta",
+          sequence_number: 1,
+          item_id: "msg_synthetic",
+          output_index: 0,
+          content_index: 0,
+          delta: "future",
+          logprobs: []
+        )
+      )
+      .fetch(0)
+    unknown_text_done = state
+      .handle_event(
+        coerce_event(
+          type: "response.output_text.done",
+          sequence_number: 2,
+          item_id: "msg_synthetic",
+          output_index: 0,
+          content_index: 0,
+          text: "future",
+          logprobs: []
+        )
+      )
+      .fetch(0)
+    unknown_arguments_delta = state
+      .handle_event(
+        coerce_event(
+          type: "response.function_call_arguments.delta",
+          sequence_number: 3,
+          item_id: "item_future",
+          output_index: 1,
+          delta: "future"
+        )
+      )
+      .fetch(0)
+    known_text_delta = state
+      .handle_event(
+        coerce_event(
+          type: "response.output_text.delta",
+          sequence_number: 4,
+          item_id: "msg_synthetic",
+          output_index: 0,
+          content_index: 1,
+          delta: "known",
+          logprobs: []
+        )
+      )
+      .fetch(0)
+
+    assert_nil(unknown_text_delta.snapshot)
+    assert_nil(unknown_text_done.parsed)
+    assert_nil(unknown_arguments_delta.snapshot)
+    assert_equal("known", known_text_delta.snapshot)
+
+    structured_state = state_after_created(
+      response(output: [message_item(content: [{type: "future_content"}])]),
+      text_format: Hash
+    )
+    structured_done = structured_state
+      .handle_event(
+        coerce_event(
+          type: "response.output_text.done",
+          sequence_number: 5,
+          item_id: "msg_synthetic",
+          output_index: 0,
+          content_index: 0,
+          text: "not JSON",
+          logprobs: []
+        )
+      )
+      .fetch(0)
+
+    assert_nil(structured_done.parsed)
+  end
+
   private
 
   def coerce_event(event)
     OpenAI::Internal::Type::Converter.coerce(OpenAI::Models::Responses::ResponseStreamEvent, event)
   end
 
-  def state_after_created(response)
-    state = OpenAI::Helpers::Streaming::ResponseStreamState.new(text_format: nil)
+  def state_after_created(response, text_format: nil)
+    state = OpenAI::Helpers::Streaming::ResponseStreamState.new(text_format: text_format)
     state.handle_event(coerce_event(type: "response.created", sequence_number: 0, response: response))
     state
   end

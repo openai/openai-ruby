@@ -77,6 +77,9 @@ else
           tools: [{type: :function, function: {name: "custom_lookup", parameters: LookupModel}}]
         )
         T.assert_type!(retrieved, OpenAI::Responses::Response)
+
+        resumed = client.responses.stream(response_id: "resp_123", starting_after: 7)
+        T.assert_type!(resumed, OpenAI::Streaming::ResponseStream)
       RUBY
 
       Tempfile.create(["sorbet-structured-output", ".rb"]) do |file|
@@ -117,6 +120,25 @@ else
         assert_predicate(status, :success?, "#{stdout}\n#{stderr}")
         assert_match(/#{keyword}: ::OpenAI::Helpers::StructuredOutput::SorbetAdapter/, stdout)
       end
+    end
+
+    def test_shipped_rbs_types_resumed_response_stream_parameters
+      root = File.expand_path("../../..", __dir__)
+      stdout, stderr, status = Open3.capture3(
+        "rbs",
+        "-I",
+        "sig",
+        "-r",
+        "net-http",
+        "method",
+        "OpenAI::Resources::Responses",
+        "stream",
+        chdir: root
+      )
+
+      assert_predicate(status, :success?, "#{stdout}\n#{stderr}")
+      assert_match(/\?response_id: ::String\?/, stdout)
+      assert_match(/\?starting_after: ::Integer\?/, stdout)
     end
   end
 end

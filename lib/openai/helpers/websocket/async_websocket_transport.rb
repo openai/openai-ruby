@@ -170,20 +170,23 @@ module OpenAI
         def read
           @connection.read
         rescue StandardError => e
-          raise @error_factory.call(url: @url, cause: e)
+          error = @error_factory.call(url: @url, cause: e)
+          raise error, cause: error.cause
         end
 
         def write(message)
           @connection.write(message)
           @connection.flush
         rescue StandardError => e
-          raise @error_factory.call(url: @url, cause: e)
+          error = @error_factory.call(url: @url, cause: e)
+          raise error, cause: error.cause
         end
 
         def close(code: 1000, reason: "")
           @connection.close(code, reason)
         rescue StandardError => e
-          raise @error_factory.call(url: @url, cause: e)
+          error = @error_factory.call(url: @url, cause: e)
+          raise error, cause: error.cause
         end
 
         # @api private
@@ -193,7 +196,8 @@ module OpenAI
           framer.abort
           @aborted = true
         rescue StandardError => e
-          raise @error_factory.call(url: @url, cause: e)
+          error = @error_factory.call(url: @url, cause: e)
+          raise error, cause: error.cause
         end
 
         # @api private
@@ -294,7 +298,8 @@ module OpenAI
         raise if @error_class === e
         raise if e.equal?(block_error)
 
-        raise @error_factory.call(url: url, cause: e, http_status: handshake_status(e))
+        error = @error_factory.call(url: url, cause: e, http_status: handshake_status(e))
+        raise error, cause: error.cause
       end
 
       private def negotiate(client, endpoint, request_target:, headers:, timeout:)
@@ -357,7 +362,8 @@ module OpenAI
         message = @dependency_message ||
           "#{@product_name} WebSockets require the `async-websocket` gem. " \
             "Add `gem \"async-websocket\"` to your Gemfile."
-        raise @error_factory.call(url: url, message: message, cause: e)
+        error = @error_factory.call(url: url, message: message, cause: e)
+        raise error, cause: error.cause
       end
 
       private def authority(url, include_default_port: false)

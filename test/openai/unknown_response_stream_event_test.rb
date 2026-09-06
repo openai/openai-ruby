@@ -255,6 +255,28 @@ class OpenAI::Test::UnknownResponseStreamEventTest < Minitest::Test
     stream&.close
   end
 
+  def test_create_output_text_skips_unknown_output_items_and_content
+    stub_request(:post, "http://localhost/responses").to_return_json(body: response_with_unknowns)
+
+    response = @client.responses.create(input: "hello", model: "gpt-4o")
+
+    assert_equal("hello", response.output_text)
+  end
+
+  def test_stream_output_text_skips_unknown_output_items_and_content
+    stub_stream(
+      :post,
+      "/responses",
+      events: [lifecycle_event("response.created", 1), completed_event_with_unknowns]
+    )
+
+    stream = @client.responses.stream(input: "hello", model: "gpt-4o")
+
+    assert_equal("hello", stream.get_output_text)
+  ensure
+    stream&.close
+  end
+
   private
 
   def assert_unknown_event(event, union:, sequence_number: 9)
@@ -279,6 +301,14 @@ class OpenAI::Test::UnknownResponseStreamEventTest < Minitest::Test
 
   def completed_event(sequence_number) = lifecycle_event("response.completed", sequence_number)
 
+  def completed_event_with_unknowns
+    {
+      type: "response.completed",
+      sequence_number: 2,
+      response: response_with_unknowns
+    }
+  end
+
   def lifecycle_event(type, sequence_number)
     status = type == "response.created" ? "in_progress" : "completed"
 
@@ -294,6 +324,26 @@ class OpenAI::Test::UnknownResponseStreamEventTest < Minitest::Test
         usage: nil,
         metadata: nil
       }
+    }
+  end
+
+  def response_with_unknowns
+    {
+      id: "resp_unknown",
+      object: "response",
+      output: [
+        {type: "future_tool"},
+        {
+          id: "msg_unknown",
+          type: "message",
+          status: "completed",
+          role: "assistant",
+          content: [
+            {type: "future_content"},
+            {type: "output_text", text: "hello", annotations: [], logprobs: []}
+          ]
+        }
+      ]
     }
   end
 

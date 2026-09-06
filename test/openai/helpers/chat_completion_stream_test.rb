@@ -49,6 +49,32 @@ class OpenAI::Test::ChatCompletionStreamTest < Minitest::Test
     end
   end
 
+  def test_stream_preserves_unknown_tool_calls_without_function_events
+    state = OpenAI::Helpers::Streaming::ChatCompletionStreamState.new
+    events = state.handle_chunk(
+      build_chunk(
+        choice_index: 0,
+        delta: {
+          role: :assistant,
+          tool_calls: [
+            {
+              index: 0,
+              id: "call_future",
+              type: :future_tool,
+              future_tool: {opaque: true}
+            }
+          ]
+        },
+        finish_reason: :tool_calls
+      )
+    )
+
+    tool_call = state.get_final_completion.choices.first.message.tool_calls.first
+    assert_instance_of(Hash, tool_call)
+    assert_equal(:future_tool, tool_call[:type])
+    refute(events.any? { |event| event.type.to_s.start_with?("tool_calls.function.") })
+  end
+
   def test_interleaved_indices_remain_ordered_and_independent
     state = OpenAI::Helpers::Streaming::ChatCompletionStreamState.new
     state.handle_chunk(build_chunk(choice_index: 1, delta: {role: :assistant, content: "one"}))

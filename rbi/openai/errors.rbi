@@ -7,6 +7,9 @@ module OpenAI
       attr_reader :cause
     end
 
+    class InvalidWebhookSignatureError < OpenAI::Errors::Error
+    end
+
     class PollingError < OpenAI::Errors::Error
     end
 
