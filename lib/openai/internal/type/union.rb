@@ -100,8 +100,25 @@ module OpenAI
             return nil if key == OpenAI::Internal::OMIT
 
             key = key.to_sym if key.is_a?(String)
-            _, found = known_variants.find { |k,| k == key }
-            found&.call
+            _, found = known_variants.find { |k,| !k.nil? && k == key }
+            return found.call if found
+
+            known_variants.each do |variant_key, variant_fn|
+              next unless variant_key.nil?
+
+              target = variant_fn.call
+              next unless target.is_a?(Class) && target <= OpenAI::Internal::Type::BaseModel
+
+              field = target.known_fields[@discriminator]
+              next unless field
+
+              type = field.fetch(:type_fn).call
+              next unless OpenAI::Internal::Type::Enum === type
+
+              return target if type === key
+            end
+
+            OpenAI::Internal::Type::Unknown
           else
             nil
           end

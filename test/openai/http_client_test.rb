@@ -461,6 +461,65 @@ class HTTPClientTest < Minitest::Test
     assert_equal(2, attempts)
   end
 
+  def test_sdk_does_not_retry_connection_errors_for_non_idempotent_requests
+    [OpenAI::Errors::APIConnectionError, OpenAI::Errors::APITimeoutError].each do |error_class|
+      attempts = 0
+      effects = 0
+      http_client = StubHTTPClient.new do |request|
+        attempts += 1
+        effects += 1
+        raise error_class.new(url: request.url)
+      end
+
+      client = OpenAI::Client.new(
+        api_key: "test-key",
+        http_client: http_client,
+        max_retries: 1,
+        initial_retry_delay: 0,
+        max_retry_delay: 0
+      )
+
+      assert_raises(error_class) do
+        client.request(method: :post, path: "probe", body: {value: "payload"})
+      end
+
+      assert_equal(1, attempts)
+      assert_equal(1, effects)
+    end
+  end
+
+  def test_sdk_retries_connection_errors_for_requests_with_an_idempotency_key
+    attempts = 0
+    http_client = StubHTTPClient.new do |request|
+      attempts += 1
+      raise OpenAI::Errors::APIConnectionError.new(url: request.url) if attempts == 1
+
+      OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "application/json"},
+        body: "{\"ok\":true}"
+      )
+    end
+
+    client = OpenAI::Client.new(
+      api_key: "test-key",
+      http_client: http_client,
+      max_retries: 1,
+      initial_retry_delay: 0,
+      max_retry_delay: 0
+    )
+
+    response = client.request(
+      method: :post,
+      path: "probe",
+      headers: {"Idempotency-Key" => "stable-operation"},
+      body: {value: "payload"}
+    )
+
+    assert_equal(true, response[:ok])
+    assert_equal(2, attempts)
+  end
+
   def test_sdk_follows_redirects_from_a_custom_http_client
     requests = []
     http_client = StubHTTPClient.new do |request|

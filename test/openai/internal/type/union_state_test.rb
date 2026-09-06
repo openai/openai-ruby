@@ -137,4 +137,82 @@ class OpenAI::Test::UnionStateTest < Minitest::Test
       assert_nil(state.fetch(:error))
     end
   end
+
+  def test_unknown_discriminators_preserve_the_original_value
+    inputs = [
+      {type: :unknown},
+      {type: "unknown"},
+      {type: nil},
+      {"type" => :unknown},
+      {"type" => "unknown"}
+    ]
+
+    inputs.each do |input|
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+      assert_same(input, OpenAI::Internal::Type::Converter.coerce(DiscriminatedUnion, input, state: state))
+      assert_equal({yes: 1, no: 0, maybe: 0}, state.fetch(:exactness))
+      assert_nil(state.fetch(:error))
+    end
+  end
+
+  def test_unknown_response_output_item_is_not_a_known_tool_call
+    input = {type: "attacker"}
+
+    output_item = OpenAI::Internal::Type::Converter.coerce(
+      OpenAI::Responses::ResponseOutputItem,
+      input
+    )
+
+    assert_same(input, output_item)
+    refute_instance_of(OpenAI::Responses::ResponseComputerToolCall, output_item)
+  end
+
+  def test_known_unkeyed_discriminator_variants_remain_typed
+    cases = [
+      [OpenAI::Responses::Tool, "web_search", OpenAI::Responses::WebSearchTool],
+      [OpenAI::Responses::Tool, "web_search_2025_08_26", OpenAI::Responses::WebSearchTool],
+      [OpenAI::Responses::Tool, "web_search_preview", OpenAI::Responses::WebSearchPreviewTool],
+      [
+        OpenAI::Responses::Tool,
+        "web_search_preview_2025_03_11",
+        OpenAI::Responses::WebSearchPreviewTool
+      ],
+      [OpenAI::Beta::BetaTool, "web_search", OpenAI::Beta::BetaWebSearchTool],
+      [OpenAI::Beta::BetaTool, "web_search_2025_08_26", OpenAI::Beta::BetaWebSearchTool],
+      [OpenAI::Beta::BetaTool, "web_search_preview", OpenAI::Beta::BetaWebSearchPreviewTool],
+      [
+        OpenAI::Beta::BetaTool,
+        "web_search_preview_2025_03_11",
+        OpenAI::Beta::BetaWebSearchPreviewTool
+      ]
+    ]
+
+    cases.each do |union, type, expected|
+      tool = OpenAI::Internal::Type::Converter.coerce(union, {type: type})
+
+      assert_instance_of(expected, tool)
+    end
+  end
+
+  def test_known_unkeyed_discriminator_ignores_unrelated_inexact_fields
+    cases = [
+      [
+        OpenAI::Responses::Tool,
+        {type: "web_search", external_web_access: "false"},
+        OpenAI::Responses::WebSearchTool
+      ],
+      [
+        OpenAI::Beta::BetaTool,
+        {type: "web_search_preview", search_content_types: ["future"]},
+        OpenAI::Beta::BetaWebSearchPreviewTool
+      ]
+    ]
+
+    cases.each do |union, input, expected|
+      tool = OpenAI::Internal::Type::Converter.coerce(union, input)
+
+      assert_instance_of(expected, tool)
+    end
+  end
 end

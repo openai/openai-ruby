@@ -46,10 +46,11 @@ module OpenAI
           text_parts = []
 
           response.output.each do |output|
-            next unless output.type == :message
+            next unless output.is_a?(OpenAI::Models::Responses::ResponseOutputMessage)
 
             output.content.each do |content|
-              next unless content.type == :output_text
+              next unless content.is_a?(OpenAI::Models::Responses::ResponseOutputText)
+
               text_parts << content.text
             end
           end
@@ -100,39 +101,27 @@ module OpenAI
 
           case event
           when OpenAI::Models::Responses::ResponseTextDeltaEvent
+            snapshot = nil
             if @current_snapshot
               output = @current_snapshot.output[event.output_index]
-              assert_type(output, :message)
-
-              content = output.content[event.content_index]
-              assert_type(content, :output_text)
-              events_to_yield <<
-                OpenAI::Streaming::ResponseTextDeltaEvent.new(
-                  content_index: event.content_index,
-                  delta: event.delta,
-                  item_id: event.item_id,
-                  output_index: event.output_index,
-                  sequence_number: event.sequence_number,
-                  type: event.type,
-                  **event.to_h.slice(:logprobs),
-                  snapshot: content.text
-                )
-            else
-              # A server-directed resumed stream may begin after response.created.
-              # Without the omitted prefix, a snapshot would be incomplete and
-              # materializing every partial prefix would make streaming quadratic.
-              events_to_yield <<
-                OpenAI::Streaming::ResponseTextDeltaEvent.new(event.to_h.merge(snapshot: nil))
+              if output.is_a?(OpenAI::Models::Responses::ResponseOutputMessage)
+                content = output.content[event.content_index]
+                snapshot = content.text if content.is_a?(OpenAI::Models::Responses::ResponseOutputText)
+              end
             end
+
+            # A server-directed resumed stream or an unknown future snapshot value
+            # has no complete prefix from which to build a truthful snapshot.
+            events_to_yield <<
+              OpenAI::Streaming::ResponseTextDeltaEvent.new(event.to_h.merge(snapshot: snapshot))
 
           when OpenAI::Models::Responses::ResponseTextDoneEvent
             text = if @current_snapshot
               output = @current_snapshot.output[event.output_index]
-              assert_type(output, :message)
-
-              content = output.content[event.content_index]
-              assert_type(content, :output_text)
-              content.text
+              if output.is_a?(OpenAI::Models::Responses::ResponseOutputMessage)
+                content = output.content[event.content_index]
+                content.text if content.is_a?(OpenAI::Models::Responses::ResponseOutputText)
+              end
             else
               event.text
             end
@@ -152,26 +141,20 @@ module OpenAI
               )
 
           when OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent
+            snapshot = nil
             if @current_snapshot
               output = @current_snapshot.output[event.output_index]
-              assert_type(output, :function_call)
-              events_to_yield <<
-                OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent.new(
-                  delta: event.delta,
-                  item_id: event.item_id,
-                  output_index: event.output_index,
-                  sequence_number: event.sequence_number,
-                  type: event.type,
-                  snapshot: output.arguments
-                )
-            else
-              # See the text-delta branch above: a partial server resume has no
-              # complete argument prefix from which to build a truthful snapshot.
-              events_to_yield <<
-                OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent.new(
-                  event.to_h.merge(snapshot: nil)
-                )
+              if output.is_a?(OpenAI::Models::Responses::ResponseFunctionToolCall)
+                snapshot = output.arguments
+              end
             end
+
+            # See the text-delta branch above: a partial server resume or an
+            # unknown future output item has no truthful accumulated prefix.
+            events_to_yield <<
+              OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent.new(
+                event.to_h.merge(snapshot: snapshot)
+              )
 
           when OpenAI::Models::Responses::ResponseCompletedEvent
             events_to_yield <<
@@ -213,16 +196,16 @@ module OpenAI
 
           when OpenAI::Models::Responses::ResponseContentPartAddedEvent
             output = current_snapshot.output[event.output_index]
-            if output && output.type == :message
+            if output.is_a?(OpenAI::Models::Responses::ResponseOutputMessage)
               output.content.push(isolated_value(event.part))
               current_snapshot.output[event.output_index] = output
             end
 
           when OpenAI::Models::Responses::ResponseTextDeltaEvent
             output = current_snapshot.output[event.output_index]
-            if output && output.type == :message
+            if output.is_a?(OpenAI::Models::Responses::ResponseOutputMessage)
               content = output.content[event.content_index]
-              if content && content.type == :output_text
+              if content.is_a?(OpenAI::Models::Responses::ResponseOutputText)
                 content.text += event.delta
                 output.content[event.content_index] = content
                 current_snapshot.output[event.output_index] = output
@@ -231,7 +214,7 @@ module OpenAI
 
           when OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent
             output = current_snapshot.output[event.output_index]
-            if output && output.type == :function_call
+            if output.is_a?(OpenAI::Models::Responses::ResponseFunctionToolCall)
               output.arguments = (output.arguments || "") + event.delta
               current_snapshot.output[event.output_index] = output
             end
@@ -255,22 +238,16 @@ module OpenAI
           OpenAI::Internal::Type::Converter.coerce(value.class, raw)
         end
 
-        def assert_type(object, expected_type)
-          return if object && object.type == expected_type
-          actual_type = object ? object.type : "nil"
-          raise "Invalid state: expected #{expected_type} but got #{actual_type}"
-        end
-
         def parse_structured_text(text)
           return nil unless @text_format && text
 
           begin
             parsed = JSON.parse(text, symbolize_names: true)
             OpenAI::Internal::Type::Converter.coerce(@text_format, parsed)
-          rescue JSON::ParserError => e
+          rescue JSON::ParserError
             raise(
-              "Failed to parse structured text as JSON for #{@text_format}: #{e.message}. " \
-                "Raw text: #{text.inspect}"
+              "Failed to parse structured text as JSON for #{@text_format}",
+              cause: nil
             )
           end
         end

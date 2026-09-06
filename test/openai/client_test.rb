@@ -466,6 +466,99 @@ class OpenAITest < Minitest::Test
     assert_equal(body, response.last_response.body)
   end
 
+  def test_diarized_transcription_response_uses_diarized_model_with_defaulted_constants
+    stub_request(:post, "http://localhost/audio/transcriptions").to_return(
+      status: 200,
+      headers: {"content-type" => "application/json"},
+      body: <<~JSON
+        {
+          "duration": 1.25,
+          "segments": [
+            {
+              "id": "seg_1",
+              "end": 1.25,
+              "speaker": "A",
+              "start": 0.0,
+              "text": "hello"
+            }
+          ],
+          "text": "hello"
+        }
+      JSON
+    )
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+    response = openai.audio.transcriptions.create(
+      file: StringIO.new("synthetic audio"),
+      model: :"gpt-4o-transcribe-diarize",
+      response_format: :diarized_json
+    )
+
+    assert_instance_of(OpenAI::Audio::TranscriptionDiarized, response)
+    assert_instance_of(OpenAI::Audio::TranscriptionDiarizedSegment, response.segments.fetch(0))
+    assert_equal("A", response.segments.fetch(0).speaker)
+    assert_equal(:transcribe, response.task)
+    assert_equal(:"transcript.text.segment", response.segments.fetch(0).type)
+  end
+
+  def test_diarized_transcription_response_missing_speaker_remains_basic_model
+    stub_request(:post, "http://localhost/audio/transcriptions").to_return(
+      status: 200,
+      headers: {"content-type" => "application/json"},
+      body: <<~JSON
+        {
+          "duration": 1.25,
+          "segments": [
+            {
+              "id": "seg_1",
+              "end": 1.25,
+              "start": 0.0,
+              "text": "hello",
+              "type": "transcript.text.segment"
+            }
+          ],
+          "task": "transcribe",
+          "text": "hello"
+        }
+      JSON
+    )
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+    response = openai.audio.transcriptions.create(
+      file: StringIO.new("synthetic audio"),
+      model: :"gpt-4o-transcribe-diarize",
+      response_format: :diarized_json
+    )
+
+    assert_instance_of(OpenAI::Audio::Transcription, response)
+    assert_instance_of(Hash, response[:segments].fetch(0))
+  end
+
+  def test_verbose_transcription_response_with_empty_segments_remains_verbose_model
+    stub_request(:post, "http://localhost/audio/transcriptions").to_return(
+      status: 200,
+      headers: {"content-type" => "application/json"},
+      body: <<~JSON
+        {
+          "duration": 1.25,
+          "language": "en",
+          "segments": [],
+          "text": "hello"
+        }
+      JSON
+    )
+
+    openai = OpenAI::Client.new(base_url: "http://localhost", api_key: "My API Key")
+    response = openai.audio.transcriptions.create(
+      file: StringIO.new("synthetic audio"),
+      model: :"whisper-1",
+      response_format: :verbose_json
+    )
+
+    assert_instance_of(OpenAI::Audio::TranscriptionVerbose, response)
+    assert_equal([], response.segments)
+  end
+
   def test_raw_response_body_requires_an_explicit_boolean_true
     body = "{\"id\":\"model_123\",\"object\":\"model\",\"created\":123,\"owned_by\":\"openai\"}"
     stub_request(:get, "http://localhost/models/model_123").to_return(

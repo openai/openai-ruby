@@ -276,7 +276,9 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     end
 
     assert_match(/Failed to parse structured text as JSON/, error.message)
-    assert_match(/Raw text:/, error.message)
+    refute_match(/Raw text:/, error.message)
+    refute_match(/SENSITIVE_MODEL_OUTPUT/, error.message)
+    assert_nil(error.cause)
   end
 
   def test_function_calling_streaming
@@ -1041,13 +1043,13 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       data: {"type":"response.output_text.delta","sequence_number":4,"response_id":"msg_malformed","item_id":"item_malformed","output_index":0,"content_index":0,"delta":"{\\"location\\":\\""}
 
       event: response.output_text.delta
-      data: {"type":"response.output_text.delta","sequence_number":5,"response_id":"msg_malformed","item_id":"item_malformed","output_index":0,"content_index":0,"delta":"San Francisco\\", malformed JSON"}
+      data: {"type":"response.output_text.delta","sequence_number":5,"response_id":"msg_malformed","item_id":"item_malformed","output_index":0,"content_index":0,"delta":"SENSITIVE_MODEL_OUTPUT\\", malformed JSON"}
 
       event: response.output_text.done
-      data: {"type":"response.output_text.done","sequence_number":6,"response_id":"msg_malformed","item_id":"item_malformed","output_index":0,"content_index":0,"text":"{\\"location\\":\\"San Francisco\\", malformed JSON"}
+      data: {"type":"response.output_text.done","sequence_number":6,"response_id":"msg_malformed","item_id":"item_malformed","output_index":0,"content_index":0,"text":"{\\"location\\":\\"SENSITIVE_MODEL_OUTPUT\\", malformed JSON"}
 
       event: response.completed
-      data: {"type":"response.completed","sequence_number":7,"response":{"id":"msg_malformed","object":"realtime.response","status":"completed","status_details":null,"output":[{"id":"item_malformed","object":"realtime.item","type":"message","status":"completed","role":"assistant","content":[{"type":"output_text","text":"{\\"location\\":\\"San Francisco\\", malformed JSON"}]}],"usage":{"total_tokens":20,"input_tokens":10,"output_tokens":10},"metadata":null}}
+      data: {"type":"response.completed","sequence_number":7,"response":{"id":"msg_malformed","object":"realtime.response","status":"completed","status_details":null,"output":[{"id":"item_malformed","object":"realtime.item","type":"message","status":"completed","role":"assistant","content":[{"type":"output_text","text":"{\\"location\\":\\"SENSITIVE_MODEL_OUTPUT\\", malformed JSON"}]}],"usage":{"total_tokens":20,"input_tokens":10,"output_tokens":10},"metadata":null}}
 
     SSE
   end
