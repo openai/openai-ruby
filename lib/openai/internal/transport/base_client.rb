@@ -474,7 +474,7 @@ module OpenAI
           in :get | :head | :options | :trace
             nil
           else
-            OpenAI::Internal::Util.deep_merge(*[req[:body], opts[:extra_body]].compact)
+            OpenAI::Internal::Transport::RequestBodyMerge.merge(req[:body], opts[:extra_body])
           end
 
           # Generated methods always pass `req[:body]` for operations that define a
