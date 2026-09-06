@@ -19,7 +19,8 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::ServiceAccounts::A
           created_at: Integer,
           name: String,
           object: Symbol,
-          value: String
+          value: String,
+          expires_at: Integer | nil
         }
     end
   end
