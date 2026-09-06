@@ -244,6 +244,7 @@ module OpenAI
 
       req = nil
       finished = false
+      request_may_have_been_sent = false
 
       # rubocop:disable Metrics/BlockLength
       enum = Enumerator.new do |y|
@@ -285,6 +286,7 @@ module OpenAI
 
               calibrate_socket_timeout(conn, deadline)
               ::Kernel.catch(:jump) do
+                request_may_have_been_sent = true
                 conn.request(req) do |rsp|
                   y << [req, rsp]
                   ::Kernel.throw(:jump) if finished
@@ -313,9 +315,21 @@ module OpenAI
       rescue ConnectionConfigurationError => e
         raise e.original, cause: e.original.cause
       rescue Timeout::Error
-        raise OpenAI::Errors::APITimeoutError.new(url: url, request: req)
+        raise(
+          OpenAI::Errors::APITimeoutError.new(
+            url: url,
+            request: req,
+            request_may_have_been_sent: request_may_have_been_sent
+          )
+        )
       rescue *NETWORK_ERRORS
-        raise OpenAI::Errors::APIConnectionError.new(url: url, request: req)
+        raise(
+          OpenAI::Errors::APIConnectionError.new(
+            url: url,
+            request: req,
+            request_may_have_been_sent: request_may_have_been_sent
+          )
+        )
       end
       # rubocop:enable Metrics/BlockLength
 

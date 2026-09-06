@@ -124,6 +124,11 @@ module OpenAI
       attr_accessor :type
 
       # @api private
+      sig { returns(T::Boolean) }
+      def request_may_have_been_sent?
+      end
+
+      # @api private
       sig do
         params(
           url: URI::Generic,
@@ -132,7 +137,8 @@ module OpenAI
           body: NilClass,
           request: NilClass,
           response: NilClass,
-          message: T.nilable(String)
+          message: T.nilable(String),
+          request_may_have_been_sent: T::Boolean
         )
           .returns(T.attached_class)
       end
@@ -143,7 +149,8 @@ module OpenAI
         body: nil,
         request: nil,
         response: nil,
-        message: "Connection error."
+        message: "Connection error.",
+        request_may_have_been_sent: true
       )
       end
     end
@@ -158,7 +165,8 @@ module OpenAI
           body: NilClass,
           request: NilClass,
           response: NilClass,
-          message: T.nilable(String)
+          message: T.nilable(String),
+          request_may_have_been_sent: T::Boolean
         )
           .returns(T.attached_class)
       end
@@ -169,7 +177,8 @@ module OpenAI
         body: nil,
         request: nil,
         response: nil,
-        message: "Request timed out."
+        message: "Request timed out.",
+        request_may_have_been_sent: true
       )
       end
     end

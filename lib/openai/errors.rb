@@ -141,6 +141,15 @@ module OpenAI
       #
       #   @return [nil]
 
+      # Whether request bytes might have reached the peer before the transport
+      # failed. HTTP clients should only set this to `false` when they can
+      # prove that no request bytes were sent.
+      #
+      # @api private
+      #
+      # @return [Boolean]
+      def request_may_have_been_sent? = @request_may_have_been_sent
+
       # @api private
       #
       # @param url [URI::Generic]
@@ -150,6 +159,7 @@ module OpenAI
       # @param request [nil]
       # @param response [nil]
       # @param message [String, nil]
+      # @param request_may_have_been_sent [Boolean]
       def initialize(
         url:,
         status: nil,
@@ -157,9 +167,11 @@ module OpenAI
         body: nil,
         request: nil,
         response: nil,
-        message: "Connection error."
+        message: "Connection error.",
+        request_may_have_been_sent: true
       )
-        super
+        @request_may_have_been_sent = request_may_have_been_sent
+        super(url:, status:, headers:, body:, request:, response:, message:)
       end
     end
 
@@ -173,6 +185,7 @@ module OpenAI
       # @param request [nil]
       # @param response [nil]
       # @param message [String, nil]
+      # @param request_may_have_been_sent [Boolean]
       def initialize(
         url:,
         status: nil,
@@ -180,7 +193,8 @@ module OpenAI
         body: nil,
         request: nil,
         response: nil,
-        message: "Request timed out."
+        message: "Request timed out.",
+        request_may_have_been_sent: true
       )
         super
       end

@@ -517,7 +517,13 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
         if request.url.host == "mtls.auth.openai.com"
           issuer_attempts += 1
           if issuer_attempts == 1
-            raise error_class.new(url: request.url, message: "fake-sensitive-network-secret")
+            raise(
+              error_class.new(
+                url: request.url,
+                message: "fake-sensitive-network-secret",
+                request_may_have_been_sent: false
+              )
+            )
           end
 
           x509_issuer_success
@@ -548,7 +554,7 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
     end
   end
 
-  def test_x509_terminal_issuer_connection_failure_is_not_retried_again_by_api_transport
+  def test_x509_ambiguous_issuer_connection_failure_is_not_retried
     events = []
     client = OpenAI::Client.new(
       api_key: nil,
@@ -569,9 +575,8 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
       assert_raises(OpenAI::Errors::APIConnectionError) { client.models.retrieve("fake-model") }
     end
 
-    assert_equal(2, attempts)
-    assert_equal(1, events.length)
-    assert_instance_of(OpenAI::Errors::APIConnectionError, events.fetch(0).error)
+    assert_equal(1, attempts)
+    assert_empty(events)
   end
 
   def test_x509_issuer_connection_retry_consumes_the_shared_api_retry_budget
@@ -591,7 +596,12 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
       if request.url.host == "mtls.auth.openai.com"
         issuer_attempts += 1
         if issuer_attempts == 1
-          raise OpenAI::Errors::APIConnectionError.new(url: request.url)
+          raise(
+            OpenAI::Errors::APIConnectionError.new(
+              url: request.url,
+              request_may_have_been_sent: false
+            )
+          )
         end
 
         x509_issuer_success
@@ -627,7 +637,12 @@ class OpenAI::Test::X509ClientTest < Minitest::Test
     attempts = 0
     dispatch = lambda do |request|
       attempts += 1
-      raise OpenAI::Errors::APIConnectionError.new(url: request.url)
+      raise(
+        OpenAI::Errors::APIConnectionError.new(
+          url: request.url,
+          request_may_have_been_sent: false
+        )
+      )
     end
 
     @native.stub(:execute, dispatch) do
