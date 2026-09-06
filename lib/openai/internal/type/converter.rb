@@ -122,7 +122,10 @@ module OpenAI
           #
           # @return [Hash{Symbol=>Object}]
           def meta_info(type_info, spec)
-            [spec, type_info].grep(Hash).first.to_h.except(:const, :enum, :union, :nil?)
+            [type_info, spec]
+              .grep(Hash)
+              .reduce({}, :merge)
+              .except(:const, :enum, :union, :nil?)
           end
 
           # @api private

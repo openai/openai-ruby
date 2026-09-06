@@ -49,7 +49,7 @@ module OpenAI
         def get_output_text
         end
 
-        sig { returns(T::Enumerator::Lazy[String]) }
+        sig { returns(T::Enumerator[String]) }
         def text
         end
 

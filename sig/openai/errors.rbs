@@ -4,6 +4,9 @@ module OpenAI
       attr_reader cause: StandardError?
     end
 
+    class InvalidWebhookSignatureError < OpenAI::Errors::Error
+    end
+
     class PollingError < OpenAI::Errors::Error
     end
 
@@ -134,6 +137,32 @@ module OpenAI
 
     class InternalServerError < OpenAI::Errors::APIStatusError
       HTTP_STATUS: Range[Integer]
+    end
+
+    class OAuthError < OpenAI::Errors::APIStatusError
+      def status: -> Integer
+
+      def status=: (Integer) -> Integer
+
+      attr_reader error_code: OpenAI::Models::oauth_error_code?
+
+      def initialize: (
+        status: Integer,
+        body: Object?,
+        headers: ::Hash[String, String]?
+      ) -> void
+    end
+
+    class SubjectTokenProviderError < OpenAI::Errors::Error
+      attr_reader provider: String
+
+      attr_accessor cause: StandardError?
+
+      def initialize: (
+        message: String,
+        provider: String,
+        ?cause: StandardError?
+      ) -> void
     end
   end
 end

@@ -109,7 +109,7 @@ module OpenAI
                 stored[OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::RECURSIVE] = true
               end
 
-              pointers.first.except(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::NO_REF).tap do
+              pointers.first.slice(:$ref).tap do
                 pointers << _1
               end
             else

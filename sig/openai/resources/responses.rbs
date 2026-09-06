@@ -88,8 +88,10 @@ module OpenAI
         ?prompt: OpenAI::Responses::ResponsePrompt?,
         ?prompt_cache_key: String,
         ?reasoning: OpenAI::Reasoning?,
+        ?response_id: String?,
         ?safety_identifier: String,
         ?service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
+        ?starting_after: Integer?,
         ?store: bool?,
         ?temperature: Float?,
         ?text: OpenAI::Responses::ResponseTextConfig,
@@ -100,8 +102,7 @@ module OpenAI
         ?truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
         ?user: String,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Internal::Stream[(OpenAI::Models::Responses::response_stream_event
-      | OpenAI::Streaming::UnknownStreamEvent)]
+      ) -> OpenAI::Streaming::ResponseStream
 
       def retrieve: (
         String response_id,

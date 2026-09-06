@@ -426,6 +426,10 @@ For secure, automated environments like cloud-managed Kubernetes, Azure, and GCP
 
 `client_id` remains available as an optional parameter for token exchange setups that require an explicit OAuth client ID.
 
+If `OPENAI_API_KEY` is already set in your environment, pass `api_key: nil`
+to explicitly opt out of that ambient API key when constructing a workload
+identity client.
+
 ### X.509 Workload Identity (Preview)
 
 Organizations enrolled in the X.509 workload identity preview can exchange a
@@ -534,6 +538,7 @@ workload_identity = OpenAI::Auth::WorkloadIdentity.new(
 )
 
 client = OpenAI::Client.new(
+  api_key: nil,
   workload_identity: workload_identity,
 )
 
@@ -555,6 +560,7 @@ workload_identity = OpenAI::Auth::WorkloadIdentity.new(
 )
 
 client = OpenAI::Client.new(
+  api_key: nil,
   workload_identity: workload_identity,
 )
 ```
@@ -571,6 +577,7 @@ workload_identity = OpenAI::Auth::WorkloadIdentity.new(
 )
 
 client = OpenAI::Client.new(
+  api_key: nil,
   workload_identity: workload_identity,
 )
 ```
@@ -601,6 +608,7 @@ workload_identity = OpenAI::Auth::WorkloadIdentity.new(
 )
 
 client = OpenAI::Client.new(
+  api_key: nil,
   workload_identity: workload_identity,
   organization: ENV["OPENAI_ORG_ID"],
   project: ENV["OPENAI_PROJECT_ID"]
@@ -636,9 +644,9 @@ post '/webhook' do
     event = client.webhooks.unwrap(request_body, request.env)
     
     case event.type
-    when 'response.completed'
+    when :'response.completed'
       puts "Response completed: #{event.data}"
-    when 'response.failed'
+    when :'response.failed'
       puts "Response failed: #{event.data}"
     else
       puts "Unhandled event type: #{event.type}"
@@ -1015,7 +1023,15 @@ for more information.
 
 Certain errors will be automatically retried 2 times by default, with a short exponential backoff.
 
-Connection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict, 429 Rate Limit, >=500 Internal errors, and timeouts will all be retried by default.
+Requests are automatically retried only when their bodies are replayable. For
+those requests, after transport execution begins, connection errors (for
+example, due to a network connectivity problem) and timeouts are retried by
+default only for idempotent HTTP methods or requests carrying a non-empty
+`Idempotency-Key` header. Failures while preparing a request or its
+authentication retain the configured retry behavior because no API request has
+been dispatched.
+408 Request Timeout, 409 Conflict, 429 Rate Limit, and >=500 Internal errors
+are retried by default regardless of the HTTP method.
 
 You can use the `max_retries` option to configure or disable this:
 
@@ -1074,7 +1090,10 @@ openai.chat.completions.create(
 
 On timeout, `OpenAI::Errors::APITimeoutError` is raised.
 
-Note that requests that time out are retried by default.
+After transport execution begins, requests with replayable bodies that time out
+are retried by default only for idempotent HTTP methods or requests carrying a
+non-empty `Idempotency-Key` header. Preparation and authentication timeouts
+before dispatch retain the configured retry behavior.
 
 ## Advanced concepts
 

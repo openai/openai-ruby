@@ -1,0 +1,103 @@
+module OpenAI
+  module Helpers
+    module Streaming
+      type response_stream_event =
+        OpenAI::Helpers::Streaming::ResponseTextDeltaEvent
+        | OpenAI::Helpers::Streaming::ResponseTextDoneEvent
+        | OpenAI::Helpers::Streaming::ResponseFunctionCallArgumentsDeltaEvent
+        | OpenAI::Helpers::Streaming::ResponseCompletedEvent
+        | OpenAI::Helpers::Streaming::response_stream_passthrough_event
+        | OpenAI::Helpers::Streaming::UnknownStreamEvent
+
+      type response_stream_passthrough_event =
+        OpenAI::Responses::ResponseAudioDeltaEvent
+        | OpenAI::Responses::ResponseAudioDoneEvent
+        | OpenAI::Responses::ResponseAudioTranscriptDeltaEvent
+        | OpenAI::Responses::ResponseAudioTranscriptDoneEvent
+        | OpenAI::Responses::ResponseCodeInterpreterCallCodeDeltaEvent
+        | OpenAI::Responses::ResponseCodeInterpreterCallCodeDoneEvent
+        | OpenAI::Responses::ResponseCodeInterpreterCallCompletedEvent
+        | OpenAI::Responses::ResponseCodeInterpreterCallInProgressEvent
+        | OpenAI::Responses::ResponseCodeInterpreterCallInterpretingEvent
+        | OpenAI::Responses::ResponseContentPartAddedEvent
+        | OpenAI::Responses::ResponseContentPartDoneEvent
+        | OpenAI::Responses::ResponseCreatedEvent
+        | OpenAI::Responses::ResponseErrorEvent
+        | OpenAI::Responses::ResponseFileSearchCallCompletedEvent
+        | OpenAI::Responses::ResponseFileSearchCallInProgressEvent
+        | OpenAI::Responses::ResponseFileSearchCallSearchingEvent
+        | OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent
+        | OpenAI::Responses::ResponseShellCallCommandAddedEvent
+        | OpenAI::Responses::ResponseShellCallCommandDeltaEvent
+        | OpenAI::Responses::ResponseShellCallCommandDoneEvent
+        | OpenAI::Responses::ResponseShellCallOutputContentDeltaEvent
+        | OpenAI::Responses::ResponseShellCallOutputContentDoneEvent
+        | OpenAI::Responses::ResponseInProgressEvent
+        | OpenAI::Responses::ResponseFailedEvent
+        | OpenAI::Responses::ResponseIncompleteEvent
+        | OpenAI::Responses::ResponseOutputItemAddedEvent
+        | OpenAI::Responses::ResponseOutputItemDoneEvent
+        | OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent
+        | OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent
+        | OpenAI::Responses::ResponseReasoningSummaryTextDeltaEvent
+        | OpenAI::Responses::ResponseReasoningSummaryTextDoneEvent
+        | OpenAI::Responses::ResponseReasoningTextDeltaEvent
+        | OpenAI::Responses::ResponseReasoningTextDoneEvent
+        | OpenAI::Responses::ResponseRefusalDeltaEvent
+        | OpenAI::Responses::ResponseRefusalDoneEvent
+        | OpenAI::Responses::ResponseWebSearchCallCompletedEvent
+        | OpenAI::Responses::ResponseWebSearchCallInProgressEvent
+        | OpenAI::Responses::ResponseWebSearchCallSearchingEvent
+        | OpenAI::Responses::ResponseImageGenCallCompletedEvent
+        | OpenAI::Responses::ResponseImageGenCallGeneratingEvent
+        | OpenAI::Responses::ResponseImageGenCallInProgressEvent
+        | OpenAI::Responses::ResponseImageGenCallPartialImageEvent
+        | OpenAI::Responses::ResponseMcpCallArgumentsDeltaEvent
+        | OpenAI::Responses::ResponseMcpCallArgumentsDoneEvent
+        | OpenAI::Responses::ResponseMcpCallCompletedEvent
+        | OpenAI::Responses::ResponseMcpCallFailedEvent
+        | OpenAI::Responses::ResponseMcpCallInProgressEvent
+        | OpenAI::Responses::ResponseMcpListToolsCompletedEvent
+        | OpenAI::Responses::ResponseMcpListToolsFailedEvent
+        | OpenAI::Responses::ResponseMcpListToolsInProgressEvent
+        | OpenAI::Responses::ResponseOutputTextAnnotationAddedEvent
+        | OpenAI::Responses::ResponseQueuedEvent
+        | OpenAI::Responses::ResponseCustomToolCallInputDeltaEvent
+        | OpenAI::Responses::ResponseCustomToolCallInputDoneEvent
+
+      class ResponseTextDeltaEvent < OpenAI::Models::Responses::ResponseTextDeltaEvent
+        def snapshot: -> String?
+      end
+
+      class ResponseTextDoneEvent < OpenAI::Models::Responses::ResponseTextDoneEvent
+        def parsed: -> untyped
+      end
+
+      class ResponseFunctionCallArgumentsDeltaEvent < OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent
+        def snapshot: -> String?
+      end
+
+      class ResponseCompletedEvent < OpenAI::Models::Responses::ResponseCompletedEvent
+        def response: -> OpenAI::Responses::Response
+      end
+
+      class ResponseStream
+        include OpenAI::Internal::Type::BaseStream[OpenAI::Models::Responses::response_stream_event
+        | OpenAI::Helpers::Streaming::UnknownStreamEvent, OpenAI::Helpers::Streaming::response_stream_event]
+
+        # @api private
+        def initialize: (
+          raw_stream: OpenAI::Internal::Stream[OpenAI::Models::Responses::response_stream_event
+          | OpenAI::Helpers::Streaming::UnknownStreamEvent],
+          ?text_format: untyped,
+          ?starting_after: Integer?
+        ) -> void
+
+        def until_done: -> self
+        def text: -> Enumerator[String]
+        def get_final_response: -> OpenAI::Responses::Response
+        def get_output_text: -> String
+      end
+    end
+  end
+end

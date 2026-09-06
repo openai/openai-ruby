@@ -697,6 +697,25 @@ class OpenAI::Test::UnionTest < Minitest::Test
     end
   end
 
+  def test_coerce_breaks_alternative_ties_on_declaration_order
+    # `Integer` and `Float` both coerce the string inexactly, so the two
+    # alternatives rank identically. `Array#sort_by!` is not stable, so without an
+    # explicit tie-break the runner-up could be picked and the union would return
+    # a Float for a type that declares `Integer` first.
+    forward = U0.new(Integer, Float)
+    reverse = U0.new(Float, Integer)
+
+    # `2 == 2.0`, so the variant that won is only visible in the coerced class.
+    assert_instance_of(Integer, OpenAI::Internal::Type::Converter.coerce(forward, "2"))
+    assert_instance_of(Float, OpenAI::Internal::Type::Converter.coerce(reverse, "2"))
+
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+    OpenAI::Internal::Type::Converter.coerce(forward, "2", state: state)
+
+    assert_equal({yes: 0, no: 0, maybe: 1}, state.fetch(:exactness))
+    assert_equal(2, state.fetch(:branched))
+  end
+
   def test_coerce_preserves_existing_union_model_variants
     model = M1.new(t: :a)
     state = OpenAI::Internal::Type::Converter.new_coerce_state
@@ -810,10 +829,20 @@ end
 class OpenAI::Test::MetaInfoTest < Minitest::Test
   A1 = OpenAI::Internal::Type::ArrayOf[Integer, nil?: true, doc: "dog"]
   H1 = OpenAI::Internal::Type::HashOf[-> { String }, nil?: true, doc: "dawg"]
+  A2 = OpenAI::Internal::Type::ArrayOf[enum: -> { Integer }, doc: "hash dog"]
+  H2 = OpenAI::Internal::Type::HashOf[enum: -> { String }, doc: "hash dawg"]
 
   class M1 < OpenAI::Internal::Type::BaseModel
     required :a, Integer, doc: "dog"
     optional :b, -> { String }, nil?: true, doc: "dawg"
+  end
+
+  class M2 < OpenAI::Internal::Type::BaseModel
+    required :a, enum: -> { Integer }, doc: "hash dog"
+  end
+
+  class M3 < OpenAI::Internal::Type::BaseModel
+    required :a, {enum: -> { Integer }, doc: "hash dog"}, doc: "spec dog"
   end
 
   module U1
@@ -828,10 +857,14 @@ class OpenAI::Test::MetaInfoTest < Minitest::Test
     m2 = H1.instance_variable_get(:@meta)
     assert_equal({doc: "dog"}, m1)
     assert_equal({doc: "dawg"}, m2)
+    assert_equal({doc: "hash dog"}, A2.instance_variable_get(:@meta))
+    assert_equal({doc: "hash dawg"}, H2.instance_variable_get(:@meta))
 
     ma, mb = M1.fields.fetch_values(:a, :b)
     assert_equal({doc: "dog"}, ma.fetch(:meta))
     assert_equal({doc: "dawg"}, mb.fetch(:meta))
+    assert_equal({doc: "hash dog"}, M2.fields.fetch(:a).fetch(:meta))
+    assert_equal({doc: "spec dog"}, M3.fields.fetch(:a).fetch(:meta))
 
     ua, ub = U1.send(:known_variants).map(&:last)
     assert_equal({doc: "dog"}, ua)

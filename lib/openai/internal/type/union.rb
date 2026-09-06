@@ -100,8 +100,25 @@ module OpenAI
             return nil if key == OpenAI::Internal::OMIT
 
             key = key.to_sym if key.is_a?(String)
-            _, found = known_variants.find { |k,| k == key }
-            found&.call
+            _, found = known_variants.find { |k,| !k.nil? && k == key }
+            return found.call if found
+
+            known_variants.each do |variant_key, variant_fn|
+              next unless variant_key.nil?
+
+              target = variant_fn.call
+              next unless target.is_a?(Class) && target <= OpenAI::Internal::Type::BaseModel
+
+              field = target.known_fields[@discriminator]
+              next unless field
+
+              type = field.fetch(:type_fn).call
+              next unless OpenAI::Internal::Type::Enum === type
+
+              return target if type === key
+            end
+
+            OpenAI::Internal::Type::Unknown
           else
             nil
           end
@@ -167,7 +184,7 @@ module OpenAI
           exactness = state.fetch(:exactness)
 
           alternatives = []
-          known_variants.each do |_, variant_fn|
+          known_variants.each_with_index do |(_, variant_fn), index|
             target = variant_fn.call
             exact = state[:exactness] = {yes: 0, no: 0, maybe: 0}
             state[:branched] += 1
@@ -180,7 +197,10 @@ module OpenAI
               state[:error] = error || previous_error
               return coerced
             elsif maybe.positive?
-              alternatives << [[-yes, -maybe, no], exact, coerced, error]
+              # `Array#sort_by!` is not stable, so equally-ranked variants would
+              # otherwise be ordered arbitrarily. Break ties on declaration order
+              # to keep the chosen variant the same across platforms and runs.
+              alternatives << [[-yes, -maybe, no, index], exact, coerced, error]
             end
           end
 

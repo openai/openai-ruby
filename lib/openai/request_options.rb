@@ -8,6 +8,16 @@ module OpenAI
   # simply pass a Hash with symbol keys matching the attributes on this class.
   class RequestOptions < OpenAI::Internal::Type::BaseModel
     # @api private
+    module ExtraQueryValue
+      extend OpenAI::Internal::Type::Union
+
+      variant String
+      variant OpenAI::Internal::Type::ArrayOf[String]
+    end
+
+    private_constant :ExtraQueryValue
+
+    # @api private
     #
     # @param opts [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     #
@@ -37,7 +47,10 @@ module OpenAI
     #   `query` given at the client level.
     #
     #   @return [Hash{String=>Array<String>, String, nil}, nil]
-    optional :extra_query, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::ArrayOf[String]]
+    optional(
+      :extra_query,
+      OpenAI::Internal::Type::HashOf[{union: ExtraQueryValue}, nil?: true]
+    )
 
     # @!attribute extra_headers
     #   Extra headers to send with the request. These are `.merged`’d into any
