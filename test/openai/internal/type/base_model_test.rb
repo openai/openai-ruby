@@ -697,6 +697,25 @@ class OpenAI::Test::UnionTest < Minitest::Test
     end
   end
 
+  def test_coerce_breaks_alternative_ties_on_declaration_order
+    # `Integer` and `Float` both coerce the string inexactly, so the two
+    # alternatives rank identically. `Array#sort_by!` is not stable, so without an
+    # explicit tie-break the runner-up could be picked and the union would return
+    # a Float for a type that declares `Integer` first.
+    forward = U0.new(Integer, Float)
+    reverse = U0.new(Float, Integer)
+
+    # `2 == 2.0`, so the variant that won is only visible in the coerced class.
+    assert_instance_of(Integer, OpenAI::Internal::Type::Converter.coerce(forward, "2"))
+    assert_instance_of(Float, OpenAI::Internal::Type::Converter.coerce(reverse, "2"))
+
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+    OpenAI::Internal::Type::Converter.coerce(forward, "2", state: state)
+
+    assert_equal({yes: 0, no: 0, maybe: 1}, state.fetch(:exactness))
+    assert_equal(2, state.fetch(:branched))
+  end
+
   def test_coerce_preserves_existing_union_model_variants
     model = M1.new(t: :a)
     state = OpenAI::Internal::Type::Converter.new_coerce_state
