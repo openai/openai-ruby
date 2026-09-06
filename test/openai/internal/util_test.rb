@@ -1010,6 +1010,35 @@ class OpenAI::Test::UtilSseTest < Minitest::Test
           {data: "second\n"}
         ]
       },
+      "valueless data line" => {
+        [
+          "data: line 1\n",
+          "data\n",
+          "data: line 2\n",
+          "\n"
+        ] => [
+          {data: "line 1\n\nline 2\n"}
+        ]
+      },
+      "valueless event and id lines" => {
+        [
+          "event\n",
+          "id\n",
+          "data: hello\n",
+          "\n"
+        ] => [
+          {event: "", id: "", data: "hello\n"}
+        ]
+      },
+      "valueless retry line is ignored" => {
+        [
+          "retry\n",
+          "data: hello\n",
+          "\n"
+        ] => [
+          {data: "hello\n"}
+        ]
+      },
       "multibyte unicode" => {
         [
           "data: \u1F62E\u200D\u1F4A8\n"
