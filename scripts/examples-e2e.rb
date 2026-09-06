@@ -211,6 +211,7 @@ module OpenAIExamplesE2E
 
   class Executor
     MAX_CAPTURED_CHARACTERS = 12_000
+    CLEANUP_GRACE_SECONDS = 2
 
     def initialize(root:, timeout:)
       @root = root
@@ -224,20 +225,42 @@ module OpenAIExamplesE2E
       status = nil
       timed_out = false
       example_path = @root.join(example.path).to_s
+      deadline = started_at + @timeout
 
       Dir.mktmpdir("openai-ruby-example-e2e") do |working_directory|
+        spawn_options = {chdir: working_directory}
+        spawn_options[:pgroup] = true unless Gem.win_platform?
         Open3.popen3(
           RbConfig.ruby,
           example_path,
-          chdir: working_directory
+          **spawn_options
         ) do |stdin, stdout, stderr, wait_thread|
           stdin.close
-          stdout_reader = Thread.new { stdout.read }
-          stderr_reader = Thread.new { stderr.read }
+          stdout_reader = Thread.new { read_output(stdout) }
+          stderr_reader = Thread.new { read_output(stderr) }
+          cleanup_attempted = false
 
-          timed_out = wait_thread.join(@timeout).nil?
-          terminate(wait_thread) if timed_out
-          status = wait_thread.value
+          begin
+            timed_out = wait_thread.join(remaining_seconds(deadline)).nil?
+            unless timed_out
+              timed_out = [stdout_reader, stderr_reader].any? do |reader|
+                reader.join(remaining_seconds(deadline)).nil?
+              end
+            end
+            if timed_out
+              terminate(wait_thread)
+              cleanup_attempted = true
+            end
+          ensure
+            needs_cleanup = wait_thread.alive? || stdout_reader.alive? || stderr_reader.alive?
+            terminate(wait_thread) if needs_cleanup && !cleanup_attempted
+            close_output(stdout)
+            close_output(stderr)
+            stdout_reader.join
+            stderr_reader.join
+          end
+
+          status = wait_thread.value unless wait_thread.alive?
           stdout_value = stdout_reader.value
           stderr_value = stderr_reader.value
         end
@@ -268,12 +291,55 @@ module OpenAIExamplesE2E
     private
 
     def terminate(wait_thread)
+      return terminate_process(wait_thread) if Gem.win_platform?
+
+      process_group_id = wait_thread.pid
+      signal_process_group("TERM", process_group_id)
+      cleanup_deadline = monotonic_time + CLEANUP_GRACE_SECONDS
+      sleep(0.01) while process_group_alive?(process_group_id) && monotonic_time < cleanup_deadline
+      signal_process_group("KILL", process_group_id) if process_group_alive?(process_group_id)
+      wait_thread.join(0.1)
+    rescue Errno::ECHILD
+      nil
+    end
+
+    def terminate_process(wait_thread)
       Process.kill("TERM", wait_thread.pid)
-      return if wait_thread.join(2)
+      return if wait_thread.join(CLEANUP_GRACE_SECONDS)
 
       Process.kill("KILL", wait_thread.pid)
-      wait_thread.join
-    rescue Errno::ESRCH, Errno::ECHILD
+      wait_thread.join(0.1)
+    rescue Errno::ECHILD, Errno::ESRCH
+      nil
+    end
+
+    def read_output(pipe)
+      output = +""
+      loop { output << pipe.readpartial(4096) }
+    rescue IOError
+      output
+    end
+
+    def remaining_seconds(deadline) = [deadline - monotonic_time, 0].max
+
+    def monotonic_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+
+    def process_group_alive?(process_group_id)
+      Process.kill(0, -process_group_id)
+      true
+    rescue Errno::EPERM, Errno::ESRCH
+      false
+    end
+
+    def signal_process_group(signal, process_group_id)
+      Process.kill(signal, -process_group_id)
+    rescue Errno::EPERM, Errno::ESRCH
+      nil
+    end
+
+    def close_output(pipe)
+      pipe.close unless pipe.closed?
+    rescue IOError
       nil
     end
 
