@@ -66,6 +66,78 @@ class OpenAI::Test::FilePartTest < Minitest::Test
     end
   end
 
+  def test_explicit_filename_strips_directories_without_platform_path_rules
+    # `::File.basename` follows the host's path rules, so on Windows it truncates
+    # at a drive separator and turns "report: final.md" into "report". An explicit
+    # filename is sent to the API rather than resolved locally, so the same input
+    # has to produce the same upload name on every platform.
+    cases = {
+      "report: final.md" => "report: final.md",
+      "notes:v2.txt" => "notes:v2.txt",
+      "C:relative.txt" => "C:relative.txt",
+      "plain.txt" => "plain.txt",
+      "nested\\report: final.md" => "report: final.md",
+      "/absolute/report.md" => "report.md"
+    }
+
+    cases.each do |filename, expected|
+      assert_equal(expected, OpenAI::FilePart.new(StringIO.new("x"), filename: filename).filename, filename)
+      assert_equal(expected, OpenAI::FilePart.new(StringIO.new("x"), filename: Pathname(filename)).filename, filename)
+    end
+  end
+
+  def test_explicit_filename_rejects_null_bytes
+    assert_raises(ArgumentError) do
+      OpenAI::FilePart.new(StringIO.new("x"), filename: "nested/safe\0name.txt")
+    end
+  end
+
+  def test_explicit_filename_preserves_invalid_encoding
+    filename = "nested/\xFF.txt".b.force_encoding(Encoding::UTF_8)
+
+    result = OpenAI::FilePart.new(StringIO.new("x"), filename: filename).filename
+
+    assert_equal("\xFF.txt".b, result.b)
+    assert_equal(filename.encoding, result.encoding)
+  end
+
+  def test_explicit_filename_preserves_multibyte_characters
+    filename = "nested/表.txt".encode(Encoding::Shift_JIS)
+    expected = "表.txt".encode(Encoding::Shift_JIS)
+
+    [filename, Pathname(filename)].each do |input|
+      assert_equal(expected, OpenAI::FilePart.new(StringIO.new("x"), filename: input).filename)
+    end
+  end
+
+  def test_explicit_filename_preserves_multibyte_characters_next_to_invalid_bytes
+    filename = "nested/\x95\x5C\xFF.txt".b.force_encoding(Encoding::Shift_JIS)
+    expected = "\x95\x5C\xFF.txt".b.force_encoding(Encoding::Shift_JIS)
+
+    [filename, Pathname(filename)].each do |input|
+      result = OpenAI::FilePart.new(StringIO.new("x"), filename: input).filename
+
+      assert_equal(expected.b, result.b)
+      assert_equal(expected.encoding, result.encoding)
+    end
+  end
+
+  def test_explicit_empty_filename_preserves_encoding
+    filename = "".b
+
+    result = OpenAI::FilePart.new(StringIO.new("x"), filename: filename).filename
+
+    assert_equal(filename.encoding, result.encoding)
+  end
+
+  def test_explicit_root_filename_preserves_one_separator
+    {"/" => "/", "///" => "/", "\\" => "\\", "\\\\" => "\\"}.each do |filename, expected|
+      [filename, Pathname(filename)].each do |input|
+        assert_equal(expected, OpenAI::FilePart.new(StringIO.new("x"), filename: input).filename)
+      end
+    end
+  end
+
   def test_generated_file_upload_preserves_public_api_and_omits_local_path
     Tempfile.create(["upload-", ".txt"]) do |content|
       content.write("upload-body")
