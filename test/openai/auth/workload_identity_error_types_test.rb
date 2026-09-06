@@ -88,7 +88,7 @@ class OpenAI::Test::WorkloadIdentityErrorTypesTest < Minitest::Test
   end
 
   def test_shipped_rbs_rejects_incorrect_metadata_type
-    source = rbs_source.sub("error.status + 1", "error.status + \"one\"")
+    source = rbs_source.sub("error.status = 401", "error.status = nil")
     stdout, stderr, status = steep_check(source)
 
     refute_predicate(status, :success?, "#{stdout}\n#{stderr}")
@@ -138,6 +138,7 @@ class OpenAI::Test::WorkloadIdentityErrorTypesTest < Minitest::Test
         error.cause&.message
       rescue OpenAI::Errors::OAuthError => error
         error.error_code&.to_s
+        error.status = 401
         error.status + 1
       end
     RUBY

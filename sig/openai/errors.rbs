@@ -142,6 +142,8 @@ module OpenAI
     class OAuthError < OpenAI::Errors::APIStatusError
       def status: -> Integer
 
+      def status=: (Integer) -> Integer
+
       attr_reader error_code: OpenAI::Models::oauth_error_code?
 
       def initialize: (
