@@ -126,6 +126,10 @@ module OpenAI
           OpenAI::Internal::Transport::BaseClient::request_input request
         ) -> bool
 
+        private def request_retryable_after_connection_error?: (
+          OpenAI::Internal::Transport::BaseClient::request_input request
+        ) -> bool
+
         private def retry_delay: (
           ::Hash[String, String] headers,
           retry_count: Integer

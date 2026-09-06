@@ -268,6 +268,16 @@ module OpenAI
         # @api private
         sig do
           params(
+            request: OpenAI::Internal::Transport::BaseClient::RequestInput
+          )
+            .returns(T::Boolean)
+        end
+        private def request_retryable_after_connection_error?(request)
+        end
+
+        # @api private
+        sig do
+          params(
             headers: T::Hash[String, String],
             retry_count: Integer
           )

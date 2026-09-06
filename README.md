@@ -1023,7 +1023,15 @@ for more information.
 
 Certain errors will be automatically retried 2 times by default, with a short exponential backoff.
 
-Connection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict, 429 Rate Limit, >=500 Internal errors, and timeouts will all be retried by default.
+Requests are automatically retried only when their bodies are replayable. For
+those requests, after transport execution begins, connection errors (for
+example, due to a network connectivity problem) and timeouts are retried by
+default only for idempotent HTTP methods or requests carrying a non-empty
+`Idempotency-Key` header. Failures while preparing a request or its
+authentication retain the configured retry behavior because no API request has
+been dispatched.
+408 Request Timeout, 409 Conflict, 429 Rate Limit, and >=500 Internal errors
+are retried by default regardless of the HTTP method.
 
 You can use the `max_retries` option to configure or disable this:
 
@@ -1082,7 +1090,10 @@ openai.chat.completions.create(
 
 On timeout, `OpenAI::Errors::APITimeoutError` is raised.
 
-Note that requests that time out are retried by default.
+After transport execution begins, requests with replayable bodies that time out
+are retried by default only for idempotent HTTP methods or requests carrying a
+non-empty `Idempotency-Key` header. Preparation and authentication timeouts
+before dispatch retain the configured retry behavior.
 
 ## Advanced concepts
 
