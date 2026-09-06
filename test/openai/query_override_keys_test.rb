@@ -81,6 +81,47 @@ class OpenAI::Test::QueryOverrideKeysTest < Minitest::Test
     )
   end
 
+  def test_exact_override_key_wins_before_counterpart_on_every_page
+    cases = [
+      [
+        {:purpose => "symbol", "purpose" => "string"},
+        {purpose: "new"},
+        [
+          "http://localhost/files?purpose=new&purpose=string",
+          "http://localhost/files?purpose=new&purpose=string&after=file-one"
+        ]
+      ],
+      [
+        {"purpose" => "string", :purpose => "symbol"},
+        {"purpose" => "new"},
+        [
+          "http://localhost/files?purpose=new&purpose=symbol",
+          "http://localhost/files?purpose=new&purpose=symbol&after=file-one"
+        ]
+      ]
+    ]
+
+    cases.each do |query, extra_query, expected_urls|
+      transport = CaptureHTTPClient.new(
+        {object: "list", data: [{id: "file-one"}], has_more: true},
+        {object: "list", data: [], has_more: false}
+      )
+      client = client_with(transport)
+
+      page = client.request(
+        method: :get,
+        path: "files",
+        query: query,
+        page: OpenAI::Internal::CursorPage,
+        model: OpenAI::FileObject,
+        options: {extra_query: extra_query}
+      )
+      page.next_page
+
+      assert_equal(expected_urls, transport.urls)
+    end
+  end
+
   private def client_with(transport, base_url: "http://localhost")
     OpenAI::Client.new(api_key: "fake-key", base_url: base_url, http_client: transport)
   end

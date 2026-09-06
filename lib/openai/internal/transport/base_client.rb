@@ -414,20 +414,10 @@ module OpenAI
 
           path = OpenAI::Internal::Util.interpolate_path(uninterpolated_path)
 
-          query = req[:query].to_h
-          query_keys = query.each_key.with_object({}) do |key, keys|
-            keys[key.to_s] = key if key.is_a?(String) || key.is_a?(Symbol)
-          end
-
-          extra_query = opts[:extra_query].to_h.transform_keys do |key|
-            if key.is_a?(String) || key.is_a?(Symbol)
-              query_keys.fetch(key.to_s, key)
-            else
-              key
-            end
-          end
-
-          query = OpenAI::Internal::Util.deep_merge(query, extra_query)
+          query = OpenAI::Internal::Transport::RequestBodyMerge.merge(
+            req[:query].to_h,
+            opts[:extra_query].to_h
+          )
 
           url = OpenAI::Internal::Util.join_parsed_uri(
             @base_url_components,
