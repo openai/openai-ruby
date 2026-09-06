@@ -359,11 +359,12 @@ module OpenAI
           texts = []
 
           output.each do |item|
-            next unless item.type == :message
+            next unless item.is_a?(OpenAI::Models::Responses::ResponseOutputMessage)
+
             item.content.each do |content|
-              if content.type == :output_text
-                texts << content.text
-              end
+              next unless content.is_a?(OpenAI::Models::Responses::ResponseOutputText)
+
+              texts << content.text
             end
           end
 

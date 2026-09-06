@@ -474,7 +474,7 @@ module OpenAI
           in :get | :head | :options | :trace
             nil
           else
-            OpenAI::Internal::Util.deep_merge(*[req[:body], opts[:extra_body]].compact)
+            OpenAI::Internal::Transport::RequestBodyMerge.merge(req[:body], opts[:extra_body])
           end
 
           # Generated methods always pass `req[:body]` for operations that define a
@@ -497,6 +497,20 @@ module OpenAI
         # @api private
         private def request_replayable?(request)
           self.class.request_body_replayable?(request[:body])
+        end
+
+        # A connection failure after dispatch has an unknown outcome: the peer
+        # may have committed the request before the response was lost. Retrying
+        # is only safe when the HTTP method itself is idempotent or the caller
+        # supplied a stable idempotency key.
+        #
+        # @api private
+        private def request_retryable_after_connection_error?(request)
+          return true if Net::HTTP::IDEMPOTENT_METHODS_.include?(request.fetch(:method).to_s.upcase)
+
+          request.fetch(:headers).any? do |name, value|
+            name.to_s.casecmp?("idempotency-key") && !value.to_s.empty?
+          end
         end
 
         # @api private
@@ -593,6 +607,7 @@ module OpenAI
           authorized_url = url.class.new(*URI.split(url.to_s))
           prepared_request = request
           trusted_origin = request[:redirect_trusted_origin]
+          request_dispatched = false
 
           begin
             encoded_headers, encoded_body = OpenAI::Internal::Util.encode_content(
@@ -654,6 +669,7 @@ module OpenAI
               timeout: timeout
             )
             log_context.request_started(input, redirect_count: redirect_count)
+            request_dispatched = true
             http_response = @requester.execute(input)
             unless http_response.is_a?(OpenAI::HTTPClient::Response)
               raise TypeError, "`http_client#execute` must return an OpenAI::HTTPClient::Response"
@@ -689,6 +705,12 @@ module OpenAI
             )
           end
 
+          if status.is_a?(OpenAI::Errors::APIConnectionError) &&
+              (retry_count >= max_retries ||
+                (request_dispatched && !request_retryable_after_connection_error?(prepared_request)))
+            raise status
+          end
+
           case status
           in ..299
             http_response
@@ -721,8 +743,6 @@ module OpenAI
               send_retry_header: send_retry_header,
               &context_provider
             )
-          in OpenAI::Errors::APIConnectionError if retry_count >= max_retries
-            raise status
           in (400..) | OpenAI::Errors::APIConnectionError
             self.class.reap_connection!(status, stream: stream)
 

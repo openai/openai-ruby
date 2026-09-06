@@ -355,7 +355,7 @@ module OpenAI
             OpenAI::Errors::OAuthError.new(
               status: response.code.to_i,
               body: body,
-              headers: response.to_hash
+              headers: response.each_header.to_h
             )
           )
         in Net::HTTPSuccess
@@ -368,7 +368,7 @@ module OpenAI
             OpenAI::Errors::APIError.new(
               url: @token_exchange_url,
               status: response.code.to_i,
-              headers: response.to_hash,
+              headers: response.each_header.to_h,
               body: body,
               message: "Token exchange failed with status #{response.code}"
             )

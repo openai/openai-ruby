@@ -651,10 +651,12 @@ module OpenAI
           prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
           prompt_cache_key: String,
           reasoning: T.nilable(OpenAI::Reasoning::OrHash),
+          response_id: T.nilable(String),
           safety_identifier: String,
           service_tier: T.nilable(
             OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
           ),
+          starting_after: T.nilable(Integer),
           store: T.nilable(T::Boolean),
           temperature: T.nilable(Float),
           text: T.nilable(
@@ -772,6 +774,8 @@ module OpenAI
         # Configuration options for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
         reasoning: nil,
+        # The ID of the response whose stream to resume.
+        response_id: nil,
         # A stable identifier used to help detect users of your application that may be
         # violating OpenAI's usage policies. The IDs should be a string that uniquely
         # identifies each user. We recommend hashing their username or email address, in
@@ -796,6 +800,9 @@ module OpenAI
         # request. This response value may be different from the value set in the
         # parameter.
         service_tier: nil,
+        # The sequence number of the event after which to resume streaming. Can only be
+        # used with `response_id`.
+        starting_after: nil,
         # Whether to store the generated model response for later retrieval via API.
         store: nil,
         # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will

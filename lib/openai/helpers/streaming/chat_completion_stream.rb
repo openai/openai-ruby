@@ -188,7 +188,7 @@ module OpenAI
         def create_new_choice_snapshot(choice)
           OpenAI::Internal::Type::Converter.coerce(
             OpenAI::Models::Chat::ParsedChoice,
-            choice.to_h.except(:delta).merge(message: choice.delta.to_h)
+            choice.to_h.except(:delta).merge(message: model_dump(choice.delta))
           )
         end
 
@@ -265,7 +265,10 @@ module OpenAI
 
           choice.delta.tool_calls.each do |tool_call_delta|
             tool_call = tool_calls_by_index[tool_call_delta.index]
-            next unless tool_call&.type == :function && tool_call_delta.function
+            unless tool_call.is_a?(OpenAI::Chat::ChatCompletionMessageFunctionToolCall) &&
+                tool_call_delta.function
+              next
+            end
 
             parsed_args = if tool_call.function.respond_to?(:parsed)
               tool_call.function.parsed
@@ -326,7 +329,7 @@ module OpenAI
 
           delta_tool_calls.each do |tool_call_chunk|
             tool_call_snapshot = tool_calls_by_index[tool_call_chunk.index]
-            next unless tool_call_snapshot&.type == :function
+            next unless tool_call_snapshot.is_a?(OpenAI::Chat::ChatCompletionMessageFunctionToolCall)
 
             input_tool = find_input_tool(tool_call_snapshot.function.name)
             next unless input_tool&.dig(:function, :strict)
@@ -656,6 +659,8 @@ module OpenAI
           @logprobs_content_done = false
           @logprobs_refusal_done = false
           @done_tool_calls = Set.new
+          @pending_tool_calls = Set.new
+          @deferred_tool_calls = Set.new
           @current_tool_call_index = nil
         end
 
@@ -671,19 +676,27 @@ module OpenAI
               events.concat(content_done_events(choice_snapshot, response_format))
 
               if @current_tool_call_index
-                event = tool_done_event(tool_calls_by_index, @current_tool_call_index)
-                events << event if event
+                if !@deferred_tool_calls.include?(@current_tool_call_index) &&
+                    incomplete_strict_tool_call?(tool_calls_by_index, @current_tool_call_index)
+                  @deferred_tool_calls.add(@current_tool_call_index)
+                end
+
+                unless @deferred_tool_calls.include?(@current_tool_call_index)
+                  event = tool_done_event(tool_calls_by_index, @current_tool_call_index)
+                  events << event if event
+                end
               end
             end
 
+            @pending_tool_calls.add(tool_call.index) unless @done_tool_calls.include?(tool_call.index)
             @current_tool_call_index = tool_call.index
           end
 
-          if choice_snapshot.finish_reason &&
-              @current_tool_call_index &&
-              !@done_tool_calls.include?(@current_tool_call_index)
-            event = tool_done_event(tool_calls_by_index, @current_tool_call_index)
-            events << event if event
+          if choice_snapshot.finish_reason
+            @pending_tool_calls.to_a.each do |tool_index|
+              event = tool_done_event(tool_calls_by_index, tool_index)
+              events << event if event
+            end
           end
 
           events
@@ -749,9 +762,11 @@ module OpenAI
           return nil if @done_tool_calls.include?(tool_index)
 
           @done_tool_calls.add(tool_index)
+          @pending_tool_calls.delete(tool_index)
+          @deferred_tool_calls.delete(tool_index)
 
           tool_call = tool_calls_by_index[tool_index]
-          return nil unless tool_call&.type == :function
+          return nil unless tool_call.is_a?(OpenAI::Chat::ChatCompletionMessageFunctionToolCall)
 
           parsed_args = parse_function_tool_arguments(tool_call.function)
 
@@ -766,6 +781,22 @@ module OpenAI
             arguments: tool_call.function.arguments,
             parsed: parsed_args
           )
+        end
+
+        def incomplete_strict_tool_call?(tool_calls_by_index, tool_index)
+          tool_call = tool_calls_by_index[tool_index]
+          return false unless tool_call&.type == :function
+
+          function = tool_call.function
+          tool = find_input_tool(function.name)
+          return false unless tool&.dig(:function, :strict)
+          return false unless function.respond_to?(:parsed) && function.parsed.nil?
+          return true unless function.arguments
+
+          JSON.parse(function.arguments)
+          false
+        rescue JSON::ParserError
+          true
         end
 
         def parse_content(message, response_format)

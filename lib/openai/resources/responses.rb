@@ -136,7 +136,7 @@ module OpenAI
       # [file search](https://platform.openai.com/docs/guides/tools-file-search) to use
       # your own data as input for the model's response.
       #
-      # @overload stream(background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
+      # @overload stream(background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, response_id: nil, safety_identifier: nil, service_tier: nil, starting_after: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
       #
       # @param background [Boolean, nil] Whether to run the model response in the background.
       #
@@ -162,7 +162,7 @@ module OpenAI
       #
       # @param parallel_tool_calls [Boolean, nil] Whether to allow the model to run tool calls in parallel.
       #
-      # @param previous_response_id [String, nil] The unique ID of the previous response to the response to the model. Use this to resume streams from a given response.
+      # @param previous_response_id [String, nil] The unique ID of the previous response to the model. Use this to create multi-turn conversations.
       #
       # @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
       #
@@ -174,9 +174,13 @@ module OpenAI
       #
       # @param reasoning [OpenAI::Models::Reasoning, nil] **o-series models only**
       #
+      # @param response_id [String, nil] The ID of the response whose stream to resume.
+      #
       # @param safety_identifier [String] A stable identifier used to help detect users of your application that may be vi
       #
       # @param service_tier [Symbol, OpenAI::Models::Responses::ResponseCreateParams::ServiceTier, nil] Specifies the processing type used for serving the request.
+      #
+      # @param starting_after [Integer, nil] The sequence number of the event after which to resume streaming. Can only be used with `response_id`.
       #
       # @param store [Boolean, nil] Whether to store the generated model response for later retrieval via
       #
@@ -288,7 +292,7 @@ module OpenAI
       #
       # @param parallel_tool_calls [Boolean, nil] Whether to allow the model to run tool calls in parallel.
       #
-      # @param previous_response_id [String, nil] The unique ID of the previous response to the response to the model. Use this to resume streams from a given response.
+      # @param previous_response_id [String, nil] The unique ID of the previous response to the model. Use this to create multi-turn conversations.
       #
       # @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
       #
