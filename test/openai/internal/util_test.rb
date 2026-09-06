@@ -901,20 +901,43 @@ class OpenAI::Test::UtilContentDecodingTest < Minitest::Test
     end
   end
 
+  # Decode a response body the way a caller would, so the assertion covers the
+  # path users actually observe. JSON bodies are parsed and never reach
+  # `force_charset!`, so the charset only shapes a raw text or error payload.
+  def decoded_body_encoding(content_type)
+    OpenAI::Internal::Util
+      .decode_content({"content-type" => content_type}, stream: ["body".b])
+      .string
+      .encoding
+  end
+
   def test_charset_parameter_name_is_case_insensitive
     # Media type parameter names are case-insensitive, so a response labelled
     # `Charset=` has to decode the same as one labelled `charset=`. Matching only
     # the lowercase spelling left the body at `Encoding::BINARY`.
     [
-      "application/json; Charset=utf-8",
-      "application/json; CHARSET=utf-8",
-      "application/json; ChArSeT=\"utf-8\""
+      "text/plain; Charset=utf-8",
+      "text/plain; CHARSET=utf-8",
+      "text/plain; ChArSeT=\"utf-8\""
     ].each do |content_type|
-      text = String.new.force_encoding(Encoding::BINARY)
+      assert_equal(Encoding::UTF_8, decoded_body_encoding(content_type), content_type)
+    end
+  end
 
-      OpenAI::Internal::Util.force_charset!(content_type, text: text)
+  def test_charset_matches_only_a_parameter_named_charset
+    # The name has to match in full and at the parameter level: a `charset` suffix
+    # of another parameter's name, and a `charset=` inside a quoted value, both
+    # belong to a different parameter and must not select the encoding.
+    cases = {
+      "text/plain; X-CHARSET=ISO-8859-1; charset=utf-8" => Encoding::UTF_8,
+      "text/plain; title=\"note; Charset=ISO-8859-1;\"; charset=utf-8" => Encoding::UTF_8,
+      "text/plain; title=\"note; charset=ISO-8859-1;\"" => Encoding::BINARY,
+      "text/plain; not-charset=ISO-8859-1" => Encoding::BINARY,
+      "text/plain; charset=\"UTF-8\"; x=\"\\\"charset=ISO-8859-1\\\"\"" => Encoding::UTF_8
+    }
 
-      assert_equal(Encoding::UTF_8, text.encoding, content_type)
+    cases.each do |content_type, encoding|
+      assert_equal(encoding, decoded_body_encoding(content_type), content_type)
     end
   end
 
