@@ -145,9 +145,14 @@ module OpenAI
     # @return [String]
     private def strip_directories(filename)
       name = filename.to_s
-      raise ArgumentError, "path name contains null byte" if name.include?("\0")
+      binary_name = name.b
+      raise ArgumentError, "path name contains null byte" if binary_name.include?("\0")
 
-      name.split(SEPARATORS).last.to_s
+      searchable_name = name.scrub { |bytes| "?" * bytes.bytesize }
+      basename = searchable_name.split(SEPARATORS).last
+      return name.byteslice(0, name.empty? ? 0 : 1) if basename.nil?
+
+      name.byteslice(searchable_name.byterindex(basename), basename.bytesize)
     end
   end
 end
