@@ -133,6 +133,29 @@ class OpenAI::Test::ExtraBodyMergeTest < Minitest::Test
     assert_empty(reads)
   end
 
+  def test_merge_only_reconciles_aliases_present_in_the_original_body
+    transport = Capture.new
+    client = new_client(transport)
+
+    client.request(
+      method: :post,
+      path: "synthetic",
+      body: {payload: {}},
+      options: {
+        extra_body: {
+          :payload => {inner: {from_symbol: true}},
+          "payload" => {"inner" => {"from_string" => true}}
+        }
+      }
+    )
+
+    serialized = transport.requests.fetch(0).body
+
+    assert_equal(2, serialized.scan("\"inner\"").length)
+    assert_includes(serialized, "\"inner\":{\"from_symbol\":true}")
+    assert_includes(serialized, "\"inner\":{\"from_string\":true}")
+  end
+
   private def create_response_body(extra_body: nil, metadata: nil, request_options: nil)
     transport = Capture.new
     client = new_client(transport)
