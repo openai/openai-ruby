@@ -64,6 +64,13 @@ class OpenAI::Test::ResponseStreamRBSTest < Minitest::Test
     assert(response_stream.methods.key?(:close), "stream mixin should expose #close")
     each_types = response_stream.methods.fetch(:each).method_types.map(&:to_s)
     assert_includes(each_types.join, "::OpenAI::Helpers::Streaming::response_stream_event")
+
+    passthrough = type_alias("::OpenAI::Helpers::Streaming::response_stream_passthrough_event")
+    assert_includes(passthrough, "::OpenAI::Models::Responses::ResponseAudioDeltaEvent")
+    refute_includes(passthrough, "::OpenAI::Models::Responses::ResponseTextDeltaEvent")
+    refute_includes(passthrough, "::OpenAI::Models::Responses::ResponseTextDoneEvent")
+    refute_includes(passthrough, "::OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent")
+    refute_includes(passthrough, "::OpenAI::Models::Responses::ResponseCompletedEvent")
   end
 
   def test_shipped_rbs_type_checks_enhanced_response_events
@@ -120,11 +127,18 @@ class OpenAI::Test::ResponseStreamRBSTest < Minitest::Test
   private
 
   def definition(type_name)
+    RBS::DefinitionBuilder.new(env: environment).build_instance(RBS::TypeName.parse(type_name))
+  end
+
+  def type_alias(type_name)
+    environment.type_alias_decls.fetch(RBS::TypeName.parse(type_name)).decl.type.to_s
+  end
+
+  def environment
     loader = RBS::EnvironmentLoader.new
     loader.add(path: ROOT.join("sig"))
     loader.add(library: "net-http")
-    environment = RBS::Environment.from_loader(loader).resolve_type_names
-    RBS::DefinitionBuilder.new(env: environment).build_instance(RBS::TypeName.parse(type_name))
+    RBS::Environment.from_loader(loader).resolve_type_names
   end
 
   def return_types(method)
