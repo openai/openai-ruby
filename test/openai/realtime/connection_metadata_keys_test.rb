@@ -98,4 +98,55 @@ class OpenAI::Test::RealtimeConnectionMetadataKeysTest < Minitest::Test
       string_params
     )
   end
+
+  def test_missing_metadata_does_not_invoke_hash_defaults
+    session_params = Hash.new("default-session").merge(instructions: "session instructions")
+    default_proc_keys = []
+    response_params = Hash
+      .new { |_params, key|
+        default_proc_keys << key
+        "default-#{key}"
+      }
+      .merge(instructions: "response instructions")
+    item_params = Hash.new("default-item").merge(
+      type: :message,
+      role: :user,
+      content: [{type: :input_text, text: "Hello"}]
+    )
+    socket = FakeSocket.new
+
+    client.realtime.connect(model: "gpt-realtime-2.1", transport: FakeTransport.new(socket)) do |connection|
+      connection.session.update(**session_params)
+      connection.response.create(**response_params)
+      connection.conversation.items.create(**item_params)
+    end
+
+    session_event, response_event, item_event = socket.writes.map { JSON.parse(_1) }
+    assert_equal(
+      {
+        "type" => "session.update",
+        "session" => {"type" => "realtime", "instructions" => "session instructions"}
+      },
+      session_event
+    )
+    assert_equal(
+      {
+        "type" => "response.create",
+        "response" => {"instructions" => "response instructions"}
+      },
+      response_event
+    )
+    assert_equal(
+      {
+        "type" => "conversation.item.create",
+        "item" => {
+          "type" => "message",
+          "role" => "user",
+          "content" => [{"type" => "input_text", "text" => "Hello"}]
+        }
+      },
+      item_event
+    )
+    assert_empty(default_proc_keys)
+  end
 end

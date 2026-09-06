@@ -14,7 +14,7 @@ module OpenAI
         private def event_payload(params, *metadata_keys)
           payload = params.to_h.dup
           metadata = metadata_keys.to_h do |key|
-            value = payload.key?(key) ? payload[key] : payload[key.to_s]
+            value = payload.key?(key) ? payload.fetch(key) : payload.fetch(key.to_s, nil)
             payload.delete(key)
             payload.delete(key.to_s)
             [key, value]
