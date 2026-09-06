@@ -1,0 +1,24 @@
+module OpenAI
+  module Helpers
+    module Streaming
+      class StreamError < StandardError
+      end
+
+      class LengthFinishReasonError < OpenAI::Helpers::Streaming::StreamError
+        attr_reader completion: OpenAI::Models::Chat::ChatCompletion
+
+        def initialize: (
+          completion: OpenAI::Models::Chat::ChatCompletion
+        ) -> void
+      end
+
+      class ContentFilterFinishReasonError < OpenAI::Helpers::Streaming::StreamError
+        def initialize: -> void
+      end
+    end
+  end
+
+  class LengthFinishReasonError = Helpers::Streaming::LengthFinishReasonError
+
+  class ContentFilterFinishReasonError = Helpers::Streaming::ContentFilterFinishReasonError
+end
