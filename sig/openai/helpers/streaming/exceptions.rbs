@@ -13,6 +13,7 @@ module OpenAI
       end
 
       class ContentFilterFinishReasonError < OpenAI::Helpers::Streaming::StreamError
+        def initialize: -> void
       end
     end
   end

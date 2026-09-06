@@ -18,6 +18,9 @@ module OpenAI
       end
 
       class ContentFilterFinishReasonError < OpenAI::Helpers::Streaming::StreamError
+        sig { returns(T.attached_class) }
+        def self.new
+        end
       end
     end
   end

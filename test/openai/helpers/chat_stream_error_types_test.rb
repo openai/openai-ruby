@@ -45,6 +45,11 @@ class OpenAI::Test::ChatStreamErrorTypesTest < Minitest::Test
     end
 
     assert_kind_of(OpenAI::Helpers::Streaming::StreamError, content_filter_error)
+    assert_instance_of(
+      OpenAI::ContentFilterFinishReasonError,
+      OpenAI::ContentFilterFinishReasonError.new
+    )
+    assert_raises(ArgumentError) { OpenAI::ContentFilterFinishReasonError.new("message") }
   end
 
   def test_shipped_rbi_types_public_finish_error_rescues_and_completion
@@ -57,6 +62,28 @@ class OpenAI::Test::ChatStreamErrorTypesTest < Minitest::Test
     stdout, stderr, status = steep_check(rbs_source)
 
     assert_predicate(status, :success?, "#{stdout}\n#{stderr}")
+  end
+
+  def test_shipped_rbi_rejects_content_filter_error_message_constructor
+    source = sorbet_source.sub(
+      "OpenAI::ContentFilterFinishReasonError.new",
+      "OpenAI::ContentFilterFinishReasonError.new(\"message\")"
+    )
+    stdout, stderr, status = sorbet_typecheck(source)
+
+    refute_predicate(status, :success?, "#{stdout}\n#{stderr}")
+    assert_includes("#{stdout}\n#{stderr}", "Too many arguments")
+  end
+
+  def test_shipped_rbs_rejects_content_filter_error_message_constructor
+    source = rbs_source.sub(
+      "OpenAI::ContentFilterFinishReasonError.new",
+      "OpenAI::ContentFilterFinishReasonError.new(\"message\")"
+    )
+    stdout, stderr, status = steep_check(source)
+
+    refute_predicate(status, :success?, "#{stdout}\n#{stderr}")
+    assert_includes("#{stdout}\n#{stderr}", "Unexpected positional argument")
   end
 
   private
@@ -106,6 +133,8 @@ class OpenAI::Test::ChatStreamErrorTypesTest < Minitest::Test
       built = OpenAI::LengthFinishReasonError.new(completion: completion)
       T.assert_type!(built, OpenAI::Helpers::Streaming::LengthFinishReasonError)
       T.assert_type!(built.completion, OpenAI::Chat::ParsedChatCompletion)
+      content_filter = OpenAI::ContentFilterFinishReasonError.new
+      T.assert_type!(content_filter, OpenAI::Helpers::Streaming::ContentFilterFinishReasonError)
 
       begin
         raise built
@@ -124,6 +153,8 @@ class OpenAI::Test::ChatStreamErrorTypesTest < Minitest::Test
       inspect_finish_error = ->(completion) do
         error = OpenAI::LengthFinishReasonError.new(completion: completion)
         error.completion.id
+        content_filter = OpenAI::ContentFilterFinishReasonError.new
+        content_filter.class
 
         begin
           raise error
