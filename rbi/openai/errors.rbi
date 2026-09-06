@@ -267,5 +267,42 @@ module OpenAI
     class InternalServerError < OpenAI::Errors::APIStatusError
       HTTP_STATUS = T.let((500..), T::Range[Integer])
     end
+
+    class OAuthError < OpenAI::Errors::APIStatusError
+      sig { returns(T.nilable(OpenAI::Models::OAuthErrorCode::Variants)) }
+      attr_reader :error_code
+
+      # @api private
+      sig do
+        params(
+          status: Integer,
+          body: T.nilable(Object),
+          headers: T.nilable(T::Hash[String, String])
+        )
+          .returns(T.attached_class)
+      end
+      def self.new(status:, body:, headers:)
+      end
+    end
+
+    class SubjectTokenProviderError < OpenAI::Errors::Error
+      sig { returns(String) }
+      attr_reader :provider
+
+      sig { returns(T.nilable(StandardError)) }
+      attr_accessor :cause
+
+      # @api private
+      sig do
+        params(
+          message: String,
+          provider: String,
+          cause: T.nilable(StandardError)
+        )
+          .returns(T.attached_class)
+      end
+      def self.new(message:, provider:, cause: nil)
+      end
+    end
   end
 end
