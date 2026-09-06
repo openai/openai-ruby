@@ -86,6 +86,12 @@ class OpenAI::Test::FilePartTest < Minitest::Test
     end
   end
 
+  def test_explicit_filename_rejects_null_bytes
+    assert_raises(ArgumentError) do
+      OpenAI::FilePart.new(StringIO.new("x"), filename: "nested/safe\0name.txt")
+    end
+  end
+
   def test_generated_file_upload_preserves_public_api_and_omits_local_path
     Tempfile.create(["upload-", ".txt"]) do |content|
       content.write("upload-body")

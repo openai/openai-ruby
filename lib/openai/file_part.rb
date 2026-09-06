@@ -144,7 +144,10 @@ module OpenAI
     #
     # @return [String]
     private def strip_directories(filename)
-      filename.to_s.split(SEPARATORS).last.to_s
+      name = filename.to_s
+      raise ArgumentError, "path name contains null byte" if name.include?("\0")
+
+      name.split(SEPARATORS).last.to_s
     end
   end
 end
