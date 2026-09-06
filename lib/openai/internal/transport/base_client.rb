@@ -414,7 +414,10 @@ module OpenAI
 
           path = OpenAI::Internal::Util.interpolate_path(uninterpolated_path)
 
-          query = OpenAI::Internal::Util.deep_merge(req[:query].to_h, opts[:extra_query].to_h)
+          query = OpenAI::Internal::Transport::RequestBodyMerge.merge(
+            req[:query].to_h,
+            opts[:extra_query].to_h
+          )
 
           url = OpenAI::Internal::Util.join_parsed_uri(
             @base_url_components,

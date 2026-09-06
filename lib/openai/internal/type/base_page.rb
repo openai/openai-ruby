@@ -59,8 +59,8 @@ module OpenAI
         # @param page_data [Object]
         def initialize(client:, req:, response_metadata:, page_data:)
           options = req[:options].to_h
-          query = OpenAI::Internal::Util
-            .deep_merge(req[:query].to_h, options[:extra_query].to_h)
+          query = OpenAI::Internal::Transport::RequestBodyMerge
+            .merge(req[:query].to_h, options[:extra_query].to_h)
             .to_h { |key, value| [key == "after" ? :after : key, value] }
 
           @client = client
