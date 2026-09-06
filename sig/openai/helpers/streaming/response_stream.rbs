@@ -1,10 +1,33 @@
 module OpenAI
   module Helpers
     module Streaming
+      type response_stream_event =
+        OpenAI::Helpers::Streaming::ResponseTextDeltaEvent
+        | OpenAI::Helpers::Streaming::ResponseTextDoneEvent
+        | OpenAI::Helpers::Streaming::ResponseFunctionCallArgumentsDeltaEvent
+        | OpenAI::Helpers::Streaming::ResponseCompletedEvent
+        | OpenAI::Models::Responses::response_stream_event
+        | OpenAI::Helpers::Streaming::UnknownStreamEvent
+
+      class ResponseTextDeltaEvent < OpenAI::Models::Responses::ResponseTextDeltaEvent
+        def snapshot: -> String?
+      end
+
+      class ResponseTextDoneEvent < OpenAI::Models::Responses::ResponseTextDoneEvent
+        def parsed: -> untyped
+      end
+
+      class ResponseFunctionCallArgumentsDeltaEvent < OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent
+        def snapshot: -> String?
+      end
+
+      class ResponseCompletedEvent < OpenAI::Models::Responses::ResponseCompletedEvent
+        def response: -> OpenAI::Responses::Response
+      end
+
       class ResponseStream
         include OpenAI::Internal::Type::BaseStream[OpenAI::Models::Responses::response_stream_event
-        | OpenAI::Helpers::Streaming::UnknownStreamEvent, OpenAI::Models::Responses::response_stream_event
-        | OpenAI::Helpers::Streaming::UnknownStreamEvent]
+        | OpenAI::Helpers::Streaming::UnknownStreamEvent, OpenAI::Helpers::Streaming::response_stream_event]
 
         # @api private
         def initialize: (
