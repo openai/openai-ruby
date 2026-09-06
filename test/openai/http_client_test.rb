@@ -30,14 +30,19 @@ class HTTPClientTest < Minitest::Test
       :write_timeout
     )
 
-    def initialize(use_ssl:, request_error: nil)
+    def initialize(use_ssl:, request_error: nil, start_error: nil)
       @use_ssl = use_ssl
       @request_error = request_error
+      @start_error = start_error
       @started = false
       @finished = false
     end
 
-    def start = (@started = true)
+    def start
+      raise @start_error if @start_error
+
+      @started = true
+    end
 
     def finish
       @started = false
@@ -488,6 +493,72 @@ class HTTPClientTest < Minitest::Test
     end
   end
 
+  def test_sdk_retries_non_idempotent_connection_errors_when_request_was_not_sent
+    [OpenAI::Errors::APIConnectionError, OpenAI::Errors::APITimeoutError].each do |error_class|
+      attempts = 0
+      http_client = StubHTTPClient.new do |request|
+        attempts += 1
+        if attempts == 1
+          raise error_class.new(url: request.url, request_may_have_been_sent: false)
+        end
+
+        OpenAI::HTTPClient::Response.new(
+          status: 200,
+          headers: {"content-type" => "application/json"},
+          body: "{\"ok\":true}"
+        )
+      end
+
+      client = OpenAI::Client.new(
+        api_key: "test-key",
+        http_client: http_client,
+        max_retries: 1,
+        initial_retry_delay: 0,
+        max_retry_delay: 0
+      )
+
+      response = client.request(method: :post, path: "probe", body: {value: "payload"})
+
+      assert_equal(true, response[:ok])
+      assert_equal(2, attempts)
+    end
+  end
+
+  def test_sdk_treats_non_false_sent_markers_as_ambiguous_connection_errors
+    false_like = Class
+      .new do
+        def ==(other) = other == false
+      end
+      .new
+
+    [nil, false_like].each do |marker|
+      attempts = 0
+      http_client = StubHTTPClient.new do |request|
+        attempts += 1
+        raise(
+          OpenAI::Errors::APIConnectionError.new(
+            url: request.url,
+            request_may_have_been_sent: marker
+          )
+        )
+      end
+
+      client = OpenAI::Client.new(
+        api_key: "test-key",
+        http_client: http_client,
+        max_retries: 1,
+        initial_retry_delay: 0,
+        max_retry_delay: 0
+      )
+
+      assert_raises(OpenAI::Errors::APIConnectionError) do
+        client.request(method: :post, path: "probe", body: {value: "payload"})
+      end
+
+      assert_equal(1, attempts)
+    end
+  end
+
   def test_sdk_retries_connection_errors_for_requests_with_an_idempotency_key
     attempts = 0
     http_client = StubHTTPClient.new do |request|
@@ -518,6 +589,29 @@ class HTTPClientTest < Minitest::Test
 
     assert_equal(true, response[:ok])
     assert_equal(2, attempts)
+  end
+
+  def test_net_http_client_marks_connection_start_failures_as_not_sent
+    connection = StubNetHTTP.new(use_ssl: true, start_error: SocketError.new("safe network probe"))
+    client_class = Class.new(OpenAI::NetHTTPClient) do
+      define_method(:connect) { |**| connection }
+      private(:connect)
+    end
+
+    http_client = client_class.new
+    request = OpenAI::HTTPClient::Request.new(
+      method: :post,
+      url: URI("https://example.com/v1/probe"),
+      headers: {},
+      body: "{\"value\":\"payload\"}",
+      timeout: 1
+    )
+
+    error = assert_raises(OpenAI::Errors::APIConnectionError) { http_client.execute(request) }
+
+    refute_predicate(error, :request_may_have_been_sent?)
+  ensure
+    http_client&.close
   end
 
   def test_sdk_follows_redirects_from_a_custom_http_client

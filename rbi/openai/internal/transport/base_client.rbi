@@ -268,11 +268,12 @@ module OpenAI
         # @api private
         sig do
           params(
-            request: OpenAI::Internal::Transport::BaseClient::RequestInput
+            request: OpenAI::Internal::Transport::BaseClient::RequestInput,
+            error: OpenAI::Errors::APIConnectionError
           )
             .returns(T::Boolean)
         end
-        private def request_retryable_after_connection_error?(request)
+        private def request_retryable_after_connection_error?(request, error:)
         end
 
         # @api private

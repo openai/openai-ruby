@@ -127,7 +127,8 @@ module OpenAI
         ) -> bool
 
         private def request_retryable_after_connection_error?: (
-          OpenAI::Internal::Transport::BaseClient::request_input request
+          OpenAI::Internal::Transport::BaseClient::request_input request,
+          error: OpenAI::Errors::APIConnectionError
         ) -> bool
 
         private def retry_delay: (

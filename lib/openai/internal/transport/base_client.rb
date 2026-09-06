@@ -502,13 +502,14 @@ module OpenAI
           self.class.request_body_replayable?(request[:body])
         end
 
-        # A connection failure after dispatch has an unknown outcome: the peer
-        # may have committed the request before the response was lost. Retrying
+        # A connection failure has an unknown outcome unless the transport can
+        # prove that no request bytes were sent. Retrying an ambiguous failure
         # is only safe when the HTTP method itself is idempotent or the caller
         # supplied a stable idempotency key.
         #
         # @api private
-        private def request_retryable_after_connection_error?(request)
+        private def request_retryable_after_connection_error?(request, error:)
+          return true if false.equal?(error.request_may_have_been_sent?)
           return true if Net::HTTP::IDEMPOTENT_METHODS_.include?(request.fetch(:method).to_s.upcase)
 
           request.fetch(:headers).any? do |name, value|
@@ -710,7 +711,8 @@ module OpenAI
 
           if status.is_a?(OpenAI::Errors::APIConnectionError) &&
               (retry_count >= max_retries ||
-                (request_dispatched && !request_retryable_after_connection_error?(prepared_request)))
+                (request_dispatched &&
+                  !request_retryable_after_connection_error?(prepared_request, error: status)))
             raise status
           end
 

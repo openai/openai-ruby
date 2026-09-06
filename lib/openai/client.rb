@@ -399,14 +399,16 @@ module OpenAI
       rescue OpenAI::Errors::APIError => error
         status = error.status
         connection_failure = error.is_a?(OpenAI::Errors::APIConnectionError)
-        retryable_status = connection_failure ||
+        retryable_connection_failure = connection_failure &&
+          false.equal?(error.request_may_have_been_sent?)
+        retryable_status = retryable_connection_failure ||
           [408, 409, 429].include?(status) ||
           (status.is_a?(Integer) && (500..599).cover?(status))
         consumed_retries = attempts + previous_issuer_retries + retry_count
         unless x509_transport?(@requester) &&
             retryable_status &&
             consumed_retries < request.fetch(:x509_request_context).fetch(:auth_max_retries) &&
-            (connection_failure || self.class.should_retry?(status, headers: error.headers || {}))
+            (retryable_connection_failure || self.class.should_retry?(status, headers: error.headers || {}))
           raise
         end
 

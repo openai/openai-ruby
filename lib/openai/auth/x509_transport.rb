@@ -116,21 +116,39 @@ module OpenAI
           native_response
 
         rescue OpenAI::Errors::APIConnectionError => error
-          raise error.class.new(url: sanitized_url(url)), cause: nil
+          raise(
+            error.class.new(
+              url: sanitized_url(url),
+              request_may_have_been_sent: error.request_may_have_been_sent?
+            ),
+            cause: nil
+          )
         end
 
         stream = Enumerator.new do |chunks|
           response.body.each { |chunk| chunks << chunk }
 
         rescue OpenAI::Errors::APIConnectionError => error
-          raise error.class.new(url: sanitized_url(url)), cause: nil
+          raise(
+            error.class.new(
+              url: sanitized_url(url),
+              request_may_have_been_sent: error.request_may_have_been_sent?
+            ),
+            cause: nil
+          )
         end
 
         body = OpenAI::Internal::Util.fused_enum(stream) do
           OpenAI::Internal::Util.close_fused!(response.body)
 
         rescue OpenAI::Errors::APIConnectionError => error
-          raise error.class.new(url: sanitized_url(url)), cause: nil
+          raise(
+            error.class.new(
+              url: sanitized_url(url),
+              request_may_have_been_sent: error.request_may_have_been_sent?
+            ),
+            cause: nil
+          )
         end
 
         OpenAI::HTTPClient::Response.new(status: response.status, headers: response.headers, body: body)

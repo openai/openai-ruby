@@ -74,7 +74,13 @@ module OpenAI
 
         raise_error(response, body)
       rescue OpenAI::Errors::APIConnectionError => error
-        raise error.class.new(url: URI(TOKEN_URL)), cause: nil
+        raise(
+          error.class.new(
+            url: URI(TOKEN_URL),
+            request_may_have_been_sent: error.request_may_have_been_sent?
+          ),
+          cause: nil
+        )
       end
 
       private def remaining_timeout(deadline)
