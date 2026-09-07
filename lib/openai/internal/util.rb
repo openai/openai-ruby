@@ -657,15 +657,102 @@ module OpenAI
 
         # @api private
         #
+        # Split a media type on its `;` delimiters, ignoring any that appear inside a
+        # quoted string so that a parameter value may contain one.
+        #
+        # @param content_type [String]
+        #
+        # @return [Array<String>]
+        private def split_media_type_segments(content_type)
+          segments = [String.new]
+          quoted = escaped = false
+
+          content_type.to_s.each_char do |char|
+            if escaped
+              segments.last << char
+              escaped = false
+            elsif quoted && char == "\\"
+              segments.last << char
+              escaped = true
+            elsif char == "\""
+              segments.last << char
+              quoted = !quoted
+            elsif char == ";" && !quoted
+              segments << String.new
+            else
+              segments.last << char
+            end
+          end
+
+          segments
+        end
+
+        # @api private
+        #
+        # Read a media type parameter value: either a token that ends at the first
+        # whitespace, or a quoted string in which `\` escapes the next character.
+        # A quoted string that is never closed, or has non-whitespace after its
+        # closing quote, has no value.
+        #
+        # @param value [String]
+        #
+        # @return [String, nil]
+        private def read_media_type_value(value)
+          return value[/\A[^;\s]+/] unless value.start_with?("\"")
+
+          unquoted = String.new
+          escaped = false
+
+          value[1..].to_s.each_char.with_index do |char, index|
+            if escaped
+              unquoted << char
+              escaped = false
+            elsif char == "\\"
+              escaped = true
+            elsif char == "\""
+              return unquoted if value[(index + 2)..].to_s.match?(/\A\s*\z/)
+
+              return nil
+            else
+              unquoted << char
+            end
+          end
+
+          nil
+        end
+
+        # @api private
+        #
+        # Find the value of the `charset` media type parameter. Parameter names are
+        # case-insensitive, so `Charset` and `CHARSET` name the same parameter, but the
+        # name has to match in full: a `charset` suffix of another parameter's name, or
+        # a `charset=` inside a quoted value, belongs to a different parameter.
+        #
+        # @param content_type [String]
+        #
+        # @return [String, nil]
+        private def media_type_charset(content_type)
+          split_media_type_segments(content_type).each do |segment|
+            name, separator, value = segment.partition("=")
+            next if separator.empty?
+            next unless name.strip.casecmp?("charset")
+
+            return read_media_type_value(value.lstrip)
+          end
+
+          nil
+        end
+
+        # @api private
+        #
         # https://www.iana.org/assignments/character-sets/character-sets.xhtml
         #
         # @param content_type [String]
         # @param text [String]
         def force_charset!(content_type, text:)
-          charset = /charset=([^;\s]+)/.match(content_type)&.captures&.first
-          charset = charset[1...-1] if charset&.start_with?("\"") && charset.end_with?("\"")
+          charset = media_type_charset(content_type)
 
-          return unless charset
+          return if charset.nil? || charset.empty?
 
           begin
             encoding = Encoding.find(charset)
