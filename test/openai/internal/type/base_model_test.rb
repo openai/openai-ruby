@@ -106,6 +106,44 @@ class OpenAI::Test::PrimitiveModelTest < Minitest::Test
     end
   end
 
+  def test_coerce_integer_strings_are_decimal
+    # `Integer(str)` infers a base from the literal's prefix, so a zero-padded
+    # decimal was misread as octal and a base-prefixed literal was accepted.
+    # Values on the wire are decimal, so neither is right.
+    cases = {
+      "10" => [{maybe: 1}, 10],
+      "010" => [{maybe: 1}, 10],
+      "08" => [{maybe: 1}, 8],
+      "007" => [{maybe: 1}, 7],
+      "-010" => [{maybe: 1}, -10],
+      "0x1f" => [{no: 1}, "0x1f"],
+      "0b11" => [{no: 1}, "0b11"],
+      "one" => [{no: 1}, "one"]
+    }
+
+    cases.each do |input, (exactness, expect)|
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+      coerced = OpenAI::Internal::Type::Converter.coerce(Integer, input, state: state)
+
+      assert_equal(expect, coerced, input)
+      assert_equal(exactness, state.fetch(:exactness).filter { _2.nonzero? }.to_h, input)
+    end
+  end
+
+  def test_coerce_integer_keeps_non_string_conversions
+    # An explicit base is only valid for strings, so numerics have to keep the
+    # unbased call and its truncation.
+    cases = {1 => [{yes: 1}, 1], 1.0 => [{maybe: 1}, 1], 3.7 => [{maybe: 1}, 3], -3.7 => [{maybe: 1}, -3]}
+
+    cases.each do |input, (exactness, expect)|
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+      coerced = OpenAI::Internal::Type::Converter.coerce(Integer, input, state: state)
+
+      assert_equal(expect, coerced, input.to_s)
+      assert_equal(exactness, state.fetch(:exactness).filter { _2.nonzero? }.to_h, input.to_s)
+    end
+  end
+
   def test_coerce_errors
     cases = {
       [Integer, "one"] => ArgumentError,
