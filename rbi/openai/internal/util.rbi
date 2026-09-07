@@ -268,6 +268,7 @@ module OpenAI
         %r{\Aapplication/(?:x-[nl]djson|(?:x-)?jsonl)[ \t]*(?:;|\z)}i,
         Regexp
       )
+      MULTIPART_CONTENT = T.let(%r{\Amultipart/form-data[ \t]*(?:;|\z)}i, Regexp)
 
       class << self
         # @api private

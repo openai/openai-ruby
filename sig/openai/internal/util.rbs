@@ -93,6 +93,7 @@ module OpenAI
 
       JSON_CONTENT: Regexp
       JSONL_CONTENT: Regexp
+      MULTIPART_CONTENT: Regexp
 
       def encode_query_params: (
         ::Hash[Symbol, top] query

@@ -348,6 +348,34 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
     writer&.close
   end
 
+  def test_multipart_content_type_matching_ignores_case
+    # Media type names are case-insensitive, and the sibling patterns in the same
+    # `case` (JSON_CONTENT, JSONL_CONTENT) already ignore case. Matching only the
+    # lowercase spelling left the body unencoded and the boundary unset, so the
+    # request went out as an inspected Hash rather than a multipart payload.
+    file = OpenAI::FilePart.new(StringIO.new("x"), filename: "a.txt")
+
+    ["multipart/form-data", "Multipart/Form-Data", "MULTIPART/FORM-DATA"].each do |content_type|
+      headers, stream = OpenAI::Internal::Util.encode_content({"content-type" => content_type}, {file: file})
+      body = stream.respond_to?(:read) ? stream.read : stream.to_a.join
+
+      assert_match(/\Amultipart\/form-data; boundary=/i, headers.fetch("content-type"), content_type)
+      assert_includes(body, "filename=\"a.txt\"", content_type)
+    end
+  end
+
+  def test_multipart_content_type_requires_a_full_media_type
+    # The name has to end at a parameter delimiter or the end of the header, so a
+    # longer media type that merely starts with it is not multipart.
+    file = OpenAI::FilePart.new(StringIO.new("x"), filename: "a.txt")
+
+    ["multipart/form-dataX", "multipart/mixed"].each do |content_type|
+      headers, = OpenAI::Internal::Util.encode_content({"content-type" => content_type}, {file: file})
+
+      refute_includes(headers.fetch("content-type"), "boundary", content_type)
+    end
+  end
+
   def test_multipart_filename_quoting
     file = OpenAI::FilePart.new(StringIO.new("x"), filename: "a \"b\"\r\nEvil: 1.md")
     _headers, stream = OpenAI::Internal::Util.encode_content(
