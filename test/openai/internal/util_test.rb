@@ -364,7 +364,7 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
       body = stream.respond_to?(:read) ? stream.read : stream.to_a.join
 
       assert_match(/\Amultipart\/form-data; boundary=/i, headers.fetch("content-type"), content_type)
-      assert_includes(body, %{filename="a.txt"}, content_type)
+      assert_includes(body, "filename=\"a.txt\"", content_type)
     end
   end
 
