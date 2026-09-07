@@ -556,11 +556,11 @@ module OpenAI
           in OpenAI::FilePart unless val.filename.nil?
             filename = escape_multipart_header_param(val.filename)
             y << "; filename=\"#{filename}\""
-            # `IO#to_path` is nil for a stream with no backing path, such as a pipe
-            # or a socket. Such a part is sent without a filename, which RFC 7578
-            # allows, rather than failing the whole request.
-          in Pathname | IO unless val.to_path.nil?
-            filename = escape_multipart_header_param(::File.basename(val.to_path))
+          in Pathname | IO
+            # Keep raw multipart IO consistent with FileInput.dump: pathless streams
+            # are still file parts and use the same stable fallback filename.
+            filename = val.to_path.nil? ? "upload" : ::File.basename(val.to_path)
+            filename = escape_multipart_header_param(filename)
             y << "; filename=\"#{filename}\""
           else
           end

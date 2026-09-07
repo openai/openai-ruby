@@ -330,10 +330,7 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
     assert_equal(sensitive_prefix.bytesize, file.pos)
   end
 
-  def test_multipart_pathless_io_is_sent_without_a_filename
-    # `IO#to_path` returns nil for a pipe or a socket, and `::File.basename(nil)`
-    # raised `TypeError: no implicit conversion of nil into String`, so uploading
-    # from a stream with no backing path failed before a request was made.
+  def test_multipart_pathless_io_uses_fallback_filename
     reader, writer = IO.pipe
     writer.write("piped-body")
     writer.close
@@ -344,8 +341,7 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
     )
     body = stream.respond_to?(:read) ? stream.read : stream.to_a.join
 
-    assert_includes(body, "Content-Disposition: form-data; name=\"file\"")
-    refute_includes(body, "filename=")
+    assert_includes(body, "Content-Disposition: form-data; name=\"file\"; filename=\"upload\"")
     assert_includes(body, "piped-body")
   ensure
     reader&.close
