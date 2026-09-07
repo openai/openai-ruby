@@ -449,6 +449,8 @@ module OpenAI
       JSON_CONTENT = %r{\Aapplication/(?:[a-z0-9.-]+\+)?json[ \t]*(?:;|\z)}i
       # @type [Regexp]
       JSONL_CONTENT = %r{\Aapplication/(?:x-[nl]djson|(?:x-)?jsonl)[ \t]*(?:;|\z)}i
+      # @type [Regexp]
+      MULTIPART_CONTENT = %r{\Amultipart/form-data[ \t]*(?:;|\z)}i
 
       class << self
         # @api private
@@ -634,7 +636,7 @@ module OpenAI
             [headers, JSON.generate(body)]
           in [OpenAI::Internal::Util::JSONL_CONTENT, Enumerable] unless OpenAI::Internal::Type::FileInput === body
             [headers, body.lazy.map { "#{JSON.generate(_1)}\n" }]
-          in [%r{^multipart/form-data}, Hash | OpenAI::Internal::Type::FileInput]
+          in [OpenAI::Internal::Util::MULTIPART_CONTENT, Hash | OpenAI::Internal::Type::FileInput]
             boundary, strio = encode_multipart_streaming(body)
             headers = {**headers, "content-type" => "#{content_type}; boundary=#{boundary}"}
             [headers, strio]
