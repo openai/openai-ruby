@@ -211,7 +211,12 @@ module OpenAI
                   return value
                 else
                   Kernel.then do
-                    return Integer(value).tap { exactness[:maybe] += 1 }
+                    # Wire text is decimal. `Integer(str)` would read a leading `0` as
+                    # octal and `0x`/`0b` as other bases, so "010" became 8 and "08"
+                    # failed outright. Non-strings keep the unbased call, which accepts
+                    # Float and other numerics that reject an explicit base.
+                    coerced = value.is_a?(String) ? Integer(value, 10) : Integer(value)
+                    return coerced.tap { exactness[:maybe] += 1 }
                   rescue ArgumentError, TypeError => e
                     state[:error] = e
                   end
