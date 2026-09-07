@@ -325,6 +325,7 @@ class HTTPClientTest < Minitest::Test
         body: "{\"ok\":true}"
       )
     end
+
     client = OpenAI::Client.new(api_key: "test-key", http_client: http_client)
     reader, writer = IO.pipe
     writer.write("piped-body")
