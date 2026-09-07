@@ -83,6 +83,8 @@ Lint/AmbiguousOperatorPrecedence:
   Enabled: true
 Lint/AmbiguousRange:
   Enabled: true
+Lint/ArgumentMismatch:
+  Enabled: true
 Lint/ArrayLiteralInRegexp:
   Enabled: true
 Lint/ConstantOverwrittenInRescue:
@@ -157,6 +159,8 @@ Lint/ShadowingOuterLocalVariable:
 Lint/SharedMutableDefault:
   Enabled: true
 Lint/SuppressedExceptionInNumberConversion:
+  Enabled: true
+Lint/SuperArgumentMismatch:
   Enabled: true
 Lint/SymbolConversion:
   Enabled: true
