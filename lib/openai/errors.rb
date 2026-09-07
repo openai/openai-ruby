@@ -554,10 +554,11 @@ module OpenAI
       attr_reader :error_code
 
       def initialize(status:, body:, headers:)
-        @error_code = OpenAI::Internal::Type::Converter.coerce(OpenAI::Models::OAuthErrorCode, body&.dig(:error))
+        error = OpenAI::Internal::Util.dig(body, :error)
+        @error_code = OpenAI::Internal::Type::Converter.coerce(OpenAI::Models::OAuthErrorCode, error)
 
-        message = if body&.dig(:error_description)
-          body[:error_description]
+        message = if (error_description = OpenAI::Internal::Util.dig(body, :error_description))
+          error_description
         elsif @error_code
           @error_code
         else

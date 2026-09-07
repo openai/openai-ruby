@@ -9,6 +9,18 @@ class OpenAI::Test::BaseClientRetryTest < Minitest::Test
     end
   end
 
+  class CustomIdempotencyClient < OpenAI::Internal::Transport::BaseClient
+    def initialize(**kwargs)
+      super(
+        base_url: "https://example.test/v1",
+        idempotency_header: "x-request-key",
+        **kwargs
+      )
+    end
+
+    private def auth_headers(**_context) = {}
+  end
+
   def setup
     super
     @client = RetryClient.new(api_key: "test-key")
@@ -139,5 +151,44 @@ class OpenAI::Test::BaseClientRetryTest < Minitest::Test
     assert_equal(1, retry_events.length)
     assert_equal(0.5, retry_events.fetch(0).delay)
     assert_equal(429, retry_events.fetch(0).status)
+  end
+
+  def test_custom_idempotency_header_makes_connection_error_retry_safe
+    attempts = 0
+    successful = OpenAI::HTTPClient::Response.new(
+      status: 200,
+      headers: {"content-type" => "application/json"},
+      body: "{\"ok\":true}"
+    )
+    http_client = Minitest::Mock.new(OpenAI::HTTPClient.new)
+    http_client.expect(:execute, nil) do |request|
+      attempts += 1
+      assert_equal("stable-operation", request.headers.fetch("x-request-key"))
+      raise OpenAI::Errors::APIConnectionError.new(url: request.url)
+    end
+
+    http_client.expect(:execute, successful) do |request|
+      attempts += 1
+      assert_equal("stable-operation", request.headers.fetch("x-request-key"))
+      true
+    end
+
+    client = CustomIdempotencyClient.new(
+      http_client: http_client,
+      max_retries: 1,
+      initial_retry_delay: 0,
+      max_retry_delay: 0
+    )
+
+    response = client.request(
+      method: :post,
+      path: "probe",
+      body: {value: "payload"},
+      options: {idempotency_key: "stable-operation"}
+    )
+
+    assert_mock(http_client)
+    assert_equal(true, response[:ok])
+    assert_equal(2, attempts)
   end
 end

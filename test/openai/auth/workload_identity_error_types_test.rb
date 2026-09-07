@@ -64,6 +64,33 @@ class OpenAI::Test::WorkloadIdentityErrorTypesTest < Minitest::Test
     assert_not_requested(:get, "https://api.openai.com/v1/models")
   end
 
+  def test_public_models_request_preserves_oauth_error_for_non_object_json_body
+    stub_request(:post, "https://auth.openai.com/oauth/token")
+      .to_return(
+        status: 401,
+        headers: {"Content-Type" => "application/json"},
+        body: JSON.generate("invalid_client")
+      )
+
+    Tempfile.create("synthetic-k8s-token") do |token_file|
+      token_file.write("synthetic-subject-token")
+      token_file.flush
+      provider = OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(token_path: token_file.path)
+
+      error = assert_raises(OpenAI::Errors::OAuthError) do
+        workload_identity_client(provider).models.list
+      end
+
+      assert_equal(401, error.status)
+      assert_equal("OAuth2 authentication error", error.message)
+      assert_nil(error.error_code)
+      assert_equal("invalid_client", error.body)
+    end
+
+    assert_requested(:post, "https://auth.openai.com/oauth/token", times: 1)
+    assert_not_requested(:get, "https://api.openai.com/v1/models")
+  end
+
   def test_shipped_rbi_types_error_rescues_and_metadata
     stdout, stderr, status = sorbet_typecheck(sorbet_source)
 

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "async/http/server"
+require "async/http/proxy"
 require "async/websocket/adapters/http"
 require "async/websocket/client"
 require "async/websocket/server"
@@ -251,6 +252,46 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     refute_nil(error.cause)
     assert_equal("Realtime WebSocket connection error.", error.message)
     refute_includes(error.message, error.cause.message)
+  end
+
+  def test_failed_handshake_closes_an_open_proxy_client
+    proxy_client = Class
+      .new do
+        attr_reader(:closed)
+
+        def close = @closed = true
+      end
+      .new
+    tunnel = Class
+      .new do
+        attr_reader(:wrapped)
+
+        def wrap_endpoint(endpoint)
+          @wrapped = true
+          endpoint
+        end
+      end
+      .new
+    handshake_error = IOError.new("handshake failed")
+    transport = OpenAI::Realtime::Transports::AsyncWebSocket.new
+    url = URI("ws://example.com/v1/realtime?model=gpt-realtime-2.1")
+
+    with_proxy_environment("http://proxy-user:proxy-pass@127.0.0.1:8080") do
+      Async::HTTP::Client.stub(:open, proxy_client) do
+        Async::HTTP::Proxy.stub(:new, tunnel) do
+          Async::WebSocket::Client.stub(:open, -> (*) { raise handshake_error }) do
+            error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
+              transport.open(url: url, headers: {}, timeout: nil) { |_socket| nil }
+            end
+
+            assert_same(handshake_error, error.cause)
+          end
+        end
+      end
+    end
+
+    assert_predicate(tunnel, :wrapped)
+    assert_predicate(proxy_client, :closed)
   end
 
   def test_sideband_handshake_failures_redact_the_error_url
@@ -509,5 +550,18 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     server.local_address.ip_port
   ensure
     server&.close
+  end
+
+  private def with_proxy_environment(proxy_url)
+    previous = {}
+    keys = %w[http_proxy HTTP_PROXY no_proxy NO_PROXY]
+    previous = keys.to_h { |key| [key, ENV[key]] }
+    ENV["http_proxy"] = proxy_url
+    ENV["HTTP_PROXY"] = nil
+    ENV["no_proxy"] = ""
+    ENV["NO_PROXY"] = ""
+    yield
+  ensure
+    previous.each { |key, value| ENV[key] = value }
   end
 end

@@ -264,10 +264,11 @@ module OpenAI
             {}
           end
 
-          client = ::Async::WebSocket::Client.open(endpoint, **client_options)
+          client = nil
           connection = nil
           socket = nil
           begin
+            client = ::Async::WebSocket::Client.open(endpoint, **client_options)
             connection = negotiate(
               client,
               endpoint,
