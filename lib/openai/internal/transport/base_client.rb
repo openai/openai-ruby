@@ -512,8 +512,9 @@ module OpenAI
           return true if false.equal?(error.request_may_have_been_sent?)
           return true if Net::HTTP::IDEMPOTENT_METHODS_.include?(request.fetch(:method).to_s.upcase)
 
+          idempotency_header = @idempotency_header || "idempotency-key"
           request.fetch(:headers).any? do |name, value|
-            name.to_s.casecmp?("idempotency-key") && !value.to_s.empty?
+            name.to_s.casecmp?(idempotency_header) && !value.to_s.empty?
           end
         end
 
