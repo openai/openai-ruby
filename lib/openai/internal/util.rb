@@ -896,7 +896,7 @@ module OpenAI
                 in ["\r", nil]
                   cr_seen = match.end(1)
                   next
-                in ["\r" | "\r\n", Integer]
+                in [terminator, Integer] if terminator != "\n" || match.begin(1) != cr_seen
                   line = buffer.slice!(..(cr_seen.pred))
                   line.force_encoding(encoding) unless encoding.nil?
                   y << line

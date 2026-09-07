@@ -982,7 +982,11 @@ class OpenAI::Test::UtilSseTest < Minitest::Test
       %W[\r\r \r] => %W[\r \r \r],
       %W[\r \n] => %W[\r\n],
       %W[\r\r\n] => %W[\r \r\n],
-      %W[\n\r] => %W[\n \r]
+      %W[\n\r] => %W[\n \r],
+      ["A\rB\n"] => ["A\r", "B\n"],
+      ["A\r", "B\n"] => ["A\r", "B\n"],
+      ["A\rB", "\n"] => ["A\r", "B\n"],
+      ["A\r", "\nB\n"] => ["A\r\n", "B\n"]
     }
     cases.each do |enum, expected|
       lines = OpenAI::Internal::Util.decode_lines(enum)
