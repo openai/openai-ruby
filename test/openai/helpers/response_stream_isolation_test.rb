@@ -194,7 +194,138 @@ class OpenAI::Test::ResponseStreamIsolationTest < Minitest::Test
     assert_nil(structured_done.parsed)
   end
 
+  def test_text_consumption_does_not_copy_each_accumulated_prefix
+    events = repeated_delta_events
+    stub_stream(events)
+    stream = @client.responses.stream(model: "test", input: "synthetic")
+    text = +""
+
+    copied_bytes = copied_snapshot_bytes do
+      stream.text.each { |delta| text << delta }
+    end
+
+    assert_equal("x" * 200_000, text)
+    assert_equal(text, stream.get_output_text)
+    assert_equal("y" * 200_000, stream.get_final_response.output.fetch(1).arguments)
+    assert_operator(copied_bytes, :<, 2_000_000)
+  ensure
+    stream&.close
+  end
+
+  def test_until_done_does_not_copy_each_accumulated_prefix
+    stub_stream(repeated_delta_events)
+    stream = @client.responses.stream(model: "test", input: "synthetic")
+
+    copied_bytes = copied_snapshot_bytes { assert_same(stream, stream.until_done) }
+
+    assert_equal("x" * 200_000, stream.get_output_text)
+    assert_equal("y" * 200_000, stream.get_final_response.output.fetch(1).arguments)
+    assert_operator(copied_bytes, :<, 2_000_000)
+  ensure
+    stream&.close
+  end
+
+  def test_unconsumed_text_enumerator_preserves_event_snapshots
+    stub_stream(repeated_delta_events(count: 3))
+    stream = @client.responses.stream(model: "test", input: "synthetic")
+    stream.text
+
+    events = stream.to_a
+    text_events = events.grep(OpenAI::Streaming::ResponseTextDeltaEvent)
+    arguments_events = events.grep(OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent)
+
+    assert_equal([100, 200, 300], text_events.map { |event| event.snapshot.length })
+    assert_equal([100, 200, 300], arguments_events.map { |event| event.snapshot.length })
+    assert_equal("x" * 300, stream.get_output_text)
+  ensure
+    stream&.close
+  end
+
+  def test_snapshots_stay_isolated_when_consumption_changes
+    events = repeated_delta_events(count: 4).map { |event| coerce_event(event) }
+    state = OpenAI::Helpers::Streaming::ResponseStreamState.new(text_format: nil)
+    created = events.shift
+    state.handle_event(created)
+
+    first_text = state.handle_event(events.shift).fetch(0)
+    first_arguments = state.handle_event(events.shift).fetch(0)
+    4.times { state.handle_event(events.shift, text_only: true) }
+    last_text = state.handle_event(events.shift).fetch(0)
+    last_arguments = state.handle_event(events.shift).fetch(0)
+
+    assert_equal("x" * 100, first_text.snapshot)
+    assert_equal("y" * 100, first_arguments.snapshot)
+    assert_equal("x" * 400, last_text.snapshot)
+    assert_equal("y" * 400, last_arguments.snapshot)
+    assert_equal("", created.response.output.fetch(0).content.fetch(0).text)
+    assert_equal("", created.response.output.fetch(1).arguments)
+  end
+
   private
+
+  # Count materialized String results in the accumulator, not elapsed time or
+  # process-wide allocations. The bound allows linear growth but catches full
+  # prefix copies for these synthetic text and argument deltas.
+  def copied_snapshot_bytes
+    bytes = 0
+    accumulator = File.expand_path("../../../lib/openai/helpers/streaming/response_stream.rb", __dir__)
+    trace = TracePoint.new(:c_return) do |event|
+      next unless event.defined_class == String
+      next unless [:+, :dup, :clone].include?(event.method_id)
+      next unless File.expand_path(event.path) == accumulator
+
+      bytes += event.return_value.bytesize
+    end
+
+    trace.enable(target_thread: Thread.current) { yield }
+    bytes
+  ensure
+    trace&.disable
+  end
+
+  def repeated_delta_events(count: 2000)
+    events = [
+      {
+        type: "response.created",
+        sequence_number: 0,
+        response: response(output: [message_item(content: [part]), function_call])
+      }
+    ]
+    count.times do |index|
+      events <<
+        {
+          type: "response.output_text.delta",
+          sequence_number: (index * 2) + 1,
+          item_id: "msg_synthetic",
+          output_index: 0,
+          content_index: 0,
+          delta: "x" * 100,
+          logprobs: []
+        }
+      events <<
+        {
+          type: "response.function_call_arguments.delta",
+          sequence_number: (index * 2) + 2,
+          item_id: "fc_synthetic",
+          output_index: 1,
+          delta: "y" * 100
+        }
+    end
+
+    events <<
+      {
+        type: "response.completed",
+        sequence_number: (count * 2) + 1,
+        response: response(
+          status: "completed",
+          output: [
+            message_item(status: "completed", content: [part(text: "x" * count * 100)]),
+            function_call(arguments: "y" * count * 100)
+          ]
+        )
+      }
+    events
+  end
 
   def coerce_event(event)
     OpenAI::Internal::Type::Converter.coerce(OpenAI::Models::Responses::ResponseStreamEvent, event)

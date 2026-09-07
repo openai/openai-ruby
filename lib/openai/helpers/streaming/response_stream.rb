@@ -19,18 +19,26 @@ module OpenAI
         end
 
         def until_done
-          each { |_event| next }
+          text.each { |_delta| nil }
           self
         end
 
         def text
           OpenAI::Internal::Util.chain_fused(@iterator) do |yielder|
+            @text_only = true
             @iterator.each do |event|
+              # Restore normal event snapshots while caller code is running.
+              @text_only = false
               case event
               when OpenAI::Models::Responses::ResponseTextDeltaEvent
                 yielder << event.delta
               end
+
+              @text_only = true
             end
+
+          ensure
+            @text_only = false
           end
         end
 
@@ -63,7 +71,7 @@ module OpenAI
         def iterator
           @iterator ||= OpenAI::Internal::Util.chain_fused(@raw_stream) do |y|
             @raw_stream.each do |raw_event|
-              events_to_yield = @state.handle_event(raw_event)
+              events_to_yield = @state.handle_event(raw_event, text_only: @text_only == true)
               events_to_yield.each do |event|
                 y << event if after_starting_event?(event)
               end
@@ -87,9 +95,10 @@ module OpenAI
           @completed_response = nil
           @text_format = text_format
           @resumed = !starting_after.nil?
+          @unexposed_buffers = {}.compare_by_identity
         end
 
-        def handle_event(event)
+        def handle_event(event, text_only: false)
           return [event] if event.is_a?(UnknownStreamEvent)
 
           @current_snapshot = accumulate_event(
@@ -101,6 +110,8 @@ module OpenAI
 
           case event
           when OpenAI::Models::Responses::ResponseTextDeltaEvent
+            return [event] if text_only
+
             snapshot = nil
             if @current_snapshot
               output = @current_snapshot.output[event.output_index]
@@ -109,6 +120,8 @@ module OpenAI
                 snapshot = content.text if content.is_a?(OpenAI::Models::Responses::ResponseOutputText)
               end
             end
+
+            @unexposed_buffers.delete(snapshot)
 
             # A server-directed resumed stream or an unknown future snapshot value
             # has no complete prefix from which to build a truthful snapshot.
@@ -141,6 +154,8 @@ module OpenAI
               )
 
           when OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent
+            return [event] if text_only
+
             snapshot = nil
             if @current_snapshot
               output = @current_snapshot.output[event.output_index]
@@ -148,6 +163,8 @@ module OpenAI
                 snapshot = output.arguments
               end
             end
+
+            @unexposed_buffers.delete(snapshot)
 
             # See the text-delta branch above: a partial server resume or an
             # unknown future output item has no truthful accumulated prefix.
@@ -206,7 +223,7 @@ module OpenAI
             if output.is_a?(OpenAI::Models::Responses::ResponseOutputMessage)
               content = output.content[event.content_index]
               if content.is_a?(OpenAI::Models::Responses::ResponseOutputText)
-                content.text += event.delta
+                content.text = append_delta(content.text, event.delta)
                 output.content[event.content_index] = content
                 current_snapshot.output[event.output_index] = output
               end
@@ -215,7 +232,7 @@ module OpenAI
           when OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent
             output = current_snapshot.output[event.output_index]
             if output.is_a?(OpenAI::Models::Responses::ResponseFunctionToolCall)
-              output.arguments = (output.arguments || "") + event.delta
+              output.arguments = append_delta(output.arguments || "", event.delta)
               current_snapshot.output[event.output_index] = output
             end
 
@@ -227,6 +244,16 @@ module OpenAI
         end
 
         private
+
+        # Reuse a buffer only until it becomes a caller-visible snapshot. The
+        # first append also isolates strings belonging to incoming wire events.
+        def append_delta(value, delta)
+          return value << delta if @unexposed_buffers.key?(value)
+
+          buffer = value + delta
+          @unexposed_buffers[buffer] = true
+          buffer
+        end
 
         # Materialize fresh containers before snapshot accumulation mutates them.
         # Coercing an already-typed model returns it unchanged, so first use the

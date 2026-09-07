@@ -82,8 +82,8 @@ module OpenAI
         def initialize(text_format:, starting_after: nil)
         end
 
-        sig { params(event: T.untyped).returns(T::Array[T.untyped]) }
-        def handle_event(event)
+        sig { params(event: T.untyped, text_only: T::Boolean).returns(T::Array[T.untyped]) }
+        def handle_event(event, text_only: false)
         end
 
         sig do
@@ -97,6 +97,10 @@ module OpenAI
         end
 
         private
+
+        sig { params(value: String, delta: String).returns(String) }
+        def append_delta(value, delta)
+        end
 
         sig { params(text: T.nilable(String)).returns(T.untyped) }
         def parse_structured_text(text)
