@@ -1,7 +1,7 @@
 # typed: strong
 
 module OpenAI
-  class Client
+  class Client < OpenAI::Internal::Transport::BaseClient
     # @api private
     sig do
       params(

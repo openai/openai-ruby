@@ -23,6 +23,7 @@ group :development, :test do
   gem "minitest-hooks", ">= 1.5.4"
   gem "minitest-mock", "~> 5.27"
   gem "minitest-proveit"
+  gem "rbi", "~> 0.4.3"
   gem "sorbet-runtime"
   gem "webmock"
 end
