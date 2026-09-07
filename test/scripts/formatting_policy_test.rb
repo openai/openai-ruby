@@ -43,6 +43,8 @@ class FormattingPolicyTest < Minitest::Test
       next unless name.match?(/\A(?:Lint|Security)\//) && options["Enabled"] == "pending"
       # Layout belongs to rubyfmt.
       next if name == "Lint/HeredocMethodCallPosition"
+      # These require project indexing and rubydex; adopt them separately.
+      next if %w[Lint/ArgumentMismatch Lint/SuperArgumentMismatch].include?(name)
 
       assert_includes(enabled, name)
     end

@@ -83,8 +83,9 @@ Lint/AmbiguousOperatorPrecedence:
   Enabled: true
 Lint/AmbiguousRange:
   Enabled: true
+# These cops require project indexing and rubydex; adopt them separately.
 Lint/ArgumentMismatch:
-  Enabled: true
+  Enabled: false
 Lint/ArrayLiteralInRegexp:
   Enabled: true
 Lint/ConstantOverwrittenInRescue:
@@ -161,7 +162,7 @@ Lint/SharedMutableDefault:
 Lint/SuppressedExceptionInNumberConversion:
   Enabled: true
 Lint/SuperArgumentMismatch:
-  Enabled: true
+  Enabled: false
 Lint/SymbolConversion:
   Enabled: true
 Lint/TopLevelReturnWithArgument:
