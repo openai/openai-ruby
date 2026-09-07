@@ -933,7 +933,8 @@ class OpenAI::Test::UtilContentDecodingTest < Minitest::Test
       "text/plain; title=\"note; Charset=ISO-8859-1;\"; charset=utf-8" => Encoding::UTF_8,
       "text/plain; title=\"note; charset=ISO-8859-1;\"" => Encoding::BINARY,
       "text/plain; not-charset=ISO-8859-1" => Encoding::BINARY,
-      "text/plain; charset=\"UTF-8\"; x=\"\\\"charset=ISO-8859-1\\\"\"" => Encoding::UTF_8
+      "text/plain; charset=\"UTF-8\"junk" => Encoding::BINARY,
+      "text/plain; x=\"\\\"charset=ISO-8859-1\\\"\"; charset=\"UTF-8\"" => Encoding::UTF_8
     }
 
     cases.each do |content_type, encoding|

@@ -691,7 +691,8 @@ module OpenAI
         #
         # Read a media type parameter value: either a token that ends at the first
         # whitespace, or a quoted string in which `\` escapes the next character.
-        # A quoted string that is never closed has no value.
+        # A quoted string that is never closed, or has non-whitespace after its
+        # closing quote, has no value.
         #
         # @param value [String]
         #
@@ -702,14 +703,16 @@ module OpenAI
           unquoted = String.new
           escaped = false
 
-          value[1..].to_s.each_char do |char|
+          value[1..].to_s.each_char.with_index do |char, index|
             if escaped
               unquoted << char
               escaped = false
             elsif char == "\\"
               escaped = true
             elsif char == "\""
-              return unquoted
+              return unquoted if value[(index + 2)..].to_s.match?(/\A\s*\z/)
+
+              return nil
             else
               unquoted << char
             end
