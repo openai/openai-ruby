@@ -98,6 +98,10 @@ module OpenAI
       sig do
         params(
           model: String,
+          reconnect: T::Boolean,
+          max_reconnect_attempts: Integer,
+          max_queue_bytes: Integer,
+          on_reconnected: T.nilable(T.proc.params(connection: OpenAI::Realtime::Connection).void),
           websocket_base_url: T.nilable(String),
           request_options: T.nilable(OpenAI::RequestOptions::OrHash),
           transport: T.untyped,
@@ -111,6 +115,10 @@ module OpenAI
       end
       def connect(
         model:,
+        reconnect: false,
+        max_reconnect_attempts: 5,
+        max_queue_bytes: 0,
+        on_reconnected: nil,
         websocket_base_url: nil,
         request_options: nil,
         transport: nil,

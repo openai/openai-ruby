@@ -39,9 +39,9 @@ module OpenAI
 
         # @api private
         sig do
-          params(socket: T.untyped, url: URI::Generic).returns(T.attached_class)
+          params(socket: T.untyped, url: URI::Generic, recovery: T.untyped).returns(T.attached_class)
         end
-        def self.new(socket:, url:)
+        def self.new(socket:, url:, recovery: nil)
         end
 
         sig do
@@ -73,6 +73,22 @@ module OpenAI
 
         sig { params(data: String).void }
         def send_raw(data)
+        end
+
+        sig { returns(T::Boolean) }
+        def reconnecting?
+        end
+
+        sig { returns(T::Array[String]) }
+        def pending_messages
+        end
+
+        sig { returns(T::Array[String]) }
+        def take_pending_messages
+        end
+
+        sig { void }
+        def flush_pending
         end
 
         sig { params(code: Integer, reason: String).void }
