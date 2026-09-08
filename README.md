@@ -112,6 +112,10 @@ does not automatically reconnect or replay an ambiguous write. When the server
 closes a connection, open a new connection and continue with
 `previous_response_id` when the response was stored.
 
+See the [Responses WebSocket guide](responses-websocket.md) and
+[runnable workflows](examples/responses/websocket_workflows.rb) for tool turns,
+multiplexing, stored continuation, stateless replay, and operation deadlines.
+
 ### Pagination
 
 List methods in the OpenAI API are paginated.
