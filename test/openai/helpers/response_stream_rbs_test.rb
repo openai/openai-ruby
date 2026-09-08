@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
-require "fileutils"
-require "open3"
 require "pathname"
 require "rbs"
-require "tmpdir"
 
 require_relative "../test_helper"
 
@@ -73,31 +70,6 @@ class OpenAI::Test::ResponseStreamRBSTest < Minitest::Test
     refute_includes(passthrough, "::OpenAI::Models::Responses::ResponseCompletedEvent")
   end
 
-  def test_shipped_rbs_type_checks_enhanced_response_events
-    source = <<~RUBY
-      stream = OpenAI::Client.new(api_key: "test-key").responses.stream(
-        model: "gpt-4o-mini",
-        input: "synthetic"
-      )
-      stream.each do |event|
-        case event
-        when OpenAI::Streaming::ResponseTextDeltaEvent
-          event.snapshot
-        when OpenAI::Streaming::ResponseTextDoneEvent
-          event.parsed
-        when OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent
-          event.snapshot
-        when OpenAI::Streaming::ResponseCompletedEvent
-          event.response
-        end
-      end
-    RUBY
-
-    stdout, stderr, status = steep_check(source)
-
-    assert_predicate(status, :success?, "#{stdout}\n#{stderr}")
-  end
-
   def test_public_response_stream_runtime_supports_declared_helpers
     stub_request(:post, "http://localhost/responses")
       .with(body: hash_including(model: "gpt-4o-mini", input: "synthetic", stream: true))
@@ -143,31 +115,6 @@ class OpenAI::Test::ResponseStreamRBSTest < Minitest::Test
 
   def return_types(method)
     method.method_types.map { |method_type| method_type.type.return_type.to_s }
-  end
-
-  def steep_check(source)
-    Dir.mktmpdir("response-stream-rbs") do |directory|
-      FileUtils.cp_r(ROOT.join("sig"), directory)
-      File.write(File.join(directory, "probe.rb"), source)
-      File.write(
-        File.join(directory, "Steepfile"),
-        <<~RUBY
-          target :lib do
-            signature "sig"
-            library "net-http"
-            check "probe.rb"
-          end
-        RUBY
-      )
-      Open3.capture3(
-        "steep",
-        "check",
-        "--no-daemon",
-        "--jobs=1",
-        "--validate=skip",
-        chdir: directory
-      )
-    end
   end
 
   def synthetic_text_stream

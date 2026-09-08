@@ -1,0 +1,18 @@
+# @type var inspect_finish_error: ^(OpenAI::Models::Chat::ChatCompletion) -> OpenAI::Helpers::Streaming::StreamError
+inspect_finish_error = ->(completion) do
+  error = OpenAI::LengthFinishReasonError.new(completion: completion)
+  error.completion.id
+  content_filter = OpenAI::ContentFilterFinishReasonError.new
+  content_filter.class
+
+  begin
+    raise error
+  rescue OpenAI::LengthFinishReasonError => length_error
+    length_error.completion.id
+    length_error
+  rescue OpenAI::ContentFilterFinishReasonError => content_filter_error
+    content_filter_error
+  end
+end
+
+inspect_finish_error

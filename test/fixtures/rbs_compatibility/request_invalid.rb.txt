@@ -1,0 +1,6 @@
+client = OpenAI::Client.new(api_key: "test-key")
+client.request(
+  method: :post,
+  path: "/undocumented/endpoint",
+  security: {bearer_auth: true, admin_api_key_auth: "false"}
+)
