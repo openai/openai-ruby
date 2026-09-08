@@ -76,6 +76,107 @@ types. Invalid client events raise `ArgumentError` with a generic public
 message; the converter error remains available through `cause` for explicit
 inspection. `send_raw` and `receive_raw` are text-frame escape hatches.
 
+## Reconnect and retained sends
+
+Automatic reconnect is disabled by default. Enable it on the existing `connect`
+method for ordinary model sessions:
+
+```ruby
+client.realtime.connect(model: "gpt-realtime-2.1", reconnect: true) do |connection|
+  connection.each { |event| handle_event(event) }
+end
+```
+
+Both `receive` and `each` drive recovery. The application block runs once, with
+the same connection object. Recovery opens a **new session**; it does not restore
+conversation history, buffered audio, outstanding tool calls, or an interrupted
+response. The normal server session events remain observable. Sends alone do
+not drive recovery: keep a receiver running to observe disconnects.
+
+`max_reconnect_attempts` defaults to 5 and bounds the total additional connection
+attempts over the block's lifetime, including retryable initial handshake
+failures. Backoff starts at 0.5 seconds, doubles to an 8-second cap, and applies
+jitter. Normal close, explicit close, permanent authentication/TLS/protocol
+failures, and exhausted retries stop recovery. Each attempt uses the client's
+existing endpoint and authentication preparation, including workload-identity
+token refresh. `request_options[:max_retries]` remains an HTTP option and must
+not be used to configure WebSocket reconnect.
+
+An optional `on_reconnected:` callback receives the same connection before the
+replacement is made available to waiting readers. It can restore application
+state using the usual typed helpers; its exceptions stop recovery. A callback
+may receive events itself, consuming them before the application receiver.
+
+### Optional outbound queue
+
+`max_queue_bytes` defaults to **0** (queueing disabled). Set a positive byte
+budget to retain validated, serialized events sent while reconnecting or while
+an explicit queue flush is in progress. Queue-full errors reject the new event
+without evicting accepted events. The budget includes a queued write until it
+settles; empty raw text costs one byte for accounting. Connected sends and
+incoming events have no new payload-size limit.
+
+Retained events are **never automatically flushed** into a replacement session.
+Restore any needed state, decide whether the queued work still belongs in that
+session, then call `flush_pending`. Normal connected sends bypass the held queue,
+allowing setup messages to precede it. Only the retained messages have FIFO
+ordering relative to each other. For example:
+
+```ruby
+restore = lambda do |connection|
+  connection.session.update(type: :realtime, instructions: "Be concise.")
+  # Use this only when the application knows its retained events are valid
+  # in the replacement session. Rebuilding earlier conversation state may
+  # require additional events and acknowledgements first.
+  connection.flush_pending
+end
+
+client.realtime.connect(
+  model: "gpt-realtime-2.1",
+  reconnect: true,
+  max_queue_bytes: 1_048_576,
+  on_reconnected: restore
+) do |connection|
+  connection.each { |event| handle_event(event) }
+end
+```
+
+The callback is optional even with queueing enabled. After receiving a new
+session's events, application code can restore state and flush the queue itself.
+`pending_messages` returns a snapshot of encoded unsent events;
+`take_pending_messages` removes and returns them without sending. The latter
+raises if a flush is in progress. These accessors return empty arrays on ordinary
+connections without recovery; `flush_pending` on such a connection is a no-op.
+
+`OpenAI::Errors::RealtimeQueueFullError` means the event was not accepted.
+`OpenAI::Errors::RealtimeReconnectError` reports a terminal recovery failure or
+an interrupted operation. Its `unsent_messages` contains retained events never
+attempted on the socket. A failed write stops the connection and exposes the
+attempted event as `uncertain_message`; the SDK never retries it. A local write
+completion is not a server acknowledgement, and `event_id` does not establish
+exactly-once delivery. These explicit payload accessors can contain sensitive
+application data; do not log them. Error messages omit their contents.
+
+Each waiting sender receives an error describing only its own event. If its write
+was never attempted, that event appears in `unsent_messages` and `uncertain_message`
+is nil, even when another concurrent sender's write caused the connection to fail.
+
+When an explicit flush is interrupted by another disconnect, unattempted events
+stay queued and require another explicit flush after recovery. Intentional close
+keeps retained data available through the connection's queue accessors. With
+reconnect enabled, close makes a best-effort attempt (up to one second) to send its
+`code` and `reason`, then releases the socket. A close during a write aborts
+immediately and reports uncertain delivery. Leaving the block cancels and joins recovery
+work. Concurrent producers submit through the connection's mailbox; socket I/O
+stays on its owning Async reactor. Cancelling a waiting operation closes the
+logical connection so an abandoned receive cannot consume a later event.
+
+Reconnect uses the optional Async runtime even with a custom transport. Custom
+transports must allow Async cancellation and preserve the cause/status of
+`RealtimeConnectionError` for retry classification. `connect_transcription` and
+`connect_to_call` retain their existing behavior; their session recovery
+semantics are not enabled by this option.
+
 ## Standard text workflows
 
 The same generic helpers cover local function results, image content, and MCP

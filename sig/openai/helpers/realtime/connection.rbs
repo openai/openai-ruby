@@ -19,7 +19,11 @@ module OpenAI
         attr_reader input_audio_buffer: OpenAI::Realtime::ConnectionResources::InputAudioBuffer
 
         # @api private
-        def initialize: (socket: untyped, url: URI::Generic) -> void
+        def initialize: (
+          socket: untyped,
+          url: URI::Generic,
+          ?recovery: untyped
+        ) -> void
         def each:
           -> Enumerator[OpenAI::Models::Realtime::connection_server_event, self]
           | {
@@ -39,6 +43,10 @@ module OpenAI
         # @api private
         def abort: -> nil
         def closed?: -> bool
+        def reconnecting?: -> bool
+        def pending_messages: -> Array[String]
+        def take_pending_messages: -> Array[String]
+        def flush_pending: -> nil
       end
     end
   end

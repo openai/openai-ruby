@@ -14,9 +14,25 @@ module OpenAI
           request_options: nil,
           transport: nil,
           transport_options: {},
+          reconnect: false,
+          max_reconnect_attempts: 5,
+          max_queue_bytes: 0,
+          on_reconnected: nil,
           &block
         )
           raise ArgumentError, "A block is required to open a Realtime WebSocket." unless block
+          unless reconnect == true || reconnect == false
+            raise ArgumentError, "`reconnect` must be true or false."
+          end
+
+          OpenAI::Realtime::Recovery.validate_options!(
+            max_reconnect_attempts: max_reconnect_attempts,
+            max_queue_bytes: max_queue_bytes,
+            on_reconnected: on_reconnected
+          )
+          if !reconnect && (max_queue_bytes.positive? || on_reconnected)
+            raise ArgumentError, "Queueing and recovery callbacks require `reconnect: true`."
+          end
 
           manager = OpenAI::Realtime::ConnectionManager.new(
             client: @client,
@@ -26,7 +42,16 @@ module OpenAI
             request_options: request_options,
             transport_options: transport_options
           )
-          manager.open(&block)
+          return manager.open(&block) unless reconnect
+
+          OpenAI::Realtime::Recovery
+            .new(
+              manager: manager,
+              max_reconnect_attempts: max_reconnect_attempts,
+              max_queue_bytes: max_queue_bytes,
+              on_reconnected: on_reconnected
+            )
+            .open(&block)
         end
 
         # Attach a server-side control WebSocket to an existing WebRTC or SIP call.

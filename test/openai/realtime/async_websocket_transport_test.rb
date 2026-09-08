@@ -388,6 +388,61 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     assert_includes(error.message, "Add `gem \"async-websocket\"` to your Gemfile")
   end
 
+  def test_reconnect_replaces_an_abnormally_closed_local_socket
+    attempts = 0
+    handler = lambda do |socket|
+      attempts += 1
+      if attempts == 1
+        socket.close(1011, "service restart")
+      else
+        write_event(socket, **JSON.parse(text_delta("recovered"), symbolize_names: true))
+      end
+    end
+
+    with_websocket_server(handler) do |client|
+      events = client.realtime.connect(model: "test-model", reconnect: true) { |connection| connection.map(&:delta) }
+      assert_equal(["recovered"], events)
+    end
+
+    assert_equal(2, attempts)
+  end
+
+  def test_reconnect_does_not_retry_a_normal_local_close
+    attempts = 0
+    handler = lambda do |socket|
+      attempts += 1
+      socket.close(1000)
+    end
+
+    with_websocket_server(handler) do |client|
+      assert_nil(client.realtime.connect(model: "test-model", reconnect: true, &:receive))
+    end
+
+    assert_equal(1, attempts)
+  end
+
+  def test_reconnect_callback_can_restore_a_real_session_before_receiving
+    attempts = 0
+    handler = lambda do |socket|
+      attempts += 1
+      if attempts == 1
+        socket.close(1012, "restarting")
+      else
+        event = read_event(socket)
+        raise "expected session restoration" unless event.fetch("type") == "session.update"
+        write_event(socket, **JSON.parse(text_delta("restored"), symbolize_names: true))
+      end
+    end
+
+    restore = -> (connection) { connection.session.update(type: :realtime, instructions: "restored") }
+    with_websocket_server(handler) do |client|
+      event = client.realtime.connect(model: "test-model", reconnect: true, on_reconnected: restore, &:receive)
+      assert_equal("restored", event.delta)
+    end
+
+    assert_equal(2, attempts)
+  end
+
   private def serve_text_lifecycle(connection)
     write_event(
       connection,

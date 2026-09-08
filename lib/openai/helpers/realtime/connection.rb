@@ -19,8 +19,9 @@ module OpenAI
       attr_reader :input_audio_buffer
 
       # @api private
-      def initialize(socket:, url:)
-        super
+      def initialize(socket:, url:, recovery: nil)
+        super(socket: socket, url: url)
+        @recovery = recovery
         @server_event_names = discriminator_values(OpenAI::Realtime::RealtimeServerEvent)
         @client_event_names = discriminator_values(OpenAI::Realtime::RealtimeClientEvent)
         @session = OpenAI::Realtime::ConnectionResources::Session.new(self)
@@ -58,6 +59,23 @@ module OpenAI
       # Validate, encode, and send a typed client event.
       def send_event(event)
         send_raw(encode_client_event(event))
+      end
+
+      # Whether automatic recovery is opening or preparing a replacement socket.
+      def reconnecting? = @recovery ? @recovery.reconnecting? : false
+
+      # Snapshot of retained events, including the current event during a flush.
+      # These may contain sensitive application data. Normal connections return [].
+      def pending_messages = @recovery ? @recovery.pending_messages : []
+
+      # Remove and return retained events without sending them.
+      def take_pending_messages = @recovery ? @recovery.take_pending_messages : []
+
+      # Explicitly send retained events in order on the current session. Restore
+      # any required session state first. Does not retry uncertain failed writes.
+      def flush_pending
+        @recovery&.flush_pending
+        nil
       end
 
       private def encode_client_event(event)

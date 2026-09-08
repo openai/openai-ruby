@@ -51,6 +51,70 @@ class OpenAI::Test::RealtimeAuthRetryTest < Minitest::Test
     end
   end
 
+  class ReconnectingTransport
+    attr_reader :attempts
+
+    class Connection < Socket
+      def initialize(first)
+        super()
+        @first = first
+      end
+
+      def read
+        if @first
+          raise(
+            OpenAI::Errors::RealtimeConnectionError.new(
+              url: URI("wss://example.com/v1/realtime"),
+              cause: EOFError.new
+            )
+          )
+        end
+
+        "{\"type\":\"future.event\"}"
+      end
+    end
+
+    def initialize = @attempts = []
+
+    def open(**request)
+      @attempts << request
+      if @attempts.length == 2
+        raise OpenAI::Errors::RealtimeConnectionError.new(url: request.fetch(:url), http_status: 401)
+      end
+
+      yield(Connection.new(@attempts.one?))
+    end
+  end
+
+  def test_reconnect_rebuilds_auth_and_preserves_one_handshake_refresh
+    client = workload_identity_client
+    transport = ReconnectingTransport.new
+    tokens = %w[first-token expired-token refreshed-token]
+    invalidations = 0
+    deadlines = []
+    get_token = lambda do |deadline:|
+      deadlines << deadline
+      tokens.shift
+    end
+
+    client.workload_identity_auth.stub(:get_token, get_token) do
+      client.workload_identity_auth.stub(:invalidate_token, -> { invalidations += 1 }) do
+        event = client.realtime.connect(model: "test-model", transport: transport, reconnect: true, &:receive)
+        assert_equal(:"future.event", event.type)
+      end
+    end
+
+    assert_equal(1, invalidations)
+    assert_equal(3, transport.attempts.length)
+    assert_equal(
+      ["Bearer first-token", "Bearer expired-token", "Bearer refreshed-token"],
+      transport.attempts.map { _1.dig(:headers, "authorization") }
+    )
+    assert_equal(deadlines[1], deadlines[2])
+    assert_operator(deadlines[1], :>, deadlines[0])
+    assert(transport.attempts.all? { _1.fetch(:url).to_s == "wss://example.com/v1/realtime?model=test-model" })
+  end
+
   def test_workload_identity_refreshes_once_after_a_definitive_upgrade_401
     client = workload_identity_client
     transport = RejectOnceTransport.new
