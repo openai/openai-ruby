@@ -1,0 +1,12 @@
+client = OpenAI::Client.new(api_key: "synthetic-key", webhook_secret: "synthetic-webhook-secret")
+headers = {
+  "webhook-id" => "evt_synthetic",
+  "webhook-timestamp" => Time.now.to_i.to_s,
+  "webhook-signature" => "v1,synthetic-invalid-signature"
+}
+
+begin
+  client.webhooks.verify_signature("{}", headers)
+rescue OpenAI::Errors::InvalidWebhookSignatureError => error
+  puts(error.message)
+end

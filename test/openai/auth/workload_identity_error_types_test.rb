@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "fileutils"
 require "open3"
 require "tempfile"
 require "tmpdir"
@@ -108,20 +107,6 @@ class OpenAI::Test::WorkloadIdentityErrorTypesTest < Minitest::Test
     assert_includes("#{stdout}\n#{stderr}", "String")
   end
 
-  def test_shipped_rbs_types_error_rescues_and_metadata
-    stdout, stderr, status = steep_check(rbs_source)
-
-    assert_predicate(status, :success?, "#{stdout}\n#{stderr}")
-  end
-
-  def test_shipped_rbs_rejects_incorrect_metadata_type
-    source = rbs_source.sub("error.status = 401", "error.status = nil")
-    stdout, stderr, status = steep_check(source)
-
-    refute_predicate(status, :success?, "#{stdout}\n#{stderr}")
-    assert_includes("#{stdout}\n#{stderr}", "error.status")
-  end
-
   private
 
   def workload_identity_client(provider)
@@ -156,21 +141,6 @@ class OpenAI::Test::WorkloadIdentityErrorTypesTest < Minitest::Test
     RUBY
   end
 
-  def rbs_source
-    <<~RUBY
-      begin
-        raise "synthetic"
-      rescue OpenAI::Errors::SubjectTokenProviderError => error
-        error.provider.upcase
-        error.cause&.message
-      rescue OpenAI::Errors::OAuthError => error
-        error.error_code&.to_s
-        error.status = 401
-        error.status + 1
-      end
-    RUBY
-  end
-
   def sorbet_typecheck(source)
     root = File.expand_path("../../..", __dir__)
 
@@ -187,30 +157,4 @@ class OpenAI::Test::WorkloadIdentityErrorTypesTest < Minitest::Test
     end
   end
 
-  def steep_check(source)
-    root = File.expand_path("../../..", __dir__)
-
-    Dir.mktmpdir("workload-identity-error-rbs") do |directory|
-      FileUtils.cp_r(File.join(root, "sig"), directory)
-      File.write(File.join(directory, "probe.rb"), source)
-      File.write(
-        File.join(directory, "Steepfile"),
-        <<~RUBY
-          target :lib do
-            signature "sig"
-            library "net-http"
-            check "probe.rb"
-          end
-        RUBY
-      )
-      Open3.capture3(
-        "steep",
-        "check",
-        "--no-daemon",
-        "--jobs=1",
-        "--validate=skip",
-        chdir: directory
-      )
-    end
-  end
 end

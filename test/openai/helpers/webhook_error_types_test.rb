@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require "fileutils"
 require "open3"
 require "tempfile"
-require "tmpdir"
 
 require_relative "../test_helper"
 
@@ -57,12 +55,6 @@ class OpenAI::Test::WebhookErrorTypesTest < Minitest::Test
     assert_includes("#{stdout}\n#{stderr}", "String")
   end
 
-  def test_shipped_rbs_types_the_public_rescue_path
-    stdout, stderr, status = steep_check(rbs_rescue_source)
-
-    assert_predicate(status, :success?, "#{stdout}\n#{stderr}")
-  end
-
   private
 
   def invalid_signature_headers
@@ -93,23 +85,6 @@ class OpenAI::Test::WebhookErrorTypesTest < Minitest::Test
     RUBY
   end
 
-  def rbs_rescue_source
-    <<~RUBY
-      client = OpenAI::Client.new(api_key: "synthetic-key", webhook_secret: "synthetic-webhook-secret")
-      headers = {
-        "webhook-id" => "evt_synthetic",
-        "webhook-timestamp" => Time.now.to_i.to_s,
-        "webhook-signature" => "v1,synthetic-invalid-signature"
-      }
-
-      begin
-        client.webhooks.verify_signature("{}", headers)
-      rescue OpenAI::Errors::InvalidWebhookSignatureError => error
-        puts(error.message)
-      end
-    RUBY
-  end
-
   def sorbet_typecheck(source)
     root = File.expand_path("../../..", __dir__)
 
@@ -126,30 +101,4 @@ class OpenAI::Test::WebhookErrorTypesTest < Minitest::Test
     end
   end
 
-  def steep_check(source)
-    root = File.expand_path("../../..", __dir__)
-
-    Dir.mktmpdir("webhook-error-rbs") do |directory|
-      FileUtils.cp_r(File.join(root, "sig"), directory)
-      File.write(File.join(directory, "probe.rb"), source)
-      File.write(
-        File.join(directory, "Steepfile"),
-        <<~RUBY
-          target :lib do
-            signature "sig"
-            library "net-http"
-            check "probe.rb"
-          end
-        RUBY
-      )
-      Open3.capture3(
-        "steep",
-        "check",
-        "--no-daemon",
-        "--jobs=1",
-        "--validate=skip",
-        chdir: directory
-      )
-    end
-  end
 end
