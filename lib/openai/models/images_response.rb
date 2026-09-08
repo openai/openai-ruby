@@ -30,17 +30,17 @@ module OpenAI
       optional :output_format, enum: -> { OpenAI::ImagesResponse::OutputFormat }
 
       # @!attribute quality
-      #   The quality of the image generated. Either `low`, `medium`, or `high`.
+      #   The quality of the image generated. One of `low`, `medium`, `high`, `xhigh`, or
+      #   `max`.
       #
       #   @return [Symbol, OpenAI::Models::ImagesResponse::Quality, nil]
       optional :quality, enum: -> { OpenAI::ImagesResponse::Quality }
 
       # @!attribute size
-      #   The size of the image generated. Either `1024x1024`, `1024x1536`, or
-      #   `1536x1024`.
+      #   The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
-      #   @return [Symbol, OpenAI::Models::ImagesResponse::Size, nil]
-      optional :size, enum: -> { OpenAI::ImagesResponse::Size }
+      #   @return [String, Symbol, OpenAI::Models::ImagesResponse::Size, nil]
+      optional :size, union: -> { OpenAI::ImagesResponse::Size }
 
       # @!attribute usage
       #   For `gpt-image-1` only, the token usage information for the image generation.
@@ -62,9 +62,9 @@ module OpenAI
       #
       #   @param output_format [Symbol, OpenAI::Models::ImagesResponse::OutputFormat] The output format of the image generation. Either `png`, `webp`, or `jpeg`.
       #
-      #   @param quality [Symbol, OpenAI::Models::ImagesResponse::Quality] The quality of the image generated. Either `low`, `medium`, or `high`.
+      #   @param quality [Symbol, OpenAI::Models::ImagesResponse::Quality] The quality of the image generated. One of `low`, `medium`, `high`, `xhigh`, or
       #
-      #   @param size [Symbol, OpenAI::Models::ImagesResponse::Size] The size of the image generated. Either `1024x1024`, `1024x1536`, or `1536x1024`
+      #   @param size [String, Symbol, OpenAI::Models::ImagesResponse::Size] The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
       #   @param usage [OpenAI::Models::ImagesResponse::Usage] For `gpt-image-1` only, the token usage information for the image generation.
 
@@ -96,7 +96,8 @@ module OpenAI
         #   @return [Array<Symbol>]
       end
 
-      # The quality of the image generated. Either `low`, `medium`, or `high`.
+      # The quality of the image generated. One of `low`, `medium`, `high`, `xhigh`, or
+      # `max`.
       #
       # @see OpenAI::Models::ImagesResponse#quality
       module Quality
@@ -105,24 +106,41 @@ module OpenAI
         LOW = :low
         MEDIUM = :medium
         HIGH = :high
+        XHIGH = :xhigh
+        MAX = :max
 
         # @!method self.values
         #   @return [Array<Symbol>]
       end
 
-      # The size of the image generated. Either `1024x1024`, `1024x1536`, or
-      # `1536x1024`.
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
       # @see OpenAI::Models::ImagesResponse#size
       module Size
-        extend OpenAI::Internal::Type::Enum
+        extend OpenAI::Internal::Type::Union
+
+        variant String
+
+        variant const: -> { OpenAI::Models::ImagesResponse::Size::SIZE_1024X1024 }
+
+        variant const: -> { OpenAI::Models::ImagesResponse::Size::SIZE_1024X1536 }
+
+        variant const: -> { OpenAI::Models::ImagesResponse::Size::SIZE_1536X1024 }
+
+        # @!method self.variants
+        #   @return [Array(String, Symbol)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias { T.any(String, OpenAI::ImagesResponse::Size::TaggedSymbol) }
+        end
+
+        # @!group
 
         SIZE_1024X1024 = :"1024x1024"
         SIZE_1024X1536 = :"1024x1536"
         SIZE_1536X1024 = :"1536x1024"
 
-        # @!method self.values
-        #   @return [Array<Symbol>]
+        # @!endgroup
       end
 
       # @see OpenAI::Models::ImagesResponse#usage

@@ -247,7 +247,9 @@ module OpenAI
           # parameter.
           service_tier: nil,
           # Body param: Whether to store the generated model response for later retrieval
-          # via API.
+          # via API. Defaults to true when omitted. If set to true, response data will be
+          # stored for at least 30 days, subject to the
+          # [data retention exceptions](/api/docs/guides/your-data#v1responses).
           store: nil,
           # Body param: Options for streaming responses. Only set this when you set
           # `stream: true`.
@@ -561,7 +563,9 @@ module OpenAI
           # parameter.
           service_tier: nil,
           # Body param: Whether to store the generated model response for later retrieval
-          # via API.
+          # via API. Defaults to true when omitted. If set to true, response data will be
+          # stored for at least 30 days, subject to the
+          # [data retention exceptions](/api/docs/guides/your-data#v1responses).
           store: nil,
           # Body param: Options for streaming responses. Only set this when you set
           # `stream: true`.

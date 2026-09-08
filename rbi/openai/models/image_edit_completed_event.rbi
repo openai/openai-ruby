@@ -32,8 +32,8 @@ module OpenAI
       sig { returns(OpenAI::ImageEditCompletedEvent::Quality::TaggedSymbol) }
       attr_accessor :quality
 
-      # The size of the edited image.
-      sig { returns(OpenAI::ImageEditCompletedEvent::Size::TaggedSymbol) }
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+      sig { returns(OpenAI::ImageEditCompletedEvent::Size::Variants) }
       attr_accessor :size
 
       # The type of the event. Always `image_edit.completed`.
@@ -62,7 +62,7 @@ module OpenAI
 
           quality: OpenAI::ImageEditCompletedEvent::Quality::OrSymbol,
 
-          size: OpenAI::ImageEditCompletedEvent::Size::OrSymbol,
+          size: T.any(String, OpenAI::ImageEditCompletedEvent::Size::OrSymbol),
 
           usage: OpenAI::ImageEditCompletedEvent::Usage::OrHash,
 
@@ -87,7 +87,7 @@ module OpenAI
         # The quality setting for the edited image.
         quality:,
 
-        # The size of the edited image.
+        # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
         size:,
 
         # For the GPT image models only, the token usage information for the image
@@ -108,7 +108,7 @@ module OpenAI
             created_at: Integer,
             output_format: OpenAI::ImageEditCompletedEvent::OutputFormat::TaggedSymbol,
             quality: OpenAI::ImageEditCompletedEvent::Quality::TaggedSymbol,
-            size: OpenAI::ImageEditCompletedEvent::Size::TaggedSymbol,
+            size: OpenAI::ImageEditCompletedEvent::Size::Variants,
             type: Symbol,
             usage: OpenAI::ImageEditCompletedEvent::Usage
           }
@@ -159,6 +159,8 @@ module OpenAI
         LOW = T.let(:low, OpenAI::ImageEditCompletedEvent::Quality::TaggedSymbol)
         MEDIUM = T.let(:medium, OpenAI::ImageEditCompletedEvent::Quality::TaggedSymbol)
         HIGH = T.let(:high, OpenAI::ImageEditCompletedEvent::Quality::TaggedSymbol)
+        XHIGH = T.let(:xhigh, OpenAI::ImageEditCompletedEvent::Quality::TaggedSymbol)
+        MAX = T.let(:max, OpenAI::ImageEditCompletedEvent::Quality::TaggedSymbol)
         AUTO = T.let(:auto, OpenAI::ImageEditCompletedEvent::Quality::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::ImageEditCompletedEvent::Quality::TaggedSymbol]) }
@@ -166,11 +168,20 @@ module OpenAI
         end
       end
 
-      # The size of the edited image.
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       module Size
-        extend OpenAI::Internal::Type::Enum
+        extend OpenAI::Internal::Type::Union
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::ImageEditCompletedEvent::Size) }
+        Variants = T.type_alias { T.any(String, OpenAI::ImageEditCompletedEvent::Size::TaggedSymbol) }
+
+        sig { override.returns(T::Array[OpenAI::ImageEditCompletedEvent::Size::Variants]) }
+        def self.variants
+        end
+
+        TaggedSymbol = T.type_alias do
+          T.all(Symbol, OpenAI::ImageEditCompletedEvent::Size)
+        end
+
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         SIZE_1024X1024 = T.let(:"1024x1024", OpenAI::ImageEditCompletedEvent::Size::TaggedSymbol)
@@ -178,9 +189,6 @@ module OpenAI
         SIZE_1536X1024 = T.let(:"1536x1024", OpenAI::ImageEditCompletedEvent::Size::TaggedSymbol)
         AUTO = T.let(:auto, OpenAI::ImageEditCompletedEvent::Size::TaggedSymbol)
 
-        sig { override.returns(T::Array[OpenAI::ImageEditCompletedEvent::Size::TaggedSymbol]) }
-        def self.values
-        end
       end
 
       class Usage < OpenAI::Internal::Type::BaseModel

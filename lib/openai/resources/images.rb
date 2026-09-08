@@ -51,8 +51,7 @@ module OpenAI
       # {OpenAI::Models::ImageEditParams} for more details.
       #
       # Creates an edited or extended image given one or more source images and a
-      # prompt. This endpoint supports GPT Image models (`gpt-image-1.5`, `gpt-image-1`,
-      # `gpt-image-1-mini`, and `chatgpt-image-latest`) and `dall-e-2`.
+      # prompt. This endpoint supports GPT Image models and `dall-e-2`.
       #
       # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
       # metadata. Use `OpenAI::FilePart` when you need to override the filename or
@@ -64,7 +63,7 @@ module OpenAI
       #
       # @param prompt [String] A text description of the desired image(s). The maximum length is 1000 character
       #
-      # @param background [Symbol, OpenAI::Models::ImageEditParams::Background, nil] Allows to set transparency for the background of the generated image(s).
+      # @param background [Symbol, OpenAI::Models::ImageEditParams::Background, nil] Allows to set transparency for the background of the generated image(s). Must
       #
       # @param input_fidelity [Symbol, OpenAI::Models::ImageEditParams::InputFidelity, nil] Control how much effort the model will exert to match the style and features, es
       #
@@ -80,11 +79,11 @@ module OpenAI
       #
       # @param partial_images [Integer, nil] The number of partial images to generate. This parameter is used for
       #
-      # @param quality [Symbol, OpenAI::Models::ImageEditParams::Quality, nil] The quality of the image that will be generated for GPT image models. Defaults t
+      # @param quality [Symbol, OpenAI::Models::ImageEditParams::Quality, nil] The quality of the image that will be generated for GPT image models. The GPT im
       #
       # @param response_format [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil] The format in which the generated images are returned. Must be one of `url` or `
       #
-      # @param size [String, Symbol, OpenAI::Models::ImageEditParams::Size, nil] The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`
+      # @param size [String, Symbol, OpenAI::Models::ImageEditParams::Size, nil] The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`, `
       #
       # @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
       #
@@ -117,8 +116,7 @@ module OpenAI
       # {OpenAI::Models::ImageEditParams} for more details.
       #
       # Creates an edited or extended image given one or more source images and a
-      # prompt. This endpoint supports GPT Image models (`gpt-image-1.5`, `gpt-image-1`,
-      # `gpt-image-1-mini`, and `chatgpt-image-latest`) and `dall-e-2`.
+      # prompt. This endpoint supports GPT Image models and `dall-e-2`.
       #
       # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
       # metadata. Use `OpenAI::FilePart` when you need to override the filename or
@@ -130,7 +128,7 @@ module OpenAI
       #
       # @param prompt [String] A text description of the desired image(s). The maximum length is 1000 character
       #
-      # @param background [Symbol, OpenAI::Models::ImageEditParams::Background, nil] Allows to set transparency for the background of the generated image(s).
+      # @param background [Symbol, OpenAI::Models::ImageEditParams::Background, nil] Allows to set transparency for the background of the generated image(s). Must
       #
       # @param input_fidelity [Symbol, OpenAI::Models::ImageEditParams::InputFidelity, nil] Control how much effort the model will exert to match the style and features, es
       #
@@ -146,11 +144,11 @@ module OpenAI
       #
       # @param partial_images [Integer, nil] The number of partial images to generate. This parameter is used for
       #
-      # @param quality [Symbol, OpenAI::Models::ImageEditParams::Quality, nil] The quality of the image that will be generated for GPT image models. Defaults t
+      # @param quality [Symbol, OpenAI::Models::ImageEditParams::Quality, nil] The quality of the image that will be generated for GPT image models. The GPT im
       #
       # @param response_format [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil] The format in which the generated images are returned. Must be one of `url` or `
       #
-      # @param size [String, Symbol, OpenAI::Models::ImageEditParams::Size, nil] The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`
+      # @param size [String, Symbol, OpenAI::Models::ImageEditParams::Size, nil] The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`, `
       #
       # @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
       #
@@ -195,7 +193,7 @@ module OpenAI
       #
       # @param prompt [String] A text description of the desired image(s). The maximum length is 32000 characte
       #
-      # @param background [Symbol, OpenAI::Models::ImageGenerateParams::Background, nil] Allows to set transparency for the background of the generated image(s).
+      # @param background [Symbol, OpenAI::Models::ImageGenerateParams::Background, nil] Allows to set transparency for the background of the generated image(s). Must
       #
       # @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT i
       #
@@ -213,7 +211,7 @@ module OpenAI
       #
       # @param response_format [Symbol, OpenAI::Models::ImageGenerateParams::ResponseFormat, nil] The format in which generated images with `dall-e-2` and `dall-e-3` are returned
       #
-      # @param size [String, Symbol, OpenAI::Models::ImageGenerateParams::Size, nil] The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`
+      # @param size [String, Symbol, OpenAI::Models::ImageGenerateParams::Size, nil] The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`, `
       #
       # @param style [Symbol, OpenAI::Models::ImageGenerateParams::Style, nil] The style of the generated images. This parameter is only supported for `dall-e-
       #
@@ -253,7 +251,7 @@ module OpenAI
       #
       # @param prompt [String] A text description of the desired image(s). The maximum length is 32000 characte
       #
-      # @param background [Symbol, OpenAI::Models::ImageGenerateParams::Background, nil] Allows to set transparency for the background of the generated image(s).
+      # @param background [Symbol, OpenAI::Models::ImageGenerateParams::Background, nil] Allows to set transparency for the background of the generated image(s). Must
       #
       # @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT i
       #
@@ -271,7 +269,7 @@ module OpenAI
       #
       # @param response_format [Symbol, OpenAI::Models::ImageGenerateParams::ResponseFormat, nil] The format in which generated images with `dall-e-2` and `dall-e-3` are returned
       #
-      # @param size [String, Symbol, OpenAI::Models::ImageGenerateParams::Size, nil] The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`
+      # @param size [String, Symbol, OpenAI::Models::ImageGenerateParams::Size, nil] The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`, `
       #
       # @param style [Symbol, OpenAI::Models::ImageGenerateParams::Style, nil] The style of the generated images. This parameter is only supported for `dall-e-
       #

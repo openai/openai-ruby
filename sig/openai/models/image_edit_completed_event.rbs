@@ -75,7 +75,7 @@ module OpenAI
         def self?.values: -> ::Array[OpenAI::Models::ImageEditCompletedEvent::output_format]
       end
 
-      type quality = :low | :medium | :high | :auto
+      type quality = :low | :medium | :high | :xhigh | :max | :auto
 
       module Quality
         extend OpenAI::Internal::Type::Enum
@@ -83,22 +83,24 @@ module OpenAI
         LOW: :low
         MEDIUM: :medium
         HIGH: :high
+        XHIGH: :xhigh
+        MAX: :max
         AUTO: :auto
 
         def self?.values: -> ::Array[OpenAI::Models::ImageEditCompletedEvent::quality]
       end
 
-      type size = :"1024x1024" | :"1024x1536" | :"1536x1024" | :auto
+      type size = String | :"1024x1024" | :"1024x1536" | :"1536x1024" | :auto
 
       module Size
-        extend OpenAI::Internal::Type::Enum
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::ImageEditCompletedEvent::size]
 
         SIZE_1024X1024: :"1024x1024"
         SIZE_1024X1536: :"1024x1536"
         SIZE_1536X1024: :"1536x1024"
         AUTO: :auto
-
-        def self?.values: -> ::Array[OpenAI::Models::ImageEditCompletedEvent::size]
       end
 
       type usage =

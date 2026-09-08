@@ -36,8 +36,8 @@ module OpenAI
       sig { returns(OpenAI::ImageEditPartialImageEvent::Quality::TaggedSymbol) }
       attr_accessor :quality
 
-      # The size of the requested edited image.
-      sig { returns(OpenAI::ImageEditPartialImageEvent::Size::TaggedSymbol) }
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+      sig { returns(OpenAI::ImageEditPartialImageEvent::Size::Variants) }
       attr_accessor :size
 
       # The type of the event. Always `image_edit.partial_image`.
@@ -60,7 +60,7 @@ module OpenAI
 
           quality: OpenAI::ImageEditPartialImageEvent::Quality::OrSymbol,
 
-          size: OpenAI::ImageEditPartialImageEvent::Size::OrSymbol,
+          size: T.any(String, OpenAI::ImageEditPartialImageEvent::Size::OrSymbol),
 
           type: Symbol
         )
@@ -86,7 +86,7 @@ module OpenAI
         # The quality setting for the requested edited image.
         quality:,
 
-        # The size of the requested edited image.
+        # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
         size:,
 
         # The type of the event. Always `image_edit.partial_image`.
@@ -104,7 +104,7 @@ module OpenAI
             output_format: OpenAI::ImageEditPartialImageEvent::OutputFormat::TaggedSymbol,
             partial_image_index: Integer,
             quality: OpenAI::ImageEditPartialImageEvent::Quality::TaggedSymbol,
-            size: OpenAI::ImageEditPartialImageEvent::Size::TaggedSymbol,
+            size: OpenAI::ImageEditPartialImageEvent::Size::Variants,
             type: Symbol
           }
         )
@@ -154,6 +154,8 @@ module OpenAI
         LOW = T.let(:low, OpenAI::ImageEditPartialImageEvent::Quality::TaggedSymbol)
         MEDIUM = T.let(:medium, OpenAI::ImageEditPartialImageEvent::Quality::TaggedSymbol)
         HIGH = T.let(:high, OpenAI::ImageEditPartialImageEvent::Quality::TaggedSymbol)
+        XHIGH = T.let(:xhigh, OpenAI::ImageEditPartialImageEvent::Quality::TaggedSymbol)
+        MAX = T.let(:max, OpenAI::ImageEditPartialImageEvent::Quality::TaggedSymbol)
         AUTO = T.let(:auto, OpenAI::ImageEditPartialImageEvent::Quality::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::ImageEditPartialImageEvent::Quality::TaggedSymbol]) }
@@ -161,11 +163,20 @@ module OpenAI
         end
       end
 
-      # The size of the requested edited image.
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       module Size
-        extend OpenAI::Internal::Type::Enum
+        extend OpenAI::Internal::Type::Union
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::ImageEditPartialImageEvent::Size) }
+        Variants = T.type_alias { T.any(String, OpenAI::ImageEditPartialImageEvent::Size::TaggedSymbol) }
+
+        sig { override.returns(T::Array[OpenAI::ImageEditPartialImageEvent::Size::Variants]) }
+        def self.variants
+        end
+
+        TaggedSymbol = T.type_alias do
+          T.all(Symbol, OpenAI::ImageEditPartialImageEvent::Size)
+        end
+
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         SIZE_1024X1024 = T.let(:"1024x1024", OpenAI::ImageEditPartialImageEvent::Size::TaggedSymbol)
@@ -173,9 +184,6 @@ module OpenAI
         SIZE_1536X1024 = T.let(:"1536x1024", OpenAI::ImageEditPartialImageEvent::Size::TaggedSymbol)
         AUTO = T.let(:auto, OpenAI::ImageEditPartialImageEvent::Size::TaggedSymbol)
 
-        sig { override.returns(T::Array[OpenAI::ImageEditPartialImageEvent::Size::TaggedSymbol]) }
-        def self.values
-        end
       end
 
     end

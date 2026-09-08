@@ -34,10 +34,10 @@ module OpenAI
       required :quality, enum: -> { OpenAI::ImageEditCompletedEvent::Quality }
 
       # @!attribute size
-      #   The size of the edited image.
+      #   The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
-      #   @return [Symbol, OpenAI::Models::ImageEditCompletedEvent::Size]
-      required :size, enum: -> { OpenAI::ImageEditCompletedEvent::Size }
+      #   @return [String, Symbol, OpenAI::Models::ImageEditCompletedEvent::Size]
+      required :size, union: -> { OpenAI::ImageEditCompletedEvent::Size }
 
       # @!attribute type
       #   The type of the event. Always `image_edit.completed`.
@@ -68,7 +68,7 @@ module OpenAI
       #
       #   @param quality [Symbol, OpenAI::Models::ImageEditCompletedEvent::Quality] The quality setting for the edited image.
       #
-      #   @param size [Symbol, OpenAI::Models::ImageEditCompletedEvent::Size] The size of the edited image.
+      #   @param size [String, Symbol, OpenAI::Models::ImageEditCompletedEvent::Size] The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
       #   @param usage [OpenAI::Models::ImageEditCompletedEvent::Usage] For the GPT image models only, the token usage information for the image generat
       #
@@ -111,25 +111,45 @@ module OpenAI
         LOW = :low
         MEDIUM = :medium
         HIGH = :high
+        XHIGH = :xhigh
+        MAX = :max
         AUTO = :auto
 
         # @!method self.values
         #   @return [Array<Symbol>]
       end
 
-      # The size of the edited image.
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
       # @see OpenAI::Models::ImageEditCompletedEvent#size
       module Size
-        extend OpenAI::Internal::Type::Enum
+        extend OpenAI::Internal::Type::Union
+
+        variant String
+
+        variant const: -> { OpenAI::Models::ImageEditCompletedEvent::Size::SIZE_1024X1024 }
+
+        variant const: -> { OpenAI::Models::ImageEditCompletedEvent::Size::SIZE_1024X1536 }
+
+        variant const: -> { OpenAI::Models::ImageEditCompletedEvent::Size::SIZE_1536X1024 }
+
+        variant const: -> { OpenAI::Models::ImageEditCompletedEvent::Size::AUTO }
+
+        # @!method self.variants
+        #   @return [Array(String, Symbol)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias { T.any(String, OpenAI::ImageEditCompletedEvent::Size::TaggedSymbol) }
+        end
+
+        # @!group
 
         SIZE_1024X1024 = :"1024x1024"
         SIZE_1024X1536 = :"1024x1536"
         SIZE_1536X1024 = :"1536x1024"
         AUTO = :auto
 
-        # @!method self.values
-        #   @return [Array<Symbol>]
+        # @!endgroup
       end
 
       # @see OpenAI::Models::ImageEditCompletedEvent#usage

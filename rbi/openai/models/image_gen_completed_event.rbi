@@ -32,8 +32,8 @@ module OpenAI
       sig { returns(OpenAI::ImageGenCompletedEvent::Quality::TaggedSymbol) }
       attr_accessor :quality
 
-      # The size of the generated image.
-      sig { returns(OpenAI::ImageGenCompletedEvent::Size::TaggedSymbol) }
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+      sig { returns(OpenAI::ImageGenCompletedEvent::Size::Variants) }
       attr_accessor :size
 
       # The type of the event. Always `image_generation.completed`.
@@ -62,7 +62,7 @@ module OpenAI
 
           quality: OpenAI::ImageGenCompletedEvent::Quality::OrSymbol,
 
-          size: OpenAI::ImageGenCompletedEvent::Size::OrSymbol,
+          size: T.any(String, OpenAI::ImageGenCompletedEvent::Size::OrSymbol),
 
           usage: OpenAI::ImageGenCompletedEvent::Usage::OrHash,
 
@@ -87,7 +87,7 @@ module OpenAI
         # The quality setting for the generated image.
         quality:,
 
-        # The size of the generated image.
+        # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
         size:,
 
         # For the GPT image models only, the token usage information for the image
@@ -108,7 +108,7 @@ module OpenAI
             created_at: Integer,
             output_format: OpenAI::ImageGenCompletedEvent::OutputFormat::TaggedSymbol,
             quality: OpenAI::ImageGenCompletedEvent::Quality::TaggedSymbol,
-            size: OpenAI::ImageGenCompletedEvent::Size::TaggedSymbol,
+            size: OpenAI::ImageGenCompletedEvent::Size::Variants,
             type: Symbol,
             usage: OpenAI::ImageGenCompletedEvent::Usage
           }
@@ -159,6 +159,8 @@ module OpenAI
         LOW = T.let(:low, OpenAI::ImageGenCompletedEvent::Quality::TaggedSymbol)
         MEDIUM = T.let(:medium, OpenAI::ImageGenCompletedEvent::Quality::TaggedSymbol)
         HIGH = T.let(:high, OpenAI::ImageGenCompletedEvent::Quality::TaggedSymbol)
+        XHIGH = T.let(:xhigh, OpenAI::ImageGenCompletedEvent::Quality::TaggedSymbol)
+        MAX = T.let(:max, OpenAI::ImageGenCompletedEvent::Quality::TaggedSymbol)
         AUTO = T.let(:auto, OpenAI::ImageGenCompletedEvent::Quality::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::ImageGenCompletedEvent::Quality::TaggedSymbol]) }
@@ -166,11 +168,20 @@ module OpenAI
         end
       end
 
-      # The size of the generated image.
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       module Size
-        extend OpenAI::Internal::Type::Enum
+        extend OpenAI::Internal::Type::Union
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::ImageGenCompletedEvent::Size) }
+        Variants = T.type_alias { T.any(String, OpenAI::ImageGenCompletedEvent::Size::TaggedSymbol) }
+
+        sig { override.returns(T::Array[OpenAI::ImageGenCompletedEvent::Size::Variants]) }
+        def self.variants
+        end
+
+        TaggedSymbol = T.type_alias do
+          T.all(Symbol, OpenAI::ImageGenCompletedEvent::Size)
+        end
+
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         SIZE_1024X1024 = T.let(:"1024x1024", OpenAI::ImageGenCompletedEvent::Size::TaggedSymbol)
@@ -178,9 +189,6 @@ module OpenAI
         SIZE_1536X1024 = T.let(:"1536x1024", OpenAI::ImageGenCompletedEvent::Size::TaggedSymbol)
         AUTO = T.let(:auto, OpenAI::ImageGenCompletedEvent::Size::TaggedSymbol)
 
-        sig { override.returns(T::Array[OpenAI::ImageGenCompletedEvent::Size::TaggedSymbol]) }
-        def self.values
-        end
       end
 
       class Usage < OpenAI::Internal::Type::BaseModel
