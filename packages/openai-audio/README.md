@@ -55,3 +55,9 @@ real subprocess pipes. It never opens a microphone or speaker. The native worker
 has compiled on macOS during development. Linux/Windows builds and physical
 loopback measurements remain release gates. Headphones are the duplex baseline;
 this worker does not implement acoustic echo cancellation.
+
+The opt-in `scripts/test-local-audio-examples.rb` runner exercises both local
+examples against the live API with the test executable. It supplies a synthetic
+48 kHz PCM fixture to the simulated device; this input override exists only in
+test code. See [local audio examples](../../local-audio.md) for the command and
+the distinction between software end-to-end coverage and physical qualification.

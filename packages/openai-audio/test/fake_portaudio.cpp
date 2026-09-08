@@ -3,6 +3,8 @@
 #include <portaudio.h>
 #include <atomic>
 #include <chrono>
+#include <cstdlib>
+#include <fstream>
 #include <thread>
 #include <vector>
 
@@ -46,7 +48,24 @@ PaError Pa_StartStream(PaStream *handle) {
   stream->active = true;
   stream->thread = std::thread([stream] {
     std::vector<float> input(240, .125f), output(240);
+    // Optional synthetic 48 kHz PCM16 fixture for live example tests. This is
+    // test-device code only; the production worker never reads this variable.
+    const char *fixture_path = std::getenv("OPENAI_AUDIO_TEST_PCM");
+    std::ifstream fixture;
+    if (stream->capture && fixture_path) fixture.open(fixture_path, std::ios::binary);
+    unsigned int pre_roll = 100; // Half a second lets the managed input gate open.
     while (stream->active) {
+      if (stream->capture && fixture_path) {
+        for (auto &sample : input) {
+          unsigned char bytes[2]{};
+          sample = 0;
+          if (!pre_roll && fixture.read(reinterpret_cast<char *>(bytes), 2)) {
+            const unsigned int value = unsigned(bytes[0]) | unsigned(bytes[1]) << 8;
+            sample = (value >= 32768 ? int(value) - 65536 : int(value)) / 32768.0f;
+          }
+        }
+        if (pre_roll) --pre_roll;
+      }
       const double now = clock_now();
       PaStreamCallbackTimeInfo timing{now - .01, now, now + .01};
       if (stream->device == 1) timing.outputBufferDacTime = now + 60;

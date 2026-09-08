@@ -261,7 +261,7 @@ Internal generation IDs and device timestamps are private. Diagnostics/inspect m
 
 Expected SDK paths: additive helpers under `lib/openai/helpers/local_audio/` and `lib/openai/helpers/realtime_audio/`, one handwritten Realtime resource extension for `connect_audio`, matching RBI/RBS, helper tests and examples. Device worker/build ownership belongs to the optional companion. Preserve generated models, `FilePart`, existing connection semantics, HTTP audio behavior, code-generation ownership and custom-code budget policy. No architectural code changes or new repository/package are authorized merely by documenting this proposal.
 
-Before implementation, agree the new public API, optional companion ownership, and live overflow/deadline defaults. Relevant Ruby lint/type/security checks and the required two-reviewer adversarial rounds apply before any push/PR. The current work is design only.
+The requester approved implementing this API, optional companion source, and the live overflow/deadline defaults. Relevant Ruby lint/type/security checks and the required two-reviewer adversarial rounds apply before any push/PR. Publication ownership, platform artifacts and physical timing qualification remain release gates.
 
 ## 12. Required verification matrix
 
@@ -284,7 +284,7 @@ The earlier seven-language audit remains the released-capability baseline. Addit
 - [Python Agents playback tracking](https://openai.github.io/openai-agents-python/realtime/guide/#interruptions-and-playback-tracking) independently separates playback accounting from generation; [JS Agents transport guidance](https://openai.github.io/openai-agents-js/guides/voice-agents/transport/) keeps WebSocket device plumbing application-owned. These are architecture references, not evidence that base SDKs ship this Ruby proposal.
 - [PortAudio callback timestamps](https://portaudio.com/docs/v19-doxydocs/structPaStreamCallbackTimeInfo.html), [stream/abort/callback contracts](https://portaudio.com/docs/v19-doxydocs/portaudio_8h.html), [PortAudio format-conversion FAQ](https://portaudio.github.io/faq.html), and [libsamplerate streaming API](https://libsndfile.github.io/libsamplerate/api_full.html) inform the proposed native backend. Its portability, IPC implementation and timing accuracy remain unverified until the prototype/tests run.
 
-The research baseline is the pinned main commit above. Implementation validation uses deterministic Ruby tests and a native worker linked to a simulated PortAudio device with real libsamplerate conversion. It has not opened physical microphones/speakers or made paid model calls. Linux/Windows builds and hardware loopback measurements remain required before advertising those capabilities.
+The research baseline is the pinned main commit above. Implementation validation uses deterministic Ruby tests and a native worker linked to a simulated PortAudio device with real libsamplerate conversion. Both local example scripts have also passed end to end against the live API using synthetic speech and simulated devices: recording/transcription/speech/playback and managed Realtime capture/response/device drain. The opt-in runner is `scripts/test-local-audio-examples.rb`. No physical microphones or speakers were opened. Linux/Windows builds and hardware loopback measurements remain required before advertising those capabilities.
 
 ## Implementation security review
 

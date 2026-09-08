@@ -3,6 +3,50 @@
 Local audio is opt-in. `require "openai"` alone never loads native audio support,
 opens devices, records speech, or starts a subprocess.
 
+## Run the local examples
+
+With `OPENAI_API_KEY` configured, FFmpeg/FFplay on `PATH`, and permission to use
+your microphone and speakers:
+
+```sh
+bundle exec ruby examples/audio/record_and_play.rb
+```
+
+For an interactive Realtime conversation, also build/install the optional native
+companion and install `async-websocket`. Use headphones, then run:
+
+```sh
+bundle exec ruby examples/realtime/local_audio.rb
+```
+
+Ctrl-C closes the conversation. `AUDIO_MAX_PLAYBACKS=1` exits after the first
+assistant audio item finishes playing; zero (the default) keeps listening.
+
+### Live API end-to-end verification without physical devices
+
+Build the simulated worker using the [companion build instructions](packages/openai-audio/README.md),
+then run the actual example scripts through this opt-in runner:
+
+```sh
+OPENAI_AUDIO_TEST_WORKER=/tmp/openai-audio-build/openai-audio-test-worker \
+  bundle exec ruby scripts/test-local-audio-examples.rb
+```
+
+This makes paid live API calls using `OPENAI_API_KEY`. It generates a known speech
+fixture, runs FFmpeg capture from that fixture, uploads it for transcription,
+generates speech, and plays it with FFplay's dummy output driver. It also runs the
+managed Realtime example through the real WebSocket, native worker subprocess,
+resampler and playback clock, with a simulated PortAudio device. The runner
+requires a transcript from the recording example and successful device drain from
+the Realtime example; each example has a 90-second deadline. Captured API output
+and credentials are not printed. Temporary synthetic media is removed on exit.
+
+Both paths were exercised successfully against the live API during development.
+These checks cover the complete software flows, but do not validate microphone
+permissions, physical speaker output, acoustic echo, or hardware timing. A host
+that cannot establish a verified Realtime TLS connection cannot run this test;
+certificate verification is never disabled.
+
 ## Record and play a clip
 
 Install FFmpeg and FFplay separately and put their executables on `PATH`.

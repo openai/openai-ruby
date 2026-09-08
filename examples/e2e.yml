@@ -3,10 +3,10 @@ version: 1
 examples:
   examples/audio/record_and_play.rb:
     status: excluded
-    reason: Requires explicit local microphone capture, speakers, FFmpeg and live audio API access.
+    reason: Opt-in live audio coverage is provided by scripts/test-local-audio-examples.rb with synthetic devices; normal runs require microphone, speakers and FFmpeg.
   examples/realtime/local_audio.rb:
     status: excluded
-    reason: Requires explicit local microphone capture, optional native audio worker, speakers and live Realtime access.
+    reason: Opt-in live audio coverage is provided by scripts/test-local-audio-examples.rb with the simulated native worker; normal runs require microphone, speakers and Realtime access.
   examples/advanced_streaming.rb:
     status: covered
     expected_output: streams can be lazy
