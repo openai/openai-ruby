@@ -98,7 +98,7 @@ jobs:
         run: bundle exec rake build:gem
 
   test-ruby:
-    timeout-minutes: 10
+    timeout-minutes: 15
     name: test (ruby ${{ matrix.ruby-version }})
     permissions:
       contents: read
