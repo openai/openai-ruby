@@ -232,7 +232,7 @@ class TestWorkflowTest < Minitest::Test
     owned_pid = Integer(File.read(fixture.fetch(:pid_record)), 10)
 
     Process.kill("TERM", launcher_pid)
-    Process.wait(launcher_pid)
+    assert(wait_for_exit(launcher_pid, timeout: 5), "expected interrupted launcher to exit promptly")
 
     assert(wait_for_process_exit(owned_pid, timeout: 5), "expected interrupt to stop process group #{owned_pid}")
     refute(File.exist?(fixture.fetch(:pid_file)), "expected interrupt to clear PID file")
@@ -451,12 +451,13 @@ class TestWorkflowTest < Minitest::Test
         if [ "$MOCK_STEADY_MODE" = "delayed_start" ]; then
           "$RUBY" -e 'sleep 0.2'
         fi
-        printf '%s\n' "$$" > "$MOCK_PID_RECORD"
         trap ': > "$MOCK_EXITED_RECORD"' EXIT
         if [ "$MOCK_STEADY_MODE" = "crash" ]; then
+          printf '%s\n' "$$" > "$MOCK_PID_RECORD"
           exit 42
         fi
-        exec "$RUBY" -e 'sleep 60'
+        # Publish readiness after Ruby startup, which can otherwise lose TERM.
+        exec "$RUBY" -e 'File.write(ENV.fetch("MOCK_PID_RECORD"), "\#{Process.pid}\\n"); sleep 60'
       BASH
     )
 

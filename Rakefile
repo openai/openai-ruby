@@ -35,10 +35,7 @@ bedrock_tests = FileList["test/openai/providers/bedrock*_test.rb"]
 run_tests = lambda do |files|
   abort("No test files selected") if files.empty?
 
-  rb = "require_relative 'test/ci_timing'; started = Process.clock_gettime(Process::CLOCK_MONOTONIC);" +
-    files.map { "require_relative(#{_1.dump});" }.join
-
-  rb += "warn format('PROFILE load %.3f', Process.clock_gettime(Process::CLOCK_MONOTONIC) - started);"
+  rb = files.map { "require_relative(#{_1.dump});" }.join
 
   ruby(*%w[-w -e], rb, verbose: false) { fail unless _1 }
 end
