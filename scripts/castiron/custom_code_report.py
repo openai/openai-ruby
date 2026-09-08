@@ -786,9 +786,8 @@ def current_pull_request(
     repository: str,
     run: dict[str, Any],
     branch: str,
-    main: str,
 ) -> dict[str, Any] | None:
-    """Resolve one live PR from trusted run metadata, including fork runs."""
+    """Resolve by live repository/ref/head identity; PR base SHA can lag main."""
     head = require_sha(run["head_sha"])
     head_repository = run.get("head_repository")
     if not isinstance(head_repository, dict):
@@ -835,7 +834,6 @@ def current_pull_request(
             and pull_head_repository["full_name"] == head_repository_name
             and pull["base"]["repo"]["full_name"] == repository
             and pull["base"]["ref"] == branch
-            and pull["base"]["sha"] == main
         ):
             current.append(pull)
     if not current:
@@ -869,7 +867,7 @@ def publish_comment(
     metadata = api("GET", root)
     branch = metadata["default_branch"]
     main = require_sha(api("GET", f"{root}/git/ref/heads/{branch}")["object"]["sha"])
-    pull = current_pull_request(root, repository, run, branch, main)
+    pull = current_pull_request(root, repository, run, branch)
     if pull is None or pull["number"] != number:
         raise ReportError("workflow run does not match report PR/head")
     if pull["head"]["sha"] != report["head_sha"] or main != report["target_base_sha"]:
@@ -904,8 +902,10 @@ def publish_comment(
         if found["body"] == body:
             return str(found["html_url"])
     # The workflow serializes publishers; recheck after pagination before writing.
-    pull = current_pull_request(root, repository, run, branch, main)
+    pull = current_pull_request(root, repository, run, branch)
     if pull is None or pull["number"] != number:
+        return "Skipped stale report"
+    if require_sha(api("GET", f"{root}/git/ref/heads/{branch}")["object"]["sha"]) != main:
         return "Skipped stale report"
     if found is not None:
         result = api("PATCH", f"{root}/issues/comments/{found['id']}", {"body": body})
@@ -965,7 +965,7 @@ def trusted_report(repo: Path, repository: str, run_id: int, run_attempt: int, o
     metadata = api("GET", root)
     branch = metadata["default_branch"]
     main = require_sha(api("GET", f"{root}/git/ref/heads/{branch}")["object"]["sha"])
-    pull = current_pull_request(root, repository, run, branch, main)
+    pull = current_pull_request(root, repository, run, branch)
     if pull is None:
         return
     number = int(pull["number"])
