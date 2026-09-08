@@ -38,14 +38,14 @@ module OpenAI
         result
       end
 
-      def initialize(argv, input:, output:, timeout:)
+      def initialize(argv, input:, output:, timeout:, error: File::NULL)
         @deadline = self.class.clock + self.class.duration(timeout, name: :timeout) if timeout
         @pid = Process.spawn(
           self.class.environment,
           *argv,
           in: input,
           out: output,
-          err: File::NULL,
+          err: error,
           close_others: true,
           unsetenv_others: true
         )

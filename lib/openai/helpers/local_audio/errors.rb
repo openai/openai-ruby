@@ -23,19 +23,5 @@ module OpenAI
     class FormatError < Error
     end
 
-    class CaptureOverflowError < Error
-    end
-
-    class PlaybackPositionError < Error
-    end
-
-    class PlaybackInterruptedError < Error
-    end
-
-    class WorkerError < Error
-    end
-
-    class StateError < Error
-    end
   end
 end

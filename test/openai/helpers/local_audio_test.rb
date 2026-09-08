@@ -57,6 +57,24 @@ class OpenAI::Test::LocalAudioTest < Minitest::Test
     end
   end
 
+  def test_zero_exit_with_player_error_is_a_sanitized_failure
+    with_executable("ffplay", "STDIN.read; STDERR.write('private decoder detail'); exit 0") do
+      error = assert_raises(Audio::PlaybackError) { Audio.play(StringIO.new("audio"), timeout: 2) }
+      assert_equal("Audio playback failed.", error.message)
+    end
+  end
+
+  def test_real_ffplay_rejects_invalid_encoded_audio
+    skip("Set OPENAI_AUDIO_FFPLAY_TEST=1 to test installed FFplay with dummy output") unless
+      ENV["OPENAI_AUDIO_FFPLAY_TEST"] == "1"
+    environment = Audio::MediaProcess.environment.merge("SDL_AUDIODRIVER" => "dummy")
+    Audio::MediaProcess.stub(:environment, environment) do
+      assert_raises(Audio::PlaybackError) do
+        Audio.play(StringIO.new("not encoded audio"), timeout: 5)
+      end
+    end
+  end
+
   def test_stalled_source_obeys_timeout_without_closing_callers_io
     with_executable("ffplay", "STDIN.read") do
       reader, writer = IO.pipe

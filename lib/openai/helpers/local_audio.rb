@@ -3,7 +3,7 @@
 require_relative "../../openai"
 require_relative "local_audio/errors"
 require_relative "local_audio/process"
-require_relative "local_audio/devices"
+require "tempfile"
 
 module OpenAI
   # Optional local microphone and speaker helpers. Loading this file opens no devices.
@@ -71,15 +71,21 @@ module OpenAI
         io = playback_source(source)
         reader, writer = IO.pipe(binmode: true)
         child = nil
+        diagnostics = nil
         begin
-          args = ["ffplay", "-autoexit", "-nodisp", "-loglevel", "quiet", "-protocol_whitelist", "pipe"]
+          # FFplay can exit zero on decoder/device failure. Count error output
+          # without exposing its contents; the private temporary file is removed.
+          diagnostics = Tempfile.new("openai-playback-errors")
+          args = ["ffplay", "-autoexit", "-nodisp", "-nostats", "-loglevel", "error", "-protocol_whitelist", "pipe"]
           args.concat(
             format == :pcm ? ["-f", "s16le", "-ar", "24000", "-ch_layout", "mono"] : [
               "-format_whitelist",
               "wav,mp3,ogg,aac,flac"
             ]
           )
-          child = MediaProcess.new(args + ["-i", "pipe:0"], input: reader, output: File::NULL, timeout: timeout)
+          child = MediaProcess.new(
+            args + ["-i", "pipe:0"], input: reader, output: File::NULL, error: diagnostics, timeout: timeout
+          )
           reader.close
           bytes = 0
           while (chunk = child.read(io))
@@ -91,12 +97,14 @@ module OpenAI
           raise PlaybackError, "Audio input is empty." if bytes.zero?
           raise FormatError, "PCM input ends with an incomplete sample." if format == :pcm && bytes.odd?
           writer.close
-          raise PlaybackError, "Audio playback failed." unless child.wait.success?
+          status = child.wait
+          raise PlaybackError, "Audio playback failed." unless status.success? && diagnostics.size.zero?
           nil
         ensure
           reader.close unless reader.closed?
           writer.close unless writer.closed?
           child&.close
+          diagnostics&.close!
         end
       end
 

@@ -10,7 +10,6 @@ module OpenAI
       ?format: :auto | :pcm,
       ?timeout: Numeric?
     ) -> nil
-    def self.devices: -> Array[OpenAI::LocalAudio::Device]
     class Error < OpenAI::Errors::Error
     end
     class DependencyError < OpenAI::LocalAudio::Error
@@ -24,79 +23,6 @@ module OpenAI
     class TimeoutError < OpenAI::LocalAudio::Error
     end
     class FormatError < OpenAI::LocalAudio::Error
-    end
-    class CaptureOverflowError < OpenAI::LocalAudio::Error
-    end
-    class PlaybackPositionError < OpenAI::LocalAudio::Error
-    end
-    class PlaybackInterruptedError < OpenAI::LocalAudio::Error
-    end
-    class WorkerError < OpenAI::LocalAudio::Error
-    end
-    class StateError < OpenAI::LocalAudio::Error
-    end
-    class Device
-      def initialize: (
-        id: String,
-        name: String,
-        host_api: String,
-        max_input_channels: Integer,
-        max_output_channels: Integer
-      ) -> void
-      attr_reader id: String
-      attr_reader name: String
-      attr_reader host_api: String
-      attr_reader max_input_channels: Integer
-      attr_reader max_output_channels: Integer
-    end
-    class PlaybackPosition
-      def initialize: (
-        played_frames: Integer,
-        ?sample_rate: Integer,
-        ?timing_quality: :device_clock_estimate
-      ) -> void
-      attr_reader played_frames: Integer
-      attr_reader sample_rate: Integer
-      attr_reader timing_quality: :device_clock_estimate
-    end
-    class Microphone
-      include Enumerable[String]
-      def self.open: [U] (
-        ?device: (String | OpenAI::LocalAudio::Device)?,
-        ?frame_duration: Numeric,
-        ?buffer_duration: Numeric
-      ) {
-        (OpenAI::LocalAudio::Microphone) -> U
-      } -> U
-      def each: ?{ (String) -> void } -> (Enumerator[String, self] | self)
-
-      # @api private
-      def started?: -> bool
-
-      # @api private
-      def fence: -> Integer
-
-      # @api private
-      def each_frame: ?{
-        (Integer, String) -> void
-      } -> (Enumerator[[Integer, String], self] | self)
-      def stop: -> nil
-    end
-    class Player
-      def self.open: [U] (
-        ?device: (String | OpenAI::LocalAudio::Device)?,
-        ?buffer_duration: Numeric
-      ) {
-        (OpenAI::LocalAudio::Player) -> U
-      } -> U
-      def begin_playback: -> OpenAI::LocalAudio::Playback
-      def close: -> nil
-    end
-    class Playback
-      def write: (String pcm) -> Integer
-      def finish: -> self
-      def wait: -> OpenAI::LocalAudio::PlaybackPosition
-      def interrupt: -> OpenAI::LocalAudio::PlaybackPosition
     end
   end
 end

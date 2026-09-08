@@ -52,9 +52,8 @@ end
 
 ### Local audio
 
-Opt-in helpers support recording and playback, live PCM devices, and managed local
-Realtime conversations. See the [local audio guide](local-audio.md) for APIs, optional
-dependencies, and native-platform validation requirements.
+Record a clip and play generated speech with optional FFmpeg/FFplay helpers.
+See the [local audio guide](local-audio.md) for setup, device selection and examples.
 
 ### Realtime WebSockets
 
