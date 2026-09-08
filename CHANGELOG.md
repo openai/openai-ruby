@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.87.0](https://github.com/openai/openai-ruby/compare/v0.86.0...v0.87.0) (2026-09-08)
+
+
+### Features
+
+* add FFmpeg local recording and playback helpers ([#685](https://github.com/openai/openai-ruby/issues/685)) ([4d05097](https://github.com/openai/openai-ruby/commit/4d05097f10408452aaf0efa48c499bada62846bb))
+* add opt-in Realtime reconnect and send queue ([#681](https://github.com/openai/openai-ruby/issues/681)) ([21b8a70](https://github.com/openai/openai-ruby/commit/21b8a70d48e2623e32aa01f95503adcf3fa2ba75))
+* **api:** add GPT Image 2.5 models and image options ([#688](https://github.com/openai/openai-ruby/issues/688)) ([02f4724](https://github.com/openai/openai-ruby/commit/02f4724eb69eebe8c46b8d51010bee364e1197ad))
+
 ## [0.86.0](https://github.com/openai/openai-ruby/compare/v0.85.0...v0.86.0) (2026-09-08)
 
 
