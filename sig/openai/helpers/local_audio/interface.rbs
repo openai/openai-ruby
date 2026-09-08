@@ -35,10 +35,11 @@ module OpenAI
         input: IO | String,
         output: IO | String,
         timeout: Numeric?,
-        ?error: IO | String | _ToIO
+        ?capture_errors: bool
       ) -> void
       def check_deadline: -> void
-      def read: (IO | StringIO io) -> String?
+      def errors?: -> bool
+      def read: (IO | StringIO io, ?stop_on_exit: bool) -> String?
       def write: (IO io, String bytes) -> void
       def wait: -> Process::Status
       def close: -> void

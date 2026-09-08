@@ -4,6 +4,7 @@ require_relative "../test_helper"
 require_relative "../../../lib/openai/helpers/local_audio"
 require "tmpdir"
 require "rbconfig"
+require "timeout"
 
 class OpenAI::Test::LocalAudioTest < Minitest::Test
   extend Minitest::Serial
@@ -118,6 +119,55 @@ class OpenAI::Test::LocalAudioTest < Minitest::Test
     assert_raises(ArgumentError) { Audio.play("a path") }
     assert_raises(ArgumentError) { Audio.play(StringIO.new, format: :mp3) }
     assert_raises(ArgumentError) { Audio.capture_device("\0") }
+    Process.stub(:spawn, -> (*) { flunk("invalid timeout must not spawn a child") }) do
+      assert_raises(ArgumentError) { Audio.record(duration: 1, timeout: false) }
+      assert_raises(ArgumentError) { Audio.play(StringIO.new("audio"), timeout: false) }
+    end
+  end
+
+  def test_exited_player_unblocks_an_open_source_without_a_deadline
+    with_executable("ffplay", "exit 1") do
+      reader, writer = IO.pipe
+      begin
+        Timeout.timeout(3) do
+          assert_raises(Audio::PlaybackError) { Audio.play(reader) }
+        end
+
+        refute(reader.closed?)
+        refute(writer.closed?)
+      ensure
+        reader.close
+        writer.close
+      end
+    end
+  end
+
+  def test_noisy_player_diagnostics_do_not_block_feeding
+    with_executable("ffplay", "128.times { STDERR.write('x' * 65_536) }; STDIN.read") do
+      error = assert_raises(Audio::PlaybackError) do
+        Audio.play(StringIO.new("audio"), timeout: 10)
+      end
+
+      assert_equal("Audio playback failed.", error.message)
+    end
+  end
+
+  def test_continuous_diagnostics_obey_timeout_and_close_the_pipe
+    with_executable("ffplay", "loop { STDERR.write('x' * 65_536) }") do
+      pipe_reader = nil
+      pipe = IO.method(:pipe)
+      capture_pipe = lambda do |**options|
+        pair = pipe.call(**options)
+        pipe_reader = pair.first
+        pair
+      end
+
+      IO.stub(:pipe, capture_pipe) do
+        assert_raises(Audio::TimeoutError) { Audio.play(StringIO.new("audio"), timeout: 0.1) }
+      end
+
+      assert(pipe_reader.closed?)
+    end
   end
 
   def test_platform_selection

@@ -3,7 +3,6 @@
 require_relative "../../openai"
 require_relative "local_audio/errors"
 require_relative "local_audio/process"
-require "tempfile"
 
 module OpenAI
   # Optional local microphone and speaker helpers. Loading this file opens no devices.
@@ -13,7 +12,7 @@ module OpenAI
       # @return [OpenAI::FilePart]
       def record(duration:, device: nil, timeout: nil)
         seconds = MediaProcess.duration(duration, name: :duration)
-        MediaProcess.duration(timeout, name: :timeout) if timeout
+        MediaProcess.duration(timeout, name: :timeout) unless timeout.nil?
         format, source = capture_device(device)
         reader, writer = IO.pipe(binmode: true)
         child = nil
@@ -67,15 +66,13 @@ module OpenAI
       # @return [nil]
       def play(source, format: :auto, timeout: nil)
         raise ArgumentError, "format must be :auto or :pcm" unless [:auto, :pcm].include?(format)
-        MediaProcess.duration(timeout, name: :timeout) if timeout
+        MediaProcess.duration(timeout, name: :timeout) unless timeout.nil?
         io = playback_source(source)
         reader, writer = IO.pipe(binmode: true)
         child = nil
-        diagnostics = nil
         begin
-          # FFplay can exit zero on decoder/device failure. Count error output
-          # without exposing its contents; the private temporary file is removed.
-          diagnostics = Tempfile.new("openai-playback-errors")
+          # FFplay can exit zero on decoder/device failure. Its owner drains
+          # error output while feeding input, retaining only a boolean.
           args = ["ffplay", "-autoexit", "-nodisp", "-nostats", "-loglevel", "error", "-protocol_whitelist", "pipe"]
           args.concat(
             format == :pcm ? ["-f", "s16le", "-ar", "24000", "-ch_layout", "mono"] : [
@@ -87,12 +84,12 @@ module OpenAI
             args + ["-i", "pipe:0"],
             input: reader,
             output: File::NULL,
-            error: diagnostics,
+            capture_errors: true,
             timeout: timeout
           )
           reader.close
           bytes = 0
-          while (chunk = child.read(io))
+          while (chunk = child.read(io, stop_on_exit: true))
             break if chunk.empty?
             bytes += chunk.bytesize
             child.write(writer, chunk)
@@ -102,13 +99,12 @@ module OpenAI
           raise FormatError, "PCM input ends with an incomplete sample." if format == :pcm && bytes.odd?
           writer.close
           status = child.wait
-          raise PlaybackError, "Audio playback failed." unless status.success? && diagnostics.size.zero?
+          raise PlaybackError, "Audio playback failed." unless status.success? && !child.errors?
           nil
         ensure
           reader.close unless reader.closed?
           writer.close unless writer.closed?
           child&.close
-          diagnostics&.close!
         end
       end
 

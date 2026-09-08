@@ -53,19 +53,23 @@ module OpenAI
           input: T.any(IO, String),
           output: T.any(IO, String),
           timeout: T.nilable(Numeric),
-          error: T.any(IO, String, Tempfile)
+          capture_errors: T::Boolean
         )
           .void
       }
-      def initialize(argv, input:, output:, timeout:, error: File::NULL)
+      def initialize(argv, input:, output:, timeout:, capture_errors: false)
       end
 
       sig { void }
       def check_deadline
       end
 
-      sig { params(io: T.any(IO, StringIO)).returns(T.nilable(String)) }
-      def read(io)
+      sig { returns(T::Boolean) }
+      def errors?
+      end
+
+      sig { params(io: T.any(IO, StringIO), stop_on_exit: T::Boolean).returns(T.nilable(String)) }
+      def read(io, stop_on_exit: false)
       end
 
       sig { params(io: IO, bytes: String).void }

@@ -102,8 +102,8 @@ or interruption. Errors are under `OpenAI::LocalAudio::Error`:
 `FormatError`, and `TimeoutError`. Media subprocesses receive a restricted
 environment without the API key, and their diagnostics are not included in
 exceptions. FFplay can exit successfully despite a decoder or device error, so
-the helper checks for error-level diagnostics in a private temporary file and
-removes it during cleanup. A forcibly killed process may leave that file behind.
+the helper drains error-level diagnostics through a pipe, retaining only whether
+an error occurred. Diagnostic contents are discarded and never written to disk.
 
 ## Model choices
 
