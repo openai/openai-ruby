@@ -1,0 +1,3 @@
+/bin/openai-audio-worker*
+/build/
+/*.gem

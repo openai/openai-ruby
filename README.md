@@ -50,6 +50,12 @@ stream.each do |event|
 end
 ```
 
+### Local audio
+
+Opt-in helpers support recording and playback, live PCM devices, and managed local
+Realtime conversations. See the [local audio guide](local-audio.md) for APIs, optional
+dependencies, and native-platform validation requirements.
+
 ### Realtime WebSockets
 
 The SDK supports block-scoped, typed Realtime WebSocket sessions for
