@@ -149,6 +149,12 @@ $ ./scripts/mock
 $ bundle exec rake test
 ```
 
+CI partitions the non-Bedrock suite into three disjoint groups of whole test
+files on each supported Ruby version. To reproduce one group locally, run
+`TEST_SHARD=1/3 ./scripts/test` (or `2/3`, `3/3`). Without `TEST_SHARD`, the
+command still runs the complete suite. Each group preserves the suite's serial
+test scheduling, including the large-payload cases.
+
 The primary bundle intentionally omits the optional AWS SDK. Install the
 dedicated Bedrock bundle and run its tests separately:
 
