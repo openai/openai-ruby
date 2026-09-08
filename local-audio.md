@@ -47,6 +47,14 @@ permissions, physical speaker output, acoustic echo, or hardware timing. A host
 that cannot establish a verified Realtime TLS connection cannot run this test;
 certificate verification is never disabled.
 
+## Example model choices
+
+Checked against OpenAI documentation on September 8, 2026:
+
+- Recorded clips use [`gpt-transcribe`](https://developers.openai.com/api/docs/guides/speech-to-text), the recommended general-purpose file transcription model.
+- Speech output and synthetic test speech use [`gpt-4o-mini-tts`](https://developers.openai.com/api/docs/guides/text-to-speech) with `marin`, one of the recommended voices for quality.
+- Voice conversations use [`gpt-realtime-2.1`](https://developers.openai.com/api/docs/models/gpt-realtime-2.1), which improves recognition, noise handling and interruptions over GPT-Realtime-2. Set `OPENAI_REALTIME_MODEL` to choose another compatible Realtime model.
+
 ## Record and play a clip
 
 Install FFmpeg and FFplay separately and put their executables on `PATH`.
@@ -57,7 +65,7 @@ require "openai/helpers/local_audio"
 
 client = OpenAI::Client.new
 clip = OpenAI::LocalAudio.record(duration: 5, timeout: 10)
-text = client.audio.transcriptions.create(model: "gpt-4o-mini-transcribe", file: clip)
+text = client.audio.transcriptions.create(model: "gpt-transcribe", file: clip)
 puts text.text
 speech = client.audio.speech.create(model: "gpt-4o-mini-tts", voice: "marin", input: "Hello.")
 OpenAI::LocalAudio.play(speech, timeout: 30)

@@ -41,10 +41,10 @@ require "openai/helpers/local_audio"
 client = OpenAI::Client.new
 recording = OpenAI::LocalAudio.record(duration: 5.0)
 transcript = client.audio.transcriptions.create(
-  model: "gpt-4o-transcribe", file: recording
+  model: "gpt-transcribe", file: recording
 )
 speech = client.audio.speech.create(
-  model: "gpt-4o-mini-tts", voice: "coral",
+  model: "gpt-4o-mini-tts", voice: "marin",
   input: transcript.text, response_format: :wav
 )
 OpenAI::LocalAudio.play(speech)
