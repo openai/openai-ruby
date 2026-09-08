@@ -1,7 +1,5 @@
 # Ruby local audio and Realtime session design
 
-[Notion design](https://app.notion.com/p/3d58e50b62b08145948ee467f4bd9bfb)
-
 **Status:** approved implementation is available in this worktree, with automated validation and independent review. No package has been published. The contracts below are the acceptance criteria. Native platform binaries and physical timing validation remain release gates. See [usage documentation](../../local-audio.md) and [companion build instructions](../../packages/openai-audio/README.md).
 
 **Review gate:** before push or PR, the complete implementation must pass two consecutive clean rounds of independent paired adversarial review, plus relevant tests, lint, type and custom-code budget checks. Physical-device timing and platform qualification remain separate release gates.
