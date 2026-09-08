@@ -88,6 +88,9 @@ examples:
   examples/responses/streaming_tools.rb:
     status: covered
     expected_output: parsed outputs from final response
+  examples/responses/websocket_workflows.rb:
+    status: covered
+    expected_output: Responses WebSocket workflow completed.
   examples/streaming.rb:
     status: covered
     expected_output: manual closing of stream
