@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require "fileutils"
 require "open3"
 require "tempfile"
-require "tmpdir"
 
 require_relative "../test_helper"
 
@@ -58,12 +56,6 @@ class OpenAI::Test::ChatStreamErrorTypesTest < Minitest::Test
     assert_predicate(status, :success?, "#{stdout}\n#{stderr}")
   end
 
-  def test_shipped_rbs_types_public_finish_error_rescues_and_completion
-    stdout, stderr, status = steep_check(rbs_source)
-
-    assert_predicate(status, :success?, "#{stdout}\n#{stderr}")
-  end
-
   def test_shipped_rbi_rejects_content_filter_error_message_constructor
     source = sorbet_source.sub(
       "OpenAI::ContentFilterFinishReasonError.new",
@@ -73,17 +65,6 @@ class OpenAI::Test::ChatStreamErrorTypesTest < Minitest::Test
 
     refute_predicate(status, :success?, "#{stdout}\n#{stderr}")
     assert_includes("#{stdout}\n#{stderr}", "Too many arguments")
-  end
-
-  def test_shipped_rbs_rejects_content_filter_error_message_constructor
-    source = rbs_source.sub(
-      "OpenAI::ContentFilterFinishReasonError.new",
-      "OpenAI::ContentFilterFinishReasonError.new(\"message\")"
-    )
-    stdout, stderr, status = steep_check(source)
-
-    refute_predicate(status, :success?, "#{stdout}\n#{stderr}")
-    assert_includes("#{stdout}\n#{stderr}", "Unexpected positional argument")
   end
 
   private
@@ -147,29 +128,6 @@ class OpenAI::Test::ChatStreamErrorTypesTest < Minitest::Test
     RUBY
   end
 
-  def rbs_source
-    <<~RUBY
-      # @type var inspect_finish_error: ^(OpenAI::Models::Chat::ChatCompletion) -> OpenAI::Helpers::Streaming::StreamError
-      inspect_finish_error = ->(completion) do
-        error = OpenAI::LengthFinishReasonError.new(completion: completion)
-        error.completion.id
-        content_filter = OpenAI::ContentFilterFinishReasonError.new
-        content_filter.class
-
-        begin
-          raise error
-        rescue OpenAI::LengthFinishReasonError => length_error
-          length_error.completion.id
-          length_error
-        rescue OpenAI::ContentFilterFinishReasonError => content_filter_error
-          content_filter_error
-        end
-      end
-
-      inspect_finish_error
-    RUBY
-  end
-
   def sorbet_typecheck(source)
     root = File.expand_path("../../..", __dir__)
 
@@ -186,30 +144,4 @@ class OpenAI::Test::ChatStreamErrorTypesTest < Minitest::Test
     end
   end
 
-  def steep_check(source)
-    root = File.expand_path("../../..", __dir__)
-
-    Dir.mktmpdir("chat-stream-error-rbs") do |directory|
-      FileUtils.cp_r(File.join(root, "sig"), directory)
-      File.write(File.join(directory, "probe.rb"), source)
-      File.write(
-        File.join(directory, "Steepfile"),
-        <<~RUBY
-          target :lib do
-            signature "sig"
-            library "net-http"
-            check "probe.rb"
-          end
-        RUBY
-      )
-      Open3.capture3(
-        "steep",
-        "check",
-        "--no-daemon",
-        "--jobs=1",
-        "--validate=skip",
-        chdir: directory
-      )
-    end
-  end
 end

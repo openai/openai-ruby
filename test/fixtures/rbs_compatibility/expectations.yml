@@ -1,0 +1,63 @@
+---
+- file: chat_stream_errors_invalid.rb
+  diagnostics:
+  - range:
+      start:
+        line: 5
+        character: 62
+      end:
+        line: 5
+        character: 71
+    severity: ERROR
+    message: Unexpected positional argument
+    code: Ruby::UnexpectedPositionalArgument
+- file: request_invalid.rb
+  diagnostics:
+  - range:
+      start:
+        line: 3
+        character: 2
+      end:
+        line: 5
+        character: 60
+    severity: ERROR
+    message: |-
+      Cannot pass a value of type `{ :method => ::Symbol, :path => (::String | ::Array[::String]), :security => ::Hash[::Symbol, (bool | ::String)] }` as an argument of type `::OpenAI::Internal::Transport::BaseClient::request_components`
+        { :method => ::Symbol, :path => (::String | ::Array[::String]), :security => ::Hash[::Symbol, (bool | ::String)] } <: ::OpenAI::Internal::Transport::BaseClient::request_components
+          { :method => ::Symbol, :path => (::String | ::Array[::String]), :security => ::Hash[::Symbol, (bool | ::String)] } <: { :body => top, :headers => (::Hash[(::String | ::Symbol), (::String | ::Integer | ::Array[(::String | ::Integer | nil)] | nil)] | nil), :method => ::Symbol, :model => (::OpenAI::Internal::Type::Converter::input | nil), :options => (::OpenAI::request_opts | nil), :page => (::Class | nil), :path => (::String | ::Array[::String]), :query => (::Hash[(::String | ::Symbol), (::Array[::String] | ::String | nil)] | nil), :security => (::Hash[(:bearer_auth | :admin_api_key_auth), bool] | nil), :stream => (::Class | nil), :unwrap => (::Symbol | ::Integer | ::Array[(::Symbol | ::Integer)] | ^(top) -> top | nil) }
+            ::Hash[::Symbol, (bool | ::String)] <: (::Hash[(:bearer_auth | :admin_api_key_auth), bool] | nil)
+              ::Hash[::Symbol, (bool | ::String)] <: ::Hash[(:bearer_auth | :admin_api_key_auth), bool]
+                ::Symbol <: (:bearer_auth | :admin_api_key_auth)
+                  ::Symbol <: :bearer_auth
+    code: Ruby::ArgumentTypeMismatch
+- file: subject_token_providers_invalid.rb
+  diagnostics:
+  - range:
+      start:
+        line: 2
+        character: 86
+      end:
+        line: 2
+        character: 89
+    severity: ERROR
+    message: |-
+      Cannot pass a value of type `::Integer` as an argument of type `::String`
+        ::Integer <: ::String
+          ::Numeric <: ::String
+            ::Object <: ::String
+              ::BasicObject <: ::String
+    code: Ruby::ArgumentTypeMismatch
+- file: workload_identity_errors_invalid.rb
+  diagnostics:
+  - range:
+      start:
+        line: 8
+        character: 17
+      end:
+        line: 8
+        character: 20
+    severity: ERROR
+    message: |-
+      Cannot pass a value of type `nil` as an argument of type `::Integer`
+        nil <: ::Integer
+    code: Ruby::ArgumentTypeMismatch

@@ -14,14 +14,15 @@ class TestShardingTest < Minitest::Test
     job = workflow.fetch("jobs").fetch("test-ruby")
     matrix = job.fetch("strategy").fetch("matrix")
     assert_equal(%w[3.3 3.4 4.0], matrix.fetch("ruby-version"))
-    assert_equal("${{ matrix.shard }}/3", job.fetch("env").fetch("TEST_SHARD"))
+    assert_equal([1], matrix.fetch("shard"))
+    assert_equal("${{ matrix.shard }}/1", job.fetch("env").fetch("TEST_SHARD"))
     assert_equal(false, job.fetch("strategy").fetch("fail-fast"))
     assert_includes(workflow.fetch("jobs").fetch("required").fetch("needs"), "test-ruby")
 
     files = Dir
       .glob(File.join(ROOT, "test/**/*_test.rb"))
       .reject { _1.match?(%r{/providers/bedrock[^/]*_test\.rb\z}) }
-    groups = matrix.fetch("shard").map { TestSharding.select(files, "#{_1}/3") }
+    groups = matrix.fetch("shard").map { TestSharding.select(files, "#{_1}/1") }
 
     assert_equal(files.sort, groups.flatten.sort)
     assert_equal(files.size, groups.flatten.uniq.size)
