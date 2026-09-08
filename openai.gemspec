@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     ".ignore"
   ] +
     [
+      "examples/audio/record_and_play.rb",
       "examples/responses/websocket_workflows.rb",
       "examples/mtls_custom_http_client.rb",
       "examples/x509_workload_identity.rb",
@@ -44,6 +45,7 @@ Gem::Specification.new do |s|
     "azure.md",
     "bedrock.md",
     "realtime.md",
+    "local-audio.md",
     "responses-websocket.md",
     "examples/realtime/README.md"
   ]

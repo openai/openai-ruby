@@ -1,6 +1,9 @@
 version: 1
 
 examples:
+  examples/audio/record_and_play.rb:
+    status: excluded
+    reason: Opt-in live audio coverage is provided by scripts/test-local-audio-examples.rb with synthetic devices; normal runs require microphone, speakers and FFmpeg.
   examples/advanced_streaming.rb:
     status: covered
     expected_output: streams can be lazy

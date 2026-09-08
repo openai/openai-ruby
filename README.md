@@ -50,6 +50,11 @@ stream.each do |event|
 end
 ```
 
+### Local audio
+
+Record a clip and play generated speech with optional FFmpeg/FFplay helpers.
+See the [local audio guide](local-audio.md) for setup, device selection and examples.
+
 ### Realtime WebSockets
 
 The SDK supports block-scoped, typed Realtime WebSocket sessions for
