@@ -84,7 +84,11 @@ module OpenAI
             ]
           )
           child = MediaProcess.new(
-            args + ["-i", "pipe:0"], input: reader, output: File::NULL, error: diagnostics, timeout: timeout
+            args + ["-i", "pipe:0"],
+            input: reader,
+            output: File::NULL,
+            error: diagnostics,
+            timeout: timeout
           )
           reader.close
           bytes = 0

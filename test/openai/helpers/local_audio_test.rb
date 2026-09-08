@@ -65,8 +65,10 @@ class OpenAI::Test::LocalAudioTest < Minitest::Test
   end
 
   def test_real_ffplay_rejects_invalid_encoded_audio
-    skip("Set OPENAI_AUDIO_FFPLAY_TEST=1 to test installed FFplay with dummy output") unless
-      ENV["OPENAI_AUDIO_FFPLAY_TEST"] == "1"
+    unless ENV["OPENAI_AUDIO_FFPLAY_TEST"] == "1"
+      skip("Set OPENAI_AUDIO_FFPLAY_TEST=1 to test installed FFplay with dummy output")
+    end
+
     environment = Audio::MediaProcess.environment.merge("SDL_AUDIODRIVER" => "dummy")
     Audio::MediaProcess.stub(:environment, environment) do
       assert_raises(Audio::PlaybackError) do
