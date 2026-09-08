@@ -75,7 +75,9 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
             type: :image_generation_call,
             id: String,
             result: String | nil,
-            status: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Status
+            status: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Status,
+            quality: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Quality | nil,
+            size: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Size | nil
           } | {
             type: :computer_call,
             id: String,
@@ -290,7 +292,9 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
             type: :image_generation_call,
             id: String,
             result: String | nil,
-            status: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Status
+            status: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Status,
+            quality: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Quality | nil,
+            size: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Size | nil
           } | {
             type: :computer_call,
             id: String,

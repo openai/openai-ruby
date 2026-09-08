@@ -173,7 +173,9 @@ class OpenAI::Test::Resources::Beta::Responses::InputItemsTest < OpenAI::Test::R
             id: String,
             result: String | nil,
             status: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Status,
-            agent: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Agent | nil
+            agent: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Agent | nil,
+            quality: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Quality | nil,
+            size: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Size | nil
           } | {
             type: :code_interpreter_call,
             id: String,

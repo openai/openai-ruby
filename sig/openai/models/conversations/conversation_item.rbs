@@ -42,7 +42,9 @@ module OpenAI
             id: String,
             result: String?,
             status: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::status,
-            ?type: :image_generation_call
+            ?type: :image_generation_call,
+            ?quality: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::quality?,
+            ?size: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::size?
           }
 
         class ImageGenerationCall < OpenAI::Internal::Type::BaseModel
@@ -54,10 +56,16 @@ module OpenAI
 
           attr_accessor type: :image_generation_call
 
+          attr_accessor quality: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::quality?
+
+          attr_accessor size: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::size?
+
           def initialize: (
             id: String,
             result: String?,
             status: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::status,
+            ?quality: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::quality?,
+            ?size: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::size?,
             ?type: :image_generation_call
           ) -> void
 
@@ -65,7 +73,9 @@ module OpenAI
             id: String,
             result: String?,
             status: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::status,
-            ?type: :image_generation_call
+            ?type: :image_generation_call,
+            ?quality: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::quality?,
+            ?size: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::size?
           }
 
           type status = :in_progress | :completed | :generating | :failed
@@ -79,6 +89,33 @@ module OpenAI
             FAILED: :failed
 
             def self?.values: -> ::Array[OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::status]
+          end
+
+          type quality = :low | :medium | :high | :xhigh | :max | :auto
+
+          module Quality
+            extend OpenAI::Internal::Type::Enum
+
+            LOW: :low
+            MEDIUM: :medium
+            HIGH: :high
+            XHIGH: :xhigh
+            MAX: :max
+            AUTO: :auto
+
+            def self?.values: -> ::Array[OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::quality]
+          end
+
+          type size = String | :"1024x1024" | :"1024x1536" | :"1536x1024"
+
+          module Size
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::size]
+
+            SIZE_1024X1024: :"1024x1024"
+            SIZE_1024X1536: :"1024x1536"
+            SIZE_1536X1024: :"1536x1024"
           end
         end
 

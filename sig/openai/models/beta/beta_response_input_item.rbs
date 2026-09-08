@@ -860,7 +860,9 @@ module OpenAI
             result: String?,
             status: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::status,
             ?type: :image_generation_call,
-            ?agent: OpenAI::Beta::BetaResponseInputItem::ImageGenerationCall::Agent?
+            ?agent: OpenAI::Beta::BetaResponseInputItem::ImageGenerationCall::Agent?,
+            ?quality: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::quality?,
+            ?size: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::size?
           }
 
         class ImageGenerationCall < OpenAI::Internal::Type::BaseModel
@@ -874,11 +876,17 @@ module OpenAI
 
           attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::ImageGenerationCall::Agent?
 
+          attr_accessor quality: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::quality?
+
+          attr_accessor size: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::size?
+
           def initialize: (
             id: String,
             result: String?,
             status: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::status,
             ?agent: OpenAI::Beta::BetaResponseInputItem::ImageGenerationCall::Agent?,
+            ?quality: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::quality?,
+            ?size: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::size?,
             ?type: :image_generation_call
           ) -> void
 
@@ -887,7 +895,9 @@ module OpenAI
             result: String?,
             status: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::status,
             ?type: :image_generation_call,
-            ?agent: OpenAI::Beta::BetaResponseInputItem::ImageGenerationCall::Agent?
+            ?agent: OpenAI::Beta::BetaResponseInputItem::ImageGenerationCall::Agent?,
+            ?quality: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::quality?,
+            ?size: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::size?
           }
 
           type status = :in_progress | :completed | :generating | :failed
@@ -911,6 +921,33 @@ module OpenAI
             def initialize: (agent_name: String) -> void
 
             def to_hash: -> { agent_name: String }
+          end
+
+          type quality = :low | :medium | :high | :xhigh | :max | :auto
+
+          module Quality
+            extend OpenAI::Internal::Type::Enum
+
+            LOW: :low
+            MEDIUM: :medium
+            HIGH: :high
+            XHIGH: :xhigh
+            MAX: :max
+            AUTO: :auto
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::quality]
+          end
+
+          type size = String | :"1024x1024" | :"1024x1536" | :"1536x1024"
+
+          module Size
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::size]
+
+            SIZE_1024X1024: :"1024x1024"
+            SIZE_1024X1536: :"1024x1536"
+            SIZE_1536X1024: :"1536x1024"
           end
         end
 

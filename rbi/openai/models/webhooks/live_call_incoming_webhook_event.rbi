@@ -100,8 +100,8 @@ module OpenAI
             )
           end
 
-          # The Transceiver `rtc_...` ID of the pending SIP session. The same value appears
-          # as `call_id` in `realtime.call.incoming`.
+          # The `live_...` ID of the pending SIP session. Forward this value unchanged when
+          # accepting or rejecting the call through the Live API.
           sig { returns(String) }
           attr_accessor :session_id
 
@@ -121,8 +121,8 @@ module OpenAI
           end
           def self.new(
 
-            # The Transceiver `rtc_...` ID of the pending SIP session. The same value appears
-            # as `call_id` in `realtime.call.incoming`.
+            # The `live_...` ID of the pending SIP session. Forward this value unchanged when
+            # accepting or rejecting the call through the Live API.
             session_id:,
 
             # Headers from the SIP Invite.

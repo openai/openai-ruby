@@ -38,19 +38,19 @@ module OpenAI
       sig { params(output_format: OpenAI::ImagesResponse::OutputFormat::OrSymbol).void }
       attr_writer :output_format
 
-      # The quality of the image generated. Either `low`, `medium`, or `high`.
+      # The quality of the image generated. One of `low`, `medium`, `high`, `xhigh`, or
+      # `max`.
       sig { returns(T.nilable(OpenAI::ImagesResponse::Quality::TaggedSymbol)) }
       attr_reader :quality
 
       sig { params(quality: OpenAI::ImagesResponse::Quality::OrSymbol).void }
       attr_writer :quality
 
-      # The size of the image generated. Either `1024x1024`, `1024x1536`, or
-      # `1536x1024`.
-      sig { returns(T.nilable(OpenAI::ImagesResponse::Size::TaggedSymbol)) }
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+      sig { returns(T.nilable(OpenAI::ImagesResponse::Size::Variants)) }
       attr_reader :size
 
-      sig { params(size: OpenAI::ImagesResponse::Size::OrSymbol).void }
+      sig { params(size: T.any(String, OpenAI::ImagesResponse::Size::OrSymbol)).void }
       attr_writer :size
 
       # For `gpt-image-1` only, the token usage information for the image generation.
@@ -74,7 +74,7 @@ module OpenAI
 
           quality: OpenAI::ImagesResponse::Quality::OrSymbol,
 
-          size: OpenAI::ImagesResponse::Size::OrSymbol,
+          size: T.any(String, OpenAI::ImagesResponse::Size::OrSymbol),
 
           usage: OpenAI::ImagesResponse::Usage::OrHash
         )
@@ -95,11 +95,11 @@ module OpenAI
         # The output format of the image generation. Either `png`, `webp`, or `jpeg`.
         output_format: nil,
 
-        # The quality of the image generated. Either `low`, `medium`, or `high`.
+        # The quality of the image generated. One of `low`, `medium`, `high`, `xhigh`, or
+        # `max`.
         quality: nil,
 
-        # The size of the image generated. Either `1024x1024`, `1024x1536`, or
-        # `1536x1024`.
+        # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
         size: nil,
 
         # For `gpt-image-1` only, the token usage information for the image generation.
@@ -116,7 +116,7 @@ module OpenAI
             data: T::Array[OpenAI::Image],
             output_format: OpenAI::ImagesResponse::OutputFormat::TaggedSymbol,
             quality: OpenAI::ImagesResponse::Quality::TaggedSymbol,
-            size: OpenAI::ImagesResponse::Size::TaggedSymbol,
+            size: OpenAI::ImagesResponse::Size::Variants,
             usage: OpenAI::ImagesResponse::Usage
           }
         )
@@ -156,7 +156,8 @@ module OpenAI
         end
       end
 
-      # The quality of the image generated. Either `low`, `medium`, or `high`.
+      # The quality of the image generated. One of `low`, `medium`, `high`, `xhigh`, or
+      # `max`.
       module Quality
         extend OpenAI::Internal::Type::Enum
 
@@ -166,25 +167,35 @@ module OpenAI
         LOW = T.let(:low, OpenAI::ImagesResponse::Quality::TaggedSymbol)
         MEDIUM = T.let(:medium, OpenAI::ImagesResponse::Quality::TaggedSymbol)
         HIGH = T.let(:high, OpenAI::ImagesResponse::Quality::TaggedSymbol)
+        XHIGH = T.let(:xhigh, OpenAI::ImagesResponse::Quality::TaggedSymbol)
+        MAX = T.let(:max, OpenAI::ImagesResponse::Quality::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::ImagesResponse::Quality::TaggedSymbol]) }
         def self.values
         end
       end
 
-      # The size of the image generated. Either `1024x1024`, `1024x1536`, or
-      # `1536x1024`.
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       module Size
-        extend OpenAI::Internal::Type::Enum
+        extend OpenAI::Internal::Type::Union
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::ImagesResponse::Size) }
+        Variants = T.type_alias { T.any(String, OpenAI::ImagesResponse::Size::TaggedSymbol) }
+
+        sig { override.returns(T::Array[OpenAI::ImagesResponse::Size::Variants]) }
+        def self.variants
+        end
+
+        TaggedSymbol = T.type_alias do
+          T.all(Symbol, OpenAI::ImagesResponse::Size)
+        end
+
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         SIZE_1024X1024 = T.let(:"1024x1024", OpenAI::ImagesResponse::Size::TaggedSymbol)
         SIZE_1024X1536 = T.let(:"1024x1536", OpenAI::ImagesResponse::Size::TaggedSymbol)
         SIZE_1536X1024 = T.let(:"1536x1024", OpenAI::ImagesResponse::Size::TaggedSymbol)
 
-        sig { override.returns(T::Array[OpenAI::ImagesResponse::Size::TaggedSymbol]) }
+        sig { returns(T::Array[OpenAI::ImagesResponse::Size::TaggedSymbol]) }
         def self.values
         end
       end
