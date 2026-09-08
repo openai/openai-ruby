@@ -10,6 +10,39 @@ module OpenAI
       ?format: :auto | :pcm,
       ?timeout: Numeric?
     ) -> nil
+
+    # @api private
+    def self.playback_source: (
+      IO | StringIO | OpenAI::FilePart source
+    ) -> (IO | StringIO)
+
+    # @api private
+    def self.capture_device: (
+      (String | Integer)? device,
+      ?platform: String
+    ) -> [String, String]
+
+    # @api private
+    def self.wav_header: (Integer bytes) -> String
+
+    # @api private
+    class MediaProcess
+      def self.environment: -> Hash[String, String]
+      def self.clock: -> Float
+      def self.duration: (Numeric value, name: String | Symbol) -> Float
+      def initialize: (
+        Array[String] argv,
+        input: IO | String,
+        output: IO | String,
+        timeout: Numeric?,
+        ?error: IO | String | _ToIO
+      ) -> void
+      def check_deadline: -> void
+      def read: (IO | StringIO io) -> String?
+      def write: (IO io, String bytes) -> void
+      def wait: -> Process::Status
+      def close: -> void
+    end
     class Error < OpenAI::Errors::Error
     end
     class DependencyError < OpenAI::LocalAudio::Error
