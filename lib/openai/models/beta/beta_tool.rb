@@ -571,9 +571,11 @@ module OpenAI
           #   one of `transparent`, `opaque`, or `auto` (default value). When `auto` is used,
           #   the model will automatically determine the best background for the image.
           #
-          #   Transparent backgrounds are available for supported GPT Image models. For
-          #   `gpt-image-2` and `gpt-image-2-2026-04-21`, this support is in preview. When
-          #   using `transparent`, set the output format to `png` or `webp`.
+          #   `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including their `2026-09-08`
+          #   snapshots, support `opaque` and `transparent` backgrounds. Transparent
+          #   backgrounds are available for supported GPT Image models. For `gpt-image-2` and
+          #   `gpt-image-2-2026-04-21`, this support is in preview. When using `transparent`,
+          #   set the output format to `png` or `webp`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaTool::ImageGeneration::Background, nil]
           optional :background, enum: -> { OpenAI::Beta::BetaTool::ImageGeneration::Background }
@@ -602,7 +604,9 @@ module OpenAI
 
           # @!attribute model
           #   The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-          #   `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`, or
+          #   `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
+          #   `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
+          #   `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
           #   `chatgpt-image-latest`. Default: `gpt-image-1`.
           #
           #   @return [String, Symbol, OpenAI::Models::Beta::BetaTool::ImageGeneration::Model, nil]
@@ -635,24 +639,27 @@ module OpenAI
           optional :partial_images, Integer
 
           # @!attribute quality
-          #   The quality of the generated image. One of `low`, `medium`, `high`, or `auto`.
-          #   Default: `auto`.
+          #   The quality of the generated image. The GPT image models support `low`,
+          #   `medium`, and `high`. `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`,
+          #   including their `2026-09-08` snapshots, also support `xhigh` and `max`. Default:
+          #   `auto`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaTool::ImageGeneration::Quality, nil]
           optional :quality, enum: -> { OpenAI::Beta::BetaTool::ImageGeneration::Quality }
 
           # @!attribute size
-          #   The size of the generated images. For `gpt-image-2` and
-          #   `gpt-image-2-2026-04-21`, arbitrary resolutions are supported as `WIDTHxHEIGHT`
-          #   strings, for example `1536x864`. Width and height must both be divisible by 16
-          #   and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above
-          #   `2560x1440` are experimental, and the maximum supported resolution is
-          #   `3840x2160`. The requested size must also satisfy the model's current pixel and
-          #   edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are
-          #   supported by the GPT image models; `auto` is supported for models that allow
-          #   automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
-          #   `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
-          #   `1024x1792`.
+          #   The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`,
+          #   `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
+          #   `gpt-image-2.5-flare`, and `gpt-image-2.5-flare-2026-09-08`, arbitrary
+          #   resolutions are supported as `WIDTHxHEIGHT` strings, for example `1536x864`.
+          #   Width and height must both be divisible by 16 and the requested aspect ratio
+          #   must be between 1:3 and 3:1. Resolutions above `2560x1440` are experimental, and
+          #   the maximum supported resolution is `3840x2160`. The requested size must also
+          #   satisfy the model's current pixel and edge limits. The standard sizes
+          #   `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models;
+          #   `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use
+          #   one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of
+          #   `1024x1024`, `1792x1024`, or `1024x1792`.
           #
           #   @return [String, Symbol, OpenAI::Models::Beta::BetaTool::ImageGeneration::Size, nil]
           optional :size, union: -> { OpenAI::Beta::BetaTool::ImageGeneration::Size }
@@ -665,7 +672,7 @@ module OpenAI
           #
           #   @param action [Symbol, OpenAI::Models::Beta::BetaTool::ImageGeneration::Action] Whether to generate a new image or edit an existing image. Default: `auto`.
           #
-          #   @param background [Symbol, OpenAI::Models::Beta::BetaTool::ImageGeneration::Background] Allows to set transparency for the background of the generated image(s).
+          #   @param background [Symbol, OpenAI::Models::Beta::BetaTool::ImageGeneration::Background] Allows to set transparency for the background of the generated image(s). Must
           #
           #   @param input_fidelity [Symbol, OpenAI::Models::Beta::BetaTool::ImageGeneration::InputFidelity, nil] Control how much effort the model will exert to match the style and features, es
           #
@@ -681,9 +688,9 @@ module OpenAI
           #
           #   @param partial_images [Integer] Number of partial images to generate in streaming mode, from 0 (default value) t
           #
-          #   @param quality [Symbol, OpenAI::Models::Beta::BetaTool::ImageGeneration::Quality] The quality of the generated image. One of `low`, `medium`, `high`,
+          #   @param quality [Symbol, OpenAI::Models::Beta::BetaTool::ImageGeneration::Quality] The quality of the generated image. The GPT image models support `low`,
           #
-          #   @param size [String, Symbol, OpenAI::Models::Beta::BetaTool::ImageGeneration::Size] The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`
+          #   @param size [String, Symbol, OpenAI::Models::Beta::BetaTool::ImageGeneration::Size] The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`, `
           #
           #   @param type [Symbol, :image_generation] The type of the image generation tool. Always `image_generation`.
 
@@ -705,9 +712,11 @@ module OpenAI
           # one of `transparent`, `opaque`, or `auto` (default value). When `auto` is used,
           # the model will automatically determine the best background for the image.
           #
-          # Transparent backgrounds are available for supported GPT Image models. For
-          # `gpt-image-2` and `gpt-image-2-2026-04-21`, this support is in preview. When
-          # using `transparent`, set the output format to `png` or `webp`.
+          # `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including their `2026-09-08`
+          # snapshots, support `opaque` and `transparent` backgrounds. Transparent
+          # backgrounds are available for supported GPT Image models. For `gpt-image-2` and
+          # `gpt-image-2-2026-04-21`, this support is in preview. When using `transparent`,
+          # set the output format to `png` or `webp`.
           #
           # @see OpenAI::Models::Beta::BetaTool::ImageGeneration#background
           module Background
@@ -765,7 +774,9 @@ module OpenAI
           end
 
           # The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-          # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`, or
+          # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
+          # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
+          # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
           # `chatgpt-image-latest`. Default: `gpt-image-1`.
           #
           # @see OpenAI::Models::Beta::BetaTool::ImageGeneration#model
@@ -781,6 +792,18 @@ module OpenAI
             variant const: -> { OpenAI::Models::Beta::BetaTool::ImageGeneration::Model::GPT_IMAGE_2 }
 
             variant const: -> { OpenAI::Models::Beta::BetaTool::ImageGeneration::Model::GPT_IMAGE_2_2026_04_21 }
+
+            variant const: -> { OpenAI::Models::Beta::BetaTool::ImageGeneration::Model::GPT_IMAGE_2_5_SUNBURST }
+
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaTool::ImageGeneration::Model::GPT_IMAGE_2_5_SUNBURST_2026_09_08 }
+            )
+
+            variant const: -> { OpenAI::Models::Beta::BetaTool::ImageGeneration::Model::GPT_IMAGE_2_5_FLARE }
+
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaTool::ImageGeneration::Model::GPT_IMAGE_2_5_FLARE_2026_09_08 }
+            )
 
             variant const: -> { OpenAI::Models::Beta::BetaTool::ImageGeneration::Model::GPT_IMAGE_1_5 }
 
@@ -799,6 +822,10 @@ module OpenAI
             GPT_IMAGE_1_MINI = :"gpt-image-1-mini"
             GPT_IMAGE_2 = :"gpt-image-2"
             GPT_IMAGE_2_2026_04_21 = :"gpt-image-2-2026-04-21"
+            GPT_IMAGE_2_5_SUNBURST = :"gpt-image-2.5-sunburst"
+            GPT_IMAGE_2_5_SUNBURST_2026_09_08 = :"gpt-image-2.5-sunburst-2026-09-08"
+            GPT_IMAGE_2_5_FLARE = :"gpt-image-2.5-flare"
+            GPT_IMAGE_2_5_FLARE_2026_09_08 = :"gpt-image-2.5-flare-2026-09-08"
             GPT_IMAGE_1_5 = :"gpt-image-1.5"
             CHATGPT_IMAGE_LATEST = :"chatgpt-image-latest"
 
@@ -833,8 +860,10 @@ module OpenAI
             #   @return [Array<Symbol>]
           end
 
-          # The quality of the generated image. One of `low`, `medium`, `high`, or `auto`.
-          # Default: `auto`.
+          # The quality of the generated image. The GPT image models support `low`,
+          # `medium`, and `high`. `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`,
+          # including their `2026-09-08` snapshots, also support `xhigh` and `max`. Default:
+          # `auto`.
           #
           # @see OpenAI::Models::Beta::BetaTool::ImageGeneration#quality
           module Quality
@@ -843,23 +872,26 @@ module OpenAI
             LOW = :low
             MEDIUM = :medium
             HIGH = :high
+            XHIGH = :xhigh
+            MAX = :max
             AUTO = :auto
 
             # @!method self.values
             #   @return [Array<Symbol>]
           end
 
-          # The size of the generated images. For `gpt-image-2` and
-          # `gpt-image-2-2026-04-21`, arbitrary resolutions are supported as `WIDTHxHEIGHT`
-          # strings, for example `1536x864`. Width and height must both be divisible by 16
-          # and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above
-          # `2560x1440` are experimental, and the maximum supported resolution is
-          # `3840x2160`. The requested size must also satisfy the model's current pixel and
-          # edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are
-          # supported by the GPT image models; `auto` is supported for models that allow
-          # automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
-          # `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or
-          # `1024x1792`.
+          # The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`,
+          # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
+          # `gpt-image-2.5-flare`, and `gpt-image-2.5-flare-2026-09-08`, arbitrary
+          # resolutions are supported as `WIDTHxHEIGHT` strings, for example `1536x864`.
+          # Width and height must both be divisible by 16 and the requested aspect ratio
+          # must be between 1:3 and 3:1. Resolutions above `2560x1440` are experimental, and
+          # the maximum supported resolution is `3840x2160`. The requested size must also
+          # satisfy the model's current pixel and edge limits. The standard sizes
+          # `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models;
+          # `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use
+          # one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of
+          # `1024x1024`, `1792x1024`, or `1024x1792`.
           #
           # @see OpenAI::Models::Beta::BetaTool::ImageGeneration#size
           module Size

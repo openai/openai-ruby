@@ -40,10 +40,10 @@ module OpenAI
       required :quality, enum: -> { OpenAI::ImageGenPartialImageEvent::Quality }
 
       # @!attribute size
-      #   The size of the requested image.
+      #   The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
-      #   @return [Symbol, OpenAI::Models::ImageGenPartialImageEvent::Size]
-      required :size, enum: -> { OpenAI::ImageGenPartialImageEvent::Size }
+      #   @return [String, Symbol, OpenAI::Models::ImageGenPartialImageEvent::Size]
+      required :size, union: -> { OpenAI::ImageGenPartialImageEvent::Size }
 
       # @!attribute type
       #   The type of the event. Always `image_generation.partial_image`.
@@ -69,7 +69,7 @@ module OpenAI
       #
       #   @param quality [Symbol, OpenAI::Models::ImageGenPartialImageEvent::Quality] The quality setting for the requested image.
       #
-      #   @param size [Symbol, OpenAI::Models::ImageGenPartialImageEvent::Size] The size of the requested image.
+      #   @param size [String, Symbol, OpenAI::Models::ImageGenPartialImageEvent::Size] The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
       #   @param type [Symbol, :"image_generation.partial_image"] The type of the event. Always `image_generation.partial_image`.
 
@@ -110,25 +110,51 @@ module OpenAI
         LOW = :low
         MEDIUM = :medium
         HIGH = :high
+        XHIGH = :xhigh
+        MAX = :max
         AUTO = :auto
 
         # @!method self.values
         #   @return [Array<Symbol>]
       end
 
-      # The size of the requested image.
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
       # @see OpenAI::Models::ImageGenPartialImageEvent#size
       module Size
-        extend OpenAI::Internal::Type::Enum
+        extend OpenAI::Internal::Type::Union
+
+        variant const: -> { OpenAI::Models::ImageGenPartialImageEvent::Size::SIZE_1024X1024 }
+
+        variant const: -> { OpenAI::Models::ImageGenPartialImageEvent::Size::SIZE_1024X1536 }
+
+        variant const: -> { OpenAI::Models::ImageGenPartialImageEvent::Size::SIZE_1536X1024 }
+
+        variant const: -> { OpenAI::Models::ImageGenPartialImageEvent::Size::AUTO }
+
+        # Keep known dimensions as symbols when reading existing API responses.
+        variant String
+
+        # @!method self.variants
+        #   @return [Array(String, Symbol)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias { T.any(String, OpenAI::ImageGenPartialImageEvent::Size::TaggedSymbol) }
+        end
+
+        # @!group
 
         SIZE_1024X1024 = :"1024x1024"
         SIZE_1024X1536 = :"1024x1536"
         SIZE_1536X1024 = :"1536x1024"
         AUTO = :auto
 
-        # @!method self.values
-        #   @return [Array<Symbol>]
+        # @!endgroup
+
+        # Preserve the enum helper available before custom dimensions were supported.
+        #
+        # @return [Array<Symbol>]
+        def self.values = [SIZE_1024X1024, SIZE_1024X1536, SIZE_1536X1024, AUTO]
       end
     end
   end

@@ -145,7 +145,7 @@ module OpenAI
         def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::output_format]
       end
 
-      type quality = :standard | :low | :medium | :high | :auto
+      type quality = :standard | :low | :medium | :high | :xhigh | :max | :auto
 
       module Quality
         extend OpenAI::Internal::Type::Enum
@@ -154,6 +154,8 @@ module OpenAI
         LOW: :low
         MEDIUM: :medium
         HIGH: :high
+        XHIGH: :xhigh
+        MAX: :max
         AUTO: :auto
 
         def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::quality]

@@ -260,6 +260,9 @@ module OpenAI
 
         # @!attribute store
         #   Whether to store the generated model response for later retrieval via API.
+        #   Defaults to true when omitted. If set to true, response data will be stored for
+        #   at least 30 days, subject to the
+        #   [data retention exceptions](/api/docs/guides/your-data#v1responses).
         #
         #   @return [Boolean, nil]
         optional :store, OpenAI::Internal::Type::Boolean, nil?: true

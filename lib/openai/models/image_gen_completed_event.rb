@@ -34,10 +34,10 @@ module OpenAI
       required :quality, enum: -> { OpenAI::ImageGenCompletedEvent::Quality }
 
       # @!attribute size
-      #   The size of the generated image.
+      #   The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
-      #   @return [Symbol, OpenAI::Models::ImageGenCompletedEvent::Size]
-      required :size, enum: -> { OpenAI::ImageGenCompletedEvent::Size }
+      #   @return [String, Symbol, OpenAI::Models::ImageGenCompletedEvent::Size]
+      required :size, union: -> { OpenAI::ImageGenCompletedEvent::Size }
 
       # @!attribute type
       #   The type of the event. Always `image_generation.completed`.
@@ -68,7 +68,7 @@ module OpenAI
       #
       #   @param quality [Symbol, OpenAI::Models::ImageGenCompletedEvent::Quality] The quality setting for the generated image.
       #
-      #   @param size [Symbol, OpenAI::Models::ImageGenCompletedEvent::Size] The size of the generated image.
+      #   @param size [String, Symbol, OpenAI::Models::ImageGenCompletedEvent::Size] The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
       #   @param usage [OpenAI::Models::ImageGenCompletedEvent::Usage] For the GPT image models only, the token usage information for the image generat
       #
@@ -111,25 +111,51 @@ module OpenAI
         LOW = :low
         MEDIUM = :medium
         HIGH = :high
+        XHIGH = :xhigh
+        MAX = :max
         AUTO = :auto
 
         # @!method self.values
         #   @return [Array<Symbol>]
       end
 
-      # The size of the generated image.
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
       # @see OpenAI::Models::ImageGenCompletedEvent#size
       module Size
-        extend OpenAI::Internal::Type::Enum
+        extend OpenAI::Internal::Type::Union
+
+        variant const: -> { OpenAI::Models::ImageGenCompletedEvent::Size::SIZE_1024X1024 }
+
+        variant const: -> { OpenAI::Models::ImageGenCompletedEvent::Size::SIZE_1024X1536 }
+
+        variant const: -> { OpenAI::Models::ImageGenCompletedEvent::Size::SIZE_1536X1024 }
+
+        variant const: -> { OpenAI::Models::ImageGenCompletedEvent::Size::AUTO }
+
+        # Keep known dimensions as symbols when reading existing API responses.
+        variant String
+
+        # @!method self.variants
+        #   @return [Array(String, Symbol)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias { T.any(String, OpenAI::ImageGenCompletedEvent::Size::TaggedSymbol) }
+        end
+
+        # @!group
 
         SIZE_1024X1024 = :"1024x1024"
         SIZE_1024X1536 = :"1024x1536"
         SIZE_1536X1024 = :"1536x1024"
         AUTO = :auto
 
-        # @!method self.values
-        #   @return [Array<Symbol>]
+        # @!endgroup
+
+        # Preserve the enum helper available before custom dimensions were supported.
+        #
+        # @return [Array<Symbol>]
+        def self.values = [SIZE_1024X1024, SIZE_1024X1536, SIZE_1536X1024, AUTO]
       end
 
       # @see OpenAI::Models::ImageGenCompletedEvent#usage

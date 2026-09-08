@@ -55,8 +55,10 @@ module OpenAI
         # @see OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent#data
         class Data < OpenAI::Internal::Type::BaseModel
           # @!attribute call_id
-          #   The Transceiver `rtc_...` ID of the pending SIP session. The same value appears
-          #   as `session_id` in `live.call.incoming`.
+          #   The Transceiver `rtc_...` ID of the pending SIP session. The paired
+          #   `live.call.incoming` event derives its `session_id` by replacing the `rtc_`
+          #   prefix with `live_`. Use the ID returned by the event with the corresponding
+          #   Realtime or Live API.
           #
           #   @return [String]
           required :call_id, String
@@ -77,7 +79,7 @@ module OpenAI
           #
           #   Event data payload.
           #
-          #   @param call_id [String] The Transceiver `rtc_...` ID of the pending SIP session. The same
+          #   @param call_id [String] The Transceiver `rtc_...` ID of the pending SIP session. The paired
           #
           #   @param sip_headers [Array<OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader>] Headers from the SIP Invite.
 
