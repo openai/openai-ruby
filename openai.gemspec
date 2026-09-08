@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     ".ignore"
   ] +
     [
+      "examples/responses/websocket_workflows.rb",
       "examples/mtls_custom_http_client.rb",
       "examples/x509_workload_identity.rb",
       "examples/realtime/README.md",
@@ -43,6 +44,7 @@ Gem::Specification.new do |s|
     "azure.md",
     "bedrock.md",
     "realtime.md",
+    "responses-websocket.md",
     "examples/realtime/README.md"
   ]
   s.add_dependency("connection_pool", ">= 2.2.3")
