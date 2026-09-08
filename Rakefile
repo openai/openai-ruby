@@ -10,6 +10,7 @@ require "rubocop/rake_task"
 
 require_relative "scripts/rubyfmt_policy"
 require_relative "scripts/rbs_format"
+require_relative "scripts/test_sharding"
 
 examples = "examples"
 ignore_file = ".ignore"
@@ -48,7 +49,7 @@ multitask(test: [:"test:examples:inventory"]) do
     abort("Run Bedrock tests with `BUNDLE_GEMFILE=gemfiles/bedrock.gemfile bundle exec rake test:bedrock`")
   end
 
-  run_tests.call(files.exclude(*bedrock_tests))
+  run_tests.call(TestSharding.select(files.exclude(*bedrock_tests).to_a, ENV["TEST_SHARD"]))
 end
 
 desc("Run Bedrock tests with the AWS test bundle")

@@ -99,7 +99,7 @@ jobs:
 
   test-ruby:
     timeout-minutes: 15
-    name: test (ruby ${{ matrix.ruby-version }})
+    name: test (ruby ${{ matrix.ruby-version }}, shard ${{ matrix.shard }}/3)
     permissions:
       contents: read
     runs-on: ${{ inputs.runner }}
@@ -107,6 +107,9 @@ jobs:
       fail-fast: false
       matrix:
         ruby-version: ['3.3', '3.4', '4.0']
+        shard: [1, 2, 3]
+    env:
+      TEST_SHARD: ${{ matrix.shard }}/3
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
