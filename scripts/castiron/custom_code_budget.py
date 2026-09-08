@@ -300,7 +300,7 @@ def github_evaluate(
         raise ValueError("unexpected or superseded source workflow run")
     head = report.require_sha(run["head_sha"])
     if run["event"] == "pull_request":
-        if report.current_pull_request(root, repository, run, branch, main) is None:
+        if report.current_pull_request(root, repository, run, branch) is None:
             raise ValueError("source run must identify exactly one current PR targeting main")
     elif run["event"] == "merge_group":
         if not run["head_branch"].startswith(f"gh-readonly-queue/{branch}/"):

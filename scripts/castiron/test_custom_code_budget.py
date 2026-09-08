@@ -313,6 +313,7 @@ class StatusPublisherTests(unittest.TestCase):
         head_changed: bool = False,
         base_changed: bool = False,
         no_result: bool = False,
+        stale_pr_base: bool = False,
         failed_budget: bool = False,
         run_overrides: dict[str, Any] | None = None,
     ) -> list[dict[str, Any]]:
@@ -337,6 +338,7 @@ class StatusPublisherTests(unittest.TestCase):
             },
             "run": {**source_run(head, event_name), **(run_overrides or {})},
             "candidates": [{"number": 3}],
+            "main": "c" * 40 if base_changed else base,
             "current": {
                 "state": "open",
                 "head": {
@@ -345,7 +347,7 @@ class StatusPublisherTests(unittest.TestCase):
                     "repo": {"id": 7, "full_name": "fork/example"},
                 },
                 "base": {
-                    "sha": "c" * 40 if base_changed else base,
+                    "sha": "d" * 40 if stale_pr_base else base,
                     "ref": "main",
                     "repo": {"full_name": "openai/example"},
                 },
@@ -370,15 +372,17 @@ class StatusPublisherTests(unittest.TestCase):
             rest: {
             pulls: {list() {}, get: async () => ({data: data.current})},
             actions: {getWorkflowRun: async () => ({data: data.run})},
-            git: {getRef: async () => ({data: {object: {sha: data.current.base.sha}}})},
+            git: {getRef: async () => ({data: {object: {sha: data.main}}})},
             repos: {
               get: async () => ({data: {default_branch: 'main'}}),
               createCommitStatus: async value => published.push(value),
             },
           }};
           const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
-          new AsyncFunction('github','context','process', data.script)(github, data.context, {env:data.env})
-            .then(() => process.stdout.write(JSON.stringify(published)))
+          const failures = [];
+          new AsyncFunction('github','context','process','core', data.script)(
+            github, data.context, {env:data.env}, {setFailed: message => failures.push(message)})
+            .then(() => process.stdout.write(JSON.stringify({published, failures})))
             .catch(error => { console.error(error); process.exitCode = 1; });
         """
         output = subprocess.run(
@@ -388,7 +392,11 @@ class StatusPublisherTests(unittest.TestCase):
             capture_output=True,
             check=True,
         )
-        return cast(list[dict[str, Any]], json.loads(output.stdout))
+        result = json.loads(output.stdout)
+        self.assertEqual(bool(result["failures"]), any(
+            status["state"] == "failure" for status in result["published"]
+        ))
+        return cast(list[dict[str, Any]], result["published"])
 
     def test_statuses_attach_to_candidate_not_main(self) -> None:
         for event in ("pull_request", "merge_group"):
@@ -398,6 +406,15 @@ class StatusPublisherTests(unittest.TestCase):
                 self.assertTrue(
                     all(r["sha"] == "b" * 40 and r["state"] == "success" for r in results)
                 )
+
+    def test_stale_pr_base_does_not_hide_results_or_evaluation_failures(self) -> None:
+        for no_result in (False, True):
+            with self.subTest(no_result=no_result):
+                results = self.publish(stale_pr_base=True, no_result=no_result)
+                self.assertEqual(len(results), 2)
+                self.assertTrue(all(
+                    r["state"] == ("failure" if no_result else "success") for r in results
+                ))
 
     def test_stale_pr_head_is_not_published(self) -> None:
         self.assertEqual(self.publish(head_changed=True), [])
@@ -589,7 +606,7 @@ class GitHubBudgetTests(unittest.TestCase):
         pull = {
             "state": "open",
             "head": {"sha": head, "ref": "sdk", "repo": {"id": 7, "full_name": "fork/example"}},
-            "base": {"sha": base, "ref": "main", "repo": {"full_name": "openai/example"}},
+            "base": {"sha": "d" * 40, "ref": "main", "repo": {"full_name": "openai/example"}},
         }
         responses = [
             {"default_branch": "main", "private": False},
@@ -617,7 +634,7 @@ class GitHubBudgetTests(unittest.TestCase):
             )
 
     def test_stale_pull_and_wrong_target_fail_before_objects_created(self) -> None:
-        for kind in ("head", "base", "repository", "branch", "closed"):
+        for kind in ("head", "repository", "branch", "closed"):
             with self.subTest(kind=kind), tempfile.TemporaryDirectory() as temp:
                 base, head = "a" * 40, "b" * 40
                 event = {
@@ -631,8 +648,6 @@ class GitHubBudgetTests(unittest.TestCase):
                 }
                 if kind == "head":
                     pull["head"]["sha"] = "c" * 40
-                elif kind == "base":
-                    pull["base"]["sha"] = "c" * 40
                 elif kind == "repository":
                     pull["base"]["repo"]["full_name"] = "wrong/repo"
                 elif kind == "branch":

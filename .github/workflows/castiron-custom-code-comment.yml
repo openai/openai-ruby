@@ -157,7 +157,7 @@ jobs:
               for (const number of [...new Set(pulls.map(pull => pull.number))].sort((a, b) => a - b)) {
                 if (!Number.isInteger(number) || number <= 0) return;
                 const {data: pr} = await github.rest.pulls.get({...context.repo, pull_number: number});
-                if (pr.state === 'open' && pr.head.sha === head && pr.base.sha === base &&
+                if (pr.state === 'open' && pr.head.sha === head &&
                     pr.head.ref === run.head_branch && pr.head.repo?.id === headRepository.id &&
                     pr.head.repo?.full_name === headRepository.full_name &&
                     pr.base.ref === branch &&
@@ -167,6 +167,7 @@ jobs:
             } else if (run.event !== 'merge_group' || !run.head_branch.startsWith(`gh-readonly-queue/${branch}/`)) {
               return;
             }
+            // PR base.sha can lag main; freshness is tied to the evaluated Git revision.
             const fresh = base === process.env.BASE_SHA && head === process.env.HEAD_SHA;
             const url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             for (const [name, result] of [
@@ -179,6 +180,9 @@ jobs:
                 : 'Budget check failed. See the trusted run summary.';
               await github.rest.repos.createCommitStatus({...context.repo, sha: head, context: name,
                 state, description, target_url: url});
+            }
+            if (!fresh || process.env.ISOLATION_RESULT !== 'success' || process.env.BUDGET_RESULT !== 'success') {
+              core.setFailed('Custom-code evaluation failed or is stale. See the trusted run summary and rerun against current main.');
             }
 
   comment:
@@ -239,7 +243,6 @@ jobs:
                 run.repository.full_name !== `${context.repo.owner}/${context.repo.repo}`) return;
             const {data: repository} = await github.rest.repos.get(context.repo);
             const branch = repository.default_branch;
-            const {data: main} = await github.rest.git.getRef({...context.repo, ref: `heads/${branch}`});
             const headRepository = run.head_repository;
             if (!headRepository || !Number.isInteger(headRepository.id) || headRepository.id <= 0 ||
                 !headRepository.full_name || !headRepository.owner?.login || !run.head_branch) return;
@@ -253,7 +256,7 @@ jobs:
               if (pr.state === 'open' && pr.head.sha === run.head_sha &&
                   pr.head.ref === run.head_branch && pr.head.repo?.id === headRepository.id &&
                   pr.head.repo?.full_name === headRepository.full_name &&
-                  pr.base.sha === main.object.sha && pr.base.ref === branch &&
+                  pr.base.ref === branch &&
                   pr.base.repo.full_name === `${context.repo.owner}/${context.repo.repo}`) current.push(pr);
             }
             if (current.length !== 1) return;

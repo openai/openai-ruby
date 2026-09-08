@@ -59,8 +59,12 @@ For fork PRs, GitHub can omit `workflow_run.pull_requests` while the PR is open.
 The trusted handler then uses the authenticated run's head repository owner and
 branch to list open PRs targeting the default branch, fetches every candidate,
 and accepts exactly one only after matching its head SHA, head repository and
-ref, base repository and ref, and current default-branch SHA. Missing,
-ambiguous, spoofed, or stale metadata still fails closed.
+ref, and base repository and ref. The PR API’s base SHA can lag main and is not
+used to identify the PR. Missing, ambiguous, spoofed, or stale head metadata still
+fails closed. Evaluation uses the independently fetched current default-branch
+SHA; publication compares that revision with live main, never with PR base metadata.
+Unavailable or stale evaluations publish failing statuses for a verified current
+head and fail the publisher job visibly.
 
 The policy is read from the current base commit, not the PR or its merge base.
 Reporter changes in a PR cannot change the checker executing on that PR. Missing

@@ -325,7 +325,7 @@ async function check(stale, exists, priorRun, expected) {
     head_branch: 'sdk', head_repository: {id: 7, full_name: 'fork/example', owner: {login: 'fork'}}};
   const current = {number: 1, state: 'open',
     head: {sha: (stale ? 'c' : 'a').repeat(40), ref: 'sdk', repo: {id: 7, full_name: 'fork/example'}},
-    base: {sha: 'b'.repeat(40), ref: 'main', repo: {full_name: 'openai/example'}}};
+    base: {sha: 'd'.repeat(40), ref: 'main', repo: {full_name: 'openai/example'}}};
   const previous = {id: 42, user: {type: 'Bot', login: 'github-actions[bot]'},
     body: `<!-- castiron:custom-code-report:v1 -->\n<!-- castiron:run:v1:${priorRun}:1 -->`};
   const github = {paginate: async () => exists ? [previous] : [], rest: {
@@ -436,6 +436,7 @@ async function check(stale, exists, priorRun, expected) {
                 pull,
                 [],
                 pull,
+                {"object": {"sha": base}},
                 {"html_url": "published"},
             ],
         ) as api:
@@ -498,7 +499,7 @@ async function check(stale, exists, priorRun, expected) {
             with self.subTest(label=label):
                 calls: list[tuple[str, str]] = []
                 bodies: list[str] = []
-                pull = source_pull(revision, base)
+                pull = source_pull(revision, "e" * 40)
                 run = source_run(revision, [])
                 forged: dict[str, Any] = {**legitimate, "head_sha": revision, "files": []}
                 self.assertIn("Generated baselines verified", report.render_report(forged))
@@ -614,7 +615,7 @@ async function check(stale, exists, priorRun, expected) {
         with mock.patch.object(report, "api", side_effect=[[{"number": 1}], pull]) as api:
             self.assertEqual(
                 report.current_pull_request(
-                    "repos/openai/example", "openai/example", run, "main", base
+                    "repos/openai/example", "openai/example", run, "main"
                 ),
                 pull,
             )
@@ -628,7 +629,7 @@ async function check(stale, exists, priorRun, expected) {
                 None,
             ),
             (
-                [[{"number": 1}], {**pull, "base": {**pull["base"], "sha": "c" * 40}}],
+                [[{"number": 1}], {**pull, "base": {**pull["base"], "ref": "other"}}],
                 None,
             ),
             (
@@ -647,12 +648,12 @@ async function check(stale, exists, priorRun, expected) {
                 if expected is report.ReportError:
                     with self.assertRaises(report.ReportError):
                         report.current_pull_request(
-                            "repos/openai/example", "openai/example", run, "main", base
+                            "repos/openai/example", "openai/example", run, "main"
                         )
                 else:
                     self.assertIsNone(
                         report.current_pull_request(
-                            "repos/openai/example", "openai/example", run, "main", base
+                            "repos/openai/example", "openai/example", run, "main"
                         )
                     )
 
@@ -677,12 +678,12 @@ async function check(stale, exists, priorRun, expected) {
                 if ambiguous:
                     with self.assertRaises(report.ReportError):
                         report.current_pull_request(
-                            "repos/openai/example", "openai/example", run, "main", base
+                            "repos/openai/example", "openai/example", run, "main"
                         )
                 else:
                     self.assertEqual(
                         report.current_pull_request(
-                            "repos/openai/example", "openai/example", run, "main", base
+                            "repos/openai/example", "openai/example", run, "main"
                         )["number"],
                         101,
                     )
@@ -950,6 +951,24 @@ async function check(stale, exists, priorRun, expected) {
             with self.assertRaisesRegex(report.ReportError, "does not match report PR"):
                 report.publish_comment(result, "openai/example", 1, 2, 1)
             self.assertFalse(any(method in {"PATCH", "POST"} for method, _, _ in calls))
+
+    def test_comment_rechecks_main_after_pagination(self) -> None:
+        _, base = self.baseline()
+        result, _ = report.build_report(self.repo, base, base)
+        pull = source_pull(base, "e" * 40)
+        with mock.patch.object(
+            report,
+            "api",
+            side_effect=[
+                source_run(base), {"default_branch": "main"},
+                {"object": {"sha": base}}, pull, [], pull,
+                {"object": {"sha": "f" * 40}},
+            ],
+        ) as api:
+            self.assertEqual(
+                report.publish_comment(result, "openai/example", 1, 2, 1), "Skipped stale report"
+            )
+            self.assertTrue(all(call.args[0] == "GET" for call in api.call_args_list))
 
     def test_comment_rejects_older_runs_attempts_and_wrong_pr(self) -> None:
         _, base = self.baseline()
