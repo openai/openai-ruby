@@ -22,6 +22,16 @@ module OpenAI
           | OpenAI::Realtime::AudioSession::Closed
         def each: ?{ (event) -> void } -> (Enumerator[event, self] | self)
         class InputTurn
+          # @api private
+          def completion_for: (
+            OpenAI::Realtime::AudioSession session
+          ) -> [Symbol, OpenAI::Errors::RealtimeAudioTurnError?]?
+
+          # @api private
+          def record_completion: (
+            Symbol action,
+            ?error: OpenAI::Errors::RealtimeAudioTurnError?
+          ) -> nil
           def commit: -> nil
           def discard: -> nil
         end

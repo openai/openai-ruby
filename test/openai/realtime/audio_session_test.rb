@@ -195,6 +195,29 @@ class OpenAI::Test::AudioSessionTest < Minitest::Test
     end
   end
 
+  def test_completed_turn_remains_idempotent_after_later_turns
+    with_audio do |audio, socket, microphone|
+      audio.start
+      first = audio.start_turn
+      microphone.capture("\0" * 960)
+      microphone.delivered.pop
+      first.commit
+      second = audio.start_turn
+      second.discard
+      third = audio.start_turn
+      third.discard
+      assert_nil(first.commit)
+      assert_nil(second.discard)
+      assert_raises(OpenAI::Errors::RealtimeAudioStateError) { first.discard }
+      assert_raises(OpenAI::Errors::RealtimeAudioStateError) { second.commit }
+      foreign = OpenAI::Realtime::AudioSession::InputTurn.new(Object.new)
+      foreign.record_completion(:discard)
+      assert_raises(OpenAI::Errors::RealtimeAudioStateError) { audio.finish_turn(foreign, :discard) }
+      assert_equal(1, socket.writes.count { |event| event[:type] == "input_audio_buffer.commit" })
+      assert_equal(2, socket.writes.count { |event| event[:type] == "input_audio_buffer.clear" })
+    end
+  end
+
   def test_break_from_event_consumer_closes_the_session
     with_audio do |audio|
       audio.each { |event| break if event.type == :"session.updated" }
@@ -353,6 +376,73 @@ class OpenAI::Test::AudioSessionTest < Minitest::Test
       microphone.delivered.pop
       turn.commit
       assert_equal(1, socket.writes.count { |event| event[:type] == "input_audio_buffer.commit" })
+    end
+  end
+
+  def test_explicit_response_waits_for_vad_input_commit
+    [:server_vad, :semantic_vad].each do |mode|
+      with_audio(mode: mode) do |audio, socket|
+        audio.start
+        speech_started = Queue.new
+        committed = Queue.new
+        clearing = Queue.new
+        release_clear = Queue.new
+        consumer = Thread.new do
+          audio.each do |event|
+            if event.respond_to?(:type) && event.type == :"input_audio_buffer.speech_started"
+              speech_started << true
+            end
+
+            if event.respond_to?(:type) && event.type == :"input_audio_buffer.committed"
+              committed << true
+            end
+          end
+        end
+
+        begin
+          socket.emit(type: "input_audio_buffer.speech_started", item_id: "speech", audio_start_ms: 0)
+          speech_started.pop
+          assert_raises(OpenAI::Errors::RealtimeAudioStateError) { audio.respond }
+          assert_equal(0, socket.writes.count { |event| event[:type] == "response.create" })
+          socket.clear_handler = lambda do |_event, _socket|
+            clearing << true
+            Async::Task.current.sleep(0.001) while release_clear.empty?
+          end
+          muting = Thread.new { audio.mute }
+          clearing.pop
+          responding = Thread.new do
+            audio.respond
+          rescue OpenAI::Errors::RealtimeAudioStateError => error
+            error
+          end
+
+          deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + 2
+          until responding.stop?
+            raise "Continuation did not queue" if Process.clock_gettime(Process::CLOCK_MONOTONIC) > deadline
+            sleep(0.005)
+          end
+
+          socket.emit(type: "input_audio_buffer.committed", item_id: "speech")
+          committed.pop
+          release_clear << true
+          assert(muting.join(2))
+          assert(responding.join(2))
+          assert_instance_of(OpenAI::Errors::RealtimeAudioStateError, responding.value)
+          deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + 2
+          until socket.writes.any? { |event| event[:type] == "response.create" }
+            raise "Committed VAD response did not start" if Process.clock_gettime(Process::CLOCK_MONOTONIC) > deadline
+            sleep(0.005)
+          end
+
+          assert_equal(1, socket.writes.count { |event| event[:type] == "response.create" })
+        ensure
+          release_clear << true
+          audio.close
+          muting&.join(2)
+          responding&.join(2)
+          consumer.join(2)
+        end
+      end
     end
   end
 
@@ -558,6 +648,7 @@ class OpenAI::Test::AudioSessionTest < Minitest::Test
       microphone.capture("\0" * 960)
       microphone.delivered.pop
       next_turn.commit
+      assert_same(error, assert_raises(OpenAI::Errors::RealtimeAudioTurnError) { turn.commit })
       assert_equal(1, socket.writes.count { |event| event[:type] == "response.create" })
     end
   end

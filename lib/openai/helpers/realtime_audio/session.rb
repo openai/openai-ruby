@@ -48,6 +48,22 @@ module OpenAI
         def commit = @session.finish_turn(self, :commit)
         def discard = @session.finish_turn(self, :discard)
         def inspect = "#<OpenAI::Realtime::AudioSession::InputTurn>"
+
+        # @api private
+        def completion_for(session)
+          unless @session.equal?(session)
+            raise Errors::RealtimeAudioStateError, "Input turn belongs to another session."
+          end
+
+          @completion
+        end
+
+        # Only the owning session runtime records terminal outcomes.
+        # @api private
+        def record_completion(action, error: nil)
+          @completion = [action, error].freeze
+          nil
+        end
       end
 
       # @api private

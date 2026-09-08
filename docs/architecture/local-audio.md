@@ -4,7 +4,7 @@
 
 **Status:** approved implementation is available in this worktree, with automated validation and independent review. No package has been published. The contracts below are the acceptance criteria. Native platform binaries and physical timing validation remain release gates. See [usage documentation](../../local-audio.md) and [companion build instructions](../../packages/openai-audio/README.md).
 
-**Review status:** four paired adversarial rounds identified issues that were corrected with regressions. A further independent reviewer found no blocking issues; the tool agent-thread limit prevented creating its paired reviewer. The required two consecutive clean paired rounds remain incomplete, so this implementation must not be pushed or opened as a PR yet.
+**Review gate:** before push or PR, the complete implementation must pass two consecutive clean rounds of independent paired adversarial review, plus relevant tests, lint, type and custom-code budget checks. Physical-device timing and platform qualification remain separate release gates.
 
 **Outcome:** Ruby applications can record/transcribe/play a finite clip, compose live PCM devices themselves, or run an interruptible local Realtime voice conversation without writing device, playback-clock, or WebSocket coordination code.
 

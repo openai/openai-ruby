@@ -32,7 +32,7 @@ module OpenAI
 
           begin_interruption(:user_speech)
           reconcile
-          create_response(epoch: arguments.first)
+          create_response(epoch: arguments.first, vad_commit: true)
           @vad_input = nil if @vad_input && @vad_input[:epoch] == arguments.first
         when :response_failed
           begin_interruption(:response_error)
@@ -154,13 +154,11 @@ module OpenAI
 
       private def complete_turn(turn, action)
         require_running
-        if turn.equal?(@last_turn) && @last_turn_error
-          raise @last_turn_error if action == :commit
-          raise Errors::RealtimeAudioStateError, "This input turn has failed."
-        end
-
-        if turn.equal?(@last_turn) && action == @last_turn_action
-          return nil
+        if (completion = turn.completion_for(self))
+          completed_action, error = completion
+          raise error if error && action == :commit
+          return nil if action == completed_action
+          raise Errors::RealtimeAudioStateError, "Input turn already finished with a different outcome."
         end
 
         unless turn.equal?(@turn)
@@ -191,18 +189,17 @@ module OpenAI
           @pending_commit = nil
           if commit[:error]
             clear_input
-            @last_turn, @last_turn_action = @turn, :failed
-            @last_turn_error = Errors::RealtimeAudioTurnError.new(event: commit[:error])
+            error = Errors::RealtimeAudioTurnError.new(event: commit[:error])
+            @turn.record_completion(:failed, error: error)
             @turn = nil
             input_event(:turn_discarded)
-            raise @last_turn_error
+            raise error
           end
 
           reconcile
         end
 
-        @last_turn_error = nil
-        @last_turn, @last_turn_action = @turn, action
+        @turn.record_completion(action)
         @turn = nil
         input_event(action == :discard ? :turn_discarded : :turn_committed)
         create_response if action == :commit
@@ -257,10 +254,13 @@ module OpenAI
         nil
       end
 
-      private def create_response(epoch: @conversation_epoch)
+      private def create_response(epoch: @conversation_epoch, vad_commit: false)
         require_running
         reconcile if @reconciling
-        raise Errors::RealtimeAudioStateError, "An input turn is still active." if @turn
+        if @turn || (@vad_input && (!vad_commit || !@vad_input[:committed]))
+          raise Errors::RealtimeAudioStateError, "An input turn is still active."
+        end
+
         if @responses.any? { |_id, response| response[:status] == "in_progress" }
           raise Errors::RealtimeAudioStateError, "A response is still generating."
         end
@@ -273,6 +273,10 @@ module OpenAI
         count = @response_generation
         @send_lock.acquire do
           return nil unless epoch == @conversation_epoch
+          if @vad_input && (!vad_commit || !@vad_input[:committed])
+            raise Errors::RealtimeAudioStateError, "An input turn is still active."
+          end
+
           @connection.send_event(type: "response.create")
         end
 

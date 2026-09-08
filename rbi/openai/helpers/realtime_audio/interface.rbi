@@ -67,6 +67,20 @@ module OpenAI
         end
 
         class InputTurn
+          # @api private
+          sig {
+            params(session: OpenAI::Realtime::AudioSession).returns(
+              T.nilable([Symbol, T.nilable(OpenAI::Errors::RealtimeAudioTurnError)])
+            )
+          }
+          def completion_for(session)
+          end
+
+          # @api private
+          sig { params(action: Symbol, error: T.nilable(OpenAI::Errors::RealtimeAudioTurnError)).returns(NilClass) }
+          def record_completion(action, error: nil)
+          end
+
           sig { returns(NilClass) }
           def commit
           end
