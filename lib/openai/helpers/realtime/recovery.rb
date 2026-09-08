@@ -102,8 +102,7 @@ module OpenAI
         return write_once(text) if Fiber.current.equal?(@owner_fiber)
 
         reply = @mutex.synchronize do
-          raise @error, cause: nil if @error
-          raise state_error("Cannot send on a closed Realtime WebSocket.") if [:closed, :ending].include?(@state)
+          raise write_error(text), cause: nil if @error || [:closed, :ending].include?(@state)
 
           if @state != :open || @flushing
             if @max_queue_bytes.zero? || @pending_bytes + [text.bytesize, 1].max > @max_queue_bytes
@@ -115,7 +114,8 @@ module OpenAI
             return nil
           end
 
-          register(:write).tap { @commands << [:write, text.dup.freeze, _1, @generation] }
+          encoded = text.dup.freeze
+          register(:write, encoded).tap { @commands << [:write, encoded, _1, @generation] }
         end
 
         await_reply(reply)
@@ -166,8 +166,8 @@ module OpenAI
         nil
       end
 
-      private def register(kind)
-        Queue.new.tap { @waiters[_1] = kind }
+      private def register(kind, text = nil)
+        Queue.new.tap { @waiters[_1] = [kind, text] }
       end
 
       private def load_async
@@ -196,10 +196,18 @@ module OpenAI
       private def respond(reply, value = nil, error: nil)
         return unless reply
 
-        @mutex.synchronize do
-          if @waiters.delete(reply)
-            reply << [error ? :error : :ok, error || value]
+        @mutex.synchronize { respond_locked(reply, value, error: error) }
+      end
+
+      private def respond_locked(reply, value = nil, error: nil)
+        if (waiter = @waiters.delete(reply))
+          failure = if error && waiter.first == :write
+            write_error(waiter.last, attempted: reply.equal?(@write_reply))
+          else
+            error
           end
+
+          reply << [failure ? :error : :ok, failure || value]
         end
       end
 
@@ -274,8 +282,7 @@ module OpenAI
             end
 
             if kind == :write
-              write_once(data)
-              respond(reply)
+              write_once(data, reply: reply)
             elsif flush
               respond(reply)
             else
@@ -352,26 +359,31 @@ module OpenAI
         end
       end
 
-      private def write_once(text, queued: false)
+      private def write_once(text, queued: false, reply: nil)
         @mutex.synchronize do
-          raise state_error("Cannot send on a closed Realtime WebSocket.") if @state == :closed
+          raise write_error(text), cause: nil if @state == :closed
           @inflight = text.dup.freeze
+          @write_reply = reply
         end
 
         begin
           @physical.send_raw(text)
+          sent = true
         rescue StandardError
           error = @mutex.synchronize do
-            fail_locked(
+            global_error = fail_locked(
               "Realtime send failed; delivery is uncertain and the event was not retried.",
               uncertain_message: text
             )
+            queued ? global_error : write_error(text, attempted: true)
           end
 
           raise error, cause: nil
         ensure
           @mutex.synchronize do
+            respond_locked(reply) if sent && reply
             @inflight = nil
+            @write_reply = nil
             if queued && @pending.first.equal?(text)
               @pending.shift
               @pending_bytes -= [text.bytesize, 1].max
@@ -407,9 +419,13 @@ module OpenAI
 
         @error = error
         @state = :closed
-        @waiters.each do |reply, kind|
-          failure = error ||
-            (kind == :read ? nil : state_error("Realtime connection closed before completing the operation."))
+        @waiters.each do |reply, (kind, text)|
+          failure = if kind == :write
+            write_error(text, attempted: reply.equal?(@write_reply))
+          else
+            error || (kind == :read ? nil : state_error("Realtime connection closed before completing the operation."))
+          end
+
           reply << [failure ? :error : :ok, failure]
         end
 
@@ -417,6 +433,15 @@ module OpenAI
         @commands.clear
         @reads.clear
         @read_reply = nil
+      end
+
+      private def write_error(text, attempted: false)
+        encoded = text.dup.freeze
+        OpenAI::Errors::RealtimeReconnectError.new(
+          message: attempted ? "Realtime send interrupted; delivery is uncertain." : "Realtime send interrupted; event was not sent.",
+          unsent_messages: attempted ? [] : [encoded],
+          uncertain_message: attempted ? encoded : nil
+        )
       end
 
       private def fail_locked(message, uncertain_message: nil)

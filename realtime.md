@@ -157,6 +157,10 @@ completion is not a server acknowledgement, and `event_id` does not establish
 exactly-once delivery. These explicit payload accessors can contain sensitive
 application data; do not log them. Error messages omit their contents.
 
+Each waiting sender receives an error describing only its own event. If its write
+was never attempted, that event appears in `unsent_messages` and `uncertain_message`
+is nil, even when another concurrent sender's write caused the connection to fail.
+
 When an explicit flush is interrupted by another disconnect, unattempted events
 stay queued and require another explicit flush after recovery. Intentional close
 keeps retained data available through the connection's queue accessors. With

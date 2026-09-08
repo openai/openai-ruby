@@ -359,6 +359,145 @@ class OpenAI::Test::RealtimeReconnectTest < Minitest::Test
     assert_equal(1, transport.requests.length)
   end
 
+  def test_concurrent_send_errors_belong_to_their_originating_callers
+    ["private second prompt", "private first prompt"].each do |second_prompt|
+      writing = Queue.new
+      gate = Queue.new
+      attempted = []
+      socket = Socket.new
+      socket.write_action = lambda do |message|
+        attempted << message
+        writing << true
+        gate.pop
+        raise connection_error(Errno::EPIPE.new)
+      end
+      assert_raises(OpenAI::Errors::RealtimeReconnectError) do
+        connect(Transport.new(socket)) do |connection|
+          send_prompt = lambda do |prompt|
+            connection.response.create(instructions: prompt)
+          rescue OpenAI::Errors::RealtimeReconnectError => e
+            e
+          end
+
+          first = Async::Task.current.async { send_prompt.call("private first prompt") }
+          writing.pop
+          second = Async::Task.current.async { send_prompt.call(second_prompt) }
+          gate << true
+          first_error = first.wait
+          second_error = second.wait
+          assert_equal(attempted.first, first_error.uncertain_message)
+          assert_empty(first_error.unsent_messages)
+          assert_nil(second_error.uncertain_message)
+          assert_equal(1, second_error.unsent_messages.length)
+          unsent = JSON.parse(second_error.unsent_messages.first)
+          assert_equal(second_prompt, unsent.fetch("response").fetch("instructions"))
+          refute_includes(second_error.full_message, "private first prompt")
+          refute_includes(second_error.inspect, "private first prompt")
+        end
+      end
+
+      assert_equal(1, attempted.length)
+    end
+  end
+
+  def test_close_after_write_completion_does_not_report_the_event_as_unsent
+    socket = Socket.new
+    connect(Transport.new(socket)) do |connection|
+      # Force close at the method boundary where delivery identity used to be
+      # cleared before the waiting sender was acknowledged.
+      trace = TracePoint.new(:return) do |event|
+        next unless event.defined_class == OpenAI::Realtime::Recovery && event.method_id == :write_once
+        trace.disable
+        connection.close
+      end
+
+      trace.enable(target_thread: Thread.current) { connection.response.create }
+    end
+
+    assert_equal(1, socket.writes.length)
+  end
+
+  def test_send_entering_recovery_after_close_keeps_its_own_payload
+    writing = Queue.new
+    gate = Queue.new
+    socket = Socket.new
+    socket.write_action = -> (_message) {
+      writing << true
+      gate.pop
+    }
+    assert_raises(OpenAI::Errors::RealtimeReconnectError) do
+      connect(Transport.new(socket)) do |connection|
+        first = Async::Task.current.async do
+          connection.response.create(instructions: "first")
+        rescue OpenAI::Errors::RealtimeReconnectError => e
+          e
+        end
+
+        writing.pop
+        # The public closed? check has succeeded when Recovery#write is entered.
+        trace = TracePoint.new(:call) do |event|
+          next unless event.defined_class == OpenAI::Realtime::Recovery && event.method_id == :write
+          trace.disable
+          connection.close
+        end
+
+        second_error = assert_raises(OpenAI::Errors::RealtimeReconnectError) do
+          trace.enable(target_thread: Thread.current) { connection.response.create(instructions: "second") }
+        end
+
+        assert_nil(second_error.uncertain_message)
+        assert_equal(
+          "second",
+          JSON.parse(second_error.unsent_messages.fetch(0)).fetch("response").fetch("instructions")
+        )
+        assert_equal("first", JSON.parse(first.wait.uncertain_message).fetch("response").fetch("instructions"))
+      end
+    end
+  end
+
+  def test_callback_send_error_excludes_other_callers_retained_events
+    started = Queue.new
+    gate = Queue.new
+    second = Socket.new
+    second.write_action = -> (_message) { raise connection_error(Errno::EPIPE.new) }
+    transport = Transport.new(
+      Socket.new(disconnected),
+      -> {
+        started << true
+        gate.pop
+        second
+      }
+    )
+    callback_error = nil
+    callback = lambda do |connection|
+      connection.response.create(instructions: "callback")
+    rescue OpenAI::Errors::RealtimeReconnectError => e
+      callback_error = e
+    end
+
+    global_error = assert_raises(OpenAI::Errors::RealtimeReconnectError) do
+      connect(transport, max_queue_bytes: 4096, on_reconnected: callback) do |connection|
+        receiver = Async::Task.current.async do
+          connection.receive
+        rescue OpenAI::Errors::RealtimeReconnectError => e
+          e
+        end
+
+        started.pop
+        connection.response.create(instructions: "queued by another caller")
+        gate << true
+        receiver.wait
+      end
+    end
+
+    assert_empty(callback_error.unsent_messages)
+    assert_equal("callback", JSON.parse(callback_error.uncertain_message).fetch("response").fetch("instructions"))
+    assert_equal(
+      "queued by another caller",
+      JSON.parse(global_error.unsent_messages.fetch(0)).fetch("response").fetch("instructions")
+    )
+  end
+
   def test_failed_flush_separates_uncertain_and_never_attempted_events
     started = Queue.new
     gate = Queue.new
