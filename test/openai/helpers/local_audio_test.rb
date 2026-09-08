@@ -64,6 +64,26 @@ class OpenAI::Test::LocalAudioTest < Minitest::Test
     end
   end
 
+  def test_unsupported_term_still_terminates_and_reaps_child
+    signals = []
+    kill = Process.method(:kill)
+    unsupported_term = lambda do |name, pid|
+      signals << [name, pid]
+      raise Errno::EINVAL if name == "TERM"
+      kill.call(name, pid)
+    end
+
+    with_executable("ffmpeg", "sleep 30") do
+      Process.stub(:kill, unsupported_term) do
+        assert_raises(Audio::TimeoutError) { Audio.record(duration: 1, timeout: 0.1) }
+      end
+    end
+
+    assert_equal(%w[TERM KILL], signals.map(&:first))
+    assert_equal(1, signals.map(&:last).uniq.length)
+    assert_raises(Errno::ECHILD) { Process.waitpid(signals.last.last, Process::WNOHANG) }
+  end
+
   def test_real_ffplay_rejects_invalid_encoded_audio
     unless ENV["OPENAI_AUDIO_FFPLAY_TEST"] == "1"
       skip("Set OPENAI_AUDIO_FFPLAY_TEST=1 to test installed FFplay with dummy output")

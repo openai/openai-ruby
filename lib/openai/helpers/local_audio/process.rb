@@ -124,6 +124,10 @@ module OpenAI
 
       private def signal(name)
         Process.kill(name, @pid)
+      rescue Errno::EINVAL
+        # Windows rejects TERM for another process; KILL still terminates it.
+        raise unless name == "TERM"
+        signal("KILL")
       rescue Errno::ESRCH
         nil
       end
