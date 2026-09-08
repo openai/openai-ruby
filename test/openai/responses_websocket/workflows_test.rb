@@ -241,6 +241,7 @@ class OpenAI::Test::ResponsesWebSocketWorkflowsTest < Minitest::Test
       end
     end
 
+    started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     with_server(handler) do |client|
       client.responses.connect do |connection|
         %w[planner critic].each do |lane|
@@ -253,6 +254,13 @@ class OpenAI::Test::ResponsesWebSocketWorkflowsTest < Minitest::Test
             Workflows.completed_responses(connection, lanes: %w[planner critic])
           end
         end
+
+        assert_operator(
+          Process.clock_gettime(Process::CLOCK_MONOTONIC) - started_at,
+          :<,
+          5,
+          "The operation deadline must fire before the 10-second harness timeout."
+        )
       end
 
       assert(peer_closed.dequeue)
