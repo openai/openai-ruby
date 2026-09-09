@@ -8,8 +8,8 @@ module OpenAI
       class Files
 
         # Create a vector store file by attaching a
-        # [File](https://platform.openai.com/docs/api-reference/files) to a
-        # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object).
+        # [File](https://developers.openai.com/api/reference/resources/files) to a
+        # [vector store](https://developers.openai.com/api/reference/resources/vector_stores).
         sig {
           params(
             vector_store_id: String,
@@ -26,10 +26,10 @@ module OpenAI
         def create(
           # The ID of the vector store for which to create a File.
           vector_store_id,
-          # A [File](https://platform.openai.com/docs/api-reference/files) ID that the
-          # vector store should use. Useful for tools like `file_search` that can access
+          # A [File](https://developers.openai.com/api/reference/resources/files) ID that
+          # the vector store should use. Useful for tools like `file_search` that can access
           # files. For multi-file ingestion, we recommend
-          # [`file_batches`](https://platform.openai.com/docs/api-reference/vector-stores-file-batches/createBatch)
+          # [`file_batches`](https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/create)
           # to minimize per-vector-store write requests.
           file_id:,
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -157,7 +157,7 @@ module OpenAI
 
         # Delete a vector store file. This will remove the file from the vector store but
         # the file itself will not be deleted. To delete the file, use the
-        # [delete file](https://platform.openai.com/docs/api-reference/files/delete)
+        # [delete file](https://developers.openai.com/api/reference/resources/files/methods/delete)
         # endpoint.
         sig {
           params(file_id: String, vector_store_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(

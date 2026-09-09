@@ -43,17 +43,23 @@ module OpenAI
         # @!method initialize(command_index:, delta:, output_index:, sequence_number:, obfuscation: nil, type: :"response.shell_call_command.delta")
         #   A streaming event that indicated a shell command was incrementally updated.
         #
-        #   @param command_index [Integer] The index of the shell command that was updated.
+        #   @param command_index [Integer]
+        #     The index of the shell command that was updated.
         #
-        #   @param delta [String] The shell command delta that was appended.
+        #   @param delta [String]
+        #     The shell command delta that was appended.
         #
-        #   @param output_index [Integer] The index of the output item that was updated.
+        #   @param output_index [Integer]
+        #     The index of the output item that was updated.
         #
-        #   @param sequence_number [Integer] The sequence number of the event that was emitted.
+        #   @param sequence_number [Integer]
+        #     The sequence number of the event that was emitted.
         #
-        #   @param obfuscation [String] An obfuscation string that was added to pad the event payload.
+        #   @param obfuscation [String]
+        #     An obfuscation string that was added to pad the event payload.
         #
-        #   @param type [Symbol, :"response.shell_call_command.delta"] The type of the event, always `response.shell_call_command.delta`.
+        #   @param type [Symbol, :"response.shell_call_command.delta"]
+        #     The type of the event, always `response.shell_call_command.delta`.
       end
     end
   end

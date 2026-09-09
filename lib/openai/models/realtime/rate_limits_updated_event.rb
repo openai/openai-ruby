@@ -31,12 +31,14 @@ module OpenAI
         #   rate limits shown here reflect that reservation, which is then adjusted
         #   accordingly once the Response is completed.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param rate_limits [Array<OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit>] List of rate limit information.
+        #   @param rate_limits [Array<OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit>]
+        #     List of rate limit information.
         #
-        #   @param type [Symbol, :"rate_limits.updated"] The event type, must be `rate_limits.updated`.
-
+        #   @param type [Symbol, :"rate_limits.updated"]
+        #     The event type, must be `rate_limits.updated`.
         class RateLimit < OpenAI::Internal::Type::BaseModel
           # @!attribute limit
           #   The maximum allowed value for the rate limit.
@@ -63,16 +65,17 @@ module OpenAI
           optional :reset_seconds, Float
 
           # @!method initialize(limit: nil, name: nil, remaining: nil, reset_seconds: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit} for more details.
+          #   @param limit [Integer]
+          #     The maximum allowed value for the rate limit.
           #
-          #   @param limit [Integer] The maximum allowed value for the rate limit.
+          #   @param name [Symbol, OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit::Name]
+          #     The name of the rate limit (`requests`, `tokens`).
           #
-          #   @param name [Symbol, OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit::Name] The name of the rate limit (`requests`, `tokens`).
+          #   @param remaining [Integer]
+          #     The remaining value before the limit is reached.
           #
-          #   @param remaining [Integer] The remaining value before the limit is reached.
-          #
-          #   @param reset_seconds [Float] Seconds until the rate limit resets.
+          #   @param reset_seconds [Float]
+          #     Seconds until the rate limit resets.
 
           # The name of the rate limit (`requests`, `tokens`).
           #

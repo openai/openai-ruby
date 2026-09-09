@@ -33,7 +33,7 @@ module OpenAI
       # The intended purpose of the uploaded file.
       #
       # See the
-      # [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
+      # [documentation on File purposes](https://developers.openai.com/api/reference/resources/files/methods/create#%28resource%29%20files%20%3E%20%28method%29%20create%20%3E%20%28params%29%200%20%3E%20%28param%29%20purpose%20%3E%20%28schema%29).
       sig { returns(OpenAI::FilePurpose::OrSymbol) }
       attr_accessor :purpose
 
@@ -79,7 +79,7 @@ module OpenAI
         # The intended purpose of the uploaded file.
         #
         # See the
-        # [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
+        # [documentation on File purposes](https://developers.openai.com/api/reference/resources/files/methods/create#%28resource%29%20files%20%3E%20%28method%29%20create%20%3E%20%28params%29%200%20%3E%20%28param%29%20purpose%20%3E%20%28schema%29).
         purpose:,
 
         # The expiration policy for a file. By default, files with `purpose=batch` expire

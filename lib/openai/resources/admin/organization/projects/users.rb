@@ -14,13 +14,17 @@ module OpenAI
             #
             # @overload create(project_id, role:, email: nil, user_id: nil, request_options: {})
             #
-            # @param project_id [String] The ID of the project.
+            # @param project_id [String]
+            #   The ID of the project.
             #
-            # @param role [String] `owner` or `member`
+            # @param role [String]
+            #   `owner` or `member`
             #
-            # @param email [String, nil] Email of the user to add.
+            # @param email [String, nil]
+            #   Email of the user to add.
             #
-            # @param user_id [String, nil] The ID of the user.
+            # @param user_id [String, nil]
+            #   The ID of the user.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -43,9 +47,11 @@ module OpenAI
             #
             # @overload retrieve(user_id, project_id:, request_options: {})
             #
-            # @param user_id [String] The ID of the user.
+            # @param user_id [String]
+            #   The ID of the user.
             #
-            # @param project_id [String] The ID of the project.
+            # @param project_id [String]
+            #   The ID of the project.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -71,11 +77,14 @@ module OpenAI
             #
             # @overload update(user_id, project_id:, role: nil, request_options: {})
             #
-            # @param user_id [String] Path param: The ID of the user.
+            # @param user_id [String]
+            #   Path param: The ID of the user.
             #
-            # @param project_id [String] Path param: The ID of the project.
+            # @param project_id [String]
+            #   Path param: The ID of the project.
             #
-            # @param role [String, nil] Body param: `owner` or `member`
+            # @param role [String, nil]
+            #   Body param: `owner` or `member`
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -98,19 +107,22 @@ module OpenAI
               )
             end
 
-            # Some parameter documentations has been truncated, see
-            # {OpenAI::Models::Admin::Organization::Projects::UserListParams} for more
-            # details.
-            #
             # Returns a list of users in the project.
             #
             # @overload list(project_id, after: nil, limit: nil, request_options: {})
             #
-            # @param project_id [String] The ID of the project.
+            # @param project_id [String]
+            #   The ID of the project.
             #
-            # @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+            # @param after [String]
+            #   A cursor for use in pagination. `after` is an object ID that defines your place
+            #   in the list. For instance, if you make a list request and receive 100 objects,
+            #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+            #   fetch the next page of the list.
             #
-            # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+            # @param limit [Integer]
+            #   A limit on the number of objects to be returned. Limit can range between 1 and
+            #   100, and the default is 20.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -138,9 +150,11 @@ module OpenAI
             #
             # @overload delete(user_id, project_id:, request_options: {})
             #
-            # @param user_id [String] The ID of the user.
+            # @param user_id [String]
+            #   The ID of the user.
             #
-            # @param project_id [String] The ID of the project.
+            # @param project_id [String]
+            #   The ID of the project.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #

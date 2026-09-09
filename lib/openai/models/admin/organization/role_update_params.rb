@@ -35,11 +35,14 @@ module OpenAI
           # @!method initialize(role_id:, description: nil, permissions: nil, role_name: nil, request_options: {})
           #   @param role_id [String]
           #
-          #   @param description [String, nil] New description for the role.
+          #   @param description [String, nil]
+          #     New description for the role.
           #
-          #   @param permissions [Array<String>, nil] Updated set of permissions for the role.
+          #   @param permissions [Array<String>, nil]
+          #     Updated set of permissions for the role.
           #
-          #   @param role_name [String, nil] New name for the role.
+          #   @param role_name [String, nil]
+          #     New name for the role.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end

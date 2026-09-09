@@ -24,12 +24,14 @@ module OpenAI
         required :data, OpenAI::Internal::Type::FileInput
 
         # @!method initialize(upload_id:, data:, request_options: {})
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Uploads::PartCreateParams} for more details.
-        #
         #   @param upload_id [String]
         #
-        #   @param data [Pathname, StringIO, IO, String, OpenAI::FilePart] The chunk of bytes for this Part.
+        #   @param data [Pathname, StringIO, IO, String, OpenAI::FilePart]
+        #     The chunk of bytes for this Part.
+        #
+        #     `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        #     metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        #     content type.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end

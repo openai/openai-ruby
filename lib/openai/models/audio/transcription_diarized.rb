@@ -38,15 +38,20 @@ module OpenAI
         #   Represents a diarized transcription response returned by the model, including
         #   the combined transcript and speaker-segment annotations.
         #
-        #   @param duration [Float] Duration of the input audio in seconds.
+        #   @param duration [Float]
+        #     Duration of the input audio in seconds.
         #
-        #   @param segments [Array<OpenAI::Models::Audio::TranscriptionDiarizedSegment>] Segments of the transcript annotated with timestamps and speaker labels.
+        #   @param segments [Array<OpenAI::Models::Audio::TranscriptionDiarizedSegment>]
+        #     Segments of the transcript annotated with timestamps and speaker labels.
         #
-        #   @param text [String] The concatenated transcript text for the entire audio input.
+        #   @param text [String]
+        #     The concatenated transcript text for the entire audio input.
         #
-        #   @param usage [OpenAI::Models::Audio::TranscriptionDiarized::Usage::Tokens, OpenAI::Models::Audio::TranscriptionDiarized::Usage::Duration] Token or duration usage statistics for the request.
+        #   @param usage [OpenAI::Models::Audio::TranscriptionDiarized::Usage::Tokens, OpenAI::Models::Audio::TranscriptionDiarized::Usage::Duration]
+        #     Token or duration usage statistics for the request.
         #
-        #   @param task [Symbol, :transcribe] The type of task that was run. Always `transcribe`.
+        #   @param task [Symbol, :transcribe]
+        #     The type of task that was run. Always `transcribe`.
 
         # Token or duration usage statistics for the request.
         #
@@ -99,15 +104,20 @@ module OpenAI
             # @!method initialize(input_tokens:, output_tokens:, total_tokens:, input_token_details: nil, type: :tokens)
             #   Usage statistics for models billed by token usage.
             #
-            #   @param input_tokens [Integer] Number of input tokens billed for this request.
+            #   @param input_tokens [Integer]
+            #     Number of input tokens billed for this request.
             #
-            #   @param output_tokens [Integer] Number of output tokens generated.
+            #   @param output_tokens [Integer]
+            #     Number of output tokens generated.
             #
-            #   @param total_tokens [Integer] Total number of tokens used (input + output).
+            #   @param total_tokens [Integer]
+            #     Total number of tokens used (input + output).
             #
-            #   @param input_token_details [OpenAI::Models::Audio::TranscriptionDiarized::Usage::Tokens::InputTokenDetails] Details about the input tokens billed for this request.
+            #   @param input_token_details [OpenAI::Models::Audio::TranscriptionDiarized::Usage::Tokens::InputTokenDetails]
+            #     Details about the input tokens billed for this request.
             #
-            #   @param type [Symbol, :tokens] The type of the usage object. Always `tokens` for this variant.
+            #   @param type [Symbol, :tokens]
+            #     The type of the usage object. Always `tokens` for this variant.
 
             # @see OpenAI::Models::Audio::TranscriptionDiarized::Usage::Tokens#input_token_details
             class InputTokenDetails < OpenAI::Internal::Type::BaseModel
@@ -126,9 +136,11 @@ module OpenAI
               # @!method initialize(audio_tokens: nil, text_tokens: nil)
               #   Details about the input tokens billed for this request.
               #
-              #   @param audio_tokens [Integer] Number of audio tokens billed for this request.
+              #   @param audio_tokens [Integer]
+              #     Number of audio tokens billed for this request.
               #
-              #   @param text_tokens [Integer] Number of text tokens billed for this request.
+              #   @param text_tokens [Integer]
+              #     Number of text tokens billed for this request.
             end
           end
 
@@ -148,9 +160,11 @@ module OpenAI
             # @!method initialize(seconds:, type: :duration)
             #   Usage statistics for models billed by audio input duration.
             #
-            #   @param seconds [Float] Duration of the input audio in seconds.
+            #   @param seconds [Float]
+            #     Duration of the input audio in seconds.
             #
-            #   @param type [Symbol, :duration] The type of the usage object. Always `duration` for this variant.
+            #   @param type [Symbol, :duration]
+            #     The type of the usage object. Always `duration` for this variant.
           end
 
           # @!method self.variants

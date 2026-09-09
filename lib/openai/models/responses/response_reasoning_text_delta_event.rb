@@ -41,22 +41,25 @@ module OpenAI
         required :type, const: :"response.reasoning_text.delta"
 
         # @!method initialize(content_index:, delta:, item_id:, output_index:, sequence_number:, type: :"response.reasoning_text.delta")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseReasoningTextDeltaEvent} for more details.
-        #
         #   Emitted when a delta is added to a reasoning text.
         #
-        #   @param content_index [Integer] The index of the reasoning content part this delta is associated with.
+        #   @param content_index [Integer]
+        #     The index of the reasoning content part this delta is associated with.
         #
-        #   @param delta [String] The text delta that was added to the reasoning content.
+        #   @param delta [String]
+        #     The text delta that was added to the reasoning content.
         #
-        #   @param item_id [String] The ID of the item this reasoning text delta is associated with.
+        #   @param item_id [String]
+        #     The ID of the item this reasoning text delta is associated with.
         #
-        #   @param output_index [Integer] The index of the output item this reasoning text delta is associated with.
+        #   @param output_index [Integer]
+        #     The index of the output item this reasoning text delta is associated with.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param type [Symbol, :"response.reasoning_text.delta"] The type of the event. Always `response.reasoning_text.delta`.
+        #   @param type [Symbol, :"response.reasoning_text.delta"]
+        #     The type of the event. Always `response.reasoning_text.delta`.
       end
     end
   end

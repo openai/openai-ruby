@@ -32,9 +32,15 @@ module OpenAI
         # @!method initialize(skill_id:, default: nil, files: nil, request_options: {})
         #   @param skill_id [String]
         #
-        #   @param default [Boolean] Whether to set this version as the default.
+        #   @param default [Boolean]
+        #     Whether to set this version as the default.
         #
-        #   @param files [Array<Pathname, StringIO, IO, String, OpenAI::FilePart>, Pathname, StringIO, IO, String, OpenAI::FilePart] Skill files to upload (directory upload) or a single zip file.
+        #   @param files [Array<Pathname, StringIO, IO, String, OpenAI::FilePart>, Pathname, StringIO, IO, String, OpenAI::FilePart]
+        #     Skill files to upload (directory upload) or a single zip file.
+        #
+        #     `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        #     metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        #     content type.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

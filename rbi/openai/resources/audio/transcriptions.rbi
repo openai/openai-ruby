@@ -89,7 +89,7 @@ module OpenAI
           languages: nil,
           # An optional text to guide the model's style or continue a previous audio
           # segment. The
-          # [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting)
+          # [prompt](https://developers.openai.com/api/docs/guides/speech-to-text#prompting)
           # should match the audio language. This field is not supported when using
           # `gpt-4o-transcribe-diarize`.
           prompt: nil,
@@ -200,7 +200,7 @@ module OpenAI
           languages: nil,
           # An optional text to guide the model's style or continue a previous audio
           # segment. The
-          # [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting)
+          # [prompt](https://developers.openai.com/api/docs/guides/speech-to-text#prompting)
           # should match the audio language. This field is not supported when using
           # `gpt-4o-transcribe-diarize`.
           prompt: nil,

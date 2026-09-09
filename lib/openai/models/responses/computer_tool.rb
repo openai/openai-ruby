@@ -12,9 +12,10 @@ module OpenAI
 
         # @!method initialize(type: :computer)
         #   A tool that controls a virtual computer. Learn more about the
-        #   [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
+        #   [computer tool](https://developers.openai.com/api/docs/guides/tools-computer-use).
         #
-        #   @param type [Symbol, :computer] The type of the computer tool. Always `computer`.
+        #   @param type [Symbol, :computer]
+        #     The type of the computer tool. Always `computer`.
       end
     end
   end

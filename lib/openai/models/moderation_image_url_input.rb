@@ -18,9 +18,11 @@ module OpenAI
       # @!method initialize(image_url:, type: :image_url)
       #   An object describing an image to classify.
       #
-      #   @param image_url [OpenAI::Models::ModerationImageURLInput::ImageURL] Contains either an image URL or a data URL for a base64 encoded image.
+      #   @param image_url [OpenAI::Models::ModerationImageURLInput::ImageURL]
+      #     Contains either an image URL or a data URL for a base64 encoded image.
       #
-      #   @param type [Symbol, :image_url] Always `image_url`.
+      #   @param type [Symbol, :image_url]
+      #     Always `image_url`.
 
       # @see OpenAI::Models::ModerationImageURLInput#image_url
       class ImageURL < OpenAI::Internal::Type::BaseModel
@@ -33,7 +35,8 @@ module OpenAI
         # @!method initialize(url:)
         #   Contains either an image URL or a data URL for a base64 encoded image.
         #
-        #   @param url [String] Either a URL of the image or the base64 encoded image data.
+        #   @param url [String]
+        #     Either a URL of the image or the base64 encoded image data.
       end
     end
   end

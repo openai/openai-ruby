@@ -21,9 +21,9 @@ module OpenAI
       attr_accessor :input
 
       # The content moderation model you would like to use. Learn more in
-      # [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
-      # learn about available models
-      # [here](https://platform.openai.com/docs/models#moderation).
+      # [the moderation guide](https://developers.openai.com/api/docs/guides/moderation),
+      # and learn about available models
+      # [here](https://developers.openai.com/api/docs/guides/moderation).
       sig { returns(T.nilable(T.any(String, OpenAI::ModerationModel::OrSymbol))) }
       attr_reader :model
 
@@ -48,9 +48,9 @@ module OpenAI
         input:,
 
         # The content moderation model you would like to use. Learn more in
-        # [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
-        # learn about available models
-        # [here](https://platform.openai.com/docs/models#moderation).
+        # [the moderation guide](https://developers.openai.com/api/docs/guides/moderation),
+        # and learn about available models
+        # [here](https://developers.openai.com/api/docs/guides/moderation).
         model: nil,
 
         request_options: {}
@@ -95,9 +95,9 @@ module OpenAI
       end
 
       # The content moderation model you would like to use. Learn more in
-      # [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
-      # learn about available models
-      # [here](https://platform.openai.com/docs/models#moderation).
+      # [the moderation guide](https://developers.openai.com/api/docs/guides/moderation),
+      # and learn about available models
+      # [here](https://developers.openai.com/api/docs/guides/moderation).
       module Model
         extend OpenAI::Internal::Type::Union
 

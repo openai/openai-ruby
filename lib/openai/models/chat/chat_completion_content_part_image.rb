@@ -27,16 +27,18 @@ module OpenAI
         )
 
         # @!method initialize(image_url:, prompt_cache_breakpoint: nil, type: :image_url)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Chat::ChatCompletionContentPartImage} for more details.
-        #
-        #   Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
+        #   Learn about
+        #   [image inputs](https://developers.openai.com/api/docs/guides/images-vision).
         #
         #   @param image_url [OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL]
         #
-        #   @param prompt_cache_breakpoint [OpenAI::Models::Chat::ChatCompletionContentPartImage::PromptCacheBreakpoint] Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        #   @param prompt_cache_breakpoint [OpenAI::Models::Chat::ChatCompletionContentPartImage::PromptCacheBreakpoint]
+        #     Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        #     from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        #     token block.
         #
-        #   @param type [Symbol, :image_url] The type of the content part.
+        #   @param type [Symbol, :image_url]
+        #     The type of the content part.
 
         # @see OpenAI::Models::Chat::ChatCompletionContentPartImage#image_url
         class ImageURL < OpenAI::Internal::Type::BaseModel
@@ -48,22 +50,21 @@ module OpenAI
 
           # @!attribute detail
           #   Specifies the detail level of the image. Learn more in the
-          #   [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
+          #   [Vision guide](https://developers.openai.com/api/docs/guides/images-vision#choose-an-image-detail-level).
           #
           #   @return [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail, nil]
           optional :detail, enum: -> { OpenAI::Chat::ChatCompletionContentPartImage::ImageURL::Detail }
 
           # @!method initialize(url:, detail: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL} for more
-          #   details.
+          #   @param url [String]
+          #     Either a URL of the image or the base64 encoded image data.
           #
-          #   @param url [String] Either a URL of the image or the base64 encoded image data.
-          #
-          #   @param detail [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail] Specifies the detail level of the image. Learn more in the [Vision guide](https:
+          #   @param detail [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail]
+          #     Specifies the detail level of the image. Learn more in the
+          #     [Vision guide](https://developers.openai.com/api/docs/guides/images-vision#choose-an-image-detail-level).
 
           # Specifies the detail level of the image. Learn more in the
-          # [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
+          # [Vision guide](https://developers.openai.com/api/docs/guides/images-vision#choose-an-image-detail-level).
           #
           # @see OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL#detail
           module Detail
@@ -91,7 +92,8 @@ module OpenAI
           #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
           #   token block.
           #
-          #   @param mode [Symbol, :explicit] The breakpoint mode. Always `explicit`.
+          #   @param mode [Symbol, :explicit]
+          #     The breakpoint mode. Always `explicit`.
         end
       end
     end

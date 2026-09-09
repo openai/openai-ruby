@@ -104,7 +104,7 @@ module OpenAI
           attr_accessor :cache_write_tokens
 
           # The number of tokens that were retrieved from the cache.
-          # [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
+          # [More on prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching).
           sig { returns(Integer) }
           attr_accessor :cached_tokens
 
@@ -124,7 +124,7 @@ module OpenAI
             cache_write_tokens:,
 
             # The number of tokens that were retrieved from the cache.
-            # [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
+            # [More on prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching).
 
             cached_tokens:
           )

@@ -23,8 +23,9 @@ module OpenAI
               .returns(OpenAI::Beta::Threads::Message)
           }
           def create(
-            # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
-            # to create a message for.
+            # The ID of the
+            # [thread](https://developers.openai.com/api/docs/assistants/migration) to create
+            # a message for.
             thread_id,
             # The text contents of the message.
             content:,
@@ -57,8 +58,9 @@ module OpenAI
           def retrieve(
             # The ID of the message to retrieve.
             message_id,
-            # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
-            # to which this message belongs.
+            # The ID of the
+            # [thread](https://developers.openai.com/api/docs/assistants/migration) to which
+            # this message belongs.
             thread_id:,
             request_options: {}
           )
@@ -104,8 +106,9 @@ module OpenAI
               .returns(OpenAI::Internal::CursorPage[OpenAI::Beta::Threads::Message])
           }
           def list(
-            # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
-            # the messages belong to.
+            # The ID of the
+            # [thread](https://developers.openai.com/api/docs/assistants/migration) the
+            # messages belong to.
             thread_id,
             # A cursor for use in pagination. `after` is an object ID that defines your place
             # in the list. For instance, if you make a list request and receive 100 objects,

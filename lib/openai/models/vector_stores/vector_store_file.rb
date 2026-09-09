@@ -47,8 +47,8 @@ module OpenAI
 
         # @!attribute vector_store_id
         #   The ID of the
-        #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
-        #   that the [File](https://platform.openai.com/docs/api-reference/files) is
+        #   [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+        #   that the [File](https://developers.openai.com/api/reference/resources/files) is
         #   attached to.
         #
         #   @return [String]
@@ -77,28 +77,45 @@ module OpenAI
         optional :chunking_strategy, union: -> { OpenAI::FileChunkingStrategy }
 
         # @!method initialize(id:, created_at:, last_error:, status:, usage_bytes:, vector_store_id:, attributes: nil, chunking_strategy: nil, object: :"vector_store.file")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::VectorStores::VectorStoreFile} for more details.
-        #
         #   A list of files attached to a vector store.
         #
-        #   @param id [String] The identifier, which can be referenced in API endpoints.
+        #   @param id [String]
+        #     The identifier, which can be referenced in API endpoints.
         #
-        #   @param created_at [Integer] The Unix timestamp (in seconds) for when the vector store file was created.
+        #   @param created_at [Integer]
+        #     The Unix timestamp (in seconds) for when the vector store file was created.
         #
-        #   @param last_error [OpenAI::Models::VectorStores::VectorStoreFile::LastError, nil] The last error associated with this vector store file. Will be `null` if there a
+        #   @param last_error [OpenAI::Models::VectorStores::VectorStoreFile::LastError, nil]
+        #     The last error associated with this vector store file. Will be `null` if there
+        #     are no errors.
         #
-        #   @param status [Symbol, OpenAI::Models::VectorStores::VectorStoreFile::Status] The status of the vector store file, which can be either `in_progress`, `complet
+        #   @param status [Symbol, OpenAI::Models::VectorStores::VectorStoreFile::Status]
+        #     The status of the vector store file, which can be either `in_progress`,
+        #     `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
+        #     vector store file is ready for use.
         #
-        #   @param usage_bytes [Integer] The total vector store usage in bytes. Note that this may be different from the
+        #   @param usage_bytes [Integer]
+        #     The total vector store usage in bytes. Note that this may be different from the
+        #     original file size.
         #
-        #   @param vector_store_id [String] The ID of the [vector store](https://platform.openai.com/docs/api-reference/vect
+        #   @param vector_store_id [String]
+        #     The ID of the
+        #     [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+        #     that the [File](https://developers.openai.com/api/reference/resources/files) is
+        #     attached to.
         #
-        #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+        #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]
+        #     Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #     for storing additional information about the object in a structured format, and
+        #     querying for objects via API or the dashboard. Keys are strings with a maximum
+        #     length of 64 characters. Values are strings with a maximum length of 512
+        #     characters, booleans, or numbers.
         #
-        #   @param chunking_strategy [OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject] The strategy used to chunk the file.
+        #   @param chunking_strategy [OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject]
+        #     The strategy used to chunk the file.
         #
-        #   @param object [Symbol, :"vector_store.file"] The object type, which is always `vector_store.file`.
+        #   @param object [Symbol, :"vector_store.file"]
+        #     The object type, which is always `vector_store.file`.
 
         # @see OpenAI::Models::VectorStores::VectorStoreFile#last_error
         class LastError < OpenAI::Internal::Type::BaseModel
@@ -118,9 +135,11 @@ module OpenAI
           #   The last error associated with this vector store file. Will be `null` if there
           #   are no errors.
           #
-          #   @param code [Symbol, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code] One of `server_error`, `unsupported_file`, or `invalid_file`.
+          #   @param code [Symbol, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code]
+          #     One of `server_error`, `unsupported_file`, or `invalid_file`.
           #
-          #   @param message [String] A human-readable description of the error.
+          #   @param message [String]
+          #     A human-readable description of the error.
 
           # One of `server_error`, `unsupported_file`, or `invalid_file`.
           #

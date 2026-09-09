@@ -40,15 +40,20 @@ module OpenAI
             # @!method initialize(id:, created_at:, name:, role:, object: :"organization.project.service_account")
             #   Represents an individual service account in a project.
             #
-            #   @param id [String] The identifier, which can be referenced in API endpoints
+            #   @param id [String]
+            #     The identifier, which can be referenced in API endpoints
             #
-            #   @param created_at [Integer] The Unix timestamp (in seconds) of when the service account was created
+            #   @param created_at [Integer]
+            #     The Unix timestamp (in seconds) of when the service account was created
             #
-            #   @param name [String] The name of the service account
+            #   @param name [String]
+            #     The name of the service account
             #
-            #   @param role [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectServiceAccount::Role] `owner`, `member`, or `none`
+            #   @param role [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectServiceAccount::Role]
+            #     `owner`, `member`, or `none`
             #
-            #   @param object [Symbol, :"organization.project.service_account"] The object type, which is always `organization.project.service_account`
+            #   @param object [Symbol, :"organization.project.service_account"]
+            #     The object type, which is always `organization.project.service_account`
 
             # `owner`, `member`, or `none`
             #

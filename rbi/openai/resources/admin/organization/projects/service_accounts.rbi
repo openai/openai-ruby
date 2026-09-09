@@ -21,6 +21,7 @@ module OpenAI
                 project_id: String,
                 name: String,
                 create_service_account_only: T.nilable(T::Boolean),
+                expires_in_seconds: T.nilable(Integer),
                 request_options: OpenAI::RequestOptions::OrHash
               )
                 .returns(OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse)
@@ -32,6 +33,12 @@ module OpenAI
               name:,
               # Create the service account without default roles or an API key.
               create_service_account_only: nil,
+              # Number of seconds until the initial API key expires. If omitted or null, the key
+              # does not expire unless the effective organization or project policy requires an
+              # expiration. When a policy sets a maximum lifetime, this value must be provided
+              # and must not exceed that limit. A non-null value cannot be used when
+              # `create_service_account_only` is true.
+              expires_in_seconds: nil,
               request_options: {}
             )
             end

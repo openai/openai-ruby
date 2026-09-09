@@ -105,37 +105,53 @@ module OpenAI
           # @!method initialize(id:, added_at:, api_key_last_used_at: nil, created: nil, developer_persona: nil, email: nil, is_default: nil, is_scale_tier_authorized_purchaser: nil, is_scim_managed: nil, is_service_account: nil, name: nil, projects: nil, role: nil, technical_level: nil, user: nil, object: :"organization.user")
           #   Represents an individual `user` within an organization.
           #
-          #   @param id [String] The identifier, which can be referenced in API endpoints
+          #   @param id [String]
+          #     The identifier, which can be referenced in API endpoints
           #
-          #   @param added_at [Integer] The Unix timestamp (in seconds) of when the user was added.
+          #   @param added_at [Integer]
+          #     The Unix timestamp (in seconds) of when the user was added.
           #
-          #   @param api_key_last_used_at [Integer, nil] The Unix timestamp (in seconds) of the user's last API key usage.
+          #   @param api_key_last_used_at [Integer, nil]
+          #     The Unix timestamp (in seconds) of the user's last API key usage.
           #
-          #   @param created [Integer] The Unix timestamp (in seconds) of when the user was created.
+          #   @param created [Integer]
+          #     The Unix timestamp (in seconds) of when the user was created.
           #
-          #   @param developer_persona [String, nil] The developer persona metadata for the user.
+          #   @param developer_persona [String, nil]
+          #     The developer persona metadata for the user.
           #
-          #   @param email [String, nil] The email address of the user
+          #   @param email [String, nil]
+          #     The email address of the user
           #
-          #   @param is_default [Boolean] Whether this is the organization's default user.
+          #   @param is_default [Boolean]
+          #     Whether this is the organization's default user.
           #
-          #   @param is_scale_tier_authorized_purchaser [Boolean, nil] Whether the user is an authorized purchaser for Scale Tier.
+          #   @param is_scale_tier_authorized_purchaser [Boolean, nil]
+          #     Whether the user is an authorized purchaser for Scale Tier.
           #
-          #   @param is_scim_managed [Boolean] Whether the user is managed through SCIM.
+          #   @param is_scim_managed [Boolean]
+          #     Whether the user is managed through SCIM.
           #
-          #   @param is_service_account [Boolean] Whether the user is a service account.
+          #   @param is_service_account [Boolean]
+          #     Whether the user is a service account.
           #
-          #   @param name [String, nil] The name of the user
+          #   @param name [String, nil]
+          #     The name of the user
           #
-          #   @param projects [OpenAI::Models::Admin::Organization::OrganizationUser::Projects, nil] Projects associated with the user, if included.
+          #   @param projects [OpenAI::Models::Admin::Organization::OrganizationUser::Projects, nil]
+          #     Projects associated with the user, if included.
           #
-          #   @param role [String, nil] `owner` or `reader`
+          #   @param role [String, nil]
+          #     `owner` or `reader`
           #
-          #   @param technical_level [String, nil] The technical level metadata for the user.
+          #   @param technical_level [String, nil]
+          #     The technical level metadata for the user.
           #
-          #   @param user [OpenAI::Models::Admin::Organization::OrganizationUser::User] Nested user details.
+          #   @param user [OpenAI::Models::Admin::Organization::OrganizationUser::User]
+          #     Nested user details.
           #
-          #   @param object [Symbol, :"organization.user"] The object type, which is always `organization.user`
+          #   @param object [Symbol, :"organization.user"]
+          #     The object type, which is always `organization.user`
 
           # @see OpenAI::Models::Admin::Organization::OrganizationUser#projects
           class Projects < OpenAI::Internal::Type::BaseModel

@@ -24,9 +24,15 @@ module OpenAI
       required :video, union: -> { OpenAI::VideoEditParams::Video }
 
       # @!method initialize(prompt:, video:, request_options: {})
-      #   @param prompt [String] Text prompt that describes how to edit the source video.
+      #   @param prompt [String]
+      #     Text prompt that describes how to edit the source video.
       #
-      #   @param video [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoEditParams::Video::VideoReferenceInputParam] Reference to the completed video to edit.
+      #   @param video [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoEditParams::Video::VideoReferenceInputParam]
+      #     Reference to the completed video to edit.
+      #
+      #     `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #     metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #     content type.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -50,7 +56,8 @@ module OpenAI
           # @!method initialize(id:)
           #   Reference to the completed video to edit.
           #
-          #   @param id [String] The identifier of the completed video.
+          #   @param id [String]
+          #     The identifier of the completed video.
         end
 
         # @!method self.variants

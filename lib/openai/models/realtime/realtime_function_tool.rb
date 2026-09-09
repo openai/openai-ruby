@@ -30,16 +30,18 @@ module OpenAI
         optional :type, enum: -> { OpenAI::Realtime::RealtimeFunctionTool::Type }
 
         # @!method initialize(description: nil, name: nil, parameters: nil, type: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::RealtimeFunctionTool} for more details.
+        #   @param description [String]
+        #     The description of the function, including guidance on when and how to call it,
+        #     and guidance about what to tell the user when calling (if anything).
         #
-        #   @param description [String] The description of the function, including guidance on when and how
+        #   @param name [String]
+        #     The name of the function.
         #
-        #   @param name [String] The name of the function.
+        #   @param parameters [Object]
+        #     Parameters of the function in JSON Schema.
         #
-        #   @param parameters [Object] Parameters of the function in JSON Schema.
-        #
-        #   @param type [Symbol, OpenAI::Models::Realtime::RealtimeFunctionTool::Type] The type of the tool, i.e. `function`.
+        #   @param type [Symbol, OpenAI::Models::Realtime::RealtimeFunctionTool::Type]
+        #     The type of the tool, i.e. `function`.
 
         # The type of the tool, i.e. `function`.
         #

@@ -35,19 +35,21 @@ module OpenAI
         required :version, String, nil?: true
 
         # @!method initialize(id:, state_variables:, tracing:, version:)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::ChatKitWorkflow} for more details.
-        #
         #   Workflow metadata and state returned for the session.
         #
-        #   @param id [String] Identifier of the workflow backing the session.
+        #   @param id [String]
+        #     Identifier of the workflow backing the session.
         #
-        #   @param state_variables [Hash{Symbol=>String, Boolean, Float}, nil] State variable key-value pairs applied when invoking the workflow. Defaults to n
+        #   @param state_variables [Hash{Symbol=>String, Boolean, Float}, nil]
+        #     State variable key-value pairs applied when invoking the workflow. Defaults to
+        #     null when no overrides were provided.
         #
-        #   @param tracing [OpenAI::Models::Beta::ChatKitWorkflow::Tracing] Tracing settings applied to the workflow.
+        #   @param tracing [OpenAI::Models::Beta::ChatKitWorkflow::Tracing]
+        #     Tracing settings applied to the workflow.
         #
-        #   @param version [String, nil] Specific workflow version used for the session. Defaults to null when using the
-
+        #   @param version [String, nil]
+        #     Specific workflow version used for the session. Defaults to null when using the
+        #     latest deployment.
         module StateVariable
           extend OpenAI::Internal::Type::Union
 
@@ -72,7 +74,8 @@ module OpenAI
           # @!method initialize(enabled:)
           #   Tracing settings applied to the workflow.
           #
-          #   @param enabled [Boolean] Indicates whether tracing is enabled.
+          #   @param enabled [Boolean]
+          #     Indicates whether tracing is enabled.
         end
       end
     end

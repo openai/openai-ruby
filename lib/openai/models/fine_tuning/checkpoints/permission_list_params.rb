@@ -41,13 +41,17 @@ module OpenAI
           # @!method initialize(fine_tuned_model_checkpoint:, after: nil, limit: nil, order: nil, project_id: nil, request_options: {})
           #   @param fine_tuned_model_checkpoint [String]
           #
-          #   @param after [String] Identifier for the last permission ID from the previous pagination request.
+          #   @param after [String]
+          #     Identifier for the last permission ID from the previous pagination request.
           #
-          #   @param limit [Integer] Number of permissions to retrieve.
+          #   @param limit [Integer]
+          #     Number of permissions to retrieve.
           #
-          #   @param order [Symbol, OpenAI::Models::FineTuning::Checkpoints::PermissionListParams::Order] The order in which to retrieve permissions.
+          #   @param order [Symbol, OpenAI::Models::FineTuning::Checkpoints::PermissionListParams::Order]
+          #     The order in which to retrieve permissions.
           #
-          #   @param project_id [String] The ID of the project to get permissions for.
+          #   @param project_id [String]
+          #     The ID of the project to get permissions for.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

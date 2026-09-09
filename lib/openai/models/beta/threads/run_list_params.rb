@@ -47,18 +47,27 @@ module OpenAI
           optional :order, enum: -> { OpenAI::Beta::Threads::RunListParams::Order }
 
           # @!method initialize(thread_id:, after: nil, before: nil, limit: nil, order: nil, request_options: {})
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::Threads::RunListParams} for more details.
-          #
           #   @param thread_id [String]
           #
-          #   @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+          #   @param after [String]
+          #     A cursor for use in pagination. `after` is an object ID that defines your place
+          #     in the list. For instance, if you make a list request and receive 100 objects,
+          #     ending with obj_foo, your subsequent call can include after=obj_foo in order to
+          #     fetch the next page of the list.
           #
-          #   @param before [String] A cursor for use in pagination. `before` is an object ID that defines your place
+          #   @param before [String]
+          #     A cursor for use in pagination. `before` is an object ID that defines your place
+          #     in the list. For instance, if you make a list request and receive 100 objects,
+          #     starting with obj_foo, your subsequent call can include before=obj_foo in order
+          #     to fetch the previous page of the list.
           #
-          #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+          #   @param limit [Integer]
+          #     A limit on the number of objects to be returned. Limit can range between 1 and
+          #     100, and the default is 20.
           #
-          #   @param order [Symbol, OpenAI::Models::Beta::Threads::RunListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+          #   @param order [Symbol, OpenAI::Models::Beta::Threads::RunListParams::Order]
+          #     Sort order by the `created_at` timestamp of the objects. `asc` for ascending
+          #     order and `desc` for descending order.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

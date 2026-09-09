@@ -37,15 +37,20 @@ module OpenAI
         # @!method initialize(item_id:, output_index:, sequence_number:, agent: nil, type: :"response.mcp_call.failed")
         #   Emitted when an MCP tool call has failed.
         #
-        #   @param item_id [String] The ID of the MCP tool call item that failed.
+        #   @param item_id [String]
+        #     The ID of the MCP tool call item that failed.
         #
-        #   @param output_index [Integer] The index of the output item that failed.
+        #   @param output_index [Integer]
+        #     The index of the output item that failed.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseMcpCallFailedEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseMcpCallFailedEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.mcp_call.failed"] The type of the event. Always 'response.mcp_call.failed'.
+        #   @param type [Symbol, :"response.mcp_call.failed"]
+        #     The type of the event. Always 'response.mcp_call.failed'.
 
         # @see OpenAI::Models::Beta::BetaResponseMcpCallFailedEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -58,7 +63,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

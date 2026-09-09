@@ -36,7 +36,7 @@ module OpenAI
               # search result content.
               #
               # See the
-              # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+              # [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
               # for more information.
               include: nil,
               request_options: {}
@@ -78,7 +78,7 @@ module OpenAI
               # search result content.
               #
               # See the
-              # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+              # [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
               # for more information.
               include: nil,
               # Query param: A limit on the number of objects to be returned. Limit can range

@@ -27,12 +27,31 @@ module OpenAI
             #   @return [Boolean, nil]
             optional :create_service_account_only, OpenAI::Internal::Type::Boolean, nil?: true
 
-            # @!method initialize(project_id:, name:, create_service_account_only: nil, request_options: {})
+            # @!attribute expires_in_seconds
+            #   Number of seconds until the initial API key expires. If omitted or null, the key
+            #   does not expire unless the effective organization or project policy requires an
+            #   expiration. When a policy sets a maximum lifetime, this value must be provided
+            #   and must not exceed that limit. A non-null value cannot be used when
+            #   `create_service_account_only` is true.
+            #
+            #   @return [Integer, nil]
+            optional :expires_in_seconds, Integer, nil?: true
+
+            # @!method initialize(project_id:, name:, create_service_account_only: nil, expires_in_seconds: nil, request_options: {})
             #   @param project_id [String]
             #
-            #   @param name [String] The name of the service account being created.
+            #   @param name [String]
+            #     The name of the service account being created.
             #
-            #   @param create_service_account_only [Boolean, nil] Create the service account without default roles or an API key.
+            #   @param create_service_account_only [Boolean, nil]
+            #     Create the service account without default roles or an API key.
+            #
+            #   @param expires_in_seconds [Integer, nil]
+            #     Number of seconds until the initial API key expires. If omitted or null, the key
+            #     does not expire unless the effective organization or project policy requires an
+            #     expiration. When a policy sets a maximum lifetime, this value must be provided
+            #     and must not exceed that limit. A non-null value cannot be used when
+            #     `create_service_account_only` is true.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
           end

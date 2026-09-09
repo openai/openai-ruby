@@ -28,11 +28,14 @@ module OpenAI
             # @!method initialize(id:, email:, name:)
             #   Represents an individual user returned when inspecting group membership.
             #
-            #   @param id [String] The identifier, which can be referenced in API endpoints
+            #   @param id [String]
+            #     The identifier, which can be referenced in API endpoints
             #
-            #   @param email [String, nil] The email address of the user.
+            #   @param email [String, nil]
+            #     The email address of the user.
             #
-            #   @param name [String] The name of the user.
+            #   @param name [String]
+            #     The name of the user.
           end
         end
       end

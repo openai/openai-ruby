@@ -12,7 +12,7 @@ module OpenAI
         # A text input to the model.
         variant :input_text, -> { OpenAI::Beta::BetaResponseInputTextContent }
 
-        # An image input to the model. Learn about [image inputs](https://platform.openai.com/docs/guides/vision)
+        # An image input to the model. Learn about [image inputs](https://developers.openai.com/api/docs/guides/images-vision)
         variant :input_image, -> { OpenAI::Beta::BetaResponseInputImageContent }
 
         # A file input to the model.

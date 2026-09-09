@@ -8,7 +8,8 @@ module OpenAI
         #
         # @overload retrieve(id, request_options: {})
         #
-        # @param id [String] Project safety alert ID
+        # @param id [String]
+        #   Project safety alert ID
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #

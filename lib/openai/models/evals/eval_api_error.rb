@@ -19,9 +19,11 @@ module OpenAI
         # @!method initialize(code:, message:)
         #   An object representing an error response from the Eval API.
         #
-        #   @param code [String] The error code.
+        #   @param code [String]
+        #     The error code.
         #
-        #   @param message [String] The error message.
+        #   @param message [String]
+        #     The error message.
       end
     end
 

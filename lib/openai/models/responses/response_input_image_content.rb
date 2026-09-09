@@ -43,21 +43,27 @@ module OpenAI
         )
 
         # @!method initialize(detail: nil, file_id: nil, image_url: nil, prompt_cache_breakpoint: nil, type: :input_image)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseInputImageContent} for more details.
-        #
         #   An image input to the model. Learn about
-        #   [image inputs](https://platform.openai.com/docs/guides/vision)
+        #   [image inputs](https://developers.openai.com/api/docs/guides/images-vision)
         #
-        #   @param detail [Symbol, OpenAI::Models::Responses::ResponseInputImageContent::Detail, nil] The detail level of the image to be sent to the model. One of `high`, `low`, `au
+        #   @param detail [Symbol, OpenAI::Models::Responses::ResponseInputImageContent::Detail, nil]
+        #     The detail level of the image to be sent to the model. One of `high`, `low`,
+        #     `auto`, or `original`. Defaults to `auto`.
         #
-        #   @param file_id [String, nil] The ID of the file to be sent to the model.
+        #   @param file_id [String, nil]
+        #     The ID of the file to be sent to the model.
         #
-        #   @param image_url [String, nil] The URL of the image to be sent to the model. A fully qualified URL or base64 en
+        #   @param image_url [String, nil]
+        #     The URL of the image to be sent to the model. A fully qualified URL or base64
+        #     encoded image in a data URL.
         #
-        #   @param prompt_cache_breakpoint [OpenAI::Models::Responses::ResponseInputImageContent::PromptCacheBreakpoint, nil] Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        #   @param prompt_cache_breakpoint [OpenAI::Models::Responses::ResponseInputImageContent::PromptCacheBreakpoint, nil]
+        #     Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        #     from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        #     token block.
         #
-        #   @param type [Symbol, :input_image] The type of the input item. Always `input_image`.
+        #   @param type [Symbol, :input_image]
+        #     The type of the input item. Always `input_image`.
 
         # The detail level of the image to be sent to the model. One of `high`, `low`,
         # `auto`, or `original`. Defaults to `auto`.
@@ -88,7 +94,8 @@ module OpenAI
           #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
           #   token block.
           #
-          #   @param mode [Symbol, :explicit] The breakpoint mode. Always `explicit`.
+          #   @param mode [Symbol, :explicit]
+          #     The breakpoint mode. Always `explicit`.
         end
       end
     end

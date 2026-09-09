@@ -6,21 +6,27 @@ module OpenAI
       class Organization
         class Projects
           class RateLimits
-            # Some parameter documentations has been truncated, see
-            # {OpenAI::Models::Admin::Organization::Projects::RateLimitListRateLimitsParams}
-            # for more details.
-            #
             # Returns the rate limits per model for a project.
             #
             # @overload list_rate_limits(project_id, after: nil, before: nil, limit: nil, request_options: {})
             #
-            # @param project_id [String] The ID of the project.
+            # @param project_id [String]
+            #   The ID of the project.
             #
-            # @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+            # @param after [String]
+            #   A cursor for use in pagination. `after` is an object ID that defines your place
+            #   in the list. For instance, if you make a list request and receive 100 objects,
+            #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+            #   fetch the next page of the list.
             #
-            # @param before [String] A cursor for use in pagination. `before` is an object ID that defines your place
+            # @param before [String]
+            #   A cursor for use in pagination. `before` is an object ID that defines your place
+            #   in the list. For instance, if you make a list request and receive 100 objects,
+            #   beginning with obj_foo, your subsequent call can include before=obj_foo in order
+            #   to fetch the previous page of the list.
             #
-            # @param limit [Integer] A limit on the number of objects to be returned. The default is 100.
+            # @param limit [Integer]
+            #   A limit on the number of objects to be returned. The default is 100.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -43,29 +49,35 @@ module OpenAI
               )
             end
 
-            # Some parameter documentations has been truncated, see
-            # {OpenAI::Models::Admin::Organization::Projects::RateLimitUpdateRateLimitParams}
-            # for more details.
-            #
             # Updates a project rate limit.
             #
             # @overload update_rate_limit(rate_limit_id, project_id:, batch_1_day_max_input_tokens: nil, max_audio_megabytes_per_1_minute: nil, max_images_per_1_minute: nil, max_requests_per_1_day: nil, max_requests_per_1_minute: nil, max_tokens_per_1_minute: nil, request_options: {})
             #
-            # @param rate_limit_id [String] Path param: The ID of the rate limit.
+            # @param rate_limit_id [String]
+            #   Path param: The ID of the rate limit.
             #
-            # @param project_id [String] Path param: The ID of the project.
+            # @param project_id [String]
+            #   Path param: The ID of the project.
             #
-            # @param batch_1_day_max_input_tokens [Integer] Body param: The maximum batch input tokens per day. Only relevant for certain mo
+            # @param batch_1_day_max_input_tokens [Integer]
+            #   Body param: The maximum batch input tokens per day. Only relevant for certain
+            #   models.
             #
-            # @param max_audio_megabytes_per_1_minute [Integer] Body param: The maximum audio megabytes per minute. Only relevant for certain mo
+            # @param max_audio_megabytes_per_1_minute [Integer]
+            #   Body param: The maximum audio megabytes per minute. Only relevant for certain
+            #   models.
             #
-            # @param max_images_per_1_minute [Integer] Body param: The maximum images per minute. Only relevant for certain models.
+            # @param max_images_per_1_minute [Integer]
+            #   Body param: The maximum images per minute. Only relevant for certain models.
             #
-            # @param max_requests_per_1_day [Integer] Body param: The maximum requests per day. Only relevant for certain models.
+            # @param max_requests_per_1_day [Integer]
+            #   Body param: The maximum requests per day. Only relevant for certain models.
             #
-            # @param max_requests_per_1_minute [Integer] Body param: The maximum requests per minute.
+            # @param max_requests_per_1_minute [Integer]
+            #   Body param: The maximum requests per minute.
             #
-            # @param max_tokens_per_1_minute [Integer] Body param: The maximum tokens per minute.
+            # @param max_tokens_per_1_minute [Integer]
+            #   Body param: The maximum tokens per minute.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #

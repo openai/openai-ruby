@@ -82,8 +82,8 @@ module OpenAI
             # Body param: Model ID used to generate the response, like `gpt-4o` or `o3`.
             # OpenAI offers a wide range of models with different capabilities, performance
             # characteristics, and price points. Refer to the
-            # [model guide](https://platform.openai.com/docs/models) to browse and compare
-            # available models.
+            # [model guide](https://developers.openai.com/api/docs/models) to browse and
+            # compare available models.
             model: nil,
             # Body param: Whether to allow the model to run tool calls in parallel.
             parallel_tool_calls: nil,
@@ -93,17 +93,17 @@ module OpenAI
             personality: nil,
             # Body param: The unique ID of the previous response to the model. Use this to
             # create multi-turn conversations. Learn more about
-            # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
+            # [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
             # Cannot be used in conjunction with `conversation`.
             previous_response_id: nil,
             # Body param: **gpt-5 and o-series models only** Configuration options for
-            # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+            # [reasoning models](https://developers.openai.com/api/docs/guides/reasoning).
             reasoning: nil,
             # Body param: Configuration options for a text response from the model. Can be
             # plain text or structured JSON data. Learn more:
             #
-            # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-            # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+            # - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+            # - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
             text: nil,
             # Body param: Controls which tool the model should use, if any.
             tool_choice: nil,

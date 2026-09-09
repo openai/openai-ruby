@@ -30,9 +30,6 @@ module OpenAI
         optional :stream_id, String
 
         # @!method initialize(sequence_number:, steer:, stream_id: nil, type: :"response.steer.accepted")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseSteerAcceptedEvent} for more details.
-        #
         #   Emitted when steering input has been validated and queued. Acceptance means the
         #   server owns the input, not that it has been applied. The successor's
         #   `response.created` event is the commit point. If accepted input cannot be
@@ -44,13 +41,18 @@ module OpenAI
         #   results and send one matching explicit `response.create` per parent. Do not
         #   resend accepted input while it is still queued.
         #
-        #   @param sequence_number [Integer] The sequence number for this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number for this event.
         #
-        #   @param steer [OpenAI::Models::Beta::BetaResponseSteerAcceptedEvent::Steer] The accepted steering submission.
+        #   @param steer [OpenAI::Models::Beta::BetaResponseSteerAcceptedEvent::Steer]
+        #     The accepted steering submission.
         #
-        #   @param stream_id [String] The WebSocket lane that emitted this event. This field is present when
+        #   @param stream_id [String]
+        #     The WebSocket lane that emitted this event. This field is present when the
+        #     target response's `response.create` event supplied a `stream_id`.
         #
-        #   @param type [Symbol, :"response.steer.accepted"] The event discriminator. Always `response.steer.accepted`.
+        #   @param type [Symbol, :"response.steer.accepted"]
+        #     The event discriminator. Always `response.steer.accepted`.
 
         # @see OpenAI::Models::Beta::BetaResponseSteerAcceptedEvent#steer
         class Steer < OpenAI::Internal::Type::BaseModel
@@ -69,9 +71,11 @@ module OpenAI
           # @!method initialize(id:, previous_response_id:)
           #   The accepted steering submission.
           #
-          #   @param id [String] The ID assigned to the steering submission.
+          #   @param id [String]
+          #     The ID assigned to the steering submission.
           #
-          #   @param previous_response_id [String] The ID of the response being steered.
+          #   @param previous_response_id [String]
+          #     The ID of the response being steered.
         end
       end
     end

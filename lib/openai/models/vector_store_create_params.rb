@@ -28,9 +28,9 @@ module OpenAI
       optional :expires_after, -> { OpenAI::VectorStoreCreateParams::ExpiresAfter }
 
       # @!attribute file_ids
-      #   A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
-      #   the vector store should use. Useful for tools like `file_search` that can access
-      #   files.
+      #   A list of [File](https://developers.openai.com/api/reference/resources/files)
+      #   IDs that the vector store should use. Useful for tools like `file_search` that
+      #   can access files.
       #
       #   @return [Array<String>, nil]
       optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
@@ -53,20 +53,32 @@ module OpenAI
       optional :name, String
 
       # @!method initialize(chunking_strategy: nil, description: nil, expires_after: nil, file_ids: nil, metadata: nil, name: nil, request_options: {})
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::VectorStoreCreateParams} for more details.
+      #   @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]
+      #     The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+      #     strategy. Only applicable if `file_ids` is non-empty.
       #
-      #   @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+      #   @param description [String]
+      #     A description for the vector store. Can be used to describe the vector store's
+      #     purpose.
       #
-      #   @param description [String] A description for the vector store. Can be used to describe the vector store's p
+      #   @param expires_after [OpenAI::Models::VectorStoreCreateParams::ExpiresAfter]
+      #     The expiration policy for a vector store.
       #
-      #   @param expires_after [OpenAI::Models::VectorStoreCreateParams::ExpiresAfter] The expiration policy for a vector store.
+      #   @param file_ids [Array<String>]
+      #     A list of [File](https://developers.openai.com/api/reference/resources/files)
+      #     IDs that the vector store should use. Useful for tools like `file_search` that
+      #     can access files.
       #
-      #   @param file_ids [Array<String>] A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
+      #   @param metadata [Hash{Symbol=>String}, nil]
+      #     Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #     for storing additional information about the object in a structured format, and
+      #     querying for objects via API or the dashboard.
       #
-      #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+      #     Keys are strings with a maximum length of 64 characters. Values are strings with
+      #     a maximum length of 512 characters.
       #
-      #   @param name [String] The name of the vector store.
+      #   @param name [String]
+      #     The name of the vector store.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -85,14 +97,14 @@ module OpenAI
         required :days, Integer
 
         # @!method initialize(days:, anchor: :last_active_at)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::VectorStoreCreateParams::ExpiresAfter} for more details.
-        #
         #   The expiration policy for a vector store.
         #
-        #   @param days [Integer] The number of days after the anchor time that the vector store will expire.
+        #   @param days [Integer]
+        #     The number of days after the anchor time that the vector store will expire.
         #
-        #   @param anchor [Symbol, :last_active_at] Anchor timestamp after which the expiration policy applies. Supported anchors: `
+        #   @param anchor [Symbol, :last_active_at]
+        #     Anchor timestamp after which the expiration policy applies. Supported anchors:
+        #     `last_active_at`.
       end
     end
   end

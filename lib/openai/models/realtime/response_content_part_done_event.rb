@@ -50,19 +50,26 @@ module OpenAI
         #   Returned when a content part is done streaming in an assistant message item.
         #   Also emitted when a Response is interrupted, incomplete, or cancelled.
         #
-        #   @param content_index [Integer] The index of the content part in the item's content array.
+        #   @param content_index [Integer]
+        #     The index of the content part in the item's content array.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param item_id [String] The ID of the item.
+        #   @param item_id [String]
+        #     The ID of the item.
         #
-        #   @param output_index [Integer] The index of the output item in the response.
+        #   @param output_index [Integer]
+        #     The index of the output item in the response.
         #
-        #   @param part [OpenAI::Models::Realtime::ResponseContentPartDoneEvent::Part] The content part that is done.
+        #   @param part [OpenAI::Models::Realtime::ResponseContentPartDoneEvent::Part]
+        #     The content part that is done.
         #
-        #   @param response_id [String] The ID of the response.
+        #   @param response_id [String]
+        #     The ID of the response.
         #
-        #   @param type [Symbol, :"response.content_part.done"] The event type, must be `response.content_part.done`.
+        #   @param type [Symbol, :"response.content_part.done"]
+        #     The event type, must be `response.content_part.done`.
 
         # @see OpenAI::Models::Realtime::ResponseContentPartDoneEvent#part
         class Part < OpenAI::Internal::Type::BaseModel
@@ -93,13 +100,17 @@ module OpenAI
           # @!method initialize(audio: nil, text: nil, transcript: nil, type: nil)
           #   The content part that is done.
           #
-          #   @param audio [String] Base64-encoded audio data (if type is "audio").
+          #   @param audio [String]
+          #     Base64-encoded audio data (if type is "audio").
           #
-          #   @param text [String] The text content (if type is "text").
+          #   @param text [String]
+          #     The text content (if type is "text").
           #
-          #   @param transcript [String] The transcript of the audio (if type is "audio").
+          #   @param transcript [String]
+          #     The transcript of the audio (if type is "audio").
           #
-          #   @param type [Symbol, OpenAI::Models::Realtime::ResponseContentPartDoneEvent::Part::Type] The content type ("text", "audio").
+          #   @param type [Symbol, OpenAI::Models::Realtime::ResponseContentPartDoneEvent::Part::Type]
+          #     The content type ("text", "audio").
 
           # The content type ("text", "audio").
           #

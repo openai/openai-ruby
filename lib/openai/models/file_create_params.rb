@@ -38,14 +38,26 @@ module OpenAI
       optional :expires_after, -> { OpenAI::FileCreateParams::ExpiresAfter }
 
       # @!method initialize(file:, purpose:, expires_after: nil, request_options: {})
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::FileCreateParams} for more details.
+      #   @param file [Pathname, StringIO, IO, String, OpenAI::FilePart]
+      #     The File object (not file name) to be uploaded.
       #
-      #   @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The File object (not file name) to be uploaded.
+      #     `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #     metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #     content type.
       #
-      #   @param purpose [Symbol, OpenAI::Models::FilePurpose] The intended purpose of the uploaded file. One of:
+      #   @param purpose [Symbol, OpenAI::Models::FilePurpose]
+      #     The intended purpose of the uploaded file. One of:
       #
-      #   @param expires_after [OpenAI::Models::FileCreateParams::ExpiresAfter] The expiration policy for a file. By default, files with `purpose=batch` expire
+      #     - `assistants`: Used in the Assistants API
+      #     - `batch`: Used in the Batch API
+      #     - `fine-tune`: Used for fine-tuning
+      #     - `vision`: Images used for vision fine-tuning
+      #     - `user_data`: Flexible file type for any purpose
+      #     - `evals`: Used for eval data sets
+      #
+      #   @param expires_after [OpenAI::Models::FileCreateParams::ExpiresAfter]
+      #     The expiration policy for a file. By default, files with `purpose=batch` expire
+      #     after 30 days and all other files are persisted until they are manually deleted.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -65,15 +77,16 @@ module OpenAI
         required :seconds, Integer
 
         # @!method initialize(seconds:, anchor: :created_at)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::FileCreateParams::ExpiresAfter} for more details.
-        #
         #   The expiration policy for a file. By default, files with `purpose=batch` expire
         #   after 30 days and all other files are persisted until they are manually deleted.
         #
-        #   @param seconds [Integer] The number of seconds after the anchor time that the file will expire. Must be b
+        #   @param seconds [Integer]
+        #     The number of seconds after the anchor time that the file will expire. Must be
+        #     between 3600 (1 hour) and 2592000 (30 days).
         #
-        #   @param anchor [Symbol, :created_at] Anchor timestamp after which the expiration policy applies. Supported anchors: `
+        #   @param anchor [Symbol, :created_at]
+        #     Anchor timestamp after which the expiration policy applies. Supported anchors:
+        #     `created_at`.
       end
     end
   end

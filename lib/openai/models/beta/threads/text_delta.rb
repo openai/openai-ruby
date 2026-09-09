@@ -22,7 +22,8 @@ module OpenAI
           # @!method initialize(annotations: nil, value: nil)
           #   @param annotations [Array<OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation>]
           #
-          #   @param value [String] The data that makes up the text.
+          #   @param value [String]
+          #     The data that makes up the text.
         end
       end
     end

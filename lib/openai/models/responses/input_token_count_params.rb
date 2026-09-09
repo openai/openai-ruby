@@ -42,8 +42,8 @@ module OpenAI
         #   Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
         #   wide range of models with different capabilities, performance characteristics,
         #   and price points. Refer to the
-        #   [model guide](https://platform.openai.com/docs/models) to browse and compare
-        #   available models.
+        #   [model guide](https://developers.openai.com/api/docs/models) to browse and
+        #   compare available models.
         #
         #   @return [String, nil]
         optional :model, String, nil?: true
@@ -65,7 +65,7 @@ module OpenAI
         # @!attribute previous_response_id
         #   The unique ID of the previous response to the model. Use this to create
         #   multi-turn conversations. Learn more about
-        #   [conversation state](https://platform.openai.com/docs/guides/conversation-state).
+        #   [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
         #   Cannot be used in conjunction with `conversation`.
         #
         #   @return [String, nil]
@@ -73,7 +73,7 @@ module OpenAI
 
         # @!attribute reasoning
         #   **gpt-5 and o-series models only** Configuration options for
-        #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+        #   [reasoning models](https://developers.openai.com/api/docs/guides/reasoning).
         #
         #   @return [OpenAI::Models::Reasoning, nil]
         optional :reasoning, -> { OpenAI::Reasoning }, nil?: true
@@ -82,8 +82,8 @@ module OpenAI
         #   Configuration options for a text response from the model. Can be plain text or
         #   structured JSON data. Learn more:
         #
-        #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+        #   - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+        #   - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
         #
         #   @return [OpenAI::Models::Responses::InputTokenCountParams::Text, nil]
         optional :text, -> { OpenAI::Responses::InputTokenCountParams::Text }, nil?: true
@@ -114,32 +114,66 @@ module OpenAI
         optional :truncation, enum: -> { OpenAI::Responses::InputTokenCountParams::Truncation }
 
         # @!method initialize(conversation: nil, input: nil, instructions: nil, model: nil, parallel_tool_calls: nil, personality: nil, previous_response_id: nil, reasoning: nil, text: nil, tool_choice: nil, tools: nil, truncation: nil, request_options: {})
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::InputTokenCountParams} for more details.
+        #   @param conversation [String, OpenAI::Models::Responses::ResponseConversationParam, nil]
+        #     The conversation that this response belongs to. Items from this conversation are
+        #     prepended to `input_items` for this response request. Input items and output
+        #     items from this response are automatically added to this conversation after this
+        #     response completes.
         #
-        #   @param conversation [String, OpenAI::Models::Responses::ResponseConversationParam, nil] The conversation that this response belongs to. Items from this conversation are
+        #   @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseConfigurationUpdateItemParam, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>, nil]
+        #     Text, image, or file inputs to the model, used to generate a response
         #
-        #   @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseConfigurationUpdateItemParam, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>, nil] Text, image, or file inputs to the model, used to generate a response
+        #   @param instructions [String, nil]
+        #     A system (or developer) message inserted into the model's context. When used
+        #     along with `previous_response_id`, the instructions from a previous response
+        #     will not be carried over to the next response. This makes it simple to swap out
+        #     system (or developer) messages in new responses.
         #
-        #   @param instructions [String, nil] A system (or developer) message inserted into the model's context.
+        #   @param model [String, nil]
+        #     Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
+        #     wide range of models with different capabilities, performance characteristics,
+        #     and price points. Refer to the
+        #     [model guide](https://developers.openai.com/api/docs/models) to browse and
+        #     compare available models.
         #
-        #   @param model [String, nil] Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a w
+        #   @param parallel_tool_calls [Boolean, nil]
+        #     Whether to allow the model to run tool calls in parallel.
         #
-        #   @param parallel_tool_calls [Boolean, nil] Whether to allow the model to run tool calls in parallel.
+        #   @param personality [String, Symbol, OpenAI::Models::Responses::InputTokenCountParams::Personality]
+        #     A model-owned style preset to apply to this request. Omit this parameter to use
+        #     the model's default style. Supported values may expand over time. Values must be
+        #     at most 64 characters.
         #
-        #   @param personality [String, Symbol, OpenAI::Models::Responses::InputTokenCountParams::Personality] A model-owned style preset to apply to this request. Omit this parameter to use
+        #   @param previous_response_id [String, nil]
+        #     The unique ID of the previous response to the model. Use this to create
+        #     multi-turn conversations. Learn more about
+        #     [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
+        #     Cannot be used in conjunction with `conversation`.
         #
-        #   @param previous_response_id [String, nil] The unique ID of the previous response to the model. Use this to create multi-tu
+        #   @param reasoning [OpenAI::Models::Reasoning, nil]
+        #     **gpt-5 and o-series models only** Configuration options for
+        #     [reasoning models](https://developers.openai.com/api/docs/guides/reasoning).
         #
-        #   @param reasoning [OpenAI::Models::Reasoning, nil] **gpt-5 and o-series models only** Configuration options for [reasoning models](
+        #   @param text [OpenAI::Models::Responses::InputTokenCountParams::Text, nil]
+        #     Configuration options for a text response from the model. Can be plain text or
+        #     structured JSON data. Learn more:
         #
-        #   @param text [OpenAI::Models::Responses::InputTokenCountParams::Text, nil] Configuration options for a text response from the model. Can be plain
+        #     - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+        #     - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
         #
-        #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom, OpenAI::Models::Responses::InputTokenCountParams::ToolChoice::SpecificProgrammaticToolCallingParam, OpenAI::Models::Responses::ToolChoiceApplyPatch, OpenAI::Models::Responses::ToolChoiceShell, nil] Controls which tool the model should use, if any.
+        #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceAllowed, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp, OpenAI::Models::Responses::ToolChoiceCustom, OpenAI::Models::Responses::InputTokenCountParams::ToolChoice::SpecificProgrammaticToolCallingParam, OpenAI::Models::Responses::ToolChoiceApplyPatch, OpenAI::Models::Responses::ToolChoiceShell, nil]
+        #     Controls which tool the model should use, if any.
         #
-        #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ProgrammaticToolCalling, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>, nil] An array of tools the model may call while generating a response. You can specif
+        #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ProgrammaticToolCalling, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>, nil]
+        #     An array of tools the model may call while generating a response. You can
+        #     specify which tool to use by setting the `tool_choice` parameter.
         #
-        #   @param truncation [Symbol, OpenAI::Models::Responses::InputTokenCountParams::Truncation] The truncation strategy to use for the model response. - `auto`: If the input to
+        #   @param truncation [Symbol, OpenAI::Models::Responses::InputTokenCountParams::Truncation]
+        #     The truncation strategy to use for the model response. - `auto`: If the input to
+        #     this Response exceeds the model's context window size, the model will truncate
+        #     the response to fit the context window by dropping items from the beginning of
+        #     the conversation. - `disabled` (default): If the input size will exceed the
+        #     context window size for a model, the request will fail with a 400 error.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -210,7 +244,7 @@ module OpenAI
           #
           #   Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
           #   ensures the model will match your supplied JSON schema. Learn more in the
-          #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          #   [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
           #
           #   The default format is `{ "type": "text" }` with no additional options.
           #
@@ -239,18 +273,32 @@ module OpenAI
           )
 
           # @!method initialize(format_: nil, verbosity: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Responses::InputTokenCountParams::Text} for more details.
-          #
           #   Configuration options for a text response from the model. Can be plain text or
           #   structured JSON data. Learn more:
           #
-          #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-          #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+          #   - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+          #   - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
           #
-          #   @param format_ [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject] An object specifying the format that the model must output.
+          #   @param format_ [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject]
+          #     An object specifying the format that the model must output.
           #
-          #   @param verbosity [Symbol, OpenAI::Models::Responses::InputTokenCountParams::Text::Verbosity, nil] Constrains the verbosity of the model's response. Lower values will result in
+          #     Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
+          #     ensures the model will match your supplied JSON schema. Learn more in the
+          #     [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
+          #
+          #     The default format is `{ "type": "text" }` with no additional options.
+          #
+          #     **Not recommended for gpt-4o and newer models:**
+          #
+          #     Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+          #     ensures the message the model generates is valid JSON. Using `json_schema` is
+          #     preferred for models that support it.
+          #
+          #   @param verbosity [Symbol, OpenAI::Models::Responses::InputTokenCountParams::Text::Verbosity, nil]
+          #     Constrains the verbosity of the model's response. Lower values will result in
+          #     more concise responses, while higher values will result in more verbose
+          #     responses. Currently supported values are `low`, `medium`, and `high`. The
+          #     default is `medium`.
 
           # Constrains the verbosity of the model's response. Lower values will result in
           # more concise responses, while higher values will result in more verbose
@@ -288,7 +336,7 @@ module OpenAI
           variant -> { OpenAI::Responses::ToolChoiceAllowed }
 
           # Indicates that the model should use a built-in tool to generate a response.
-          # [Learn more about built-in tools](https://platform.openai.com/docs/guides/tools).
+          # [Learn more about built-in tools](https://developers.openai.com/api/docs/guides/tools).
           variant -> { OpenAI::Responses::ToolChoiceTypes }
 
           # Use this option to force the model to call a specific function.
@@ -316,7 +364,8 @@ module OpenAI
             required :type, const: :programmatic_tool_calling
 
             # @!method initialize(type: :programmatic_tool_calling)
-            #   @param type [Symbol, :programmatic_tool_calling] The tool to call. Always `programmatic_tool_calling`.
+            #   @param type [Symbol, :programmatic_tool_calling]
+            #     The tool to call. Always `programmatic_tool_calling`.
           end
 
           # @!method self.variants

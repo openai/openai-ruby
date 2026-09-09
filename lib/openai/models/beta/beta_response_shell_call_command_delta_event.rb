@@ -49,19 +49,26 @@ module OpenAI
         # @!method initialize(command_index:, delta:, output_index:, sequence_number:, agent: nil, obfuscation: nil, type: :"response.shell_call_command.delta")
         #   A streaming event that indicated a shell command was incrementally updated.
         #
-        #   @param command_index [Integer] The index of the shell command that was updated.
+        #   @param command_index [Integer]
+        #     The index of the shell command that was updated.
         #
-        #   @param delta [String] The shell command delta that was appended.
+        #   @param delta [String]
+        #     The shell command delta that was appended.
         #
-        #   @param output_index [Integer] The index of the output item that was updated.
+        #   @param output_index [Integer]
+        #     The index of the output item that was updated.
         #
-        #   @param sequence_number [Integer] The sequence number of the event that was emitted.
+        #   @param sequence_number [Integer]
+        #     The sequence number of the event that was emitted.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseShellCallCommandDeltaEvent::Agent] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseShellCallCommandDeltaEvent::Agent]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param obfuscation [String] An obfuscation string that was added to pad the event payload.
+        #   @param obfuscation [String]
+        #     An obfuscation string that was added to pad the event payload.
         #
-        #   @param type [Symbol, :"response.shell_call_command.delta"] The type of the event, always `response.shell_call_command.delta`.
+        #   @param type [Symbol, :"response.shell_call_command.delta"]
+        #     The type of the event, always `response.shell_call_command.delta`.
 
         # @see OpenAI::Models::Beta::BetaResponseShellCallCommandDeltaEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -74,7 +81,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

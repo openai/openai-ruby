@@ -30,17 +30,19 @@ module OpenAI
           optional :history, -> { OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::History }
 
           # @!method initialize(automatic_thread_titling: nil, file_upload: nil, history: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::ChatKit::ChatSessionChatKitConfigurationParam} for more
-          #   details.
-          #
           #   Optional per-session configuration settings for ChatKit behavior.
           #
-          #   @param automatic_thread_titling [OpenAI::Models::Beta::ChatKit::ChatSessionChatKitConfigurationParam::AutomaticThreadTitling] Configuration for automatic thread titling. When omitted, automatic thread titli
+          #   @param automatic_thread_titling [OpenAI::Models::Beta::ChatKit::ChatSessionChatKitConfigurationParam::AutomaticThreadTitling]
+          #     Configuration for automatic thread titling. When omitted, automatic thread
+          #     titling is enabled by default.
           #
-          #   @param file_upload [OpenAI::Models::Beta::ChatKit::ChatSessionChatKitConfigurationParam::FileUpload] Configuration for upload enablement and limits. When omitted, uploads are disabl
+          #   @param file_upload [OpenAI::Models::Beta::ChatKit::ChatSessionChatKitConfigurationParam::FileUpload]
+          #     Configuration for upload enablement and limits. When omitted, uploads are
+          #     disabled by default (max_files 10, max_file_size 512 MB).
           #
-          #   @param history [OpenAI::Models::Beta::ChatKit::ChatSessionChatKitConfigurationParam::History] Configuration for chat history retention. When omitted, history is enabled by de
+          #   @param history [OpenAI::Models::Beta::ChatKit::ChatSessionChatKitConfigurationParam::History]
+          #     Configuration for chat history retention. When omitted, history is enabled by
+          #     default with no limit on recent_threads (null).
 
           # @see OpenAI::Models::Beta::ChatKit::ChatSessionChatKitConfigurationParam#automatic_thread_titling
           class AutomaticThreadTitling < OpenAI::Internal::Type::BaseModel
@@ -54,7 +56,8 @@ module OpenAI
             #   Configuration for automatic thread titling. When omitted, automatic thread
             #   titling is enabled by default.
             #
-            #   @param enabled [Boolean] Enable automatic thread title generation. Defaults to true.
+            #   @param enabled [Boolean]
+            #     Enable automatic thread title generation. Defaults to true.
           end
 
           # @see OpenAI::Models::Beta::ChatKit::ChatSessionChatKitConfigurationParam#file_upload
@@ -79,18 +82,18 @@ module OpenAI
             optional :max_files, Integer
 
             # @!method initialize(enabled: nil, max_file_size: nil, max_files: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::ChatKit::ChatSessionChatKitConfigurationParam::FileUpload}
-            #   for more details.
-            #
             #   Configuration for upload enablement and limits. When omitted, uploads are
             #   disabled by default (max_files 10, max_file_size 512 MB).
             #
-            #   @param enabled [Boolean] Enable uploads for this session. Defaults to false.
+            #   @param enabled [Boolean]
+            #     Enable uploads for this session. Defaults to false.
             #
-            #   @param max_file_size [Integer] Maximum size in megabytes for each uploaded file. Defaults to 512 MB, which is t
+            #   @param max_file_size [Integer]
+            #     Maximum size in megabytes for each uploaded file. Defaults to 512 MB, which is
+            #     the maximum allowable size.
             #
-            #   @param max_files [Integer] Maximum number of files that can be uploaded to the session. Defaults to 10.
+            #   @param max_files [Integer]
+            #     Maximum number of files that can be uploaded to the session. Defaults to 10.
           end
 
           # @see OpenAI::Models::Beta::ChatKit::ChatSessionChatKitConfigurationParam#history
@@ -109,16 +112,15 @@ module OpenAI
             optional :recent_threads, Integer
 
             # @!method initialize(enabled: nil, recent_threads: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::ChatKit::ChatSessionChatKitConfigurationParam::History}
-            #   for more details.
-            #
             #   Configuration for chat history retention. When omitted, history is enabled by
             #   default with no limit on recent_threads (null).
             #
-            #   @param enabled [Boolean] Enables chat users to access previous ChatKit threads. Defaults to true.
+            #   @param enabled [Boolean]
+            #     Enables chat users to access previous ChatKit threads. Defaults to true.
             #
-            #   @param recent_threads [Integer] Number of recent ChatKit threads users have access to. Defaults to unlimited whe
+            #   @param recent_threads [Integer]
+            #     Number of recent ChatKit threads users have access to. Defaults to unlimited
+            #     when unset.
           end
         end
       end

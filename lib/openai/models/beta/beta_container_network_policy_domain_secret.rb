@@ -23,11 +23,14 @@ module OpenAI
         required :value, String
 
         # @!method initialize(domain:, name:, value:)
-        #   @param domain [String] The domain associated with the secret.
+        #   @param domain [String]
+        #     The domain associated with the secret.
         #
-        #   @param name [String] The name of the secret to inject for the domain.
+        #   @param name [String]
+        #     The name of the secret to inject for the domain.
         #
-        #   @param value [String] The secret value to inject for the domain.
+        #   @param value [String]
+        #     The secret value to inject for the domain.
       end
     end
 

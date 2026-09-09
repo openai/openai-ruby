@@ -35,7 +35,7 @@ module OpenAI
 
         # An optional text to guide the model's style or continue a previous audio
         # segment. The
-        # [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting)
+        # [prompt](https://developers.openai.com/api/docs/guides/speech-to-text#prompting)
         # should be in English.
         sig { returns(T.nilable(String)) }
         attr_reader :prompt
@@ -97,7 +97,7 @@ module OpenAI
 
           # An optional text to guide the model's style or continue a previous audio
           # segment. The
-          # [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting)
+          # [prompt](https://developers.openai.com/api/docs/guides/speech-to-text#prompting)
           # should be in English.
           prompt: nil,
 

@@ -43,22 +43,27 @@ module OpenAI
         required :type, const: :"transcript.text.segment"
 
         # @!method initialize(id:, end_:, speaker:, start:, text:, type: :"transcript.text.segment")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Audio::TranscriptionDiarizedSegment} for more details.
-        #
         #   A segment of diarized transcript text with speaker metadata.
         #
-        #   @param id [String] Unique identifier for the segment.
+        #   @param id [String]
+        #     Unique identifier for the segment.
         #
-        #   @param end_ [Float] End timestamp of the segment in seconds.
+        #   @param end_ [Float]
+        #     End timestamp of the segment in seconds.
         #
-        #   @param speaker [String] Speaker label for this segment. When known speakers are provided, the label matc
+        #   @param speaker [String]
+        #     Speaker label for this segment. When known speakers are provided, the label
+        #     matches `known_speaker_names[]`. Otherwise speakers are labeled sequentially
+        #     using capital letters (`A`, `B`, ...).
         #
-        #   @param start [Float] Start timestamp of the segment in seconds.
+        #   @param start [Float]
+        #     Start timestamp of the segment in seconds.
         #
-        #   @param text [String] Transcript text for this segment.
+        #   @param text [String]
+        #     Transcript text for this segment.
         #
-        #   @param type [Symbol, :"transcript.text.segment"] The type of the segment. Always `transcript.text.segment`.
+        #   @param type [Symbol, :"transcript.text.segment"]
+        #     The type of the segment. Always `transcript.text.segment`.
       end
     end
   end

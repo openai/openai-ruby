@@ -10,7 +10,8 @@ module OpenAI
             #
             # @overload retrieve(project_id, request_options: {})
             #
-            # @param project_id [String] The ID of the project to inspect.
+            # @param project_id [String]
+            #   The ID of the project to inspect.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -31,9 +32,11 @@ module OpenAI
             #
             # @overload update(project_id, retention_type:, request_options: {})
             #
-            # @param project_id [String] The ID of the project to update.
+            # @param project_id [String]
+            #   The ID of the project to update.
             #
-            # @param retention_type [Symbol, OpenAI::Models::Admin::Organization::Projects::DataRetentionUpdateParams::RetentionType] The desired project data retention type.
+            # @param retention_type [Symbol, OpenAI::Models::Admin::Organization::Projects::DataRetentionUpdateParams::RetentionType]
+            #   The desired project data retention type.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #

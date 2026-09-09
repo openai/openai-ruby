@@ -27,11 +27,14 @@ module OpenAI
         #   is established as the first server event. This event will contain the default
         #   Session configuration.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param session [OpenAI::Models::Realtime::RealtimeSessionCreateRequest, OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest] The session configuration.
+        #   @param session [OpenAI::Models::Realtime::RealtimeSessionCreateRequest, OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest]
+        #     The session configuration.
         #
-        #   @param type [Symbol, :"session.created"] The event type, must be `session.created`.
+        #   @param type [Symbol, :"session.created"]
+        #     The event type, must be `session.created`.
 
         # The session configuration.
         #

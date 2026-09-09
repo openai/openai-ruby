@@ -17,9 +17,11 @@ module OpenAI
         optional :skills, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaLocalSkill] }
 
         # @!method initialize(skills: nil, type: :local)
-        #   @param skills [Array<OpenAI::Models::Beta::BetaLocalSkill>] An optional list of skills.
+        #   @param skills [Array<OpenAI::Models::Beta::BetaLocalSkill>]
+        #     An optional list of skills.
         #
-        #   @param type [Symbol, :local] Use a local computer environment.
+        #   @param type [Symbol, :local]
+        #     Use a local computer environment.
       end
     end
 

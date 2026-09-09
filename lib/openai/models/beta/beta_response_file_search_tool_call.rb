@@ -46,24 +46,28 @@ module OpenAI
         )
 
         # @!method initialize(id:, queries:, status:, agent: nil, results: nil, type: :file_search_call)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseFileSearchToolCall} for more details.
-        #
         #   The results of a file search tool call. See the
-        #   [file search guide](https://platform.openai.com/docs/guides/tools-file-search)
+        #   [file search guide](https://developers.openai.com/api/docs/guides/tools-file-search)
         #   for more information.
         #
-        #   @param id [String] The unique ID of the file search tool call.
+        #   @param id [String]
+        #     The unique ID of the file search tool call.
         #
-        #   @param queries [Array<String>] The queries used to search for files.
+        #   @param queries [Array<String>]
+        #     The queries used to search for files.
         #
-        #   @param status [Symbol, OpenAI::Models::Beta::BetaResponseFileSearchToolCall::Status] The status of the file search tool call. One of `in_progress`,
+        #   @param status [Symbol, OpenAI::Models::Beta::BetaResponseFileSearchToolCall::Status]
+        #     The status of the file search tool call. One of `in_progress`, `searching`,
+        #     `incomplete` or `failed`,
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseFileSearchToolCall::Agent, nil] The agent that produced this item.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseFileSearchToolCall::Agent, nil]
+        #     The agent that produced this item.
         #
-        #   @param results [Array<OpenAI::Models::Beta::BetaResponseFileSearchToolCall::Result>, nil] The results of the file search tool call.
+        #   @param results [Array<OpenAI::Models::Beta::BetaResponseFileSearchToolCall::Result>, nil]
+        #     The results of the file search tool call.
         #
-        #   @param type [Symbol, :file_search_call] The type of the file search tool call. Always `file_search_call`.
+        #   @param type [Symbol, :file_search_call]
+        #     The type of the file search tool call. Always `file_search_call`.
 
         # The status of the file search tool call. One of `in_progress`, `searching`,
         # `incomplete` or `failed`,
@@ -93,7 +97,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that produced this item.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
 
         class Result < OpenAI::Internal::Type::BaseModel
@@ -138,19 +143,24 @@ module OpenAI
           optional :text, String
 
           # @!method initialize(attributes: nil, file_id: nil, filename: nil, score: nil, text: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::BetaResponseFileSearchToolCall::Result} for more details.
+          #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]
+          #     Set of 16 key-value pairs that can be attached to an object. This can be useful
+          #     for storing additional information about the object in a structured format, and
+          #     querying for objects via API or the dashboard. Keys are strings with a maximum
+          #     length of 64 characters. Values are strings with a maximum length of 512
+          #     characters, booleans, or numbers.
           #
-          #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+          #   @param file_id [String]
+          #     The unique ID of the file.
           #
-          #   @param file_id [String] The unique ID of the file.
+          #   @param filename [String]
+          #     The name of the file.
           #
-          #   @param filename [String] The name of the file.
+          #   @param score [Float]
+          #     The relevance score of the file - a value between 0 and 1.
           #
-          #   @param score [Float] The relevance score of the file - a value between 0 and 1.
-          #
-          #   @param text [String] The text that was retrieved from the file.
-
+          #   @param text [String]
+          #     The text that was retrieved from the file.
           module Attribute
             extend OpenAI::Internal::Type::Union
 

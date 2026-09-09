@@ -72,26 +72,35 @@ module OpenAI
           # @!method initialize(id:, created_at:, datasource_item:, datasource_item_id:, eval_id:, results:, run_id:, sample:, status:, object: :"eval.run.output_item")
           #   A schema representing an evaluation run output item.
           #
-          #   @param id [String] Unique identifier for the evaluation run output item.
+          #   @param id [String]
+          #     Unique identifier for the evaluation run output item.
           #
-          #   @param created_at [Integer] Unix timestamp (in seconds) when the evaluation run was created.
+          #   @param created_at [Integer]
+          #     Unix timestamp (in seconds) when the evaluation run was created.
           #
-          #   @param datasource_item [Hash{Symbol=>Object}] Details of the input data source item.
+          #   @param datasource_item [Hash{Symbol=>Object}]
+          #     Details of the input data source item.
           #
-          #   @param datasource_item_id [Integer] The identifier for the data source item.
+          #   @param datasource_item_id [Integer]
+          #     The identifier for the data source item.
           #
-          #   @param eval_id [String] The identifier of the evaluation group.
+          #   @param eval_id [String]
+          #     The identifier of the evaluation group.
           #
-          #   @param results [Array<OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Result>] A list of grader results for this output item.
+          #   @param results [Array<OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Result>]
+          #     A list of grader results for this output item.
           #
-          #   @param run_id [String] The identifier of the evaluation run associated with this output item.
+          #   @param run_id [String]
+          #     The identifier of the evaluation run associated with this output item.
           #
-          #   @param sample [OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample] A sample containing the input and output of the evaluation run.
+          #   @param sample [OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample]
+          #     A sample containing the input and output of the evaluation run.
           #
-          #   @param status [String] The status of the evaluation run.
+          #   @param status [String]
+          #     The status of the evaluation run.
           #
-          #   @param object [Symbol, :"eval.run.output_item"] The type of the object. Always "eval.run.output_item".
-
+          #   @param object [Symbol, :"eval.run.output_item"]
+          #     The type of the object. Always "eval.run.output_item".
           class Result < OpenAI::Internal::Type::BaseModel
             # @!attribute name
             #   The name of the grader.
@@ -126,15 +135,20 @@ module OpenAI
             # @!method initialize(name:, passed:, score:, sample: nil, type: nil)
             #   A single grader result for an evaluation run output item.
             #
-            #   @param name [String] The name of the grader.
+            #   @param name [String]
+            #     The name of the grader.
             #
-            #   @param passed [Boolean] Whether the grader considered the output a pass.
+            #   @param passed [Boolean]
+            #     Whether the grader considered the output a pass.
             #
-            #   @param score [Float] The numeric score produced by the grader.
+            #   @param score [Float]
+            #     The numeric score produced by the grader.
             #
-            #   @param sample [Hash{Symbol=>Object}, nil] Optional sample or intermediate data produced by the grader.
+            #   @param sample [Hash{Symbol=>Object}, nil]
+            #     Optional sample or intermediate data produced by the grader.
             #
-            #   @param type [String] The grader type (for example, "string-check-grader").
+            #   @param type [String]
+            #     The grader type (for example, "string-check-grader").
           end
 
           # @see OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse#sample
@@ -210,32 +224,37 @@ module OpenAI
             required :usage, -> { OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage }
 
             # @!method initialize(error:, finish_reason:, input:, max_completion_tokens:, model:, output:, seed:, temperature:, top_p:, usage:)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample} for more
-            #   details.
-            #
             #   A sample containing the input and output of the evaluation run.
             #
-            #   @param error [OpenAI::Models::Evals::EvalAPIError] An object representing an error response from the Eval API.
+            #   @param error [OpenAI::Models::Evals::EvalAPIError]
+            #     An object representing an error response from the Eval API.
             #
-            #   @param finish_reason [String] The reason why the sample generation was finished.
+            #   @param finish_reason [String]
+            #     The reason why the sample generation was finished.
             #
-            #   @param input [Array<OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input>] An array of input messages.
+            #   @param input [Array<OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input>]
+            #     An array of input messages.
             #
-            #   @param max_completion_tokens [Integer] The maximum number of tokens allowed for completion.
+            #   @param max_completion_tokens [Integer]
+            #     The maximum number of tokens allowed for completion.
             #
-            #   @param model [String] The model used for generating the sample.
+            #   @param model [String]
+            #     The model used for generating the sample.
             #
-            #   @param output [Array<OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output>] An array of output messages.
+            #   @param output [Array<OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output>]
+            #     An array of output messages.
             #
-            #   @param seed [Integer] The seed used for generating the sample.
+            #   @param seed [Integer]
+            #     The seed used for generating the sample.
             #
-            #   @param temperature [Float] The sampling temperature used.
+            #   @param temperature [Float]
+            #     The sampling temperature used.
             #
-            #   @param top_p [Float] The top_p value used for sampling.
+            #   @param top_p [Float]
+            #     The top_p value used for sampling.
             #
-            #   @param usage [OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage] Token usage details for the sample.
-
+            #   @param usage [OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage]
+            #     Token usage details for the sample.
             class Input < OpenAI::Internal::Type::BaseModel
               # @!attribute content
               #   The content of the message.
@@ -252,9 +271,11 @@ module OpenAI
               # @!method initialize(content:, role:)
               #   An input message.
               #
-              #   @param content [String] The content of the message.
+              #   @param content [String]
+              #     The content of the message.
               #
-              #   @param role [String] The role of the message sender (e.g., system, user, developer).
+              #   @param role [String]
+              #     The role of the message sender (e.g., system, user, developer).
             end
 
             class Output < OpenAI::Internal::Type::BaseModel
@@ -271,9 +292,11 @@ module OpenAI
               optional :role, String
 
               # @!method initialize(content: nil, role: nil)
-              #   @param content [String] The content of the message.
+              #   @param content [String]
+              #     The content of the message.
               #
-              #   @param role [String] The role of the message (e.g. "system", "assistant", "user").
+              #   @param role [String]
+              #     The role of the message (e.g. "system", "assistant", "user").
             end
 
             # @see OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample#usage
@@ -305,13 +328,17 @@ module OpenAI
               # @!method initialize(cached_tokens:, completion_tokens:, prompt_tokens:, total_tokens:)
               #   Token usage details for the sample.
               #
-              #   @param cached_tokens [Integer] The number of tokens retrieved from cache.
+              #   @param cached_tokens [Integer]
+              #     The number of tokens retrieved from cache.
               #
-              #   @param completion_tokens [Integer] The number of completion tokens generated.
+              #   @param completion_tokens [Integer]
+              #     The number of completion tokens generated.
               #
-              #   @param prompt_tokens [Integer] The number of prompt tokens used.
+              #   @param prompt_tokens [Integer]
+              #     The number of prompt tokens used.
               #
-              #   @param total_tokens [Integer] The total number of tokens used.
+              #   @param total_tokens [Integer]
+              #     The total number of tokens used.
             end
           end
         end

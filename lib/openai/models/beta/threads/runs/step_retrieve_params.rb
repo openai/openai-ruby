@@ -31,7 +31,7 @@ module OpenAI
             #   to fetch the file search result content.
             #
             #   See the
-            #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+            #   [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
             #   for more information.
             #
             #   @return [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>, nil]
@@ -41,16 +41,20 @@ module OpenAI
             )
 
             # @!method initialize(thread_id:, run_id:, step_id:, include: nil, request_options: {})
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::Threads::Runs::StepRetrieveParams} for more details.
-            #
             #   @param thread_id [String]
             #
             #   @param run_id [String]
             #
             #   @param step_id [String]
             #
-            #   @param include [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>] A list of additional fields to include in the response. Currently the only suppo
+            #   @param include [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>]
+            #     A list of additional fields to include in the response. Currently the only
+            #     supported value is `step_details.tool_calls[*].file_search.results[*].content`
+            #     to fetch the file search result content.
+            #
+            #     See the
+            #     [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
+            #     for more information.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
           end

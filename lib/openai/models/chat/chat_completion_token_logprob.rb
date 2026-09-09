@@ -38,17 +38,23 @@ module OpenAI
         )
 
         # @!method initialize(token:, bytes:, logprob:, top_logprobs:)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Chat::ChatCompletionTokenLogprob} for more details.
+        #   @param token [String]
+        #     The token.
         #
-        #   @param token [String] The token.
+        #   @param bytes [Array<Integer>, nil]
+        #     A list of integers representing the UTF-8 bytes representation of the token.
+        #     Useful in instances where characters are represented by multiple tokens and
+        #     their byte representations must be combined to generate the correct text
+        #     representation. Can be `null` if there is no bytes representation for the token.
         #
-        #   @param bytes [Array<Integer>, nil] A list of integers representing the UTF-8 bytes representation of the token. Use
+        #   @param logprob [Float]
+        #     The log probability of this token, if it is within the top 20 most likely
+        #     tokens. Otherwise, the value `-9999.0` is used to signify that the token is very
+        #     unlikely.
         #
-        #   @param logprob [Float] The log probability of this token, if it is within the top 20 most likely tokens
-        #
-        #   @param top_logprobs [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob>] List of the most likely tokens and their log probability, at this token position
-
+        #   @param top_logprobs [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob>]
+        #     List of the most likely tokens and their log probability, at this token
+        #     position. The number of entries may be fewer than the requested `top_logprobs`.
         class TopLogprob < OpenAI::Internal::Type::BaseModel
           # @!attribute token
           #   The token.
@@ -74,14 +80,19 @@ module OpenAI
           required :logprob, Float
 
           # @!method initialize(token:, bytes:, logprob:)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob} for more details.
+          #   @param token [String]
+          #     The token.
           #
-          #   @param token [String] The token.
+          #   @param bytes [Array<Integer>, nil]
+          #     A list of integers representing the UTF-8 bytes representation of the token.
+          #     Useful in instances where characters are represented by multiple tokens and
+          #     their byte representations must be combined to generate the correct text
+          #     representation. Can be `null` if there is no bytes representation for the token.
           #
-          #   @param bytes [Array<Integer>, nil] A list of integers representing the UTF-8 bytes representation of the token. Use
-          #
-          #   @param logprob [Float] The log probability of this token, if it is within the top 20 most likely tokens
+          #   @param logprob [Float]
+          #     The log probability of this token, if it is within the top 20 most likely
+          #     tokens. Otherwise, the value `-9999.0` is used to signify that the token is very
+          #     unlikely.
         end
       end
     end

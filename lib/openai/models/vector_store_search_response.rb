@@ -46,19 +46,24 @@ module OpenAI
       required :score, Float
 
       # @!method initialize(attributes:, content:, file_id:, filename:, score:)
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::VectorStoreSearchResponse} for more details.
+      #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]
+      #     Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #     for storing additional information about the object in a structured format, and
+      #     querying for objects via API or the dashboard. Keys are strings with a maximum
+      #     length of 64 characters. Values are strings with a maximum length of 512
+      #     characters, booleans, or numbers.
       #
-      #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+      #   @param content [Array<OpenAI::Models::VectorStoreSearchResponse::Content>]
+      #     Content chunks from the file.
       #
-      #   @param content [Array<OpenAI::Models::VectorStoreSearchResponse::Content>] Content chunks from the file.
+      #   @param file_id [String]
+      #     The ID of the vector store file.
       #
-      #   @param file_id [String] The ID of the vector store file.
+      #   @param filename [String]
+      #     The name of the vector store file.
       #
-      #   @param filename [String] The name of the vector store file.
-      #
-      #   @param score [Float] The similarity score for the result.
-
+      #   @param score [Float]
+      #     The similarity score for the result.
       module Attribute
         extend OpenAI::Internal::Type::Union
 
@@ -86,9 +91,11 @@ module OpenAI
         required :type, enum: -> { OpenAI::Models::VectorStoreSearchResponse::Content::Type }
 
         # @!method initialize(text:, type:)
-        #   @param text [String] The text content returned from search.
+        #   @param text [String]
+        #     The text content returned from search.
         #
-        #   @param type [Symbol, OpenAI::Models::VectorStoreSearchResponse::Content::Type] The type of content.
+        #   @param type [Symbol, OpenAI::Models::VectorStoreSearchResponse::Content::Type]
+        #     The type of content.
 
         # The type of content.
         #

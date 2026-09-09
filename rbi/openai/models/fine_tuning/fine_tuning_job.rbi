@@ -64,7 +64,7 @@ module OpenAI
 
         # The compiled results file ID(s) for the fine-tuning job. You can retrieve the
         # results with the
-        # [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
+        # [Files API](https://developers.openai.com/api/reference/resources/files/methods/content).
         sig { returns(T::Array[String]) }
         attr_accessor :result_files
 
@@ -83,13 +83,13 @@ module OpenAI
         attr_accessor :trained_tokens
 
         # The file ID used for training. You can retrieve the training data with the
-        # [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
+        # [Files API](https://developers.openai.com/api/reference/resources/files/methods/content).
         sig { returns(String) }
         attr_accessor :training_file
 
         # The file ID used for validation. You can retrieve the validation results with
         # the
-        # [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
+        # [Files API](https://developers.openai.com/api/reference/resources/files/methods/content).
         sig { returns(T.nilable(String)) }
         attr_accessor :validation_file
 
@@ -195,7 +195,7 @@ module OpenAI
 
           # The compiled results file ID(s) for the fine-tuning job. You can retrieve the
           # results with the
-          # [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
+          # [Files API](https://developers.openai.com/api/reference/resources/files/methods/content).
           result_files:,
 
           # The seed used for the fine-tuning job.
@@ -210,12 +210,12 @@ module OpenAI
           trained_tokens:,
 
           # The file ID used for training. You can retrieve the training data with the
-          # [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
+          # [Files API](https://developers.openai.com/api/reference/resources/files/methods/content).
           training_file:,
 
           # The file ID used for validation. You can retrieve the validation results with
           # the
-          # [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
+          # [Files API](https://developers.openai.com/api/reference/resources/files/methods/content).
           validation_file:,
 
           # The Unix timestamp (in seconds) for when the fine-tuning job is estimated to

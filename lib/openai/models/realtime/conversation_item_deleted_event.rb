@@ -27,11 +27,14 @@ module OpenAI
         #   `conversation.item.delete` event. This event is used to synchronize the server's
         #   understanding of the conversation history with the client's view.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param item_id [String] The ID of the item that was deleted.
+        #   @param item_id [String]
+        #     The ID of the item that was deleted.
         #
-        #   @param type [Symbol, :"conversation.item.deleted"] The event type, must be `conversation.item.deleted`.
+        #   @param type [Symbol, :"conversation.item.deleted"]
+        #     The event type, must be `conversation.item.deleted`.
       end
     end
   end

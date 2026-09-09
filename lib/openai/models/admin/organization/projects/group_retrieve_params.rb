@@ -31,7 +31,8 @@ module OpenAI
             #
             #   @param group_id [String]
             #
-            #   @param group_type [Symbol, OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::GroupType] The type of group to retrieve.
+            #   @param group_type [Symbol, OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::GroupType]
+            #     The type of group to retrieve.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

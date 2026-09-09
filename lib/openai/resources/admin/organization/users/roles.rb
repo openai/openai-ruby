@@ -10,9 +10,11 @@ module OpenAI
             #
             # @overload create(user_id, role_id:, request_options: {})
             #
-            # @param user_id [String] The ID of the user that should receive the organization role.
+            # @param user_id [String]
+            #   The ID of the user that should receive the organization role.
             #
-            # @param role_id [String] Identifier of the role to assign.
+            # @param role_id [String]
+            #   Identifier of the role to assign.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -35,9 +37,11 @@ module OpenAI
             #
             # @overload retrieve(role_id, user_id:, request_options: {})
             #
-            # @param role_id [String] The ID of the organization role to retrieve for the user.
+            # @param role_id [String]
+            #   The ID of the organization role to retrieve for the user.
             #
-            # @param user_id [String] The ID of the user to inspect.
+            # @param user_id [String]
+            #   The ID of the user to inspect.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -59,20 +63,22 @@ module OpenAI
               )
             end
 
-            # Some parameter documentations has been truncated, see
-            # {OpenAI::Models::Admin::Organization::Users::RoleListParams} for more details.
-            #
             # Lists the organization roles assigned to a user within the organization.
             #
             # @overload list(user_id, after: nil, limit: nil, order: nil, request_options: {})
             #
-            # @param user_id [String] The ID of the user to inspect.
+            # @param user_id [String]
+            #   The ID of the user to inspect.
             #
-            # @param after [String] Cursor for pagination. Provide the value from the previous response's `next` fie
+            # @param after [String]
+            #   Cursor for pagination. Provide the value from the previous response's `next`
+            #   field to continue listing organization roles.
             #
-            # @param limit [Integer] A limit on the number of organization role assignments to return.
+            # @param limit [Integer]
+            #   A limit on the number of organization role assignments to return.
             #
-            # @param order [Symbol, OpenAI::Models::Admin::Organization::Users::RoleListParams::Order] Sort order for the returned organization roles.
+            # @param order [Symbol, OpenAI::Models::Admin::Organization::Users::RoleListParams::Order]
+            #   Sort order for the returned organization roles.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -97,9 +103,11 @@ module OpenAI
             #
             # @overload delete(role_id, user_id:, request_options: {})
             #
-            # @param role_id [String] The ID of the organization role to remove from the user.
+            # @param role_id [String]
+            #   The ID of the organization role to remove from the user.
             #
-            # @param user_id [String] The ID of the user to modify.
+            # @param user_id [String]
+            #   The ID of the user to modify.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #

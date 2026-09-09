@@ -36,11 +36,14 @@ module OpenAI
             # @!method initialize(project_id:, role:, email: nil, user_id: nil, request_options: {})
             #   @param project_id [String]
             #
-            #   @param role [String] `owner` or `member`
+            #   @param role [String]
+            #     `owner` or `member`
             #
-            #   @param email [String, nil] Email of the user to add.
+            #   @param email [String, nil]
+            #     Email of the user to add.
             #
-            #   @param user_id [String, nil] The ID of the user.
+            #   @param user_id [String, nil]
+            #     The ID of the user.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
           end

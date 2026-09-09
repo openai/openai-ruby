@@ -30,19 +30,20 @@ module OpenAI
         required :type, const: :"response.code_interpreter_call.interpreting"
 
         # @!method initialize(item_id:, output_index:, sequence_number:, type: :"response.code_interpreter_call.interpreting")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseCodeInterpreterCallInterpretingEvent} for
-        #   more details.
-        #
         #   Emitted when the code interpreter is actively interpreting the code snippet.
         #
-        #   @param item_id [String] The unique identifier of the code interpreter tool call item.
+        #   @param item_id [String]
+        #     The unique identifier of the code interpreter tool call item.
         #
-        #   @param output_index [Integer] The index of the output item in the response for which the code interpreter is i
+        #   @param output_index [Integer]
+        #     The index of the output item in the response for which the code interpreter is
+        #     interpreting code.
         #
-        #   @param sequence_number [Integer] The sequence number of this event, used to order streaming events.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event, used to order streaming events.
         #
-        #   @param type [Symbol, :"response.code_interpreter_call.interpreting"] The type of the event. Always `response.code_interpreter_call.interpreting`.
+        #   @param type [Symbol, :"response.code_interpreter_call.interpreting"]
+        #     The type of the event. Always `response.code_interpreter_call.interpreting`.
       end
     end
   end

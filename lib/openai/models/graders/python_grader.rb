@@ -31,13 +31,17 @@ module OpenAI
         # @!method initialize(name:, source:, image_tag: nil, type: :python)
         #   A PythonGrader object that runs a python script on the input.
         #
-        #   @param name [String] The name of the grader.
+        #   @param name [String]
+        #     The name of the grader.
         #
-        #   @param source [String] The source code of the python script.
+        #   @param source [String]
+        #     The source code of the python script.
         #
-        #   @param image_tag [String] The image tag to use for the python script.
+        #   @param image_tag [String]
+        #     The image tag to use for the python script.
         #
-        #   @param type [Symbol, :python] The object type, which is always `python`.
+        #   @param type [Symbol, :python]
+        #     The object type, which is always `python`.
       end
     end
 

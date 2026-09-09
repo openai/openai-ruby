@@ -17,12 +17,14 @@ module OpenAI
           required :type, const: :image_file
 
           # @!method initialize(image_file:, type: :image_file)
-          #   References an image [File](https://platform.openai.com/docs/api-reference/files)
-          #   in the content of a message.
+          #   References an image
+          #   [File](https://developers.openai.com/api/reference/resources/files) in the
+          #   content of a message.
           #
           #   @param image_file [OpenAI::Models::Beta::Threads::ImageFile]
           #
-          #   @param type [Symbol, :image_file] Always `image_file`.
+          #   @param type [Symbol, :image_file]
+          #     Always `image_file`.
         end
       end
     end

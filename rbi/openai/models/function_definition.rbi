@@ -26,8 +26,8 @@ module OpenAI
       attr_writer :description
 
       # The parameters the functions accepts, described as a JSON Schema object. See the
-      # [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
-      # and the
+      # [guide](https://developers.openai.com/api/docs/guides/function-calling) for
+      # examples, and the
       # [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
       # documentation about the format.
       #
@@ -42,7 +42,7 @@ module OpenAI
       # set to true, the model will follow the exact schema defined in the `parameters`
       # field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn
       # more about Structured Outputs in the
-      # [function calling guide](https://platform.openai.com/docs/guides/function-calling).
+      # [function calling guide](https://developers.openai.com/api/docs/guides/function-calling).
       sig { returns(T.nilable(T::Boolean)) }
       attr_accessor :strict
 
@@ -70,8 +70,8 @@ module OpenAI
         description: nil,
 
         # The parameters the functions accepts, described as a JSON Schema object. See the
-        # [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
-        # and the
+        # [guide](https://developers.openai.com/api/docs/guides/function-calling) for
+        # examples, and the
         # [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
         # documentation about the format.
         #
@@ -82,7 +82,7 @@ module OpenAI
         # set to true, the model will follow the exact schema defined in the `parameters`
         # field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn
         # more about Structured Outputs in the
-        # [function calling guide](https://platform.openai.com/docs/guides/function-calling).
+        # [function calling guide](https://developers.openai.com/api/docs/guides/function-calling).
 
         strict: nil
       )

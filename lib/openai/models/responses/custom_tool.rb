@@ -52,26 +52,30 @@ module OpenAI
         optional :format_, union: -> { OpenAI::CustomToolInputFormat }, api_name: :format
 
         # @!method initialize(name:, allowed_callers: nil, async: nil, defer_loading: nil, description: nil, format_: nil, type: :custom)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::CustomTool} for more details.
-        #
         #   A custom tool that processes input using a specified format. Learn more about
-        #   [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
+        #   [custom tools](https://developers.openai.com/api/docs/guides/function-calling#custom-tools)
         #
-        #   @param name [String] The name of the custom tool, used to identify it in tool calls.
+        #   @param name [String]
+        #     The name of the custom tool, used to identify it in tool calls.
         #
-        #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::CustomTool::AllowedCaller>, nil] The tool invocation context(s).
+        #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::CustomTool::AllowedCaller>, nil]
+        #     The tool invocation context(s).
         #
-        #   @param async [Boolean] Whether the tool response can be returned asynchronously versus immediately retu
+        #   @param async [Boolean]
+        #     Whether the tool response can be returned asynchronously versus immediately
+        #     returned on next response creation.
         #
-        #   @param defer_loading [Boolean] Whether this tool should be deferred and discovered via tool search.
+        #   @param defer_loading [Boolean]
+        #     Whether this tool should be deferred and discovered via tool search.
         #
-        #   @param description [String] Optional description of the custom tool, used to provide more context.
+        #   @param description [String]
+        #     Optional description of the custom tool, used to provide more context.
         #
-        #   @param format_ [OpenAI::Models::CustomToolInputFormat::Text, OpenAI::Models::CustomToolInputFormat::Grammar] The input format for the custom tool. Default is unconstrained text.
+        #   @param format_ [OpenAI::Models::CustomToolInputFormat::Text, OpenAI::Models::CustomToolInputFormat::Grammar]
+        #     The input format for the custom tool. Default is unconstrained text.
         #
-        #   @param type [Symbol, :custom] The type of the custom tool. Always `custom`.
-
+        #   @param type [Symbol, :custom]
+        #     The type of the custom tool. Always `custom`.
         module AllowedCaller
           extend OpenAI::Internal::Type::Enum
 

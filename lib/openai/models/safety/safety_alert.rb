@@ -55,9 +55,6 @@ module OpenAI
         required :response_id, String
 
         # @!method initialize(id:, created_at:, error_type:, model:, reason:, request_id:, request_paused:, response_id:, object: :"safety.alert")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Safety::SafetyAlert} for more details.
-        #
         #   @param id [String]
         #
         #   @param created_at [Integer]
@@ -66,11 +63,15 @@ module OpenAI
         #
         #   @param model [String]
         #
-        #   @param reason [String, nil] A customer-safe description derived from error_type, or null for zero data reten
+        #   @param reason [String, nil]
+        #     A customer-safe description derived from error_type, or null for zero data
+        #     retention requests.
         #
         #   @param request_id [String]
         #
-        #   @param request_paused [Boolean] Whether block registration succeeded for this request. This does not confirm tha
+        #   @param request_paused [Boolean]
+        #     Whether block registration succeeded for this request. This does not confirm
+        #     that response execution stopped.
         #
         #   @param response_id [String]
         #
