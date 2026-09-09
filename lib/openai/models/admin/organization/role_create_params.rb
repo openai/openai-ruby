@@ -28,11 +28,14 @@ module OpenAI
           optional :description, String, nil?: true
 
           # @!method initialize(permissions:, role_name:, description: nil, request_options: {})
-          #   @param permissions [Array<String>] Permissions to grant to the role.
+          #   @param permissions [Array<String>]
+          #     Permissions to grant to the role.
           #
-          #   @param role_name [String] Unique name for the role.
+          #   @param role_name [String]
+          #     Unique name for the role.
           #
-          #   @param description [String, nil] Optional description of the role.
+          #   @param description [String, nil]
+          #     Optional description of the role.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end

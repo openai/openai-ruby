@@ -27,8 +27,9 @@ module OpenAI
             .returns(OpenAI::Beta::Thread)
         }
         def create(
-          # A list of [messages](https://platform.openai.com/docs/api-reference/messages) to
-          # start the thread with.
+          # A list of
+          # [messages](https://developers.openai.com/api/docs/assistants/migration) to start
+          # the thread with.
           messages: nil,
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           # for storing additional information about the object in a structured format, and
@@ -143,8 +144,8 @@ module OpenAI
         }
         def create_and_run(
           # The ID of the
-          # [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
-          # execute this run.
+          # [assistant](https://developers.openai.com/api/docs/assistants/migration) to use
+          # to execute this run.
           assistant_id:,
           # Override the default system message of the assistant. This is useful for
           # modifying the behavior on a per-run basis.
@@ -168,24 +169,25 @@ module OpenAI
           # Keys are strings with a maximum length of 64 characters. Values are strings with
           # a maximum length of 512 characters.
           metadata: nil,
-          # The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to
-          # be used to execute this run. If a value is provided here, it will override the
-          # model associated with the assistant. If not, the model associated with the
-          # assistant will be used.
+          # The ID of the
+          # [Model](https://developers.openai.com/api/reference/resources/models) to be used
+          # to execute this run. If a value is provided here, it will override the model
+          # associated with the assistant. If not, the model associated with the assistant
+          # will be used.
           model: nil,
           # Whether to enable
-          # [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
+          # [parallel function calling](https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling)
           # during tool use.
           parallel_tool_calls: nil,
           # Specifies the format that the model must output. Compatible with
-          # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
-          # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
-          # and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+          # [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+          # [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+          # all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
           #
           # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
           # Outputs which ensures the model will match your supplied JSON schema. Learn more
           # in the
-          # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
           #
           # Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
           # message the model generates is valid JSON.
@@ -282,8 +284,8 @@ module OpenAI
         }
         def stream_raw(
           # The ID of the
-          # [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
-          # execute this run.
+          # [assistant](https://developers.openai.com/api/docs/assistants/migration) to use
+          # to execute this run.
           assistant_id:,
           # Override the default system message of the assistant. This is useful for
           # modifying the behavior on a per-run basis.
@@ -307,24 +309,25 @@ module OpenAI
           # Keys are strings with a maximum length of 64 characters. Values are strings with
           # a maximum length of 512 characters.
           metadata: nil,
-          # The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to
-          # be used to execute this run. If a value is provided here, it will override the
-          # model associated with the assistant. If not, the model associated with the
-          # assistant will be used.
+          # The ID of the
+          # [Model](https://developers.openai.com/api/reference/resources/models) to be used
+          # to execute this run. If a value is provided here, it will override the model
+          # associated with the assistant. If not, the model associated with the assistant
+          # will be used.
           model: nil,
           # Whether to enable
-          # [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
+          # [parallel function calling](https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling)
           # during tool use.
           parallel_tool_calls: nil,
           # Specifies the format that the model must output. Compatible with
-          # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
-          # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
-          # and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+          # [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+          # [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+          # all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
           #
           # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
           # Outputs which ensures the model will match your supplied JSON schema. Learn more
           # in the
-          # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
           #
           # Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
           # message the model generates is valid JSON.

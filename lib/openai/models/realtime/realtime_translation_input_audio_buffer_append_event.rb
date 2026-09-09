@@ -40,11 +40,14 @@ module OpenAI
         #   audio and later resumes, model time treats the resumed audio as contiguous with
         #   the previous audio rather than as a real-world pause.
         #
-        #   @param audio [String] Base64-encoded 24 kHz PCM16 mono audio bytes.
+        #   @param audio [String]
+        #     Base64-encoded 24 kHz PCM16 mono audio bytes.
         #
-        #   @param event_id [String] Optional client-generated ID used to identify this event.
+        #   @param event_id [String]
+        #     Optional client-generated ID used to identify this event.
         #
-        #   @param type [Symbol, :"session.input_audio_buffer.append"] The event type, must be `session.input_audio_buffer.append`.
+        #   @param type [Symbol, :"session.input_audio_buffer.append"]
+        #     The event type, must be `session.input_audio_buffer.append`.
       end
     end
   end

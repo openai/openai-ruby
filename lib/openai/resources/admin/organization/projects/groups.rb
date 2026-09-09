@@ -13,11 +13,14 @@ module OpenAI
             #
             # @overload create(project_id, group_id:, role:, request_options: {})
             #
-            # @param project_id [String] The ID of the project to update.
+            # @param project_id [String]
+            #   The ID of the project to update.
             #
-            # @param group_id [String] Identifier of the group to add to the project.
+            # @param group_id [String]
+            #   Identifier of the group to add to the project.
             #
-            # @param role [String] Identifier of the project role to grant to the group.
+            # @param role [String]
+            #   Identifier of the project role to grant to the group.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -40,11 +43,14 @@ module OpenAI
             #
             # @overload retrieve(group_id, project_id:, group_type: nil, request_options: {})
             #
-            # @param group_id [String] Path param: The ID of the group to retrieve.
+            # @param group_id [String]
+            #   Path param: The ID of the group to retrieve.
             #
-            # @param project_id [String] Path param: The ID of the project to inspect.
+            # @param project_id [String]
+            #   Path param: The ID of the project to inspect.
             #
-            # @param group_type [Symbol, OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::GroupType] Query param: The type of group to retrieve.
+            # @param group_type [Symbol, OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::GroupType]
+            #   Query param: The type of group to retrieve.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -68,21 +74,22 @@ module OpenAI
               )
             end
 
-            # Some parameter documentations has been truncated, see
-            # {OpenAI::Models::Admin::Organization::Projects::GroupListParams} for more
-            # details.
-            #
             # Lists the groups that have access to a project.
             #
             # @overload list(project_id, after: nil, limit: nil, order: nil, request_options: {})
             #
-            # @param project_id [String] The ID of the project to inspect.
+            # @param project_id [String]
+            #   The ID of the project to inspect.
             #
-            # @param after [String] Cursor for pagination. Provide the ID of the last group from the previous respon
+            # @param after [String]
+            #   Cursor for pagination. Provide the ID of the last group from the previous
+            #   response to fetch the next page.
             #
-            # @param limit [Integer] A limit on the number of project groups to return. Defaults to 20.
+            # @param limit [Integer]
+            #   A limit on the number of project groups to return. Defaults to 20.
             #
-            # @param order [Symbol, OpenAI::Models::Admin::Organization::Projects::GroupListParams::Order] Sort order for the returned groups.
+            # @param order [Symbol, OpenAI::Models::Admin::Organization::Projects::GroupListParams::Order]
+            #   Sort order for the returned groups.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -107,9 +114,11 @@ module OpenAI
             #
             # @overload delete(group_id, project_id:, request_options: {})
             #
-            # @param group_id [String] The ID of the group to remove from the project.
+            # @param group_id [String]
+            #   The ID of the group to remove from the project.
             #
-            # @param project_id [String] The ID of the project to update.
+            # @param project_id [String]
+            #   The ID of the project to update.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #

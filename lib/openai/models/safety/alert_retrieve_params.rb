@@ -15,7 +15,8 @@ module OpenAI
         required :id, String
 
         # @!method initialize(id:, request_options: {})
-        #   @param id [String] Project safety alert ID
+        #   @param id [String]
+        #     Project safety alert ID
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end

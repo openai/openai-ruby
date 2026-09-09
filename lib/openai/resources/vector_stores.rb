@@ -9,24 +9,36 @@ module OpenAI
       # @return [OpenAI::Resources::VectorStores::FileBatches]
       attr_reader :file_batches
 
-      # Some parameter documentations has been truncated, see
-      # {OpenAI::Models::VectorStoreCreateParams} for more details.
-      #
       # Create a vector store.
       #
       # @overload create(chunking_strategy: nil, description: nil, expires_after: nil, file_ids: nil, metadata: nil, name: nil, request_options: {})
       #
-      # @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+      # @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]
+      #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+      #   strategy. Only applicable if `file_ids` is non-empty.
       #
-      # @param description [String] A description for the vector store. Can be used to describe the vector store's p
+      # @param description [String]
+      #   A description for the vector store. Can be used to describe the vector store's
+      #   purpose.
       #
-      # @param expires_after [OpenAI::Models::VectorStoreCreateParams::ExpiresAfter] The expiration policy for a vector store.
+      # @param expires_after [OpenAI::Models::VectorStoreCreateParams::ExpiresAfter]
+      #   The expiration policy for a vector store.
       #
-      # @param file_ids [Array<String>] A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
+      # @param file_ids [Array<String>]
+      #   A list of [File](https://developers.openai.com/api/reference/resources/files)
+      #   IDs that the vector store should use. Useful for tools like `file_search` that
+      #   can access files.
       #
-      # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+      # @param metadata [Hash{Symbol=>String}, nil]
+      #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #   for storing additional information about the object in a structured format, and
+      #   querying for objects via API or the dashboard.
       #
-      # @param name [String] The name of the vector store.
+      #   Keys are strings with a maximum length of 64 characters. Values are strings with
+      #   a maximum length of 512 characters.
+      #
+      # @param name [String]
+      #   The name of the vector store.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -49,7 +61,8 @@ module OpenAI
       #
       # @overload retrieve(vector_store_id, request_options: {})
       #
-      # @param vector_store_id [String] The ID of the vector store to retrieve.
+      # @param vector_store_id [String]
+      #   The ID of the vector store to retrieve.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -66,20 +79,26 @@ module OpenAI
         )
       end
 
-      # Some parameter documentations has been truncated, see
-      # {OpenAI::Models::VectorStoreUpdateParams} for more details.
-      #
       # Modifies a vector store.
       #
       # @overload update(vector_store_id, expires_after: nil, metadata: nil, name: nil, request_options: {})
       #
-      # @param vector_store_id [String] The ID of the vector store to modify.
+      # @param vector_store_id [String]
+      #   The ID of the vector store to modify.
       #
-      # @param expires_after [OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, nil] The expiration policy for a vector store.
+      # @param expires_after [OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, nil]
+      #   The expiration policy for a vector store.
       #
-      # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+      # @param metadata [Hash{Symbol=>String}, nil]
+      #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #   for storing additional information about the object in a structured format, and
+      #   querying for objects via API or the dashboard.
       #
-      # @param name [String, nil] The name of the vector store.
+      #   Keys are strings with a maximum length of 64 characters. Values are strings with
+      #   a maximum length of 512 characters.
+      #
+      # @param name [String, nil]
+      #   The name of the vector store.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -98,20 +117,29 @@ module OpenAI
         )
       end
 
-      # Some parameter documentations has been truncated, see
-      # {OpenAI::Models::VectorStoreListParams} for more details.
-      #
       # Returns a list of vector stores.
       #
       # @overload list(after: nil, before: nil, limit: nil, order: nil, request_options: {})
       #
-      # @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+      # @param after [String]
+      #   A cursor for use in pagination. `after` is an object ID that defines your place
+      #   in the list. For instance, if you make a list request and receive 100 objects,
+      #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+      #   fetch the next page of the list.
       #
-      # @param before [String] A cursor for use in pagination. `before` is an object ID that defines your place
+      # @param before [String]
+      #   A cursor for use in pagination. `before` is an object ID that defines your place
+      #   in the list. For instance, if you make a list request and receive 100 objects,
+      #   starting with obj_foo, your subsequent call can include before=obj_foo in order
+      #   to fetch the previous page of the list.
       #
-      # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+      # @param limit [Integer]
+      #   A limit on the number of objects to be returned. Limit can range between 1 and
+      #   100, and the default is 20.
       #
-      # @param order [Symbol, OpenAI::Models::VectorStoreListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+      # @param order [Symbol, OpenAI::Models::VectorStoreListParams::Order]
+      #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
+      #   order and `desc` for descending order.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -136,7 +164,8 @@ module OpenAI
       #
       # @overload delete(vector_store_id, request_options: {})
       #
-      # @param vector_store_id [String] The ID of the vector store to delete.
+      # @param vector_store_id [String]
+      #   The ID of the vector store to delete.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -153,25 +182,29 @@ module OpenAI
         )
       end
 
-      # Some parameter documentations has been truncated, see
-      # {OpenAI::Models::VectorStoreSearchParams} for more details.
-      #
       # Search a vector store for relevant chunks based on a query and file attributes
       # filter.
       #
       # @overload search(vector_store_id, query:, filters: nil, max_num_results: nil, ranking_options: nil, rewrite_query: nil, request_options: {})
       #
-      # @param vector_store_id [String] The ID of the vector store to search.
+      # @param vector_store_id [String]
+      #   The ID of the vector store to search.
       #
-      # @param query [String, Array<String>] A query string for a search
+      # @param query [String, Array<String>]
+      #   A query string for a search
       #
-      # @param filters [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter] A filter to apply based on file attributes.
+      # @param filters [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
+      #   A filter to apply based on file attributes.
       #
-      # @param max_num_results [Integer] The maximum number of results to return. This number should be between 1 and 50
+      # @param max_num_results [Integer]
+      #   The maximum number of results to return. This number should be between 1 and 50
+      #   inclusive.
       #
-      # @param ranking_options [OpenAI::Models::VectorStoreSearchParams::RankingOptions] Ranking options for search.
+      # @param ranking_options [OpenAI::Models::VectorStoreSearchParams::RankingOptions]
+      #   Ranking options for search.
       #
-      # @param rewrite_query [Boolean] Whether to rewrite the natural language query for vector search.
+      # @param rewrite_query [Boolean]
+      #   Whether to rewrite the natural language query for vector search.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #

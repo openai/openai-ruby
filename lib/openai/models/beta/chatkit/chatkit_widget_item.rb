@@ -44,17 +44,23 @@ module OpenAI
           # @!method initialize(id:, created_at:, thread_id:, widget:, object: :"chatkit.thread_item", type: :"chatkit.widget")
           #   Thread item that renders a widget payload.
           #
-          #   @param id [String] Identifier of the thread item.
+          #   @param id [String]
+          #     Identifier of the thread item.
           #
-          #   @param created_at [Integer] Unix timestamp (in seconds) for when the item was created.
+          #   @param created_at [Integer]
+          #     Unix timestamp (in seconds) for when the item was created.
           #
-          #   @param thread_id [String] Identifier of the parent thread.
+          #   @param thread_id [String]
+          #     Identifier of the parent thread.
           #
-          #   @param widget [String] Serialized widget payload rendered in the UI.
+          #   @param widget [String]
+          #     Serialized widget payload rendered in the UI.
           #
-          #   @param object [Symbol, :"chatkit.thread_item"] Type discriminator that is always `chatkit.thread_item`.
+          #   @param object [Symbol, :"chatkit.thread_item"]
+          #     Type discriminator that is always `chatkit.thread_item`.
           #
-          #   @param type [Symbol, :"chatkit.widget"] Type discriminator that is always `chatkit.widget`.
+          #   @param type [Symbol, :"chatkit.widget"]
+          #     Type discriminator that is always `chatkit.widget`.
         end
       end
 

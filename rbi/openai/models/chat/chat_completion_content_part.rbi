@@ -7,8 +7,7 @@ module OpenAI
 
     module Chat
 
-      # Learn about
-      # [text inputs](https://platform.openai.com/docs/guides/text-generation).
+      # Learn about [text inputs](https://developers.openai.com/api/docs/guides/text).
       module ChatCompletionContentPart
         extend OpenAI::Internal::Type::Union
 
@@ -53,8 +52,8 @@ module OpenAI
           }
           attr_writer :prompt_cache_breakpoint
 
-          # Learn about [file inputs](https://platform.openai.com/docs/guides/text) for text
-          # generation.
+          # Learn about [file inputs](https://developers.openai.com/api/docs/guides/text)
+          # for text generation.
           sig do
             params(
 

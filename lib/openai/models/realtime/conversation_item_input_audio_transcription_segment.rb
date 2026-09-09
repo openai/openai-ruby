@@ -61,23 +61,32 @@ module OpenAI
         # @!method initialize(id:, content_index:, end_:, event_id:, item_id:, speaker:, start:, text:, type: :"conversation.item.input_audio_transcription.segment")
         #   Returned when an input audio transcription segment is identified for an item.
         #
-        #   @param id [String] The segment identifier.
+        #   @param id [String]
+        #     The segment identifier.
         #
-        #   @param content_index [Integer] The index of the input audio content part within the item.
+        #   @param content_index [Integer]
+        #     The index of the input audio content part within the item.
         #
-        #   @param end_ [Float] End time of the segment in seconds.
+        #   @param end_ [Float]
+        #     End time of the segment in seconds.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param item_id [String] The ID of the item containing the input audio content.
+        #   @param item_id [String]
+        #     The ID of the item containing the input audio content.
         #
-        #   @param speaker [String] The detected speaker label for this segment.
+        #   @param speaker [String]
+        #     The detected speaker label for this segment.
         #
-        #   @param start [Float] Start time of the segment in seconds.
+        #   @param start [Float]
+        #     Start time of the segment in seconds.
         #
-        #   @param text [String] The text for this segment.
+        #   @param text [String]
+        #     The text for this segment.
         #
-        #   @param type [Symbol, :"conversation.item.input_audio_transcription.segment"] The event type, must be `conversation.item.input_audio_transcription.segment`.
+        #   @param type [Symbol, :"conversation.item.input_audio_transcription.segment"]
+        #     The event type, must be `conversation.item.input_audio_transcription.segment`.
       end
     end
   end

@@ -582,130 +582,190 @@ module OpenAI
           )
 
           # @!method initialize(id:, effective_at:, type:, actor: nil, api_key_created: nil, api_key_deleted: nil, api_key_updated: nil, certificate_created: nil, certificate_deleted: nil, certificate_updated: nil, certificates_activated: nil, certificates_deactivated: nil, checkpoint_permission_created: nil, checkpoint_permission_deleted: nil, external_key_registered: nil, external_key_removed: nil, group_created: nil, group_deleted: nil, group_updated: nil, invite_accepted: nil, invite_deleted: nil, invite_sent: nil, ip_allowlist_config_activated: nil, ip_allowlist_config_deactivated: nil, ip_allowlist_created: nil, ip_allowlist_deleted: nil, ip_allowlist_updated: nil, login_failed: nil, login_succeeded: nil, logout_failed: nil, logout_succeeded: nil, organization_updated: nil, project: nil, project_archived: nil, project_created: nil, project_deleted: nil, project_updated: nil, rate_limit_deleted: nil, rate_limit_updated: nil, role_assignment_created: nil, role_assignment_deleted: nil, role_bound_to_resource: nil, role_created: nil, role_deleted: nil, role_unbound_from_resource: nil, role_updated: nil, scim_disabled: nil, scim_enabled: nil, service_account_created: nil, service_account_deleted: nil, service_account_updated: nil, user_added: nil, user_deleted: nil, user_updated: nil, workload_identity_provider_mapping_created: nil, workload_identity_provider_mapping_deleted: nil, workload_identity_provider_mapping_updated: nil, workload_identity_provider_created: nil, workload_identity_provider_deleted: nil, workload_identity_provider_updated: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Admin::Organization::AuditLogListResponse} for more details.
-          #
           #   A log of a user action or configuration change within this organization.
           #
-          #   @param id [String] The ID of this log.
+          #   @param id [String]
+          #     The ID of this log.
           #
-          #   @param effective_at [Integer] The Unix timestamp (in seconds) of the event.
+          #   @param effective_at [Integer]
+          #     The Unix timestamp (in seconds) of the event.
           #
-          #   @param type [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::Type] The event type.
+          #   @param type [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::Type]
+          #     The event type.
           #
-          #   @param actor [OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor, nil] The actor who performed the audit logged action.
+          #   @param actor [OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor, nil]
+          #     The actor who performed the audit logged action.
           #
-          #   @param api_key_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated] The details for events with this `type`.
+          #   @param api_key_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated]
+          #     The details for events with this `type`.
           #
-          #   @param api_key_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyDeleted] The details for events with this `type`.
+          #   @param api_key_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyDeleted]
+          #     The details for events with this `type`.
           #
-          #   @param api_key_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated] The details for events with this `type`.
+          #   @param api_key_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated]
+          #     The details for events with this `type`.
           #
-          #   @param certificate_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateCreated] The details for events with this `type`.
+          #   @param certificate_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateCreated]
+          #     The details for events with this `type`.
           #
-          #   @param certificate_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateDeleted] The details for events with this `type`.
+          #   @param certificate_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateDeleted]
+          #     The details for events with this `type`.
           #
-          #   @param certificate_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateUpdated] The details for events with this `type`.
+          #   @param certificate_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateUpdated]
+          #     The details for events with this `type`.
           #
-          #   @param certificates_activated [OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated] The details for events with this `type`.
+          #   @param certificates_activated [OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated]
+          #     The details for events with this `type`.
           #
-          #   @param certificates_deactivated [OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated] The details for events with this `type`.
+          #   @param certificates_deactivated [OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated]
+          #     The details for events with this `type`.
           #
-          #   @param checkpoint_permission_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated] The project and fine-tuned model checkpoint that the checkpoint permission was c
+          #   @param checkpoint_permission_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated]
+          #     The project and fine-tuned model checkpoint that the checkpoint permission was
+          #     created for.
           #
-          #   @param checkpoint_permission_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted] The details for events with this `type`.
+          #   @param checkpoint_permission_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted]
+          #     The details for events with this `type`.
           #
-          #   @param external_key_registered [OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRegistered] The details for events with this `type`.
+          #   @param external_key_registered [OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRegistered]
+          #     The details for events with this `type`.
           #
-          #   @param external_key_removed [OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved] The details for events with this `type`.
+          #   @param external_key_removed [OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved]
+          #     The details for events with this `type`.
           #
-          #   @param group_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated] The details for events with this `type`.
+          #   @param group_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated]
+          #     The details for events with this `type`.
           #
-          #   @param group_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted] The details for events with this `type`.
+          #   @param group_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted]
+          #     The details for events with this `type`.
           #
-          #   @param group_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated] The details for events with this `type`.
+          #   @param group_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated]
+          #     The details for events with this `type`.
           #
-          #   @param invite_accepted [OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteAccepted] The details for events with this `type`.
+          #   @param invite_accepted [OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteAccepted]
+          #     The details for events with this `type`.
           #
-          #   @param invite_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteDeleted] The details for events with this `type`.
+          #   @param invite_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteDeleted]
+          #     The details for events with this `type`.
           #
-          #   @param invite_sent [OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent] The details for events with this `type`.
+          #   @param invite_sent [OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent]
+          #     The details for events with this `type`.
           #
-          #   @param ip_allowlist_config_activated [OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated] The details for events with this `type`.
+          #   @param ip_allowlist_config_activated [OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated]
+          #     The details for events with this `type`.
           #
-          #   @param ip_allowlist_config_deactivated [OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated] The details for events with this `type`.
+          #   @param ip_allowlist_config_deactivated [OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated]
+          #     The details for events with this `type`.
           #
-          #   @param ip_allowlist_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistCreated] The details for events with this `type`.
+          #   @param ip_allowlist_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistCreated]
+          #     The details for events with this `type`.
           #
-          #   @param ip_allowlist_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistDeleted] The details for events with this `type`.
+          #   @param ip_allowlist_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistDeleted]
+          #     The details for events with this `type`.
           #
-          #   @param ip_allowlist_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistUpdated] The details for events with this `type`.
+          #   @param ip_allowlist_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistUpdated]
+          #     The details for events with this `type`.
           #
-          #   @param login_failed [OpenAI::Models::Admin::Organization::AuditLogListResponse::LoginFailed] The details for events with this `type`.
+          #   @param login_failed [OpenAI::Models::Admin::Organization::AuditLogListResponse::LoginFailed]
+          #     The details for events with this `type`.
           #
-          #   @param login_succeeded [Object] This event has no additional fields beyond the standard audit log attributes.
+          #   @param login_succeeded [Object]
+          #     This event has no additional fields beyond the standard audit log attributes.
           #
-          #   @param logout_failed [OpenAI::Models::Admin::Organization::AuditLogListResponse::LogoutFailed] The details for events with this `type`.
+          #   @param logout_failed [OpenAI::Models::Admin::Organization::AuditLogListResponse::LogoutFailed]
+          #     The details for events with this `type`.
           #
-          #   @param logout_succeeded [Object] This event has no additional fields beyond the standard audit log attributes.
+          #   @param logout_succeeded [Object]
+          #     This event has no additional fields beyond the standard audit log attributes.
           #
-          #   @param organization_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated] The details for events with this `type`.
+          #   @param organization_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated]
+          #     The details for events with this `type`.
           #
-          #   @param project [OpenAI::Models::Admin::Organization::AuditLogListResponse::Project] The project that the action was scoped to. Absent for actions not scoped to proj
+          #   @param project [OpenAI::Models::Admin::Organization::AuditLogListResponse::Project]
+          #     The project that the action was scoped to. Absent for actions not scoped to
+          #     projects. Note that any admin actions taken via Admin API keys are associated
+          #     with the default project.
           #
-          #   @param project_archived [OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectArchived] The details for events with this `type`.
+          #   @param project_archived [OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectArchived]
+          #     The details for events with this `type`.
           #
-          #   @param project_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated] The details for events with this `type`.
+          #   @param project_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated]
+          #     The details for events with this `type`.
           #
-          #   @param project_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectDeleted] The details for events with this `type`.
+          #   @param project_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectDeleted]
+          #     The details for events with this `type`.
           #
-          #   @param project_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated] The details for events with this `type`.
+          #   @param project_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated]
+          #     The details for events with this `type`.
           #
-          #   @param rate_limit_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitDeleted] The details for events with this `type`.
+          #   @param rate_limit_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitDeleted]
+          #     The details for events with this `type`.
           #
-          #   @param rate_limit_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated] The details for events with this `type`.
+          #   @param rate_limit_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated]
+          #     The details for events with this `type`.
           #
-          #   @param role_assignment_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentCreated] The details for events with this `type`.
+          #   @param role_assignment_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentCreated]
+          #     The details for events with this `type`.
           #
-          #   @param role_assignment_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted] The details for events with this `type`.
+          #   @param role_assignment_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted]
+          #     The details for events with this `type`.
           #
-          #   @param role_bound_to_resource [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource] The details for events with this `type`.
+          #   @param role_bound_to_resource [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource]
+          #     The details for events with this `type`.
           #
-          #   @param role_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated] The details for events with this `type`.
+          #   @param role_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated]
+          #     The details for events with this `type`.
           #
-          #   @param role_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted] The details for events with this `type`.
+          #   @param role_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted]
+          #     The details for events with this `type`.
           #
-          #   @param role_unbound_from_resource [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource] The details for events with this `type`.
+          #   @param role_unbound_from_resource [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource]
+          #     The details for events with this `type`.
           #
-          #   @param role_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated] The details for events with this `type`.
+          #   @param role_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated]
+          #     The details for events with this `type`.
           #
-          #   @param scim_disabled [OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimDisabled] The details for events with this `type`.
+          #   @param scim_disabled [OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimDisabled]
+          #     The details for events with this `type`.
           #
-          #   @param scim_enabled [OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimEnabled] The details for events with this `type`.
+          #   @param scim_enabled [OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimEnabled]
+          #     The details for events with this `type`.
           #
-          #   @param service_account_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated] The details for events with this `type`.
+          #   @param service_account_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated]
+          #     The details for events with this `type`.
           #
-          #   @param service_account_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted] The details for events with this `type`.
+          #   @param service_account_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted]
+          #     The details for events with this `type`.
           #
-          #   @param service_account_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated] The details for events with this `type`.
+          #   @param service_account_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated]
+          #     The details for events with this `type`.
           #
-          #   @param user_added [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded] The details for events with this `type`.
+          #   @param user_added [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded]
+          #     The details for events with this `type`.
           #
-          #   @param user_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted] The details for events with this `type`.
+          #   @param user_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted]
+          #     The details for events with this `type`.
           #
-          #   @param user_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated] The details for events with this `type`.
+          #   @param user_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated]
+          #     The details for events with this `type`.
           #
-          #   @param workload_identity_provider_mapping_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated] The details for events with this `type`.
+          #   @param workload_identity_provider_mapping_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated]
+          #     The details for events with this `type`.
           #
-          #   @param workload_identity_provider_mapping_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted] The details for events with this `type`.
+          #   @param workload_identity_provider_mapping_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted]
+          #     The details for events with this `type`.
           #
-          #   @param workload_identity_provider_mapping_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated] The details for events with this `type`.
+          #   @param workload_identity_provider_mapping_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated]
+          #     The details for events with this `type`.
           #
-          #   @param workload_identity_provider_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated] The details for events with this `type`.
+          #   @param workload_identity_provider_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated]
+          #     The details for events with this `type`.
           #
-          #   @param workload_identity_provider_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted] The details for events with this `type`.
+          #   @param workload_identity_provider_deleted [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted]
+          #     The details for events with this `type`.
           #
-          #   @param workload_identity_provider_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated] The details for events with this `type`.
+          #   @param workload_identity_provider_updated [OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated]
+          #     The details for events with this `type`.
 
           # The event type.
           #
@@ -888,11 +948,14 @@ module OpenAI
             # @!method initialize(api_key: nil, session: nil, type: nil)
             #   The actor who performed the audit logged action.
             #
-            #   @param api_key [OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey] The API Key used to perform the audit logged action.
+            #   @param api_key [OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey]
+            #     The API Key used to perform the audit logged action.
             #
-            #   @param session [OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session] The session in which the audit logged action was performed.
+            #   @param session [OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session]
+            #     The session in which the audit logged action was performed.
             #
-            #   @param type [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Type] The type of actor. Is either `session` or `api_key`.
+            #   @param type [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Type]
+            #     The type of actor. Is either `session` or `api_key`.
 
             # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor#api_key
             class APIKey < OpenAI::Internal::Type::BaseModel
@@ -929,13 +992,17 @@ module OpenAI
               # @!method initialize(id: nil, service_account: nil, type: nil, user: nil)
               #   The API Key used to perform the audit logged action.
               #
-              #   @param id [String] The tracking id of the API key.
+              #   @param id [String]
+              #     The tracking id of the API key.
               #
-              #   @param service_account [OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::ServiceAccount] The service account that performed the audit logged action.
+              #   @param service_account [OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::ServiceAccount]
+              #     The service account that performed the audit logged action.
               #
-              #   @param type [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::Type] The type of API key. Can be either `user` or `service_account`.
+              #   @param type [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::Type]
+              #     The type of API key. Can be either `user` or `service_account`.
               #
-              #   @param user [OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::User] The user who performed the audit logged action.
+              #   @param user [OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::User]
+              #     The user who performed the audit logged action.
 
               # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey#service_account
               class ServiceAccount < OpenAI::Internal::Type::BaseModel
@@ -948,7 +1015,8 @@ module OpenAI
                 # @!method initialize(id: nil)
                 #   The service account that performed the audit logged action.
                 #
-                #   @param id [String] The service account id.
+                #   @param id [String]
+                #     The service account id.
               end
 
               # The type of API key. Can be either `user` or `service_account`.
@@ -981,9 +1049,11 @@ module OpenAI
                 # @!method initialize(id: nil, email: nil)
                 #   The user who performed the audit logged action.
                 #
-                #   @param id [String] The user id.
+                #   @param id [String]
+                #     The user id.
                 #
-                #   @param email [String] The user email.
+                #   @param email [String]
+                #     The user email.
               end
             end
 
@@ -1004,9 +1074,11 @@ module OpenAI
               # @!method initialize(ip_address: nil, user: nil)
               #   The session in which the audit logged action was performed.
               #
-              #   @param ip_address [String] The IP address from which the action was performed.
+              #   @param ip_address [String]
+              #     The IP address from which the action was performed.
               #
-              #   @param user [OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session::User] The user who performed the audit logged action.
+              #   @param user [OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session::User]
+              #     The user who performed the audit logged action.
 
               # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session#user
               class User < OpenAI::Internal::Type::BaseModel
@@ -1025,9 +1097,11 @@ module OpenAI
                 # @!method initialize(id: nil, email: nil)
                 #   The user who performed the audit logged action.
                 #
-                #   @param id [String] The user id.
+                #   @param id [String]
+                #     The user id.
                 #
-                #   @param email [String] The user email.
+                #   @param email [String]
+                #     The user email.
               end
             end
 
@@ -1062,9 +1136,11 @@ module OpenAI
             # @!method initialize(id: nil, data: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The tracking ID of the API key.
+            #   @param id [String]
+            #     The tracking ID of the API key.
             #
-            #   @param data [OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated::Data] The payload used to create the API key.
+            #   @param data [OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated::Data]
+            #     The payload used to create the API key.
 
             # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated#data
             class Data < OpenAI::Internal::Type::BaseModel
@@ -1077,7 +1153,8 @@ module OpenAI
               # @!method initialize(scopes: nil)
               #   The payload used to create the API key.
               #
-              #   @param scopes [Array<String>] A list of scopes allowed for the API key, e.g. `["api.model.request"]`
+              #   @param scopes [Array<String>]
+              #     A list of scopes allowed for the API key, e.g. `["api.model.request"]`
             end
           end
 
@@ -1092,7 +1169,8 @@ module OpenAI
             # @!method initialize(id: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The tracking ID of the API key.
+            #   @param id [String]
+            #     The tracking ID of the API key.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#api_key_updated
@@ -1115,9 +1193,11 @@ module OpenAI
             # @!method initialize(id: nil, changes_requested: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The tracking ID of the API key.
+            #   @param id [String]
+            #     The tracking ID of the API key.
             #
-            #   @param changes_requested [OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated::ChangesRequested] The payload used to update the API key.
+            #   @param changes_requested [OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated::ChangesRequested]
+            #     The payload used to update the API key.
 
             # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated#changes_requested
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
@@ -1130,7 +1210,8 @@ module OpenAI
               # @!method initialize(scopes: nil)
               #   The payload used to update the API key.
               #
-              #   @param scopes [Array<String>] A list of scopes allowed for the API key, e.g. `["api.model.request"]`
+              #   @param scopes [Array<String>]
+              #     A list of scopes allowed for the API key, e.g. `["api.model.request"]`
             end
           end
 
@@ -1151,9 +1232,11 @@ module OpenAI
             # @!method initialize(id: nil, name: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The certificate ID.
+            #   @param id [String]
+            #     The certificate ID.
             #
-            #   @param name [String] The name of the certificate.
+            #   @param name [String]
+            #     The name of the certificate.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#certificate_deleted
@@ -1179,11 +1262,14 @@ module OpenAI
             # @!method initialize(id: nil, certificate: nil, name: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The certificate ID.
+            #   @param id [String]
+            #     The certificate ID.
             #
-            #   @param certificate [String] The certificate content in PEM format.
+            #   @param certificate [String]
+            #     The certificate content in PEM format.
             #
-            #   @param name [String] The name of the certificate.
+            #   @param name [String]
+            #     The name of the certificate.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#certificate_updated
@@ -1203,9 +1289,11 @@ module OpenAI
             # @!method initialize(id: nil, name: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The certificate ID.
+            #   @param id [String]
+            #     The certificate ID.
             #
-            #   @param name [String] The name of the certificate.
+            #   @param name [String]
+            #     The name of the certificate.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#certificates_activated
@@ -1241,9 +1329,11 @@ module OpenAI
               optional :name, String
 
               # @!method initialize(id: nil, name: nil)
-              #   @param id [String] The certificate ID.
+              #   @param id [String]
+              #     The certificate ID.
               #
-              #   @param name [String] The name of the certificate.
+              #   @param name [String]
+              #     The name of the certificate.
             end
           end
 
@@ -1280,9 +1370,11 @@ module OpenAI
               optional :name, String
 
               # @!method initialize(id: nil, name: nil)
-              #   @param id [String] The certificate ID.
+              #   @param id [String]
+              #     The certificate ID.
               #
-              #   @param name [String] The name of the certificate.
+              #   @param name [String]
+              #     The name of the certificate.
             end
           end
 
@@ -1307,9 +1399,11 @@ module OpenAI
             #   The project and fine-tuned model checkpoint that the checkpoint permission was
             #   created for.
             #
-            #   @param id [String] The ID of the checkpoint permission.
+            #   @param id [String]
+            #     The ID of the checkpoint permission.
             #
-            #   @param data [OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated::Data] The payload used to create the checkpoint permission.
+            #   @param data [OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated::Data]
+            #     The payload used to create the checkpoint permission.
 
             # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated#data
             class Data < OpenAI::Internal::Type::BaseModel
@@ -1328,9 +1422,11 @@ module OpenAI
               # @!method initialize(fine_tuned_model_checkpoint: nil, project_id: nil)
               #   The payload used to create the checkpoint permission.
               #
-              #   @param fine_tuned_model_checkpoint [String] The ID of the fine-tuned model checkpoint.
+              #   @param fine_tuned_model_checkpoint [String]
+              #     The ID of the fine-tuned model checkpoint.
               #
-              #   @param project_id [String] The ID of the project that the checkpoint permission was created for.
+              #   @param project_id [String]
+              #     The ID of the project that the checkpoint permission was created for.
             end
           end
 
@@ -1345,7 +1441,8 @@ module OpenAI
             # @!method initialize(id: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The ID of the checkpoint permission.
+            #   @param id [String]
+            #     The ID of the checkpoint permission.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#external_key_registered
@@ -1365,9 +1462,11 @@ module OpenAI
             # @!method initialize(id: nil, data: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The ID of the external key configuration.
+            #   @param id [String]
+            #     The ID of the external key configuration.
             #
-            #   @param data [Object] The configuration for the external key.
+            #   @param data [Object]
+            #     The configuration for the external key.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#external_key_removed
@@ -1381,7 +1480,8 @@ module OpenAI
             # @!method initialize(id: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The ID of the external key configuration.
+            #   @param id [String]
+            #     The ID of the external key configuration.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#group_created
@@ -1401,9 +1501,11 @@ module OpenAI
             # @!method initialize(id: nil, data: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The ID of the group.
+            #   @param id [String]
+            #     The ID of the group.
             #
-            #   @param data [OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated::Data] Information about the created group.
+            #   @param data [OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated::Data]
+            #     Information about the created group.
 
             # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated#data
             class Data < OpenAI::Internal::Type::BaseModel
@@ -1416,7 +1518,8 @@ module OpenAI
               # @!method initialize(group_name: nil)
               #   Information about the created group.
               #
-              #   @param group_name [String] The group name.
+              #   @param group_name [String]
+              #     The group name.
             end
           end
 
@@ -1431,7 +1534,8 @@ module OpenAI
             # @!method initialize(id: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The ID of the group.
+            #   @param id [String]
+            #     The ID of the group.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#group_updated
@@ -1454,9 +1558,11 @@ module OpenAI
             # @!method initialize(id: nil, changes_requested: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The ID of the group.
+            #   @param id [String]
+            #     The ID of the group.
             #
-            #   @param changes_requested [OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated::ChangesRequested] The payload used to update the group.
+            #   @param changes_requested [OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated::ChangesRequested]
+            #     The payload used to update the group.
 
             # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated#changes_requested
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
@@ -1469,7 +1575,8 @@ module OpenAI
               # @!method initialize(group_name: nil)
               #   The payload used to update the group.
               #
-              #   @param group_name [String] The updated group name.
+              #   @param group_name [String]
+              #     The updated group name.
             end
           end
 
@@ -1484,7 +1591,8 @@ module OpenAI
             # @!method initialize(id: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The ID of the invite.
+            #   @param id [String]
+            #     The ID of the invite.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#invite_deleted
@@ -1498,7 +1606,8 @@ module OpenAI
             # @!method initialize(id: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The ID of the invite.
+            #   @param id [String]
+            #     The ID of the invite.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#invite_sent
@@ -1518,9 +1627,11 @@ module OpenAI
             # @!method initialize(id: nil, data: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The ID of the invite.
+            #   @param id [String]
+            #     The ID of the invite.
             #
-            #   @param data [OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent::Data] The payload used to create the invite.
+            #   @param data [OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent::Data]
+            #     The payload used to create the invite.
 
             # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent#data
             class Data < OpenAI::Internal::Type::BaseModel
@@ -1539,9 +1650,11 @@ module OpenAI
               # @!method initialize(email: nil, role: nil)
               #   The payload used to create the invite.
               #
-              #   @param email [String] The email invited to the organization.
+              #   @param email [String]
+              #     The email invited to the organization.
               #
-              #   @param role [String] The role the email was invited to be. Is either `owner` or `member`.
+              #   @param role [String]
+              #     The role the email was invited to be. Is either `owner` or `member`.
             end
           end
 
@@ -1563,8 +1676,8 @@ module OpenAI
             # @!method initialize(configs: nil)
             #   The details for events with this `type`.
             #
-            #   @param configs [Array<OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated::Config>] The configurations that were activated.
-
+            #   @param configs [Array<OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated::Config>]
+            #     The configurations that were activated.
             class Config < OpenAI::Internal::Type::BaseModel
               # @!attribute id
               #   The ID of the IP allowlist configuration.
@@ -1579,9 +1692,11 @@ module OpenAI
               optional :name, String
 
               # @!method initialize(id: nil, name: nil)
-              #   @param id [String] The ID of the IP allowlist configuration.
+              #   @param id [String]
+              #     The ID of the IP allowlist configuration.
               #
-              #   @param name [String] The name of the IP allowlist configuration.
+              #   @param name [String]
+              #     The name of the IP allowlist configuration.
             end
           end
 
@@ -1603,8 +1718,8 @@ module OpenAI
             # @!method initialize(configs: nil)
             #   The details for events with this `type`.
             #
-            #   @param configs [Array<OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated::Config>] The configurations that were deactivated.
-
+            #   @param configs [Array<OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated::Config>]
+            #     The configurations that were deactivated.
             class Config < OpenAI::Internal::Type::BaseModel
               # @!attribute id
               #   The ID of the IP allowlist configuration.
@@ -1619,9 +1734,11 @@ module OpenAI
               optional :name, String
 
               # @!method initialize(id: nil, name: nil)
-              #   @param id [String] The ID of the IP allowlist configuration.
+              #   @param id [String]
+              #     The ID of the IP allowlist configuration.
               #
-              #   @param name [String] The name of the IP allowlist configuration.
+              #   @param name [String]
+              #     The name of the IP allowlist configuration.
             end
           end
 
@@ -1648,11 +1765,14 @@ module OpenAI
             # @!method initialize(id: nil, allowed_ips: nil, name: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The ID of the IP allowlist configuration.
+            #   @param id [String]
+            #     The ID of the IP allowlist configuration.
             #
-            #   @param allowed_ips [Array<String>] The IP addresses or CIDR ranges included in the configuration.
+            #   @param allowed_ips [Array<String>]
+            #     The IP addresses or CIDR ranges included in the configuration.
             #
-            #   @param name [String] The name of the IP allowlist configuration.
+            #   @param name [String]
+            #     The name of the IP allowlist configuration.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#ip_allowlist_deleted
@@ -1678,11 +1798,14 @@ module OpenAI
             # @!method initialize(id: nil, allowed_ips: nil, name: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The ID of the IP allowlist configuration.
+            #   @param id [String]
+            #     The ID of the IP allowlist configuration.
             #
-            #   @param allowed_ips [Array<String>] The IP addresses or CIDR ranges that were in the configuration.
+            #   @param allowed_ips [Array<String>]
+            #     The IP addresses or CIDR ranges that were in the configuration.
             #
-            #   @param name [String] The name of the IP allowlist configuration.
+            #   @param name [String]
+            #     The name of the IP allowlist configuration.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#ip_allowlist_updated
@@ -1702,9 +1825,11 @@ module OpenAI
             # @!method initialize(id: nil, allowed_ips: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The ID of the IP allowlist configuration.
+            #   @param id [String]
+            #     The ID of the IP allowlist configuration.
             #
-            #   @param allowed_ips [Array<String>] The updated set of IP addresses or CIDR ranges in the configuration.
+            #   @param allowed_ips [Array<String>]
+            #     The updated set of IP addresses or CIDR ranges in the configuration.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#login_failed
@@ -1724,9 +1849,11 @@ module OpenAI
             # @!method initialize(error_code: nil, error_message: nil)
             #   The details for events with this `type`.
             #
-            #   @param error_code [String] The error code of the failure.
+            #   @param error_code [String]
+            #     The error code of the failure.
             #
-            #   @param error_message [String] The error message of the failure.
+            #   @param error_message [String]
+            #     The error message of the failure.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#logout_failed
@@ -1746,9 +1873,11 @@ module OpenAI
             # @!method initialize(error_code: nil, error_message: nil)
             #   The details for events with this `type`.
             #
-            #   @param error_code [String] The error code of the failure.
+            #   @param error_code [String]
+            #     The error code of the failure.
             #
-            #   @param error_message [String] The error message of the failure.
+            #   @param error_message [String]
+            #     The error message of the failure.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#organization_updated
@@ -1771,9 +1900,11 @@ module OpenAI
             # @!method initialize(id: nil, changes_requested: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The organization ID.
+            #   @param id [String]
+            #     The organization ID.
             #
-            #   @param changes_requested [OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated::ChangesRequested] The payload used to update the organization settings.
+            #   @param changes_requested [OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated::ChangesRequested]
+            #     The payload used to update the organization settings.
 
             # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated#changes_requested
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
@@ -1825,25 +1956,33 @@ module OpenAI
               optional :usage_dashboard_visibility, String
 
               # @!method initialize(api_call_logging: nil, api_call_logging_project_ids: nil, description: nil, name: nil, threads_ui_visibility: nil, title: nil, usage_dashboard_visibility: nil)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated::ChangesRequested}
-              #   for more details.
-              #
               #   The payload used to update the organization settings.
               #
-              #   @param api_call_logging [String] How your organization logs data from supported API calls. One of `disabled`, `en
+              #   @param api_call_logging [String]
+              #     How your organization logs data from supported API calls. One of `disabled`,
+              #     `enabled_per_call`, `enabled_for_all_projects`, or
+              #     `enabled_for_selected_projects`
               #
-              #   @param api_call_logging_project_ids [String] The list of project ids if api_call_logging is set to `enabled_for_selected_proj
+              #   @param api_call_logging_project_ids [String]
+              #     The list of project ids if api_call_logging is set to
+              #     `enabled_for_selected_projects`
               #
-              #   @param description [String] The organization description.
+              #   @param description [String]
+              #     The organization description.
               #
-              #   @param name [String] The organization name.
+              #   @param name [String]
+              #     The organization name.
               #
-              #   @param threads_ui_visibility [String] Visibility of the threads page which shows messages created with the Assistants
+              #   @param threads_ui_visibility [String]
+              #     Visibility of the threads page which shows messages created with the Assistants
+              #     API and Playground. One of `ANY_ROLE`, `OWNERS`, or `NONE`.
               #
-              #   @param title [String] The organization title.
+              #   @param title [String]
+              #     The organization title.
               #
-              #   @param usage_dashboard_visibility [String] Visibility of the usage dashboard which shows activity and costs for your organi
+              #   @param usage_dashboard_visibility [String]
+              #     Visibility of the usage dashboard which shows activity and costs for your
+              #     organization. One of `ANY_ROLE` or `OWNERS`.
             end
           end
 
@@ -1866,9 +2005,11 @@ module OpenAI
             #   projects. Note that any admin actions taken via Admin API keys are associated
             #   with the default project.
             #
-            #   @param id [String] The project ID.
+            #   @param id [String]
+            #     The project ID.
             #
-            #   @param name [String] The project title.
+            #   @param name [String]
+            #     The project title.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#project_archived
@@ -1882,7 +2023,8 @@ module OpenAI
             # @!method initialize(id: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The project ID.
+            #   @param id [String]
+            #     The project ID.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#project_created
@@ -1902,9 +2044,11 @@ module OpenAI
             # @!method initialize(id: nil, data: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The project ID.
+            #   @param id [String]
+            #     The project ID.
             #
-            #   @param data [OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated::Data] The payload used to create the project.
+            #   @param data [OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated::Data]
+            #     The payload used to create the project.
 
             # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated#data
             class Data < OpenAI::Internal::Type::BaseModel
@@ -1923,9 +2067,11 @@ module OpenAI
               # @!method initialize(name: nil, title: nil)
               #   The payload used to create the project.
               #
-              #   @param name [String] The project name.
+              #   @param name [String]
+              #     The project name.
               #
-              #   @param title [String] The title of the project as seen on the dashboard.
+              #   @param title [String]
+              #     The title of the project as seen on the dashboard.
             end
           end
 
@@ -1940,7 +2086,8 @@ module OpenAI
             # @!method initialize(id: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The project ID.
+            #   @param id [String]
+            #     The project ID.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#project_updated
@@ -1963,9 +2110,11 @@ module OpenAI
             # @!method initialize(id: nil, changes_requested: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The project ID.
+            #   @param id [String]
+            #     The project ID.
             #
-            #   @param changes_requested [OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated::ChangesRequested] The payload used to update the project.
+            #   @param changes_requested [OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated::ChangesRequested]
+            #     The payload used to update the project.
 
             # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated#changes_requested
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
@@ -1978,7 +2127,8 @@ module OpenAI
               # @!method initialize(title: nil)
               #   The payload used to update the project.
               #
-              #   @param title [String] The title of the project as seen on the dashboard.
+              #   @param title [String]
+              #     The title of the project as seen on the dashboard.
             end
           end
 
@@ -1993,7 +2143,8 @@ module OpenAI
             # @!method initialize(id: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The rate limit ID
+            #   @param id [String]
+            #     The rate limit ID
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#rate_limit_updated
@@ -2016,9 +2167,11 @@ module OpenAI
             # @!method initialize(id: nil, changes_requested: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The rate limit ID
+            #   @param id [String]
+            #     The rate limit ID
             #
-            #   @param changes_requested [OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated::ChangesRequested] The payload used to update the rate limits.
+            #   @param changes_requested [OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated::ChangesRequested]
+            #     The payload used to update the rate limits.
 
             # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated#changes_requested
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
@@ -2061,17 +2214,23 @@ module OpenAI
               # @!method initialize(batch_1_day_max_input_tokens: nil, max_audio_megabytes_per_1_minute: nil, max_images_per_1_minute: nil, max_requests_per_1_day: nil, max_requests_per_1_minute: nil, max_tokens_per_1_minute: nil)
               #   The payload used to update the rate limits.
               #
-              #   @param batch_1_day_max_input_tokens [Integer] The maximum batch input tokens per day. Only relevant for certain models.
+              #   @param batch_1_day_max_input_tokens [Integer]
+              #     The maximum batch input tokens per day. Only relevant for certain models.
               #
-              #   @param max_audio_megabytes_per_1_minute [Integer] The maximum audio megabytes per minute. Only relevant for certain models.
+              #   @param max_audio_megabytes_per_1_minute [Integer]
+              #     The maximum audio megabytes per minute. Only relevant for certain models.
               #
-              #   @param max_images_per_1_minute [Integer] The maximum images per minute. Only relevant for certain models.
+              #   @param max_images_per_1_minute [Integer]
+              #     The maximum images per minute. Only relevant for certain models.
               #
-              #   @param max_requests_per_1_day [Integer] The maximum requests per day. Only relevant for certain models.
+              #   @param max_requests_per_1_day [Integer]
+              #     The maximum requests per day. Only relevant for certain models.
               #
-              #   @param max_requests_per_1_minute [Integer] The maximum requests per minute.
+              #   @param max_requests_per_1_minute [Integer]
+              #     The maximum requests per minute.
               #
-              #   @param max_tokens_per_1_minute [Integer] The maximum tokens per minute.
+              #   @param max_tokens_per_1_minute [Integer]
+              #     The maximum tokens per minute.
             end
           end
 
@@ -2110,15 +2269,20 @@ module OpenAI
             # @!method initialize(id: nil, principal_id: nil, principal_type: nil, resource_id: nil, resource_type: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The identifier of the role assignment.
+            #   @param id [String]
+            #     The identifier of the role assignment.
             #
-            #   @param principal_id [String] The principal (user or group) that received the role.
+            #   @param principal_id [String]
+            #     The principal (user or group) that received the role.
             #
-            #   @param principal_type [String] The type of principal (user or group) that received the role.
+            #   @param principal_type [String]
+            #     The type of principal (user or group) that received the role.
             #
-            #   @param resource_id [String] The resource the role assignment is scoped to.
+            #   @param resource_id [String]
+            #     The resource the role assignment is scoped to.
             #
-            #   @param resource_type [String] The type of resource the role assignment is scoped to.
+            #   @param resource_type [String]
+            #     The type of resource the role assignment is scoped to.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#role_assignment_deleted
@@ -2156,15 +2320,20 @@ module OpenAI
             # @!method initialize(id: nil, principal_id: nil, principal_type: nil, resource_id: nil, resource_type: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The identifier of the role assignment.
+            #   @param id [String]
+            #     The identifier of the role assignment.
             #
-            #   @param principal_id [String] The principal (user or group) that had the role removed.
+            #   @param principal_id [String]
+            #     The principal (user or group) that had the role removed.
             #
-            #   @param principal_type [String] The type of principal (user or group) that had the role removed.
+            #   @param principal_type [String]
+            #     The type of principal (user or group) that had the role removed.
             #
-            #   @param resource_id [String] The resource the role assignment was scoped to.
+            #   @param resource_id [String]
+            #     The resource the role assignment was scoped to.
             #
-            #   @param resource_type [String] The type of resource the role assignment was scoped to.
+            #   @param resource_type [String]
+            #     The type of resource the role assignment was scoped to.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#role_bound_to_resource
@@ -2235,31 +2404,39 @@ module OpenAI
             optional :workspace_id, String
 
             # @!method initialize(id: nil, connector_id: nil, connector_name: nil, enabled: nil, permissions: nil, resource_id: nil, resource_type: nil, role_id: nil, source: nil, workspace_id: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource}
-            #   for more details.
-            #
             #   The details for events with this `type`.
             #
-            #   @param id [String] The ID of the resource the role was bound to. ChatGPT workspace connector resour
+            #   @param id [String]
+            #     The ID of the resource the role was bound to. ChatGPT workspace connector
+            #     resources use `<workspace_id>__<connector_id>`.
             #
-            #   @param connector_id [String] The connector ID for a ChatGPT workspace connector resource.
+            #   @param connector_id [String]
+            #     The connector ID for a ChatGPT workspace connector resource.
             #
-            #   @param connector_name [String] The connector display name for a ChatGPT workspace connector resource, or the co
+            #   @param connector_name [String]
+            #     The connector display name for a ChatGPT workspace connector resource, or the
+            #     connector ID when the display name could not be resolved.
             #
-            #   @param enabled [Boolean] Whether the connector is enabled for the role.
+            #   @param enabled [Boolean]
+            #     Whether the connector is enabled for the role.
             #
-            #   @param permissions [Array<String>] The permissions granted to the role for the resource.
+            #   @param permissions [Array<String>]
+            #     The permissions granted to the role for the resource.
             #
-            #   @param resource_id [String] The ID of the resource the role was bound to.
+            #   @param resource_id [String]
+            #     The ID of the resource the role was bound to.
             #
-            #   @param resource_type [String] The type of resource the role was bound to.
+            #   @param resource_type [String]
+            #     The type of resource the role was bound to.
             #
-            #   @param role_id [String] The ID of the role that was bound to the resource.
+            #   @param role_id [String]
+            #     The ID of the role that was bound to the resource.
             #
-            #   @param source [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source] The connector role mutation path that produced the event.
+            #   @param source [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::Source]
+            #     The connector role mutation path that produced the event.
             #
-            #   @param workspace_id [String] The workspace ID for a ChatGPT workspace connector resource.
+            #   @param workspace_id [String]
+            #     The workspace ID for a ChatGPT workspace connector resource.
 
             # The connector role mutation path that produced the event.
             #
@@ -2313,15 +2490,20 @@ module OpenAI
             # @!method initialize(id: nil, permissions: nil, resource_id: nil, resource_type: nil, role_name: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The role ID.
+            #   @param id [String]
+            #     The role ID.
             #
-            #   @param permissions [Array<String>] The permissions granted by the role.
+            #   @param permissions [Array<String>]
+            #     The permissions granted by the role.
             #
-            #   @param resource_id [String] The resource the role is scoped to.
+            #   @param resource_id [String]
+            #     The resource the role is scoped to.
             #
-            #   @param resource_type [String] The type of resource the role belongs to.
+            #   @param resource_type [String]
+            #     The type of resource the role belongs to.
             #
-            #   @param role_name [String] The name of the role.
+            #   @param role_name [String]
+            #     The name of the role.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#role_deleted
@@ -2335,7 +2517,8 @@ module OpenAI
             # @!method initialize(id: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The role ID.
+            #   @param id [String]
+            #     The role ID.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#role_unbound_from_resource
@@ -2406,31 +2589,39 @@ module OpenAI
             optional :workspace_id, String
 
             # @!method initialize(id: nil, connector_id: nil, connector_name: nil, enabled: nil, permissions: nil, resource_id: nil, resource_type: nil, role_id: nil, source: nil, workspace_id: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource}
-            #   for more details.
-            #
             #   The details for events with this `type`.
             #
-            #   @param id [String] The ID of the resource the role was unbound from. ChatGPT workspace connector re
+            #   @param id [String]
+            #     The ID of the resource the role was unbound from. ChatGPT workspace connector
+            #     resources use `<workspace_id>__<connector_id>`.
             #
-            #   @param connector_id [String] The connector ID for a ChatGPT workspace connector resource.
+            #   @param connector_id [String]
+            #     The connector ID for a ChatGPT workspace connector resource.
             #
-            #   @param connector_name [String] The connector display name for a ChatGPT workspace connector resource, or the co
+            #   @param connector_name [String]
+            #     The connector display name for a ChatGPT workspace connector resource, or the
+            #     connector ID when the display name could not be resolved.
             #
-            #   @param enabled [Boolean] Whether the connector is enabled for the role.
+            #   @param enabled [Boolean]
+            #     Whether the connector is enabled for the role.
             #
-            #   @param permissions [Array<String>] The permissions remaining for the role after the change.
+            #   @param permissions [Array<String>]
+            #     The permissions remaining for the role after the change.
             #
-            #   @param resource_id [String] The ID of the resource the role was unbound from.
+            #   @param resource_id [String]
+            #     The ID of the resource the role was unbound from.
             #
-            #   @param resource_type [String] The type of resource the role was unbound from.
+            #   @param resource_type [String]
+            #     The type of resource the role was unbound from.
             #
-            #   @param role_id [String] The ID of the role that was unbound from the resource.
+            #   @param role_id [String]
+            #     The ID of the role that was unbound from the resource.
             #
-            #   @param source [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source] The connector role mutation path that produced the event.
+            #   @param source [Symbol, OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::Source]
+            #     The connector role mutation path that produced the event.
             #
-            #   @param workspace_id [String] The workspace ID for a ChatGPT workspace connector resource.
+            #   @param workspace_id [String]
+            #     The workspace ID for a ChatGPT workspace connector resource.
 
             # The connector role mutation path that produced the event.
             #
@@ -2469,9 +2660,11 @@ module OpenAI
             # @!method initialize(id: nil, changes_requested: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The role ID.
+            #   @param id [String]
+            #     The role ID.
             #
-            #   @param changes_requested [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated::ChangesRequested] The payload used to update the role.
+            #   @param changes_requested [OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated::ChangesRequested]
+            #     The payload used to update the role.
 
             # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated#changes_requested
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
@@ -2520,19 +2713,26 @@ module OpenAI
               # @!method initialize(description: nil, metadata: nil, permissions_added: nil, permissions_removed: nil, resource_id: nil, resource_type: nil, role_name: nil)
               #   The payload used to update the role.
               #
-              #   @param description [String] The updated role description, when provided.
+              #   @param description [String]
+              #     The updated role description, when provided.
               #
-              #   @param metadata [Object] Additional metadata stored on the role.
+              #   @param metadata [Object]
+              #     Additional metadata stored on the role.
               #
-              #   @param permissions_added [Array<String>] The permissions added to the role.
+              #   @param permissions_added [Array<String>]
+              #     The permissions added to the role.
               #
-              #   @param permissions_removed [Array<String>] The permissions removed from the role.
+              #   @param permissions_removed [Array<String>]
+              #     The permissions removed from the role.
               #
-              #   @param resource_id [String] The resource the role is scoped to.
+              #   @param resource_id [String]
+              #     The resource the role is scoped to.
               #
-              #   @param resource_type [String] The type of resource the role belongs to.
+              #   @param resource_type [String]
+              #     The type of resource the role belongs to.
               #
-              #   @param role_name [String] The updated role name, when provided.
+              #   @param role_name [String]
+              #     The updated role name, when provided.
             end
           end
 
@@ -2547,7 +2747,8 @@ module OpenAI
             # @!method initialize(id: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The ID of the SCIM was disabled for.
+            #   @param id [String]
+            #     The ID of the SCIM was disabled for.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#scim_enabled
@@ -2561,7 +2762,8 @@ module OpenAI
             # @!method initialize(id: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The ID of the SCIM was enabled for.
+            #   @param id [String]
+            #     The ID of the SCIM was enabled for.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#service_account_created
@@ -2584,9 +2786,11 @@ module OpenAI
             # @!method initialize(id: nil, data: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The service account ID.
+            #   @param id [String]
+            #     The service account ID.
             #
-            #   @param data [OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated::Data] The payload used to create the service account.
+            #   @param data [OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated::Data]
+            #     The payload used to create the service account.
 
             # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated#data
             class Data < OpenAI::Internal::Type::BaseModel
@@ -2599,7 +2803,8 @@ module OpenAI
               # @!method initialize(role: nil)
               #   The payload used to create the service account.
               #
-              #   @param role [String] The role of the service account. Is either `owner` or `member`.
+              #   @param role [String]
+              #     The role of the service account. Is either `owner` or `member`.
             end
           end
 
@@ -2614,7 +2819,8 @@ module OpenAI
             # @!method initialize(id: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The service account ID.
+            #   @param id [String]
+            #     The service account ID.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#service_account_updated
@@ -2637,9 +2843,11 @@ module OpenAI
             # @!method initialize(id: nil, changes_requested: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The service account ID.
+            #   @param id [String]
+            #     The service account ID.
             #
-            #   @param changes_requested [OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated::ChangesRequested] The payload used to updated the service account.
+            #   @param changes_requested [OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated::ChangesRequested]
+            #     The payload used to updated the service account.
 
             # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated#changes_requested
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
@@ -2652,7 +2860,8 @@ module OpenAI
               # @!method initialize(role: nil)
               #   The payload used to updated the service account.
               #
-              #   @param role [String] The role of the service account. Is either `owner` or `member`.
+              #   @param role [String]
+              #     The role of the service account. Is either `owner` or `member`.
             end
           end
 
@@ -2673,9 +2882,11 @@ module OpenAI
             # @!method initialize(id: nil, data: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The user ID.
+            #   @param id [String]
+            #     The user ID.
             #
-            #   @param data [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded::Data] The payload used to add the user to the project.
+            #   @param data [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded::Data]
+            #     The payload used to add the user to the project.
 
             # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded#data
             class Data < OpenAI::Internal::Type::BaseModel
@@ -2688,7 +2899,8 @@ module OpenAI
               # @!method initialize(role: nil)
               #   The payload used to add the user to the project.
               #
-              #   @param role [String] The role of the user. Is either `owner` or `member`.
+              #   @param role [String]
+              #     The role of the user. Is either `owner` or `member`.
             end
           end
 
@@ -2703,7 +2915,8 @@ module OpenAI
             # @!method initialize(id: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The user ID.
+            #   @param id [String]
+            #     The user ID.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#user_updated
@@ -2726,9 +2939,11 @@ module OpenAI
             # @!method initialize(id: nil, changes_requested: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The project ID.
+            #   @param id [String]
+            #     The project ID.
             #
-            #   @param changes_requested [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated::ChangesRequested] The payload used to update the user.
+            #   @param changes_requested [OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated::ChangesRequested]
+            #     The payload used to update the user.
 
             # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated#changes_requested
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
@@ -2741,7 +2956,8 @@ module OpenAI
               # @!method initialize(role: nil)
               #   The payload used to update the user.
               #
-              #   @param role [String] The role of the user. Is either `owner` or `member`.
+              #   @param role [String]
+              #     The role of the user. Is either `owner` or `member`.
             end
           end
 
@@ -2768,11 +2984,14 @@ module OpenAI
             # @!method initialize(id: nil, data: nil, identity_provider_id: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The workload identity provider mapping ID.
+            #   @param id [String]
+            #     The workload identity provider mapping ID.
             #
-            #   @param data [Object] The payload used to create the workload identity provider mapping.
+            #   @param data [Object]
+            #     The payload used to create the workload identity provider mapping.
             #
-            #   @param identity_provider_id [String] The workload identity provider ID.
+            #   @param identity_provider_id [String]
+            #     The workload identity provider ID.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#workload_identity_provider_mapping_deleted
@@ -2804,13 +3023,17 @@ module OpenAI
             # @!method initialize(id: nil, identity_provider_id: nil, project_id: nil, service_account_id: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The workload identity provider mapping ID.
+            #   @param id [String]
+            #     The workload identity provider mapping ID.
             #
-            #   @param identity_provider_id [String] The workload identity provider ID.
+            #   @param identity_provider_id [String]
+            #     The workload identity provider ID.
             #
-            #   @param project_id [String] The project ID.
+            #   @param project_id [String]
+            #     The project ID.
             #
-            #   @param service_account_id [String] The mapped service account ID.
+            #   @param service_account_id [String]
+            #     The mapped service account ID.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#workload_identity_provider_mapping_updated
@@ -2836,11 +3059,14 @@ module OpenAI
             # @!method initialize(id: nil, changes_requested: nil, identity_provider_id: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The workload identity provider mapping ID.
+            #   @param id [String]
+            #     The workload identity provider mapping ID.
             #
-            #   @param changes_requested [Object] The payload used to update the workload identity provider mapping.
+            #   @param changes_requested [Object]
+            #     The payload used to update the workload identity provider mapping.
             #
-            #   @param identity_provider_id [String] The workload identity provider ID.
+            #   @param identity_provider_id [String]
+            #     The workload identity provider ID.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#workload_identity_provider_created
@@ -2860,9 +3086,11 @@ module OpenAI
             # @!method initialize(id: nil, data: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The workload identity provider ID.
+            #   @param id [String]
+            #     The workload identity provider ID.
             #
-            #   @param data [Object] The payload used to create the workload identity provider.
+            #   @param data [Object]
+            #     The payload used to create the workload identity provider.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#workload_identity_provider_deleted
@@ -2882,9 +3110,11 @@ module OpenAI
             # @!method initialize(id: nil, name: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The workload identity provider ID.
+            #   @param id [String]
+            #     The workload identity provider ID.
             #
-            #   @param name [String] The workload identity provider name.
+            #   @param name [String]
+            #     The workload identity provider name.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#workload_identity_provider_updated
@@ -2904,9 +3134,11 @@ module OpenAI
             # @!method initialize(id: nil, changes_requested: nil)
             #   The details for events with this `type`.
             #
-            #   @param id [String] The workload identity provider ID.
+            #   @param id [String]
+            #     The workload identity provider ID.
             #
-            #   @param changes_requested [Object] The payload used to update the workload identity provider.
+            #   @param changes_requested [Object]
+            #     The payload used to update the workload identity provider.
           end
         end
       end

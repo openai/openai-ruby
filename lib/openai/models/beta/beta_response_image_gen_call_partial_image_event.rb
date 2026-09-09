@@ -72,33 +72,41 @@ module OpenAI
         optional :size, String
 
         # @!method initialize(item_id:, output_index:, partial_image_b64:, partial_image_index:, sequence_number:, agent: nil, background: nil, output_format: nil, quality: nil, size: nil, type: :"response.image_generation_call.partial_image")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseImageGenCallPartialImageEvent} for more
-        #   details.
-        #
         #   Emitted when a partial image is available during image generation streaming.
         #
-        #   @param item_id [String] The unique identifier of the image generation item being processed.
+        #   @param item_id [String]
+        #     The unique identifier of the image generation item being processed.
         #
-        #   @param output_index [Integer] The index of the output item in the response's output array.
+        #   @param output_index [Integer]
+        #     The index of the output item in the response's output array.
         #
-        #   @param partial_image_b64 [String] Base64-encoded partial image data, suitable for rendering as an image.
+        #   @param partial_image_b64 [String]
+        #     Base64-encoded partial image data, suitable for rendering as an image.
         #
-        #   @param partial_image_index [Integer] 0-based index for the partial image (backend is 1-based, but this is 0-based for
+        #   @param partial_image_index [Integer]
+        #     0-based index for the partial image (backend is 1-based, but this is 0-based for
+        #     the user).
         #
-        #   @param sequence_number [Integer] The sequence number of the image generation item being processed.
+        #   @param sequence_number [Integer]
+        #     The sequence number of the image generation item being processed.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseImageGenCallPartialImageEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseImageGenCallPartialImageEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param background [String] The background setting that was used.
+        #   @param background [String]
+        #     The background setting that was used.
         #
-        #   @param output_format [String] The output format that was used.
+        #   @param output_format [String]
+        #     The output format that was used.
         #
-        #   @param quality [String] The image quality that was used.
+        #   @param quality [String]
+        #     The image quality that was used.
         #
-        #   @param size [String] The image size that was used.
+        #   @param size [String]
+        #     The image size that was used.
         #
-        #   @param type [Symbol, :"response.image_generation_call.partial_image"] The type of the event. Always 'response.image_generation_call.partial_image'.
+        #   @param type [Symbol, :"response.image_generation_call.partial_image"]
+        #     The type of the event. Always 'response.image_generation_call.partial_image'.
 
         # @see OpenAI::Models::Beta::BetaResponseImageGenCallPartialImageEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -111,7 +119,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

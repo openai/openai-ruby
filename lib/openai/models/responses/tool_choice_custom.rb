@@ -19,9 +19,11 @@ module OpenAI
         # @!method initialize(name:, type: :custom)
         #   Use this option to force the model to call a specific custom tool.
         #
-        #   @param name [String] The name of the custom tool to call.
+        #   @param name [String]
+        #     The name of the custom tool to call.
         #
-        #   @param type [Symbol, :custom] For custom tool calling, the type is always `custom`.
+        #   @param type [Symbol, :custom]
+        #     For custom tool calling, the type is always `custom`.
       end
     end
   end

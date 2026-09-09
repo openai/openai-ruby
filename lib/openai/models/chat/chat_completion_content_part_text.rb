@@ -28,17 +28,18 @@ module OpenAI
         )
 
         # @!method initialize(text:, prompt_cache_breakpoint: nil, type: :text)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Chat::ChatCompletionContentPartText} for more details.
+        #   Learn about [text inputs](https://developers.openai.com/api/docs/guides/text).
         #
-        #   Learn about
-        #   [text inputs](https://platform.openai.com/docs/guides/text-generation).
+        #   @param text [String]
+        #     The text content.
         #
-        #   @param text [String] The text content.
+        #   @param prompt_cache_breakpoint [OpenAI::Models::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint]
+        #     Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        #     from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        #     token block.
         #
-        #   @param prompt_cache_breakpoint [OpenAI::Models::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint] Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        #
-        #   @param type [Symbol, :text] The type of the content part.
+        #   @param type [Symbol, :text]
+        #     The type of the content part.
 
         # @see OpenAI::Models::Chat::ChatCompletionContentPartText#prompt_cache_breakpoint
         class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
@@ -53,7 +54,8 @@ module OpenAI
           #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
           #   token block.
           #
-          #   @param mode [Symbol, :explicit] The breakpoint mode. Always `explicit`.
+          #   @param mode [Symbol, :explicit]
+          #     The breakpoint mode. Always `explicit`.
         end
       end
     end

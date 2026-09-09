@@ -23,7 +23,7 @@ module OpenAI
         attr_accessor :type
 
         # The log probabilities of the delta. Only included if you
-        # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
+        # [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
         # with the `include[]` parameter set to `logprobs`.
         sig { returns(T.nilable(T::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob])) }
         attr_reader :logprobs
@@ -41,7 +41,7 @@ module OpenAI
 
         # Emitted when there is an additional text delta. This is also the first event
         # emitted when the transcription starts. Only emitted when you
-        # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
+        # [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
         # with the `Stream` parameter set to `true`.
         sig do
           params(
@@ -62,7 +62,7 @@ module OpenAI
           delta:,
 
           # The log probabilities of the delta. Only included if you
-          # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
+          # [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
           # with the `include[]` parameter set to `logprobs`.
           logprobs: nil,
 

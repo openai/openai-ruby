@@ -9,13 +9,17 @@ module OpenAI
           #
           # @overload create(currency:, interval:, notification_channel:, threshold_amount:, request_options: {})
           #
-          # @param currency [Symbol, OpenAI::Models::Admin::Organization::SpendAlertCreateParams::Currency] The currency for the threshold amount.
+          # @param currency [Symbol, OpenAI::Models::Admin::Organization::SpendAlertCreateParams::Currency]
+          #   The currency for the threshold amount.
           #
-          # @param interval [Symbol, OpenAI::Models::Admin::Organization::SpendAlertCreateParams::Interval] The time interval for evaluating spend against the threshold.
+          # @param interval [Symbol, OpenAI::Models::Admin::Organization::SpendAlertCreateParams::Interval]
+          #   The time interval for evaluating spend against the threshold.
           #
-          # @param notification_channel [OpenAI::Models::Admin::Organization::SpendAlertCreateParams::NotificationChannel] Email notification settings for a spend alert.
+          # @param notification_channel [OpenAI::Models::Admin::Organization::SpendAlertCreateParams::NotificationChannel]
+          #   Email notification settings for a spend alert.
           #
-          # @param threshold_amount [Integer] The alert threshold amount, in cents.
+          # @param threshold_amount [Integer]
+          #   The alert threshold amount, in cents.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -38,7 +42,8 @@ module OpenAI
           #
           # @overload retrieve(alert_id, request_options: {})
           #
-          # @param alert_id [String] The ID of the spend alert to retrieve.
+          # @param alert_id [String]
+          #   The ID of the spend alert to retrieve.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -59,15 +64,20 @@ module OpenAI
           #
           # @overload update(alert_id, currency:, interval:, notification_channel:, threshold_amount:, request_options: {})
           #
-          # @param alert_id [String] The ID of the spend alert to update.
+          # @param alert_id [String]
+          #   The ID of the spend alert to update.
           #
-          # @param currency [Symbol, OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::Currency] The currency for the threshold amount.
+          # @param currency [Symbol, OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::Currency]
+          #   The currency for the threshold amount.
           #
-          # @param interval [Symbol, OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::Interval] The time interval for evaluating spend against the threshold.
+          # @param interval [Symbol, OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::Interval]
+          #   The time interval for evaluating spend against the threshold.
           #
-          # @param notification_channel [OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::NotificationChannel] Email notification settings for a spend alert.
+          # @param notification_channel [OpenAI::Models::Admin::Organization::SpendAlertUpdateParams::NotificationChannel]
+          #   Email notification settings for a spend alert.
           #
-          # @param threshold_amount [Integer] The alert threshold amount, in cents.
+          # @param threshold_amount [Integer]
+          #   The alert threshold amount, in cents.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -86,20 +96,23 @@ module OpenAI
             )
           end
 
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::Admin::Organization::SpendAlertListParams} for more details.
-          #
           # Lists organization spend alerts.
           #
           # @overload list(after: nil, before: nil, limit: nil, order: nil, request_options: {})
           #
-          # @param after [String] Cursor for pagination. Provide the ID of the last spend alert from the previous
+          # @param after [String]
+          #   Cursor for pagination. Provide the ID of the last spend alert from the previous
+          #   response to fetch the next page.
           #
-          # @param before [String] Cursor for pagination. Provide the ID of the first spend alert from the previous
+          # @param before [String]
+          #   Cursor for pagination. Provide the ID of the first spend alert from the previous
+          #   response to fetch the previous page.
           #
-          # @param limit [Integer] A limit on the number of spend alerts to return. Defaults to 20.
+          # @param limit [Integer]
+          #   A limit on the number of spend alerts to return. Defaults to 20.
           #
-          # @param order [Symbol, OpenAI::Models::Admin::Organization::SpendAlertListParams::Order] Sort order for the returned spend alerts.
+          # @param order [Symbol, OpenAI::Models::Admin::Organization::SpendAlertListParams::Order]
+          #   Sort order for the returned spend alerts.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -124,7 +137,8 @@ module OpenAI
           #
           # @overload delete(alert_id, request_options: {})
           #
-          # @param alert_id [String] The ID of the spend alert to delete.
+          # @param alert_id [String]
+          #   The ID of the spend alert to delete.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

@@ -41,22 +41,25 @@ module OpenAI
         required :type, const: :"response.content_part.done"
 
         # @!method initialize(content_index:, item_id:, output_index:, part:, sequence_number:, type: :"response.content_part.done")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseContentPartDoneEvent} for more details.
-        #
         #   Emitted when a content part is done.
         #
-        #   @param content_index [Integer] The index of the content part that is done.
+        #   @param content_index [Integer]
+        #     The index of the content part that is done.
         #
-        #   @param item_id [String] The ID of the output item that the content part was added to.
+        #   @param item_id [String]
+        #     The ID of the output item that the content part was added to.
         #
-        #   @param output_index [Integer] The index of the output item that the content part was added to.
+        #   @param output_index [Integer]
+        #     The index of the output item that the content part was added to.
         #
-        #   @param part [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal, OpenAI::Models::Responses::ResponseContentPartDoneEvent::Part::ReasoningText] The content part that is done.
+        #   @param part [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal, OpenAI::Models::Responses::ResponseContentPartDoneEvent::Part::ReasoningText]
+        #     The content part that is done.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param type [Symbol, :"response.content_part.done"] The type of the event. Always `response.content_part.done`.
+        #   @param type [Symbol, :"response.content_part.done"]
+        #     The type of the event. Always `response.content_part.done`.
 
         # The content part that is done.
         #
@@ -91,9 +94,11 @@ module OpenAI
             # @!method initialize(text:, type: :reasoning_text)
             #   Reasoning text from the model.
             #
-            #   @param text [String] The reasoning text from the model.
+            #   @param text [String]
+            #     The reasoning text from the model.
             #
-            #   @param type [Symbol, :reasoning_text] The type of the reasoning text. Always `reasoning_text`.
+            #   @param type [Symbol, :reasoning_text]
+            #     The type of the reasoning text. Always `reasoning_text`.
           end
 
           # @!method self.variants

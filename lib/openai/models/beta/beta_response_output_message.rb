@@ -54,24 +54,32 @@ module OpenAI
         optional :phase, enum: -> { OpenAI::Beta::BetaResponseOutputMessage::Phase }, nil?: true
 
         # @!method initialize(id:, content:, status:, agent: nil, phase: nil, role: :assistant, type: :message)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseOutputMessage} for more details.
-        #
         #   An output message from the model.
         #
-        #   @param id [String] The unique ID of the output message.
+        #   @param id [String]
+        #     The unique ID of the output message.
         #
-        #   @param content [Array<OpenAI::Models::Beta::BetaResponseOutputText, OpenAI::Models::Beta::BetaResponseOutputRefusal>] The content of the output message.
+        #   @param content [Array<OpenAI::Models::Beta::BetaResponseOutputText, OpenAI::Models::Beta::BetaResponseOutputRefusal>]
+        #     The content of the output message.
         #
-        #   @param status [Symbol, OpenAI::Models::Beta::BetaResponseOutputMessage::Status] The status of the message input. One of `in_progress`, `completed`, or
+        #   @param status [Symbol, OpenAI::Models::Beta::BetaResponseOutputMessage::Status]
+        #     The status of the message input. One of `in_progress`, `completed`, or
+        #     `incomplete`. Populated when input items are returned via API.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseOutputMessage::Agent, nil] The agent that produced this item.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseOutputMessage::Agent, nil]
+        #     The agent that produced this item.
         #
-        #   @param phase [Symbol, OpenAI::Models::Beta::BetaResponseOutputMessage::Phase, nil] Labels an `assistant` message as intermediate commentary (`commentary`) or the f
+        #   @param phase [Symbol, OpenAI::Models::Beta::BetaResponseOutputMessage::Phase, nil]
+        #     Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        #     final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
+        #     sending follow-up requests, preserve and resend phase on all assistant messages
+        #     — dropping it can degrade performance. Not used for user messages.
         #
-        #   @param role [Symbol, :assistant] The role of the output message. Always `assistant`.
+        #   @param role [Symbol, :assistant]
+        #     The role of the output message. Always `assistant`.
         #
-        #   @param type [Symbol, :message] The type of the output message. Always `message`.
+        #   @param type [Symbol, :message]
+        #     The type of the output message. Always `message`.
 
         # A text output from the model.
         module Content
@@ -115,7 +123,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that produced this item.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
 
         # Labels an `assistant` message as intermediate commentary (`commentary`) or the

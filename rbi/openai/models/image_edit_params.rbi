@@ -136,7 +136,7 @@ module OpenAI
 
       # A unique identifier representing your end-user, which can help OpenAI to monitor
       # and detect abuse.
-      # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+      # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
       sig { returns(T.nilable(String)) }
       attr_reader :user
 
@@ -285,7 +285,7 @@ module OpenAI
 
         # A unique identifier representing your end-user, which can help OpenAI to monitor
         # and detect abuse.
-        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
         user: nil,
 
         request_options: {}

@@ -30,9 +30,11 @@ module OpenAI
             # @!method initialize(project_id:, mode:, model_ids:, request_options: {})
             #   @param project_id [String]
             #
-            #   @param mode [Symbol, OpenAI::Models::Admin::Organization::Projects::ModelPermissionUpdateParams::Mode] The model permissions mode to apply.
+            #   @param mode [Symbol, OpenAI::Models::Admin::Organization::Projects::ModelPermissionUpdateParams::Mode]
+            #     The model permissions mode to apply.
             #
-            #   @param model_ids [Array<String>] The model IDs included in this permissions policy.
+            #   @param model_ids [Array<String>]
+            #     The model IDs included in this permissions policy.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

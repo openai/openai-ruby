@@ -31,9 +31,6 @@ module OpenAI
         required :type, const: :"response.steer"
 
         # @!method initialize(input:, previous_response_id:, type: :"response.steer")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseSteerEvent} for more details.
-        #
         #   Queues user input to steer a response on this WebSocket connection. Input can
         #   contain text, images, and files. Steering is supported only for single-agent
         #   responses on models and execution modes that support steering. Responses bound
@@ -62,11 +59,22 @@ module OpenAI
         #   This event accepts only `type`, `previous_response_id`, and `input`. Do not send
         #   `stream_id`; the target response determines the WebSocket lane.
         #
-        #   @param input [String, Array<Hash{Symbol=>Object}>] Input to queue for a continuation of the response. Uses the same string or
+        #   @param input [String, Array<Hash{Symbol=>Object}>]
+        #     Input to queue for a continuation of the response. Uses the same string or
+        #     input-item shape as `response.create.input`, with a non-empty array when
+        #     supplying input items.
         #
-        #   @param previous_response_id [String] The ID of the response to steer on this WebSocket connection.
+        #     Steering accepts only messages with the `user` role. Each message may contain
+        #     only `type`, `role`, and `content`, with `content` as a string or an array of
+        #     `input_text`, `input_image`, and `input_file` parts. The optional `type` must be
+        #     `message`. Other roles, tool outputs, and item types are not supported for
+        #     steering.
         #
-        #   @param type [Symbol, :"response.steer"] The event discriminator. Always `response.steer`.
+        #   @param previous_response_id [String]
+        #     The ID of the response to steer on this WebSocket connection.
+        #
+        #   @param type [Symbol, :"response.steer"]
+        #     The event discriminator. Always `response.steer`.
       end
     end
 

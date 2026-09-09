@@ -23,7 +23,8 @@ module OpenAI
           # @!method initialize(certificate_id:, name: nil, request_options: {})
           #   @param certificate_id [String]
           #
-          #   @param name [String] The updated name for the certificate
+          #   @param name [String]
+          #     The updated name for the certificate
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end

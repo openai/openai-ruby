@@ -29,11 +29,14 @@ module OpenAI
               # @!method initialize(role:, user:, object: :"user.role")
               #   Role assignment linking a user to a role.
               #
-              #   @param role [OpenAI::Models::Admin::Organization::Role] Details about a role that can be assigned through the public Roles API.
+              #   @param role [OpenAI::Models::Admin::Organization::Role]
+              #     Details about a role that can be assigned through the public Roles API.
               #
-              #   @param user [OpenAI::Models::Admin::Organization::OrganizationUser] Represents an individual `user` within an organization.
+              #   @param user [OpenAI::Models::Admin::Organization::OrganizationUser]
+              #     Represents an individual `user` within an organization.
               #
-              #   @param object [Symbol, :"user.role"] Always `user.role`.
+              #   @param object [Symbol, :"user.role"]
+              #     Always `user.role`.
             end
           end
         end

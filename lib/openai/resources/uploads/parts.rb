@@ -5,20 +5,18 @@ module OpenAI
     class Uploads
       # Use Uploads to upload large files in multiple parts.
       class Parts
-        # Some parameter documentations has been truncated, see
-        # {OpenAI::Models::Uploads::PartCreateParams} for more details.
-        #
         # Adds a
-        # [Part](https://platform.openai.com/docs/api-reference/uploads/part-object) to an
-        # [Upload](https://platform.openai.com/docs/api-reference/uploads/object) object.
-        # A Part represents a chunk of bytes from the file you are trying to upload.
+        # [Part](https://developers.openai.com/api/reference/resources/uploads/subresources/parts)
+        # to an [Upload](https://developers.openai.com/api/reference/resources/uploads)
+        # object. A Part represents a chunk of bytes from the file you are trying to
+        # upload.
         #
         # Each Part can be at most 64 MB, and you can add Parts until you hit the Upload
         # maximum of 8 GB.
         #
         # It is possible to add multiple Parts in parallel. You can decide the intended
         # order of the Parts when you
-        # [complete the Upload](https://platform.openai.com/docs/api-reference/uploads/complete).
+        # [complete the Upload](https://developers.openai.com/api/reference/resources/uploads/methods/complete).
         #
         # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
         # metadata. Use `OpenAI::FilePart` when you need to override the filename or
@@ -26,9 +24,15 @@ module OpenAI
         #
         # @overload create(upload_id, data:, request_options: {})
         #
-        # @param upload_id [String] The ID of the Upload.
+        # @param upload_id [String]
+        #   The ID of the Upload.
         #
-        # @param data [Pathname, StringIO, IO, String, OpenAI::FilePart] The chunk of bytes for this Part.
+        # @param data [Pathname, StringIO, IO, String, OpenAI::FilePart]
+        #   The chunk of bytes for this Part.
+        #
+        #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        #   content type.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #

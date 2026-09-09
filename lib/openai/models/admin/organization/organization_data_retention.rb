@@ -21,9 +21,11 @@ module OpenAI
           # @!method initialize(type:, object: :"organization.data_retention")
           #   Represents the organization's data retention control setting.
           #
-          #   @param type [Symbol, OpenAI::Models::Admin::Organization::OrganizationDataRetention::Type] The configured organization data retention type.
+          #   @param type [Symbol, OpenAI::Models::Admin::Organization::OrganizationDataRetention::Type]
+          #     The configured organization data retention type.
           #
-          #   @param object [Symbol, :"organization.data_retention"] The object type, which is always `organization.data_retention`.
+          #   @param object [Symbol, :"organization.data_retention"]
+          #     The object type, which is always `organization.data_retention`.
 
           # The configured organization data retention type.
           #

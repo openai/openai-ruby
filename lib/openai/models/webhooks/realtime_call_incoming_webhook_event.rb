@@ -35,22 +35,24 @@ module OpenAI
         optional :object, enum: -> { OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Object }
 
         # @!method initialize(id:, created_at:, data:, object: nil, type: :"realtime.call.incoming")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent} for more details.
-        #
         #   Sent when an incoming API SIP session is available for Realtime acceptance. The
         #   same pending session can also emit `live.call.incoming`; the first successful
         #   Realtime or Live accept endpoint selects the runtime surface.
         #
-        #   @param id [String] The unique ID of the event.
+        #   @param id [String]
+        #     The unique ID of the event.
         #
-        #   @param created_at [Integer] The Unix timestamp (in seconds) of when the model response was completed.
+        #   @param created_at [Integer]
+        #     The Unix timestamp (in seconds) of when the model response was completed.
         #
-        #   @param data [OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent::Data] Event data payload.
+        #   @param data [OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent::Data]
+        #     Event data payload.
         #
-        #   @param object [Symbol, OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent::Object] The object of the event. Always `event`.
+        #   @param object [Symbol, OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent::Object]
+        #     The object of the event. Always `event`.
         #
-        #   @param type [Symbol, :"realtime.call.incoming"] The type of the event. Always `realtime.call.incoming`.
+        #   @param type [Symbol, :"realtime.call.incoming"]
+        #     The type of the event. Always `realtime.call.incoming`.
 
         # @see OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent#data
         class Data < OpenAI::Internal::Type::BaseModel
@@ -64,7 +66,9 @@ module OpenAI
           required :call_id, String
 
           # @!attribute sip_headers
-          #   Headers from the SIP Invite.
+          #   Headers from the SIP INVITE, excluding SIP authorization headers. Retained
+          #   names, values, repeated entries, and order are preserved. Treat these values as
+          #   untrusted call metadata.
           #
           #   @return [Array<OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader>]
           required(
@@ -73,16 +77,18 @@ module OpenAI
           )
 
           # @!method initialize(call_id:, sip_headers:)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent::Data} for more
-          #   details.
-          #
           #   Event data payload.
           #
-          #   @param call_id [String] The Transceiver `rtc_...` ID of the pending SIP session. The paired
+          #   @param call_id [String]
+          #     The Transceiver `rtc_...` ID of the pending SIP session. The paired
+          #     `live.call.incoming` event derives its `session_id` by replacing the `rtc_`
+          #     prefix with `live_`. Use the ID returned by the event with the corresponding
+          #     Realtime or Live API.
           #
-          #   @param sip_headers [Array<OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader>] Headers from the SIP Invite.
-
+          #   @param sip_headers [Array<OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader>]
+          #     Headers from the SIP INVITE, excluding SIP authorization headers. Retained
+          #     names, values, repeated entries, and order are preserved. Treat these values as
+          #     untrusted call metadata.
           class SipHeader < OpenAI::Internal::Type::BaseModel
             # @!attribute name
             #   Name of the SIP Header.
@@ -97,15 +103,13 @@ module OpenAI
             required :value, String
 
             # @!method initialize(name:, value:)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader}
-            #   for more details.
-            #
             #   A header from the SIP Invite.
             #
-            #   @param name [String] Name of the SIP Header.
+            #   @param name [String]
+            #     Name of the SIP Header.
             #
-            #   @param value [String] Value of the SIP Header.
+            #   @param value [String]
+            #     Value of the SIP Header.
           end
         end
 

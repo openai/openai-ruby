@@ -56,11 +56,14 @@ module OpenAI
         optional :steer, -> { OpenAI::ErrorObject::Misalignment::Steer }
 
         # @!method initialize(detailed_explanation: nil, error_type: nil, steer: nil)
-        #   @param detailed_explanation [String] The public explanation for this block.
+        #   @param detailed_explanation [String]
+        #     The public explanation for this block.
         #
-        #   @param error_type [String, Symbol, OpenAI::Models::ErrorObject::Misalignment::ErrorType] An optional classification; clients must accept additional values.
+        #   @param error_type [String, Symbol, OpenAI::Models::ErrorObject::Misalignment::ErrorType]
+        #     An optional classification; clients must accept additional values.
         #
-        #   @param steer [OpenAI::Models::ErrorObject::Misalignment::Steer] An optional public continuation instruction.
+        #   @param steer [OpenAI::Models::ErrorObject::Misalignment::Steer]
+        #     An optional public continuation instruction.
 
         # An optional classification; clients must accept additional values.
         #
@@ -114,7 +117,8 @@ module OpenAI
           # @!method initialize(message:)
           #   An optional public continuation instruction.
           #
-          #   @param message [String] The public continuation instruction.
+          #   @param message [String]
+          #     The public continuation instruction.
         end
       end
     end

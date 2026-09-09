@@ -29,16 +29,19 @@ module OpenAI
         optional :n_epochs, union: -> { OpenAI::FineTuning::SupervisedHyperparameters::NEpochs }
 
         # @!method initialize(batch_size: nil, learning_rate_multiplier: nil, n_epochs: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::FineTuning::SupervisedHyperparameters} for more details.
-        #
         #   The hyperparameters used for the fine-tuning job.
         #
-        #   @param batch_size [Symbol, :auto, Integer] Number of examples in each batch. A larger batch size means that model parameter
+        #   @param batch_size [Symbol, :auto, Integer]
+        #     Number of examples in each batch. A larger batch size means that model
+        #     parameters are updated less frequently, but with lower variance.
         #
-        #   @param learning_rate_multiplier [Symbol, :auto, Float] Scaling factor for the learning rate. A smaller learning rate may be useful to a
+        #   @param learning_rate_multiplier [Symbol, :auto, Float]
+        #     Scaling factor for the learning rate. A smaller learning rate may be useful to
+        #     avoid overfitting.
         #
-        #   @param n_epochs [Symbol, :auto, Integer] The number of epochs to train the model for. An epoch refers to one full cycle t
+        #   @param n_epochs [Symbol, :auto, Integer]
+        #     The number of epochs to train the model for. An epoch refers to one full cycle
+        #     through the training dataset.
 
         # Number of examples in each batch. A larger batch size means that model
         # parameters are updated less frequently, but with lower variance.

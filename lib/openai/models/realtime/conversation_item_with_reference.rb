@@ -83,32 +83,52 @@ module OpenAI
         optional :type, enum: -> { OpenAI::Realtime::ConversationItemWithReference::Type }
 
         # @!method initialize(id: nil, arguments: nil, call_id: nil, content: nil, name: nil, object: nil, output: nil, role: nil, status: nil, type: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::ConversationItemWithReference} for more details.
-        #
         #   The item to add to the conversation.
         #
-        #   @param id [String] For an item of type (`message` | `function_call` | `function_call_output`)
+        #   @param id [String]
+        #     For an item of type (`message` | `function_call` | `function_call_output`) this
+        #     field allows the client to assign the unique ID of the item. It is not required
+        #     because the server will generate one if not provided.
         #
-        #   @param arguments [String] The arguments of the function call (for `function_call` items).
+        #     For an item of type `item_reference`, this field is required and is a reference
+        #     to any item that has previously existed in the conversation.
         #
-        #   @param call_id [String] The ID of the function call (for `function_call` and
+        #   @param arguments [String]
+        #     The arguments of the function call (for `function_call` items).
         #
-        #   @param content [Array<OpenAI::Models::Realtime::ConversationItemWithReference::Content>] The content of the message, applicable for `message` items.
+        #   @param call_id [String]
+        #     The ID of the function call (for `function_call` and `function_call_output`
+        #     items). If passed on a `function_call_output` item, the server will check that a
+        #     `function_call` item with the same ID exists in the conversation history.
         #
-        #   @param name [String] The name of the function being called (for `function_call` items).
+        #   @param content [Array<OpenAI::Models::Realtime::ConversationItemWithReference::Content>]
+        #     The content of the message, applicable for `message` items.
         #
-        #   @param object [Symbol, OpenAI::Models::Realtime::ConversationItemWithReference::Object] Identifier for the API object being returned - always `realtime.item`.
+        #     - Message items of role `system` support only `input_text` content
+        #     - Message items of role `user` support `input_text` and `input_audio` content
+        #     - Message items of role `assistant` support `text` content.
         #
-        #   @param output [String] The output of the function call (for `function_call_output` items).
+        #   @param name [String]
+        #     The name of the function being called (for `function_call` items).
         #
-        #   @param role [Symbol, OpenAI::Models::Realtime::ConversationItemWithReference::Role] The role of the message sender (`user`, `assistant`, `system`), only
+        #   @param object [Symbol, OpenAI::Models::Realtime::ConversationItemWithReference::Object]
+        #     Identifier for the API object being returned - always `realtime.item`.
         #
-        #   @param status [Symbol, OpenAI::Models::Realtime::ConversationItemWithReference::Status] The status of the item (`completed`, `incomplete`, `in_progress`). These have no
+        #   @param output [String]
+        #     The output of the function call (for `function_call_output` items).
         #
-        #   @param type [Symbol, OpenAI::Models::Realtime::ConversationItemWithReference::Type] The type of the item (`message`, `function_call`, `function_call_output`,
-        #   `item\_
-
+        #   @param role [Symbol, OpenAI::Models::Realtime::ConversationItemWithReference::Role]
+        #     The role of the message sender (`user`, `assistant`, `system`), only applicable
+        #     for `message` items.
+        #
+        #   @param status [Symbol, OpenAI::Models::Realtime::ConversationItemWithReference::Status]
+        #     The status of the item (`completed`, `incomplete`, `in_progress`). These have no
+        #     effect on the conversation, but are accepted for consistency with the
+        #     `conversation.item.created` event.
+        #
+        #   @param type [Symbol, OpenAI::Models::Realtime::ConversationItemWithReference::Type]
+        #     The type of the item (`message`, `function_call`, `function_call_output`,
+        #     `item_reference`).
         class Content < OpenAI::Internal::Type::BaseModel
           # @!attribute id
           #   ID of a previous conversation item to reference (for `item_reference` content
@@ -143,19 +163,22 @@ module OpenAI
           optional :type, enum: -> { OpenAI::Realtime::ConversationItemWithReference::Content::Type }
 
           # @!method initialize(id: nil, audio: nil, text: nil, transcript: nil, type: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Realtime::ConversationItemWithReference::Content} for more
-          #   details.
+          #   @param id [String]
+          #     ID of a previous conversation item to reference (for `item_reference` content
+          #     types in `response.create` events). These can reference both client and server
+          #     created items.
           #
-          #   @param id [String] ID of a previous conversation item to reference (for `item_reference`
+          #   @param audio [String]
+          #     Base64-encoded audio bytes, used for `input_audio` content type.
           #
-          #   @param audio [String] Base64-encoded audio bytes, used for `input_audio` content type.
+          #   @param text [String]
+          #     The text content, used for `input_text` and `text` content types.
           #
-          #   @param text [String] The text content, used for `input_text` and `text` content types.
+          #   @param transcript [String]
+          #     The transcript of the audio, used for `input_audio` content type.
           #
-          #   @param transcript [String] The transcript of the audio, used for `input_audio` content type.
-          #
-          #   @param type [Symbol, OpenAI::Models::Realtime::ConversationItemWithReference::Content::Type] The content type (`input_text`, `input_audio`, `item_reference`, `text`).
+          #   @param type [Symbol, OpenAI::Models::Realtime::ConversationItemWithReference::Content::Type]
+          #     The content type (`input_text`, `input_audio`, `item_reference`, `text`).
 
           # The content type (`input_text`, `input_audio`, `item_reference`, `text`).
           #

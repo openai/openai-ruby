@@ -27,7 +27,8 @@ module OpenAI
             # @!method initialize(project_id:, retention_type:, request_options: {})
             #   @param project_id [String]
             #
-            #   @param retention_type [Symbol, OpenAI::Models::Admin::Organization::Projects::DataRetentionUpdateParams::RetentionType] The desired project data retention type.
+            #   @param retention_type [Symbol, OpenAI::Models::Admin::Organization::Projects::DataRetentionUpdateParams::RetentionType]
+            #     The desired project data retention type.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

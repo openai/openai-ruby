@@ -42,22 +42,25 @@ module OpenAI
         )
 
         # @!method initialize(id:, queries:, status:, results: nil, type: :file_search_call)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseFileSearchToolCall} for more details.
-        #
         #   The results of a file search tool call. See the
-        #   [file search guide](https://platform.openai.com/docs/guides/tools-file-search)
+        #   [file search guide](https://developers.openai.com/api/docs/guides/tools-file-search)
         #   for more information.
         #
-        #   @param id [String] The unique ID of the file search tool call.
+        #   @param id [String]
+        #     The unique ID of the file search tool call.
         #
-        #   @param queries [Array<String>] The queries used to search for files.
+        #   @param queries [Array<String>]
+        #     The queries used to search for files.
         #
-        #   @param status [Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status] The status of the file search tool call. One of `in_progress`,
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status]
+        #     The status of the file search tool call. One of `in_progress`, `searching`,
+        #     `incomplete` or `failed`,
         #
-        #   @param results [Array<OpenAI::Models::Responses::ResponseFileSearchToolCall::Result>, nil] The results of the file search tool call.
+        #   @param results [Array<OpenAI::Models::Responses::ResponseFileSearchToolCall::Result>, nil]
+        #     The results of the file search tool call.
         #
-        #   @param type [Symbol, :file_search_call] The type of the file search tool call. Always `file_search_call`.
+        #   @param type [Symbol, :file_search_call]
+        #     The type of the file search tool call. Always `file_search_call`.
 
         # The status of the file search tool call. One of `in_progress`, `searching`,
         # `incomplete` or `failed`,
@@ -118,20 +121,24 @@ module OpenAI
           optional :text, String
 
           # @!method initialize(attributes: nil, file_id: nil, filename: nil, score: nil, text: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Responses::ResponseFileSearchToolCall::Result} for more
-          #   details.
+          #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]
+          #     Set of 16 key-value pairs that can be attached to an object. This can be useful
+          #     for storing additional information about the object in a structured format, and
+          #     querying for objects via API or the dashboard. Keys are strings with a maximum
+          #     length of 64 characters. Values are strings with a maximum length of 512
+          #     characters, booleans, or numbers.
           #
-          #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+          #   @param file_id [String]
+          #     The unique ID of the file.
           #
-          #   @param file_id [String] The unique ID of the file.
+          #   @param filename [String]
+          #     The name of the file.
           #
-          #   @param filename [String] The name of the file.
+          #   @param score [Float]
+          #     The relevance score of the file - a value between 0 and 1.
           #
-          #   @param score [Float] The relevance score of the file - a value between 0 and 1.
-          #
-          #   @param text [String] The text that was retrieved from the file.
-
+          #   @param text [String]
+          #     The text that was retrieved from the file.
           module Attribute
             extend OpenAI::Internal::Type::Union
 

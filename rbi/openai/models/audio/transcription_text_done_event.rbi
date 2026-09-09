@@ -32,7 +32,7 @@ module OpenAI
 
         # The log probabilities of the individual tokens in the transcription. Only
         # included if you
-        # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
+        # [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
         # with the `include[]` parameter set to `logprobs`.
         sig { returns(T.nilable(T::Array[OpenAI::Audio::TranscriptionTextDoneEvent::Logprob])) }
         attr_reader :logprobs
@@ -49,7 +49,7 @@ module OpenAI
 
         # Emitted when the transcription is complete. Contains the complete transcription
         # text. Only emitted when you
-        # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
+        # [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
         # with the `Stream` parameter set to `true`.
         sig do
           params(
@@ -77,7 +77,7 @@ module OpenAI
 
           # The log probabilities of the individual tokens in the transcription. Only
           # included if you
-          # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
+          # [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
           # with the `include[]` parameter set to `logprobs`.
           logprobs: nil,
 

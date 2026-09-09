@@ -32,13 +32,17 @@ module OpenAI
         #   A configuration update that applies to subsequent responses until it is replaced
         #   by another configuration update.
         #
-        #   @param id [String] The unique ID of the configuration update item.
+        #   @param id [String]
+        #     The unique ID of the configuration update item.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Agent] The agent that produced this item.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Agent]
+        #     The agent that produced this item.
         #
-        #   @param reasoning [OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Reasoning] The reasoning configuration applied by this update.
+        #   @param reasoning [OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Reasoning]
+        #     The reasoning configuration applied by this update.
         #
-        #   @param type [Symbol, :configuration_update] The item type. Always `configuration_update`.
+        #   @param type [Symbol, :configuration_update]
+        #     The item type. Always `configuration_update`.
 
         # @see OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -51,7 +55,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that produced this item.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
 
         # @see OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem#reasoning
@@ -68,13 +73,11 @@ module OpenAI
           )
 
           # @!method initialize(effort: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Reasoning} for more
-          #   details.
-          #
           #   The reasoning configuration applied by this update.
           #
-          #   @param effort [Symbol, OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Reasoning::Effort, nil] The reasoning effort used for subsequent responses until another
+          #   @param effort [Symbol, OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Reasoning::Effort, nil]
+          #     The reasoning effort used for subsequent responses until another configuration
+          #     update replaces it.
 
           # The reasoning effort used for subsequent responses until another configuration
           # update replaces it.

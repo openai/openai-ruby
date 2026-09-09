@@ -12,9 +12,11 @@ module OpenAI
           #
           # @overload create(certificate:, name: nil, request_options: {})
           #
-          # @param certificate [String] The certificate content in PEM format
+          # @param certificate [String]
+          #   The certificate content in PEM format
           #
-          # @param name [String] An optional name for the certificate
+          # @param name [String]
+          #   An optional name for the certificate
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -33,19 +35,18 @@ module OpenAI
             )
           end
 
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::Admin::Organization::CertificateRetrieveParams} for more
-          # details.
-          #
           # Get a certificate that has been uploaded to the organization.
           #
           # You can get a certificate regardless of whether it is active or not.
           #
           # @overload retrieve(certificate_id, include: nil, request_options: {})
           #
-          # @param certificate_id [String] Unique ID of the certificate to retrieve.
+          # @param certificate_id [String]
+          #   Unique ID of the certificate to retrieve.
           #
-          # @param include [Array<Symbol, OpenAI::Models::Admin::Organization::CertificateRetrieveParams::Include>] A list of additional fields to include in the response. Currently the only suppo
+          # @param include [Array<Symbol, OpenAI::Models::Admin::Organization::CertificateRetrieveParams::Include>]
+          #   A list of additional fields to include in the response. Currently the only
+          #   supported value is `content` to fetch the PEM content of the certificate.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -69,9 +70,11 @@ module OpenAI
           #
           # @overload update(certificate_id, name: nil, request_options: {})
           #
-          # @param certificate_id [String] Unique ID of the certificate to modify.
+          # @param certificate_id [String]
+          #   Unique ID of the certificate to modify.
           #
-          # @param name [String] The updated name for the certificate
+          # @param name [String]
+          #   The updated name for the certificate
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -90,18 +93,23 @@ module OpenAI
             )
           end
 
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::Admin::Organization::CertificateListParams} for more details.
-          #
           # List uploaded certificates for this organization.
           #
           # @overload list(after: nil, limit: nil, order: nil, request_options: {})
           #
-          # @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+          # @param after [String]
+          #   A cursor for use in pagination. `after` is an object ID that defines your place
+          #   in the list. For instance, if you make a list request and receive 100 objects,
+          #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+          #   fetch the next page of the list.
           #
-          # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+          # @param limit [Integer]
+          #   A limit on the number of objects to be returned. Limit can range between 1 and
+          #   100, and the default is 20.
           #
-          # @param order [Symbol, OpenAI::Models::Admin::Organization::CertificateListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+          # @param order [Symbol, OpenAI::Models::Admin::Organization::CertificateListParams::Order]
+          #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
+          #   order and `desc` for descending order.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -128,7 +136,8 @@ module OpenAI
           #
           # @overload delete(certificate_id, request_options: {})
           #
-          # @param certificate_id [String] Unique ID of the certificate to delete.
+          # @param certificate_id [String]
+          #   Unique ID of the certificate to delete.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

@@ -42,21 +42,23 @@ module OpenAI
         )
 
         # @!method initialize(item_id:, output_index:, sequence_number:, agent: nil, type: :"response.code_interpreter_call.interpreting")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseCodeInterpreterCallInterpretingEvent} for
-        #   more details.
-        #
         #   Emitted when the code interpreter is actively interpreting the code snippet.
         #
-        #   @param item_id [String] The unique identifier of the code interpreter tool call item.
+        #   @param item_id [String]
+        #     The unique identifier of the code interpreter tool call item.
         #
-        #   @param output_index [Integer] The index of the output item in the response for which the code interpreter is i
+        #   @param output_index [Integer]
+        #     The index of the output item in the response for which the code interpreter is
+        #     interpreting code.
         #
-        #   @param sequence_number [Integer] The sequence number of this event, used to order streaming events.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event, used to order streaming events.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseCodeInterpreterCallInterpretingEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseCodeInterpreterCallInterpretingEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.code_interpreter_call.interpreting"] The type of the event. Always `response.code_interpreter_call.interpreting`.
+        #   @param type [Symbol, :"response.code_interpreter_call.interpreting"]
+        #     The type of the event. Always `response.code_interpreter_call.interpreting`.
 
         # @see OpenAI::Models::Beta::BetaResponseCodeInterpreterCallInterpretingEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -69,7 +71,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

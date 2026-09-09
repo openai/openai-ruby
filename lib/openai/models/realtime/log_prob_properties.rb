@@ -23,16 +23,16 @@ module OpenAI
         required :logprob, Float
 
         # @!method initialize(token:, bytes:, logprob:)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::LogProbProperties} for more details.
-        #
         #   A log probability object.
         #
-        #   @param token [String] The token that was used to generate the log probability.
+        #   @param token [String]
+        #     The token that was used to generate the log probability.
         #
-        #   @param bytes [Array<Integer>] The bytes that were used to generate the log probability.
+        #   @param bytes [Array<Integer>]
+        #     The bytes that were used to generate the log probability.
         #
-        #   @param logprob [Float] The log probability of the token.
+        #   @param logprob [Float]
+        #     The log probability of the token.
       end
     end
   end

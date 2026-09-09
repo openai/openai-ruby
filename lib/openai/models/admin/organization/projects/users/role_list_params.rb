@@ -41,19 +41,19 @@ module OpenAI
               optional :order, enum: -> { OpenAI::Admin::Organization::Projects::Users::RoleListParams::Order }
 
               # @!method initialize(project_id:, user_id:, after: nil, limit: nil, order: nil, request_options: {})
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Admin::Organization::Projects::Users::RoleListParams} for more
-              #   details.
-              #
               #   @param project_id [String]
               #
               #   @param user_id [String]
               #
-              #   @param after [String] Cursor for pagination. Provide the value from the previous response's `next` fie
+              #   @param after [String]
+              #     Cursor for pagination. Provide the value from the previous response's `next`
+              #     field to continue listing project roles.
               #
-              #   @param limit [Integer] A limit on the number of project role assignments to return.
+              #   @param limit [Integer]
+              #     A limit on the number of project role assignments to return.
               #
-              #   @param order [Symbol, OpenAI::Models::Admin::Organization::Projects::Users::RoleListParams::Order] Sort order for the returned project roles.
+              #   @param order [Symbol, OpenAI::Models::Admin::Organization::Projects::Users::RoleListParams::Order]
+              #     Sort order for the returned project roles.
               #
               #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

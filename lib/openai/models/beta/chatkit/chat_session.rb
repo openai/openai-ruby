@@ -68,25 +68,35 @@ module OpenAI
           # @!method initialize(id:, chatkit_configuration:, client_secret:, expires_at:, max_requests_per_1_minute:, rate_limits:, status:, user:, workflow:, object: :"chatkit.session")
           #   Represents a ChatKit session and its resolved configuration.
           #
-          #   @param id [String] Identifier for the ChatKit session.
+          #   @param id [String]
+          #     Identifier for the ChatKit session.
           #
-          #   @param chatkit_configuration [OpenAI::Models::Beta::ChatKit::ChatSessionChatKitConfiguration] Resolved ChatKit feature configuration for the session.
+          #   @param chatkit_configuration [OpenAI::Models::Beta::ChatKit::ChatSessionChatKitConfiguration]
+          #     Resolved ChatKit feature configuration for the session.
           #
-          #   @param client_secret [String] Ephemeral client secret that authenticates session requests.
+          #   @param client_secret [String]
+          #     Ephemeral client secret that authenticates session requests.
           #
-          #   @param expires_at [Integer] Unix timestamp (in seconds) for when the session expires.
+          #   @param expires_at [Integer]
+          #     Unix timestamp (in seconds) for when the session expires.
           #
-          #   @param max_requests_per_1_minute [Integer] Convenience copy of the per-minute request limit.
+          #   @param max_requests_per_1_minute [Integer]
+          #     Convenience copy of the per-minute request limit.
           #
-          #   @param rate_limits [OpenAI::Models::Beta::ChatKit::ChatSessionRateLimits] Resolved rate limit values.
+          #   @param rate_limits [OpenAI::Models::Beta::ChatKit::ChatSessionRateLimits]
+          #     Resolved rate limit values.
           #
-          #   @param status [Symbol, OpenAI::Models::Beta::ChatKit::ChatSessionStatus] Current lifecycle state of the session.
+          #   @param status [Symbol, OpenAI::Models::Beta::ChatKit::ChatSessionStatus]
+          #     Current lifecycle state of the session.
           #
-          #   @param user [String] User identifier associated with the session.
+          #   @param user [String]
+          #     User identifier associated with the session.
           #
-          #   @param workflow [OpenAI::Models::Beta::ChatKitWorkflow] Workflow metadata for the session.
+          #   @param workflow [OpenAI::Models::Beta::ChatKitWorkflow]
+          #     Workflow metadata for the session.
           #
-          #   @param object [Symbol, :"chatkit.session"] Type discriminator that is always `chatkit.session`.
+          #   @param object [Symbol, :"chatkit.session"]
+          #     Type discriminator that is always `chatkit.session`.
         end
       end
     end

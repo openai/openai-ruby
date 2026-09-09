@@ -53,19 +53,26 @@ module OpenAI
         # @!method initialize(annotation:, annotation_index:, content_index:, item_id:, output_index:, sequence_number:, type: :"response.output_text.annotation.added")
         #   Emitted when an annotation is added to output text content.
         #
-        #   @param annotation [OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::ContainerFileCitation, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::FilePath, nil] An annotation that applies to a span of output text.
+        #   @param annotation [OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::ContainerFileCitation, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::FilePath, nil]
+        #     An annotation that applies to a span of output text.
         #
-        #   @param annotation_index [Integer] The index of the annotation within the content part.
+        #   @param annotation_index [Integer]
+        #     The index of the annotation within the content part.
         #
-        #   @param content_index [Integer] The index of the content part within the output item.
+        #   @param content_index [Integer]
+        #     The index of the content part within the output item.
         #
-        #   @param item_id [String] The unique identifier of the item to which the annotation is being added.
+        #   @param item_id [String]
+        #     The unique identifier of the item to which the annotation is being added.
         #
-        #   @param output_index [Integer] The index of the output item in the response's output array.
+        #   @param output_index [Integer]
+        #     The index of the output item in the response's output array.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param type [Symbol, :"response.output_text.annotation.added"] The type of the event. Always 'response.output_text.annotation.added'.
+        #   @param type [Symbol, :"response.output_text.annotation.added"]
+        #     The type of the event. Always 'response.output_text.annotation.added'.
 
         # An annotation that applies to a span of output text.
         #
@@ -124,13 +131,17 @@ module OpenAI
             # @!method initialize(file_id:, filename:, index:, type: :file_citation)
             #   A citation to a file.
             #
-            #   @param file_id [String] The ID of the file.
+            #   @param file_id [String]
+            #     The ID of the file.
             #
-            #   @param filename [String] The filename of the file cited.
+            #   @param filename [String]
+            #     The filename of the file cited.
             #
-            #   @param index [Integer] The index of the file in the list of files.
+            #   @param index [Integer]
+            #     The index of the file in the list of files.
             #
-            #   @param type [Symbol, :file_citation] The type of the file citation. Always `file_citation`.
+            #   @param type [Symbol, :file_citation]
+            #     The type of the file citation. Always `file_citation`.
           end
 
           class URLCitation < OpenAI::Internal::Type::BaseModel
@@ -167,15 +178,20 @@ module OpenAI
             # @!method initialize(end_index:, start_index:, title:, url:, type: :url_citation)
             #   A citation for a web resource used to generate a model response.
             #
-            #   @param end_index [Integer] The index of the last character of the URL citation in the message.
+            #   @param end_index [Integer]
+            #     The index of the last character of the URL citation in the message.
             #
-            #   @param start_index [Integer] The index of the first character of the URL citation in the message.
+            #   @param start_index [Integer]
+            #     The index of the first character of the URL citation in the message.
             #
-            #   @param title [String] The title of the web resource.
+            #   @param title [String]
+            #     The title of the web resource.
             #
-            #   @param url [String] The URL of the web resource.
+            #   @param url [String]
+            #     The URL of the web resource.
             #
-            #   @param type [Symbol, :url_citation] The type of the URL citation. Always `url_citation`.
+            #   @param type [Symbol, :url_citation]
+            #     The type of the URL citation. Always `url_citation`.
           end
 
           class ContainerFileCitation < OpenAI::Internal::Type::BaseModel
@@ -218,17 +234,23 @@ module OpenAI
             # @!method initialize(container_id:, end_index:, file_id:, filename:, start_index:, type: :container_file_citation)
             #   A citation for a container file used to generate a model response.
             #
-            #   @param container_id [String] The ID of the container file.
+            #   @param container_id [String]
+            #     The ID of the container file.
             #
-            #   @param end_index [Integer] The index of the last character of the container file citation in the message.
+            #   @param end_index [Integer]
+            #     The index of the last character of the container file citation in the message.
             #
-            #   @param file_id [String] The ID of the file.
+            #   @param file_id [String]
+            #     The ID of the file.
             #
-            #   @param filename [String] The filename of the container file cited.
+            #   @param filename [String]
+            #     The filename of the container file cited.
             #
-            #   @param start_index [Integer] The index of the first character of the container file citation in the message.
+            #   @param start_index [Integer]
+            #     The index of the first character of the container file citation in the message.
             #
-            #   @param type [Symbol, :container_file_citation] The type of the container file citation. Always `container_file_citation`.
+            #   @param type [Symbol, :container_file_citation]
+            #     The type of the container file citation. Always `container_file_citation`.
           end
 
           class FilePath < OpenAI::Internal::Type::BaseModel
@@ -251,17 +273,16 @@ module OpenAI
             required :type, const: :file_path
 
             # @!method initialize(file_id:, index:, type: :file_path)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::FilePath}
-            #   for more details.
-            #
             #   A path to a file.
             #
-            #   @param file_id [String] The ID of the file.
+            #   @param file_id [String]
+            #     The ID of the file.
             #
-            #   @param index [Integer] The index of the file in the list of files.
+            #   @param index [Integer]
+            #     The index of the file in the list of files.
             #
-            #   @param type [Symbol, :file_path] The type of the file path. Always `file_path`.
+            #   @param type [Symbol, :file_path]
+            #     The type of the file path. Always `file_path`.
           end
 
           # @!method self.variants

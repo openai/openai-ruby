@@ -35,20 +35,22 @@ module OpenAI
         optional :object, enum: -> { OpenAI::Webhooks::ResponseCompletedWebhookEvent::Object }
 
         # @!method initialize(id:, created_at:, data:, object: nil, type: :"response.completed")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent} for more details.
-        #
         #   Sent when a background response has been completed.
         #
-        #   @param id [String] The unique ID of the event.
+        #   @param id [String]
+        #     The unique ID of the event.
         #
-        #   @param created_at [Integer] The Unix timestamp (in seconds) of when the model response was completed.
+        #   @param created_at [Integer]
+        #     The Unix timestamp (in seconds) of when the model response was completed.
         #
-        #   @param data [OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent::Data] Event data payload.
+        #   @param data [OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent::Data]
+        #     Event data payload.
         #
-        #   @param object [Symbol, OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent::Object] The object of the event. Always `event`.
+        #   @param object [Symbol, OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent::Object]
+        #     The object of the event. Always `event`.
         #
-        #   @param type [Symbol, :"response.completed"] The type of the event. Always `response.completed`.
+        #   @param type [Symbol, :"response.completed"]
+        #     The type of the event. Always `response.completed`.
 
         # @see OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent#data
         class Data < OpenAI::Internal::Type::BaseModel
@@ -59,13 +61,10 @@ module OpenAI
           required :id, String
 
           # @!method initialize(id:)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent::Data} for more
-          #   details.
-          #
           #   Event data payload.
           #
-          #   @param id [String] The unique ID of the model response.
+          #   @param id [String]
+          #     The unique ID of the model response.
         end
 
         # The object of the event. Always `event`.

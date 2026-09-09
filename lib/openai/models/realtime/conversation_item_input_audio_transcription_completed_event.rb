@@ -62,10 +62,6 @@ module OpenAI
         )
 
         # @!method initialize(content_index:, event_id:, item_id:, transcript:, usage:, languages: nil, logprobs: nil, type: :"conversation.item.input_audio_transcription.completed")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent}
-        #   for more details.
-        #
         #   This event is the output of audio transcription for user audio written to the
         #   user audio buffer. Transcription begins when the input audio buffer is committed
         #   by the client or server (when VAD is enabled). Transcription runs asynchronously
@@ -77,21 +73,31 @@ module OpenAI
         #   transcript may diverge somewhat from the model's interpretation, and should be
         #   treated as a rough guide.
         #
-        #   @param content_index [Integer] The index of the content part containing the audio.
+        #   @param content_index [Integer]
+        #     The index of the content part containing the audio.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param item_id [String] The ID of the item containing the audio that is being transcribed.
+        #   @param item_id [String]
+        #     The ID of the item containing the audio that is being transcribed.
         #
-        #   @param transcript [String] The transcribed text.
+        #   @param transcript [String]
+        #     The transcribed text.
         #
-        #   @param usage [OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens, OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration] Usage statistics for the transcription, this is billed according to the ASR mode
+        #   @param usage [OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens, OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageDuration]
+        #     Usage statistics for the transcription, this is billed according to the ASR
+        #     model's pricing rather than the realtime model's pricing.
         #
-        #   @param languages [Array<OpenAI::Models::Audio::TranscriptionLanguage>] The languages detected in the audio. Returned by `gpt-transcribe`. An empty arra
+        #   @param languages [Array<OpenAI::Models::Audio::TranscriptionLanguage>]
+        #     The languages detected in the audio. Returned by `gpt-transcribe`. An empty
+        #     array indicates that no language could be reliably detected.
         #
-        #   @param logprobs [Array<OpenAI::Models::Realtime::LogProbProperties>, nil] The log probabilities of the transcription.
+        #   @param logprobs [Array<OpenAI::Models::Realtime::LogProbProperties>, nil]
+        #     The log probabilities of the transcription.
         #
-        #   @param type [Symbol, :"conversation.item.input_audio_transcription.completed"] The event type, must be
+        #   @param type [Symbol, :"conversation.item.input_audio_transcription.completed"]
+        #     The event type, must be `conversation.item.input_audio_transcription.completed`.
 
         # Usage statistics for the transcription, this is billed according to the ASR
         # model's pricing rather than the realtime model's pricing.
@@ -153,15 +159,20 @@ module OpenAI
             # @!method initialize(input_tokens:, output_tokens:, total_tokens:, input_token_details: nil, type: :tokens)
             #   Usage statistics for models billed by token usage.
             #
-            #   @param input_tokens [Integer] Number of input tokens billed for this request.
+            #   @param input_tokens [Integer]
+            #     Number of input tokens billed for this request.
             #
-            #   @param output_tokens [Integer] Number of output tokens generated.
+            #   @param output_tokens [Integer]
+            #     Number of output tokens generated.
             #
-            #   @param total_tokens [Integer] Total number of tokens used (input + output).
+            #   @param total_tokens [Integer]
+            #     Total number of tokens used (input + output).
             #
-            #   @param input_token_details [OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails] Details about the input tokens billed for this request.
+            #   @param input_token_details [OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails]
+            #     Details about the input tokens billed for this request.
             #
-            #   @param type [Symbol, :tokens] The type of the usage object. Always `tokens` for this variant.
+            #   @param type [Symbol, :tokens]
+            #     The type of the usage object. Always `tokens` for this variant.
 
             # @see OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens#input_token_details
             class InputTokenDetails < OpenAI::Internal::Type::BaseModel
@@ -180,9 +191,11 @@ module OpenAI
               # @!method initialize(audio_tokens: nil, text_tokens: nil)
               #   Details about the input tokens billed for this request.
               #
-              #   @param audio_tokens [Integer] Number of audio tokens billed for this request.
+              #   @param audio_tokens [Integer]
+              #     Number of audio tokens billed for this request.
               #
-              #   @param text_tokens [Integer] Number of text tokens billed for this request.
+              #   @param text_tokens [Integer]
+              #     Number of text tokens billed for this request.
             end
           end
 
@@ -202,9 +215,11 @@ module OpenAI
             # @!method initialize(seconds:, type: :duration)
             #   Usage statistics for models billed by audio input duration.
             #
-            #   @param seconds [Float] Duration of the input audio in seconds.
+            #   @param seconds [Float]
+            #     Duration of the input audio in seconds.
             #
-            #   @param type [Symbol, :duration] The type of the usage object. Always `duration` for this variant.
+            #   @param type [Symbol, :duration]
+            #     The type of the usage object. Always `duration` for this variant.
           end
 
           # @!method self.variants

@@ -38,30 +38,37 @@ module OpenAI
 
         # @!attribute vector_store_id
         #   The ID of the
-        #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
-        #   that the [File](https://platform.openai.com/docs/api-reference/files) is
+        #   [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+        #   that the [File](https://developers.openai.com/api/reference/resources/files) is
         #   attached to.
         #
         #   @return [String]
         required :vector_store_id, String
 
         # @!method initialize(id:, created_at:, file_counts:, status:, vector_store_id:, object: :"vector_store.files_batch")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::VectorStores::VectorStoreFileBatch} for more details.
-        #
         #   A batch of files attached to a vector store.
         #
-        #   @param id [String] The identifier, which can be referenced in API endpoints.
+        #   @param id [String]
+        #     The identifier, which can be referenced in API endpoints.
         #
-        #   @param created_at [Integer] The Unix timestamp (in seconds) for when the vector store files batch was create
+        #   @param created_at [Integer]
+        #     The Unix timestamp (in seconds) for when the vector store files batch was
+        #     created.
         #
         #   @param file_counts [OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts]
         #
-        #   @param status [Symbol, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status] The status of the vector store files batch, which can be either `in_progress`, `
+        #   @param status [Symbol, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status]
+        #     The status of the vector store files batch, which can be either `in_progress`,
+        #     `completed`, `cancelled` or `failed`.
         #
-        #   @param vector_store_id [String] The ID of the [vector store](https://platform.openai.com/docs/api-reference/vect
+        #   @param vector_store_id [String]
+        #     The ID of the
+        #     [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+        #     that the [File](https://developers.openai.com/api/reference/resources/files) is
+        #     attached to.
         #
-        #   @param object [Symbol, :"vector_store.files_batch"] The object type, which is always `vector_store.file_batch`.
+        #   @param object [Symbol, :"vector_store.files_batch"]
+        #     The object type, which is always `vector_store.file_batch`.
 
         # @see OpenAI::Models::VectorStores::VectorStoreFileBatch#file_counts
         class FileCounts < OpenAI::Internal::Type::BaseModel
@@ -96,15 +103,20 @@ module OpenAI
           required :total, Integer
 
           # @!method initialize(cancelled:, completed:, failed:, in_progress:, total:)
-          #   @param cancelled [Integer] The number of files that where cancelled.
+          #   @param cancelled [Integer]
+          #     The number of files that where cancelled.
           #
-          #   @param completed [Integer] The number of files that have been processed.
+          #   @param completed [Integer]
+          #     The number of files that have been processed.
           #
-          #   @param failed [Integer] The number of files that have failed to process.
+          #   @param failed [Integer]
+          #     The number of files that have failed to process.
           #
-          #   @param in_progress [Integer] The number of files that are currently being processed.
+          #   @param in_progress [Integer]
+          #     The number of files that are currently being processed.
           #
-          #   @param total [Integer] The total number of files.
+          #   @param total [Integer]
+          #     The total number of files.
         end
 
         # The status of the vector store files batch, which can be either `in_progress`,

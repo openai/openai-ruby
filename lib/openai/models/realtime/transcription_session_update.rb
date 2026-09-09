@@ -25,11 +25,14 @@ module OpenAI
         # @!method initialize(session:, event_id: nil, type: :"transcription_session.update")
         #   Send this event to update a transcription session.
         #
-        #   @param session [OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session] Realtime transcription session object configuration.
+        #   @param session [OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session]
+        #     Realtime transcription session object configuration.
         #
-        #   @param event_id [String] Optional client-generated ID used to identify this event.
+        #   @param event_id [String]
+        #     Optional client-generated ID used to identify this event.
         #
-        #   @param type [Symbol, :"transcription_session.update"] The event type, must be `transcription_session.update`.
+        #   @param type [Symbol, :"transcription_session.update"]
+        #     The event type, must be `transcription_session.update`.
 
         # @see OpenAI::Models::Realtime::TranscriptionSessionUpdate#session
         class Session < OpenAI::Internal::Type::BaseModel
@@ -86,22 +89,33 @@ module OpenAI
           optional :turn_detection, -> { OpenAI::Realtime::TranscriptionSessionUpdate::Session::TurnDetection }
 
           # @!method initialize(include: nil, input_audio_format: nil, input_audio_noise_reduction: nil, input_audio_transcription: nil, turn_detection: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session} for more
-          #   details.
-          #
           #   Realtime transcription session object configuration.
           #
-          #   @param include [Array<Symbol, OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::Include>] The set of items to include in the transcription. Current available items are:
+          #   @param include [Array<Symbol, OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::Include>]
+          #     The set of items to include in the transcription. Current available items are:
+          #     `item.input_audio_transcription.logprobs`
           #
-          #   @param input_audio_format [Symbol, OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::InputAudioFormat] The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+          #   @param input_audio_format [Symbol, OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::InputAudioFormat]
+          #     The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`. For
+          #     `pcm16`, input audio must be 16-bit PCM at a 24kHz sample rate, single channel
+          #     (mono), and little-endian byte order.
           #
-          #   @param input_audio_noise_reduction [OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::InputAudioNoiseReduction] Configuration for input audio noise reduction. This can be set to `null` to turn
+          #   @param input_audio_noise_reduction [OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::InputAudioNoiseReduction]
+          #     Configuration for input audio noise reduction. This can be set to `null` to turn
+          #     off. Noise reduction filters audio added to the input audio buffer before it is
+          #     sent to VAD and the model. Filtering the audio can improve VAD and turn
+          #     detection accuracy (reducing false positives) and model performance by improving
+          #     perception of the input audio.
           #
-          #   @param input_audio_transcription [OpenAI::Models::Realtime::AudioTranscription] Configuration for input audio transcription. The client can optionally set the l
+          #   @param input_audio_transcription [OpenAI::Models::Realtime::AudioTranscription]
+          #     Configuration for input audio transcription. The client can optionally set the
+          #     language and prompt for transcription, these offer additional guidance to the
+          #     transcription service.
           #
-          #   @param turn_detection [OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::TurnDetection] Configuration for turn detection. Can be set to `null` to turn off. Server VAD m
-
+          #   @param turn_detection [OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::TurnDetection]
+          #     Configuration for turn detection. Can be set to `null` to turn off. Server VAD
+          #     means that the model will detect the start and end of speech based on audio
+          #     volume and respond at the end of user speech.
           module Include
             extend OpenAI::Internal::Type::Enum
 
@@ -138,17 +152,16 @@ module OpenAI
             optional :type, enum: -> { OpenAI::Realtime::NoiseReductionType }
 
             # @!method initialize(type: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::InputAudioNoiseReduction}
-            #   for more details.
-            #
             #   Configuration for input audio noise reduction. This can be set to `null` to turn
             #   off. Noise reduction filters audio added to the input audio buffer before it is
             #   sent to VAD and the model. Filtering the audio can improve VAD and turn
             #   detection accuracy (reducing false positives) and model performance by improving
             #   perception of the input audio.
             #
-            #   @param type [Symbol, OpenAI::Models::Realtime::NoiseReductionType] Type of noise reduction. `near_field` is for close-talking microphones such as h
+            #   @param type [Symbol, OpenAI::Models::Realtime::NoiseReductionType]
+            #     Type of noise reduction. `near_field` is for close-talking microphones such as
+            #     headphones, `far_field` is for far-field microphones such as laptop or
+            #     conference room microphones.
           end
 
           # @see OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session#turn_detection
@@ -184,21 +197,27 @@ module OpenAI
             optional :type, enum: -> { OpenAI::Realtime::TranscriptionSessionUpdate::Session::TurnDetection::Type }
 
             # @!method initialize(prefix_padding_ms: nil, silence_duration_ms: nil, threshold: nil, type: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::TurnDetection}
-            #   for more details.
-            #
             #   Configuration for turn detection. Can be set to `null` to turn off. Server VAD
             #   means that the model will detect the start and end of speech based on audio
             #   volume and respond at the end of user speech.
             #
-            #   @param prefix_padding_ms [Integer] Amount of audio to include before the VAD detected speech (in
+            #   @param prefix_padding_ms [Integer]
+            #     Amount of audio to include before the VAD detected speech (in milliseconds).
+            #     Defaults to 300ms.
             #
-            #   @param silence_duration_ms [Integer] Duration of silence to detect speech stop (in milliseconds). Defaults
+            #   @param silence_duration_ms [Integer]
+            #     Duration of silence to detect speech stop (in milliseconds). Defaults to 500ms.
+            #     With shorter values the model will respond more quickly, but may jump in on
+            #     short pauses from the user.
             #
-            #   @param threshold [Float] Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A
+            #   @param threshold [Float]
+            #     Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A higher
+            #     threshold will require louder audio to activate the model, and thus might
+            #     perform better in noisy environments.
             #
-            #   @param type [Symbol, OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::TurnDetection::Type] Type of turn detection. Only `server_vad` is currently supported for transcripti
+            #   @param type [Symbol, OpenAI::Models::Realtime::TranscriptionSessionUpdate::Session::TurnDetection::Type]
+            #     Type of turn detection. Only `server_vad` is currently supported for
+            #     transcription sessions.
 
             # Type of turn detection. Only `server_vad` is currently supported for
             # transcription sessions.

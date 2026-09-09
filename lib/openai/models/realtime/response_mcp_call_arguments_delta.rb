@@ -49,19 +49,26 @@ module OpenAI
         # @!method initialize(delta:, event_id:, item_id:, output_index:, response_id:, obfuscation: nil, type: :"response.mcp_call_arguments.delta")
         #   Returned when MCP tool call arguments are updated during response generation.
         #
-        #   @param delta [String] The JSON-encoded arguments delta.
+        #   @param delta [String]
+        #     The JSON-encoded arguments delta.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param item_id [String] The ID of the MCP tool call item.
+        #   @param item_id [String]
+        #     The ID of the MCP tool call item.
         #
-        #   @param output_index [Integer] The index of the output item in the response.
+        #   @param output_index [Integer]
+        #     The index of the output item in the response.
         #
-        #   @param response_id [String] The ID of the response.
+        #   @param response_id [String]
+        #     The ID of the response.
         #
-        #   @param obfuscation [String, nil] If present, indicates the delta text was obfuscated.
+        #   @param obfuscation [String, nil]
+        #     If present, indicates the delta text was obfuscated.
         #
-        #   @param type [Symbol, :"response.mcp_call_arguments.delta"] The event type, must be `response.mcp_call_arguments.delta`.
+        #   @param type [Symbol, :"response.mcp_call_arguments.delta"]
+        #     The event type, must be `response.mcp_call_arguments.delta`.
       end
     end
   end

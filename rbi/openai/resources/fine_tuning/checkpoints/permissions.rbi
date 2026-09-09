@@ -10,7 +10,8 @@ module OpenAI
         # Manage fine-tuning jobs to tailor a model to your specific training data.
         class Permissions
 
-          # **NOTE:** Calling this endpoint requires an [admin API key](../admin-api-keys).
+          # **NOTE:** Calling this endpoint requires an
+          # [admin API key](https://developers.openai.com/api/reference/resources/admin/subresources/organization/subresources/admin_api_keys).
           #
           # This enables organization owners to share fine-tuned models with other projects
           # in their organization.
@@ -31,7 +32,8 @@ module OpenAI
           )
           end
 
-          # **NOTE:** This endpoint requires an [admin API key](../admin-api-keys).
+          # **NOTE:** This endpoint requires an
+          # [admin API key](https://developers.openai.com/api/reference/resources/admin/subresources/organization/subresources/admin_api_keys).
           #
           # Organization owners can use this endpoint to view all permissions for a
           # fine-tuned model checkpoint.
@@ -61,7 +63,8 @@ module OpenAI
           )
           end
 
-          # **NOTE:** This endpoint requires an [admin API key](../admin-api-keys).
+          # **NOTE:** This endpoint requires an
+          # [admin API key](https://developers.openai.com/api/reference/resources/admin/subresources/organization/subresources/admin_api_keys).
           #
           # Organization owners can use this endpoint to view all permissions for a
           # fine-tuned model checkpoint.
@@ -95,7 +98,8 @@ module OpenAI
           )
           end
 
-          # **NOTE:** This endpoint requires an [admin API key](../admin-api-keys).
+          # **NOTE:** This endpoint requires an
+          # [admin API key](https://developers.openai.com/api/reference/resources/admin/subresources/organization/subresources/admin_api_keys).
           #
           # Organization owners can use this endpoint to delete a permission for a
           # fine-tuned model checkpoint.

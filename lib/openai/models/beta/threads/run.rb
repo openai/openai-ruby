@@ -16,8 +16,8 @@ module OpenAI
 
           # @!attribute assistant_id
           #   The ID of the
-          #   [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
-          #   execution of this run.
+          #   [assistant](https://developers.openai.com/api/docs/assistants/migration) used
+          #   for execution of this run.
           #
           #   @return [String]
           required :assistant_id, String
@@ -61,8 +61,8 @@ module OpenAI
 
           # @!attribute instructions
           #   The instructions that the
-          #   [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
-          #   this run.
+          #   [assistant](https://developers.openai.com/api/docs/assistants/migration) used
+          #   for this run.
           #
           #   @return [String]
           required :instructions, String
@@ -100,8 +100,8 @@ module OpenAI
 
           # @!attribute model
           #   The model that the
-          #   [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
-          #   this run.
+          #   [assistant](https://developers.openai.com/api/docs/assistants/migration) used
+          #   for this run.
           #
           #   @return [String]
           required :model, String
@@ -114,7 +114,7 @@ module OpenAI
 
           # @!attribute parallel_tool_calls
           #   Whether to enable
-          #   [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
+          #   [parallel function calling](https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling)
           #   during tool use.
           #
           #   @return [Boolean]
@@ -129,14 +129,14 @@ module OpenAI
 
           # @!attribute response_format
           #   Specifies the format that the model must output. Compatible with
-          #   [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
-          #   [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
-          #   and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+          #   [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+          #   [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+          #   all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
           #
           #   Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
           #   Outputs which ensures the model will match your supplied JSON schema. Learn more
           #   in the
-          #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          #   [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
           #
           #   Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
           #   message the model generates is valid JSON.
@@ -167,8 +167,9 @@ module OpenAI
           required :status, enum: -> { OpenAI::Beta::Threads::RunStatus }
 
           # @!attribute thread_id
-          #   The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
-          #   that was executed on as a part of this run.
+          #   The ID of the
+          #   [thread](https://developers.openai.com/api/docs/assistants/migration) that was
+          #   executed on as a part of this run.
           #
           #   @return [String]
           required :thread_id, String
@@ -187,8 +188,8 @@ module OpenAI
 
           # @!attribute tools
           #   The list of tools that the
-          #   [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
-          #   this run.
+          #   [assistant](https://developers.openai.com/api/docs/assistants/migration) used
+          #   for this run.
           #
           #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>]
           required :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool] }
@@ -220,65 +221,139 @@ module OpenAI
           optional :top_p, Float, nil?: true
 
           # @!method initialize(id:, assistant_id:, cancelled_at:, completed_at:, created_at:, expires_at:, failed_at:, incomplete_details:, instructions:, last_error:, max_completion_tokens:, max_prompt_tokens:, metadata:, model:, parallel_tool_calls:, required_action:, response_format:, started_at:, status:, thread_id:, tool_choice:, tools:, truncation_strategy:, usage:, temperature: nil, top_p: nil, object: :"thread.run")
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::Threads::Run} for more details.
-          #
           #   Represents an execution run on a
-          #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://developers.openai.com/api/docs/assistants/migration).
           #
-          #   @param id [String] The identifier, which can be referenced in API endpoints.
+          #   @param id [String]
+          #     The identifier, which can be referenced in API endpoints.
           #
-          #   @param assistant_id [String] The ID of the [assistant](https://platform.openai.com/docs/api-reference/assista
+          #   @param assistant_id [String]
+          #     The ID of the
+          #     [assistant](https://developers.openai.com/api/docs/assistants/migration) used
+          #     for execution of this run.
           #
-          #   @param cancelled_at [Integer, nil] The Unix timestamp (in seconds) for when the run was cancelled.
+          #   @param cancelled_at [Integer, nil]
+          #     The Unix timestamp (in seconds) for when the run was cancelled.
           #
-          #   @param completed_at [Integer, nil] The Unix timestamp (in seconds) for when the run was completed.
+          #   @param completed_at [Integer, nil]
+          #     The Unix timestamp (in seconds) for when the run was completed.
           #
-          #   @param created_at [Integer] The Unix timestamp (in seconds) for when the run was created.
+          #   @param created_at [Integer]
+          #     The Unix timestamp (in seconds) for when the run was created.
           #
-          #   @param expires_at [Integer, nil] The Unix timestamp (in seconds) for when the run will expire.
+          #   @param expires_at [Integer, nil]
+          #     The Unix timestamp (in seconds) for when the run will expire.
           #
-          #   @param failed_at [Integer, nil] The Unix timestamp (in seconds) for when the run failed.
+          #   @param failed_at [Integer, nil]
+          #     The Unix timestamp (in seconds) for when the run failed.
           #
-          #   @param incomplete_details [OpenAI::Models::Beta::Threads::Run::IncompleteDetails, nil] Details on why the run is incomplete. Will be `null` if the run is not incomplet
+          #   @param incomplete_details [OpenAI::Models::Beta::Threads::Run::IncompleteDetails, nil]
+          #     Details on why the run is incomplete. Will be `null` if the run is not
+          #     incomplete.
           #
-          #   @param instructions [String] The instructions that the [assistant](https://platform.openai.com/docs/api-refer
+          #   @param instructions [String]
+          #     The instructions that the
+          #     [assistant](https://developers.openai.com/api/docs/assistants/migration) used
+          #     for this run.
           #
-          #   @param last_error [OpenAI::Models::Beta::Threads::Run::LastError, nil] The last error associated with this run. Will be `null` if there are no errors.
+          #   @param last_error [OpenAI::Models::Beta::Threads::Run::LastError, nil]
+          #     The last error associated with this run. Will be `null` if there are no errors.
           #
-          #   @param max_completion_tokens [Integer, nil] The maximum number of completion tokens specified to have been used over the cou
+          #   @param max_completion_tokens [Integer, nil]
+          #     The maximum number of completion tokens specified to have been used over the
+          #     course of the run.
           #
-          #   @param max_prompt_tokens [Integer, nil] The maximum number of prompt tokens specified to have been used over the course
+          #   @param max_prompt_tokens [Integer, nil]
+          #     The maximum number of prompt tokens specified to have been used over the course
+          #     of the run.
           #
-          #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+          #   @param metadata [Hash{Symbol=>String}, nil]
+          #     Set of 16 key-value pairs that can be attached to an object. This can be useful
+          #     for storing additional information about the object in a structured format, and
+          #     querying for objects via API or the dashboard.
           #
-          #   @param model [String] The model that the [assistant](https://platform.openai.com/docs/api-reference/as
+          #     Keys are strings with a maximum length of 64 characters. Values are strings with
+          #     a maximum length of 512 characters.
           #
-          #   @param parallel_tool_calls [Boolean] Whether to enable [parallel function calling](https://platform.openai.com/docs/g
+          #   @param model [String]
+          #     The model that the
+          #     [assistant](https://developers.openai.com/api/docs/assistants/migration) used
+          #     for this run.
           #
-          #   @param required_action [OpenAI::Models::Beta::Threads::Run::RequiredAction, nil] Details on the action required to continue the run. Will be `null` if no action
+          #   @param parallel_tool_calls [Boolean]
+          #     Whether to enable
+          #     [parallel function calling](https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling)
+          #     during tool use.
           #
-          #   @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil] Specifies the format that the model must output. Compatible with [GPT-4o](https:
+          #   @param required_action [OpenAI::Models::Beta::Threads::Run::RequiredAction, nil]
+          #     Details on the action required to continue the run. Will be `null` if no action
+          #     is required.
           #
-          #   @param started_at [Integer, nil] The Unix timestamp (in seconds) for when the run was started.
+          #   @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]
+          #     Specifies the format that the model must output. Compatible with
+          #     [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+          #     [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+          #     all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
           #
-          #   @param status [Symbol, OpenAI::Models::Beta::Threads::RunStatus] The status of the run, which can be either `queued`, `in_progress`, `requires_ac
+          #     Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
+          #     Outputs which ensures the model will match your supplied JSON schema. Learn more
+          #     in the
+          #     [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
           #
-          #   @param thread_id [String] The ID of the [thread](https://platform.openai.com/docs/api-reference/threads) t
+          #     Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
+          #     message the model generates is valid JSON.
           #
-          #   @param tool_choice [Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto, OpenAI::Models::Beta::AssistantToolChoice, nil] Controls which (if any) tool is called by the model.
+          #     **Important:** when using JSON mode, you **must** also instruct the model to
+          #     produce JSON yourself via a system or user message. Without this, the model may
+          #     generate an unending stream of whitespace until the generation reaches the token
+          #     limit, resulting in a long-running and seemingly "stuck" request. Also note that
+          #     the message content may be partially cut off if `finish_reason="length"`, which
+          #     indicates the generation exceeded `max_tokens` or the conversation exceeded the
+          #     max context length.
           #
-          #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>] The list of tools that the [assistant](https://platform.openai.com/docs/api-refe
+          #   @param started_at [Integer, nil]
+          #     The Unix timestamp (in seconds) for when the run was started.
           #
-          #   @param truncation_strategy [OpenAI::Models::Beta::Threads::Run::TruncationStrategy, nil] Controls for how a thread will be truncated prior to the run. Use this to contro
+          #   @param status [Symbol, OpenAI::Models::Beta::Threads::RunStatus]
+          #     The status of the run, which can be either `queued`, `in_progress`,
+          #     `requires_action`, `cancelling`, `cancelled`, `failed`, `completed`,
+          #     `incomplete`, or `expired`.
           #
-          #   @param usage [OpenAI::Models::Beta::Threads::Run::Usage, nil] Usage statistics related to the run. This value will be `null` if the run is not
+          #   @param thread_id [String]
+          #     The ID of the
+          #     [thread](https://developers.openai.com/api/docs/assistants/migration) that was
+          #     executed on as a part of this run.
           #
-          #   @param temperature [Float, nil] The sampling temperature used for this run. If not set, defaults to 1.
+          #   @param tool_choice [Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto, OpenAI::Models::Beta::AssistantToolChoice, nil]
+          #     Controls which (if any) tool is called by the model. `none` means the model will
+          #     not call any tools and instead generates a message. `auto` is the default value
+          #     and means the model can pick between generating a message or calling one or more
+          #     tools. `required` means the model must call one or more tools before responding
+          #     to the user. Specifying a particular tool like `{"type": "file_search"}` or
+          #     `{"type": "function", "function": {"name": "my_function"}}` forces the model to
+          #     call that tool.
           #
-          #   @param top_p [Float, nil] The nucleus sampling value used for this run. If not set, defaults to 1.
+          #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>]
+          #     The list of tools that the
+          #     [assistant](https://developers.openai.com/api/docs/assistants/migration) used
+          #     for this run.
           #
-          #   @param object [Symbol, :"thread.run"] The object type, which is always `thread.run`.
+          #   @param truncation_strategy [OpenAI::Models::Beta::Threads::Run::TruncationStrategy, nil]
+          #     Controls for how a thread will be truncated prior to the run. Use this to
+          #     control the initial context window of the run.
+          #
+          #   @param usage [OpenAI::Models::Beta::Threads::Run::Usage, nil]
+          #     Usage statistics related to the run. This value will be `null` if the run is not
+          #     in a terminal state (i.e. `in_progress`, `queued`, etc.).
+          #
+          #   @param temperature [Float, nil]
+          #     The sampling temperature used for this run. If not set, defaults to 1.
+          #
+          #   @param top_p [Float, nil]
+          #     The nucleus sampling value used for this run. If not set, defaults to 1.
+          #
+          #   @param object [Symbol, :"thread.run"]
+          #     The object type, which is always `thread.run`.
 
           # @see OpenAI::Models::Beta::Threads::Run#incomplete_details
           class IncompleteDetails < OpenAI::Internal::Type::BaseModel
@@ -290,13 +365,12 @@ module OpenAI
             optional :reason, enum: -> { OpenAI::Beta::Threads::Run::IncompleteDetails::Reason }
 
             # @!method initialize(reason: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::Threads::Run::IncompleteDetails} for more details.
-            #
             #   Details on why the run is incomplete. Will be `null` if the run is not
             #   incomplete.
             #
-            #   @param reason [Symbol, OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason] The reason why the run is incomplete. This will point to which specific token li
+            #   @param reason [Symbol, OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason]
+            #     The reason why the run is incomplete. This will point to which specific token
+            #     limit was reached over the course of the run.
 
             # The reason why the run is incomplete. This will point to which specific token
             # limit was reached over the course of the run.
@@ -330,9 +404,11 @@ module OpenAI
             # @!method initialize(code:, message:)
             #   The last error associated with this run. Will be `null` if there are no errors.
             #
-            #   @param code [Symbol, OpenAI::Models::Beta::Threads::Run::LastError::Code] One of `server_error`, `rate_limit_exceeded`, or `invalid_prompt`.
+            #   @param code [Symbol, OpenAI::Models::Beta::Threads::Run::LastError::Code]
+            #     One of `server_error`, `rate_limit_exceeded`, or `invalid_prompt`.
             #
-            #   @param message [String] A human-readable description of the error.
+            #   @param message [String]
+            #     A human-readable description of the error.
 
             # One of `server_error`, `rate_limit_exceeded`, or `invalid_prompt`.
             #
@@ -367,9 +443,11 @@ module OpenAI
             #   Details on the action required to continue the run. Will be `null` if no action
             #   is required.
             #
-            #   @param submit_tool_outputs [OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs] Details on the tool outputs needed for this run to continue.
+            #   @param submit_tool_outputs [OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs]
+            #     Details on the tool outputs needed for this run to continue.
             #
-            #   @param type [Symbol, :submit_tool_outputs] For now, this is always `submit_tool_outputs`.
+            #   @param type [Symbol, :submit_tool_outputs]
+            #     For now, this is always `submit_tool_outputs`.
 
             # @see OpenAI::Models::Beta::Threads::Run::RequiredAction#submit_tool_outputs
             class SubmitToolOutputs < OpenAI::Internal::Type::BaseModel
@@ -385,7 +463,8 @@ module OpenAI
               # @!method initialize(tool_calls:)
               #   Details on the tool outputs needed for this run to continue.
               #
-              #   @param tool_calls [Array<OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall>] A list of the relevant tool calls.
+              #   @param tool_calls [Array<OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall>]
+              #     A list of the relevant tool calls.
             end
           end
 
@@ -408,15 +487,18 @@ module OpenAI
             optional :last_messages, Integer, nil?: true
 
             # @!method initialize(type:, last_messages: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::Threads::Run::TruncationStrategy} for more details.
-            #
             #   Controls for how a thread will be truncated prior to the run. Use this to
             #   control the initial context window of the run.
             #
-            #   @param type [Symbol, OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type] The truncation strategy to use for the thread. The default is `auto`. If set to
+            #   @param type [Symbol, OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type]
+            #     The truncation strategy to use for the thread. The default is `auto`. If set to
+            #     `last_messages`, the thread will be truncated to the n most recent messages in
+            #     the thread. When set to `auto`, messages in the middle of the thread will be
+            #     dropped to fit the context length of the model, `max_prompt_tokens`.
             #
-            #   @param last_messages [Integer, nil] The number of most recent messages from the thread when constructing the context
+            #   @param last_messages [Integer, nil]
+            #     The number of most recent messages from the thread when constructing the context
+            #     for the run.
 
             # The truncation strategy to use for the thread. The default is `auto`. If set to
             # `last_messages`, the thread will be truncated to the n most recent messages in
@@ -459,11 +541,14 @@ module OpenAI
             #   Usage statistics related to the run. This value will be `null` if the run is not
             #   in a terminal state (i.e. `in_progress`, `queued`, etc.).
             #
-            #   @param completion_tokens [Integer] Number of completion tokens used over the course of the run.
+            #   @param completion_tokens [Integer]
+            #     Number of completion tokens used over the course of the run.
             #
-            #   @param prompt_tokens [Integer] Number of prompt tokens used over the course of the run.
+            #   @param prompt_tokens [Integer]
+            #     Number of prompt tokens used over the course of the run.
             #
-            #   @param total_tokens [Integer] Total number of tokens used (prompt + completion).
+            #   @param total_tokens [Integer]
+            #     Total number of tokens used (prompt + completion).
           end
         end
       end

@@ -929,7 +929,7 @@ module OpenAI
           # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
           # reasoning effort can result in faster responses and fewer tokens used on
           # reasoning in a response. Not all reasoning models support every value. See the
-          # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+          # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
           # model-specific support.
           sig { returns(T.nilable(OpenAI::ReasoningEffort::OrSymbol)) }
           attr_accessor :reasoning_effort
@@ -939,7 +939,7 @@ module OpenAI
           # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
           # Outputs which ensures the model will match your supplied JSON schema. Learn more
           # in the
-          # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
           #
           # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
           # ensures the message the model generates is valid JSON. Using `json_schema` is
@@ -1027,7 +1027,7 @@ module OpenAI
             # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
             # reasoning effort can result in faster responses and fewer tokens used on
             # reasoning in a response. Not all reasoning models support every value. See the
-            # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+            # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
             # model-specific support.
             reasoning_effort: nil,
 
@@ -1036,7 +1036,7 @@ module OpenAI
             # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
             # Outputs which ensures the model will match your supplied JSON schema. Learn more
             # in the
-            # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+            # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
             #
             # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
             # ensures the message the model generates is valid JSON. Using `json_schema` is
@@ -1085,7 +1085,7 @@ module OpenAI
           # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
           # Outputs which ensures the model will match your supplied JSON schema. Learn more
           # in the
-          # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
           #
           # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
           # ensures the message the model generates is valid JSON. Using `json_schema` is

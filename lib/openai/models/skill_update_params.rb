@@ -21,7 +21,8 @@ module OpenAI
       # @!method initialize(skill_id:, default_version:, request_options: {})
       #   @param skill_id [String]
       #
-      #   @param default_version [String] The skill version number to set as default.
+      #   @param default_version [String]
+      #     The skill version number to set as default.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end

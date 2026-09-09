@@ -21,7 +21,8 @@ module OpenAI
       # @!method initialize(video_id:, variant: nil, request_options: {})
       #   @param video_id [String]
       #
-      #   @param variant [Symbol, OpenAI::Models::VideoDownloadContentParams::Variant] Which downloadable asset to return. Defaults to the MP4 video.
+      #   @param variant [Symbol, OpenAI::Models::VideoDownloadContentParams::Variant]
+      #     Which downloadable asset to return. Defaults to the MP4 video.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

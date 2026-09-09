@@ -10,7 +10,8 @@ module OpenAI
             #
             # @overload retrieve(project_id, request_options: {})
             #
-            # @param project_id [String] The ID of the project.
+            # @param project_id [String]
+            #   The ID of the project.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -31,17 +32,23 @@ module OpenAI
             #
             # @overload update(project_id, code_interpreter: nil, file_search: nil, image_generation: nil, mcp: nil, web_search: nil, request_options: {})
             #
-            # @param project_id [String] The ID of the project.
+            # @param project_id [String]
+            #   The ID of the project.
             #
-            # @param code_interpreter [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter, nil] The code interpreter permission update.
+            # @param code_interpreter [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter, nil]
+            #   The code interpreter permission update.
             #
-            # @param file_search [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch, nil] The file search permission update.
+            # @param file_search [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch, nil]
+            #   The file search permission update.
             #
-            # @param image_generation [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration, nil] The image generation permission update.
+            # @param image_generation [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration, nil]
+            #   The image generation permission update.
             #
-            # @param mcp [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp, nil] The MCP permission update.
+            # @param mcp [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp, nil]
+            #   The MCP permission update.
             #
-            # @param web_search [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch, nil] The web search permission update.
+            # @param web_search [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch, nil]
+            #   The web search permission update.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #

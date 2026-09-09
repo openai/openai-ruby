@@ -101,38 +101,54 @@ module OpenAI
         required :status, String
 
         # @!method initialize(id:, created_at:, data_source:, error:, eval_id:, metadata:, model:, name:, per_model_usage:, per_testing_criteria_results:, report_url:, result_counts:, status:, object: :"eval.run")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Evals::RunListResponse} for more details.
-        #
         #   A schema representing an evaluation run.
         #
-        #   @param id [String] Unique identifier for the evaluation run.
+        #   @param id [String]
+        #     Unique identifier for the evaluation run.
         #
-        #   @param created_at [Integer] Unix timestamp (in seconds) when the evaluation run was created.
+        #   @param created_at [Integer]
+        #     Unix timestamp (in seconds) when the evaluation run was created.
         #
-        #   @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Models::Evals::RunListResponse::DataSource::Responses] Information about the run's data source.
+        #   @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Models::Evals::RunListResponse::DataSource::Responses]
+        #     Information about the run's data source.
         #
-        #   @param error [OpenAI::Models::Evals::EvalAPIError] An object representing an error response from the Eval API.
+        #   @param error [OpenAI::Models::Evals::EvalAPIError]
+        #     An object representing an error response from the Eval API.
         #
-        #   @param eval_id [String] The identifier of the associated evaluation.
+        #   @param eval_id [String]
+        #     The identifier of the associated evaluation.
         #
-        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #     Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #     for storing additional information about the object in a structured format, and
+        #     querying for objects via API or the dashboard.
         #
-        #   @param model [String] The model that is evaluated, if applicable.
+        #     Keys are strings with a maximum length of 64 characters. Values are strings with
+        #     a maximum length of 512 characters.
         #
-        #   @param name [String] The name of the evaluation run.
+        #   @param model [String]
+        #     The model that is evaluated, if applicable.
         #
-        #   @param per_model_usage [Array<OpenAI::Models::Evals::RunListResponse::PerModelUsage>] Usage statistics for each model during the evaluation run.
+        #   @param name [String]
+        #     The name of the evaluation run.
         #
-        #   @param per_testing_criteria_results [Array<OpenAI::Models::Evals::RunListResponse::PerTestingCriteriaResult>] Results per testing criteria applied during the evaluation run.
+        #   @param per_model_usage [Array<OpenAI::Models::Evals::RunListResponse::PerModelUsage>]
+        #     Usage statistics for each model during the evaluation run.
         #
-        #   @param report_url [String] The URL to the rendered evaluation run report on the UI dashboard.
+        #   @param per_testing_criteria_results [Array<OpenAI::Models::Evals::RunListResponse::PerTestingCriteriaResult>]
+        #     Results per testing criteria applied during the evaluation run.
         #
-        #   @param result_counts [OpenAI::Models::Evals::RunListResponse::ResultCounts] Counters summarizing the outcomes of the evaluation run.
+        #   @param report_url [String]
+        #     The URL to the rendered evaluation run report on the UI dashboard.
         #
-        #   @param status [String] The status of the evaluation run.
+        #   @param result_counts [OpenAI::Models::Evals::RunListResponse::ResultCounts]
+        #     Counters summarizing the outcomes of the evaluation run.
         #
-        #   @param object [Symbol, :"eval.run"] The type of the object. Always "eval.run".
+        #   @param status [String]
+        #     The status of the evaluation run.
+        #
+        #   @param object [Symbol, :"eval.run"]
+        #     The type of the object. Always "eval.run".
 
         # Information about the run's data source.
         #
@@ -191,21 +207,24 @@ module OpenAI
             )
 
             # @!method initialize(source:, input_messages: nil, model: nil, sampling_params: nil, type: :responses)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Evals::RunListResponse::DataSource::Responses} for more
-            #   details.
-            #
             #   A ResponsesRunDataSource object describing a model sampling configuration.
             #
-            #   @param source [OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::FileContent, OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::FileID, OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::Responses] Determines what populates the `item` namespace in this run's data source.
+            #   @param source [OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::FileContent, OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::FileID, OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::Responses]
+            #     Determines what populates the `item` namespace in this run's data source.
             #
-            #   @param input_messages [OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template, OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::ItemReference] Used when sampling from a model. Dictates the structure of the messages passed i
+            #   @param input_messages [OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template, OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::ItemReference]
+            #     Used when sampling from a model. Dictates the structure of the messages passed
+            #     into the model. Can either be a reference to a prebuilt trajectory (ie,
+            #     `item.input_trajectory`), or a template with variable references to the `item`
+            #     namespace.
             #
-            #   @param model [String] The name of the model to use for generating completions (e.g. "o3-mini").
+            #   @param model [String]
+            #     The name of the model to use for generating completions (e.g. "o3-mini").
             #
             #   @param sampling_params [OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams]
             #
-            #   @param type [Symbol, :responses] The type of run data source. Always `responses`.
+            #   @param type [Symbol, :responses]
+            #     The type of run data source. Always `responses`.
 
             # Determines what populates the `item` namespace in this run's data source.
             #
@@ -249,10 +268,11 @@ module OpenAI
                 required :type, const: :file_content
 
                 # @!method initialize(content:, type: :file_content)
-                #   @param content [Array<OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::FileContent::Content>] The content of the jsonl file.
+                #   @param content [Array<OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::FileContent::Content>]
+                #     The content of the jsonl file.
                 #
-                #   @param type [Symbol, :file_content] The type of jsonl source. Always `file_content`.
-
+                #   @param type [Symbol, :file_content]
+                #     The type of jsonl source. Always `file_content`.
                 class Content < OpenAI::Internal::Type::BaseModel
                   # @!attribute item
                   #
@@ -284,9 +304,11 @@ module OpenAI
                 required :type, const: :file_id
 
                 # @!method initialize(id:, type: :file_id)
-                #   @param id [String] The identifier of the file.
+                #   @param id [String]
+                #     The identifier of the file.
                 #
-                #   @param type [Symbol, :file_id] The type of jsonl source. Always `file_id`.
+                #   @param type [Symbol, :file_id]
+                #     The type of jsonl source. Always `file_id`.
               end
 
               class Responses < OpenAI::Internal::Type::BaseModel
@@ -336,7 +358,7 @@ module OpenAI
                 #   are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
                 #   reasoning effort can result in faster responses and fewer tokens used on
                 #   reasoning in a response. Not all reasoning models support every value. See the
-                #   [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+                #   [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
                 #   model-specific support.
                 #
                 #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
@@ -367,33 +389,50 @@ module OpenAI
                 optional :users, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
                 # @!method initialize(created_after: nil, created_before: nil, instructions_search: nil, metadata: nil, model: nil, reasoning_effort: nil, temperature: nil, tools: nil, top_p: nil, users: nil, type: :responses)
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::Responses}
-                #   for more details.
-                #
                 #   A EvalResponsesSource object describing a run data source configuration.
                 #
-                #   @param created_after [Integer, nil] Only include items created after this timestamp (inclusive). This is a query par
+                #   @param created_after [Integer, nil]
+                #     Only include items created after this timestamp (inclusive). This is a query
+                #     parameter used to select responses.
                 #
-                #   @param created_before [Integer, nil] Only include items created before this timestamp (inclusive). This is a query pa
+                #   @param created_before [Integer, nil]
+                #     Only include items created before this timestamp (inclusive). This is a query
+                #     parameter used to select responses.
                 #
-                #   @param instructions_search [String, nil] Optional string to search the 'instructions' field. This is a query parameter us
+                #   @param instructions_search [String, nil]
+                #     Optional string to search the 'instructions' field. This is a query parameter
+                #     used to select responses.
                 #
-                #   @param metadata [Object, nil] Metadata filter for the responses. This is a query parameter used to select resp
+                #   @param metadata [Object, nil]
+                #     Metadata filter for the responses. This is a query parameter used to select
+                #     responses.
                 #
-                #   @param model [String, nil] The name of the model to find responses for. This is a query parameter used to s
+                #   @param model [String, nil]
+                #     The name of the model to find responses for. This is a query parameter used to
+                #     select responses.
                 #
-                #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Constrains effort on reasoning for reasoning models. Currently supported
+                #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
+                #     Constrains effort on reasoning for reasoning models. Currently supported values
+                #     are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+                #     reasoning effort can result in faster responses and fewer tokens used on
+                #     reasoning in a response. Not all reasoning models support every value. See the
+                #     [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
+                #     model-specific support.
                 #
-                #   @param temperature [Float, nil] Sampling temperature. This is a query parameter used to select responses.
+                #   @param temperature [Float, nil]
+                #     Sampling temperature. This is a query parameter used to select responses.
                 #
-                #   @param tools [Array<String>, nil] List of tool names. This is a query parameter used to select responses.
+                #   @param tools [Array<String>, nil]
+                #     List of tool names. This is a query parameter used to select responses.
                 #
-                #   @param top_p [Float, nil] Nucleus sampling parameter. This is a query parameter used to select responses.
+                #   @param top_p [Float, nil]
+                #     Nucleus sampling parameter. This is a query parameter used to select responses.
                 #
-                #   @param users [Array<String>, nil] List of user identifiers. This is a query parameter used to select responses.
+                #   @param users [Array<String>, nil]
+                #     List of user identifiers. This is a query parameter used to select responses.
                 #
-                #   @param type [Symbol, :responses] The type of run data source. Always `responses`.
+                #   @param type [Symbol, :responses]
+                #     The type of run data source. Always `responses`.
               end
 
               # @!method self.variants
@@ -443,13 +482,12 @@ module OpenAI
                 required :type, const: :template
 
                 # @!method initialize(template:, type: :template)
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template}
-                #   for more details.
+                #   @param template [Array<OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::ChatMessage, OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem>]
+                #     A list of chat messages forming the prompt or context. May include variable
+                #     references to the `item` namespace, ie {{item.name}}.
                 #
-                #   @param template [Array<OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::ChatMessage, OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem>] A list of chat messages forming the prompt or context. May include variable refe
-                #
-                #   @param type [Symbol, :template] The type of input messages. Always `template`.
+                #   @param type [Symbol, :template]
+                #     The type of input messages. Always `template`.
 
                 # A message input to the model with a role indicating instruction following
                 # hierarchy. Instructions given with the `developer` or `system` role take
@@ -490,9 +528,11 @@ module OpenAI
                     required :role, String
 
                     # @!method initialize(content:, role:)
-                    #   @param content [String] The content of the message.
+                    #   @param content [String]
+                    #     The content of the message.
                     #
-                    #   @param role [String] The role of the message (e.g. "system", "assistant", "user").
+                    #   @param role [String]
+                    #     The role of the message (e.g. "system", "assistant", "user").
                   end
 
                   class EvalItem < OpenAI::Internal::Type::BaseModel
@@ -532,21 +572,22 @@ module OpenAI
                     )
 
                     # @!method initialize(content:, role:, type: nil)
-                    #   Some parameter documentations has been truncated, see
-                    #   {OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem}
-                    #   for more details.
-                    #
                     #   A message input to the model with a role indicating instruction following
                     #   hierarchy. Instructions given with the `developer` or `system` role take
                     #   precedence over instructions given with the `user` role. Messages with the
                     #   `assistant` role are presumed to have been generated by the model in previous
                     #   interactions.
                     #
-                    #   @param content [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::OutputText, OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::InputImage, OpenAI::Models::Responses::ResponseInputAudio, Array<String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Graders::GraderInputItem::OutputText, OpenAI::Models::Graders::GraderInputItem::InputImage, OpenAI::Models::Responses::ResponseInputAudio>] Inputs to the model - can contain template strings. Supports text, output text,
+                    #   @param content [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::OutputText, OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::InputImage, OpenAI::Models::Responses::ResponseInputAudio, Array<String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Graders::GraderInputItem::OutputText, OpenAI::Models::Graders::GraderInputItem::InputImage, OpenAI::Models::Responses::ResponseInputAudio>]
+                    #     Inputs to the model - can contain template strings. Supports text, output text,
+                    #     input images, and input audio, either as a single item or an array of items.
                     #
-                    #   @param role [Symbol, OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Role] The role of the message input. One of `user`, `assistant`, `system`, or
+                    #   @param role [Symbol, OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Role]
+                    #     The role of the message input. One of `user`, `assistant`, `system`, or
+                    #     `developer`.
                     #
-                    #   @param type [Symbol, OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Type] The type of the message input. Always `message`.
+                    #   @param type [Symbol, OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Type]
+                    #     The type of the message input. Always `message`.
 
                     # Inputs to the model - can contain template strings. Supports text, output text,
                     # input images, and input audio, either as a single item or an array of items.
@@ -596,15 +637,13 @@ module OpenAI
                         required :type, const: :output_text
 
                         # @!method initialize(text:, type: :output_text)
-                        #   Some parameter documentations has been truncated, see
-                        #   {OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::OutputText}
-                        #   for more details.
-                        #
                         #   A text output from the model.
                         #
-                        #   @param text [String] The text output from the model.
+                        #   @param text [String]
+                        #     The text output from the model.
                         #
-                        #   @param type [Symbol, :output_text] The type of the output text. Always `output_text`.
+                        #   @param type [Symbol, :output_text]
+                        #     The type of the output text. Always `output_text`.
                       end
 
                       class InputImage < OpenAI::Internal::Type::BaseModel
@@ -628,17 +667,17 @@ module OpenAI
                         optional :detail, String
 
                         # @!method initialize(image_url:, detail: nil, type: :input_image)
-                        #   Some parameter documentations has been truncated, see
-                        #   {OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::InputImage}
-                        #   for more details.
-                        #
                         #   An image input block used within EvalItem content arrays.
                         #
-                        #   @param image_url [String] The URL of the image input.
+                        #   @param image_url [String]
+                        #     The URL of the image input.
                         #
-                        #   @param detail [String] The detail level of the image to be sent to the model. One of `high`, `low`, or
+                        #   @param detail [String]
+                        #     The detail level of the image to be sent to the model. One of `high`, `low`, or
+                        #     `auto`. Defaults to `auto`.
                         #
-                        #   @param type [Symbol, :input_image] The type of the image input. Always `input_image`.
+                        #   @param type [Symbol, :input_image]
+                        #     The type of the image input. Always `input_image`.
                       end
 
                       # @!method self.variants
@@ -693,9 +732,11 @@ module OpenAI
                 required :type, const: :item_reference
 
                 # @!method initialize(item_reference:, type: :item_reference)
-                #   @param item_reference [String] A reference to a variable in the `item` namespace. Ie, "item.name"
+                #   @param item_reference [String]
+                #     A reference to a variable in the `item` namespace. Ie, "item.name"
                 #
-                #   @param type [Symbol, :item_reference] The type of input messages. Always `item_reference`.
+                #   @param type [Symbol, :item_reference]
+                #     The type of input messages. Always `item_reference`.
               end
 
               # @!method self.variants
@@ -715,7 +756,7 @@ module OpenAI
               #   are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
               #   reasoning effort can result in faster responses and fewer tokens used on
               #   reasoning in a response. Not all reasoning models support every value. See the
-              #   [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+              #   [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
               #   model-specific support.
               #
               #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
@@ -737,8 +778,8 @@ module OpenAI
               #   Configuration options for a text response from the model. Can be plain text or
               #   structured JSON data. Learn more:
               #
-              #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-              #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+              #   - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+              #   - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
               #
               #   @return [OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams::Text, nil]
               optional(
@@ -754,13 +795,14 @@ module OpenAI
               #
               #   - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
               #     capabilities, like
-              #     [web search](https://platform.openai.com/docs/guides/tools-web-search) or
-              #     [file search](https://platform.openai.com/docs/guides/tools-file-search).
+              #     [web search](https://developers.openai.com/api/docs/guides/tools-web-search)
+              #     or
+              #     [file search](https://developers.openai.com/api/docs/guides/tools-file-search).
               #     Learn more about
-              #     [built-in tools](https://platform.openai.com/docs/guides/tools).
+              #     [built-in tools](https://developers.openai.com/api/docs/guides/tools).
               #   - **Function calls (custom tools)**: Functions that are defined by you, enabling
               #     the model to call your own code. Learn more about
-              #     [function calling](https://platform.openai.com/docs/guides/function-calling).
+              #     [function calling](https://developers.openai.com/api/docs/guides/function-calling).
               #
               #   @return [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ProgrammaticToolCalling, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>, nil]
               optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool] }
@@ -772,23 +814,49 @@ module OpenAI
               optional :top_p, Float
 
               # @!method initialize(max_completion_tokens: nil, reasoning_effort: nil, seed: nil, temperature: nil, text: nil, tools: nil, top_p: nil)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams}
-              #   for more details.
+              #   @param max_completion_tokens [Integer]
+              #     The maximum number of tokens in the generated output.
               #
-              #   @param max_completion_tokens [Integer] The maximum number of tokens in the generated output.
+              #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
+              #     Constrains effort on reasoning for reasoning models. Currently supported values
+              #     are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+              #     reasoning effort can result in faster responses and fewer tokens used on
+              #     reasoning in a response. Not all reasoning models support every value. See the
+              #     [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
+              #     model-specific support.
               #
-              #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Constrains effort on reasoning for reasoning models. Currently supported
+              #   @param seed [Integer]
+              #     A seed value to initialize the randomness, during sampling.
               #
-              #   @param seed [Integer] A seed value to initialize the randomness, during sampling.
+              #   @param temperature [Float]
+              #     A higher temperature increases randomness in the outputs.
               #
-              #   @param temperature [Float] A higher temperature increases randomness in the outputs.
+              #   @param text [OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams::Text]
+              #     Configuration options for a text response from the model. Can be plain text or
+              #     structured JSON data. Learn more:
               #
-              #   @param text [OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams::Text] Configuration options for a text response from the model. Can be plain
+              #     - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+              #     - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
               #
-              #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ProgrammaticToolCalling, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>] An array of tools the model may call while generating a response. You
+              #   @param tools [Array<OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::ComputerUsePreviewTool, OpenAI::Models::Responses::Tool::Mcp, OpenAI::Models::Responses::Tool::CodeInterpreter, OpenAI::Models::Responses::Tool::ProgrammaticToolCalling, OpenAI::Models::Responses::Tool::ImageGeneration, OpenAI::Models::Responses::Tool::LocalShell, OpenAI::Models::Responses::FunctionShellTool, OpenAI::Models::Responses::CustomTool, OpenAI::Models::Responses::NamespaceTool, OpenAI::Models::Responses::ToolSearchTool, OpenAI::Models::Responses::ApplyPatchTool, OpenAI::Models::Responses::WebSearchTool, OpenAI::Models::Responses::WebSearchPreviewTool>]
+              #     An array of tools the model may call while generating a response. You can
+              #     specify which tool to use by setting the `tool_choice` parameter.
               #
-              #   @param top_p [Float] An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
+              #     The two categories of tools you can provide the model are:
+              #
+              #     - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
+              #       capabilities, like
+              #       [web search](https://developers.openai.com/api/docs/guides/tools-web-search)
+              #       or
+              #       [file search](https://developers.openai.com/api/docs/guides/tools-file-search).
+              #       Learn more about
+              #       [built-in tools](https://developers.openai.com/api/docs/guides/tools).
+              #     - **Function calls (custom tools)**: Functions that are defined by you, enabling
+              #       the model to call your own code. Learn more about
+              #       [function calling](https://developers.openai.com/api/docs/guides/function-calling).
+              #
+              #   @param top_p [Float]
+              #     An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
 
               # @see OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams#text
               class Text < OpenAI::Internal::Type::BaseModel
@@ -797,7 +865,7 @@ module OpenAI
                 #
                 #   Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
                 #   ensures the model will match your supplied JSON schema. Learn more in the
-                #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+                #   [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
                 #
                 #   The default format is `{ "type": "text" }` with no additional options.
                 #
@@ -817,17 +885,26 @@ module OpenAI
                 )
 
                 # @!method initialize(format_: nil)
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams::Text}
-                #   for more details.
-                #
                 #   Configuration options for a text response from the model. Can be plain text or
                 #   structured JSON data. Learn more:
                 #
-                #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-                #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+                #   - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+                #   - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
                 #
-                #   @param format_ [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject] An object specifying the format that the model must output.
+                #   @param format_ [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject]
+                #     An object specifying the format that the model must output.
+                #
+                #     Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
+                #     ensures the model will match your supplied JSON schema. Learn more in the
+                #     [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
+                #
+                #     The default format is `{ "type": "text" }` with no additional options.
+                #
+                #     **Not recommended for gpt-4o and newer models:**
+                #
+                #     Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+                #     ensures the message the model generates is valid JSON. Using `json_schema` is
+                #     preferred for models that support it.
               end
             end
           end
@@ -874,17 +951,23 @@ module OpenAI
           required :total_tokens, Integer
 
           # @!method initialize(cached_tokens:, completion_tokens:, invocation_count:, model_name:, prompt_tokens:, total_tokens:)
-          #   @param cached_tokens [Integer] The number of tokens retrieved from cache.
+          #   @param cached_tokens [Integer]
+          #     The number of tokens retrieved from cache.
           #
-          #   @param completion_tokens [Integer] The number of completion tokens generated.
+          #   @param completion_tokens [Integer]
+          #     The number of completion tokens generated.
           #
-          #   @param invocation_count [Integer] The number of invocations.
+          #   @param invocation_count [Integer]
+          #     The number of invocations.
           #
-          #   @param model_name [String] The name of the model.
+          #   @param model_name [String]
+          #     The name of the model.
           #
-          #   @param prompt_tokens [Integer] The number of prompt tokens used.
+          #   @param prompt_tokens [Integer]
+          #     The number of prompt tokens used.
           #
-          #   @param total_tokens [Integer] The total number of tokens used.
+          #   @param total_tokens [Integer]
+          #     The total number of tokens used.
         end
 
         class PerTestingCriteriaResult < OpenAI::Internal::Type::BaseModel
@@ -907,11 +990,14 @@ module OpenAI
           required :testing_criteria, String
 
           # @!method initialize(failed:, passed:, testing_criteria:)
-          #   @param failed [Integer] Number of tests failed for this criteria.
+          #   @param failed [Integer]
+          #     Number of tests failed for this criteria.
           #
-          #   @param passed [Integer] Number of tests passed for this criteria.
+          #   @param passed [Integer]
+          #     Number of tests passed for this criteria.
           #
-          #   @param testing_criteria [String] A description of the testing criteria.
+          #   @param testing_criteria [String]
+          #     A description of the testing criteria.
         end
 
         # @see OpenAI::Models::Evals::RunListResponse#result_counts
@@ -943,13 +1029,17 @@ module OpenAI
           # @!method initialize(errored:, failed:, passed:, total:)
           #   Counters summarizing the outcomes of the evaluation run.
           #
-          #   @param errored [Integer] Number of output items that resulted in an error.
+          #   @param errored [Integer]
+          #     Number of output items that resulted in an error.
           #
-          #   @param failed [Integer] Number of output items that failed to pass the evaluation.
+          #   @param failed [Integer]
+          #     Number of output items that failed to pass the evaluation.
           #
-          #   @param passed [Integer] Number of output items that passed the evaluation.
+          #   @param passed [Integer]
+          #     Number of output items that passed the evaluation.
           #
-          #   @param total [Integer] Total number of executed output items.
+          #   @param total [Integer]
+          #     Total number of executed output items.
         end
       end
     end

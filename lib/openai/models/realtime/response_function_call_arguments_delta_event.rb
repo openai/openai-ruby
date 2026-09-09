@@ -47,25 +47,28 @@ module OpenAI
         required :type, const: :"response.function_call_arguments.delta"
 
         # @!method initialize(call_id:, delta:, event_id:, item_id:, output_index:, response_id:, type: :"response.function_call_arguments.delta")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::ResponseFunctionCallArgumentsDeltaEvent} for more
-        #   details.
-        #
         #   Returned when the model-generated function call arguments are updated.
         #
-        #   @param call_id [String] The ID of the function call.
+        #   @param call_id [String]
+        #     The ID of the function call.
         #
-        #   @param delta [String] The arguments delta as a JSON string.
+        #   @param delta [String]
+        #     The arguments delta as a JSON string.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param item_id [String] The ID of the function call item.
+        #   @param item_id [String]
+        #     The ID of the function call item.
         #
-        #   @param output_index [Integer] The index of the output item in the response.
+        #   @param output_index [Integer]
+        #     The index of the output item in the response.
         #
-        #   @param response_id [String] The ID of the response.
+        #   @param response_id [String]
+        #     The ID of the response.
         #
-        #   @param type [Symbol, :"response.function_call_arguments.delta"] The event type, must be `response.function_call_arguments.delta`.
+        #   @param type [Symbol, :"response.function_call_arguments.delta"]
+        #     The event type, must be `response.function_call_arguments.delta`.
       end
     end
   end

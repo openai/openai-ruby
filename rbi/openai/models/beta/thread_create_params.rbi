@@ -17,8 +17,9 @@ module OpenAI
           )
         end
 
-        # A list of [messages](https://platform.openai.com/docs/api-reference/messages) to
-        # start the thread with.
+        # A list of
+        # [messages](https://developers.openai.com/api/docs/assistants/migration) to start
+        # the thread with.
         sig { returns(T.nilable(T::Array[OpenAI::Beta::ThreadCreateParams::Message])) }
         attr_reader :messages
 
@@ -59,8 +60,9 @@ module OpenAI
         end
         def self.new(
 
-          # A list of [messages](https://platform.openai.com/docs/api-reference/messages) to
-          # start the thread with.
+          # A list of
+          # [messages](https://developers.openai.com/api/docs/assistants/migration) to start
+          # the thread with.
           messages: nil,
 
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -421,9 +423,9 @@ module OpenAI
               )
             end
 
-            # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
-            # available to the `code_interpreter` tool. There can be a maximum of 20 files
-            # associated with the tool.
+            # A list of [file](https://developers.openai.com/api/reference/resources/files)
+            # IDs made available to the `code_interpreter` tool. There can be a maximum of 20
+            # files associated with the tool.
             sig { returns(T.nilable(T::Array[String])) }
             attr_reader :file_ids
 
@@ -439,9 +441,9 @@ module OpenAI
             end
             def self.new(
 
-              # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
-              # available to the `code_interpreter` tool. There can be a maximum of 20 files
-              # associated with the tool.
+              # A list of [file](https://developers.openai.com/api/reference/resources/files)
+              # IDs made available to the `code_interpreter` tool. There can be a maximum of 20
+              # files associated with the tool.
 
               file_ids: nil
             )
@@ -466,7 +468,7 @@ module OpenAI
             end
 
             # The
-            # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+            # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
             # attached to this thread. There can be a maximum of 1 vector store attached to
             # the thread.
             sig { returns(T.nilable(T::Array[String])) }
@@ -476,7 +478,7 @@ module OpenAI
             attr_writer :vector_store_ids
 
             # A helper to create a
-            # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+            # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
             # with file_ids and attach it to this thread. There can be a maximum of 1 vector
             # store attached to the thread.
             sig {
@@ -508,13 +510,13 @@ module OpenAI
             def self.new(
 
               # The
-              # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+              # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
               # attached to this thread. There can be a maximum of 1 vector store attached to
               # the thread.
               vector_store_ids: nil,
 
               # A helper to create a
-              # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+              # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
               # with file_ids and attach it to this thread. There can be a maximum of 1 vector
               # store attached to the thread.
 
@@ -566,10 +568,10 @@ module OpenAI
               }
               attr_writer :chunking_strategy
 
-              # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs to
-              # add to the vector store. For vector stores created before Nov 2025, there can be
-              # a maximum of 10,000 files in a vector store. For vector stores created starting
-              # in Nov 2025, the limit is 100,000,000 files.
+              # A list of [file](https://developers.openai.com/api/reference/resources/files)
+              # IDs to add to the vector store. For vector stores created before Nov 2025, there
+              # can be a maximum of 10,000 files in a vector store. For vector stores created
+              # starting in Nov 2025, the limit is 100,000,000 files.
               sig { returns(T.nilable(T::Array[String])) }
               attr_reader :file_ids
 
@@ -605,10 +607,10 @@ module OpenAI
                 # strategy.
                 chunking_strategy: nil,
 
-                # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs to
-                # add to the vector store. For vector stores created before Nov 2025, there can be
-                # a maximum of 10,000 files in a vector store. For vector stores created starting
-                # in Nov 2025, the limit is 100,000,000 files.
+                # A list of [file](https://developers.openai.com/api/reference/resources/files)
+                # IDs to add to the vector store. For vector stores created before Nov 2025, there
+                # can be a maximum of 10,000 files in a vector store. For vector stores created
+                # starting in Nov 2025, the limit is 100,000,000 files.
                 file_ids: nil,
 
                 # Set of 16 key-value pairs that can be attached to an object. This can be useful

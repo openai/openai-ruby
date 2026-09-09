@@ -20,12 +20,13 @@ module OpenAI
           optional :url, String
 
           # @!method initialize(detail: nil, url: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::Threads::ImageURLDelta} for more details.
+          #   @param detail [Symbol, OpenAI::Models::Beta::Threads::ImageURLDelta::Detail]
+          #     Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
+          #     to high resolution using `high`.
           #
-          #   @param detail [Symbol, OpenAI::Models::Beta::Threads::ImageURLDelta::Detail] Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
-          #
-          #   @param url [String] The URL of the image, must be a supported image types: jpeg, jpg, png, gif, webp
+          #   @param url [String]
+          #     The URL of the image, must be a supported image types: jpeg, jpg, png, gif,
+          #     webp.
 
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
           # to high resolution using `high`.

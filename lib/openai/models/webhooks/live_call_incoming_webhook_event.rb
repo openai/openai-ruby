@@ -35,22 +35,24 @@ module OpenAI
         optional :object, enum: -> { OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Object }
 
         # @!method initialize(id:, created_at:, data:, object: nil, type: :"live.call.incoming")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent} for more details.
-        #
         #   Sent when an incoming API SIP session is available for Live acceptance. The same
         #   pending session can also emit `realtime.call.incoming`; the first successful
         #   Realtime or Live accept endpoint selects the runtime surface.
         #
-        #   @param id [String] The unique ID of the event.
+        #   @param id [String]
+        #     The unique ID of the event.
         #
-        #   @param created_at [Integer] The Unix timestamp (in seconds) of when the event was created.
+        #   @param created_at [Integer]
+        #     The Unix timestamp (in seconds) of when the event was created.
         #
-        #   @param data [OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data] Event data payload.
+        #   @param data [OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data]
+        #     Event data payload.
         #
-        #   @param object [Symbol, OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Object] The object of the event. Always `event`.
+        #   @param object [Symbol, OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Object]
+        #     The object of the event. Always `event`.
         #
-        #   @param type [Symbol, :"live.call.incoming"] The type of the event. Always `live.call.incoming`.
+        #   @param type [Symbol, :"live.call.incoming"]
+        #     The type of the event. Always `live.call.incoming`.
 
         # @see OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent#data
         class Data < OpenAI::Internal::Type::BaseModel
@@ -62,7 +64,9 @@ module OpenAI
           required :session_id, String
 
           # @!attribute sip_headers
-          #   Headers from the SIP Invite.
+          #   Headers from the SIP INVITE, excluding SIP authorization headers. Retained
+          #   names, values, repeated entries, and order are preserved. Treat these values as
+          #   untrusted call metadata.
           #
           #   @return [Array<OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader>]
           required(
@@ -71,15 +75,16 @@ module OpenAI
           )
 
           # @!method initialize(session_id:, sip_headers:)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data} for more details.
-          #
           #   Event data payload.
           #
-          #   @param session_id [String] The `live_...` ID of the pending SIP session. Forward this value
+          #   @param session_id [String]
+          #     The `live_...` ID of the pending SIP session. Forward this value unchanged when
+          #     accepting or rejecting the call through the Live API.
           #
-          #   @param sip_headers [Array<OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader>] Headers from the SIP Invite.
-
+          #   @param sip_headers [Array<OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader>]
+          #     Headers from the SIP INVITE, excluding SIP authorization headers. Retained
+          #     names, values, repeated entries, and order are preserved. Treat these values as
+          #     untrusted call metadata.
           class SipHeader < OpenAI::Internal::Type::BaseModel
             # @!attribute name
             #   Name of the SIP Header.
@@ -94,15 +99,13 @@ module OpenAI
             required :value, String
 
             # @!method initialize(name:, value:)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader} for
-            #   more details.
-            #
             #   A header from the SIP Invite.
             #
-            #   @param name [String] Name of the SIP Header.
+            #   @param name [String]
+            #     Name of the SIP Header.
             #
-            #   @param value [String] Value of the SIP Header.
+            #   @param value [String]
+            #     Value of the SIP Header.
           end
         end
 

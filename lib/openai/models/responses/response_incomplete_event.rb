@@ -23,20 +23,20 @@ module OpenAI
         required :type, const: :"response.incomplete"
 
         # @!method initialize(response:, sequence_number:, type: :"response.incomplete")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseIncompleteEvent} for more details.
-        #
         #   An event that is emitted when a response finishes as incomplete.
         #
         #   Over WebSocket, steering can finish a response with
         #   `response.incomplete_details.reason` set to `steered`, followed automatically by
         #   a successor `response.created` that commits the queued steering input.
         #
-        #   @param response [OpenAI::Models::Responses::Response] The response that was incomplete.
+        #   @param response [OpenAI::Models::Responses::Response]
+        #     The response that was incomplete.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param type [Symbol, :"response.incomplete"] The type of the event. Always `response.incomplete`.
+        #   @param type [Symbol, :"response.incomplete"]
+        #     The type of the event. Always `response.incomplete`.
       end
     end
   end

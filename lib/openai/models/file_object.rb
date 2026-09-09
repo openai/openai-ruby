@@ -67,28 +67,38 @@ module OpenAI
       optional :status_details, String
 
       # @!method initialize(id:, bytes:, created_at:, filename:, purpose:, status:, expires_at: nil, status_details: nil, object: :file)
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::FileObject} for more details.
-      #
       #   The `File` object represents a document that has been uploaded to OpenAI.
       #
-      #   @param id [String] The file identifier, which can be referenced in the API endpoints.
+      #   @param id [String]
+      #     The file identifier, which can be referenced in the API endpoints.
       #
-      #   @param bytes [Integer] The size of the file, in bytes.
+      #   @param bytes [Integer]
+      #     The size of the file, in bytes.
       #
-      #   @param created_at [Integer] The Unix timestamp (in seconds) for when the file was created.
+      #   @param created_at [Integer]
+      #     The Unix timestamp (in seconds) for when the file was created.
       #
-      #   @param filename [String] The name of the file.
+      #   @param filename [String]
+      #     The name of the file.
       #
-      #   @param purpose [Symbol, OpenAI::Models::FileObject::Purpose] The intended purpose of the file. Supported values are `assistants`, `assistants
+      #   @param purpose [Symbol, OpenAI::Models::FileObject::Purpose]
+      #     The intended purpose of the file. Supported values are `assistants`,
+      #     `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`,
+      #     `vision`, and `user_data`.
       #
-      #   @param status [Symbol, OpenAI::Models::FileObject::Status] Deprecated. The current status of the file, which can be either `uploaded`, `pro
+      #   @param status [Symbol, OpenAI::Models::FileObject::Status]
+      #     Deprecated. The current status of the file, which can be either `uploaded`,
+      #     `processed`, or `error`.
       #
-      #   @param expires_at [Integer] The Unix timestamp (in seconds) for when the file will expire.
+      #   @param expires_at [Integer]
+      #     The Unix timestamp (in seconds) for when the file will expire.
       #
-      #   @param status_details [String] Deprecated. For details on why a fine-tuning training file failed validation, se
+      #   @param status_details [String]
+      #     Deprecated. For details on why a fine-tuning training file failed validation,
+      #     see the `error` field on `fine_tuning.job`.
       #
-      #   @param object [Symbol, :file] The object type, which is always `file`.
+      #   @param object [Symbol, :file]
+      #     The object type, which is always `file`.
 
       # The intended purpose of the file. Supported values are `assistants`,
       # `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`,

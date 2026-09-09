@@ -31,10 +31,10 @@ module OpenAI
         # request.
         input:,
         # ID of the model to use. You can use the
-        # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
-        # see all of your available models, or see our
-        # [Model overview](https://platform.openai.com/docs/models) for descriptions of
-        # them.
+        # [List models](https://developers.openai.com/api/reference/resources/models/methods/list)
+        # API to see all of your available models, or see our
+        # [Model overview](https://developers.openai.com/api/docs/models) for descriptions
+        # of them.
         model:,
         # The number of dimensions the resulting output embeddings should have. Only
         # supported in `text-embedding-3` and later models.
@@ -44,7 +44,7 @@ module OpenAI
         encoding_format: nil,
         # A unique identifier representing your end-user, which can help OpenAI to monitor
         # and detect abuse.
-        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
         user: nil,
         request_options: {}
       )

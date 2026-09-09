@@ -14,7 +14,7 @@ module OpenAI
 
       # The embedding vector, which is a list of floats. The length of vector depends on
       # the model as listed in the
-      # [embedding guide](https://platform.openai.com/docs/guides/embeddings).
+      # [embedding guide](https://developers.openai.com/api/docs/guides/embeddings).
       sig { returns(T::Array[Float]) }
       attr_accessor :embedding
 
@@ -42,7 +42,7 @@ module OpenAI
 
         # The embedding vector, which is a list of floats. The length of vector depends on
         # the model as listed in the
-        # [embedding guide](https://platform.openai.com/docs/guides/embeddings).
+        # [embedding guide](https://developers.openai.com/api/docs/guides/embeddings).
         embedding:,
 
         # The index of the embedding in the list of embeddings.
