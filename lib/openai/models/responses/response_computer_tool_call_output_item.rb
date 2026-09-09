@@ -56,23 +56,28 @@ module OpenAI
         optional :created_by, String
 
         # @!method initialize(id:, call_id:, output:, status:, acknowledged_safety_checks: nil, created_by: nil, type: :computer_call_output)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseComputerToolCallOutputItem} for more
-        #   details.
+        #   @param id [String]
+        #     The unique ID of the computer call tool output.
         #
-        #   @param id [String] The unique ID of the computer call tool output.
+        #   @param call_id [String]
+        #     The ID of the computer tool call that produced the output.
         #
-        #   @param call_id [String] The ID of the computer tool call that produced the output.
+        #   @param output [OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot]
+        #     A computer screenshot image used with the computer use tool.
         #
-        #   @param output [OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot] A computer screenshot image used with the computer use tool.
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status]
+        #     The status of the message input. One of `in_progress`, `completed`, or
+        #     `incomplete`. Populated when input items are returned via API.
         #
-        #   @param status [Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status] The status of the message input. One of `in_progress`, `completed`, or
+        #   @param acknowledged_safety_checks [Array<OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>]
+        #     The safety checks reported by the API that have been acknowledged by the
+        #     developer.
         #
-        #   @param acknowledged_safety_checks [Array<OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>] The safety checks reported by the API that have been acknowledged by the
+        #   @param created_by [String]
+        #     The identifier of the actor that created the item.
         #
-        #   @param created_by [String] The identifier of the actor that created the item.
-        #
-        #   @param type [Symbol, :computer_call_output] The type of the computer tool call output. Always `computer_call_output`.
+        #   @param type [Symbol, :computer_call_output]
+        #     The type of the computer tool call output. Always `computer_call_output`.
 
         # The status of the message input. One of `in_progress`, `completed`, or
         # `incomplete`. Populated when input items are returned via API.
@@ -112,11 +117,14 @@ module OpenAI
           # @!method initialize(id:, code: nil, message: nil)
           #   A pending safety check for the computer call.
           #
-          #   @param id [String] The ID of the pending safety check.
+          #   @param id [String]
+          #     The ID of the pending safety check.
           #
-          #   @param code [String, nil] The type of the pending safety check.
+          #   @param code [String, nil]
+          #     The type of the pending safety check.
           #
-          #   @param message [String, nil] Details about the pending safety check.
+          #   @param message [String, nil]
+          #     Details about the pending safety check.
         end
       end
     end

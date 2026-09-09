@@ -20,9 +20,11 @@ module OpenAI
         #   A JsonlRunDataSource object with that specifies a JSONL file that matches the
         #   eval
         #
-        #   @param source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileID] Determines what populates the `item` namespace in the data source.
+        #   @param source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileID]
+        #     Determines what populates the `item` namespace in the data source.
         #
-        #   @param type [Symbol, :jsonl] The type of data source. Always `jsonl`.
+        #   @param type [Symbol, :jsonl]
+        #     The type of data source. Always `jsonl`.
 
         # Determines what populates the `item` namespace in the data source.
         #
@@ -57,10 +59,11 @@ module OpenAI
             required :type, const: :file_content
 
             # @!method initialize(content:, type: :file_content)
-            #   @param content [Array<OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content>] The content of the jsonl file.
+            #   @param content [Array<OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content>]
+            #     The content of the jsonl file.
             #
-            #   @param type [Symbol, :file_content] The type of jsonl source. Always `file_content`.
-
+            #   @param type [Symbol, :file_content]
+            #     The type of jsonl source. Always `file_content`.
             class Content < OpenAI::Internal::Type::BaseModel
               # @!attribute item
               #
@@ -92,9 +95,11 @@ module OpenAI
             required :type, const: :file_id
 
             # @!method initialize(id:, type: :file_id)
-            #   @param id [String] The identifier of the file.
+            #   @param id [String]
+            #     The identifier of the file.
             #
-            #   @param type [Symbol, :file_id] The type of jsonl source. Always `file_id`.
+            #   @param type [Symbol, :file_id]
+            #     The type of jsonl source. Always `file_id`.
           end
 
           # @!method self.variants

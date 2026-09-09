@@ -96,30 +96,41 @@ module OpenAI
               #   Detailed information about a role assignment entry returned when listing
               #   assignments.
               #
-              #   @param id [String] Identifier for the role.
+              #   @param id [String]
+              #     Identifier for the role.
               #
-              #   @param assignment_sources [Array<OpenAI::Models::Admin::Organization::Projects::Groups::RoleRetrieveResponse::AssignmentSource>, nil] Principals from which the role assignment is inherited, when available.
+              #   @param assignment_sources [Array<OpenAI::Models::Admin::Organization::Projects::Groups::RoleRetrieveResponse::AssignmentSource>, nil]
+              #     Principals from which the role assignment is inherited, when available.
               #
-              #   @param created_at [Integer, nil] When the role was created.
+              #   @param created_at [Integer, nil]
+              #     When the role was created.
               #
-              #   @param created_by [String, nil] Identifier of the actor who created the role.
+              #   @param created_by [String, nil]
+              #     Identifier of the actor who created the role.
               #
-              #   @param created_by_user_obj [Hash{Symbol=>Object}, nil] User details for the actor that created the role, when available.
+              #   @param created_by_user_obj [Hash{Symbol=>Object}, nil]
+              #     User details for the actor that created the role, when available.
               #
-              #   @param description [String, nil] Description of the role.
+              #   @param description [String, nil]
+              #     Description of the role.
               #
-              #   @param metadata [Hash{Symbol=>Object}, nil] Arbitrary metadata stored on the role.
+              #   @param metadata [Hash{Symbol=>Object}, nil]
+              #     Arbitrary metadata stored on the role.
               #
-              #   @param name [String] Name of the role.
+              #   @param name [String]
+              #     Name of the role.
               #
-              #   @param permissions [Array<String>] Permissions associated with the role.
+              #   @param permissions [Array<String>]
+              #     Permissions associated with the role.
               #
-              #   @param predefined_role [Boolean] Whether the role is predefined by OpenAI.
+              #   @param predefined_role [Boolean]
+              #     Whether the role is predefined by OpenAI.
               #
-              #   @param resource_type [String] Resource type the role applies to.
+              #   @param resource_type [String]
+              #     Resource type the role applies to.
               #
-              #   @param updated_at [Integer, nil] When the role was last updated.
-
+              #   @param updated_at [Integer, nil]
+              #     When the role was last updated.
               class AssignmentSource < OpenAI::Internal::Type::BaseModel
                 # @!attribute principal_id
                 #

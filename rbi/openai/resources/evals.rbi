@@ -15,7 +15,7 @@ module OpenAI
       # data source, which dictates the schema of the data used in the evaluation. After
       # creating an evaluation, you can run it on different models and model parameters.
       # We support several types of graders and datasources. For more information, see
-      # the [Evals guide](https://platform.openai.com/docs/guides/evals).
+      # the [Evals guide](https://developers.openai.com/api/docs/guides/evals).
       sig {
         params(
           data_source_config: T.any(

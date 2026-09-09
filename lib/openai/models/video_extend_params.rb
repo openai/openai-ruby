@@ -31,14 +31,19 @@ module OpenAI
       required :video, union: -> { OpenAI::VideoExtendParams::Video }
 
       # @!method initialize(prompt:, seconds:, video:, request_options: {})
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::VideoExtendParams} for more details.
+      #   @param prompt [String]
+      #     Updated text prompt that directs the extension generation.
       #
-      #   @param prompt [String] Updated text prompt that directs the extension generation.
+      #   @param seconds [Symbol, OpenAI::Models::VideoSeconds]
+      #     Length of the newly generated extension segment in seconds (allowed values: 4,
+      #     8, 12, 16, 20).
       #
-      #   @param seconds [Symbol, OpenAI::Models::VideoSeconds] Length of the newly generated extension segment in seconds (allowed values: 4, 8
+      #   @param video [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoExtendParams::Video::VideoReferenceInputParam]
+      #     Reference to the completed video to extend.
       #
-      #   @param video [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoExtendParams::Video::VideoReferenceInputParam] Reference to the completed video to extend.
+      #     `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #     metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #     content type.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -62,7 +67,8 @@ module OpenAI
           # @!method initialize(id:)
           #   Reference to the completed video.
           #
-          #   @param id [String] The identifier of the completed video.
+          #   @param id [String]
+          #     The identifier of the completed video.
         end
 
         # @!method self.variants

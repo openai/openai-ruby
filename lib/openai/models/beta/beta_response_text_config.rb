@@ -9,7 +9,7 @@ module OpenAI
         #
         #   Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
         #   ensures the model will match your supplied JSON schema. Learn more in the
-        #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+        #   [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
         #
         #   The default format is `{ "type": "text" }` with no additional options.
         #
@@ -32,18 +32,32 @@ module OpenAI
         optional :verbosity, enum: -> { OpenAI::Beta::BetaResponseTextConfig::Verbosity }, nil?: true
 
         # @!method initialize(format_: nil, verbosity: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseTextConfig} for more details.
-        #
         #   Configuration options for a text response from the model. Can be plain text or
         #   structured JSON data. Learn more:
         #
-        #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+        #   - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+        #   - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
         #
-        #   @param format_ [OpenAI::Models::Beta::BetaResponseFormatTextConfig::Text, OpenAI::Models::Beta::BetaResponseFormatTextJSONSchemaConfig, OpenAI::Models::Beta::BetaResponseFormatTextConfig::JSONObject] An object specifying the format that the model must output.
+        #   @param format_ [OpenAI::Models::Beta::BetaResponseFormatTextConfig::Text, OpenAI::Models::Beta::BetaResponseFormatTextJSONSchemaConfig, OpenAI::Models::Beta::BetaResponseFormatTextConfig::JSONObject]
+        #     An object specifying the format that the model must output.
         #
-        #   @param verbosity [Symbol, OpenAI::Models::Beta::BetaResponseTextConfig::Verbosity, nil] Constrains the verbosity of the model's response. Lower values will result in
+        #     Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
+        #     ensures the model will match your supplied JSON schema. Learn more in the
+        #     [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
+        #
+        #     The default format is `{ "type": "text" }` with no additional options.
+        #
+        #     **Not recommended for gpt-4o and newer models:**
+        #
+        #     Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+        #     ensures the message the model generates is valid JSON. Using `json_schema` is
+        #     preferred for models that support it.
+        #
+        #   @param verbosity [Symbol, OpenAI::Models::Beta::BetaResponseTextConfig::Verbosity, nil]
+        #     Constrains the verbosity of the model's response. Lower values will result in
+        #     more concise responses, while higher values will result in more verbose
+        #     responses. Currently supported values are `low`, `medium`, and `high`. The
+        #     default is `medium`.
 
         # Constrains the verbosity of the model's response. Lower values will result in
         # more concise responses, while higher values will result in more verbose

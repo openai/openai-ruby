@@ -5,22 +5,26 @@ module OpenAI
     class Beta
       class ChatKit
         class Sessions
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::Beta::ChatKit::SessionCreateParams} for more details.
-          #
           # Create a ChatKit session.
           #
           # @overload create(user:, workflow:, chatkit_configuration: nil, expires_after: nil, rate_limits: nil, request_options: {})
           #
-          # @param user [String] A free-form string that identifies your end user; ensures this Session can acces
+          # @param user [String]
+          #   A free-form string that identifies your end user; ensures this Session can
+          #   access other objects that have the same `user` scope.
           #
-          # @param workflow [OpenAI::Models::Beta::ChatKit::ChatSessionWorkflowParam] Workflow that powers the session.
+          # @param workflow [OpenAI::Models::Beta::ChatKit::ChatSessionWorkflowParam]
+          #   Workflow that powers the session.
           #
-          # @param chatkit_configuration [OpenAI::Models::Beta::ChatKit::ChatSessionChatKitConfigurationParam] Optional overrides for ChatKit runtime configuration features
+          # @param chatkit_configuration [OpenAI::Models::Beta::ChatKit::ChatSessionChatKitConfigurationParam]
+          #   Optional overrides for ChatKit runtime configuration features
           #
-          # @param expires_after [OpenAI::Models::Beta::ChatKit::ChatSessionExpiresAfterParam] Optional override for session expiration timing in seconds from creation. Defaul
+          # @param expires_after [OpenAI::Models::Beta::ChatKit::ChatSessionExpiresAfterParam]
+          #   Optional override for session expiration timing in seconds from creation.
+          #   Defaults to 10 minutes.
           #
-          # @param rate_limits [OpenAI::Models::Beta::ChatKit::ChatSessionRateLimitsParam] Optional override for per-minute request limits. When omitted, defaults to 10.
+          # @param rate_limits [OpenAI::Models::Beta::ChatKit::ChatSessionRateLimitsParam]
+          #   Optional override for per-minute request limits. When omitted, defaults to 10.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -45,7 +49,8 @@ module OpenAI
           #
           # @overload cancel(session_id, request_options: {})
           #
-          # @param session_id [String] Unique identifier for the ChatKit session to cancel.
+          # @param session_id [String]
+          #   Unique identifier for the ChatKit session to cancel.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

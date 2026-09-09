@@ -17,7 +17,7 @@ module OpenAI
       attr_accessor :type
 
       # Configure the model to generate valid Python code. See the
-      # [custom grammars guide](https://platform.openai.com/docs/guides/custom-grammars)
+      # [custom grammars guide](https://developers.openai.com/api/docs/guides/function-calling#context-free-grammars)
       # for more details.
       sig do
         params(

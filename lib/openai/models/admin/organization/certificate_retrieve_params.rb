@@ -27,13 +27,11 @@ module OpenAI
           )
 
           # @!method initialize(certificate_id:, include: nil, request_options: {})
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Admin::Organization::CertificateRetrieveParams} for more
-          #   details.
-          #
           #   @param certificate_id [String]
           #
-          #   @param include [Array<Symbol, OpenAI::Models::Admin::Organization::CertificateRetrieveParams::Include>] A list of additional fields to include in the response. Currently the only suppo
+          #   @param include [Array<Symbol, OpenAI::Models::Admin::Organization::CertificateRetrieveParams::Include>]
+          #     A list of additional fields to include in the response. Currently the only
+          #     supported value is `content` to fetch the PEM content of the certificate.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

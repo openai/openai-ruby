@@ -7,9 +7,6 @@ module OpenAI
     class Videos
       # @deprecated The Sora API is scheduled to permanently shut down on September 24, 2026.
       #
-      # Some parameter documentations has been truncated, see
-      # {OpenAI::Models::VideoCreateParams} for more details.
-      #
       # Create a new video generation job from a prompt and optional reference assets.
       #
       # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
@@ -18,15 +15,26 @@ module OpenAI
       #
       # @overload create(prompt:, input_reference: nil, model: nil, seconds: nil, size: nil, request_options: {})
       #
-      # @param prompt [String] Text prompt that describes the video to generate.
+      # @param prompt [String]
+      #   Text prompt that describes the video to generate.
       #
-      # @param input_reference [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::ImageInputReferenceParam] Optional reference asset upload or reference object that guides generation.
+      # @param input_reference [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::ImageInputReferenceParam]
+      #   Optional reference asset upload or reference object that guides generation.
       #
-      # @param model [String, Symbol, OpenAI::Models::VideoModel] The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
       #
-      # @param seconds [Symbol, OpenAI::Models::VideoSeconds] Clip duration in seconds (allowed values: 4, 8, 12). Defaults to 4 seconds.
+      # @param model [String, Symbol, OpenAI::Models::VideoModel]
+      #   The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
+      #   to `sora-2`.
       #
-      # @param size [Symbol, OpenAI::Models::VideoSize] Output resolution formatted as width x height (allowed values: 720x1280, 1280x72
+      # @param seconds [Symbol, OpenAI::Models::VideoSeconds]
+      #   Clip duration in seconds (allowed values: 4, 8, 12). Defaults to 4 seconds.
+      #
+      # @param size [Symbol, OpenAI::Models::VideoSize]
+      #   Output resolution formatted as width x height (allowed values: 720x1280,
+      #   1280x720, 1024x1792, 1792x1024). Defaults to 720x1280.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -52,7 +60,8 @@ module OpenAI
       #
       # @overload retrieve(video_id, request_options: {})
       #
-      # @param video_id [String] The identifier of the video to retrieve.
+      # @param video_id [String]
+      #   The identifier of the video to retrieve.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -71,18 +80,19 @@ module OpenAI
 
       # @deprecated The Sora API is scheduled to permanently shut down on September 24, 2026.
       #
-      # Some parameter documentations has been truncated, see
-      # {OpenAI::Models::VideoListParams} for more details.
-      #
       # List recently generated videos for the current project.
       #
       # @overload list(after: nil, limit: nil, order: nil, request_options: {})
       #
-      # @param after [String] Identifier for the last item from the previous pagination request
+      # @param after [String]
+      #   Identifier for the last item from the previous pagination request
       #
-      # @param limit [Integer] Number of items to retrieve
+      # @param limit [Integer]
+      #   Number of items to retrieve
       #
-      # @param order [Symbol, OpenAI::Models::VideoListParams::Order] Sort order of results by timestamp. Use `asc` for ascending order or `desc` for
+      # @param order [Symbol, OpenAI::Models::VideoListParams::Order]
+      #   Sort order of results by timestamp. Use `asc` for ascending order or `desc` for
+      #   descending order.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -109,7 +119,8 @@ module OpenAI
       #
       # @overload delete(video_id, request_options: {})
       #
-      # @param video_id [String] The identifier of the video to delete.
+      # @param video_id [String]
+      #   The identifier of the video to delete.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -136,9 +147,15 @@ module OpenAI
       #
       # @overload create_character(name:, video:, request_options: {})
       #
-      # @param name [String] Display name for this API character.
+      # @param name [String]
+      #   Display name for this API character.
       #
-      # @param video [Pathname, StringIO, IO, String, OpenAI::FilePart] Video file used to create a character.
+      # @param video [Pathname, StringIO, IO, String, OpenAI::FilePart]
+      #   Video file used to create a character.
+      #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -166,9 +183,11 @@ module OpenAI
       #
       # @overload download_content(video_id, variant: nil, request_options: {})
       #
-      # @param video_id [String] The identifier of the video whose media to download.
+      # @param video_id [String]
+      #   The identifier of the video whose media to download.
       #
-      # @param variant [Symbol, OpenAI::Models::VideoDownloadContentParams::Variant] Which downloadable asset to return. Defaults to the MP4 video.
+      # @param variant [Symbol, OpenAI::Models::VideoDownloadContentParams::Variant]
+      #   Which downloadable asset to return. Defaults to the MP4 video.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -200,9 +219,15 @@ module OpenAI
       #
       # @overload edit(prompt:, video:, request_options: {})
       #
-      # @param prompt [String] Text prompt that describes how to edit the source video.
+      # @param prompt [String]
+      #   Text prompt that describes how to edit the source video.
       #
-      # @param video [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoEditParams::Video::VideoReferenceInputParam] Reference to the completed video to edit.
+      # @param video [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoEditParams::Video::VideoReferenceInputParam]
+      #   Reference to the completed video to edit.
+      #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -224,9 +249,6 @@ module OpenAI
 
       # @deprecated The Sora API is scheduled to permanently shut down on September 24, 2026.
       #
-      # Some parameter documentations has been truncated, see
-      # {OpenAI::Models::VideoExtendParams} for more details.
-      #
       # Create an extension of a completed video.
       #
       # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
@@ -235,11 +257,19 @@ module OpenAI
       #
       # @overload extend_(prompt:, seconds:, video:, request_options: {})
       #
-      # @param prompt [String] Updated text prompt that directs the extension generation.
+      # @param prompt [String]
+      #   Updated text prompt that directs the extension generation.
       #
-      # @param seconds [Symbol, OpenAI::Models::VideoSeconds] Length of the newly generated extension segment in seconds (allowed values: 4, 8
+      # @param seconds [Symbol, OpenAI::Models::VideoSeconds]
+      #   Length of the newly generated extension segment in seconds (allowed values: 4,
+      #   8, 12, 16, 20).
       #
-      # @param video [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoExtendParams::Video::VideoReferenceInputParam] Reference to the completed video to extend.
+      # @param video [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::VideoExtendParams::Video::VideoReferenceInputParam]
+      #   Reference to the completed video to extend.
+      #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -265,7 +295,8 @@ module OpenAI
       #
       # @overload get_character(character_id, request_options: {})
       #
-      # @param character_id [String] The identifier of the character to retrieve.
+      # @param character_id [String]
+      #   The identifier of the character to retrieve.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -288,9 +319,11 @@ module OpenAI
       #
       # @overload remix(video_id, prompt:, request_options: {})
       #
-      # @param video_id [String] The identifier of the completed video to remix.
+      # @param video_id [String]
+      #   The identifier of the completed video to remix.
       #
-      # @param prompt [String] Updated text prompt that directs the remix generation.
+      # @param prompt [String]
+      #   Updated text prompt that directs the remix generation.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #

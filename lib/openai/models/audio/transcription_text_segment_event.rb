@@ -43,20 +43,26 @@ module OpenAI
         # @!method initialize(id:, end_:, speaker:, start:, text:, type: :"transcript.text.segment")
         #   Emitted when a diarized transcription returns a completed segment with speaker
         #   information. Only emitted when you
-        #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
+        #   [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
         #   with `stream` set to `true` and `response_format` set to `diarized_json`.
         #
-        #   @param id [String] Unique identifier for the segment.
+        #   @param id [String]
+        #     Unique identifier for the segment.
         #
-        #   @param end_ [Float] End timestamp of the segment in seconds.
+        #   @param end_ [Float]
+        #     End timestamp of the segment in seconds.
         #
-        #   @param speaker [String] Speaker label for this segment.
+        #   @param speaker [String]
+        #     Speaker label for this segment.
         #
-        #   @param start [Float] Start timestamp of the segment in seconds.
+        #   @param start [Float]
+        #     Start timestamp of the segment in seconds.
         #
-        #   @param text [String] Transcript text for this segment.
+        #   @param text [String]
+        #     Transcript text for this segment.
         #
-        #   @param type [Symbol, :"transcript.text.segment"] The type of the event. Always `transcript.text.segment`.
+        #   @param type [Symbol, :"transcript.text.segment"]
+        #     The type of the event. Always `transcript.text.segment`.
       end
     end
   end

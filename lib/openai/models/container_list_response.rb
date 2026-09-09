@@ -61,26 +61,34 @@ module OpenAI
       optional :network_policy, -> { OpenAI::Models::ContainerListResponse::NetworkPolicy }
 
       # @!method initialize(id:, created_at:, name:, object:, status:, expires_after: nil, last_active_at: nil, memory_limit: nil, network_policy: nil)
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::ContainerListResponse} for more details.
+      #   @param id [String]
+      #     Unique identifier for the container.
       #
-      #   @param id [String] Unique identifier for the container.
+      #   @param created_at [Integer]
+      #     Unix timestamp (in seconds) when the container was created.
       #
-      #   @param created_at [Integer] Unix timestamp (in seconds) when the container was created.
+      #   @param name [String]
+      #     Name of the container.
       #
-      #   @param name [String] Name of the container.
+      #   @param object [String]
+      #     The type of this object.
       #
-      #   @param object [String] The type of this object.
+      #   @param status [String]
+      #     Status of the container (e.g., active, deleted).
       #
-      #   @param status [String] Status of the container (e.g., active, deleted).
+      #   @param expires_after [OpenAI::Models::ContainerListResponse::ExpiresAfter]
+      #     The container will expire after this time period. The anchor is the reference
+      #     point for the expiration. The minutes is the number of minutes after the anchor
+      #     before the container expires.
       #
-      #   @param expires_after [OpenAI::Models::ContainerListResponse::ExpiresAfter] The container will expire after this time period.
+      #   @param last_active_at [Integer]
+      #     Unix timestamp (in seconds) when the container was last active.
       #
-      #   @param last_active_at [Integer] Unix timestamp (in seconds) when the container was last active.
+      #   @param memory_limit [Symbol, OpenAI::Models::ContainerListResponse::MemoryLimit]
+      #     The memory limit configured for the container.
       #
-      #   @param memory_limit [Symbol, OpenAI::Models::ContainerListResponse::MemoryLimit] The memory limit configured for the container.
-      #
-      #   @param network_policy [OpenAI::Models::ContainerListResponse::NetworkPolicy] Network access policy for the container.
+      #   @param network_policy [OpenAI::Models::ContainerListResponse::NetworkPolicy]
+      #     Network access policy for the container.
 
       # @see OpenAI::Models::ContainerListResponse#expires_after
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
@@ -101,9 +109,11 @@ module OpenAI
         #   point for the expiration. The minutes is the number of minutes after the anchor
         #   before the container expires.
         #
-        #   @param anchor [Symbol, OpenAI::Models::ContainerListResponse::ExpiresAfter::Anchor] The reference point for the expiration.
+        #   @param anchor [Symbol, OpenAI::Models::ContainerListResponse::ExpiresAfter::Anchor]
+        #     The reference point for the expiration.
         #
-        #   @param minutes [Integer] The number of minutes after the anchor before the container expires.
+        #   @param minutes [Integer]
+        #     The number of minutes after the anchor before the container expires.
 
         # The reference point for the expiration.
         #
@@ -150,9 +160,11 @@ module OpenAI
         # @!method initialize(type:, allowed_domains: nil)
         #   Network access policy for the container.
         #
-        #   @param type [Symbol, OpenAI::Models::ContainerListResponse::NetworkPolicy::Type] The network policy mode.
+        #   @param type [Symbol, OpenAI::Models::ContainerListResponse::NetworkPolicy::Type]
+        #     The network policy mode.
         #
-        #   @param allowed_domains [Array<String>] Allowed outbound domains when `type` is `allowlist`.
+        #   @param allowed_domains [Array<String>]
+        #     Allowed outbound domains when `type` is `allowlist`.
 
         # The network policy mode.
         #

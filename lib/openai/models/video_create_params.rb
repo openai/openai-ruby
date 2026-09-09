@@ -44,18 +44,26 @@ module OpenAI
       optional :size, enum: -> { OpenAI::VideoSize }
 
       # @!method initialize(prompt:, input_reference: nil, model: nil, seconds: nil, size: nil, request_options: {})
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::VideoCreateParams} for more details.
+      #   @param prompt [String]
+      #     Text prompt that describes the video to generate.
       #
-      #   @param prompt [String] Text prompt that describes the video to generate.
+      #   @param input_reference [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::ImageInputReferenceParam]
+      #     Optional reference asset upload or reference object that guides generation.
       #
-      #   @param input_reference [Pathname, StringIO, IO, String, OpenAI::FilePart, OpenAI::Models::ImageInputReferenceParam] Optional reference asset upload or reference object that guides generation.
+      #     `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #     metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #     content type.
       #
-      #   @param model [String, Symbol, OpenAI::Models::VideoModel] The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
+      #   @param model [String, Symbol, OpenAI::Models::VideoModel]
+      #     The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults
+      #     to `sora-2`.
       #
-      #   @param seconds [Symbol, OpenAI::Models::VideoSeconds] Clip duration in seconds (allowed values: 4, 8, 12). Defaults to 4 seconds.
+      #   @param seconds [Symbol, OpenAI::Models::VideoSeconds]
+      #     Clip duration in seconds (allowed values: 4, 8, 12). Defaults to 4 seconds.
       #
-      #   @param size [Symbol, OpenAI::Models::VideoSize] Output resolution formatted as width x height (allowed values: 720x1280, 1280x72
+      #   @param size [Symbol, OpenAI::Models::VideoSize]
+      #     Output resolution formatted as width x height (allowed values: 720x1280,
+      #     1280x720, 1024x1792, 1792x1024). Defaults to 720x1280.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

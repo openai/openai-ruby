@@ -9,22 +9,22 @@ module OpenAI
 
         discriminator :type
 
-        # Defines a function in your own code the model can choose to call. Learn more about [function calling](https://platform.openai.com/docs/guides/function-calling).
+        # Defines a function in your own code the model can choose to call. Learn more about [function calling](https://developers.openai.com/api/docs/guides/function-calling).
         variant :function, -> { OpenAI::Responses::FunctionTool }
 
         variant -> { OpenAI::StructuredOutput::JsonSchemaConverter }
 
-        # A tool that searches for relevant content from uploaded files. Learn more about the [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
+        # A tool that searches for relevant content from uploaded files. Learn more about the [file search tool](https://developers.openai.com/api/docs/guides/tools-file-search).
         variant :file_search, -> { OpenAI::Responses::FileSearchTool }
 
-        # A tool that controls a virtual computer. Learn more about the [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
+        # A tool that controls a virtual computer. Learn more about the [computer tool](https://developers.openai.com/api/docs/guides/tools-computer-use).
         variant :computer, -> { OpenAI::Responses::ComputerTool }
 
-        # A tool that controls a virtual computer. Learn more about the [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
+        # A tool that controls a virtual computer. Learn more about the [computer tool](https://developers.openai.com/api/docs/guides/tools-computer-use).
         variant :computer_use_preview, -> { OpenAI::Responses::ComputerUsePreviewTool }
 
         # Give the model access to additional tools via remote Model Context Protocol
-        # (MCP) servers. [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
+        # (MCP) servers. [Learn more about MCP](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
         variant :mcp, -> { OpenAI::Responses::Tool::Mcp }
 
         # A tool that runs Python code to help generate a response to a prompt.
@@ -41,7 +41,7 @@ module OpenAI
         # A tool that allows the model to execute shell commands.
         variant :shell, -> { OpenAI::Responses::FunctionShellTool }
 
-        # A custom tool that processes input using a specified format. Learn more about   [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
+        # A custom tool that processes input using a specified format. Learn more about   [custom tools](https://developers.openai.com/api/docs/guides/function-calling#custom-tools)
         variant :custom, -> { OpenAI::Responses::CustomTool }
 
         # Groups function/custom tools under a shared namespace.
@@ -54,10 +54,10 @@ module OpenAI
         variant :apply_patch, -> { OpenAI::Responses::ApplyPatchTool }
 
         # Search the Internet for sources related to the prompt. Learn more about the
-        # [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
+        # [web search tool](https://developers.openai.com/api/docs/guides/tools-web-search).
         variant -> { OpenAI::Responses::WebSearchTool }
 
-        # This tool searches the web for relevant results to use in a response. Learn more about the [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
+        # This tool searches the web for relevant results to use in a response. Learn more about the [web search tool](https://developers.openai.com/api/docs/guides/tools-web-search).
         variant -> { OpenAI::Responses::WebSearchPreviewTool }
 
         class Mcp < OpenAI::Internal::Type::BaseModel
@@ -101,7 +101,7 @@ module OpenAI
           #   Identifier for service connectors, like those available in ChatGPT. One of
           #   `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
           #   service connectors
-          #   [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+          #   [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
           #
           #   Currently supported `connector_id` values are:
           #
@@ -157,37 +157,64 @@ module OpenAI
           optional :tunnel_id, String
 
           # @!method initialize(server_label:, allowed_callers: nil, allowed_tools: nil, authorization: nil, connector_id: nil, defer_loading: nil, headers: nil, require_approval: nil, server_description: nil, server_url: nil, tunnel_id: nil, type: :mcp)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Responses::Tool::Mcp} for more details.
-          #
           #   Give the model access to additional tools via remote Model Context Protocol
           #   (MCP) servers.
-          #   [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
+          #   [Learn more about MCP](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
           #
-          #   @param server_label [String] A label for this MCP server, used to identify it in tool calls.
+          #   @param server_label [String]
+          #     A label for this MCP server, used to identify it in tool calls.
           #
-          #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::Tool::Mcp::AllowedCaller>, nil] The tool invocation context(s).
+          #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::Tool::Mcp::AllowedCaller>, nil]
+          #     The tool invocation context(s).
           #
-          #   @param allowed_tools [Array<String>, OpenAI::Models::Responses::Tool::Mcp::AllowedTools::McpToolFilter, nil] List of allowed tool names or a filter object.
+          #   @param allowed_tools [Array<String>, OpenAI::Models::Responses::Tool::Mcp::AllowedTools::McpToolFilter, nil]
+          #     List of allowed tool names or a filter object.
           #
-          #   @param authorization [String] An OAuth access token that can be used with a remote MCP server, either
+          #   @param authorization [String]
+          #     An OAuth access token that can be used with a remote MCP server, either with a
+          #     custom MCP server URL or a service connector. Your application must handle the
+          #     OAuth authorization flow and provide the token here.
           #
-          #   @param connector_id [Symbol, OpenAI::Models::Responses::Tool::Mcp::ConnectorID] Identifier for service connectors, like those available in ChatGPT. One of
+          #   @param connector_id [Symbol, OpenAI::Models::Responses::Tool::Mcp::ConnectorID]
+          #     Identifier for service connectors, like those available in ChatGPT. One of
+          #     `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
+          #     service connectors
+          #     [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
           #
-          #   @param defer_loading [Boolean] Whether this MCP tool is deferred and discovered via tool search.
+          #     Currently supported `connector_id` values are:
           #
-          #   @param headers [Hash{Symbol=>String}, nil] Optional HTTP headers to send to the MCP server. Use for authentication
+          #     - Dropbox: `connector_dropbox`
+          #     - Gmail: `connector_gmail`
+          #     - Google Calendar: `connector_googlecalendar`
+          #     - Google Drive: `connector_googledrive`
+          #     - Microsoft Teams: `connector_microsoftteams`
+          #     - Outlook Calendar: `connector_outlookcalendar`
+          #     - Outlook Email: `connector_outlookemail`
+          #     - SharePoint: `connector_sharepoint`
           #
-          #   @param require_approval [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting, nil] Specify which of the MCP server's tools require approval.
+          #   @param defer_loading [Boolean]
+          #     Whether this MCP tool is deferred and discovered via tool search.
           #
-          #   @param server_description [String] Optional description of the MCP server, used to provide more context.
+          #   @param headers [Hash{Symbol=>String}, nil]
+          #     Optional HTTP headers to send to the MCP server. Use for authentication or other
+          #     purposes.
           #
-          #   @param server_url [String] The URL for the MCP server. One of `server_url`, `connector_id`, or
+          #   @param require_approval [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalSetting, nil]
+          #     Specify which of the MCP server's tools require approval.
           #
-          #   @param tunnel_id [String] The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+          #   @param server_description [String]
+          #     Optional description of the MCP server, used to provide more context.
           #
-          #   @param type [Symbol, :mcp] The type of the MCP tool. Always `mcp`.
-
+          #   @param server_url [String]
+          #     The URL for the MCP server. One of `server_url`, `connector_id`, or `tunnel_id`
+          #     must be provided.
+          #
+          #   @param tunnel_id [String]
+          #     The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+          #     `server_url`, `connector_id`, or `tunnel_id` must be provided.
+          #
+          #   @param type [Symbol, :mcp]
+          #     The type of the MCP tool. Always `mcp`.
           module AllowedCaller
             extend OpenAI::Internal::Type::Enum
 
@@ -227,15 +254,16 @@ module OpenAI
               optional :tool_names, OpenAI::Internal::Type::ArrayOf[String]
 
               # @!method initialize(read_only: nil, tool_names: nil)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Responses::Tool::Mcp::AllowedTools::McpToolFilter} for more
-              #   details.
-              #
               #   A filter object to specify which tools are allowed.
               #
-              #   @param read_only [Boolean] Indicates whether or not a tool modifies data or is read-only. If an
+              #   @param read_only [Boolean]
+              #     Indicates whether or not a tool modifies data or is read-only. If an MCP server
+              #     is
+              #     [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+              #     it will match this filter.
               #
-              #   @param tool_names [Array<String>] List of allowed tool names.
+              #   @param tool_names [Array<String>]
+              #     List of allowed tool names.
             end
 
             # @!method self.variants
@@ -248,7 +276,7 @@ module OpenAI
           # Identifier for service connectors, like those available in ChatGPT. One of
           # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
           # service connectors
-          # [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+          # [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
           #
           # Currently supported `connector_id` values are:
           #
@@ -308,16 +336,14 @@ module OpenAI
               optional :never, -> { OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never }
 
               # @!method initialize(always: nil, never: nil)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter}
-              #   for more details.
-              #
               #   Specify which of the MCP server's tools require approval. Can be `always`,
               #   `never`, or a filter object associated with tools that require approval.
               #
-              #   @param always [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always] A filter object to specify which tools are allowed.
+              #   @param always [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always]
+              #     A filter object to specify which tools are allowed.
               #
-              #   @param never [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never] A filter object to specify which tools are allowed.
+              #   @param never [OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never]
+              #     A filter object to specify which tools are allowed.
 
               # @see OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter#always
               class Always < OpenAI::Internal::Type::BaseModel
@@ -337,15 +363,16 @@ module OpenAI
                 optional :tool_names, OpenAI::Internal::Type::ArrayOf[String]
 
                 # @!method initialize(read_only: nil, tool_names: nil)
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always}
-                #   for more details.
-                #
                 #   A filter object to specify which tools are allowed.
                 #
-                #   @param read_only [Boolean] Indicates whether or not a tool modifies data or is read-only. If an
+                #   @param read_only [Boolean]
+                #     Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                #     is
+                #     [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                #     it will match this filter.
                 #
-                #   @param tool_names [Array<String>] List of allowed tool names.
+                #   @param tool_names [Array<String>]
+                #     List of allowed tool names.
               end
 
               # @see OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter#never
@@ -366,15 +393,16 @@ module OpenAI
                 optional :tool_names, OpenAI::Internal::Type::ArrayOf[String]
 
                 # @!method initialize(read_only: nil, tool_names: nil)
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never}
-                #   for more details.
-                #
                 #   A filter object to specify which tools are allowed.
                 #
-                #   @param read_only [Boolean] Indicates whether or not a tool modifies data or is read-only. If an
+                #   @param read_only [Boolean]
+                #     Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                #     is
+                #     [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                #     it will match this filter.
                 #
-                #   @param tool_names [Array<String>] List of allowed tool names.
+                #   @param tool_names [Array<String>]
+                #     List of allowed tool names.
               end
             end
 
@@ -424,16 +452,18 @@ module OpenAI
           )
 
           # @!method initialize(container:, allowed_callers: nil, type: :code_interpreter)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Responses::Tool::CodeInterpreter} for more details.
-          #
           #   A tool that runs Python code to help generate a response to a prompt.
           #
-          #   @param container [String, OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto] The code interpreter container. Can be a container ID or an object that
+          #   @param container [String, OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto]
+          #     The code interpreter container. Can be a container ID or an object that
+          #     specifies uploaded file IDs to make available to your code, along with an
+          #     optional `memory_limit` setting.
           #
-          #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::Tool::CodeInterpreter::AllowedCaller>, nil] The tool invocation context(s).
+          #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::Tool::CodeInterpreter::AllowedCaller>, nil]
+          #     The tool invocation context(s).
           #
-          #   @param type [Symbol, :code_interpreter] The type of the code interpreter tool. Always `code_interpreter`.
+          #   @param type [Symbol, :code_interpreter]
+          #     The type of the code interpreter tool. Always `code_interpreter`.
 
           # The code interpreter container. Can be a container ID or an object that
           # specifies uploaded file IDs to make available to your code, along with an
@@ -489,13 +519,17 @@ module OpenAI
               #   Configuration for a code interpreter container. Optionally specify the IDs of
               #   the files to run the code on.
               #
-              #   @param file_ids [Array<String>] An optional list of uploaded files to make available to your code.
+              #   @param file_ids [Array<String>]
+              #     An optional list of uploaded files to make available to your code.
               #
-              #   @param memory_limit [Symbol, OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit, nil] The memory limit for the code interpreter container.
+              #   @param memory_limit [Symbol, OpenAI::Models::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto::MemoryLimit, nil]
+              #     The memory limit for the code interpreter container.
               #
-              #   @param network_policy [OpenAI::Models::Responses::ContainerNetworkPolicyDisabled, OpenAI::Models::Responses::ContainerNetworkPolicyAllowlist] Network access policy for the container.
+              #   @param network_policy [OpenAI::Models::Responses::ContainerNetworkPolicyDisabled, OpenAI::Models::Responses::ContainerNetworkPolicyAllowlist]
+              #     Network access policy for the container.
               #
-              #   @param type [Symbol, :auto] Always `auto`.
+              #   @param type [Symbol, :auto]
+              #     Always `auto`.
 
               # The memory limit for the code interpreter container.
               #
@@ -552,7 +586,8 @@ module OpenAI
           required :type, const: :programmatic_tool_calling
 
           # @!method initialize(type: :programmatic_tool_calling)
-          #   @param type [Symbol, :programmatic_tool_calling] The type of the tool. Always `programmatic_tool_calling`.
+          #   @param type [Symbol, :programmatic_tool_calling]
+          #     The type of the tool. Always `programmatic_tool_calling`.
         end
 
         class ImageGeneration < OpenAI::Internal::Type::BaseModel
@@ -667,34 +702,75 @@ module OpenAI
           optional :size, union: -> { OpenAI::Responses::Tool::ImageGeneration::Size }
 
           # @!method initialize(action: nil, background: nil, input_fidelity: nil, input_image_mask: nil, model: nil, moderation: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, size: nil, type: :image_generation)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Responses::Tool::ImageGeneration} for more details.
-          #
           #   A tool that generates images using the GPT image models.
           #
-          #   @param action [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Action] Whether to generate a new image or edit an existing image. Default: `auto`.
+          #   @param action [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Action]
+          #     Whether to generate a new image or edit an existing image. Default: `auto`.
           #
-          #   @param background [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Background] Allows to set transparency for the background of the generated image(s). Must
+          #   @param background [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Background]
+          #     Allows to set transparency for the background of the generated image(s). Must be
+          #     one of `transparent`, `opaque`, or `auto` (default value). When `auto` is used,
+          #     the model will automatically determine the best background for the image.
           #
-          #   @param input_fidelity [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::InputFidelity, nil] Control how much effort the model will exert to match the style and features, es
+          #     `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including their `2026-09-08`
+          #     snapshots, support `opaque` and `transparent` backgrounds. Transparent
+          #     backgrounds are available for supported GPT Image models. For `gpt-image-2` and
+          #     `gpt-image-2-2026-04-21`, this support is in preview. When using `transparent`,
+          #     set the output format to `png` or `webp`.
           #
-          #   @param input_image_mask [OpenAI::Models::Responses::Tool::ImageGeneration::InputImageMask] Optional mask for inpainting. Contains `image_url`
+          #   @param input_fidelity [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::InputFidelity, nil]
+          #     Control how much effort the model will exert to match the style and features,
+          #     especially facial features, of input images. This parameter is only supported
+          #     for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
+          #     `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
           #
-          #   @param model [String, Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Model] The image generation model to use. One of `gpt-image-1`,
+          #   @param input_image_mask [OpenAI::Models::Responses::Tool::ImageGeneration::InputImageMask]
+          #     Optional mask for inpainting. Contains `image_url` (string, optional) and
+          #     `file_id` (string, optional).
           #
-          #   @param moderation [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Moderation] Moderation level for the generated image. Default: `auto`.
+          #   @param model [String, Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Model]
+          #     The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
+          #     `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
+          #     `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
+          #     `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
+          #     `chatgpt-image-latest`. Default: `gpt-image-1`.
           #
-          #   @param output_compression [Integer] Compression level for the output image. Default: 100.
+          #   @param moderation [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Moderation]
+          #     Moderation level for the generated image. Default: `auto`.
           #
-          #   @param output_format [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::OutputFormat] The output format of the generated image. One of `png`, `webp`, or
+          #   @param output_compression [Integer]
+          #     Compression level for the output image. Default: 100.
           #
-          #   @param partial_images [Integer] Number of partial images to generate in streaming mode, from 0 (default value) t
+          #   @param output_format [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::OutputFormat]
+          #     The output format of the generated image. One of `png`, `webp`, or `jpeg`.
+          #     Default: `png`.
           #
-          #   @param quality [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Quality] The quality of the generated image. The GPT image models support `low`,
+          #   @param partial_images [Integer]
+          #     Number of partial images to generate in streaming mode, from 0 (default value)
+          #     to 3.
           #
-          #   @param size [String, Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Size] The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`, `
+          #   @param quality [Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Quality]
+          #     The quality of the generated image. The GPT image models support `low`,
+          #     `medium`, and `high`. `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`,
+          #     including their `2026-09-08` snapshots, also support `xhigh` and `max`. Default:
+          #     `auto`.
           #
-          #   @param type [Symbol, :image_generation] The type of the image generation tool. Always `image_generation`.
+          #   @param size [String, Symbol, OpenAI::Models::Responses::Tool::ImageGeneration::Size]
+          #     The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`,
+          #     `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
+          #     `gpt-image-2.5-flare`, and `gpt-image-2.5-flare-2026-09-08`, arbitrary
+          #     resolutions are supported as `WIDTHxHEIGHT` strings, for example `1536x864`.
+          #     Width and height must both be divisible by 16 and the requested aspect ratio
+          #     must be between 1:3 and 3:1. Resolutions above `2560x1440` are experimental, and
+          #     the maximum supported resolution is `3840x2160`. The requested size must also
+          #     satisfy the model's current pixel and edge limits. The standard sizes
+          #     `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models;
+          #     `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use
+          #     one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of
+          #     `1024x1024`, `1792x1024`, or `1024x1792`.
+          #
+          #   @param type [Symbol, :image_generation]
+          #     The type of the image generation tool. Always `image_generation`.
 
           # Whether to generate a new image or edit an existing image. Default: `auto`.
           #
@@ -763,16 +839,14 @@ module OpenAI
             optional :image_url, String
 
             # @!method initialize(file_id: nil, image_url: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::Tool::ImageGeneration::InputImageMask} for more
-            #   details.
-            #
             #   Optional mask for inpainting. Contains `image_url` (string, optional) and
             #   `file_id` (string, optional).
             #
-            #   @param file_id [String] File ID for the mask image.
+            #   @param file_id [String]
+            #     File ID for the mask image.
             #
-            #   @param image_url [String] Base64-encoded mask image.
+            #   @param image_url [String]
+            #     Base64-encoded mask image.
           end
 
           # The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
@@ -937,7 +1011,8 @@ module OpenAI
           # @!method initialize(type: :local_shell)
           #   A tool that allows the model to execute shell commands in a local environment.
           #
-          #   @param type [Symbol, :local_shell] The type of the local shell tool. Always `local_shell`.
+          #   @param type [Symbol, :local_shell]
+          #     The type of the local shell tool. Always `local_shell`.
         end
 
         # @!method self.variants

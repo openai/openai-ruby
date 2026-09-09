@@ -52,27 +52,32 @@ module OpenAI
         optional :actions, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ComputerAction] }
 
         # @!method initialize(id:, call_id:, pending_safety_checks:, status:, type:, action: nil, actions: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseComputerToolCall} for more details.
-        #
         #   A tool call to a computer use tool. See the
-        #   [computer use guide](https://platform.openai.com/docs/guides/tools-computer-use)
+        #   [computer use guide](https://developers.openai.com/api/docs/guides/tools-computer-use)
         #   for more information.
         #
-        #   @param id [String] The unique ID of the computer call.
+        #   @param id [String]
+        #     The unique ID of the computer call.
         #
-        #   @param call_id [String] An identifier used when responding to the tool call with output.
+        #   @param call_id [String]
+        #     An identifier used when responding to the tool call with output.
         #
-        #   @param pending_safety_checks [Array<OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck>] The pending safety checks for the computer call.
+        #   @param pending_safety_checks [Array<OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck>]
+        #     The pending safety checks for the computer call.
         #
-        #   @param status [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Status] The status of the item. One of `in_progress`, `completed`, or
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Status]
+        #     The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+        #     Populated when items are returned via API.
         #
-        #   @param type [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Type] The type of the computer call. Always `computer_call`.
+        #   @param type [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Type]
+        #     The type of the computer call. Always `computer_call`.
         #
-        #   @param action [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait] A click action.
+        #   @param action [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait]
+        #     A click action.
         #
-        #   @param actions [Array<OpenAI::Models::Responses::ComputerAction::Click, OpenAI::Models::Responses::ComputerAction::DoubleClick, OpenAI::Models::Responses::ComputerAction::Drag, OpenAI::Models::Responses::ComputerAction::Keypress, OpenAI::Models::Responses::ComputerAction::Move, OpenAI::Models::Responses::ComputerAction::Screenshot, OpenAI::Models::Responses::ComputerAction::Scroll, OpenAI::Models::Responses::ComputerAction::Type, OpenAI::Models::Responses::ComputerAction::Wait>] Flattened batched actions for `computer_use`. Each action includes an
-
+        #   @param actions [Array<OpenAI::Models::Responses::ComputerAction::Click, OpenAI::Models::Responses::ComputerAction::DoubleClick, OpenAI::Models::Responses::ComputerAction::Drag, OpenAI::Models::Responses::ComputerAction::Keypress, OpenAI::Models::Responses::ComputerAction::Move, OpenAI::Models::Responses::ComputerAction::Screenshot, OpenAI::Models::Responses::ComputerAction::Scroll, OpenAI::Models::Responses::ComputerAction::Type, OpenAI::Models::Responses::ComputerAction::Wait>]
+        #     Flattened batched actions for `computer_use`. Each action includes an `type`
+        #     discriminator and action-specific fields.
         class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel
           # @!attribute id
           #   The ID of the pending safety check.
@@ -95,11 +100,14 @@ module OpenAI
           # @!method initialize(id:, code: nil, message: nil)
           #   A pending safety check for the computer call.
           #
-          #   @param id [String] The ID of the pending safety check.
+          #   @param id [String]
+          #     The ID of the pending safety check.
           #
-          #   @param code [String, nil] The type of the pending safety check.
+          #   @param code [String, nil]
+          #     The type of the pending safety check.
           #
-          #   @param message [String, nil] Details about the pending safety check.
+          #   @param message [String, nil]
+          #     Details about the pending safety check.
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
@@ -197,21 +205,23 @@ module OpenAI
             optional :keys, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
             # @!method initialize(button:, x:, y_:, keys: nil, type: :click)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click} for more
-            #   details.
-            #
             #   A click action.
             #
-            #   @param button [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button] Indicates which mouse button was pressed during the click. One of `left`, `right
+            #   @param button [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button]
+            #     Indicates which mouse button was pressed during the click. One of `left`,
+            #     `right`, `wheel`, `back`, or `forward`.
             #
-            #   @param x [Integer] The x-coordinate where the click occurred.
+            #   @param x [Integer]
+            #     The x-coordinate where the click occurred.
             #
-            #   @param y_ [Integer] The y-coordinate where the click occurred.
+            #   @param y_ [Integer]
+            #     The y-coordinate where the click occurred.
             #
-            #   @param keys [Array<String>, nil] The keys being held while clicking.
+            #   @param keys [Array<String>, nil]
+            #     The keys being held while clicking.
             #
-            #   @param type [Symbol, :click] Specifies the event type. For a click action, this property is always `click`.
+            #   @param type [Symbol, :click]
+            #     Specifies the event type. For a click action, this property is always `click`.
 
             # Indicates which mouse button was pressed during the click. One of `left`,
             # `right`, `wheel`, `back`, or `forward`.
@@ -258,19 +268,20 @@ module OpenAI
             required :y_, Integer, api_name: :y
 
             # @!method initialize(keys:, x:, y_:, type: :double_click)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick} for
-            #   more details.
-            #
             #   A double click action.
             #
-            #   @param keys [Array<String>, nil] The keys being held while double-clicking.
+            #   @param keys [Array<String>, nil]
+            #     The keys being held while double-clicking.
             #
-            #   @param x [Integer] The x-coordinate where the double click occurred.
+            #   @param x [Integer]
+            #     The x-coordinate where the double click occurred.
             #
-            #   @param y_ [Integer] The y-coordinate where the double click occurred.
+            #   @param y_ [Integer]
+            #     The y-coordinate where the double click occurred.
             #
-            #   @param type [Symbol, :double_click] Specifies the event type. For a double click action, this property is always set
+            #   @param type [Symbol, :double_click]
+            #     Specifies the event type. For a double click action, this property is always set
+            #     to `double_click`.
           end
 
           class Drag < OpenAI::Internal::Type::BaseModel
@@ -305,18 +316,25 @@ module OpenAI
             optional :keys, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
             # @!method initialize(path:, keys: nil, type: :drag)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag} for more
-            #   details.
-            #
             #   A drag action.
             #
-            #   @param path [Array<OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path>] An array of coordinates representing the path of the drag action. Coordinates wi
+            #   @param path [Array<OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path>]
+            #     An array of coordinates representing the path of the drag action. Coordinates
+            #     will appear as an array of objects, eg
             #
-            #   @param keys [Array<String>, nil] The keys being held while dragging the mouse.
+            #     ```
+            #     [
+            #       { x: 100, y: 200 },
+            #       { x: 200, y: 300 }
+            #     ]
+            #     ```
             #
-            #   @param type [Symbol, :drag] Specifies the event type. For a drag action, this property is always set to `dra
-
+            #   @param keys [Array<String>, nil]
+            #     The keys being held while dragging the mouse.
+            #
+            #   @param type [Symbol, :drag]
+            #     Specifies the event type. For a drag action, this property is always set to
+            #     `drag`.
             class Path < OpenAI::Internal::Type::BaseModel
               # @!attribute x
               #   The x-coordinate.
@@ -333,9 +351,11 @@ module OpenAI
               # @!method initialize(x:, y_:)
               #   An x/y coordinate pair, e.g. `{ x: 100, y: 200 }`.
               #
-              #   @param x [Integer] The x-coordinate.
+              #   @param x [Integer]
+              #     The x-coordinate.
               #
-              #   @param y_ [Integer] The y-coordinate.
+              #   @param y_ [Integer]
+              #     The y-coordinate.
             end
           end
 
@@ -355,15 +375,15 @@ module OpenAI
             required :type, const: :keypress
 
             # @!method initialize(keys:, type: :keypress)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress} for more
-            #   details.
-            #
             #   A collection of keypresses the model would like to perform.
             #
-            #   @param keys [Array<String>] The combination of keys the model is requesting to be pressed. This is an array
+            #   @param keys [Array<String>]
+            #     The combination of keys the model is requesting to be pressed. This is an array
+            #     of strings, each representing a key.
             #
-            #   @param type [Symbol, :keypress] Specifies the event type. For a keypress action, this property is always set to
+            #   @param type [Symbol, :keypress]
+            #     Specifies the event type. For a keypress action, this property is always set to
+            #     `keypress`.
           end
 
           class Move < OpenAI::Internal::Type::BaseModel
@@ -393,19 +413,20 @@ module OpenAI
             optional :keys, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
             # @!method initialize(x:, y_:, keys: nil, type: :move)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move} for more
-            #   details.
-            #
             #   A mouse move action.
             #
-            #   @param x [Integer] The x-coordinate to move to.
+            #   @param x [Integer]
+            #     The x-coordinate to move to.
             #
-            #   @param y_ [Integer] The y-coordinate to move to.
+            #   @param y_ [Integer]
+            #     The y-coordinate to move to.
             #
-            #   @param keys [Array<String>, nil] The keys being held while moving the mouse.
+            #   @param keys [Array<String>, nil]
+            #     The keys being held while moving the mouse.
             #
-            #   @param type [Symbol, :move] Specifies the event type. For a move action, this property is always set to `mov
+            #   @param type [Symbol, :move]
+            #     Specifies the event type. For a move action, this property is always set to
+            #     `move`.
           end
 
           class Screenshot < OpenAI::Internal::Type::BaseModel
@@ -417,13 +438,11 @@ module OpenAI
             required :type, const: :screenshot
 
             # @!method initialize(type: :screenshot)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot} for
-            #   more details.
-            #
             #   A screenshot action.
             #
-            #   @param type [Symbol, :screenshot] Specifies the event type. For a screenshot action, this property is always set t
+            #   @param type [Symbol, :screenshot]
+            #     Specifies the event type. For a screenshot action, this property is always set
+            #     to `screenshot`.
           end
 
           class Scroll < OpenAI::Internal::Type::BaseModel
@@ -465,23 +484,26 @@ module OpenAI
             optional :keys, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
             # @!method initialize(scroll_x:, scroll_y:, x:, y_:, keys: nil, type: :scroll)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll} for more
-            #   details.
-            #
             #   A scroll action.
             #
-            #   @param scroll_x [Integer] The horizontal scroll distance.
+            #   @param scroll_x [Integer]
+            #     The horizontal scroll distance.
             #
-            #   @param scroll_y [Integer] The vertical scroll distance.
+            #   @param scroll_y [Integer]
+            #     The vertical scroll distance.
             #
-            #   @param x [Integer] The x-coordinate where the scroll occurred.
+            #   @param x [Integer]
+            #     The x-coordinate where the scroll occurred.
             #
-            #   @param y_ [Integer] The y-coordinate where the scroll occurred.
+            #   @param y_ [Integer]
+            #     The y-coordinate where the scroll occurred.
             #
-            #   @param keys [Array<String>, nil] The keys being held while scrolling.
+            #   @param keys [Array<String>, nil]
+            #     The keys being held while scrolling.
             #
-            #   @param type [Symbol, :scroll] Specifies the event type. For a scroll action, this property is always set to `s
+            #   @param type [Symbol, :scroll]
+            #     Specifies the event type. For a scroll action, this property is always set to
+            #     `scroll`.
           end
 
           class Type < OpenAI::Internal::Type::BaseModel
@@ -499,15 +521,14 @@ module OpenAI
             required :type, const: :type
 
             # @!method initialize(text:, type: :type)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type} for more
-            #   details.
-            #
             #   An action to type in text.
             #
-            #   @param text [String] The text to type.
+            #   @param text [String]
+            #     The text to type.
             #
-            #   @param type [Symbol, :type] Specifies the event type. For a type action, this property is always set to `typ
+            #   @param type [Symbol, :type]
+            #     Specifies the event type. For a type action, this property is always set to
+            #     `type`.
           end
 
           class Wait < OpenAI::Internal::Type::BaseModel
@@ -519,13 +540,11 @@ module OpenAI
             required :type, const: :wait
 
             # @!method initialize(type: :wait)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait} for more
-            #   details.
-            #
             #   A wait action.
             #
-            #   @param type [Symbol, :wait] Specifies the event type. For a wait action, this property is always set to `wai
+            #   @param type [Symbol, :wait]
+            #     Specifies the event type. For a wait action, this property is always set to
+            #     `wait`.
           end
 
           # @!method self.variants

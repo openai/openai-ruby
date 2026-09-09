@@ -29,18 +29,19 @@ module OpenAI
         optional :agent, -> { OpenAI::Beta::BetaResponseCreatedEvent::Agent }, nil?: true
 
         # @!method initialize(response:, sequence_number:, agent: nil, type: :"response.created")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseCreatedEvent} for more details.
-        #
         #   An event that is emitted when a response is created.
         #
-        #   @param response [OpenAI::Models::Beta::BetaResponse] The response that was created.
+        #   @param response [OpenAI::Models::Beta::BetaResponse]
+        #     The response that was created.
         #
-        #   @param sequence_number [Integer] The sequence number for this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number for this event.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseCreatedEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseCreatedEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.created"] The type of the event. Always `response.created`.
+        #   @param type [Symbol, :"response.created"]
+        #     The type of the event. Always `response.created`.
 
         # @see OpenAI::Models::Beta::BetaResponseCreatedEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -53,7 +54,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

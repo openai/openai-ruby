@@ -7,7 +7,7 @@ module OpenAI
       #
       # Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
       # ensures the model will match your supplied JSON schema. Learn more in the
-      # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+      # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
       #
       # The default format is `{ "type": "text" }` with no additional options.
       #
@@ -25,7 +25,7 @@ module OpenAI
         variant :text, -> { OpenAI::Beta::BetaResponseFormatTextConfig::Text }
 
         # JSON Schema response format. Used to generate structured JSON responses.
-        # Learn more about [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
+        # Learn more about [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs).
         variant :json_schema, -> { OpenAI::Beta::BetaResponseFormatTextJSONSchemaConfig }
 
         # JSON object response format. An older method of generating JSON responses.
@@ -44,7 +44,8 @@ module OpenAI
           # @!method initialize(type: :text)
           #   Default response format. Used to generate text responses.
           #
-          #   @param type [Symbol, :text] The type of response format being defined. Always `text`.
+          #   @param type [Symbol, :text]
+          #     The type of response format being defined. Always `text`.
         end
 
         class JSONObject < OpenAI::Internal::Type::BaseModel
@@ -59,7 +60,8 @@ module OpenAI
           #   `json_schema` is recommended for models that support it. Note that the model
           #   will not generate JSON without a system or user message instructing it to do so.
           #
-          #   @param type [Symbol, :json_object] The type of response format being defined. Always `json_object`.
+          #   @param type [Symbol, :json_object]
+          #     The type of response format being defined. Always `json_object`.
         end
 
         # @!method self.variants

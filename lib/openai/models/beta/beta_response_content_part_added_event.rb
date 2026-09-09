@@ -47,24 +47,28 @@ module OpenAI
         optional :agent, -> { OpenAI::Beta::BetaResponseContentPartAddedEvent::Agent }, nil?: true
 
         # @!method initialize(content_index:, item_id:, output_index:, part:, sequence_number:, agent: nil, type: :"response.content_part.added")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseContentPartAddedEvent} for more details.
-        #
         #   Emitted when a new content part is added.
         #
-        #   @param content_index [Integer] The index of the content part that was added.
+        #   @param content_index [Integer]
+        #     The index of the content part that was added.
         #
-        #   @param item_id [String] The ID of the output item that the content part was added to.
+        #   @param item_id [String]
+        #     The ID of the output item that the content part was added to.
         #
-        #   @param output_index [Integer] The index of the output item that the content part was added to.
+        #   @param output_index [Integer]
+        #     The index of the output item that the content part was added to.
         #
-        #   @param part [OpenAI::Models::Beta::BetaResponseOutputText, OpenAI::Models::Beta::BetaResponseOutputRefusal, OpenAI::Models::Beta::BetaResponseContentPartAddedEvent::Part::ReasoningText] The content part that was added.
+        #   @param part [OpenAI::Models::Beta::BetaResponseOutputText, OpenAI::Models::Beta::BetaResponseOutputRefusal, OpenAI::Models::Beta::BetaResponseContentPartAddedEvent::Part::ReasoningText]
+        #     The content part that was added.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseContentPartAddedEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseContentPartAddedEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.content_part.added"] The type of the event. Always `response.content_part.added`.
+        #   @param type [Symbol, :"response.content_part.added"]
+        #     The type of the event. Always `response.content_part.added`.
 
         # The content part that was added.
         #
@@ -99,9 +103,11 @@ module OpenAI
             # @!method initialize(text:, type: :reasoning_text)
             #   Reasoning text from the model.
             #
-            #   @param text [String] The reasoning text from the model.
+            #   @param text [String]
+            #     The reasoning text from the model.
             #
-            #   @param type [Symbol, :reasoning_text] The type of the reasoning text. Always `reasoning_text`.
+            #   @param type [Symbol, :reasoning_text]
+            #     The type of the reasoning text. Always `reasoning_text`.
           end
 
           # @!method self.variants
@@ -119,7 +125,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

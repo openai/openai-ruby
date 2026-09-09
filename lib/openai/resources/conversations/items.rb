@@ -5,18 +5,22 @@ module OpenAI
     class Conversations
       # Manage conversations and conversation items.
       class Items
-        # Some parameter documentations has been truncated, see
-        # {OpenAI::Models::Conversations::ItemCreateParams} for more details.
-        #
         # Create items in a conversation with the given ID.
         #
         # @overload create(conversation_id, items:, include: nil, request_options: {})
         #
-        # @param conversation_id [String] Path param: The ID of the conversation to add the item to.
+        # @param conversation_id [String]
+        #   Path param: The ID of the conversation to add the item to.
         #
-        # @param items [Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseConfigurationUpdateItemParam, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>] Body param: The items to add to the conversation. You may add up to 20 items at
+        # @param items [Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseConfigurationUpdateItemParam, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>]
+        #   Body param: The items to add to the conversation. You may add up to 20 items at
+        #   a time.
         #
-        # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] Query param: Additional fields to include in the response. See the `include`
+        # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]
+        #   Query param: Additional fields to include in the response. See the `include`
+        #   parameter for
+        #   [listing Conversation items above](https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/list#%28resource%29%20conversations.items%20%3E%20%28method%29%20list%20%3E%20%28params%29%20default%20%3E%20%28param%29%20include%20%3E%20%28schema%29)
+        #   for more information.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -38,18 +42,21 @@ module OpenAI
           )
         end
 
-        # Some parameter documentations has been truncated, see
-        # {OpenAI::Models::Conversations::ItemRetrieveParams} for more details.
-        #
         # Get a single item from a conversation with the given IDs.
         #
         # @overload retrieve(item_id, conversation_id:, include: nil, request_options: {})
         #
-        # @param item_id [String] Path param: The ID of the item to retrieve.
+        # @param item_id [String]
+        #   Path param: The ID of the item to retrieve.
         #
-        # @param conversation_id [String] Path param: The ID of the conversation that contains the item.
+        # @param conversation_id [String]
+        #   Path param: The ID of the conversation that contains the item.
         #
-        # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] Query param: Additional fields to include in the response. See the `include`
+        # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]
+        #   Query param: Additional fields to include in the response. See the `include`
+        #   parameter for
+        #   [listing Conversation items above](https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/list#%28resource%29%20conversations.items%20%3E%20%28method%29%20list%20%3E%20%28params%29%20default%20%3E%20%28param%29%20include%20%3E%20%28schema%29)
+        #   for more information.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -73,22 +80,45 @@ module OpenAI
           )
         end
 
-        # Some parameter documentations has been truncated, see
-        # {OpenAI::Models::Conversations::ItemListParams} for more details.
-        #
         # List all items for a conversation with the given ID.
         #
         # @overload list(conversation_id, after: nil, include: nil, limit: nil, order: nil, request_options: {})
         #
-        # @param conversation_id [String] The ID of the conversation to list items for.
+        # @param conversation_id [String]
+        #   The ID of the conversation to list items for.
         #
-        # @param after [String] An item ID to list items after, used in pagination.
+        # @param after [String]
+        #   An item ID to list items after, used in pagination.
         #
-        # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] Specify additional output data to include in the model response. Currently suppo
+        # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]
+        #   Specify additional output data to include in the model response. Currently
+        #   supported values are:
         #
-        # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between
+        #   - `web_search_call.action.sources`: Include the sources of the web search tool
+        #     call.
+        #   - `code_interpreter_call.outputs`: Includes the outputs of python code execution
+        #     in code interpreter tool call items.
+        #   - `computer_call_output.output.image_url`: Include image urls from the computer
+        #     call output.
+        #   - `file_search_call.results`: Include the search results of the file search tool
+        #     call.
+        #   - `message.input_image.image_url`: Include image urls from the input message.
+        #   - `message.output_text.logprobs`: Include logprobs with assistant messages.
+        #   - `reasoning.encrypted_content`: Includes an encrypted version of reasoning
+        #     tokens in reasoning item outputs. This enables reasoning items to be used in
+        #     multi-turn conversations when using the Responses API statelessly (like when
+        #     the `store` parameter is set to `false`, or when an organization is enrolled
+        #     in the zero data retention program).
         #
-        # @param order [Symbol, OpenAI::Models::Conversations::ItemListParams::Order] The order to return the input items in. Default is `desc`.
+        # @param limit [Integer]
+        #   A limit on the number of objects to be returned. Limit can range between 1 and
+        #   100, and the default is 20.
+        #
+        # @param order [Symbol, OpenAI::Models::Conversations::ItemListParams::Order]
+        #   The order to return the input items in. Default is `desc`.
+        #
+        #   - `asc`: Return the input items in ascending order.
+        #   - `desc`: Return the input items in descending order.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -113,9 +143,11 @@ module OpenAI
         #
         # @overload delete(item_id, conversation_id:, request_options: {})
         #
-        # @param item_id [String] The ID of the item to delete.
+        # @param item_id [String]
+        #   The ID of the item to delete.
         #
-        # @param conversation_id [String] The ID of the conversation that contains the item.
+        # @param conversation_id [String]
+        #   The ID of the conversation that contains the item.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #

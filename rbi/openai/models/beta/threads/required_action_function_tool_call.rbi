@@ -18,7 +18,7 @@ module OpenAI
 
           # The ID of the tool call. This ID must be referenced when you submit the tool
           # outputs in using the
-          # [Submit tool outputs to run](https://platform.openai.com/docs/api-reference/runs/submitToolOutputs)
+          # [Submit tool outputs to run](https://developers.openai.com/api/docs/assistants/migration)
           # endpoint.
           sig { returns(String) }
           attr_accessor :id
@@ -51,7 +51,7 @@ module OpenAI
 
             # The ID of the tool call. This ID must be referenced when you submit the tool
             # outputs in using the
-            # [Submit tool outputs to run](https://platform.openai.com/docs/api-reference/runs/submitToolOutputs)
+            # [Submit tool outputs to run](https://developers.openai.com/api/docs/assistants/migration)
             # endpoint.
             id:,
 

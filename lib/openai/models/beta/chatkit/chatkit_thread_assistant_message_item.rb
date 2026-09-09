@@ -47,17 +47,23 @@ module OpenAI
           # @!method initialize(id:, content:, created_at:, thread_id:, object: :"chatkit.thread_item", type: :"chatkit.assistant_message")
           #   Assistant-authored message within a thread.
           #
-          #   @param id [String] Identifier of the thread item.
+          #   @param id [String]
+          #     Identifier of the thread item.
           #
-          #   @param content [Array<OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText>] Ordered assistant response segments.
+          #   @param content [Array<OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText>]
+          #     Ordered assistant response segments.
           #
-          #   @param created_at [Integer] Unix timestamp (in seconds) for when the item was created.
+          #   @param created_at [Integer]
+          #     Unix timestamp (in seconds) for when the item was created.
           #
-          #   @param thread_id [String] Identifier of the parent thread.
+          #   @param thread_id [String]
+          #     Identifier of the parent thread.
           #
-          #   @param object [Symbol, :"chatkit.thread_item"] Type discriminator that is always `chatkit.thread_item`.
+          #   @param object [Symbol, :"chatkit.thread_item"]
+          #     Type discriminator that is always `chatkit.thread_item`.
           #
-          #   @param type [Symbol, :"chatkit.assistant_message"] Type discriminator that is always `chatkit.assistant_message`.
+          #   @param type [Symbol, :"chatkit.assistant_message"]
+          #     Type discriminator that is always `chatkit.assistant_message`.
         end
       end
 

@@ -41,22 +41,25 @@ module OpenAI
         optional :agent, -> { OpenAI::Beta::BetaResponseErrorEvent::Agent }, nil?: true
 
         # @!method initialize(code:, message:, param:, sequence_number:, agent: nil, type: :error)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseErrorEvent} for more details.
-        #
         #   Emitted when an error occurs.
         #
-        #   @param code [String, nil] The error code.
+        #   @param code [String, nil]
+        #     The error code.
         #
-        #   @param message [String] The error message.
+        #   @param message [String]
+        #     The error message.
         #
-        #   @param param [String, nil] The error parameter.
+        #   @param param [String, nil]
+        #     The error parameter.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseErrorEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseErrorEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :error] The type of the event. Always `error`.
+        #   @param type [Symbol, :error]
+        #     The type of the event. Always `error`.
 
         # @see OpenAI::Models::Beta::BetaResponseErrorEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -69,7 +72,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

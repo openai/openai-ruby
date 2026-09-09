@@ -36,21 +36,24 @@ module OpenAI
         required :type, const: :translation
 
         # @!method initialize(id:, audio:, expires_at:, model:, type: :translation)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::RealtimeTranslationSession} for more details.
-        #
         #   A Realtime translation session. Translation sessions continuously translate
         #   input audio into the configured output language.
         #
-        #   @param id [String] Unique identifier for the session that looks like `sess_1234567890abcdef`.
+        #   @param id [String]
+        #     Unique identifier for the session that looks like `sess_1234567890abcdef`.
         #
-        #   @param audio [OpenAI::Models::Realtime::RealtimeTranslationSession::Audio] Configuration for translation input and output audio.
+        #   @param audio [OpenAI::Models::Realtime::RealtimeTranslationSession::Audio]
+        #     Configuration for translation input and output audio.
         #
-        #   @param expires_at [Integer] Expiration timestamp for the session, in seconds since epoch.
+        #   @param expires_at [Integer]
+        #     Expiration timestamp for the session, in seconds since epoch.
         #
-        #   @param model [String] The Realtime translation model used for this session. This field is set at
+        #   @param model [String]
+        #     The Realtime translation model used for this session. This field is set at
+        #     session creation and cannot be changed with `session.update`.
         #
-        #   @param type [Symbol, :translation] The session type. Always `translation` for Realtime translation sessions.
+        #   @param type [Symbol, :translation]
+        #     The session type. Always `translation` for Realtime translation sessions.
 
         # @see OpenAI::Models::Realtime::RealtimeTranslationSession#audio
         class Audio < OpenAI::Internal::Type::BaseModel
@@ -95,13 +98,13 @@ module OpenAI
             )
 
             # @!method initialize(noise_reduction: nil, transcription: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Realtime::RealtimeTranslationSession::Audio::Input} for more
-            #   details.
+            #   @param noise_reduction [OpenAI::Models::Realtime::RealtimeTranslationSession::Audio::Input::NoiseReduction, nil]
+            #     Optional input noise reduction.
             #
-            #   @param noise_reduction [OpenAI::Models::Realtime::RealtimeTranslationSession::Audio::Input::NoiseReduction, nil] Optional input noise reduction.
-            #
-            #   @param transcription [OpenAI::Models::Realtime::RealtimeTranslationSession::Audio::Input::Transcription, nil] Optional source-language transcription. When configured, the server emits
+            #   @param transcription [OpenAI::Models::Realtime::RealtimeTranslationSession::Audio::Input::Transcription, nil]
+            #     Optional source-language transcription. When configured, the server emits
+            #     `session.input_transcript.delta` events. Translation itself still runs from the
+            #     input audio stream.
 
             # @see OpenAI::Models::Realtime::RealtimeTranslationSession::Audio::Input#noise_reduction
             class NoiseReduction < OpenAI::Internal::Type::BaseModel
@@ -114,13 +117,12 @@ module OpenAI
               required :type, enum: -> { OpenAI::Realtime::NoiseReductionType }
 
               # @!method initialize(type:)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Realtime::RealtimeTranslationSession::Audio::Input::NoiseReduction}
-              #   for more details.
-              #
               #   Optional input noise reduction.
               #
-              #   @param type [Symbol, OpenAI::Models::Realtime::NoiseReductionType] Type of noise reduction. `near_field` is for close-talking microphones such as h
+              #   @param type [Symbol, OpenAI::Models::Realtime::NoiseReductionType]
+              #     Type of noise reduction. `near_field` is for close-talking microphones such as
+              #     headphones, `far_field` is for far-field microphones such as laptop or
+              #     conference room microphones.
             end
 
             # @see OpenAI::Models::Realtime::RealtimeTranslationSession::Audio::Input#transcription
@@ -136,7 +138,8 @@ module OpenAI
               #   `session.input_transcript.delta` events. Translation itself still runs from the
               #   input audio stream.
               #
-              #   @param model [String] The transcription model used for source transcript deltas.
+              #   @param model [String]
+              #     The transcription model used for source transcript deltas.
             end
           end
 
@@ -149,11 +152,8 @@ module OpenAI
             optional :language, String
 
             # @!method initialize(language: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Realtime::RealtimeTranslationSession::Audio::Output} for more
-            #   details.
-            #
-            #   @param language [String] Target language for translated output audio and transcript deltas.
+            #   @param language [String]
+            #     Target language for translated output audio and transcript deltas.
           end
         end
       end

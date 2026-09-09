@@ -26,7 +26,7 @@ module OpenAI
         # @!attribute logprobs
         #   The log probabilities of the individual tokens in the transcription. Only
         #   included if you
-        #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
+        #   [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
         #   with the `include[]` parameter set to `logprobs`.
         #
         #   @return [Array<OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob>, nil]
@@ -42,24 +42,29 @@ module OpenAI
         optional :usage, -> { OpenAI::Audio::TranscriptionTextDoneEvent::Usage }
 
         # @!method initialize(text:, languages: nil, logprobs: nil, usage: nil, type: :"transcript.text.done")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Audio::TranscriptionTextDoneEvent} for more details.
-        #
         #   Emitted when the transcription is complete. Contains the complete transcription
         #   text. Only emitted when you
-        #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
+        #   [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
         #   with the `Stream` parameter set to `true`.
         #
-        #   @param text [String] The text that was transcribed.
+        #   @param text [String]
+        #     The text that was transcribed.
         #
-        #   @param languages [Array<OpenAI::Models::Audio::TranscriptionLanguage>] The languages detected in the audio. Returned by `gpt-transcribe`. An empty arra
+        #   @param languages [Array<OpenAI::Models::Audio::TranscriptionLanguage>]
+        #     The languages detected in the audio. Returned by `gpt-transcribe`. An empty
+        #     array indicates that no language could be reliably detected.
         #
-        #   @param logprobs [Array<OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob>] The log probabilities of the individual tokens in the transcription. Only includ
+        #   @param logprobs [Array<OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob>]
+        #     The log probabilities of the individual tokens in the transcription. Only
+        #     included if you
+        #     [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
+        #     with the `include[]` parameter set to `logprobs`.
         #
-        #   @param usage [OpenAI::Models::Audio::TranscriptionTextDoneEvent::Usage] Usage statistics for models billed by token usage.
+        #   @param usage [OpenAI::Models::Audio::TranscriptionTextDoneEvent::Usage]
+        #     Usage statistics for models billed by token usage.
         #
-        #   @param type [Symbol, :"transcript.text.done"] The type of the event. Always `transcript.text.done`.
-
+        #   @param type [Symbol, :"transcript.text.done"]
+        #     The type of the event. Always `transcript.text.done`.
         class Logprob < OpenAI::Internal::Type::BaseModel
           # @!attribute token
           #   The token that was used to generate the log probability.
@@ -80,14 +85,14 @@ module OpenAI
           optional :logprob, Float
 
           # @!method initialize(token: nil, bytes: nil, logprob: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob} for more details.
+          #   @param token [String]
+          #     The token that was used to generate the log probability.
           #
-          #   @param token [String] The token that was used to generate the log probability.
+          #   @param bytes [Array<Integer>]
+          #     The bytes that were used to generate the log probability.
           #
-          #   @param bytes [Array<Integer>] The bytes that were used to generate the log probability.
-          #
-          #   @param logprob [Float] The log probability of the token.
+          #   @param logprob [Float]
+          #     The log probability of the token.
         end
 
         # @see OpenAI::Models::Audio::TranscriptionTextDoneEvent#usage
@@ -125,15 +130,20 @@ module OpenAI
           # @!method initialize(input_tokens:, output_tokens:, total_tokens:, input_token_details: nil, type: :tokens)
           #   Usage statistics for models billed by token usage.
           #
-          #   @param input_tokens [Integer] Number of input tokens billed for this request.
+          #   @param input_tokens [Integer]
+          #     Number of input tokens billed for this request.
           #
-          #   @param output_tokens [Integer] Number of output tokens generated.
+          #   @param output_tokens [Integer]
+          #     Number of output tokens generated.
           #
-          #   @param total_tokens [Integer] Total number of tokens used (input + output).
+          #   @param total_tokens [Integer]
+          #     Total number of tokens used (input + output).
           #
-          #   @param input_token_details [OpenAI::Models::Audio::TranscriptionTextDoneEvent::Usage::InputTokenDetails] Details about the input tokens billed for this request.
+          #   @param input_token_details [OpenAI::Models::Audio::TranscriptionTextDoneEvent::Usage::InputTokenDetails]
+          #     Details about the input tokens billed for this request.
           #
-          #   @param type [Symbol, :tokens] The type of the usage object. Always `tokens` for this variant.
+          #   @param type [Symbol, :tokens]
+          #     The type of the usage object. Always `tokens` for this variant.
 
           # @see OpenAI::Models::Audio::TranscriptionTextDoneEvent::Usage#input_token_details
           class InputTokenDetails < OpenAI::Internal::Type::BaseModel
@@ -152,9 +162,11 @@ module OpenAI
             # @!method initialize(audio_tokens: nil, text_tokens: nil)
             #   Details about the input tokens billed for this request.
             #
-            #   @param audio_tokens [Integer] Number of audio tokens billed for this request.
+            #   @param audio_tokens [Integer]
+            #     Number of audio tokens billed for this request.
             #
-            #   @param text_tokens [Integer] Number of text tokens billed for this request.
+            #   @param text_tokens [Integer]
+            #     Number of text tokens billed for this request.
           end
         end
       end

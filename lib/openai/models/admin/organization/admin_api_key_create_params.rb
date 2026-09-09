@@ -22,12 +22,11 @@ module OpenAI
           optional :expires_in_seconds, Integer
 
           # @!method initialize(name:, expires_in_seconds: nil, request_options: {})
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Admin::Organization::AdminAPIKeyCreateParams} for more details.
-          #
           #   @param name [String]
           #
-          #   @param expires_in_seconds [Integer] The number of seconds until the API key expires. Omit this field for a key that
+          #   @param expires_in_seconds [Integer]
+          #     The number of seconds until the API key expires. Omit this field for a key that
+          #     does not expire.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end

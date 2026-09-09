@@ -63,7 +63,7 @@ module OpenAI
         }
         def accept(
           # The identifier for the call provided in the
-          # [`realtime.call.incoming`](https://platform.openai.com/docs/api-reference/webhook-events/realtime/call/incoming)
+          # [`realtime.call.incoming`](https://developers.openai.com/api/reference/resources/webhooks#realtime.call.incoming)
           # webhook.
           call_id,
           # Configuration for input and output audio.
@@ -100,7 +100,7 @@ module OpenAI
           # reasoning Realtime models such as `gpt-realtime-2`.
           parallel_tool_calls: nil,
           # Reference to a prompt template and its variables.
-          # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
+          # [Learn more](https://developers.openai.com/api/docs/guides/text?api-mode=responses#version-prompts-in-code).
           prompt: nil,
           # Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.
           reasoning: nil,
@@ -146,10 +146,10 @@ module OpenAI
         sig { params(call_id: String, request_options: OpenAI::RequestOptions::OrHash).void }
         def hangup(
           # The identifier for the call. For SIP calls, use the value provided in the
-          # [`realtime.call.incoming`](https://platform.openai.com/docs/api-reference/webhook-events/realtime/call/incoming)
+          # [`realtime.call.incoming`](https://developers.openai.com/api/reference/resources/webhooks#realtime.call.incoming)
           # webhook. For WebRTC sessions, reuse the call ID returned in the `Location`
           # header when creating the call with
-          # [`POST /v1/realtime/calls`](https://platform.openai.com/docs/api-reference/realtime/create-call).
+          # [`POST /v1/realtime/calls`](https://developers.openai.com/api/reference/resources/realtime/subresources/calls/methods/create).
           call_id,
           request_options: {}
         )
@@ -159,7 +159,7 @@ module OpenAI
         sig { params(call_id: String, target_uri: String, request_options: OpenAI::RequestOptions::OrHash).void }
         def refer(
           # The identifier for the call provided in the
-          # [`realtime.call.incoming`](https://platform.openai.com/docs/api-reference/webhook-events/realtime/call/incoming)
+          # [`realtime.call.incoming`](https://developers.openai.com/api/reference/resources/webhooks#realtime.call.incoming)
           # webhook.
           call_id,
           # URI that should appear in the SIP Refer-To header. Supports values like
@@ -173,7 +173,7 @@ module OpenAI
         sig { params(call_id: String, status_code: Integer, request_options: OpenAI::RequestOptions::OrHash).void }
         def reject(
           # The identifier for the call provided in the
-          # [`realtime.call.incoming`](https://platform.openai.com/docs/api-reference/webhook-events/realtime/call/incoming)
+          # [`realtime.call.incoming`](https://developers.openai.com/api/reference/resources/webhooks#realtime.call.incoming)
           # webhook.
           call_id,
           # SIP response code to send back to the caller. Defaults to `603` (Decline) when

@@ -38,20 +38,23 @@ module OpenAI
           required :name, String
 
           # @!method initialize(id:, created_at:, group_type:, is_scim_managed:, name:)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Admin::Organization::Group} for more details.
-          #
           #   Details about an organization group.
           #
-          #   @param id [String] Identifier for the group.
+          #   @param id [String]
+          #     Identifier for the group.
           #
-          #   @param created_at [Integer] Unix timestamp (in seconds) when the group was created.
+          #   @param created_at [Integer]
+          #     Unix timestamp (in seconds) when the group was created.
           #
-          #   @param group_type [Symbol, OpenAI::Models::Admin::Organization::Group::GroupType] The type of the group.
+          #   @param group_type [Symbol, OpenAI::Models::Admin::Organization::Group::GroupType]
+          #     The type of the group.
           #
-          #   @param is_scim_managed [Boolean] Whether the group is managed through SCIM and controlled by your identity provid
+          #   @param is_scim_managed [Boolean]
+          #     Whether the group is managed through SCIM and controlled by your identity
+          #     provider.
           #
-          #   @param name [String] Display name of the group.
+          #   @param name [String]
+          #     Display name of the group.
 
           # The type of the group.
           #

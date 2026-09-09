@@ -35,15 +35,16 @@ module OpenAI
 
           # The model sample to be evaluated. This value will be used to populate the
           # `sample` namespace. See
-          # [the guide](https://platform.openai.com/docs/guides/graders) for more details.
-          # The `output_json` variable will be populated if the model sample is a valid JSON
-          # string.
+          # [the guide](https://developers.openai.com/api/docs/guides/graders) for more
+          # details. The `output_json` variable will be populated if the model sample is a
+          # valid JSON string.
           sig { returns(String) }
           attr_accessor :model_sample
 
           # The dataset item provided to the grader. This will be used to populate the
           # `item` namespace. See
-          # [the guide](https://platform.openai.com/docs/guides/graders) for more details.
+          # [the guide](https://developers.openai.com/api/docs/guides/graders) for more
+          # details.
           sig { returns(T.nilable(T.anything)) }
           attr_reader :item
 
@@ -76,14 +77,15 @@ module OpenAI
 
             # The model sample to be evaluated. This value will be used to populate the
             # `sample` namespace. See
-            # [the guide](https://platform.openai.com/docs/guides/graders) for more details.
-            # The `output_json` variable will be populated if the model sample is a valid JSON
-            # string.
+            # [the guide](https://developers.openai.com/api/docs/guides/graders) for more
+            # details. The `output_json` variable will be populated if the model sample is a
+            # valid JSON string.
             model_sample:,
 
             # The dataset item provided to the grader. This will be used to populate the
             # `item` namespace. See
-            # [the guide](https://platform.openai.com/docs/guides/graders) for more details.
+            # [the guide](https://developers.openai.com/api/docs/guides/graders) for more
+            # details.
             item: nil,
 
             request_options: {}

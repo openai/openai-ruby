@@ -49,7 +49,7 @@ module OpenAI
           # @!attribute event_types
           #   Return only events with a `type` in one of these values. For example,
           #   `project.created`. For all options, see the documentation for the
-          #   [audit log object](https://platform.openai.com/docs/api-reference/audit-logs/object).
+          #   [audit log object](https://developers.openai.com/api/reference/resources/admin/subresources/organization/subresources/audit_logs).
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::AuditLogListParams::EventType>, nil]
           optional(
@@ -88,28 +88,50 @@ module OpenAI
           optional :tenant_only, OpenAI::Internal::Type::Boolean
 
           # @!method initialize(actor_emails: nil, actor_ids: nil, after: nil, before: nil, effective_at: nil, event_types: nil, limit: nil, project_ids: nil, resource_ids: nil, tenant_only: nil, request_options: {})
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Admin::Organization::AuditLogListParams} for more details.
+          #   @param actor_emails [Array<String>]
+          #     Return only events performed by users with these emails.
           #
-          #   @param actor_emails [Array<String>] Return only events performed by users with these emails.
+          #   @param actor_ids [Array<String>]
+          #     Return only events performed by these actors. Can be a user ID, a service
+          #     account ID, or an api key tracking ID.
           #
-          #   @param actor_ids [Array<String>] Return only events performed by these actors. Can be a user ID, a service accoun
+          #   @param after [String]
+          #     A cursor for use in pagination. `after` is an object ID that defines your place
+          #     in the list. For instance, if you make a list request and receive 100 objects,
+          #     ending with obj_foo, your subsequent call can include after=obj_foo in order to
+          #     fetch the next page of the list.
           #
-          #   @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+          #   @param before [String]
+          #     A cursor for use in pagination. `before` is an object ID that defines your place
+          #     in the list. For instance, if you make a list request and receive 100 objects,
+          #     starting with obj_foo, your subsequent call can include before=obj_foo in order
+          #     to fetch the previous page of the list.
           #
-          #   @param before [String] A cursor for use in pagination. `before` is an object ID that defines your place
+          #   @param effective_at [OpenAI::Models::Admin::Organization::AuditLogListParams::EffectiveAt]
+          #     Return only events whose `effective_at` (Unix seconds) is in this range.
           #
-          #   @param effective_at [OpenAI::Models::Admin::Organization::AuditLogListParams::EffectiveAt] Return only events whose `effective_at` (Unix seconds) is in this range.
+          #   @param event_types [Array<Symbol, OpenAI::Models::Admin::Organization::AuditLogListParams::EventType>]
+          #     Return only events with a `type` in one of these values. For example,
+          #     `project.created`. For all options, see the documentation for the
+          #     [audit log object](https://developers.openai.com/api/reference/resources/admin/subresources/organization/subresources/audit_logs).
           #
-          #   @param event_types [Array<Symbol, OpenAI::Models::Admin::Organization::AuditLogListParams::EventType>] Return only events with a `type` in one of these values. For example, `project.c
+          #   @param limit [Integer]
+          #     A limit on the number of objects to be returned. Limit can range between 1 and
+          #     100, and the default is 20.
           #
-          #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+          #   @param project_ids [Array<String>]
+          #     Return only events for these projects.
           #
-          #   @param project_ids [Array<String>] Return only events for these projects.
+          #   @param resource_ids [Array<String>]
+          #     Return only events performed on these targets. For example, a project ID
+          #     updated. For ChatGPT connector role events, use the workspace connector resource
+          #     ID shown in `details.id`, such as `<workspace_id>__<connector_id>`.
           #
-          #   @param resource_ids [Array<String>] Return only events performed on these targets. For example, a project ID updated
-          #
-          #   @param tenant_only [Boolean] Return only tenant-scoped events associated with this organization. Required for
+          #   @param tenant_only [Boolean]
+          #     Return only tenant-scoped events associated with this organization. Required for
+          #     tenant-scoped events such as `role.bound_to_resource` and
+          #     `role.unbound_from_resource`. When `true`, all supplied event types must be
+          #     tenant-scoped.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -142,19 +164,22 @@ module OpenAI
             optional :lte, Integer
 
             # @!method initialize(gt: nil, gte: nil, lt: nil, lte: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Admin::Organization::AuditLogListParams::EffectiveAt} for more
-            #   details.
-            #
             #   Return only events whose `effective_at` (Unix seconds) is in this range.
             #
-            #   @param gt [Integer] Return only events whose `effective_at` (Unix seconds) is greater than this valu
+            #   @param gt [Integer]
+            #     Return only events whose `effective_at` (Unix seconds) is greater than this
+            #     value.
             #
-            #   @param gte [Integer] Return only events whose `effective_at` (Unix seconds) is greater than or equal
+            #   @param gte [Integer]
+            #     Return only events whose `effective_at` (Unix seconds) is greater than or equal
+            #     to this value.
             #
-            #   @param lt [Integer] Return only events whose `effective_at` (Unix seconds) is less than this value.
+            #   @param lt [Integer]
+            #     Return only events whose `effective_at` (Unix seconds) is less than this value.
             #
-            #   @param lte [Integer] Return only events whose `effective_at` (Unix seconds) is less than or equal to
+            #   @param lte [Integer]
+            #     Return only events whose `effective_at` (Unix seconds) is less than or equal to
+            #     this value.
           end
 
           # The event type.

@@ -52,7 +52,7 @@ module OpenAI
         #   `null` to turn off once on. Input audio transcription is not native to the
         #   model, since the model consumes audio directly. Transcription runs
         #   asynchronously through
-        #   [the /audio/transcriptions endpoint](https://platform.openai.com/docs/api-reference/audio/createTranscription)
+        #   [the /audio/transcriptions endpoint](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
         #   and should be treated as guidance of input audio content rather than precisely
         #   what the model heard. The client can optionally set the language and prompt for
         #   transcription, these offer additional guidance to the transcription service.
@@ -118,7 +118,7 @@ module OpenAI
 
         # @!attribute prompt
         #   Reference to a prompt template and its variables.
-        #   [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
+        #   [Learn more](https://developers.openai.com/api/docs/guides/text?api-mode=responses#version-prompts-in-code).
         #
         #   @return [OpenAI::Models::Responses::ResponsePrompt, nil]
         optional :prompt, -> { OpenAI::Responses::ResponsePrompt }, nil?: true
@@ -191,51 +191,123 @@ module OpenAI
         optional :voice, union: -> { OpenAI::Realtime::RealtimeSession::Voice }
 
         # @!method initialize(id: nil, expires_at: nil, include: nil, input_audio_format: nil, input_audio_noise_reduction: nil, input_audio_transcription: nil, instructions: nil, max_response_output_tokens: nil, modalities: nil, model: nil, object: nil, output_audio_format: nil, prompt: nil, speed: nil, temperature: nil, tool_choice: nil, tools: nil, tracing: nil, turn_detection: nil, voice: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::RealtimeSession} for more details.
-        #
         #   Realtime session object for the beta interface.
         #
-        #   @param id [String] Unique identifier for the session that looks like `sess_1234567890abcdef`.
+        #   @param id [String]
+        #     Unique identifier for the session that looks like `sess_1234567890abcdef`.
         #
-        #   @param expires_at [Integer] Expiration timestamp for the session, in seconds since epoch.
+        #   @param expires_at [Integer]
+        #     Expiration timestamp for the session, in seconds since epoch.
         #
-        #   @param include [Array<Symbol, OpenAI::Models::Realtime::RealtimeSession::Include>, nil] Additional fields to include in server outputs.
+        #   @param include [Array<Symbol, OpenAI::Models::Realtime::RealtimeSession::Include>, nil]
+        #     Additional fields to include in server outputs.
         #
-        #   @param input_audio_format [Symbol, OpenAI::Models::Realtime::RealtimeSession::InputAudioFormat] The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+        #     - `item.input_audio_transcription.logprobs`: Include logprobs for input audio
+        #       transcription.
         #
-        #   @param input_audio_noise_reduction [OpenAI::Models::Realtime::RealtimeSession::InputAudioNoiseReduction] Configuration for input audio noise reduction. This can be set to `null` to turn
+        #   @param input_audio_format [Symbol, OpenAI::Models::Realtime::RealtimeSession::InputAudioFormat]
+        #     The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`. For
+        #     `pcm16`, input audio must be 16-bit PCM at a 24kHz sample rate, single channel
+        #     (mono), and little-endian byte order.
         #
-        #   @param input_audio_transcription [OpenAI::Models::Realtime::AudioTranscription, nil] Configuration for input audio transcription, defaults to off and can be set to `
+        #   @param input_audio_noise_reduction [OpenAI::Models::Realtime::RealtimeSession::InputAudioNoiseReduction]
+        #     Configuration for input audio noise reduction. This can be set to `null` to turn
+        #     off. Noise reduction filters audio added to the input audio buffer before it is
+        #     sent to VAD and the model. Filtering the audio can improve VAD and turn
+        #     detection accuracy (reducing false positives) and model performance by improving
+        #     perception of the input audio.
         #
-        #   @param instructions [String] The default system instructions (i.e. system message) prepended to model
+        #   @param input_audio_transcription [OpenAI::Models::Realtime::AudioTranscription, nil]
+        #     Configuration for input audio transcription, defaults to off and can be set to
+        #     `null` to turn off once on. Input audio transcription is not native to the
+        #     model, since the model consumes audio directly. Transcription runs
+        #     asynchronously through
+        #     [the /audio/transcriptions endpoint](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
+        #     and should be treated as guidance of input audio content rather than precisely
+        #     what the model heard. The client can optionally set the language and prompt for
+        #     transcription, these offer additional guidance to the transcription service.
         #
-        #   @param max_response_output_tokens [Integer, Symbol, :inf] Maximum number of output tokens for a single assistant response,
+        #   @param instructions [String]
+        #     The default system instructions (i.e. system message) prepended to model calls.
+        #     This field allows the client to guide the model on desired responses. The model
+        #     can be instructed on response content and format, (e.g. "be extremely succinct",
+        #     "act friendly", "here are examples of good responses") and on audio behavior
+        #     (e.g. "talk quickly", "inject emotion into your voice", "laugh frequently"). The
+        #     instructions are not guaranteed to be followed by the model, but they provide
+        #     guidance to the model on the desired behavior.
         #
-        #   @param modalities [Array<Symbol, OpenAI::Models::Realtime::RealtimeSession::Modality>] The set of modalities the model can respond with. To disable audio,
+        #     Note that the server sets default instructions which will be used if this field
+        #     is not set and are visible in the `session.created` event at the start of the
+        #     session.
         #
-        #   @param model [String, Symbol, OpenAI::Models::Realtime::RealtimeSession::Model] The Realtime model used for this session.
+        #   @param max_response_output_tokens [Integer, Symbol, :inf]
+        #     Maximum number of output tokens for a single assistant response, inclusive of
+        #     tool calls. Provide an integer between 1 and 4096 to limit output tokens, or
+        #     `inf` for the maximum available tokens for a given model. Defaults to `inf`.
         #
-        #   @param object [Symbol, OpenAI::Models::Realtime::RealtimeSession::Object] The object type. Always `realtime.session`.
+        #   @param modalities [Array<Symbol, OpenAI::Models::Realtime::RealtimeSession::Modality>]
+        #     The set of modalities the model can respond with. To disable audio, set this to
+        #     ["text"].
         #
-        #   @param output_audio_format [Symbol, OpenAI::Models::Realtime::RealtimeSession::OutputAudioFormat] The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+        #   @param model [String, Symbol, OpenAI::Models::Realtime::RealtimeSession::Model]
+        #     The Realtime model used for this session.
         #
-        #   @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
+        #   @param object [Symbol, OpenAI::Models::Realtime::RealtimeSession::Object]
+        #     The object type. Always `realtime.session`.
         #
-        #   @param speed [Float] The speed of the model's spoken response. 1.0 is the default speed. 0.25 is
+        #   @param output_audio_format [Symbol, OpenAI::Models::Realtime::RealtimeSession::OutputAudioFormat]
+        #     The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+        #     For `pcm16`, output audio is sampled at a rate of 24kHz.
         #
-        #   @param temperature [Float] Sampling temperature for the model, limited to [0.6, 1.2]. For audio models a te
+        #   @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil]
+        #     Reference to a prompt template and its variables.
+        #     [Learn more](https://developers.openai.com/api/docs/guides/text?api-mode=responses#version-prompts-in-code).
         #
-        #   @param tool_choice [String] How the model chooses tools. Options are `auto`, `none`, `required`, or
+        #   @param speed [Float]
+        #     The speed of the model's spoken response. 1.0 is the default speed. 0.25 is the
+        #     minimum speed. 1.5 is the maximum speed. This value can only be changed in
+        #     between model turns, not while a response is in progress.
         #
-        #   @param tools [Array<OpenAI::Models::Realtime::RealtimeFunctionTool>] Tools (functions) available to the model.
+        #   @param temperature [Float]
+        #     Sampling temperature for the model, limited to [0.6, 1.2]. For audio models a
+        #     temperature of 0.8 is highly recommended for best performance.
         #
-        #   @param tracing [Symbol, :auto, OpenAI::Models::Realtime::RealtimeSession::Tracing::TracingConfiguration, nil] Configuration options for tracing. Set to null to disable tracing. Once
+        #   @param tool_choice [String]
+        #     How the model chooses tools. Options are `auto`, `none`, `required`, or specify
+        #     a function.
         #
-        #   @param turn_detection [OpenAI::Models::Realtime::RealtimeSession::TurnDetection::ServerVad, OpenAI::Models::Realtime::RealtimeSession::TurnDetection::SemanticVad, nil] Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
+        #   @param tools [Array<OpenAI::Models::Realtime::RealtimeFunctionTool>]
+        #     Tools (functions) available to the model.
         #
-        #   @param voice [String, Symbol, OpenAI::Models::Realtime::RealtimeSession::Voice] The voice the model uses to respond. Voice cannot be changed during the
-
+        #   @param tracing [Symbol, :auto, OpenAI::Models::Realtime::RealtimeSession::Tracing::TracingConfiguration, nil]
+        #     Configuration options for tracing. Set to null to disable tracing. Once tracing
+        #     is enabled for a session, the configuration cannot be modified.
+        #
+        #     `auto` will create a trace for the session with default values for the workflow
+        #     name, group id, and metadata.
+        #
+        #   @param turn_detection [OpenAI::Models::Realtime::RealtimeSession::TurnDetection::ServerVad, OpenAI::Models::Realtime::RealtimeSession::TurnDetection::SemanticVad, nil]
+        #     Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
+        #     set to `null` to turn off, in which case the client must manually trigger model
+        #     response.
+        #
+        #     Server VAD means that the model will detect the start and end of speech based on
+        #     audio volume and respond at the end of user speech.
+        #
+        #     Semantic VAD is more advanced and uses a turn detection model (in conjunction
+        #     with VAD) to semantically estimate whether the user has finished speaking, then
+        #     dynamically sets a timeout based on this probability. For example, if user audio
+        #     trails off with "uhhm", the model will score a low probability of turn end and
+        #     wait longer for the user to continue speaking. This can be useful for more
+        #     natural conversations, but may have a higher latency.
+        #
+        #     For `gpt-realtime-whisper` transcription sessions, turn detection must be set to
+        #     `null`; VAD is not supported.
+        #
+        #   @param voice [String, Symbol, OpenAI::Models::Realtime::RealtimeSession::Voice]
+        #     The voice the model uses to respond. Voice cannot be changed during the session
+        #     once the model has responded with audio at least once. Current voice options are
+        #     `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, and `verse`.
         module Include
           extend OpenAI::Internal::Type::Enum
 
@@ -272,17 +344,16 @@ module OpenAI
           optional :type, enum: -> { OpenAI::Realtime::NoiseReductionType }
 
           # @!method initialize(type: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Realtime::RealtimeSession::InputAudioNoiseReduction} for more
-          #   details.
-          #
           #   Configuration for input audio noise reduction. This can be set to `null` to turn
           #   off. Noise reduction filters audio added to the input audio buffer before it is
           #   sent to VAD and the model. Filtering the audio can improve VAD and turn
           #   detection accuracy (reducing false positives) and model performance by improving
           #   perception of the input audio.
           #
-          #   @param type [Symbol, OpenAI::Models::Realtime::NoiseReductionType] Type of noise reduction. `near_field` is for close-talking microphones such as h
+          #   @param type [Symbol, OpenAI::Models::Realtime::NoiseReductionType]
+          #     Type of noise reduction. `near_field` is for close-talking microphones such as
+          #     headphones, `far_field` is for far-field microphones such as laptop or
+          #     conference room microphones.
         end
 
         # Maximum number of output tokens for a single assistant response, inclusive of
@@ -448,17 +519,19 @@ module OpenAI
             optional :workflow_name, String
 
             # @!method initialize(group_id: nil, metadata: nil, workflow_name: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Realtime::RealtimeSession::Tracing::TracingConfiguration} for
-            #   more details.
-            #
             #   Granular configuration for tracing.
             #
-            #   @param group_id [String] The group id to attach to this trace to enable filtering and
+            #   @param group_id [String]
+            #     The group id to attach to this trace to enable filtering and grouping in the
+            #     traces dashboard.
             #
-            #   @param metadata [Object] The arbitrary metadata to attach to this trace to enable
+            #   @param metadata [Object]
+            #     The arbitrary metadata to attach to this trace to enable filtering in the traces
+            #     dashboard.
             #
-            #   @param workflow_name [String] The name of the workflow to attach to this trace. This is used to
+            #   @param workflow_name [String]
+            #     The name of the workflow to attach to this trace. This is used to name the trace
+            #     in the traces dashboard.
           end
 
           # @!method self.variants
@@ -565,26 +638,56 @@ module OpenAI
             optional :threshold, Float
 
             # @!method initialize(create_response: nil, idle_timeout_ms: nil, interrupt_response: nil, prefix_padding_ms: nil, silence_duration_ms: nil, threshold: nil, type: :server_vad)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Realtime::RealtimeSession::TurnDetection::ServerVad} for more
-            #   details.
-            #
             #   Server-side voice activity detection (VAD) which flips on when user speech is
             #   detected and off after a period of silence.
             #
-            #   @param create_response [Boolean] Whether or not to automatically generate a response when a VAD stop event occurs
+            #   @param create_response [Boolean]
+            #     Whether or not to automatically generate a response when a VAD stop event
+            #     occurs. If `interrupt_response` is set to `false` this may fail to create a
+            #     response if the model is already responding.
             #
-            #   @param idle_timeout_ms [Integer, nil] Optional timeout after which a model response will be triggered automatically. T
+            #     If both `create_response` and `interrupt_response` are set to `false`, the model
+            #     will never respond automatically but VAD events will still be emitted.
             #
-            #   @param interrupt_response [Boolean] Whether or not to automatically interrupt (cancel) any ongoing response with out
+            #   @param idle_timeout_ms [Integer, nil]
+            #     Optional timeout after which a model response will be triggered automatically.
+            #     This is useful for situations in which a long pause from the user is unexpected,
+            #     such as a phone call. The model will effectively prompt the user to continue the
+            #     conversation based on the current context.
             #
-            #   @param prefix_padding_ms [Integer] Used only for `server_vad` mode. Amount of audio to include before the VAD detec
+            #     The timeout value will be applied after the last model response's audio has
+            #     finished playing, i.e. it's set to the `response.done` time plus audio playback
+            #     duration.
             #
-            #   @param silence_duration_ms [Integer] Used only for `server_vad` mode. Duration of silence to detect speech stop (in m
+            #     An `input_audio_buffer.timeout_triggered` event (plus events associated with the
+            #     Response) will be emitted when the timeout is reached. Idle timeout is currently
+            #     only supported for `server_vad` mode.
             #
-            #   @param threshold [Float] Used only for `server_vad` mode. Activation threshold for VAD (0.0 to 1.0), this
+            #   @param interrupt_response [Boolean]
+            #     Whether or not to automatically interrupt (cancel) any ongoing response with
+            #     output to the default conversation (i.e. `conversation` of `auto`) when a VAD
+            #     start event occurs. If `true` then the response will be cancelled, otherwise it
+            #     will continue until complete.
             #
-            #   @param type [Symbol, :server_vad] Type of turn detection, `server_vad` to turn on simple Server VAD.
+            #     If both `create_response` and `interrupt_response` are set to `false`, the model
+            #     will never respond automatically but VAD events will still be emitted.
+            #
+            #   @param prefix_padding_ms [Integer]
+            #     Used only for `server_vad` mode. Amount of audio to include before the VAD
+            #     detected speech (in milliseconds). Defaults to 300ms.
+            #
+            #   @param silence_duration_ms [Integer]
+            #     Used only for `server_vad` mode. Duration of silence to detect speech stop (in
+            #     milliseconds). Defaults to 500ms. With shorter values the model will respond
+            #     more quickly, but may jump in on short pauses from the user.
+            #
+            #   @param threshold [Float]
+            #     Used only for `server_vad` mode. Activation threshold for VAD (0.0 to 1.0), this
+            #     defaults to 0.5. A higher threshold will require louder audio to activate the
+            #     model, and thus might perform better in noisy environments.
+            #
+            #   @param type [Symbol, :server_vad]
+            #     Type of turn detection, `server_vad` to turn on simple Server VAD.
           end
 
           class SemanticVad < OpenAI::Internal::Type::BaseModel
@@ -619,20 +722,26 @@ module OpenAI
             optional :interrupt_response, OpenAI::Internal::Type::Boolean
 
             # @!method initialize(create_response: nil, eagerness: nil, interrupt_response: nil, type: :semantic_vad)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Realtime::RealtimeSession::TurnDetection::SemanticVad} for more
-            #   details.
-            #
             #   Server-side semantic turn detection which uses a model to determine when the
             #   user has finished speaking.
             #
-            #   @param create_response [Boolean] Whether or not to automatically generate a response when a VAD stop event occurs
+            #   @param create_response [Boolean]
+            #     Whether or not to automatically generate a response when a VAD stop event
+            #     occurs.
             #
-            #   @param eagerness [Symbol, OpenAI::Models::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness] Used only for `semantic_vad` mode. The eagerness of the model to respond. `low`
+            #   @param eagerness [Symbol, OpenAI::Models::Realtime::RealtimeSession::TurnDetection::SemanticVad::Eagerness]
+            #     Used only for `semantic_vad` mode. The eagerness of the model to respond. `low`
+            #     will wait longer for the user to continue speaking, `high` will respond more
+            #     quickly. `auto` is the default and is equivalent to `medium`. `low`, `medium`,
+            #     and `high` have max timeouts of 8s, 4s, and 2s respectively.
             #
-            #   @param interrupt_response [Boolean] Whether or not to automatically interrupt any ongoing response with output to th
+            #   @param interrupt_response [Boolean]
+            #     Whether or not to automatically interrupt any ongoing response with output to
+            #     the default conversation (i.e. `conversation` of `auto`) when a VAD start event
+            #     occurs.
             #
-            #   @param type [Symbol, :semantic_vad] Type of turn detection, `semantic_vad` to turn on Semantic VAD.
+            #   @param type [Symbol, :semantic_vad]
+            #     Type of turn detection, `semantic_vad` to turn on Semantic VAD.
 
             # Used only for `semantic_vad` mode. The eagerness of the model to respond. `low`
             # will wait longer for the user to continue speaking, `high` will respond more

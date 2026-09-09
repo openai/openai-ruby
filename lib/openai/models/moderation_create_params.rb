@@ -16,20 +16,23 @@ module OpenAI
 
       # @!attribute model
       #   The content moderation model you would like to use. Learn more in
-      #   [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
-      #   learn about available models
-      #   [here](https://platform.openai.com/docs/models#moderation).
+      #   [the moderation guide](https://developers.openai.com/api/docs/guides/moderation),
+      #   and learn about available models
+      #   [here](https://developers.openai.com/api/docs/guides/moderation).
       #
       #   @return [String, Symbol, OpenAI::Models::ModerationModel, nil]
       optional :model, union: -> { OpenAI::ModerationCreateParams::Model }
 
       # @!method initialize(input:, model: nil, request_options: {})
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::ModerationCreateParams} for more details.
+      #   @param input [String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>]
+      #     Input (or inputs) to classify. Can be a single string, an array of strings, or
+      #     an array of multi-modal input objects similar to other models.
       #
-      #   @param input [String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>] Input (or inputs) to classify. Can be a single string, an array of strings, or
-      #
-      #   @param model [String, Symbol, OpenAI::Models::ModerationModel] The content moderation model you would like to use. Learn more in
+      #   @param model [String, Symbol, OpenAI::Models::ModerationModel]
+      #     The content moderation model you would like to use. Learn more in
+      #     [the moderation guide](https://developers.openai.com/api/docs/guides/moderation),
+      #     and learn about available models
+      #     [here](https://developers.openai.com/api/docs/guides/moderation).
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -60,17 +63,17 @@ module OpenAI
       end
 
       # The content moderation model you would like to use. Learn more in
-      # [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
-      # learn about available models
-      # [here](https://platform.openai.com/docs/models#moderation).
+      # [the moderation guide](https://developers.openai.com/api/docs/guides/moderation),
+      # and learn about available models
+      # [here](https://developers.openai.com/api/docs/guides/moderation).
       module Model
         extend OpenAI::Internal::Type::Union
 
         variant String
 
         # The content moderation model you would like to use. Learn more in
-        # [the moderation guide](https://platform.openai.com/docs/guides/moderation), and learn about
-        # available models [here](https://platform.openai.com/docs/models#moderation).
+        # [the moderation guide](https://developers.openai.com/api/docs/guides/moderation), and learn about
+        # available models [here](https://developers.openai.com/api/docs/guides/moderation).
         variant enum: -> { OpenAI::ModerationModel }
 
         # @!method self.variants

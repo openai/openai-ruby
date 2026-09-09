@@ -23,16 +23,16 @@ module OpenAI
         required :type, const: :"response.failed"
 
         # @!method initialize(response:, sequence_number:, type: :"response.failed")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseFailedEvent} for more details.
-        #
         #   An event that is emitted when a response fails.
         #
-        #   @param response [OpenAI::Models::Responses::Response] The response that failed.
+        #   @param response [OpenAI::Models::Responses::Response]
+        #     The response that failed.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param type [Symbol, :"response.failed"] The type of the event. Always `response.failed`.
+        #   @param type [Symbol, :"response.failed"]
+        #     The type of the event. Always `response.failed`.
       end
     end
   end

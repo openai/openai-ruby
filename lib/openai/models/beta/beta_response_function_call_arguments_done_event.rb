@@ -42,15 +42,20 @@ module OpenAI
         # @!method initialize(arguments:, item_id:, output_index:, sequence_number:, agent: nil, type: :"response.function_call_arguments.done")
         #   Emitted when function-call arguments are finalized.
         #
-        #   @param arguments [String] The function-call arguments.
+        #   @param arguments [String]
+        #     The function-call arguments.
         #
-        #   @param item_id [String] The ID of the item.
+        #   @param item_id [String]
+        #     The ID of the item.
         #
-        #   @param output_index [Integer] The index of the output item.
+        #   @param output_index [Integer]
+        #     The index of the output item.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
         #   @param type [Symbol, :"response.function_call_arguments.done"]
 
@@ -65,7 +70,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

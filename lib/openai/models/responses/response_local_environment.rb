@@ -13,7 +13,8 @@ module OpenAI
         # @!method initialize(type: :local)
         #   Represents the use of a local environment to perform shell actions.
         #
-        #   @param type [Symbol, :local] The environment type. Always `local`.
+        #   @param type [Symbol, :local]
+        #     The environment type. Always `local`.
       end
     end
   end

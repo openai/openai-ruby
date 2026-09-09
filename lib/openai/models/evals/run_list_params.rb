@@ -40,18 +40,21 @@ module OpenAI
         optional :status, enum: -> { OpenAI::Evals::RunListParams::Status }
 
         # @!method initialize(eval_id:, after: nil, limit: nil, order: nil, status: nil, request_options: {})
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Evals::RunListParams} for more details.
-        #
         #   @param eval_id [String]
         #
-        #   @param after [String] Identifier for the last run from the previous pagination request.
+        #   @param after [String]
+        #     Identifier for the last run from the previous pagination request.
         #
-        #   @param limit [Integer] Number of runs to retrieve.
+        #   @param limit [Integer]
+        #     Number of runs to retrieve.
         #
-        #   @param order [Symbol, OpenAI::Models::Evals::RunListParams::Order] Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for de
+        #   @param order [Symbol, OpenAI::Models::Evals::RunListParams::Order]
+        #     Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for
+        #     descending order. Defaults to `asc`.
         #
-        #   @param status [Symbol, OpenAI::Models::Evals::RunListParams::Status] Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+        #   @param status [Symbol, OpenAI::Models::Evals::RunListParams::Status]
+        #     Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+        #     | `canceled`.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

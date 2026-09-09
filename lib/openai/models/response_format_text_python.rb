@@ -11,10 +11,11 @@ module OpenAI
 
       # @!method initialize(type: :python)
       #   Configure the model to generate valid Python code. See the
-      #   [custom grammars guide](https://platform.openai.com/docs/guides/custom-grammars)
+      #   [custom grammars guide](https://developers.openai.com/api/docs/guides/function-calling#context-free-grammars)
       #   for more details.
       #
-      #   @param type [Symbol, :python] The type of response format being defined. Always `python`.
+      #   @param type [Symbol, :python]
+      #     The type of response format being defined. Always `python`.
     end
   end
 end

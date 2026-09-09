@@ -46,17 +46,23 @@ module OpenAI
             # @!method initialize(id:, added_at:, role:, email: nil, name: nil, object: :"organization.project.user")
             #   Represents an individual user in a project.
             #
-            #   @param id [String] The identifier, which can be referenced in API endpoints
+            #   @param id [String]
+            #     The identifier, which can be referenced in API endpoints
             #
-            #   @param added_at [Integer] The Unix timestamp (in seconds) of when the project was added.
+            #   @param added_at [Integer]
+            #     The Unix timestamp (in seconds) of when the project was added.
             #
-            #   @param role [String] `owner` or `member`
+            #   @param role [String]
+            #     `owner` or `member`
             #
-            #   @param email [String, nil] The email address of the user
+            #   @param email [String, nil]
+            #     The email address of the user
             #
-            #   @param name [String, nil] The name of the user
+            #   @param name [String, nil]
+            #     The name of the user
             #
-            #   @param object [Symbol, :"organization.project.user"] The object type, which is always `organization.project.user`
+            #   @param object [Symbol, :"organization.project.user"]
+            #     The object type, which is always `organization.project.user`
           end
         end
 

@@ -43,20 +43,25 @@ module OpenAI
         optional :status, enum: -> { OpenAI::Beta::BetaResponseInputMessageItem::Status }
 
         # @!method initialize(id:, content:, role:, agent: nil, status: nil, type: :message)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseInputMessageItem} for more details.
+        #   @param id [String]
+        #     The unique ID of the message input.
         #
-        #   @param id [String] The unique ID of the message input.
+        #   @param content [Array<OpenAI::Models::Beta::BetaResponseInputText, OpenAI::Models::Beta::BetaResponseInputImage, OpenAI::Models::Beta::BetaResponseInputFile>]
+        #     A list of one or many input items to the model, containing different content
+        #     types.
         #
-        #   @param content [Array<OpenAI::Models::Beta::BetaResponseInputText, OpenAI::Models::Beta::BetaResponseInputImage, OpenAI::Models::Beta::BetaResponseInputFile>] A list of one or many input items to the model, containing different content
+        #   @param role [Symbol, OpenAI::Models::Beta::BetaResponseInputMessageItem::Role]
+        #     The role of the message input. One of `user`, `system`, or `developer`.
         #
-        #   @param role [Symbol, OpenAI::Models::Beta::BetaResponseInputMessageItem::Role] The role of the message input. One of `user`, `system`, or `developer`.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseInputMessageItem::Agent, nil]
+        #     The agent that produced this item.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseInputMessageItem::Agent, nil] The agent that produced this item.
+        #   @param status [Symbol, OpenAI::Models::Beta::BetaResponseInputMessageItem::Status]
+        #     The status of item. One of `in_progress`, `completed`, or `incomplete`.
+        #     Populated when items are returned via API.
         #
-        #   @param status [Symbol, OpenAI::Models::Beta::BetaResponseInputMessageItem::Status] The status of item. One of `in_progress`, `completed`, or
-        #
-        #   @param type [Symbol, :message] The type of the message input. Always set to `message`.
+        #   @param type [Symbol, :message]
+        #     The type of the message input. Always set to `message`.
 
         # The role of the message input. One of `user`, `system`, or `developer`.
         #
@@ -83,7 +88,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that produced this item.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
 
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.

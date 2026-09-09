@@ -84,7 +84,7 @@ module OpenAI
 
         # @!attribute prompt
         #   Reference to a prompt template and its variables.
-        #   [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
+        #   [Learn more](https://developers.openai.com/api/docs/guides/text?api-mode=responses#version-prompts-in-code).
         #
         #   @return [OpenAI::Models::Responses::ResponsePrompt, nil]
         optional :prompt, -> { OpenAI::Responses::ResponsePrompt }, nil?: true
@@ -112,34 +112,72 @@ module OpenAI
         )
 
         # @!method initialize(audio: nil, conversation: nil, input: nil, instructions: nil, max_output_tokens: nil, metadata: nil, output_modalities: nil, parallel_tool_calls: nil, prompt: nil, reasoning: nil, tool_choice: nil, tools: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::RealtimeResponseCreateParams} for more details.
-        #
         #   Create a new Realtime response with these parameters
         #
-        #   @param audio [OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput] Configuration for audio input and output.
+        #   @param audio [OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput]
+        #     Configuration for audio input and output.
         #
-        #   @param conversation [String, Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateParams::Conversation] Controls which conversation the response is added to. Currently supports
+        #   @param conversation [String, Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateParams::Conversation]
+        #     Controls which conversation the response is added to. Currently supports `auto`
+        #     and `none`, with `auto` as the default value. The `auto` value means that the
+        #     contents of the response will be added to the default conversation. Set this to
+        #     `none` to create an out-of-band response which will not add items to default
+        #     conversation.
         #
-        #   @param input [Array<OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage, OpenAI::Models::Realtime::RealtimeConversationItemUserMessage, OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCallOutput, OpenAI::Models::Realtime::RealtimeMcpApprovalResponse, OpenAI::Models::Realtime::RealtimeMcpListTools, OpenAI::Models::Realtime::RealtimeMcpToolCall, OpenAI::Models::Realtime::RealtimeMcpApprovalRequest>] Input items to include in the prompt for the model. Using this field
+        #   @param input [Array<OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage, OpenAI::Models::Realtime::RealtimeConversationItemUserMessage, OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCallOutput, OpenAI::Models::Realtime::RealtimeMcpApprovalResponse, OpenAI::Models::Realtime::RealtimeMcpListTools, OpenAI::Models::Realtime::RealtimeMcpToolCall, OpenAI::Models::Realtime::RealtimeMcpApprovalRequest>]
+        #     Input items to include in the prompt for the model. Using this field creates a
+        #     new context for this Response instead of using the default conversation. An
+        #     empty array `[]` will clear the context for this Response. Note that this can
+        #     include references to items that previously appeared in the session using their
+        #     id.
         #
-        #   @param instructions [String] The default system instructions (i.e. system message) prepended to model calls.
+        #   @param instructions [String]
+        #     The default system instructions (i.e. system message) prepended to model calls.
+        #     This field allows the client to guide the model on desired responses. The model
+        #     can be instructed on response content and format, (e.g. "be extremely succinct",
+        #     "act friendly", "here are examples of good responses") and on audio behavior
+        #     (e.g. "talk quickly", "inject emotion into your voice", "laugh frequently"). The
+        #     instructions are not guaranteed to be followed by the model, but they provide
+        #     guidance to the model on the desired behavior. Note that the server sets default
+        #     instructions which will be used if this field is not set and are visible in the
+        #     `session.created` event at the start of the session.
         #
-        #   @param max_output_tokens [Integer, Symbol, :inf] Maximum number of output tokens for a single assistant response,
+        #   @param max_output_tokens [Integer, Symbol, :inf]
+        #     Maximum number of output tokens for a single assistant response, inclusive of
+        #     tool calls. Provide an integer between 1 and 4096 to limit output tokens, or
+        #     `inf` for the maximum available tokens for a given model. Defaults to `inf`.
         #
-        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #     Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #     for storing additional information about the object in a structured format, and
+        #     querying for objects via API or the dashboard.
         #
-        #   @param output_modalities [Array<Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateParams::OutputModality>] The set of modalities the model used to respond, currently the only possible val
+        #     Keys are strings with a maximum length of 64 characters. Values are strings with
+        #     a maximum length of 512 characters.
         #
-        #   @param parallel_tool_calls [Boolean] Whether the model may call multiple tools in parallel. Only supported by
+        #   @param output_modalities [Array<Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateParams::OutputModality>]
+        #     The set of modalities the model used to respond, currently the only possible
+        #     values are `[\"audio\"]`, `[\"text\"]`. Audio output always include a text
+        #     transcript. Setting the output to mode `text` will disable audio output from the
+        #     model.
         #
-        #   @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
+        #   @param parallel_tool_calls [Boolean]
+        #     Whether the model may call multiple tools in parallel. Only supported by
+        #     reasoning Realtime models such as `gpt-realtime-2`.
         #
-        #   @param reasoning [OpenAI::Models::Realtime::RealtimeReasoning] Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.
+        #   @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil]
+        #     Reference to a prompt template and its variables.
+        #     [Learn more](https://developers.openai.com/api/docs/guides/text?api-mode=responses#version-prompts-in-code).
         #
-        #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp] How the model chooses tools. Provide one of the string modes or force a specific
+        #   @param reasoning [OpenAI::Models::Realtime::RealtimeReasoning]
+        #     Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.
         #
-        #   @param tools [Array<OpenAI::Models::Realtime::RealtimeFunctionTool, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool>] Tools available to the model.
+        #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp]
+        #     How the model chooses tools. Provide one of the string modes or force a specific
+        #     function/MCP tool.
+        #
+        #   @param tools [Array<OpenAI::Models::Realtime::RealtimeFunctionTool, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool>]
+        #     Tools available to the model.
 
         # Controls which conversation the response is added to. Currently supports `auto`
         # and `none`, with `auto` as the default value. The `auto` value means that the
@@ -227,14 +265,14 @@ module OpenAI
 
         # Give the model access to additional tools via remote Model Context Protocol
         # (MCP) servers.
-        # [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
+        # [Learn more about MCP](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
         module Tool
           extend OpenAI::Internal::Type::Union
 
           variant -> { OpenAI::Realtime::RealtimeFunctionTool }
 
           # Give the model access to additional tools via remote Model Context Protocol
-          # (MCP) servers. [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
+          # (MCP) servers. [Learn more about MCP](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
           variant -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool }
 
           # @!method self.variants

@@ -5,17 +5,21 @@ module OpenAI
     # Given text and/or image inputs, classifies if those inputs are potentially
     # harmful.
     class Moderations
-      # Some parameter documentations has been truncated, see
-      # {OpenAI::Models::ModerationCreateParams} for more details.
-      #
       # Classifies if text and/or image inputs are potentially harmful. Learn more in
-      # the [moderation guide](https://platform.openai.com/docs/guides/moderation).
+      # the
+      # [moderation guide](https://developers.openai.com/api/docs/guides/moderation).
       #
       # @overload create(input:, model: nil, request_options: {})
       #
-      # @param input [String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>] Input (or inputs) to classify. Can be a single string, an array of strings, or
+      # @param input [String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>]
+      #   Input (or inputs) to classify. Can be a single string, an array of strings, or
+      #   an array of multi-modal input objects similar to other models.
       #
-      # @param model [String, Symbol, OpenAI::Models::ModerationModel] The content moderation model you would like to use. Learn more in
+      # @param model [String, Symbol, OpenAI::Models::ModerationModel]
+      #   The content moderation model you would like to use. Learn more in
+      #   [the moderation guide](https://developers.openai.com/api/docs/guides/moderation),
+      #   and learn about available models
+      #   [here](https://developers.openai.com/api/docs/guides/moderation).
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #

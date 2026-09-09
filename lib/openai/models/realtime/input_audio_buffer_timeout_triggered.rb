@@ -37,9 +37,6 @@ module OpenAI
         required :type, const: :"input_audio_buffer.timeout_triggered"
 
         # @!method initialize(audio_end_ms:, audio_start_ms:, event_id:, item_id:, type: :"input_audio_buffer.timeout_triggered")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::InputAudioBufferTimeoutTriggered} for more details.
-        #
         #   Returned when the Server VAD timeout is triggered for the input audio buffer.
         #   This is configured with `idle_timeout_ms` in the `turn_detection` settings of
         #   the session, and it indicates that there hasn't been any speech detected for the
@@ -57,15 +54,22 @@ module OpenAI
         #   by the model, so the model may respond with something relevant to the
         #   conversation or a prompt to continue speaking.
         #
-        #   @param audio_end_ms [Integer] Millisecond offset of audio written to the input audio buffer at the time the ti
+        #   @param audio_end_ms [Integer]
+        #     Millisecond offset of audio written to the input audio buffer at the time the
+        #     timeout was triggered.
         #
-        #   @param audio_start_ms [Integer] Millisecond offset of audio written to the input audio buffer that was after the
+        #   @param audio_start_ms [Integer]
+        #     Millisecond offset of audio written to the input audio buffer that was after the
+        #     playback time of the last model response.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param item_id [String] The ID of the item associated with this segment.
+        #   @param item_id [String]
+        #     The ID of the item associated with this segment.
         #
-        #   @param type [Symbol, :"input_audio_buffer.timeout_triggered"] The event type, must be `input_audio_buffer.timeout_triggered`.
+        #   @param type [Symbol, :"input_audio_buffer.timeout_triggered"]
+        #     The event type, must be `input_audio_buffer.timeout_triggered`.
       end
     end
   end

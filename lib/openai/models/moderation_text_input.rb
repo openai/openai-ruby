@@ -18,9 +18,11 @@ module OpenAI
       # @!method initialize(text:, type: :text)
       #   An object describing text to classify.
       #
-      #   @param text [String] A string of text to classify.
+      #   @param text [String]
+      #     A string of text to classify.
       #
-      #   @param type [Symbol, :text] Always `text`.
+      #   @param type [Symbol, :text]
+      #     Always `text`.
     end
   end
 end

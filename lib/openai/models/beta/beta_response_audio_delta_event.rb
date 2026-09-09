@@ -29,18 +29,19 @@ module OpenAI
         optional :agent, -> { OpenAI::Beta::BetaResponseAudioDeltaEvent::Agent }, nil?: true
 
         # @!method initialize(delta:, sequence_number:, agent: nil, type: :"response.audio.delta")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseAudioDeltaEvent} for more details.
-        #
         #   Emitted when there is a partial audio response.
         #
-        #   @param delta [String] A chunk of Base64 encoded response audio bytes.
+        #   @param delta [String]
+        #     A chunk of Base64 encoded response audio bytes.
         #
-        #   @param sequence_number [Integer] A sequence number for this chunk of the stream response.
+        #   @param sequence_number [Integer]
+        #     A sequence number for this chunk of the stream response.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseAudioDeltaEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseAudioDeltaEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.audio.delta"] The type of the event. Always `response.audio.delta`.
+        #   @param type [Symbol, :"response.audio.delta"]
+        #     The type of the event. Always `response.audio.delta`.
 
         # @see OpenAI::Models::Beta::BetaResponseAudioDeltaEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -53,7 +54,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

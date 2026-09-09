@@ -522,7 +522,7 @@ module OpenAI
                 # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
                 # reasoning effort can result in faster responses and fewer tokens used on
                 # reasoning in a response. Not all reasoning models support every value. See the
-                # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+                # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
                 # model-specific support.
                 sig { returns(T.nilable(OpenAI::ReasoningEffort::TaggedSymbol)) }
                 attr_accessor :reasoning_effort
@@ -597,7 +597,7 @@ module OpenAI
                   # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
                   # reasoning effort can result in faster responses and fewer tokens used on
                   # reasoning in a response. Not all reasoning models support every value. See the
-                  # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+                  # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
                   # model-specific support.
                   reasoning_effort: nil,
 
@@ -1185,7 +1185,7 @@ module OpenAI
               # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
               # reasoning effort can result in faster responses and fewer tokens used on
               # reasoning in a response. Not all reasoning models support every value. See the
-              # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+              # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
               # model-specific support.
               sig { returns(T.nilable(OpenAI::ReasoningEffort::TaggedSymbol)) }
               attr_accessor :reasoning_effort
@@ -1207,8 +1207,8 @@ module OpenAI
               # Configuration options for a text response from the model. Can be plain text or
               # structured JSON data. Learn more:
               #
-              # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-              # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+              # - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+              # - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
               sig {
                 returns(T.nilable(OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams::Text))
               }
@@ -1229,13 +1229,14 @@ module OpenAI
               #
               # - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
               #   capabilities, like
-              #   [web search](https://platform.openai.com/docs/guides/tools-web-search) or
-              #   [file search](https://platform.openai.com/docs/guides/tools-file-search).
+              #   [web search](https://developers.openai.com/api/docs/guides/tools-web-search)
+              #   or
+              #   [file search](https://developers.openai.com/api/docs/guides/tools-file-search).
               #   Learn more about
-              #   [built-in tools](https://platform.openai.com/docs/guides/tools).
+              #   [built-in tools](https://developers.openai.com/api/docs/guides/tools).
               # - **Function calls (custom tools)**: Functions that are defined by you, enabling
               #   the model to call your own code. Learn more about
-              #   [function calling](https://platform.openai.com/docs/guides/function-calling).
+              #   [function calling](https://developers.openai.com/api/docs/guides/function-calling).
               sig { returns(T.nilable(T::Array[OpenAI::Responses::Tool::Variants])) }
               attr_reader :tools
 
@@ -1320,7 +1321,7 @@ module OpenAI
                 # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
                 # reasoning effort can result in faster responses and fewer tokens used on
                 # reasoning in a response. Not all reasoning models support every value. See the
-                # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+                # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
                 # model-specific support.
                 reasoning_effort: nil,
 
@@ -1333,8 +1334,8 @@ module OpenAI
                 # Configuration options for a text response from the model. Can be plain text or
                 # structured JSON data. Learn more:
                 #
-                # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-                # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+                # - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+                # - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
                 text: nil,
 
                 # An array of tools the model may call while generating a response. You can
@@ -1344,13 +1345,14 @@ module OpenAI
                 #
                 # - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
                 #   capabilities, like
-                #   [web search](https://platform.openai.com/docs/guides/tools-web-search) or
-                #   [file search](https://platform.openai.com/docs/guides/tools-file-search).
+                #   [web search](https://developers.openai.com/api/docs/guides/tools-web-search)
+                #   or
+                #   [file search](https://developers.openai.com/api/docs/guides/tools-file-search).
                 #   Learn more about
-                #   [built-in tools](https://platform.openai.com/docs/guides/tools).
+                #   [built-in tools](https://developers.openai.com/api/docs/guides/tools).
                 # - **Function calls (custom tools)**: Functions that are defined by you, enabling
                 #   the model to call your own code. Learn more about
-                #   [function calling](https://platform.openai.com/docs/guides/function-calling).
+                #   [function calling](https://developers.openai.com/api/docs/guides/function-calling).
                 tools: nil,
 
                 # An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
@@ -1387,7 +1389,7 @@ module OpenAI
                 #
                 # Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
                 # ensures the model will match your supplied JSON schema. Learn more in the
-                # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+                # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
                 #
                 # The default format is `{ "type": "text" }` with no additional options.
                 #
@@ -1414,8 +1416,8 @@ module OpenAI
                 # Configuration options for a text response from the model. Can be plain text or
                 # structured JSON data. Learn more:
                 #
-                # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-                # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+                # - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+                # - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
                 sig do
                   params(
 
@@ -1433,7 +1435,7 @@ module OpenAI
                   #
                   # Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
                   # ensures the model will match your supplied JSON schema. Learn more in the
-                  # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+                  # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
                   #
                   # The default format is `{ "type": "text" }` with no additional options.
                   #

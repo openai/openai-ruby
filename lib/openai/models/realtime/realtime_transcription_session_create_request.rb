@@ -32,18 +32,20 @@ module OpenAI
         )
 
         # @!method initialize(audio: nil, include: nil, type: :transcription)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest} for more
-        #   details.
-        #
         #   Realtime transcription session object configuration.
         #
-        #   @param audio [OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudio] Configuration for input and output audio.
+        #   @param audio [OpenAI::Models::Realtime::RealtimeTranscriptionSessionAudio]
+        #     Configuration for input and output audio.
         #
-        #   @param include [Array<Symbol, OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::Include>] Additional fields to include in server outputs.
+        #   @param include [Array<Symbol, OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::Include>]
+        #     Additional fields to include in server outputs.
         #
-        #   @param type [Symbol, :transcription] The type of session to create. Always `transcription` for transcription sessions
-
+        #     `item.input_audio_transcription.logprobs`: Include logprobs for input audio
+        #     transcription.
+        #
+        #   @param type [Symbol, :transcription]
+        #     The type of session to create. Always `transcription` for transcription
+        #     sessions.
         module Include
           extend OpenAI::Internal::Type::Enum
 

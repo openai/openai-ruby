@@ -31,11 +31,12 @@ module OpenAI
 
       # The ID of an uploaded file that contains requests for the new batch.
       #
-      # See [upload file](https://platform.openai.com/docs/api-reference/files/create)
+      # See
+      # [upload file](https://developers.openai.com/api/reference/resources/files/methods/create)
       # for how to upload a file.
       #
       # Your input file must be formatted as a
-      # [JSONL file](https://platform.openai.com/docs/api-reference/batch/request-input),
+      # [JSONL file](https://developers.openai.com/api/docs/guides/batch#1-prepare-your-batch-file),
       # and must be uploaded with the purpose `batch`. The file can contain up to 50,000
       # requests, and can be up to 200 MB in size.
       sig { returns(String) }
@@ -91,11 +92,12 @@ module OpenAI
 
         # The ID of an uploaded file that contains requests for the new batch.
         #
-        # See [upload file](https://platform.openai.com/docs/api-reference/files/create)
+        # See
+        # [upload file](https://developers.openai.com/api/reference/resources/files/methods/create)
         # for how to upload a file.
         #
         # Your input file must be formatted as a
-        # [JSONL file](https://platform.openai.com/docs/api-reference/batch/request-input),
+        # [JSONL file](https://developers.openai.com/api/docs/guides/batch#1-prepare-your-batch-file),
         # and must be uploaded with the purpose `batch`. The file can contain up to 50,000
         # requests, and can be up to 200 MB in size.
         input_file_id:,

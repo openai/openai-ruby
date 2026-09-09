@@ -21,8 +21,8 @@ module OpenAI
           attr_accessor :id
 
           # The ID of the
-          # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
-          # execution of this run.
+          # [assistant](https://developers.openai.com/api/docs/assistants/migration) used
+          # for execution of this run.
           sig { returns(String) }
           attr_accessor :assistant_id
 
@@ -55,8 +55,8 @@ module OpenAI
           attr_writer :incomplete_details
 
           # The instructions that the
-          # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
-          # this run.
+          # [assistant](https://developers.openai.com/api/docs/assistants/migration) used
+          # for this run.
           sig { returns(String) }
           attr_accessor :instructions
 
@@ -87,8 +87,8 @@ module OpenAI
           attr_accessor :metadata
 
           # The model that the
-          # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
-          # this run.
+          # [assistant](https://developers.openai.com/api/docs/assistants/migration) used
+          # for this run.
           sig { returns(String) }
           attr_accessor :model
 
@@ -97,7 +97,7 @@ module OpenAI
           attr_accessor :object
 
           # Whether to enable
-          # [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
+          # [parallel function calling](https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling)
           # during tool use.
           sig { returns(T::Boolean) }
           attr_accessor :parallel_tool_calls
@@ -111,14 +111,14 @@ module OpenAI
           attr_writer :required_action
 
           # Specifies the format that the model must output. Compatible with
-          # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
-          # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
-          # and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+          # [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+          # [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+          # all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
           #
           # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
           # Outputs which ensures the model will match your supplied JSON schema. Learn more
           # in the
-          # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
           #
           # Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
           # message the model generates is valid JSON.
@@ -143,8 +143,9 @@ module OpenAI
           sig { returns(OpenAI::Beta::Threads::RunStatus::TaggedSymbol) }
           attr_accessor :status
 
-          # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
-          # that was executed on as a part of this run.
+          # The ID of the
+          # [thread](https://developers.openai.com/api/docs/assistants/migration) that was
+          # executed on as a part of this run.
           sig { returns(String) }
           attr_accessor :thread_id
 
@@ -159,8 +160,8 @@ module OpenAI
           attr_accessor :tool_choice
 
           # The list of tools that the
-          # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
-          # this run.
+          # [assistant](https://developers.openai.com/api/docs/assistants/migration) used
+          # for this run.
           sig { returns(T::Array[OpenAI::Beta::AssistantTool::Variants]) }
           attr_accessor :tools
 
@@ -189,7 +190,7 @@ module OpenAI
           attr_accessor :top_p
 
           # Represents an execution run on a
-          # [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           sig do
             params(
 
@@ -273,8 +274,8 @@ module OpenAI
             id:,
 
             # The ID of the
-            # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
-            # execution of this run.
+            # [assistant](https://developers.openai.com/api/docs/assistants/migration) used
+            # for execution of this run.
             assistant_id:,
 
             # The Unix timestamp (in seconds) for when the run was cancelled.
@@ -297,8 +298,8 @@ module OpenAI
             incomplete_details:,
 
             # The instructions that the
-            # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
-            # this run.
+            # [assistant](https://developers.openai.com/api/docs/assistants/migration) used
+            # for this run.
             instructions:,
 
             # The last error associated with this run. Will be `null` if there are no errors.
@@ -321,12 +322,12 @@ module OpenAI
             metadata:,
 
             # The model that the
-            # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
-            # this run.
+            # [assistant](https://developers.openai.com/api/docs/assistants/migration) used
+            # for this run.
             model:,
 
             # Whether to enable
-            # [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
+            # [parallel function calling](https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling)
             # during tool use.
             parallel_tool_calls:,
 
@@ -335,14 +336,14 @@ module OpenAI
             required_action:,
 
             # Specifies the format that the model must output. Compatible with
-            # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
-            # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
-            # and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+            # [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+            # [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+            # all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
             #
             # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
             # Outputs which ensures the model will match your supplied JSON schema. Learn more
             # in the
-            # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+            # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
             #
             # Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
             # message the model generates is valid JSON.
@@ -364,8 +365,9 @@ module OpenAI
             # `incomplete`, or `expired`.
             status:,
 
-            # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
-            # that was executed on as a part of this run.
+            # The ID of the
+            # [thread](https://developers.openai.com/api/docs/assistants/migration) that was
+            # executed on as a part of this run.
             thread_id:,
 
             # Controls which (if any) tool is called by the model. `none` means the model will
@@ -378,8 +380,8 @@ module OpenAI
             tool_choice:,
 
             # The list of tools that the
-            # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
-            # this run.
+            # [assistant](https://developers.openai.com/api/docs/assistants/migration) used
+            # for this run.
             tools:,
 
             # Controls for how a thread will be truncated prior to the run. Use this to

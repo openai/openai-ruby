@@ -41,10 +41,10 @@ module OpenAI
         attr_accessor :metadata
 
         # ID of the model to use. You can use the
-        # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
-        # see all of your available models, or see our
-        # [Model overview](https://platform.openai.com/docs/models) for descriptions of
-        # them.
+        # [List models](https://developers.openai.com/api/reference/resources/models/methods/list)
+        # API to see all of your available models, or see our
+        # [Model overview](https://developers.openai.com/api/docs/models) for descriptions
+        # of them.
         sig { returns(String) }
         attr_accessor :model
 
@@ -63,14 +63,14 @@ module OpenAI
         attr_accessor :tools
 
         # Specifies the format that the model must output. Compatible with
-        # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
-        # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
-        # and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+        # [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+        # [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+        # all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
         #
         # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
         # Outputs which ensures the model will match your supplied JSON schema. Learn more
         # in the
-        # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+        # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
         #
         # Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
         # message the model generates is valid JSON.
@@ -178,10 +178,10 @@ module OpenAI
           metadata:,
 
           # ID of the model to use. You can use the
-          # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
-          # see all of your available models, or see our
-          # [Model overview](https://platform.openai.com/docs/models) for descriptions of
-          # them.
+          # [List models](https://developers.openai.com/api/reference/resources/models/methods/list)
+          # API to see all of your available models, or see our
+          # [Model overview](https://developers.openai.com/api/docs/models) for descriptions
+          # of them.
           model:,
 
           # The name of the assistant. The maximum length is 256 characters.
@@ -193,14 +193,14 @@ module OpenAI
           tools:,
 
           # Specifies the format that the model must output. Compatible with
-          # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
-          # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
-          # and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+          # [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+          # [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+          # all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
           #
           # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
           # Outputs which ensures the model will match your supplied JSON schema. Learn more
           # in the
-          # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
           #
           # Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
           # message the model generates is valid JSON.
@@ -320,9 +320,9 @@ module OpenAI
               )
             end
 
-            # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
-            # available to the `code_interpreter`` tool. There can be a maximum of 20 files
-            # associated with the tool.
+            # A list of [file](https://developers.openai.com/api/reference/resources/files)
+            # IDs made available to the `code_interpreter`` tool. There can be a maximum of 20
+            # files associated with the tool.
             sig { returns(T.nilable(T::Array[String])) }
             attr_reader :file_ids
 
@@ -338,9 +338,9 @@ module OpenAI
             end
             def self.new(
 
-              # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
-              # available to the `code_interpreter`` tool. There can be a maximum of 20 files
-              # associated with the tool.
+              # A list of [file](https://developers.openai.com/api/reference/resources/files)
+              # IDs made available to the `code_interpreter`` tool. There can be a maximum of 20
+              # files associated with the tool.
 
               file_ids: nil
             )
@@ -365,7 +365,7 @@ module OpenAI
             end
 
             # The ID of the
-            # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+            # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
             # attached to this assistant. There can be a maximum of 1 vector store attached to
             # the assistant.
             sig { returns(T.nilable(T::Array[String])) }
@@ -384,7 +384,7 @@ module OpenAI
             def self.new(
 
               # The ID of the
-              # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+              # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
               # attached to this assistant. There can be a maximum of 1 vector store attached to
               # the assistant.
 

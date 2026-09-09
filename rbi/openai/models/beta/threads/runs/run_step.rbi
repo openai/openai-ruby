@@ -25,7 +25,7 @@ module OpenAI
             attr_accessor :id
 
             # The ID of the
-            # [assistant](https://platform.openai.com/docs/api-reference/assistants)
+            # [assistant](https://developers.openai.com/api/docs/assistants/migration)
             # associated with the run step.
             sig { returns(String) }
             attr_accessor :assistant_id
@@ -72,8 +72,8 @@ module OpenAI
             sig { returns(Symbol) }
             attr_accessor :object
 
-            # The ID of the [run](https://platform.openai.com/docs/api-reference/runs) that
-            # this run step is a part of.
+            # The ID of the [run](https://developers.openai.com/api/docs/assistants/migration)
+            # that this run step is a part of.
             sig { returns(String) }
             attr_accessor :run_id
 
@@ -86,8 +86,9 @@ module OpenAI
             sig { returns(OpenAI::Beta::Threads::Runs::RunStep::StepDetails::Variants) }
             attr_accessor :step_details
 
-            # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
-            # that was run.
+            # The ID of the
+            # [thread](https://developers.openai.com/api/docs/assistants/migration) that was
+            # run.
             sig { returns(String) }
             attr_accessor :thread_id
 
@@ -150,7 +151,7 @@ module OpenAI
               id:,
 
               # The ID of the
-              # [assistant](https://platform.openai.com/docs/api-reference/assistants)
+              # [assistant](https://developers.openai.com/api/docs/assistants/migration)
               # associated with the run step.
               assistant_id:,
 
@@ -182,8 +183,8 @@ module OpenAI
               # a maximum length of 512 characters.
               metadata:,
 
-              # The ID of the [run](https://platform.openai.com/docs/api-reference/runs) that
-              # this run step is a part of.
+              # The ID of the [run](https://developers.openai.com/api/docs/assistants/migration)
+              # that this run step is a part of.
               run_id:,
 
               # The status of the run step, which can be either `in_progress`, `cancelled`,
@@ -193,8 +194,9 @@ module OpenAI
               # The details of the run step.
               step_details:,
 
-              # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
-              # that was run.
+              # The ID of the
+              # [thread](https://developers.openai.com/api/docs/assistants/migration) that was
+              # run.
               thread_id:,
 
               # The type of run step, which can be either `message_creation` or `tool_calls`.

@@ -57,24 +57,42 @@ module OpenAI
             #   @return [String]
             required :redacted_value, String
 
-            # @!method initialize(id:, created_at:, last_used_at:, name:, owner:, owner_project_access:, redacted_value:, object: :"organization.project.api_key")
+            # @!attribute expires_at
+            #   The Unix timestamp (in seconds) when the API key expires, or null if it does not
+            #   expire.
+            #
+            #   @return [Integer, nil]
+            optional :expires_at, Integer, nil?: true
+
+            # @!method initialize(id:, created_at:, last_used_at:, name:, owner:, owner_project_access:, redacted_value:, expires_at: nil, object: :"organization.project.api_key")
             #   Represents an individual API key in a project.
             #
-            #   @param id [String] The identifier, which can be referenced in API endpoints
+            #   @param id [String]
+            #     The identifier, which can be referenced in API endpoints
             #
-            #   @param created_at [Integer] The Unix timestamp (in seconds) of when the API key was created
+            #   @param created_at [Integer]
+            #     The Unix timestamp (in seconds) of when the API key was created
             #
-            #   @param last_used_at [Integer, nil] The Unix timestamp (in seconds) of when the API key was last used.
+            #   @param last_used_at [Integer, nil]
+            #     The Unix timestamp (in seconds) of when the API key was last used.
             #
-            #   @param name [String] The name of the API key
+            #   @param name [String]
+            #     The name of the API key
             #
             #   @param owner [OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner]
             #
-            #   @param owner_project_access [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess] Whether the API key's owner currently has effective access to the project.
+            #   @param owner_project_access [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess]
+            #     Whether the API key's owner currently has effective access to the project.
             #
-            #   @param redacted_value [String] The redacted value of the API key
+            #   @param redacted_value [String]
+            #     The redacted value of the API key
             #
-            #   @param object [Symbol, :"organization.project.api_key"] The object type, which is always `organization.project.api_key`
+            #   @param expires_at [Integer, nil]
+            #     The Unix timestamp (in seconds) when the API key expires, or null if it does not
+            #     expire.
+            #
+            #   @param object [Symbol, :"organization.project.api_key"]
+            #     The object type, which is always `organization.project.api_key`
 
             # @see OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey#owner
             class Owner < OpenAI::Internal::Type::BaseModel
@@ -100,11 +118,14 @@ module OpenAI
               optional :user, -> { OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::User }
 
               # @!method initialize(service_account: nil, type: nil, user: nil)
-              #   @param service_account [OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount] The service account that owns a project API key.
+              #   @param service_account [OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount]
+              #     The service account that owns a project API key.
               #
-              #   @param type [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::Type] `user` or `service_account`
+              #   @param type [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::Type]
+              #     `user` or `service_account`
               #
-              #   @param user [OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::User] The user that owns a project API key.
+              #   @param user [OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::User]
+              #     The user that owns a project API key.
 
               # @see OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner#service_account
               class ServiceAccount < OpenAI::Internal::Type::BaseModel
@@ -135,13 +156,17 @@ module OpenAI
                 # @!method initialize(id:, created_at:, name:, role:)
                 #   The service account that owns a project API key.
                 #
-                #   @param id [String] The identifier, which can be referenced in API endpoints
+                #   @param id [String]
+                #     The identifier, which can be referenced in API endpoints
                 #
-                #   @param created_at [Integer] The Unix timestamp (in seconds) of when the service account was created.
+                #   @param created_at [Integer]
+                #     The Unix timestamp (in seconds) of when the service account was created.
                 #
-                #   @param name [String] The name of the service account.
+                #   @param name [String]
+                #     The name of the service account.
                 #
-                #   @param role [String] The service account's project role.
+                #   @param role [String]
+                #     The service account's project role.
               end
 
               # `user` or `service_account`
@@ -192,15 +217,20 @@ module OpenAI
                 # @!method initialize(id:, created_at:, email:, name:, role:)
                 #   The user that owns a project API key.
                 #
-                #   @param id [String] The identifier, which can be referenced in API endpoints
+                #   @param id [String]
+                #     The identifier, which can be referenced in API endpoints
                 #
-                #   @param created_at [Integer] The Unix timestamp (in seconds) of when the user was created.
+                #   @param created_at [Integer]
+                #     The Unix timestamp (in seconds) of when the user was created.
                 #
-                #   @param email [String] The email address of the user.
+                #   @param email [String]
+                #     The email address of the user.
                 #
-                #   @param name [String] The name of the user.
+                #   @param name [String]
+                #     The name of the user.
                 #
-                #   @param role [String] The user's project role.
+                #   @param role [String]
+                #     The user's project role.
               end
             end
 

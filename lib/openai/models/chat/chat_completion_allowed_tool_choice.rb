@@ -17,14 +17,13 @@ module OpenAI
         required :type, const: :allowed_tools
 
         # @!method initialize(allowed_tools:, type: :allowed_tools)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Chat::ChatCompletionAllowedToolChoice} for more details.
-        #
         #   Constrains the tools available to the model to a pre-defined set.
         #
-        #   @param allowed_tools [OpenAI::Models::Chat::ChatCompletionAllowedTools] Constrains the tools available to the model to a pre-defined set.
+        #   @param allowed_tools [OpenAI::Models::Chat::ChatCompletionAllowedTools]
+        #     Constrains the tools available to the model to a pre-defined set.
         #
-        #   @param type [Symbol, :allowed_tools] Allowed tool configuration type. Always `allowed_tools`.
+        #   @param type [Symbol, :allowed_tools]
+        #     Allowed tool configuration type. Always `allowed_tools`.
       end
     end
 

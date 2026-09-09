@@ -44,17 +44,23 @@ module OpenAI
         #   Returned when the model-generated audio is done. Also emitted when a Response is
         #   interrupted, incomplete, or cancelled.
         #
-        #   @param content_index [Integer] The index of the content part in the item's content array.
+        #   @param content_index [Integer]
+        #     The index of the content part in the item's content array.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param item_id [String] The ID of the item.
+        #   @param item_id [String]
+        #     The ID of the item.
         #
-        #   @param output_index [Integer] The index of the output item in the response.
+        #   @param output_index [Integer]
+        #     The index of the output item in the response.
         #
-        #   @param response_id [String] The ID of the response.
+        #   @param response_id [String]
+        #     The ID of the response.
         #
-        #   @param type [Symbol, :"response.output_audio.done"] The event type, must be `response.output_audio.done`.
+        #   @param type [Symbol, :"response.output_audio.done"]
+        #     The event type, must be `response.output_audio.done`.
       end
     end
   end

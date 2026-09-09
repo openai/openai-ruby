@@ -23,9 +23,11 @@ module OpenAI
           # @!method initialize(content: nil, role: nil)
           #   The delta containing the fields that have changed on the Message.
           #
-          #   @param content [Array<OpenAI::Models::Beta::Threads::ImageFileDeltaBlock, OpenAI::Models::Beta::Threads::TextDeltaBlock, OpenAI::Models::Beta::Threads::RefusalDeltaBlock, OpenAI::Models::Beta::Threads::ImageURLDeltaBlock>] The content of the message in array of text and/or images.
+          #   @param content [Array<OpenAI::Models::Beta::Threads::ImageFileDeltaBlock, OpenAI::Models::Beta::Threads::TextDeltaBlock, OpenAI::Models::Beta::Threads::RefusalDeltaBlock, OpenAI::Models::Beta::Threads::ImageURLDeltaBlock>]
+          #     The content of the message in array of text and/or images.
           #
-          #   @param role [Symbol, OpenAI::Models::Beta::Threads::MessageDelta::Role] The entity that produced the message. One of `user` or `assistant`.
+          #   @param role [Symbol, OpenAI::Models::Beta::Threads::MessageDelta::Role]
+          #     The entity that produced the message. One of `user` or `assistant`.
 
           # The entity that produced the message. One of `user` or `assistant`.
           #

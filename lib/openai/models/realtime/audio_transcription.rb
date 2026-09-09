@@ -48,7 +48,7 @@ module OpenAI
         # @!attribute prompt
         #   An optional text to guide the model's style or continue a previous audio
         #   segment. For `whisper-1`, the
-        #   [prompt is a list of keywords](https://platform.openai.com/docs/guides/speech-to-text#prompting).
+        #   [prompt is a list of keywords](https://developers.openai.com/api/docs/guides/speech-to-text#prompting).
         #   For `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the
         #   prompt is a free text string, for example "expect words related to technology".
         #   Prompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.
@@ -57,20 +57,39 @@ module OpenAI
         optional :prompt, String
 
         # @!method initialize(delay: nil, keywords: nil, language: nil, languages: nil, model: nil, prompt: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::AudioTranscription} for more details.
+        #   @param delay [Symbol, OpenAI::Models::Realtime::AudioTranscription::Delay]
+        #     Controls how long the model waits before emitting transcription text. Higher
+        #     values can improve transcription accuracy at the cost of latency. Only supported
+        #     with `gpt-realtime-whisper` in GA Realtime sessions.
         #
-        #   @param delay [Symbol, OpenAI::Models::Realtime::AudioTranscription::Delay] Controls how long the model waits before emitting transcription text.
+        #   @param keywords [Array<String>]
+        #     Words or phrases to guide transcription of the input audio. Supported by
+        #     `gpt-transcribe` and `gpt-live-transcribe`.
         #
-        #   @param keywords [Array<String>] Words or phrases to guide transcription of the input audio. Supported by `gpt-tr
+        #   @param language [String]
+        #     The language of the input audio. Supplying the input language in
+        #     [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`)
+        #     format will improve accuracy and latency.
         #
-        #   @param language [String] The language of the input audio. Supplying the input language in
+        #   @param languages [Array<String>]
+        #     Possible languages of the input audio, in
+        #     [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) format.
+        #     Supported by `gpt-transcribe` and `gpt-live-transcribe`.
         #
-        #   @param languages [Array<String>] Possible languages of the input audio, in [ISO-639-1](https://en.wikipedia.org/w
+        #   @param model [String, Symbol, OpenAI::Models::Realtime::AudioTranscription::Model]
+        #     The model to use for transcription. Current options are `whisper-1`,
+        #     `gpt-transcribe`, `gpt-live-transcribe`, `gpt-4o-mini-transcribe`,
+        #     `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`,
+        #     `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. Use
+        #     `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.
         #
-        #   @param model [String, Symbol, OpenAI::Models::Realtime::AudioTranscription::Model] The model to use for transcription. Current options are `whisper-1`, `gpt-transc
-        #
-        #   @param prompt [String] An optional text to guide the model's style or continue a previous audio
+        #   @param prompt [String]
+        #     An optional text to guide the model's style or continue a previous audio
+        #     segment. For `whisper-1`, the
+        #     [prompt is a list of keywords](https://developers.openai.com/api/docs/guides/speech-to-text#prompting).
+        #     For `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the
+        #     prompt is a free text string, for example "expect words related to technology".
+        #     Prompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.
 
         # Controls how long the model waits before emitting transcription text. Higher
         # values can improve transcription accuracy at the cost of latency. Only supported

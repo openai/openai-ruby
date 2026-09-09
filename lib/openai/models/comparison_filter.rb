@@ -33,17 +33,28 @@ module OpenAI
       required :value, union: -> { OpenAI::ComparisonFilter::Value }
 
       # @!method initialize(key:, type:, value:)
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::ComparisonFilter} for more details.
-      #
       #   A filter used to compare a specified attribute key to a given value using a
       #   defined comparison operation.
       #
-      #   @param key [String] The key to compare against the value.
+      #   @param key [String]
+      #     The key to compare against the value.
       #
-      #   @param type [Symbol, OpenAI::Models::ComparisonFilter::Type] Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`, `
+      #   @param type [Symbol, OpenAI::Models::ComparisonFilter::Type]
+      #     Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`,
+      #     `nin`.
       #
-      #   @param value [String, Float, Boolean, Array<String, Float>] The value to compare against the attribute key; supports string, number, or bool
+      #     - `eq`: equals
+      #     - `ne`: not equal
+      #     - `gt`: greater than
+      #     - `gte`: greater than or equal
+      #     - `lt`: less than
+      #     - `lte`: less than or equal
+      #     - `in`: in
+      #     - `nin`: not in
+      #
+      #   @param value [String, Float, Boolean, Array<String, Float>]
+      #     The value to compare against the attribute key; supports string, number, or
+      #     boolean types.
 
       # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`,
       # `nin`.

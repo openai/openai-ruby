@@ -38,7 +38,7 @@ module OpenAI
 
         # Parameters for audio output. Required when audio output is requested with
         # `modalities: ["audio"]`.
-        # [Learn more](https://platform.openai.com/docs/guides/audio).
+        # [Learn more](https://developers.openai.com/api/docs/guides/audio).
         sig do
           params(
 

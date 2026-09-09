@@ -43,17 +43,23 @@ module OpenAI
         # @!method initialize(command_index:, delta:, item_id:, output_index:, sequence_number:, type: :"response.shell_call_output_content.delta")
         #   A streaming event that indicated shell call output was incrementally added.
         #
-        #   @param command_index [Integer] The index of the shell command that produced output.
+        #   @param command_index [Integer]
+        #     The index of the shell command that produced output.
         #
-        #   @param delta [OpenAI::Models::Responses::ResponseShellCallOutputContentDeltaEvent::Delta] The stdout/stderr delta that was emitted.
+        #   @param delta [OpenAI::Models::Responses::ResponseShellCallOutputContentDeltaEvent::Delta]
+        #     The stdout/stderr delta that was emitted.
         #
-        #   @param item_id [String] The ID of the output item that was updated.
+        #   @param item_id [String]
+        #     The ID of the output item that was updated.
         #
-        #   @param output_index [Integer] The index of the output item that was updated.
+        #   @param output_index [Integer]
+        #     The index of the output item that was updated.
         #
-        #   @param sequence_number [Integer] The sequence number of the event that was emitted.
+        #   @param sequence_number [Integer]
+        #     The sequence number of the event that was emitted.
         #
-        #   @param type [Symbol, :"response.shell_call_output_content.delta"] The type of the event, always `response.shell_call_output_content.delta`.
+        #   @param type [Symbol, :"response.shell_call_output_content.delta"]
+        #     The type of the event, always `response.shell_call_output_content.delta`.
 
         # @see OpenAI::Models::Responses::ResponseShellCallOutputContentDeltaEvent#delta
         class Delta < OpenAI::Internal::Type::BaseModel
@@ -72,9 +78,11 @@ module OpenAI
           # @!method initialize(stderr: nil, stdout: nil)
           #   The stdout/stderr delta that was emitted.
           #
-          #   @param stderr [String] The stderr delta that was emitted.
+          #   @param stderr [String]
+          #     The stderr delta that was emitted.
           #
-          #   @param stdout [String] The stdout delta that was emitted.
+          #   @param stdout [String]
+          #     The stdout delta that was emitted.
         end
       end
     end

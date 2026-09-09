@@ -17,14 +17,13 @@ module OpenAI
         required :type, const: :custom
 
         # @!method initialize(custom:, type: :custom)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Chat::ChatCompletionCustomTool} for more details.
-        #
         #   A custom tool that processes input using a specified format.
         #
-        #   @param custom [OpenAI::Models::Chat::ChatCompletionCustomTool::Custom] Properties of the custom tool.
+        #   @param custom [OpenAI::Models::Chat::ChatCompletionCustomTool::Custom]
+        #     Properties of the custom tool.
         #
-        #   @param type [Symbol, :custom] The type of the custom tool. Always `custom`.
+        #   @param type [Symbol, :custom]
+        #     The type of the custom tool. Always `custom`.
 
         # @see OpenAI::Models::Chat::ChatCompletionCustomTool#custom
         class Custom < OpenAI::Internal::Type::BaseModel
@@ -53,16 +52,16 @@ module OpenAI
           )
 
           # @!method initialize(name:, description: nil, format_: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Chat::ChatCompletionCustomTool::Custom} for more details.
-          #
           #   Properties of the custom tool.
           #
-          #   @param name [String] The name of the custom tool, used to identify it in tool calls.
+          #   @param name [String]
+          #     The name of the custom tool, used to identify it in tool calls.
           #
-          #   @param description [String] Optional description of the custom tool, used to provide more context.
+          #   @param description [String]
+          #     Optional description of the custom tool, used to provide more context.
           #
-          #   @param format_ [OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::Format::Text, OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::Format::Grammar] The input format for the custom tool. Default is unconstrained text.
+          #   @param format_ [OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::Format::Text, OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::Format::Grammar]
+          #     The input format for the custom tool. Default is unconstrained text.
 
           # The input format for the custom tool. Default is unconstrained text.
           #
@@ -88,7 +87,8 @@ module OpenAI
               # @!method initialize(type: :text)
               #   Unconstrained free-form text.
               #
-              #   @param type [Symbol, :text] Unconstrained text format. Always `text`.
+              #   @param type [Symbol, :text]
+              #     Unconstrained text format. Always `text`.
             end
 
             class Grammar < OpenAI::Internal::Type::BaseModel
@@ -107,9 +107,11 @@ module OpenAI
               # @!method initialize(grammar:, type: :grammar)
               #   A grammar defined by the user.
               #
-              #   @param grammar [OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar] Your chosen grammar.
+              #   @param grammar [OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar]
+              #     Your chosen grammar.
               #
-              #   @param type [Symbol, :grammar] Grammar format. Always `grammar`.
+              #   @param type [Symbol, :grammar]
+              #     Grammar format. Always `grammar`.
 
               # @see OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::Format::Grammar#grammar
               class Grammar < OpenAI::Internal::Type::BaseModel
@@ -131,9 +133,11 @@ module OpenAI
                 # @!method initialize(definition:, syntax:)
                 #   Your chosen grammar.
                 #
-                #   @param definition [String] The grammar definition.
+                #   @param definition [String]
+                #     The grammar definition.
                 #
-                #   @param syntax [Symbol, OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar::Syntax] The syntax of the grammar definition. One of `lark` or `regex`.
+                #   @param syntax [Symbol, OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar::Syntax]
+                #     The syntax of the grammar definition. One of `lark` or `regex`.
 
                 # The syntax of the grammar definition. One of `lark` or `regex`.
                 #

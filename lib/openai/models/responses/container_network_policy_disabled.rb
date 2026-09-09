@@ -11,7 +11,8 @@ module OpenAI
         required :type, const: :disabled
 
         # @!method initialize(type: :disabled)
-        #   @param type [Symbol, :disabled] Disable outbound network access. Always `disabled`.
+        #   @param type [Symbol, :disabled]
+        #     Disable outbound network access. Always `disabled`.
       end
     end
   end
