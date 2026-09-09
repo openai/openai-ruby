@@ -201,7 +201,7 @@ module OpenAI
         # **WebRTC/SIP Only:** Emitted when the server begins streaming audio to the client. This event is
         # emitted after an audio content part has been added (`response.content_part.added`)
         # to the response.
-        # [Learn more](https://platform.openai.com/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
+        # [Learn more](https://developers.openai.com/api/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
         variant(
           :"output_audio_buffer.started",
           -> { OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferStarted }
@@ -210,7 +210,7 @@ module OpenAI
         # **WebRTC/SIP Only:** Emitted when the output audio buffer has been completely drained on the server,
         # and no more audio is forthcoming. This event is emitted after the full response
         # data has been sent to the client (`response.done`).
-        # [Learn more](https://platform.openai.com/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
+        # [Learn more](https://developers.openai.com/api/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
         variant(
           :"output_audio_buffer.stopped",
           -> { OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferStopped }
@@ -220,7 +220,7 @@ module OpenAI
         # mode when the user has interrupted (`input_audio_buffer.speech_started`),
         # or when the client has emitted the `output_audio_buffer.clear` event to manually
         # cut off the current audio response.
-        # [Learn more](https://platform.openai.com/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
+        # [Learn more](https://developers.openai.com/api/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
         variant(
           :"output_audio_buffer.cleared",
           -> { OpenAI::Realtime::RealtimeServerEvent::OutputAudioBufferCleared }
@@ -310,11 +310,14 @@ module OpenAI
           #   data after noise cancellation and VAD. It includes the full content of the Item,
           #   including audio data.
           #
-          #   @param event_id [String] The unique ID of the server event.
+          #   @param event_id [String]
+          #     The unique ID of the server event.
           #
-          #   @param item [OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage, OpenAI::Models::Realtime::RealtimeConversationItemUserMessage, OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCallOutput, OpenAI::Models::Realtime::RealtimeMcpApprovalResponse, OpenAI::Models::Realtime::RealtimeMcpListTools, OpenAI::Models::Realtime::RealtimeMcpToolCall, OpenAI::Models::Realtime::RealtimeMcpApprovalRequest] A single item within a Realtime conversation.
+          #   @param item [OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage, OpenAI::Models::Realtime::RealtimeConversationItemUserMessage, OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCallOutput, OpenAI::Models::Realtime::RealtimeMcpApprovalResponse, OpenAI::Models::Realtime::RealtimeMcpListTools, OpenAI::Models::Realtime::RealtimeMcpToolCall, OpenAI::Models::Realtime::RealtimeMcpApprovalRequest]
+          #     A single item within a Realtime conversation.
           #
-          #   @param type [Symbol, :"conversation.item.retrieved"] The event type, must be `conversation.item.retrieved`.
+          #   @param type [Symbol, :"conversation.item.retrieved"]
+          #     The event type, must be `conversation.item.retrieved`.
         end
 
         class OutputAudioBufferStarted < OpenAI::Internal::Type::BaseModel
@@ -340,13 +343,16 @@ module OpenAI
           #   **WebRTC/SIP Only:** Emitted when the server begins streaming audio to the
           #   client. This event is emitted after an audio content part has been added
           #   (`response.content_part.added`) to the response.
-          #   [Learn more](https://platform.openai.com/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
+          #   [Learn more](https://developers.openai.com/api/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
           #
-          #   @param event_id [String] The unique ID of the server event.
+          #   @param event_id [String]
+          #     The unique ID of the server event.
           #
-          #   @param response_id [String] The unique ID of the response that produced the audio.
+          #   @param response_id [String]
+          #     The unique ID of the response that produced the audio.
           #
-          #   @param type [Symbol, :"output_audio_buffer.started"] The event type, must be `output_audio_buffer.started`.
+          #   @param type [Symbol, :"output_audio_buffer.started"]
+          #     The event type, must be `output_audio_buffer.started`.
         end
 
         class OutputAudioBufferStopped < OpenAI::Internal::Type::BaseModel
@@ -372,13 +378,16 @@ module OpenAI
           #   **WebRTC/SIP Only:** Emitted when the output audio buffer has been completely
           #   drained on the server, and no more audio is forthcoming. This event is emitted
           #   after the full response data has been sent to the client (`response.done`).
-          #   [Learn more](https://platform.openai.com/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
+          #   [Learn more](https://developers.openai.com/api/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
           #
-          #   @param event_id [String] The unique ID of the server event.
+          #   @param event_id [String]
+          #     The unique ID of the server event.
           #
-          #   @param response_id [String] The unique ID of the response that produced the audio.
+          #   @param response_id [String]
+          #     The unique ID of the response that produced the audio.
           #
-          #   @param type [Symbol, :"output_audio_buffer.stopped"] The event type, must be `output_audio_buffer.stopped`.
+          #   @param type [Symbol, :"output_audio_buffer.stopped"]
+          #     The event type, must be `output_audio_buffer.stopped`.
         end
 
         class OutputAudioBufferCleared < OpenAI::Internal::Type::BaseModel
@@ -406,13 +415,16 @@ module OpenAI
           #   (`input_audio_buffer.speech_started`), or when the client has emitted the
           #   `output_audio_buffer.clear` event to manually cut off the current audio
           #   response.
-          #   [Learn more](https://platform.openai.com/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
+          #   [Learn more](https://developers.openai.com/api/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
           #
-          #   @param event_id [String] The unique ID of the server event.
+          #   @param event_id [String]
+          #     The unique ID of the server event.
           #
-          #   @param response_id [String] The unique ID of the response that produced the audio.
+          #   @param response_id [String]
+          #     The unique ID of the response that produced the audio.
           #
-          #   @param type [Symbol, :"output_audio_buffer.cleared"] The event type, must be `output_audio_buffer.cleared`.
+          #   @param type [Symbol, :"output_audio_buffer.cleared"]
+          #     The event type, must be `output_audio_buffer.cleared`.
         end
 
         # @!method self.variants

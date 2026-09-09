@@ -37,18 +37,22 @@ module OpenAI
         optional :status, enum: -> { OpenAI::Responses::ResponseInputMessageItem::Status }
 
         # @!method initialize(id:, content:, role:, status: nil, type: :message)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseInputMessageItem} for more details.
+        #   @param id [String]
+        #     The unique ID of the message input.
         #
-        #   @param id [String] The unique ID of the message input.
+        #   @param content [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>]
+        #     A list of one or many input items to the model, containing different content
+        #     types.
         #
-        #   @param content [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>] A list of one or many input items to the model, containing different content
+        #   @param role [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Role]
+        #     The role of the message input. One of `user`, `system`, or `developer`.
         #
-        #   @param role [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Role] The role of the message input. One of `user`, `system`, or `developer`.
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status]
+        #     The status of item. One of `in_progress`, `completed`, or `incomplete`.
+        #     Populated when items are returned via API.
         #
-        #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status] The status of item. One of `in_progress`, `completed`, or
-        #
-        #   @param type [Symbol, :message] The type of the message input. Always set to `message`.
+        #   @param type [Symbol, :message]
+        #     The type of the message input. Always set to `message`.
 
         # The role of the message input. One of `user`, `system`, or `developer`.
         #

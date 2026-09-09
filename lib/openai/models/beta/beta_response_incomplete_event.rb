@@ -29,22 +29,23 @@ module OpenAI
         optional :agent, -> { OpenAI::Beta::BetaResponseIncompleteEvent::Agent }, nil?: true
 
         # @!method initialize(response:, sequence_number:, agent: nil, type: :"response.incomplete")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseIncompleteEvent} for more details.
-        #
         #   An event that is emitted when a response finishes as incomplete.
         #
         #   Over WebSocket, steering can finish a response with
         #   `response.incomplete_details.reason` set to `steered`, followed automatically by
         #   a successor `response.created` that commits the queued steering input.
         #
-        #   @param response [OpenAI::Models::Beta::BetaResponse] The response that was incomplete.
+        #   @param response [OpenAI::Models::Beta::BetaResponse]
+        #     The response that was incomplete.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseIncompleteEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseIncompleteEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.incomplete"] The type of the event. Always `response.incomplete`.
+        #   @param type [Symbol, :"response.incomplete"]
+        #     The type of the event. Always `response.incomplete`.
 
         # @see OpenAI::Models::Beta::BetaResponseIncompleteEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -57,7 +58,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

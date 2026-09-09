@@ -31,13 +31,17 @@ module OpenAI
         # @!method initialize(item_id:, output_index:, sequence_number:, type: :"response.mcp_list_tools.completed")
         #   Emitted when the list of available MCP tools has been successfully retrieved.
         #
-        #   @param item_id [String] The ID of the MCP tool call item that produced this output.
+        #   @param item_id [String]
+        #     The ID of the MCP tool call item that produced this output.
         #
-        #   @param output_index [Integer] The index of the output item that was processed.
+        #   @param output_index [Integer]
+        #     The index of the output item that was processed.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param type [Symbol, :"response.mcp_list_tools.completed"] The type of the event. Always 'response.mcp_list_tools.completed'.
+        #   @param type [Symbol, :"response.mcp_list_tools.completed"]
+        #     The type of the event. Always 'response.mcp_list_tools.completed'.
       end
     end
   end

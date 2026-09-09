@@ -24,9 +24,9 @@ module OpenAI
           sig { params(detail: OpenAI::Beta::Threads::ImageFileDelta::Detail::OrSymbol).void }
           attr_writer :detail
 
-          # The [File](https://platform.openai.com/docs/api-reference/files) ID of the image
-          # in the message content. Set `purpose="vision"` when uploading the File if you
-          # need to later display the file content.
+          # The [File](https://developers.openai.com/api/reference/resources/files) ID of
+          # the image in the message content. Set `purpose="vision"` when uploading the File
+          # if you need to later display the file content.
           sig { returns(T.nilable(String)) }
           attr_reader :file_id
 
@@ -48,9 +48,9 @@ module OpenAI
             # fewer tokens, you can opt in to high resolution using `high`.
             detail: nil,
 
-            # The [File](https://platform.openai.com/docs/api-reference/files) ID of the image
-            # in the message content. Set `purpose="vision"` when uploading the File if you
-            # need to later display the file content.
+            # The [File](https://developers.openai.com/api/reference/resources/files) ID of
+            # the image in the message content. Set `purpose="vision"` when uploading the File
+            # if you need to later display the file content.
 
             file_id: nil
           )

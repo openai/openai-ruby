@@ -8,7 +8,7 @@ module OpenAI
     class Moderations
 
       # Classifies if text and/or image inputs are potentially harmful. Learn more in
-      # the [moderation guide](https://platform.openai.com/docs/guides/moderation).
+      # [the moderation guide](https://developers.openai.com/api/docs/guides/moderation).
       sig {
         params(
           input: OpenAI::ModerationCreateParams::Input::Variants,
@@ -22,9 +22,7 @@ module OpenAI
         # an array of multi-modal input objects similar to other models.
         input:,
         # The content moderation model you would like to use. Learn more in
-        # [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
-        # learn about available models
-        # [here](https://platform.openai.com/docs/models#moderation).
+        # [the moderation guide](https://developers.openai.com/api/docs/guides/moderation).
         model: nil,
         request_options: {}
       )

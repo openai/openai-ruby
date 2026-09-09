@@ -16,7 +16,8 @@ module OpenAI
           required :name, String
 
           # @!method initialize(name:, request_options: {})
-          #   @param name [String] Human readable name for the group.
+          #   @param name [String]
+          #     Human readable name for the group.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end

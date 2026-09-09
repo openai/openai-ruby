@@ -12,12 +12,11 @@ module OpenAI
         optional :effort, enum: -> { OpenAI::Realtime::RealtimeReasoningEffort }
 
         # @!method initialize(effort: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::RealtimeReasoning} for more details.
-        #
         #   Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.
         #
-        #   @param effort [Symbol, OpenAI::Models::Realtime::RealtimeReasoningEffort] Constrains effort on reasoning for reasoning-capable Realtime models such as
+        #   @param effort [Symbol, OpenAI::Models::Realtime::RealtimeReasoningEffort]
+        #     Constrains effort on reasoning for reasoning-capable Realtime models such as
+        #     `gpt-realtime-2`.
       end
     end
   end

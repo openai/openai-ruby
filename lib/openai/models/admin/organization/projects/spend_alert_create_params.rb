@@ -45,13 +45,17 @@ module OpenAI
             # @!method initialize(project_id:, currency:, interval:, notification_channel:, threshold_amount:, request_options: {})
             #   @param project_id [String]
             #
-            #   @param currency [Symbol, OpenAI::Models::Admin::Organization::Projects::SpendAlertCreateParams::Currency] The currency for the threshold amount.
+            #   @param currency [Symbol, OpenAI::Models::Admin::Organization::Projects::SpendAlertCreateParams::Currency]
+            #     The currency for the threshold amount.
             #
-            #   @param interval [Symbol, OpenAI::Models::Admin::Organization::Projects::SpendAlertCreateParams::Interval] The time interval for evaluating spend against the threshold.
+            #   @param interval [Symbol, OpenAI::Models::Admin::Organization::Projects::SpendAlertCreateParams::Interval]
+            #     The time interval for evaluating spend against the threshold.
             #
-            #   @param notification_channel [OpenAI::Models::Admin::Organization::Projects::SpendAlertCreateParams::NotificationChannel] Email notification settings for a spend alert.
+            #   @param notification_channel [OpenAI::Models::Admin::Organization::Projects::SpendAlertCreateParams::NotificationChannel]
+            #     Email notification settings for a spend alert.
             #
-            #   @param threshold_amount [Integer] The alert threshold amount, in cents.
+            #   @param threshold_amount [Integer]
+            #     The alert threshold amount, in cents.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -97,11 +101,14 @@ module OpenAI
               # @!method initialize(recipients:, subject_prefix: nil, type: :email)
               #   Email notification settings for a spend alert.
               #
-              #   @param recipients [Array<String>] Email addresses that receive the spend alert notification.
+              #   @param recipients [Array<String>]
+              #     Email addresses that receive the spend alert notification.
               #
-              #   @param subject_prefix [String, nil] Optional subject prefix for alert emails.
+              #   @param subject_prefix [String, nil]
+              #     Optional subject prefix for alert emails.
               #
-              #   @param type [Symbol, :email] The notification channel type. Currently only `email` is supported.
+              #   @param type [Symbol, :email]
+              #     The notification channel type. Currently only `email` is supported.
             end
           end
         end

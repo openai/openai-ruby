@@ -52,26 +52,31 @@ module OpenAI
       required :type, const: :"image_edit.partial_image"
 
       # @!method initialize(b64_json:, background:, created_at:, output_format:, partial_image_index:, quality:, size:, type: :"image_edit.partial_image")
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::ImageEditPartialImageEvent} for more details.
-      #
       #   Emitted when a partial image is available during image editing streaming.
       #
-      #   @param b64_json [String] Base64-encoded partial image data, suitable for rendering as an image.
+      #   @param b64_json [String]
+      #     Base64-encoded partial image data, suitable for rendering as an image.
       #
-      #   @param background [Symbol, OpenAI::Models::ImageEditPartialImageEvent::Background] The background setting for the requested edited image.
+      #   @param background [Symbol, OpenAI::Models::ImageEditPartialImageEvent::Background]
+      #     The background setting for the requested edited image.
       #
-      #   @param created_at [Integer] The Unix timestamp when the event was created.
+      #   @param created_at [Integer]
+      #     The Unix timestamp when the event was created.
       #
-      #   @param output_format [Symbol, OpenAI::Models::ImageEditPartialImageEvent::OutputFormat] The output format for the requested edited image.
+      #   @param output_format [Symbol, OpenAI::Models::ImageEditPartialImageEvent::OutputFormat]
+      #     The output format for the requested edited image.
       #
-      #   @param partial_image_index [Integer] 0-based index for the partial image (streaming).
+      #   @param partial_image_index [Integer]
+      #     0-based index for the partial image (streaming).
       #
-      #   @param quality [Symbol, OpenAI::Models::ImageEditPartialImageEvent::Quality] The quality setting for the requested edited image.
+      #   @param quality [Symbol, OpenAI::Models::ImageEditPartialImageEvent::Quality]
+      #     The quality setting for the requested edited image.
       #
-      #   @param size [String, Symbol, OpenAI::Models::ImageEditPartialImageEvent::Size] The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+      #   @param size [String, Symbol, OpenAI::Models::ImageEditPartialImageEvent::Size]
+      #     The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
-      #   @param type [Symbol, :"image_edit.partial_image"] The type of the event. Always `image_edit.partial_image`.
+      #   @param type [Symbol, :"image_edit.partial_image"]
+      #     The type of the event. Always `image_edit.partial_image`.
 
       # The background setting for the requested edited image.
       #

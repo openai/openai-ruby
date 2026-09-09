@@ -48,17 +48,23 @@ module OpenAI
           # @!method initialize(id:, currency:, interval:, notification_channel:, threshold_amount:, object: :"organization.spend_alert")
           #   Represents a spend alert configured at the organization level.
           #
-          #   @param id [String] The identifier, which can be referenced in API endpoints.
+          #   @param id [String]
+          #     The identifier, which can be referenced in API endpoints.
           #
-          #   @param currency [Symbol, OpenAI::Models::Admin::Organization::OrganizationSpendAlert::Currency] The currency for the threshold amount.
+          #   @param currency [Symbol, OpenAI::Models::Admin::Organization::OrganizationSpendAlert::Currency]
+          #     The currency for the threshold amount.
           #
-          #   @param interval [Symbol, OpenAI::Models::Admin::Organization::OrganizationSpendAlert::Interval] The time interval for evaluating spend against the threshold.
+          #   @param interval [Symbol, OpenAI::Models::Admin::Organization::OrganizationSpendAlert::Interval]
+          #     The time interval for evaluating spend against the threshold.
           #
-          #   @param notification_channel [OpenAI::Models::Admin::Organization::OrganizationSpendAlert::NotificationChannel] Email notification settings for a spend alert.
+          #   @param notification_channel [OpenAI::Models::Admin::Organization::OrganizationSpendAlert::NotificationChannel]
+          #     Email notification settings for a spend alert.
           #
-          #   @param threshold_amount [Integer] The alert threshold amount, in cents.
+          #   @param threshold_amount [Integer]
+          #     The alert threshold amount, in cents.
           #
-          #   @param object [Symbol, :"organization.spend_alert"] The object type, which is always `organization.spend_alert`.
+          #   @param object [Symbol, :"organization.spend_alert"]
+          #     The object type, which is always `organization.spend_alert`.
 
           # The currency for the threshold amount.
           #
@@ -107,11 +113,14 @@ module OpenAI
             # @!method initialize(recipients:, subject_prefix: nil, type: :email)
             #   Email notification settings for a spend alert.
             #
-            #   @param recipients [Array<String>] Email addresses that receive the spend alert notification.
+            #   @param recipients [Array<String>]
+            #     Email addresses that receive the spend alert notification.
             #
-            #   @param subject_prefix [String, nil] Optional subject prefix for alert emails.
+            #   @param subject_prefix [String, nil]
+            #     Optional subject prefix for alert emails.
             #
-            #   @param type [Symbol, :email] The notification channel type. Currently only `email` is supported.
+            #   @param type [Symbol, :email]
+            #     The notification channel type. Currently only `email` is supported.
           end
         end
       end

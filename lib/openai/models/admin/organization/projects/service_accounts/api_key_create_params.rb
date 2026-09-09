@@ -42,15 +42,20 @@ module OpenAI
               optional :scopes, OpenAI::Internal::Type::ArrayOf[String]
 
               # @!method initialize(project_id:, service_account_id:, expires_in_seconds: nil, name: nil, scopes: nil, request_options: {})
-              #   @param project_id [String] The ID of the project.
+              #   @param project_id [String]
+              #     The ID of the project.
               #
-              #   @param service_account_id [String] The ID of the service account.
+              #   @param service_account_id [String]
+              #     The ID of the service account.
               #
-              #   @param expires_in_seconds [Integer, nil] Number of seconds until the API key expires.
+              #   @param expires_in_seconds [Integer, nil]
+              #     Number of seconds until the API key expires.
               #
-              #   @param name [String] API key name.
+              #   @param name [String]
+              #     API key name.
               #
-              #   @param scopes [Array<String>] API key scopes.
+              #   @param scopes [Array<String>]
+              #     API key scopes.
               #
               #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
             end

@@ -49,19 +49,26 @@ module OpenAI
         # @!method initialize(command_index:, delta:, item_id:, output_index:, sequence_number:, agent: nil, type: :"response.shell_call_output_content.delta")
         #   A streaming event that indicated shell call output was incrementally added.
         #
-        #   @param command_index [Integer] The index of the shell command that produced output.
+        #   @param command_index [Integer]
+        #     The index of the shell command that produced output.
         #
-        #   @param delta [OpenAI::Models::Beta::BetaResponseShellCallOutputContentDeltaEvent::Delta] The stdout/stderr delta that was emitted.
+        #   @param delta [OpenAI::Models::Beta::BetaResponseShellCallOutputContentDeltaEvent::Delta]
+        #     The stdout/stderr delta that was emitted.
         #
-        #   @param item_id [String] The ID of the output item that was updated.
+        #   @param item_id [String]
+        #     The ID of the output item that was updated.
         #
-        #   @param output_index [Integer] The index of the output item that was updated.
+        #   @param output_index [Integer]
+        #     The index of the output item that was updated.
         #
-        #   @param sequence_number [Integer] The sequence number of the event that was emitted.
+        #   @param sequence_number [Integer]
+        #     The sequence number of the event that was emitted.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseShellCallOutputContentDeltaEvent::Agent] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseShellCallOutputContentDeltaEvent::Agent]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.shell_call_output_content.delta"] The type of the event, always `response.shell_call_output_content.delta`.
+        #   @param type [Symbol, :"response.shell_call_output_content.delta"]
+        #     The type of the event, always `response.shell_call_output_content.delta`.
 
         # @see OpenAI::Models::Beta::BetaResponseShellCallOutputContentDeltaEvent#delta
         class Delta < OpenAI::Internal::Type::BaseModel
@@ -80,9 +87,11 @@ module OpenAI
           # @!method initialize(stderr: nil, stdout: nil)
           #   The stdout/stderr delta that was emitted.
           #
-          #   @param stderr [String] The stderr delta that was emitted.
+          #   @param stderr [String]
+          #     The stderr delta that was emitted.
           #
-          #   @param stdout [String] The stdout delta that was emitted.
+          #   @param stdout [String]
+          #     The stdout delta that was emitted.
         end
 
         # @see OpenAI::Models::Beta::BetaResponseShellCallOutputContentDeltaEvent#agent
@@ -96,7 +105,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

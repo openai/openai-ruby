@@ -10,9 +10,11 @@ module OpenAI
             #
             # @overload create(group_id, user_id:, request_options: {})
             #
-            # @param group_id [String] The ID of the group to update.
+            # @param group_id [String]
+            #   The ID of the group to update.
             #
-            # @param user_id [String] Identifier of the user to add to the group.
+            # @param user_id [String]
+            #   Identifier of the user to add to the group.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -35,9 +37,11 @@ module OpenAI
             #
             # @overload retrieve(user_id, group_id:, request_options: {})
             #
-            # @param user_id [String] The ID of the user to retrieve from the group.
+            # @param user_id [String]
+            #   The ID of the user to retrieve from the group.
             #
-            # @param group_id [String] The ID of the group to inspect.
+            # @param group_id [String]
+            #   The ID of the group to inspect.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -59,20 +63,23 @@ module OpenAI
               )
             end
 
-            # Some parameter documentations has been truncated, see
-            # {OpenAI::Models::Admin::Organization::Groups::UserListParams} for more details.
-            #
             # Lists the users assigned to a group.
             #
             # @overload list(group_id, after: nil, limit: nil, order: nil, request_options: {})
             #
-            # @param group_id [String] The ID of the group to inspect.
+            # @param group_id [String]
+            #   The ID of the group to inspect.
             #
-            # @param after [String] A cursor for use in pagination. Provide the ID of the last user from the previou
+            # @param after [String]
+            #   A cursor for use in pagination. Provide the ID of the last user from the
+            #   previous list response to retrieve the next page.
             #
-            # @param limit [Integer] A limit on the number of users to be returned. Limit can range between 0 and 100
+            # @param limit [Integer]
+            #   A limit on the number of users to be returned. Limit can range between 0 and
+            #   1000, and the default is 100.
             #
-            # @param order [Symbol, OpenAI::Models::Admin::Organization::Groups::UserListParams::Order] Specifies the sort order of users in the list.
+            # @param order [Symbol, OpenAI::Models::Admin::Organization::Groups::UserListParams::Order]
+            #   Specifies the sort order of users in the list.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -97,9 +104,11 @@ module OpenAI
             #
             # @overload delete(user_id, group_id:, request_options: {})
             #
-            # @param user_id [String] The ID of the user to remove from the group.
+            # @param user_id [String]
+            #   The ID of the user to remove from the group.
             #
-            # @param group_id [String] The ID of the group to update.
+            # @param group_id [String]
+            #   The ID of the group to update.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #

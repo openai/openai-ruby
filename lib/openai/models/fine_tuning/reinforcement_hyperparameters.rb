@@ -56,24 +56,31 @@ module OpenAI
         optional :reasoning_effort, enum: -> { OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort }
 
         # @!method initialize(batch_size: nil, compute_multiplier: nil, eval_interval: nil, eval_samples: nil, learning_rate_multiplier: nil, n_epochs: nil, reasoning_effort: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::FineTuning::ReinforcementHyperparameters} for more details.
-        #
         #   The hyperparameters used for the reinforcement fine-tuning job.
         #
-        #   @param batch_size [Symbol, :auto, Integer] Number of examples in each batch. A larger batch size means that model parameter
+        #   @param batch_size [Symbol, :auto, Integer]
+        #     Number of examples in each batch. A larger batch size means that model
+        #     parameters are updated less frequently, but with lower variance.
         #
-        #   @param compute_multiplier [Symbol, :auto, Float] Multiplier on amount of compute used for exploring search space during training.
+        #   @param compute_multiplier [Symbol, :auto, Float]
+        #     Multiplier on amount of compute used for exploring search space during training.
         #
-        #   @param eval_interval [Symbol, :auto, Integer] The number of training steps between evaluation runs.
+        #   @param eval_interval [Symbol, :auto, Integer]
+        #     The number of training steps between evaluation runs.
         #
-        #   @param eval_samples [Symbol, :auto, Integer] Number of evaluation samples to generate per training step.
+        #   @param eval_samples [Symbol, :auto, Integer]
+        #     Number of evaluation samples to generate per training step.
         #
-        #   @param learning_rate_multiplier [Symbol, :auto, Float] Scaling factor for the learning rate. A smaller learning rate may be useful to a
+        #   @param learning_rate_multiplier [Symbol, :auto, Float]
+        #     Scaling factor for the learning rate. A smaller learning rate may be useful to
+        #     avoid overfitting.
         #
-        #   @param n_epochs [Symbol, :auto, Integer] The number of epochs to train the model for. An epoch refers to one full cycle t
+        #   @param n_epochs [Symbol, :auto, Integer]
+        #     The number of epochs to train the model for. An epoch refers to one full cycle
+        #     through the training dataset.
         #
-        #   @param reasoning_effort [Symbol, OpenAI::Models::FineTuning::ReinforcementHyperparameters::ReasoningEffort] Level of reasoning effort.
+        #   @param reasoning_effort [Symbol, OpenAI::Models::FineTuning::ReinforcementHyperparameters::ReasoningEffort]
+        #     Level of reasoning effort.
 
         # Number of examples in each batch. A larger batch size means that model
         # parameters are updated less frequently, but with lower variance.

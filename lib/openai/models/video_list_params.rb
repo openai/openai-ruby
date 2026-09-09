@@ -27,14 +27,15 @@ module OpenAI
       optional :order, enum: -> { OpenAI::VideoListParams::Order }
 
       # @!method initialize(after: nil, limit: nil, order: nil, request_options: {})
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::VideoListParams} for more details.
+      #   @param after [String]
+      #     Identifier for the last item from the previous pagination request
       #
-      #   @param after [String] Identifier for the last item from the previous pagination request
+      #   @param limit [Integer]
+      #     Number of items to retrieve
       #
-      #   @param limit [Integer] Number of items to retrieve
-      #
-      #   @param order [Symbol, OpenAI::Models::VideoListParams::Order] Sort order of results by timestamp. Use `asc` for ascending order or `desc` for
+      #   @param order [Symbol, OpenAI::Models::VideoListParams::Order]
+      #     Sort order of results by timestamp. Use `asc` for ascending order or `desc` for
+      #     descending order.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

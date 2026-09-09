@@ -25,11 +25,14 @@ module OpenAI
         # @!method initialize(conversation:, event_id:, type: :"conversation.created")
         #   Returned when a conversation is created. Emitted right after session creation.
         #
-        #   @param conversation [OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation] The conversation resource.
+        #   @param conversation [OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation]
+        #     The conversation resource.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param type [Symbol, :"conversation.created"] The event type, must be `conversation.created`.
+        #   @param type [Symbol, :"conversation.created"]
+        #     The event type, must be `conversation.created`.
 
         # @see OpenAI::Models::Realtime::ConversationCreatedEvent#conversation
         class Conversation < OpenAI::Internal::Type::BaseModel
@@ -48,9 +51,11 @@ module OpenAI
           # @!method initialize(id: nil, object: nil)
           #   The conversation resource.
           #
-          #   @param id [String] The unique ID of the conversation.
+          #   @param id [String]
+          #     The unique ID of the conversation.
           #
-          #   @param object [Symbol, OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation::Object] The object type, must be `realtime.conversation`.
+          #   @param object [Symbol, OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation::Object]
+          #     The object type, must be `realtime.conversation`.
 
           # The object type, must be `realtime.conversation`.
           #

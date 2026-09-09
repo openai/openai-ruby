@@ -46,22 +46,30 @@ module OpenAI
         optional :phase, enum: -> { OpenAI::Conversations::Message::Phase }, nil?: true
 
         # @!method initialize(id:, content:, role:, status:, phase: nil, type: :message)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Conversations::Message} for more details.
-        #
         #   A message to or from the model.
         #
-        #   @param id [String] The unique ID of the message.
+        #   @param id [String]
+        #     The unique ID of the message.
         #
-        #   @param content [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Conversations::TextContent, OpenAI::Models::Conversations::SummaryTextContent, OpenAI::Models::Conversations::Message::Content::ReasoningText, OpenAI::Models::Responses::ResponseOutputRefusal, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Conversations::ComputerScreenshotContent, OpenAI::Models::Responses::ResponseInputFile>] The content of the message
+        #   @param content [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Conversations::TextContent, OpenAI::Models::Conversations::SummaryTextContent, OpenAI::Models::Conversations::Message::Content::ReasoningText, OpenAI::Models::Responses::ResponseOutputRefusal, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Conversations::ComputerScreenshotContent, OpenAI::Models::Responses::ResponseInputFile>]
+        #     The content of the message
         #
-        #   @param role [Symbol, OpenAI::Models::Conversations::Message::Role] The role of the message. One of `unknown`, `user`, `assistant`, `system`, `criti
+        #   @param role [Symbol, OpenAI::Models::Conversations::Message::Role]
+        #     The role of the message. One of `unknown`, `user`, `assistant`, `system`,
+        #     `critic`, `discriminator`, `developer`, or `tool`.
         #
-        #   @param status [Symbol, OpenAI::Models::Conversations::Message::Status] The status of item. One of `in_progress`, `completed`, or `incomplete`. Populate
+        #   @param status [Symbol, OpenAI::Models::Conversations::Message::Status]
+        #     The status of item. One of `in_progress`, `completed`, or `incomplete`.
+        #     Populated when items are returned via API.
         #
-        #   @param phase [Symbol, OpenAI::Models::Conversations::Message::Phase, nil] Labels an `assistant` message as intermediate commentary (`commentary`) or the f
+        #   @param phase [Symbol, OpenAI::Models::Conversations::Message::Phase, nil]
+        #     Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        #     final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
+        #     sending follow-up requests, preserve and resend phase on all assistant messages
+        #     — dropping it can degrade performance. Not used for user messages.
         #
-        #   @param type [Symbol, :message] The type of the message. Always set to `message`.
+        #   @param type [Symbol, :message]
+        #     The type of the message. Always set to `message`.
 
         # A content part that makes up an input or output item.
         module Content
@@ -87,7 +95,7 @@ module OpenAI
           # A refusal from the model.
           variant :refusal, -> { OpenAI::Responses::ResponseOutputRefusal }
 
-          # An image input to the model. Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
+          # An image input to the model. Learn about [image inputs](https://developers.openai.com/api/docs/guides/images-vision).
           variant :input_image, -> { OpenAI::Responses::ResponseInputImage }
 
           # A screenshot of a computer.
@@ -112,9 +120,11 @@ module OpenAI
             # @!method initialize(text:, type: :reasoning_text)
             #   Reasoning text from the model.
             #
-            #   @param text [String] The reasoning text from the model.
+            #   @param text [String]
+            #     The reasoning text from the model.
             #
-            #   @param type [Symbol, :reasoning_text] The type of the reasoning text. Always `reasoning_text`.
+            #   @param type [Symbol, :reasoning_text]
+            #     The type of the reasoning text. Always `reasoning_text`.
           end
 
           # @!method self.variants

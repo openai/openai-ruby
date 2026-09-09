@@ -27,17 +27,21 @@ module OpenAI
         required :type, const: :"transcription_session.updated"
 
         # @!method initialize(event_id:, session:, type: :"transcription_session.updated")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent} for more details.
-        #
         #   Returned when a transcription session is updated with a
         #   `transcription_session.update` event, unless there is an error.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param session [OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session] A new Realtime transcription session configuration.
+        #   @param session [OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session]
+        #     A new Realtime transcription session configuration.
         #
-        #   @param type [Symbol, :"transcription_session.updated"] The event type, must be `transcription_session.updated`.
+        #     When a session is created on the server via REST API, the session object also
+        #     contains an ephemeral key. Default TTL for keys is 10 minutes. This property is
+        #     not present when a session is updated via the WebSocket API.
+        #
+        #   @param type [Symbol, :"transcription_session.updated"]
+        #     The event type, must be `transcription_session.updated`.
 
         # @see OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent#session
         class Session < OpenAI::Internal::Type::BaseModel
@@ -85,25 +89,29 @@ module OpenAI
           )
 
           # @!method initialize(client_secret:, input_audio_format: nil, input_audio_transcription: nil, modalities: nil, turn_detection: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session} for more
-          #   details.
-          #
           #   A new Realtime transcription session configuration.
           #
           #   When a session is created on the server via REST API, the session object also
           #   contains an ephemeral key. Default TTL for keys is 10 minutes. This property is
           #   not present when a session is updated via the WebSocket API.
           #
-          #   @param client_secret [OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session::ClientSecret] Ephemeral key returned by the API. Only present when the session is
+          #   @param client_secret [OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session::ClientSecret]
+          #     Ephemeral key returned by the API. Only present when the session is created on
+          #     the server via REST API.
           #
-          #   @param input_audio_format [String] The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+          #   @param input_audio_format [String]
+          #     The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
           #
           #   @param input_audio_transcription [OpenAI::Models::Realtime::AudioTranscription]
           #
-          #   @param modalities [Array<Symbol, OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session::Modality>] The set of modalities the model can respond with. To disable audio,
+          #   @param modalities [Array<Symbol, OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session::Modality>]
+          #     The set of modalities the model can respond with. To disable audio, set this to
+          #     ["text"].
           #
-          #   @param turn_detection [OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session::TurnDetection] Configuration for turn detection. Can be set to `null` to turn off. Server
+          #   @param turn_detection [OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session::TurnDetection]
+          #     Configuration for turn detection. Can be set to `null` to turn off. Server VAD
+          #     means that the model will detect the start and end of speech based on audio
+          #     volume and respond at the end of user speech.
 
           # @see OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session#client_secret
           class ClientSecret < OpenAI::Internal::Type::BaseModel
@@ -123,16 +131,17 @@ module OpenAI
             required :value, String
 
             # @!method initialize(expires_at:, value:)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session::ClientSecret}
-            #   for more details.
-            #
             #   Ephemeral key returned by the API. Only present when the session is created on
             #   the server via REST API.
             #
-            #   @param expires_at [Integer] Timestamp for when the token expires. Currently, all tokens expire
+            #   @param expires_at [Integer]
+            #     Timestamp for when the token expires. Currently, all tokens expire after one
+            #     minute.
             #
-            #   @param value [String] Ephemeral key usable in client environments to authenticate connections
+            #   @param value [String]
+            #     Ephemeral key usable in client environments to authenticate connections to the
+            #     Realtime API. Use this in client-side environments rather than a standard API
+            #     token, which should only be used server-side.
           end
 
           module Modality
@@ -177,21 +186,26 @@ module OpenAI
             optional :type, String
 
             # @!method initialize(prefix_padding_ms: nil, silence_duration_ms: nil, threshold: nil, type: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session::TurnDetection}
-            #   for more details.
-            #
             #   Configuration for turn detection. Can be set to `null` to turn off. Server VAD
             #   means that the model will detect the start and end of speech based on audio
             #   volume and respond at the end of user speech.
             #
-            #   @param prefix_padding_ms [Integer] Amount of audio to include before the VAD detected speech (in
+            #   @param prefix_padding_ms [Integer]
+            #     Amount of audio to include before the VAD detected speech (in milliseconds).
+            #     Defaults to 300ms.
             #
-            #   @param silence_duration_ms [Integer] Duration of silence to detect speech stop (in milliseconds). Defaults
+            #   @param silence_duration_ms [Integer]
+            #     Duration of silence to detect speech stop (in milliseconds). Defaults to 500ms.
+            #     With shorter values the model will respond more quickly, but may jump in on
+            #     short pauses from the user.
             #
-            #   @param threshold [Float] Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A
+            #   @param threshold [Float]
+            #     Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A higher
+            #     threshold will require louder audio to activate the model, and thus might
+            #     perform better in noisy environments.
             #
-            #   @param type [String] Type of turn detection, only `server_vad` is currently supported.
+            #   @param type [String]
+            #     Type of turn detection, only `server_vad` is currently supported.
           end
         end
       end

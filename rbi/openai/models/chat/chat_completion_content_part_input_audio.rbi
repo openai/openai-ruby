@@ -40,7 +40,7 @@ module OpenAI
         }
         attr_writer :prompt_cache_breakpoint
 
-        # Learn about [audio inputs](https://platform.openai.com/docs/guides/audio).
+        # Learn about [audio inputs](https://developers.openai.com/api/docs/guides/audio).
         sig do
           params(
 

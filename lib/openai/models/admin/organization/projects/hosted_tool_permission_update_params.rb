@@ -76,15 +76,20 @@ module OpenAI
             # @!method initialize(project_id:, code_interpreter: nil, file_search: nil, image_generation: nil, mcp: nil, web_search: nil, request_options: {})
             #   @param project_id [String]
             #
-            #   @param code_interpreter [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter, nil] The code interpreter permission update.
+            #   @param code_interpreter [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::CodeInterpreter, nil]
+            #     The code interpreter permission update.
             #
-            #   @param file_search [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch, nil] The file search permission update.
+            #   @param file_search [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::FileSearch, nil]
+            #     The file search permission update.
             #
-            #   @param image_generation [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration, nil] The image generation permission update.
+            #   @param image_generation [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::ImageGeneration, nil]
+            #     The image generation permission update.
             #
-            #   @param mcp [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp, nil] The MCP permission update.
+            #   @param mcp [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::Mcp, nil]
+            #     The MCP permission update.
             #
-            #   @param web_search [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch, nil] The web search permission update.
+            #   @param web_search [OpenAI::Models::Admin::Organization::Projects::HostedToolPermissionUpdateParams::WebSearch, nil]
+            #     The web search permission update.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -98,7 +103,8 @@ module OpenAI
               # @!method initialize(enabled:)
               #   The code interpreter permission update.
               #
-              #   @param enabled [Boolean] Whether to enable the hosted tool for the project.
+              #   @param enabled [Boolean]
+              #     Whether to enable the hosted tool for the project.
             end
 
             class FileSearch < OpenAI::Internal::Type::BaseModel
@@ -111,7 +117,8 @@ module OpenAI
               # @!method initialize(enabled:)
               #   The file search permission update.
               #
-              #   @param enabled [Boolean] Whether to enable the hosted tool for the project.
+              #   @param enabled [Boolean]
+              #     Whether to enable the hosted tool for the project.
             end
 
             class ImageGeneration < OpenAI::Internal::Type::BaseModel
@@ -124,7 +131,8 @@ module OpenAI
               # @!method initialize(enabled:)
               #   The image generation permission update.
               #
-              #   @param enabled [Boolean] Whether to enable the hosted tool for the project.
+              #   @param enabled [Boolean]
+              #     Whether to enable the hosted tool for the project.
             end
 
             class Mcp < OpenAI::Internal::Type::BaseModel
@@ -137,7 +145,8 @@ module OpenAI
               # @!method initialize(enabled:)
               #   The MCP permission update.
               #
-              #   @param enabled [Boolean] Whether to enable the hosted tool for the project.
+              #   @param enabled [Boolean]
+              #     Whether to enable the hosted tool for the project.
             end
 
             class WebSearch < OpenAI::Internal::Type::BaseModel
@@ -150,7 +159,8 @@ module OpenAI
               # @!method initialize(enabled:)
               #   The web search permission update.
               #
-              #   @param enabled [Boolean] Whether to enable the hosted tool for the project.
+              #   @param enabled [Boolean]
+              #     Whether to enable the hosted tool for the project.
             end
           end
         end

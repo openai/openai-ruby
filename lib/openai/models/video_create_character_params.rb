@@ -24,9 +24,15 @@ module OpenAI
       required :video, OpenAI::Internal::Type::FileInput
 
       # @!method initialize(name:, video:, request_options: {})
-      #   @param name [String] Display name for this API character.
+      #   @param name [String]
+      #     Display name for this API character.
       #
-      #   @param video [Pathname, StringIO, IO, String, OpenAI::FilePart] Video file used to create a character.
+      #   @param video [Pathname, StringIO, IO, String, OpenAI::FilePart]
+      #     Video file used to create a character.
+      #
+      #     `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #     metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #     content type.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end

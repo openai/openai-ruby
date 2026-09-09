@@ -35,20 +35,22 @@ module OpenAI
         required :type, const: :"response.mcp_call_arguments.done"
 
         # @!method initialize(arguments:, item_id:, output_index:, sequence_number:, type: :"response.mcp_call_arguments.done")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseMcpCallArgumentsDoneEvent} for more details.
-        #
         #   Emitted when the arguments for an MCP tool call are finalized.
         #
-        #   @param arguments [String] A JSON string containing the finalized arguments for the MCP tool call.
+        #   @param arguments [String]
+        #     A JSON string containing the finalized arguments for the MCP tool call.
         #
-        #   @param item_id [String] The unique identifier of the MCP tool call item being processed.
+        #   @param item_id [String]
+        #     The unique identifier of the MCP tool call item being processed.
         #
-        #   @param output_index [Integer] The index of the output item in the response's output array.
+        #   @param output_index [Integer]
+        #     The index of the output item in the response's output array.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param type [Symbol, :"response.mcp_call_arguments.done"] The type of the event. Always 'response.mcp_call_arguments.done'.
+        #   @param type [Symbol, :"response.mcp_call_arguments.done"]
+        #     The type of the event. Always 'response.mcp_call_arguments.done'.
       end
     end
   end

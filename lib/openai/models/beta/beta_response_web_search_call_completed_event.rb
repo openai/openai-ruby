@@ -35,21 +35,22 @@ module OpenAI
         optional :agent, -> { OpenAI::Beta::BetaResponseWebSearchCallCompletedEvent::Agent }, nil?: true
 
         # @!method initialize(item_id:, output_index:, sequence_number:, agent: nil, type: :"response.web_search_call.completed")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseWebSearchCallCompletedEvent} for more
-        #   details.
-        #
         #   Emitted when a web search call is completed.
         #
-        #   @param item_id [String] Unique ID for the output item associated with the web search call.
+        #   @param item_id [String]
+        #     Unique ID for the output item associated with the web search call.
         #
-        #   @param output_index [Integer] The index of the output item that the web search call is associated with.
+        #   @param output_index [Integer]
+        #     The index of the output item that the web search call is associated with.
         #
-        #   @param sequence_number [Integer] The sequence number of the web search call being processed.
+        #   @param sequence_number [Integer]
+        #     The sequence number of the web search call being processed.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseWebSearchCallCompletedEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseWebSearchCallCompletedEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.web_search_call.completed"] The type of the event. Always `response.web_search_call.completed`.
+        #   @param type [Symbol, :"response.web_search_call.completed"]
+        #     The type of the event. Always `response.web_search_call.completed`.
 
         # @see OpenAI::Models::Beta::BetaResponseWebSearchCallCompletedEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -62,7 +63,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

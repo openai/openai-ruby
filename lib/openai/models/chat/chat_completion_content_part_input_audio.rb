@@ -27,16 +27,17 @@ module OpenAI
         )
 
         # @!method initialize(input_audio:, prompt_cache_breakpoint: nil, type: :input_audio)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Chat::ChatCompletionContentPartInputAudio} for more details.
-        #
-        #   Learn about [audio inputs](https://platform.openai.com/docs/guides/audio).
+        #   Learn about [audio inputs](https://developers.openai.com/api/docs/guides/audio).
         #
         #   @param input_audio [OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio]
         #
-        #   @param prompt_cache_breakpoint [OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::PromptCacheBreakpoint] Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        #   @param prompt_cache_breakpoint [OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::PromptCacheBreakpoint]
+        #     Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        #     from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        #     token block.
         #
-        #   @param type [Symbol, :input_audio] The type of the content part. Always `input_audio`.
+        #   @param type [Symbol, :input_audio]
+        #     The type of the content part. Always `input_audio`.
 
         # @see OpenAI::Models::Chat::ChatCompletionContentPartInputAudio#input_audio
         class InputAudio < OpenAI::Internal::Type::BaseModel
@@ -57,13 +58,11 @@ module OpenAI
           )
 
           # @!method initialize(data:, format_:)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio} for more
-          #   details.
+          #   @param data [String]
+          #     Base64 encoded audio data.
           #
-          #   @param data [String] Base64 encoded audio data.
-          #
-          #   @param format_ [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format] The format of the encoded audio data. Currently supports "wav" and "mp3".
+          #   @param format_ [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format]
+          #     The format of the encoded audio data. Currently supports "wav" and "mp3".
 
           # The format of the encoded audio data. Currently supports "wav" and "mp3".
           #
@@ -92,7 +91,8 @@ module OpenAI
           #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
           #   token block.
           #
-          #   @param mode [Symbol, :explicit] The breakpoint mode. Always `explicit`.
+          #   @param mode [Symbol, :explicit]
+          #     The breakpoint mode. Always `explicit`.
         end
       end
     end

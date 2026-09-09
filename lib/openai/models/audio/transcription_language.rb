@@ -13,7 +13,8 @@ module OpenAI
         # @!method initialize(code:)
         #   A language detected in transcribed audio.
         #
-        #   @param code [String] The code of a language detected in the audio.
+        #   @param code [String]
+        #     The code of a language detected in the audio.
       end
     end
   end

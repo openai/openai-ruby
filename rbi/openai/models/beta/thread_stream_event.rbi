@@ -15,7 +15,7 @@ module OpenAI
         end
 
         # Represents a thread that contains
-        # [messages](https://platform.openai.com/docs/api-reference/messages).
+        # [messages](https://developers.openai.com/api/docs/assistants/migration).
         sig { returns(OpenAI::Beta::Thread) }
         attr_reader :data
 
@@ -33,7 +33,7 @@ module OpenAI
         attr_writer :enabled
 
         # Occurs when a new
-        # [thread](https://platform.openai.com/docs/api-reference/threads/object) is
+        # [thread](https://developers.openai.com/api/docs/assistants/migration) is
         # created.
         sig do
           params(
@@ -49,7 +49,7 @@ module OpenAI
         def self.new(
 
           # Represents a thread that contains
-          # [messages](https://platform.openai.com/docs/api-reference/messages).
+          # [messages](https://developers.openai.com/api/docs/assistants/migration).
           data:,
 
           # Whether to enable input audio transcription.

@@ -28,11 +28,14 @@ module OpenAI
           optional :order, enum: -> { OpenAI::Admin::Organization::AdminAPIKeyListParams::Order }
 
           # @!method initialize(after: nil, limit: nil, order: nil, request_options: {})
-          #   @param after [String, nil] Return keys with IDs that come after this ID in the pagination order.
+          #   @param after [String, nil]
+          #     Return keys with IDs that come after this ID in the pagination order.
           #
-          #   @param limit [Integer] Maximum number of keys to return.
+          #   @param limit [Integer]
+          #     Maximum number of keys to return.
           #
-          #   @param order [Symbol, OpenAI::Models::Admin::Organization::AdminAPIKeyListParams::Order] Order results by creation time, ascending or descending.
+          #   @param order [Symbol, OpenAI::Models::Admin::Organization::AdminAPIKeyListParams::Order]
+          #     Order results by creation time, ascending or descending.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

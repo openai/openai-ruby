@@ -23,9 +23,11 @@ module OpenAI
       # @!method initialize(code:, message:, misalignment: nil)
       #   An error that occurred while generating the response.
       #
-      #   @param code [String] A machine-readable error code that was returned.
+      #   @param code [String]
+      #     A machine-readable error code that was returned.
       #
-      #   @param message [String] A human-readable description of the error that was returned.
+      #   @param message [String]
+      #     A human-readable description of the error that was returned.
       #
       #   @param misalignment [OpenAI::Models::VideoCreateError::Misalignment]
 
@@ -50,11 +52,14 @@ module OpenAI
         optional :steer, -> { OpenAI::VideoCreateError::Misalignment::Steer }
 
         # @!method initialize(detailed_explanation: nil, error_type: nil, steer: nil)
-        #   @param detailed_explanation [String] The public explanation for this block.
+        #   @param detailed_explanation [String]
+        #     The public explanation for this block.
         #
-        #   @param error_type [String, Symbol, OpenAI::Models::VideoCreateError::Misalignment::ErrorType] An optional classification; clients must accept additional values.
+        #   @param error_type [String, Symbol, OpenAI::Models::VideoCreateError::Misalignment::ErrorType]
+        #     An optional classification; clients must accept additional values.
         #
-        #   @param steer [OpenAI::Models::VideoCreateError::Misalignment::Steer] An optional public continuation instruction.
+        #   @param steer [OpenAI::Models::VideoCreateError::Misalignment::Steer]
+        #     An optional public continuation instruction.
 
         # An optional classification; clients must accept additional values.
         #
@@ -110,7 +115,8 @@ module OpenAI
           # @!method initialize(message:)
           #   An optional public continuation instruction.
           #
-          #   @param message [String] The public continuation instruction.
+          #   @param message [String]
+          #     The public continuation instruction.
         end
       end
     end

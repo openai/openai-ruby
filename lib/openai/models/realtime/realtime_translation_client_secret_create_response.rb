@@ -24,18 +24,18 @@ module OpenAI
         required :value, String
 
         # @!method initialize(expires_at:, session:, value:)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::RealtimeTranslationClientSecretCreateResponse} for
-        #   more details.
-        #
         #   Response from creating a translation session and client secret for the Realtime
         #   API.
         #
-        #   @param expires_at [Integer] Expiration timestamp for the client secret, in seconds since epoch.
+        #   @param expires_at [Integer]
+        #     Expiration timestamp for the client secret, in seconds since epoch.
         #
-        #   @param session [OpenAI::Models::Realtime::RealtimeTranslationSession] A Realtime translation session. Translation sessions continuously translate inpu
+        #   @param session [OpenAI::Models::Realtime::RealtimeTranslationSession]
+        #     A Realtime translation session. Translation sessions continuously translate
+        #     input audio into the configured output language.
         #
-        #   @param value [String] The generated client secret value.
+        #   @param value [String]
+        #     The generated client secret value.
       end
     end
   end

@@ -15,7 +15,8 @@ module OpenAI
           #
           # @overload create(name:, request_options: {})
           #
-          # @param name [String] Human readable name for the group.
+          # @param name [String]
+          #   Human readable name for the group.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -38,7 +39,8 @@ module OpenAI
           #
           # @overload retrieve(group_id, request_options: {})
           #
-          # @param group_id [String] The ID of the group to retrieve.
+          # @param group_id [String]
+          #   The ID of the group to retrieve.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -59,9 +61,11 @@ module OpenAI
           #
           # @overload update(group_id, name:, request_options: {})
           #
-          # @param group_id [String] The ID of the group to update.
+          # @param group_id [String]
+          #   The ID of the group to update.
           #
-          # @param name [String] New display name for the group.
+          # @param name [String]
+          #   New display name for the group.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -80,18 +84,22 @@ module OpenAI
             )
           end
 
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::Admin::Organization::GroupListParams} for more details.
-          #
           # Lists all groups in the organization.
           #
           # @overload list(after: nil, limit: nil, order: nil, request_options: {})
           #
-          # @param after [String] A cursor for use in pagination. `after` is a group ID that defines your place in
+          # @param after [String]
+          #   A cursor for use in pagination. `after` is a group ID that defines your place in
+          #   the list. For instance, if you make a list request and receive 100 objects,
+          #   ending with group_abc, your subsequent call can include `after=group_abc` in
+          #   order to fetch the next page of the list.
           #
-          # @param limit [Integer] A limit on the number of groups to be returned. Limit can range between 0 and 10
+          # @param limit [Integer]
+          #   A limit on the number of groups to be returned. Limit can range between 0 and
+          #   1000, and the default is 100.
           #
-          # @param order [Symbol, OpenAI::Models::Admin::Organization::GroupListParams::Order] Specifies the sort order of the returned groups.
+          # @param order [Symbol, OpenAI::Models::Admin::Organization::GroupListParams::Order]
+          #   Specifies the sort order of the returned groups.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -116,7 +124,8 @@ module OpenAI
           #
           # @overload delete(group_id, request_options: {})
           #
-          # @param group_id [String] The ID of the group to delete.
+          # @param group_id [String]
+          #   The ID of the group to delete.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

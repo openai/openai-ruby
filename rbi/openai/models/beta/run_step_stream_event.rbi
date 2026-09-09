@@ -6,8 +6,8 @@ module OpenAI
     module Beta
 
       # Occurs when a
-      # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-      # is created.
+      # [run step](https://developers.openai.com/api/docs/assistants/migration) is
+      # created.
       module RunStepStreamEvent
         extend OpenAI::Internal::Type::Union
 
@@ -42,8 +42,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          # is created.
+          # [run step](https://developers.openai.com/api/docs/assistants/migration) is
+          # created.
           sig do
             params(
 
@@ -91,8 +91,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          # moves to an `in_progress` state.
+          # [run step](https://developers.openai.com/api/docs/assistants/migration) moves to
+          # an `in_progress` state.
           sig do
             params(
 
@@ -141,8 +141,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when parts of a
-          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          # are being streamed.
+          # [run step](https://developers.openai.com/api/docs/assistants/migration) are
+          # being streamed.
           sig do
             params(
 
@@ -191,8 +191,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          # is completed.
+          # [run step](https://developers.openai.com/api/docs/assistants/migration) is
+          # completed.
           sig do
             params(
 
@@ -240,8 +240,7 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          # fails.
+          # [run step](https://developers.openai.com/api/docs/assistants/migration) fails.
           sig do
             params(
 
@@ -289,8 +288,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          # is cancelled.
+          # [run step](https://developers.openai.com/api/docs/assistants/migration) is
+          # cancelled.
           sig do
             params(
 
@@ -338,8 +337,7 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          # expires.
+          # [run step](https://developers.openai.com/api/docs/assistants/migration) expires.
           sig do
             params(
 

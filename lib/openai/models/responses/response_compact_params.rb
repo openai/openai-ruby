@@ -12,8 +12,8 @@ module OpenAI
         #   Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
         #   range of models with different capabilities, performance characteristics, and
         #   price points. Refer to the
-        #   [model guide](https://platform.openai.com/docs/models) to browse and compare
-        #   available models.
+        #   [model guide](https://developers.openai.com/api/docs/models) to browse and
+        #   compare available models.
         #
         #   @return [Symbol, String, OpenAI::Models::Responses::ResponseCompactParams::Model, nil]
         required :model, union: -> { OpenAI::Responses::ResponseCompactParams::Model }, nil?: true
@@ -36,7 +36,7 @@ module OpenAI
         # @!attribute previous_response_id
         #   The unique ID of the previous response to the model. Use this to create
         #   multi-turn conversations. Learn more about
-        #   [conversation state](https://platform.openai.com/docs/guides/conversation-state).
+        #   [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
         #   Cannot be used in conjunction with `conversation`.
         #
         #   @return [String, nil]
@@ -56,7 +56,7 @@ module OpenAI
         #   up to the latest 80 breakpoints in the conversation, without a content-block
         #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
         #   `ttl` defaults to `30m`, which is currently the only supported value. See the
-        #   [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+        #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
         #   for current details.
         #
         #   @return [OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions, nil]
@@ -84,48 +84,86 @@ module OpenAI
         #   Project settings. Unless otherwise configured, the Project will use 'default'. -
         #   If set to 'default', then the request will be processed with the standard
         #   pricing and performance for the selected model. - If set to
-        #   '[flex](https://platform.openai.com/docs/guides/flex-processing)', then the
-        #   request will be processed with the Flex Processing service tier. - To opt-in to
-        #   [Fast mode](/api/docs/guides/fast-mode) at the request level, include the
-        #   `service_tier=fast` or `service_tier=priority` parameter for Responses or Chat
-        #   Completions. For models with a dedicated Fast tier, either value resolves to
-        #   `service_tier=fast`; for other models, either value resolves to
-        #   `service_tier=priority`. - When not set, the default behavior is 'auto'. When
-        #   the `service_tier` parameter is set, the response body will include the
-        #   `service_tier` value based on the processing mode actually used to serve the
-        #   request. This response value may be different from the value set in the
-        #   parameter.
+        #   '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        #   the request will be processed with the Flex Processing service tier. - To opt-in
+        #   to [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        #   request level, include the `service_tier=fast` or `service_tier=priority`
+        #   parameter for Responses or Chat Completions. For models with a dedicated Fast
+        #   tier, either value resolves to `service_tier=fast`; for other models, either
+        #   value resolves to `service_tier=priority`. - When not set, the default behavior
+        #   is 'auto'. When the `service_tier` parameter is set, the response body will
+        #   include the `service_tier` value based on the processing mode actually used to
+        #   serve the request. This response value may be different from the value set in
+        #   the parameter.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseCompactParams::ServiceTier, nil]
         optional :service_tier, enum: -> { OpenAI::Responses::ResponseCompactParams::ServiceTier }, nil?: true
 
         # @!method initialize(model:, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, service_tier: nil, request_options: {})
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseCompactParams} for more details.
+        #   @param model [Symbol, String, OpenAI::Models::Responses::ResponseCompactParams::Model, nil]
+        #     Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
+        #     range of models with different capabilities, performance characteristics, and
+        #     price points. Refer to the
+        #     [model guide](https://developers.openai.com/api/docs/models) to browse and
+        #     compare available models.
         #
-        #   @param model [Symbol, String, OpenAI::Models::Responses::ResponseCompactParams::Model, nil] Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
+        #   @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseConfigurationUpdateItemParam, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>, nil]
+        #     Text, image, or file inputs to the model, used to generate a response
         #
-        #   @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseConfigurationUpdateItemParam, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>, nil] Text, image, or file inputs to the model, used to generate a response
+        #   @param instructions [String, nil]
+        #     A system (or developer) message inserted into the model's context. When used
+        #     along with `previous_response_id`, the instructions from a previous response
+        #     will not be carried over to the next response. This makes it simple to swap out
+        #     system (or developer) messages in new responses.
         #
-        #   @param instructions [String, nil] A system (or developer) message inserted into the model's context.
+        #   @param previous_response_id [String, nil]
+        #     The unique ID of the previous response to the model. Use this to create
+        #     multi-turn conversations. Learn more about
+        #     [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
+        #     Cannot be used in conjunction with `conversation`.
         #
-        #   @param previous_response_id [String, nil] The unique ID of the previous response to the model. Use this to create multi-tu
+        #   @param prompt_cache_key [String, nil]
+        #     A key to use when reading from or writing to the prompt cache.
         #
-        #   @param prompt_cache_key [String, nil] A key to use when reading from or writing to the prompt cache.
+        #   @param prompt_cache_options [OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions, nil]
+        #     Options for prompt caching. Supported for `gpt-5.6` and later models. By
+        #     default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+        #     explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+        #     request can write up to four breakpoints. For cache matching, OpenAI considers
+        #     up to the latest 80 breakpoints in the conversation, without a content-block
+        #     lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+        #     `ttl` defaults to `30m`, which is currently the only supported value. See the
+        #     [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
+        #     for current details.
         #
-        #   @param prompt_cache_options [OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions, nil] Options for prompt caching. Supported for `gpt-5.6` and later models. By default
+        #   @param prompt_cache_retention [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheRetention, nil]
+        #     How long to retain a prompt cache entry created by this request.
         #
-        #   @param prompt_cache_retention [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheRetention, nil] How long to retain a prompt cache entry created by this request.
-        #
-        #   @param service_tier [Symbol, OpenAI::Models::Responses::ResponseCompactParams::ServiceTier, nil] Specifies the processing type used for serving the request. - If set to 'auto'
+        #   @param service_tier [Symbol, OpenAI::Models::Responses::ResponseCompactParams::ServiceTier, nil]
+        #     Specifies the processing type used for serving the request. - If set to 'auto',
+        #     then the request will be processed with the service tier configured in the
+        #     Project settings. Unless otherwise configured, the Project will use 'default'. -
+        #     If set to 'default', then the request will be processed with the standard
+        #     pricing and performance for the selected model. - If set to
+        #     '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        #     the request will be processed with the Flex Processing service tier. - To opt-in
+        #     to [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        #     request level, include the `service_tier=fast` or `service_tier=priority`
+        #     parameter for Responses or Chat Completions. For models with a dedicated Fast
+        #     tier, either value resolves to `service_tier=fast`; for other models, either
+        #     value resolves to `service_tier=priority`. - When not set, the default behavior
+        #     is 'auto'. When the `service_tier` parameter is set, the response body will
+        #     include the `service_tier` value based on the processing mode actually used to
+        #     serve the request. This response value may be different from the value set in
+        #     the parameter.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
         # range of models with different capabilities, performance characteristics, and
         # price points. Refer to the
-        # [model guide](https://platform.openai.com/docs/models) to browse and compare
-        # available models.
+        # [model guide](https://developers.openai.com/api/docs/models) to browse and
+        # compare available models.
         module Model
           extend OpenAI::Internal::Type::Union
 
@@ -509,10 +547,6 @@ module OpenAI
           optional :ttl, enum: -> { OpenAI::Responses::ResponseCompactParams::PromptCacheOptions::Ttl }
 
           # @!method initialize(mode: nil, ttl: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions} for more
-          #   details.
-          #
           #   Options for prompt caching. Supported for `gpt-5.6` and later models. By
           #   default, OpenAI automatically chooses one implicit cache breakpoint. You can add
           #   explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
@@ -520,12 +554,21 @@ module OpenAI
           #   up to the latest 80 breakpoints in the conversation, without a content-block
           #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
           #   `ttl` defaults to `30m`, which is currently the only supported value. See the
-          #   [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+          #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
           #   for current details.
           #
-          #   @param mode [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::Mode] Controls whether OpenAI automatically creates an implicit cache breakpoint. Defa
+          #   @param mode [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::Mode]
+          #     Controls whether OpenAI automatically creates an implicit cache breakpoint.
+          #     Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+          #     and writes up to the latest three explicit breakpoints in the request. With
+          #     `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+          #     latest four explicit breakpoints. If there are no explicit breakpoints, the
+          #     request does not use prompt caching.
           #
-          #   @param ttl [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::Ttl] The minimum lifetime applied to every implicit and explicit cache breakpoint wri
+          #   @param ttl [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheOptions::Ttl]
+          #     The minimum lifetime applied to every implicit and explicit cache breakpoint
+          #     written by the request. Defaults to `30m`, which is currently the only supported
+          #     value. The backend may retain cache entries for longer.
 
           # Controls whether OpenAI automatically creates an implicit cache breakpoint.
           # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
@@ -578,17 +621,17 @@ module OpenAI
         # Project settings. Unless otherwise configured, the Project will use 'default'. -
         # If set to 'default', then the request will be processed with the standard
         # pricing and performance for the selected model. - If set to
-        # '[flex](https://platform.openai.com/docs/guides/flex-processing)', then the
-        # request will be processed with the Flex Processing service tier. - To opt-in to
-        # [Fast mode](/api/docs/guides/fast-mode) at the request level, include the
-        # `service_tier=fast` or `service_tier=priority` parameter for Responses or Chat
-        # Completions. For models with a dedicated Fast tier, either value resolves to
-        # `service_tier=fast`; for other models, either value resolves to
-        # `service_tier=priority`. - When not set, the default behavior is 'auto'. When
-        # the `service_tier` parameter is set, the response body will include the
-        # `service_tier` value based on the processing mode actually used to serve the
-        # request. This response value may be different from the value set in the
-        # parameter.
+        # '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        # the request will be processed with the Flex Processing service tier. - To opt-in
+        # to [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        # request level, include the `service_tier=fast` or `service_tier=priority`
+        # parameter for Responses or Chat Completions. For models with a dedicated Fast
+        # tier, either value resolves to `service_tier=fast`; for other models, either
+        # value resolves to `service_tier=priority`. - When not set, the default behavior
+        # is 'auto'. When the `service_tier` parameter is set, the response body will
+        # include the `service_tier` value based on the processing mode actually used to
+        # serve the request. This response value may be different from the value set in
+        # the parameter.
         module ServiceTier
           extend OpenAI::Internal::Type::Enum
 

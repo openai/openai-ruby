@@ -12,11 +12,11 @@ module OpenAI
 
         # @!attribute messages
         #   A list of messages comprising the conversation so far. Depending on the
-        #   [model](https://platform.openai.com/docs/models) you use, different message
-        #   types (modalities) are supported, like
-        #   [text](https://platform.openai.com/docs/guides/text-generation),
-        #   [images](https://platform.openai.com/docs/guides/vision), and
-        #   [audio](https://platform.openai.com/docs/guides/audio).
+        #   [model](https://developers.openai.com/api/docs/models) you use, different
+        #   message types (modalities) are supported, like
+        #   [text](https://developers.openai.com/api/docs/guides/text),
+        #   [images](https://developers.openai.com/api/docs/guides/images-vision), and
+        #   [audio](https://developers.openai.com/api/docs/guides/audio).
         #
         #   @return [Array<OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam>]
         required(
@@ -28,8 +28,8 @@ module OpenAI
         #   Model ID used to generate the response, like `gpt-6-astra` or `o3`. OpenAI
         #   offers a wide range of models with different capabilities, performance
         #   characteristics, and price points. Refer to the
-        #   [model guide](https://platform.openai.com/docs/models) to browse and compare
-        #   available models.
+        #   [model guide](https://developers.openai.com/api/docs/models) to browse and
+        #   compare available models.
         #
         #   @return [String, Symbol, OpenAI::Models::ChatModel]
         required :model, union: -> { OpenAI::Chat::CompletionCreateParams::Model }
@@ -37,7 +37,7 @@ module OpenAI
         # @!attribute audio
         #   Parameters for audio output. Required when audio output is requested with
         #   `modalities: ["audio"]`.
-        #   [Learn more](https://platform.openai.com/docs/guides/audio).
+        #   [Learn more](https://developers.openai.com/api/docs/guides/audio).
         #
         #   @return [OpenAI::Models::Chat::ChatCompletionAudioParam, nil]
         optional :audio, -> { OpenAI::Chat::ChatCompletionAudioParam }, nil?: true
@@ -108,7 +108,7 @@ module OpenAI
         # @!attribute max_completion_tokens
         #   An upper bound for the number of tokens that can be generated for a completion,
         #   including visible output tokens and
-        #   [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
+        #   [reasoning tokens](https://developers.openai.com/api/docs/guides/reasoning).
         #
         #   @return [Integer, nil]
         optional :max_completion_tokens, Integer, nil?: true
@@ -116,13 +116,13 @@ module OpenAI
         # @!attribute max_tokens
         #   @deprecated
         #
-        #   The maximum number of [tokens](/tokenizer) that can be generated in the chat
-        #   completion. This value can be used to control
+        #   The maximum number of [tokens](https://platform.openai.com/tokenizer) that can
+        #   be generated in the chat completion. This value can be used to control
         #   [costs](https://openai.com/api/pricing/) for text generated via API.
         #
         #   This value is now deprecated in favor of `max_completion_tokens`, and is not
         #   compatible with
-        #   [o-series models](https://platform.openai.com/docs/guides/reasoning).
+        #   [o-series models](https://developers.openai.com/api/docs/guides/reasoning).
         #
         #   @return [Integer, nil]
         optional :max_tokens, Integer, nil?: true
@@ -145,8 +145,8 @@ module OpenAI
         #   `["text"]`
         #
         #   The `gpt-4o-audio-preview` model can also be used to
-        #   [generate audio](https://platform.openai.com/docs/guides/audio). To request that
-        #   this model generate both text and audio responses, you can use:
+        #   [generate audio](https://developers.openai.com/api/docs/guides/audio). To
+        #   request that this model generate both text and audio responses, you can use:
         #
         #   `["text", "audio"]`
         #
@@ -173,7 +173,7 @@ module OpenAI
 
         # @!attribute parallel_tool_calls
         #   Whether to enable
-        #   [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
+        #   [parallel function calling](https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling)
         #   during tool use.
         #
         #   @return [Boolean, nil]
@@ -197,7 +197,7 @@ module OpenAI
         # @!attribute prompt_cache_key
         #   Used by OpenAI to cache responses for similar requests to optimize your cache
         #   hit rates. Replaces the `user` field.
-        #   [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
+        #   [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching).
         #
         #   @return [String, nil]
         optional :prompt_cache_key, String, nil?: true
@@ -210,7 +210,7 @@ module OpenAI
         #   up to the latest 80 breakpoints in the conversation, without a content-block
         #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
         #   `ttl` defaults to `30m`, which is currently the only supported value. See the
-        #   [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+        #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
         #   for current details.
         #
         #   @return [OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions, nil]
@@ -224,7 +224,7 @@ module OpenAI
         #   The retention policy for the prompt cache. Set to `24h` to enable extended
         #   prompt caching, which keeps cached prefixes active for longer, up to a maximum
         #   of 24 hours.
-        #   [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+        #   [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention).
         #   This field expresses a maximum retention policy, while
         #   `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
         #   are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
@@ -249,7 +249,7 @@ module OpenAI
         #   are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
         #   reasoning effort can result in faster responses and fewer tokens used on
         #   reasoning in a response. Not all reasoning models support every value. See the
-        #   [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+        #   [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
         #   model-specific support.
         #
         #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
@@ -261,7 +261,7 @@ module OpenAI
         #   Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
         #   Outputs which ensures the model will match your supplied JSON schema. Learn more
         #   in the
-        #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+        #   [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
         #
         #   Setting to `{ "type": "json_object" }` enables the older JSON mode, which
         #   ensures the message the model generates is valid JSON. Using `json_schema` is
@@ -276,7 +276,7 @@ module OpenAI
         #   identifies each user, with a maximum length of 64 characters. We recommend
         #   hashing their username or email address, in order to avoid sending us any
         #   identifying information.
-        #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
+        #   [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
         #
         #   @return [String, nil]
         optional :safety_identifier, String, nil?: true
@@ -301,13 +301,15 @@ module OpenAI
         #     will use 'default'.
         #   - If set to 'default', then the request will be processed with the standard
         #     pricing and performance for the selected model.
-        #   - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)',
-        #     then the request will be processed with the Flex Processing service tier.
-        #   - To opt-in to [Fast mode](/api/docs/guides/fast-mode) at the request level,
-        #     include the `service_tier=fast` or `service_tier=priority` parameter for
-        #     Responses or Chat Completions. The response will show `service_tier=priority`
-        #     regardless of if you specify `service_tier=fast` or `priority` in your
-        #     request.
+        #   - If set to
+        #     '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        #     the request will be processed with the Flex Processing service tier.
+        #   - To opt-in to
+        #     [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        #     request level, include the `service_tier=fast` or `service_tier=priority`
+        #     parameter for Responses or Chat Completions. The response will show
+        #     `service_tier=priority` regardless of if you specify `service_tier=fast` or
+        #     `priority` in your request.
         #   - When not set, the default behavior is 'auto'.
         #
         #   When the `service_tier` parameter is set, the response body will include the
@@ -329,8 +331,9 @@ module OpenAI
 
         # @!attribute store
         #   Whether or not to store the output of this chat completion request for use in
-        #   our [model distillation](https://platform.openai.com/docs/guides/distillation)
-        #   or [evals](https://platform.openai.com/docs/guides/evals) products.
+        #   our
+        #   [model distillation](https://developers.openai.com/api/docs/guides/supervised-fine-tuning#distilling-from-a-larger-model)
+        #   or [evals](https://developers.openai.com/api/docs/guides/evals) products.
         #
         #   Supports text and image inputs. Note: image inputs over 8MB will be dropped.
         #
@@ -368,8 +371,9 @@ module OpenAI
 
         # @!attribute tools
         #   A list of tools the model may call. You can provide either
-        #   [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
-        #   or [function tools](https://platform.openai.com/docs/guides/function-calling).
+        #   [custom tools](https://developers.openai.com/api/docs/guides/function-calling#custom-tools)
+        #   or
+        #   [function tools](https://developers.openai.com/api/docs/guides/function-calling).
         #
         #   @return [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool>, nil]
         optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Chat::ChatCompletionTool] }
@@ -400,7 +404,7 @@ module OpenAI
         #   `prompt_cache_key` instead to maintain caching optimizations. A stable
         #   identifier for your end-users. Used to boost cache hit rates by better bucketing
         #   similar requests and to help OpenAI detect and prevent abuse.
-        #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
+        #   [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
         #
         #   @return [String, nil]
         optional :user, String
@@ -417,94 +421,301 @@ module OpenAI
         # @!attribute web_search_options
         #   This tool searches the web for relevant results to use in a response. Learn more
         #   about the
-        #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
+        #   [web search tool](https://developers.openai.com/api/docs/guides/tools-web-search).
         #
         #   @return [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, nil]
         optional :web_search_options, -> { OpenAI::Chat::CompletionCreateParams::WebSearchOptions }
 
         # @!method initialize(messages:, model:, audio: nil, frequency_penalty: nil, function_call: nil, functions: nil, logit_bias: nil, logprobs: nil, max_completion_tokens: nil, max_tokens: nil, metadata: nil, modalities: nil, moderation: nil, n: nil, parallel_tool_calls: nil, prediction: nil, presence_penalty: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning_effort: nil, response_format: nil, safety_identifier: nil, seed: nil, service_tier: nil, stop: nil, store: nil, stream_options: nil, temperature: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, user: nil, verbosity: nil, web_search_options: nil, request_options: {})
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Chat::CompletionCreateParams} for more details.
+        #   @param messages [Array<OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam>]
+        #     A list of messages comprising the conversation so far. Depending on the
+        #     [model](https://developers.openai.com/api/docs/models) you use, different
+        #     message types (modalities) are supported, like
+        #     [text](https://developers.openai.com/api/docs/guides/text),
+        #     [images](https://developers.openai.com/api/docs/guides/images-vision), and
+        #     [audio](https://developers.openai.com/api/docs/guides/audio).
         #
-        #   @param messages [Array<OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam>] A list of messages comprising the conversation so far. Depending on the
+        #   @param model [String, Symbol, OpenAI::Models::ChatModel]
+        #     Model ID used to generate the response, like `gpt-6-astra` or `o3`. OpenAI
+        #     offers a wide range of models with different capabilities, performance
+        #     characteristics, and price points. Refer to the
+        #     [model guide](https://developers.openai.com/api/docs/models) to browse and
+        #     compare available models.
         #
-        #   @param model [String, Symbol, OpenAI::Models::ChatModel] Model ID used to generate the response, like `gpt-6-astra` or `o3`. OpenAI
+        #   @param audio [OpenAI::Models::Chat::ChatCompletionAudioParam, nil]
+        #     Parameters for audio output. Required when audio output is requested with
+        #     `modalities: ["audio"]`.
+        #     [Learn more](https://developers.openai.com/api/docs/guides/audio).
         #
-        #   @param audio [OpenAI::Models::Chat::ChatCompletionAudioParam, nil] Parameters for audio output. Required when audio output is requested with
+        #   @param frequency_penalty [Float, nil]
+        #     Number between -2.0 and 2.0. Positive values penalize new tokens based on their
+        #     existing frequency in the text so far, decreasing the model's likelihood to
+        #     repeat the same line verbatim.
         #
-        #   @param frequency_penalty [Float, nil] Number between -2.0 and 2.0. Positive values penalize new tokens based on
+        #   @param function_call [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]
+        #     Deprecated in favor of `tool_choice`.
         #
-        #   @param function_call [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption] Deprecated in favor of `tool_choice`.
+        #     Controls which (if any) function is called by the model.
         #
-        #   @param functions [Array<OpenAI::Models::Chat::CompletionCreateParams::Function>] Deprecated in favor of `tools`.
+        #     `none` means the model will not call a function and instead generates a message.
         #
-        #   @param logit_bias [Hash{Symbol=>Integer}, nil] Modify the likelihood of specified tokens appearing in the completion.
+        #     `auto` means the model can pick between generating a message or calling a
+        #     function.
         #
-        #   @param logprobs [Boolean, nil] Whether to return log probabilities of the output tokens or not. If true,
+        #     Specifying a particular function via `{"name": "my_function"}` forces the model
+        #     to call that function.
         #
-        #   @param max_completion_tokens [Integer, nil] An upper bound for the number of tokens that can be generated for a completion,
+        #     `none` is the default when no functions are present. `auto` is the default if
+        #     functions are present.
         #
-        #   @param max_tokens [Integer, nil] The maximum number of [tokens](/tokenizer) that can be generated in the
+        #   @param functions [Array<OpenAI::Models::Chat::CompletionCreateParams::Function>]
+        #     Deprecated in favor of `tools`.
         #
-        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+        #     A list of functions the model may generate JSON inputs for.
         #
-        #   @param modalities [Array<Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality>, nil] Output types that you would like the model to generate.
+        #   @param logit_bias [Hash{Symbol=>Integer}, nil]
+        #     Modify the likelihood of specified tokens appearing in the completion.
         #
-        #   @param moderation [OpenAI::Models::Chat::CompletionCreateParams::Moderation, nil] Configuration for running moderation on the request input and generated output.
+        #     Accepts a JSON object that maps tokens (specified by their token ID in the
+        #     tokenizer) to an associated bias value from -100 to 100. Mathematically, the
+        #     bias is added to the logits generated by the model prior to sampling. The exact
+        #     effect will vary per model, but values between -1 and 1 should decrease or
+        #     increase likelihood of selection; values like -100 or 100 should result in a ban
+        #     or exclusive selection of the relevant token.
         #
-        #   @param n [Integer, nil] How many chat completion choices to generate for each input message. Note that y
+        #   @param logprobs [Boolean, nil]
+        #     Whether to return log probabilities of the output tokens or not. If true,
+        #     returns the log probabilities of each output token returned in the `content` of
+        #     `message`.
         #
-        #   @param parallel_tool_calls [Boolean] Whether to enable [parallel function calling](https://platform.openai.com/docs/g
+        #   @param max_completion_tokens [Integer, nil]
+        #     An upper bound for the number of tokens that can be generated for a completion,
+        #     including visible output tokens and
+        #     [reasoning tokens](https://developers.openai.com/api/docs/guides/reasoning).
         #
-        #   @param prediction [OpenAI::Models::Chat::ChatCompletionPredictionContent, nil] Static predicted output content, such as the content of a text file that is
+        #   @param max_tokens [Integer, nil]
+        #     The maximum number of [tokens](https://platform.openai.com/tokenizer) that can
+        #     be generated in the chat completion. This value can be used to control
+        #     [costs](https://openai.com/api/pricing/) for text generated via API.
         #
-        #   @param presence_penalty [Float, nil] Number between -2.0 and 2.0. Positive values penalize new tokens based on
+        #     This value is now deprecated in favor of `max_completion_tokens`, and is not
+        #     compatible with
+        #     [o-series models](https://developers.openai.com/api/docs/guides/reasoning).
         #
-        #   @param prompt_cache_key [String, nil] Used by OpenAI to cache responses for similar requests to optimize your cache hi
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #     Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #     for storing additional information about the object in a structured format, and
+        #     querying for objects via API or the dashboard.
         #
-        #   @param prompt_cache_options [OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions] Options for prompt caching. Supported for `gpt-5.6` and later models. By default
+        #     Keys are strings with a maximum length of 64 characters. Values are strings with
+        #     a maximum length of 512 characters.
         #
-        #   @param prompt_cache_retention [Symbol, OpenAI::Models::Chat::CompletionCreateParams::PromptCacheRetention, nil] Deprecated. Use `prompt_cache_options.ttl` instead.
+        #   @param modalities [Array<Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality>, nil]
+        #     Output types that you would like the model to generate. Most models are capable
+        #     of generating text, which is the default:
         #
-        #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Constrains effort on reasoning for reasoning models. Currently supported
+        #     `["text"]`
         #
-        #   @param response_format [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject] An object specifying the format that the model must output.
+        #     The `gpt-4o-audio-preview` model can also be used to
+        #     [generate audio](https://developers.openai.com/api/docs/guides/audio). To
+        #     request that this model generate both text and audio responses, you can use:
         #
-        #   @param safety_identifier [String, nil] A stable identifier used to help detect users of your application that may be vi
+        #     `["text", "audio"]`
         #
-        #   @param seed [Integer, nil] This feature is in Beta.
+        #   @param moderation [OpenAI::Models::Chat::CompletionCreateParams::Moderation, nil]
+        #     Configuration for running moderation on the request input and generated output.
         #
-        #   @param service_tier [Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier, nil] Specifies the processing type used for serving the request.
+        #   @param n [Integer, nil]
+        #     How many chat completion choices to generate for each input message. Note that
+        #     you will be charged based on the number of generated tokens across all of the
+        #     choices. Keep `n` as `1` to minimize costs.
         #
-        #   @param stop [String, Array<String>, nil] Not supported with latest reasoning models `o3` and `o4-mini`.
+        #   @param parallel_tool_calls [Boolean]
+        #     Whether to enable
+        #     [parallel function calling](https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling)
+        #     during tool use.
         #
-        #   @param store [Boolean, nil] Whether or not to store the output of this chat completion request for
+        #   @param prediction [OpenAI::Models::Chat::ChatCompletionPredictionContent, nil]
+        #     Static predicted output content, such as the content of a text file that is
+        #     being regenerated.
         #
-        #   @param stream_options [OpenAI::Models::Chat::ChatCompletionStreamOptions, nil] Options for streaming response. Only set this when you set `stream: true`.
+        #   @param presence_penalty [Float, nil]
+        #     Number between -2.0 and 2.0. Positive values penalize new tokens based on
+        #     whether they appear in the text so far, increasing the model's likelihood to
+        #     talk about new topics.
         #
-        #   @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
+        #   @param prompt_cache_key [String, nil]
+        #     Used by OpenAI to cache responses for similar requests to optimize your cache
+        #     hit rates. Replaces the `user` field.
+        #     [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching).
         #
-        #   @param tool_choice [Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionAllowedToolChoice, OpenAI::Models::Chat::ChatCompletionNamedToolChoice, OpenAI::Models::Chat::ChatCompletionNamedToolChoiceCustom] Controls which (if any) tool is called by the model.
+        #   @param prompt_cache_options [OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions]
+        #     Options for prompt caching. Supported for `gpt-5.6` and later models. By
+        #     default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+        #     explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+        #     request can write up to four breakpoints. For cache matching, OpenAI considers
+        #     up to the latest 80 breakpoints in the conversation, without a content-block
+        #     lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+        #     `ttl` defaults to `30m`, which is currently the only supported value. See the
+        #     [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
+        #     for current details.
         #
-        #   @param tools [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool>] A list of tools the model may call. You can provide either
+        #   @param prompt_cache_retention [Symbol, OpenAI::Models::Chat::CompletionCreateParams::PromptCacheRetention, nil]
+        #     Deprecated. Use `prompt_cache_options.ttl` instead.
         #
-        #   @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the maximum number of most likely
+        #     The retention policy for the prompt cache. Set to `24h` to enable extended
+        #     prompt caching, which keeps cached prefixes active for longer, up to a maximum
+        #     of 24 hours.
+        #     [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention).
+        #     This field expresses a maximum retention policy, while
+        #     `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+        #     are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+        #     models, only `24h` is supported.
         #
-        #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling,
+        #     For older models that support both `in_memory` and `24h`, the default depends on
+        #     your organization's data retention policy:
         #
-        #   @param user [String] This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
+        #     - Organizations without ZDR enabled default to `24h`.
+        #     - Organizations with ZDR enabled default to `in_memory` when
+        #       `prompt_cache_retention` is not specified.
         #
-        #   @param verbosity [Symbol, OpenAI::Models::Chat::CompletionCreateParams::Verbosity, nil] Constrains the verbosity of the model's response. Lower values will result in
+        #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
+        #     Constrains effort on reasoning for reasoning models. Currently supported values
+        #     are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+        #     reasoning effort can result in faster responses and fewer tokens used on
+        #     reasoning in a response. Not all reasoning models support every value. See the
+        #     [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
+        #     model-specific support.
         #
-        #   @param web_search_options [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions] This tool searches the web for relevant results to use in a response.
+        #   @param response_format [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
+        #     An object specifying the format that the model must output.
+        #
+        #     Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
+        #     Outputs which ensures the model will match your supplied JSON schema. Learn more
+        #     in the
+        #     [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
+        #
+        #     Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+        #     ensures the message the model generates is valid JSON. Using `json_schema` is
+        #     preferred for models that support it.
+        #
+        #   @param safety_identifier [String, nil]
+        #     A stable identifier used to help detect users of your application that may be
+        #     violating OpenAI's usage policies. The IDs should be a string that uniquely
+        #     identifies each user, with a maximum length of 64 characters. We recommend
+        #     hashing their username or email address, in order to avoid sending us any
+        #     identifying information.
+        #     [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
+        #
+        #   @param seed [Integer, nil]
+        #     This feature is in Beta. If specified, our system will make a best effort to
+        #     sample deterministically, such that repeated requests with the same `seed` and
+        #     parameters should return the same result. Determinism is not guaranteed, and you
+        #     should refer to the `system_fingerprint` response parameter to monitor changes
+        #     in the backend.
+        #
+        #   @param service_tier [Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier, nil]
+        #     Specifies the processing type used for serving the request.
+        #
+        #     - If set to 'auto', then the request will be processed with the service tier
+        #       configured in the Project settings. Unless otherwise configured, the Project
+        #       will use 'default'.
+        #     - If set to 'default', then the request will be processed with the standard
+        #       pricing and performance for the selected model.
+        #     - If set to
+        #       '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        #       the request will be processed with the Flex Processing service tier.
+        #     - To opt-in to
+        #       [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        #       request level, include the `service_tier=fast` or `service_tier=priority`
+        #       parameter for Responses or Chat Completions. The response will show
+        #       `service_tier=priority` regardless of if you specify `service_tier=fast` or
+        #       `priority` in your request.
+        #     - When not set, the default behavior is 'auto'.
+        #
+        #     When the `service_tier` parameter is set, the response body will include the
+        #     `service_tier` value based on the processing mode actually used to serve the
+        #     request. This response value may be different from the value set in the
+        #     parameter.
+        #
+        #   @param stop [String, Array<String>, nil]
+        #     Not supported with latest reasoning models `o3` and `o4-mini`.
+        #
+        #     Up to 4 sequences where the API will stop generating further tokens. The
+        #     returned text will not contain the stop sequence.
+        #
+        #   @param store [Boolean, nil]
+        #     Whether or not to store the output of this chat completion request for use in
+        #     our
+        #     [model distillation](https://developers.openai.com/api/docs/guides/supervised-fine-tuning#distilling-from-a-larger-model)
+        #     or [evals](https://developers.openai.com/api/docs/guides/evals) products.
+        #
+        #     Supports text and image inputs. Note: image inputs over 8MB will be dropped.
+        #
+        #   @param stream_options [OpenAI::Models::Chat::ChatCompletionStreamOptions, nil]
+        #     Options for streaming response. Only set this when you set `stream: true`.
+        #
+        #   @param temperature [Float, nil]
+        #     What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+        #     make the output more random, while lower values like 0.2 will make it more
+        #     focused and deterministic. We generally recommend altering this or `top_p` but
+        #     not both.
+        #
+        #   @param tool_choice [Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionAllowedToolChoice, OpenAI::Models::Chat::ChatCompletionNamedToolChoice, OpenAI::Models::Chat::ChatCompletionNamedToolChoiceCustom]
+        #     Controls which (if any) tool is called by the model. `none` means the model will
+        #     not call any tool and instead generates a message. `auto` means the model can
+        #     pick between generating a message or calling one or more tools. `required` means
+        #     the model must call one or more tools. Specifying a particular tool via
+        #     `{"type": "function", "function": {"name": "my_function"}}` forces the model to
+        #     call that tool.
+        #
+        #     `none` is the default when no tools are present. `auto` is the default if tools
+        #     are present.
+        #
+        #   @param tools [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool>]
+        #     A list of tools the model may call. You can provide either
+        #     [custom tools](https://developers.openai.com/api/docs/guides/function-calling#custom-tools)
+        #     or
+        #     [function tools](https://developers.openai.com/api/docs/guides/function-calling).
+        #
+        #   @param top_logprobs [Integer, nil]
+        #     An integer between 0 and 20 specifying the maximum number of most likely tokens
+        #     to return at each token position, each with an associated log probability. In
+        #     some cases, the number of returned tokens may be fewer than requested.
+        #     `logprobs` must be set to `true` if this parameter is used.
+        #
+        #   @param top_p [Float, nil]
+        #     An alternative to sampling with temperature, called nucleus sampling, where the
+        #     model considers the results of the tokens with top_p probability mass. So 0.1
+        #     means only the tokens comprising the top 10% probability mass are considered.
+        #
+        #     We generally recommend altering this or `temperature` but not both.
+        #
+        #   @param user [String]
+        #     This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
+        #     `prompt_cache_key` instead to maintain caching optimizations. A stable
+        #     identifier for your end-users. Used to boost cache hit rates by better bucketing
+        #     similar requests and to help OpenAI detect and prevent abuse.
+        #     [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
+        #
+        #   @param verbosity [Symbol, OpenAI::Models::Chat::CompletionCreateParams::Verbosity, nil]
+        #     Constrains the verbosity of the model's response. Lower values will result in
+        #     more concise responses, while higher values will result in more verbose
+        #     responses. Currently supported values are `low`, `medium`, and `high`. The
+        #     default is `medium`.
+        #
+        #   @param web_search_options [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions]
+        #     This tool searches the web for relevant results to use in a response. Learn more
+        #     about the
+        #     [web search tool](https://developers.openai.com/api/docs/guides/tools-web-search).
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # Model ID used to generate the response, like `gpt-6-astra` or `o3`. OpenAI
         # offers a wide range of models with different capabilities, performance
         # characteristics, and price points. Refer to the
-        # [model guide](https://platform.openai.com/docs/models) to browse and compare
-        # available models.
+        # [model guide](https://developers.openai.com/api/docs/models) to browse and
+        # compare available models.
         module Model
           extend OpenAI::Internal::Type::Union
 
@@ -512,7 +723,7 @@ module OpenAI
 
           # Model ID used to generate the response, like `gpt-6-astra` or `o3`. OpenAI
           # offers a wide range of models with different capabilities, performance
-          # characteristics, and price points. Refer to the [model guide](https://platform.openai.com/docs/models)
+          # characteristics, and price points. Refer to the [model guide](https://developers.openai.com/api/docs/models)
           # to browse and compare available models.
           variant enum: -> { OpenAI::ChatModel }
 
@@ -580,8 +791,8 @@ module OpenAI
 
           # @!attribute parameters
           #   The parameters the functions accepts, described as a JSON Schema object. See the
-          #   [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
-          #   and the
+          #   [guide](https://developers.openai.com/api/docs/guides/function-calling) for
+          #   examples, and the
           #   [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
           #   documentation about the format.
           #
@@ -591,14 +802,22 @@ module OpenAI
           optional :parameters, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
 
           # @!method initialize(name:, description: nil, parameters: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Chat::CompletionCreateParams::Function} for more details.
+          #   @param name [String]
+          #     The name of the function to be called. Must be a-z, A-Z, 0-9, or contain
+          #     underscores and dashes, with a maximum length of 64.
           #
-          #   @param name [String] The name of the function to be called. Must be a-z, A-Z, 0-9, or contain undersc
+          #   @param description [String]
+          #     A description of what the function does, used by the model to choose when and
+          #     how to call the function.
           #
-          #   @param description [String] A description of what the function does, used by the model to choose when and ho
+          #   @param parameters [Hash{Symbol=>Object}]
+          #     The parameters the functions accepts, described as a JSON Schema object. See the
+          #     [guide](https://developers.openai.com/api/docs/guides/function-calling) for
+          #     examples, and the
+          #     [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+          #     documentation about the format.
           #
-          #   @param parameters [Hash{Symbol=>Object}] The parameters the functions accepts, described as a JSON Schema object. See the
+          #     Omitting `parameters` defines a function with an empty parameter list.
         end
 
         module Modality
@@ -626,14 +845,14 @@ module OpenAI
           optional :policy, -> { OpenAI::Chat::CompletionCreateParams::Moderation::Policy }, nil?: true
 
           # @!method initialize(model:, policy: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Chat::CompletionCreateParams::Moderation} for more details.
-          #
           #   Configuration for running moderation on the request input and generated output.
           #
-          #   @param model [String] The moderation model to use for moderated completions, e.g. 'omni-moderation-lat
+          #   @param model [String]
+          #     The moderation model to use for moderated completions, e.g.
+          #     'omni-moderation-latest'.
           #
-          #   @param policy [OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy, nil] The policy to apply to moderated response input and output.
+          #   @param policy [OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy, nil]
+          #     The policy to apply to moderated response input and output.
 
           # @see OpenAI::Models::Chat::CompletionCreateParams::Moderation#policy
           class Policy < OpenAI::Internal::Type::BaseModel
@@ -664,9 +883,11 @@ module OpenAI
             # @!method initialize(input: nil, output: nil)
             #   The policy to apply to moderated response input and output.
             #
-            #   @param input [OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy::Input, nil] The moderation policy for the response input.
+            #   @param input [OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy::Input, nil]
+            #     The moderation policy for the response input.
             #
-            #   @param output [OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy::Output, nil] The moderation policy for the response output.
+            #   @param output [OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy::Output, nil]
+            #     The moderation policy for the response output.
 
             # @see OpenAI::Models::Chat::CompletionCreateParams::Moderation::Policy#input
             class Input < OpenAI::Internal::Type::BaseModel
@@ -739,10 +960,6 @@ module OpenAI
           optional :ttl, enum: -> { OpenAI::Chat::CompletionCreateParams::PromptCacheOptions::Ttl }
 
           # @!method initialize(mode: nil, ttl: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions} for more
-          #   details.
-          #
           #   Options for prompt caching. Supported for `gpt-5.6` and later models. By
           #   default, OpenAI automatically chooses one implicit cache breakpoint. You can add
           #   explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
@@ -750,12 +967,21 @@ module OpenAI
           #   up to the latest 80 breakpoints in the conversation, without a content-block
           #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
           #   `ttl` defaults to `30m`, which is currently the only supported value. See the
-          #   [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+          #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
           #   for current details.
           #
-          #   @param mode [Symbol, OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::Mode] Controls whether OpenAI automatically creates an implicit cache breakpoint. Defa
+          #   @param mode [Symbol, OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::Mode]
+          #     Controls whether OpenAI automatically creates an implicit cache breakpoint.
+          #     Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+          #     and writes up to the latest three explicit breakpoints in the request. With
+          #     `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+          #     latest four explicit breakpoints. If there are no explicit breakpoints, the
+          #     request does not use prompt caching.
           #
-          #   @param ttl [Symbol, OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::Ttl] The minimum lifetime applied to every implicit and explicit cache breakpoint wri
+          #   @param ttl [Symbol, OpenAI::Models::Chat::CompletionCreateParams::PromptCacheOptions::Ttl]
+          #     The minimum lifetime applied to every implicit and explicit cache breakpoint
+          #     written by the request. Defaults to `30m`, which is currently the only supported
+          #     value. The backend may retain cache entries for longer.
 
           # Controls whether OpenAI automatically creates an implicit cache breakpoint.
           # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
@@ -797,7 +1023,7 @@ module OpenAI
         # The retention policy for the prompt cache. Set to `24h` to enable extended
         # prompt caching, which keeps cached prefixes active for longer, up to a maximum
         # of 24 hours.
-        # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+        # [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention).
         # This field expresses a maximum retention policy, while
         # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
         # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
@@ -824,7 +1050,7 @@ module OpenAI
         # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
         # Outputs which ensures the model will match your supplied JSON schema. Learn more
         # in the
-        # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+        # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
         #
         # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
         # ensures the message the model generates is valid JSON. Using `json_schema` is
@@ -838,7 +1064,7 @@ module OpenAI
           variant :text, -> { OpenAI::ResponseFormatText }
 
           # JSON Schema response format. Used to generate structured JSON responses.
-          # Learn more about [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
+          # Learn more about [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs).
           variant :json_schema, -> { OpenAI::ResponseFormatJSONSchema }
 
           # JSON object response format. An older method of generating JSON responses.
@@ -858,13 +1084,15 @@ module OpenAI
         #   will use 'default'.
         # - If set to 'default', then the request will be processed with the standard
         #   pricing and performance for the selected model.
-        # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)',
-        #   then the request will be processed with the Flex Processing service tier.
-        # - To opt-in to [Fast mode](/api/docs/guides/fast-mode) at the request level,
-        #   include the `service_tier=fast` or `service_tier=priority` parameter for
-        #   Responses or Chat Completions. The response will show `service_tier=priority`
-        #   regardless of if you specify `service_tier=fast` or `priority` in your
-        #   request.
+        # - If set to
+        #   '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        #   the request will be processed with the Flex Processing service tier.
+        # - To opt-in to
+        #   [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        #   request level, include the `service_tier=fast` or `service_tier=priority`
+        #   parameter for Responses or Chat Completions. The response will show
+        #   `service_tier=priority` regardless of if you specify `service_tier=fast` or
+        #   `priority` in your request.
         # - When not set, the default behavior is 'auto'.
         #
         # When the `service_tier` parameter is set, the response body will include the
@@ -940,17 +1168,16 @@ module OpenAI
           )
 
           # @!method initialize(search_context_size: nil, user_location: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions} for more
-          #   details.
-          #
           #   This tool searches the web for relevant results to use in a response. Learn more
           #   about the
-          #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
+          #   [web search tool](https://developers.openai.com/api/docs/guides/tools-web-search).
           #
-          #   @param search_context_size [Symbol, OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize] High level guidance for the amount of context window space to use for the
+          #   @param search_context_size [Symbol, OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize]
+          #     High level guidance for the amount of context window space to use for the
+          #     search. One of `low`, `medium`, or `high`. `medium` is the default.
           #
-          #   @param user_location [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation, nil] Approximate location parameters for the search.
+          #   @param user_location [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation, nil]
+          #     Approximate location parameters for the search.
 
           # High level guidance for the amount of context window space to use for the
           # search. One of `low`, `medium`, or `high`. `medium` is the default.
@@ -985,15 +1212,13 @@ module OpenAI
             required :type, const: :approximate
 
             # @!method initialize(approximate:, type: :approximate)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation}
-            #   for more details.
-            #
             #   Approximate location parameters for the search.
             #
-            #   @param approximate [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate] Approximate location parameters for the search.
+            #   @param approximate [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate]
+            #     Approximate location parameters for the search.
             #
-            #   @param type [Symbol, :approximate] The type of location approximation. Always `approximate`.
+            #   @param type [Symbol, :approximate]
+            #     The type of location approximation. Always `approximate`.
 
             # @see OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation#approximate
             class Approximate < OpenAI::Internal::Type::BaseModel
@@ -1024,19 +1249,21 @@ module OpenAI
               optional :timezone, String
 
               # @!method initialize(city: nil, country: nil, region: nil, timezone: nil)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate}
-              #   for more details.
-              #
               #   Approximate location parameters for the search.
               #
-              #   @param city [String] Free text input for the city of the user, e.g. `San Francisco`.
+              #   @param city [String]
+              #     Free text input for the city of the user, e.g. `San Francisco`.
               #
-              #   @param country [String] The two-letter
+              #   @param country [String]
+              #     The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
+              #     the user, e.g. `US`.
               #
-              #   @param region [String] Free text input for the region of the user, e.g. `California`.
+              #   @param region [String]
+              #     Free text input for the region of the user, e.g. `California`.
               #
-              #   @param timezone [String] The [IANA timezone](https://timeapi.io/documentation/iana-timezones)
+              #   @param timezone [String]
+              #     The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
+              #     user, e.g. `America/Los_Angeles`.
             end
           end
         end

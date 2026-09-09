@@ -64,23 +64,32 @@ module OpenAI
             # @!method initialize(id:, max_requests_per_1_minute:, max_tokens_per_1_minute:, model:, batch_1_day_max_input_tokens: nil, max_audio_megabytes_per_1_minute: nil, max_images_per_1_minute: nil, max_requests_per_1_day: nil, object: :"project.rate_limit")
             #   Represents a project rate limit config.
             #
-            #   @param id [String] The identifier, which can be referenced in API endpoints.
+            #   @param id [String]
+            #     The identifier, which can be referenced in API endpoints.
             #
-            #   @param max_requests_per_1_minute [Integer] The maximum requests per minute.
+            #   @param max_requests_per_1_minute [Integer]
+            #     The maximum requests per minute.
             #
-            #   @param max_tokens_per_1_minute [Integer] The maximum tokens per minute.
+            #   @param max_tokens_per_1_minute [Integer]
+            #     The maximum tokens per minute.
             #
-            #   @param model [String] The model this rate limit applies to.
+            #   @param model [String]
+            #     The model this rate limit applies to.
             #
-            #   @param batch_1_day_max_input_tokens [Integer] The maximum batch input tokens per day. Only present for relevant models.
+            #   @param batch_1_day_max_input_tokens [Integer]
+            #     The maximum batch input tokens per day. Only present for relevant models.
             #
-            #   @param max_audio_megabytes_per_1_minute [Integer] The maximum audio megabytes per minute. Only present for relevant models.
+            #   @param max_audio_megabytes_per_1_minute [Integer]
+            #     The maximum audio megabytes per minute. Only present for relevant models.
             #
-            #   @param max_images_per_1_minute [Integer] The maximum images per minute. Only present for relevant models.
+            #   @param max_images_per_1_minute [Integer]
+            #     The maximum images per minute. Only present for relevant models.
             #
-            #   @param max_requests_per_1_day [Integer] The maximum requests per day. Only present for relevant models.
+            #   @param max_requests_per_1_day [Integer]
+            #     The maximum requests per day. Only present for relevant models.
             #
-            #   @param object [Symbol, :"project.rate_limit"] The object type, which is always `project.rate_limit`
+            #   @param object [Symbol, :"project.rate_limit"]
+            #     The object type, which is always `project.rate_limit`
           end
         end
 

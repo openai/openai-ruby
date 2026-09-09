@@ -120,8 +120,8 @@ module OpenAI
       # Model ID used to process the batch, like `gpt-6-astra`. OpenAI offers a wide
       # range of models with different capabilities, performance characteristics, and
       # price points. Refer to the
-      # [model guide](https://platform.openai.com/docs/models) to browse and compare
-      # available models.
+      # [model guide](https://developers.openai.com/api/docs/models) to browse and
+      # compare available models.
       sig { returns(T.nilable(String)) }
       attr_reader :model
 
@@ -259,8 +259,8 @@ module OpenAI
         # Model ID used to process the batch, like `gpt-6-astra`. OpenAI offers a wide
         # range of models with different capabilities, performance characteristics, and
         # price points. Refer to the
-        # [model guide](https://platform.openai.com/docs/models) to browse and compare
-        # available models.
+        # [model guide](https://developers.openai.com/api/docs/models) to browse and
+        # compare available models.
         model: nil,
 
         # The ID of the file containing the outputs of successfully executed requests.

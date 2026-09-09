@@ -36,15 +36,19 @@ module OpenAI
         # @!method initialize(id:, created_at:, data:, object: :event, type: :"safety.alert.created")
         #   Sent when an approved safety alert is available for an API project.
         #
-        #   @param id [String] The unique ID of the webhook event.
+        #   @param id [String]
+        #     The unique ID of the webhook event.
         #
-        #   @param created_at [Integer] The Unix timestamp in seconds when the event was created.
+        #   @param created_at [Integer]
+        #     The Unix timestamp in seconds when the event was created.
         #
         #   @param data [OpenAI::Models::Webhooks::SafetyAlertCreatedWebhookEvent::Data]
         #
-        #   @param object [Symbol, :event] Always `event`.
+        #   @param object [Symbol, :event]
+        #     Always `event`.
         #
-        #   @param type [Symbol, :"safety.alert.created"] Always `safety.alert.created`.
+        #   @param type [Symbol, :"safety.alert.created"]
+        #     Always `safety.alert.created`.
 
         # @see OpenAI::Models::Webhooks::SafetyAlertCreatedWebhookEvent#data
         class Data < OpenAI::Internal::Type::BaseModel
@@ -55,7 +59,8 @@ module OpenAI
           required :id, String
 
           # @!method initialize(id:)
-          #   @param id [String] The safety alert ID to pass to `GET /v1/safety/alerts/{id}`.
+          #   @param id [String]
+          #     The safety alert ID to pass to `GET /v1/safety/alerts/{id}`.
         end
       end
     end

@@ -54,6 +54,11 @@ module OpenAI
             sig { returns(String) }
             attr_accessor :redacted_value
 
+            # The Unix timestamp (in seconds) when the API key expires, or null if it does not
+            # expire.
+            sig { returns(T.nilable(Integer)) }
+            attr_accessor :expires_at
+
             # Represents an individual API key in a project.
             sig do
               params(
@@ -71,6 +76,8 @@ module OpenAI
                 owner_project_access: OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess::OrSymbol,
 
                 redacted_value: String,
+
+                expires_at: T.nilable(Integer),
 
                 object: Symbol
               )
@@ -98,6 +105,10 @@ module OpenAI
               # The redacted value of the API key
               redacted_value:,
 
+              # The Unix timestamp (in seconds) when the API key expires, or null if it does not
+              # expire.
+              expires_at: nil,
+
               # The object type, which is always `organization.project.api_key`
 
               object: :"organization.project.api_key"
@@ -114,7 +125,8 @@ module OpenAI
                   object: Symbol,
                   owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
                   owner_project_access: OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess::TaggedSymbol,
-                  redacted_value: String
+                  redacted_value: String,
+                  expires_at: T.nilable(Integer)
                 }
               )
             end

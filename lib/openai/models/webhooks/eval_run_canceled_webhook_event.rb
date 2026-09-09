@@ -35,20 +35,22 @@ module OpenAI
         optional :object, enum: -> { OpenAI::Webhooks::EvalRunCanceledWebhookEvent::Object }
 
         # @!method initialize(id:, created_at:, data:, object: nil, type: :"eval.run.canceled")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent} for more details.
-        #
         #   Sent when an eval run has been canceled.
         #
-        #   @param id [String] The unique ID of the event.
+        #   @param id [String]
+        #     The unique ID of the event.
         #
-        #   @param created_at [Integer] The Unix timestamp (in seconds) of when the eval run was canceled.
+        #   @param created_at [Integer]
+        #     The Unix timestamp (in seconds) of when the eval run was canceled.
         #
-        #   @param data [OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent::Data] Event data payload.
+        #   @param data [OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent::Data]
+        #     Event data payload.
         #
-        #   @param object [Symbol, OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent::Object] The object of the event. Always `event`.
+        #   @param object [Symbol, OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent::Object]
+        #     The object of the event. Always `event`.
         #
-        #   @param type [Symbol, :"eval.run.canceled"] The type of the event. Always `eval.run.canceled`.
+        #   @param type [Symbol, :"eval.run.canceled"]
+        #     The type of the event. Always `eval.run.canceled`.
 
         # @see OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent#data
         class Data < OpenAI::Internal::Type::BaseModel
@@ -59,12 +61,10 @@ module OpenAI
           required :id, String
 
           # @!method initialize(id:)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent::Data} for more details.
-          #
           #   Event data payload.
           #
-          #   @param id [String] The unique ID of the eval run.
+          #   @param id [String]
+          #     The unique ID of the eval run.
         end
 
         # The object of the event. Always `event`.

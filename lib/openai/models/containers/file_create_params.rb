@@ -30,14 +30,17 @@ module OpenAI
         optional :file_id, String
 
         # @!method initialize(container_id:, file: nil, file_id: nil, request_options: {})
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Containers::FileCreateParams} for more details.
-        #
         #   @param container_id [String]
         #
-        #   @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The File object (not file name) to be uploaded.
+        #   @param file [Pathname, StringIO, IO, String, OpenAI::FilePart]
+        #     The File object (not file name) to be uploaded.
         #
-        #   @param file_id [String] Name of the file to create.
+        #     `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        #     metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        #     content type.
+        #
+        #   @param file_id [String]
+        #     Name of the file to create.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end

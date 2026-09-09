@@ -36,16 +36,17 @@ module OpenAI
           optional :name, String, nil?: true
 
           # @!method initialize(project_id:, external_key_id: nil, geography: nil, name: nil, request_options: {})
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Admin::Organization::ProjectUpdateParams} for more details.
-          #
           #   @param project_id [String]
           #
-          #   @param external_key_id [String, nil] External key ID to associate with the project.
+          #   @param external_key_id [String, nil]
+          #     External key ID to associate with the project.
           #
-          #   @param geography [String, nil] Geography for the project.
+          #   @param geography [String, nil]
+          #     Geography for the project. Deprecated: use `residency` when creating a project
+          #     to configure data residency. This field is retained for backward compatibility.
           #
-          #   @param name [String, nil] The updated name of the project, this name appears in reports.
+          #   @param name [String, nil]
+          #     The updated name of the project, this name appears in reports.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end

@@ -4,22 +4,32 @@ module OpenAI
   module Resources
     class VectorStores
       class Files
-        # Some parameter documentations has been truncated, see
-        # {OpenAI::Models::VectorStores::FileCreateParams} for more details.
-        #
         # Create a vector store file by attaching a
-        # [File](https://platform.openai.com/docs/api-reference/files) to a
-        # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object).
+        # [File](https://developers.openai.com/api/reference/resources/files) to a
+        # [vector store](https://developers.openai.com/api/reference/resources/vector_stores).
         #
         # @overload create(vector_store_id, file_id:, attributes: nil, chunking_strategy: nil, request_options: {})
         #
-        # @param vector_store_id [String] The ID of the vector store for which to create a File.
+        # @param vector_store_id [String]
+        #   The ID of the vector store for which to create a File.
         #
-        # @param file_id [String] A [File](https://platform.openai.com/docs/api-reference/files) ID that the vecto
+        # @param file_id [String]
+        #   A [File](https://developers.openai.com/api/reference/resources/files) ID that
+        #   the vector store should use. Useful for tools like `file_search` that can access
+        #   files. For multi-file ingestion, we recommend
+        #   [`file_batches`](https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/create)
+        #   to minimize per-vector-store write requests.
         #
-        # @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+        # @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]
+        #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #   for storing additional information about the object in a structured format, and
+        #   querying for objects via API or the dashboard. Keys are strings with a maximum
+        #   length of 64 characters. Values are strings with a maximum length of 512
+        #   characters, booleans, or numbers.
         #
-        # @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+        # @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]
+        #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+        #   strategy. Only applicable if `file_ids` is non-empty.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -42,9 +52,11 @@ module OpenAI
         #
         # @overload retrieve(file_id, vector_store_id:, request_options: {})
         #
-        # @param file_id [String] The ID of the file being retrieved.
+        # @param file_id [String]
+        #   The ID of the file being retrieved.
         #
-        # @param vector_store_id [String] The ID of the vector store that the file belongs to.
+        # @param vector_store_id [String]
+        #   The ID of the vector store that the file belongs to.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -66,18 +78,22 @@ module OpenAI
           )
         end
 
-        # Some parameter documentations has been truncated, see
-        # {OpenAI::Models::VectorStores::FileUpdateParams} for more details.
-        #
         # Update attributes on a vector store file.
         #
         # @overload update(file_id, vector_store_id:, attributes:, request_options: {})
         #
-        # @param file_id [String] Path param: The ID of the file to update attributes.
+        # @param file_id [String]
+        #   Path param: The ID of the file to update attributes.
         #
-        # @param vector_store_id [String] Path param: The ID of the vector store the file belongs to.
+        # @param vector_store_id [String]
+        #   Path param: The ID of the vector store the file belongs to.
         #
-        # @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Body param: Set of 16 key-value pairs that can be attached to an object. This ca
+        # @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]
+        #   Body param: Set of 16 key-value pairs that can be attached to an object. This
+        #   can be useful for storing additional information about the object in a
+        #   structured format, and querying for objects via API or the dashboard. Keys are
+        #   strings with a maximum length of 64 characters. Values are strings with a
+        #   maximum length of 512 characters, booleans, or numbers.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -100,24 +116,35 @@ module OpenAI
           )
         end
 
-        # Some parameter documentations has been truncated, see
-        # {OpenAI::Models::VectorStores::FileListParams} for more details.
-        #
         # Returns a list of vector store files.
         #
         # @overload list(vector_store_id, after: nil, before: nil, filter: nil, limit: nil, order: nil, request_options: {})
         #
-        # @param vector_store_id [String] The ID of the vector store that the files belong to.
+        # @param vector_store_id [String]
+        #   The ID of the vector store that the files belong to.
         #
-        # @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+        # @param after [String]
+        #   A cursor for use in pagination. `after` is an object ID that defines your place
+        #   in the list. For instance, if you make a list request and receive 100 objects,
+        #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+        #   fetch the next page of the list.
         #
-        # @param before [String] A cursor for use in pagination. `before` is an object ID that defines your place
+        # @param before [String]
+        #   A cursor for use in pagination. `before` is an object ID that defines your place
+        #   in the list. For instance, if you make a list request and receive 100 objects,
+        #   starting with obj_foo, your subsequent call can include before=obj_foo in order
+        #   to fetch the previous page of the list.
         #
-        # @param filter [Symbol, OpenAI::Models::VectorStores::FileListParams::Filter] Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
+        # @param filter [Symbol, OpenAI::Models::VectorStores::FileListParams::Filter]
+        #   Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
         #
-        # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+        # @param limit [Integer]
+        #   A limit on the number of objects to be returned. Limit can range between 1 and
+        #   100, and the default is 20.
         #
-        # @param order [Symbol, OpenAI::Models::VectorStores::FileListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+        # @param order [Symbol, OpenAI::Models::VectorStores::FileListParams::Order]
+        #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
+        #   order and `desc` for descending order.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -140,14 +167,16 @@ module OpenAI
 
         # Delete a vector store file. This will remove the file from the vector store but
         # the file itself will not be deleted. To delete the file, use the
-        # [delete file](https://platform.openai.com/docs/api-reference/files/delete)
+        # [delete file](https://developers.openai.com/api/reference/resources/files/methods/delete)
         # endpoint.
         #
         # @overload delete(file_id, vector_store_id:, request_options: {})
         #
-        # @param file_id [String] The ID of the file to delete.
+        # @param file_id [String]
+        #   The ID of the file to delete.
         #
-        # @param vector_store_id [String] The ID of the vector store that the file belongs to.
+        # @param vector_store_id [String]
+        #   The ID of the vector store that the file belongs to.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -173,9 +202,11 @@ module OpenAI
         #
         # @overload content(file_id, vector_store_id:, request_options: {})
         #
-        # @param file_id [String] The ID of the file within the vector store.
+        # @param file_id [String]
+        #   The ID of the file within the vector store.
         #
-        # @param vector_store_id [String] The ID of the vector store.
+        # @param vector_store_id [String]
+        #   The ID of the vector store.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #

@@ -31,13 +31,17 @@ module OpenAI
         # @!method initialize(item_id:, output_index:, sequence_number:, type: :"response.mcp_call.failed")
         #   Emitted when an MCP tool call has failed.
         #
-        #   @param item_id [String] The ID of the MCP tool call item that failed.
+        #   @param item_id [String]
+        #     The ID of the MCP tool call item that failed.
         #
-        #   @param output_index [Integer] The index of the output item that failed.
+        #   @param output_index [Integer]
+        #     The index of the output item that failed.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param type [Symbol, :"response.mcp_call.failed"] The type of the event. Always 'response.mcp_call.failed'.
+        #   @param type [Symbol, :"response.mcp_call.failed"]
+        #     The type of the event. Always 'response.mcp_call.failed'.
       end
     end
   end

@@ -43,7 +43,11 @@ module OpenAI
             result: String?,
             status: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::status,
             ?type: :image_generation_call,
+            ?action: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::action?,
+            ?background: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::background?,
+            ?output_format: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::output_format?,
             ?quality: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::quality?,
+            ?revised_prompt: String?,
             ?size: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::size?
           }
 
@@ -56,7 +60,15 @@ module OpenAI
 
           attr_accessor type: :image_generation_call
 
+          attr_accessor action: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::action?
+
+          attr_accessor background: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::background?
+
+          attr_accessor output_format: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::output_format?
+
           attr_accessor quality: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::quality?
+
+          attr_accessor revised_prompt: String?
 
           attr_accessor size: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::size?
 
@@ -64,7 +76,11 @@ module OpenAI
             id: String,
             result: String?,
             status: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::status,
+            ?action: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::action?,
+            ?background: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::background?,
+            ?output_format: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::output_format?,
             ?quality: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::quality?,
+            ?revised_prompt: String?,
             ?size: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::size?,
             ?type: :image_generation_call
           ) -> void
@@ -74,7 +90,11 @@ module OpenAI
             result: String?,
             status: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::status,
             ?type: :image_generation_call,
+            ?action: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::action?,
+            ?background: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::background?,
+            ?output_format: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::output_format?,
             ?quality: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::quality?,
+            ?revised_prompt: String?,
             ?size: OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::size?
           }
 
@@ -89,6 +109,42 @@ module OpenAI
             FAILED: :failed
 
             def self?.values: -> ::Array[OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::status]
+          end
+
+          type action = :generate | :edit | :auto
+
+          module Action
+            extend OpenAI::Internal::Type::Enum
+
+            GENERATE: :generate
+            EDIT: :edit
+            AUTO: :auto
+
+            def self?.values: -> ::Array[OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::action]
+          end
+
+          type background = :transparent | :opaque | :auto
+
+          module Background
+            extend OpenAI::Internal::Type::Enum
+
+            TRANSPARENT: :transparent
+            OPAQUE: :opaque
+            AUTO: :auto
+
+            def self?.values: -> ::Array[OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::background]
+          end
+
+          type output_format = :png | :webp | :jpeg
+
+          module OutputFormat
+            extend OpenAI::Internal::Type::Enum
+
+            PNG: :png
+            WEBP: :webp
+            JPEG: :jpeg
+
+            def self?.values: -> ::Array[OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::output_format]
           end
 
           type quality = :low | :medium | :high | :xhigh | :max | :auto

@@ -21,7 +21,8 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :input
 
-        # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
+        # One of the available
+        # [TTS models](https://developers.openai.com/api/docs/guides/text-to-speech):
         # `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.
         sig { returns(T.any(String, OpenAI::Audio::SpeechModel::OrSymbol)) }
         attr_accessor :model
@@ -31,7 +32,7 @@ module OpenAI
         # `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice
         # object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the
         # voices are available in the
-        # [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
+        # [Text to speech guide](https://developers.openai.com/api/docs/guides/text-to-speech#voice-options).
         sig {
           returns(
             T.any(
@@ -105,7 +106,8 @@ module OpenAI
           # The text to generate audio for. The maximum length is 4096 characters.
           input:,
 
-          # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
+          # One of the available
+          # [TTS models](https://developers.openai.com/api/docs/guides/text-to-speech):
           # `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.
           model:,
 
@@ -114,7 +116,7 @@ module OpenAI
           # `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice
           # object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the
           # voices are available in the
-          # [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
+          # [Text to speech guide](https://developers.openai.com/api/docs/guides/text-to-speech#voice-options).
           voice:,
 
           # Control the voice of your generated audio with additional instructions. Does not
@@ -158,7 +160,8 @@ module OpenAI
         def to_hash
         end
 
-        # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
+        # One of the available
+        # [TTS models](https://developers.openai.com/api/docs/guides/text-to-speech):
         # `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.
         module Model
           extend OpenAI::Internal::Type::Union
@@ -176,7 +179,7 @@ module OpenAI
         # `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice
         # object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the
         # voices are available in the
-        # [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
+        # [Text to speech guide](https://developers.openai.com/api/docs/guides/text-to-speech#voice-options).
         module Voice
           extend OpenAI::Internal::Type::Union
 

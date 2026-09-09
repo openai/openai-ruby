@@ -15,7 +15,7 @@ module OpenAI
         end
 
         # The type of hosted tool the model should to use. Learn more about
-        # [built-in tools](https://platform.openai.com/docs/guides/tools).
+        # [built-in tools](https://developers.openai.com/api/docs/guides/tools).
         #
         # Allowed values are:
         #
@@ -30,7 +30,7 @@ module OpenAI
         attr_accessor :type
 
         # Indicates that the model should use a built-in tool to generate a response.
-        # [Learn more about built-in tools](https://platform.openai.com/docs/guides/tools).
+        # [Learn more about built-in tools](https://developers.openai.com/api/docs/guides/tools).
         sig do
           params(
 
@@ -41,7 +41,7 @@ module OpenAI
         def self.new(
 
           # The type of hosted tool the model should to use. Learn more about
-          # [built-in tools](https://platform.openai.com/docs/guides/tools).
+          # [built-in tools](https://developers.openai.com/api/docs/guides/tools).
           #
           # Allowed values are:
           #
@@ -66,7 +66,7 @@ module OpenAI
         end
 
         # The type of hosted tool the model should to use. Learn more about
-        # [built-in tools](https://platform.openai.com/docs/guides/tools).
+        # [built-in tools](https://developers.openai.com/api/docs/guides/tools).
         #
         # Allowed values are:
         #

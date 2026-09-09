@@ -10,7 +10,8 @@ module OpenAI
             #
             # @overload retrieve(project_id, request_options: {})
             #
-            # @param project_id [String] The ID of the project whose hard spend limit is being managed.
+            # @param project_id [String]
+            #   The ID of the project whose hard spend limit is being managed.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -27,21 +28,22 @@ module OpenAI
               )
             end
 
-            # Some parameter documentations has been truncated, see
-            # {OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams} for more
-            # details.
-            #
             # Create or replace a project's hard spend limit.
             #
             # @overload update(project_id, currency:, interval:, threshold_amount:, request_options: {})
             #
-            # @param project_id [String] The ID of the project whose hard spend limit is being managed.
+            # @param project_id [String]
+            #   The ID of the project whose hard spend limit is being managed.
             #
-            # @param currency [Symbol, OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::Currency] The currency for the threshold amount. Currently, only `USD` is supported.
+            # @param currency [Symbol, OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::Currency]
+            #   The currency for the threshold amount. Currently, only `USD` is supported.
             #
-            # @param interval [Symbol, OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::Interval] The time interval for evaluating spend against the threshold. Currently, only `m
+            # @param interval [Symbol, OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::Interval]
+            #   The time interval for evaluating spend against the threshold. Currently, only
+            #   `month` is supported.
             #
-            # @param threshold_amount [Integer] The hard spend limit amount, in cents.
+            # @param threshold_amount [Integer]
+            #   The hard spend limit amount, in cents.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -64,7 +66,8 @@ module OpenAI
             #
             # @overload delete(project_id, request_options: {})
             #
-            # @param project_id [String] The ID of the project whose hard spend limit is being managed.
+            # @param project_id [String]
+            #   The ID of the project whose hard spend limit is being managed.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #

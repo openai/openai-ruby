@@ -37,9 +37,11 @@ module OpenAI
             #
             #   @param service_account_id [String]
             #
-            #   @param name [String] The updated service account name.
+            #   @param name [String]
+            #     The updated service account name.
             #
-            #   @param role [Symbol, OpenAI::Models::Admin::Organization::Projects::ServiceAccountUpdateParams::Role] The updated service account role.
+            #   @param role [Symbol, OpenAI::Models::Admin::Organization::Projects::ServiceAccountUpdateParams::Role]
+            #     The updated service account role.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

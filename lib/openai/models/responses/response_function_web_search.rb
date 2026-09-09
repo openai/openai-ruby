@@ -30,20 +30,22 @@ module OpenAI
         required :type, const: :web_search_call
 
         # @!method initialize(id:, action:, status:, type: :web_search_call)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseFunctionWebSearch} for more details.
-        #
         #   The results of a web search tool call. See the
-        #   [web search guide](https://platform.openai.com/docs/guides/tools-web-search) for
-        #   more information.
+        #   [web search guide](https://developers.openai.com/api/docs/guides/tools-web-search)
+        #   for more information.
         #
-        #   @param id [String] The unique ID of the web search tool call.
+        #   @param id [String]
+        #     The unique ID of the web search tool call.
         #
-        #   @param action [OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::OpenPage, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::FindInPage] An object describing the specific action taken in this web search call.
+        #   @param action [OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::OpenPage, OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::FindInPage]
+        #     An object describing the specific action taken in this web search call. Includes
+        #     details on how the model used the web (search, open_page, find_in_page).
         #
-        #   @param status [Symbol, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status] The status of the web search tool call.
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status]
+        #     The status of the web search tool call.
         #
-        #   @param type [Symbol, :web_search_call] The type of the web search tool call. Always `web_search_call`.
+        #   @param type [Symbol, :web_search_call]
+        #     The type of the web search tool call. Always `web_search_call`.
 
         # An object describing the specific action taken in this web search call. Includes
         # details on how the model used the web (search, open_page, find_in_page).
@@ -96,20 +98,19 @@ module OpenAI
             )
 
             # @!method initialize(queries: nil, query: nil, sources: nil, type: :search)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search} for more
-            #   details.
-            #
             #   Action type "search" - Performs a web search query.
             #
-            #   @param queries [Array<String>] The search queries.
+            #   @param queries [Array<String>]
+            #     The search queries.
             #
-            #   @param query [String] The search query.
+            #   @param query [String]
+            #     The search query.
             #
-            #   @param sources [Array<OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search::Source>] The sources used in the search.
+            #   @param sources [Array<OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search::Source>]
+            #     The sources used in the search.
             #
-            #   @param type [Symbol, :search] The action type.
-
+            #   @param type [Symbol, :search]
+            #     The action type.
             class Source < OpenAI::Internal::Type::BaseModel
               # @!attribute type
               #   The type of source. Always `url`.
@@ -124,15 +125,13 @@ module OpenAI
               required :url, String
 
               # @!method initialize(url:, type: :url)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::Search::Source}
-              #   for more details.
-              #
               #   A source used in the search.
               #
-              #   @param url [String] The URL of the source.
+              #   @param url [String]
+              #     The URL of the source.
               #
-              #   @param type [Symbol, :url] The type of source. Always `url`.
+              #   @param type [Symbol, :url]
+              #     The type of source. Always `url`.
             end
           end
 
@@ -150,15 +149,13 @@ module OpenAI
             optional :url, String, nil?: true
 
             # @!method initialize(url: nil, type: :open_page)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::OpenPage} for
-            #   more details.
-            #
             #   Action type "open_page" - Opens a specific URL from search results.
             #
-            #   @param url [String, nil] The URL opened by the model.
+            #   @param url [String, nil]
+            #     The URL opened by the model.
             #
-            #   @param type [Symbol, :open_page] The action type.
+            #   @param type [Symbol, :open_page]
+            #     The action type.
           end
 
           class FindInPage < OpenAI::Internal::Type::BaseModel
@@ -181,17 +178,16 @@ module OpenAI
             required :url, String
 
             # @!method initialize(pattern:, url:, type: :find_in_page)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::ResponseFunctionWebSearch::Action::FindInPage} for
-            #   more details.
-            #
             #   Action type "find_in_page": Searches for a pattern within a loaded page.
             #
-            #   @param pattern [String] The pattern or text to search for within the page.
+            #   @param pattern [String]
+            #     The pattern or text to search for within the page.
             #
-            #   @param url [String] The URL of the page searched for the pattern.
+            #   @param url [String]
+            #     The URL of the page searched for the pattern.
             #
-            #   @param type [Symbol, :find_in_page] The action type.
+            #   @param type [Symbol, :find_in_page]
+            #     The action type.
           end
 
           # @!method self.variants

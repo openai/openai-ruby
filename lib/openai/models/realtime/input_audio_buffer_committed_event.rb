@@ -30,21 +30,23 @@ module OpenAI
         optional :previous_item_id, String, nil?: true
 
         # @!method initialize(event_id:, item_id:, previous_item_id: nil, type: :"input_audio_buffer.committed")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::InputAudioBufferCommittedEvent} for more details.
-        #
         #   Returned when an input audio buffer is committed, either by the client or
         #   automatically in server VAD mode. The `item_id` property is the ID of the user
         #   message item that will be created, thus a `conversation.item.created` event will
         #   also be sent to the client.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param item_id [String] The ID of the user message item that will be created.
+        #   @param item_id [String]
+        #     The ID of the user message item that will be created.
         #
-        #   @param previous_item_id [String, nil] The ID of the preceding item after which the new item will be inserted.
+        #   @param previous_item_id [String, nil]
+        #     The ID of the preceding item after which the new item will be inserted. Can be
+        #     `null` if the item has no predecessor.
         #
-        #   @param type [Symbol, :"input_audio_buffer.committed"] The event type, must be `input_audio_buffer.committed`.
+        #   @param type [Symbol, :"input_audio_buffer.committed"]
+        #     The event type, must be `input_audio_buffer.committed`.
       end
     end
   end

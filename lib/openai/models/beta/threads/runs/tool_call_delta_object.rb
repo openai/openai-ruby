@@ -24,14 +24,15 @@ module OpenAI
             )
 
             # @!method initialize(tool_calls: nil, type: :tool_calls)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject} for more details.
-            #
             #   Details of the tool call.
             #
-            #   @param tool_calls [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta>] An array of tool calls the run step was involved in. These can be associated wit
+            #   @param tool_calls [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta>]
+            #     An array of tool calls the run step was involved in. These can be associated
+            #     with one of three types of tools: `code_interpreter`, `file_search`, or
+            #     `function`.
             #
-            #   @param type [Symbol, :tool_calls] Always `tool_calls`.
+            #   @param type [Symbol, :tool_calls]
+            #     Always `tool_calls`.
           end
         end
       end
