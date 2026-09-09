@@ -22,9 +22,11 @@ module OpenAI
             # @!method initialize(deleted:, object: :"project.model_permissions.deleted")
             #   Confirmation payload returned after deleting project model permissions.
             #
-            #   @param deleted [Boolean] Whether the project model permissions were deleted.
+            #   @param deleted [Boolean]
+            #     Whether the project model permissions were deleted.
             #
-            #   @param object [Symbol, :"project.model_permissions.deleted"] The object type, which is always `project.model_permissions.deleted`.
+            #   @param object [Symbol, :"project.model_permissions.deleted"]
+            #     The object type, which is always `project.model_permissions.deleted`.
           end
         end
 

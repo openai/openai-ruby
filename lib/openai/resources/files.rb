@@ -5,9 +5,6 @@ module OpenAI
     # Files are used to upload documents that can be used with features like
     # Assistants and Fine-tuning.
     class Files
-      # Some parameter documentations has been truncated, see
-      # {OpenAI::Models::FileCreateParams} for more details.
-      #
       # Upload a file that can be used across various endpoints. Individual files can be
       # up to 512 MB, and each project can store up to 2.5 TB of files in total. There
       # is no organization-wide storage limit. Uploads to this endpoint are rate-limited
@@ -15,20 +12,20 @@ module OpenAI
       #
       # - The Assistants API supports files up to 2 million tokens and of specific file
       #   types. See the
-      #   [Assistants Tools guide](https://platform.openai.com/docs/assistants/tools)
+      #   [Assistants Tools guide](https://developers.openai.com/api/docs/guides/tools)
       #   for details.
       # - The Fine-tuning API only supports `.jsonl` files. The input also has certain
       #   required formats for fine-tuning
-      #   [chat](https://platform.openai.com/docs/api-reference/fine-tuning/chat-input)
+      #   [chat](https://developers.openai.com/api/docs/guides/supervised-fine-tuning#formatting-your-data)
       #   or
-      #   [completions](https://platform.openai.com/docs/api-reference/fine-tuning/completions-input)
+      #   [completions](https://developers.openai.com/api/docs/guides/supervised-fine-tuning#formatting-your-data)
       #   models.
       # - The Batch API only supports `.jsonl` files up to 200 MB in size. The input
       #   also has a specific required
-      #   [format](https://platform.openai.com/docs/api-reference/batch/request-input).
+      #   [format](https://developers.openai.com/api/docs/guides/batch#1-prepare-your-batch-file).
       # - For Retrieval or `file_search` ingestion, upload files here first. If you need
       #   to attach multiple uploaded files to the same vector store, use
-      #   [`/vector_stores/{vector_store_id}/file_batches`](https://platform.openai.com/docs/api-reference/vector-stores-file-batches/createBatch)
+      #   [`/vector_stores/{vector_store_id}/file_batches`](https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/create)
       #   instead of attaching them one by one. Vector store attachment has separate
       #   limits from file upload, including 2,000 attached files per minute per
       #   organization.
@@ -42,11 +39,26 @@ module OpenAI
       #
       # @overload create(file:, purpose:, expires_after: nil, request_options: {})
       #
-      # @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The File object (not file name) to be uploaded.
+      # @param file [Pathname, StringIO, IO, String, OpenAI::FilePart]
+      #   The File object (not file name) to be uploaded.
       #
-      # @param purpose [Symbol, OpenAI::Models::FilePurpose] The intended purpose of the uploaded file. One of:
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
       #
-      # @param expires_after [OpenAI::Models::FileCreateParams::ExpiresAfter] The expiration policy for a file. By default, files with `purpose=batch` expire
+      # @param purpose [Symbol, OpenAI::Models::FilePurpose]
+      #   The intended purpose of the uploaded file. One of:
+      #
+      #   - `assistants`: Used in the Assistants API
+      #   - `batch`: Used in the Batch API
+      #   - `fine-tune`: Used for fine-tuning
+      #   - `vision`: Images used for vision fine-tuning
+      #   - `user_data`: Flexible file type for any purpose
+      #   - `evals`: Used for eval data sets
+      #
+      # @param expires_after [OpenAI::Models::FileCreateParams::ExpiresAfter]
+      #   The expiration policy for a file. By default, files with `purpose=batch` expire
+      #   after 30 days and all other files are persisted until they are manually deleted.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -70,7 +82,8 @@ module OpenAI
       #
       # @overload retrieve(file_id, request_options: {})
       #
-      # @param file_id [String] The ID of the file to use for this request.
+      # @param file_id [String]
+      #   The ID of the file to use for this request.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -87,20 +100,26 @@ module OpenAI
         )
       end
 
-      # Some parameter documentations has been truncated, see
-      # {OpenAI::Models::FileListParams} for more details.
-      #
       # Returns a list of files.
       #
       # @overload list(after: nil, limit: nil, order: nil, purpose: nil, request_options: {})
       #
-      # @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+      # @param after [String]
+      #   A cursor for use in pagination. `after` is an object ID that defines your place
+      #   in the list. For instance, if you make a list request and receive 100 objects,
+      #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+      #   fetch the next page of the list.
       #
-      # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+      # @param limit [Integer]
+      #   A limit on the number of objects to be returned. Limit can range between 1 and
+      #   10,000, and the default is 10,000.
       #
-      # @param order [Symbol, OpenAI::Models::FileListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+      # @param order [Symbol, OpenAI::Models::FileListParams::Order]
+      #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
+      #   order and `desc` for descending order.
       #
-      # @param purpose [String] Only return files with the given purpose.
+      # @param purpose [String]
+      #   Only return files with the given purpose.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -125,7 +144,8 @@ module OpenAI
       #
       # @overload delete(file_id, request_options: {})
       #
-      # @param file_id [String] The ID of the file to use for this request.
+      # @param file_id [String]
+      #   The ID of the file to use for this request.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -146,7 +166,8 @@ module OpenAI
       #
       # @overload content(file_id, request_options: {})
       #
-      # @param file_id [String] The ID of the file to use for this request.
+      # @param file_id [String]
+      #   The ID of the file to use for this request.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #

@@ -21,7 +21,7 @@ module OpenAI
           attr_accessor :id
 
           # If applicable, the ID of the
-          # [assistant](https://platform.openai.com/docs/api-reference/assistants) that
+          # [assistant](https://developers.openai.com/api/docs/assistants/migration) that
           # authored this message.
           sig { returns(T.nilable(String)) }
           attr_accessor :assistant_id
@@ -70,7 +70,7 @@ module OpenAI
           sig { returns(OpenAI::Beta::Threads::Message::Role::TaggedSymbol) }
           attr_accessor :role
 
-          # The ID of the [run](https://platform.openai.com/docs/api-reference/runs)
+          # The ID of the [run](https://developers.openai.com/api/docs/assistants/migration)
           # associated with the creation of this message. Value is `null` when messages are
           # created manually using the create message or create thread endpoints.
           sig { returns(T.nilable(String)) }
@@ -81,13 +81,13 @@ module OpenAI
           sig { returns(OpenAI::Beta::Threads::Message::Status::TaggedSymbol) }
           attr_accessor :status
 
-          # The [thread](https://platform.openai.com/docs/api-reference/threads) ID that
-          # this message belongs to.
+          # The [thread](https://developers.openai.com/api/docs/assistants/migration) ID
+          # that this message belongs to.
           sig { returns(String) }
           attr_accessor :thread_id
 
           # Represents a message within a
-          # [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           sig do
             params(
 
@@ -134,7 +134,7 @@ module OpenAI
             id:,
 
             # If applicable, the ID of the
-            # [assistant](https://platform.openai.com/docs/api-reference/assistants) that
+            # [assistant](https://developers.openai.com/api/docs/assistants/migration) that
             # authored this message.
             assistant_id:,
 
@@ -167,7 +167,7 @@ module OpenAI
             # The entity that produced the message. One of `user` or `assistant`.
             role:,
 
-            # The ID of the [run](https://platform.openai.com/docs/api-reference/runs)
+            # The ID of the [run](https://developers.openai.com/api/docs/assistants/migration)
             # associated with the creation of this message. Value is `null` when messages are
             # created manually using the create message or create thread endpoints.
             run_id:,
@@ -176,8 +176,8 @@ module OpenAI
             # `completed`.
             status:,
 
-            # The [thread](https://platform.openai.com/docs/api-reference/threads) ID that
-            # this message belongs to.
+            # The [thread](https://developers.openai.com/api/docs/assistants/migration) ID
+            # that this message belongs to.
             thread_id:,
 
             # The object type, which is always `thread.message`.

@@ -22,14 +22,13 @@ module OpenAI
         optional :misalignment, -> { OpenAI::Beta::BetaResponseError::Misalignment }
 
         # @!method initialize(code:, message:, misalignment: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseError} for more details.
-        #
         #   An error object returned when the model fails to generate a Response.
         #
-        #   @param code [Symbol, OpenAI::Models::Beta::BetaResponseError::Code] The error code for the response.
+        #   @param code [Symbol, OpenAI::Models::Beta::BetaResponseError::Code]
+        #     The error code for the response.
         #
-        #   @param message [String] A human-readable description of the error.
+        #   @param message [String]
+        #     A human-readable description of the error.
         #
         #   @param misalignment [OpenAI::Models::Beta::BetaResponseError::Misalignment]
 
@@ -86,11 +85,14 @@ module OpenAI
           optional :steer, -> { OpenAI::Beta::BetaResponseError::Misalignment::Steer }
 
           # @!method initialize(detailed_explanation: nil, error_type: nil, steer: nil)
-          #   @param detailed_explanation [String] The public explanation for this block.
+          #   @param detailed_explanation [String]
+          #     The public explanation for this block.
           #
-          #   @param error_type [String, Symbol, OpenAI::Models::Beta::BetaResponseError::Misalignment::ErrorType] An optional classification; clients must accept additional values.
+          #   @param error_type [String, Symbol, OpenAI::Models::Beta::BetaResponseError::Misalignment::ErrorType]
+          #     An optional classification; clients must accept additional values.
           #
-          #   @param steer [OpenAI::Models::Beta::BetaResponseError::Misalignment::Steer] An optional public continuation instruction.
+          #   @param steer [OpenAI::Models::Beta::BetaResponseError::Misalignment::Steer]
+          #     An optional public continuation instruction.
 
           # An optional classification; clients must accept additional values.
           #
@@ -148,7 +150,8 @@ module OpenAI
             # @!method initialize(message:)
             #   An optional public continuation instruction.
             #
-            #   @param message [String] The public continuation instruction.
+            #   @param message [String]
+            #     The public continuation instruction.
           end
         end
       end

@@ -10,13 +10,17 @@ module OpenAI
             #
             # @overload create(project_id, permissions:, role_name:, description: nil, request_options: {})
             #
-            # @param project_id [String] The ID of the project to update.
+            # @param project_id [String]
+            #   The ID of the project to update.
             #
-            # @param permissions [Array<String>] Permissions to grant to the role.
+            # @param permissions [Array<String>]
+            #   Permissions to grant to the role.
             #
-            # @param role_name [String] Unique name for the role.
+            # @param role_name [String]
+            #   Unique name for the role.
             #
-            # @param description [String, nil] Optional description of the role.
+            # @param description [String, nil]
+            #   Optional description of the role.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -39,9 +43,11 @@ module OpenAI
             #
             # @overload retrieve(role_id, project_id:, request_options: {})
             #
-            # @param role_id [String] The ID of the role to retrieve.
+            # @param role_id [String]
+            #   The ID of the role to retrieve.
             #
-            # @param project_id [String] The ID of the project.
+            # @param project_id [String]
+            #   The ID of the project.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -67,15 +73,20 @@ module OpenAI
             #
             # @overload update(role_id, project_id:, description: nil, permissions: nil, role_name: nil, request_options: {})
             #
-            # @param role_id [String] Path param: The ID of the role to update.
+            # @param role_id [String]
+            #   Path param: The ID of the role to update.
             #
-            # @param project_id [String] Path param: The ID of the project to update.
+            # @param project_id [String]
+            #   Path param: The ID of the project to update.
             #
-            # @param description [String, nil] Body param: New description for the role.
+            # @param description [String, nil]
+            #   Body param: New description for the role.
             #
-            # @param permissions [Array<String>, nil] Body param: Updated set of permissions for the role.
+            # @param permissions [Array<String>, nil]
+            #   Body param: Updated set of permissions for the role.
             #
-            # @param role_name [String, nil] Body param: New name for the role.
+            # @param role_name [String, nil]
+            #   Body param: New name for the role.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -98,21 +109,22 @@ module OpenAI
               )
             end
 
-            # Some parameter documentations has been truncated, see
-            # {OpenAI::Models::Admin::Organization::Projects::RoleListParams} for more
-            # details.
-            #
             # Lists the roles configured for a project.
             #
             # @overload list(project_id, after: nil, limit: nil, order: nil, request_options: {})
             #
-            # @param project_id [String] The ID of the project to inspect.
+            # @param project_id [String]
+            #   The ID of the project to inspect.
             #
-            # @param after [String] Cursor for pagination. Provide the value from the previous response's `next` fie
+            # @param after [String]
+            #   Cursor for pagination. Provide the value from the previous response's `next`
+            #   field to continue listing roles.
             #
-            # @param limit [Integer] A limit on the number of roles to return. Defaults to 1000.
+            # @param limit [Integer]
+            #   A limit on the number of roles to return. Defaults to 1000.
             #
-            # @param order [Symbol, OpenAI::Models::Admin::Organization::Projects::RoleListParams::Order] Sort order for the returned roles.
+            # @param order [Symbol, OpenAI::Models::Admin::Organization::Projects::RoleListParams::Order]
+            #   Sort order for the returned roles.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -137,9 +149,11 @@ module OpenAI
             #
             # @overload delete(role_id, project_id:, request_options: {})
             #
-            # @param role_id [String] The ID of the role to delete.
+            # @param role_id [String]
+            #   The ID of the role to delete.
             #
-            # @param project_id [String] The ID of the project to update.
+            # @param project_id [String]
+            #   The ID of the project to update.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #

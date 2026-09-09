@@ -45,17 +45,24 @@ module OpenAI
             )
 
             # @!method initialize(project_id:, after: nil, limit: nil, owner_project_access: nil, request_options: {})
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Admin::Organization::Projects::APIKeyListParams} for more
-            #   details.
-            #
             #   @param project_id [String]
             #
-            #   @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+            #   @param after [String]
+            #     A cursor for use in pagination. `after` is an object ID that defines your place
+            #     in the list. For instance, if you make a list request and receive 100 objects,
+            #     ending with obj_foo, your subsequent call can include after=obj_foo in order to
+            #     fetch the next page of the list.
             #
-            #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+            #   @param limit [Integer]
+            #     A limit on the number of objects to be returned. Limit can range between 1 and
+            #     100, and the default is 20.
             #
-            #   @param owner_project_access [Symbol, OpenAI::Models::Admin::Organization::Projects::APIKeyListParams::OwnerProjectAccess] Filter API keys by whether the owner currently has effective access to the proje
+            #   @param owner_project_access [Symbol, OpenAI::Models::Admin::Organization::Projects::APIKeyListParams::OwnerProjectAccess]
+            #     Filter API keys by whether the owner currently has effective access to the
+            #     project. Use `active` for owners with access, `inactive` for owners without
+            #     access, or `any` for all enabled project API keys. If omitted, the endpoint
+            #     applies its existing membership-based visibility rules, which may exclude some
+            #     enabled keys.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

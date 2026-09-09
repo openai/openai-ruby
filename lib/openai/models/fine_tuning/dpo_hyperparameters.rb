@@ -36,18 +36,23 @@ module OpenAI
         optional :n_epochs, union: -> { OpenAI::FineTuning::DpoHyperparameters::NEpochs }
 
         # @!method initialize(batch_size: nil, beta: nil, learning_rate_multiplier: nil, n_epochs: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::FineTuning::DpoHyperparameters} for more details.
-        #
         #   The hyperparameters used for the DPO fine-tuning job.
         #
-        #   @param batch_size [Symbol, :auto, Integer] Number of examples in each batch. A larger batch size means that model parameter
+        #   @param batch_size [Symbol, :auto, Integer]
+        #     Number of examples in each batch. A larger batch size means that model
+        #     parameters are updated less frequently, but with lower variance.
         #
-        #   @param beta [Symbol, :auto, Float] The beta value for the DPO method. A higher beta value will increase the weight
+        #   @param beta [Symbol, :auto, Float]
+        #     The beta value for the DPO method. A higher beta value will increase the weight
+        #     of the penalty between the policy and reference model.
         #
-        #   @param learning_rate_multiplier [Symbol, :auto, Float] Scaling factor for the learning rate. A smaller learning rate may be useful to a
+        #   @param learning_rate_multiplier [Symbol, :auto, Float]
+        #     Scaling factor for the learning rate. A smaller learning rate may be useful to
+        #     avoid overfitting.
         #
-        #   @param n_epochs [Symbol, :auto, Integer] The number of epochs to train the model for. An epoch refers to one full cycle t
+        #   @param n_epochs [Symbol, :auto, Integer]
+        #     The number of epochs to train the model for. An epoch refers to one full cycle
+        #     through the training dataset.
 
         # Number of examples in each batch. A larger batch size means that model
         # parameters are updated less frequently, but with lower variance.

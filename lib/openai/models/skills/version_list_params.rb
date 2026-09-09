@@ -34,11 +34,14 @@ module OpenAI
         # @!method initialize(skill_id:, after: nil, limit: nil, order: nil, request_options: {})
         #   @param skill_id [String]
         #
-        #   @param after [String] The skill version ID to start after.
+        #   @param after [String]
+        #     The skill version ID to start after.
         #
-        #   @param limit [Integer] Number of versions to retrieve.
+        #   @param limit [Integer]
+        #     Number of versions to retrieve.
         #
-        #   @param order [Symbol, OpenAI::Models::Skills::VersionListParams::Order] Sort order of results by version number.
+        #   @param order [Symbol, OpenAI::Models::Skills::VersionListParams::Order]
+        #     Sort order of results by version number.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

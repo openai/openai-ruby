@@ -23,11 +23,14 @@ module OpenAI
         required :path, String
 
         # @!method initialize(description:, name:, path:)
-        #   @param description [String] The description of the skill.
+        #   @param description [String]
+        #     The description of the skill.
         #
-        #   @param name [String] The name of the skill.
+        #   @param name [String]
+        #     The name of the skill.
         #
-        #   @param path [String] The path to the directory containing the skill.
+        #   @param path [String]
+        #     The path to the directory containing the skill.
       end
     end
   end

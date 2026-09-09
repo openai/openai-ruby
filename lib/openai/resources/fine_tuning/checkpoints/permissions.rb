@@ -6,20 +6,19 @@ module OpenAI
       class Checkpoints
         # Manage fine-tuning jobs to tailor a model to your specific training data.
         class Permissions
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::FineTuning::Checkpoints::PermissionCreateParams} for more
-          # details.
-          #
-          # **NOTE:** Calling this endpoint requires an [admin API key](../admin-api-keys).
+          # **NOTE:** Calling this endpoint requires an
+          # [admin API key](https://developers.openai.com/api/reference/resources/admin/subresources/organization/subresources/admin_api_keys).
           #
           # This enables organization owners to share fine-tuned models with other projects
           # in their organization.
           #
           # @overload create(fine_tuned_model_checkpoint, project_ids:, request_options: {})
           #
-          # @param fine_tuned_model_checkpoint [String] The ID of the fine-tuned model checkpoint to create a permission for.
+          # @param fine_tuned_model_checkpoint [String]
+          #   The ID of the fine-tuned model checkpoint to create a permission for.
           #
-          # @param project_ids [Array<String>] The project identifiers to grant access to.
+          # @param project_ids [Array<String>]
+          #   The project identifiers to grant access to.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -41,26 +40,28 @@ module OpenAI
 
           # @deprecated Retrieve is deprecated. Please swap to the paginated list method instead.
           #
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams} for more
-          # details.
-          #
-          # **NOTE:** This endpoint requires an [admin API key](../admin-api-keys).
+          # **NOTE:** This endpoint requires an
+          # [admin API key](https://developers.openai.com/api/reference/resources/admin/subresources/organization/subresources/admin_api_keys).
           #
           # Organization owners can use this endpoint to view all permissions for a
           # fine-tuned model checkpoint.
           #
           # @overload retrieve(fine_tuned_model_checkpoint, after: nil, limit: nil, order: nil, project_id: nil, request_options: {})
           #
-          # @param fine_tuned_model_checkpoint [String] The ID of the fine-tuned model checkpoint to get permissions for.
+          # @param fine_tuned_model_checkpoint [String]
+          #   The ID of the fine-tuned model checkpoint to get permissions for.
           #
-          # @param after [String] Identifier for the last permission ID from the previous pagination request.
+          # @param after [String]
+          #   Identifier for the last permission ID from the previous pagination request.
           #
-          # @param limit [Integer] Number of permissions to retrieve.
+          # @param limit [Integer]
+          #   Number of permissions to retrieve.
           #
-          # @param order [Symbol, OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order] The order in which to retrieve permissions.
+          # @param order [Symbol, OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order]
+          #   The order in which to retrieve permissions.
           #
-          # @param project_id [String] The ID of the project to get permissions for.
+          # @param project_id [String]
+          #   The ID of the project to get permissions for.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -80,26 +81,28 @@ module OpenAI
             )
           end
 
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::FineTuning::Checkpoints::PermissionListParams} for more
-          # details.
-          #
-          # **NOTE:** This endpoint requires an [admin API key](../admin-api-keys).
+          # **NOTE:** This endpoint requires an
+          # [admin API key](https://developers.openai.com/api/reference/resources/admin/subresources/organization/subresources/admin_api_keys).
           #
           # Organization owners can use this endpoint to view all permissions for a
           # fine-tuned model checkpoint.
           #
           # @overload list(fine_tuned_model_checkpoint, after: nil, limit: nil, order: nil, project_id: nil, request_options: {})
           #
-          # @param fine_tuned_model_checkpoint [String] The ID of the fine-tuned model checkpoint to get permissions for.
+          # @param fine_tuned_model_checkpoint [String]
+          #   The ID of the fine-tuned model checkpoint to get permissions for.
           #
-          # @param after [String] Identifier for the last permission ID from the previous pagination request.
+          # @param after [String]
+          #   Identifier for the last permission ID from the previous pagination request.
           #
-          # @param limit [Integer] Number of permissions to retrieve.
+          # @param limit [Integer]
+          #   Number of permissions to retrieve.
           #
-          # @param order [Symbol, OpenAI::Models::FineTuning::Checkpoints::PermissionListParams::Order] The order in which to retrieve permissions.
+          # @param order [Symbol, OpenAI::Models::FineTuning::Checkpoints::PermissionListParams::Order]
+          #   The order in which to retrieve permissions.
           #
-          # @param project_id [String] The ID of the project to get permissions for.
+          # @param project_id [String]
+          #   The ID of the project to get permissions for.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -120,20 +123,19 @@ module OpenAI
             )
           end
 
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteParams} for more
-          # details.
-          #
-          # **NOTE:** This endpoint requires an [admin API key](../admin-api-keys).
+          # **NOTE:** This endpoint requires an
+          # [admin API key](https://developers.openai.com/api/reference/resources/admin/subresources/organization/subresources/admin_api_keys).
           #
           # Organization owners can use this endpoint to delete a permission for a
           # fine-tuned model checkpoint.
           #
           # @overload delete(permission_id, fine_tuned_model_checkpoint:, request_options: {})
           #
-          # @param permission_id [String] The ID of the fine-tuned model checkpoint permission to delete.
+          # @param permission_id [String]
+          #   The ID of the fine-tuned model checkpoint permission to delete.
           #
-          # @param fine_tuned_model_checkpoint [String] The ID of the fine-tuned model checkpoint to delete a permission for.
+          # @param fine_tuned_model_checkpoint [String]
+          #   The ID of the fine-tuned model checkpoint to delete a permission for.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

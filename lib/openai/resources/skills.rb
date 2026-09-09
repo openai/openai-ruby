@@ -17,7 +17,12 @@ module OpenAI
       #
       # @overload create(files: nil, request_options: {})
       #
-      # @param files [Array<Pathname, StringIO, IO, String, OpenAI::FilePart>, Pathname, StringIO, IO, String, OpenAI::FilePart] Skill files to upload (directory upload) or a single zip file.
+      # @param files [Array<Pathname, StringIO, IO, String, OpenAI::FilePart>, Pathname, StringIO, IO, String, OpenAI::FilePart]
+      #   Skill files to upload (directory upload) or a single zip file.
+      #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -41,7 +46,8 @@ module OpenAI
       #
       # @overload retrieve(skill_id, request_options: {})
       #
-      # @param skill_id [String] The identifier of the skill to retrieve.
+      # @param skill_id [String]
+      #   The identifier of the skill to retrieve.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -62,9 +68,11 @@ module OpenAI
       #
       # @overload update(skill_id, default_version:, request_options: {})
       #
-      # @param skill_id [String] The identifier of the skill.
+      # @param skill_id [String]
+      #   The identifier of the skill.
       #
-      # @param default_version [String] The skill version number to set as default.
+      # @param default_version [String]
+      #   The skill version number to set as default.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -83,18 +91,19 @@ module OpenAI
         )
       end
 
-      # Some parameter documentations has been truncated, see
-      # {OpenAI::Models::SkillListParams} for more details.
-      #
       # List all skills for the current project.
       #
       # @overload list(after: nil, limit: nil, order: nil, request_options: {})
       #
-      # @param after [String] Identifier for the last item from the previous pagination request
+      # @param after [String]
+      #   Identifier for the last item from the previous pagination request
       #
-      # @param limit [Integer] Number of items to retrieve
+      # @param limit [Integer]
+      #   Number of items to retrieve
       #
-      # @param order [Symbol, OpenAI::Models::SkillListParams::Order] Sort order of results by timestamp. Use `asc` for ascending order or `desc` for
+      # @param order [Symbol, OpenAI::Models::SkillListParams::Order]
+      #   Sort order of results by timestamp. Use `asc` for ascending order or `desc` for
+      #   descending order.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -119,7 +128,8 @@ module OpenAI
       #
       # @overload delete(skill_id, request_options: {})
       #
-      # @param skill_id [String] The identifier of the skill to delete.
+      # @param skill_id [String]
+      #   The identifier of the skill to delete.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #

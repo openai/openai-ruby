@@ -29,7 +29,7 @@ module OpenAI
         attr_accessor :role
 
         # Annotations for the message, when applicable, as when using the
-        # [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
+        # [web search tool](https://developers.openai.com/api/docs/guides/tools-web-search).
         sig { returns(T.nilable(T::Array[OpenAI::Chat::ChatCompletionMessage::Annotation])) }
         attr_reader :annotations
 
@@ -38,7 +38,7 @@ module OpenAI
 
         # If the audio output modality is requested, this object contains data about the
         # audio response from the model.
-        # [Learn more](https://platform.openai.com/docs/guides/audio).
+        # [Learn more](https://developers.openai.com/api/docs/guides/audio).
         sig { returns(T.nilable(OpenAI::Chat::ChatCompletionAudio)) }
         attr_reader :audio
 
@@ -104,12 +104,12 @@ module OpenAI
           refusal:,
 
           # Annotations for the message, when applicable, as when using the
-          # [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
+          # [web search tool](https://developers.openai.com/api/docs/guides/tools-web-search).
           annotations: nil,
 
           # If the audio output modality is requested, this object contains data about the
           # audio response from the model.
-          # [Learn more](https://platform.openai.com/docs/guides/audio).
+          # [Learn more](https://developers.openai.com/api/docs/guides/audio).
           audio: nil,
 
           # Deprecated and replaced by `tool_calls`. The name and arguments of a function

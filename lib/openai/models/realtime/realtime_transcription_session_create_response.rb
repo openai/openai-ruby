@@ -49,23 +49,28 @@ module OpenAI
         )
 
         # @!method initialize(id:, object:, audio: nil, expires_at: nil, include: nil, type: :transcription)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse} for more
-        #   details.
-        #
         #   A Realtime transcription session configuration object.
         #
-        #   @param id [String] Unique identifier for the session that looks like `sess_1234567890abcdef`.
+        #   @param id [String]
+        #     Unique identifier for the session that looks like `sess_1234567890abcdef`.
         #
-        #   @param object [String] The object type. Always `realtime.transcription_session`.
+        #   @param object [String]
+        #     The object type. Always `realtime.transcription_session`.
         #
-        #   @param audio [OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio] Configuration for input audio for the session.
+        #   @param audio [OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio]
+        #     Configuration for input audio for the session.
         #
-        #   @param expires_at [Integer] Expiration timestamp for the session, in seconds since epoch.
+        #   @param expires_at [Integer]
+        #     Expiration timestamp for the session, in seconds since epoch.
         #
-        #   @param include [Array<Symbol, OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::Include>] Additional fields to include in server outputs.
+        #   @param include [Array<Symbol, OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::Include>]
+        #     Additional fields to include in server outputs.
         #
-        #   @param type [Symbol, :transcription] The type of session. Always `transcription` for transcription sessions.
+        #     - `item.input_audio_transcription.logprobs`: Include logprobs for input audio
+        #       transcription.
+        #
+        #   @param type [Symbol, :transcription]
+        #     The type of session. Always `transcription` for transcription sessions.
 
         # @see OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse#audio
         class Audio < OpenAI::Internal::Type::BaseModel
@@ -117,17 +122,19 @@ module OpenAI
             )
 
             # @!method initialize(format_: nil, noise_reduction: nil, transcription: nil, turn_detection: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input}
-            #   for more details.
+            #   @param format_ [OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA]
+            #     The PCM audio format. Only a 24kHz sample rate is supported.
             #
-            #   @param format_ [OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA] The PCM audio format. Only a 24kHz sample rate is supported.
-            #
-            #   @param noise_reduction [OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input::NoiseReduction] Configuration for input audio noise reduction.
+            #   @param noise_reduction [OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input::NoiseReduction]
+            #     Configuration for input audio noise reduction.
             #
             #   @param transcription [OpenAI::Models::Realtime::AudioTranscription]
             #
-            #   @param turn_detection [OpenAI::Models::Realtime::RealtimeTranscriptionSessionTurnDetection, nil] Configuration for turn detection. Can be set to `null` to turn off. Server
+            #   @param turn_detection [OpenAI::Models::Realtime::RealtimeTranscriptionSessionTurnDetection, nil]
+            #     Configuration for turn detection. Can be set to `null` to turn off. Server VAD
+            #     means that the model will detect the start and end of speech based on audio
+            #     volume and respond at the end of user speech. For `gpt-realtime-whisper`, this
+            #     must be `null`; VAD is not supported.
 
             # @see OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input#noise_reduction
             class NoiseReduction < OpenAI::Internal::Type::BaseModel
@@ -140,13 +147,12 @@ module OpenAI
               optional :type, enum: -> { OpenAI::Realtime::NoiseReductionType }
 
               # @!method initialize(type: nil)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input::NoiseReduction}
-              #   for more details.
-              #
               #   Configuration for input audio noise reduction.
               #
-              #   @param type [Symbol, OpenAI::Models::Realtime::NoiseReductionType] Type of noise reduction. `near_field` is for close-talking microphones such as h
+              #   @param type [Symbol, OpenAI::Models::Realtime::NoiseReductionType]
+              #     Type of noise reduction. `near_field` is for close-talking microphones such as
+              #     headphones, `far_field` is for far-field microphones such as laptop or
+              #     conference room microphones.
             end
           end
         end

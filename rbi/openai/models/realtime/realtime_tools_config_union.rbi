@@ -7,7 +7,7 @@ module OpenAI
 
       # Give the model access to additional tools via remote Model Context Protocol
       # (MCP) servers.
-      # [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
+      # [Learn more about MCP](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
       module RealtimeToolsConfigUnion
         extend OpenAI::Internal::Type::Union
 
@@ -62,7 +62,7 @@ module OpenAI
           # Identifier for service connectors, like those available in ChatGPT. One of
           # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
           # service connectors
-          # [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+          # [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
           #
           # Currently supported `connector_id` values are:
           #
@@ -130,7 +130,7 @@ module OpenAI
 
           # Give the model access to additional tools via remote Model Context Protocol
           # (MCP) servers.
-          # [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
+          # [Learn more about MCP](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
           sig do
             params(
 
@@ -191,7 +191,7 @@ module OpenAI
             # Identifier for service connectors, like those available in ChatGPT. One of
             # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
             # service connectors
-            # [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+            # [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
             #
             # Currently supported `connector_id` values are:
             #
@@ -364,7 +364,7 @@ module OpenAI
           # Identifier for service connectors, like those available in ChatGPT. One of
           # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
           # service connectors
-          # [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+          # [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
           #
           # Currently supported `connector_id` values are:
           #

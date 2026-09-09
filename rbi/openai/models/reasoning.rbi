@@ -25,7 +25,7 @@ module OpenAI
       # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
       # reasoning effort can result in faster responses and fewer tokens used on
       # reasoning in a response. Not all reasoning models support every value. See the
-      # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+      # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
       # model-specific support.
       sig { returns(T.nilable(OpenAI::ReasoningEffort::OrSymbol)) }
       attr_accessor :effort
@@ -57,7 +57,7 @@ module OpenAI
       attr_accessor :summary
 
       # Configuration options for
-      # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+      # [reasoning models](https://developers.openai.com/api/docs/guides/reasoning).
       sig do
         params(
 
@@ -87,7 +87,7 @@ module OpenAI
         # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
         # reasoning effort can result in faster responses and fewer tokens used on
         # reasoning in a response. Not all reasoning models support every value. See the
-        # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+        # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
         # model-specific support.
         effort: nil,
 

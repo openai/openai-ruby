@@ -9,7 +9,7 @@ module OpenAI
 
       # A single item within a conversation. The set of possible types are the same as
       # the `output` type of a
-      # [Response object](https://platform.openai.com/docs/api-reference/responses/object#responses/object-output).
+      # [Response object](https://developers.openai.com/api/reference/resources/responses#%28resource%29%20responses%20%3E%20%28model%29%20response%20%3E%20%28schema%29%20%3E%20%28property%29%20output).
       module ConversationItem
         extend OpenAI::Internal::Type::Union
 

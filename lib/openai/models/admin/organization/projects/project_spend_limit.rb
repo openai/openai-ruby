@@ -39,21 +39,23 @@ module OpenAI
             required :threshold_amount, Integer
 
             # @!method initialize(currency:, enforcement:, interval:, threshold_amount:, object: :"project.spend_limit")
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit} for more
-            #   details.
-            #
             #   Represents a hard spend limit configured at the project level.
             #
-            #   @param currency [String, Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Currency] The currency for the threshold amount. Currently, only `USD` is supported.
+            #   @param currency [String, Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Currency]
+            #     The currency for the threshold amount. Currently, only `USD` is supported.
             #
-            #   @param enforcement [OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Enforcement] The current enforcement state of the hard spend limit.
+            #   @param enforcement [OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Enforcement]
+            #     The current enforcement state of the hard spend limit.
             #
-            #   @param interval [String, Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Interval] The time interval for evaluating spend against the threshold. Currently, only `m
+            #   @param interval [String, Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Interval]
+            #     The time interval for evaluating spend against the threshold. Currently, only
+            #     `month` is supported.
             #
-            #   @param threshold_amount [Integer] The hard spend limit amount, in cents.
+            #   @param threshold_amount [Integer]
+            #     The hard spend limit amount, in cents.
             #
-            #   @param object [Symbol, :"project.spend_limit"] The object type, which is always `project.spend_limit`.
+            #   @param object [Symbol, :"project.spend_limit"]
+            #     The object type, which is always `project.spend_limit`.
 
             # The currency for the threshold amount. Currently, only `USD` is supported.
             #
@@ -95,7 +97,8 @@ module OpenAI
               # @!method initialize(status:)
               #   The current enforcement state of the hard spend limit.
               #
-              #   @param status [String, Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Enforcement::Status] Whether the hard spend limit is currently enforcing.
+              #   @param status [String, Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::Enforcement::Status]
+              #     Whether the hard spend limit is currently enforcing.
 
               # Whether the hard spend limit is currently enforcing.
               #

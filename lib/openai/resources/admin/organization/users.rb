@@ -12,7 +12,8 @@ module OpenAI
           #
           # @overload retrieve(user_id, request_options: {})
           #
-          # @param user_id [String] The ID of the user.
+          # @param user_id [String]
+          #   The ID of the user.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -33,15 +34,20 @@ module OpenAI
           #
           # @overload update(user_id, developer_persona: nil, role: nil, role_id: nil, technical_level: nil, request_options: {})
           #
-          # @param user_id [String] The ID of the user.
+          # @param user_id [String]
+          #   The ID of the user.
           #
-          # @param developer_persona [String, nil] Developer persona metadata.
+          # @param developer_persona [String, nil]
+          #   Developer persona metadata.
           #
-          # @param role [String, nil] `owner` or `reader`
+          # @param role [String, nil]
+          #   `owner` or `reader`
           #
-          # @param role_id [String, nil] Role ID to assign to the user.
+          # @param role_id [String, nil]
+          #   Role ID to assign to the user.
           #
-          # @param technical_level [String, nil] Technical level metadata.
+          # @param technical_level [String, nil]
+          #   Technical level metadata.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -60,18 +66,22 @@ module OpenAI
             )
           end
 
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::Admin::Organization::UserListParams} for more details.
-          #
           # Lists all of the users in the organization.
           #
           # @overload list(after: nil, emails: nil, limit: nil, request_options: {})
           #
-          # @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+          # @param after [String]
+          #   A cursor for use in pagination. `after` is an object ID that defines your place
+          #   in the list. For instance, if you make a list request and receive 100 objects,
+          #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+          #   fetch the next page of the list.
           #
-          # @param emails [Array<String>] Filter by the email address of users.
+          # @param emails [Array<String>]
+          #   Filter by the email address of users.
           #
-          # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+          # @param limit [Integer]
+          #   A limit on the number of objects to be returned. Limit can range between 1 and
+          #   100, and the default is 20.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -96,7 +106,8 @@ module OpenAI
           #
           # @overload delete(user_id, request_options: {})
           #
-          # @param user_id [String] The ID of the user.
+          # @param user_id [String]
+          #   The ID of the user.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

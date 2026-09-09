@@ -31,13 +31,17 @@ module OpenAI
         # @!method initialize(description: nil, execution: nil, parameters: nil, type: :tool_search)
         #   Hosted or BYOT tool search configuration for deferred tools.
         #
-        #   @param description [String, nil] Description shown to the model for a client-executed tool search tool.
+        #   @param description [String, nil]
+        #     Description shown to the model for a client-executed tool search tool.
         #
-        #   @param execution [Symbol, OpenAI::Models::Responses::ToolSearchTool::Execution] Whether tool search is executed by the server or by the client.
+        #   @param execution [Symbol, OpenAI::Models::Responses::ToolSearchTool::Execution]
+        #     Whether tool search is executed by the server or by the client.
         #
-        #   @param parameters [Object, nil] Parameter schema for a client-executed tool search tool.
+        #   @param parameters [Object, nil]
+        #     Parameter schema for a client-executed tool search tool.
         #
-        #   @param type [Symbol, :tool_search] The type of the tool. Always `tool_search`.
+        #   @param type [Symbol, :tool_search]
+        #     The type of the tool. Always `tool_search`.
 
         # Whether tool search is executed by the server or by the client.
         #

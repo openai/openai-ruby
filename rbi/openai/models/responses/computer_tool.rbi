@@ -19,7 +19,7 @@ module OpenAI
         attr_accessor :type
 
         # A tool that controls a virtual computer. Learn more about the
-        # [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
+        # [computer tool](https://developers.openai.com/api/docs/guides/tools-computer-use).
         sig do
           params(
 

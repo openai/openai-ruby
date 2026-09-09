@@ -24,11 +24,14 @@ module OpenAI
         required :role, const: :function
 
         # @!method initialize(content:, name:, role: :function)
-        #   @param content [String, nil] The contents of the function message.
+        #   @param content [String, nil]
+        #     The contents of the function message.
         #
-        #   @param name [String] The name of the function to call.
+        #   @param name [String]
+        #     The name of the function to call.
         #
-        #   @param role [Symbol, :function] The role of the messages author, in this case `function`.
+        #   @param role [Symbol, :function]
+        #     The role of the messages author, in this case `function`.
       end
     end
 

@@ -42,20 +42,26 @@ module OpenAI
         )
 
         # @!method initialize(detail:, file_id:, image_url:, prompt_cache_breakpoint: nil, type: :computer_screenshot)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Conversations::ComputerScreenshotContent} for more details.
-        #
         #   A screenshot of a computer.
         #
-        #   @param detail [Symbol, OpenAI::Models::Conversations::ComputerScreenshotContent::Detail] The detail level of the screenshot image to be sent to the model. One of `high`,
+        #   @param detail [Symbol, OpenAI::Models::Conversations::ComputerScreenshotContent::Detail]
+        #     The detail level of the screenshot image to be sent to the model. One of `high`,
+        #     `low`, `auto`, or `original`. Defaults to `auto`.
         #
-        #   @param file_id [String, nil] The identifier of an uploaded file that contains the screenshot.
+        #   @param file_id [String, nil]
+        #     The identifier of an uploaded file that contains the screenshot.
         #
-        #   @param image_url [String, nil] The URL of the screenshot image.
+        #   @param image_url [String, nil]
+        #     The URL of the screenshot image.
         #
-        #   @param prompt_cache_breakpoint [OpenAI::Models::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint] Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        #   @param prompt_cache_breakpoint [OpenAI::Models::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint]
+        #     Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        #     from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        #     token block.
         #
-        #   @param type [Symbol, :computer_screenshot] Specifies the event type. For a computer screenshot, this property is always set
+        #   @param type [Symbol, :computer_screenshot]
+        #     Specifies the event type. For a computer screenshot, this property is always set
+        #     to `computer_screenshot`.
 
         # The detail level of the screenshot image to be sent to the model. One of `high`,
         # `low`, `auto`, or `original`. Defaults to `auto`.
@@ -86,7 +92,8 @@ module OpenAI
           #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
           #   token block.
           #
-          #   @param mode [Symbol, :explicit] The breakpoint mode. Always `explicit`.
+          #   @param mode [Symbol, :explicit]
+          #     The breakpoint mode. Always `explicit`.
         end
       end
     end

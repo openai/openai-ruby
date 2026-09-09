@@ -43,17 +43,23 @@ module OpenAI
         # @!method initialize(command:, command_index:, output_index:, sequence_number:, agent: nil, type: :"response.shell_call_command.done")
         #   A streaming event that indicated a shell command was completed.
         #
-        #   @param command [String] The final shell command that was emitted.
+        #   @param command [String]
+        #     The final shell command that was emitted.
         #
-        #   @param command_index [Integer] The index of the shell command that was completed.
+        #   @param command_index [Integer]
+        #     The index of the shell command that was completed.
         #
-        #   @param output_index [Integer] The index of the output item that was updated.
+        #   @param output_index [Integer]
+        #     The index of the output item that was updated.
         #
-        #   @param sequence_number [Integer] The sequence number of the event that was emitted.
+        #   @param sequence_number [Integer]
+        #     The sequence number of the event that was emitted.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseShellCallCommandDoneEvent::Agent] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseShellCallCommandDoneEvent::Agent]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.shell_call_command.done"] The type of the event, always `response.shell_call_command.done`.
+        #   @param type [Symbol, :"response.shell_call_command.done"]
+        #     The type of the event, always `response.shell_call_command.done`.
 
         # @see OpenAI::Models::Beta::BetaResponseShellCallCommandDoneEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -66,7 +72,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

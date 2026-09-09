@@ -37,15 +37,20 @@ module OpenAI
         # @!method initialize(code:, item_id:, output_index:, sequence_number:, type: :"response.code_interpreter_call_code.done")
         #   Emitted when the code snippet is finalized by the code interpreter.
         #
-        #   @param code [String] The final code snippet output by the code interpreter.
+        #   @param code [String]
+        #     The final code snippet output by the code interpreter.
         #
-        #   @param item_id [String] The unique identifier of the code interpreter tool call item.
+        #   @param item_id [String]
+        #     The unique identifier of the code interpreter tool call item.
         #
-        #   @param output_index [Integer] The index of the output item in the response for which the code is finalized.
+        #   @param output_index [Integer]
+        #     The index of the output item in the response for which the code is finalized.
         #
-        #   @param sequence_number [Integer] The sequence number of this event, used to order streaming events.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event, used to order streaming events.
         #
-        #   @param type [Symbol, :"response.code_interpreter_call_code.done"] The type of the event. Always `response.code_interpreter_call_code.done`.
+        #   @param type [Symbol, :"response.code_interpreter_call_code.done"]
+        #     The type of the event. Always `response.code_interpreter_call_code.done`.
       end
     end
   end

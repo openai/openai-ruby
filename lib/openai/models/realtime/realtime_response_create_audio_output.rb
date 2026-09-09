@@ -34,13 +34,16 @@ module OpenAI
           optional :voice, union: -> { OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice }
 
           # @!method initialize(format_: nil, voice: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output} for more
-          #   details.
+          #   @param format_ [OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA]
+          #     The format of the output audio.
           #
-          #   @param format_ [OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA] The format of the output audio.
-          #
-          #   @param voice [String, Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::ID, OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice] The voice the model uses to respond. Supported built-in voices are
+          #   @param voice [String, Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::ID, OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice]
+          #     The voice the model uses to respond. Supported built-in voices are `alloy`,
+          #     `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
+          #     `cedar`. You may also provide a custom voice object with an `id`, for example
+          #     `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
+          #     model has responded with audio at least once. We recommend `marin` and `cedar`
+          #     for best quality.
 
           # The voice the model uses to respond. Supported built-in voices are `alloy`,
           # `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
@@ -88,7 +91,8 @@ module OpenAI
               # @!method initialize(id:)
               #   Custom voice reference.
               #
-              #   @param id [String] The custom voice ID, e.g. `voice_1234`.
+              #   @param id [String]
+              #     The custom voice ID, e.g. `voice_1234`.
             end
 
             # @!method self.variants

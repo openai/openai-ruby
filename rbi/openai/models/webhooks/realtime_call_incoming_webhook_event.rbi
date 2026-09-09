@@ -107,7 +107,9 @@ module OpenAI
           sig { returns(String) }
           attr_accessor :call_id
 
-          # Headers from the SIP Invite.
+          # Headers from the SIP INVITE, excluding SIP authorization headers. Retained
+          # names, values, repeated entries, and order are preserved. Treat these values as
+          # untrusted call metadata.
           sig { returns(T::Array[OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader]) }
           attr_accessor :sip_headers
 
@@ -129,7 +131,9 @@ module OpenAI
             # Realtime or Live API.
             call_id:,
 
-            # Headers from the SIP Invite.
+            # Headers from the SIP INVITE, excluding SIP authorization headers. Retained
+            # names, values, repeated entries, and order are preserved. Treat these values as
+            # untrusted call metadata.
 
             sip_headers:
           )

@@ -19,9 +19,11 @@ module OpenAI
         # @!method initialize(grader:, hyperparameters: nil)
         #   Configuration for the reinforcement fine-tuning method.
         #
-        #   @param grader [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader] The grader used for the fine-tuning job.
+        #   @param grader [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader]
+        #     The grader used for the fine-tuning job.
         #
-        #   @param hyperparameters [OpenAI::Models::FineTuning::ReinforcementHyperparameters] The hyperparameters used for the reinforcement fine-tuning job.
+        #   @param hyperparameters [OpenAI::Models::FineTuning::ReinforcementHyperparameters]
+        #     The hyperparameters used for the reinforcement fine-tuning job.
 
         # The grader used for the fine-tuning job.
         #

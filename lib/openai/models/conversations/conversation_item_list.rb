@@ -38,15 +38,20 @@ module OpenAI
         # @!method initialize(data:, first_id:, has_more:, last_id:, object: :list)
         #   A list of Conversation items.
         #
-        #   @param data [Array<OpenAI::Models::Conversations::Message, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItem, OpenAI::Models::Conversations::ConversationItem::AdditionalTools, OpenAI::Models::Responses::ResponseConfigurationUpdateItem, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Conversations::ConversationItem::Program, OpenAI::Models::Conversations::ConversationItem::ProgramOutput, OpenAI::Models::Responses::ResponseCompactionItem, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Conversations::ConversationItem::LocalShellCall, OpenAI::Models::Conversations::ConversationItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseFunctionShellToolCall, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput, OpenAI::Models::Responses::ResponseApplyPatchToolCall, OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput, OpenAI::Models::Conversations::ConversationItem::McpListTools, OpenAI::Models::Conversations::ConversationItem::McpApprovalRequest, OpenAI::Models::Conversations::ConversationItem::McpApprovalResponse, OpenAI::Models::Conversations::ConversationItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput>] A list of conversation items.
+        #   @param data [Array<OpenAI::Models::Conversations::Message, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItem, OpenAI::Models::Conversations::ConversationItem::AdditionalTools, OpenAI::Models::Responses::ResponseConfigurationUpdateItem, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Conversations::ConversationItem::Program, OpenAI::Models::Conversations::ConversationItem::ProgramOutput, OpenAI::Models::Responses::ResponseCompactionItem, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Conversations::ConversationItem::LocalShellCall, OpenAI::Models::Conversations::ConversationItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseFunctionShellToolCall, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput, OpenAI::Models::Responses::ResponseApplyPatchToolCall, OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput, OpenAI::Models::Conversations::ConversationItem::McpListTools, OpenAI::Models::Conversations::ConversationItem::McpApprovalRequest, OpenAI::Models::Conversations::ConversationItem::McpApprovalResponse, OpenAI::Models::Conversations::ConversationItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput>]
+        #     A list of conversation items.
         #
-        #   @param first_id [String] The ID of the first item in the list.
+        #   @param first_id [String]
+        #     The ID of the first item in the list.
         #
-        #   @param has_more [Boolean] Whether there are more items available.
+        #   @param has_more [Boolean]
+        #     Whether there are more items available.
         #
-        #   @param last_id [String] The ID of the last item in the list.
+        #   @param last_id [String]
+        #     The ID of the last item in the list.
         #
-        #   @param object [Symbol, :list] The type of object returned, must be `list`.
+        #   @param object [Symbol, :list]
+        #     The type of object returned, must be `list`.
       end
     end
 

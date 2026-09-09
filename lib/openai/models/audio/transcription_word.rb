@@ -23,11 +23,14 @@ module OpenAI
         required :word, String
 
         # @!method initialize(end_:, start:, word:)
-        #   @param end_ [Float] End time of the word in seconds.
+        #   @param end_ [Float]
+        #     End time of the word in seconds.
         #
-        #   @param start [Float] Start time of the word in seconds.
+        #   @param start [Float]
+        #     Start time of the word in seconds.
         #
-        #   @param word [String] The text content of the word.
+        #   @param word [String]
+        #     The text content of the word.
       end
     end
   end

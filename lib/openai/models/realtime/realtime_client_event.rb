@@ -66,7 +66,7 @@ module OpenAI
         # stop generating audio and emit a `output_audio_buffer.cleared` event. This
         # event should be preceded by a `response.cancel` client event to stop the
         # generation of the current response.
-        # [Learn more](https://platform.openai.com/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
+        # [Learn more](https://developers.openai.com/api/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
         variant :"output_audio_buffer.clear", -> { OpenAI::Realtime::OutputAudioBufferClearEvent }
 
         # Send this event to commit the user input audio buffer, which will create a  new user message item in the conversation. This event will produce an error  if the input audio buffer is empty. When in Server VAD mode, the client does  not need to send this event, the server will commit the audio buffer  automatically.

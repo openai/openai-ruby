@@ -21,7 +21,7 @@ module OpenAI
       attr_accessor :type
 
       # A custom grammar for the model to follow when generating text. Learn more in the
-      # [custom grammars guide](https://platform.openai.com/docs/guides/custom-grammars).
+      # [custom grammars guide](https://developers.openai.com/api/docs/guides/function-calling#context-free-grammars).
       sig do
         params(
 

@@ -119,8 +119,8 @@ module OpenAI
       #   Model ID used to process the batch, like `gpt-6-astra`. OpenAI offers a wide
       #   range of models with different capabilities, performance characteristics, and
       #   price points. Refer to the
-      #   [model guide](https://platform.openai.com/docs/models) to browse and compare
-      #   available models.
+      #   [model guide](https://developers.openai.com/api/docs/models) to browse and
+      #   compare available models.
       #
       #   @return [String, nil]
       optional :model, String
@@ -146,52 +146,80 @@ module OpenAI
       optional :usage, -> { OpenAI::BatchUsage }
 
       # @!method initialize(id:, completion_window:, created_at:, endpoint:, input_file_id:, status:, cancelled_at: nil, cancelling_at: nil, completed_at: nil, error_file_id: nil, errors: nil, expired_at: nil, expires_at: nil, failed_at: nil, finalizing_at: nil, in_progress_at: nil, metadata: nil, model: nil, output_file_id: nil, request_counts: nil, usage: nil, object: :batch)
-      #   Some parameter documentations has been truncated, see {OpenAI::Models::Batch}
-      #   for more details.
-      #
       #   @param id [String]
       #
-      #   @param completion_window [String] The time frame within which the batch should be processed.
+      #   @param completion_window [String]
+      #     The time frame within which the batch should be processed.
       #
-      #   @param created_at [Integer] The Unix timestamp (in seconds) for when the batch was created.
+      #   @param created_at [Integer]
+      #     The Unix timestamp (in seconds) for when the batch was created.
       #
-      #   @param endpoint [String] The OpenAI API endpoint used by the batch.
+      #   @param endpoint [String]
+      #     The OpenAI API endpoint used by the batch.
       #
-      #   @param input_file_id [String] The ID of the input file for the batch.
+      #   @param input_file_id [String]
+      #     The ID of the input file for the batch.
       #
-      #   @param status [Symbol, OpenAI::Models::Batch::Status] The current status of the batch.
+      #   @param status [Symbol, OpenAI::Models::Batch::Status]
+      #     The current status of the batch.
       #
-      #   @param cancelled_at [Integer] The Unix timestamp (in seconds) for when the batch was cancelled.
+      #   @param cancelled_at [Integer]
+      #     The Unix timestamp (in seconds) for when the batch was cancelled.
       #
-      #   @param cancelling_at [Integer] The Unix timestamp (in seconds) for when the batch started cancelling.
+      #   @param cancelling_at [Integer]
+      #     The Unix timestamp (in seconds) for when the batch started cancelling.
       #
-      #   @param completed_at [Integer] The Unix timestamp (in seconds) for when the batch was completed.
+      #   @param completed_at [Integer]
+      #     The Unix timestamp (in seconds) for when the batch was completed.
       #
-      #   @param error_file_id [String] The ID of the file containing the outputs of requests with errors.
+      #   @param error_file_id [String]
+      #     The ID of the file containing the outputs of requests with errors.
       #
       #   @param errors [OpenAI::Models::Batch::Errors]
       #
-      #   @param expired_at [Integer] The Unix timestamp (in seconds) for when the batch expired.
+      #   @param expired_at [Integer]
+      #     The Unix timestamp (in seconds) for when the batch expired.
       #
-      #   @param expires_at [Integer] The Unix timestamp (in seconds) for when the batch will expire.
+      #   @param expires_at [Integer]
+      #     The Unix timestamp (in seconds) for when the batch will expire.
       #
-      #   @param failed_at [Integer] The Unix timestamp (in seconds) for when the batch failed.
+      #   @param failed_at [Integer]
+      #     The Unix timestamp (in seconds) for when the batch failed.
       #
-      #   @param finalizing_at [Integer] The Unix timestamp (in seconds) for when the batch started finalizing.
+      #   @param finalizing_at [Integer]
+      #     The Unix timestamp (in seconds) for when the batch started finalizing.
       #
-      #   @param in_progress_at [Integer] The Unix timestamp (in seconds) for when the batch started processing.
+      #   @param in_progress_at [Integer]
+      #     The Unix timestamp (in seconds) for when the batch started processing.
       #
-      #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+      #   @param metadata [Hash{Symbol=>String}, nil]
+      #     Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #     for storing additional information about the object in a structured format, and
+      #     querying for objects via API or the dashboard.
       #
-      #   @param model [String] Model ID used to process the batch, like `gpt-6-astra`. OpenAI
+      #     Keys are strings with a maximum length of 64 characters. Values are strings with
+      #     a maximum length of 512 characters.
       #
-      #   @param output_file_id [String] The ID of the file containing the outputs of successfully executed requests.
+      #   @param model [String]
+      #     Model ID used to process the batch, like `gpt-6-astra`. OpenAI offers a wide
+      #     range of models with different capabilities, performance characteristics, and
+      #     price points. Refer to the
+      #     [model guide](https://developers.openai.com/api/docs/models) to browse and
+      #     compare available models.
       #
-      #   @param request_counts [OpenAI::Models::BatchRequestCounts] The request counts for different statuses within the batch.
+      #   @param output_file_id [String]
+      #     The ID of the file containing the outputs of successfully executed requests.
       #
-      #   @param usage [OpenAI::Models::BatchUsage] Represents token usage details including input tokens, output tokens, a
+      #   @param request_counts [OpenAI::Models::BatchRequestCounts]
+      #     The request counts for different statuses within the batch.
       #
-      #   @param object [Symbol, :batch] The object type, which is always `batch`.
+      #   @param usage [OpenAI::Models::BatchUsage]
+      #     Represents token usage details including input tokens, output tokens, a
+      #     breakdown of output tokens, and the total tokens used. Only populated on batches
+      #     created after September 7, 2025.
+      #
+      #   @param object [Symbol, :batch]
+      #     The object type, which is always `batch`.
 
       # The current status of the batch.
       #
@@ -228,7 +256,8 @@ module OpenAI
         # @!method initialize(data: nil, object: nil)
         #   @param data [Array<OpenAI::Models::BatchError>]
         #
-        #   @param object [String] The object type, which is always `list`.
+        #   @param object [String]
+        #     The object type, which is always `list`.
       end
     end
   end

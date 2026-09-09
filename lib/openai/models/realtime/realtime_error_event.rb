@@ -27,11 +27,14 @@ module OpenAI
         #   problem. Most errors are recoverable and the session will stay open, we
         #   recommend to implementors to monitor and log error messages by default.
         #
-        #   @param error [OpenAI::Models::Realtime::RealtimeError] Details of the error.
+        #   @param error [OpenAI::Models::Realtime::RealtimeError]
+        #     Details of the error.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param type [Symbol, :error] The event type, must be `error`.
+        #   @param type [Symbol, :error]
+        #     The event type, must be `error`.
       end
     end
   end

@@ -20,9 +20,11 @@ module OpenAI
         #   Returned when the input audio buffer is cleared by the client with a
         #   `input_audio_buffer.clear` event.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param type [Symbol, :"input_audio_buffer.cleared"] The event type, must be `input_audio_buffer.cleared`.
+        #   @param type [Symbol, :"input_audio_buffer.cleared"]
+        #     The event type, must be `input_audio_buffer.cleared`.
       end
     end
   end

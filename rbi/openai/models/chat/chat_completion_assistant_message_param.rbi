@@ -21,7 +21,7 @@ module OpenAI
         attr_accessor :role
 
         # Data about a previous audio response from the model.
-        # [Learn more](https://platform.openai.com/docs/guides/audio).
+        # [Learn more](https://developers.openai.com/api/docs/guides/audio).
         sig { returns(T.nilable(OpenAI::Chat::ChatCompletionAssistantMessageParam::Audio)) }
         attr_reader :audio
 
@@ -111,7 +111,7 @@ module OpenAI
         def self.new(
 
           # Data about a previous audio response from the model.
-          # [Learn more](https://platform.openai.com/docs/guides/audio).
+          # [Learn more](https://developers.openai.com/api/docs/guides/audio).
           audio: nil,
 
           # The contents of the assistant message. Required unless `tool_calls` or
@@ -172,7 +172,7 @@ module OpenAI
           attr_accessor :id
 
           # Data about a previous audio response from the model.
-          # [Learn more](https://platform.openai.com/docs/guides/audio).
+          # [Learn more](https://developers.openai.com/api/docs/guides/audio).
           sig do
             params(
 
@@ -210,8 +210,7 @@ module OpenAI
             )
           }
 
-          # Learn about
-          # [text inputs](https://platform.openai.com/docs/guides/text-generation).
+          # Learn about [text inputs](https://developers.openai.com/api/docs/guides/text).
           module ArrayOfContentPart
             extend OpenAI::Internal::Type::Union
 

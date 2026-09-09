@@ -9,9 +9,11 @@ module OpenAI
           #
           # @overload retrieve(version, skill_id:, request_options: {})
           #
-          # @param version [String] The skill version number.
+          # @param version [String]
+          #   The skill version number.
           #
-          # @param skill_id [String] The identifier of the skill.
+          # @param skill_id [String]
+          #   The identifier of the skill.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

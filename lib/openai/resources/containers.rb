@@ -10,17 +10,23 @@ module OpenAI
       #
       # @overload create(name:, expires_after: nil, file_ids: nil, memory_limit: nil, network_policy: nil, skills: nil, request_options: {})
       #
-      # @param name [String] Name of the container to create.
+      # @param name [String]
+      #   Name of the container to create.
       #
-      # @param expires_after [OpenAI::Models::ContainerCreateParams::ExpiresAfter] Container expiration time in seconds relative to the 'anchor' time.
+      # @param expires_after [OpenAI::Models::ContainerCreateParams::ExpiresAfter]
+      #   Container expiration time in seconds relative to the 'anchor' time.
       #
-      # @param file_ids [Array<String>] IDs of files to copy to the container.
+      # @param file_ids [Array<String>]
+      #   IDs of files to copy to the container.
       #
-      # @param memory_limit [Symbol, OpenAI::Models::ContainerCreateParams::MemoryLimit] Optional memory limit for the container. Defaults to "1g".
+      # @param memory_limit [Symbol, OpenAI::Models::ContainerCreateParams::MemoryLimit]
+      #   Optional memory limit for the container. Defaults to "1g".
       #
-      # @param network_policy [OpenAI::Models::Responses::ContainerNetworkPolicyDisabled, OpenAI::Models::Responses::ContainerNetworkPolicyAllowlist] Network access policy for the container.
+      # @param network_policy [OpenAI::Models::Responses::ContainerNetworkPolicyDisabled, OpenAI::Models::Responses::ContainerNetworkPolicyAllowlist]
+      #   Network access policy for the container.
       #
-      # @param skills [Array<OpenAI::Models::Responses::SkillReference, OpenAI::Models::Responses::InlineSkill>] An optional list of skills referenced by id or inline data.
+      # @param skills [Array<OpenAI::Models::Responses::SkillReference, OpenAI::Models::Responses::InlineSkill>]
+      #   An optional list of skills referenced by id or inline data.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -59,20 +65,26 @@ module OpenAI
         )
       end
 
-      # Some parameter documentations has been truncated, see
-      # {OpenAI::Models::ContainerListParams} for more details.
-      #
       # List Containers
       #
       # @overload list(after: nil, limit: nil, name: nil, order: nil, request_options: {})
       #
-      # @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+      # @param after [String]
+      #   A cursor for use in pagination. `after` is an object ID that defines your place
+      #   in the list. For instance, if you make a list request and receive 100 objects,
+      #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+      #   fetch the next page of the list.
       #
-      # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+      # @param limit [Integer]
+      #   A limit on the number of objects to be returned. Limit can range between 1 and
+      #   100, and the default is 20.
       #
-      # @param name [String] Filter results by container name.
+      # @param name [String]
+      #   Filter results by container name.
       #
-      # @param order [Symbol, OpenAI::Models::ContainerListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+      # @param order [Symbol, OpenAI::Models::ContainerListParams::Order]
+      #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
+      #   order and `desc` for descending order.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -97,7 +109,8 @@ module OpenAI
       #
       # @overload delete(container_id, request_options: {})
       #
-      # @param container_id [String] The ID of the container to delete.
+      # @param container_id [String]
+      #   The ID of the container to delete.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #

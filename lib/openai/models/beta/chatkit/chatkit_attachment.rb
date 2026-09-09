@@ -38,15 +38,20 @@ module OpenAI
           # @!method initialize(id:, mime_type:, name:, preview_url:, type:)
           #   Attachment metadata included on thread items.
           #
-          #   @param id [String] Identifier for the attachment.
+          #   @param id [String]
+          #     Identifier for the attachment.
           #
-          #   @param mime_type [String] MIME type of the attachment.
+          #   @param mime_type [String]
+          #     MIME type of the attachment.
           #
-          #   @param name [String] Original display name for the attachment.
+          #   @param name [String]
+          #     Original display name for the attachment.
           #
-          #   @param preview_url [String, nil] Preview URL for rendering the attachment inline.
+          #   @param preview_url [String, nil]
+          #     Preview URL for rendering the attachment inline.
           #
-          #   @param type [Symbol, OpenAI::Models::Beta::ChatKit::ChatKitAttachment::Type] Attachment discriminator.
+          #   @param type [Symbol, OpenAI::Models::Beta::ChatKit::ChatKitAttachment::Type]
+          #     Attachment discriminator.
 
           # Attachment discriminator.
           #

@@ -73,12 +73,12 @@ module OpenAI
           id:,
 
           # Annotations for the message, when applicable, as when using the
-          # [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
+          # [web search tool](https://developers.openai.com/api/docs/guides/tools-web-search).
           annotations: nil,
 
           # If the audio output modality is requested, this object contains data about the
           # audio response from the model.
-          # [Learn more](https://platform.openai.com/docs/guides/audio).
+          # [Learn more](https://developers.openai.com/api/docs/guides/audio).
           audio: nil,
 
           # Deprecated and replaced by `tool_calls`. The name and arguments of a function
@@ -116,8 +116,7 @@ module OpenAI
         def to_hash
         end
 
-        # Learn about
-        # [text inputs](https://platform.openai.com/docs/guides/text-generation).
+        # Learn about [text inputs](https://developers.openai.com/api/docs/guides/text).
         module ContentPart
           extend OpenAI::Internal::Type::Union
 

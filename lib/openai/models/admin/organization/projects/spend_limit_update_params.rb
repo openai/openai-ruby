@@ -35,17 +35,17 @@ module OpenAI
             required :threshold_amount, Integer
 
             # @!method initialize(project_id:, currency:, interval:, threshold_amount:, request_options: {})
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams} for more
-            #   details.
-            #
             #   @param project_id [String]
             #
-            #   @param currency [Symbol, OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::Currency] The currency for the threshold amount. Currently, only `USD` is supported.
+            #   @param currency [Symbol, OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::Currency]
+            #     The currency for the threshold amount. Currently, only `USD` is supported.
             #
-            #   @param interval [Symbol, OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::Interval] The time interval for evaluating spend against the threshold. Currently, only `m
+            #   @param interval [Symbol, OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::Interval]
+            #     The time interval for evaluating spend against the threshold. Currently, only
+            #     `month` is supported.
             #
-            #   @param threshold_amount [Integer] The hard spend limit amount, in cents.
+            #   @param threshold_amount [Integer]
+            #     The hard spend limit amount, in cents.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

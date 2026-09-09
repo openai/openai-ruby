@@ -61,17 +61,23 @@ module OpenAI
             #
             #   @param rate_limit_id [String]
             #
-            #   @param batch_1_day_max_input_tokens [Integer] The maximum batch input tokens per day. Only relevant for certain models.
+            #   @param batch_1_day_max_input_tokens [Integer]
+            #     The maximum batch input tokens per day. Only relevant for certain models.
             #
-            #   @param max_audio_megabytes_per_1_minute [Integer] The maximum audio megabytes per minute. Only relevant for certain models.
+            #   @param max_audio_megabytes_per_1_minute [Integer]
+            #     The maximum audio megabytes per minute. Only relevant for certain models.
             #
-            #   @param max_images_per_1_minute [Integer] The maximum images per minute. Only relevant for certain models.
+            #   @param max_images_per_1_minute [Integer]
+            #     The maximum images per minute. Only relevant for certain models.
             #
-            #   @param max_requests_per_1_day [Integer] The maximum requests per day. Only relevant for certain models.
+            #   @param max_requests_per_1_day [Integer]
+            #     The maximum requests per day. Only relevant for certain models.
             #
-            #   @param max_requests_per_1_minute [Integer] The maximum requests per minute.
+            #   @param max_requests_per_1_minute [Integer]
+            #     The maximum requests per minute.
             #
-            #   @param max_tokens_per_1_minute [Integer] The maximum tokens per minute.
+            #   @param max_tokens_per_1_minute [Integer]
+            #     The maximum tokens per minute.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
           end

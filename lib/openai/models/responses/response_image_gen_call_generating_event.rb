@@ -32,13 +32,17 @@ module OpenAI
         #   Emitted when an image generation tool call is actively generating an image
         #   (intermediate state).
         #
-        #   @param item_id [String] The unique identifier of the image generation item being processed.
+        #   @param item_id [String]
+        #     The unique identifier of the image generation item being processed.
         #
-        #   @param output_index [Integer] The index of the output item in the response's output array.
+        #   @param output_index [Integer]
+        #     The index of the output item in the response's output array.
         #
-        #   @param sequence_number [Integer] The sequence number of the image generation item being processed.
+        #   @param sequence_number [Integer]
+        #     The sequence number of the image generation item being processed.
         #
-        #   @param type [Symbol, :"response.image_generation_call.generating"] The type of the event. Always 'response.image_generation_call.generating'.
+        #   @param type [Symbol, :"response.image_generation_call.generating"]
+        #     The type of the event. Always 'response.image_generation_call.generating'.
       end
     end
   end

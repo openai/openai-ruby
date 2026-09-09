@@ -25,11 +25,14 @@ module OpenAI
         # @!method initialize(event_id:, item_id:, type: :"mcp_list_tools.failed")
         #   Returned when listing MCP tools has failed for an item.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param item_id [String] The ID of the MCP list tools item.
+        #   @param item_id [String]
+        #     The ID of the MCP list tools item.
         #
-        #   @param type [Symbol, :"mcp_list_tools.failed"] The event type, must be `mcp_list_tools.failed`.
+        #   @param type [Symbol, :"mcp_list_tools.failed"]
+        #     The event type, must be `mcp_list_tools.failed`.
       end
     end
   end

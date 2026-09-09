@@ -47,24 +47,28 @@ module OpenAI
         optional :agent, -> { OpenAI::Beta::BetaResponseReasoningTextDeltaEvent::Agent }, nil?: true
 
         # @!method initialize(content_index:, delta:, item_id:, output_index:, sequence_number:, agent: nil, type: :"response.reasoning_text.delta")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseReasoningTextDeltaEvent} for more details.
-        #
         #   Emitted when a delta is added to a reasoning text.
         #
-        #   @param content_index [Integer] The index of the reasoning content part this delta is associated with.
+        #   @param content_index [Integer]
+        #     The index of the reasoning content part this delta is associated with.
         #
-        #   @param delta [String] The text delta that was added to the reasoning content.
+        #   @param delta [String]
+        #     The text delta that was added to the reasoning content.
         #
-        #   @param item_id [String] The ID of the item this reasoning text delta is associated with.
+        #   @param item_id [String]
+        #     The ID of the item this reasoning text delta is associated with.
         #
-        #   @param output_index [Integer] The index of the output item this reasoning text delta is associated with.
+        #   @param output_index [Integer]
+        #     The index of the output item this reasoning text delta is associated with.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseReasoningTextDeltaEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseReasoningTextDeltaEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.reasoning_text.delta"] The type of the event. Always `response.reasoning_text.delta`.
+        #   @param type [Symbol, :"response.reasoning_text.delta"]
+        #     The type of the event. Always `response.reasoning_text.delta`.
 
         # @see OpenAI::Models::Beta::BetaResponseReasoningTextDeltaEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -77,7 +81,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

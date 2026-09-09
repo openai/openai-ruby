@@ -11,11 +11,14 @@ module OpenAI
               #
               # @overload create(group_id, project_id:, role_id:, request_options: {})
               #
-              # @param group_id [String] Path param: The ID of the group that should receive the project role.
+              # @param group_id [String]
+              #   Path param: The ID of the group that should receive the project role.
               #
-              # @param project_id [String] Path param: The ID of the project to update.
+              # @param project_id [String]
+              #   Path param: The ID of the project to update.
               #
-              # @param role_id [String] Body param: Identifier of the role to assign.
+              # @param role_id [String]
+              #   Body param: Identifier of the role to assign.
               #
               # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
               #
@@ -42,11 +45,14 @@ module OpenAI
               #
               # @overload retrieve(role_id, project_id:, group_id:, request_options: {})
               #
-              # @param role_id [String] The ID of the project role to retrieve for the group.
+              # @param role_id [String]
+              #   The ID of the project role to retrieve for the group.
               #
-              # @param project_id [String] The ID of the project to inspect.
+              # @param project_id [String]
+              #   The ID of the project to inspect.
               #
-              # @param group_id [String] The ID of the group to inspect.
+              # @param group_id [String]
+              #   The ID of the group to inspect.
               #
               # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
               #
@@ -72,23 +78,25 @@ module OpenAI
                 )
               end
 
-              # Some parameter documentations has been truncated, see
-              # {OpenAI::Models::Admin::Organization::Projects::Groups::RoleListParams} for more
-              # details.
-              #
               # Lists the project roles assigned to a group within a project.
               #
               # @overload list(group_id, project_id:, after: nil, limit: nil, order: nil, request_options: {})
               #
-              # @param group_id [String] Path param: The ID of the group to inspect.
+              # @param group_id [String]
+              #   Path param: The ID of the group to inspect.
               #
-              # @param project_id [String] Path param: The ID of the project to inspect.
+              # @param project_id [String]
+              #   Path param: The ID of the project to inspect.
               #
-              # @param after [String] Query param: Cursor for pagination. Provide the value from the previous response
+              # @param after [String]
+              #   Query param: Cursor for pagination. Provide the value from the previous
+              #   response's `next` field to continue listing project roles.
               #
-              # @param limit [Integer] Query param: A limit on the number of project role assignments to return.
+              # @param limit [Integer]
+              #   Query param: A limit on the number of project role assignments to return.
               #
-              # @param order [Symbol, OpenAI::Models::Admin::Organization::Projects::Groups::RoleListParams::Order] Query param: Sort order for the returned project roles.
+              # @param order [Symbol, OpenAI::Models::Admin::Organization::Projects::Groups::RoleListParams::Order]
+              #   Query param: Sort order for the returned project roles.
               #
               # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
               #
@@ -117,11 +125,14 @@ module OpenAI
               #
               # @overload delete(role_id, project_id:, group_id:, request_options: {})
               #
-              # @param role_id [String] The ID of the project role to remove from the group.
+              # @param role_id [String]
+              #   The ID of the project role to remove from the group.
               #
-              # @param project_id [String] The ID of the project to modify.
+              # @param project_id [String]
+              #   The ID of the project to modify.
               #
-              # @param group_id [String] The ID of the group whose project role assignment should be removed.
+              # @param group_id [String]
+              #   The ID of the group whose project role assignment should be removed.
               #
               # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
               #

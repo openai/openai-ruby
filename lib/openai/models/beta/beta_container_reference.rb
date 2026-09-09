@@ -17,9 +17,11 @@ module OpenAI
         required :type, const: :container_reference
 
         # @!method initialize(container_id:, type: :container_reference)
-        #   @param container_id [String] The ID of the referenced container.
+        #   @param container_id [String]
+        #     The ID of the referenced container.
         #
-        #   @param type [Symbol, :container_reference] References a container created with the /v1/containers endpoint
+        #   @param type [Symbol, :container_reference]
+        #     References a container created with the /v1/containers endpoint
       end
     end
 

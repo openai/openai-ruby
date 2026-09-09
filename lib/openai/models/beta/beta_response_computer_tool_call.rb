@@ -58,29 +58,35 @@ module OpenAI
         optional :agent, -> { OpenAI::Beta::BetaResponseComputerToolCall::Agent }, nil?: true
 
         # @!method initialize(id:, call_id:, pending_safety_checks:, status:, type:, action: nil, actions: nil, agent: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseComputerToolCall} for more details.
-        #
         #   A tool call to a computer use tool. See the
-        #   [computer use guide](https://platform.openai.com/docs/guides/tools-computer-use)
+        #   [computer use guide](https://developers.openai.com/api/docs/guides/tools-computer-use)
         #   for more information.
         #
-        #   @param id [String] The unique ID of the computer call.
+        #   @param id [String]
+        #     The unique ID of the computer call.
         #
-        #   @param call_id [String] An identifier used when responding to the tool call with output.
+        #   @param call_id [String]
+        #     An identifier used when responding to the tool call with output.
         #
-        #   @param pending_safety_checks [Array<OpenAI::Models::Beta::BetaResponseComputerToolCall::PendingSafetyCheck>] The pending safety checks for the computer call.
+        #   @param pending_safety_checks [Array<OpenAI::Models::Beta::BetaResponseComputerToolCall::PendingSafetyCheck>]
+        #     The pending safety checks for the computer call.
         #
-        #   @param status [Symbol, OpenAI::Models::Beta::BetaResponseComputerToolCall::Status] The status of the item. One of `in_progress`, `completed`, or
+        #   @param status [Symbol, OpenAI::Models::Beta::BetaResponseComputerToolCall::Status]
+        #     The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+        #     Populated when items are returned via API.
         #
-        #   @param type [Symbol, OpenAI::Models::Beta::BetaResponseComputerToolCall::Type] The type of the computer call. Always `computer_call`.
+        #   @param type [Symbol, OpenAI::Models::Beta::BetaResponseComputerToolCall::Type]
+        #     The type of the computer call. Always `computer_call`.
         #
-        #   @param action [OpenAI::Models::Beta::BetaComputerAction::Click, OpenAI::Models::Beta::BetaComputerAction::DoubleClick, OpenAI::Models::Beta::BetaComputerAction::Drag, OpenAI::Models::Beta::BetaComputerAction::Keypress, OpenAI::Models::Beta::BetaComputerAction::Move, OpenAI::Models::Beta::BetaComputerAction::Screenshot, OpenAI::Models::Beta::BetaComputerAction::Scroll, OpenAI::Models::Beta::BetaComputerAction::Type, OpenAI::Models::Beta::BetaComputerAction::Wait] A click action.
+        #   @param action [OpenAI::Models::Beta::BetaComputerAction::Click, OpenAI::Models::Beta::BetaComputerAction::DoubleClick, OpenAI::Models::Beta::BetaComputerAction::Drag, OpenAI::Models::Beta::BetaComputerAction::Keypress, OpenAI::Models::Beta::BetaComputerAction::Move, OpenAI::Models::Beta::BetaComputerAction::Screenshot, OpenAI::Models::Beta::BetaComputerAction::Scroll, OpenAI::Models::Beta::BetaComputerAction::Type, OpenAI::Models::Beta::BetaComputerAction::Wait]
+        #     A click action.
         #
-        #   @param actions [Array<OpenAI::Models::Beta::BetaComputerAction::Click, OpenAI::Models::Beta::BetaComputerAction::DoubleClick, OpenAI::Models::Beta::BetaComputerAction::Drag, OpenAI::Models::Beta::BetaComputerAction::Keypress, OpenAI::Models::Beta::BetaComputerAction::Move, OpenAI::Models::Beta::BetaComputerAction::Screenshot, OpenAI::Models::Beta::BetaComputerAction::Scroll, OpenAI::Models::Beta::BetaComputerAction::Type, OpenAI::Models::Beta::BetaComputerAction::Wait>] Flattened batched actions for `computer_use`. Each action includes an
+        #   @param actions [Array<OpenAI::Models::Beta::BetaComputerAction::Click, OpenAI::Models::Beta::BetaComputerAction::DoubleClick, OpenAI::Models::Beta::BetaComputerAction::Drag, OpenAI::Models::Beta::BetaComputerAction::Keypress, OpenAI::Models::Beta::BetaComputerAction::Move, OpenAI::Models::Beta::BetaComputerAction::Screenshot, OpenAI::Models::Beta::BetaComputerAction::Scroll, OpenAI::Models::Beta::BetaComputerAction::Type, OpenAI::Models::Beta::BetaComputerAction::Wait>]
+        #     Flattened batched actions for `computer_use`. Each action includes an `type`
+        #     discriminator and action-specific fields.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseComputerToolCall::Agent, nil] The agent that produced this item.
-
+        #   @param agent [OpenAI::Models::Beta::BetaResponseComputerToolCall::Agent, nil]
+        #     The agent that produced this item.
         class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel
           # @!attribute id
           #   The ID of the pending safety check.
@@ -103,11 +109,14 @@ module OpenAI
           # @!method initialize(id:, code: nil, message: nil)
           #   A pending safety check for the computer call.
           #
-          #   @param id [String] The ID of the pending safety check.
+          #   @param id [String]
+          #     The ID of the pending safety check.
           #
-          #   @param code [String, nil] The type of the pending safety check.
+          #   @param code [String, nil]
+          #     The type of the pending safety check.
           #
-          #   @param message [String, nil] Details about the pending safety check.
+          #   @param message [String, nil]
+          #     Details about the pending safety check.
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
@@ -148,7 +157,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that produced this item.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

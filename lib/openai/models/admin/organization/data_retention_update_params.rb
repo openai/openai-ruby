@@ -19,7 +19,8 @@ module OpenAI
           )
 
           # @!method initialize(retention_type:, request_options: {})
-          #   @param retention_type [Symbol, OpenAI::Models::Admin::Organization::DataRetentionUpdateParams::RetentionType] The desired organization data retention type.
+          #   @param retention_type [Symbol, OpenAI::Models::Admin::Organization::DataRetentionUpdateParams::RetentionType]
+          #     The desired organization data retention type.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
