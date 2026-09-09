@@ -56,27 +56,31 @@ module OpenAI
         optional :agent, -> { OpenAI::Beta::BetaResponseTextDeltaEvent::Agent }, nil?: true
 
         # @!method initialize(content_index:, delta:, item_id:, logprobs:, output_index:, sequence_number:, agent: nil, type: :"response.output_text.delta")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseTextDeltaEvent} for more details.
-        #
         #   Emitted when there is an additional text delta.
         #
-        #   @param content_index [Integer] The index of the content part that the text delta was added to.
+        #   @param content_index [Integer]
+        #     The index of the content part that the text delta was added to.
         #
-        #   @param delta [String] The text delta that was added.
+        #   @param delta [String]
+        #     The text delta that was added.
         #
-        #   @param item_id [String] The ID of the output item that the text delta was added to.
+        #   @param item_id [String]
+        #     The ID of the output item that the text delta was added to.
         #
-        #   @param logprobs [Array<OpenAI::Models::Beta::BetaResponseTextDeltaEvent::Logprob>] The log probabilities of the tokens in the delta.
+        #   @param logprobs [Array<OpenAI::Models::Beta::BetaResponseTextDeltaEvent::Logprob>]
+        #     The log probabilities of the tokens in the delta.
         #
-        #   @param output_index [Integer] The index of the output item that the text delta was added to.
+        #   @param output_index [Integer]
+        #     The index of the output item that the text delta was added to.
         #
-        #   @param sequence_number [Integer] The sequence number for this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number for this event.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseTextDeltaEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseTextDeltaEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.output_text.delta"] The type of the event. Always `response.output_text.delta`.
-
+        #   @param type [Symbol, :"response.output_text.delta"]
+        #     The type of the event. Always `response.output_text.delta`.
         class Logprob < OpenAI::Internal::Type::BaseModel
           # @!attribute token
           #   A possible text token.
@@ -100,19 +104,18 @@ module OpenAI
           )
 
           # @!method initialize(token:, logprob:, top_logprobs: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::BetaResponseTextDeltaEvent::Logprob} for more details.
-          #
           #   A logprob is the logarithmic probability that the model assigns to producing a
           #   particular token at a given position in the sequence. Less-negative (higher)
           #   logprob values indicate greater model confidence in that token choice.
           #
-          #   @param token [String] A possible text token.
+          #   @param token [String]
+          #     A possible text token.
           #
-          #   @param logprob [Float] The log probability of this token.
+          #   @param logprob [Float]
+          #     The log probability of this token.
           #
-          #   @param top_logprobs [Array<OpenAI::Models::Beta::BetaResponseTextDeltaEvent::Logprob::TopLogprob>] The log probabilities of up to 20 of the most likely tokens.
-
+          #   @param top_logprobs [Array<OpenAI::Models::Beta::BetaResponseTextDeltaEvent::Logprob::TopLogprob>]
+          #     The log probabilities of up to 20 of the most likely tokens.
           class TopLogprob < OpenAI::Internal::Type::BaseModel
             # @!attribute token
             #   A possible text token.
@@ -127,9 +130,11 @@ module OpenAI
             optional :logprob, Float
 
             # @!method initialize(token: nil, logprob: nil)
-            #   @param token [String] A possible text token.
+            #   @param token [String]
+            #     A possible text token.
             #
-            #   @param logprob [Float] The log probability of this token.
+            #   @param logprob [Float]
+            #     The log probability of this token.
           end
         end
 
@@ -144,7 +149,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

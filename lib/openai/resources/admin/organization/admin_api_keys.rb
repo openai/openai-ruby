@@ -5,16 +5,15 @@ module OpenAI
     class Admin
       class Organization
         class AdminAPIKeys
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::Admin::Organization::AdminAPIKeyCreateParams} for more details.
-          #
           # Create an organization admin API key
           #
           # @overload create(name:, expires_in_seconds: nil, request_options: {})
           #
           # @param name [String]
           #
-          # @param expires_in_seconds [Integer] The number of seconds until the API key expires. Omit this field for a key that
+          # @param expires_in_seconds [Integer]
+          #   The number of seconds until the API key expires. Omit this field for a key that
+          #   does not expire.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -37,7 +36,8 @@ module OpenAI
           #
           # @overload retrieve(key_id, request_options: {})
           #
-          # @param key_id [String] The ID of the API key.
+          # @param key_id [String]
+          #   The ID of the API key.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -58,11 +58,14 @@ module OpenAI
           #
           # @overload list(after: nil, limit: nil, order: nil, request_options: {})
           #
-          # @param after [String, nil] Return keys with IDs that come after this ID in the pagination order.
+          # @param after [String, nil]
+          #   Return keys with IDs that come after this ID in the pagination order.
           #
-          # @param limit [Integer] Maximum number of keys to return.
+          # @param limit [Integer]
+          #   Maximum number of keys to return.
           #
-          # @param order [Symbol, OpenAI::Models::Admin::Organization::AdminAPIKeyListParams::Order] Order results by creation time, ascending or descending.
+          # @param order [Symbol, OpenAI::Models::Admin::Organization::AdminAPIKeyListParams::Order]
+          #   Order results by creation time, ascending or descending.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -87,7 +90,8 @@ module OpenAI
           #
           # @overload delete(key_id, request_options: {})
           #
-          # @param key_id [String] The ID of the API key to be deleted.
+          # @param key_id [String]
+          #   The ID of the API key to be deleted.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

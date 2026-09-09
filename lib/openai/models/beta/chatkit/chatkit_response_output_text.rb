@@ -29,11 +29,14 @@ module OpenAI
           # @!method initialize(annotations:, text:, type: :output_text)
           #   Assistant response text accompanied by optional annotations.
           #
-          #   @param annotations [Array<OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::Annotation::File, OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::Annotation::URL>] Ordered list of annotations attached to the response text.
+          #   @param annotations [Array<OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::Annotation::File, OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::Annotation::URL>]
+          #     Ordered list of annotations attached to the response text.
           #
-          #   @param text [String] Assistant generated text.
+          #   @param text [String]
+          #     Assistant generated text.
           #
-          #   @param type [Symbol, :output_text] Type discriminator that is always `output_text`.
+          #   @param type [Symbol, :output_text]
+          #     Type discriminator that is always `output_text`.
 
           # Annotation object describing a cited source.
           module Annotation
@@ -63,9 +66,11 @@ module OpenAI
               # @!method initialize(source:, type: :file)
               #   Annotation that references an uploaded file.
               #
-              #   @param source [OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::Annotation::File::Source] File attachment referenced by the annotation.
+              #   @param source [OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::Annotation::File::Source]
+              #     File attachment referenced by the annotation.
               #
-              #   @param type [Symbol, :file] Type discriminator that is always `file` for this annotation.
+              #   @param type [Symbol, :file]
+              #     Type discriminator that is always `file` for this annotation.
 
               # @see OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::Annotation::File#source
               class Source < OpenAI::Internal::Type::BaseModel
@@ -84,9 +89,11 @@ module OpenAI
                 # @!method initialize(filename:, type: :file)
                 #   File attachment referenced by the annotation.
                 #
-                #   @param filename [String] Filename referenced by the annotation.
+                #   @param filename [String]
+                #     Filename referenced by the annotation.
                 #
-                #   @param type [Symbol, :file] Type discriminator that is always `file`.
+                #   @param type [Symbol, :file]
+                #     Type discriminator that is always `file`.
               end
             end
 
@@ -106,9 +113,11 @@ module OpenAI
               # @!method initialize(source:, type: :url)
               #   Annotation that references a URL.
               #
-              #   @param source [OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::Annotation::URL::Source] URL referenced by the annotation.
+              #   @param source [OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::Annotation::URL::Source]
+              #     URL referenced by the annotation.
               #
-              #   @param type [Symbol, :url] Type discriminator that is always `url` for this annotation.
+              #   @param type [Symbol, :url]
+              #     Type discriminator that is always `url` for this annotation.
 
               # @see OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::Annotation::URL#source
               class Source < OpenAI::Internal::Type::BaseModel
@@ -127,9 +136,11 @@ module OpenAI
                 # @!method initialize(url:, type: :url)
                 #   URL referenced by the annotation.
                 #
-                #   @param url [String] URL referenced by the annotation.
+                #   @param url [String]
+                #     URL referenced by the annotation.
                 #
-                #   @param type [Symbol, :url] Type discriminator that is always `url`.
+                #   @param type [Symbol, :url]
+                #     Type discriminator that is always `url`.
               end
             end
 

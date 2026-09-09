@@ -46,18 +46,23 @@ module OpenAI
         # @!method initialize(command_index:, item_id:, output:, output_index:, sequence_number:, type: :"response.shell_call_output_content.done")
         #   A streaming event that indicated shell call output was completed.
         #
-        #   @param command_index [Integer] The index of the shell command that produced output.
+        #   @param command_index [Integer]
+        #     The index of the shell command that produced output.
         #
-        #   @param item_id [String] The ID of the output item that was updated.
+        #   @param item_id [String]
+        #     The ID of the output item that was updated.
         #
-        #   @param output [Array<OpenAI::Models::Responses::ResponseShellCallOutputContentDoneEvent::Output>] The output contents emitted for the shell command.
+        #   @param output [Array<OpenAI::Models::Responses::ResponseShellCallOutputContentDoneEvent::Output>]
+        #     The output contents emitted for the shell command.
         #
-        #   @param output_index [Integer] The index of the output item that was updated.
+        #   @param output_index [Integer]
+        #     The index of the output item that was updated.
         #
-        #   @param sequence_number [Integer] The sequence number of the event that was emitted.
+        #   @param sequence_number [Integer]
+        #     The sequence number of the event that was emitted.
         #
-        #   @param type [Symbol, :"response.shell_call_output_content.done"] The type of the event, always `response.shell_call_output_content.done`.
-
+        #   @param type [Symbol, :"response.shell_call_output_content.done"]
+        #     The type of the event, always `response.shell_call_output_content.done`.
         class Output < OpenAI::Internal::Type::BaseModel
           # @!attribute outcome
           #   Represents either an exit outcome (with an exit code) or a timeout outcome for a
@@ -88,19 +93,20 @@ module OpenAI
           optional :created_by, String
 
           # @!method initialize(outcome:, stderr:, stdout:, created_by: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Responses::ResponseShellCallOutputContentDoneEvent::Output} for
-          #   more details.
-          #
           #   The content of a shell tool call output that was emitted.
           #
-          #   @param outcome [OpenAI::Models::Responses::ResponseShellCallOutputContentDoneEvent::Output::Outcome::Timeout, OpenAI::Models::Responses::ResponseShellCallOutputContentDoneEvent::Output::Outcome::Exit] Represents either an exit outcome (with an exit code) or a timeout outcome for a
+          #   @param outcome [OpenAI::Models::Responses::ResponseShellCallOutputContentDoneEvent::Output::Outcome::Timeout, OpenAI::Models::Responses::ResponseShellCallOutputContentDoneEvent::Output::Outcome::Exit]
+          #     Represents either an exit outcome (with an exit code) or a timeout outcome for a
+          #     shell call output chunk.
           #
-          #   @param stderr [String] The standard error output that was captured.
+          #   @param stderr [String]
+          #     The standard error output that was captured.
           #
-          #   @param stdout [String] The standard output that was captured.
+          #   @param stdout [String]
+          #     The standard output that was captured.
           #
-          #   @param created_by [String] The identifier of the actor that created the item.
+          #   @param created_by [String]
+          #     The identifier of the actor that created the item.
 
           # Represents either an exit outcome (with an exit code) or a timeout outcome for a
           # shell call output chunk.
@@ -130,7 +136,8 @@ module OpenAI
               # @!method initialize(type: :timeout)
               #   Indicates that the shell call exceeded its configured time limit.
               #
-              #   @param type [Symbol, :timeout] The outcome type. Always `timeout`.
+              #   @param type [Symbol, :timeout]
+              #     The outcome type. Always `timeout`.
             end
 
             class Exit < OpenAI::Internal::Type::BaseModel
@@ -149,9 +156,11 @@ module OpenAI
               # @!method initialize(exit_code:, type: :exit)
               #   Indicates that the shell commands finished and returned an exit code.
               #
-              #   @param exit_code [Integer] Exit code from the shell process.
+              #   @param exit_code [Integer]
+              #     Exit code from the shell process.
               #
-              #   @param type [Symbol, :exit] The outcome type. Always `exit`.
+              #   @param type [Symbol, :exit]
+              #     The outcome type. Always `exit`.
             end
 
             # @!method self.variants

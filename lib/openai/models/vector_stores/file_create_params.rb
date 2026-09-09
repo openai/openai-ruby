@@ -14,10 +14,10 @@ module OpenAI
         required :vector_store_id, String
 
         # @!attribute file_id
-        #   A [File](https://platform.openai.com/docs/api-reference/files) ID that the
-        #   vector store should use. Useful for tools like `file_search` that can access
+        #   A [File](https://developers.openai.com/api/reference/resources/files) ID that
+        #   the vector store should use. Useful for tools like `file_search` that can access
         #   files. For multi-file ingestion, we recommend
-        #   [`file_batches`](https://platform.openai.com/docs/api-reference/vector-stores-file-batches/createBatch)
+        #   [`file_batches`](https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/create)
         #   to minimize per-vector-store write requests.
         #
         #   @return [String]
@@ -47,16 +47,25 @@ module OpenAI
         optional :chunking_strategy, union: -> { OpenAI::FileChunkingStrategyParam }
 
         # @!method initialize(vector_store_id:, file_id:, attributes: nil, chunking_strategy: nil, request_options: {})
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::VectorStores::FileCreateParams} for more details.
-        #
         #   @param vector_store_id [String]
         #
-        #   @param file_id [String] A [File](https://platform.openai.com/docs/api-reference/files) ID that the vecto
+        #   @param file_id [String]
+        #     A [File](https://developers.openai.com/api/reference/resources/files) ID that
+        #     the vector store should use. Useful for tools like `file_search` that can access
+        #     files. For multi-file ingestion, we recommend
+        #     [`file_batches`](https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/create)
+        #     to minimize per-vector-store write requests.
         #
-        #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+        #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]
+        #     Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #     for storing additional information about the object in a structured format, and
+        #     querying for objects via API or the dashboard. Keys are strings with a maximum
+        #     length of 64 characters. Values are strings with a maximum length of 512
+        #     characters, booleans, or numbers.
         #
-        #   @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+        #   @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]
+        #     The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+        #     strategy. Only applicable if `file_ids` is non-empty.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

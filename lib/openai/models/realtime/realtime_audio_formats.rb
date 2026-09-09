@@ -34,9 +34,11 @@ module OpenAI
           # @!method initialize(rate: nil, type: nil)
           #   The PCM audio format. Only a 24kHz sample rate is supported.
           #
-          #   @param rate [Integer, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::Rate] The sample rate of the audio. Always `24000`.
+          #   @param rate [Integer, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::Rate]
+          #     The sample rate of the audio. Always `24000`.
           #
-          #   @param type [Symbol, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::Type] The audio format. Always `audio/pcm`.
+          #   @param type [Symbol, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::Type]
+          #     The audio format. Always `audio/pcm`.
 
           # The sample rate of the audio. Always `24000`.
           #
@@ -73,7 +75,8 @@ module OpenAI
           # @!method initialize(type: nil)
           #   The G.711 μ-law format.
           #
-          #   @param type [Symbol, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU::Type] The audio format. Always `audio/pcmu`.
+          #   @param type [Symbol, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU::Type]
+          #     The audio format. Always `audio/pcmu`.
 
           # The audio format. Always `audio/pcmu`.
           #
@@ -98,7 +101,8 @@ module OpenAI
           # @!method initialize(type: nil)
           #   The G.711 A-law format.
           #
-          #   @param type [Symbol, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA::Type] The audio format. Always `audio/pcma`.
+          #   @param type [Symbol, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA::Type]
+          #     The audio format. Always `audio/pcma`.
 
           # The audio format. Always `audio/pcma`.
           #

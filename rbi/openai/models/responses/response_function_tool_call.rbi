@@ -77,7 +77,7 @@ module OpenAI
         attr_writer :status
 
         # A tool call to run a function. See the
-        # [function calling guide](https://platform.openai.com/docs/guides/function-calling)
+        # [function calling guide](https://developers.openai.com/api/docs/guides/function-calling)
         # for more information.
         sig do
           params(

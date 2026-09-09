@@ -9,22 +9,28 @@ module OpenAI
         # @return [OpenAI::Resources::Evals::Runs::OutputItems]
         attr_reader :output_items
 
-        # Some parameter documentations has been truncated, see
-        # {OpenAI::Models::Evals::RunCreateParams} for more details.
-        #
         # Kicks off a new run for a given evaluation, specifying the data source, and what
         # model configuration to use to test. The datasource will be validated against the
         # schema specified in the config of the evaluation.
         #
         # @overload create(eval_id, data_source:, metadata: nil, name: nil, request_options: {})
         #
-        # @param eval_id [String] The ID of the evaluation to create a run for.
+        # @param eval_id [String]
+        #   The ID of the evaluation to create a run for.
         #
-        # @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource] Details about the run's data source.
+        # @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource]
+        #   Details about the run's data source.
         #
-        # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+        # @param metadata [Hash{Symbol=>String}, nil]
+        #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #   for storing additional information about the object in a structured format, and
+        #   querying for objects via API or the dashboard.
         #
-        # @param name [String] The name of the run.
+        #   Keys are strings with a maximum length of 64 characters. Values are strings with
+        #   a maximum length of 512 characters.
+        #
+        # @param name [String]
+        #   The name of the run.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -47,9 +53,11 @@ module OpenAI
         #
         # @overload retrieve(run_id, eval_id:, request_options: {})
         #
-        # @param run_id [String] The ID of the run to retrieve.
+        # @param run_id [String]
+        #   The ID of the run to retrieve.
         #
-        # @param eval_id [String] The ID of the evaluation to retrieve runs for.
+        # @param eval_id [String]
+        #   The ID of the evaluation to retrieve runs for.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -71,22 +79,26 @@ module OpenAI
           )
         end
 
-        # Some parameter documentations has been truncated, see
-        # {OpenAI::Models::Evals::RunListParams} for more details.
-        #
         # Get a list of runs for an evaluation.
         #
         # @overload list(eval_id, after: nil, limit: nil, order: nil, status: nil, request_options: {})
         #
-        # @param eval_id [String] The ID of the evaluation to retrieve runs for.
+        # @param eval_id [String]
+        #   The ID of the evaluation to retrieve runs for.
         #
-        # @param after [String] Identifier for the last run from the previous pagination request.
+        # @param after [String]
+        #   Identifier for the last run from the previous pagination request.
         #
-        # @param limit [Integer] Number of runs to retrieve.
+        # @param limit [Integer]
+        #   Number of runs to retrieve.
         #
-        # @param order [Symbol, OpenAI::Models::Evals::RunListParams::Order] Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for de
+        # @param order [Symbol, OpenAI::Models::Evals::RunListParams::Order]
+        #   Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for
+        #   descending order. Defaults to `asc`.
         #
-        # @param status [Symbol, OpenAI::Models::Evals::RunListParams::Status] Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+        # @param status [Symbol, OpenAI::Models::Evals::RunListParams::Status]
+        #   Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+        #   | `canceled`.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -111,9 +123,11 @@ module OpenAI
         #
         # @overload delete(run_id, eval_id:, request_options: {})
         #
-        # @param run_id [String] The ID of the run to delete.
+        # @param run_id [String]
+        #   The ID of the run to delete.
         #
-        # @param eval_id [String] The ID of the evaluation to delete the run from.
+        # @param eval_id [String]
+        #   The ID of the evaluation to delete the run from.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -139,9 +153,11 @@ module OpenAI
         #
         # @overload cancel(run_id, eval_id:, request_options: {})
         #
-        # @param run_id [String] The ID of the run to cancel.
+        # @param run_id [String]
+        #   The ID of the run to cancel.
         #
-        # @param eval_id [String] The ID of the evaluation whose run you want to cancel.
+        # @param eval_id [String]
+        #   The ID of the evaluation whose run you want to cancel.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #

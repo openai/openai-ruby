@@ -30,19 +30,20 @@ module OpenAI
         required :type, const: :"response.code_interpreter_call.in_progress"
 
         # @!method initialize(item_id:, output_index:, sequence_number:, type: :"response.code_interpreter_call.in_progress")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseCodeInterpreterCallInProgressEvent} for more
-        #   details.
-        #
         #   Emitted when a code interpreter call is in progress.
         #
-        #   @param item_id [String] The unique identifier of the code interpreter tool call item.
+        #   @param item_id [String]
+        #     The unique identifier of the code interpreter tool call item.
         #
-        #   @param output_index [Integer] The index of the output item in the response for which the code interpreter call
+        #   @param output_index [Integer]
+        #     The index of the output item in the response for which the code interpreter call
+        #     is in progress.
         #
-        #   @param sequence_number [Integer] The sequence number of this event, used to order streaming events.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event, used to order streaming events.
         #
-        #   @param type [Symbol, :"response.code_interpreter_call.in_progress"] The type of the event. Always `response.code_interpreter_call.in_progress`.
+        #   @param type [Symbol, :"response.code_interpreter_call.in_progress"]
+        #     The type of the event. Always `response.code_interpreter_call.in_progress`.
       end
     end
   end

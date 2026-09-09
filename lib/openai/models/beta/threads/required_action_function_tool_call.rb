@@ -8,7 +8,7 @@ module OpenAI
           # @!attribute id
           #   The ID of the tool call. This ID must be referenced when you submit the tool
           #   outputs in using the
-          #   [Submit tool outputs to run](https://platform.openai.com/docs/api-reference/runs/submitToolOutputs)
+          #   [Submit tool outputs to run](https://developers.openai.com/api/docs/assistants/migration)
           #   endpoint.
           #
           #   @return [String]
@@ -28,17 +28,20 @@ module OpenAI
           required :type, const: :function
 
           # @!method initialize(id:, function:, type: :function)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall} for more
-          #   details.
-          #
           #   Tool call objects
           #
-          #   @param id [String] The ID of the tool call. This ID must be referenced when you submit the tool out
+          #   @param id [String]
+          #     The ID of the tool call. This ID must be referenced when you submit the tool
+          #     outputs in using the
+          #     [Submit tool outputs to run](https://developers.openai.com/api/docs/assistants/migration)
+          #     endpoint.
           #
-          #   @param function [OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function] The function definition.
+          #   @param function [OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function]
+          #     The function definition.
           #
-          #   @param type [Symbol, :function] The type of tool call the output is required for. For now, this is always `funct
+          #   @param type [Symbol, :function]
+          #     The type of tool call the output is required for. For now, this is always
+          #     `function`.
 
           # @see OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall#function
           class Function < OpenAI::Internal::Type::BaseModel
@@ -57,9 +60,11 @@ module OpenAI
             # @!method initialize(arguments:, name:)
             #   The function definition.
             #
-            #   @param arguments [String] The arguments that the model expects you to pass to the function.
+            #   @param arguments [String]
+            #     The arguments that the model expects you to pass to the function.
             #
-            #   @param name [String] The name of the function.
+            #   @param name [String]
+            #     The name of the function.
           end
         end
       end

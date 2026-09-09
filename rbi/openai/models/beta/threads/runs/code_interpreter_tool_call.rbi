@@ -260,8 +260,8 @@ module OpenAI
                       )
                     end
 
-                    # The [file](https://platform.openai.com/docs/api-reference/files) ID of the
-                    # image.
+                    # The [file](https://developers.openai.com/api/reference/resources/files) ID of
+                    # the image.
                     sig { returns(String) }
                     attr_accessor :file_id
 
@@ -274,8 +274,8 @@ module OpenAI
                     end
                     def self.new(
 
-                      # The [file](https://platform.openai.com/docs/api-reference/files) ID of the
-                      # image.
+                      # The [file](https://developers.openai.com/api/reference/resources/files) ID of
+                      # the image.
 
                       file_id:
                     )

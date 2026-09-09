@@ -72,26 +72,37 @@ module OpenAI
           optional :project_ids, OpenAI::Internal::Type::ArrayOf[String]
 
           # @!method initialize(start_time:, api_key_ids: nil, bucket_width: nil, end_time: nil, group_by: nil, limit: nil, line_items: nil, page: nil, project_ids: nil, request_options: {})
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Admin::Organization::UsageCostsParams} for more details.
+          #   @param start_time [Integer]
+          #     Start time (Unix seconds) of the query time range, inclusive.
           #
-          #   @param start_time [Integer] Start time (Unix seconds) of the query time range, inclusive.
+          #   @param api_key_ids [Array<String>]
+          #     Return only costs for these API keys.
           #
-          #   @param api_key_ids [Array<String>] Return only costs for these API keys.
+          #   @param bucket_width [Symbol, OpenAI::Models::Admin::Organization::UsageCostsParams::BucketWidth]
+          #     Width of each time bucket in response. Currently only `1d` is supported, default
+          #     to `1d`.
           #
-          #   @param bucket_width [Symbol, OpenAI::Models::Admin::Organization::UsageCostsParams::BucketWidth] Width of each time bucket in response. Currently only `1d` is supported, default
+          #   @param end_time [Integer]
+          #     End time (Unix seconds) of the query time range, exclusive.
           #
-          #   @param end_time [Integer] End time (Unix seconds) of the query time range, exclusive.
+          #   @param group_by [Array<Symbol, OpenAI::Models::Admin::Organization::UsageCostsParams::GroupBy>]
+          #     Group the costs by the specified fields. Support fields include `project_id`,
+          #     `line_item`, `api_key_id` and any combination of them.
           #
-          #   @param group_by [Array<Symbol, OpenAI::Models::Admin::Organization::UsageCostsParams::GroupBy>] Group the costs by the specified fields. Support fields include `project_id`, `l
+          #   @param limit [Integer]
+          #     A limit on the number of buckets to be returned. Limit can range between 1 and
+          #     180, and the default is 7.
           #
-          #   @param limit [Integer] A limit on the number of buckets to be returned. Limit can range between 1 and 1
+          #   @param line_items [Array<String>]
+          #     Return only costs for these exact line item names. Each value must match the
+          #     complete `line_item` value, for example `gpt-6-astra, input_tokens`.
           #
-          #   @param line_items [Array<String>] Return only costs for these exact line item names. Each value must match the com
+          #   @param page [String]
+          #     A cursor for use in pagination. Corresponding to the `next_page` field from the
+          #     previous response.
           #
-          #   @param page [String] A cursor for use in pagination. Corresponding to the `next_page` field from the
-          #
-          #   @param project_ids [Array<String>] Return only costs for these projects.
+          #   @param project_ids [Array<String>]
+          #     Return only costs for these projects.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

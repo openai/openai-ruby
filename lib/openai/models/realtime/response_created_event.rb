@@ -26,11 +26,14 @@ module OpenAI
         #   Returned when a new Response is created. The first event of response creation,
         #   where the response is in an initial state of `in_progress`.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param response [OpenAI::Models::Realtime::RealtimeResponse] The response resource.
+        #   @param response [OpenAI::Models::Realtime::RealtimeResponse]
+        #     The response resource.
         #
-        #   @param type [Symbol, :"response.created"] The event type, must be `response.created`.
+        #   @param type [Symbol, :"response.created"]
+        #     The event type, must be `response.created`.
       end
     end
   end

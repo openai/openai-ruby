@@ -33,20 +33,22 @@ module OpenAI
         optional :user_location, -> { OpenAI::Responses::WebSearchPreviewTool::UserLocation }, nil?: true
 
         # @!method initialize(type:, search_content_types: nil, search_context_size: nil, user_location: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::WebSearchPreviewTool} for more details.
-        #
         #   This tool searches the web for relevant results to use in a response. Learn more
         #   about the
-        #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
+        #   [web search tool](https://developers.openai.com/api/docs/guides/tools-web-search).
         #
-        #   @param type [Symbol, OpenAI::Models::Responses::WebSearchPreviewTool::Type] The type of the web search tool. One of `web_search_preview` or `web_search_prev
+        #   @param type [Symbol, OpenAI::Models::Responses::WebSearchPreviewTool::Type]
+        #     The type of the web search tool. One of `web_search_preview` or
+        #     `web_search_preview_2025_03_11`.
         #
         #   @param search_content_types [Array<Symbol, OpenAI::Models::Responses::WebSearchPreviewTool::SearchContentType>]
         #
-        #   @param search_context_size [Symbol, OpenAI::Models::Responses::WebSearchPreviewTool::SearchContextSize] High level guidance for the amount of context window space to use for the search
+        #   @param search_context_size [Symbol, OpenAI::Models::Responses::WebSearchPreviewTool::SearchContextSize]
+        #     High level guidance for the amount of context window space to use for the
+        #     search. One of `low`, `medium`, or `high`. `medium` is the default.
         #
-        #   @param user_location [OpenAI::Models::Responses::WebSearchPreviewTool::UserLocation, nil] The user's location.
+        #   @param user_location [OpenAI::Models::Responses::WebSearchPreviewTool::UserLocation, nil]
+        #     The user's location.
 
         # The type of the web search tool. One of `web_search_preview` or
         # `web_search_preview_2025_03_11`.
@@ -122,21 +124,24 @@ module OpenAI
           optional :timezone, String, nil?: true
 
           # @!method initialize(city: nil, country: nil, region: nil, timezone: nil, type: :approximate)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Responses::WebSearchPreviewTool::UserLocation} for more
-          #   details.
-          #
           #   The user's location.
           #
-          #   @param city [String, nil] Free text input for the city of the user, e.g. `San Francisco`.
+          #   @param city [String, nil]
+          #     Free text input for the city of the user, e.g. `San Francisco`.
           #
-          #   @param country [String, nil] The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of t
+          #   @param country [String, nil]
+          #     The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
+          #     the user, e.g. `US`.
           #
-          #   @param region [String, nil] Free text input for the region of the user, e.g. `California`.
+          #   @param region [String, nil]
+          #     Free text input for the region of the user, e.g. `California`.
           #
-          #   @param timezone [String, nil] The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the user
+          #   @param timezone [String, nil]
+          #     The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
+          #     user, e.g. `America/Los_Angeles`.
           #
-          #   @param type [Symbol, :approximate] The type of location approximation. Always `approximate`.
+          #   @param type [Symbol, :approximate]
+          #     The type of location approximation. Always `approximate`.
         end
       end
     end

@@ -28,16 +28,17 @@ module OpenAI
       required :flagged, OpenAI::Internal::Type::Boolean
 
       # @!method initialize(categories:, category_applied_input_types:, category_scores:, flagged:)
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::Moderation} for more details.
+      #   @param categories [OpenAI::Models::Moderation::Categories]
+      #     A list of the categories, and whether they are flagged or not.
       #
-      #   @param categories [OpenAI::Models::Moderation::Categories] A list of the categories, and whether they are flagged or not.
+      #   @param category_applied_input_types [OpenAI::Models::Moderation::CategoryAppliedInputTypes]
+      #     A list of the categories along with the input type(s) that the score applies to.
       #
-      #   @param category_applied_input_types [OpenAI::Models::Moderation::CategoryAppliedInputTypes] A list of the categories along with the input type(s) that the score applies to.
+      #   @param category_scores [OpenAI::Models::Moderation::CategoryScores]
+      #     A list of the categories along with their scores as predicted by model.
       #
-      #   @param category_scores [OpenAI::Models::Moderation::CategoryScores] A list of the categories along with their scores as predicted by model.
-      #
-      #   @param flagged [Boolean] Whether any of the below categories are flagged.
+      #   @param flagged [Boolean]
+      #     Whether any of the below categories are flagged.
 
       # @see OpenAI::Models::Moderation#categories
       class Categories < OpenAI::Internal::Type::BaseModel
@@ -137,36 +138,63 @@ module OpenAI
         required :violence_graphic, OpenAI::Internal::Type::Boolean, api_name: :"violence/graphic"
 
         # @!method initialize(harassment:, harassment_threatening:, hate:, hate_threatening:, illicit:, illicit_violent:, self_harm:, self_harm_instructions:, self_harm_intent:, sexual:, sexual_minors:, violence:, violence_graphic:)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Moderation::Categories} for more details.
-        #
         #   A list of the categories, and whether they are flagged or not.
         #
-        #   @param harassment [Boolean] Content that expresses, incites, or promotes harassing language towards any targ
+        #   @param harassment [Boolean]
+        #     Content that expresses, incites, or promotes harassing language towards any
+        #     target.
         #
-        #   @param harassment_threatening [Boolean] Harassment content that also includes violence or serious harm towards any targe
+        #   @param harassment_threatening [Boolean]
+        #     Harassment content that also includes violence or serious harm towards any
+        #     target.
         #
-        #   @param hate [Boolean] Content that expresses, incites, or promotes hate based on race, gender, ethnici
+        #   @param hate [Boolean]
+        #     Content that expresses, incites, or promotes hate based on race, gender,
+        #     ethnicity, religion, nationality, sexual orientation, disability status, or
+        #     caste. Hateful content aimed at non-protected groups (e.g., chess players) is
+        #     harassment.
         #
-        #   @param hate_threatening [Boolean] Hateful content that also includes violence or serious harm towards the targeted
+        #   @param hate_threatening [Boolean]
+        #     Hateful content that also includes violence or serious harm towards the targeted
+        #     group based on race, gender, ethnicity, religion, nationality, sexual
+        #     orientation, disability status, or caste.
         #
-        #   @param illicit [Boolean, nil] Content that includes instructions or advice that facilitate the planning or exe
+        #   @param illicit [Boolean, nil]
+        #     Content that includes instructions or advice that facilitate the planning or
+        #     execution of wrongdoing, or that gives advice or instruction on how to commit
+        #     illicit acts. For example, "how to shoplift" would fit this category.
         #
-        #   @param illicit_violent [Boolean, nil] Content that includes instructions or advice that facilitate the planning or exe
+        #   @param illicit_violent [Boolean, nil]
+        #     Content that includes instructions or advice that facilitate the planning or
+        #     execution of wrongdoing that also includes violence, or that gives advice or
+        #     instruction on the procurement of any weapon.
         #
-        #   @param self_harm [Boolean] Content that promotes, encourages, or depicts acts of self-harm, such as suicide
+        #   @param self_harm [Boolean]
+        #     Content that promotes, encourages, or depicts acts of self-harm, such as
+        #     suicide, cutting, and eating disorders.
         #
-        #   @param self_harm_instructions [Boolean] Content that encourages performing acts of self-harm, such as suicide, cutting,
+        #   @param self_harm_instructions [Boolean]
+        #     Content that encourages performing acts of self-harm, such as suicide, cutting,
+        #     and eating disorders, or that gives instructions or advice on how to commit such
+        #     acts.
         #
-        #   @param self_harm_intent [Boolean] Content where the speaker expresses that they are engaging or intend to engage i
+        #   @param self_harm_intent [Boolean]
+        #     Content where the speaker expresses that they are engaging or intend to engage
+        #     in acts of self-harm, such as suicide, cutting, and eating disorders.
         #
-        #   @param sexual [Boolean] Content meant to arouse sexual excitement, such as the description of sexual act
+        #   @param sexual [Boolean]
+        #     Content meant to arouse sexual excitement, such as the description of sexual
+        #     activity, or that promotes sexual services (excluding sex education and
+        #     wellness).
         #
-        #   @param sexual_minors [Boolean] Sexual content that includes an individual who is under 18 years old.
+        #   @param sexual_minors [Boolean]
+        #     Sexual content that includes an individual who is under 18 years old.
         #
-        #   @param violence [Boolean] Content that depicts death, violence, or physical injury.
+        #   @param violence [Boolean]
+        #     Content that depicts death, violence, or physical injury.
         #
-        #   @param violence_graphic [Boolean] Content that depicts death, violence, or physical injury in graphic detail.
+        #   @param violence_graphic [Boolean]
+        #     Content that depicts death, violence, or physical injury in graphic detail.
       end
 
       # @see OpenAI::Models::Moderation#category_applied_input_types
@@ -315,32 +343,44 @@ module OpenAI
         # @!method initialize(harassment:, harassment_threatening:, hate:, hate_threatening:, illicit:, illicit_violent:, self_harm:, self_harm_instructions:, self_harm_intent:, sexual:, sexual_minors:, violence:, violence_graphic:)
         #   A list of the categories along with the input type(s) that the score applies to.
         #
-        #   @param harassment [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment>] The applied input type(s) for the category 'harassment'.
+        #   @param harassment [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment>]
+        #     The applied input type(s) for the category 'harassment'.
         #
-        #   @param harassment_threatening [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening>] The applied input type(s) for the category 'harassment/threatening'.
+        #   @param harassment_threatening [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening>]
+        #     The applied input type(s) for the category 'harassment/threatening'.
         #
-        #   @param hate [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate>] The applied input type(s) for the category 'hate'.
+        #   @param hate [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate>]
+        #     The applied input type(s) for the category 'hate'.
         #
-        #   @param hate_threatening [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening>] The applied input type(s) for the category 'hate/threatening'.
+        #   @param hate_threatening [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening>]
+        #     The applied input type(s) for the category 'hate/threatening'.
         #
-        #   @param illicit [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit>] The applied input type(s) for the category 'illicit'.
+        #   @param illicit [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit>]
+        #     The applied input type(s) for the category 'illicit'.
         #
-        #   @param illicit_violent [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent>] The applied input type(s) for the category 'illicit/violent'.
+        #   @param illicit_violent [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent>]
+        #     The applied input type(s) for the category 'illicit/violent'.
         #
-        #   @param self_harm [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm>] The applied input type(s) for the category 'self-harm'.
+        #   @param self_harm [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm>]
+        #     The applied input type(s) for the category 'self-harm'.
         #
-        #   @param self_harm_instructions [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction>] The applied input type(s) for the category 'self-harm/instructions'.
+        #   @param self_harm_instructions [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction>]
+        #     The applied input type(s) for the category 'self-harm/instructions'.
         #
-        #   @param self_harm_intent [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent>] The applied input type(s) for the category 'self-harm/intent'.
+        #   @param self_harm_intent [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent>]
+        #     The applied input type(s) for the category 'self-harm/intent'.
         #
-        #   @param sexual [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual>] The applied input type(s) for the category 'sexual'.
+        #   @param sexual [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual>]
+        #     The applied input type(s) for the category 'sexual'.
         #
-        #   @param sexual_minors [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor>] The applied input type(s) for the category 'sexual/minors'.
+        #   @param sexual_minors [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor>]
+        #     The applied input type(s) for the category 'sexual/minors'.
         #
-        #   @param violence [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence>] The applied input type(s) for the category 'violence'.
+        #   @param violence [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence>]
+        #     The applied input type(s) for the category 'violence'.
         #
-        #   @param violence_graphic [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic>] The applied input type(s) for the category 'violence/graphic'.
-
+        #   @param violence_graphic [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic>]
+        #     The applied input type(s) for the category 'violence/graphic'.
         module Harassment
           extend OpenAI::Internal::Type::Enum
 
@@ -548,31 +588,44 @@ module OpenAI
         # @!method initialize(harassment:, harassment_threatening:, hate:, hate_threatening:, illicit:, illicit_violent:, self_harm:, self_harm_instructions:, self_harm_intent:, sexual:, sexual_minors:, violence:, violence_graphic:)
         #   A list of the categories along with their scores as predicted by model.
         #
-        #   @param harassment [Float] The score for the category 'harassment'.
+        #   @param harassment [Float]
+        #     The score for the category 'harassment'.
         #
-        #   @param harassment_threatening [Float] The score for the category 'harassment/threatening'.
+        #   @param harassment_threatening [Float]
+        #     The score for the category 'harassment/threatening'.
         #
-        #   @param hate [Float] The score for the category 'hate'.
+        #   @param hate [Float]
+        #     The score for the category 'hate'.
         #
-        #   @param hate_threatening [Float] The score for the category 'hate/threatening'.
+        #   @param hate_threatening [Float]
+        #     The score for the category 'hate/threatening'.
         #
-        #   @param illicit [Float] The score for the category 'illicit'.
+        #   @param illicit [Float]
+        #     The score for the category 'illicit'.
         #
-        #   @param illicit_violent [Float] The score for the category 'illicit/violent'.
+        #   @param illicit_violent [Float]
+        #     The score for the category 'illicit/violent'.
         #
-        #   @param self_harm [Float] The score for the category 'self-harm'.
+        #   @param self_harm [Float]
+        #     The score for the category 'self-harm'.
         #
-        #   @param self_harm_instructions [Float] The score for the category 'self-harm/instructions'.
+        #   @param self_harm_instructions [Float]
+        #     The score for the category 'self-harm/instructions'.
         #
-        #   @param self_harm_intent [Float] The score for the category 'self-harm/intent'.
+        #   @param self_harm_intent [Float]
+        #     The score for the category 'self-harm/intent'.
         #
-        #   @param sexual [Float] The score for the category 'sexual'.
+        #   @param sexual [Float]
+        #     The score for the category 'sexual'.
         #
-        #   @param sexual_minors [Float] The score for the category 'sexual/minors'.
+        #   @param sexual_minors [Float]
+        #     The score for the category 'sexual/minors'.
         #
-        #   @param violence [Float] The score for the category 'violence'.
+        #   @param violence [Float]
+        #     The score for the category 'violence'.
         #
-        #   @param violence_graphic [Float] The score for the category 'violence/graphic'.
+        #   @param violence_graphic [Float]
+        #     The score for the category 'violence/graphic'.
       end
     end
   end

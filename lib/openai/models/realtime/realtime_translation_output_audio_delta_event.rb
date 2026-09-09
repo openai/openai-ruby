@@ -53,27 +53,32 @@ module OpenAI
         optional :sample_rate, Integer
 
         # @!method initialize(delta:, event_id:, channels: nil, elapsed_ms: nil, format_: nil, sample_rate: nil, type: :"session.output_audio.delta")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent} for more
-        #   details.
-        #
         #   Returned when translated output audio is available. The `delta` contains a PCM16
         #   audio chunk whose length can vary. Clients should decode and queue the complete
         #   delta instead of assuming a fixed byte or sample count.
         #
-        #   @param delta [String] Base64-encoded translated audio data.
+        #   @param delta [String]
+        #     Base64-encoded translated audio data.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param channels [Integer] Number of audio channels.
+        #   @param channels [Integer]
+        #     Number of audio channels.
         #
-        #   @param elapsed_ms [Integer, nil] Timing metadata for stream alignment, derived from the translation frame
+        #   @param elapsed_ms [Integer, nil]
+        #     Timing metadata for stream alignment, derived from the translation frame when
+        #     available. Treat `elapsed_ms` as alignment metadata, not a unique event
+        #     identifier.
         #
-        #   @param format_ [Symbol, OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent::Format] Audio encoding for `delta`.
+        #   @param format_ [Symbol, OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent::Format]
+        #     Audio encoding for `delta`.
         #
-        #   @param sample_rate [Integer] Sample rate of the audio delta.
+        #   @param sample_rate [Integer]
+        #     Sample rate of the audio delta.
         #
-        #   @param type [Symbol, :"session.output_audio.delta"] The event type, must be `session.output_audio.delta`.
+        #   @param type [Symbol, :"session.output_audio.delta"]
+        #     The event type, must be `session.output_audio.delta`.
 
         # Audio encoding for `delta`.
         #

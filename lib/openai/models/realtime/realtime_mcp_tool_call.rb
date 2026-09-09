@@ -55,21 +55,29 @@ module OpenAI
         # @!method initialize(id:, arguments:, name:, server_label:, approval_request_id: nil, error: nil, output: nil, type: :mcp_call)
         #   A Realtime item representing an invocation of a tool on an MCP server.
         #
-        #   @param id [String] The unique ID of the tool call.
+        #   @param id [String]
+        #     The unique ID of the tool call.
         #
-        #   @param arguments [String] A JSON string of the arguments passed to the tool.
+        #   @param arguments [String]
+        #     A JSON string of the arguments passed to the tool.
         #
-        #   @param name [String] The name of the tool that was run.
+        #   @param name [String]
+        #     The name of the tool that was run.
         #
-        #   @param server_label [String] The label of the MCP server running the tool.
+        #   @param server_label [String]
+        #     The label of the MCP server running the tool.
         #
-        #   @param approval_request_id [String, nil] The ID of an associated approval request, if any.
+        #   @param approval_request_id [String, nil]
+        #     The ID of an associated approval request, if any.
         #
-        #   @param error [OpenAI::Models::Realtime::RealtimeMcpProtocolError, OpenAI::Models::Realtime::RealtimeMcpToolExecutionError, OpenAI::Models::Realtime::RealtimeMcphttpError, nil] The error from the tool call, if any.
+        #   @param error [OpenAI::Models::Realtime::RealtimeMcpProtocolError, OpenAI::Models::Realtime::RealtimeMcpToolExecutionError, OpenAI::Models::Realtime::RealtimeMcphttpError, nil]
+        #     The error from the tool call, if any.
         #
-        #   @param output [String, nil] The output from the tool call.
+        #   @param output [String, nil]
+        #     The output from the tool call.
         #
-        #   @param type [Symbol, :mcp_call] The type of the item. Always `mcp_call`.
+        #   @param type [Symbol, :mcp_call]
+        #     The type of the item. Always `mcp_call`.
 
         # The error from the tool call, if any.
         #

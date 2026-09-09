@@ -50,19 +50,26 @@ module OpenAI
         # @!method initialize(id:, created_at:, level:, message:, data: nil, type: nil, object: :"fine_tuning.job.event")
         #   Fine-tuning job event object
         #
-        #   @param id [String] The object identifier.
+        #   @param id [String]
+        #     The object identifier.
         #
-        #   @param created_at [Integer] The Unix timestamp (in seconds) for when the fine-tuning job was created.
+        #   @param created_at [Integer]
+        #     The Unix timestamp (in seconds) for when the fine-tuning job was created.
         #
-        #   @param level [Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Level] The log level of the event.
+        #   @param level [Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Level]
+        #     The log level of the event.
         #
-        #   @param message [String] The message of the event.
+        #   @param message [String]
+        #     The message of the event.
         #
-        #   @param data [Object] The data associated with the event.
+        #   @param data [Object]
+        #     The data associated with the event.
         #
-        #   @param type [Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Type] The type of event.
+        #   @param type [Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Type]
+        #     The type of event.
         #
-        #   @param object [Symbol, :"fine_tuning.job.event"] The object type, which is always "fine_tuning.job.event".
+        #   @param object [Symbol, :"fine_tuning.job.event"]
+        #     The object type, which is always "fine_tuning.job.event".
 
         # The log level of the event.
         #

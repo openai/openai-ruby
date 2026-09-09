@@ -36,9 +36,9 @@ module OpenAI
         description: nil,
         # The expiration policy for a vector store.
         expires_after: nil,
-        # A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
-        # the vector store should use. Useful for tools like `file_search` that can access
-        # files.
+        # A list of [File](https://developers.openai.com/api/reference/resources/files)
+        # IDs that the vector store should use. Useful for tools like `file_search` that
+        # can access files.
         file_ids: nil,
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
         # for storing additional information about the object in a structured format, and

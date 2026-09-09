@@ -24,19 +24,19 @@ module OpenAI
         optional :event_id, String
 
         # @!method initialize(session:, event_id: nil, type: :"session.update")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::RealtimeTranslationSessionUpdateEvent} for more
-        #   details.
-        #
         #   Send this event to update the translation session configuration. Translation
         #   sessions support updates to `audio.output.language`,
         #   `audio.input.transcription`, and `audio.input.noise_reduction`.
         #
-        #   @param session [OpenAI::Models::Realtime::RealtimeTranslationSessionUpdateRequest] Translation session fields to update. The session `type` and `model` are set
+        #   @param session [OpenAI::Models::Realtime::RealtimeTranslationSessionUpdateRequest]
+        #     Translation session fields to update. The session `type` and `model` are set at
+        #     creation and cannot be changed with `session.update`.
         #
-        #   @param event_id [String] Optional client-generated ID used to identify this event.
+        #   @param event_id [String]
+        #     Optional client-generated ID used to identify this event.
         #
-        #   @param type [Symbol, :"session.update"] The event type, must be `session.update`.
+        #   @param type [Symbol, :"session.update"]
+        #     The event type, must be `session.update`.
       end
     end
   end

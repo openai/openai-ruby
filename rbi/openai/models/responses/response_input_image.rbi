@@ -44,7 +44,7 @@ module OpenAI
         attr_writer :prompt_cache_breakpoint
 
         # An image input to the model. Learn about
-        # [image inputs](https://platform.openai.com/docs/guides/vision).
+        # [image inputs](https://developers.openai.com/api/docs/guides/images-vision).
         sig do
           params(
 

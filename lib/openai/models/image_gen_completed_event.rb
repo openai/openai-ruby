@@ -53,26 +53,32 @@ module OpenAI
       required :usage, -> { OpenAI::ImageGenCompletedEvent::Usage }
 
       # @!method initialize(b64_json:, background:, created_at:, output_format:, quality:, size:, usage:, type: :"image_generation.completed")
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::ImageGenCompletedEvent} for more details.
-      #
       #   Emitted when image generation has completed and the final image is available.
       #
-      #   @param b64_json [String] Base64-encoded image data, suitable for rendering as an image.
+      #   @param b64_json [String]
+      #     Base64-encoded image data, suitable for rendering as an image.
       #
-      #   @param background [Symbol, OpenAI::Models::ImageGenCompletedEvent::Background] The background setting for the generated image.
+      #   @param background [Symbol, OpenAI::Models::ImageGenCompletedEvent::Background]
+      #     The background setting for the generated image.
       #
-      #   @param created_at [Integer] The Unix timestamp when the event was created.
+      #   @param created_at [Integer]
+      #     The Unix timestamp when the event was created.
       #
-      #   @param output_format [Symbol, OpenAI::Models::ImageGenCompletedEvent::OutputFormat] The output format for the generated image.
+      #   @param output_format [Symbol, OpenAI::Models::ImageGenCompletedEvent::OutputFormat]
+      #     The output format for the generated image.
       #
-      #   @param quality [Symbol, OpenAI::Models::ImageGenCompletedEvent::Quality] The quality setting for the generated image.
+      #   @param quality [Symbol, OpenAI::Models::ImageGenCompletedEvent::Quality]
+      #     The quality setting for the generated image.
       #
-      #   @param size [String, Symbol, OpenAI::Models::ImageGenCompletedEvent::Size] The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+      #   @param size [String, Symbol, OpenAI::Models::ImageGenCompletedEvent::Size]
+      #     The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
-      #   @param usage [OpenAI::Models::ImageGenCompletedEvent::Usage] For the GPT image models only, the token usage information for the image generat
+      #   @param usage [OpenAI::Models::ImageGenCompletedEvent::Usage]
+      #     For the GPT image models only, the token usage information for the image
+      #     generation.
       #
-      #   @param type [Symbol, :"image_generation.completed"] The type of the event. Always `image_generation.completed`.
+      #   @param type [Symbol, :"image_generation.completed"]
+      #     The type of the event. Always `image_generation.completed`.
 
       # The background setting for the generated image.
       #
@@ -185,19 +191,20 @@ module OpenAI
         required :total_tokens, Integer
 
         # @!method initialize(input_tokens:, input_tokens_details:, output_tokens:, total_tokens:)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::ImageGenCompletedEvent::Usage} for more details.
-        #
         #   For the GPT image models only, the token usage information for the image
         #   generation.
         #
-        #   @param input_tokens [Integer] The number of tokens (images and text) in the input prompt.
+        #   @param input_tokens [Integer]
+        #     The number of tokens (images and text) in the input prompt.
         #
-        #   @param input_tokens_details [OpenAI::Models::ImageGenCompletedEvent::Usage::InputTokensDetails] The input tokens detailed information for the image generation.
+        #   @param input_tokens_details [OpenAI::Models::ImageGenCompletedEvent::Usage::InputTokensDetails]
+        #     The input tokens detailed information for the image generation.
         #
-        #   @param output_tokens [Integer] The number of image tokens in the output image.
+        #   @param output_tokens [Integer]
+        #     The number of image tokens in the output image.
         #
-        #   @param total_tokens [Integer] The total number of tokens (images and text) used for the image generation.
+        #   @param total_tokens [Integer]
+        #     The total number of tokens (images and text) used for the image generation.
 
         # @see OpenAI::Models::ImageGenCompletedEvent::Usage#input_tokens_details
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
@@ -216,9 +223,11 @@ module OpenAI
           # @!method initialize(image_tokens:, text_tokens:)
           #   The input tokens detailed information for the image generation.
           #
-          #   @param image_tokens [Integer] The number of image tokens in the input prompt.
+          #   @param image_tokens [Integer]
+          #     The number of image tokens in the input prompt.
           #
-          #   @param text_tokens [Integer] The number of text tokens in the input prompt.
+          #   @param text_tokens [Integer]
+          #     The number of text tokens in the input prompt.
         end
       end
     end

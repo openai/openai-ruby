@@ -48,8 +48,8 @@ module OpenAI
         attr_accessor :usage_bytes
 
         # The ID of the
-        # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
-        # that the [File](https://platform.openai.com/docs/api-reference/files) is
+        # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+        # that the [File](https://developers.openai.com/api/reference/resources/files) is
         # attached to.
         sig { returns(String) }
         attr_accessor :vector_store_id
@@ -126,8 +126,8 @@ module OpenAI
           usage_bytes:,
 
           # The ID of the
-          # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
-          # that the [File](https://platform.openai.com/docs/api-reference/files) is
+          # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+          # that the [File](https://developers.openai.com/api/reference/resources/files) is
           # attached to.
           vector_store_id:,
 

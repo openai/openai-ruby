@@ -36,14 +36,13 @@ module OpenAI
           required :type, const: :output_text
 
           # @!method initialize(text:, type: :output_text)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Graders::GraderInputItem::OutputText} for more details.
-          #
           #   A text output from the model.
           #
-          #   @param text [String] The text output from the model.
+          #   @param text [String]
+          #     The text output from the model.
           #
-          #   @param type [Symbol, :output_text] The type of the output text. Always `output_text`.
+          #   @param type [Symbol, :output_text]
+          #     The type of the output text. Always `output_text`.
         end
 
         class InputImage < OpenAI::Internal::Type::BaseModel
@@ -67,16 +66,17 @@ module OpenAI
           optional :detail, String
 
           # @!method initialize(image_url:, detail: nil, type: :input_image)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Graders::GraderInputItem::InputImage} for more details.
-          #
           #   An image input block used within EvalItem content arrays.
           #
-          #   @param image_url [String] The URL of the image input.
+          #   @param image_url [String]
+          #     The URL of the image input.
           #
-          #   @param detail [String] The detail level of the image to be sent to the model. One of `high`, `low`, or
+          #   @param detail [String]
+          #     The detail level of the image to be sent to the model. One of `high`, `low`, or
+          #     `auto`. Defaults to `auto`.
           #
-          #   @param type [Symbol, :input_image] The type of the image input. Always `input_image`.
+          #   @param type [Symbol, :input_image]
+          #     The type of the image input. Always `input_image`.
         end
 
         # @!method self.variants

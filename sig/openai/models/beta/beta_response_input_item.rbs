@@ -860,8 +860,12 @@ module OpenAI
             result: String?,
             status: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::status,
             ?type: :image_generation_call,
+            ?action: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::action?,
             ?agent: OpenAI::Beta::BetaResponseInputItem::ImageGenerationCall::Agent?,
+            ?background: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::background?,
+            ?output_format: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::output_format?,
             ?quality: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::quality?,
+            ?revised_prompt: String?,
             ?size: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::size?
           }
 
@@ -874,9 +878,17 @@ module OpenAI
 
           attr_accessor type: :image_generation_call
 
+          attr_accessor action: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::action?
+
           attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::ImageGenerationCall::Agent?
 
+          attr_accessor background: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::background?
+
+          attr_accessor output_format: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::output_format?
+
           attr_accessor quality: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::quality?
+
+          attr_accessor revised_prompt: String?
 
           attr_accessor size: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::size?
 
@@ -884,8 +896,12 @@ module OpenAI
             id: String,
             result: String?,
             status: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::status,
+            ?action: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::action?,
             ?agent: OpenAI::Beta::BetaResponseInputItem::ImageGenerationCall::Agent?,
+            ?background: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::background?,
+            ?output_format: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::output_format?,
             ?quality: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::quality?,
+            ?revised_prompt: String?,
             ?size: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::size?,
             ?type: :image_generation_call
           ) -> void
@@ -895,8 +911,12 @@ module OpenAI
             result: String?,
             status: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::status,
             ?type: :image_generation_call,
+            ?action: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::action?,
             ?agent: OpenAI::Beta::BetaResponseInputItem::ImageGenerationCall::Agent?,
+            ?background: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::background?,
+            ?output_format: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::output_format?,
             ?quality: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::quality?,
+            ?revised_prompt: String?,
             ?size: OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::size?
           }
 
@@ -913,6 +933,18 @@ module OpenAI
             def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::status]
           end
 
+          type action = :generate | :edit | :auto
+
+          module Action
+            extend OpenAI::Internal::Type::Enum
+
+            GENERATE: :generate
+            EDIT: :edit
+            AUTO: :auto
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::action]
+          end
+
           type agent = { agent_name: String }
 
           class Agent < OpenAI::Internal::Type::BaseModel
@@ -921,6 +953,30 @@ module OpenAI
             def initialize: (agent_name: String) -> void
 
             def to_hash: -> { agent_name: String }
+          end
+
+          type background = :transparent | :opaque | :auto
+
+          module Background
+            extend OpenAI::Internal::Type::Enum
+
+            TRANSPARENT: :transparent
+            OPAQUE: :opaque
+            AUTO: :auto
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::background]
+          end
+
+          type output_format = :png | :webp | :jpeg
+
+          module OutputFormat
+            extend OpenAI::Internal::Type::Enum
+
+            PNG: :png
+            WEBP: :webp
+            JPEG: :jpeg
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::output_format]
           end
 
           type quality = :low | :medium | :high | :xhigh | :max | :auto

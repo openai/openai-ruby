@@ -50,19 +50,26 @@ module OpenAI
         #   Returned when the text value of an "output_text" content part is done streaming.
         #   Also emitted when a Response is interrupted, incomplete, or cancelled.
         #
-        #   @param content_index [Integer] The index of the content part in the item's content array.
+        #   @param content_index [Integer]
+        #     The index of the content part in the item's content array.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param item_id [String] The ID of the item.
+        #   @param item_id [String]
+        #     The ID of the item.
         #
-        #   @param output_index [Integer] The index of the output item in the response.
+        #   @param output_index [Integer]
+        #     The index of the output item in the response.
         #
-        #   @param response_id [String] The ID of the response.
+        #   @param response_id [String]
+        #     The ID of the response.
         #
-        #   @param text [String] The final text content.
+        #   @param text [String]
+        #     The final text content.
         #
-        #   @param type [Symbol, :"response.output_text.done"] The event type, must be `response.output_text.done`.
+        #   @param type [Symbol, :"response.output_text.done"]
+        #     The event type, must be `response.output_text.done`.
       end
     end
   end

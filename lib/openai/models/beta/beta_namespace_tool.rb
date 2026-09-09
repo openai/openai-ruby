@@ -31,13 +31,17 @@ module OpenAI
         # @!method initialize(description:, name:, tools:, type: :namespace)
         #   Groups function/custom tools under a shared namespace.
         #
-        #   @param description [String] A description of the namespace shown to the model.
+        #   @param description [String]
+        #     A description of the namespace shown to the model.
         #
-        #   @param name [String] The namespace name used in tool calls (for example, `crm`).
+        #   @param name [String]
+        #     The namespace name used in tool calls (for example, `crm`).
         #
-        #   @param tools [Array<OpenAI::Models::Beta::BetaNamespaceTool::Tool::Function, OpenAI::Models::Beta::BetaCustomTool>] The function/custom tools available inside this namespace.
+        #   @param tools [Array<OpenAI::Models::Beta::BetaNamespaceTool::Tool::Function, OpenAI::Models::Beta::BetaCustomTool>]
+        #     The function/custom tools available inside this namespace.
         #
-        #   @param type [Symbol, :namespace] The type of the tool. Always `namespace`.
+        #   @param type [Symbol, :namespace]
+        #     The type of the tool. Always `namespace`.
 
         # A function or custom tool that belongs to a namespace.
         module Tool
@@ -47,7 +51,7 @@ module OpenAI
 
           variant :function, -> { OpenAI::Beta::BetaNamespaceTool::Tool::Function }
 
-          # A custom tool that processes input using a specified format. Learn more about   [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
+          # A custom tool that processes input using a specified format. Learn more about   [custom tools](https://developers.openai.com/api/docs/guides/function-calling#custom-tools)
           variant :custom, -> { OpenAI::Beta::BetaCustomTool }
 
           class Function < OpenAI::Internal::Type::BaseModel
@@ -116,24 +120,30 @@ module OpenAI
             optional :strict, OpenAI::Internal::Type::Boolean, nil?: true
 
             # @!method initialize(name:, allowed_callers: nil, async: nil, defer_loading: nil, description: nil, output_schema: nil, parameters: nil, strict: nil, type: :function)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::BetaNamespaceTool::Tool::Function} for more details.
-            #
             #   @param name [String]
             #
-            #   @param allowed_callers [Array<Symbol, OpenAI::Models::Beta::BetaNamespaceTool::Tool::Function::AllowedCaller>, nil] The tool invocation context(s).
+            #   @param allowed_callers [Array<Symbol, OpenAI::Models::Beta::BetaNamespaceTool::Tool::Function::AllowedCaller>, nil]
+            #     The tool invocation context(s).
             #
-            #   @param async [Boolean] Whether the tool response can be returned asynchronously versus immediately retu
+            #   @param async [Boolean]
+            #     Whether the tool response can be returned asynchronously versus immediately
+            #     returned on next response creation.
             #
-            #   @param defer_loading [Boolean] Whether this function should be deferred and discovered via tool search.
+            #   @param defer_loading [Boolean]
+            #     Whether this function should be deferred and discovered via tool search.
             #
             #   @param description [String, nil]
             #
-            #   @param output_schema [Hash{Symbol=>Object}, nil] A JSON Schema describing the JSON value encoded in string outputs for this funct
+            #   @param output_schema [Hash{Symbol=>Object}, nil]
+            #     A JSON Schema describing the JSON value encoded in string outputs for this
+            #     function tool. This does not describe content-array outputs.
             #
             #   @param parameters [Object, nil]
             #
-            #   @param strict [Boolean, nil] Whether to enforce strict parameter validation. If omitted, Responses attempts t
+            #   @param strict [Boolean, nil]
+            #     Whether to enforce strict parameter validation. If omitted, Responses attempts
+            #     to use strict validation when the schema is compatible, and falls back to
+            #     non-strict validation otherwise.
             #
             #   @param type [Symbol, :function]
 

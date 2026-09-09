@@ -19,7 +19,8 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::APIKeysTest < Open
           object: Symbol,
           owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
           owner_project_access: OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess,
-          redacted_value: String
+          redacted_value: String,
+          expires_at: Integer | nil
         }
     end
   end
@@ -47,7 +48,8 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::APIKeysTest < Open
           object: Symbol,
           owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
           owner_project_access: OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess,
-          redacted_value: String
+          redacted_value: String,
+          expires_at: Integer | nil
         }
     end
   end

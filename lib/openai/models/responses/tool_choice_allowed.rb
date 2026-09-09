@@ -41,16 +41,31 @@ module OpenAI
         required :type, const: :allowed_tools
 
         # @!method initialize(mode:, tools:, type: :allowed_tools)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ToolChoiceAllowed} for more details.
-        #
         #   Constrains the tools available to the model to a pre-defined set.
         #
-        #   @param mode [Symbol, OpenAI::Models::Responses::ToolChoiceAllowed::Mode] Constrains the tools available to the model to a pre-defined set.
+        #   @param mode [Symbol, OpenAI::Models::Responses::ToolChoiceAllowed::Mode]
+        #     Constrains the tools available to the model to a pre-defined set.
         #
-        #   @param tools [Array<Hash{Symbol=>Object}>] A list of tool definitions that the model should be allowed to call.
+        #     `auto` allows the model to pick from among the allowed tools and generate a
+        #     message.
         #
-        #   @param type [Symbol, :allowed_tools] Allowed tool configuration type. Always `allowed_tools`.
+        #     `required` requires the model to call one or more of the allowed tools.
+        #
+        #   @param tools [Array<Hash{Symbol=>Object}>]
+        #     A list of tool definitions that the model should be allowed to call.
+        #
+        #     For the Responses API, the list of tool definitions might look like:
+        #
+        #     ```json
+        #     [
+        #       { "type": "function", "name": "get_weather" },
+        #       { "type": "mcp", "server_label": "deepwiki" },
+        #       { "type": "image_generation" }
+        #     ]
+        #     ```
+        #
+        #   @param type [Symbol, :allowed_tools]
+        #     Allowed tool configuration type. Always `allowed_tools`.
 
         # Constrains the tools available to the model to a pre-defined set.
         #

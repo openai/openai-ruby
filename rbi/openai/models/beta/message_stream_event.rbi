@@ -6,7 +6,7 @@ module OpenAI
     module Beta
 
       # Occurs when a
-      # [message](https://platform.openai.com/docs/api-reference/messages/object) is
+      # [message](https://developers.openai.com/api/docs/assistants/migration) is
       # created.
       module MessageStreamEvent
         extend OpenAI::Internal::Type::Union
@@ -30,7 +30,7 @@ module OpenAI
           end
 
           # Represents a message within a
-          # [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           sig { returns(OpenAI::Beta::Threads::Message) }
           attr_reader :data
 
@@ -41,7 +41,7 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          # [message](https://platform.openai.com/docs/api-reference/messages/object) is
+          # [message](https://developers.openai.com/api/docs/assistants/migration) is
           # created.
           sig do
             params(
@@ -55,7 +55,7 @@ module OpenAI
           def self.new(
 
             # Represents a message within a
-            # [thread](https://platform.openai.com/docs/api-reference/threads).
+            # [thread](https://developers.openai.com/api/docs/assistants/migration).
             data:,
 
             event: :"thread.message.created"
@@ -81,7 +81,7 @@ module OpenAI
           end
 
           # Represents a message within a
-          # [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           sig { returns(OpenAI::Beta::Threads::Message) }
           attr_reader :data
 
@@ -92,8 +92,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          # [message](https://platform.openai.com/docs/api-reference/messages/object) moves
-          # to an `in_progress` state.
+          # [message](https://developers.openai.com/api/docs/assistants/migration) moves to
+          # an `in_progress` state.
           sig do
             params(
 
@@ -106,7 +106,7 @@ module OpenAI
           def self.new(
 
             # Represents a message within a
-            # [thread](https://platform.openai.com/docs/api-reference/threads).
+            # [thread](https://developers.openai.com/api/docs/assistants/migration).
             data:,
 
             event: :"thread.message.in_progress"
@@ -143,8 +143,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when parts of a
-          # [Message](https://platform.openai.com/docs/api-reference/messages/object) are
-          # being streamed.
+          # [Message](https://developers.openai.com/api/docs/assistants/migration) are being
+          # streamed.
           sig do
             params(
 
@@ -183,7 +183,7 @@ module OpenAI
           end
 
           # Represents a message within a
-          # [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           sig { returns(OpenAI::Beta::Threads::Message) }
           attr_reader :data
 
@@ -194,7 +194,7 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          # [message](https://platform.openai.com/docs/api-reference/messages/object) is
+          # [message](https://developers.openai.com/api/docs/assistants/migration) is
           # completed.
           sig do
             params(
@@ -208,7 +208,7 @@ module OpenAI
           def self.new(
 
             # Represents a message within a
-            # [thread](https://platform.openai.com/docs/api-reference/threads).
+            # [thread](https://developers.openai.com/api/docs/assistants/migration).
             data:,
 
             event: :"thread.message.completed"
@@ -234,7 +234,7 @@ module OpenAI
           end
 
           # Represents a message within a
-          # [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           sig { returns(OpenAI::Beta::Threads::Message) }
           attr_reader :data
 
@@ -245,7 +245,7 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          # [message](https://platform.openai.com/docs/api-reference/messages/object) ends
+          # [message](https://developers.openai.com/api/docs/assistants/migration) ends
           # before it is completed.
           sig do
             params(
@@ -259,7 +259,7 @@ module OpenAI
           def self.new(
 
             # Represents a message within a
-            # [thread](https://platform.openai.com/docs/api-reference/threads).
+            # [thread](https://developers.openai.com/api/docs/assistants/migration).
             data:,
 
             event: :"thread.message.incomplete"

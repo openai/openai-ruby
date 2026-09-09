@@ -22,9 +22,11 @@ module OpenAI
             # @!method initialize(deleted:, object: :"group.user.deleted")
             #   Confirmation payload returned after removing a user from a group.
             #
-            #   @param deleted [Boolean] Whether the group membership was removed.
+            #   @param deleted [Boolean]
+            #     Whether the group membership was removed.
             #
-            #   @param object [Symbol, :"group.user.deleted"] Always `group.user.deleted`.
+            #   @param object [Symbol, :"group.user.deleted"]
+            #     Always `group.user.deleted`.
           end
         end
       end

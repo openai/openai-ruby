@@ -23,8 +23,8 @@ module OpenAI
           attr_accessor :thread_id
 
           # The ID of the
-          # [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
-          # execute this run.
+          # [assistant](https://developers.openai.com/api/docs/assistants/migration) to use
+          # to execute this run.
           sig { returns(String) }
           attr_accessor :assistant_id
 
@@ -33,7 +33,7 @@ module OpenAI
           # to fetch the file search result content.
           #
           # See the
-          # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+          # [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
           # for more information.
           sig { returns(T.nilable(T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol])) }
           attr_reader :include
@@ -52,8 +52,8 @@ module OpenAI
           attr_accessor :additional_messages
 
           # Overrides the
-          # [instructions](https://platform.openai.com/docs/api-reference/assistants/createAssistant)
-          # of the assistant. This is useful for modifying the behavior on a per-run basis.
+          # [instructions](https://developers.openai.com/api/docs/assistants/migration) of
+          # the assistant. This is useful for modifying the behavior on a per-run basis.
           sig { returns(T.nilable(String)) }
           attr_accessor :instructions
 
@@ -82,15 +82,16 @@ module OpenAI
           sig { returns(T.nilable(T::Hash[Symbol, String])) }
           attr_accessor :metadata
 
-          # The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to
-          # be used to execute this run. If a value is provided here, it will override the
-          # model associated with the assistant. If not, the model associated with the
-          # assistant will be used.
+          # The ID of the
+          # [Model](https://developers.openai.com/api/reference/resources/models) to be used
+          # to execute this run. If a value is provided here, it will override the model
+          # associated with the assistant. If not, the model associated with the assistant
+          # will be used.
           sig { returns(T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol))) }
           attr_accessor :model
 
           # Whether to enable
-          # [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
+          # [parallel function calling](https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling)
           # during tool use.
           sig { returns(T.nilable(T::Boolean)) }
           attr_reader :parallel_tool_calls
@@ -102,20 +103,20 @@ module OpenAI
           # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
           # reasoning effort can result in faster responses and fewer tokens used on
           # reasoning in a response. Not all reasoning models support every value. See the
-          # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+          # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
           # model-specific support.
           sig { returns(T.nilable(OpenAI::ReasoningEffort::OrSymbol)) }
           attr_accessor :reasoning_effort
 
           # Specifies the format that the model must output. Compatible with
-          # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
-          # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
-          # and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+          # [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+          # [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+          # all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
           #
           # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
           # Outputs which ensures the model will match your supplied JSON schema. Learn more
           # in the
-          # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
           #
           # Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
           # message the model generates is valid JSON.
@@ -265,8 +266,8 @@ module OpenAI
             thread_id:,
 
             # The ID of the
-            # [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
-            # execute this run.
+            # [assistant](https://developers.openai.com/api/docs/assistants/migration) to use
+            # to execute this run.
             assistant_id:,
 
             # A list of additional fields to include in the response. Currently the only
@@ -274,7 +275,7 @@ module OpenAI
             # to fetch the file search result content.
             #
             # See the
-            # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+            # [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
             # for more information.
             include: nil,
 
@@ -287,8 +288,8 @@ module OpenAI
             additional_messages: nil,
 
             # Overrides the
-            # [instructions](https://platform.openai.com/docs/api-reference/assistants/createAssistant)
-            # of the assistant. This is useful for modifying the behavior on a per-run basis.
+            # [instructions](https://developers.openai.com/api/docs/assistants/migration) of
+            # the assistant. This is useful for modifying the behavior on a per-run basis.
             instructions: nil,
 
             # The maximum number of completion tokens that may be used over the course of the
@@ -313,14 +314,15 @@ module OpenAI
             # a maximum length of 512 characters.
             metadata: nil,
 
-            # The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to
-            # be used to execute this run. If a value is provided here, it will override the
-            # model associated with the assistant. If not, the model associated with the
-            # assistant will be used.
+            # The ID of the
+            # [Model](https://developers.openai.com/api/reference/resources/models) to be used
+            # to execute this run. If a value is provided here, it will override the model
+            # associated with the assistant. If not, the model associated with the assistant
+            # will be used.
             model: nil,
 
             # Whether to enable
-            # [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
+            # [parallel function calling](https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling)
             # during tool use.
             parallel_tool_calls: nil,
 
@@ -328,19 +330,19 @@ module OpenAI
             # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
             # reasoning effort can result in faster responses and fewer tokens used on
             # reasoning in a response. Not all reasoning models support every value. See the
-            # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+            # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
             # model-specific support.
             reasoning_effort: nil,
 
             # Specifies the format that the model must output. Compatible with
-            # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
-            # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
-            # and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+            # [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+            # [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+            # all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
             #
             # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
             # Outputs which ensures the model will match your supplied JSON schema. Learn more
             # in the
-            # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+            # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
             #
             # Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
             # message the model generates is valid JSON.
@@ -712,10 +714,11 @@ module OpenAI
             end
           end
 
-          # The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to
-          # be used to execute this run. If a value is provided here, it will override the
-          # model associated with the assistant. If not, the model associated with the
-          # assistant will be used.
+          # The ID of the
+          # [Model](https://developers.openai.com/api/reference/resources/models) to be used
+          # to execute this run. If a value is provided here, it will override the model
+          # associated with the assistant. If not, the model associated with the assistant
+          # will be used.
           module Model
             extend OpenAI::Internal::Type::Union
 

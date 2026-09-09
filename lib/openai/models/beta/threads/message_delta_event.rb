@@ -27,11 +27,14 @@ module OpenAI
           #   Represents a message delta i.e. any changed fields on a message during
           #   streaming.
           #
-          #   @param id [String] The identifier of the message, which can be referenced in API endpoints.
+          #   @param id [String]
+          #     The identifier of the message, which can be referenced in API endpoints.
           #
-          #   @param delta [OpenAI::Models::Beta::Threads::MessageDelta] The delta containing the fields that have changed on the Message.
+          #   @param delta [OpenAI::Models::Beta::Threads::MessageDelta]
+          #     The delta containing the fields that have changed on the Message.
           #
-          #   @param object [Symbol, :"thread.message.delta"] The object type, which is always `thread.message.delta`.
+          #   @param object [Symbol, :"thread.message.delta"]
+          #     The object type, which is always `thread.message.delta`.
         end
       end
     end

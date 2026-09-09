@@ -71,31 +71,37 @@ module OpenAI
         optional :output_schema, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown], nil?: true
 
         # @!method initialize(name:, parameters:, strict:, allowed_callers: nil, async: nil, defer_loading: nil, description: nil, output_schema: nil, type: :function)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::FunctionTool} for more details.
-        #
         #   Defines a function in your own code the model can choose to call. Learn more
         #   about
-        #   [function calling](https://platform.openai.com/docs/guides/function-calling).
+        #   [function calling](https://developers.openai.com/api/docs/guides/function-calling).
         #
-        #   @param name [String] The name of the function to call.
+        #   @param name [String]
+        #     The name of the function to call.
         #
-        #   @param parameters [Hash{Symbol=>Object}, nil] A JSON schema object describing the parameters of the function.
+        #   @param parameters [Hash{Symbol=>Object}, nil]
+        #     A JSON schema object describing the parameters of the function.
         #
-        #   @param strict [Boolean, nil] Whether strict parameter validation is enforced for this function tool.
+        #   @param strict [Boolean, nil]
+        #     Whether strict parameter validation is enforced for this function tool.
         #
-        #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::FunctionTool::AllowedCaller>, nil] The tool invocation context(s).
+        #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::FunctionTool::AllowedCaller>, nil]
+        #     The tool invocation context(s).
         #
         #   @param async [Boolean]
         #
-        #   @param defer_loading [Boolean] Whether this function is deferred and loaded via tool search.
+        #   @param defer_loading [Boolean]
+        #     Whether this function is deferred and loaded via tool search.
         #
-        #   @param description [String, nil] A description of the function. Used by the model to determine whether or not to
+        #   @param description [String, nil]
+        #     A description of the function. Used by the model to determine whether or not to
+        #     call the function.
         #
-        #   @param output_schema [Hash{Symbol=>Object}, nil] A JSON schema object describing the JSON value encoded in string outputs for thi
+        #   @param output_schema [Hash{Symbol=>Object}, nil]
+        #     A JSON schema object describing the JSON value encoded in string outputs for
+        #     this function.
         #
-        #   @param type [Symbol, :function] The type of the function tool. Always `function`.
-
+        #   @param type [Symbol, :function]
+        #     The type of the function tool. Always `function`.
         module AllowedCaller
           extend OpenAI::Internal::Type::Enum
 

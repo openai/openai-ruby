@@ -36,9 +36,6 @@ module OpenAI
         optional :stream_id, String
 
         # @!method initialize(error:, sequence_number:, steer:, stream_id: nil, type: :"response.steer.failed")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseSteerFailedEvent} for more details.
-        #
         #   Emitted when steering input is rejected or cannot be committed to a successor
         #   response. Returns the original, uncommitted input so the client can carry it
         #   into `response.create` when appropriate. Invalid input must be corrected before
@@ -48,15 +45,21 @@ module OpenAI
         #   allocated omit `steer.id`. A lost connection or missing acknowledgement leaves
         #   the outcome unknown; it is not proof that the input was rejected.
         #
-        #   @param error [OpenAI::Models::Responses::ResponseSteerFailedEvent::Error] Information about why the input could not be committed.
+        #   @param error [OpenAI::Models::Responses::ResponseSteerFailedEvent::Error]
+        #     Information about why the input could not be committed.
         #
-        #   @param sequence_number [Integer] The sequence number for this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number for this event.
         #
-        #   @param steer [OpenAI::Models::Responses::ResponseSteerFailedEvent::Steer] The steering submission that could not be committed.
+        #   @param steer [OpenAI::Models::Responses::ResponseSteerFailedEvent::Steer]
+        #     The steering submission that could not be committed.
         #
-        #   @param stream_id [String] The WebSocket lane that emitted this event, when the target response is
+        #   @param stream_id [String]
+        #     The WebSocket lane that emitted this event, when the target response is
+        #     available and its `response.create` event supplied a `stream_id`.
         #
-        #   @param type [Symbol, :"response.steer.failed"] The event discriminator. Always `response.steer.failed`.
+        #   @param type [Symbol, :"response.steer.failed"]
+        #     The event discriminator. Always `response.steer.failed`.
 
         # @see OpenAI::Models::Responses::ResponseSteerFailedEvent#error
         class Error < OpenAI::Internal::Type::BaseModel
@@ -91,16 +94,28 @@ module OpenAI
           required :type, const: :invalid_request_error
 
           # @!method initialize(code:, message:, type: :invalid_request_error)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Responses::ResponseSteerFailedEvent::Error} for more details.
-          #
           #   Information about why the input could not be committed.
           #
-          #   @param code [Symbol, String, OpenAI::Models::Responses::ResponseSteerErrorCode] A machine-readable steering error code. Clients should handle unknown
+          #   @param code [Symbol, String, OpenAI::Models::Responses::ResponseSteerErrorCode]
+          #     A machine-readable steering error code. Clients should handle unknown values
+          #     because additional codes may be introduced. Known values include:
           #
-          #   @param message [String] A human-readable description of the error.
+          #     - `response_not_found`: The target response is not available on this connection.
+          #     - `invalid_input`: The event or input failed validation.
+          #     - `steering_not_supported`: The model or response execution mode does not
+          #       support steering.
+          #     - `too_many_pending_steers`: Too much steering input is pending for the
+          #       response.
+          #     - `response_already_completed`: The response completed and is no longer
+          #       accepting steering input.
+          #     - `response_not_active`: The response is no longer accepting steering input.
+          #     - `successor_creation_failed`: The successor response could not be created.
           #
-          #   @param type [Symbol, :invalid_request_error] The error type. Always `invalid_request_error`.
+          #   @param message [String]
+          #     A human-readable description of the error.
+          #
+          #   @param type [Symbol, :invalid_request_error]
+          #     The error type. Always `invalid_request_error`.
         end
 
         # @see OpenAI::Models::Responses::ResponseSteerFailedEvent#steer
@@ -132,16 +147,24 @@ module OpenAI
           optional :id, String
 
           # @!method initialize(input:, previous_response_id:, id: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Responses::ResponseSteerFailedEvent::Steer} for more details.
-          #
           #   The steering submission that could not be committed.
           #
-          #   @param input [String, Array<Hash{Symbol=>Object}>] Input to queue for a continuation of the response. Uses the same string or
+          #   @param input [String, Array<Hash{Symbol=>Object}>]
+          #     Input to queue for a continuation of the response. Uses the same string or
+          #     input-item shape as `response.create.input`, with a non-empty array when
+          #     supplying input items.
           #
-          #   @param previous_response_id [String] The ID of the response that was targeted for steering.
+          #     Steering accepts only messages with the `user` role. Each message may contain
+          #     only `type`, `role`, and `content`, with `content` as a string or an array of
+          #     `input_text`, `input_image`, and `input_file` parts. The optional `type` must be
+          #     `message`. Other roles, tool outputs, and item types are not supported for
+          #     steering.
           #
-          #   @param id [String] The ID assigned to the steering submission, if one was allocated.
+          #   @param previous_response_id [String]
+          #     The ID of the response that was targeted for steering.
+          #
+          #   @param id [String]
+          #     The ID assigned to the steering submission, if one was allocated.
         end
       end
     end

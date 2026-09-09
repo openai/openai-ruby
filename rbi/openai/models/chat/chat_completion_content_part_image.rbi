@@ -38,7 +38,8 @@ module OpenAI
         }
         attr_writer :prompt_cache_breakpoint
 
-        # Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
+        # Learn about
+        # [image inputs](https://developers.openai.com/api/docs/guides/images-vision).
         sig do
           params(
 
@@ -90,7 +91,7 @@ module OpenAI
           attr_accessor :url
 
           # Specifies the detail level of the image. Learn more in the
-          # [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
+          # [Vision guide](https://developers.openai.com/api/docs/guides/images-vision#choose-an-image-detail-level).
           sig { returns(T.nilable(OpenAI::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol)) }
           attr_reader :detail
 
@@ -112,7 +113,7 @@ module OpenAI
             url:,
 
             # Specifies the detail level of the image. Learn more in the
-            # [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
+            # [Vision guide](https://developers.openai.com/api/docs/guides/images-vision#choose-an-image-detail-level).
 
             detail: nil
           )
@@ -127,7 +128,7 @@ module OpenAI
           end
 
           # Specifies the detail level of the image. Learn more in the
-          # [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
+          # [Vision guide](https://developers.openai.com/api/docs/guides/images-vision#choose-an-image-detail-level).
           module Detail
             extend OpenAI::Internal::Type::Enum
 

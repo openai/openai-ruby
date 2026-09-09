@@ -36,8 +36,7 @@ module OpenAI
         }
         attr_writer :prompt_cache_breakpoint
 
-        # Learn about
-        # [text inputs](https://platform.openai.com/docs/guides/text-generation).
+        # Learn about [text inputs](https://developers.openai.com/api/docs/guides/text).
         sig do
           params(
 

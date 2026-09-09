@@ -19,9 +19,11 @@ module OpenAI
           required :object, const: :"certificate.deleted"
 
           # @!method initialize(id:, object: :"certificate.deleted")
-          #   @param id [String] The ID of the certificate that was deleted.
+          #   @param id [String]
+          #     The ID of the certificate that was deleted.
           #
-          #   @param object [Symbol, :"certificate.deleted"] The object type, must be `certificate.deleted`.
+          #   @param object [Symbol, :"certificate.deleted"]
+          #     The object type, must be `certificate.deleted`.
         end
       end
     end

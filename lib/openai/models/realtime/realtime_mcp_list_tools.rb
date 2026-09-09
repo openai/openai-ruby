@@ -31,14 +31,17 @@ module OpenAI
         # @!method initialize(server_label:, tools:, id: nil, type: :mcp_list_tools)
         #   A Realtime item listing tools available on an MCP server.
         #
-        #   @param server_label [String] The label of the MCP server.
+        #   @param server_label [String]
+        #     The label of the MCP server.
         #
-        #   @param tools [Array<OpenAI::Models::Realtime::RealtimeMcpListTools::Tool>] The tools available on the server.
+        #   @param tools [Array<OpenAI::Models::Realtime::RealtimeMcpListTools::Tool>]
+        #     The tools available on the server.
         #
-        #   @param id [String] The unique ID of the list.
+        #   @param id [String]
+        #     The unique ID of the list.
         #
-        #   @param type [Symbol, :mcp_list_tools] The type of the item. Always `mcp_list_tools`.
-
+        #   @param type [Symbol, :mcp_list_tools]
+        #     The type of the item. Always `mcp_list_tools`.
         class Tool < OpenAI::Internal::Type::BaseModel
           # @!attribute input_schema
           #   The JSON schema describing the tool's input.
@@ -65,18 +68,19 @@ module OpenAI
           optional :description, String, nil?: true
 
           # @!method initialize(input_schema:, name:, annotations: nil, description: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Realtime::RealtimeMcpListTools::Tool} for more details.
-          #
           #   A tool available on an MCP server.
           #
-          #   @param input_schema [Object] The JSON schema describing the tool's input.
+          #   @param input_schema [Object]
+          #     The JSON schema describing the tool's input.
           #
-          #   @param name [String] The name of the tool.
+          #   @param name [String]
+          #     The name of the tool.
           #
-          #   @param annotations [Object, nil] Additional annotations about the tool.
+          #   @param annotations [Object, nil]
+          #     Additional annotations about the tool.
           #
-          #   @param description [String, nil] The description of the tool.
+          #   @param description [String, nil]
+          #     The description of the tool.
         end
       end
     end

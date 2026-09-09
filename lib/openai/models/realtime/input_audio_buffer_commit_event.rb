@@ -26,9 +26,11 @@ module OpenAI
         #   enabled in session configuration), but it will not create a response from the
         #   model. The server will respond with an `input_audio_buffer.committed` event.
         #
-        #   @param event_id [String] Optional client-generated ID used to identify this event.
+        #   @param event_id [String]
+        #     Optional client-generated ID used to identify this event.
         #
-        #   @param type [Symbol, :"input_audio_buffer.commit"] The event type, must be `input_audio_buffer.commit`.
+        #   @param type [Symbol, :"input_audio_buffer.commit"]
+        #     The event type, must be `input_audio_buffer.commit`.
       end
     end
   end

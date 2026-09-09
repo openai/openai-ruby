@@ -126,7 +126,7 @@ module OpenAI
         attr_writer :agent
 
         # A tool call to a computer use tool. See the
-        # [computer use guide](https://platform.openai.com/docs/guides/tools-computer-use)
+        # [computer use guide](https://developers.openai.com/api/docs/guides/tools-computer-use)
         # for more information.
         sig do
           params(

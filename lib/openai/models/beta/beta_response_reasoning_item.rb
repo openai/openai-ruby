@@ -61,28 +61,39 @@ module OpenAI
         optional :status, enum: -> { OpenAI::Beta::BetaResponseReasoningItem::Status }
 
         # @!method initialize(id:, summary:, agent: nil, content: nil, encrypted_content: nil, status: nil, type: :reasoning)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseReasoningItem} for more details.
-        #
         #   A description of the chain of thought used by a reasoning model while generating
         #   a response. Be sure to include these items in your `input` to the Responses API
         #   for subsequent turns of a conversation if you are manually
-        #   [managing context](https://platform.openai.com/docs/guides/conversation-state).
+        #   [managing context](https://developers.openai.com/api/docs/guides/conversation-state).
         #
-        #   @param id [String] The unique identifier of the reasoning content.
+        #   @param id [String]
+        #     The unique identifier of the reasoning content.
         #
-        #   @param summary [Array<OpenAI::Models::Beta::BetaResponseReasoningItem::Summary>] Reasoning summary content.
+        #   @param summary [Array<OpenAI::Models::Beta::BetaResponseReasoningItem::Summary>]
+        #     Reasoning summary content.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseReasoningItem::Agent, nil] The agent that produced this item.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseReasoningItem::Agent, nil]
+        #     The agent that produced this item.
         #
-        #   @param content [Array<OpenAI::Models::Beta::BetaResponseReasoningItem::Content>] Reasoning text content.
+        #   @param content [Array<OpenAI::Models::Beta::BetaResponseReasoningItem::Content>]
+        #     Reasoning text content.
         #
-        #   @param encrypted_content [String, nil] The encrypted content of the reasoning item. This is populated by default
+        #   @param encrypted_content [String, nil]
+        #     The encrypted content of the reasoning item. This is populated by default for
+        #     reasoning items returned by `POST /v1/responses` and WebSocket `response.create`
+        #     requests.
         #
-        #   @param status [Symbol, OpenAI::Models::Beta::BetaResponseReasoningItem::Status] The status of the item. One of `in_progress`, `completed`, or
+        #     When streaming, use the completed reasoning item and its `encrypted_content`
+        #     from the `response.output_item.done` event in subsequent requests. The
+        #     `encrypted_content` in `response.output_item.added` may be incomplete. This is
+        #     especially important when `store` is `false` or when using Zero Data Retention.
         #
-        #   @param type [Symbol, :reasoning] The type of the object. Always `reasoning`.
-
+        #   @param status [Symbol, OpenAI::Models::Beta::BetaResponseReasoningItem::Status]
+        #     The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+        #     Populated when items are returned via API.
+        #
+        #   @param type [Symbol, :reasoning]
+        #     The type of the object. Always `reasoning`.
         class Summary < OpenAI::Internal::Type::BaseModel
           # @!attribute text
           #   A summary of the reasoning output from the model so far.
@@ -99,9 +110,11 @@ module OpenAI
           # @!method initialize(text:, type: :summary_text)
           #   A summary text from the model.
           #
-          #   @param text [String] A summary of the reasoning output from the model so far.
+          #   @param text [String]
+          #     A summary of the reasoning output from the model so far.
           #
-          #   @param type [Symbol, :summary_text] The type of the object. Always `summary_text`.
+          #   @param type [Symbol, :summary_text]
+          #     The type of the object. Always `summary_text`.
         end
 
         # @see OpenAI::Models::Beta::BetaResponseReasoningItem#agent
@@ -115,7 +128,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that produced this item.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
 
         class Content < OpenAI::Internal::Type::BaseModel
@@ -134,9 +148,11 @@ module OpenAI
           # @!method initialize(text:, type: :reasoning_text)
           #   Reasoning text from the model.
           #
-          #   @param text [String] The reasoning text from the model.
+          #   @param text [String]
+          #     The reasoning text from the model.
           #
-          #   @param type [Symbol, :reasoning_text] The type of the reasoning text. Always `reasoning_text`.
+          #   @param type [Symbol, :reasoning_text]
+          #     The type of the reasoning text. Always `reasoning_text`.
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.

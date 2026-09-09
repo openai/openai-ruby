@@ -52,9 +52,6 @@ module OpenAI
         optional :stream_id, String
 
         # @!method initialize(reason:, required_input:, sequence_number:, steer:, stream_id: nil, type: :"response.steer.pending")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseSteerPendingEvent} for more details.
-        #
         #   Emitted when accepted steering input remains queued after the target response
         #   completes. The server still owns the input. Do not resend it. The successor's
         #   `response.created` event is the commit point.
@@ -72,17 +69,31 @@ module OpenAI
         #   submissions for the same parent can report the same required inputs; they do not
         #   each require a separate continuation.
         #
-        #   @param reason [Symbol, :waiting_for_required_input, String] An extensible enum describing why accepted steering input is still queued.
+        #   @param reason [Symbol, :waiting_for_required_input, String]
+        #     An extensible enum describing why accepted steering input is still queued.
+        #     Clients should handle unknown values because additional reasons may be
+        #     introduced. Known values include:
         #
-        #   @param required_input [Array<OpenAI::Models::Beta::BetaResponseSteerRequiredInput::FunctionCallOutput, OpenAI::Models::Beta::BetaResponseSteerRequiredInput::CustomToolCallOutput, OpenAI::Models::Beta::BetaResponseSteerRequiredInput::ComputerCallOutput, OpenAI::Models::Beta::BetaResponseSteerRequiredInput::ShellCallOutput, OpenAI::Models::Beta::BetaResponseSteerRequiredInput::ApplyPatchCallOutput, OpenAI::Models::Beta::BetaResponseSteerRequiredInput::ToolSearchOutput, OpenAI::Models::Beta::BetaResponseSteerRequiredInput::McpApprovalResponse>] Input stubs identifying outstanding client-owned tool results or
+        #     - `waiting_for_required_input`: The response is waiting for the tool results or
+        #       approval decisions identified by `required_input`.
         #
-        #   @param sequence_number [Integer] The sequence number for this event.
+        #   @param required_input [Array<OpenAI::Models::Beta::BetaResponseSteerRequiredInput::FunctionCallOutput, OpenAI::Models::Beta::BetaResponseSteerRequiredInput::CustomToolCallOutput, OpenAI::Models::Beta::BetaResponseSteerRequiredInput::ComputerCallOutput, OpenAI::Models::Beta::BetaResponseSteerRequiredInput::ShellCallOutput, OpenAI::Models::Beta::BetaResponseSteerRequiredInput::ApplyPatchCallOutput, OpenAI::Models::Beta::BetaResponseSteerRequiredInput::ToolSearchOutput, OpenAI::Models::Beta::BetaResponseSteerRequiredInput::McpApprovalResponse>]
+        #     Input stubs identifying outstanding client-owned tool results or approval
+        #     decisions. Each stub contains identifying fields only; the client supplies the
+        #     result before including it in `response.create`.
         #
-        #   @param steer [OpenAI::Models::Beta::BetaResponseSteerPendingEvent::Steer] The steering submission that remains queued.
+        #   @param sequence_number [Integer]
+        #     The sequence number for this event.
         #
-        #   @param stream_id [String] The WebSocket lane that emitted this event. This field is present when
+        #   @param steer [OpenAI::Models::Beta::BetaResponseSteerPendingEvent::Steer]
+        #     The steering submission that remains queued.
         #
-        #   @param type [Symbol, :"response.steer.pending"] The event discriminator. Always `response.steer.pending`.
+        #   @param stream_id [String]
+        #     The WebSocket lane that emitted this event. This field is present when the
+        #     target response's `response.create` event supplied a `stream_id`.
+        #
+        #   @param type [Symbol, :"response.steer.pending"]
+        #     The event discriminator. Always `response.steer.pending`.
 
         # @see OpenAI::Models::Beta::BetaResponseSteerPendingEvent#steer
         class Steer < OpenAI::Internal::Type::BaseModel
@@ -101,9 +112,11 @@ module OpenAI
           # @!method initialize(id:, previous_response_id:)
           #   The steering submission that remains queued.
           #
-          #   @param id [String] The ID assigned to the steering submission.
+          #   @param id [String]
+          #     The ID assigned to the steering submission.
           #
-          #   @param previous_response_id [String] The ID of the response being steered.
+          #   @param previous_response_id [String]
+          #     The ID of the response being steered.
         end
       end
     end

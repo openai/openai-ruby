@@ -101,32 +101,51 @@ module OpenAI
           optional :user_ids, OpenAI::Internal::Type::ArrayOf[String]
 
           # @!method initialize(start_time:, api_key_ids: nil, bucket_width: nil, end_time: nil, group_by: nil, limit: nil, models: nil, page: nil, project_ids: nil, sizes: nil, sources: nil, user_ids: nil, request_options: {})
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Admin::Organization::UsageImagesParams} for more details.
+          #   @param start_time [Integer]
+          #     Start time (Unix seconds) of the query time range, inclusive.
           #
-          #   @param start_time [Integer] Start time (Unix seconds) of the query time range, inclusive.
+          #   @param api_key_ids [Array<String>]
+          #     Return only usage for these API keys.
           #
-          #   @param api_key_ids [Array<String>] Return only usage for these API keys.
+          #   @param bucket_width [Symbol, OpenAI::Models::Admin::Organization::UsageImagesParams::BucketWidth]
+          #     Width of each time bucket in response. Currently `1m`, `1h` and `1d` are
+          #     supported, default to `1d`.
           #
-          #   @param bucket_width [Symbol, OpenAI::Models::Admin::Organization::UsageImagesParams::BucketWidth] Width of each time bucket in response. Currently `1m`, `1h` and `1d` are support
+          #   @param end_time [Integer]
+          #     End time (Unix seconds) of the query time range, exclusive.
           #
-          #   @param end_time [Integer] End time (Unix seconds) of the query time range, exclusive.
+          #   @param group_by [Array<Symbol, OpenAI::Models::Admin::Organization::UsageImagesParams::GroupBy>]
+          #     Group the usage data by the specified fields. Support fields include
+          #     `project_id`, `user_id`, `api_key_id`, `model`, `size`, `source` or any
+          #     combination of them.
           #
-          #   @param group_by [Array<Symbol, OpenAI::Models::Admin::Organization::UsageImagesParams::GroupBy>] Group the usage data by the specified fields. Support fields include `project_id
+          #   @param limit [Integer]
+          #     Specifies the number of buckets to return.
           #
-          #   @param limit [Integer] Specifies the number of buckets to return.
+          #     - `bucket_width=1d`: default: 7, max: 31
+          #     - `bucket_width=1h`: default: 24, max: 168
+          #     - `bucket_width=1m`: default: 60, max: 1440
           #
-          #   @param models [Array<String>] Return only usage for these models.
+          #   @param models [Array<String>]
+          #     Return only usage for these models.
           #
-          #   @param page [String] A cursor for use in pagination. Corresponding to the `next_page` field from the
+          #   @param page [String]
+          #     A cursor for use in pagination. Corresponding to the `next_page` field from the
+          #     previous response.
           #
-          #   @param project_ids [Array<String>] Return only usage for these projects.
+          #   @param project_ids [Array<String>]
+          #     Return only usage for these projects.
           #
-          #   @param sizes [Array<Symbol, OpenAI::Models::Admin::Organization::UsageImagesParams::Size>] Return only usages for these image sizes. Possible values are `256x256`, `512x51
+          #   @param sizes [Array<Symbol, OpenAI::Models::Admin::Organization::UsageImagesParams::Size>]
+          #     Return only usages for these image sizes. Possible values are `256x256`,
+          #     `512x512`, `1024x1024`, `1792x1792`, `1024x1792` or any combination of them.
           #
-          #   @param sources [Array<Symbol, OpenAI::Models::Admin::Organization::UsageImagesParams::Source>] Return only usages for these sources. Possible values are `image.generation`, `i
+          #   @param sources [Array<Symbol, OpenAI::Models::Admin::Organization::UsageImagesParams::Source>]
+          #     Return only usages for these sources. Possible values are `image.generation`,
+          #     `image.edit`, `image.variation` or any combination of them.
           #
-          #   @param user_ids [Array<String>] Return only usage for these users.
+          #   @param user_ids [Array<String>]
+          #     Return only usage for these users.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

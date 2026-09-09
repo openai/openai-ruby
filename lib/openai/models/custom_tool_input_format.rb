@@ -24,7 +24,8 @@ module OpenAI
         # @!method initialize(type: :text)
         #   Unconstrained free-form text.
         #
-        #   @param type [Symbol, :text] Unconstrained text format. Always `text`.
+        #   @param type [Symbol, :text]
+        #     Unconstrained text format. Always `text`.
       end
 
       class Grammar < OpenAI::Internal::Type::BaseModel
@@ -49,11 +50,14 @@ module OpenAI
         # @!method initialize(definition:, syntax:, type: :grammar)
         #   A grammar defined by the user.
         #
-        #   @param definition [String] The grammar definition.
+        #   @param definition [String]
+        #     The grammar definition.
         #
-        #   @param syntax [Symbol, OpenAI::Models::CustomToolInputFormat::Grammar::Syntax] The syntax of the grammar definition. One of `lark` or `regex`.
+        #   @param syntax [Symbol, OpenAI::Models::CustomToolInputFormat::Grammar::Syntax]
+        #     The syntax of the grammar definition. One of `lark` or `regex`.
         #
-        #   @param type [Symbol, :grammar] Grammar format. Always `grammar`.
+        #   @param type [Symbol, :grammar]
+        #     Grammar format. Always `grammar`.
 
         # The syntax of the grammar definition. One of `lark` or `regex`.
         #

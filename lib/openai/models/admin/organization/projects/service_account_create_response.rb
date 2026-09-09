@@ -47,10 +47,6 @@ module OpenAI
             )
 
             # @!method initialize(id:, api_key:, created_at:, name:, role:, object: :"organization.project.service_account")
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse}
-            #   for more details.
-            #
             #   @param id [String]
             #
             #   @param api_key [OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::APIKey, nil]
@@ -59,7 +55,9 @@ module OpenAI
             #
             #   @param name [String]
             #
-            #   @param role [Symbol, OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role] Service accounts created with default project membership have role `member`. Acc
+            #   @param role [Symbol, OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse::Role]
+            #     Service accounts created with default project membership have role `member`.
+            #     Accounts created with `create_service_account_only` have role `none`.
             #
             #   @param object [Symbol, :"organization.project.service_account"]
 
@@ -91,7 +89,14 @@ module OpenAI
               #   @return [String]
               required :value, String
 
-              # @!method initialize(id:, created_at:, name:, value:, object: :"organization.project.service_account.api_key")
+              # @!attribute expires_at
+              #   The Unix timestamp (in seconds) when the API key expires, or null if it does not
+              #   expire.
+              #
+              #   @return [Integer, nil]
+              optional :expires_at, Integer, nil?: true
+
+              # @!method initialize(id:, created_at:, name:, value:, expires_at: nil, object: :"organization.project.service_account.api_key")
               #   @param id [String]
               #
               #   @param created_at [Integer]
@@ -100,7 +105,12 @@ module OpenAI
               #
               #   @param value [String]
               #
-              #   @param object [Symbol, :"organization.project.service_account.api_key"] The object type, which is always `organization.project.service_account.api_key`
+              #   @param expires_at [Integer, nil]
+              #     The Unix timestamp (in seconds) when the API key expires, or null if it does not
+              #     expire.
+              #
+              #   @param object [Symbol, :"organization.project.service_account.api_key"]
+              #     The object type, which is always `organization.project.service_account.api_key`
             end
 
             # Service accounts created with default project membership have role `member`.

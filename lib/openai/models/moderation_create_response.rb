@@ -25,11 +25,14 @@ module OpenAI
       # @!method initialize(id:, model:, results:)
       #   Represents if a given text input is potentially harmful.
       #
-      #   @param id [String] The unique identifier for the moderation request.
+      #   @param id [String]
+      #     The unique identifier for the moderation request.
       #
-      #   @param model [String] The model used to generate the moderation results.
+      #   @param model [String]
+      #     The model used to generate the moderation results.
       #
-      #   @param results [Array<OpenAI::Models::Moderation>] A list of moderation objects.
+      #   @param results [Array<OpenAI::Models::Moderation>]
+      #     A list of moderation objects.
     end
   end
 end

@@ -41,7 +41,7 @@ module OpenAI
         size: nil,
         # A unique identifier representing your end-user, which can help OpenAI to monitor
         # and detect abuse.
-        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
         user: nil,
         request_options: {}
       )
@@ -165,7 +165,7 @@ module OpenAI
         size: nil,
         # A unique identifier representing your end-user, which can help OpenAI to monitor
         # and detect abuse.
-        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
         user: nil,
         # There is no need to provide `stream:`. Instead, use `#edit_stream_raw` or
         # `#edit` for streaming and non-streaming use cases, respectively.
@@ -292,7 +292,7 @@ module OpenAI
         size: nil,
         # A unique identifier representing your end-user, which can help OpenAI to monitor
         # and detect abuse.
-        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
         user: nil,
         # There is no need to provide `stream:`. Instead, use `#edit_stream_raw` or
         # `#edit` for streaming and non-streaming use cases, respectively.
@@ -304,7 +304,7 @@ module OpenAI
       # See {OpenAI::Resources::Images#generate_stream_raw} for streaming counterpart.
       #
       # Creates an image given a prompt.
-      # [Learn more](https://platform.openai.com/docs/guides/images).
+      # [Learn more](https://developers.openai.com/api/docs/guides/images-vision).
       sig {
         params(
           prompt: String,
@@ -403,7 +403,7 @@ module OpenAI
         style: nil,
         # A unique identifier representing your end-user, which can help OpenAI to monitor
         # and detect abuse.
-        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
         user: nil,
         # There is no need to provide `stream:`. Instead, use `#generate_stream_raw` or
         # `#generate` for streaming and non-streaming use cases, respectively.
@@ -415,7 +415,7 @@ module OpenAI
       # See {OpenAI::Resources::Images#generate} for non-streaming counterpart.
       #
       # Creates an image given a prompt.
-      # [Learn more](https://platform.openai.com/docs/guides/images).
+      # [Learn more](https://developers.openai.com/api/docs/guides/images-vision).
       sig {
         params(
           prompt: String,
@@ -514,7 +514,7 @@ module OpenAI
         style: nil,
         # A unique identifier representing your end-user, which can help OpenAI to monitor
         # and detect abuse.
-        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
         user: nil,
         # There is no need to provide `stream:`. Instead, use `#generate_stream_raw` or
         # `#generate` for streaming and non-streaming use cases, respectively.

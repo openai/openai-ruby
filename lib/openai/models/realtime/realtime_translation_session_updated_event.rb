@@ -26,11 +26,14 @@ module OpenAI
         #   Returned when a translation session is updated with a `session.update` event,
         #   unless there is an error.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param session [OpenAI::Models::Realtime::RealtimeTranslationSession] The translation session configuration.
+        #   @param session [OpenAI::Models::Realtime::RealtimeTranslationSession]
+        #     The translation session configuration.
         #
-        #   @param type [Symbol, :"session.updated"] The event type, must be `session.updated`.
+        #   @param type [Symbol, :"session.updated"]
+        #     The event type, must be `session.updated`.
       end
     end
   end

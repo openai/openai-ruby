@@ -46,7 +46,7 @@ module OpenAI
         attr_writer :tool_resources
 
         # Represents a thread that contains
-        # [messages](https://platform.openai.com/docs/api-reference/messages).
+        # [messages](https://developers.openai.com/api/docs/assistants/migration).
         sig do
           params(
 
@@ -164,9 +164,9 @@ module OpenAI
               )
             end
 
-            # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
-            # available to the `code_interpreter` tool. There can be a maximum of 20 files
-            # associated with the tool.
+            # A list of [file](https://developers.openai.com/api/reference/resources/files)
+            # IDs made available to the `code_interpreter` tool. There can be a maximum of 20
+            # files associated with the tool.
             sig { returns(T.nilable(T::Array[String])) }
             attr_reader :file_ids
 
@@ -182,9 +182,9 @@ module OpenAI
             end
             def self.new(
 
-              # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
-              # available to the `code_interpreter` tool. There can be a maximum of 20 files
-              # associated with the tool.
+              # A list of [file](https://developers.openai.com/api/reference/resources/files)
+              # IDs made available to the `code_interpreter` tool. There can be a maximum of 20
+              # files associated with the tool.
 
               file_ids: nil
             )
@@ -209,7 +209,7 @@ module OpenAI
             end
 
             # The
-            # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+            # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
             # attached to this thread. There can be a maximum of 1 vector store attached to
             # the thread.
             sig { returns(T.nilable(T::Array[String])) }
@@ -228,7 +228,7 @@ module OpenAI
             def self.new(
 
               # The
-              # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+              # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
               # attached to this thread. There can be a maximum of 1 vector store attached to
               # the thread.
 

@@ -21,16 +21,19 @@ module OpenAI
         required :voice, union: -> { OpenAI::Chat::ChatCompletionAudioParam::Voice }
 
         # @!method initialize(format_:, voice:)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Chat::ChatCompletionAudioParam} for more details.
-        #
         #   Parameters for audio output. Required when audio output is requested with
         #   `modalities: ["audio"]`.
-        #   [Learn more](https://platform.openai.com/docs/guides/audio).
+        #   [Learn more](https://developers.openai.com/api/docs/guides/audio).
         #
-        #   @param format_ [Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Format] Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`,
+        #   @param format_ [Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Format]
+        #     Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
+        #     or `pcm16`.
         #
-        #   @param voice [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::ID, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice] The voice the model uses to respond. Supported built-in voices are
+        #   @param voice [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::ID, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice]
+        #     The voice the model uses to respond. Supported built-in voices are `alloy`,
+        #     `ash`, `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, `shimmer`,
+        #     `marin`, and `cedar`. You may also provide a custom voice object with an `id`,
+        #     for example `{ "id": "voice_1234" }`.
 
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
         # or `pcm16`.
@@ -94,7 +97,8 @@ module OpenAI
             # @!method initialize(id:)
             #   Custom voice reference.
             #
-            #   @param id [String] The custom voice ID, e.g. `voice_1234`.
+            #   @param id [String]
+            #     The custom voice ID, e.g. `voice_1234`.
           end
 
           # @!method self.variants

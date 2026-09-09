@@ -47,25 +47,28 @@ module OpenAI
         optional :agent, -> { OpenAI::Beta::BetaResponseReasoningSummaryTextDoneEvent::Agent }, nil?: true
 
         # @!method initialize(item_id:, output_index:, sequence_number:, summary_index:, text:, agent: nil, type: :"response.reasoning_summary_text.done")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseReasoningSummaryTextDoneEvent} for more
-        #   details.
-        #
         #   Emitted when a reasoning summary text is completed.
         #
-        #   @param item_id [String] The ID of the item this summary text is associated with.
+        #   @param item_id [String]
+        #     The ID of the item this summary text is associated with.
         #
-        #   @param output_index [Integer] The index of the output item this summary text is associated with.
+        #   @param output_index [Integer]
+        #     The index of the output item this summary text is associated with.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param summary_index [Integer] The index of the summary part within the reasoning summary.
+        #   @param summary_index [Integer]
+        #     The index of the summary part within the reasoning summary.
         #
-        #   @param text [String] The full text of the completed reasoning summary.
+        #   @param text [String]
+        #     The full text of the completed reasoning summary.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseReasoningSummaryTextDoneEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseReasoningSummaryTextDoneEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.reasoning_summary_text.done"] The type of the event. Always `response.reasoning_summary_text.done`.
+        #   @param type [Symbol, :"response.reasoning_summary_text.done"]
+        #     The type of the event. Always `response.reasoning_summary_text.done`.
 
         # @see OpenAI::Models::Beta::BetaResponseReasoningSummaryTextDoneEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -78,7 +81,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

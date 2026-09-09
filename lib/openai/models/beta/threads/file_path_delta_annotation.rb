@@ -42,7 +42,8 @@ module OpenAI
           #   A URL for the file that's generated when the assistant used the
           #   `code_interpreter` tool to generate a file.
           #
-          #   @param index [Integer] The index of the annotation in the text content part.
+          #   @param index [Integer]
+          #     The index of the annotation in the text content part.
           #
           #   @param end_index [Integer]
           #
@@ -50,9 +51,11 @@ module OpenAI
           #
           #   @param start_index [Integer]
           #
-          #   @param text [String] The text in the message content that needs to be replaced.
+          #   @param text [String]
+          #     The text in the message content that needs to be replaced.
           #
-          #   @param type [Symbol, :file_path] Always `file_path`.
+          #   @param type [Symbol, :file_path]
+          #     Always `file_path`.
 
           # @see OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation#file_path
           class FilePath < OpenAI::Internal::Type::BaseModel
@@ -63,7 +66,8 @@ module OpenAI
             optional :file_id, String
 
             # @!method initialize(file_id: nil)
-            #   @param file_id [String] The ID of the file that was generated.
+            #   @param file_id [String]
+            #     The ID of the file that was generated.
           end
         end
       end

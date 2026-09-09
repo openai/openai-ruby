@@ -18,7 +18,12 @@ module OpenAI
       required :file, OpenAI::Internal::Type::FileInput
 
       # @!method initialize(file:, request_options: {})
-      #   @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The image or audio file to check for supported OpenAI provenance signals.
+      #   @param file [Pathname, StringIO, IO, String, OpenAI::FilePart]
+      #     The image or audio file to check for supported OpenAI provenance signals.
+      #
+      #     `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #     metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #     content type.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end

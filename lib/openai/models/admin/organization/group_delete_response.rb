@@ -27,11 +27,14 @@ module OpenAI
           # @!method initialize(id:, deleted:, object: :"group.deleted")
           #   Confirmation payload returned after deleting a group.
           #
-          #   @param id [String] Identifier of the deleted group.
+          #   @param id [String]
+          #     Identifier of the deleted group.
           #
-          #   @param deleted [Boolean] Whether the group was deleted.
+          #   @param deleted [Boolean]
+          #     Whether the group was deleted.
           #
-          #   @param object [Symbol, :"group.deleted"] Always `group.deleted`.
+          #   @param object [Symbol, :"group.deleted"]
+          #     Always `group.deleted`.
         end
       end
     end
