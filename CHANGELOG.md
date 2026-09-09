@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.88.0](https://github.com/openai/openai-ruby/compare/v0.87.0...v0.88.0) (2026-09-09)
+
+
+### Features
+
+* **api:** Add service account key expiration support ([#689](https://github.com/openai/openai-ruby/issues/689)) ([b9adc2a](https://github.com/openai/openai-ruby/commit/b9adc2ac754715e737c5fb9f457d17fd036d40d2))
+
 ## [0.87.0](https://github.com/openai/openai-ruby/compare/v0.86.0...v0.87.0) (2026-09-08)
 
 
