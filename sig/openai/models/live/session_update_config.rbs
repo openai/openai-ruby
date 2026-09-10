@@ -1,0 +1,56 @@
+module OpenAI
+  module Models
+    module Live
+      type session_update_config =
+        { ?delegation: OpenAI::Models::Live::SessionUpdateConfig::delegation? }
+
+      class SessionUpdateConfig < OpenAI::Internal::Type::BaseModel
+        attr_accessor delegation: OpenAI::Models::Live::SessionUpdateConfig::delegation?
+
+        def initialize: (
+          ?delegation: OpenAI::Models::Live::SessionUpdateConfig::delegation?
+        ) -> void
+
+        def to_hash: -> {
+          ?delegation: OpenAI::Models::Live::SessionUpdateConfig::delegation?
+        }
+
+        type delegation =
+          OpenAI::Live::ClientDelegation
+          | OpenAI::Live::SessionUpdateConfig::Delegation::Responses
+
+        module Delegation
+          extend OpenAI::Internal::Type::Union
+
+          type responses =
+            {
+              ?type: :responses,
+              ?responses: OpenAI::Live::ResponsesDelegationUpdateConfig
+            }
+
+          class Responses < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :responses
+
+            attr_reader responses: OpenAI::Live::ResponsesDelegationUpdateConfig?
+
+            def responses=: (
+              OpenAI::Live::ResponsesDelegationUpdateConfig
+            ) -> OpenAI::Live::ResponsesDelegationUpdateConfig
+
+            def initialize: (
+              ?responses: OpenAI::Live::ResponsesDelegationUpdateConfig,
+              ?type: :responses
+            ) -> void
+
+            def to_hash: -> {
+              ?type: :responses,
+              ?responses: OpenAI::Live::ResponsesDelegationUpdateConfig
+            }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Live::SessionUpdateConfig::delegation]
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Live
+      type fork_session_start_event =
+        {
+          session: OpenAI::Live::ForkSessionConfig,
+          ?type: :"session.start",
+          ?event_id: String?
+        }
+
+      class ForkSessionStartEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor session: OpenAI::Live::ForkSessionConfig
+
+        attr_accessor type: :"session.start"
+
+        attr_accessor event_id: String?
+
+        def initialize: (
+          session: OpenAI::Live::ForkSessionConfig,
+          ?event_id: String?,
+          ?type: :"session.start"
+        ) -> void
+
+        def to_hash: -> {
+          session: OpenAI::Live::ForkSessionConfig,
+          ?type: :"session.start",
+          ?event_id: String?
+        }
+      end
+    end
+  end
+end

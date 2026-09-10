@@ -1,0 +1,95 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type live_transport_incoming_webhook_event =
+        {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data,
+          ?type: :"live.transport.incoming",
+          ?object: OpenAI::Models::Webhooks::LiveTransportIncomingWebhookEvent::object
+        }
+
+      class LiveTransportIncomingWebhookEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor data: OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data
+
+        attr_accessor type: :"live.transport.incoming"
+
+        attr_reader object: OpenAI::Models::Webhooks::LiveTransportIncomingWebhookEvent::object?
+
+        def object=: (
+          OpenAI::Models::Webhooks::LiveTransportIncomingWebhookEvent::object
+        ) -> OpenAI::Models::Webhooks::LiveTransportIncomingWebhookEvent::object
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data,
+          ?object: OpenAI::Models::Webhooks::LiveTransportIncomingWebhookEvent::object,
+          ?type: :"live.transport.incoming"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data,
+          ?type: :"live.transport.incoming",
+          ?object: OpenAI::Models::Webhooks::LiveTransportIncomingWebhookEvent::object
+        }
+
+        type data =
+          {
+            session_id: String,
+            sip_headers: ::Array[OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data::SipHeader],
+            ?type: :sip
+          }
+
+        class Data < OpenAI::Internal::Type::BaseModel
+          attr_accessor session_id: String
+
+          attr_accessor sip_headers: ::Array[OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data::SipHeader]
+
+          attr_accessor type: :sip
+
+          def initialize: (
+            session_id: String,
+            sip_headers: ::Array[OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data::SipHeader],
+            ?type: :sip
+          ) -> void
+
+          def to_hash: -> {
+            session_id: String,
+            sip_headers: ::Array[OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data::SipHeader],
+            ?type: :sip
+          }
+
+          type sip_header = { name: String, value: String }
+
+          class SipHeader < OpenAI::Internal::Type::BaseModel
+            attr_accessor name: String
+
+            attr_accessor value: String
+
+            def initialize: (name: String, value: String) -> void
+
+            def to_hash: -> { name: String, value: String }
+          end
+        end
+
+        type object = :event
+
+        module Object
+          extend OpenAI::Internal::Type::Enum
+
+          EVENT: :event
+
+          def self?.values: -> ::Array[OpenAI::Models::Webhooks::LiveTransportIncomingWebhookEvent::object]
+        end
+      end
+    end
+  end
+end

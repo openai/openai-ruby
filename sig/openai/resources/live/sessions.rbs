@@ -1,0 +1,44 @@
+module OpenAI
+  module Resources
+    class Live
+      class Sessions
+        def accept: (
+          String session_id,
+          session: OpenAI::Live::SessionAcceptParams::Session,
+          ?request_options: OpenAI::request_opts
+        ) -> nil
+
+        def download_recording: (
+          String session_id,
+          ?request_options: OpenAI::request_opts
+        ) -> (StringIO & OpenAI::ResponseCarrier)
+
+        def fork: (
+          String session_id,
+          transport: OpenAI::Live::SessionForkParams::Transport,
+          ?session: OpenAI::Live::MediaSessionForkConfig,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Models::Live::SessionForkResponse
+
+        def hangup: (
+          String session_id,
+          ?request_options: OpenAI::request_opts
+        ) -> nil
+
+        def refer: (
+          String session_id,
+          target_uri: String,
+          ?request_options: OpenAI::request_opts
+        ) -> nil
+
+        def reject: (
+          String session_id,
+          status_code: Integer,
+          ?request_options: OpenAI::request_opts
+        ) -> nil
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end

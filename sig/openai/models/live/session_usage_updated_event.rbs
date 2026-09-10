@@ -1,0 +1,58 @@
+module OpenAI
+  module Models
+    module Live
+      type session_usage_updated_event =
+        {
+          event_id: String,
+          ?type: :"session.usage.updated",
+          usage: OpenAI::Live::SessionUsage,
+          ?client_event_id: String,
+          ?context_window: OpenAI::Live::SessionUsageUpdatedEvent::ContextWindow
+        }
+
+      class SessionUsageUpdatedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor event_id: String
+
+        attr_accessor type: :"session.usage.updated"
+
+        attr_accessor usage: OpenAI::Live::SessionUsage
+
+        attr_reader client_event_id: String?
+
+        def client_event_id=: (String) -> String
+
+        attr_reader context_window: OpenAI::Live::SessionUsageUpdatedEvent::ContextWindow?
+
+        def context_window=: (
+          OpenAI::Live::SessionUsageUpdatedEvent::ContextWindow
+        ) -> OpenAI::Live::SessionUsageUpdatedEvent::ContextWindow
+
+        def initialize: (
+          event_id: String,
+          usage: OpenAI::Live::SessionUsage,
+          ?client_event_id: String,
+          ?context_window: OpenAI::Live::SessionUsageUpdatedEvent::ContextWindow,
+          ?type: :"session.usage.updated"
+        ) -> void
+
+        def to_hash: -> {
+          event_id: String,
+          ?type: :"session.usage.updated",
+          usage: OpenAI::Live::SessionUsage,
+          ?client_event_id: String,
+          ?context_window: OpenAI::Live::SessionUsageUpdatedEvent::ContextWindow
+        }
+
+        type context_window = { usage_ratio: Float }
+
+        class ContextWindow < OpenAI::Internal::Type::BaseModel
+          attr_accessor usage_ratio: Float
+
+          def initialize: (usage_ratio: Float) -> void
+
+          def to_hash: -> { usage_ratio: Float }
+        end
+      end
+    end
+  end
+end

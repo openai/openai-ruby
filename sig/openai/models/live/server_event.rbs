@@ -1,0 +1,212 @@
+module OpenAI
+  module Models
+    module Live
+      type server_event =
+        OpenAI::Live::SessionStartedEvent
+        | OpenAI::Live::SessionUpdatedEvent
+        | OpenAI::Live::InputAudioMutedEvent
+        | OpenAI::Live::InputAudioUnmutedEvent
+        | OpenAI::Live::InstructionsAppendedEvent
+        | OpenAI::Live::ThinkingAppendedEvent
+        | OpenAI::Live::CommentaryAppendedEvent
+        | OpenAI::Live::ServerEvent::SessionInputAudioAppend
+        | OpenAI::Live::OutputAudioDeltaEvent
+        | OpenAI::Live::InputTranscriptDeltaEvent
+        | OpenAI::Live::OutputTranscriptDeltaEvent
+        | OpenAI::Live::DelegationCreatedEvent
+        | OpenAI::Live::ResponseEvent
+        | OpenAI::Live::SessionUsageUpdatedEvent
+        | OpenAI::Live::SessionClosedEvent
+        | OpenAI::Live::ErrorEvent
+        | OpenAI::Live::InfoEvent
+        | OpenAI::Live::ServerEvent::TransportDtmfReceived
+        | OpenAI::Live::ServerEvent::TransportDtmfSend
+        | OpenAI::Live::ServerEvent::TransportRinging
+        | OpenAI::Live::ServerEvent::TransportAnswered
+        | OpenAI::Live::ServerEvent::TransportFailed
+
+      module ServerEvent
+        extend OpenAI::Internal::Type::Union
+
+        type session_input_audio_append =
+          { audio: String, ?type: :"session.input_audio.append" }
+
+        class SessionInputAudioAppend < OpenAI::Internal::Type::BaseModel
+          attr_accessor audio: String
+
+          attr_accessor type: :"session.input_audio.append"
+
+          def initialize: (
+            audio: String,
+            ?type: :"session.input_audio.append"
+          ) -> void
+
+          def to_hash: -> {
+            audio: String,
+            ?type: :"session.input_audio.append"
+          }
+        end
+
+        type transport_dtmf_received =
+          { event: String, event_id: String, ?type: :"transport.dtmf.received" }
+
+        class TransportDtmfReceived < OpenAI::Internal::Type::BaseModel
+          attr_accessor event: String
+
+          attr_accessor event_id: String
+
+          attr_accessor type: :"transport.dtmf.received"
+
+          def initialize: (
+            event: String,
+            event_id: String,
+            ?type: :"transport.dtmf.received"
+          ) -> void
+
+          def to_hash: -> {
+            event: String,
+            event_id: String,
+            ?type: :"transport.dtmf.received"
+          }
+        end
+
+        type transport_dtmf_send =
+          { event: String, event_id: String, ?type: :"transport.dtmf.send" }
+
+        class TransportDtmfSend < OpenAI::Internal::Type::BaseModel
+          attr_accessor event: String
+
+          attr_accessor event_id: String
+
+          attr_accessor type: :"transport.dtmf.send"
+
+          def initialize: (
+            event: String,
+            event_id: String,
+            ?type: :"transport.dtmf.send"
+          ) -> void
+
+          def to_hash: -> {
+            event: String,
+            event_id: String,
+            ?type: :"transport.dtmf.send"
+          }
+        end
+
+        type transport_ringing =
+          { event_id: String, session_id: String, ?type: :"transport.ringing" }
+
+        class TransportRinging < OpenAI::Internal::Type::BaseModel
+          attr_accessor event_id: String
+
+          attr_accessor session_id: String
+
+          attr_accessor type: :"transport.ringing"
+
+          def initialize: (
+            event_id: String,
+            session_id: String,
+            ?type: :"transport.ringing"
+          ) -> void
+
+          def to_hash: -> {
+            event_id: String,
+            session_id: String,
+            ?type: :"transport.ringing"
+          }
+        end
+
+        type transport_answered =
+          { event_id: String, session_id: String, ?type: :"transport.answered" }
+
+        class TransportAnswered < OpenAI::Internal::Type::BaseModel
+          attr_accessor event_id: String
+
+          attr_accessor session_id: String
+
+          attr_accessor type: :"transport.answered"
+
+          def initialize: (
+            event_id: String,
+            session_id: String,
+            ?type: :"transport.answered"
+          ) -> void
+
+          def to_hash: -> {
+            event_id: String,
+            session_id: String,
+            ?type: :"transport.answered"
+          }
+        end
+
+        type transport_failed =
+          {
+            error: OpenAI::Live::ServerEvent::TransportFailed::Error,
+            event_id: String,
+            session_id: String,
+            ?type: :"transport.failed"
+          }
+
+        class TransportFailed < OpenAI::Internal::Type::BaseModel
+          attr_accessor error: OpenAI::Live::ServerEvent::TransportFailed::Error
+
+          attr_accessor event_id: String
+
+          attr_accessor session_id: String
+
+          attr_accessor type: :"transport.failed"
+
+          def initialize: (
+            error: OpenAI::Live::ServerEvent::TransportFailed::Error,
+            event_id: String,
+            session_id: String,
+            ?type: :"transport.failed"
+          ) -> void
+
+          def to_hash: -> {
+            error: OpenAI::Live::ServerEvent::TransportFailed::Error,
+            event_id: String,
+            session_id: String,
+            ?type: :"transport.failed"
+          }
+
+          type error =
+            {
+              code: String,
+              message: String,
+              ?type: :call_error,
+              ?param: String
+            }
+
+          class Error < OpenAI::Internal::Type::BaseModel
+            attr_accessor code: String
+
+            attr_accessor message: String
+
+            attr_accessor type: :call_error
+
+            attr_reader param: String?
+
+            def param=: (String) -> String
+
+            def initialize: (
+              code: String,
+              message: String,
+              ?param: String,
+              ?type: :call_error
+            ) -> void
+
+            def to_hash: -> {
+              code: String,
+              message: String,
+              ?type: :call_error,
+              ?param: String
+            }
+          end
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Live::server_event]
+      end
+    end
+  end
+end

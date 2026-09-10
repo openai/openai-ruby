@@ -126,7 +126,11 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
             id: String,
             result: String | nil,
             status: OpenAI::Responses::ResponseItem::ImageGenerationCall::Status,
+            action: OpenAI::Responses::ResponseItem::ImageGenerationCall::Action | nil,
+            background: OpenAI::Responses::ResponseItem::ImageGenerationCall::Background | nil,
+            output_format: OpenAI::Responses::ResponseItem::ImageGenerationCall::OutputFormat | nil,
             quality: OpenAI::Responses::ResponseItem::ImageGenerationCall::Quality | nil,
+            revised_prompt: String | nil,
             size: OpenAI::Responses::ResponseItem::ImageGenerationCall::Size | nil
           } | {
             type: :code_interpreter_call,

@@ -1,0 +1,46 @@
+module OpenAI
+  module Models
+    module Live
+      type error =
+        {
+          code: String,
+          message: String,
+          type: String,
+          ?client_event_id: String,
+          ?param: String
+        }
+
+      class Error < OpenAI::Internal::Type::BaseModel
+        attr_accessor code: String
+
+        attr_accessor message: String
+
+        attr_accessor type: String
+
+        attr_reader client_event_id: String?
+
+        def client_event_id=: (String) -> String
+
+        attr_reader param: String?
+
+        def param=: (String) -> String
+
+        def initialize: (
+          code: String,
+          message: String,
+          type: String,
+          ?client_event_id: String,
+          ?param: String
+        ) -> void
+
+        def to_hash: -> {
+          code: String,
+          message: String,
+          type: String,
+          ?client_event_id: String,
+          ?param: String
+        }
+      end
+    end
+  end
+end

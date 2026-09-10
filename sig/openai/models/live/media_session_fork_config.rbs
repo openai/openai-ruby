@@ -1,0 +1,66 @@
+module OpenAI
+  module Models
+    module Live
+      type media_session_fork_config =
+        {
+          ?client: OpenAI::Live::ClientConfig,
+          ?delegation: OpenAI::Live::MediaSessionForkConfig::Delegation,
+          ?store: bool
+        }
+
+      class MediaSessionForkConfig < OpenAI::Internal::Type::BaseModel
+        attr_reader client: OpenAI::Live::ClientConfig?
+
+        def client=: (OpenAI::Live::ClientConfig) -> OpenAI::Live::ClientConfig
+
+        attr_reader delegation: OpenAI::Live::MediaSessionForkConfig::Delegation?
+
+        def delegation=: (
+          OpenAI::Live::MediaSessionForkConfig::Delegation
+        ) -> OpenAI::Live::MediaSessionForkConfig::Delegation
+
+        attr_reader store: bool?
+
+        def store=: (bool) -> bool
+
+        def initialize: (
+          ?client: OpenAI::Live::ClientConfig,
+          ?delegation: OpenAI::Live::MediaSessionForkConfig::Delegation,
+          ?store: bool
+        ) -> void
+
+        def to_hash: -> {
+          ?client: OpenAI::Live::ClientConfig,
+          ?delegation: OpenAI::Live::MediaSessionForkConfig::Delegation,
+          ?store: bool
+        }
+
+        type delegation =
+          {
+            ?type: :responses,
+            ?responses: OpenAI::Live::ResponsesDelegationUpdateConfig
+          }
+
+        class Delegation < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :responses
+
+          attr_reader responses: OpenAI::Live::ResponsesDelegationUpdateConfig?
+
+          def responses=: (
+            OpenAI::Live::ResponsesDelegationUpdateConfig
+          ) -> OpenAI::Live::ResponsesDelegationUpdateConfig
+
+          def initialize: (
+            ?responses: OpenAI::Live::ResponsesDelegationUpdateConfig,
+            ?type: :responses
+          ) -> void
+
+          def to_hash: -> {
+            ?type: :responses,
+            ?responses: OpenAI::Live::ResponsesDelegationUpdateConfig
+          }
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    module Live
+      type session_close_event = { ?type: :"session.close", ?event_id: String? }
+
+      class SessionCloseEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :"session.close"
+
+        attr_accessor event_id: String?
+
+        def initialize: (?event_id: String?, ?type: :"session.close") -> void
+
+        def to_hash: -> { ?type: :"session.close", ?event_id: String? }
+      end
+    end
+  end
+end

@@ -1,0 +1,54 @@
+module OpenAI
+  module Models
+    module Live
+      type session_fork_params =
+        {
+          session_id: String,
+          transport: OpenAI::Live::SessionForkParams::Transport,
+          ?session: OpenAI::Live::MediaSessionForkConfig,
+          ?request_options: OpenAI::request_opts
+        }
+
+      class SessionForkParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor session_id: String
+
+        attr_accessor transport: OpenAI::Live::SessionForkParams::Transport
+
+        attr_reader session: OpenAI::Live::MediaSessionForkConfig?
+
+        def session=: (
+          OpenAI::Live::MediaSessionForkConfig
+        ) -> OpenAI::Live::MediaSessionForkConfig
+
+        def initialize: (
+          session_id: String,
+          transport: OpenAI::Live::SessionForkParams::Transport,
+          ?session: OpenAI::Live::MediaSessionForkConfig,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          session_id: String,
+          transport: OpenAI::Live::SessionForkParams::Transport,
+          ?session: OpenAI::Live::MediaSessionForkConfig,
+          ?request_options: OpenAI::RequestOptions
+        }
+
+        type transport = { sdp: String, ?type: :webrtc }
+
+        class Transport < OpenAI::Internal::Type::BaseModel
+          attr_accessor sdp: String
+
+          attr_accessor type: :webrtc
+
+          def initialize: (sdp: String, ?type: :webrtc) -> void
+
+          def to_hash: -> { sdp: String, ?type: :webrtc }
+        end
+      end
+    end
+  end
+end

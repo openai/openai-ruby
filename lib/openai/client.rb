@@ -101,6 +101,9 @@ module OpenAI
     # @return [OpenAI::Resources::Responses]
     attr_reader :responses
 
+    # @return [OpenAI::Resources::Live]
+    attr_reader :live
+
     # @return [OpenAI::Resources::Realtime]
     attr_reader :realtime
 
@@ -264,6 +267,7 @@ module OpenAI
       @uploads = OpenAI::Resources::Uploads.new(client: self)
       @admin = OpenAI::Resources::Admin.new(client: self)
       @responses = OpenAI::Resources::Responses.new(client: self)
+      @live = OpenAI::Resources::Live.new(client: self)
       @realtime = OpenAI::Resources::Realtime.new(client: self)
       @conversations = OpenAI::Resources::Conversations.new(client: self)
       @evals = OpenAI::Resources::Evals.new(client: self)

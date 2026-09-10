@@ -1,0 +1,89 @@
+module OpenAI
+  module Models
+    module Live
+      type fork_session_config =
+        {
+          ?audio: OpenAI::Live::ForkSessionConfig::Audio,
+          ?client: OpenAI::Live::ClientConfig,
+          ?delegation: OpenAI::Live::ForkSessionConfig::Delegation,
+          ?store: bool
+        }
+
+      class ForkSessionConfig < OpenAI::Internal::Type::BaseModel
+        attr_reader audio: OpenAI::Live::ForkSessionConfig::Audio?
+
+        def audio=: (
+          OpenAI::Live::ForkSessionConfig::Audio
+        ) -> OpenAI::Live::ForkSessionConfig::Audio
+
+        attr_reader client: OpenAI::Live::ClientConfig?
+
+        def client=: (OpenAI::Live::ClientConfig) -> OpenAI::Live::ClientConfig
+
+        attr_reader delegation: OpenAI::Live::ForkSessionConfig::Delegation?
+
+        def delegation=: (
+          OpenAI::Live::ForkSessionConfig::Delegation
+        ) -> OpenAI::Live::ForkSessionConfig::Delegation
+
+        attr_reader store: bool?
+
+        def store=: (bool) -> bool
+
+        def initialize: (
+          ?audio: OpenAI::Live::ForkSessionConfig::Audio,
+          ?client: OpenAI::Live::ClientConfig,
+          ?delegation: OpenAI::Live::ForkSessionConfig::Delegation,
+          ?store: bool
+        ) -> void
+
+        def to_hash: -> {
+          ?audio: OpenAI::Live::ForkSessionConfig::Audio,
+          ?client: OpenAI::Live::ClientConfig,
+          ?delegation: OpenAI::Live::ForkSessionConfig::Delegation,
+          ?store: bool
+        }
+
+        type audio = { ?format_: OpenAI::Models::Live::audio_format }
+
+        class Audio < OpenAI::Internal::Type::BaseModel
+          attr_reader format_: OpenAI::Models::Live::audio_format?
+
+          def format_=: (
+            OpenAI::Models::Live::audio_format
+          ) -> OpenAI::Models::Live::audio_format
+
+          def initialize: (?format_: OpenAI::Models::Live::audio_format) -> void
+
+          def to_hash: -> { ?format_: OpenAI::Models::Live::audio_format }
+        end
+
+        type delegation =
+          {
+            ?type: :responses,
+            ?responses: OpenAI::Live::ResponsesDelegationUpdateConfig
+          }
+
+        class Delegation < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :responses
+
+          attr_reader responses: OpenAI::Live::ResponsesDelegationUpdateConfig?
+
+          def responses=: (
+            OpenAI::Live::ResponsesDelegationUpdateConfig
+          ) -> OpenAI::Live::ResponsesDelegationUpdateConfig
+
+          def initialize: (
+            ?responses: OpenAI::Live::ResponsesDelegationUpdateConfig,
+            ?type: :responses
+          ) -> void
+
+          def to_hash: -> {
+            ?type: :responses,
+            ?responses: OpenAI::Live::ResponsesDelegationUpdateConfig
+          }
+        end
+      end
+    end
+  end
+end

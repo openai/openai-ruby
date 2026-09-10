@@ -1,0 +1,15 @@
+module OpenAI
+  module Models
+    module Live
+      type client_delegation = { ?type: :client }
+
+      class ClientDelegation < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :client
+
+        def initialize: (?type: :client) -> void
+
+        def to_hash: -> { ?type: :client }
+      end
+    end
+  end
+end

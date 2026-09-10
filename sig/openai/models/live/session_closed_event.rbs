@@ -1,0 +1,68 @@
+module OpenAI
+  module Models
+    module Live
+      type session_closed_event =
+        {
+          event_id: String,
+          reason: OpenAI::Models::Live::SessionClosedEvent::reason,
+          session: OpenAI::Live::SessionResource,
+          ?type: :"session.closed",
+          usage: OpenAI::Live::SessionUsage,
+          ?client_event_id: String
+        }
+
+      class SessionClosedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor event_id: String
+
+        attr_accessor reason: OpenAI::Models::Live::SessionClosedEvent::reason
+
+        attr_accessor session: OpenAI::Live::SessionResource
+
+        attr_accessor type: :"session.closed"
+
+        attr_accessor usage: OpenAI::Live::SessionUsage
+
+        attr_reader client_event_id: String?
+
+        def client_event_id=: (String) -> String
+
+        def initialize: (
+          event_id: String,
+          reason: OpenAI::Models::Live::SessionClosedEvent::reason,
+          session: OpenAI::Live::SessionResource,
+          usage: OpenAI::Live::SessionUsage,
+          ?client_event_id: String,
+          ?type: :"session.closed"
+        ) -> void
+
+        def to_hash: -> {
+          event_id: String,
+          reason: OpenAI::Models::Live::SessionClosedEvent::reason,
+          session: OpenAI::Live::SessionResource,
+          ?type: :"session.closed",
+          usage: OpenAI::Live::SessionUsage,
+          ?client_event_id: String
+        }
+
+        type reason =
+          :close_requested
+          | :expired
+          | :content
+          | :remote_hangup
+          | :connection_lost
+
+        module Reason
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Live::SessionClosedEvent::reason]
+
+          CLOSE_REQUESTED: :close_requested
+          EXPIRED: :expired
+          CONTENT: :content
+          REMOTE_HANGUP: :remote_hangup
+          CONNECTION_LOST: :connection_lost
+        end
+      end
+    end
+  end
+end

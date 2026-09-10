@@ -1,0 +1,58 @@
+module OpenAI
+  module Models
+    module Live
+      type built_in_voice =
+        :alloy
+        | :ash
+        | :ballad
+        | :beacon
+        | :bossa
+        | :cedar
+        | :cinder
+        | :coral
+        | :delta
+        | :echo
+        | :gleam
+        | :marin
+        | :meridian
+        | :quartz
+        | :ripple
+        | :sage
+        | :shimmer
+        | :stone
+        | :tempo
+        | :verse
+        | :vesper
+        | :willow
+
+      module BuiltInVoice
+        extend OpenAI::Internal::Type::Enum
+
+        ALLOY: :alloy
+        ASH: :ash
+        BALLAD: :ballad
+        BEACON: :beacon
+        BOSSA: :bossa
+        CEDAR: :cedar
+        CINDER: :cinder
+        CORAL: :coral
+        DELTA: :delta
+        ECHO: :echo
+        GLEAM: :gleam
+        MARIN: :marin
+        MERIDIAN: :meridian
+        QUARTZ: :quartz
+        RIPPLE: :ripple
+        SAGE: :sage
+        SHIMMER: :shimmer
+        STONE: :stone
+        TEMPO: :tempo
+        VERSE: :verse
+        VESPER: :vesper
+        WILLOW: :willow
+
+        def self?.values: -> ::Array[OpenAI::Models::Live::built_in_voice]
+      end
+    end
+  end
+end

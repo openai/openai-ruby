@@ -1,0 +1,41 @@
+module OpenAI
+  module Models
+    module Live
+      type output_audio_delta_event =
+        {
+          delta: String,
+          ?type: :"session.output_audio.delta",
+          ?end_ms: Integer,
+          ?start_ms: Integer
+        }
+
+      class OutputAudioDeltaEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor delta: String
+
+        attr_accessor type: :"session.output_audio.delta"
+
+        attr_reader end_ms: Integer?
+
+        def end_ms=: (Integer) -> Integer
+
+        attr_reader start_ms: Integer?
+
+        def start_ms=: (Integer) -> Integer
+
+        def initialize: (
+          delta: String,
+          ?end_ms: Integer,
+          ?start_ms: Integer,
+          ?type: :"session.output_audio.delta"
+        ) -> void
+
+        def to_hash: -> {
+          delta: String,
+          ?type: :"session.output_audio.delta",
+          ?end_ms: Integer,
+          ?start_ms: Integer
+        }
+      end
+    end
+  end
+end

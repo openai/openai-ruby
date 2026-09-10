@@ -1,0 +1,44 @@
+module OpenAI
+  module Models
+    module Live
+      type instructions_appended_event =
+        {
+          end_ms: Integer,
+          event_id: String,
+          start_ms: Integer,
+          ?type: :"session.instructions.appended",
+          ?client_event_id: String
+        }
+
+      class InstructionsAppendedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor end_ms: Integer
+
+        attr_accessor event_id: String
+
+        attr_accessor start_ms: Integer
+
+        attr_accessor type: :"session.instructions.appended"
+
+        attr_reader client_event_id: String?
+
+        def client_event_id=: (String) -> String
+
+        def initialize: (
+          end_ms: Integer,
+          event_id: String,
+          start_ms: Integer,
+          ?client_event_id: String,
+          ?type: :"session.instructions.appended"
+        ) -> void
+
+        def to_hash: -> {
+          end_ms: Integer,
+          event_id: String,
+          start_ms: Integer,
+          ?type: :"session.instructions.appended",
+          ?client_event_id: String
+        }
+      end
+    end
+  end
+end
