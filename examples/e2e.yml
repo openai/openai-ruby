@@ -49,6 +49,9 @@ examples:
   examples/image_stream.rb:
     status: covered
     expected_output: Final image completed!
+  examples/live/webrtc.rb:
+    status: excluded
+    reason: Requires a browser-generated SDP offer and Live model access; offline tests cover the backend SDP handoff.
   examples/mtls_custom_http_client.rb:
     status: excluded
     reason: Requires an enrolled mTLS certificate, private key, endpoint, and model.

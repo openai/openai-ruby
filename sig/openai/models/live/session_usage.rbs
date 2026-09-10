@@ -1,0 +1,15 @@
+module OpenAI
+  module Models
+    module Live
+      type session_usage = { seconds: Float }
+
+      class SessionUsage < OpenAI::Internal::Type::BaseModel
+        attr_accessor seconds: Float
+
+        def initialize: (seconds: Float) -> void
+
+        def to_hash: -> { seconds: Float }
+      end
+    end
+  end
+end

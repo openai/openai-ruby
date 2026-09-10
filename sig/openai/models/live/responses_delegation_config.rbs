@@ -1,0 +1,244 @@
+module OpenAI
+  module Models
+    module Live
+      type responses_delegation_config =
+        {
+          model: String,
+          ?instructions: String?,
+          ?max_output_tokens: Integer?,
+          ?parallel_tool_calls: bool?,
+          ?reasoning: OpenAI::Live::ResponsesDelegationConfig::Reasoning?,
+          ?service_tier: OpenAI::Models::Live::ResponsesDelegationConfig::service_tier?,
+          ?text: OpenAI::Live::ResponsesDelegationConfig::Text?,
+          ?tool_choice: OpenAI::Models::Live::ResponsesDelegationConfig::tool_choice,
+          ?tools: ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::tool]
+        }
+
+      class ResponsesDelegationConfig < OpenAI::Internal::Type::BaseModel
+        attr_accessor model: String
+
+        attr_accessor instructions: String?
+
+        attr_accessor max_output_tokens: Integer?
+
+        attr_accessor parallel_tool_calls: bool?
+
+        attr_accessor reasoning: OpenAI::Live::ResponsesDelegationConfig::Reasoning?
+
+        attr_accessor service_tier: OpenAI::Models::Live::ResponsesDelegationConfig::service_tier?
+
+        attr_accessor text: OpenAI::Live::ResponsesDelegationConfig::Text?
+
+        attr_reader tool_choice: OpenAI::Models::Live::ResponsesDelegationConfig::tool_choice?
+
+        def tool_choice=: (
+          OpenAI::Models::Live::ResponsesDelegationConfig::tool_choice
+        ) -> OpenAI::Models::Live::ResponsesDelegationConfig::tool_choice
+
+        attr_reader tools: ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::tool]?
+
+        def tools=: (
+          ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::tool]
+        ) -> ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::tool]
+
+        def initialize: (
+          model: String,
+          ?instructions: String?,
+          ?max_output_tokens: Integer?,
+          ?parallel_tool_calls: bool?,
+          ?reasoning: OpenAI::Live::ResponsesDelegationConfig::Reasoning?,
+          ?service_tier: OpenAI::Models::Live::ResponsesDelegationConfig::service_tier?,
+          ?text: OpenAI::Live::ResponsesDelegationConfig::Text?,
+          ?tool_choice: OpenAI::Models::Live::ResponsesDelegationConfig::tool_choice,
+          ?tools: ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::tool]
+        ) -> void
+
+        def to_hash: -> {
+          model: String,
+          ?instructions: String?,
+          ?max_output_tokens: Integer?,
+          ?parallel_tool_calls: bool?,
+          ?reasoning: OpenAI::Live::ResponsesDelegationConfig::Reasoning?,
+          ?service_tier: OpenAI::Models::Live::ResponsesDelegationConfig::service_tier?,
+          ?text: OpenAI::Live::ResponsesDelegationConfig::Text?,
+          ?tool_choice: OpenAI::Models::Live::ResponsesDelegationConfig::tool_choice,
+          ?tools: ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::tool]
+        }
+
+        type reasoning =
+          {
+            ?effort: OpenAI::Models::Live::ResponsesDelegationConfig::Reasoning::effort?,
+            ?summary: OpenAI::Models::Live::ResponsesDelegationConfig::Reasoning::summary?
+          }
+
+        class Reasoning < OpenAI::Internal::Type::BaseModel
+          attr_accessor effort: OpenAI::Models::Live::ResponsesDelegationConfig::Reasoning::effort?
+
+          attr_accessor summary: OpenAI::Models::Live::ResponsesDelegationConfig::Reasoning::summary?
+
+          def initialize: (
+            ?effort: OpenAI::Models::Live::ResponsesDelegationConfig::Reasoning::effort?,
+            ?summary: OpenAI::Models::Live::ResponsesDelegationConfig::Reasoning::summary?
+          ) -> void
+
+          def to_hash: -> {
+            ?effort: OpenAI::Models::Live::ResponsesDelegationConfig::Reasoning::effort?,
+            ?summary: OpenAI::Models::Live::ResponsesDelegationConfig::Reasoning::summary?
+          }
+
+          type effort = :none | :minimal | :low | :medium | :high | :xhigh
+
+          module Effort
+            extend OpenAI::Internal::Type::Enum
+
+            NONE: :none
+            MINIMAL: :minimal
+            LOW: :low
+            MEDIUM: :medium
+            HIGH: :high
+            XHIGH: :xhigh
+
+            def self?.values: -> ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::Reasoning::effort]
+          end
+
+          type summary = :concise | :detailed | :auto
+
+          module Summary
+            extend OpenAI::Internal::Type::Enum
+
+            CONCISE: :concise
+            DETAILED: :detailed
+            AUTO: :auto
+
+            def self?.values: -> ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::Reasoning::summary]
+          end
+        end
+
+        type service_tier =
+          :auto
+          | :default
+          | :fast_tier_temp_pilot
+          | :flex
+          | :priority
+          | :ultrafast
+
+        module ServiceTier
+          extend OpenAI::Internal::Type::Enum
+
+          AUTO: :auto
+          DEFAULT: :default
+          FAST_TIER_TEMP_PILOT: :fast_tier_temp_pilot
+          FLEX: :flex
+          PRIORITY: :priority
+          ULTRAFAST: :ultrafast
+
+          def self?.values: -> ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::service_tier]
+        end
+
+        type text =
+          {
+            ?verbosity: OpenAI::Models::Live::ResponsesDelegationConfig::Text::verbosity?
+          }
+
+        class Text < OpenAI::Internal::Type::BaseModel
+          attr_accessor verbosity: OpenAI::Models::Live::ResponsesDelegationConfig::Text::verbosity?
+
+          def initialize: (
+            ?verbosity: OpenAI::Models::Live::ResponsesDelegationConfig::Text::verbosity?
+          ) -> void
+
+          def to_hash: -> {
+            ?verbosity: OpenAI::Models::Live::ResponsesDelegationConfig::Text::verbosity?
+          }
+
+          type verbosity = :low | :medium | :high
+
+          module Verbosity
+            extend OpenAI::Internal::Type::Enum
+
+            LOW: :low
+            MEDIUM: :medium
+            HIGH: :high
+
+            def self?.values: -> ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::Text::verbosity]
+          end
+        end
+
+        type tool_choice =
+          OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::live_tool_choice_enum
+          | OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveFunctionToolChoiceParam
+          | OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam
+
+        module ToolChoice
+          extend OpenAI::Internal::Type::Union
+
+          type live_tool_choice_enum = :auto | :none | :required
+
+          module LiveToolChoiceEnum
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO: :auto
+            NONE: :none
+            REQUIRED: :required
+
+            def self?.values: -> ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::live_tool_choice_enum]
+          end
+
+          type live_function_tool_choice_param =
+            { name: String, ?type: :function }
+
+          class LiveFunctionToolChoiceParam < OpenAI::Internal::Type::BaseModel
+            attr_accessor name: String
+
+            attr_accessor type: :function
+
+            def initialize: (name: String, ?type: :function) -> void
+
+            def to_hash: -> { name: String, ?type: :function }
+          end
+
+          type live_mcp_tool_choice_param =
+            { name: String, server_label: String, ?type: :mcp }
+
+          class LiveMCPToolChoiceParam < OpenAI::Internal::Type::BaseModel
+            attr_accessor name: String
+
+            attr_accessor server_label: String
+
+            attr_accessor type: :mcp
+
+            def initialize: (
+              name: String,
+              server_label: String,
+              ?type: :mcp
+            ) -> void
+
+            def to_hash: -> { name: String, server_label: String, ?type: :mcp }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::tool_choice]
+        end
+
+        type tool =
+          OpenAI::Live::FunctionTool
+          | OpenAI::Live::ResponsesDelegationConfig::Tool::WebSearch
+
+        module Tool
+          extend OpenAI::Internal::Type::Union
+
+          type web_search = { ?type: :web_search }
+
+          class WebSearch < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :web_search
+
+            def initialize: (?type: :web_search) -> void
+
+            def to_hash: -> { ?type: :web_search }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::tool]
+        end
+      end
+    end
+  end
+end

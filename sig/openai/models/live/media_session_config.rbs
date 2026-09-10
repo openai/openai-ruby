@@ -1,0 +1,157 @@
+module OpenAI
+  module Models
+    module Live
+      type media_session_config =
+        {
+          model: OpenAI::Models::Live::MediaSessionConfig::model,
+          ?audio: OpenAI::Live::MediaSessionConfig::Audio,
+          ?client: OpenAI::Live::ClientConfig,
+          ?delegation: OpenAI::Models::Live::MediaSessionConfig::delegation?,
+          ?input: ::Array[OpenAI::Models::Live::initial_item],
+          ?instructions: String?,
+          ?store: bool
+        }
+
+      class MediaSessionConfig < OpenAI::Internal::Type::BaseModel
+        attr_accessor model: OpenAI::Models::Live::MediaSessionConfig::model
+
+        attr_reader audio: OpenAI::Live::MediaSessionConfig::Audio?
+
+        def audio=: (
+          OpenAI::Live::MediaSessionConfig::Audio
+        ) -> OpenAI::Live::MediaSessionConfig::Audio
+
+        attr_reader client: OpenAI::Live::ClientConfig?
+
+        def client=: (OpenAI::Live::ClientConfig) -> OpenAI::Live::ClientConfig
+
+        attr_accessor delegation: OpenAI::Models::Live::MediaSessionConfig::delegation?
+
+        attr_reader input: ::Array[OpenAI::Models::Live::initial_item]?
+
+        def input=: (
+          ::Array[OpenAI::Models::Live::initial_item]
+        ) -> ::Array[OpenAI::Models::Live::initial_item]
+
+        attr_accessor instructions: String?
+
+        attr_reader store: bool?
+
+        def store=: (bool) -> bool
+
+        def initialize: (
+          model: OpenAI::Models::Live::MediaSessionConfig::model,
+          ?audio: OpenAI::Live::MediaSessionConfig::Audio,
+          ?client: OpenAI::Live::ClientConfig,
+          ?delegation: OpenAI::Models::Live::MediaSessionConfig::delegation?,
+          ?input: ::Array[OpenAI::Models::Live::initial_item],
+          ?instructions: String?,
+          ?store: bool
+        ) -> void
+
+        def to_hash: -> {
+          model: OpenAI::Models::Live::MediaSessionConfig::model,
+          ?audio: OpenAI::Live::MediaSessionConfig::Audio,
+          ?client: OpenAI::Live::ClientConfig,
+          ?delegation: OpenAI::Models::Live::MediaSessionConfig::delegation?,
+          ?input: ::Array[OpenAI::Models::Live::initial_item],
+          ?instructions: String?,
+          ?store: bool
+        }
+
+        type model = String | :"gpt-live-1"
+
+        module Model
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Live::MediaSessionConfig::model]
+
+          GPT_LIVE_1: :"gpt-live-1"
+        end
+
+        type audio =
+          { ?output: OpenAI::Live::MediaSessionConfig::Audio::Output }
+
+        class Audio < OpenAI::Internal::Type::BaseModel
+          attr_reader output: OpenAI::Live::MediaSessionConfig::Audio::Output?
+
+          def output=: (
+            OpenAI::Live::MediaSessionConfig::Audio::Output
+          ) -> OpenAI::Live::MediaSessionConfig::Audio::Output
+
+          def initialize: (
+            ?output: OpenAI::Live::MediaSessionConfig::Audio::Output
+          ) -> void
+
+          def to_hash: -> {
+            ?output: OpenAI::Live::MediaSessionConfig::Audio::Output
+          }
+
+          type output =
+            {
+              ?voice: OpenAI::Models::Live::MediaSessionConfig::Audio::Output::voice
+            }
+
+          class Output < OpenAI::Internal::Type::BaseModel
+            attr_reader voice: OpenAI::Models::Live::MediaSessionConfig::Audio::Output::voice?
+
+            def voice=: (
+              OpenAI::Models::Live::MediaSessionConfig::Audio::Output::voice
+            ) -> OpenAI::Models::Live::MediaSessionConfig::Audio::Output::voice
+
+            def initialize: (
+              ?voice: OpenAI::Models::Live::MediaSessionConfig::Audio::Output::voice
+            ) -> void
+
+            def to_hash: -> {
+              ?voice: OpenAI::Models::Live::MediaSessionConfig::Audio::Output::voice
+            }
+
+            type voice =
+              String
+              | OpenAI::Models::Live::built_in_voice
+              | OpenAI::Live::CustomVoice
+
+            module Voice
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Live::MediaSessionConfig::Audio::Output::voice]
+            end
+          end
+        end
+
+        type delegation =
+          OpenAI::Live::ClientDelegation
+          | OpenAI::Live::MediaSessionConfig::Delegation::Responses
+
+        module Delegation
+          extend OpenAI::Internal::Type::Union
+
+          type responses =
+            {
+              responses: OpenAI::Live::ResponsesDelegationConfig,
+              ?type: :responses
+            }
+
+          class Responses < OpenAI::Internal::Type::BaseModel
+            attr_accessor responses: OpenAI::Live::ResponsesDelegationConfig
+
+            attr_accessor type: :responses
+
+            def initialize: (
+              responses: OpenAI::Live::ResponsesDelegationConfig,
+              ?type: :responses
+            ) -> void
+
+            def to_hash: -> {
+              responses: OpenAI::Live::ResponsesDelegationConfig,
+              ?type: :responses
+            }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Live::MediaSessionConfig::delegation]
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,185 @@
+module OpenAI
+  module Models
+    module Live
+      type session_accept_params =
+        {
+          session_id: String,
+          session: OpenAI::Live::SessionAcceptParams::Session,
+          ?request_options: OpenAI::request_opts
+        }
+
+      class SessionAcceptParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor session_id: String
+
+        attr_accessor session: OpenAI::Live::SessionAcceptParams::Session
+
+        def initialize: (
+          session_id: String,
+          session: OpenAI::Live::SessionAcceptParams::Session,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          session_id: String,
+          session: OpenAI::Live::SessionAcceptParams::Session,
+          ?request_options: OpenAI::RequestOptions
+        }
+
+        type session =
+          {
+            model: OpenAI::Models::Live::SessionAcceptParams::Session::model,
+            ?type: :live,
+            ?audio: OpenAI::Live::SessionAcceptParams::Session::Audio,
+            ?delegation: OpenAI::Models::Live::SessionAcceptParams::Session::delegation?,
+            ?input: ::Array[OpenAI::Models::Live::initial_item],
+            ?instructions: String?,
+            ?store: bool
+          }
+
+        class Session < OpenAI::Internal::Type::BaseModel
+          attr_accessor model: OpenAI::Models::Live::SessionAcceptParams::Session::model
+
+          attr_accessor type: :live
+
+          attr_reader audio: OpenAI::Live::SessionAcceptParams::Session::Audio?
+
+          def audio=: (
+            OpenAI::Live::SessionAcceptParams::Session::Audio
+          ) -> OpenAI::Live::SessionAcceptParams::Session::Audio
+
+          attr_accessor delegation: OpenAI::Models::Live::SessionAcceptParams::Session::delegation?
+
+          attr_reader input: ::Array[OpenAI::Models::Live::initial_item]?
+
+          def input=: (
+            ::Array[OpenAI::Models::Live::initial_item]
+          ) -> ::Array[OpenAI::Models::Live::initial_item]
+
+          attr_accessor instructions: String?
+
+          attr_reader store: bool?
+
+          def store=: (bool) -> bool
+
+          def initialize: (
+            model: OpenAI::Models::Live::SessionAcceptParams::Session::model,
+            ?audio: OpenAI::Live::SessionAcceptParams::Session::Audio,
+            ?delegation: OpenAI::Models::Live::SessionAcceptParams::Session::delegation?,
+            ?input: ::Array[OpenAI::Models::Live::initial_item],
+            ?instructions: String?,
+            ?store: bool,
+            ?type: :live
+          ) -> void
+
+          def to_hash: -> {
+            model: OpenAI::Models::Live::SessionAcceptParams::Session::model,
+            ?type: :live,
+            ?audio: OpenAI::Live::SessionAcceptParams::Session::Audio,
+            ?delegation: OpenAI::Models::Live::SessionAcceptParams::Session::delegation?,
+            ?input: ::Array[OpenAI::Models::Live::initial_item],
+            ?instructions: String?,
+            ?store: bool
+          }
+
+          type model = String | :"gpt-live-1"
+
+          module Model
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Live::SessionAcceptParams::Session::model]
+
+            GPT_LIVE_1: :"gpt-live-1"
+          end
+
+          type audio =
+            {
+              ?output: OpenAI::Live::SessionAcceptParams::Session::Audio::Output
+            }
+
+          class Audio < OpenAI::Internal::Type::BaseModel
+            attr_reader output: OpenAI::Live::SessionAcceptParams::Session::Audio::Output?
+
+            def output=: (
+              OpenAI::Live::SessionAcceptParams::Session::Audio::Output
+            ) -> OpenAI::Live::SessionAcceptParams::Session::Audio::Output
+
+            def initialize: (
+              ?output: OpenAI::Live::SessionAcceptParams::Session::Audio::Output
+            ) -> void
+
+            def to_hash: -> {
+              ?output: OpenAI::Live::SessionAcceptParams::Session::Audio::Output
+            }
+
+            type output =
+              {
+                ?voice: OpenAI::Models::Live::SessionAcceptParams::Session::Audio::Output::voice
+              }
+
+            class Output < OpenAI::Internal::Type::BaseModel
+              attr_reader voice: OpenAI::Models::Live::SessionAcceptParams::Session::Audio::Output::voice?
+
+              def voice=: (
+                OpenAI::Models::Live::SessionAcceptParams::Session::Audio::Output::voice
+              ) -> OpenAI::Models::Live::SessionAcceptParams::Session::Audio::Output::voice
+
+              def initialize: (
+                ?voice: OpenAI::Models::Live::SessionAcceptParams::Session::Audio::Output::voice
+              ) -> void
+
+              def to_hash: -> {
+                ?voice: OpenAI::Models::Live::SessionAcceptParams::Session::Audio::Output::voice
+              }
+
+              type voice =
+                String
+                | OpenAI::Models::Live::built_in_voice
+                | OpenAI::Live::CustomVoice
+
+              module Voice
+                extend OpenAI::Internal::Type::Union
+
+                def self?.variants: -> ::Array[OpenAI::Models::Live::SessionAcceptParams::Session::Audio::Output::voice]
+              end
+            end
+          end
+
+          type delegation =
+            OpenAI::Live::ClientDelegation
+            | OpenAI::Live::SessionAcceptParams::Session::Delegation::Responses
+
+          module Delegation
+            extend OpenAI::Internal::Type::Union
+
+            type responses =
+              {
+                responses: OpenAI::Live::ResponsesDelegationConfig,
+                ?type: :responses
+              }
+
+            class Responses < OpenAI::Internal::Type::BaseModel
+              attr_accessor responses: OpenAI::Live::ResponsesDelegationConfig
+
+              attr_accessor type: :responses
+
+              def initialize: (
+                responses: OpenAI::Live::ResponsesDelegationConfig,
+                ?type: :responses
+              ) -> void
+
+              def to_hash: -> {
+                responses: OpenAI::Live::ResponsesDelegationConfig,
+                ?type: :responses
+              }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Live::SessionAcceptParams::Session::delegation]
+          end
+        end
+      end
+    end
+  end
+end

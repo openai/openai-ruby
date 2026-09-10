@@ -1,0 +1,73 @@
+module OpenAI
+  module Models
+    module Live
+      type audio_format =
+        OpenAI::Live::AudioFormat::AudioPCM
+        | OpenAI::Live::AudioFormat::AudioPCMU
+        | OpenAI::Live::AudioFormat::AudioPCMA
+
+      module AudioFormat
+        extend OpenAI::Internal::Type::Union
+
+        type audio_pcm =
+          {
+            rate: OpenAI::Models::Live::AudioFormat::AudioPCM::rate,
+            ?type: :"audio/pcm"
+          }
+
+        class AudioPCM < OpenAI::Internal::Type::BaseModel
+          attr_accessor rate: OpenAI::Models::Live::AudioFormat::AudioPCM::rate
+
+          attr_accessor type: :"audio/pcm"
+
+          def initialize: (
+            rate: OpenAI::Models::Live::AudioFormat::AudioPCM::rate,
+            ?type: :"audio/pcm"
+          ) -> void
+
+          def to_hash: -> {
+            rate: OpenAI::Models::Live::AudioFormat::AudioPCM::rate,
+            ?type: :"audio/pcm"
+          }
+
+          type rate = 16000 | 24000
+
+          module Rate
+            extend OpenAI::Internal::Type::Enum
+
+            RATE_16000: 16000
+            RATE_24000: 24000
+
+            def self?.values: -> ::Array[OpenAI::Models::Live::AudioFormat::AudioPCM::rate]
+          end
+        end
+
+        type audio_pcmu = { rate: Integer, ?type: :"audio/pcmu" }
+
+        class AudioPCMU < OpenAI::Internal::Type::BaseModel
+          attr_accessor rate: Integer
+
+          attr_accessor type: :"audio/pcmu"
+
+          def initialize: (rate: Integer, ?type: :"audio/pcmu") -> void
+
+          def to_hash: -> { rate: Integer, ?type: :"audio/pcmu" }
+        end
+
+        type audio_pcma = { rate: Integer, ?type: :"audio/pcma" }
+
+        class AudioPCMA < OpenAI::Internal::Type::BaseModel
+          attr_accessor rate: Integer
+
+          attr_accessor type: :"audio/pcma"
+
+          def initialize: (rate: Integer, ?type: :"audio/pcma") -> void
+
+          def to_hash: -> { rate: Integer, ?type: :"audio/pcma" }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Live::audio_format]
+      end
+    end
+  end
+end

@@ -1,0 +1,332 @@
+module OpenAI
+  module Models
+    module Live
+      type initial_item =
+        OpenAI::Live::InitialItem::Developer
+        | OpenAI::Live::InitialItem::User
+        | OpenAI::Live::InitialItem::Assistant
+
+      module InitialItem
+        extend OpenAI::Internal::Type::Union
+
+        type developer =
+          {
+            content: ::Array[OpenAI::Live::InitialItem::Developer::Content],
+            ?role: :developer,
+            ?id: String?,
+            ?status: OpenAI::Models::Live::InitialItem::Developer::status?,
+            ?type: OpenAI::Models::Live::InitialItem::Developer::type_
+          }
+
+        class Developer < OpenAI::Internal::Type::BaseModel
+          attr_accessor content: ::Array[OpenAI::Live::InitialItem::Developer::Content]
+
+          attr_accessor role: :developer
+
+          attr_accessor id: String?
+
+          attr_accessor status: OpenAI::Models::Live::InitialItem::Developer::status?
+
+          attr_reader type: OpenAI::Models::Live::InitialItem::Developer::type_?
+
+          def type=: (
+            OpenAI::Models::Live::InitialItem::Developer::type_
+          ) -> OpenAI::Models::Live::InitialItem::Developer::type_
+
+          def initialize: (
+            content: ::Array[OpenAI::Live::InitialItem::Developer::Content],
+            ?id: String?,
+            ?status: OpenAI::Models::Live::InitialItem::Developer::status?,
+            ?type: OpenAI::Models::Live::InitialItem::Developer::type_,
+            ?role: :developer
+          ) -> void
+
+          def to_hash: -> {
+            content: ::Array[OpenAI::Live::InitialItem::Developer::Content],
+            ?role: :developer,
+            ?id: String?,
+            ?status: OpenAI::Models::Live::InitialItem::Developer::status?,
+            ?type: OpenAI::Models::Live::InitialItem::Developer::type_
+          }
+
+          type content =
+            {
+              text: String,
+              ?type: OpenAI::Models::Live::InitialItem::Developer::Content::type_
+            }
+
+          class Content < OpenAI::Internal::Type::BaseModel
+            attr_accessor text: String
+
+            attr_reader type: OpenAI::Models::Live::InitialItem::Developer::Content::type_?
+
+            def type=: (
+              OpenAI::Models::Live::InitialItem::Developer::Content::type_
+            ) -> OpenAI::Models::Live::InitialItem::Developer::Content::type_
+
+            def initialize: (
+              text: String,
+              ?type: OpenAI::Models::Live::InitialItem::Developer::Content::type_
+            ) -> void
+
+            def to_hash: -> {
+              text: String,
+              ?type: OpenAI::Models::Live::InitialItem::Developer::Content::type_
+            }
+
+            type type_ = :input_text
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              INPUT_TEXT: :input_text
+
+              def self?.values: -> ::Array[OpenAI::Models::Live::InitialItem::Developer::Content::type_]
+            end
+          end
+
+          type status = :incomplete | :completed
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            INCOMPLETE: :incomplete
+            COMPLETED: :completed
+
+            def self?.values: -> ::Array[OpenAI::Models::Live::InitialItem::Developer::status]
+          end
+
+          type type_ = :message
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            MESSAGE: :message
+
+            def self?.values: -> ::Array[OpenAI::Models::Live::InitialItem::Developer::type_]
+          end
+        end
+
+        type user =
+          {
+            content: ::Array[OpenAI::Live::InitialItem::User::Content],
+            ?role: :user,
+            ?id: String?,
+            ?status: OpenAI::Models::Live::InitialItem::User::status?,
+            ?type: OpenAI::Models::Live::InitialItem::User::type_
+          }
+
+        class User < OpenAI::Internal::Type::BaseModel
+          attr_accessor content: ::Array[OpenAI::Live::InitialItem::User::Content]
+
+          attr_accessor role: :user
+
+          attr_accessor id: String?
+
+          attr_accessor status: OpenAI::Models::Live::InitialItem::User::status?
+
+          attr_reader type: OpenAI::Models::Live::InitialItem::User::type_?
+
+          def type=: (
+            OpenAI::Models::Live::InitialItem::User::type_
+          ) -> OpenAI::Models::Live::InitialItem::User::type_
+
+          def initialize: (
+            content: ::Array[OpenAI::Live::InitialItem::User::Content],
+            ?id: String?,
+            ?status: OpenAI::Models::Live::InitialItem::User::status?,
+            ?type: OpenAI::Models::Live::InitialItem::User::type_,
+            ?role: :user
+          ) -> void
+
+          def to_hash: -> {
+            content: ::Array[OpenAI::Live::InitialItem::User::Content],
+            ?role: :user,
+            ?id: String?,
+            ?status: OpenAI::Models::Live::InitialItem::User::status?,
+            ?type: OpenAI::Models::Live::InitialItem::User::type_
+          }
+
+          type content =
+            {
+              text: String,
+              ?type: OpenAI::Models::Live::InitialItem::User::Content::type_
+            }
+
+          class Content < OpenAI::Internal::Type::BaseModel
+            attr_accessor text: String
+
+            attr_reader type: OpenAI::Models::Live::InitialItem::User::Content::type_?
+
+            def type=: (
+              OpenAI::Models::Live::InitialItem::User::Content::type_
+            ) -> OpenAI::Models::Live::InitialItem::User::Content::type_
+
+            def initialize: (
+              text: String,
+              ?type: OpenAI::Models::Live::InitialItem::User::Content::type_
+            ) -> void
+
+            def to_hash: -> {
+              text: String,
+              ?type: OpenAI::Models::Live::InitialItem::User::Content::type_
+            }
+
+            type type_ = :input_text
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              INPUT_TEXT: :input_text
+
+              def self?.values: -> ::Array[OpenAI::Models::Live::InitialItem::User::Content::type_]
+            end
+          end
+
+          type status = :incomplete | :completed
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            INCOMPLETE: :incomplete
+            COMPLETED: :completed
+
+            def self?.values: -> ::Array[OpenAI::Models::Live::InitialItem::User::status]
+          end
+
+          type type_ = :message
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            MESSAGE: :message
+
+            def self?.values: -> ::Array[OpenAI::Models::Live::InitialItem::User::type_]
+          end
+        end
+
+        type assistant =
+          {
+            content: ::Array[OpenAI::Models::Live::InitialItem::Assistant::content],
+            ?role: :assistant,
+            ?id: String?,
+            ?status: OpenAI::Models::Live::InitialItem::Assistant::status?,
+            ?type: OpenAI::Models::Live::InitialItem::Assistant::type_
+          }
+
+        class Assistant < OpenAI::Internal::Type::BaseModel
+          attr_accessor content: ::Array[OpenAI::Models::Live::InitialItem::Assistant::content]
+
+          attr_accessor role: :assistant
+
+          attr_accessor id: String?
+
+          attr_accessor status: OpenAI::Models::Live::InitialItem::Assistant::status?
+
+          attr_reader type: OpenAI::Models::Live::InitialItem::Assistant::type_?
+
+          def type=: (
+            OpenAI::Models::Live::InitialItem::Assistant::type_
+          ) -> OpenAI::Models::Live::InitialItem::Assistant::type_
+
+          def initialize: (
+            content: ::Array[OpenAI::Models::Live::InitialItem::Assistant::content],
+            ?id: String?,
+            ?status: OpenAI::Models::Live::InitialItem::Assistant::status?,
+            ?type: OpenAI::Models::Live::InitialItem::Assistant::type_,
+            ?role: :assistant
+          ) -> void
+
+          def to_hash: -> {
+            content: ::Array[OpenAI::Models::Live::InitialItem::Assistant::content],
+            ?role: :assistant,
+            ?id: String?,
+            ?status: OpenAI::Models::Live::InitialItem::Assistant::status?,
+            ?type: OpenAI::Models::Live::InitialItem::Assistant::type_
+          }
+
+          type content =
+            OpenAI::Live::InitialItem::Assistant::Content::Text
+            | OpenAI::Live::InitialItem::Assistant::Content::OutputText
+
+          module Content
+            extend OpenAI::Internal::Type::Union
+
+            type text =
+              {
+                text: String,
+                ?type: OpenAI::Models::Live::InitialItem::Assistant::Content::Text::type_
+              }
+
+            class Text < OpenAI::Internal::Type::BaseModel
+              attr_accessor text: String
+
+              attr_reader type: OpenAI::Models::Live::InitialItem::Assistant::Content::Text::type_?
+
+              def type=: (
+                OpenAI::Models::Live::InitialItem::Assistant::Content::Text::type_
+              ) -> OpenAI::Models::Live::InitialItem::Assistant::Content::Text::type_
+
+              def initialize: (
+                text: String,
+                ?type: OpenAI::Models::Live::InitialItem::Assistant::Content::Text::type_
+              ) -> void
+
+              def to_hash: -> {
+                text: String,
+                ?type: OpenAI::Models::Live::InitialItem::Assistant::Content::Text::type_
+              }
+
+              type type_ = :text
+
+              module Type
+                extend OpenAI::Internal::Type::Enum
+
+                TEXT: :text
+
+                def self?.values: -> ::Array[OpenAI::Models::Live::InitialItem::Assistant::Content::Text::type_]
+              end
+            end
+
+            type output_text = { text: String, ?type: :output_text }
+
+            class OutputText < OpenAI::Internal::Type::BaseModel
+              attr_accessor text: String
+
+              attr_accessor type: :output_text
+
+              def initialize: (text: String, ?type: :output_text) -> void
+
+              def to_hash: -> { text: String, ?type: :output_text }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Live::InitialItem::Assistant::content]
+          end
+
+          type status = :incomplete | :completed
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            INCOMPLETE: :incomplete
+            COMPLETED: :completed
+
+            def self?.values: -> ::Array[OpenAI::Models::Live::InitialItem::Assistant::status]
+          end
+
+          type type_ = :message
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            MESSAGE: :message
+
+            def self?.values: -> ::Array[OpenAI::Models::Live::InitialItem::Assistant::type_]
+          end
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Live::initial_item]
+      end
+    end
+  end
+end

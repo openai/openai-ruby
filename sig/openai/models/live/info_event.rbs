@@ -1,0 +1,44 @@
+module OpenAI
+  module Models
+    module Live
+      type info_event =
+        {
+          code: String,
+          event_id: String,
+          message: String,
+          ?type: :info,
+          ?client_event_id: String
+        }
+
+      class InfoEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor code: String
+
+        attr_accessor event_id: String
+
+        attr_accessor message: String
+
+        attr_accessor type: :info
+
+        attr_reader client_event_id: String?
+
+        def client_event_id=: (String) -> String
+
+        def initialize: (
+          code: String,
+          event_id: String,
+          message: String,
+          ?client_event_id: String,
+          ?type: :info
+        ) -> void
+
+        def to_hash: -> {
+          code: String,
+          event_id: String,
+          message: String,
+          ?type: :info,
+          ?client_event_id: String
+        }
+      end
+    end
+  end
+end

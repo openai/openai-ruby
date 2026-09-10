@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Live
+      type response_item_create_event =
+        {
+          item: OpenAI::Models::Responses::response_input_item,
+          ?type: :"response.item.create",
+          ?event_id: String?
+        }
+
+      class ResponseItemCreateEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor item: OpenAI::Models::Responses::response_input_item
+
+        attr_accessor type: :"response.item.create"
+
+        attr_accessor event_id: String?
+
+        def initialize: (
+          item: OpenAI::Models::Responses::response_input_item,
+          ?event_id: String?,
+          ?type: :"response.item.create"
+        ) -> void
+
+        def to_hash: -> {
+          item: OpenAI::Models::Responses::response_input_item,
+          ?type: :"response.item.create",
+          ?event_id: String?
+        }
+      end
+    end
+  end
+end

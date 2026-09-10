@@ -1,0 +1,18 @@
+module OpenAI
+  module Models
+    module Live
+      type response_create_event =
+        { ?type: :"response.create", ?event_id: String? }
+
+      class ResponseCreateEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :"response.create"
+
+        attr_accessor event_id: String?
+
+        def initialize: (?event_id: String?, ?type: :"response.create") -> void
+
+        def to_hash: -> { ?type: :"response.create", ?event_id: String? }
+      end
+    end
+  end
+end

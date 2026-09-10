@@ -1,0 +1,33 @@
+module OpenAI
+  module Models
+    module Live
+      type session_refer_params =
+        {
+          session_id: String,
+          target_uri: String,
+          ?request_options: OpenAI::request_opts
+        }
+
+      class SessionReferParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor session_id: String
+
+        attr_accessor target_uri: String
+
+        def initialize: (
+          session_id: String,
+          target_uri: String,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          session_id: String,
+          target_uri: String,
+          ?request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end

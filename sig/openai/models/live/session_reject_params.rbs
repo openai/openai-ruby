@@ -1,0 +1,33 @@
+module OpenAI
+  module Models
+    module Live
+      type session_reject_params =
+        {
+          session_id: String,
+          status_code: Integer,
+          ?request_options: OpenAI::request_opts
+        }
+
+      class SessionRejectParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor session_id: String
+
+        attr_accessor status_code: Integer
+
+        def initialize: (
+          session_id: String,
+          status_code: Integer,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          session_id: String,
+          status_code: Integer,
+          ?request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end

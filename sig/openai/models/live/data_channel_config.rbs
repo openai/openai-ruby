@@ -1,0 +1,56 @@
+module OpenAI
+  module Models
+    module Live
+      type data_channel_config =
+        {
+          ?allowed_client_events: OpenAI::Models::Live::DataChannelConfig::allowed_client_events,
+          ?allowed_server_events: OpenAI::Models::Live::DataChannelConfig::allowed_server_events
+        }
+
+      class DataChannelConfig < OpenAI::Internal::Type::BaseModel
+        attr_reader allowed_client_events: OpenAI::Models::Live::DataChannelConfig::allowed_client_events?
+
+        def allowed_client_events=: (
+          OpenAI::Models::Live::DataChannelConfig::allowed_client_events
+        ) -> OpenAI::Models::Live::DataChannelConfig::allowed_client_events
+
+        attr_reader allowed_server_events: OpenAI::Models::Live::DataChannelConfig::allowed_server_events?
+
+        def allowed_server_events=: (
+          OpenAI::Models::Live::DataChannelConfig::allowed_server_events
+        ) -> OpenAI::Models::Live::DataChannelConfig::allowed_server_events
+
+        def initialize: (
+          ?allowed_client_events: OpenAI::Models::Live::DataChannelConfig::allowed_client_events,
+          ?allowed_server_events: OpenAI::Models::Live::DataChannelConfig::allowed_server_events
+        ) -> void
+
+        def to_hash: -> {
+          ?allowed_client_events: OpenAI::Models::Live::DataChannelConfig::allowed_client_events,
+          ?allowed_server_events: OpenAI::Models::Live::DataChannelConfig::allowed_server_events
+        }
+
+        type allowed_client_events = :all | ::Array[String]
+
+        module AllowedClientEvents
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Live::DataChannelConfig::allowed_client_events]
+
+          StringArray: OpenAI::Internal::Type::Converter
+        end
+
+        type allowed_server_events =
+          :all | ::Array[OpenAI::Live::ServerEventSelector]
+
+        module AllowedServerEvents
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Live::DataChannelConfig::allowed_server_events]
+
+          ServerEventSelectorArray: OpenAI::Internal::Type::Converter
+        end
+      end
+    end
+  end
+end

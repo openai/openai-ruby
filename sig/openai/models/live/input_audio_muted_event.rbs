@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    module Live
+      type input_audio_muted_event =
+        {
+          event_id: String,
+          ?type: :"session.input_audio.muted",
+          ?client_event_id: String
+        }
+
+      class InputAudioMutedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor event_id: String
+
+        attr_accessor type: :"session.input_audio.muted"
+
+        attr_reader client_event_id: String?
+
+        def client_event_id=: (String) -> String
+
+        def initialize: (
+          event_id: String,
+          ?client_event_id: String,
+          ?type: :"session.input_audio.muted"
+        ) -> void
+
+        def to_hash: -> {
+          event_id: String,
+          ?type: :"session.input_audio.muted",
+          ?client_event_id: String
+        }
+      end
+    end
+  end
+end

@@ -1,0 +1,49 @@
+module OpenAI
+  module Models
+    module Live
+      type session_fork_response =
+        {
+          session: OpenAI::Models::Live::SessionForkResponse::Session,
+          transport: OpenAI::Models::Live::SessionForkResponse::Transport
+        }
+
+      class SessionForkResponse < OpenAI::Internal::Type::BaseModel
+        attr_accessor session: OpenAI::Models::Live::SessionForkResponse::Session
+
+        attr_accessor transport: OpenAI::Models::Live::SessionForkResponse::Transport
+
+        def initialize: (
+          session: OpenAI::Models::Live::SessionForkResponse::Session,
+          transport: OpenAI::Models::Live::SessionForkResponse::Transport
+        ) -> void
+
+        def to_hash: -> {
+          session: OpenAI::Models::Live::SessionForkResponse::Session,
+          transport: OpenAI::Models::Live::SessionForkResponse::Transport
+        }
+
+        type session = { id: String }
+
+        class Session < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          def initialize: (id: String) -> void
+
+          def to_hash: -> { id: String }
+        end
+
+        type transport = { sdp: String, ?type: :webrtc }
+
+        class Transport < OpenAI::Internal::Type::BaseModel
+          attr_accessor sdp: String
+
+          attr_accessor type: :webrtc
+
+          def initialize: (sdp: String, ?type: :webrtc) -> void
+
+          def to_hash: -> { sdp: String, ?type: :webrtc }
+        end
+      end
+    end
+  end
+end

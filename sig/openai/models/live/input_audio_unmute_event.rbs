@@ -1,0 +1,24 @@
+module OpenAI
+  module Models
+    module Live
+      type input_audio_unmute_event =
+        { ?type: :"session.input_audio.unmute", ?event_id: String? }
+
+      class InputAudioUnmuteEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :"session.input_audio.unmute"
+
+        attr_accessor event_id: String?
+
+        def initialize: (
+          ?event_id: String?,
+          ?type: :"session.input_audio.unmute"
+        ) -> void
+
+        def to_hash: -> {
+          ?type: :"session.input_audio.unmute",
+          ?event_id: String?
+        }
+      end
+    end
+  end
+end

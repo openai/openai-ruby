@@ -1,0 +1,15 @@
+module OpenAI
+  module Models
+    module Live
+      type client_config = { data_channel: OpenAI::Live::DataChannelConfig }
+
+      class ClientConfig < OpenAI::Internal::Type::BaseModel
+        attr_accessor data_channel: OpenAI::Live::DataChannelConfig
+
+        def initialize: (data_channel: OpenAI::Live::DataChannelConfig) -> void
+
+        def to_hash: -> { data_channel: OpenAI::Live::DataChannelConfig }
+      end
+    end
+  end
+end

@@ -40,9 +40,11 @@ module OpenAI
         sig { params(object: OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Object::OrSymbol).void }
         attr_writer :object
 
-        # Sent when an incoming API SIP session is available for Live acceptance. The same
-        # pending session can also emit `realtime.call.incoming`; the first successful
-        # Realtime or Live accept endpoint selects the runtime surface.
+        # Deprecated: use `live.transport.incoming`. Retained for existing subscriptions
+        # during migration; new subscriptions to this event are not allowed. Sent when an
+        # incoming API SIP session is available for Live acceptance. The same pending
+        # session can also emit `realtime.call.incoming`; the first successful Realtime or
+        # Live accept endpoint selects the runtime surface.
         sig do
           params(
 
@@ -100,8 +102,9 @@ module OpenAI
             )
           end
 
-          # The `live_...` ID of the pending SIP session. Forward this value unchanged when
-          # accepting or rejecting the call through the Live API.
+          # The `live_...` ID of the pending SIP session. Pass this value unchanged to Live
+          # call controls and sideband connections. The corresponding
+          # `realtime.call.incoming` event uses a separate `rtc_...` call ID.
           sig { returns(String) }
           attr_accessor :session_id
 
@@ -123,8 +126,9 @@ module OpenAI
           end
           def self.new(
 
-            # The `live_...` ID of the pending SIP session. Forward this value unchanged when
-            # accepting or rejecting the call through the Live API.
+            # The `live_...` ID of the pending SIP session. Pass this value unchanged to Live
+            # call controls and sideband connections. The corresponding
+            # `realtime.call.incoming` event uses a separate `rtc_...` call ID.
             session_id:,
 
             # Headers from the SIP INVITE, excluding SIP authorization headers. Retained

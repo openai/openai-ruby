@@ -76,7 +76,11 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
             id: String,
             result: String | nil,
             status: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Status,
+            action: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Action | nil,
+            background: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Background | nil,
+            output_format: OpenAI::Conversations::ConversationItem::ImageGenerationCall::OutputFormat | nil,
             quality: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Quality | nil,
+            revised_prompt: String | nil,
             size: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Size | nil
           } | {
             type: :computer_call,
@@ -293,7 +297,11 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
             id: String,
             result: String | nil,
             status: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Status,
+            action: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Action | nil,
+            background: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Background | nil,
+            output_format: OpenAI::Conversations::ConversationItem::ImageGenerationCall::OutputFormat | nil,
             quality: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Quality | nil,
+            revised_prompt: String | nil,
             size: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Size | nil
           } | {
             type: :computer_call,
