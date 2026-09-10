@@ -1,0 +1,40 @@
+module OpenAI
+  module Resources
+    class Beta
+      class Agents
+        class Sessions
+          class Artifacts
+            def retrieve: (
+              String artifact_id,
+              session_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Beta::Agents::Sessions::SessionArtifact
+
+            def list: (
+              String session_id,
+              ?after: String?,
+              ?environment_id: String?,
+              ?limit: Integer?,
+              ?order: OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Internal::CursorPage[OpenAI::Beta::Agents::Sessions::SessionArtifact]
+
+            def delete: (
+              String artifact_id,
+              session_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Beta::Agents::Sessions::SessionArtifactDeleted
+
+            def content: (
+              String artifact_id,
+              session_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> (StringIO & OpenAI::ResponseCarrier)
+
+            def initialize: (client: OpenAI::Client) -> void
+          end
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,66 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session_assistant_message =
+        {
+          id: String,
+          content: ::Array[OpenAI::Beta::OutputText],
+          phase: OpenAI::Models::Beta::AgentSessionAssistantMessage::phase?,
+          ?role: :assistant,
+          status: OpenAI::Models::Beta::agent_output_item_status,
+          turn_id: String,
+          ?type: :message
+        }
+
+      class AgentSessionAssistantMessage < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor content: ::Array[OpenAI::Beta::OutputText]
+
+        attr_accessor phase: OpenAI::Models::Beta::AgentSessionAssistantMessage::phase?
+
+        attr_accessor role: :assistant
+
+        attr_accessor status: OpenAI::Models::Beta::agent_output_item_status
+
+        attr_accessor turn_id: String
+
+        attr_accessor type: :message
+
+        def initialize: (
+          id: String,
+          content: ::Array[OpenAI::Beta::OutputText],
+          phase: OpenAI::Models::Beta::AgentSessionAssistantMessage::phase?,
+          status: OpenAI::Models::Beta::agent_output_item_status,
+          turn_id: String,
+          ?role: :assistant,
+          ?type: :message
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          content: ::Array[OpenAI::Beta::OutputText],
+          phase: OpenAI::Models::Beta::AgentSessionAssistantMessage::phase?,
+          ?role: :assistant,
+          status: OpenAI::Models::Beta::agent_output_item_status,
+          turn_id: String,
+          ?type: :message
+        }
+
+        type phase = :commentary | :final_answer
+
+        module Phase
+          extend OpenAI::Internal::Type::Enum
+
+          # Commentary produced while the agent works.
+          COMMENTARY: :commentary
+
+          # The agent's final answer.
+          FINAL_ANSWER: :final_answer
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSessionAssistantMessage::phase]
+        end
+      end
+    end
+  end
+end

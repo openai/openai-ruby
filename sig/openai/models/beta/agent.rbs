@@ -1,0 +1,96 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent =
+        {
+          id: String,
+          created_at: Integer,
+          instructions: String?,
+          metadata: ::Hash[Symbol, String],
+          model: String,
+          multi_agent: OpenAI::Beta::MultiAgentConfig,
+          name: String?,
+          ?object: :agent,
+          reasoning: OpenAI::Beta::AgentReasoning,
+          service_tier: OpenAI::Models::Beta::Agent::service_tier,
+          text: OpenAI::Beta::AgentText,
+          tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool],
+          updated_at: Integer
+        }
+
+      class Agent < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor instructions: String?
+
+        attr_accessor metadata: ::Hash[Symbol, String]
+
+        attr_accessor model: String
+
+        attr_accessor multi_agent: OpenAI::Beta::MultiAgentConfig
+
+        attr_accessor name: String?
+
+        attr_accessor object: :agent
+
+        attr_accessor reasoning: OpenAI::Beta::AgentReasoning
+
+        attr_accessor service_tier: OpenAI::Models::Beta::Agent::service_tier
+
+        attr_accessor text: OpenAI::Beta::AgentText
+
+        attr_accessor tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool]
+
+        attr_accessor updated_at: Integer
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          instructions: String?,
+          metadata: ::Hash[Symbol, String],
+          model: String,
+          multi_agent: OpenAI::Beta::MultiAgentConfig,
+          name: String?,
+          reasoning: OpenAI::Beta::AgentReasoning,
+          service_tier: OpenAI::Models::Beta::Agent::service_tier,
+          text: OpenAI::Beta::AgentText,
+          tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool],
+          updated_at: Integer,
+          ?object: :agent
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          instructions: String?,
+          metadata: ::Hash[Symbol, String],
+          model: String,
+          multi_agent: OpenAI::Beta::MultiAgentConfig,
+          name: String?,
+          ?object: :agent,
+          reasoning: OpenAI::Beta::AgentReasoning,
+          service_tier: OpenAI::Models::Beta::Agent::service_tier,
+          text: OpenAI::Beta::AgentText,
+          tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool],
+          updated_at: Integer
+        }
+
+        type service_tier = :auto | :default | :flex | :priority | :fast
+
+        module ServiceTier
+          extend OpenAI::Internal::Type::Enum
+
+          AUTO: :auto
+          DEFAULT: :default
+          FLEX: :flex
+          PRIORITY: :priority
+          FAST: :fast
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::Agent::service_tier]
+        end
+      end
+    end
+  end
+end

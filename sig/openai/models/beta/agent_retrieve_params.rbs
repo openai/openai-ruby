@@ -1,0 +1,25 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_retrieve_params =
+        { agent_id: String, ?request_options: OpenAI::request_opts }
+
+      class AgentRetrieveParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor agent_id: String
+
+        def initialize: (
+          agent_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          agent_id: String,
+          ?request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end

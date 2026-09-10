@@ -1,0 +1,26 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_function_call_status =
+        :in_progress | :completed | :failed | :incomplete
+
+      module AgentFunctionCallStatus
+        extend OpenAI::Internal::Type::Enum
+
+        # The call is in progress.
+        IN_PROGRESS: :in_progress
+
+        # The call completed successfully.
+        COMPLETED: :completed
+
+        # The call failed.
+        FAILED: :failed
+
+        # The call stopped before completing.
+        INCOMPLETE: :incomplete
+
+        def self?.values: -> ::Array[OpenAI::Models::Beta::agent_function_call_status]
+      end
+    end
+  end
+end

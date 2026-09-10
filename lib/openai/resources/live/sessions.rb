@@ -4,7 +4,11 @@ module OpenAI
   module Resources
     class Live
       class Sessions
-        # Accept an incoming SIP call with Live startup configuration.
+        # Accept an incoming SIP call. Supply session with type live, the model, and
+        # startup configuration. Before accepting calls, follow the
+        # [Live prompting guide](https://developers.openai.com/api/docs/guides/live-prompting)
+        # to write frontend conversation instructions and a separate backend prompt. SIP
+        # media format is negotiated; omit audio.format.
         #
         # @overload accept(session_id, session:, request_options: {})
         #
@@ -88,7 +92,7 @@ module OpenAI
           )
         end
 
-        # Hang up a Live session.
+        # End a SIP call identified by session_id.
         #
         # @overload hangup(session_id, request_options: {})
         #
@@ -111,7 +115,8 @@ module OpenAI
           )
         end
 
-        # Transfer a Live SIP call to another destination.
+        # Transfer a SIP call to another destination. Supply a nonblank target_uri for the
+        # SIP Refer-To header.
         #
         # @overload refer(session_id, target_uri:, request_options: {})
         #
@@ -140,7 +145,8 @@ module OpenAI
           )
         end
 
-        # Reject an incoming SIP call.
+        # Reject an incoming SIP call. Send a required SIP rejection status_code between
+        # 300 and 699.
         #
         # @overload reject(session_id, status_code:, request_options: {})
         #

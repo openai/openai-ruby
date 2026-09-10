@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session_idle_event =
+        {
+          event_id: String,
+          session: OpenAI::Beta::AgentSession,
+          ?type: :"agent.session.idle"
+        }
+
+      class AgentSessionIdleEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor event_id: String
+
+        attr_accessor session: OpenAI::Beta::AgentSession
+
+        attr_accessor type: :"agent.session.idle"
+
+        def initialize: (
+          event_id: String,
+          session: OpenAI::Beta::AgentSession,
+          ?type: :"agent.session.idle"
+        ) -> void
+
+        def to_hash: -> {
+          event_id: String,
+          session: OpenAI::Beta::AgentSession,
+          ?type: :"agent.session.idle"
+        }
+      end
+    end
+  end
+end

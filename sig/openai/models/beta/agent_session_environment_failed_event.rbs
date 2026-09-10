@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session_environment_failed_event =
+        {
+          environment: OpenAI::Beta::AgentSessionEnvironmentState,
+          event_id: String,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.session.environment.failed"
+        }
+
+      class AgentSessionEnvironmentFailedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor environment: OpenAI::Beta::AgentSessionEnvironmentState
+
+        attr_accessor event_id: String
+
+        attr_accessor session_id: String
+
+        attr_accessor turn_id: String?
+
+        attr_accessor type: :"agent.session.environment.failed"
+
+        def initialize: (
+          environment: OpenAI::Beta::AgentSessionEnvironmentState,
+          event_id: String,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.session.environment.failed"
+        ) -> void
+
+        def to_hash: -> {
+          environment: OpenAI::Beta::AgentSessionEnvironmentState,
+          event_id: String,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.session.environment.failed"
+        }
+      end
+    end
+  end
+end

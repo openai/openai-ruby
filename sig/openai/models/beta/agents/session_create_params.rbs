@@ -1,0 +1,144 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type session_create_params =
+          {
+            environment: OpenAI::Models::Beta::environment_param,
+            ?agent: OpenAI::Beta::Agents::SessionCreateParams::Agent,
+            ?agent_id: String,
+            ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
+            ?metadata: ::Hash[Symbol, String]?,
+            ?vault_ids: ::Array[String]?,
+            ?request_options: OpenAI::request_opts
+          }
+
+        class SessionCreateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor environment: OpenAI::Models::Beta::environment_param
+
+          attr_reader agent: OpenAI::Beta::Agents::SessionCreateParams::Agent?
+
+          def agent=: (
+            OpenAI::Beta::Agents::SessionCreateParams::Agent
+          ) -> OpenAI::Beta::Agents::SessionCreateParams::Agent
+
+          attr_reader agent_id: String?
+
+          def agent_id=: (String) -> String
+
+          attr_accessor input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?
+
+          attr_accessor metadata: ::Hash[Symbol, String]?
+
+          attr_accessor vault_ids: ::Array[String]?
+
+          def initialize: (
+            environment: OpenAI::Models::Beta::environment_param,
+            ?agent: OpenAI::Beta::Agents::SessionCreateParams::Agent,
+            ?agent_id: String,
+            ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
+            ?metadata: ::Hash[Symbol, String]?,
+            ?vault_ids: ::Array[String]?,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            environment: OpenAI::Models::Beta::environment_param,
+            ?agent: OpenAI::Beta::Agents::SessionCreateParams::Agent,
+            ?agent_id: String,
+            ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
+            ?metadata: ::Hash[Symbol, String]?,
+            ?vault_ids: ::Array[String]?,
+            ?request_options: OpenAI::RequestOptions
+          }
+
+          type agent =
+            {
+              ?instructions: String?,
+              ?model: String,
+              ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
+              ?reasoning: OpenAI::Beta::AgentReasoningParam?,
+              ?service_tier: OpenAI::Models::Beta::Agents::SessionCreateParams::Agent::service_tier?,
+              ?text: OpenAI::Beta::AgentTextParam?,
+              ?tools: ::Array[OpenAI::Models::Beta::agent_tool_param]?
+            }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_accessor instructions: String?
+
+            attr_reader model: String?
+
+            def model=: (String) -> String
+
+            attr_accessor multi_agent: OpenAI::Beta::MultiAgentConfigParam?
+
+            attr_accessor reasoning: OpenAI::Beta::AgentReasoningParam?
+
+            attr_accessor service_tier: OpenAI::Models::Beta::Agents::SessionCreateParams::Agent::service_tier?
+
+            attr_accessor text: OpenAI::Beta::AgentTextParam?
+
+            attr_accessor tools: ::Array[OpenAI::Models::Beta::agent_tool_param]?
+
+            def initialize: (
+              ?instructions: String?,
+              ?model: String,
+              ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
+              ?reasoning: OpenAI::Beta::AgentReasoningParam?,
+              ?service_tier: OpenAI::Models::Beta::Agents::SessionCreateParams::Agent::service_tier?,
+              ?text: OpenAI::Beta::AgentTextParam?,
+              ?tools: ::Array[OpenAI::Models::Beta::agent_tool_param]?
+            ) -> void
+
+            def to_hash: -> {
+              ?instructions: String?,
+              ?model: String,
+              ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
+              ?reasoning: OpenAI::Beta::AgentReasoningParam?,
+              ?service_tier: OpenAI::Models::Beta::Agents::SessionCreateParams::Agent::service_tier?,
+              ?text: OpenAI::Beta::AgentTextParam?,
+              ?tools: ::Array[OpenAI::Models::Beta::agent_tool_param]?
+            }
+
+            type service_tier = :auto | :default | :flex | :priority | :fast
+
+            module ServiceTier
+              extend OpenAI::Internal::Type::Enum
+
+              # Selects the service tier automatically.
+              AUTO: :auto
+
+              # Uses the default service tier.
+              DEFAULT: :default
+
+              # Uses the flex service tier.
+              FLEX: :flex
+
+              # Uses the priority service tier.
+              PRIORITY: :priority
+
+              # Uses the fast service tier.
+              FAST: :fast
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::SessionCreateParams::Agent::service_tier]
+            end
+          end
+
+          type input =
+            String | ::Array[OpenAI::Beta::AgentSessionInputMessageParam]
+
+          module Input
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::SessionCreateParams::input]
+
+            AgentSessionInputMessageParamArray: OpenAI::Internal::Type::Converter
+          end
+        end
+      end
+    end
+  end
+end

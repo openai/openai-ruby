@@ -1,0 +1,47 @@
+module OpenAI
+  module Models
+    module Beta
+      type hosted_environment_file_param =
+        OpenAI::Beta::HostedEnvironmentFileParam::FileID
+        | OpenAI::Beta::HostedEnvironmentFileParam::Inline
+
+      module HostedEnvironmentFileParam
+        extend OpenAI::Internal::Type::Union
+
+        type file_id = { file_id: String, path: String, ?type: :file_id }
+
+        class FileID < OpenAI::Internal::Type::BaseModel
+          attr_accessor file_id: String
+
+          attr_accessor path: String
+
+          attr_accessor type: :file_id
+
+          def initialize: (
+            file_id: String,
+            path: String,
+            ?type: :file_id
+          ) -> void
+
+          def to_hash: -> { file_id: String, path: String, ?type: :file_id }
+        end
+
+        type inline = { data: String, path: String, ?type: :inline }
+
+        class Inline < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: String
+
+          attr_accessor path: String
+
+          attr_accessor type: :inline
+
+          def initialize: (data: String, path: String, ?type: :inline) -> void
+
+          def to_hash: -> { data: String, path: String, ?type: :inline }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::hosted_environment_file_param]
+      end
+    end
+  end
+end

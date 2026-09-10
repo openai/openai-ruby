@@ -1,0 +1,43 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session_event =
+        OpenAI::Beta::AgentSessionErrorEvent
+        | OpenAI::Beta::AgentSessionEnvironmentReadyEvent
+        | OpenAI::Beta::AgentOutputCommandExecutionOutputDeltaEvent
+        | OpenAI::Beta::AgentSessionCreatedEvent
+        | OpenAI::Beta::AgentSessionTurnCreatedEvent
+        | OpenAI::Beta::AgentSessionTurnInProgressEvent
+        | OpenAI::Beta::AgentSessionTurnCompletedEvent
+        | OpenAI::Beta::AgentSessionTurnFailedEvent
+        | OpenAI::Beta::AgentSessionTurnCancelledEvent
+        | OpenAI::Beta::AgentSessionTurnItemAddedEvent
+        | OpenAI::Beta::AgentSessionIdleEvent
+        | OpenAI::Beta::AgentSessionInProgressEvent
+        | OpenAI::Beta::AgentSessionRequiresActionEvent
+        | OpenAI::Beta::AgentSessionFailedEvent
+        | OpenAI::Beta::AgentSessionEnvironmentPendingEvent
+        | OpenAI::Beta::AgentSessionEnvironmentConnectedEvent
+        | OpenAI::Beta::AgentSessionEnvironmentDisconnectedEvent
+        | OpenAI::Beta::AgentSessionEnvironmentFailedEvent
+        | OpenAI::Beta::AgentSessionSubagentCreatedEvent
+        | OpenAI::Beta::AgentSessionSubagentActiveEvent
+        | OpenAI::Beta::AgentSessionSubagentClosedEvent
+        | OpenAI::Beta::AgentSessionTurnItemDoneEvent
+        | OpenAI::Beta::AgentSessionTurnContentPartAddedEvent
+        | OpenAI::Beta::AgentSessionTurnContentPartDoneEvent
+        | OpenAI::Beta::AgentSessionTurnOutputTextDeltaEvent
+        | OpenAI::Beta::AgentSessionTurnOutputTextDoneEvent
+        | OpenAI::Beta::AgentSessionTurnReasoningSummaryPartAddedEvent
+        | OpenAI::Beta::AgentSessionTurnReasoningSummaryPartDoneEvent
+        | OpenAI::Beta::AgentSessionTurnReasoningSummaryTextDeltaEvent
+        | OpenAI::Beta::AgentSessionTurnReasoningSummaryTextDoneEvent
+
+      module AgentSessionEvent
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::agent_session_event]
+      end
+    end
+  end
+end

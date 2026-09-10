@@ -1,0 +1,116 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session_item =
+        OpenAI::Beta::AgentSessionMessage
+        | OpenAI::Beta::AgentReasoningItem
+        | OpenAI::Beta::AgentFunctionCallItem
+        | OpenAI::Beta::AgentSessionItem::FunctionCallOutput
+        | OpenAI::Beta::AgentSessionItem::AgentMessage
+        | OpenAI::Beta::AgentMcpCallItem
+        | OpenAI::Beta::AgentWebSearchCallItem
+        | OpenAI::Beta::AgentCommandExecutionItem
+        | OpenAI::Beta::AgentCreateSubagentCallItem
+        | OpenAI::Beta::AgentSendSubagentInputCallItem
+        | OpenAI::Beta::AgentResumeSubagentCallItem
+        | OpenAI::Beta::AgentWaitForSubagentsCallItem
+        | OpenAI::Beta::AgentInterruptSubagentCallItem
+        | OpenAI::Beta::AgentCloseSubagentCallItem
+
+      module AgentSessionItem
+        extend OpenAI::Internal::Type::Union
+
+        type function_call_output =
+          {
+            id: String,
+            call_id: String,
+            error: String?,
+            output: OpenAI::Models::Beta::agent_function_call_output?,
+            status: OpenAI::Models::Beta::agent_function_call_status,
+            turn_id: String,
+            ?type: :function_call_output
+          }
+
+        class FunctionCallOutput < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor call_id: String
+
+          attr_accessor error: String?
+
+          attr_accessor output: OpenAI::Models::Beta::agent_function_call_output?
+
+          attr_accessor status: OpenAI::Models::Beta::agent_function_call_status
+
+          attr_accessor turn_id: String
+
+          attr_accessor type: :function_call_output
+
+          def initialize: (
+            id: String,
+            call_id: String,
+            error: String?,
+            output: OpenAI::Models::Beta::agent_function_call_output?,
+            status: OpenAI::Models::Beta::agent_function_call_status,
+            turn_id: String,
+            ?type: :function_call_output
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            call_id: String,
+            error: String?,
+            output: OpenAI::Models::Beta::agent_function_call_output?,
+            status: OpenAI::Models::Beta::agent_function_call_status,
+            turn_id: String,
+            ?type: :function_call_output
+          }
+        end
+
+        type agent_message =
+          {
+            id: String,
+            content: ::Array[OpenAI::Models::Beta::agent_content],
+            recipient_agent_id: String,
+            sender_agent_id: String,
+            turn_id: String,
+            ?type: :agent_message
+          }
+
+        class AgentMessage < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor content: ::Array[OpenAI::Models::Beta::agent_content]
+
+          attr_accessor recipient_agent_id: String
+
+          attr_accessor sender_agent_id: String
+
+          attr_accessor turn_id: String
+
+          attr_accessor type: :agent_message
+
+          def initialize: (
+            id: String,
+            content: ::Array[OpenAI::Models::Beta::agent_content],
+            recipient_agent_id: String,
+            sender_agent_id: String,
+            turn_id: String,
+            ?type: :agent_message
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            content: ::Array[OpenAI::Models::Beta::agent_content],
+            recipient_agent_id: String,
+            sender_agent_id: String,
+            turn_id: String,
+            ?type: :agent_message
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::agent_session_item]
+      end
+    end
+  end
+end

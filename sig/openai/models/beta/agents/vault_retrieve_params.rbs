@@ -1,0 +1,27 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type vault_retrieve_params =
+          { vault_id: String, ?request_options: OpenAI::request_opts }
+
+        class VaultRetrieveParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor vault_id: String
+
+          def initialize: (
+            vault_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            vault_id: String,
+            ?request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

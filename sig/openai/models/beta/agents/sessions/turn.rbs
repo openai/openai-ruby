@@ -1,0 +1,108 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        module Sessions
+          type turn =
+            {
+              id: String,
+              agent_id: String,
+              completed_at: Integer?,
+              created_at: Integer,
+              error: OpenAI::Beta::SessionTurnError?,
+              ?object: :"agent.session.turn",
+              session_id: String,
+              started_at: Integer?,
+              status: OpenAI::Models::Beta::Agents::Sessions::Turn::status,
+              subagent_id: String?,
+              usage: OpenAI::Beta::TokenUsage?
+            }
+
+          class Turn < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor agent_id: String
+
+            attr_accessor completed_at: Integer?
+
+            attr_accessor created_at: Integer
+
+            attr_accessor error: OpenAI::Beta::SessionTurnError?
+
+            attr_accessor object: :"agent.session.turn"
+
+            attr_accessor session_id: String
+
+            attr_accessor started_at: Integer?
+
+            attr_accessor status: OpenAI::Models::Beta::Agents::Sessions::Turn::status
+
+            attr_accessor subagent_id: String?
+
+            attr_accessor usage: OpenAI::Beta::TokenUsage?
+
+            def initialize: (
+              id: String,
+              agent_id: String,
+              completed_at: Integer?,
+              created_at: Integer,
+              error: OpenAI::Beta::SessionTurnError?,
+              session_id: String,
+              started_at: Integer?,
+              status: OpenAI::Models::Beta::Agents::Sessions::Turn::status,
+              subagent_id: String?,
+              usage: OpenAI::Beta::TokenUsage?,
+              ?object: :"agent.session.turn"
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              agent_id: String,
+              completed_at: Integer?,
+              created_at: Integer,
+              error: OpenAI::Beta::SessionTurnError?,
+              ?object: :"agent.session.turn",
+              session_id: String,
+              started_at: Integer?,
+              status: OpenAI::Models::Beta::Agents::Sessions::Turn::status,
+              subagent_id: String?,
+              usage: OpenAI::Beta::TokenUsage?
+            }
+
+            type status =
+              :queued
+              | :in_progress
+              | :waiting
+              | :completed
+              | :failed
+              | :cancelled
+
+            module Status
+              extend OpenAI::Internal::Type::Enum
+
+              # The turn is waiting to start.
+              QUEUED: :queued
+
+              # The turn is in progress.
+              IN_PROGRESS: :in_progress
+
+              # The turn is waiting for external input.
+              WAITING: :waiting
+
+              # The turn completed successfully.
+              COMPLETED: :completed
+
+              # The turn failed.
+              FAILED: :failed
+
+              # The turn was cancelled.
+              CANCELLED: :cancelled
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::Sessions::Turn::status]
+            end
+          end
+        end
+      end
+    end
+  end
+end

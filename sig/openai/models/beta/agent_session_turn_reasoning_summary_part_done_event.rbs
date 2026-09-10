@@ -1,0 +1,64 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session_turn_reasoning_summary_part_done_event =
+        {
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Beta::SummaryText,
+          session_id: String,
+          ?status: :incomplete?,
+          summary_index: Integer,
+          turn_id: String?,
+          ?type: :"agent.session.turn.reasoning_summary_part.done"
+        }
+
+      class AgentSessionTurnReasoningSummaryPartDoneEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor part: OpenAI::Beta::SummaryText
+
+        attr_accessor session_id: String
+
+        attr_reader status: :incomplete
+
+        def status=: (:incomplete?) -> :incomplete?
+
+        attr_accessor summary_index: Integer
+
+        attr_accessor turn_id: String?
+
+        attr_accessor type: :"agent.session.turn.reasoning_summary_part.done"
+
+        def initialize: (
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Beta::SummaryText,
+          session_id: String,
+          summary_index: Integer,
+          turn_id: String?,
+          ?status: :incomplete?,
+          ?type: :"agent.session.turn.reasoning_summary_part.done"
+        ) -> void
+
+        def to_hash: -> {
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Beta::SummaryText,
+          session_id: String,
+          ?status: :incomplete?,
+          summary_index: Integer,
+          turn_id: String?,
+          ?type: :"agent.session.turn.reasoning_summary_part.done"
+        }
+      end
+    end
+  end
+end

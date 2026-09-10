@@ -1,0 +1,76 @@
+module OpenAI
+  module Models
+    module Beta
+      type subagent =
+        {
+          id: String,
+          closed_at: Integer?,
+          instructions: ::Array[OpenAI::Models::Beta::agent_content]?,
+          name: String?,
+          ?object: :"agent.session.subagent",
+          opened_at: Integer,
+          parent_agent_id: String,
+          session_id: String,
+          status: OpenAI::Models::Beta::Subagent::status
+        }
+
+      class Subagent < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor closed_at: Integer?
+
+        attr_accessor instructions: ::Array[OpenAI::Models::Beta::agent_content]?
+
+        attr_accessor name: String?
+
+        attr_accessor object: :"agent.session.subagent"
+
+        attr_accessor opened_at: Integer
+
+        attr_accessor parent_agent_id: String
+
+        attr_accessor session_id: String
+
+        attr_accessor status: OpenAI::Models::Beta::Subagent::status
+
+        def initialize: (
+          id: String,
+          closed_at: Integer?,
+          instructions: ::Array[OpenAI::Models::Beta::agent_content]?,
+          name: String?,
+          opened_at: Integer,
+          parent_agent_id: String,
+          session_id: String,
+          status: OpenAI::Models::Beta::Subagent::status,
+          ?object: :"agent.session.subagent"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          closed_at: Integer?,
+          instructions: ::Array[OpenAI::Models::Beta::agent_content]?,
+          name: String?,
+          ?object: :"agent.session.subagent",
+          opened_at: Integer,
+          parent_agent_id: String,
+          session_id: String,
+          status: OpenAI::Models::Beta::Subagent::status
+        }
+
+        type status = :active | :closed
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          # The subagent remains available, including while idle between turns.
+          ACTIVE: :active
+
+          # The subagent is closed.
+          CLOSED: :closed
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::Subagent::status]
+        end
+      end
+    end
+  end
+end

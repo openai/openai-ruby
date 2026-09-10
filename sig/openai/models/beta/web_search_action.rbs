@@ -1,0 +1,85 @@
+module OpenAI
+  module Models
+    module Beta
+      type web_search_action =
+        OpenAI::Beta::WebSearchAction::Search
+        | OpenAI::Beta::WebSearchAction::OpenPage
+        | OpenAI::Beta::WebSearchAction::FindInPage
+        | OpenAI::Beta::WebSearchAction::Other
+
+      module WebSearchAction
+        extend OpenAI::Internal::Type::Union
+
+        type search =
+          { queries: ::Array[String]?, query: String?, ?type: :search }
+
+        class Search < OpenAI::Internal::Type::BaseModel
+          attr_accessor queries: ::Array[String]?
+
+          attr_accessor query: String?
+
+          attr_accessor type: :search
+
+          def initialize: (
+            queries: ::Array[String]?,
+            query: String?,
+            ?type: :search
+          ) -> void
+
+          def to_hash: -> {
+            queries: ::Array[String]?,
+            query: String?,
+            ?type: :search
+          }
+        end
+
+        type open_page = { ?type: :open_page, url: String? }
+
+        class OpenPage < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :open_page
+
+          attr_accessor url: String?
+
+          def initialize: (url: String?, ?type: :open_page) -> void
+
+          def to_hash: -> { ?type: :open_page, url: String? }
+        end
+
+        type find_in_page =
+          { pattern: String?, ?type: :find_in_page, url: String? }
+
+        class FindInPage < OpenAI::Internal::Type::BaseModel
+          attr_accessor pattern: String?
+
+          attr_accessor type: :find_in_page
+
+          attr_accessor url: String?
+
+          def initialize: (
+            pattern: String?,
+            url: String?,
+            ?type: :find_in_page
+          ) -> void
+
+          def to_hash: -> {
+            pattern: String?,
+            ?type: :find_in_page,
+            url: String?
+          }
+        end
+
+        type other = { ?type: :other }
+
+        class Other < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :other
+
+          def initialize: (?type: :other) -> void
+
+          def to_hash: -> { ?type: :other }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::web_search_action]
+      end
+    end
+  end
+end

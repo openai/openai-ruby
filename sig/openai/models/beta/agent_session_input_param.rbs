@@ -1,0 +1,91 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session_input_param =
+        OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMessage
+        | OpenAI::Beta::AgentSessionInputParam::AgentSessionInputCancel
+        | OpenAI::Beta::AgentSessionInputParam::AgentSessionInputToolResult
+
+      module AgentSessionInputParam
+        extend OpenAI::Internal::Type::Union
+
+        type agent_session_input_message =
+          {
+            input: ::Array[OpenAI::Beta::AgentSessionInputMessageParam],
+            ?type: :"agent.session.input.message"
+          }
+
+        class AgentSessionInputMessage < OpenAI::Internal::Type::BaseModel
+          attr_accessor input: ::Array[OpenAI::Beta::AgentSessionInputMessageParam]
+
+          attr_accessor type: :"agent.session.input.message"
+
+          def initialize: (
+            input: ::Array[OpenAI::Beta::AgentSessionInputMessageParam],
+            ?type: :"agent.session.input.message"
+          ) -> void
+
+          def to_hash: -> {
+            input: ::Array[OpenAI::Beta::AgentSessionInputMessageParam],
+            ?type: :"agent.session.input.message"
+          }
+        end
+
+        type agent_session_input_cancel =
+          { ?type: :"agent.session.input.cancel" }
+
+        class AgentSessionInputCancel < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :"agent.session.input.cancel"
+
+          def initialize: (?type: :"agent.session.input.cancel") -> void
+
+          def to_hash: -> { ?type: :"agent.session.input.cancel" }
+        end
+
+        type agent_session_input_tool_result =
+          {
+            call_id: String,
+            success: bool,
+            turn_id: String,
+            ?type: :"agent.session.input.tool_result",
+            ?error: String?,
+            ?output: OpenAI::Models::Beta::agent_function_call_output_param?
+          }
+
+        class AgentSessionInputToolResult < OpenAI::Internal::Type::BaseModel
+          attr_accessor call_id: String
+
+          attr_accessor success: bool
+
+          attr_accessor turn_id: String
+
+          attr_accessor type: :"agent.session.input.tool_result"
+
+          attr_accessor error: String?
+
+          attr_accessor output: OpenAI::Models::Beta::agent_function_call_output_param?
+
+          def initialize: (
+            call_id: String,
+            success: bool,
+            turn_id: String,
+            ?error: String?,
+            ?output: OpenAI::Models::Beta::agent_function_call_output_param?,
+            ?type: :"agent.session.input.tool_result"
+          ) -> void
+
+          def to_hash: -> {
+            call_id: String,
+            success: bool,
+            turn_id: String,
+            ?type: :"agent.session.input.tool_result",
+            ?error: String?,
+            ?output: OpenAI::Models::Beta::agent_function_call_output_param?
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::agent_session_input_param]
+      end
+    end
+  end
+end

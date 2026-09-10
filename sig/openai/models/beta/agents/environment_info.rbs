@@ -1,0 +1,80 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type environment_info =
+          {
+            id: String,
+            files: ::Array[OpenAI::Models::Beta::hosted_environment_file],
+            ?object: :"agent.environment",
+            plugins: ::Array[OpenAI::Beta::HostedPlugin],
+            skills: ::Array[OpenAI::Models::Beta::hosted_skill],
+            status: OpenAI::Models::Beta::Agents::EnvironmentInfo::status,
+            type: OpenAI::Models::Beta::Agents::EnvironmentInfo::type_
+          }
+
+        class EnvironmentInfo < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor files: ::Array[OpenAI::Models::Beta::hosted_environment_file]
+
+          attr_accessor object: :"agent.environment"
+
+          attr_accessor plugins: ::Array[OpenAI::Beta::HostedPlugin]
+
+          attr_accessor skills: ::Array[OpenAI::Models::Beta::hosted_skill]
+
+          attr_accessor status: OpenAI::Models::Beta::Agents::EnvironmentInfo::status
+
+          attr_accessor type: OpenAI::Models::Beta::Agents::EnvironmentInfo::type_
+
+          def initialize: (
+            id: String,
+            files: ::Array[OpenAI::Models::Beta::hosted_environment_file],
+            plugins: ::Array[OpenAI::Beta::HostedPlugin],
+            skills: ::Array[OpenAI::Models::Beta::hosted_skill],
+            status: OpenAI::Models::Beta::Agents::EnvironmentInfo::status,
+            type: OpenAI::Models::Beta::Agents::EnvironmentInfo::type_,
+            ?object: :"agent.environment"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            files: ::Array[OpenAI::Models::Beta::hosted_environment_file],
+            ?object: :"agent.environment",
+            plugins: ::Array[OpenAI::Beta::HostedPlugin],
+            skills: ::Array[OpenAI::Models::Beta::hosted_skill],
+            status: OpenAI::Models::Beta::Agents::EnvironmentInfo::status,
+            type: OpenAI::Models::Beta::Agents::EnvironmentInfo::type_
+          }
+
+          type status =
+            :pending | :connected | :disconnected | :expired | :failed
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            PENDING: :pending
+            CONNECTED: :connected
+            DISCONNECTED: :disconnected
+            EXPIRED: :expired
+            FAILED: :failed
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::EnvironmentInfo::status]
+          end
+
+          type type_ = :openai_hosted | :self_hosted
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            OPENAI_HOSTED: :openai_hosted
+            SELF_HOSTED: :self_hosted
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::EnvironmentInfo::type_]
+          end
+        end
+      end
+    end
+  end
+end

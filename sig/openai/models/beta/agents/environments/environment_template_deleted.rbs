@@ -1,0 +1,38 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        class EnvironmentTemplateDeleted = Environments::EnvironmentTemplateDeleted
+
+        module Environments
+          type environment_template_deleted =
+            {
+              id: String,
+              deleted: bool,
+              ?object: :"agent.environment.template.deleted"
+            }
+
+          class EnvironmentTemplateDeleted < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor deleted: bool
+
+            attr_accessor object: :"agent.environment.template.deleted"
+
+            def initialize: (
+              id: String,
+              deleted: bool,
+              ?object: :"agent.environment.template.deleted"
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              deleted: bool,
+              ?object: :"agent.environment.template.deleted"
+            }
+          end
+        end
+      end
+    end
+  end
+end

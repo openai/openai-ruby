@@ -1,0 +1,181 @@
+module OpenAI
+  module Models
+    module Beta
+      type environment =
+        OpenAI::Beta::Environment::None
+        | OpenAI::Beta::Environment::OpenAIHosted
+        | OpenAI::Beta::Environment::SelfHosted
+
+      module Environment
+        extend OpenAI::Internal::Type::Union
+
+        type none = { ?type: :none }
+
+        class None < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :none
+
+          def initialize: (?type: :none) -> void
+
+          def to_hash: -> { ?type: :none }
+        end
+
+        type openai_hosted =
+          {
+            id: String,
+            capability_directories: ::Array[String],
+            files: ::Array[OpenAI::Models::Beta::hosted_environment_file],
+            network: OpenAI::Beta::Environment::OpenAIHosted::Network,
+            packages: OpenAI::Beta::Environment::OpenAIHosted::Packages,
+            plugins: ::Array[OpenAI::Beta::HostedPlugin],
+            skills: ::Array[OpenAI::Models::Beta::hosted_skill],
+            ?type: :openai_hosted
+          }
+
+        class OpenAIHosted < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor capability_directories: ::Array[String]
+
+          attr_accessor files: ::Array[OpenAI::Models::Beta::hosted_environment_file]
+
+          attr_accessor network: OpenAI::Beta::Environment::OpenAIHosted::Network
+
+          attr_accessor packages: OpenAI::Beta::Environment::OpenAIHosted::Packages
+
+          attr_accessor plugins: ::Array[OpenAI::Beta::HostedPlugin]
+
+          attr_accessor skills: ::Array[OpenAI::Models::Beta::hosted_skill]
+
+          attr_accessor type: :openai_hosted
+
+          def initialize: (
+            id: String,
+            capability_directories: ::Array[String],
+            files: ::Array[OpenAI::Models::Beta::hosted_environment_file],
+            network: OpenAI::Beta::Environment::OpenAIHosted::Network,
+            packages: OpenAI::Beta::Environment::OpenAIHosted::Packages,
+            plugins: ::Array[OpenAI::Beta::HostedPlugin],
+            skills: ::Array[OpenAI::Models::Beta::hosted_skill],
+            ?type: :openai_hosted
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            capability_directories: ::Array[String],
+            files: ::Array[OpenAI::Models::Beta::hosted_environment_file],
+            network: OpenAI::Beta::Environment::OpenAIHosted::Network,
+            packages: OpenAI::Beta::Environment::OpenAIHosted::Packages,
+            plugins: ::Array[OpenAI::Beta::HostedPlugin],
+            skills: ::Array[OpenAI::Models::Beta::hosted_skill],
+            ?type: :openai_hosted
+          }
+
+          type network =
+            {
+              access: OpenAI::Models::Beta::Environment::OpenAIHosted::Network::access,
+              allowed_domains: ::Array[String]
+            }
+
+          class Network < OpenAI::Internal::Type::BaseModel
+            attr_accessor access: OpenAI::Models::Beta::Environment::OpenAIHosted::Network::access
+
+            attr_accessor allowed_domains: ::Array[String]
+
+            def initialize: (
+              access: OpenAI::Models::Beta::Environment::OpenAIHosted::Network::access,
+              allowed_domains: ::Array[String]
+            ) -> void
+
+            def to_hash: -> {
+              access: OpenAI::Models::Beta::Environment::OpenAIHosted::Network::access,
+              allowed_domains: ::Array[String]
+            }
+
+            type access = :enabled | :disabled | :restricted
+
+            module Access
+              extend OpenAI::Internal::Type::Enum
+
+              # Allows unrestricted network access.
+              ENABLED: :enabled
+
+              # Disables network access.
+              DISABLED: :disabled
+
+              # Allows access only to configured domains.
+              RESTRICTED: :restricted
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Environment::OpenAIHosted::Network::access]
+            end
+          end
+
+          type packages =
+            {
+              npm: ::Array[String],
+              python: ::Array[String],
+              system_: ::Array[String]
+            }
+
+          class Packages < OpenAI::Internal::Type::BaseModel
+            attr_accessor npm: ::Array[String]
+
+            attr_accessor python: ::Array[String]
+
+            attr_accessor system_: ::Array[String]
+
+            def initialize: (
+              npm: ::Array[String],
+              python: ::Array[String],
+              system_: ::Array[String]
+            ) -> void
+
+            def to_hash: -> {
+              npm: ::Array[String],
+              python: ::Array[String],
+              system_: ::Array[String]
+            }
+          end
+        end
+
+        type self_hosted =
+          {
+            id: String,
+            capability_directories: ::Array[String],
+            remote_url: String,
+            ?type: :self_hosted,
+            workspace_directory: String
+          }
+
+        class SelfHosted < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor capability_directories: ::Array[String]
+
+          attr_accessor remote_url: String
+
+          attr_accessor type: :self_hosted
+
+          attr_accessor workspace_directory: String
+
+          def initialize: (
+            id: String,
+            capability_directories: ::Array[String],
+            remote_url: String,
+            workspace_directory: String,
+            ?type: :self_hosted
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            capability_directories: ::Array[String],
+            remote_url: String,
+            ?type: :self_hosted,
+            workspace_directory: String
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::environment]
+      end
+    end
+  end
+end

@@ -1,0 +1,44 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_text_param =
+        {
+          ?format_: OpenAI::Models::Beta::text_format_param?,
+          ?verbosity: OpenAI::Models::Beta::AgentTextParam::verbosity?
+        }
+
+      class AgentTextParam < OpenAI::Internal::Type::BaseModel
+        attr_accessor format_: OpenAI::Models::Beta::text_format_param?
+
+        attr_accessor verbosity: OpenAI::Models::Beta::AgentTextParam::verbosity?
+
+        def initialize: (
+          ?format_: OpenAI::Models::Beta::text_format_param?,
+          ?verbosity: OpenAI::Models::Beta::AgentTextParam::verbosity?
+        ) -> void
+
+        def to_hash: -> {
+          ?format_: OpenAI::Models::Beta::text_format_param?,
+          ?verbosity: OpenAI::Models::Beta::AgentTextParam::verbosity?
+        }
+
+        type verbosity = :low | :medium | :high
+
+        module Verbosity
+          extend OpenAI::Internal::Type::Enum
+
+          # Produces less text.
+          LOW: :low
+
+          # Uses the default amount of text.
+          MEDIUM: :medium
+
+          # Produces more text.
+          HIGH: :high
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AgentTextParam::verbosity]
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,69 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type vault_list_params =
+          {
+            ?after: String,
+            ?limit: Integer?,
+            ?order: OpenAI::Models::Beta::Agents::VaultListParams::order,
+            ?status: OpenAI::Models::Beta::Agents::vault_status_filter,
+            ?request_options: OpenAI::request_opts
+          }
+
+        class VaultListParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_reader after: String?
+
+          def after=: (String) -> String
+
+          attr_accessor limit: Integer?
+
+          attr_reader order: OpenAI::Models::Beta::Agents::VaultListParams::order?
+
+          def order=: (
+            OpenAI::Models::Beta::Agents::VaultListParams::order
+          ) -> OpenAI::Models::Beta::Agents::VaultListParams::order
+
+          attr_reader status: OpenAI::Models::Beta::Agents::vault_status_filter?
+
+          def status=: (
+            OpenAI::Models::Beta::Agents::vault_status_filter
+          ) -> OpenAI::Models::Beta::Agents::vault_status_filter
+
+          def initialize: (
+            ?after: String,
+            ?limit: Integer?,
+            ?order: OpenAI::Models::Beta::Agents::VaultListParams::order,
+            ?status: OpenAI::Models::Beta::Agents::vault_status_filter,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            ?after: String,
+            ?limit: Integer?,
+            ?order: OpenAI::Models::Beta::Agents::VaultListParams::order,
+            ?status: OpenAI::Models::Beta::Agents::vault_status_filter,
+            ?request_options: OpenAI::RequestOptions
+          }
+
+          type order = :asc | :desc
+
+          module Order
+            extend OpenAI::Internal::Type::Enum
+
+            # Returns resources in ascending order.
+            ASC: :asc
+
+            # Returns resources in descending order.
+            DESC: :desc
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::VaultListParams::order]
+          end
+        end
+      end
+    end
+  end
+end

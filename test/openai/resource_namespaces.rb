@@ -24,6 +24,21 @@ module OpenAI
         end
       end
 
+      module Agents
+        module Environments
+        end
+
+        module Sessions
+          module Subagents
+            module Turns
+            end
+          end
+        end
+
+        module Vaults
+        end
+      end
+
       module Alpha
       end
 
@@ -31,6 +46,21 @@ module OpenAI
       end
 
       module Beta
+        module Agents
+          module Environments
+          end
+
+          module Sessions
+            module Subagents
+              module Turns
+              end
+            end
+          end
+
+          module Vaults
+          end
+        end
+
         module ChatKit
         end
 
@@ -63,6 +93,9 @@ module OpenAI
       end
 
       module Conversations
+      end
+
+      module Environments
       end
 
       module Evals
@@ -141,8 +174,20 @@ module OpenAI
       module ServiceAccounts
       end
 
+      module Sessions
+        module Subagents
+          module Turns
+          end
+        end
+      end
+
       module Skills
         module Versions
+        end
+      end
+
+      module Subagents
+        module Turns
         end
       end
 
@@ -151,10 +196,16 @@ module OpenAI
         end
       end
 
+      module Turns
+      end
+
       module Uploads
       end
 
       module Users
+      end
+
+      module Vaults
       end
 
       module VectorStores

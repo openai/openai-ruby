@@ -1,0 +1,62 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_mcp_call_item =
+        {
+          id: String,
+          arguments: top,
+          error: top,
+          name: String,
+          output: top,
+          server_label: String,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :mcp_call
+        }
+
+      class AgentMcpCallItem < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor arguments: top
+
+        attr_accessor error: top
+
+        attr_accessor name: String
+
+        attr_accessor output: top
+
+        attr_accessor server_label: String
+
+        attr_accessor status: OpenAI::Models::Beta::agent_function_call_status
+
+        attr_accessor turn_id: String
+
+        attr_accessor type: :mcp_call
+
+        def initialize: (
+          id: String,
+          arguments: top,
+          error: top,
+          name: String,
+          output: top,
+          server_label: String,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :mcp_call
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          arguments: top,
+          error: top,
+          name: String,
+          output: top,
+          server_label: String,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :mcp_call
+        }
+      end
+    end
+  end
+end

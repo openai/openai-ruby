@@ -1,0 +1,28 @@
+module OpenAI
+  module Models
+    module Beta
+      type inline_capability_source_param =
+        { data: String, ?media_type: :"application/zip", ?type: :base64 }
+
+      class InlineCapabilitySourceParam < OpenAI::Internal::Type::BaseModel
+        attr_accessor data: String
+
+        attr_accessor media_type: :"application/zip"
+
+        attr_accessor type: :base64
+
+        def initialize: (
+          data: String,
+          ?media_type: :"application/zip",
+          ?type: :base64
+        ) -> void
+
+        def to_hash: -> {
+          data: String,
+          ?media_type: :"application/zip",
+          ?type: :base64
+        }
+      end
+    end
+  end
+end

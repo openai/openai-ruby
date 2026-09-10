@@ -1,0 +1,79 @@
+module OpenAI
+  module Models
+    module Beta
+      type persisted_mcp_transport_param =
+        OpenAI::Beta::PersistedMcpTransportParam::HTTP
+        | OpenAI::Beta::PersistedMcpTransportParam::Stdio
+
+      module PersistedMcpTransportParam
+        extend OpenAI::Internal::Type::Union
+
+        type http =
+          {
+            server_url: String,
+            ?type: :http,
+            ?headers: ::Hash[Symbol, String]?
+          }
+
+        class HTTP < OpenAI::Internal::Type::BaseModel
+          attr_accessor server_url: String
+
+          attr_accessor type: :http
+
+          attr_accessor headers: ::Hash[Symbol, String]?
+
+          def initialize: (
+            server_url: String,
+            ?headers: ::Hash[Symbol, String]?,
+            ?type: :http
+          ) -> void
+
+          def to_hash: -> {
+            server_url: String,
+            ?type: :http,
+            ?headers: ::Hash[Symbol, String]?
+          }
+        end
+
+        type stdio =
+          {
+            command: String,
+            cwd: String,
+            ?type: :stdio,
+            ?args: ::Array[String]?,
+            ?env_vars: ::Array[String]?
+          }
+
+        class Stdio < OpenAI::Internal::Type::BaseModel
+          attr_accessor command: String
+
+          attr_accessor cwd: String
+
+          attr_accessor type: :stdio
+
+          attr_accessor args: ::Array[String]?
+
+          attr_accessor env_vars: ::Array[String]?
+
+          def initialize: (
+            command: String,
+            cwd: String,
+            ?args: ::Array[String]?,
+            ?env_vars: ::Array[String]?,
+            ?type: :stdio
+          ) -> void
+
+          def to_hash: -> {
+            command: String,
+            cwd: String,
+            ?type: :stdio,
+            ?args: ::Array[String]?,
+            ?env_vars: ::Array[String]?
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::persisted_mcp_transport_param]
+      end
+    end
+  end
+end

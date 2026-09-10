@@ -7,7 +7,11 @@ module OpenAI
 
       class Sessions
 
-        # Accept an incoming SIP call with Live startup configuration.
+        # Accept an incoming SIP call. Supply session with type live, the model, and
+        # startup configuration. Before accepting calls, follow the
+        # [Live prompting guide](https://developers.openai.com/api/docs/guides/live-prompting)
+        # to write frontend conversation instructions and a separate backend prompt. SIP
+        # media format is negotiated; omit audio.format.
         sig {
           params(
             session_id: String,
@@ -63,7 +67,7 @@ module OpenAI
         )
         end
 
-        # Hang up a Live session.
+        # End a SIP call identified by session_id.
         sig { params(session_id: String, request_options: OpenAI::RequestOptions::OrHash).void }
         def hangup(
           # Opaque Live session identifier from the creation response or incoming-call
@@ -73,7 +77,8 @@ module OpenAI
         )
         end
 
-        # Transfer a Live SIP call to another destination.
+        # Transfer a SIP call to another destination. Supply a nonblank target_uri for the
+        # SIP Refer-To header.
         sig { params(session_id: String, target_uri: String, request_options: OpenAI::RequestOptions::OrHash).void }
         def refer(
           # Opaque Live session identifier from the creation response or incoming-call
@@ -86,7 +91,8 @@ module OpenAI
         )
         end
 
-        # Reject an incoming SIP call.
+        # Reject an incoming SIP call. Send a required SIP rejection status_code between
+        # 300 and 699.
         sig { params(session_id: String, status_code: Integer, request_options: OpenAI::RequestOptions::OrHash).void }
         def reject(
           # Opaque Live session identifier from the creation response or incoming-call
