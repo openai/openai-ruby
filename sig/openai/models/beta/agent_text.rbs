@@ -1,0 +1,39 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_text =
+        {
+          format_: OpenAI::Models::Beta::text_format,
+          verbosity: OpenAI::Models::Beta::AgentText::verbosity
+        }
+
+      class AgentText < OpenAI::Internal::Type::BaseModel
+        attr_accessor format_: OpenAI::Models::Beta::text_format
+
+        attr_accessor verbosity: OpenAI::Models::Beta::AgentText::verbosity
+
+        def initialize: (
+          format_: OpenAI::Models::Beta::text_format,
+          verbosity: OpenAI::Models::Beta::AgentText::verbosity
+        ) -> void
+
+        def to_hash: -> {
+          format_: OpenAI::Models::Beta::text_format,
+          verbosity: OpenAI::Models::Beta::AgentText::verbosity
+        }
+
+        type verbosity = :low | :medium | :high
+
+        module Verbosity
+          extend OpenAI::Internal::Type::Enum
+
+          LOW: :low
+          MEDIUM: :medium
+          HIGH: :high
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AgentText::verbosity]
+        end
+      end
+    end
+  end
+end

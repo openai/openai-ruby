@@ -1,0 +1,38 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        class SessionArtifactDeleted = Sessions::SessionArtifactDeleted
+
+        module Sessions
+          type session_artifact_deleted =
+            {
+              id: String,
+              deleted: bool,
+              ?object: :"agent.session.artifact.deleted"
+            }
+
+          class SessionArtifactDeleted < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor deleted: bool
+
+            attr_accessor object: :"agent.session.artifact.deleted"
+
+            def initialize: (
+              id: String,
+              deleted: bool,
+              ?object: :"agent.session.artifact.deleted"
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              deleted: bool,
+              ?object: :"agent.session.artifact.deleted"
+            }
+          end
+        end
+      end
+    end
+  end
+end

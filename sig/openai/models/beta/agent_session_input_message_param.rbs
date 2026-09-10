@@ -1,0 +1,46 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session_input_message_param =
+        {
+          content: ::Array[OpenAI::Models::Beta::input_content_param],
+          ?role: :user,
+          ?type: OpenAI::Models::Beta::AgentSessionInputMessageParam::type_
+        }
+
+      class AgentSessionInputMessageParam < OpenAI::Internal::Type::BaseModel
+        attr_accessor content: ::Array[OpenAI::Models::Beta::input_content_param]
+
+        attr_accessor role: :user
+
+        attr_reader type: OpenAI::Models::Beta::AgentSessionInputMessageParam::type_?
+
+        def type=: (
+          OpenAI::Models::Beta::AgentSessionInputMessageParam::type_
+        ) -> OpenAI::Models::Beta::AgentSessionInputMessageParam::type_
+
+        def initialize: (
+          content: ::Array[OpenAI::Models::Beta::input_content_param],
+          ?type: OpenAI::Models::Beta::AgentSessionInputMessageParam::type_,
+          ?role: :user
+        ) -> void
+
+        def to_hash: -> {
+          content: ::Array[OpenAI::Models::Beta::input_content_param],
+          ?role: :user,
+          ?type: OpenAI::Models::Beta::AgentSessionInputMessageParam::type_
+        }
+
+        type type_ = :message
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          MESSAGE: :message
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSessionInputMessageParam::type_]
+        end
+      end
+    end
+  end
+end

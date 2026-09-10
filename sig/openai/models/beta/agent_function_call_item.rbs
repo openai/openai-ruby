@@ -1,0 +1,52 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_function_call_item =
+        {
+          id: String,
+          arguments: top,
+          call_id: String,
+          name: String,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :function_call
+        }
+
+      class AgentFunctionCallItem < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor arguments: top
+
+        attr_accessor call_id: String
+
+        attr_accessor name: String
+
+        attr_accessor status: OpenAI::Models::Beta::agent_function_call_status
+
+        attr_accessor turn_id: String
+
+        attr_accessor type: :function_call
+
+        def initialize: (
+          id: String,
+          arguments: top,
+          call_id: String,
+          name: String,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :function_call
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          arguments: top,
+          call_id: String,
+          name: String,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :function_call
+        }
+      end
+    end
+  end
+end

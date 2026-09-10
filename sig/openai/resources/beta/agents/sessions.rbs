@@ -1,0 +1,65 @@
+module OpenAI
+  module Resources
+    class Beta
+      class Agents
+        class Sessions
+          attr_reader subagents: OpenAI::Resources::Beta::Agents::Sessions::Subagents
+
+          attr_reader artifacts: OpenAI::Resources::Beta::Agents::Sessions::Artifacts
+
+          attr_reader items: OpenAI::Resources::Beta::Agents::Sessions::Items
+
+          attr_reader events: OpenAI::Resources::Beta::Agents::Sessions::Events
+
+          attr_reader turns: OpenAI::Resources::Beta::Agents::Sessions::Turns
+
+          def create: (
+            environment: OpenAI::Models::Beta::environment_param,
+            ?agent: OpenAI::Beta::Agents::SessionCreateParams::Agent,
+            ?agent_id: String,
+            ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
+            ?metadata: ::Hash[Symbol, String]?,
+            ?vault_ids: ::Array[String]?,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Beta::AgentSession
+
+          def create_streaming: (
+            environment: OpenAI::Models::Beta::environment_param,
+            ?agent: OpenAI::Beta::Agents::SessionCreateParams::Agent,
+            ?agent_id: String,
+            ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
+            ?metadata: ::Hash[Symbol, String]?,
+            ?vault_ids: ::Array[String]?,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::Stream[OpenAI::Models::Beta::agent_session_event]
+
+          def retrieve: (
+            String session_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Beta::AgentSession
+
+          def update: (
+            String session_id,
+            ?metadata: ::Hash[Symbol, String]?,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Beta::AgentSession
+
+          def list: (
+            ?after: String,
+            ?agent_id: String,
+            ?limit: Integer?,
+            ?order: OpenAI::Models::Beta::Agents::SessionListParams::order,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::CursorPage[OpenAI::Beta::AgentSession]
+
+          def delete: (
+            String session_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Beta::AgentSessionDeleted
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

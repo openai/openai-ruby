@@ -1,0 +1,89 @@
+module OpenAI
+  module Models
+    module Beta
+      type mcp_transport_param =
+        OpenAI::Beta::McpTransportParam::HTTP
+        | OpenAI::Beta::McpTransportParam::Stdio
+
+      module McpTransportParam
+        extend OpenAI::Internal::Type::Union
+
+        type http =
+          {
+            server_url: String,
+            ?type: :http,
+            ?authorization: String?,
+            ?headers: ::Hash[Symbol, String]?
+          }
+
+        class HTTP < OpenAI::Internal::Type::BaseModel
+          attr_accessor server_url: String
+
+          attr_accessor type: :http
+
+          attr_accessor authorization: String?
+
+          attr_accessor headers: ::Hash[Symbol, String]?
+
+          def initialize: (
+            server_url: String,
+            ?authorization: String?,
+            ?headers: ::Hash[Symbol, String]?,
+            ?type: :http
+          ) -> void
+
+          def to_hash: -> {
+            server_url: String,
+            ?type: :http,
+            ?authorization: String?,
+            ?headers: ::Hash[Symbol, String]?
+          }
+        end
+
+        type stdio =
+          {
+            command: String,
+            cwd: String,
+            ?type: :stdio,
+            ?args: ::Array[String]?,
+            ?env: ::Hash[Symbol, String]?,
+            ?env_vars: ::Array[String]?
+          }
+
+        class Stdio < OpenAI::Internal::Type::BaseModel
+          attr_accessor command: String
+
+          attr_accessor cwd: String
+
+          attr_accessor type: :stdio
+
+          attr_accessor args: ::Array[String]?
+
+          attr_accessor env: ::Hash[Symbol, String]?
+
+          attr_accessor env_vars: ::Array[String]?
+
+          def initialize: (
+            command: String,
+            cwd: String,
+            ?args: ::Array[String]?,
+            ?env: ::Hash[Symbol, String]?,
+            ?env_vars: ::Array[String]?,
+            ?type: :stdio
+          ) -> void
+
+          def to_hash: -> {
+            command: String,
+            cwd: String,
+            ?type: :stdio,
+            ?args: ::Array[String]?,
+            ?env: ::Hash[Symbol, String]?,
+            ?env_vars: ::Array[String]?
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::mcp_transport_param]
+      end
+    end
+  end
+end

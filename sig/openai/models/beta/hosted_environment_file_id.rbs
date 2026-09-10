@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Beta
+      type hosted_environment_file_id =
+        {
+          id: String,
+          file_id: String,
+          path: String,
+          size_bytes: Integer,
+          ?type: :file_id
+        }
+
+      class HostedEnvironmentFileID < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor file_id: String
+
+        attr_accessor path: String
+
+        attr_accessor size_bytes: Integer
+
+        attr_accessor type: :file_id
+
+        def initialize: (
+          id: String,
+          file_id: String,
+          path: String,
+          size_bytes: Integer,
+          ?type: :file_id
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          file_id: String,
+          path: String,
+          size_bytes: Integer,
+          ?type: :file_id
+        }
+      end
+    end
+  end
+end

@@ -1,0 +1,62 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_command_execution_item =
+        {
+          id: String,
+          command: String,
+          cwd: String?,
+          duration_ms: Integer?,
+          exit_code: Integer?,
+          output: String?,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :command_execution
+        }
+
+      class AgentCommandExecutionItem < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor command: String
+
+        attr_accessor cwd: String?
+
+        attr_accessor duration_ms: Integer?
+
+        attr_accessor exit_code: Integer?
+
+        attr_accessor output: String?
+
+        attr_accessor status: OpenAI::Models::Beta::agent_function_call_status
+
+        attr_accessor turn_id: String
+
+        attr_accessor type: :command_execution
+
+        def initialize: (
+          id: String,
+          command: String,
+          cwd: String?,
+          duration_ms: Integer?,
+          exit_code: Integer?,
+          output: String?,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :command_execution
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          command: String,
+          cwd: String?,
+          duration_ms: Integer?,
+          exit_code: Integer?,
+          output: String?,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :command_execution
+        }
+      end
+    end
+  end
+end

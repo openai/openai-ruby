@@ -1,0 +1,30 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type vault_deleted =
+          { id: String, deleted: bool, ?object: :"vault.deleted" }
+
+        class VaultDeleted < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor deleted: bool
+
+          attr_accessor object: :"vault.deleted"
+
+          def initialize: (
+            id: String,
+            deleted: bool,
+            ?object: :"vault.deleted"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            deleted: bool,
+            ?object: :"vault.deleted"
+          }
+        end
+      end
+    end
+  end
+end

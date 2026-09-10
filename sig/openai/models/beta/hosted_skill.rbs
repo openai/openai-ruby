@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Beta
+      type hosted_skill =
+        OpenAI::Beta::HostedSkillReference | OpenAI::Beta::HostedSkill::Inline
+
+      module HostedSkill
+        extend OpenAI::Internal::Type::Union
+
+        type inline = { description: String, name: String, ?type: :inline }
+
+        class Inline < OpenAI::Internal::Type::BaseModel
+          attr_accessor description: String
+
+          attr_accessor name: String
+
+          attr_accessor type: :inline
+
+          def initialize: (
+            description: String,
+            name: String,
+            ?type: :inline
+          ) -> void
+
+          def to_hash: -> { description: String, name: String, ?type: :inline }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::hosted_skill]
+      end
+    end
+  end
+end

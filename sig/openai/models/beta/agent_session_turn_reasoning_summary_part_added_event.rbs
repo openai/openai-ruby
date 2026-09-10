@@ -1,0 +1,57 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session_turn_reasoning_summary_part_added_event =
+        {
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Beta::SummaryText,
+          session_id: String,
+          summary_index: Integer,
+          turn_id: String?,
+          ?type: :"agent.session.turn.reasoning_summary_part.added"
+        }
+
+      class AgentSessionTurnReasoningSummaryPartAddedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor part: OpenAI::Beta::SummaryText
+
+        attr_accessor session_id: String
+
+        attr_accessor summary_index: Integer
+
+        attr_accessor turn_id: String?
+
+        attr_accessor type: :"agent.session.turn.reasoning_summary_part.added"
+
+        def initialize: (
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Beta::SummaryText,
+          session_id: String,
+          summary_index: Integer,
+          turn_id: String?,
+          ?type: :"agent.session.turn.reasoning_summary_part.added"
+        ) -> void
+
+        def to_hash: -> {
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Beta::SummaryText,
+          session_id: String,
+          summary_index: Integer,
+          turn_id: String?,
+          ?type: :"agent.session.turn.reasoning_summary_part.added"
+        }
+      end
+    end
+  end
+end

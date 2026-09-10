@@ -1,0 +1,23 @@
+module OpenAI
+  module Models
+    module Beta
+      type multi_agent_config_param =
+        { enabled: bool, ?max_concurrent_subagents: Integer }
+
+      class MultiAgentConfigParam < OpenAI::Internal::Type::BaseModel
+        attr_accessor enabled: bool
+
+        attr_reader max_concurrent_subagents: Integer?
+
+        def max_concurrent_subagents=: (Integer) -> Integer
+
+        def initialize: (
+          enabled: bool,
+          ?max_concurrent_subagents: Integer
+        ) -> void
+
+        def to_hash: -> { enabled: bool, ?max_concurrent_subagents: Integer }
+      end
+    end
+  end
+end

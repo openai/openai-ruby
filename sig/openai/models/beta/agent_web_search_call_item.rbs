@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_web_search_call_item =
+        {
+          id: String,
+          action: OpenAI::Models::Beta::web_search_action?,
+          status: OpenAI::Models::Beta::agent_output_item_status,
+          turn_id: String,
+          ?type: :web_search_call
+        }
+
+      class AgentWebSearchCallItem < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor action: OpenAI::Models::Beta::web_search_action?
+
+        attr_accessor status: OpenAI::Models::Beta::agent_output_item_status
+
+        attr_accessor turn_id: String
+
+        attr_accessor type: :web_search_call
+
+        def initialize: (
+          id: String,
+          action: OpenAI::Models::Beta::web_search_action?,
+          status: OpenAI::Models::Beta::agent_output_item_status,
+          turn_id: String,
+          ?type: :web_search_call
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          action: OpenAI::Models::Beta::web_search_action?,
+          status: OpenAI::Models::Beta::agent_output_item_status,
+          turn_id: String,
+          ?type: :web_search_call
+        }
+      end
+    end
+  end
+end

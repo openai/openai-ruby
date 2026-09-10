@@ -1,6 +1,8 @@
 module OpenAI
   module Resources
     class Beta
+      attr_reader agents: OpenAI::Resources::Beta::Agents
+
       attr_reader responses: OpenAI::Resources::Beta::Responses
 
       attr_reader chatkit: OpenAI::Resources::Beta::ChatKit

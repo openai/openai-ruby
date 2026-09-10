@@ -1,0 +1,37 @@
+module OpenAI
+  module Resources
+    class Beta
+      class Agents
+        class Vaults
+          attr_reader credentials: OpenAI::Resources::Beta::Agents::Vaults::Credentials
+
+          def create: (
+            ?metadata: ::Hash[Symbol, String]?,
+            ?name: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Beta::Agents::Vault
+
+          def retrieve: (
+            String vault_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Beta::Agents::Vault
+
+          def list: (
+            ?after: String,
+            ?limit: Integer?,
+            ?order: OpenAI::Models::Beta::Agents::VaultListParams::order,
+            ?status: OpenAI::Models::Beta::Agents::vault_status_filter,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::CursorPage[OpenAI::Beta::Agents::Vault]
+
+          def delete: (
+            String vault_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Beta::Agents::VaultDeleted
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

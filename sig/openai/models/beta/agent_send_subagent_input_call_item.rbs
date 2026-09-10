@@ -1,0 +1,52 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_send_subagent_input_call_item =
+        {
+          id: String,
+          content: ::Array[OpenAI::Models::Beta::agent_content],
+          recipient_agent_id: String,
+          sender_agent_id: String,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :send_subagent_input_call
+        }
+
+      class AgentSendSubagentInputCallItem < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor content: ::Array[OpenAI::Models::Beta::agent_content]
+
+        attr_accessor recipient_agent_id: String
+
+        attr_accessor sender_agent_id: String
+
+        attr_accessor status: OpenAI::Models::Beta::agent_function_call_status
+
+        attr_accessor turn_id: String
+
+        attr_accessor type: :send_subagent_input_call
+
+        def initialize: (
+          id: String,
+          content: ::Array[OpenAI::Models::Beta::agent_content],
+          recipient_agent_id: String,
+          sender_agent_id: String,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :send_subagent_input_call
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          content: ::Array[OpenAI::Models::Beta::agent_content],
+          recipient_agent_id: String,
+          sender_agent_id: String,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :send_subagent_input_call
+        }
+      end
+    end
+  end
+end

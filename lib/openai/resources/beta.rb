@@ -3,6 +3,9 @@
 module OpenAI
   module Resources
     class Beta
+      # @return [OpenAI::Resources::Beta::Agents]
+      attr_reader :agents
+
       # @return [OpenAI::Resources::Beta::Responses]
       attr_reader :responses
 
@@ -22,6 +25,7 @@ module OpenAI
       # @param client [OpenAI::Client]
       def initialize(client:)
         @client = client
+        @agents = OpenAI::Resources::Beta::Agents.new(client: client)
         @responses = OpenAI::Resources::Beta::Responses.new(client: client)
         @chatkit = OpenAI::Resources::Beta::ChatKit.new(client: client)
         @assistants = OpenAI::Resources::Beta::Assistants.new(client: client)

@@ -1,0 +1,234 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session =
+        {
+          id: String,
+          agent: OpenAI::Beta::AgentSession::Agent,
+          created_at: Integer,
+          environment: OpenAI::Models::Beta::environment,
+          error: String?,
+          last_active_at: Integer,
+          metadata: ::Hash[Symbol, String],
+          ?object: :"agent.session",
+          required_actions: ::Array[OpenAI::Models::Beta::AgentSession::required_action],
+          status: OpenAI::Models::Beta::AgentSession::status,
+          usage: OpenAI::Beta::TokenUsage?,
+          vault_ids: ::Array[String]
+        }
+
+      class AgentSession < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor agent: OpenAI::Beta::AgentSession::Agent
+
+        attr_accessor created_at: Integer
+
+        attr_accessor environment: OpenAI::Models::Beta::environment
+
+        attr_accessor error: String?
+
+        attr_accessor last_active_at: Integer
+
+        attr_accessor metadata: ::Hash[Symbol, String]
+
+        attr_accessor object: :"agent.session"
+
+        attr_accessor required_actions: ::Array[OpenAI::Models::Beta::AgentSession::required_action]
+
+        attr_accessor status: OpenAI::Models::Beta::AgentSession::status
+
+        attr_accessor usage: OpenAI::Beta::TokenUsage?
+
+        attr_accessor vault_ids: ::Array[String]
+
+        def initialize: (
+          id: String,
+          agent: OpenAI::Beta::AgentSession::Agent,
+          created_at: Integer,
+          environment: OpenAI::Models::Beta::environment,
+          error: String?,
+          last_active_at: Integer,
+          metadata: ::Hash[Symbol, String],
+          required_actions: ::Array[OpenAI::Models::Beta::AgentSession::required_action],
+          status: OpenAI::Models::Beta::AgentSession::status,
+          usage: OpenAI::Beta::TokenUsage?,
+          vault_ids: ::Array[String],
+          ?object: :"agent.session"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          agent: OpenAI::Beta::AgentSession::Agent,
+          created_at: Integer,
+          environment: OpenAI::Models::Beta::environment,
+          error: String?,
+          last_active_at: Integer,
+          metadata: ::Hash[Symbol, String],
+          ?object: :"agent.session",
+          required_actions: ::Array[OpenAI::Models::Beta::AgentSession::required_action],
+          status: OpenAI::Models::Beta::AgentSession::status,
+          usage: OpenAI::Beta::TokenUsage?,
+          vault_ids: ::Array[String]
+        }
+
+        type agent =
+          {
+            id: String,
+            instructions: String?,
+            model: String,
+            multi_agent: OpenAI::Beta::MultiAgentConfig,
+            name: String?,
+            reasoning: OpenAI::Beta::AgentReasoning,
+            service_tier: OpenAI::Models::Beta::AgentSession::Agent::service_tier,
+            text: OpenAI::Beta::AgentText,
+            tools: ::Array[OpenAI::Models::Beta::agent_tool]
+          }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor instructions: String?
+
+          attr_accessor model: String
+
+          attr_accessor multi_agent: OpenAI::Beta::MultiAgentConfig
+
+          attr_accessor name: String?
+
+          attr_accessor reasoning: OpenAI::Beta::AgentReasoning
+
+          attr_accessor service_tier: OpenAI::Models::Beta::AgentSession::Agent::service_tier
+
+          attr_accessor text: OpenAI::Beta::AgentText
+
+          attr_accessor tools: ::Array[OpenAI::Models::Beta::agent_tool]
+
+          def initialize: (
+            id: String,
+            instructions: String?,
+            model: String,
+            multi_agent: OpenAI::Beta::MultiAgentConfig,
+            name: String?,
+            reasoning: OpenAI::Beta::AgentReasoning,
+            service_tier: OpenAI::Models::Beta::AgentSession::Agent::service_tier,
+            text: OpenAI::Beta::AgentText,
+            tools: ::Array[OpenAI::Models::Beta::agent_tool]
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            instructions: String?,
+            model: String,
+            multi_agent: OpenAI::Beta::MultiAgentConfig,
+            name: String?,
+            reasoning: OpenAI::Beta::AgentReasoning,
+            service_tier: OpenAI::Models::Beta::AgentSession::Agent::service_tier,
+            text: OpenAI::Beta::AgentText,
+            tools: ::Array[OpenAI::Models::Beta::agent_tool]
+          }
+
+          type service_tier = :auto | :default | :flex | :priority | :fast
+
+          module ServiceTier
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO: :auto
+            DEFAULT: :default
+            FLEX: :flex
+            PRIORITY: :priority
+            FAST: :fast
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSession::Agent::service_tier]
+          end
+        end
+
+        type required_action =
+          OpenAI::Beta::AgentSession::RequiredAction::FunctionCall
+          | OpenAI::Beta::AgentSession::RequiredAction::EnvironmentConnection
+
+        module RequiredAction
+          extend OpenAI::Internal::Type::Union
+
+          type function_call =
+            {
+              arguments: top,
+              call_id: String,
+              name: String,
+              turn_id: String,
+              ?type: :function_call
+            }
+
+          class FunctionCall < OpenAI::Internal::Type::BaseModel
+            attr_accessor arguments: top
+
+            attr_accessor call_id: String
+
+            attr_accessor name: String
+
+            attr_accessor turn_id: String
+
+            attr_accessor type: :function_call
+
+            def initialize: (
+              arguments: top,
+              call_id: String,
+              name: String,
+              turn_id: String,
+              ?type: :function_call
+            ) -> void
+
+            def to_hash: -> {
+              arguments: top,
+              call_id: String,
+              name: String,
+              turn_id: String,
+              ?type: :function_call
+            }
+          end
+
+          type environment_connection =
+            { environment_id: String, ?type: :environment_connection }
+
+          class EnvironmentConnection < OpenAI::Internal::Type::BaseModel
+            attr_accessor environment_id: String
+
+            attr_accessor type: :environment_connection
+
+            def initialize: (
+              environment_id: String,
+              ?type: :environment_connection
+            ) -> void
+
+            def to_hash: -> {
+              environment_id: String,
+              ?type: :environment_connection
+            }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::AgentSession::required_action]
+        end
+
+        type status = :idle | :in_progress | :requires_action | :failed
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          # The session has no turn in progress and is ready for input. A hosted environment may still be provisioning.
+          IDLE: :idle
+
+          # The session is processing a turn.
+          IN_PROGRESS: :in_progress
+
+          # The session is waiting for one or more required actions.
+          REQUIRES_ACTION: :requires_action
+
+          # The session failed.
+          FAILED: :failed
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSession::status]
+        end
+      end
+    end
+  end
+end

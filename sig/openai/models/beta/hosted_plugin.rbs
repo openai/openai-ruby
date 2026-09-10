@@ -1,0 +1,23 @@
+module OpenAI
+  module Models
+    module Beta
+      type hosted_plugin = { description: String, name: String, ?type: :inline }
+
+      class HostedPlugin < OpenAI::Internal::Type::BaseModel
+        attr_accessor description: String
+
+        attr_accessor name: String
+
+        attr_accessor type: :inline
+
+        def initialize: (
+          description: String,
+          name: String,
+          ?type: :inline
+        ) -> void
+
+        def to_hash: -> { description: String, name: String, ?type: :inline }
+      end
+    end
+  end
+end

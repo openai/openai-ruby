@@ -1,0 +1,44 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type vault =
+          {
+            id: String,
+            created_at: Integer,
+            metadata: ::Hash[Symbol, String],
+            name: String?,
+            ?object: :vault
+          }
+
+        class Vault < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor created_at: Integer
+
+          attr_accessor metadata: ::Hash[Symbol, String]
+
+          attr_accessor name: String?
+
+          attr_accessor object: :vault
+
+          def initialize: (
+            id: String,
+            created_at: Integer,
+            metadata: ::Hash[Symbol, String],
+            name: String?,
+            ?object: :vault
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            created_at: Integer,
+            metadata: ::Hash[Symbol, String],
+            name: String?,
+            ?object: :vault
+          }
+        end
+      end
+    end
+  end
+end

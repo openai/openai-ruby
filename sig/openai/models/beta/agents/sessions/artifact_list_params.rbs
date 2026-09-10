@@ -1,0 +1,70 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        module Sessions
+          type artifact_list_params =
+            {
+              session_id: String,
+              ?after: String?,
+              ?environment_id: String?,
+              ?limit: Integer?,
+              ?order: OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order,
+              ?request_options: OpenAI::request_opts
+            }
+
+          class ArtifactListParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            attr_accessor session_id: String
+
+            attr_accessor after: String?
+
+            attr_accessor environment_id: String?
+
+            attr_accessor limit: Integer?
+
+            attr_reader order: OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order?
+
+            def order=: (
+              OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order
+            ) -> OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order
+
+            def initialize: (
+              session_id: String,
+              ?after: String?,
+              ?environment_id: String?,
+              ?limit: Integer?,
+              ?order: OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order,
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              session_id: String,
+              ?after: String?,
+              ?environment_id: String?,
+              ?limit: Integer?,
+              ?order: OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order,
+              ?request_options: OpenAI::RequestOptions
+            }
+
+            type order = :asc | :desc
+
+            module Order
+              extend OpenAI::Internal::Type::Enum
+
+              # Returns resources in ascending order.
+              ASC: :asc
+
+              # Returns resources in descending order.
+              DESC: :desc
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order]
+            end
+          end
+        end
+      end
+    end
+  end
+end

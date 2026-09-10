@@ -1,0 +1,57 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session_turn_content_part_added_event =
+        {
+          content_index: Integer,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Beta::OutputText,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.session.turn.content_part.added"
+        }
+
+      class AgentSessionTurnContentPartAddedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor content_index: Integer
+
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor part: OpenAI::Beta::OutputText
+
+        attr_accessor session_id: String
+
+        attr_accessor turn_id: String?
+
+        attr_accessor type: :"agent.session.turn.content_part.added"
+
+        def initialize: (
+          content_index: Integer,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Beta::OutputText,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.session.turn.content_part.added"
+        ) -> void
+
+        def to_hash: -> {
+          content_index: Integer,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Beta::OutputText,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.session.turn.content_part.added"
+        }
+      end
+    end
+  end
+end

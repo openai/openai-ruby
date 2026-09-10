@@ -1,0 +1,24 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_deleted =
+        { id: String, deleted: bool, ?object: :"agent.deleted" }
+
+      class AgentDeleted < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor deleted: bool
+
+        attr_accessor object: :"agent.deleted"
+
+        def initialize: (
+          id: String,
+          deleted: bool,
+          ?object: :"agent.deleted"
+        ) -> void
+
+        def to_hash: -> { id: String, deleted: bool, ?object: :"agent.deleted" }
+      end
+    end
+  end
+end

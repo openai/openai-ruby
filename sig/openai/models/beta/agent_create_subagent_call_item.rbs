@@ -1,0 +1,57 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_create_subagent_call_item =
+        {
+          id: String,
+          agent_id: String,
+          content: ::Array[OpenAI::Models::Beta::agent_content],
+          model: String?,
+          reasoning_effort: String?,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :create_subagent_call
+        }
+
+      class AgentCreateSubagentCallItem < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor agent_id: String
+
+        attr_accessor content: ::Array[OpenAI::Models::Beta::agent_content]
+
+        attr_accessor model: String?
+
+        attr_accessor reasoning_effort: String?
+
+        attr_accessor status: OpenAI::Models::Beta::agent_function_call_status
+
+        attr_accessor turn_id: String
+
+        attr_accessor type: :create_subagent_call
+
+        def initialize: (
+          id: String,
+          agent_id: String,
+          content: ::Array[OpenAI::Models::Beta::agent_content],
+          model: String?,
+          reasoning_effort: String?,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :create_subagent_call
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          agent_id: String,
+          content: ::Array[OpenAI::Models::Beta::agent_content],
+          model: String?,
+          reasoning_effort: String?,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :create_subagent_call
+        }
+      end
+    end
+  end
+end

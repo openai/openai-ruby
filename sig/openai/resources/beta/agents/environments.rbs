@@ -1,0 +1,20 @@
+module OpenAI
+  module Resources
+    class Beta
+      class Agents
+        class Environments
+          attr_reader files: OpenAI::Resources::Beta::Agents::Environments::Files
+
+          attr_reader templates: OpenAI::Resources::Beta::Agents::Environments::Templates
+
+          def retrieve: (
+            String environment_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Beta::Agents::EnvironmentInfo
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

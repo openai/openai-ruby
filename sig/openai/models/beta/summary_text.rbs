@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    module Beta
+      type summary_text = { text: String, ?type: :summary_text }
+
+      class SummaryText < OpenAI::Internal::Type::BaseModel
+        attr_accessor text: String
+
+        attr_accessor type: :summary_text
+
+        def initialize: (text: String, ?type: :summary_text) -> void
+
+        def to_hash: -> { text: String, ?type: :summary_text }
+      end
+    end
+  end
+end

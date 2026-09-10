@@ -1,0 +1,138 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        module Environments
+          type template_create_params =
+            {
+              ?capability_directories: ::Array[String]?,
+              ?env: ::Hash[Symbol, String]?,
+              ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
+              ?name: String?,
+              ?network: OpenAI::Beta::Agents::Environments::TemplateCreateParams::Network?,
+              ?packages: OpenAI::Beta::Agents::Environments::TemplateCreateParams::Packages?,
+              ?plugins: ::Array[OpenAI::Beta::HostedPluginParam]?,
+              ?setup_commands: ::Array[OpenAI::Beta::SetupCommandParam]?,
+              ?skills: ::Array[OpenAI::Models::Beta::hosted_skill_param]?,
+              ?request_options: OpenAI::request_opts
+            }
+
+          class TemplateCreateParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            attr_accessor capability_directories: ::Array[String]?
+
+            attr_accessor env: ::Hash[Symbol, String]?
+
+            attr_accessor files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?
+
+            attr_accessor name: String?
+
+            attr_accessor network: OpenAI::Beta::Agents::Environments::TemplateCreateParams::Network?
+
+            attr_accessor packages: OpenAI::Beta::Agents::Environments::TemplateCreateParams::Packages?
+
+            attr_accessor plugins: ::Array[OpenAI::Beta::HostedPluginParam]?
+
+            attr_accessor setup_commands: ::Array[OpenAI::Beta::SetupCommandParam]?
+
+            attr_accessor skills: ::Array[OpenAI::Models::Beta::hosted_skill_param]?
+
+            def initialize: (
+              ?capability_directories: ::Array[String]?,
+              ?env: ::Hash[Symbol, String]?,
+              ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
+              ?name: String?,
+              ?network: OpenAI::Beta::Agents::Environments::TemplateCreateParams::Network?,
+              ?packages: OpenAI::Beta::Agents::Environments::TemplateCreateParams::Packages?,
+              ?plugins: ::Array[OpenAI::Beta::HostedPluginParam]?,
+              ?setup_commands: ::Array[OpenAI::Beta::SetupCommandParam]?,
+              ?skills: ::Array[OpenAI::Models::Beta::hosted_skill_param]?,
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              ?capability_directories: ::Array[String]?,
+              ?env: ::Hash[Symbol, String]?,
+              ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
+              ?name: String?,
+              ?network: OpenAI::Beta::Agents::Environments::TemplateCreateParams::Network?,
+              ?packages: OpenAI::Beta::Agents::Environments::TemplateCreateParams::Packages?,
+              ?plugins: ::Array[OpenAI::Beta::HostedPluginParam]?,
+              ?setup_commands: ::Array[OpenAI::Beta::SetupCommandParam]?,
+              ?skills: ::Array[OpenAI::Models::Beta::hosted_skill_param]?,
+              ?request_options: OpenAI::RequestOptions
+            }
+
+            type network =
+              {
+                access: OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Network::access,
+                ?allowed_domains: ::Array[String]?
+              }
+
+            class Network < OpenAI::Internal::Type::BaseModel
+              attr_accessor access: OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Network::access
+
+              attr_accessor allowed_domains: ::Array[String]?
+
+              def initialize: (
+                access: OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Network::access,
+                ?allowed_domains: ::Array[String]?
+              ) -> void
+
+              def to_hash: -> {
+                access: OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Network::access,
+                ?allowed_domains: ::Array[String]?
+              }
+
+              type access = :enabled | :disabled | :restricted
+
+              module Access
+                extend OpenAI::Internal::Type::Enum
+
+                # Allows unrestricted network access, matching an omitted network policy.
+                ENABLED: :enabled
+
+                # Disables network access.
+                DISABLED: :disabled
+
+                # Allows access only to configured domains.
+                RESTRICTED: :restricted
+
+                def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Network::access]
+              end
+            end
+
+            type packages =
+              {
+                ?npm: ::Array[String]?,
+                ?python: ::Array[String]?,
+                ?system_: ::Array[String]?
+              }
+
+            class Packages < OpenAI::Internal::Type::BaseModel
+              attr_accessor npm: ::Array[String]?
+
+              attr_accessor python: ::Array[String]?
+
+              attr_accessor system_: ::Array[String]?
+
+              def initialize: (
+                ?npm: ::Array[String]?,
+                ?python: ::Array[String]?,
+                ?system_: ::Array[String]?
+              ) -> void
+
+              def to_hash: -> {
+                ?npm: ::Array[String]?,
+                ?python: ::Array[String]?,
+                ?system_: ::Array[String]?
+              }
+            end
+          end
+        end
+      end
+    end
+  end
+end

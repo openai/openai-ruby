@@ -1,0 +1,63 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        class SessionArtifact = Sessions::SessionArtifact
+
+        module Sessions
+          type session_artifact =
+            {
+              id: String,
+              created_at: Integer,
+              environment_id: String,
+              ?object: :"agent.session.artifact",
+              path: String,
+              session_id: String,
+              size_bytes: Integer,
+              turn_id: String
+            }
+
+          class SessionArtifact < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor created_at: Integer
+
+            attr_accessor environment_id: String
+
+            attr_accessor object: :"agent.session.artifact"
+
+            attr_accessor path: String
+
+            attr_accessor session_id: String
+
+            attr_accessor size_bytes: Integer
+
+            attr_accessor turn_id: String
+
+            def initialize: (
+              id: String,
+              created_at: Integer,
+              environment_id: String,
+              path: String,
+              session_id: String,
+              size_bytes: Integer,
+              turn_id: String,
+              ?object: :"agent.session.artifact"
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              created_at: Integer,
+              environment_id: String,
+              ?object: :"agent.session.artifact",
+              path: String,
+              session_id: String,
+              size_bytes: Integer,
+              turn_id: String
+            }
+          end
+        end
+      end
+    end
+  end
+end

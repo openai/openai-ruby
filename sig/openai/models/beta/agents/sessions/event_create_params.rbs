@@ -1,0 +1,44 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        module Sessions
+          type event_create_params =
+            {
+              session_id: String,
+              events: ::Array[OpenAI::Models::Beta::agent_session_input_param],
+              ?idempotency_key: String,
+              ?request_options: OpenAI::request_opts
+            }
+
+          class EventCreateParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            attr_accessor session_id: String
+
+            attr_accessor events: ::Array[OpenAI::Models::Beta::agent_session_input_param]
+
+            attr_reader idempotency_key: String?
+
+            def idempotency_key=: (String) -> String
+
+            def initialize: (
+              session_id: String,
+              events: ::Array[OpenAI::Models::Beta::agent_session_input_param],
+              ?idempotency_key: String,
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              session_id: String,
+              events: ::Array[OpenAI::Models::Beta::agent_session_input_param],
+              ?idempotency_key: String,
+              ?request_options: OpenAI::RequestOptions
+            }
+          end
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,40 @@
+module OpenAI
+  module Models
+    module Beta
+      type text_format_param =
+        OpenAI::Beta::TextFormatParam::Text
+        | OpenAI::Beta::TextFormatParam::JSONSchema
+
+      module TextFormatParam
+        extend OpenAI::Internal::Type::Union
+
+        type text = { ?type: :text }
+
+        class Text < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :text
+
+          def initialize: (?type: :text) -> void
+
+          def to_hash: -> { ?type: :text }
+        end
+
+        type json_schema = { schema: ::Hash[Symbol, top], ?type: :json_schema }
+
+        class JSONSchema < OpenAI::Internal::Type::BaseModel
+          attr_accessor schema: ::Hash[Symbol, top]
+
+          attr_accessor type: :json_schema
+
+          def initialize: (
+            schema: ::Hash[Symbol, top],
+            ?type: :json_schema
+          ) -> void
+
+          def to_hash: -> { schema: ::Hash[Symbol, top], ?type: :json_schema }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::text_format_param]
+      end
+    end
+  end
+end

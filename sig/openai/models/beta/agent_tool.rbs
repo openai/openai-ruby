@@ -1,0 +1,226 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_tool =
+        OpenAI::Beta::AgentTool::Function
+        | OpenAI::Beta::AgentTool::ProgrammaticToolCalling
+        | OpenAI::Beta::AgentTool::Mcp
+        | OpenAI::Beta::AgentTool::WebSearch
+
+      module AgentTool
+        extend OpenAI::Internal::Type::Union
+
+        type function =
+          {
+            defer_loading: bool,
+            description: String,
+            name: String,
+            parameters: ::Hash[Symbol, top],
+            ?type: :function
+          }
+
+        class Function < OpenAI::Internal::Type::BaseModel
+          attr_accessor defer_loading: bool
+
+          attr_accessor description: String
+
+          attr_accessor name: String
+
+          attr_accessor parameters: ::Hash[Symbol, top]
+
+          attr_accessor type: :function
+
+          def initialize: (
+            defer_loading: bool,
+            description: String,
+            name: String,
+            parameters: ::Hash[Symbol, top],
+            ?type: :function
+          ) -> void
+
+          def to_hash: -> {
+            defer_loading: bool,
+            description: String,
+            name: String,
+            parameters: ::Hash[Symbol, top],
+            ?type: :function
+          }
+        end
+
+        type programmatic_tool_calling =
+          { enabled: bool, ?type: :programmatic_tool_calling }
+
+        class ProgrammaticToolCalling < OpenAI::Internal::Type::BaseModel
+          attr_accessor enabled: bool
+
+          attr_accessor type: :programmatic_tool_calling
+
+          def initialize: (
+            enabled: bool,
+            ?type: :programmatic_tool_calling
+          ) -> void
+
+          def to_hash: -> { enabled: bool, ?type: :programmatic_tool_calling }
+        end
+
+        type mcp =
+          {
+            allowed_tools: ::Array[String]?,
+            connection_origin: OpenAI::Models::Beta::AgentTool::Mcp::connection_origin,
+            credential_id: String?,
+            request_metadata: ::Hash[Symbol, top],
+            required: bool,
+            server_label: String,
+            transport: OpenAI::Models::Beta::mcp_transport,
+            ?type: :mcp
+          }
+
+        class Mcp < OpenAI::Internal::Type::BaseModel
+          attr_accessor allowed_tools: ::Array[String]?
+
+          attr_accessor connection_origin: OpenAI::Models::Beta::AgentTool::Mcp::connection_origin
+
+          attr_accessor credential_id: String?
+
+          attr_accessor request_metadata: ::Hash[Symbol, top]
+
+          attr_accessor required: bool
+
+          attr_accessor server_label: String
+
+          attr_accessor transport: OpenAI::Models::Beta::mcp_transport
+
+          attr_accessor type: :mcp
+
+          def initialize: (
+            allowed_tools: ::Array[String]?,
+            connection_origin: OpenAI::Models::Beta::AgentTool::Mcp::connection_origin,
+            credential_id: String?,
+            request_metadata: ::Hash[Symbol, top],
+            required: bool,
+            server_label: String,
+            transport: OpenAI::Models::Beta::mcp_transport,
+            ?type: :mcp
+          ) -> void
+
+          def to_hash: -> {
+            allowed_tools: ::Array[String]?,
+            connection_origin: OpenAI::Models::Beta::AgentTool::Mcp::connection_origin,
+            credential_id: String?,
+            request_metadata: ::Hash[Symbol, top],
+            required: bool,
+            server_label: String,
+            transport: OpenAI::Models::Beta::mcp_transport,
+            ?type: :mcp
+          }
+
+          type connection_origin = :service | :environment
+
+          module ConnectionOrigin
+            extend OpenAI::Internal::Type::Enum
+
+            SERVICE: :service
+            ENVIRONMENT: :environment
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::AgentTool::Mcp::connection_origin]
+          end
+        end
+
+        type web_search =
+          {
+            allowed_domains: ::Array[String]?,
+            context_size: OpenAI::Models::Beta::AgentTool::WebSearch::context_size,
+            location: OpenAI::Beta::AgentTool::WebSearch::Location?,
+            mode: OpenAI::Models::Beta::AgentTool::WebSearch::mode,
+            ?type: :web_search
+          }
+
+        class WebSearch < OpenAI::Internal::Type::BaseModel
+          attr_accessor allowed_domains: ::Array[String]?
+
+          attr_accessor context_size: OpenAI::Models::Beta::AgentTool::WebSearch::context_size
+
+          attr_accessor location: OpenAI::Beta::AgentTool::WebSearch::Location?
+
+          attr_accessor mode: OpenAI::Models::Beta::AgentTool::WebSearch::mode
+
+          attr_accessor type: :web_search
+
+          def initialize: (
+            allowed_domains: ::Array[String]?,
+            context_size: OpenAI::Models::Beta::AgentTool::WebSearch::context_size,
+            location: OpenAI::Beta::AgentTool::WebSearch::Location?,
+            mode: OpenAI::Models::Beta::AgentTool::WebSearch::mode,
+            ?type: :web_search
+          ) -> void
+
+          def to_hash: -> {
+            allowed_domains: ::Array[String]?,
+            context_size: OpenAI::Models::Beta::AgentTool::WebSearch::context_size,
+            location: OpenAI::Beta::AgentTool::WebSearch::Location?,
+            mode: OpenAI::Models::Beta::AgentTool::WebSearch::mode,
+            ?type: :web_search
+          }
+
+          type context_size = :low | :medium | :high
+
+          module ContextSize
+            extend OpenAI::Internal::Type::Enum
+
+            LOW: :low
+            MEDIUM: :medium
+            HIGH: :high
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::AgentTool::WebSearch::context_size]
+          end
+
+          type location =
+            {
+              city: String?,
+              country: String?,
+              region: String?,
+              timezone: String?
+            }
+
+          class Location < OpenAI::Internal::Type::BaseModel
+            attr_accessor city: String?
+
+            attr_accessor country: String?
+
+            attr_accessor region: String?
+
+            attr_accessor timezone: String?
+
+            def initialize: (
+              city: String?,
+              country: String?,
+              region: String?,
+              timezone: String?
+            ) -> void
+
+            def to_hash: -> {
+              city: String?,
+              country: String?,
+              region: String?,
+              timezone: String?
+            }
+          end
+
+          type mode = :disabled | :cached | :live
+
+          module Mode
+            extend OpenAI::Internal::Type::Enum
+
+            DISABLED: :disabled
+            CACHED: :cached
+            LIVE: :live
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::AgentTool::WebSearch::mode]
+          end
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::agent_tool]
+      end
+    end
+  end
+end
