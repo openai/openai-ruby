@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.89.0](https://github.com/openai/openai-ruby/compare/v0.88.0...v0.89.0) (2026-09-10)
+
+
+### Features
+
+* **api:** Add Live API ([3fde020](https://github.com/openai/openai-ruby/commit/3fde0201bc4f75af36a87acb3d71c8136c0df9c0))
+
+
+### Chores
+
+* **deps:** bump the codeql group with 2 updates ([#692](https://github.com/openai/openai-ruby/issues/692)) ([7f19b93](https://github.com/openai/openai-ruby/commit/7f19b932549bd7d4376e6ca91c7c75f9b856ae83))
+
 ## [0.88.0](https://github.com/openai/openai-ruby/compare/v0.87.0...v0.88.0) (2026-09-09)
 
 
