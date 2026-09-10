@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.90.0](https://github.com/openai/openai-ruby/compare/v0.89.0...v0.90.0) (2026-09-10)
+
+
+### Features
+
+* **api:** add Agents API ([#695](https://github.com/openai/openai-ruby/issues/695)) ([24324ed](https://github.com/openai/openai-ruby/commit/24324ed510a198d2f955668a231a63c46cf491c1))
+
 ## [0.89.0](https://github.com/openai/openai-ruby/compare/v0.88.0...v0.89.0) (2026-09-10)
 
 
