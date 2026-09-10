@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Webhooks
+      # @deprecated
       class LiveCallIncomingWebhookEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   The unique ID of the event.
@@ -35,9 +36,11 @@ module OpenAI
         optional :object, enum: -> { OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Object }
 
         # @!method initialize(id:, created_at:, data:, object: nil, type: :"live.call.incoming")
-        #   Sent when an incoming API SIP session is available for Live acceptance. The same
-        #   pending session can also emit `realtime.call.incoming`; the first successful
-        #   Realtime or Live accept endpoint selects the runtime surface.
+        #   Deprecated: use `live.transport.incoming`. Retained for existing subscriptions
+        #   during migration; new subscriptions to this event are not allowed. Sent when an
+        #   incoming API SIP session is available for Live acceptance. The same pending
+        #   session can also emit `realtime.call.incoming`; the first successful Realtime or
+        #   Live accept endpoint selects the runtime surface.
         #
         #   @param id [String]
         #     The unique ID of the event.
@@ -57,8 +60,9 @@ module OpenAI
         # @see OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent#data
         class Data < OpenAI::Internal::Type::BaseModel
           # @!attribute session_id
-          #   The `live_...` ID of the pending SIP session. Forward this value unchanged when
-          #   accepting or rejecting the call through the Live API.
+          #   The `live_...` ID of the pending SIP session. Pass this value unchanged to Live
+          #   call controls and sideband connections. The corresponding
+          #   `realtime.call.incoming` event uses a separate `rtc_...` call ID.
           #
           #   @return [String]
           required :session_id, String
@@ -78,8 +82,9 @@ module OpenAI
           #   Event data payload.
           #
           #   @param session_id [String]
-          #     The `live_...` ID of the pending SIP session. Forward this value unchanged when
-          #     accepting or rejecting the call through the Live API.
+          #     The `live_...` ID of the pending SIP session. Pass this value unchanged to Live
+          #     call controls and sideband connections. The corresponding
+          #     `realtime.call.incoming` event uses a separate `rtc_...` call ID.
           #
           #   @param sip_headers [Array<OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader>]
           #     Headers from the SIP INVITE, excluding SIP authorization headers. Retained

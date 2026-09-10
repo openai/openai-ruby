@@ -98,6 +98,9 @@ module OpenAI
     sig { returns(OpenAI::Resources::Responses) }
     attr_reader :responses
 
+    sig { returns(OpenAI::Resources::Live) }
+    attr_reader :live
+
     sig { returns(OpenAI::Resources::Realtime) }
     attr_reader :realtime
 

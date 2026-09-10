@@ -1,0 +1,49 @@
+module OpenAI
+  module Models
+    module Live
+      type input_transcript_delta_event =
+        {
+          delta: String,
+          end_ms: Integer,
+          event_id: String,
+          start_ms: Integer,
+          ?type: :"session.input_transcript.delta",
+          ?client_event_id: String
+        }
+
+      class InputTranscriptDeltaEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor delta: String
+
+        attr_accessor end_ms: Integer
+
+        attr_accessor event_id: String
+
+        attr_accessor start_ms: Integer
+
+        attr_accessor type: :"session.input_transcript.delta"
+
+        attr_reader client_event_id: String?
+
+        def client_event_id=: (String) -> String
+
+        def initialize: (
+          delta: String,
+          end_ms: Integer,
+          event_id: String,
+          start_ms: Integer,
+          ?client_event_id: String,
+          ?type: :"session.input_transcript.delta"
+        ) -> void
+
+        def to_hash: -> {
+          delta: String,
+          end_ms: Integer,
+          event_id: String,
+          start_ms: Integer,
+          ?type: :"session.input_transcript.delta",
+          ?client_event_id: String
+        }
+      end
+    end
+  end
+end

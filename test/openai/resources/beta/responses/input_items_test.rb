@@ -173,8 +173,12 @@ class OpenAI::Test::Resources::Beta::Responses::InputItemsTest < OpenAI::Test::R
             id: String,
             result: String | nil,
             status: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Status,
+            action: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Action | nil,
             agent: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Agent | nil,
+            background: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Background | nil,
+            output_format: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::OutputFormat | nil,
             quality: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Quality | nil,
+            revised_prompt: String | nil,
             size: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Size | nil
           } | {
             type: :code_interpreter_call,

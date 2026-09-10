@@ -1,0 +1,45 @@
+module OpenAI
+  module Models
+    module Live
+      type live_create_params =
+        {
+          session: OpenAI::Live::MediaSessionConfig,
+          transport: OpenAI::Live::LiveCreateParams::Transport,
+          ?request_options: OpenAI::request_opts
+        }
+
+      class LiveCreateParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor session: OpenAI::Live::MediaSessionConfig
+
+        attr_accessor transport: OpenAI::Live::LiveCreateParams::Transport
+
+        def initialize: (
+          session: OpenAI::Live::MediaSessionConfig,
+          transport: OpenAI::Live::LiveCreateParams::Transport,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          session: OpenAI::Live::MediaSessionConfig,
+          transport: OpenAI::Live::LiveCreateParams::Transport,
+          ?request_options: OpenAI::RequestOptions
+        }
+
+        type transport = { sdp: String, ?type: :webrtc }
+
+        class Transport < OpenAI::Internal::Type::BaseModel
+          attr_accessor sdp: String
+
+          attr_accessor type: :webrtc
+
+          def initialize: (sdp: String, ?type: :webrtc) -> void
+
+          def to_hash: -> { sdp: String, ?type: :webrtc }
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,39 @@
+module OpenAI
+  module Models
+    module Live
+      type session_started_event =
+        {
+          event_id: String,
+          session: OpenAI::Live::SessionResource,
+          ?type: :"session.started",
+          ?client_event_id: String
+        }
+
+      class SessionStartedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor event_id: String
+
+        attr_accessor session: OpenAI::Live::SessionResource
+
+        attr_accessor type: :"session.started"
+
+        attr_reader client_event_id: String?
+
+        def client_event_id=: (String) -> String
+
+        def initialize: (
+          event_id: String,
+          session: OpenAI::Live::SessionResource,
+          ?client_event_id: String,
+          ?type: :"session.started"
+        ) -> void
+
+        def to_hash: -> {
+          event_id: String,
+          session: OpenAI::Live::SessionResource,
+          ?type: :"session.started",
+          ?client_event_id: String
+        }
+      end
+    end
+  end
+end

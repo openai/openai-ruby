@@ -147,6 +147,8 @@ module OpenAI
 
   class ImagesResponse = OpenAI::Models::ImagesResponse
 
+  module Live = OpenAI::Models::Live
+
   Metadata: OpenAI::Internal::Type::Converter
 
   class Model = OpenAI::Models::Model

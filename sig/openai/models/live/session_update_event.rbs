@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Live
+      type session_update_event =
+        {
+          session: OpenAI::Live::SessionUpdateConfig,
+          ?type: :"session.update",
+          ?event_id: String?
+        }
+
+      class SessionUpdateEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor session: OpenAI::Live::SessionUpdateConfig
+
+        attr_accessor type: :"session.update"
+
+        attr_accessor event_id: String?
+
+        def initialize: (
+          session: OpenAI::Live::SessionUpdateConfig,
+          ?event_id: String?,
+          ?type: :"session.update"
+        ) -> void
+
+        def to_hash: -> {
+          session: OpenAI::Live::SessionUpdateConfig,
+          ?type: :"session.update",
+          ?event_id: String?
+        }
+      end
+    end
+  end
+end

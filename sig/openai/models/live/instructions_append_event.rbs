@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Live
+      type instructions_append_event =
+        {
+          content: String,
+          delegation_id: String?,
+          ?type: :"session.instructions.append",
+          ?event_id: String?
+        }
+
+      class InstructionsAppendEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor content: String
+
+        attr_accessor delegation_id: String?
+
+        attr_accessor type: :"session.instructions.append"
+
+        attr_accessor event_id: String?
+
+        def initialize: (
+          content: String,
+          delegation_id: String?,
+          ?event_id: String?,
+          ?type: :"session.instructions.append"
+        ) -> void
+
+        def to_hash: -> {
+          content: String,
+          delegation_id: String?,
+          ?type: :"session.instructions.append",
+          ?event_id: String?
+        }
+      end
+    end
+  end
+end

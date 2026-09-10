@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Live
+      type input_audio_append_event =
+        {
+          audio: String,
+          ?type: :"session.input_audio.append",
+          ?event_id: String?
+        }
+
+      class InputAudioAppendEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor audio: String
+
+        attr_accessor type: :"session.input_audio.append"
+
+        attr_accessor event_id: String?
+
+        def initialize: (
+          audio: String,
+          ?event_id: String?,
+          ?type: :"session.input_audio.append"
+        ) -> void
+
+        def to_hash: -> {
+          audio: String,
+          ?type: :"session.input_audio.append",
+          ?event_id: String?
+        }
+      end
+    end
+  end
+end

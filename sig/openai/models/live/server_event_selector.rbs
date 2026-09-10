@@ -1,0 +1,19 @@
+module OpenAI
+  module Models
+    module Live
+      type server_event_selector = { type: String, ?response_event: String }
+
+      class ServerEventSelector < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: String
+
+        attr_reader response_event: String?
+
+        def response_event=: (String) -> String
+
+        def initialize: (type: String, ?response_event: String) -> void
+
+        def to_hash: -> { type: String, ?response_event: String }
+      end
+    end
+  end
+end

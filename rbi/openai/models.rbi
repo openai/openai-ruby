@@ -150,6 +150,8 @@ module OpenAI
 
   ImagesResponse = OpenAI::Models::ImagesResponse
 
+  Live = OpenAI::Models::Live
+
   Metadata = T.let(OpenAI::Models::Metadata, OpenAI::Internal::Type::Converter)
 
   Model = OpenAI::Models::Model

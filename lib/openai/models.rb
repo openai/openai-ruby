@@ -196,6 +196,8 @@ module OpenAI
 
   ImagesResponse = OpenAI::Models::ImagesResponse
 
+  Live = OpenAI::Models::Live
+
   # @type [OpenAI::Internal::Type::Converter]
   Metadata = OpenAI::Models::Metadata
 

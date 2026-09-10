@@ -93,6 +93,9 @@ module OpenAI
       module Jobs
       end
 
+      module Live
+      end
+
       module Organization
         module Groups
         end

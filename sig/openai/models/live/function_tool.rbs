@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Live
+      type function_tool =
+        {
+          name: String,
+          ?type: :function,
+          ?description: String?,
+          ?parameters: ::Hash[Symbol, top]?,
+          ?strict: bool?
+        }
+
+      class FunctionTool < OpenAI::Internal::Type::BaseModel
+        attr_accessor name: String
+
+        attr_accessor type: :function
+
+        attr_accessor description: String?
+
+        attr_accessor parameters: ::Hash[Symbol, top]?
+
+        attr_accessor strict: bool?
+
+        def initialize: (
+          name: String,
+          ?description: String?,
+          ?parameters: ::Hash[Symbol, top]?,
+          ?strict: bool?,
+          ?type: :function
+        ) -> void
+
+        def to_hash: -> {
+          name: String,
+          ?type: :function,
+          ?description: String?,
+          ?parameters: ::Hash[Symbol, top]?,
+          ?strict: bool?
+        }
+      end
+    end
+  end
+end

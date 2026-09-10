@@ -1,0 +1,89 @@
+module OpenAI
+  module Models
+    module Live
+      type delegation_created_event =
+        {
+          delegation: OpenAI::Live::DelegationCreatedEvent::Delegation,
+          event_id: String,
+          offset_ms: Integer,
+          ?type: :"session.delegation.created",
+          ?client_event_id: String
+        }
+
+      class DelegationCreatedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor delegation: OpenAI::Live::DelegationCreatedEvent::Delegation
+
+        attr_accessor event_id: String
+
+        attr_accessor offset_ms: Integer
+
+        attr_accessor type: :"session.delegation.created"
+
+        attr_reader client_event_id: String?
+
+        def client_event_id=: (String) -> String
+
+        def initialize: (
+          delegation: OpenAI::Live::DelegationCreatedEvent::Delegation,
+          event_id: String,
+          offset_ms: Integer,
+          ?client_event_id: String,
+          ?type: :"session.delegation.created"
+        ) -> void
+
+        def to_hash: -> {
+          delegation: OpenAI::Live::DelegationCreatedEvent::Delegation,
+          event_id: String,
+          offset_ms: Integer,
+          ?type: :"session.delegation.created",
+          ?client_event_id: String
+        }
+
+        type delegation =
+          {
+            id: String,
+            target: OpenAI::Models::Live::DelegationCreatedEvent::Delegation::target,
+            ?type: :delegation,
+            ?response_id: String
+          }
+
+        class Delegation < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor target: OpenAI::Models::Live::DelegationCreatedEvent::Delegation::target
+
+          attr_accessor type: :delegation
+
+          attr_reader response_id: String?
+
+          def response_id=: (String) -> String
+
+          def initialize: (
+            id: String,
+            target: OpenAI::Models::Live::DelegationCreatedEvent::Delegation::target,
+            ?response_id: String,
+            ?type: :delegation
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            target: OpenAI::Models::Live::DelegationCreatedEvent::Delegation::target,
+            ?type: :delegation,
+            ?response_id: String
+          }
+
+          type target = :client | :responses
+
+          module Target
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Live::DelegationCreatedEvent::Delegation::target]
+
+            CLIENT: :client
+            RESPONSES: :responses
+          end
+        end
+      end
+    end
+  end
+end
