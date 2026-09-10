@@ -1,0 +1,57 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        module Vaults
+          type mcp_oauth_token_endpoint_auth_rotate_param =
+            OpenAI::Beta::Agents::Vaults::McpOauthTokenEndpointAuthRotateParam::ClientSecretBasic
+            | OpenAI::Beta::Agents::Vaults::McpOauthTokenEndpointAuthRotateParam::ClientSecretPost
+
+          module McpOauthTokenEndpointAuthRotateParam
+            extend OpenAI::Internal::Type::Union
+
+            type client_secret_basic =
+              { ?type: :client_secret_basic, ?client_secret: String? }
+
+            class ClientSecretBasic < OpenAI::Internal::Type::BaseModel
+              attr_accessor type: :client_secret_basic
+
+              attr_accessor client_secret: String?
+
+              def initialize: (
+                ?client_secret: String?,
+                ?type: :client_secret_basic
+              ) -> void
+
+              def to_hash: -> {
+                ?type: :client_secret_basic,
+                ?client_secret: String?
+              }
+            end
+
+            type client_secret_post =
+              { ?type: :client_secret_post, ?client_secret: String? }
+
+            class ClientSecretPost < OpenAI::Internal::Type::BaseModel
+              attr_accessor type: :client_secret_post
+
+              attr_accessor client_secret: String?
+
+              def initialize: (
+                ?client_secret: String?,
+                ?type: :client_secret_post
+              ) -> void
+
+              def to_hash: -> {
+                ?type: :client_secret_post,
+                ?client_secret: String?
+              }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::Vaults::mcp_oauth_token_endpoint_auth_rotate_param]
+          end
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type vault_create_params =
+          {
+            ?metadata: ::Hash[Symbol, String]?,
+            ?name: String,
+            ?request_options: OpenAI::request_opts
+          }
+
+        class VaultCreateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor metadata: ::Hash[Symbol, String]?
+
+          attr_reader name: String?
+
+          def name=: (String) -> String
+
+          def initialize: (
+            ?metadata: ::Hash[Symbol, String]?,
+            ?name: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            ?metadata: ::Hash[Symbol, String]?,
+            ?name: String,
+            ?request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

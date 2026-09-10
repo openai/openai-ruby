@@ -1,0 +1,52 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_output_command_execution_output_delta_event =
+        {
+          delta: String,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.output.command_execution_output.delta"
+        }
+
+      class AgentOutputCommandExecutionOutputDeltaEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor delta: String
+
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor session_id: String
+
+        attr_accessor turn_id: String?
+
+        attr_accessor type: :"agent.output.command_execution_output.delta"
+
+        def initialize: (
+          delta: String,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.output.command_execution_output.delta"
+        ) -> void
+
+        def to_hash: -> {
+          delta: String,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.output.command_execution_output.delta"
+        }
+      end
+    end
+  end
+end

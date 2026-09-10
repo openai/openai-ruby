@@ -1,0 +1,57 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session_turn_output_text_delta_event =
+        {
+          content_index: Integer,
+          delta: String,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.session.turn.output_text.delta"
+        }
+
+      class AgentSessionTurnOutputTextDeltaEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor content_index: Integer
+
+        attr_accessor delta: String
+
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor session_id: String
+
+        attr_accessor turn_id: String?
+
+        attr_accessor type: :"agent.session.turn.output_text.delta"
+
+        def initialize: (
+          content_index: Integer,
+          delta: String,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.session.turn.output_text.delta"
+        ) -> void
+
+        def to_hash: -> {
+          content_index: Integer,
+          delta: String,
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.session.turn.output_text.delta"
+        }
+      end
+    end
+  end
+end

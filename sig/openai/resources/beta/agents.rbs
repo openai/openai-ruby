@@ -1,0 +1,59 @@
+module OpenAI
+  module Resources
+    class Beta
+      class Agents
+        attr_reader environments: OpenAI::Resources::Beta::Agents::Environments
+
+        attr_reader vaults: OpenAI::Resources::Beta::Agents::Vaults
+
+        attr_reader sessions: OpenAI::Resources::Beta::Agents::Sessions
+
+        def create: (
+          model: String,
+          ?instructions: String?,
+          ?metadata: ::Hash[Symbol, String]?,
+          ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
+          ?name: String?,
+          ?reasoning: OpenAI::Beta::AgentReasoningParam?,
+          ?service_tier: OpenAI::Models::Beta::AgentCreateParams::service_tier?,
+          ?text: OpenAI::Beta::AgentTextParam?,
+          ?tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool_param]?,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Beta::Agent
+
+        def retrieve: (
+          String agent_id,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Beta::Agent
+
+        def update: (
+          String agent_id,
+          ?instructions: String?,
+          ?metadata: ::Hash[Symbol, String]?,
+          ?model: String,
+          ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
+          ?name: String?,
+          ?reasoning: OpenAI::Beta::AgentReasoningParam?,
+          ?service_tier: OpenAI::Models::Beta::AgentUpdateParams::service_tier?,
+          ?text: OpenAI::Beta::AgentTextParam?,
+          ?tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool_param]?,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Beta::Agent
+
+        def list: (
+          ?after: String,
+          ?limit: Integer?,
+          ?order: OpenAI::Models::Beta::AgentListParams::order,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Internal::CursorPage[OpenAI::Beta::Agent]
+
+        def delete: (
+          String agent_id,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Beta::AgentDeleted
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end

@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    module Beta
+      type setup_command_param = { command: String, ?cwd: String? }
+
+      class SetupCommandParam < OpenAI::Internal::Type::BaseModel
+        attr_accessor command: String
+
+        attr_accessor cwd: String?
+
+        def initialize: (command: String, ?cwd: String?) -> void
+
+        def to_hash: -> { command: String, ?cwd: String? }
+      end
+    end
+  end
+end

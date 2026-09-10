@@ -1,0 +1,43 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        class EnvironmentFile = Environments::EnvironmentFile
+
+        module Environments
+          type environment_file =
+            {
+              environment_id: String,
+              ?object: :"agent.environment.file",
+              path: String,
+              size_bytes: Integer
+            }
+
+          class EnvironmentFile < OpenAI::Internal::Type::BaseModel
+            attr_accessor environment_id: String
+
+            attr_accessor object: :"agent.environment.file"
+
+            attr_accessor path: String
+
+            attr_accessor size_bytes: Integer
+
+            def initialize: (
+              environment_id: String,
+              path: String,
+              size_bytes: Integer,
+              ?object: :"agent.environment.file"
+            ) -> void
+
+            def to_hash: -> {
+              environment_id: String,
+              ?object: :"agent.environment.file",
+              path: String,
+              size_bytes: Integer
+            }
+          end
+        end
+      end
+    end
+  end
+end

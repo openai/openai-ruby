@@ -1,0 +1,35 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type session_update_params =
+          {
+            session_id: String,
+            ?metadata: ::Hash[Symbol, String]?,
+            ?request_options: OpenAI::request_opts
+          }
+
+        class SessionUpdateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor session_id: String
+
+          attr_accessor metadata: ::Hash[Symbol, String]?
+
+          def initialize: (
+            session_id: String,
+            ?metadata: ::Hash[Symbol, String]?,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            session_id: String,
+            ?metadata: ::Hash[Symbol, String]?,
+            ?request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

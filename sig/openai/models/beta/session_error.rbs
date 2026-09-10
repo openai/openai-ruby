@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Beta
+      type session_error =
+        { code: String?, message: String, param: String?, type: String }
+
+      class SessionError < OpenAI::Internal::Type::BaseModel
+        attr_accessor code: String?
+
+        attr_accessor message: String
+
+        attr_accessor param: String?
+
+        attr_accessor type: String
+
+        def initialize: (
+          code: String?,
+          message: String,
+          param: String?,
+          type: String
+        ) -> void
+
+        def to_hash: -> {
+          code: String?,
+          message: String,
+          param: String?,
+          type: String
+        }
+      end
+    end
+  end
+end

@@ -1,0 +1,74 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session_environment_state =
+        {
+          id: String,
+          error: OpenAI::Beta::AgentSessionEnvironmentState::Error?,
+          status: OpenAI::Models::Beta::AgentSessionEnvironmentState::status,
+          type: String
+        }
+
+      class AgentSessionEnvironmentState < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor error: OpenAI::Beta::AgentSessionEnvironmentState::Error?
+
+        attr_accessor status: OpenAI::Models::Beta::AgentSessionEnvironmentState::status
+
+        attr_accessor type: String
+
+        def initialize: (
+          id: String,
+          error: OpenAI::Beta::AgentSessionEnvironmentState::Error?,
+          status: OpenAI::Models::Beta::AgentSessionEnvironmentState::status,
+          type: String
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          error: OpenAI::Beta::AgentSessionEnvironmentState::Error?,
+          status: OpenAI::Models::Beta::AgentSessionEnvironmentState::status,
+          type: String
+        }
+
+        type error = { code: String, message: String, type: String }
+
+        class Error < OpenAI::Internal::Type::BaseModel
+          attr_accessor code: String
+
+          attr_accessor message: String
+
+          attr_accessor type: String
+
+          def initialize: (code: String, message: String, type: String) -> void
+
+          def to_hash: -> { code: String, message: String, type: String }
+        end
+
+        type status = :pending | :ready | :connected | :disconnected | :failed
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          # The environment is being prepared.
+          PENDING: :pending
+
+          # The environment is ready to connect.
+          READY: :ready
+
+          # The environment is connected.
+          CONNECTED: :connected
+
+          # The environment is disconnected.
+          DISCONNECTED: :disconnected
+
+          # The environment failed to connect.
+          FAILED: :failed
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSessionEnvironmentState::status]
+        end
+      end
+    end
+  end
+end

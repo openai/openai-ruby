@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session_environment_pending_event =
+        {
+          environment: OpenAI::Beta::AgentSessionEnvironmentState,
+          event_id: String,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.session.environment.pending"
+        }
+
+      class AgentSessionEnvironmentPendingEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor environment: OpenAI::Beta::AgentSessionEnvironmentState
+
+        attr_accessor event_id: String
+
+        attr_accessor session_id: String
+
+        attr_accessor turn_id: String?
+
+        attr_accessor type: :"agent.session.environment.pending"
+
+        def initialize: (
+          environment: OpenAI::Beta::AgentSessionEnvironmentState,
+          event_id: String,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.session.environment.pending"
+        ) -> void
+
+        def to_hash: -> {
+          environment: OpenAI::Beta::AgentSessionEnvironmentState,
+          event_id: String,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.session.environment.pending"
+        }
+      end
+    end
+  end
+end

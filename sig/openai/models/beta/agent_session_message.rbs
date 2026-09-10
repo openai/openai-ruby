@@ -1,0 +1,77 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session_message =
+        {
+          id: String?,
+          content: ::Array[OpenAI::Models::Beta::agent_session_message_content],
+          phase: OpenAI::Models::Beta::AgentSessionMessage::phase?,
+          role: OpenAI::Models::Beta::AgentSessionMessage::role,
+          status: OpenAI::Models::Beta::agent_output_item_status,
+          turn_id: String,
+          ?type: :message
+        }
+
+      class AgentSessionMessage < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String?
+
+        attr_accessor content: ::Array[OpenAI::Models::Beta::agent_session_message_content]
+
+        attr_accessor phase: OpenAI::Models::Beta::AgentSessionMessage::phase?
+
+        attr_accessor role: OpenAI::Models::Beta::AgentSessionMessage::role
+
+        attr_accessor status: OpenAI::Models::Beta::agent_output_item_status
+
+        attr_accessor turn_id: String
+
+        attr_accessor type: :message
+
+        def initialize: (
+          id: String?,
+          content: ::Array[OpenAI::Models::Beta::agent_session_message_content],
+          phase: OpenAI::Models::Beta::AgentSessionMessage::phase?,
+          role: OpenAI::Models::Beta::AgentSessionMessage::role,
+          status: OpenAI::Models::Beta::agent_output_item_status,
+          turn_id: String,
+          ?type: :message
+        ) -> void
+
+        def to_hash: -> {
+          id: String?,
+          content: ::Array[OpenAI::Models::Beta::agent_session_message_content],
+          phase: OpenAI::Models::Beta::AgentSessionMessage::phase?,
+          role: OpenAI::Models::Beta::AgentSessionMessage::role,
+          status: OpenAI::Models::Beta::agent_output_item_status,
+          turn_id: String,
+          ?type: :message
+        }
+
+        type phase = :commentary | :final_answer
+
+        module Phase
+          extend OpenAI::Internal::Type::Enum
+
+          # Commentary produced while the agent works.
+          COMMENTARY: :commentary
+
+          # The agent's final answer.
+          FINAL_ANSWER: :final_answer
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSessionMessage::phase]
+        end
+
+        type role = :user | :assistant
+
+        module Role
+          extend OpenAI::Internal::Type::Enum
+
+          USER: :user
+          ASSISTANT: :assistant
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSessionMessage::role]
+        end
+      end
+    end
+  end
+end

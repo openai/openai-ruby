@@ -1,0 +1,96 @@
+module OpenAI
+  module Models
+    module Beta
+      type session_turn_error =
+        { code: OpenAI::Models::Beta::SessionTurnError::code, message: String }
+
+      class SessionTurnError < OpenAI::Internal::Type::BaseModel
+        attr_accessor code: OpenAI::Models::Beta::SessionTurnError::code
+
+        attr_accessor message: String
+
+        def initialize: (
+          code: OpenAI::Models::Beta::SessionTurnError::code,
+          message: String
+        ) -> void
+
+        def to_hash: -> {
+          code: OpenAI::Models::Beta::SessionTurnError::code,
+          message: String
+        }
+
+        type code =
+          :context_length_exceeded
+          | :session_budget_exceeded
+          | :usage_limit_exceeded
+          | :rate_limit_exceeded
+          | :server_overloaded
+          | :cyber_policy
+          | :connection_failed
+          | :server_error
+          | :authentication_error
+          | :invalid_request
+          | :resource_not_found
+          | :sandbox_error
+          | :executor_version_incompatible
+          | :active_turn_not_steerable
+          | :request_timeout
+          | :internal_error
+
+        module Code
+          extend OpenAI::Internal::Type::Enum
+
+          # The request exceeds the model's context window.
+          CONTEXT_LENGTH_EXCEEDED: :context_length_exceeded
+
+          # The session has reached its usage budget.
+          SESSION_BUDGET_EXCEEDED: :session_budget_exceeded
+
+          # The organization has reached a usage, plan, or billing limit.
+          USAGE_LIMIT_EXCEEDED: :usage_limit_exceeded
+
+          # The request exceeds the available rate limit.
+          RATE_LIMIT_EXCEEDED: :rate_limit_exceeded
+
+          # The model service is temporarily overloaded.
+          SERVER_OVERLOADED: :server_overloaded
+
+          # The request was rejected by a safety policy.
+          CYBER_POLICY: :cyber_policy
+
+          # The request could not connect to the model service.
+          CONNECTION_FAILED: :connection_failed
+
+          # The model service encountered an unexpected error.
+          SERVER_ERROR: :server_error
+
+          # The API credentials are invalid or lack the required access.
+          AUTHENTICATION_ERROR: :authentication_error
+
+          # The request contains invalid input or configuration.
+          INVALID_REQUEST: :invalid_request
+
+          # The requested model or resource is unavailable.
+          RESOURCE_NOT_FOUND: :resource_not_found
+
+          # The request could not complete in its execution environment.
+          SANDBOX_ERROR: :sandbox_error
+
+          # The executor must be upgraded before it can run this turn.
+          EXECUTOR_VERSION_INCOMPATIBLE: :executor_version_incompatible
+
+          # The session cannot accept additional input while a request is running.
+          ACTIVE_TURN_NOT_STEERABLE: :active_turn_not_steerable
+
+          # The request timed out before the model service responded.
+          REQUEST_TIMEOUT: :request_timeout
+
+          # An unexpected internal error prevented the session request from completing.
+          INTERNAL_ERROR: :internal_error
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::SessionTurnError::code]
+        end
+      end
+    end
+  end
+end

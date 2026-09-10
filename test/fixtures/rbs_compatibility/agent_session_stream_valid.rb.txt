@@ -1,0 +1,11 @@
+client = OpenAI::Client.new(api_key: "fake-key")
+client.beta.agents.sessions.stream("session_test", input: "Hello", tool_handlers: {"lookup" => ->(arguments) { arguments.fetch("query").to_s }}) do |stream|
+  stream.each do |event|
+    event.event_id.to_s
+  end
+end
+stream = client.beta.agents.sessions.stream("session_test", input: [{role: :user, content: [{type: :input_text, text: "Hello"}]}])
+stream.until_done
+stream.close
+message = OpenAI::Beta::AgentSessionMessage.new(id: "message_test", content: [], phase: nil, role: :assistant, status: :completed, turn_id: "turn_test")
+message.output_text.upcase

@@ -1,0 +1,57 @@
+module OpenAI
+  module Resources
+    class Beta
+      class Agents
+        class Environments
+          class Templates
+            def create: (
+              ?capability_directories: ::Array[String]?,
+              ?env: ::Hash[Symbol, String]?,
+              ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
+              ?name: String?,
+              ?network: OpenAI::Beta::Agents::Environments::TemplateCreateParams::Network?,
+              ?packages: OpenAI::Beta::Agents::Environments::TemplateCreateParams::Packages?,
+              ?plugins: ::Array[OpenAI::Beta::HostedPluginParam]?,
+              ?setup_commands: ::Array[OpenAI::Beta::SetupCommandParam]?,
+              ?skills: ::Array[OpenAI::Models::Beta::hosted_skill_param]?,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Beta::Agents::Environments::EnvironmentTemplate
+
+            def retrieve: (
+              String environment_template_id,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Beta::Agents::Environments::EnvironmentTemplate
+
+            def update: (
+              String environment_template_id,
+              ?capability_directories: ::Array[String]?,
+              ?env: ::Hash[Symbol, String]?,
+              ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
+              ?name: String?,
+              ?network: OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Network?,
+              ?packages: OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Packages?,
+              ?plugins: ::Array[OpenAI::Beta::HostedPluginParam]?,
+              ?setup_commands: ::Array[OpenAI::Beta::SetupCommandParam]?,
+              ?skills: ::Array[OpenAI::Models::Beta::hosted_skill_param]?,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Beta::Agents::Environments::EnvironmentTemplate
+
+            def list: (
+              ?after: String,
+              ?limit: Integer,
+              ?order: OpenAI::Models::Beta::Agents::Environments::TemplateListParams::order,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Internal::CursorPage[OpenAI::Beta::Agents::Environments::EnvironmentTemplate]
+
+            def delete: (
+              String environment_template_id,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Beta::Agents::Environments::EnvironmentTemplateDeleted
+
+            def initialize: (client: OpenAI::Client) -> void
+          end
+        end
+      end
+    end
+  end
+end

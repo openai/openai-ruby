@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_reasoning_item =
+        {
+          id: String,
+          status: OpenAI::Models::Beta::agent_output_item_status?,
+          summary: ::Array[OpenAI::Beta::SummaryText],
+          turn_id: String,
+          ?type: :reasoning
+        }
+
+      class AgentReasoningItem < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor status: OpenAI::Models::Beta::agent_output_item_status?
+
+        attr_accessor summary: ::Array[OpenAI::Beta::SummaryText]
+
+        attr_accessor turn_id: String
+
+        attr_accessor type: :reasoning
+
+        def initialize: (
+          id: String,
+          status: OpenAI::Models::Beta::agent_output_item_status?,
+          summary: ::Array[OpenAI::Beta::SummaryText],
+          turn_id: String,
+          ?type: :reasoning
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          status: OpenAI::Models::Beta::agent_output_item_status?,
+          summary: ::Array[OpenAI::Beta::SummaryText],
+          turn_id: String,
+          ?type: :reasoning
+        }
+      end
+    end
+  end
+end

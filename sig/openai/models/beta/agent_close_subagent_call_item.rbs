@@ -1,0 +1,47 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_close_subagent_call_item =
+        {
+          id: String,
+          recipient_agent_id: String,
+          sender_agent_id: String,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :close_subagent_call
+        }
+
+      class AgentCloseSubagentCallItem < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor recipient_agent_id: String
+
+        attr_accessor sender_agent_id: String
+
+        attr_accessor status: OpenAI::Models::Beta::agent_function_call_status
+
+        attr_accessor turn_id: String
+
+        attr_accessor type: :close_subagent_call
+
+        def initialize: (
+          id: String,
+          recipient_agent_id: String,
+          sender_agent_id: String,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :close_subagent_call
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          recipient_agent_id: String,
+          sender_agent_id: String,
+          status: OpenAI::Models::Beta::agent_function_call_status,
+          turn_id: String,
+          ?type: :close_subagent_call
+        }
+      end
+    end
+  end
+end

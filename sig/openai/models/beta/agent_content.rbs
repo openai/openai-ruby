@@ -1,0 +1,33 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_content =
+        OpenAI::Beta::OutputText | OpenAI::Beta::AgentContent::EncryptedContent
+
+      module AgentContent
+        extend OpenAI::Internal::Type::Union
+
+        type encrypted_content =
+          { encrypted_content: String, ?type: :encrypted_content }
+
+        class EncryptedContent < OpenAI::Internal::Type::BaseModel
+          attr_accessor encrypted_content: String
+
+          attr_accessor type: :encrypted_content
+
+          def initialize: (
+            encrypted_content: String,
+            ?type: :encrypted_content
+          ) -> void
+
+          def to_hash: -> {
+            encrypted_content: String,
+            ?type: :encrypted_content
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::agent_content]
+      end
+    end
+  end
+end

@@ -1,0 +1,98 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_update_params =
+        {
+          agent_id: String,
+          ?instructions: String?,
+          ?metadata: ::Hash[Symbol, String]?,
+          ?model: String,
+          ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
+          ?name: String?,
+          ?reasoning: OpenAI::Beta::AgentReasoningParam?,
+          ?service_tier: OpenAI::Models::Beta::AgentUpdateParams::service_tier?,
+          ?text: OpenAI::Beta::AgentTextParam?,
+          ?tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool_param]?,
+          ?request_options: OpenAI::request_opts
+        }
+
+      class AgentUpdateParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor agent_id: String
+
+        attr_accessor instructions: String?
+
+        attr_accessor metadata: ::Hash[Symbol, String]?
+
+        attr_reader model: String?
+
+        def model=: (String) -> String
+
+        attr_accessor multi_agent: OpenAI::Beta::MultiAgentConfigParam?
+
+        attr_accessor name: String?
+
+        attr_accessor reasoning: OpenAI::Beta::AgentReasoningParam?
+
+        attr_accessor service_tier: OpenAI::Models::Beta::AgentUpdateParams::service_tier?
+
+        attr_accessor text: OpenAI::Beta::AgentTextParam?
+
+        attr_accessor tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool_param]?
+
+        def initialize: (
+          agent_id: String,
+          ?instructions: String?,
+          ?metadata: ::Hash[Symbol, String]?,
+          ?model: String,
+          ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
+          ?name: String?,
+          ?reasoning: OpenAI::Beta::AgentReasoningParam?,
+          ?service_tier: OpenAI::Models::Beta::AgentUpdateParams::service_tier?,
+          ?text: OpenAI::Beta::AgentTextParam?,
+          ?tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool_param]?,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          agent_id: String,
+          ?instructions: String?,
+          ?metadata: ::Hash[Symbol, String]?,
+          ?model: String,
+          ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
+          ?name: String?,
+          ?reasoning: OpenAI::Beta::AgentReasoningParam?,
+          ?service_tier: OpenAI::Models::Beta::AgentUpdateParams::service_tier?,
+          ?text: OpenAI::Beta::AgentTextParam?,
+          ?tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool_param]?,
+          ?request_options: OpenAI::RequestOptions
+        }
+
+        type service_tier = :auto | :default | :flex | :priority | :fast
+
+        module ServiceTier
+          extend OpenAI::Internal::Type::Enum
+
+          # Selects the service tier automatically.
+          AUTO: :auto
+
+          # Uses the default service tier.
+          DEFAULT: :default
+
+          # Uses the flex service tier.
+          FLEX: :flex
+
+          # Uses the priority service tier.
+          PRIORITY: :priority
+
+          # Uses the fast service tier.
+          FAST: :fast
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AgentUpdateParams::service_tier]
+        end
+      end
+    end
+  end
+end

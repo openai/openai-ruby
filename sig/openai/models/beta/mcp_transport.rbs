@@ -1,0 +1,63 @@
+module OpenAI
+  module Models
+    module Beta
+      type mcp_transport =
+        OpenAI::Beta::McpTransport::HTTP | OpenAI::Beta::McpTransport::Stdio
+
+      module McpTransport
+        extend OpenAI::Internal::Type::Union
+
+        type http = { server_url: String, ?type: :http }
+
+        class HTTP < OpenAI::Internal::Type::BaseModel
+          attr_accessor server_url: String
+
+          attr_accessor type: :http
+
+          def initialize: (server_url: String, ?type: :http) -> void
+
+          def to_hash: -> { server_url: String, ?type: :http }
+        end
+
+        type stdio =
+          {
+            args: ::Array[String],
+            command: String,
+            cwd: String,
+            env_vars: ::Array[String],
+            ?type: :stdio
+          }
+
+        class Stdio < OpenAI::Internal::Type::BaseModel
+          attr_accessor args: ::Array[String]
+
+          attr_accessor command: String
+
+          attr_accessor cwd: String
+
+          attr_accessor env_vars: ::Array[String]
+
+          attr_accessor type: :stdio
+
+          def initialize: (
+            args: ::Array[String],
+            command: String,
+            cwd: String,
+            env_vars: ::Array[String],
+            ?type: :stdio
+          ) -> void
+
+          def to_hash: -> {
+            args: ::Array[String],
+            command: String,
+            cwd: String,
+            env_vars: ::Array[String],
+            ?type: :stdio
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::mcp_transport]
+      end
+    end
+  end
+end

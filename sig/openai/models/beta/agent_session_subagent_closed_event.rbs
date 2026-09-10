@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session_subagent_closed_event =
+        {
+          event_id: String,
+          subagent: OpenAI::Beta::Subagent,
+          ?type: :"agent.session.subagent.closed"
+        }
+
+      class AgentSessionSubagentClosedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor event_id: String
+
+        attr_accessor subagent: OpenAI::Beta::Subagent
+
+        attr_accessor type: :"agent.session.subagent.closed"
+
+        def initialize: (
+          event_id: String,
+          subagent: OpenAI::Beta::Subagent,
+          ?type: :"agent.session.subagent.closed"
+        ) -> void
+
+        def to_hash: -> {
+          event_id: String,
+          subagent: OpenAI::Beta::Subagent,
+          ?type: :"agent.session.subagent.closed"
+        }
+      end
+    end
+  end
+end

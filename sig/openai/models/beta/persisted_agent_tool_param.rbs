@@ -1,0 +1,251 @@
+module OpenAI
+  module Models
+    module Beta
+      type persisted_agent_tool_param =
+        OpenAI::Beta::PersistedAgentToolParam::Function
+        | OpenAI::Beta::PersistedAgentToolParam::ToolSearch
+        | OpenAI::Beta::PersistedAgentToolParam::ProgrammaticToolCalling
+        | OpenAI::Beta::PersistedAgentToolParam::Mcp
+        | OpenAI::Beta::PersistedAgentToolParam::WebSearch
+
+      module PersistedAgentToolParam
+        extend OpenAI::Internal::Type::Union
+
+        type function =
+          {
+            description: String,
+            name: String,
+            parameters: ::Hash[Symbol, top],
+            ?type: :function,
+            ?defer_loading: bool
+          }
+
+        class Function < OpenAI::Internal::Type::BaseModel
+          attr_accessor description: String
+
+          attr_accessor name: String
+
+          attr_accessor parameters: ::Hash[Symbol, top]
+
+          attr_accessor type: :function
+
+          attr_reader defer_loading: bool?
+
+          def defer_loading=: (bool) -> bool
+
+          def initialize: (
+            description: String,
+            name: String,
+            parameters: ::Hash[Symbol, top],
+            ?defer_loading: bool,
+            ?type: :function
+          ) -> void
+
+          def to_hash: -> {
+            description: String,
+            name: String,
+            parameters: ::Hash[Symbol, top],
+            ?type: :function,
+            ?defer_loading: bool
+          }
+        end
+
+        type tool_search = { ?type: :tool_search }
+
+        class ToolSearch < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :tool_search
+
+          def initialize: (?type: :tool_search) -> void
+
+          def to_hash: -> { ?type: :tool_search }
+        end
+
+        type programmatic_tool_calling =
+          { ?type: :programmatic_tool_calling, ?enabled: bool }
+
+        class ProgrammaticToolCalling < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :programmatic_tool_calling
+
+          attr_reader enabled: bool?
+
+          def enabled=: (bool) -> bool
+
+          def initialize: (
+            ?enabled: bool,
+            ?type: :programmatic_tool_calling
+          ) -> void
+
+          def to_hash: -> { ?type: :programmatic_tool_calling, ?enabled: bool }
+        end
+
+        type mcp =
+          {
+            server_label: String,
+            transport: OpenAI::Models::Beta::persisted_mcp_transport_param,
+            ?type: :mcp,
+            ?allowed_tools: ::Array[String]?,
+            ?connection_origin: OpenAI::Models::Beta::PersistedAgentToolParam::Mcp::connection_origin?,
+            ?credential_id: String?,
+            ?request_metadata: ::Hash[Symbol, top]?,
+            ?required: bool
+          }
+
+        class Mcp < OpenAI::Internal::Type::BaseModel
+          attr_accessor server_label: String
+
+          attr_accessor transport: OpenAI::Models::Beta::persisted_mcp_transport_param
+
+          attr_accessor type: :mcp
+
+          attr_accessor allowed_tools: ::Array[String]?
+
+          attr_accessor connection_origin: OpenAI::Models::Beta::PersistedAgentToolParam::Mcp::connection_origin?
+
+          attr_accessor credential_id: String?
+
+          attr_accessor request_metadata: ::Hash[Symbol, top]?
+
+          attr_reader required: bool?
+
+          def required=: (bool) -> bool
+
+          def initialize: (
+            server_label: String,
+            transport: OpenAI::Models::Beta::persisted_mcp_transport_param,
+            ?allowed_tools: ::Array[String]?,
+            ?connection_origin: OpenAI::Models::Beta::PersistedAgentToolParam::Mcp::connection_origin?,
+            ?credential_id: String?,
+            ?request_metadata: ::Hash[Symbol, top]?,
+            ?required: bool,
+            ?type: :mcp
+          ) -> void
+
+          def to_hash: -> {
+            server_label: String,
+            transport: OpenAI::Models::Beta::persisted_mcp_transport_param,
+            ?type: :mcp,
+            ?allowed_tools: ::Array[String]?,
+            ?connection_origin: OpenAI::Models::Beta::PersistedAgentToolParam::Mcp::connection_origin?,
+            ?credential_id: String?,
+            ?request_metadata: ::Hash[Symbol, top]?,
+            ?required: bool
+          }
+
+          type connection_origin = :service | :environment
+
+          module ConnectionOrigin
+            extend OpenAI::Internal::Type::Enum
+
+            # Uses the Managed Agents service network.
+            SERVICE: :service
+
+            # Uses the session's execution environment.
+            ENVIRONMENT: :environment
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::PersistedAgentToolParam::Mcp::connection_origin]
+          end
+        end
+
+        type web_search =
+          {
+            ?type: :web_search,
+            ?allowed_domains: ::Array[String]?,
+            ?context_size: OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch::context_size?,
+            ?location: OpenAI::Beta::PersistedAgentToolParam::WebSearch::Location?,
+            ?mode: OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch::mode?
+          }
+
+        class WebSearch < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :web_search
+
+          attr_accessor allowed_domains: ::Array[String]?
+
+          attr_accessor context_size: OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch::context_size?
+
+          attr_accessor location: OpenAI::Beta::PersistedAgentToolParam::WebSearch::Location?
+
+          attr_accessor mode: OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch::mode?
+
+          def initialize: (
+            ?allowed_domains: ::Array[String]?,
+            ?context_size: OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch::context_size?,
+            ?location: OpenAI::Beta::PersistedAgentToolParam::WebSearch::Location?,
+            ?mode: OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch::mode?,
+            ?type: :web_search
+          ) -> void
+
+          def to_hash: -> {
+            ?type: :web_search,
+            ?allowed_domains: ::Array[String]?,
+            ?context_size: OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch::context_size?,
+            ?location: OpenAI::Beta::PersistedAgentToolParam::WebSearch::Location?,
+            ?mode: OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch::mode?
+          }
+
+          type context_size = :low | :medium | :high
+
+          module ContextSize
+            extend OpenAI::Internal::Type::Enum
+
+            LOW: :low
+            MEDIUM: :medium
+            HIGH: :high
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch::context_size]
+          end
+
+          type location =
+            {
+              ?city: String?,
+              ?country: String?,
+              ?region: String?,
+              ?timezone: String?
+            }
+
+          class Location < OpenAI::Internal::Type::BaseModel
+            attr_accessor city: String?
+
+            attr_accessor country: String?
+
+            attr_accessor region: String?
+
+            attr_accessor timezone: String?
+
+            def initialize: (
+              ?city: String?,
+              ?country: String?,
+              ?region: String?,
+              ?timezone: String?
+            ) -> void
+
+            def to_hash: -> {
+              ?city: String?,
+              ?country: String?,
+              ?region: String?,
+              ?timezone: String?
+            }
+          end
+
+          type mode = :disabled | :cached | :live
+
+          module Mode
+            extend OpenAI::Internal::Type::Enum
+
+            # Disables web search.
+            DISABLED: :disabled
+
+            # Uses cached search results.
+            CACHED: :cached
+
+            # Searches the live web.
+            LIVE: :live
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch::mode]
+          end
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::persisted_agent_tool_param]
+      end
+    end
+  end
+end

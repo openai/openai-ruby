@@ -1,0 +1,60 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_reasoning =
+        {
+          effort: OpenAI::Models::Beta::AgentReasoning::effort?,
+          summary: OpenAI::Models::Beta::AgentReasoning::summary?
+        }
+
+      class AgentReasoning < OpenAI::Internal::Type::BaseModel
+        attr_accessor effort: OpenAI::Models::Beta::AgentReasoning::effort?
+
+        attr_accessor summary: OpenAI::Models::Beta::AgentReasoning::summary?
+
+        def initialize: (
+          effort: OpenAI::Models::Beta::AgentReasoning::effort?,
+          summary: OpenAI::Models::Beta::AgentReasoning::summary?
+        ) -> void
+
+        def to_hash: -> {
+          effort: OpenAI::Models::Beta::AgentReasoning::effort?,
+          summary: OpenAI::Models::Beta::AgentReasoning::summary?
+        }
+
+        type effort = :none | :minimal | :low | :medium | :high | :xhigh | :max
+
+        module Effort
+          extend OpenAI::Internal::Type::Enum
+
+          NONE: :none
+          MINIMAL: :minimal
+          LOW: :low
+          MEDIUM: :medium
+          HIGH: :high
+          XHIGH: :xhigh
+          MAX: :max
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AgentReasoning::effort]
+        end
+
+        type summary = :concise | :detailed | :auto
+
+        module Summary
+          extend OpenAI::Internal::Type::Enum
+
+          # Returns a concise reasoning summary when supported.
+          CONCISE: :concise
+
+          # Returns a detailed reasoning summary when supported.
+          DETAILED: :detailed
+
+          # Automatically selects the most detailed summary supported by the model.
+          AUTO: :auto
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AgentReasoning::summary]
+        end
+      end
+    end
+  end
+end

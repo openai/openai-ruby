@@ -1,0 +1,27 @@
+module OpenAI
+  module Resources
+    class Beta
+      class Agents
+        class Sessions
+          class Subagents
+            class Turns
+              class Items
+                def list: (
+                  String turn_id,
+                  session_id: String,
+                  subagent_id: String,
+                  ?after: String,
+                  ?limit: Integer,
+                  ?order: OpenAI::Models::Beta::Agents::Sessions::Subagents::Turns::ItemListParams::order,
+                  ?request_options: OpenAI::request_opts
+                ) -> OpenAI::Internal::CursorPage[OpenAI::Models::Beta::agent_session_item]
+
+                def initialize: (client: OpenAI::Client) -> void
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,52 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session_message_content =
+        OpenAI::Beta::AgentSessionMessageContent::InputText
+        | OpenAI::Beta::AgentSessionMessageContent::InputImage
+        | OpenAI::Beta::AgentSessionMessageContent::OutputText
+
+      module AgentSessionMessageContent
+        extend OpenAI::Internal::Type::Union
+
+        type input_text = { text: String, ?type: :input_text }
+
+        class InputText < OpenAI::Internal::Type::BaseModel
+          attr_accessor text: String
+
+          attr_accessor type: :input_text
+
+          def initialize: (text: String, ?type: :input_text) -> void
+
+          def to_hash: -> { text: String, ?type: :input_text }
+        end
+
+        type input_image = { image_url: String, ?type: :input_image }
+
+        class InputImage < OpenAI::Internal::Type::BaseModel
+          attr_accessor image_url: String
+
+          attr_accessor type: :input_image
+
+          def initialize: (image_url: String, ?type: :input_image) -> void
+
+          def to_hash: -> { image_url: String, ?type: :input_image }
+        end
+
+        type output_text = { text: String, ?type: :output_text }
+
+        class OutputText < OpenAI::Internal::Type::BaseModel
+          attr_accessor text: String
+
+          attr_accessor type: :output_text
+
+          def initialize: (text: String, ?type: :output_text) -> void
+
+          def to_hash: -> { text: String, ?type: :output_text }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::agent_session_message_content]
+      end
+    end
+  end
+end

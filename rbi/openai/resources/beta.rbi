@@ -5,6 +5,9 @@ module OpenAI
 
     class Beta
 
+      sig { returns(OpenAI::Resources::Beta::Agents) }
+      attr_reader :agents
+
       sig { returns(OpenAI::Resources::Beta::Responses) }
       attr_reader :responses
 
