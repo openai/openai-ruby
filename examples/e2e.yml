@@ -64,6 +64,9 @@ examples:
   examples/realtime/mcp_approval.rb:
     status: excluded
     reason: Requires a caller-selected remote MCP server and live Realtime MCP access.
+  examples/realtime/sip_webhook.rb:
+    status: excluded
+    reason: Requires a trusted signed-webhook gateway, dedicated tenant project, and SIP provider; deterministic lifecycle tests use fake data.
   examples/realtime/sideband.rb:
     status: excluded
     reason: Requires an existing, application-authorized WebRTC or SIP call ID and live Realtime access.
