@@ -55,6 +55,9 @@ examples:
   examples/mtls_custom_http_client.rb:
     status: excluded
     reason: Requires an enrolled mTLS certificate, private key, endpoint, and model.
+  examples/realtime/browser/server.rb:
+    status: excluded
+    reason: Requires an authenticated local browser, microphone permission and live Realtime access; see examples/realtime/browser/README.md for launch and lifecycle checks.
   examples/realtime/function_calling.rb:
     status: covered
     expected_output: "[realtime] function calling smoke test passed"

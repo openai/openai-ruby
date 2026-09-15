@@ -220,3 +220,9 @@ require a separately reviewed concurrency and device-lifecycle boundary.
 
 See the repository's [Realtime WebSocket guide](../../realtime.md) for the
 public connection API, custom transports, proxy behavior, and TLS setup.
+
+## Native browser reference workflows
+
+See [browser/README.md](browser/README.md) for the runnable short-lived-secret
+and backend-owned SDP workflows, local application authentication, native
+browser Start/Stop, optional trusted sideband, and failed-handoff cleanup.
