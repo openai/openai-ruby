@@ -10,7 +10,7 @@ document.querySelector('#mode').textContent = mode === 'direct'
   : '2. Backend-owned SDP forwarding and call lifetime';
 const peer = new BrowserPeer({mode, audio: document.querySelector('audio'), status(message) {
   status.textContent = message;
-  start.disabled = Boolean(peer.current);
+  start.disabled = Boolean(peer.current) || peer.stopping;
   stop.disabled = !peer.current;
 }});
 start.addEventListener('click', () => {

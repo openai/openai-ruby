@@ -32,6 +32,10 @@ OpenAI key, into the password field. Start, allow the microphone, wait for
 `Connected`, and speak. Stop releases microphone tracks, remote tracks, the data
 channel, peer and audio element. Stop works even during a permission prompt;
 if permission later resolves, those new tracks are immediately stopped.
+Start stays disabled through backend cleanup acknowledgment and a subsequent
+five-second creation cooldown. If cleanup fails, Start remains disabled; reload
+only after confirming that the backend released the call. This example does not
+poll for readiness or automatically retry startup.
 
 The app uses the standard OpenAI endpoint and requires project access to
 `gpt-realtime-2.1` (or `OPENAI_REALTIME_MODEL`). Real requests incur API usage.
@@ -138,6 +142,9 @@ serialized creation and sideband setup (up to 30 seconds), hangup (five seconds)
 and delivery. Failed startup can wait this additional cleanup interval before
 settling. Expired requests remain best effort; server leases and retries still
 cover unsuccessful delivery.
+The cleanup result does not include the subsequent five-second restart cooldown;
+wait until `peer.stopping` is false before starting another run. Failed cleanup
+keeps that flag set until reload and displays the recovery guidance above.
 Server diagnostics include only fixed lifecycle metadata, including
 `[browser] call released` and the existing sideband success marker. The harness
 must require successful cleanup and stop the server after its bounded run.

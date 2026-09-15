@@ -41,8 +41,8 @@ module OpenAI::Examples::Realtime
       raise ArgumentError, "Use an application token of at least 32 characters" if token.bytesize < 32
       @client, @token, @model, @sideband = client, token, model, sideband
       @manual_turns = manual_turns
-      @origin = "http://127.0.0.1:#{port}"
-      @authority = "127.0.0.1:#{port}"
+      @origin = URI::HTTP.build(host: "127.0.0.1", port: port).to_s
+      @authority = @origin.delete_prefix("http://")
       @clock, @output = clock, output
       @mutex = Mutex.new
       @call = nil
@@ -229,6 +229,7 @@ module OpenAI::Examples::Realtime
       @output.puts("[browser] call released")
     rescue OpenAI::Errors::NotFoundError
       @call = nil
+      @output.puts("[browser] call released")
     rescue StandardError
       @call[:deadline] = @clock.call + 5
       @output.puts("[browser] hangup failed; retry pending")

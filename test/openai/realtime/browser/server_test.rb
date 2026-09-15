@@ -102,6 +102,16 @@ class OpenAI::Test::BrowserAppTest < Minitest::Test
     assert_equal(405, request("/server.rb", method: "GET").status)
   end
 
+  def test_default_http_port_uses_browser_normalized_authority
+    @app = OpenAI::Examples::Realtime::BrowserApp.new(client: @client, token: TOKEN, port: 80)
+    headers = {"host" => "127.0.0.1", "origin" => "http://127.0.0.1"}
+    assert_equal(200, request("/backend", headers: headers, method: "GET").status)
+    assert_equal(200, request("/api/stop", headers: headers).status)
+    assert_equal(403, request("/api/stop", headers: headers.merge("origin" => "http://127.0.0.1:9292")).status)
+    assert_equal(403, request("/backend", headers: headers.merge("host" => "127.0.0.1:9292"), method: "GET").status)
+    assert_mock(@http)
+  end
+
   def test_secret_uses_short_ttl_trusted_safety_identifier_and_no_create_retries
     @http
       .expect(
@@ -167,16 +177,17 @@ class OpenAI::Test::BrowserAppTest < Minitest::Test
     assert_mock(@http)
   end
 
-  def test_hangup_failure_keeps_ownership_and_retries_on_timer
+  def test_hangup_failure_keeps_ownership_until_retry_confirms_call_gone
     create
     expect_hangup(status: 500)
     assert_equal(503, request("/api/stop").status)
     assert_equal(409, request("/api/ack").status)
     assert_equal(409, request("/api/calls").status)
     @now += 6
-    expect_hangup
+    expect_hangup(status: 404)
     @app.reap
     assert_equal(404, request("/api/ack").status)
+    assert_includes(@output.string, "[browser] call released")
     assert_mock(@http)
   end
 

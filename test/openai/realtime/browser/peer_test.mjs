@@ -100,7 +100,8 @@ test('direct flow sends only ephemeral credential to OpenAI and closes media on 
   assert.equal(f.track.stopped, true);
   assert.equal(f.env.pc.connectionState, 'closed');
   assert.equal(f.audio.srcObject, null);
-  assert.equal(f.timers.size, 0);
+  assert.equal(f.peer.stopping, true);
+  assert.equal([...f.timers.values()].some(t => t.delay === 5000), true);
 });
 
 test('backend acknowledges only connected peer and Stop waits for server release', async () => {
@@ -111,7 +112,8 @@ test('backend acknowledges only connected peer and Stop waits for server release
   assert.equal(f.requests.at(-1).path, '/api/stop');
   assert.equal(f.requests.at(-1).signal.aborted, false);
   assert.equal(f.track.stopped, true);
-  assert.equal(f.timers.size, 0);
+  assert.equal(f.peer.stopping, true);
+  assert.equal([...f.timers.values()].some(t => t.delay === 5000), true);
 });
 
 test('Stop during backend allocation uses independent cleanup even if answer is lost', async () => {
@@ -156,7 +158,7 @@ test('startup timeout covers stalled negotiation and failed hangup is reported',
   const start = f.peer.start('fake token'); await tick();
   [...f.timers.values()].find(t => t.delay === 60000).fn();
   await start; await tick();
-  assert.equal(f.status.at(-1), 'Stopped; server cleanup pending');
+  assert.equal(f.status.at(-1), 'Stopped; server cleanup pending. Reload only after backend release is confirmed.');
   assert.equal(f.track.stopped, true);
 });
 
@@ -224,7 +226,7 @@ test('failed startup waits for backend cleanup on errors and timeout', async () 
       await start;
       assert.equal(finished, true);
       assert.equal(f.status.includes('Connected'), false);
-      if (!cleanupOK) assert.equal(f.status.at(-1), 'Stopped; server cleanup pending');
+      if (!cleanupOK) assert.equal(f.status.at(-1), 'Stopped; server cleanup pending. Reload only after backend release is confirmed.');
     }
   }
 });
@@ -262,7 +264,7 @@ test('unreachable backend cleanup still has a deadline', async t => {
   const stopped = f.peer.stop();
   t.mock.timers.tick(40000); await tick();
   assert.equal(await stopped, false);
-  assert.equal(f.status.at(-1), 'Stopped; server cleanup pending');
+  assert.equal(f.status.at(-1), 'Stopped; server cleanup pending. Reload only after backend release is confirmed.');
 });
 
 test('permission time leaves a separate budget for backend setup and peer establishment', async t => {
@@ -284,4 +286,38 @@ test('permission time leaves a separate budget for backend setup and peer establ
   assert.equal(f.status.at(-1), 'Connected');
   assert.equal(f.track.stopped, false);
   assert.equal(await f.peer.stop(), true);
+});
+
+test('restart waits for cleanup acknowledgment and the full cooldown', async t => {
+  const f = timedFixture(t); const cleanup = deferred(); const original = f.env.fetch;
+  f.env.fetch = (path, options) => path === '/api/stop' ? cleanup.promise : original(path, options);
+  await f.peer.start('fake token');
+  const stopped = f.peer.stop();
+  const requests = f.requests.length;
+  t.mock.timers.tick(5000); await tick();
+  await f.peer.start('fake token');
+  assert.equal(f.peer.stopping, true);
+  assert.equal(f.requests.length, requests);
+  cleanup.resolve({ok: true}); await stopped;
+  t.mock.timers.tick(4999); await tick();
+  await f.peer.start('fake token');
+  assert.equal(f.peer.stopping, true);
+  assert.equal(f.requests.length, requests);
+  t.mock.timers.tick(1); await tick();
+  assert.equal(f.peer.stopping, false);
+  await f.peer.start('fake token');
+  assert.equal(f.status.at(-1), 'Connected');
+  await f.peer.stop();
+});
+
+test('failed cleanup keeps restart disabled and explains recovery', async t => {
+  const f = timedFixture(t);
+  await f.peer.start('fake token');
+  f.env.fetch = async () => ({ok: false});
+  assert.equal(await f.peer.stop(), false);
+  t.mock.timers.tick(100000); await tick();
+  await f.peer.start('fake token');
+  assert.equal(f.peer.current, null);
+  assert.equal(f.peer.stopping, true);
+  assert.equal(f.status.at(-1), 'Stopped; server cleanup pending. Reload only after backend release is confirmed.');
 });

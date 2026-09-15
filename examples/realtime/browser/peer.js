@@ -6,6 +6,7 @@ export class BrowserPeer {
     this.status = status;
     this.env = environment;
     this.current = null;
+    this.stopping = false;
   }
 
   async request(run, path, body = '', type = 'text/plain', cleanup = false) {
@@ -37,7 +38,7 @@ export class BrowserPeer {
   }
 
   async start(token) {
-    if (this.current) return;
+    if (this.current || this.stopping) return;
     const run = {token, id: this.env.crypto.randomUUID(), abort: new this.env.AbortController()};
     this.current = run;
     this.status('Starting');
@@ -146,6 +147,7 @@ export class BrowserPeer {
   stop(message = 'Stopped') {
     const run = this.current;
     if (!run) return;
+    this.stopping = true;
     this.current = null; // Invalidate callbacks before closing owned resources.
     run.abort.abort();
     this.env.clearTimeout(run.deadline);
@@ -158,14 +160,20 @@ export class BrowserPeer {
     this.audio.pause();
     this.audio.srcObject = null;
     this.status(message);
+    const allowRestart = () => this.env.setTimeout(() => {
+      this.stopping = false;
+      this.status(message);
+    }, 5000);
     if (run.submitted) {
       // Independent of the aborted startup request. If delivery fails, the
       // application lease reclaims the known call; pagehide is only best effort.
       run.cleanup = this.request(run, '/api/stop', '', 'text/plain', true).then(() => true).catch(() => {
-        if (!this.current) this.status('Stopped; server cleanup pending');
+        this.status('Stopped; server cleanup pending. Reload only after backend release is confirmed.');
         return false;
       });
+      run.cleanup.then(released => { if (released) allowRestart(); });
       return run.cleanup;
     }
+    allowRestart();
   }
 }
