@@ -108,6 +108,7 @@ module OpenAI
 
         private def answer(call_id)
           owned = false
+          completed = false
           # A lost accept response does not prove ownership. Never retry it or hang
           # up a potentially competing Realtime/Live handler's call.
           record(call_id, :accept_unknown)
@@ -139,9 +140,11 @@ module OpenAI
             end
           end
 
+          completed = true
           :sideband_closed
         ensure
-          cleanup(call_id, $!) if owned
+          # A caller may already be rescuing an unrelated exception in $!.
+          cleanup(call_id, completed ? nil : $!) if owned
         end
 
         private def cleanup(call_id, primary_error)

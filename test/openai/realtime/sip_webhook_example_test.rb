@@ -221,6 +221,42 @@ class OpenAI::Test::SIPWebhookExampleTest < Minitest::Test
     assert_mock(http)
   end
 
+  def test_enclosing_rescue_does_not_hide_hangup_failure_after_normal_sideband_exit
+    http = http_mock
+    expect_http(http, :accept)
+    expect_http(http, :hangup, status: 500)
+    worker = worker(http: http)
+
+    begin
+      raise "unrelated caller failure"
+    rescue RuntimeError
+      assert_raises(OpenAI::Errors::InternalServerError) { worker.handle(envelope) }
+    end
+
+    assert_equal(:cleanup_unconfirmed, worker.state(CALL_ID))
+    assert_mock(http)
+  end
+
+  def test_enclosing_rescue_preserves_this_invocations_cancellation_when_hangup_fails
+    http = http_mock
+    expect_http(http, :accept)
+    expect_http(http, :hangup, status: 500)
+    primary = Async::Stop.new
+    transport = Minitest::Mock.new
+    transport.expect(:open, nil) { |**_options, &_block| raise primary }
+    worker = worker(http: http, transport: transport)
+
+    begin
+      raise "unrelated caller failure"
+    rescue RuntimeError
+      assert_same(primary, assert_raises(Async::Stop) { worker.handle(envelope) })
+    end
+
+    assert_equal(:cleanup_unconfirmed, worker.state(CALL_ID))
+    assert_mock(http)
+    assert_mock(transport)
+  end
+
   def test_deadline_or_cancellation_in_sideband_still_cleans_up
     [Timeout::Error.new("fake deadline"), Async::Stop.new].each do |primary|
       http = http_mock(:accept, :hangup)
