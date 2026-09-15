@@ -353,7 +353,7 @@ module OpenAI
         in Net::HTTPBadRequest | Net::HTTPUnauthorized | Net::HTTPForbidden
           raise(
             OpenAI::Errors::OAuthError.new(
-              status: response.code.to_i,
+              status: Integer(response.code, 10),
               body: body,
               headers: response.each_header.to_h
             )
@@ -367,7 +367,7 @@ module OpenAI
           raise(
             OpenAI::Errors::APIError.new(
               url: @token_exchange_url,
-              status: response.code.to_i,
+              status: Integer(response.code, 10),
               headers: response.each_header.to_h,
               body: body,
               message: "Token exchange failed with status #{response.code}"

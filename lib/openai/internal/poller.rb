@@ -85,7 +85,7 @@ module OpenAI
         bounded = {**options, extra_headers: headers}
         unless remaining.nil?
           request_timeout = options[:timeout]
-          request_timeout = request_timeout.to_f.clamp(0..) unless request_timeout.nil?
+          request_timeout = Float(request_timeout).clamp(0..) unless request_timeout.nil?
           bounded[:timeout] = [request_timeout, remaining].compact.min
 
           # The transport applies `timeout` to every retry attempt independently.
@@ -147,7 +147,7 @@ module OpenAI
           return invalid_duration!(name: name, allow_zero: allow_zero)
         end
 
-        duration = value.to_f
+        duration = Float(value)
         valid = duration.finite? && (allow_zero ? duration >= 0 : duration.positive?)
         return duration if valid
 

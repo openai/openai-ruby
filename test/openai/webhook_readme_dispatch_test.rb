@@ -30,7 +30,7 @@ class OpenAI::Test::WebhookReadmeDispatchTest < Minitest::Test
     payload = JSON.generate(
       id: "evt_synthetic_readme_dispatch",
       object: "event",
-      created_at: timestamp.to_i,
+      created_at: Integer(timestamp, 10),
       type: type,
       data: {id: "resp_synthetic_readme_dispatch"}
     )

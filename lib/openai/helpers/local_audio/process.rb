@@ -33,7 +33,7 @@ module OpenAI
           raise ArgumentError, "#{name} must be a positive finite number of seconds"
         end
 
-        result = value.to_f
+        result = Float(value)
         raise ArgumentError, "#{name} is not representable" unless result.finite?
         result
       end

@@ -64,7 +64,7 @@ module RBSFormat
     formatted = formatter.output.join.gsub(
       /# (?:class|module) #{Regexp.escape(marker)}-(\d+)\n *[^\n]+$/
     ) do
-      restorations.fetch(Regexp.last_match(1).to_i)
+      restorations.fetch(Integer(Regexp.last_match(1), 10))
     end
 
     ensure_comments_preserved!(source, formatted)

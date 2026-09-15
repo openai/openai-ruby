@@ -891,7 +891,7 @@ module OpenAI
               encoding = row.encoding if !row.empty? && (encoding.nil? || encoding == Encoding::US_ASCII)
               offset = buffer.bytesize
               buffer << (row.encoding == Encoding::BINARY ? row : row.b)
-              while (match = re.match(buffer, cr_seen&.to_i || offset))
+              while (match = re.match(buffer, cr_seen || offset))
                 case [match.captures.first, cr_seen]
                 in ["\r", nil]
                   cr_seen = match.end(1)

@@ -62,6 +62,19 @@ class WorkloadIdentityTest < Minitest::Test
     assert_equal("explicit_account", config.service_account_id)
   end
 
+  def test_refresh_buffer_preserves_decimal_strings_and_numeric_inputs
+    {"060" => 60, "08" => 8, 60 => 60, 60.75 => 60}.each do |input, expected|
+      config = OpenAI::Auth::WorkloadIdentity.new(
+        identity_provider_id: "test-provider",
+        service_account_id: "test-account",
+        provider: OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new,
+        refresh_buffer_seconds: input
+      )
+
+      assert_equal(expected, config.refresh_buffer_seconds)
+    end
+  end
+
   def test_workload_identity_rejects_missing_identity_provider_id
     ENV["SERVICE_ACCOUNT_ID"] = "environment-account"
 

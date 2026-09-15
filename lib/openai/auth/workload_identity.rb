@@ -30,7 +30,11 @@ module OpenAI
         @identity_provider_id = identity_provider_id.to_s
         @service_account_id = service_account_id.to_s
         @provider = provider
-        @refresh_buffer_seconds = refresh_buffer_seconds.to_i
+        @refresh_buffer_seconds = if refresh_buffer_seconds.is_a?(String)
+          Integer(refresh_buffer_seconds, 10)
+        else
+          Integer(refresh_buffer_seconds)
+        end
       end
     end
   end
