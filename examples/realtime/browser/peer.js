@@ -13,7 +13,8 @@ export class BrowserPeer {
       method: 'POST', body, cache: 'no-store', redirect: 'error',
       headers: {Authorization: `Bearer ${run.token}`, 'Content-Type': type,
         'X-Operation-Id': run.id},
-      signal: cleanup ? this.env.AbortSignal.timeout(10000) : run.abort.signal,
+      // Cleanup may wait for serialized creation (15s), sideband (15s), then hangup (5s).
+      signal: cleanup ? this.env.AbortSignal.timeout(40000) : run.abort.signal,
       keepalive: cleanup,
     });
     if (!response.ok) throw new Error('Application request failed.');
@@ -92,6 +93,10 @@ export class BrowserPeer {
       this.check(run);
       await this.wait(run, run.pc.setLocalDescription(offer));
       this.check(run);
+      // Give signaling its own budget after permission/local offer preparation:
+      // creation (15s), optional sideband (15s), handoff (20s), and delivery time.
+      this.env.clearTimeout(run.deadline);
+      run.deadline = this.env.setTimeout(() => this.stop('Startup timed out'), 60000);
       let answer;
       if (this.mode === 'direct') {
         const secretResponse = await this.request(run, '/api/secret');

@@ -37,7 +37,12 @@ The app uses the standard OpenAI endpoint and requires project access to
 `gpt-realtime-2.1` (or `OPENAI_REALTIME_MODEL`). Real requests incur API usage.
 `PORT` defaults to 9292. Use the exact numeric loopback URL, not `localhost`.
 Browsers allow microphone capture on loopback; remote deployment requires HTTPS.
-Autoplay may require using the audio controls. Startup has a 30-second deadline.
+Autoplay may require using the audio controls. Permission and local offer
+preparation have a 30-second deadline. Signaling and peer establishment then have
+a separate 60-second deadline: up to 15 seconds for creation, 15 for optional
+sideband setup, 20 for the server handoff lease, plus delivery time. The server
+lease still expires 20 seconds after answer preparation if no acknowledgment
+arrives; the longer browser deadline does not extend it.
 
 For the backend's optional existing Ruby sideband example, install
 `async-websocket` and launch with `BROWSER_SIDEBAND=1`. Before handing back the
@@ -128,6 +133,11 @@ the audio controls. `peer.current.pc` and `.dc` are the native browser
 objects. Attach event observers without replacing its lifecycle handlers.
 `await peer.stop()` returns `true` only after the backend acknowledges cleanup,
 `false` on failed cleanup; a missing run/direct peer has no server acknowledgement.
+Local media stops immediately. The cleanup request can wait up to 40 seconds for
+serialized creation and sideband setup (up to 30 seconds), hangup (five seconds),
+and delivery. Failed startup can wait this additional cleanup interval before
+settling. Expired requests remain best effort; server leases and retries still
+cover unsuccessful delivery.
 Server diagnostics include only fixed lifecycle metadata, including
 `[browser] call released` and the existing sideband success marker. The harness
 must require successful cleanup and stop the server after its bounded run.

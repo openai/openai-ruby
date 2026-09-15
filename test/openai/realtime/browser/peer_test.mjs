@@ -4,6 +4,25 @@ import {BrowserPeer} from '../../../../examples/realtime/browser/peer.js';
 
 const deferred = () => { let resolve; const promise = new Promise(r => { resolve = r; }); return {promise, resolve}; };
 const tick = () => new Promise(resolve => setImmediate(resolve));
+const after = (delay, value, signal) => new Promise((resolve, reject) => {
+  setTimeout(() => resolve(value), delay);
+  signal?.addEventListener('abort', () => reject(new DOMException('Stopped', 'AbortError')), {once: true});
+});
+
+function timedFixture(t) {
+  t.mock.timers.enable({apis: ['setTimeout']});
+  const f = fixture();
+  f.env.setTimeout = setTimeout;
+  f.env.clearTimeout = clearTimeout;
+  // Node's native AbortSignal clock is separate from the mock timer clock.
+  f.env.AbortSignal = {timeout(delay) {
+    const controller = new AbortController();
+    setTimeout(() => controller.abort(), delay);
+    return controller.signal;
+  }};
+  return f;
+}
+
 function fixture(mode = 'backend') {
   const track = {stopped: false, stop() { this.stopped = true; }, addEventListener() {}};
   const stream = {getTracks: () => [track]};
@@ -135,7 +154,7 @@ test('startup timeout covers stalled negotiation and failed hangup is reported',
   const original = f.env.fetch;
   f.env.fetch = (path, options) => path === '/api/stop' ? Promise.resolve({ok: false}) : original(path, options);
   const start = f.peer.start('fake token'); await tick();
-  [...f.timers.values()].find(t => t.delay === 30000).fn();
+  [...f.timers.values()].find(t => t.delay === 60000).fn();
   await start; await tick();
   assert.equal(f.status.at(-1), 'Stopped; server cleanup pending');
   assert.equal(f.track.stopped, true);
@@ -172,7 +191,7 @@ test('Stop and startup timeout settle pending native negotiation operations', as
       f.env.RTCPeerConnection.prototype[method] = () => operation.promise;
       const start = f.peer.start('fake token'); await tick();
       if (cancel === 'stop') await f.peer.stop();
-      else [...f.timers.values()].find(t => t.delay === 30000).fn();
+      else [...f.timers.values()].find(t => t.delay === (method === 'setRemoteDescription' ? 60000 : 30000)).fn();
       await start;
       assert.equal(f.peer.current, null, `${method}: ${cancel}`);
       assert.equal(f.track.stopped, true);
@@ -196,7 +215,7 @@ test('failed startup waits for backend cleanup on errors and timeout', async () 
       let finished = false;
       const start = f.peer.start('fake token').then(() => { finished = true; });
       await tick();
-      if (failure === 'timeout') [...f.timers.values()].find(t => t.delay === 30000).fn();
+      if (failure === 'timeout') [...f.timers.values()].find(t => t.delay === 60000).fn();
       await tick();
       assert.equal(f.peer.current, null);
       assert.equal(f.track.stopped, true);
@@ -219,4 +238,50 @@ test('autoplay rejection preserves the connected lifecycle status', async () => 
   assert.equal(f.status.at(-1), 'Connected');
   assert.equal(f.peer.current.pc.connectionState, 'connected');
   await f.peer.stop();
+});
+
+test('Stop can await serialized backend setup and hangup', async t => {
+  const f = timedFixture(t);
+  f.env.fetch = (path, options) => after(path === '/api/stop' ? 35000 : 30000,
+    {ok: true, json: async () => ({sdp: 'fake answer'})}, options.signal);
+  const start = f.peer.start('fake token'); await tick();
+  let result;
+  const stopped = f.peer.stop().then(value => { result = value; });
+  assert.equal(f.track.stopped, true);
+  t.mock.timers.tick(10000); await tick();
+  assert.equal(result, undefined, 'cleanup must remain pending during serialized setup');
+  t.mock.timers.tick(25000); await tick();
+  await stopped; await start;
+  assert.equal(result, true);
+});
+
+test('unreachable backend cleanup still has a deadline', async t => {
+  const f = timedFixture(t);
+  await f.peer.start('fake token');
+  f.env.fetch = (_path, options) => after(100000, {ok: true}, options.signal);
+  const stopped = f.peer.stop();
+  t.mock.timers.tick(40000); await tick();
+  assert.equal(await stopped, false);
+  assert.equal(f.status.at(-1), 'Stopped; server cleanup pending');
+});
+
+test('permission time leaves a separate budget for backend setup and peer establishment', async t => {
+  const f = timedFixture(t); const original = f.env.fetch;
+  f.env.navigator.mediaDevices.getUserMedia = () => after(20000, f.stream);
+  f.env.fetch = (path, options) => path === '/api/calls'
+    ? after(28000, {ok: true, json: async () => ({sdp: 'fake answer'})}, options.signal)
+    : original(path, options);
+  const apply = f.env.RTCPeerConnection.prototype.setRemoteDescription;
+  f.env.RTCPeerConnection.prototype.setRemoteDescription = async function(answer) {
+    await after(10000);
+    return apply.call(this, answer);
+  };
+  const start = f.peer.start('fake token');
+  t.mock.timers.tick(20000); await tick();
+  t.mock.timers.tick(28000); await tick();
+  t.mock.timers.tick(10000); await tick();
+  await start;
+  assert.equal(f.status.at(-1), 'Connected');
+  assert.equal(f.track.stopped, false);
+  assert.equal(await f.peer.stop(), true);
 });
