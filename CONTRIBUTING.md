@@ -306,3 +306,58 @@ $ PORT=8808 ./scripts/docs preview
 
 The existing `bundle exec rake build:docs` and
 `bundle exec rake docs:preview` tasks delegate to the same docs bundle.
+
+### Protected Realtime live verification
+
+`Realtime Live Smoke` is a separate manual workflow using the existing protected
+`ci` environment, SDK-team approval, default-branch restriction, read-only job
+permissions and pinned actions. It is not a required PR check. Dispatching and
+approving this workflow authorizes the bounded paid scenario described below;
+do not dispatch it merely to validate a PR. No environment protection is created
+or weakened by this change.
+
+For an explicitly authorized local audio run, put the key in the environment and
+run:
+
+```sh
+OPENAI_REALTIME_LIVE_SMOKE=1 bundle exec ruby scripts/realtime-smoke/run.rb audio
+```
+
+The fixed scenario makes at most one short `gpt-4o-mini-tts` request for synthetic
+speech, one committed `gpt-4o-mini-transcribe` session, and one `gpt-realtime-2.1`
+voice response capped at 128 output tokens. The fixture is at most six seconds
+of 24 kHz mono PCM16, reused in memory for both sessions. No microphone or
+speaker is opened; no input files, prompts or model overrides are accepted.
+All HTTP retries and conversational reconnect are disabled. HTTP operations
+have ten-second timeouts, the scenario has a sixty-second deadline, and its
+supervising process terminates it after seventy-five seconds. The SDK's
+block-scoped sockets close/abort on exit. There is no automatic rerun; each
+manual run consumes another allowance. These are workload bounds, not a dollar
+cap: use a dedicated project with an owner-approved spending limit as well.
+
+Output is one JSON metadata record. SDK/transport/example output and exception
+messages are discarded at the subprocess boundary, including on failure.
+Transcripts, audio, credentials, SDP and identifiers are never reported or
+uploaded. The workflow uploads no artifacts. Only exit 0 with `passed` means
+live network evidence; exit 1 means failure, and exit 2 means skipped or
+unavailable. Missing opt-in/credentials never counts as passing. Model access
+and service errors fail the run without printing response bodies.
+
+The separate `browser` selection currently returns `unavailable` without making
+requests. Its explicit dependency is **Ruby Realtime: browser WebRTC reference
+workflows**. Integration must use that application's native `RTCPeerConnection`
+workflow to prove generated call creation, real negotiation, sideband
+acknowledgement and explicit hangup, with known-call cleanup on every failure.
+Until integrated, audio success is not WebRTC evidence. The distinct Live API,
+SIP and translation are outside this harness. `scripts/realtime-smoke/manifest.yml`
+records this opt-in coverage separately from the ordinary example E2E inventory;
+existing text/function E2E and generic Responses smoke do not establish it.
+
+Offline validation (no credentials or network):
+
+```sh
+bundle exec ruby test/scripts/realtime_smoke_test.rb
+```
+
+Offline lifecycle tests verify the harness and shipped event handling; they do
+not establish model availability or successful live transcription/voice.

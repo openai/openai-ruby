@@ -1,0 +1,46 @@
+name: Realtime Live Smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      scenario:
+        description: 'Paid opt-in: one bounded audio smoke (one TTS, transcription, voice); browser awaits its reference dependency'
+        required: true
+        default: audio
+        type: choice
+        options:
+          - audio
+          - browser
+
+permissions: {}
+
+concurrency:
+  group: realtime-live-smoke
+  cancel-in-progress: false
+
+jobs:
+  realtime-live-smoke:
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      github.repository == 'openai/openai-ruby'
+    runs-on: ubuntu-latest
+    environment: ci
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@bec3f19a76460dbe12f60def7d1a77585f07516c # v1
+        with:
+          ruby-version: "4.0"
+          bundler-cache: true
+      - name: Run bounded Realtime verification
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_REALTIME_LIVE_SMOKE: "1"
+          SMOKE_SCENARIO: ${{ inputs.scenario }}
+        run: bundle exec ruby scripts/realtime-smoke/run.rb "$SMOKE_SCENARIO"
