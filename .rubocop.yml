@@ -188,7 +188,8 @@ Lint/UnreachablePatternBranch:
 Lint/UnmodifiedReduceAccumulator:
   Enabled: true
 Lint/UnusedPrivateMethod:
-  Enabled: true
+  # Requires project indexing and rubydex; adopt separately.
+  Enabled: false
 Lint/UselessConstantScoping:
   Enabled: true
 Lint/UselessDefaultValueArgument:

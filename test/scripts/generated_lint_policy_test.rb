@@ -7,7 +7,7 @@ require "open3"
 class GeneratedLintPolicyTest < Minitest::Test
   ROOT = File.expand_path("../..", __dir__)
 
-  def test_generated_policy_enables_cops_with_only_the_webhook_exception
+  def test_number_conversion_uses_only_the_generated_webhook_exception
     # Config loading can change the process working directory; isolate it from
     # the parallel test suite.
     source = <<~RUBY
@@ -15,15 +15,13 @@ class GeneratedLintPolicyTest < Minitest::Test
       require "rubocop"
       config = RuboCop::ConfigStore.new.for_dir(Dir.pwd)
       puts JSON.generate({
-        number_conversion: config.for_cop("Lint/NumberConversion"),
-        unused_private_method: config.for_cop("Lint/UnusedPrivateMethod")
+        number_conversion: config.for_cop("Lint/NumberConversion")
       })
     RUBY
     stdout, stderr, status = Open3.capture3("bundle", "exec", "ruby", "-e", source, chdir: ROOT)
     assert(status.success?, "#{stdout}\n#{stderr}")
     config = JSON.parse(stdout)
     assert_equal(true, config.fetch("number_conversion").fetch("Enabled"))
-    assert_equal(true, config.fetch("unused_private_method").fetch("Enabled"))
     assert_equal(
       [File.join(ROOT, "lib/openai/resources/webhooks.rb")],
       config.fetch("number_conversion").fetch("Exclude")
