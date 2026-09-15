@@ -84,7 +84,11 @@ origin and call path, records the call immediately, and then consumes the answer
 It never returns the call ID to the browser.
 
 The browser supplies a random **application operation ID** before allocation;
-Stop can therefore request cleanup even if the answer response is lost. The
+Stop can therefore request cleanup even if the answer response is lost. Stopped
+operation IDs are retained in memory until process exit, so a Stop that overtakes
+its create prevents that later allocation. This single-operator example is
+intended for bounded local runs; a deployed service needs durable operation
+records and a retention policy tied to a defined request-expiry contract. The
 app remains the owner after successful HTTP delivery. It requires `/api/ack`
 after native remote-description application, peer connection and channel open.
 A 20-second handoff lease expires without that acknowledgement. An acknowledged

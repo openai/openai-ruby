@@ -46,6 +46,7 @@ module OpenAI::Examples::Realtime
       @clock, @output = clock, output
       @mutex = Mutex.new
       @call = nil
+      @cancelled = {}
       @next_create = 0
       @closing = false
     end
@@ -120,7 +121,7 @@ module OpenAI::Examples::Realtime
       when "/api/calls"
         raise Rejected.new(415) unless request["content-type"] == "application/sdp"
         id = operation_id(request)
-        raise Rejected.new(409) if @call
+        raise Rejected.new(409) if @call || @cancelled.include?(id)
         rate_limit!
         create_call(id, request.body.to_s, response)
       when "/api/ack", "/api/renew"
@@ -133,6 +134,9 @@ module OpenAI::Examples::Realtime
       when "/api/stop"
         # Only application operation IDs are accepted, never browser call IDs.
         id = operation_id(request)
+        # A Stop can overtake its create on another HTTP connection. Retain the
+        # cancellation for this process lifetime; never allocate that ID later.
+        @cancelled[id] = true
         if @call && @call[:id] == id
           cleanup
           raise Rejected.new(503) if @call

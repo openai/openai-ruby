@@ -228,6 +228,14 @@ class OpenAI::Test::BrowserAppTest < Minitest::Test
     assert_mock(@http)
   end
 
+  def test_stop_before_create_permanently_cancels_that_operation
+    assert_equal(200, request("/api/stop").status)
+    @now += 120
+    assert_equal(409, request("/api/calls").status)
+    assert_equal(200, request("/api/stop").status)
+    assert_mock(@http)
+  end
+
   def test_shutdown_reclaims_and_stops_new_operations
     create
     expect_hangup

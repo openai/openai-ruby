@@ -49,7 +49,8 @@ test('Stop during permission prompt closes late microphone without allocating', 
   const f = fixture(); const mic = deferred();
   f.env.navigator.mediaDevices.getUserMedia = () => mic.promise;
   const start = f.peer.start('fake app token');
-  f.peer.stop(); mic.resolve(f.stream); await start;
+  f.peer.stop(); await start;
+  mic.resolve(f.stream); await tick();
   assert.equal(f.track.stopped, true);
   assert.equal(f.env.pc, undefined);
   assert.deepEqual(f.requests, []);
@@ -107,10 +108,8 @@ test('Stop during backend allocation uses independent cleanup even if answer is 
 
 test('failed remote SDP handoff reclaims backend call and microphone', async () => {
   const f = fixture();
-  const start = f.peer.start('fake token');
-  await Promise.resolve();
-  f.env.pc.setRemoteDescription = async () => { throw new Error('fake invalid SDP'); };
-  await start; await tick();
+  f.env.RTCPeerConnection.prototype.setRemoteDescription = async () => { throw new Error('fake invalid SDP'); };
+  await f.peer.start('fake token'); await tick();
   assert.equal(f.requests.at(-1).path, '/api/stop');
   assert.equal(f.status.at(-1), 'Start failed');
   assert.equal(f.track.stopped, true);
@@ -149,4 +148,38 @@ test('lease renewal failure stops rather than leaving live media without server 
   await [...f.timers.values()].find(t => t.delay === 10000).fn();
   assert.equal(f.peer.current, null);
   assert.equal(f.track.stopped, true);
+});
+
+
+test('startup deadline settles while permission is still unresolved', async () => {
+  const f = fixture(); const mic = deferred();
+  f.env.navigator.mediaDevices.getUserMedia = () => mic.promise;
+  const start = f.peer.start('fake token');
+  [...f.timers.values()].find(t => t.delay === 30000).fn();
+  await start;
+  assert.equal(f.status.at(-1), 'Startup timed out');
+  assert.equal(f.peer.current, null);
+  mic.resolve(f.stream); await tick();
+  assert.equal(f.track.stopped, true);
+  assert.deepEqual(f.requests, []);
+});
+
+
+test('Stop and startup timeout settle pending native negotiation operations', async () => {
+  for (const method of ['createOffer', 'setLocalDescription', 'setRemoteDescription']) {
+    for (const cancel of ['stop', 'timeout']) {
+      const f = fixture(); const operation = deferred();
+      f.env.RTCPeerConnection.prototype[method] = () => operation.promise;
+      const start = f.peer.start('fake token'); await tick();
+      if (cancel === 'stop') await f.peer.stop();
+      else [...f.timers.values()].find(t => t.delay === 30000).fn();
+      await start;
+      assert.equal(f.peer.current, null, `${method}: ${cancel}`);
+      assert.equal(f.track.stopped, true);
+      assert.equal(f.env.pc.connectionState, 'closed');
+      if (method === 'setRemoteDescription') assert.equal(f.requests.at(-1).path, '/api/stop');
+      operation.resolve({type: 'offer', sdp: 'fake late offer'}); await tick();
+      assert.equal(f.requests.some(r => r.path === '/api/ack'), false);
+    }
+  }
 });

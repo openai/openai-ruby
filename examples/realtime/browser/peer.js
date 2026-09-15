@@ -24,6 +24,17 @@ export class BrowserPeer {
     if (this.current !== run) throw new DOMException('Stopped', 'AbortError');
   }
 
+  async wait(run, operation) {
+    let cancel;
+    const cancelled = new Promise((_, reject) => {
+      cancel = () => reject(new DOMException('Stopped', 'AbortError'));
+      run.abort.signal.addEventListener('abort', cancel, {once: true});
+      if (run.abort.signal.aborted) cancel();
+    });
+    try { return await Promise.race([operation, cancelled]); }
+    finally { run.abort.signal.removeEventListener('abort', cancel); }
+  }
+
   async start(token) {
     if (this.current) return;
     const run = {token, id: this.env.crypto.randomUUID(), abort: new this.env.AbortController()};
@@ -31,12 +42,15 @@ export class BrowserPeer {
     this.status('Starting');
     run.deadline = this.env.setTimeout(() => this.stop('Startup timed out'), 30000);
     try {
-      const stream = await this.env.navigator.mediaDevices.getUserMedia({audio: true});
-      // Permission prompts cannot be aborted. Stop every late-arriving track.
-      if (this.current !== run) {
-        stream.getTracks().forEach(track => track.stop());
-        return;
-      }
+      // The permission prompt itself cannot be aborted. Settle start on Stop,
+      // and separately release any tracks that arrive after cancellation.
+      const media = this.env.navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
+        if (this.current !== run) stream.getTracks().forEach(track => track.stop());
+        else run.stream = stream;
+        return stream;
+      });
+      const stream = await this.wait(run, media);
+      this.check(run);
       run.stream = stream;
       run.pc = new this.env.RTCPeerConnection();
       stream.getTracks().forEach(track => {
@@ -73,9 +87,9 @@ export class BrowserPeer {
           if (message.type === 'error') this.stop('Realtime error');
         } catch { this.stop('Invalid Realtime event'); }
       };
-      const offer = await run.pc.createOffer();
+      const offer = await this.wait(run, run.pc.createOffer());
       this.check(run);
-      await run.pc.setLocalDescription(offer);
+      await this.wait(run, run.pc.setLocalDescription(offer));
       this.check(run);
       let answer;
       if (this.mode === 'direct') {
@@ -95,7 +109,7 @@ export class BrowserPeer {
         answer = (await response.json()).sdp;
       }
       this.check(run);
-      await run.pc.setRemoteDescription({type: 'answer', sdp: answer});
+      await this.wait(run, run.pc.setRemoteDescription({type: 'answer', sdp: answer}));
       this.check(run);
       await ready;
       this.check(run);
