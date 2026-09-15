@@ -27,15 +27,17 @@ module OpenAI
           end
 
           @client = client
-          @authority = "127.0.0.1:#{port}"
-          @origin = "http://#{@authority}"
+          @authorities = ["127.0.0.1:#{port}"]
+          # Browsers omit the default HTTP port.
+          @authorities << "127.0.0.1" if port == 80
+          @origins = @authorities.map { "http://#{_1}" }
           @model = model
           @backend_model = backend_model
           @creating = false
         end
 
         def call(request)
-          return response(403, "Forbidden") unless request.authority == @authority
+          return response(403, "Forbidden") unless @authorities.include?(request.authority)
 
           if request.method == "GET" && (asset = ASSETS[request.path])
             return response(200, File.read(File.join(__dir__, "conversation", asset.first)), asset.last)
@@ -43,7 +45,7 @@ module OpenAI
 
           return response(404, "Not found") unless request.path == "/session"
           return response(405, "Method not allowed") unless request.method == "POST"
-          return response(403, "Forbidden") unless request.headers["origin"] == [@origin]
+          return response(403, "Forbidden") unless @origins.any? { request.headers["origin"] == [_1] }
           return response(415, "Expected application/sdp") unless request.headers["content-type"] == "application/sdp"
           return response(409, "Session creation already in progress") if @creating
 

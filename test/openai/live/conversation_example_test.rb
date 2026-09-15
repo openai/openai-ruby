@@ -60,6 +60,46 @@ class OpenAI::Test::LiveConversationExampleTest < Minitest::Test
     assert_not_requested(:post, "https://api.openai.com/v1/live/sessions")
   end
 
+  def test_default_http_port_accepts_explicit_and_browser_normalized_headers
+    app = OpenAI::Examples::Live::Conversation.new(client: @client, port: 80)
+    stub = stub_request(:post, "https://api.openai.com/v1/live/sessions")
+      .to_return_json(body: {session: {id: "live_fake"}, transport: {type: "webrtc", sdp: "fake answer"}})
+
+    ["127.0.0.1", "127.0.0.1:80"].each do |authority|
+      assert_equal(200, Sync { app.call(request(authority: authority, method: "GET", path: "/")) }.status)
+      ["http://127.0.0.1", "http://127.0.0.1:80"].each do |origin|
+        assert_equal(201, Sync { app.call(request(authority: authority, origin: origin)) }.status)
+      end
+    end
+
+    assert_requested(stub, times: 4)
+  end
+
+  def test_default_port_equivalence_does_not_allow_other_authorities_or_origins
+    app = OpenAI::Examples::Live::Conversation.new(client: @client, port: 80)
+    ["localhost", "evil.example:80", "127.0.0.1:443", "127.0.0.1:4567"].each do |authority|
+      assert_equal(403, Sync { app.call(request(authority: authority, origin: "http://127.0.0.1")) }.status)
+    end
+
+    [
+      nil,
+      "null",
+      "https://127.0.0.1",
+      "http://localhost",
+      "http://127.0.0.1:4567",
+      "http://user@127.0.0.1",
+      "http://127.0.0.1, http://127.0.0.1:80",
+      ["http://127.0.0.1", "http://127.0.0.1"],
+      ["http://127.0.0.1", "http://evil.example"]
+    ].each do |origin|
+      assert_equal(403, Sync { app.call(request(authority: "127.0.0.1", origin: origin)) }.status)
+    end
+
+    assert_equal(403, Sync { @app.call(request(authority: "127.0.0.1")) }.status)
+    assert_equal(403, Sync { @app.call(request(origin: "http://127.0.0.1")) }.status)
+    assert_not_requested(:post, "https://api.openai.com/v1/live/sessions")
+  end
+
   def test_bad_method_content_type_empty_body_and_paths_do_not_create_sessions
     assert_equal(405, Sync { @app.call(request(method: "GET")) }.status)
     assert_equal(415, Sync { @app.call(request(content_type: "text/plain")) }.status)
@@ -131,8 +171,8 @@ class OpenAI::Test::LiveConversationExampleTest < Minitest::Test
     path: "/session"
   )
     headers = {"content-type" => content_type}
-    headers["origin"] = origin if origin
     result = Protocol::HTTP::Request[method, path, headers, [body]]
+    result.headers["origin"] = origin if origin
     result.authority = authority
     result
   end
