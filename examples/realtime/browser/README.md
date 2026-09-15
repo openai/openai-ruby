@@ -121,7 +121,9 @@ The UI has `#token`, `#start`, `#stop`, `#status` and an `audio` element. For mo
 precise harness control, import `/peer.js` and construct
 `new BrowserPeer({mode: 'backend', audio, status})`. `await peer.start(token)`
 finishes startup; success requires status `Connected` (failure is handled and
-reported through status). `peer.current.pc` and `.dc` are the native browser
+reported through status). Failed startup waits for its bounded backend cleanup
+attempt. Autoplay denial leaves `Connected` intact; playback help appears beside
+the audio controls. `peer.current.pc` and `.dc` are the native browser
 objects. Attach event observers without replacing its lifecycle handlers.
 `await peer.stop()` returns `true` only after the backend acknowledges cleanup,
 `false` on failed cleanup; a missing run/direct peer has no server acknowledgement.
@@ -133,10 +135,11 @@ Offline tests (Node 22+ for the browser-controller tests):
 
 ```sh
 bundle exec ruby test/openai/realtime/browser/server_test.rb
-node --test test/openai/realtime/browser/peer_test.mjs
+node --experimental-default-type=module --test test/openai/realtime/browser/peer_test.mjs
 ```
 
-The controller tests simulate browser boundaries; they are not evidence of a
+The required Ruby CI test job also runs the controller suite. The controller
+tests simulate browser boundaries; they are not evidence of a
 real ICE/media exchange. Ruby tests exercise real SDK serialization with fake
 HTTP responses. Live API/audio evidence must be reported separately by the
 protected harness; do not equate a rendered page or fake SDP test with a paid

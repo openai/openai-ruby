@@ -60,7 +60,8 @@ export class BrowserPeer {
       run.pc.ontrack = event => {
         if (this.current === run) {
           this.audio.srcObject = event.streams[0] || new this.env.MediaStream([event.track]);
-          this.audio.play().catch(() => { if (this.current === run) this.status('Use audio controls to play'); });
+          // Playback help remains beside the controls, independent of connection status.
+          this.audio.play().catch(() => {});
         }
       };
       run.dc = run.pc.createDataChannel('oai-events');
@@ -132,6 +133,8 @@ export class BrowserPeer {
       this.status('Connected');
     } catch {
       if (this.current === run) this.stop('Start failed');
+      // A timeout or peer callback may already have stopped this run.
+      await run.cleanup;
     }
   }
 
@@ -153,10 +156,11 @@ export class BrowserPeer {
     if (run.submitted) {
       // Independent of the aborted startup request. If delivery fails, the
       // application lease reclaims the known call; pagehide is only best effort.
-      return this.request(run, '/api/stop', '', 'text/plain', true).then(() => true).catch(() => {
+      run.cleanup = this.request(run, '/api/stop', '', 'text/plain', true).then(() => true).catch(() => {
         if (!this.current) this.status('Stopped; server cleanup pending');
         return false;
       });
+      return run.cleanup;
     }
   }
 }

@@ -183,3 +183,40 @@ test('Stop and startup timeout settle pending native negotiation operations', as
     }
   }
 });
+
+
+test('failed startup waits for backend cleanup on errors and timeout', async () => {
+  for (const failure of ['handoff', 'timeout']) {
+    for (const cleanupOK of [true, false]) {
+      const f = fixture(); const cleanup = deferred(); const original = f.env.fetch;
+      f.env.fetch = (path, options) => path === '/api/stop' ? cleanup.promise : original(path, options);
+      f.env.RTCPeerConnection.prototype.setRemoteDescription = failure === 'handoff'
+        ? async () => { throw new Error('fake SDP failure'); }
+        : () => new Promise(() => {});
+      let finished = false;
+      const start = f.peer.start('fake token').then(() => { finished = true; });
+      await tick();
+      if (failure === 'timeout') [...f.timers.values()].find(t => t.delay === 30000).fn();
+      await tick();
+      assert.equal(f.peer.current, null);
+      assert.equal(f.track.stopped, true);
+      assert.equal(finished, false, `${failure} must await cleanup`);
+      cleanup.resolve({ok: cleanupOK});
+      await start;
+      assert.equal(finished, true);
+      assert.equal(f.status.includes('Connected'), false);
+      if (!cleanupOK) assert.equal(f.status.at(-1), 'Stopped; server cleanup pending');
+    }
+  }
+});
+
+test('autoplay rejection preserves the connected lifecycle status', async () => {
+  const f = fixture();
+  f.audio.play = async () => { throw new DOMException('Autoplay blocked', 'NotAllowedError'); };
+  await f.peer.start('fake token');
+  f.env.pc.ontrack({streams: [f.stream]});
+  await tick();
+  assert.equal(f.status.at(-1), 'Connected');
+  assert.equal(f.peer.current.pc.connectionState, 'connected');
+  await f.peer.stop();
+});

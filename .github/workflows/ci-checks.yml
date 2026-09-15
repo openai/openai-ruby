@@ -123,6 +123,8 @@ jobs:
         run: bundle check
       - name: Check concurrent Steady publication
         run: node scripts/steady/publication.test.cjs
+      - name: Check browser lifecycle
+        run: node --experimental-default-type=module --test test/openai/realtime/browser/peer_test.mjs
 
       - name: Run tests
         run: ./scripts/test
