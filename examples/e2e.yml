@@ -49,6 +49,9 @@ examples:
   examples/image_stream.rb:
     status: covered
     expected_output: Final image completed!
+  examples/live/conversation.rb:
+    status: excluded
+    reason: Requires a browser, microphone, and paid Live model access; offline tests cover local session creation and browser lifecycle.
   examples/live/webrtc.rb:
     status: excluded
     reason: Requires a browser-generated SDP offer and Live model access; offline tests cover the backend SDP handoff.
