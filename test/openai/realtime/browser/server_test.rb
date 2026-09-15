@@ -228,6 +228,45 @@ class OpenAI::Test::BrowserAppTest < Minitest::Test
     assert_mock(@http)
   end
 
+  def test_slow_sideband_preserves_the_browser_handoff_window
+    @app = OpenAI::Examples::Realtime::BrowserApp.new(
+      client: @client,
+      token: TOKEN,
+      sideband: true,
+      clock: -> { @now },
+      output: @output
+    )
+    session = Minitest::Mock.new
+    session.expect(:update, nil) do |type:, instructions:|
+      @now += 14
+      type == :realtime && instructions == "Keep answers short."
+    end
+
+    updated = OpenAI::Realtime::SessionUpdatedEvent.new(
+      event_id: "event_fake_updated",
+      session: OpenAI::Realtime::RealtimeSessionCreateRequest.new(instructions: "Keep answers short.")
+    )
+    connection = Minitest::Mock.new([updated])
+    connection.expect(:session, session)
+    connect = lambda do |call_id:, &block|
+      assert_equal("rtc_fake_example", call_id)
+      block.call(connection)
+    end
+
+    @client.realtime.stub(:connect_to_call, connect) do
+      response = create
+      assert_equal(200, response.status)
+      response.body.call(StringIO.new)
+    end
+
+    @now += 19
+    @app.reap
+    assert_equal(200, request("/api/ack").status)
+    expect_hangup
+    assert_equal(200, request("/api/stop").status)
+    [session, connection, @http].each { |mock| assert_mock(mock) }
+  end
+
   def test_stop_before_create_permanently_cancels_that_operation
     assert_equal(200, request("/api/stop").status)
     @now += 120

@@ -91,7 +91,8 @@ intended for bounded local runs; a deployed service needs durable operation
 records and a retention policy tied to a defined request-expiry contract. The
 app remains the owner after successful HTTP delivery. It requires `/api/ack`
 after native remote-description application, peer connection and channel open.
-A 20-second handoff lease expires without that acknowledgement. An acknowledged
+A 20-second handoff lease is refreshed after answer preparation and optional
+sideband setup, before delivery, and expires without that acknowledgement. An acknowledged
 call has a 60-second lease, renewed by the browser every ten seconds. A paused
 background tab can lose its lease and must Start again. Expired leases cannot
 be revived. Page exit sends best effort Stop; the timer covers lost requests.
@@ -131,11 +132,11 @@ Server diagnostics include only fixed lifecycle metadata, including
 `[browser] call released` and the existing sideband success marker. The harness
 must require successful cleanup and stop the server after its bounded run.
 
-Offline tests (Node 22+ for the browser-controller tests):
+Offline tests (Node 22.7+ for the browser-controller tests):
 
 ```sh
 bundle exec ruby test/openai/realtime/browser/server_test.rb
-node --experimental-default-type=module --test test/openai/realtime/browser/peer_test.mjs
+node --test test/openai/realtime/browser/peer_test.mjs
 ```
 
 The required Ruby CI test job also runs the controller suite. The controller

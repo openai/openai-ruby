@@ -193,6 +193,7 @@ module OpenAI::Examples::Realtime
         end
 
         payload = JSON.generate({sdp: answer})
+        @call[:deadline] = @clock.call + 20
         response.chunked = true
         response.body = proc do |socket|
           begin
