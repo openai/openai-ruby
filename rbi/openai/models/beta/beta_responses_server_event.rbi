@@ -28,6 +28,7 @@ module OpenAI
             OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsCompleted,
             OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallInWsProgress,
             OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsInterpreting,
+            OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCompactionWsCompacting,
             OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsCompleted,
             OpenAI::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsAdded,
             OpenAI::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsDone,
@@ -725,6 +726,82 @@ module OpenAI
                 sequence_number: Integer,
                 type: Symbol,
                 agent: T.nilable(OpenAI::Beta::BetaResponseCodeInterpreterCallInterpretingEvent::Agent),
+                stream_id: T.nilable(String)
+              }
+            )
+          end
+          def to_hash
+          end
+
+        end
+
+        class BetaResponseCompactionWsCompacting < OpenAI::Models::Beta::BetaResponseCompactionCompactingEvent
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCompactionWsCompacting,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
+          sig { returns(T.nilable(String)) }
+          attr_reader :stream_id
+
+          sig { params(stream_id: String).void }
+          attr_writer :stream_id
+
+          # Emitted when new summary content is sampled for a compaction trigger. Contains
+          # no summary content.
+          sig do
+            params(
+
+              item_id: String,
+
+              output_index: Integer,
+
+              sequence_number: Integer,
+
+              agent: OpenAI::Beta::BetaResponseCompactionCompactingEvent::Agent::OrHash,
+
+              stream_id: String,
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # The ID of the compaction output item.
+            item_id:,
+
+            # The index of the compaction output item.
+            output_index:,
+
+            # The sequence number of the event that was emitted.
+            sequence_number:,
+
+            # The agent that owns this multi-agent streaming event.
+            agent: nil,
+
+            # The WebSocket lane that emitted this event. This field is present when the
+            # originating `response.create` event supplied a `stream_id`.
+            stream_id: nil,
+
+            # The type of the event, always `response.compaction.compacting`.
+
+            type: :"response.compaction.compacting"
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                agent: T.nilable(OpenAI::Beta::BetaResponseCompactionCompactingEvent::Agent),
                 stream_id: T.nilable(String)
               }
             )

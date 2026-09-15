@@ -19,6 +19,7 @@ module OpenAI
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsCompleted
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallInWsProgress
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCodeInterpreterCallWsInterpreting
+        | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseCompactionWsCompacting
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsCompleted
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsAdded
         | OpenAI::Beta::BetaResponsesServerEvent::BetaResponseContentPartWsDone
@@ -361,6 +362,40 @@ module OpenAI
             sequence_number: Integer,
             ?type: :"response.code_interpreter_call.interpreting",
             ?agent: OpenAI::Beta::BetaResponseCodeInterpreterCallInterpretingEvent::Agent?,
+            ?stream_id: String
+          }
+        end
+
+        type beta_response_compaction_ws_compacting =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.compaction.compacting",
+            ?agent: OpenAI::Beta::BetaResponseCompactionCompactingEvent::Agent,
+            ?stream_id: String
+          }
+
+        class BetaResponseCompactionWsCompacting < OpenAI::Models::Beta::BetaResponseCompactionCompactingEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?agent: OpenAI::Beta::BetaResponseCompactionCompactingEvent::Agent,
+            ?stream_id: String,
+            ?type: :"response.compaction.compacting"
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.compaction.compacting",
+            ?agent: OpenAI::Beta::BetaResponseCompactionCompactingEvent::Agent,
             ?stream_id: String
           }
         end
