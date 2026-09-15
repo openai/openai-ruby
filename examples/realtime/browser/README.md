@@ -136,7 +136,10 @@ attempt. Autoplay denial leaves `Connected` intact; playback help appears beside
 the audio controls. `peer.current.pc` and `.dc` are the native browser
 objects. Attach event observers without replacing its lifecycle handlers.
 `await peer.stop()` returns `true` only after the backend acknowledges cleanup,
-`false` on failed cleanup; a missing run/direct peer has no server acknowledgement.
+`false` on failed cleanup. Repeated Stop calls share the retained cleanup promise
+and result, including when an event callback initiated cleanup. A new run clears
+that result; a run stopped before backend submission or a direct peer has no
+server acknowledgment.
 Local media stops immediately. The cleanup request can wait up to 40 seconds for
 serialized creation and sideband setup (up to 30 seconds), hangup (five seconds),
 and delivery. Failed startup can wait this additional cleanup interval before

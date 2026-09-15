@@ -321,3 +321,46 @@ test('failed cleanup keeps restart disabled and explains recovery', async t => {
   assert.equal(f.peer.stopping, true);
   assert.equal(f.status.at(-1), 'Stopped; server cleanup pending. Reload only after backend release is confirmed.');
 });
+
+test('repeated Stop awaits event-driven cleanup without sending another request', async () => {
+  for (const ok of [true, false]) {
+    const f = fixture(); const cleanup = deferred(); const original = f.env.fetch;
+    let requests = 0; let fromStatus;
+    f.env.fetch = (path, options) => {
+      if (path !== '/api/stop') return original(path, options);
+      requests++;
+      return cleanup.promise;
+    };
+    f.peer.status = value => {
+      f.status.push(value);
+      if (value === 'Peer failed') fromStatus = f.peer.stop();
+    };
+    await f.peer.start('fake token');
+    f.env.pc.connectionState = 'failed';
+    f.env.pc.onconnectionstatechange();
+    const stopped = f.peer.stop();
+    assert.ok(stopped instanceof Promise);
+    assert.equal(stopped, fromStatus);
+    assert.equal(stopped, f.peer.stop());
+    let finished = false;
+    const awaited = stopped.then(value => { finished = true; return value; });
+    await tick();
+    assert.equal(finished, false);
+    cleanup.resolve({ok});
+    assert.equal(await awaited, ok);
+    assert.equal(await f.peer.stop(), ok);
+    assert.equal(requests, 1);
+  }
+});
+
+test('a new run does not inherit the previous cleanup acknowledgment', async () => {
+  const f = fixture();
+  await f.peer.start('fake token');
+  assert.equal(await f.peer.stop(), true);
+  [...f.timers.values()].find(t => t.delay === 5000).fn();
+  const mic = deferred();
+  f.env.navigator.mediaDevices.getUserMedia = () => mic.promise;
+  const start = f.peer.start('fake token');
+  assert.equal(f.peer.stop(), undefined);
+  mic.resolve(f.stream); await start;
+});
