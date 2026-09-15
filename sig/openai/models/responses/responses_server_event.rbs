@@ -15,6 +15,7 @@ module OpenAI
         | OpenAI::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallWsCompleted
         | OpenAI::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallInWsProgress
         | OpenAI::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallWsInterpreting
+        | OpenAI::Responses::ResponsesServerEvent::ResponseCompactionWsCompacting
         | OpenAI::Responses::ResponsesServerEvent::ResponseWsCompleted
         | OpenAI::Responses::ResponsesServerEvent::ResponseContentPartWsAdded
         | OpenAI::Responses::ResponsesServerEvent::ResponseContentPartWsDone
@@ -330,6 +331,37 @@ module OpenAI
             output_index: Integer,
             sequence_number: Integer,
             ?type: :"response.code_interpreter_call.interpreting",
+            ?stream_id: String
+          }
+        end
+
+        type response_compaction_ws_compacting =
+          {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.compaction.compacting",
+            ?stream_id: String
+          }
+
+        class ResponseCompactionWsCompacting < OpenAI::Models::Responses::ResponseCompactionCompactingEvent
+          def stream_id: -> String?
+
+          def stream_id=: (String _) -> String
+
+          def initialize: (
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?stream_id: String,
+            ?type: :"response.compaction.compacting"
+          ) -> void
+
+          def to_hash: -> {
+            item_id: String,
+            output_index: Integer,
+            sequence_number: Integer,
+            ?type: :"response.compaction.compacting",
             ?stream_id: String
           }
         end

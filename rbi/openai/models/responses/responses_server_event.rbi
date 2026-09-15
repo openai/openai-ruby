@@ -24,6 +24,7 @@ module OpenAI
             OpenAI::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallWsCompleted,
             OpenAI::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallInWsProgress,
             OpenAI::Responses::ResponsesServerEvent::ResponseCodeInterpreterCallWsInterpreting,
+            OpenAI::Responses::ResponsesServerEvent::ResponseCompactionWsCompacting,
             OpenAI::Responses::ResponsesServerEvent::ResponseWsCompleted,
             OpenAI::Responses::ResponsesServerEvent::ResponseContentPartWsAdded,
             OpenAI::Responses::ResponsesServerEvent::ResponseContentPartWsDone,
@@ -639,6 +640,76 @@ module OpenAI
             # The type of the event. Always `response.code_interpreter_call.interpreting`.
 
             type: :"response.code_interpreter_call.interpreting"
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                item_id: String,
+                output_index: Integer,
+                sequence_number: Integer,
+                type: Symbol,
+                stream_id: T.nilable(String)
+              }
+            )
+          end
+          def to_hash
+          end
+
+        end
+
+        class ResponseCompactionWsCompacting < OpenAI::Models::Responses::ResponseCompactionCompactingEvent
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponsesServerEvent::ResponseCompactionWsCompacting,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
+          sig { returns(T.nilable(String)) }
+          attr_reader :stream_id
+
+          sig { params(stream_id: String).void }
+          attr_writer :stream_id
+
+          # Emitted when new summary content is sampled for a compaction trigger. Contains
+          # no summary content.
+          sig do
+            params(
+
+              item_id: String,
+
+              output_index: Integer,
+
+              sequence_number: Integer,
+
+              stream_id: String,
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # The ID of the compaction output item.
+            item_id:,
+
+            # The index of the compaction output item.
+            output_index:,
+
+            # The sequence number of the event that was emitted.
+            sequence_number:,
+
+            # The WebSocket lane that emitted this event. This field is present when the
+            # originating `response.create` event supplied a `stream_id`.
+            stream_id: nil,
+
+            # The type of the event, always `response.compaction.compacting`.
+
+            type: :"response.compaction.compacting"
           )
           end
 

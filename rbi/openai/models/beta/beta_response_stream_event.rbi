@@ -22,6 +22,7 @@ module OpenAI
             OpenAI::Beta::BetaResponseCodeInterpreterCallCompletedEvent,
             OpenAI::Beta::BetaResponseCodeInterpreterCallInProgressEvent,
             OpenAI::Beta::BetaResponseCodeInterpreterCallInterpretingEvent,
+            OpenAI::Beta::BetaResponseCompactionCompactingEvent,
             OpenAI::Beta::BetaResponseCompletedEvent,
             OpenAI::Beta::BetaResponseContentPartAddedEvent,
             OpenAI::Beta::BetaResponseContentPartDoneEvent,

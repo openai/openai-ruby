@@ -40,6 +40,9 @@ module OpenAI
           # The organization has reached a usage, plan, or billing limit.
           USAGE_LIMIT_EXCEEDED = :usage_limit_exceeded
 
+          # The organization has no API credits remaining.
+          CREDIT_BALANCE_EXHAUSTED = :credit_balance_exhausted
+
           # The request exceeds the available rate limit.
           RATE_LIMIT_EXCEEDED = :rate_limit_exceeded
 

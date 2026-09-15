@@ -20,6 +20,7 @@ module OpenAI
             OpenAI::Responses::ResponseCodeInterpreterCallCompletedEvent,
             OpenAI::Responses::ResponseCodeInterpreterCallInProgressEvent,
             OpenAI::Responses::ResponseCodeInterpreterCallInterpretingEvent,
+            OpenAI::Responses::ResponseCompactionCompactingEvent,
             OpenAI::Responses::ResponseCompletedEvent,
             OpenAI::Responses::ResponseContentPartAddedEvent,
             OpenAI::Responses::ResponseContentPartDoneEvent,
