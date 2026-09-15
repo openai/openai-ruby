@@ -210,8 +210,8 @@ class OpenAI::Test::BrowserAppTest < Minitest::Test
       clock: -> { @now },
       output: @output
     )
-    # Stub existing example boundary; no alternate sideband implementation.
-    OpenAI::Examples::Realtime::Sideband.stub(:run, -> (**) { raise "fake sideband failure" }) do
+    # Stub only this client resource so parallel sideband tests stay isolated.
+    @client.realtime.stub(:connect_to_call, -> (**) { raise "fake sideband failure" }) do
       @http
         .expect(
           :execute,
