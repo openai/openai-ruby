@@ -137,7 +137,12 @@ class ValidateRuboCopDirectivesTest < Minitest::Test
 
   def test_validates_source_trees_without_git
     Dir.mktmpdir do |directory|
-      FileUtils.cp(File.expand_path("../../.rubocop.yml", __dir__), directory)
+      %w[.rubocop.yml lib/openai/.rubocop.generated.yml].each do |path|
+        destination = File.join(directory, path)
+        FileUtils.mkdir_p(File.dirname(destination))
+        FileUtils.cp(File.expand_path("../../#{path}", __dir__), destination)
+      end
+
       %w[lib/generated.rb vendor/bundle/dependency.rb sorbet/rbi/gems/dependency.rbi].each do |path|
         full_path = File.join(directory, path)
         FileUtils.mkdir_p(File.dirname(full_path))

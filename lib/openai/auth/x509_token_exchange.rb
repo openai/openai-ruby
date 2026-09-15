@@ -149,7 +149,7 @@ module OpenAI
           raise invalid_response("expires_in must be greater than zero and at most one hour", response: response)
         end
 
-        {id: token, expires_in: expires_in.to_f}
+        {id: token, expires_in: Float(expires_in)}
       end
 
       private def raise_error(response, body)

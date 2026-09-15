@@ -1,5 +1,8 @@
 # yaml-language-server: $schema=https://www.rubyschema.org/rubocop.json
 ---
+inherit_from:
+  - lib/openai/.rubocop.generated.yml
+
 # Keep RuboCop's standard file types and dependency exclusions alongside ours.
 inherit_mode:
   merge:
@@ -139,6 +142,9 @@ Lint/NonAtomicFileOperation:
   Enabled: true
 Lint/NumberedParameterAssignment:
   Enabled: true
+Lint/NumberConversion:
+  Enabled: true
+  AutoCorrect: false
 Lint/NumericOperationWithConstantResult:
   Enabled: true
 Lint/OrAssignmentToConstant:
@@ -180,6 +186,8 @@ Lint/UnexpectedBlockArity:
 Lint/UnreachablePatternBranch:
   Enabled: true
 Lint/UnmodifiedReduceAccumulator:
+  Enabled: true
+Lint/UnusedPrivateMethod:
   Enabled: true
 Lint/UselessConstantScoping:
   Enabled: true

@@ -7,7 +7,7 @@ module TestSharding
     match = /\A([1-9][0-9]*)\/([1-9][0-9]*)\z/.match(shard)
     raise ArgumentError, "TEST_SHARD must be INDEX/COUNT (for example 1/3)" unless match
 
-    index, count = match.captures.map(&:to_i)
+    index, count = match.captures.map { Integer(_1, 10) }
     raise ArgumentError, "TEST_SHARD index must not exceed its count" if index > count
 
     # Keep whole files together: global stubs and large-payload cases retain

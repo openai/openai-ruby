@@ -29,7 +29,7 @@ class ReleaseWorkflowTest < Minitest::Test
     )
 
     # Simulate the generic updater's stable-version replacement inside marked blocks.
-    next_version = "#{OpenAI::VERSION.split(".").first.to_i + 1}.0.0"
+    next_version = "#{Integer(OpenAI::VERSION.split(".").first, 10) + 1}.0.0"
     updated = lockfile.gsub(/x-release-please-start-version\n.*?x-release-please-end/m) do |block|
       block.gsub(/\d+\.\d+\.\d+/, next_version)
     end

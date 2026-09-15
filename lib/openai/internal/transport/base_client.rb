@@ -466,7 +466,7 @@ module OpenAI
           end
 
           timeout = opts.fetch(:timeout, @timeout)
-          timeout = timeout.to_f.clamp(0..) unless timeout.nil?
+          timeout = Float(timeout).clamp(0..) unless timeout.nil?
           unless headers.key?("x-stainless-timeout") || timeout.nil? || timeout.zero?
             headers["x-stainless-timeout"] = timeout.to_s
           end

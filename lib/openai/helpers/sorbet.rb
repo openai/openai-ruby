@@ -202,7 +202,7 @@ module OpenAI
 
             value
           in :scalar
-            value = value.to_f if node.value == Float && value.is_a?(Integer)
+            value = Float(value) if node.value == Float && value.is_a?(Integer)
 
             unless value.is_a?(node.value) && (node.value != Float || value.finite?)
               fail_hydration(path, expected: node.value.name, actual: value)
