@@ -1,0 +1,58 @@
+module OpenAI
+  module Models
+    class BetaResponseCompactionCompactingEvent = Beta::BetaResponseCompactionCompactingEvent
+
+    module Beta
+      type beta_response_compaction_compacting_event =
+        {
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?type: :"response.compaction.compacting",
+          ?agent: OpenAI::Beta::BetaResponseCompactionCompactingEvent::Agent
+        }
+
+      class BetaResponseCompactionCompactingEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.compaction.compacting"
+
+        attr_reader agent: OpenAI::Beta::BetaResponseCompactionCompactingEvent::Agent?
+
+        def agent=: (
+          OpenAI::Beta::BetaResponseCompactionCompactingEvent::Agent
+        ) -> OpenAI::Beta::BetaResponseCompactionCompactingEvent::Agent
+
+        def initialize: (
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?agent: OpenAI::Beta::BetaResponseCompactionCompactingEvent::Agent,
+          ?type: :"response.compaction.compacting"
+        ) -> void
+
+        def to_hash: -> {
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?type: :"response.compaction.compacting",
+          ?agent: OpenAI::Beta::BetaResponseCompactionCompactingEvent::Agent
+        }
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end
