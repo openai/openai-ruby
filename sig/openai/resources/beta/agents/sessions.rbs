@@ -40,6 +40,7 @@ module OpenAI
 
           def update: (
             String session_id,
+            ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
             ?metadata: ::Hash[Symbol, String]?,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Beta::AgentSession
