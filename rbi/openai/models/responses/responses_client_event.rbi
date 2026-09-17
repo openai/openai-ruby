@@ -1327,6 +1327,14 @@ module OpenAI
             }
             attr_writer :mode
 
+            # Prepares the prompt cache without generating output. Defaults to `false`. When
+            # set to `true`, overrides the `generate` field to `false`.
+            sig { returns(T.nilable(T::Boolean)) }
+            attr_reader :prewarm
+
+            sig { params(prewarm: T::Boolean).void }
+            attr_writer :prewarm
+
             # The minimum lifetime applied to every implicit and explicit cache breakpoint
             # written by the request. Defaults to `30m`, which is currently the only supported
             # value. The backend may retain cache entries for longer.
@@ -1359,6 +1367,8 @@ module OpenAI
 
                 mode: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol,
 
+                prewarm: T::Boolean,
+
                 ttl: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol
               )
                 .returns(T.attached_class)
@@ -1377,6 +1387,10 @@ module OpenAI
               # request does not use prompt caching.
               mode: nil,
 
+              # Prepares the prompt cache without generating output. Defaults to `false`. When
+              # set to `true`, overrides the `generate` field to `false`.
+              prewarm: nil,
+
               # The minimum lifetime applied to every implicit and explicit cache breakpoint
               # written by the request. Defaults to `30m`, which is currently the only supported
               # value. The backend may retain cache entries for longer.
@@ -1392,6 +1406,7 @@ module OpenAI
                   mode: T.nilable(
                     OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol
                   ),
+                  prewarm: T.nilable(T::Boolean),
                   ttl: T.nilable(
                     OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol
                   )
