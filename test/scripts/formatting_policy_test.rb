@@ -296,12 +296,32 @@ class FormattingPolicyTest < Minitest::Test
   end
 
   def test_existing_ci_lint_task_enforces_both_formatters
-    source = "require \"rake\"; load \"Rakefile\"; puts JSON.generate(Rake::Task[\"lint:rubocop\"].prerequisites)"
-    stdout, stderr, status = Open3.capture3("bundle", "exec", "ruby", "-rjson", "-e", source, chdir: ROOT)
-    assert(status.success?, "#{stdout}\n#{stderr}")
-    prerequisites = JSON.parse(stdout)
-    assert_includes(prerequisites, "lint:rubyfmt")
-    assert_includes(prerequisites, "lint:rbs_format")
+    [
+      ["rb", "value={hello: 'world'}\n", "rubyfmt failed"],
+      ["rbs", "class Example\n  def call: (String value)->String\nend\n", "RBS formatting differs"]
+    ].each do |extension, source, diagnostic|
+      Dir.mktmpdir do |directory|
+        path = File.join(directory, "unformatted example.#{extension}")
+        File.write(path, source)
+        mode = File.stat(path).mode
+        paths = File.join(directory, "paths")
+        File.write(paths, "#{path}\n")
+
+        stdout, stderr, status = Open3.capture3(
+          "bundle",
+          "exec",
+          "rake",
+          "lint:rubocop",
+          "FORMAT_FILE=#{paths}",
+          chdir: ROOT
+        )
+
+        refute(status.success?, "unformatted #{extension} must fail the full CI lint task")
+        assert_includes(stdout + stderr, diagnostic)
+        assert_equal(source, File.read(path), "the full CI lint task must not rewrite #{extension} source")
+        assert_equal(mode, File.stat(path).mode)
+      end
+    end
   end
 
   def test_format_runs_ruby_and_rbs_on_the_calling_thread

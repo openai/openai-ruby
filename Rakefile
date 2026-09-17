@@ -10,6 +10,7 @@ require "rubocop/rake_task"
 
 require_relative "scripts/rubyfmt_policy"
 require_relative "scripts/rbs_format"
+require_relative "scripts/parallel_lint_checks"
 require_relative "scripts/test_sharding"
 
 examples = "examples"
@@ -58,7 +59,8 @@ multitask("test:bedrock") do
 end
 
 desc("Lint `*.rb(i)`")
-RuboCop::RakeTask.new(:"lint:rubocop") do |task|
+rubocop_task = Gem.win_platform? ? :"lint:rubocop" : :"lint:rubocop:inspect"
+RuboCop::RakeTask.new(rubocop_task) do |task|
   task.patterns = ["."]
   task.formatters = %w[github] if ENV.key?("CI")
 
@@ -70,7 +72,19 @@ multitask(:"lint:rubocop_directives") do
   ruby(*%w[scripts/validate-rubocop-directives])
 end
 
-Rake::Task[:"lint:rubocop"].enhance([:"lint:rubocop_directives", :"lint:rubyfmt", :"lint:rbs_format"])
+if Gem.win_platform?
+  # Keep the original gate where POSIX process-group cleanup is unavailable.
+  Rake::Task[:"lint:rubocop"].enhance([:"lint:rubocop_directives", :"lint:rubyfmt", :"lint:rbs_format"])
+else
+  desc("Check suppression directives, formatting, and RuboCop offenses")
+  task(:"lint:rubocop") do
+    abort("Ruby lint checks failed") unless ParallelLintChecks.run(root: __dir__)
+  end
+
+  %w[auto_correct autocorrect autocorrect_all].each do |name|
+    task("lint:rubocop:#{name}" => "lint:rubocop:inspect:#{name}")
+  end
+end
 
 ruby_paths = lambda do
   inputs = if ENV.key?(FILES_ENV)
@@ -178,7 +192,13 @@ desc("Lint and typecheck")
 # RuboCop temporarily changes cwd; sibling commands must not launch alongside it.
 task(:lint) do
   failures = []
-  [:"lint:rubocop", :"lint:rubocop_directives", :typecheck].each do |name|
+  checks = if Gem.win_platform?
+    [:"lint:rubocop", :"lint:rubocop_directives", :typecheck]
+  else
+    [:"lint:rubocop", :typecheck]
+  end
+
+  checks.each do |name|
     Rake::Task[name].invoke
   rescue SystemExit, StandardError => error
     failures << error
