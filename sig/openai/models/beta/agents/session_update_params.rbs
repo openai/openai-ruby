@@ -5,6 +5,7 @@ module OpenAI
         type session_update_params =
           {
             session_id: String,
+            ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
             ?metadata: ::Hash[Symbol, String]?,
             ?request_options: OpenAI::request_opts
           }
@@ -15,19 +16,117 @@ module OpenAI
 
           attr_accessor session_id: String
 
+          attr_reader agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent?
+
+          def agent=: (
+            OpenAI::Beta::Agents::SessionUpdateParams::Agent
+          ) -> OpenAI::Beta::Agents::SessionUpdateParams::Agent
+
           attr_accessor metadata: ::Hash[Symbol, String]?
 
           def initialize: (
             session_id: String,
+            ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
             ?metadata: ::Hash[Symbol, String]?,
             ?request_options: OpenAI::request_opts
           ) -> void
 
           def to_hash: -> {
             session_id: String,
+            ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
             ?metadata: ::Hash[Symbol, String]?,
             ?request_options: OpenAI::RequestOptions
           }
+
+          type agent =
+            {
+              ?model: String,
+              ?reasoning: OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning,
+              ?service_tier: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier?
+            }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            attr_reader model: String?
+
+            def model=: (String) -> String
+
+            attr_reader reasoning: OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning?
+
+            def reasoning=: (
+              OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning
+            ) -> OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning
+
+            attr_accessor service_tier: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier?
+
+            def initialize: (
+              ?model: String,
+              ?reasoning: OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning,
+              ?service_tier: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier?
+            ) -> void
+
+            def to_hash: -> {
+              ?model: String,
+              ?reasoning: OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning,
+              ?service_tier: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier?
+            }
+
+            type reasoning =
+              {
+                ?effort: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::Reasoning::effort?
+              }
+
+            class Reasoning < OpenAI::Internal::Type::BaseModel
+              attr_accessor effort: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::Reasoning::effort?
+
+              def initialize: (
+                ?effort: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::Reasoning::effort?
+              ) -> void
+
+              def to_hash: -> {
+                ?effort: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::Reasoning::effort?
+              }
+
+              type effort =
+                :none | :minimal | :low | :medium | :high | :xhigh | :max
+
+              module Effort
+                extend OpenAI::Internal::Type::Enum
+
+                NONE: :none
+                MINIMAL: :minimal
+                LOW: :low
+                MEDIUM: :medium
+                HIGH: :high
+                XHIGH: :xhigh
+                MAX: :max
+
+                def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::Reasoning::effort]
+              end
+            end
+
+            type service_tier = :auto | :default | :flex | :priority | :fast
+
+            module ServiceTier
+              extend OpenAI::Internal::Type::Enum
+
+              # Selects the service tier automatically.
+              AUTO: :auto
+
+              # Uses the default service tier.
+              DEFAULT: :default
+
+              # Uses the flex service tier.
+              FLEX: :flex
+
+              # Uses the priority service tier.
+              PRIORITY: :priority
+
+              # Uses the fast service tier.
+              FAST: :fast
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier]
+            end
+          end
         end
       end
     end

@@ -150,13 +150,17 @@ module OpenAI
             )
           end
 
-          # Updates session metadata. Omitted fields are unchanged. See
+          # Updates session metadata, model, reasoning effort, or service tier. Model
+          # settings apply to subsequent turns. Omitted fields are unchanged. See
           # [managing sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions/manage).
           #
-          # @overload update(session_id, metadata: nil, request_options: {})
+          # @overload update(session_id, agent: nil, metadata: nil, request_options: {})
           #
           # @param session_id [String]
           #   The ID of the session.
+          #
+          # @param agent [OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent]
+          #   Model settings for subsequent turns. Omitted fields stay unchanged.
           #
           # @param metadata [Hash{Symbol=>String}, nil]
           #   Replaces all metadata. Omit to leave unchanged, or pass null or {} to clear it.

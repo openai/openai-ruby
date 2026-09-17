@@ -130,11 +130,13 @@ module OpenAI
           )
           end
 
-          # Updates session metadata. Omitted fields are unchanged. See
+          # Updates session metadata, model, reasoning effort, or service tier. Model
+          # settings apply to subsequent turns. Omitted fields are unchanged. See
           # [managing sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions/manage).
           sig {
             params(
               session_id: String,
+              agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent::OrHash,
               metadata: T.nilable(T::Hash[Symbol, String]),
               request_options: OpenAI::RequestOptions::OrHash
             )
@@ -143,6 +145,8 @@ module OpenAI
           def update(
             # The ID of the session.
             session_id,
+            # Model settings for subsequent turns. Omitted fields stay unchanged.
+            agent: nil,
             # Replaces all metadata. Omit to leave unchanged, or pass null or {} to clear it.
             # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
             # characters.
