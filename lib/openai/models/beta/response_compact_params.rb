@@ -216,8 +216,6 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_5_1_CODEX }
 
-          variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_5_1_MINI }
-
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_5_1_CHAT_LATEST }
 
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_5 }
@@ -277,6 +275,10 @@ module OpenAI
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_4O_2024_08_06 }
 
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_4O_2024_05_13 }
+
+          variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_AUDIO_MINI }
+
+          variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_AUDIO_MINI_2025_12_15 }
 
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_4O_AUDIO_PREVIEW }
 
@@ -348,6 +350,8 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_3_5_TURBO_16K_0613 }
 
+          variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_5_1_MINI }
+
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::O1_PRO }
 
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::O1_PRO_2025_03_19 }
@@ -417,7 +421,6 @@ module OpenAI
           GPT_5_1 = :"gpt-5.1"
           GPT_5_1_2025_11_13 = :"gpt-5.1-2025-11-13"
           GPT_5_1_CODEX = :"gpt-5.1-codex"
-          GPT_5_1_MINI = :"gpt-5.1-mini"
           GPT_5_1_CHAT_LATEST = :"gpt-5.1-chat-latest"
           GPT_5 = :"gpt-5"
           GPT_5_MINI = :"gpt-5-mini"
@@ -448,6 +451,8 @@ module OpenAI
           GPT_4O_2024_11_20 = :"gpt-4o-2024-11-20"
           GPT_4O_2024_08_06 = :"gpt-4o-2024-08-06"
           GPT_4O_2024_05_13 = :"gpt-4o-2024-05-13"
+          GPT_AUDIO_MINI = :"gpt-audio-mini"
+          GPT_AUDIO_MINI_2025_12_15 = :"gpt-audio-mini-2025-12-15"
           GPT_4O_AUDIO_PREVIEW = :"gpt-4o-audio-preview"
           GPT_4O_AUDIO_PREVIEW_2024_10_01 = :"gpt-4o-audio-preview-2024-10-01"
           GPT_4O_AUDIO_PREVIEW_2024_12_17 = :"gpt-4o-audio-preview-2024-12-17"
@@ -481,6 +486,7 @@ module OpenAI
           GPT_3_5_TURBO_1106 = :"gpt-3.5-turbo-1106"
           GPT_3_5_TURBO_0125 = :"gpt-3.5-turbo-0125"
           GPT_3_5_TURBO_16K_0613 = :"gpt-3.5-turbo-16k-0613"
+          GPT_5_1_MINI = :"gpt-5.1-mini"
           O1_PRO = :"o1-pro"
           O1_PRO_2025_03_19 = :"o1-pro-2025-03-19"
           O3_PRO = :"o3-pro"

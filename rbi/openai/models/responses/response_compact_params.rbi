@@ -258,7 +258,6 @@ module OpenAI
             OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
           )
           GPT_5_1_CODEX = T.let(:"gpt-5.1-codex", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
-          GPT_5_1_MINI = T.let(:"gpt-5.1-mini", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
           GPT_5_1_CHAT_LATEST = T.let(
             :"gpt-5.1-chat-latest",
             OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
@@ -319,6 +318,11 @@ module OpenAI
           GPT_4O_2024_11_20 = T.let(:"gpt-4o-2024-11-20", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
           GPT_4O_2024_08_06 = T.let(:"gpt-4o-2024-08-06", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
           GPT_4O_2024_05_13 = T.let(:"gpt-4o-2024-05-13", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_AUDIO_MINI = T.let(:"gpt-audio-mini", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_AUDIO_MINI_2025_12_15 = T.let(
+            :"gpt-audio-mini-2025-12-15",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
           GPT_4O_AUDIO_PREVIEW = T.let(
             :"gpt-4o-audio-preview",
             OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
@@ -415,6 +419,7 @@ module OpenAI
             :"gpt-3.5-turbo-16k-0613",
             OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
           )
+          GPT_5_1_MINI = T.let(:"gpt-5.1-mini", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
           O1_PRO = T.let(:"o1-pro", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
           O1_PRO_2025_03_19 = T.let(:"o1-pro-2025-03-19", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
           O3_PRO = T.let(:"o3-pro", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)

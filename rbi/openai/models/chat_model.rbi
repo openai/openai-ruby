@@ -29,7 +29,6 @@ module OpenAI
       GPT_5_1 = T.let(:"gpt-5.1", OpenAI::ChatModel::TaggedSymbol)
       GPT_5_1_2025_11_13 = T.let(:"gpt-5.1-2025-11-13", OpenAI::ChatModel::TaggedSymbol)
       GPT_5_1_CODEX = T.let(:"gpt-5.1-codex", OpenAI::ChatModel::TaggedSymbol)
-      GPT_5_1_MINI = T.let(:"gpt-5.1-mini", OpenAI::ChatModel::TaggedSymbol)
       GPT_5_1_CHAT_LATEST = T.let(:"gpt-5.1-chat-latest", OpenAI::ChatModel::TaggedSymbol)
       GPT_5 = T.let(:"gpt-5", OpenAI::ChatModel::TaggedSymbol)
       GPT_5_MINI = T.let(:"gpt-5-mini", OpenAI::ChatModel::TaggedSymbol)
@@ -60,6 +59,8 @@ module OpenAI
       GPT_4O_2024_11_20 = T.let(:"gpt-4o-2024-11-20", OpenAI::ChatModel::TaggedSymbol)
       GPT_4O_2024_08_06 = T.let(:"gpt-4o-2024-08-06", OpenAI::ChatModel::TaggedSymbol)
       GPT_4O_2024_05_13 = T.let(:"gpt-4o-2024-05-13", OpenAI::ChatModel::TaggedSymbol)
+      GPT_AUDIO_MINI = T.let(:"gpt-audio-mini", OpenAI::ChatModel::TaggedSymbol)
+      GPT_AUDIO_MINI_2025_12_15 = T.let(:"gpt-audio-mini-2025-12-15", OpenAI::ChatModel::TaggedSymbol)
       GPT_4O_AUDIO_PREVIEW = T.let(:"gpt-4o-audio-preview", OpenAI::ChatModel::TaggedSymbol)
       GPT_4O_AUDIO_PREVIEW_2024_10_01 = T.let(:"gpt-4o-audio-preview-2024-10-01", OpenAI::ChatModel::TaggedSymbol)
       GPT_4O_AUDIO_PREVIEW_2024_12_17 = T.let(:"gpt-4o-audio-preview-2024-12-17", OpenAI::ChatModel::TaggedSymbol)
@@ -99,6 +100,7 @@ module OpenAI
       GPT_3_5_TURBO_1106 = T.let(:"gpt-3.5-turbo-1106", OpenAI::ChatModel::TaggedSymbol)
       GPT_3_5_TURBO_0125 = T.let(:"gpt-3.5-turbo-0125", OpenAI::ChatModel::TaggedSymbol)
       GPT_3_5_TURBO_16K_0613 = T.let(:"gpt-3.5-turbo-16k-0613", OpenAI::ChatModel::TaggedSymbol)
+      GPT_5_1_MINI = T.let(:"gpt-5.1-mini", OpenAI::ChatModel::TaggedSymbol)
 
       sig { override.returns(T::Array[OpenAI::ChatModel::TaggedSymbol]) }
       def self.values
