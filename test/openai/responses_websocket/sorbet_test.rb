@@ -49,6 +49,27 @@ class OpenAI::Test::ResponsesWebSocketSorbetTest < Minitest::Test
     assert_includes("#{stdout}\n#{stderr}", "Expected")
   end
 
+  def test_session_rbi_preserves_typed_events_and_final_responses
+    source = <<~RUBY
+      # typed: strict
+
+      limits = OpenAI::Responses::SessionLimits.new(
+        max_lanes: 4, max_events_per_lane: 32, max_events: 64,
+        max_bytes_per_lane: 100_000, max_bytes: 200_000, max_response_bytes: 200_000
+      )
+      OpenAI::Responses::Session.open(client: OpenAI::Client.new, limits: limits) do |session|
+        lane = session.lane("main")
+        lane.send_event(type: "response.create", model: "example-model")
+        T.assert_type!(lane.receive, OpenAI::Responses::Connection::ServerEvent)
+        T.assert_type!(lane.get_final_response, OpenAI::Responses::Response)
+        session.reconnect(restore: ->(current) { current.default.send_event(type: "response.create") })
+      end
+    RUBY
+
+    stdout, stderr, status = typecheck(source)
+    assert_predicate(status, :success?, "#{stdout}\n#{stderr}")
+  end
+
   private def typecheck(source)
     root = File.expand_path("../../..", __dir__)
     Tempfile.create(["responses-websocket-sorbet", ".rb"]) do |file|

@@ -32,6 +32,11 @@ module OpenAI
         ) -> nil
 
         # @api private
+        def encode_client_event: (
+          OpenAI::Models::Responses::connection_client_event event
+        ) -> ::Hash[Symbol, untyped]
+
+        # @api private
         def send_raw: (String data) -> nil
 
         def close: (?code: Integer, ?reason: String) -> nil

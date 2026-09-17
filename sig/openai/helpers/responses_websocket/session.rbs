@@ -1,0 +1,123 @@
+module OpenAI
+  module Models
+    module Responses
+      class SessionError < OpenAI::Errors::Error
+        def cause: -> nil
+      end
+
+      class BufferError < SessionError
+      end
+
+      class StateLostError < SessionError
+      end
+
+      class RequestError < SessionError
+        attr_reader event: connection_server_event
+
+        # @api private
+        def initialize: (connection_server_event event) -> void
+      end
+
+      class SessionLimits
+        attr_reader max_lanes: Integer
+        attr_reader max_events_per_lane: Integer
+        attr_reader max_events: Integer
+        attr_reader max_bytes_per_lane: Integer
+        attr_reader max_bytes: Integer
+        attr_reader max_response_bytes: Integer
+        def initialize: (
+          max_lanes: Integer,
+          max_events_per_lane: Integer,
+          max_events: Integer,
+          max_bytes_per_lane: Integer,
+          max_bytes: Integer,
+          max_response_bytes: Integer
+        ) -> void
+      end
+
+      class SessionLane
+        attr_reader stream_id: String?
+        def send_event: (connection_client_event event) -> void
+        def receive: -> connection_server_event
+        def get_final_response: -> OpenAI::Responses::Response
+        def close: -> void
+
+        # @api private
+        def initialize: (
+          Session session,
+          String? stream_id,
+          Hash[String, untyped] pending_steers
+        ) -> void
+
+        # @api private
+        def enqueue: (
+          connection_server_event event,
+          Integer bytes,
+          ?bool raw_command_sent
+        ) -> bool?
+
+        # @api private
+        def discard: (?Exception? error) -> void
+
+        # @api private
+        def wake: -> void
+      end
+
+      class Session
+        attr_reader limits: SessionLimits
+        attr_reader default: SessionLane
+        def self.open: [Result] (
+          client: OpenAI::Client,
+          limits: SessionLimits,
+          ?request_options: OpenAI::request_opts?,
+          ?websocket_base_url: String?,
+          ?transport: top,
+          ?transport_options: ::Hash[Symbol, top]
+        ) {
+          (Session session) -> Result
+        } -> Result
+        def lane: (String? stream_id) -> SessionLane
+        def reconnect: (
+          restore: ^(Session) -> top,
+          ?client: OpenAI::Client,
+          ?request_options: OpenAI::request_opts?
+        ) -> self
+        def close: -> void
+
+        # @api private
+        def initialize: (
+          task: untyped,
+          client: OpenAI::Client,
+          limits: SessionLimits,
+          request_options: OpenAI::request_opts?,
+          websocket_base_url: String?,
+          transport: top,
+          transport_options: ::Hash[Symbol, top]
+        ) -> void
+
+        # @api private
+        def start: -> void
+
+        # @api private
+        def encode_client_event: (
+          connection_client_event event
+        ) -> ::Hash[Symbol, untyped]
+
+        # @api private
+        def send_event: (connection_client_event event) -> void
+
+        # @api private
+        def check_reader!: -> void
+
+        # @api private
+        def assert_owner!: -> void
+
+        # @api private
+        def consumed: (Integer bytes) -> void
+
+        # @api private
+        def detach: (SessionLane value) -> void
+      end
+    end
+  end
+end

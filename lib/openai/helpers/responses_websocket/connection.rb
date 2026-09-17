@@ -154,7 +154,8 @@ module OpenAI
         data
       end
 
-      private def encode_client_event(event)
+      # @api private
+      def encode_client_event(event)
         validate_event_tree!(event)
         payload = if event.is_a?(Hash)
           OpenAI::Internal::Type::Unknown.dump(event, state: {can_retry: true})

@@ -68,19 +68,79 @@ module OpenAI
         end
       end
 
+      def session_limits
+        # Application budgets for these short text examples, not service limits.
+        OpenAI::Responses::SessionLimits.new(
+          max_lanes: 8,
+          max_events_per_lane: 128,
+          max_events: 512,
+          max_bytes_per_lane: 16 * 1024 * 1024,
+          max_bytes: 32 * 1024 * 1024,
+          max_response_bytes: 64 * 1024 * 1024
+        )
+      end
+
       def multiplex(client:, model:)
-        client.responses.connect do |connection|
-          %w[planner critic].each do |lane|
-            connection.response.create(
+        OpenAI::Responses::Session.open(client: client, limits: session_limits) do |session|
+          lanes = %w[planner critic].to_h { |name| [name, session.lane(name)] }
+          lanes.each_value do |lane|
+            lane.send_event(
+              type: :"response.create",
               model: model,
-              input: "Say hello as the #{lane}.",
-              stream_id: lane,
+              input: "Say hello as the #{lane.stream_id}.",
               store: false
             )
           end
 
-          completed_responses(connection, lanes: %w[planner critic])
+          results = Thread::Queue.new
+          readers = []
+          begin
+            readers <<
+              Async::Task.current.async do
+                loop do
+                  event = session.default.receive
+                  next unless event.type.to_s == "error"
+
+                  results.push(OpenAI::Responses::RequestError.new(event))
+                  break
+                end
+
+              rescue StandardError
+                # Named readers report connection failure, or drain terminal
+                # responses already queued before a normal connection close.
+                nil
+              end
+            lanes.each do |name, lane|
+              readers <<
+                Async::Task.current.async do
+                  response = lane.get_final_response
+                  unless response.status.to_s == "completed"
+                    raise("Responses WebSocket operation did not complete.")
+                  end
+
+                  results.push([name, response])
+                rescue StandardError => error
+                  results.push(error)
+                end
+            end
+
+            lanes.length.times.to_h do
+              result = results.pop
+              raise result if result.is_a?(StandardError)
+
+              result
+            end
+
+          ensure
+            readers.each(&:stop)
+            readers.each(&:wait)
+          end
         end
+
+      rescue OpenAI::Responses::RequestError
+        raise "Responses WebSocket operation did not complete."
+      rescue OpenAI::Responses::SessionError
+        raise "Responses WebSocket closed with unfinished work."
       end
 
       # Deliberately rotate a healthy connection after a completed turn. This does

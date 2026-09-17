@@ -127,6 +127,107 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     end
   end
 
+  def test_tls_through_an_http_connect_proxy
+    root_key = OpenSSL::PKey::RSA.new(2_048)
+    root = issue_certificate(subject: "/CN=proxy-test-root", key: root_key, ca: true)
+    key = OpenSSL::PKey::RSA.new(2_048)
+    certificate = issue_certificate(
+      subject: "/CN=192.0.2.1",
+      key: key,
+      issuer: root,
+      issuer_key: root_key,
+      extended_key_usage: "serverAuth",
+      subject_alt_name: "IP:192.0.2.1"
+    )
+    trust = OpenSSL::X509::Store.new
+    trust.add_cert(root)
+    transport = OpenAI::Realtime::Transports::AsyncWebSocket.new { |context| context.cert_store = trust }
+    handler = -> (socket) {
+      write_event(socket, **JSON.parse(text_delta("TLS proxy connected"), symbolize_names: true))
+    }
+    previous = %w[https_proxy HTTPS_PROXY no_proxy NO_PROXY].to_h { |name| [name, ENV[name]] }
+    proxy = TCPServer.new("127.0.0.1", 0)
+    proxy_thread = nil
+    with_secure_websocket_server(handler, ssl_context: server_tls_context(certificate, key), host: "192.0.2.1") do |
+        client
+      |
+      proxy_thread = Thread.new do
+        downstream = proxy.accept
+        headers = +""
+        headers << downstream.readpartial(1_024) until headers.include?("\r\n\r\n")
+        upstream = TCPSocket.new("127.0.0.1", client.base_url.port)
+        downstream.write("HTTP/1.1 200 Connection Established\r\n\r\n")
+        relays = [
+          Thread.new { IO.copy_stream(downstream, upstream) },
+          Thread.new { IO.copy_stream(upstream, downstream) }
+        ]
+        relays.each(&:join)
+      ensure
+        relays&.each(&:kill)
+        relays&.each(&:join)
+        downstream&.close
+        upstream&.close
+      end
+
+      ENV["https_proxy"] = "http://127.0.0.1:#{proxy.local_address.ip_port}"
+      ENV["HTTPS_PROXY"] = nil
+      ENV["no_proxy"] = ""
+      ENV["NO_PROXY"] = ""
+      event = client.realtime.connect(model: "gpt-realtime-2.1", transport: transport, &:receive)
+      assert_instance_of(OpenAI::Realtime::ResponseTextDeltaEvent, event)
+      assert_equal("TLS proxy connected", event.delta)
+    end
+
+  ensure
+    previous&.each { |name, value| ENV[name] = value }
+    proxy_thread&.kill
+    proxy_thread&.join
+    proxy&.close
+  end
+
+  def test_tls_timeout_releases_a_proxy_that_keeps_its_read_side_open
+    proxy = TCPServer.new("127.0.0.1", 0)
+    proxy_thread = Thread.new do
+      socket = proxy.accept
+      headers = +""
+      headers << socket.readpartial(1_024) until headers.include?("\r\n\r\n")
+      socket.write("HTTP/1.1 200 Connection Established\r\n\r\n")
+      Thread::Queue.new.pop
+    ensure
+      socket&.close
+    end
+
+    outer_timeout = Class.new(StandardError)
+    previous = %w[https_proxy HTTPS_PROXY no_proxy NO_PROXY].to_h { |name| [name, ENV[name]] }
+    ENV["https_proxy"] = "http://127.0.0.1:#{proxy.local_address.ip_port}"
+    ENV["HTTPS_PROXY"] = nil
+    ENV["no_proxy"] = ""
+    ENV["NO_PROXY"] = ""
+    error = nil
+    started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    Sync do |task|
+      task.with_timeout(1, outer_timeout) do
+        error = assert_raises(OpenAI::Errors::RealtimeConnectionError) do
+          OpenAI::Realtime::Transports::AsyncWebSocket
+            .new
+            .open(
+              url: URI("wss://192.0.2.1/v1/realtime"),
+              headers: {},
+              timeout: 0.05
+            ) { flunk("The TLS handshake must not succeed.") }
+        end
+      end
+    end
+
+    assert_instance_of(Async::TimeoutError, error.cause)
+    assert_operator(Process.clock_gettime(Process::CLOCK_MONOTONIC) - started, :<, 0.5)
+  ensure
+    previous&.each { |name, value| ENV[name] = value }
+    proxy_thread&.kill
+    proxy_thread&.join
+    proxy&.close
+  end
+
   def test_tls_configurator_cannot_disable_verification_or_install_a_callback
     connection = Class
       .new do
@@ -260,6 +361,7 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
         attr_reader(:closed)
 
         def close = @closed = true
+        def pool = Struct.new(:resources).new({})
       end
       .new
     tunnel = Class

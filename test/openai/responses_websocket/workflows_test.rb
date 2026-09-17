@@ -37,6 +37,29 @@ class OpenAI::Test::ResponsesWebSocketWorkflowsTest < Minitest::Test
     end
   end
 
+  def test_multiplex_example_fails_on_connection_error_without_waiting_for_eof
+    peer_closed = Async::Queue.new
+    handler = lambda do |socket|
+      2.times { read_event(socket) }
+      write_event(socket, type: "error", error: {type: "server_error", message: "synthetic private prompt"})
+      # Keep the connection open until the example handles the error.
+      begin
+        assert_nil(socket.read)
+      rescue EOFError, Protocol::WebSocket::ClosedError
+        nil
+      ensure
+        peer_closed.enqueue(true)
+      end
+    end
+
+    with_server(handler) do |client|
+      error = assert_raises(RuntimeError) { Workflows.multiplex(client: client, model: "example-model") }
+      assert_equal("Responses WebSocket operation did not complete.", error.message)
+      refute_includes(error.full_message, "synthetic private prompt")
+      assert(peer_closed.dequeue)
+    end
+  end
+
   def test_tool_example_continues_with_only_the_tool_result
     handler = lambda do |socket|
       first = read_event(socket)

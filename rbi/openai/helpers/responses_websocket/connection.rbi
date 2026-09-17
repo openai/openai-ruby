@@ -55,6 +55,11 @@ module OpenAI
         end
 
         # @api private
+        sig { params(event: ClientEvent).returns(OpenAI::Internal::AnyHash) }
+        def encode_client_event(event)
+        end
+
+        # @api private
         sig { params(data: String).void }
         def send_raw(data)
         end

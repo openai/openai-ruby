@@ -1,9 +1,11 @@
 # Responses WebSocket workflows
 
-Requires `openai` 0.86.0 or later and the optional `async-websocket` gem:
+Install `openai` and the optional `async-websocket` gem. The `multiplex` workflow
+uses `OpenAI::Responses::Session`; versions with only `client.responses.connect`
+can use the raw connection patterns below.
 
 ```ruby
-gem "openai", ">= 0.86.0"
+gem "openai"
 gem "async-websocket"
 ```
 
@@ -58,6 +60,73 @@ event types arrive as `OpenAI::Responses::UnknownServerEvent`. Preserve or handl
 them explicitly where your application needs them. Do not assume every event
 has a response, text delta, or lane ID.
 
+## Managed sessions
+
+`OpenAI::Responses::Session.open` adds routed lanes and final-response collection
+using the same authentication, custom headers, and connection options as
+`client.responses.connect`. With `OPENAI_API_KEY` set, this complete example
+opens a session and closes its reader and transport when the block exits:
+
+```ruby
+require "openai"
+
+limits = OpenAI::Responses::SessionLimits.new(
+  max_lanes: 8,
+  max_events_per_lane: 128,
+  max_events: 512,
+  max_bytes_per_lane: 16 * 1024 * 1024,
+  max_bytes: 32 * 1024 * 1024,
+  max_response_bytes: 64 * 1024 * 1024
+)
+
+OpenAI::Responses::Session.open(
+  client: OpenAI::Client.new,
+  limits: limits,
+  request_options: {extra_headers: {"X-Application-Request" => "example"}}
+) do |session|
+  lane = session.lane("conversation")
+  lane.send_event(type: "response.create", model: "gpt-5.2", input: "Say hello.")
+  response = lane.get_final_response
+  puts response.status
+  # Supply previous_response_id: response.id explicitly for continuation.
+end
+```
+
+These required budgets are application choices, not service limits or changes
+to raw connection defaults. The default and all detached lane IDs count toward `max_lanes` until reconnect. Queue
+budgets apply per lane and across the session; byte counts measure serialized
+event data, not total process memory. `max_response_bytes` bounds cumulative
+compatible event bytes retained for collection. Choose budgets for legitimate
+large output, including images and tool results. Queue overflow closes the
+session's connection; collection overflow leaves raw events and other lanes usable.
+
+Register lanes before sending and consume each response before creating another
+on that lane. One Async task reads the physical connection; each lane has one
+consumer, and all session operations use the owning Ruby thread. `lane.receive`
+returns original typed or unknown events. `lane.get_final_response` consumes
+remaining events and returns the current completed, failed, or incomplete response;
+inspect its status. Collect a parent's final response before receiving its successor's
+`response.created`, which starts accumulation for the successor. The helper does not
+retain a history of completed responses; callers can retain the raw terminal events. Protocol errors raise `OpenAI::Responses::RequestError` with the
+original event in `error.event`. Raw commands other than `response.create` leave
+subsequent unsequenced, unscoped errors uncorrelated until explicit reconnect. Consuming
+such an error during an active default response fails that lane; named lanes remain
+usable. Errors received before the first raw submission retain ordinary create-retry
+behavior, regardless of later commands sent before consuming them. Observe `session.default` for connection-level
+errors and events with no registered lane. Closing a named lane discards its
+queue and routes future events for that ID to the default lane. Closing a lane
+does not cancel its server work. Its ID remains reserved until reconnect,
+including after terminal events: steering can create automatic successors.
+Continue using the same open lane for sequential responses. Closing the default
+lane opts out of unclaimed events; it cannot be replaced before reconnect.
+
+Recovery is explicit: `session.reconnect(client: fresh_client,
+request_options: fresh_options, restore: callback)` re-evaluates authentication
+and custom headers. Old lane handles raise `StateLostError`; the callback
+registers fresh lanes and sends application-selected restoration state. No
+previous create is replayed. Choose stored IDs or full history as described in
+[reconnect guidance](#reconnect-without-replaying-uncertain-work).
+
 ## Sequential tool turns
 
 The `tools` workflow forces a call to one known, harmless application function.
@@ -87,13 +156,44 @@ route a lane-scoped error to just that lane, while treating a connection-scoped
 error as affecting the connection. Track separate response IDs when multiple
 requests are outstanding within a lane; a lane alone is not a request ID.
 
-The server executes same-lane requests in FIFO order. The SDK does not enforce
-lane grammar, schedule lanes, or manage a per-lane queue. Consult the platform
-guide for the current concurrent-response and named-lane limits.
+The server executes same-lane requests in FIFO order without overlap. Named IDs
+contain 1–256 ASCII letters, digits, underscores, hyphens or periods; an empty string
+is invalid. The raw connection forwards IDs without enforcing this grammar.
+The optional [session helper](#managed-sessions)
+routes events into local queues and allows one consumed response at a time per
+lane; it does not schedule server work. Named-lane terminal events and request
+errors echo the ID; default-lane events omit it.
 
-To fork, send an existing response ID on a different lane. With `store=false`,
+The service allows 16 active responses and queues additional creates. It accepts
+32 distinct named IDs per connection; the default lane does not count. These
+are separate from the session's application budgets. Detaching a local lane
+does not reset the server's distinct-ID count.
+
+To fork, send an existing response ID on a different lane. With `store=false` or ZDR,
 wait for the fork's `response.in_progress` before advancing the source lane so
 its parent remains available in the connection-local cache.
+
+The server keeps recent response state in a connection-local cache. With
+`store=true`, an older response may be loaded from persisted state. With
+`store=false` or ZDR, an uncached ID returns `previous_response_not_found`.
+A same-lane continuation returning a 4xx or 5xx evicts its referenced cached
+parent; an errored cross-lane fork preserves the shared parent for the source
+lane. Do not blindly retry the same parent after a cache miss; use the explicit
+context-restoration approach below when needed.
+
+## Warmup and compaction
+
+For optional warmup, send `connection.response.create(..., generate: false)`,
+consume the terminal response, and save its ID. A later create can use that ID
+as `previous_response_id` with new input. Warmup prepares state without model
+output; the existing create helper forwards `generate` as an extra field.
+
+With automatic compaction configured through `context_management`, continue
+using the latest response ID and only new input items. Standalone
+`client.responses.compact(...)` instead returns a compacted input window. Send
+its complete `output` as input to a new WebSocket chain, omitting or nulling
+`previous_response_id`; do not use the compaction object's ID as a response ID
+or prune items from its output.
 
 ## Reconnect without replaying uncertain work
 
@@ -154,15 +254,22 @@ acknowledgment, and it does not guarantee that a response stopped executing.
   event. Stop using that connection; do not automatically resend it.
 - A transport read failure poisons the connection. A server `error` event is
   delivered as an event and does not by itself poison it.
+  Handle `previous_response_not_found`, `invalid_stream_id`,
+  `websocket_stream_limit_reached`, and `websocket_connection_limit_reached`
+  through the original error event. Observe `session.default` when using named
+  session lanes so connection-scoped errors are not left unread.
 - Malformed JSON raises `ResponsesProtocolError` without exposing the payload;
   the connection permits later reads. Decide whether continuing is appropriate
   for your application.
 - Raw `send_event` supports generated client models or hashes, including
   `response.steer`. There is no `connection.response.steer` convenience method.
-- The platform documents `generate: false` warmup. It can be forwarded through
-  create's keyword rest even though 0.86.0 has no named generated `generate`
-  keyword. Follow the platform contract; do not send HTTP-only `stream` or
-  `background` flags just because generated models expose them.
+  Steering accepts only `type`, `previous_response_id`, and `input`, without
+  `stream_id`. Accepted input is committed at the successor's `response.created`.
+  If `response.steer.pending` requires tool output or approval, fill its
+  `required_input` stubs and send one create on the parent's lane with that
+  parent ID. Reuse saved results; do not rerun tools or resend accepted input.
+- Follow the platform contract; do not send HTTP-only `stream` or `background`
+  flags just because generated models expose them.
 - X.509 workload identity and provider runtimes are not supported by this
   entry point. A nonempty `request_options.extra_query` or nonzero
   `request_options.max_retries` is rejected. Supported workload identity has a
