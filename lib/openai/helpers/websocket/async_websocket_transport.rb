@@ -343,7 +343,12 @@ module OpenAI
 
       private def close_resources(connection, client, proxy_client, connection_aborted:, pending_error:)
         cleanup_error = nil
-        resources = [client, proxy_client]
+        resources = [client]
+        # These tunnels belong to this connection. A peer may keep its read side
+        # open after a failed TLS handshake, so retire them before draining the
+        # proxy pool instead of waiting indefinitely for a remote EOF.
+        resources.concat(proxy_client.pool.resources.keys) if proxy_client
+        resources << proxy_client
         resources.unshift(connection) unless connection_aborted
         resources.compact.each do |resource|
           resource.close
