@@ -595,6 +595,7 @@ module OpenAI
             {
               ?comparison_response_id: String?,
               ?mode: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::mode,
+              ?prewarm: bool,
               ?ttl: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::ttl
             }
 
@@ -607,6 +608,10 @@ module OpenAI
               OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::mode
             ) -> OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::mode
 
+            attr_reader prewarm: bool?
+
+            def prewarm=: (bool) -> bool
+
             attr_reader ttl: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::ttl?
 
             def ttl=: (
@@ -616,12 +621,14 @@ module OpenAI
             def initialize: (
               ?comparison_response_id: String?,
               ?mode: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::mode,
+              ?prewarm: bool,
               ?ttl: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::ttl
             ) -> void
 
             def to_hash: -> {
               ?comparison_response_id: String?,
               ?mode: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::mode,
+              ?prewarm: bool,
               ?ttl: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::ttl
             }
 

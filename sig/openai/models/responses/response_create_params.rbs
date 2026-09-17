@@ -327,6 +327,7 @@ module OpenAI
           {
             ?comparison_response_id: String?,
             ?mode: OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::mode,
+            ?prewarm: bool,
             ?ttl: OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::ttl
           }
 
@@ -339,6 +340,10 @@ module OpenAI
             OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::mode
           ) -> OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::mode
 
+          attr_reader prewarm: bool?
+
+          def prewarm=: (bool) -> bool
+
           attr_reader ttl: OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::ttl?
 
           def ttl=: (
@@ -348,12 +353,14 @@ module OpenAI
           def initialize: (
             ?comparison_response_id: String?,
             ?mode: OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::mode,
+            ?prewarm: bool,
             ?ttl: OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::ttl
           ) -> void
 
           def to_hash: -> {
             ?comparison_response_id: String?,
             ?mode: OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::mode,
+            ?prewarm: bool,
             ?ttl: OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::ttl
           }
 

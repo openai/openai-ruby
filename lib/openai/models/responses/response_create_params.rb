@@ -817,6 +817,13 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::Mode, nil]
           optional :mode, enum: -> { OpenAI::Responses::ResponseCreateParams::PromptCacheOptions::Mode }
 
+          # @!attribute prewarm
+          #   Prepares the prompt cache without generating output. Defaults to `false`. When
+          #   set to `true`, overrides the `generate` field to `false`.
+          #
+          #   @return [Boolean, nil]
+          optional :prewarm, OpenAI::Internal::Type::Boolean
+
           # @!attribute ttl
           #   The minimum lifetime applied to every implicit and explicit cache breakpoint
           #   written by the request. Defaults to `30m`, which is currently the only supported
@@ -825,7 +832,7 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::Ttl, nil]
           optional :ttl, enum: -> { OpenAI::Responses::ResponseCreateParams::PromptCacheOptions::Ttl }
 
-          # @!method initialize(comparison_response_id: nil, mode: nil, ttl: nil)
+          # @!method initialize(comparison_response_id: nil, mode: nil, prewarm: nil, ttl: nil)
           #   Options for prompt caching. Supported for `gpt-5.6` and later models. By
           #   default, OpenAI automatically chooses one implicit cache breakpoint. You can add
           #   explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
@@ -847,6 +854,10 @@ module OpenAI
           #     `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
           #     latest four explicit breakpoints. If there are no explicit breakpoints, the
           #     request does not use prompt caching.
+          #
+          #   @param prewarm [Boolean]
+          #     Prepares the prompt cache without generating output. Defaults to `false`. When
+          #     set to `true`, overrides the `generate` field to `false`.
           #
           #   @param ttl [Symbol, OpenAI::Models::Responses::ResponseCreateParams::PromptCacheOptions::Ttl]
           #     The minimum lifetime applied to every implicit and explicit cache breakpoint
