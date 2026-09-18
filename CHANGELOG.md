@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.91.0](https://github.com/openai/openai-ruby/compare/v0.90.0...v0.91.0) (2026-09-18)
+
+
+### Features
+
+* **api:** add agent session model settings ([#708](https://github.com/openai/openai-ruby/issues/708)) ([244a98e](https://github.com/openai/openai-ruby/commit/244a98e6e2eba0aa30f094116249e84433d8794d))
+* **api:** add audio-mini model choices ([#710](https://github.com/openai/openai-ruby/issues/710)) ([3cdfe3f](https://github.com/openai/openai-ruby/commit/3cdfe3f275eb0c3678803b1037b64271ace69135))
+* **api:** add compaction progress events ([#706](https://github.com/openai/openai-ruby/issues/706)) ([47e2dc7](https://github.com/openai/openai-ruby/commit/47e2dc7e8cd22c1d949cfaeae32531d7dd23f9b5))
+* **api:** add managed Responses WebSocket sessions ([#711](https://github.com/openai/openai-ruby/issues/711)) ([a619653](https://github.com/openai/openai-ruby/commit/a61965302b90800fbdb2b888a0a666695cfbf825))
+* **api:** add prompt-cache prewarming ([#712](https://github.com/openai/openai-ruby/issues/712)) ([61b5692](https://github.com/openai/openai-ruby/commit/61b56920641a4b241ded57b289b587b5698db55a))
+
+
+### Chores
+
+* **api:** clarify incoming SIP call ID usage ([#709](https://github.com/openai/openai-ruby/issues/709)) ([cedfada](https://github.com/openai/openai-ruby/commit/cedfada1f4bbdd4e106c84b6564c03271d5bf133))
+* **deps-dev:** bump sorbet-runtime from 0.6.13455 to 0.6.13486 in the development-dependencies group ([#698](https://github.com/openai/openai-ruby/issues/698)) ([ef1dc85](https://github.com/openai/openai-ruby/commit/ef1dc859af816214dbd244a2da431e64193ac6e1))
+* **deps:** bump ruby/setup-ruby from 1.321.0 to 1.322.0 ([#700](https://github.com/openai/openai-ruby/issues/700)) ([5bdc477](https://github.com/openai/openai-ruby/commit/5bdc477abc7e9e040debca40dd14e530b1c80ff1))
+* **deps:** bump ruby/setup-ruby from 1.322.0 to 1.323.0 ([#707](https://github.com/openai/openai-ruby/issues/707)) ([460148c](https://github.com/openai/openai-ruby/commit/460148cd775fc588d1b20ccd6a4ef35f9985ad10))
+
 ## [0.90.0](https://github.com/openai/openai-ruby/compare/v0.89.0...v0.90.0) (2026-09-10)
 
 
