@@ -213,6 +213,9 @@ module OpenAI
 
       module Versions
       end
+
+      module Webhooks
+      end
     end
   end
 end

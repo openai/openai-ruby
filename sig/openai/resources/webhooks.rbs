@@ -1,6 +1,51 @@
 module OpenAI
   module Resources
     class Webhooks
+      attr_reader event_types: OpenAI::Resources::Webhooks::EventTypes
+
+      def create: (
+        event_types: ::Array[OpenAI::Models::Webhooks::WebhookCreateParams::event_type],
+        name: String,
+        url: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Webhooks::WebhookEndpointWithSecret
+
+      def retrieve: (
+        String webhook_endpoint_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Webhooks::WebhookEndpoint
+
+      def update: (
+        String webhook_endpoint_id,
+        ?event_types: ::Array[OpenAI::Models::Webhooks::WebhookUpdateParams::event_type],
+        ?name: String,
+        ?url: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Webhooks::WebhookEndpoint
+
+      def list: (
+        ?after: String?,
+        ?limit: Integer,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::CursorPage[OpenAI::Webhooks::WebhookEndpoint]
+
+      def delete: (
+        String webhook_endpoint_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Webhooks::DeletedWebhookEndpoint
+
+      def rotate_secret: (
+        String webhook_endpoint_id,
+        ?keep_old_secret_active_for_24_hours: bool,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Webhooks::WebhookEndpointWithSecret
+
+      def test_: (
+        String webhook_endpoint_id,
+        event_type: OpenAI::Models::Webhooks::WebhookTestParams::event_type,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Webhooks::WebhookEndpointTestResult
+
       def unwrap: (
         String payload,
         ?Hash[String | Symbol, String] headers,
