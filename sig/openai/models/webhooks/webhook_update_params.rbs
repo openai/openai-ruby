@@ -1,0 +1,96 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type webhook_update_params =
+        {
+          webhook_endpoint_id: String,
+          ?event_types: ::Array[OpenAI::Models::Webhooks::WebhookUpdateParams::event_type],
+          ?name: String,
+          ?url: String,
+          ?request_options: OpenAI::request_opts
+        }
+
+      class WebhookUpdateParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor webhook_endpoint_id: String
+
+        attr_reader event_types: ::Array[OpenAI::Models::Webhooks::WebhookUpdateParams::event_type]?
+
+        def event_types=: (
+          ::Array[OpenAI::Models::Webhooks::WebhookUpdateParams::event_type]
+        ) -> ::Array[OpenAI::Models::Webhooks::WebhookUpdateParams::event_type]
+
+        attr_reader name: String?
+
+        def name=: (String) -> String
+
+        attr_reader url: String?
+
+        def url=: (String) -> String
+
+        def initialize: (
+          webhook_endpoint_id: String,
+          ?event_types: ::Array[OpenAI::Models::Webhooks::WebhookUpdateParams::event_type],
+          ?name: String,
+          ?url: String,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          webhook_endpoint_id: String,
+          ?event_types: ::Array[OpenAI::Models::Webhooks::WebhookUpdateParams::event_type],
+          ?name: String,
+          ?url: String,
+          ?request_options: OpenAI::RequestOptions
+        }
+
+        type event_type =
+          :"batch.completed"
+          | :"batch.failed"
+          | :"batch.expired"
+          | :"batch.cancelled"
+          | :"response.completed"
+          | :"response.failed"
+          | :"response.cancelled"
+          | :"response.incomplete"
+          | :"eval.run.succeeded"
+          | :"eval.run.failed"
+          | :"eval.run.canceled"
+          | :"fine_tuning.job.succeeded"
+          | :"fine_tuning.job.failed"
+          | :"fine_tuning.job.cancelled"
+          | :"realtime.call.incoming"
+          | :"video.completed"
+          | :"video.failed"
+          | :"safety.alert.created"
+
+        module EventType
+          extend OpenAI::Internal::Type::Enum
+
+          BATCH_COMPLETED: :"batch.completed"
+          BATCH_FAILED: :"batch.failed"
+          BATCH_EXPIRED: :"batch.expired"
+          BATCH_CANCELLED: :"batch.cancelled"
+          RESPONSE_COMPLETED: :"response.completed"
+          RESPONSE_FAILED: :"response.failed"
+          RESPONSE_CANCELLED: :"response.cancelled"
+          RESPONSE_INCOMPLETE: :"response.incomplete"
+          EVAL_RUN_SUCCEEDED: :"eval.run.succeeded"
+          EVAL_RUN_FAILED: :"eval.run.failed"
+          EVAL_RUN_CANCELED: :"eval.run.canceled"
+          FINE_TUNING_JOB_SUCCEEDED: :"fine_tuning.job.succeeded"
+          FINE_TUNING_JOB_FAILED: :"fine_tuning.job.failed"
+          FINE_TUNING_JOB_CANCELLED: :"fine_tuning.job.cancelled"
+          REALTIME_CALL_INCOMING: :"realtime.call.incoming"
+          VIDEO_COMPLETED: :"video.completed"
+          VIDEO_FAILED: :"video.failed"
+          SAFETY_ALERT_CREATED: :"safety.alert.created"
+
+          def self?.values: -> ::Array[OpenAI::Models::Webhooks::WebhookUpdateParams::event_type]
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type webhook_endpoint_list =
+        {
+          data: ::Array[OpenAI::Webhooks::WebhookEndpoint],
+          first_id: String?,
+          has_more: bool,
+          last_id: String?,
+          ?object: :list
+        }
+
+      class WebhookEndpointList < OpenAI::Internal::Type::BaseModel
+        attr_accessor data: ::Array[OpenAI::Webhooks::WebhookEndpoint]
+
+        attr_accessor first_id: String?
+
+        attr_accessor has_more: bool
+
+        attr_accessor last_id: String?
+
+        attr_accessor object: :list
+
+        def initialize: (
+          data: ::Array[OpenAI::Webhooks::WebhookEndpoint],
+          first_id: String?,
+          has_more: bool,
+          last_id: String?,
+          ?object: :list
+        ) -> void
+
+        def to_hash: -> {
+          data: ::Array[OpenAI::Webhooks::WebhookEndpoint],
+          first_id: String?,
+          has_more: bool,
+          last_id: String?,
+          ?object: :list
+        }
+      end
+    end
+  end
+end
