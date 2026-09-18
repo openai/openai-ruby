@@ -1,0 +1,59 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type webhook_endpoint =
+        {
+          id: String,
+          created_at: Integer,
+          event_types: ::Array[String],
+          name: String,
+          ?object: :webhook_endpoint,
+          signing_secret_hint: String?,
+          url: String,
+          ?updated_at: Integer
+        }
+
+      class WebhookEndpoint < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor event_types: ::Array[String]
+
+        attr_accessor name: String
+
+        attr_accessor object: :webhook_endpoint
+
+        attr_accessor signing_secret_hint: String?
+
+        attr_accessor url: String
+
+        attr_reader updated_at: Integer?
+
+        def updated_at=: (Integer) -> Integer
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          event_types: ::Array[String],
+          name: String,
+          signing_secret_hint: String?,
+          url: String,
+          ?updated_at: Integer,
+          ?object: :webhook_endpoint
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          event_types: ::Array[String],
+          name: String,
+          ?object: :webhook_endpoint,
+          signing_secret_hint: String?,
+          url: String,
+          ?updated_at: Integer
+        }
+      end
+    end
+  end
+end

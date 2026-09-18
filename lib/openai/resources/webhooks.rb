@@ -3,6 +3,200 @@
 module OpenAI
   module Resources
     class Webhooks
+      # @return [OpenAI::Resources::Webhooks::EventTypes]
+      attr_reader :event_types
+
+      # Creates a webhook endpoint for the authenticated project.
+      #
+      # @overload create(event_types:, name:, url:, request_options: {})
+      #
+      # @param event_types [Array<Symbol, OpenAI::Models::Webhooks::WebhookCreateParams::EventType>]
+      #   The event types that trigger deliveries to this endpoint.
+      #
+      # @param name [String]
+      #   A human-readable name for the webhook endpoint.
+      #
+      # @param url [String]
+      #   The HTTPS URL that receives webhook deliveries.
+      #
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+      #
+      # @return [OpenAI::Models::Webhooks::WebhookEndpointWithSecret]
+      #
+      # @see OpenAI::Models::Webhooks::WebhookCreateParams
+      def create(params)
+        parsed, options = OpenAI::Webhooks::WebhookCreateParams.dump_request(params)
+        @client.request(
+          method: :post,
+          path: "webhook_endpoints",
+          body: parsed,
+          model: OpenAI::Webhooks::WebhookEndpointWithSecret,
+          security: {bearer_auth: true},
+          options: options
+        )
+      end
+
+      # Retrieves a webhook endpoint for the authenticated project.
+      #
+      # @overload retrieve(webhook_endpoint_id, request_options: {})
+      #
+      # @param webhook_endpoint_id [String]
+      #   The ID of the webhook endpoint to retrieve.
+      #
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+      #
+      # @return [OpenAI::Models::Webhooks::WebhookEndpoint]
+      #
+      # @see OpenAI::Models::Webhooks::WebhookRetrieveParams
+      def retrieve(webhook_endpoint_id, params = {})
+        @client.request(
+          method: :get,
+          path: ["webhook_endpoints/%1$s", webhook_endpoint_id],
+          model: OpenAI::Webhooks::WebhookEndpoint,
+          security: {bearer_auth: true},
+          options: params[:request_options]
+        )
+      end
+
+      # Updates a webhook endpoint for the authenticated project.
+      #
+      # @overload update(webhook_endpoint_id, event_types: nil, name: nil, url: nil, request_options: {})
+      #
+      # @param webhook_endpoint_id [String]
+      #   The ID of the webhook endpoint to update.
+      #
+      # @param event_types [Array<Symbol, OpenAI::Models::Webhooks::WebhookUpdateParams::EventType>]
+      #   The complete set of event types that should trigger deliveries.
+      #
+      # @param name [String]
+      #   A new human-readable name for the webhook endpoint.
+      #
+      # @param url [String]
+      #   A new HTTPS URL that receives webhook deliveries.
+      #
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+      #
+      # @return [OpenAI::Models::Webhooks::WebhookEndpoint]
+      #
+      # @see OpenAI::Models::Webhooks::WebhookUpdateParams
+      def update(webhook_endpoint_id, params = {})
+        parsed, options = OpenAI::Webhooks::WebhookUpdateParams.dump_request(params)
+        @client.request(
+          method: :post,
+          path: ["webhook_endpoints/%1$s", webhook_endpoint_id],
+          body: parsed,
+          model: OpenAI::Webhooks::WebhookEndpoint,
+          security: {bearer_auth: true},
+          options: options
+        )
+      end
+
+      # Returns webhook endpoints for the authenticated project in newest-first order.
+      #
+      # @overload list(after: nil, limit: nil, request_options: {})
+      #
+      # @param after [String, nil]
+      #   ID of the last webhook endpoint from the previous page.
+      #
+      # @param limit [Integer]
+      #   Maximum number of webhook endpoints to return. Defaults to 20.
+      #
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+      #
+      # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Webhooks::WebhookEndpoint>]
+      #
+      # @see OpenAI::Models::Webhooks::WebhookListParams
+      def list(params = {})
+        parsed, options = OpenAI::Webhooks::WebhookListParams.dump_request(params)
+        query = OpenAI::Internal::Util.encode_query_params(parsed)
+        @client.request(
+          method: :get,
+          path: "webhook_endpoints",
+          query: query,
+          page: OpenAI::Internal::CursorPage,
+          model: OpenAI::Webhooks::WebhookEndpoint,
+          security: {bearer_auth: true},
+          options: options
+        )
+      end
+
+      # Deletes a webhook endpoint for the authenticated project.
+      #
+      # @overload delete(webhook_endpoint_id, request_options: {})
+      #
+      # @param webhook_endpoint_id [String]
+      #   The ID of the webhook endpoint to delete.
+      #
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+      #
+      # @return [OpenAI::Models::Webhooks::DeletedWebhookEndpoint]
+      #
+      # @see OpenAI::Models::Webhooks::WebhookDeleteParams
+      def delete(webhook_endpoint_id, params = {})
+        @client.request(
+          method: :delete,
+          path: ["webhook_endpoints/%1$s", webhook_endpoint_id],
+          model: OpenAI::Webhooks::DeletedWebhookEndpoint,
+          security: {bearer_auth: true},
+          options: params[:request_options]
+        )
+      end
+
+      # Rotates the signing secret for a webhook endpoint in the authenticated project.
+      #
+      # @overload rotate_secret(webhook_endpoint_id, keep_old_secret_active_for_24_hours: nil, request_options: {})
+      #
+      # @param webhook_endpoint_id [String]
+      #   The ID of the webhook endpoint whose signing secret will be rotated.
+      #
+      # @param keep_old_secret_active_for_24_hours [Boolean]
+      #   Whether to keep the previous signing secret valid for 24 hours after rotation.
+      #   Defaults to false, which invalidates the previous secret immediately.
+      #
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+      #
+      # @return [OpenAI::Models::Webhooks::WebhookEndpointWithSecret]
+      #
+      # @see OpenAI::Models::Webhooks::WebhookRotateSecretParams
+      def rotate_secret(webhook_endpoint_id, params = {})
+        parsed, options = OpenAI::Webhooks::WebhookRotateSecretParams.dump_request(params)
+        @client.request(
+          method: :post,
+          path: ["webhook_endpoints/%1$s/rotate_secret", webhook_endpoint_id],
+          body: parsed,
+          model: OpenAI::Webhooks::WebhookEndpointWithSecret,
+          security: {bearer_auth: true},
+          options: options
+        )
+      end
+
+      # Sends a sample event to a webhook endpoint for the authenticated project.
+      #
+      # @overload test_(webhook_endpoint_id, event_type:, request_options: {})
+      #
+      # @param webhook_endpoint_id [String]
+      #   The ID of the webhook endpoint to test.
+      #
+      # @param event_type [Symbol, OpenAI::Models::Webhooks::WebhookTestParams::EventType]
+      #   The event type to send as a sample delivery.
+      #
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+      #
+      # @return [OpenAI::Models::Webhooks::WebhookEndpointTestResult]
+      #
+      # @see OpenAI::Models::Webhooks::WebhookTestParams
+      def test_(webhook_endpoint_id, params)
+        parsed, options = OpenAI::Webhooks::WebhookTestParams.dump_request(params)
+        @client.request(
+          method: :post,
+          path: ["webhook_endpoints/%1$s/test", webhook_endpoint_id],
+          body: parsed,
+          model: OpenAI::Webhooks::WebhookEndpointTestResult,
+          security: {bearer_auth: true},
+          options: options
+        )
+      end
+
       # Validates that the given payload was sent by OpenAI and parses the payload.
       #
       # @param payload [String] The raw webhook payload as a string
@@ -112,6 +306,7 @@ module OpenAI
       # @param client [OpenAI::Client]
       def initialize(client:)
         @client = client
+        @event_types = OpenAI::Resources::Webhooks::EventTypes.new(client: client)
       end
     end
   end

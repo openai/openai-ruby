@@ -1,0 +1,35 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type webhook_list_params =
+        {
+          ?after: String?,
+          ?limit: Integer,
+          ?request_options: OpenAI::request_opts
+        }
+
+      class WebhookListParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor after: String?
+
+        attr_reader limit: Integer?
+
+        def limit=: (Integer) -> Integer
+
+        def initialize: (
+          ?after: String?,
+          ?limit: Integer,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          ?after: String?,
+          ?limit: Integer,
+          ?request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end

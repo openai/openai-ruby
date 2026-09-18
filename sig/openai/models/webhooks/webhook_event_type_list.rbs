@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type webhook_event_type_list = { data: ::Array[String], ?object: :list }
+
+      class WebhookEventTypeList < OpenAI::Internal::Type::BaseModel
+        attr_accessor data: ::Array[String]
+
+        attr_accessor object: :list
+
+        def initialize: (data: ::Array[String], ?object: :list) -> void
+
+        def to_hash: -> { data: ::Array[String], ?object: :list }
+      end
+    end
+  end
+end
