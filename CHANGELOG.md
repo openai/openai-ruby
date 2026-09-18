@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.92.0](https://github.com/openai/openai-ruby/compare/v0.91.0...v0.92.0) (2026-09-18)
+
+
+### Features
+
+* **api:** add webhook endpoint management ([#715](https://github.com/openai/openai-ruby/issues/715)) ([200081b](https://github.com/openai/openai-ruby/commit/200081baaa078144426ba3678661fd63a9eaafb0))
+
+
+### Chores
+
+* **api:** deprecate MCP connector_id ([#717](https://github.com/openai/openai-ruby/issues/717)) ([d64821b](https://github.com/openai/openai-ruby/commit/d64821b69a34e8382a6c9fd67764c2081f403d38))
+
 ## [0.91.0](https://github.com/openai/openai-ruby/compare/v0.90.0...v0.91.0) (2026-09-18)
 
 
