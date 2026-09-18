@@ -159,7 +159,7 @@ module OpenAI
               module Access
                 extend OpenAI::Internal::Type::Enum
 
-                # Allows unrestricted network access, matching an omitted network policy.
+                # Allows unrestricted network access.
                 ENABLED = :enabled
 
                 # Disables network access.

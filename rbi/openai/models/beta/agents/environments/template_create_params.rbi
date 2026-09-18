@@ -250,7 +250,7 @@ module OpenAI
                 }
                 OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-                # Allows unrestricted network access, matching an omitted network policy.
+                # Allows unrestricted network access.
                 ENABLED = T.let(
                   :enabled,
                   OpenAI::Beta::Agents::Environments::TemplateCreateParams::Network::Access::TaggedSymbol
