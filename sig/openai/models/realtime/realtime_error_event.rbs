@@ -9,12 +9,21 @@ module OpenAI
         }
 
       class RealtimeErrorEvent < OpenAI::Internal::Type::BaseModel
+        # Details of the error.
         attr_accessor error: OpenAI::Realtime::RealtimeError
 
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The event type, must be `error`.
         attr_accessor type: :error
 
+        # @param error
+        #   Details of the error.
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param type
+        #   The event type, must be `error`.
         def initialize: (
           error: OpenAI::Realtime::RealtimeError,
           event_id: String,

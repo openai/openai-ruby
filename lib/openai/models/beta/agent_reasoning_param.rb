@@ -5,13 +5,14 @@ module OpenAI
     module Beta
       class AgentReasoningParam < OpenAI::Internal::Type::BaseModel
         # @!attribute effort
-        #   The amount of reasoning effort the model should use.
+        #   The amount of reasoning effort the model should use. Omission lets the model
+        #   select it.
         #
         #   @return [Symbol, OpenAI::Models::Beta::AgentReasoningParam::Effort, nil]
         optional :effort, enum: -> { OpenAI::Beta::AgentReasoningParam::Effort }, nil?: true
 
         # @!attribute summary
-        #   The reasoning summary format requested from the model.
+        #   Controls whether the response includes a reasoning summary.
         #
         #   @return [Symbol, OpenAI::Models::Beta::AgentReasoningParam::Summary, nil]
         optional :summary, enum: -> { OpenAI::Beta::AgentReasoningParam::Summary }, nil?: true
@@ -20,12 +21,14 @@ module OpenAI
         #   Reasoning configuration for the agent.
         #
         #   @param effort [Symbol, OpenAI::Models::Beta::AgentReasoningParam::Effort, nil]
-        #     The amount of reasoning effort the model should use.
+        #     The amount of reasoning effort the model should use. Omission lets the model
+        #     select it.
         #
         #   @param summary [Symbol, OpenAI::Models::Beta::AgentReasoningParam::Summary, nil]
-        #     The reasoning summary format requested from the model.
+        #     Controls whether the response includes a reasoning summary.
 
-        # The amount of reasoning effort the model should use.
+        # The amount of reasoning effort the model should use. Omission lets the model
+        # select it.
         #
         # @see OpenAI::Models::Beta::AgentReasoningParam#effort
         module Effort
@@ -43,7 +46,7 @@ module OpenAI
           #   @return [Array<Symbol>]
         end
 
-        # The reasoning summary format requested from the model.
+        # Controls whether the response includes a reasoning summary.
         #
         # @see OpenAI::Models::Beta::AgentReasoningParam#summary
         module Summary

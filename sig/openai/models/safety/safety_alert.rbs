@@ -27,14 +27,24 @@ module OpenAI
 
         attr_accessor object: :"safety.alert"
 
+        # A customer-safe description derived from error_type, or null for zero data
+        # retention requests.
         attr_accessor reason: String?
 
         attr_accessor request_id: String
 
+        # Whether block registration succeeded for this request. This does not confirm
+        # that response execution stopped.
         attr_accessor request_paused: bool
 
         attr_accessor response_id: String
 
+        # @param reason
+        #   A customer-safe description derived from error_type, or null for zero data
+        #   retention requests.
+        # @param request_paused
+        #   Whether block registration succeeded for this request. This does not confirm
+        #   that response execution stopped.
         def initialize: (
           id: String,
           created_at: Integer,

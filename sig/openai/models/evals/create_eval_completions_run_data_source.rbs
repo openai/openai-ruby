@@ -11,18 +11,30 @@ module OpenAI
         }
 
       class CreateEvalCompletionsRunDataSource < OpenAI::Internal::Type::BaseModel
+        # Determines what populates the `item` namespace in this run's data source.
         attr_accessor source: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::source
 
+        # The type of run data source. Always `completions`.
         attr_accessor type: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::type_
 
+        # Used when sampling from a model. Dictates the structure of the messages passed
+        # into the model. Can either be a reference to a prebuilt trajectory (ie,
+        # `item.input_trajectory`), or a template with variable references to the `item`
+        # namespace.
         attr_reader input_messages: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::input_messages?
 
+        # Used when sampling from a model. Dictates the structure of the messages passed
+        # into the model. Can either be a reference to a prebuilt trajectory (ie,
+        # `item.input_trajectory`), or a template with variable references to the `item`
+        # namespace.
         def input_messages=: (
           OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::input_messages
         ) -> OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::input_messages
 
+        # The name of the model to use for generating completions (e.g. "o3-mini").
         attr_reader model: String?
 
+        # The name of the model to use for generating completions (e.g. "o3-mini").
         def model=: (String) -> String
 
         attr_reader sampling_params: OpenAI::Evals::CreateEvalCompletionsRunDataSource::SamplingParams?
@@ -31,6 +43,17 @@ module OpenAI
           OpenAI::Evals::CreateEvalCompletionsRunDataSource::SamplingParams
         ) -> OpenAI::Evals::CreateEvalCompletionsRunDataSource::SamplingParams
 
+        # @param source
+        #   Determines what populates the `item` namespace in this run's data source.
+        # @param type
+        #   The type of run data source. Always `completions`.
+        # @param input_messages
+        #   Used when sampling from a model. Dictates the structure of the messages passed
+        #   into the model. Can either be a reference to a prebuilt trajectory (ie,
+        #   `item.input_trajectory`), or a template with variable references to the `item`
+        #   namespace.
+        # @param model
+        #   The name of the model to use for generating completions (e.g. "o3-mini").
         def initialize: (
           source: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::source,
           type: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::type_,
@@ -62,10 +85,16 @@ module OpenAI
             }
 
           class FileContent < OpenAI::Internal::Type::BaseModel
+            # The content of the jsonl file.
             attr_accessor content: ::Array[OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent::Content]
 
+            # The type of jsonl source. Always `file_content`.
             attr_accessor type: :file_content
 
+            # @param content
+            #   The content of the jsonl file.
+            # @param type
+            #   The type of jsonl source. Always `file_content`.
             def initialize: (
               content: ::Array[OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent::Content],
               ?type: :file_content
@@ -101,10 +130,16 @@ module OpenAI
           type file_id = { id: String, ?type: :file_id }
 
           class FileID < OpenAI::Internal::Type::BaseModel
+            # The identifier of the file.
             attr_accessor id: String
 
+            # The type of jsonl source. Always `file_id`.
             attr_accessor type: :file_id
 
+            # @param id
+            #   The identifier of the file.
+            # @param type
+            #   The type of jsonl source. Always `file_id`.
             def initialize: (id: String, ?type: :file_id) -> void
 
             def to_hash: -> { id: String, ?type: :file_id }
@@ -121,18 +156,46 @@ module OpenAI
             }
 
           class StoredCompletions < OpenAI::Internal::Type::BaseModel
+            # The type of source. Always `stored_completions`.
             attr_accessor type: :stored_completions
 
+            # An optional Unix timestamp to filter items created after this time.
             attr_accessor created_after: Integer?
 
+            # An optional Unix timestamp to filter items created before this time.
             attr_accessor created_before: Integer?
 
+            # An optional maximum number of items to return.
             attr_accessor limit: Integer?
 
+            # Set of 16 key-value pairs that can be attached to an object. This can be useful
+            # for storing additional information about the object in a structured format, and
+            # querying for objects via API or the dashboard.
+            #
+            # Keys are strings with a maximum length of 64 characters. Values are strings with
+            # a maximum length of 512 characters.
             attr_accessor metadata: OpenAI::Models::metadata?
 
+            # An optional model to filter by (e.g., 'gpt-6-astra').
             attr_accessor model: String?
 
+            # @param created_after
+            #   An optional Unix timestamp to filter items created after this time.
+            # @param created_before
+            #   An optional Unix timestamp to filter items created before this time.
+            # @param limit
+            #   An optional maximum number of items to return.
+            # @param metadata
+            #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+            #   for storing additional information about the object in a structured format, and
+            #   querying for objects via API or the dashboard.
+            #
+            #   Keys are strings with a maximum length of 64 characters. Values are strings with
+            #   a maximum length of 512 characters.
+            # @param model
+            #   An optional model to filter by (e.g., 'gpt-6-astra').
+            # @param type
+            #   The type of source. Always `stored_completions`.
             def initialize: (
               ?created_after: Integer?,
               ?created_before: Integer?,
@@ -179,10 +242,18 @@ module OpenAI
             }
 
           class Template < OpenAI::Internal::Type::BaseModel
+            # A list of chat messages forming the prompt or context. May include variable
+            # references to the `item` namespace, ie {{item.name}}.
             attr_accessor template: ::Array[OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::template]
 
+            # The type of input messages. Always `template`.
             attr_accessor type: :template
 
+            # @param template
+            #   A list of chat messages forming the prompt or context. May include variable
+            #   references to the `item` namespace, ie {{item.name}}.
+            # @param type
+            #   The type of input messages. Always `template`.
             def initialize: (
               template: ::Array[OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::template],
               ?type: :template
@@ -208,16 +279,30 @@ module OpenAI
                 }
 
               class EvalItem < OpenAI::Internal::Type::BaseModel
+                # Inputs to the model - can contain template strings. Supports text, output text,
+                # input images, and input audio, either as a single item or an array of items.
                 attr_accessor content: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::content
 
+                # The role of the message input. One of `user`, `assistant`, `system`, or
+                # `developer`.
                 attr_accessor role: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::role
 
+                # The type of the message input. Always `message`.
                 attr_reader type: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::type_?
 
+                # The type of the message input. Always `message`.
                 def type=: (
                   OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::type_
                 ) -> OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::type_
 
+                # @param content
+                #   Inputs to the model - can contain template strings. Supports text, output text,
+                #   input images, and input audio, either as a single item or an array of items.
+                # @param role
+                #   The role of the message input. One of `user`, `assistant`, `system`, or
+                #   `developer`.
+                # @param type
+                #   The type of the message input. Always `message`.
                 def initialize: (
                   content: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::content,
                   role: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::EvalItem::role,
@@ -244,10 +329,16 @@ module OpenAI
                   type output_text = { text: String, ?type: :output_text }
 
                   class OutputText < OpenAI::Internal::Type::BaseModel
+                    # The text output from the model.
                     attr_accessor text: String
 
+                    # The type of the output text. Always `output_text`.
                     attr_accessor type: :output_text
 
+                    # @param text
+                    #   The text output from the model.
+                    # @param type
+                    #   The type of the output text. Always `output_text`.
                     def initialize: (text: String, ?type: :output_text) -> void
 
                     def to_hash: -> { text: String, ?type: :output_text }
@@ -257,14 +348,27 @@ module OpenAI
                     { image_url: String, ?type: :input_image, ?detail: String }
 
                   class InputImage < OpenAI::Internal::Type::BaseModel
+                    # The URL of the image input.
                     attr_accessor image_url: String
 
+                    # The type of the image input. Always `input_image`.
                     attr_accessor type: :input_image
 
+                    # The detail level of the image to be sent to the model. One of `high`, `low`, or
+                    # `auto`. Defaults to `auto`.
                     attr_reader detail: String?
 
+                    # The detail level of the image to be sent to the model. One of `high`, `low`, or
+                    # `auto`. Defaults to `auto`.
                     def detail=: (String) -> String
 
+                    # @param image_url
+                    #   The URL of the image input.
+                    # @param detail
+                    #   The detail level of the image to be sent to the model. One of `high`, `low`, or
+                    #   `auto`. Defaults to `auto`.
+                    # @param type
+                    #   The type of the image input. Always `input_image`.
                     def initialize: (
                       image_url: String,
                       ?detail: String,
@@ -313,10 +417,16 @@ module OpenAI
             { item_reference: String, ?type: :item_reference }
 
           class ItemReference < OpenAI::Internal::Type::BaseModel
+            # A reference to a variable in the `item` namespace. Ie, "item.input_trajectory"
             attr_accessor item_reference: String
 
+            # The type of input messages. Always `item_reference`.
             attr_accessor type: :item_reference
 
+            # @param item_reference
+            #   A reference to a variable in the `item` namespace. Ie, "item.input_trajectory"
+            # @param type
+            #   The type of input messages. Always `item_reference`.
             def initialize: (
               item_reference: String,
               ?type: :item_reference
@@ -340,36 +450,106 @@ module OpenAI
           }
 
         class SamplingParams < OpenAI::Internal::Type::BaseModel
+          # The maximum number of tokens in the generated output.
           attr_reader max_completion_tokens: Integer?
 
+          # The maximum number of tokens in the generated output.
           def max_completion_tokens=: (Integer) -> Integer
 
+          # Constrains effort on reasoning for reasoning models. Currently supported values
+          # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+          # reasoning effort can result in faster responses and fewer tokens used on
+          # reasoning in a response. Not all reasoning models support every value. See the
+          # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
+          # model-specific support.
           attr_accessor reasoning_effort: OpenAI::Models::reasoning_effort?
 
+          # An object specifying the format that the model must output.
+          #
+          # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
+          # Outputs which ensures the model will match your supplied JSON schema. Learn more
+          # in the
+          # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
+          #
+          # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+          # ensures the message the model generates is valid JSON. Using `json_schema` is
+          # preferred for models that support it.
           attr_reader response_format: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::response_format?
 
+          # An object specifying the format that the model must output.
+          #
+          # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
+          # Outputs which ensures the model will match your supplied JSON schema. Learn more
+          # in the
+          # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
+          #
+          # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+          # ensures the message the model generates is valid JSON. Using `json_schema` is
+          # preferred for models that support it.
           def response_format=: (
             OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::response_format
           ) -> OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::response_format
 
+          # A seed value to initialize the randomness, during sampling.
           attr_reader seed: Integer?
 
+          # A seed value to initialize the randomness, during sampling.
           def seed=: (Integer) -> Integer
 
+          # A higher temperature increases randomness in the outputs.
           attr_reader temperature: Float?
 
+          # A higher temperature increases randomness in the outputs.
           def temperature=: (Float) -> Float
 
+          # A list of tools the model may call. Currently, only functions are supported as a
+          # tool. Use this to provide a list of functions the model may generate JSON inputs
+          # for. A max of 128 functions are supported.
           attr_reader tools: ::Array[OpenAI::Chat::ChatCompletionFunctionTool]?
 
+          # A list of tools the model may call. Currently, only functions are supported as a
+          # tool. Use this to provide a list of functions the model may generate JSON inputs
+          # for. A max of 128 functions are supported.
           def tools=: (
             ::Array[OpenAI::Chat::ChatCompletionFunctionTool]
           ) -> ::Array[OpenAI::Chat::ChatCompletionFunctionTool]
 
+          # An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
           attr_reader top_p: Float?
 
+          # An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
           def top_p=: (Float) -> Float
 
+          # @param max_completion_tokens
+          #   The maximum number of tokens in the generated output.
+          # @param reasoning_effort
+          #   Constrains effort on reasoning for reasoning models. Currently supported values
+          #   are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+          #   reasoning effort can result in faster responses and fewer tokens used on
+          #   reasoning in a response. Not all reasoning models support every value. See the
+          #   [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
+          #   model-specific support.
+          # @param response_format
+          #   An object specifying the format that the model must output.
+          #
+          #   Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
+          #   Outputs which ensures the model will match your supplied JSON schema. Learn more
+          #   in the
+          #   [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
+          #
+          #   Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+          #   ensures the message the model generates is valid JSON. Using `json_schema` is
+          #   preferred for models that support it.
+          # @param seed
+          #   A seed value to initialize the randomness, during sampling.
+          # @param temperature
+          #   A higher temperature increases randomness in the outputs.
+          # @param tools
+          #   A list of tools the model may call. Currently, only functions are supported as a
+          #   tool. Use this to provide a list of functions the model may generate JSON inputs
+          #   for. A max of 128 functions are supported.
+          # @param top_p
+          #   An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
           def initialize: (
             ?max_completion_tokens: Integer,
             ?reasoning_effort: OpenAI::Models::reasoning_effort?,

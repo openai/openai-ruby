@@ -34,7 +34,7 @@ module OpenAI
             required :created_at, Integer
 
             # @!attribute error
-            #   A customer-safe error describing why a session request failed.
+            #   A customer-safe error. Non-null only for a failed turn.
             #
             #   @return [OpenAI::Models::Beta::SessionTurnError, nil]
             required :error, -> { OpenAI::Beta::SessionTurnError }, nil?: true
@@ -70,7 +70,8 @@ module OpenAI
             required :subagent_id, String, nil?: true
 
             # @!attribute usage
-            #   Recorded token usage for a session or turn. Usage is best effort and may change.
+            #   Best-effort token usage for the turn, or null if unknown. Recorded usage may
+            #   change.
             #
             #   @return [OpenAI::Models::Beta::TokenUsage, nil]
             required :usage, -> { OpenAI::Beta::TokenUsage }, nil?: true
@@ -93,7 +94,7 @@ module OpenAI
             #     subagent opening time when the preceding timestamps are unavailable.
             #
             #   @param error [OpenAI::Models::Beta::SessionTurnError, nil]
-            #     A customer-safe error describing why a session request failed.
+            #     A customer-safe error. Non-null only for a failed turn.
             #
             #   @param session_id [String]
             #     The ID of the session that owns the turn.
@@ -108,7 +109,8 @@ module OpenAI
             #     The ID of the subagent that ran the turn, if applicable.
             #
             #   @param usage [OpenAI::Models::Beta::TokenUsage, nil]
-            #     Recorded token usage for a session or turn. Usage is best effort and may change.
+            #     Best-effort token usage for the turn, or null if unknown. Recorded usage may
+            #     change.
             #
             #   @param object [Symbol, :"agent.session.turn"]
             #     The object type. Always `agent.session.turn`.

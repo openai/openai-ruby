@@ -15,16 +15,36 @@ module OpenAI
 
         attr_accessor skill_id: String
 
+        # Whether to set this version as the default.
         attr_reader default: bool?
 
+        # Whether to set this version as the default.
         def default=: (bool) -> bool
 
+        # Skill files to upload (directory upload) or a single zip file.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         attr_reader files: OpenAI::Models::Skills::VersionCreateParams::files?
 
+        # Skill files to upload (directory upload) or a single zip file.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         def files=: (
           OpenAI::Models::Skills::VersionCreateParams::files
         ) -> OpenAI::Models::Skills::VersionCreateParams::files
 
+        # @param default
+        #   Whether to set this version as the default.
+        # @param files
+        #   Skill files to upload (directory upload) or a single zip file.
+        #
+        #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        #   content type.
         def initialize: (
           skill_id: String,
           ?default: bool,

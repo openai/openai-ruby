@@ -9,12 +9,21 @@ module OpenAI
         }
 
       class AgentSessionIdleEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the event.
         attr_accessor event_id: String
 
+        # The session that became idle.
         attr_accessor session: OpenAI::Beta::AgentSession
 
+        # The type of the object. Always `agent.session.idle`.
         attr_accessor type: :"agent.session.idle"
 
+        # @param event_id
+        #   The unique ID of the event.
+        # @param session
+        #   The session that became idle.
+        # @param type
+        #   The type of the object. Always `agent.session.idle`.
         def initialize: (
           event_id: String,
           session: OpenAI::Beta::AgentSession,

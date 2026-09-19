@@ -12,20 +12,41 @@ module OpenAI
       }
 
     class Skill < OpenAI::Internal::Type::BaseModel
+      # Unique identifier for the skill.
       attr_accessor id: String
 
+      # Unix timestamp (seconds) for when the skill was created.
       attr_accessor created_at: Integer
 
+      # Default version for the skill.
       attr_accessor default_version: String
 
+      # Description of the skill.
       attr_accessor description: String
 
+      # Latest version for the skill.
       attr_accessor latest_version: String
 
+      # Name of the skill.
       attr_accessor name: String
 
+      # The object type, which is `skill`.
       attr_accessor object: :skill
 
+      # @param id
+      #   Unique identifier for the skill.
+      # @param created_at
+      #   Unix timestamp (seconds) for when the skill was created.
+      # @param default_version
+      #   Default version for the skill.
+      # @param description
+      #   Description of the skill.
+      # @param latest_version
+      #   Latest version for the skill.
+      # @param name
+      #   Name of the skill.
+      # @param object
+      #   The object type, which is `skill`.
       def initialize: (
         id: String,
         created_at: Integer,

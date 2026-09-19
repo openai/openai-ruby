@@ -17,26 +17,56 @@ module OpenAI
           }
 
         class ChatSession < OpenAI::Internal::Type::BaseModel
+          # Identifier for the ChatKit session.
           attr_accessor id: String
 
+          # Resolved ChatKit feature configuration for the session.
           attr_accessor chatkit_configuration: OpenAI::Beta::ChatKit::ChatSessionChatKitConfiguration
 
+          # Ephemeral client secret that authenticates session requests.
           attr_accessor client_secret: String
 
+          # Unix timestamp (in seconds) for when the session expires.
           attr_accessor expires_at: Integer
 
+          # Convenience copy of the per-minute request limit.
           attr_accessor max_requests_per_1_minute: Integer
 
+          # Type discriminator that is always `chatkit.session`.
           attr_accessor object: :"chatkit.session"
 
+          # Resolved rate limit values.
           attr_accessor rate_limits: OpenAI::Beta::ChatKit::ChatSessionRateLimits
 
+          # Current lifecycle state of the session.
           attr_accessor status: OpenAI::Models::Beta::ChatKit::chat_session_status
 
+          # User identifier associated with the session.
           attr_accessor user: String
 
+          # Workflow metadata for the session.
           attr_accessor workflow: OpenAI::Beta::ChatKitWorkflow
 
+          # @param id
+          #   Identifier for the ChatKit session.
+          # @param chatkit_configuration
+          #   Resolved ChatKit feature configuration for the session.
+          # @param client_secret
+          #   Ephemeral client secret that authenticates session requests.
+          # @param expires_at
+          #   Unix timestamp (in seconds) for when the session expires.
+          # @param max_requests_per_1_minute
+          #   Convenience copy of the per-minute request limit.
+          # @param rate_limits
+          #   Resolved rate limit values.
+          # @param status
+          #   Current lifecycle state of the session.
+          # @param user
+          #   User identifier associated with the session.
+          # @param workflow
+          #   Workflow metadata for the session.
+          # @param object
+          #   Type discriminator that is always `chatkit.session`.
           def initialize: (
             id: String,
             chatkit_configuration: OpenAI::Beta::ChatKit::ChatSessionChatKitConfiguration,

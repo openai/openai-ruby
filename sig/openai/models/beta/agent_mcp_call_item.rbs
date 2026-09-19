@@ -15,24 +15,51 @@ module OpenAI
         }
 
       class AgentMcpCallItem < OpenAI::Internal::Type::BaseModel
+        # The ID of the MCP call item.
         attr_accessor id: String
 
+        # The arguments passed to the MCP tool.
         attr_accessor arguments: top
 
+        # The error returned by the MCP tool, if any.
         attr_accessor error: top
 
+        # The name of the MCP tool.
         attr_accessor name: String
 
+        # The output returned by the MCP tool, if any.
         attr_accessor output: top
 
+        # The label of the MCP server.
         attr_accessor server_label: String
 
+        # The status of the MCP tool call.
         attr_accessor status: OpenAI::Models::Beta::agent_function_call_status
 
+        # The ID of the turn that contains this item.
         attr_accessor turn_id: String
 
+        # The item type. Always `mcp_call`.
         attr_accessor type: :mcp_call
 
+        # @param id
+        #   The ID of the MCP call item.
+        # @param arguments
+        #   The arguments passed to the MCP tool.
+        # @param error
+        #   The error returned by the MCP tool, if any.
+        # @param name
+        #   The name of the MCP tool.
+        # @param output
+        #   The output returned by the MCP tool, if any.
+        # @param server_label
+        #   The label of the MCP server.
+        # @param status
+        #   The status of the MCP tool call.
+        # @param turn_id
+        #   The ID of the turn that contains this item.
+        # @param type
+        #   The item type. Always `mcp_call`.
         def initialize: (
           id: String,
           arguments: top,

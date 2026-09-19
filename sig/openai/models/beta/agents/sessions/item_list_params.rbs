@@ -18,20 +18,32 @@ module OpenAI
 
             attr_accessor session_id: String
 
+            # Return resources after this resource ID in the selected order.
             attr_reader after: String?
 
+            # Return resources after this resource ID in the selected order.
             def after=: (String) -> String
 
+            # The maximum number of resources to return, between 1 and 100. Defaults to 20.
             attr_reader limit: Integer?
 
+            # The maximum number of resources to return, between 1 and 100. Defaults to 20.
             def limit=: (Integer) -> Integer
 
+            # The order in which resources are returned. Defaults to `desc`.
             attr_reader order: OpenAI::Models::Beta::Agents::Sessions::ItemListParams::order?
 
+            # The order in which resources are returned. Defaults to `desc`.
             def order=: (
               OpenAI::Models::Beta::Agents::Sessions::ItemListParams::order
             ) -> OpenAI::Models::Beta::Agents::Sessions::ItemListParams::order
 
+            # @param after
+            #   Return resources after this resource ID in the selected order.
+            # @param limit
+            #   The maximum number of resources to return, between 1 and 100. Defaults to 20.
+            # @param order
+            #   The order in which resources are returned. Defaults to `desc`.
             def initialize: (
               session_id: String,
               ?after: String,

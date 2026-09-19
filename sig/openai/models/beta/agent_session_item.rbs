@@ -32,20 +32,41 @@ module OpenAI
           }
 
         class FunctionCallOutput < OpenAI::Internal::Type::BaseModel
+          # The ID of the function call output item.
           attr_accessor id: String
 
+          # The ID of the function call that produced this output.
           attr_accessor call_id: String
 
+          # The error message, if the call failed.
           attr_accessor error: String?
 
+          # The function result, if the call succeeded.
           attr_accessor output: OpenAI::Models::Beta::agent_function_call_output?
 
+          # The status of the function call.
           attr_accessor status: OpenAI::Models::Beta::agent_function_call_status
 
+          # The ID of the turn that contains this item.
           attr_accessor turn_id: String
 
+          # The item type. Always `function_call_output`.
           attr_accessor type: :function_call_output
 
+          # @param id
+          #   The ID of the function call output item.
+          # @param call_id
+          #   The ID of the function call that produced this output.
+          # @param error
+          #   The error message, if the call failed.
+          # @param output
+          #   The function result, if the call succeeded.
+          # @param status
+          #   The status of the function call.
+          # @param turn_id
+          #   The ID of the turn that contains this item.
+          # @param type
+          #   The item type. Always `function_call_output`.
           def initialize: (
             id: String,
             call_id: String,
@@ -78,18 +99,36 @@ module OpenAI
           }
 
         class AgentMessage < OpenAI::Internal::Type::BaseModel
+          # The ID of the message.
           attr_accessor id: String
 
+          # The content exchanged between the agents.
           attr_accessor content: ::Array[OpenAI::Models::Beta::agent_content]
 
+          # The ID or name of the receiving agent.
           attr_accessor recipient_agent_id: String
 
+          # The ID or name of the sending agent.
           attr_accessor sender_agent_id: String
 
+          # The ID of the turn that contains this item.
           attr_accessor turn_id: String
 
+          # The item type. Always `agent_message`.
           attr_accessor type: :agent_message
 
+          # @param id
+          #   The ID of the message.
+          # @param content
+          #   The content exchanged between the agents.
+          # @param recipient_agent_id
+          #   The ID or name of the receiving agent.
+          # @param sender_agent_id
+          #   The ID or name of the sending agent.
+          # @param turn_id
+          #   The ID of the turn that contains this item.
+          # @param type
+          #   The item type. Always `agent_message`.
           def initialize: (
             id: String,
             content: ::Array[OpenAI::Models::Beta::agent_content],

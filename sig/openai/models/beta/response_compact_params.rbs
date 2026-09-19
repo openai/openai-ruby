@@ -19,20 +19,61 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
+        # range of models with different capabilities, performance characteristics, and
+        # price points. Refer to the
+        # [model guide](https://developers.openai.com/api/docs/models) to browse and
+        # compare available models.
         attr_accessor model: OpenAI::Models::Beta::ResponseCompactParams::model?
 
+        # Text, image, or file inputs to the model, used to generate a response
         attr_accessor input: OpenAI::Models::Beta::ResponseCompactParams::input?
 
+        # A system (or developer) message inserted into the model's context. When used
+        # along with `previous_response_id`, the instructions from a previous response
+        # will not be carried over to the next response. This makes it simple to swap out
+        # system (or developer) messages in new responses.
         attr_accessor instructions: String?
 
+        # The unique ID of the previous response to the model. Use this to create
+        # multi-turn conversations. Learn more about
+        # [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
+        # Cannot be used in conjunction with `conversation`.
         attr_accessor previous_response_id: String?
 
+        # A key to use when reading from or writing to the prompt cache.
         attr_accessor prompt_cache_key: String?
 
+        # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+        # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+        # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+        # request can write up to four breakpoints. For cache matching, OpenAI considers
+        # up to the latest 80 breakpoints in the conversation, without a content-block
+        # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+        # `ttl` defaults to `30m`, which is currently the only supported value. See the
+        # [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
+        # for current details.
         attr_accessor prompt_cache_options: OpenAI::Beta::ResponseCompactParams::PromptCacheOptions?
 
+        # How long to retain a prompt cache entry created by this request.
         attr_accessor prompt_cache_retention: OpenAI::Models::Beta::ResponseCompactParams::prompt_cache_retention?
 
+        # Specifies the processing type used for serving the request. - If set to 'auto',
+        # then the request will be processed with the service tier configured in the
+        # Project settings. Unless otherwise configured, the Project will use 'default'. -
+        # If set to 'default', then the request will be processed with the standard
+        # pricing and performance for the selected model. - If set to
+        # '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        # the request will be processed with the Flex Processing service tier. - To opt-in
+        # to [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        # request level, include the `service_tier=fast` or `service_tier=priority`
+        # parameter for Responses or Chat Completions. For models with a dedicated Fast
+        # tier, either value resolves to `service_tier=fast`; for other models, either
+        # value resolves to `service_tier=priority`. - When not set, the default behavior
+        # is 'auto'. When the `service_tier` parameter is set, the response body will
+        # include the `service_tier` value based on the processing mode actually used to
+        # serve the request. This response value may be different from the value set in
+        # the parameter.
         attr_accessor service_tier: OpenAI::Models::Beta::ResponseCompactParams::service_tier?
 
         attr_reader betas: ::Array[OpenAI::Models::Beta::ResponseCompactParams::beta]?
@@ -41,6 +82,55 @@ module OpenAI
           ::Array[OpenAI::Models::Beta::ResponseCompactParams::beta]
         ) -> ::Array[OpenAI::Models::Beta::ResponseCompactParams::beta]
 
+        # @param model
+        #   Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
+        #   range of models with different capabilities, performance characteristics, and
+        #   price points. Refer to the
+        #   [model guide](https://developers.openai.com/api/docs/models) to browse and
+        #   compare available models.
+        # @param input
+        #   Text, image, or file inputs to the model, used to generate a response
+        # @param instructions
+        #   A system (or developer) message inserted into the model's context. When used
+        #   along with `previous_response_id`, the instructions from a previous response
+        #   will not be carried over to the next response. This makes it simple to swap out
+        #   system (or developer) messages in new responses.
+        # @param previous_response_id
+        #   The unique ID of the previous response to the model. Use this to create
+        #   multi-turn conversations. Learn more about
+        #   [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
+        #   Cannot be used in conjunction with `conversation`.
+        # @param prompt_cache_key
+        #   A key to use when reading from or writing to the prompt cache.
+        # @param prompt_cache_options
+        #   Options for prompt caching. Supported for `gpt-5.6` and later models. By
+        #   default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+        #   explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+        #   request can write up to four breakpoints. For cache matching, OpenAI considers
+        #   up to the latest 80 breakpoints in the conversation, without a content-block
+        #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+        #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+        #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
+        #   for current details.
+        # @param prompt_cache_retention
+        #   How long to retain a prompt cache entry created by this request.
+        # @param service_tier
+        #   Specifies the processing type used for serving the request. - If set to 'auto',
+        #   then the request will be processed with the service tier configured in the
+        #   Project settings. Unless otherwise configured, the Project will use 'default'. -
+        #   If set to 'default', then the request will be processed with the standard
+        #   pricing and performance for the selected model. - If set to
+        #   '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        #   the request will be processed with the Flex Processing service tier. - To opt-in
+        #   to [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        #   request level, include the `service_tier=fast` or `service_tier=priority`
+        #   parameter for Responses or Chat Completions. For models with a dedicated Fast
+        #   tier, either value resolves to `service_tier=fast`; for other models, either
+        #   value resolves to `service_tier=priority`. - When not set, the default behavior
+        #   is 'auto'. When the `service_tier` parameter is set, the response body will
+        #   include the `service_tier` value based on the processing mode actually used to
+        #   serve the request. This response value may be different from the value set in
+        #   the parameter.
         def initialize: (
           model: OpenAI::Models::Beta::ResponseCompactParams::model?,
           ?input: OpenAI::Models::Beta::ResponseCompactParams::input?,
@@ -153,7 +243,6 @@ module OpenAI
           | :"gpt-3.5-turbo-1106"
           | :"gpt-3.5-turbo-0125"
           | :"gpt-3.5-turbo-16k-0613"
-          | :"gpt-5.1-mini"
           | :"o1-pro"
           | :"o1-pro-2025-03-19"
           | :"o3-pro"
@@ -265,7 +354,6 @@ module OpenAI
           GPT_3_5_TURBO_1106: :"gpt-3.5-turbo-1106"
           GPT_3_5_TURBO_0125: :"gpt-3.5-turbo-0125"
           GPT_3_5_TURBO_16K_0613: :"gpt-3.5-turbo-16k-0613"
-          GPT_5_1_MINI: :"gpt-5.1-mini"
           O1_PRO: :"o1-pro"
           O1_PRO_2025_03_19: :"o1-pro-2025-03-19"
           O3_PRO: :"o3-pro"
@@ -305,18 +393,47 @@ module OpenAI
           }
 
         class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+          # Controls whether OpenAI automatically creates an implicit cache breakpoint.
+          # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+          # and writes up to the latest three explicit breakpoints in the request. With
+          # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+          # latest four explicit breakpoints. If there are no explicit breakpoints, the
+          # request does not use prompt caching.
           attr_reader mode: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::mode?
 
+          # Controls whether OpenAI automatically creates an implicit cache breakpoint.
+          # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+          # and writes up to the latest three explicit breakpoints in the request. With
+          # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+          # latest four explicit breakpoints. If there are no explicit breakpoints, the
+          # request does not use prompt caching.
           def mode=: (
             OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::mode
           ) -> OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::mode
 
+          # The minimum lifetime applied to every implicit and explicit cache breakpoint
+          # written by the request. Defaults to `30m`, which is currently the only supported
+          # value. The backend may retain cache entries for longer.
           attr_reader ttl: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::ttl?
 
+          # The minimum lifetime applied to every implicit and explicit cache breakpoint
+          # written by the request. Defaults to `30m`, which is currently the only supported
+          # value. The backend may retain cache entries for longer.
           def ttl=: (
             OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::ttl
           ) -> OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::ttl
 
+          # @param mode
+          #   Controls whether OpenAI automatically creates an implicit cache breakpoint.
+          #   Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+          #   and writes up to the latest three explicit breakpoints in the request. With
+          #   `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+          #   latest four explicit breakpoints. If there are no explicit breakpoints, the
+          #   request does not use prompt caching.
+          # @param ttl
+          #   The minimum lifetime applied to every implicit and explicit cache breakpoint
+          #   written by the request. Defaults to `30m`, which is currently the only supported
+          #   value. The backend may retain cache entries for longer.
           def initialize: (
             ?mode: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::mode,
             ?ttl: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::ttl

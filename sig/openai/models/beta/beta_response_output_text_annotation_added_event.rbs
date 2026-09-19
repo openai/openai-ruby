@@ -16,22 +16,46 @@ module OpenAI
         }
 
       class BetaResponseOutputTextAnnotationAddedEvent < OpenAI::Internal::Type::BaseModel
+        # The annotation object being added. (See annotation schema for details.)
         attr_accessor annotation: OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::annotation?
 
+        # The index of the annotation within the content part.
         attr_accessor annotation_index: Integer
 
+        # The index of the content part within the output item.
         attr_accessor content_index: Integer
 
+        # The unique identifier of the item to which the annotation is being added.
         attr_accessor item_id: String
 
+        # The index of the output item in the response's output array.
         attr_accessor output_index: Integer
 
+        # The sequence number of this event.
         attr_accessor sequence_number: Integer
 
+        # The type of the event. Always 'response.output_text.annotation.added'.
         attr_accessor type: :"response.output_text.annotation.added"
 
+        # The agent that owns this multi-agent streaming event.
         attr_accessor agent: OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Agent?
 
+        # @param annotation
+        #   The annotation object being added. (See annotation schema for details.)
+        # @param annotation_index
+        #   The index of the annotation within the content part.
+        # @param content_index
+        #   The index of the content part within the output item.
+        # @param item_id
+        #   The unique identifier of the item to which the annotation is being added.
+        # @param output_index
+        #   The index of the output item in the response's output array.
+        # @param sequence_number
+        #   The sequence number of this event.
+        # @param agent
+        #   The agent that owns this multi-agent streaming event.
+        # @param type
+        #   The type of the event. Always 'response.output_text.annotation.added'.
         def initialize: (
           annotation: OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::annotation?,
           annotation_index: Integer,
@@ -72,14 +96,26 @@ module OpenAI
             }
 
           class FileCitation < OpenAI::Internal::Type::BaseModel
+            # The ID of the file.
             attr_accessor file_id: String
 
+            # The filename of the file cited.
             attr_accessor filename: String
 
+            # The index of the file in the list of files.
             attr_accessor index: Integer
 
+            # The type of the file citation. Always `file_citation`.
             attr_accessor type: :file_citation
 
+            # @param file_id
+            #   The ID of the file.
+            # @param filename
+            #   The filename of the file cited.
+            # @param index
+            #   The index of the file in the list of files.
+            # @param type
+            #   The type of the file citation. Always `file_citation`.
             def initialize: (
               file_id: String,
               filename: String,
@@ -105,16 +141,31 @@ module OpenAI
             }
 
           class URLCitation < OpenAI::Internal::Type::BaseModel
+            # The index of the last character of the URL citation in the message.
             attr_accessor end_index: Integer
 
+            # The index of the first character of the URL citation in the message.
             attr_accessor start_index: Integer
 
+            # The title of the web resource.
             attr_accessor title: String
 
+            # The type of the URL citation. Always `url_citation`.
             attr_accessor type: :url_citation
 
+            # The URL of the web resource.
             attr_accessor url: String
 
+            # @param end_index
+            #   The index of the last character of the URL citation in the message.
+            # @param start_index
+            #   The index of the first character of the URL citation in the message.
+            # @param title
+            #   The title of the web resource.
+            # @param url
+            #   The URL of the web resource.
+            # @param type
+            #   The type of the URL citation. Always `url_citation`.
             def initialize: (
               end_index: Integer,
               start_index: Integer,
@@ -143,18 +194,36 @@ module OpenAI
             }
 
           class ContainerFileCitation < OpenAI::Internal::Type::BaseModel
+            # The ID of the container file.
             attr_accessor container_id: String
 
+            # The index of the last character of the container file citation in the message.
             attr_accessor end_index: Integer
 
+            # The ID of the file.
             attr_accessor file_id: String
 
+            # The filename of the container file cited.
             attr_accessor filename: String
 
+            # The index of the first character of the container file citation in the message.
             attr_accessor start_index: Integer
 
+            # The type of the container file citation. Always `container_file_citation`.
             attr_accessor type: :container_file_citation
 
+            # @param container_id
+            #   The ID of the container file.
+            # @param end_index
+            #   The index of the last character of the container file citation in the message.
+            # @param file_id
+            #   The ID of the file.
+            # @param filename
+            #   The filename of the container file cited.
+            # @param start_index
+            #   The index of the first character of the container file citation in the message.
+            # @param type
+            #   The type of the container file citation. Always `container_file_citation`.
             def initialize: (
               container_id: String,
               end_index: Integer,
@@ -178,12 +247,21 @@ module OpenAI
             { file_id: String, index: Integer, ?type: :file_path }
 
           class FilePath < OpenAI::Internal::Type::BaseModel
+            # The ID of the file.
             attr_accessor file_id: String
 
+            # The index of the file in the list of files.
             attr_accessor index: Integer
 
+            # The type of the file path. Always `file_path`.
             attr_accessor type: :file_path
 
+            # @param file_id
+            #   The ID of the file.
+            # @param index
+            #   The index of the file in the list of files.
+            # @param type
+            #   The type of the file path. Always `file_path`.
             def initialize: (
               file_id: String,
               index: Integer,
@@ -203,8 +281,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }

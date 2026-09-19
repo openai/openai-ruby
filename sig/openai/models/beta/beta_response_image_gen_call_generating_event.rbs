@@ -13,16 +13,31 @@ module OpenAI
         }
 
       class BetaResponseImageGenCallGeneratingEvent < OpenAI::Internal::Type::BaseModel
+        # The unique identifier of the image generation item being processed.
         attr_accessor item_id: String
 
+        # The index of the output item in the response's output array.
         attr_accessor output_index: Integer
 
+        # The sequence number of the image generation item being processed.
         attr_accessor sequence_number: Integer
 
+        # The type of the event. Always 'response.image_generation_call.generating'.
         attr_accessor type: :"response.image_generation_call.generating"
 
+        # The agent that owns this multi-agent streaming event.
         attr_accessor agent: OpenAI::Beta::BetaResponseImageGenCallGeneratingEvent::Agent?
 
+        # @param item_id
+        #   The unique identifier of the image generation item being processed.
+        # @param output_index
+        #   The index of the output item in the response's output array.
+        # @param sequence_number
+        #   The sequence number of the image generation item being processed.
+        # @param agent
+        #   The agent that owns this multi-agent streaming event.
+        # @param type
+        #   The type of the event. Always 'response.image_generation_call.generating'.
         def initialize: (
           item_id: String,
           output_index: Integer,
@@ -42,8 +57,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }

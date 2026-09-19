@@ -5,12 +5,21 @@ module OpenAI
         { data: String, transcript: String, ?type: :output_audio }
 
       class ResponseOutputAudio < OpenAI::Internal::Type::BaseModel
+        # Base64-encoded audio data from the model.
         attr_accessor data: String
 
+        # The transcript of the audio data from the model.
         attr_accessor transcript: String
 
+        # The type of the output audio. Always `output_audio`.
         attr_accessor type: :output_audio
 
+        # @param data
+        #   Base64-encoded audio data from the model.
+        # @param transcript
+        #   The transcript of the audio data from the model.
+        # @param type
+        #   The type of the output audio. Always `output_audio`.
         def initialize: (
           data: String,
           transcript: String,

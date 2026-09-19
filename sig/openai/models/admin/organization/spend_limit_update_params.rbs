@@ -14,12 +14,23 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # The currency for the threshold amount. Currently, only `USD` is supported.
           attr_accessor currency: OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::currency
 
+          # The time interval for evaluating spend against the threshold. Currently, only
+          # `month` is supported.
           attr_accessor interval: OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::interval
 
+          # The hard spend limit amount, in cents.
           attr_accessor threshold_amount: Integer
 
+          # @param currency
+          #   The currency for the threshold amount. Currently, only `USD` is supported.
+          # @param interval
+          #   The time interval for evaluating spend against the threshold. Currently, only
+          #   `month` is supported.
+          # @param threshold_amount
+          #   The hard spend limit amount, in cents.
           def initialize: (
             currency: OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::currency,
             interval: OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::interval,

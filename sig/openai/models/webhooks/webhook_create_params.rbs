@@ -13,12 +13,21 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # The event types that trigger deliveries to this endpoint.
         attr_accessor event_types: ::Array[OpenAI::Models::Webhooks::WebhookCreateParams::event_type]
 
+        # A human-readable name for the webhook endpoint.
         attr_accessor name: String
 
+        # The HTTPS URL that receives webhook deliveries.
         attr_accessor url: String
 
+        # @param event_types
+        #   The event types that trigger deliveries to this endpoint.
+        # @param name
+        #   A human-readable name for the webhook endpoint.
+        # @param url
+        #   The HTTPS URL that receives webhook deliveries.
         def initialize: (
           event_types: ::Array[OpenAI::Models::Webhooks::WebhookCreateParams::event_type],
           name: String,

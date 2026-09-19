@@ -11,14 +11,27 @@ module OpenAI
         }
 
       class ChatCompletionSystemMessageParam < OpenAI::Internal::Type::BaseModel
+        # The contents of the system message.
         attr_accessor content: OpenAI::Models::Chat::ChatCompletionSystemMessageParam::content
 
+        # The role of the messages author, in this case `system`.
         attr_accessor role: :system
 
+        # An optional name for the participant. Provides the model information to
+        # differentiate between participants of the same role.
         attr_reader name: String?
 
+        # An optional name for the participant. Provides the model information to
+        # differentiate between participants of the same role.
         def name=: (String) -> String
 
+        # @param content
+        #   The contents of the system message.
+        # @param name
+        #   An optional name for the participant. Provides the model information to
+        #   differentiate between participants of the same role.
+        # @param role
+        #   The role of the messages author, in this case `system`.
         def initialize: (
           content: OpenAI::Models::Chat::ChatCompletionSystemMessageParam::content,
           ?name: String,

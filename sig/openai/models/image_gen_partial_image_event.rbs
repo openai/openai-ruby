@@ -13,22 +13,46 @@ module OpenAI
       }
 
     class ImageGenPartialImageEvent < OpenAI::Internal::Type::BaseModel
+      # Base64-encoded partial image data, suitable for rendering as an image.
       attr_accessor b64_json: String
 
+      # The background setting for the requested image.
       attr_accessor background: OpenAI::Models::ImageGenPartialImageEvent::background
 
+      # The Unix timestamp when the event was created.
       attr_accessor created_at: Integer
 
+      # The output format for the requested image.
       attr_accessor output_format: OpenAI::Models::ImageGenPartialImageEvent::output_format
 
+      # 0-based index for the partial image (streaming).
       attr_accessor partial_image_index: Integer
 
+      # The quality setting for the requested image.
       attr_accessor quality: OpenAI::Models::ImageGenPartialImageEvent::quality
 
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       attr_accessor size: OpenAI::Models::ImageGenPartialImageEvent::size
 
+      # The type of the event. Always `image_generation.partial_image`.
       attr_accessor type: :"image_generation.partial_image"
 
+      # @param b64_json
+      #   Base64-encoded partial image data, suitable for rendering as an image.
+      # @param background
+      #   The background setting for the requested image.
+      # @param created_at
+      #   The Unix timestamp when the event was created.
+      # @param output_format
+      #   The output format for the requested image.
+      # @param partial_image_index
+      #   0-based index for the partial image (streaming).
+      # @param quality
+      #   The quality setting for the requested image.
+      # @param size
+      #   The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+      # @param type
+      #   The type of the event. Always `image_generation.partial_image`.
       def initialize: (
         b64_json: String,
         background: OpenAI::Models::ImageGenPartialImageEvent::background,

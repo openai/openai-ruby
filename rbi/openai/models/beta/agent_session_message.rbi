@@ -23,7 +23,7 @@ module OpenAI
         sig { returns(T::Array[OpenAI::Beta::AgentSessionMessageContent::Variants]) }
         attr_accessor :content
 
-        # The phase of an assistant message.
+        # The phase of an assistant message. Null for user messages.
         sig { returns(T.nilable(OpenAI::Beta::AgentSessionMessage::Phase::TaggedSymbol)) }
         attr_accessor :phase
 
@@ -78,7 +78,7 @@ module OpenAI
           # assistant messages contain output text.
           content:,
 
-          # The phase of an assistant message.
+          # The phase of an assistant message. Null for user messages.
           phase:,
 
           # The role of the message author.
@@ -112,7 +112,7 @@ module OpenAI
         def to_hash
         end
 
-        # The phase of an assistant message.
+        # The phase of an assistant message. Null for user messages.
         module Phase
           extend OpenAI::Internal::Type::Enum
 

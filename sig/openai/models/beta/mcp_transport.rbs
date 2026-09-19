@@ -10,10 +10,16 @@ module OpenAI
         type http = { server_url: String, ?type: :http }
 
         class HTTP < OpenAI::Internal::Type::BaseModel
+          # The URL of the MCP server.
           attr_accessor server_url: String
 
+          # The type of the object. Always `http`.
           attr_accessor type: :http
 
+          # @param server_url
+          #   The URL of the MCP server.
+          # @param type
+          #   The type of the object. Always `http`.
           def initialize: (server_url: String, ?type: :http) -> void
 
           def to_hash: -> { server_url: String, ?type: :http }
@@ -29,16 +35,31 @@ module OpenAI
           }
 
         class Stdio < OpenAI::Internal::Type::BaseModel
+          # Arguments passed to the MCP server command.
           attr_accessor args: ::Array[String]
 
+          # The command used to start the MCP server.
           attr_accessor command: String
 
+          # The working directory used to start the MCP server.
           attr_accessor cwd: String
 
+          # Environment variable names inherited from the execution environment.
           attr_accessor env_vars: ::Array[String]
 
+          # The type of the object. Always `stdio`.
           attr_accessor type: :stdio
 
+          # @param args
+          #   Arguments passed to the MCP server command.
+          # @param command
+          #   The command used to start the MCP server.
+          # @param cwd
+          #   The working directory used to start the MCP server.
+          # @param env_vars
+          #   Environment variable names inherited from the execution environment.
+          # @param type
+          #   The type of the object. Always `stdio`.
           def initialize: (
             args: ::Array[String],
             command: String,

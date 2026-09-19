@@ -32,10 +32,20 @@ module OpenAI
           { audio: String, ?type: :"session.input_audio.append" }
 
         class SessionInputAudioAppend < OpenAI::Internal::Type::BaseModel
+          # Base64-encoded raw mono PCM16LE at 24 kHz received from the primary transport,
+          # reflected to the sideband before model-input muting. This server event uses the
+          # same audio key as the client command, but is not an acknowledgment of it.
           attr_accessor audio: String
 
+          # The event type, always `session.input_audio.append`.
           attr_accessor type: :"session.input_audio.append"
 
+          # @param audio
+          #   Base64-encoded raw mono PCM16LE at 24 kHz received from the primary transport,
+          #   reflected to the sideband before model-input muting. This server event uses the
+          #   same audio key as the client command, but is not an acknowledgment of it.
+          # @param type
+          #   The event type, always `session.input_audio.append`.
           def initialize: (
             audio: String,
             ?type: :"session.input_audio.append"
@@ -99,10 +109,13 @@ module OpenAI
         class TransportRinging < OpenAI::Internal::Type::BaseModel
           attr_accessor event_id: String
 
+          # The canonical Live session ID.
           attr_accessor session_id: String
 
           attr_accessor type: :"transport.ringing"
 
+          # @param session_id
+          #   The canonical Live session ID.
           def initialize: (
             event_id: String,
             session_id: String,
@@ -122,10 +135,13 @@ module OpenAI
         class TransportAnswered < OpenAI::Internal::Type::BaseModel
           attr_accessor event_id: String
 
+          # The canonical Live session ID.
           attr_accessor session_id: String
 
           attr_accessor type: :"transport.answered"
 
+          # @param session_id
+          #   The canonical Live session ID.
           def initialize: (
             event_id: String,
             session_id: String,
@@ -152,10 +168,13 @@ module OpenAI
 
           attr_accessor event_id: String
 
+          # The canonical Live session ID.
           attr_accessor session_id: String
 
           attr_accessor type: :"transport.failed"
 
+          # @param session_id
+          #   The canonical Live session ID.
           def initialize: (
             error: OpenAI::Live::ForkServerEvent::TransportFailed::Error,
             event_id: String,
@@ -179,16 +198,23 @@ module OpenAI
             }
 
           class Error < OpenAI::Internal::Type::BaseModel
+            # The call setup failure code.
             attr_accessor code: String
 
             attr_accessor message: String
 
             attr_accessor type: :call_error
 
+            # The parameter related to the error, if any. Empty when no parameter applies.
             attr_reader param: String?
 
+            # The parameter related to the error, if any. Empty when no parameter applies.
             def param=: (String) -> String
 
+            # @param code
+            #   The call setup failure code.
+            # @param param
+            #   The parameter related to the error, if any. Empty when no parameter applies.
             def initialize: (
               code: String,
               message: String,

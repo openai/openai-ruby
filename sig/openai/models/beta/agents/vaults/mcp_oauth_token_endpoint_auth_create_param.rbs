@@ -14,8 +14,11 @@ module OpenAI
             type none = { ?type: :none }
 
             class None < OpenAI::Internal::Type::BaseModel
+              # The type of the object. Always `none`.
               attr_accessor type: :none
 
+              # @param type
+              #   The type of the object. Always `none`.
               def initialize: (?type: :none) -> void
 
               def to_hash: -> { ?type: :none }
@@ -25,10 +28,16 @@ module OpenAI
               { client_secret: String, ?type: :client_secret_basic }
 
             class ClientSecretBasic < OpenAI::Internal::Type::BaseModel
+              # The OAuth client secret to store. Never returned in credential resources.
               attr_accessor client_secret: String
 
+              # The type of the object. Always `client_secret_basic`.
               attr_accessor type: :client_secret_basic
 
+              # @param client_secret
+              #   The OAuth client secret to store. Never returned in credential resources.
+              # @param type
+              #   The type of the object. Always `client_secret_basic`.
               def initialize: (
                 client_secret: String,
                 ?type: :client_secret_basic
@@ -44,10 +53,16 @@ module OpenAI
               { client_secret: String, ?type: :client_secret_post }
 
             class ClientSecretPost < OpenAI::Internal::Type::BaseModel
+              # The OAuth client secret to store. Never returned in credential resources.
               attr_accessor client_secret: String
 
+              # The type of the object. Always `client_secret_post`.
               attr_accessor type: :client_secret_post
 
+              # @param client_secret
+              #   The OAuth client secret to store. Never returned in credential resources.
+              # @param type
+              #   The type of the object. Always `client_secret_post`.
               def initialize: (
                 client_secret: String,
                 ?type: :client_secret_post

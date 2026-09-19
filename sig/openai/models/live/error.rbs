@@ -11,20 +11,39 @@ module OpenAI
         }
 
       class Error < OpenAI::Internal::Type::BaseModel
+        # A machine-readable code identifying the Live error, such as `unknown_parameter`.
         attr_accessor code: String
 
+        # A human-readable explanation of the Live error.
         attr_accessor message: String
 
+        # The category of error, such as `invalid_request_error` for an invalid Live
+        # client command.
         attr_accessor type: String
 
+        # The event_id of the client command that caused the error, when supplied.
         attr_reader client_event_id: String?
 
+        # The event_id of the client command that caused the error, when supplied.
         def client_event_id=: (String) -> String
 
+        # The parameter that caused the error, when applicable, such as `session.voice`.
         attr_reader param: String?
 
+        # The parameter that caused the error, when applicable, such as `session.voice`.
         def param=: (String) -> String
 
+        # @param code
+        #   A machine-readable code identifying the Live error, such as `unknown_parameter`.
+        # @param message
+        #   A human-readable explanation of the Live error.
+        # @param type
+        #   The category of error, such as `invalid_request_error` for an invalid Live
+        #   client command.
+        # @param client_event_id
+        #   The event_id of the client command that caused the error, when supplied.
+        # @param param
+        #   The parameter that caused the error, when applicable, such as `session.voice`.
         def initialize: (
           code: String,
           message: String,

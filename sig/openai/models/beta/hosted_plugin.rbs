@@ -4,12 +4,21 @@ module OpenAI
       type hosted_plugin = { description: String, name: String, ?type: :inline }
 
       class HostedPlugin < OpenAI::Internal::Type::BaseModel
+        # The installed plugin description.
         attr_accessor description: String
 
+        # The installed plugin name.
         attr_accessor name: String
 
+        # The type of the object. Always `inline`.
         attr_accessor type: :inline
 
+        # @param description
+        #   The installed plugin description.
+        # @param name
+        #   The installed plugin name.
+        # @param type
+        #   The type of the object. Always `inline`.
         def initialize: (
           description: String,
           name: String,

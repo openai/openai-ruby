@@ -14,20 +14,41 @@ module OpenAI
           }
 
         class FineTuningJobCheckpoint < OpenAI::Internal::Type::BaseModel
+          # The checkpoint identifier, which can be referenced in the API endpoints.
           attr_accessor id: String
 
+          # The Unix timestamp (in seconds) for when the checkpoint was created.
           attr_accessor created_at: Integer
 
+          # The name of the fine-tuned checkpoint model that is created.
           attr_accessor fine_tuned_model_checkpoint: String
 
+          # The name of the fine-tuning job that this checkpoint was created from.
           attr_accessor fine_tuning_job_id: String
 
+          # Metrics at the step number during the fine-tuning job.
           attr_accessor metrics: OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics
 
+          # The object type, which is always "fine_tuning.job.checkpoint".
           attr_accessor object: :"fine_tuning.job.checkpoint"
 
+          # The step number that the checkpoint was created at.
           attr_accessor step_number: Integer
 
+          # @param id
+          #   The checkpoint identifier, which can be referenced in the API endpoints.
+          # @param created_at
+          #   The Unix timestamp (in seconds) for when the checkpoint was created.
+          # @param fine_tuned_model_checkpoint
+          #   The name of the fine-tuned checkpoint model that is created.
+          # @param fine_tuning_job_id
+          #   The name of the fine-tuning job that this checkpoint was created from.
+          # @param metrics
+          #   Metrics at the step number during the fine-tuning job.
+          # @param step_number
+          #   The step number that the checkpoint was created at.
+          # @param object
+          #   The object type, which is always "fine_tuning.job.checkpoint".
           def initialize: (
             id: String,
             created_at: Integer,

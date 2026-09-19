@@ -11,14 +11,27 @@ module OpenAI
         }
 
       class ChatCompletionDeveloperMessageParam < OpenAI::Internal::Type::BaseModel
+        # The contents of the developer message.
         attr_accessor content: OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam::content
 
+        # The role of the messages author, in this case `developer`.
         attr_accessor role: :developer
 
+        # An optional name for the participant. Provides the model information to
+        # differentiate between participants of the same role.
         attr_reader name: String?
 
+        # An optional name for the participant. Provides the model information to
+        # differentiate between participants of the same role.
         def name=: (String) -> String
 
+        # @param content
+        #   The contents of the developer message.
+        # @param name
+        #   An optional name for the participant. Provides the model information to
+        #   differentiate between participants of the same role.
+        # @param role
+        #   The role of the messages author, in this case `developer`.
         def initialize: (
           content: OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam::content,
           ?name: String,

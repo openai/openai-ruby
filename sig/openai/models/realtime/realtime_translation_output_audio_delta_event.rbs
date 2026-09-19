@@ -13,28 +13,56 @@ module OpenAI
         }
 
       class RealtimeTranslationOutputAudioDeltaEvent < OpenAI::Internal::Type::BaseModel
+        # Base64-encoded translated audio data.
         attr_accessor delta: String
 
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The event type, must be `session.output_audio.delta`.
         attr_accessor type: :"session.output_audio.delta"
 
+        # Number of audio channels.
         attr_reader channels: Integer?
 
+        # Number of audio channels.
         def channels=: (Integer) -> Integer
 
+        # Timing metadata for stream alignment, derived from the translation frame when
+        # available. Treat `elapsed_ms` as alignment metadata, not a unique event
+        # identifier.
         attr_accessor elapsed_ms: Integer?
 
+        # Audio encoding for `delta`.
         attr_reader format_: OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent::format_?
 
+        # Audio encoding for `delta`.
         def format_=: (
           OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent::format_
         ) -> OpenAI::Models::Realtime::RealtimeTranslationOutputAudioDeltaEvent::format_
 
+        # Sample rate of the audio delta.
         attr_reader sample_rate: Integer?
 
+        # Sample rate of the audio delta.
         def sample_rate=: (Integer) -> Integer
 
+        # @param delta
+        #   Base64-encoded translated audio data.
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param channels
+        #   Number of audio channels.
+        # @param elapsed_ms
+        #   Timing metadata for stream alignment, derived from the translation frame when
+        #   available. Treat `elapsed_ms` as alignment metadata, not a unique event
+        #   identifier.
+        # @param format_
+        #   Audio encoding for `delta`.
+        # @param sample_rate
+        #   Sample rate of the audio delta.
+        # @param type
+        #   The event type, must be `session.output_audio.delta`.
         def initialize: (
           delta: String,
           event_id: String,

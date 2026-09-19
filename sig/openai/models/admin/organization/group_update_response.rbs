@@ -11,14 +11,28 @@ module OpenAI
           }
 
         class GroupUpdateResponse < OpenAI::Internal::Type::BaseModel
+          # Identifier for the group.
           attr_accessor id: String
 
+          # Unix timestamp (in seconds) when the group was created.
           attr_accessor created_at: Integer
 
+          # Whether the group is managed through SCIM and controlled by your identity
+          # provider.
           attr_accessor is_scim_managed: bool
 
+          # Updated display name for the group.
           attr_accessor name: String
 
+          # @param id
+          #   Identifier for the group.
+          # @param created_at
+          #   Unix timestamp (in seconds) when the group was created.
+          # @param is_scim_managed
+          #   Whether the group is managed through SCIM and controlled by your identity
+          #   provider.
+          # @param name
+          #   Updated display name for the group.
           def initialize: (
             id: String,
             created_at: Integer,

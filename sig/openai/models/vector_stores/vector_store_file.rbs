@@ -17,28 +17,78 @@ module OpenAI
         }
 
       class VectorStoreFile < OpenAI::Internal::Type::BaseModel
+        # The identifier, which can be referenced in API endpoints.
         attr_accessor id: String
 
+        # The Unix timestamp (in seconds) for when the vector store file was created.
         attr_accessor created_at: Integer
 
+        # The last error associated with this vector store file. Will be `null` if there
+        # are no errors.
         attr_accessor last_error: OpenAI::VectorStores::VectorStoreFile::LastError?
 
+        # The object type, which is always `vector_store.file`.
         attr_accessor object: :"vector_store.file"
 
+        # The status of the vector store file, which can be either `in_progress`,
+        # `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
+        # vector store file is ready for use.
         attr_accessor status: OpenAI::Models::VectorStores::VectorStoreFile::status
 
+        # The total vector store usage in bytes. Note that this may be different from the
+        # original file size.
         attr_accessor usage_bytes: Integer
 
+        # The ID of the
+        # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+        # that the [File](https://developers.openai.com/api/reference/resources/files) is
+        # attached to.
         attr_accessor vector_store_id: String
 
+        # Set of 16 key-value pairs that can be attached to an object. This can be useful
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard. Keys are strings with a maximum
+        # length of 64 characters. Values are strings with a maximum length of 512
+        # characters, booleans, or numbers.
         attr_accessor attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::VectorStoreFile::attribute]?
 
+        # The strategy used to chunk the file.
         attr_reader chunking_strategy: OpenAI::Models::file_chunking_strategy?
 
+        # The strategy used to chunk the file.
         def chunking_strategy=: (
           OpenAI::Models::file_chunking_strategy
         ) -> OpenAI::Models::file_chunking_strategy
 
+        # @param id
+        #   The identifier, which can be referenced in API endpoints.
+        # @param created_at
+        #   The Unix timestamp (in seconds) for when the vector store file was created.
+        # @param last_error
+        #   The last error associated with this vector store file. Will be `null` if there
+        #   are no errors.
+        # @param status
+        #   The status of the vector store file, which can be either `in_progress`,
+        #   `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
+        #   vector store file is ready for use.
+        # @param usage_bytes
+        #   The total vector store usage in bytes. Note that this may be different from the
+        #   original file size.
+        # @param vector_store_id
+        #   The ID of the
+        #   [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+        #   that the [File](https://developers.openai.com/api/reference/resources/files) is
+        #   attached to.
+        # @param attributes
+        #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #   for storing additional information about the object in a structured format, and
+        #   querying for objects via API or the dashboard. Keys are strings with a maximum
+        #   length of 64 characters. Values are strings with a maximum length of 512
+        #   characters, booleans, or numbers.
+        # @param chunking_strategy
+        #   The strategy used to chunk the file.
+        # @param object
+        #   The object type, which is always `vector_store.file`.
         def initialize: (
           id: String,
           created_at: Integer,
@@ -70,10 +120,16 @@ module OpenAI
           }
 
         class LastError < OpenAI::Internal::Type::BaseModel
+          # One of `server_error`, `unsupported_file`, or `invalid_file`.
           attr_accessor code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::code
 
+          # A human-readable description of the error.
           attr_accessor message: String
 
+          # @param code
+          #   One of `server_error`, `unsupported_file`, or `invalid_file`.
+          # @param message
+          #   A human-readable description of the error.
           def initialize: (
             code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::code,
             message: String

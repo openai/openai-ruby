@@ -11,16 +11,31 @@ module OpenAI
         }
 
       class AgentWebSearchCallItem < OpenAI::Internal::Type::BaseModel
+        # The ID of the web search call.
         attr_accessor id: String
 
+        # The action performed by the web search tool.
         attr_accessor action: OpenAI::Models::Beta::web_search_action?
 
+        # The status of the web search call.
         attr_accessor status: OpenAI::Models::Beta::agent_output_item_status
 
+        # The ID of the turn that contains this item.
         attr_accessor turn_id: String
 
+        # The item type. Always `web_search_call`.
         attr_accessor type: :web_search_call
 
+        # @param id
+        #   The ID of the web search call.
+        # @param action
+        #   The action performed by the web search tool.
+        # @param status
+        #   The status of the web search call.
+        # @param turn_id
+        #   The ID of the turn that contains this item.
+        # @param type
+        #   The item type. Always `web_search_call`.
         def initialize: (
           id: String,
           action: OpenAI::Models::Beta::web_search_action?,

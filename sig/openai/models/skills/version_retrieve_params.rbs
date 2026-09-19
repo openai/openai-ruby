@@ -14,8 +14,11 @@ module OpenAI
 
         attr_accessor skill_id: String
 
+        # The version number to retrieve.
         attr_accessor version: String
 
+        # @param version
+        #   The version number to retrieve.
         def initialize: (
           skill_id: String,
           version: String,

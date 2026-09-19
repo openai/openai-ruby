@@ -10,16 +10,32 @@ module OpenAI
         }
 
       class SessionStartedEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the Live server event.
         attr_accessor event_id: String
 
+        # The resolved Live session configuration and server-assigned session metadata.
         attr_accessor session: OpenAI::Live::SessionResource
 
+        # The event type, always `session.started`.
         attr_accessor type: :"session.started"
 
+        # The event_id of the client command associated with this server event, when
+        # supplied.
         attr_reader client_event_id: String?
 
+        # The event_id of the client command associated with this server event, when
+        # supplied.
         def client_event_id=: (String) -> String
 
+        # @param event_id
+        #   The unique ID of the Live server event.
+        # @param session
+        #   The resolved Live session configuration and server-assigned session metadata.
+        # @param client_event_id
+        #   The event_id of the client command associated with this server event, when
+        #   supplied.
+        # @param type
+        #   The event type, always `session.started`.
         def initialize: (
           event_id: String,
           session: OpenAI::Live::SessionResource,

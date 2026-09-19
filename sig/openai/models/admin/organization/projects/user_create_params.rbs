@@ -18,12 +18,21 @@ module OpenAI
 
             attr_accessor project_id: String
 
+            # `owner` or `member`
             attr_accessor role: String
 
+            # Email of the user to add.
             attr_accessor email: String?
 
+            # The ID of the user.
             attr_accessor user_id: String?
 
+            # @param role
+            #   `owner` or `member`
+            # @param email
+            #   Email of the user to add.
+            # @param user_id
+            #   The ID of the user.
             def initialize: (
               project_id: String,
               role: String,

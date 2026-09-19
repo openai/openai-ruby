@@ -12,16 +12,32 @@ module OpenAI
         }
 
       class BetaResponseInjectCreatedEvent < OpenAI::Internal::Type::BaseModel
+        # The ID of the response that accepted the input.
         attr_accessor response_id: String
 
+        # The sequence number for this event.
         attr_accessor sequence_number: Integer
 
+        # The event discriminator. Always `response.inject.created`.
         attr_accessor type: :"response.inject.created"
 
+        # The multiplexed WebSocket stream that emitted the event. This field is present
+        # only when WebSocket multiplexing is enabled separately.
         attr_reader stream_id: String?
 
+        # The multiplexed WebSocket stream that emitted the event. This field is present
+        # only when WebSocket multiplexing is enabled separately.
         def stream_id=: (String) -> String
 
+        # @param response_id
+        #   The ID of the response that accepted the input.
+        # @param sequence_number
+        #   The sequence number for this event.
+        # @param stream_id
+        #   The multiplexed WebSocket stream that emitted the event. This field is present
+        #   only when WebSocket multiplexing is enabled separately.
+        # @param type
+        #   The event discriminator. Always `response.inject.created`.
         def initialize: (
           response_id: String,
           sequence_number: Integer,

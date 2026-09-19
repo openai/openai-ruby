@@ -12,26 +12,63 @@ module OpenAI
         }
 
       class ResponseReasoningItem < OpenAI::Internal::Type::BaseModel
+        # The unique identifier of the reasoning content.
         attr_accessor id: String
 
+        # Reasoning summary content.
         attr_accessor summary: ::Array[OpenAI::Responses::ResponseReasoningItem::Summary]
 
+        # The type of the object. Always `reasoning`.
         attr_accessor type: :reasoning
 
+        # Reasoning text content.
         attr_reader content: ::Array[OpenAI::Responses::ResponseReasoningItem::Content]?
 
+        # Reasoning text content.
         def content=: (
           ::Array[OpenAI::Responses::ResponseReasoningItem::Content]
         ) -> ::Array[OpenAI::Responses::ResponseReasoningItem::Content]
 
+        # The encrypted content of the reasoning item. This is populated by default for
+        # reasoning items returned by `POST /v1/responses` and WebSocket `response.create`
+        # requests.
+        #
+        # When streaming, use the completed reasoning item and its `encrypted_content`
+        # from the `response.output_item.done` event in subsequent requests. The
+        # `encrypted_content` in `response.output_item.added` may be incomplete. This is
+        # especially important when `store` is `false` or when using Zero Data Retention.
         attr_accessor encrypted_content: String?
 
+        # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+        # Populated when items are returned via API.
         attr_reader status: OpenAI::Models::Responses::ResponseReasoningItem::status?
 
+        # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+        # Populated when items are returned via API.
         def status=: (
           OpenAI::Models::Responses::ResponseReasoningItem::status
         ) -> OpenAI::Models::Responses::ResponseReasoningItem::status
 
+        # @param id
+        #   The unique identifier of the reasoning content.
+        # @param summary
+        #   Reasoning summary content.
+        # @param content
+        #   Reasoning text content.
+        # @param encrypted_content
+        #   The encrypted content of the reasoning item. This is populated by default for
+        #   reasoning items returned by `POST /v1/responses` and WebSocket `response.create`
+        #   requests.
+        #
+        #   When streaming, use the completed reasoning item and its `encrypted_content`
+        #   from the `response.output_item.done` event in subsequent requests. The
+        #   `encrypted_content` in `response.output_item.added` may be incomplete. This is
+        #   especially important when `store` is `false` or when using Zero Data Retention.
+        # @param status
+        #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+        #   Populated when items are returned via API.
+        # @param type
+        #   The type of the object. Always `reasoning`.
         def initialize: (
           id: String,
           summary: ::Array[OpenAI::Responses::ResponseReasoningItem::Summary],
@@ -53,10 +90,16 @@ module OpenAI
         type summary = { text: String, ?type: :summary_text }
 
         class Summary < OpenAI::Internal::Type::BaseModel
+          # A summary of the reasoning output from the model so far.
           attr_accessor text: String
 
+          # The type of the object. Always `summary_text`.
           attr_accessor type: :summary_text
 
+          # @param text
+          #   A summary of the reasoning output from the model so far.
+          # @param type
+          #   The type of the object. Always `summary_text`.
           def initialize: (text: String, ?type: :summary_text) -> void
 
           def to_hash: -> { text: String, ?type: :summary_text }
@@ -65,10 +108,16 @@ module OpenAI
         type content = { text: String, ?type: :reasoning_text }
 
         class Content < OpenAI::Internal::Type::BaseModel
+          # The reasoning text from the model.
           attr_accessor text: String
 
+          # The type of the reasoning text. Always `reasoning_text`.
           attr_accessor type: :reasoning_text
 
+          # @param text
+          #   The reasoning text from the model.
+          # @param type
+          #   The type of the reasoning text. Always `reasoning_text`.
           def initialize: (text: String, ?type: :reasoning_text) -> void
 
           def to_hash: -> { text: String, ?type: :reasoning_text }

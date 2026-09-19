@@ -12,10 +12,16 @@ module OpenAI
         type input_text = { text: String, ?type: :input_text }
 
         class InputText < OpenAI::Internal::Type::BaseModel
+          # The text supplied by the user.
           attr_accessor text: String
 
+          # The type of the object. Always `input_text`.
           attr_accessor type: :input_text
 
+          # @param text
+          #   The text supplied by the user.
+          # @param type
+          #   The type of the object. Always `input_text`.
           def initialize: (text: String, ?type: :input_text) -> void
 
           def to_hash: -> { text: String, ?type: :input_text }
@@ -24,10 +30,18 @@ module OpenAI
         type input_image = { image_url: String, ?type: :input_image }
 
         class InputImage < OpenAI::Internal::Type::BaseModel
+          # The URL of the image supplied by the user, which may be a base64-encoded data
+          # URL.
           attr_accessor image_url: String
 
+          # The type of the object. Always `input_image`.
           attr_accessor type: :input_image
 
+          # @param image_url
+          #   The URL of the image supplied by the user, which may be a base64-encoded data
+          #   URL.
+          # @param type
+          #   The type of the object. Always `input_image`.
           def initialize: (image_url: String, ?type: :input_image) -> void
 
           def to_hash: -> { image_url: String, ?type: :input_image }
@@ -36,10 +50,16 @@ module OpenAI
         type output_text = { text: String, ?type: :output_text }
 
         class OutputText < OpenAI::Internal::Type::BaseModel
+          # The text produced by the assistant.
           attr_accessor text: String
 
+          # The type of the object. Always `output_text`.
           attr_accessor type: :output_text
 
+          # @param text
+          #   The text produced by the assistant.
+          # @param type
+          #   The type of the object. Always `output_text`.
           def initialize: (text: String, ?type: :output_text) -> void
 
           def to_hash: -> { text: String, ?type: :output_text }

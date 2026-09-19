@@ -9,12 +9,21 @@ module OpenAI
         }
 
       class ConversationItemDeletedEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The ID of the item that was deleted.
         attr_accessor item_id: String
 
+        # The event type, must be `conversation.item.deleted`.
         attr_accessor type: :"conversation.item.deleted"
 
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param item_id
+        #   The ID of the item that was deleted.
+        # @param type
+        #   The event type, must be `conversation.item.deleted`.
         def initialize: (
           event_id: String,
           item_id: String,

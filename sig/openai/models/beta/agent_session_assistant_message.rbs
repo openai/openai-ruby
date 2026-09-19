@@ -13,20 +13,41 @@ module OpenAI
         }
 
       class AgentSessionAssistantMessage < OpenAI::Internal::Type::BaseModel
+        # The ID of the message.
         attr_accessor id: String
 
+        # The content of the message.
         attr_accessor content: ::Array[OpenAI::Beta::OutputText]
 
+        # The phase of the assistant message.
         attr_accessor phase: OpenAI::Models::Beta::AgentSessionAssistantMessage::phase?
 
+        # The role of the message author. Always `assistant`.
         attr_accessor role: :assistant
 
+        # The status of the message.
         attr_accessor status: OpenAI::Models::Beta::agent_output_item_status
 
+        # The ID of the turn that contains this item.
         attr_accessor turn_id: String
 
+        # The item type. Always `message`.
         attr_accessor type: :message
 
+        # @param id
+        #   The ID of the message.
+        # @param content
+        #   The content of the message.
+        # @param phase
+        #   The phase of the assistant message.
+        # @param status
+        #   The status of the message.
+        # @param turn_id
+        #   The ID of the turn that contains this item.
+        # @param role
+        #   The role of the message author. Always `assistant`.
+        # @param type
+        #   The item type. Always `message`.
         def initialize: (
           id: String,
           content: ::Array[OpenAI::Beta::OutputText],

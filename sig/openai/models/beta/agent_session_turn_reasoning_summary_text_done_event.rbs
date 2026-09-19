@@ -14,22 +14,46 @@ module OpenAI
         }
 
       class AgentSessionTurnReasoningSummaryTextDoneEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the event.
         attr_accessor event_id: String
 
+        # The ID of the reasoning item.
         attr_accessor item_id: String
 
+        # The index of the item in the turn output.
         attr_accessor output_index: Integer
 
+        # The ID of the session associated with the event.
         attr_accessor session_id: String
 
+        # The index of the summary content part.
         attr_accessor summary_index: Integer
 
+        # The complete reasoning summary text.
         attr_accessor text: String
 
+        # The ID of the turn associated with the event, when applicable.
         attr_accessor turn_id: String?
 
+        # The type of the object. Always `agent.session.turn.reasoning_summary_text.done`.
         attr_accessor type: :"agent.session.turn.reasoning_summary_text.done"
 
+        # @param event_id
+        #   The unique ID of the event.
+        # @param item_id
+        #   The ID of the reasoning item.
+        # @param output_index
+        #   The index of the item in the turn output.
+        # @param session_id
+        #   The ID of the session associated with the event.
+        # @param summary_index
+        #   The index of the summary content part.
+        # @param text
+        #   The complete reasoning summary text.
+        # @param turn_id
+        #   The ID of the turn associated with the event, when applicable.
+        # @param type
+        #   The type of the object. Always `agent.session.turn.reasoning_summary_text.done`.
         def initialize: (
           event_id: String,
           item_id: String,

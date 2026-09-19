@@ -8,10 +8,18 @@ module OpenAI
         }
 
       class AgentReasoning < OpenAI::Internal::Type::BaseModel
+        # The requested reasoning effort, or `null` when the model selects its own
+        # default.
         attr_accessor effort: OpenAI::Models::Beta::AgentReasoning::effort?
 
+        # The requested reasoning summary format, or `null` when summaries are disabled.
         attr_accessor summary: OpenAI::Models::Beta::AgentReasoning::summary?
 
+        # @param effort
+        #   The requested reasoning effort, or `null` when the model selects its own
+        #   default.
+        # @param summary
+        #   The requested reasoning summary format, or `null` when summaries are disabled.
         def initialize: (
           effort: OpenAI::Models::Beta::AgentReasoning::effort?,
           summary: OpenAI::Models::Beta::AgentReasoning::summary?

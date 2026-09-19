@@ -99,14 +99,15 @@ module OpenAI
           }
           attr_accessor :files
 
-          # Network access for an OpenAI-hosted environment.
+          # Network access policy for the environment. Defaults to disabled for GA requests
+          # and enabled for alpha/beta requests.
           sig { returns(T.nilable(OpenAI::Beta::EnvironmentParam::OpenAIHosted::Network)) }
           attr_reader :network
 
           sig { params(network: T.nilable(OpenAI::Beta::EnvironmentParam::OpenAIHosted::Network::OrHash)).void }
           attr_writer :network
 
-          # Packages to install in an OpenAI-hosted environment.
+          # Packages to install in the environment. Defaults to empty package lists.
           sig { returns(T.nilable(OpenAI::Beta::EnvironmentParam::OpenAIHosted::Packages)) }
           attr_reader :packages
 
@@ -188,10 +189,11 @@ module OpenAI
             # Files available before the agent starts. Defaults to an empty list.
             files: nil,
 
-            # Network access for an OpenAI-hosted environment.
+            # Network access policy for the environment. Defaults to disabled for GA requests
+            # and enabled for alpha/beta requests.
             network: nil,
 
-            # Packages to install in an OpenAI-hosted environment.
+            # Packages to install in the environment. Defaults to empty package lists.
             packages: nil,
 
             # Plugins provided as inline ZIP archives. Defaults to an empty list.
@@ -256,7 +258,8 @@ module OpenAI
             sig { returns(T.nilable(T::Array[String])) }
             attr_accessor :allowed_domains
 
-            # Network access for an OpenAI-hosted environment.
+            # Network access policy for the environment. Defaults to disabled for GA requests
+            # and enabled for alpha/beta requests.
             sig do
               params(
 
@@ -337,7 +340,7 @@ module OpenAI
             sig { returns(T.nilable(T::Array[String])) }
             attr_accessor :system_
 
-            # Packages to install in an OpenAI-hosted environment.
+            # Packages to install in the environment. Defaults to empty package lists.
             sig do
               params(
 

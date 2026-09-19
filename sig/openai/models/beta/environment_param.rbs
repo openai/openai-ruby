@@ -12,8 +12,11 @@ module OpenAI
         type none = { ?type: :none }
 
         class None < OpenAI::Internal::Type::BaseModel
+          # The type of the object. Always `none`.
           attr_accessor type: :none
 
+          # @param type
+          #   The type of the object. Always `none`.
           def initialize: (?type: :none) -> void
 
           def to_hash: -> { ?type: :none }
@@ -34,28 +37,68 @@ module OpenAI
           }
 
         class OpenAIHosted < OpenAI::Internal::Type::BaseModel
+          # The type of the object. Always `openai_hosted`.
           attr_accessor type: :openai_hosted
 
+          # Directories that contain capabilities exposed to the agent. Defaults to an empty
+          # list.
           attr_accessor capability_directories: ::Array[String]?
 
+          # Environment variables made available to the agent.
           attr_accessor env: ::Hash[Symbol, String]?
 
+          # A reusable hosted template applied before inline session configuration. Omitted
+          # fields inherit the template; network overrides cannot broaden its policy.
           attr_reader environment_template_id: String?
 
+          # A reusable hosted template applied before inline session configuration. Omitted
+          # fields inherit the template; network overrides cannot broaden its policy.
           def environment_template_id=: (String) -> String
 
+          # Files available before the agent starts. Defaults to an empty list.
           attr_accessor files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?
 
+          # Network access policy for the environment. Defaults to disabled for GA requests
+          # and enabled for alpha/beta requests.
           attr_accessor network: OpenAI::Beta::EnvironmentParam::OpenAIHosted::Network?
 
+          # Packages to install in the environment. Defaults to empty package lists.
           attr_accessor packages: OpenAI::Beta::EnvironmentParam::OpenAIHosted::Packages?
 
+          # Plugins provided as inline ZIP archives. Defaults to an empty list.
           attr_accessor plugins: ::Array[OpenAI::Beta::HostedPluginParam]?
 
+          # Ordered, confidential setup commands. Command bodies are never returned.
           attr_accessor setup_commands: ::Array[OpenAI::Beta::SetupCommandParam]?
 
+          # Skills referenced by ID or provided as inline ZIP archives. Defaults to an empty
+          # list.
           attr_accessor skills: ::Array[OpenAI::Models::Beta::hosted_skill_param]?
 
+          # @param capability_directories
+          #   Directories that contain capabilities exposed to the agent. Defaults to an empty
+          #   list.
+          # @param env
+          #   Environment variables made available to the agent.
+          # @param environment_template_id
+          #   A reusable hosted template applied before inline session configuration. Omitted
+          #   fields inherit the template; network overrides cannot broaden its policy.
+          # @param files
+          #   Files available before the agent starts. Defaults to an empty list.
+          # @param network
+          #   Network access policy for the environment. Defaults to disabled for GA requests
+          #   and enabled for alpha/beta requests.
+          # @param packages
+          #   Packages to install in the environment. Defaults to empty package lists.
+          # @param plugins
+          #   Plugins provided as inline ZIP archives. Defaults to an empty list.
+          # @param setup_commands
+          #   Ordered, confidential setup commands. Command bodies are never returned.
+          # @param skills
+          #   Skills referenced by ID or provided as inline ZIP archives. Defaults to an empty
+          #   list.
+          # @param type
+          #   The type of the object. Always `openai_hosted`.
           def initialize: (
             ?capability_directories: ::Array[String]?,
             ?env: ::Hash[Symbol, String]?,
@@ -89,10 +132,16 @@ module OpenAI
             }
 
           class Network < OpenAI::Internal::Type::BaseModel
+            # The environment's network access mode.
             attr_accessor access: OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::Network::access
 
+            # Domains the environment may access when network access is restricted.
             attr_accessor allowed_domains: ::Array[String]?
 
+            # @param access
+            #   The environment's network access mode.
+            # @param allowed_domains
+            #   Domains the environment may access when network access is restricted.
             def initialize: (
               access: OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::Network::access,
               ?allowed_domains: ::Array[String]?
@@ -129,12 +178,21 @@ module OpenAI
             }
 
           class Packages < OpenAI::Internal::Type::BaseModel
+            # npm packages to install globally. Defaults to an empty list.
             attr_accessor npm: ::Array[String]?
 
+            # Python packages to install. Defaults to an empty list.
             attr_accessor python: ::Array[String]?
 
+            # System packages to install. Defaults to an empty list.
             attr_accessor system_: ::Array[String]?
 
+            # @param npm
+            #   npm packages to install globally. Defaults to an empty list.
+            # @param python
+            #   Python packages to install. Defaults to an empty list.
+            # @param system_
+            #   System packages to install. Defaults to an empty list.
             def initialize: (
               ?npm: ::Array[String]?,
               ?python: ::Array[String]?,
@@ -157,12 +215,23 @@ module OpenAI
           }
 
         class SelfHosted < OpenAI::Internal::Type::BaseModel
+          # The type of the object. Always `self_hosted`.
           attr_accessor type: :self_hosted
 
+          # Absolute project directory inside the self-hosted environment.
           attr_accessor workspace_directory: String
 
+          # Directories that contain capabilities exposed to the agent. Defaults to an empty
+          # list.
           attr_accessor capability_directories: ::Array[String]?
 
+          # @param workspace_directory
+          #   Absolute project directory inside the self-hosted environment.
+          # @param capability_directories
+          #   Directories that contain capabilities exposed to the agent. Defaults to an empty
+          #   list.
+          # @param type
+          #   The type of the object. Always `self_hosted`.
           def initialize: (
             workspace_directory: String,
             ?capability_directories: ::Array[String]?,

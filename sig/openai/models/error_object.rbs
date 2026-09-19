@@ -48,22 +48,34 @@ module OpenAI
         }
 
       class Misalignment < OpenAI::Internal::Type::BaseModel
+        # The public explanation for this block.
         attr_reader detailed_explanation: String?
 
+        # The public explanation for this block.
         def detailed_explanation=: (String) -> String
 
+        # An optional classification; clients must accept additional values.
         attr_reader error_type: OpenAI::Models::ErrorObject::Misalignment::error_type?
 
+        # An optional classification; clients must accept additional values.
         def error_type=: (
           OpenAI::Models::ErrorObject::Misalignment::error_type
         ) -> OpenAI::Models::ErrorObject::Misalignment::error_type
 
+        # An optional public continuation instruction.
         attr_reader steer: OpenAI::ErrorObject::Misalignment::Steer?
 
+        # An optional public continuation instruction.
         def steer=: (
           OpenAI::ErrorObject::Misalignment::Steer
         ) -> OpenAI::ErrorObject::Misalignment::Steer
 
+        # @param detailed_explanation
+        #   The public explanation for this block.
+        # @param error_type
+        #   An optional classification; clients must accept additional values.
+        # @param steer
+        #   An optional public continuation instruction.
         def initialize: (
           ?detailed_explanation: String,
           ?error_type: OpenAI::Models::ErrorObject::Misalignment::error_type,
@@ -97,8 +109,11 @@ module OpenAI
         type steer = { message: String }
 
         class Steer < OpenAI::Internal::Type::BaseModel
+          # The public continuation instruction.
           attr_accessor message: String
 
+          # @param message
+          #   The public continuation instruction.
           def initialize: (message: String) -> void
 
           def to_hash: -> { message: String }

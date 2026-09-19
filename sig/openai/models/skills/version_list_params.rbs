@@ -16,20 +16,32 @@ module OpenAI
 
         attr_accessor skill_id: String
 
+        # The skill version ID to start after.
         attr_reader after: String?
 
+        # The skill version ID to start after.
         def after=: (String) -> String
 
+        # Number of versions to retrieve.
         attr_reader limit: Integer?
 
+        # Number of versions to retrieve.
         def limit=: (Integer) -> Integer
 
+        # Sort order of results by version number.
         attr_reader order: OpenAI::Models::Skills::VersionListParams::order?
 
+        # Sort order of results by version number.
         def order=: (
           OpenAI::Models::Skills::VersionListParams::order
         ) -> OpenAI::Models::Skills::VersionListParams::order
 
+        # @param after
+        #   The skill version ID to start after.
+        # @param limit
+        #   Number of versions to retrieve.
+        # @param order
+        #   Sort order of results by version number.
         def initialize: (
           skill_id: String,
           ?after: String,

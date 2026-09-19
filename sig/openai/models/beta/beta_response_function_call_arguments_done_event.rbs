@@ -14,18 +14,33 @@ module OpenAI
         }
 
       class BetaResponseFunctionCallArgumentsDoneEvent < OpenAI::Internal::Type::BaseModel
+        # The function-call arguments.
         attr_accessor arguments: String
 
+        # The ID of the item.
         attr_accessor item_id: String
 
+        # The index of the output item.
         attr_accessor output_index: Integer
 
+        # The sequence number of this event.
         attr_accessor sequence_number: Integer
 
         attr_accessor type: :"response.function_call_arguments.done"
 
+        # The agent that owns this multi-agent streaming event.
         attr_accessor agent: OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent::Agent?
 
+        # @param arguments
+        #   The function-call arguments.
+        # @param item_id
+        #   The ID of the item.
+        # @param output_index
+        #   The index of the output item.
+        # @param sequence_number
+        #   The sequence number of this event.
+        # @param agent
+        #   The agent that owns this multi-agent streaming event.
         def initialize: (
           arguments: String,
           item_id: String,
@@ -47,8 +62,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }

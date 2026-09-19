@@ -5,10 +5,16 @@ module OpenAI
         type text_content_block_param = { text: String, ?type: :text }
 
         class TextContentBlockParam < OpenAI::Internal::Type::BaseModel
+          # Text content to be sent to the model
           attr_accessor text: String
 
+          # Always `text`.
           attr_accessor type: :text
 
+          # @param text
+          #   Text content to be sent to the model
+          # @param type
+          #   Always `text`.
           def initialize: (text: String, ?type: :text) -> void
 
           def to_hash: -> { text: String, ?type: :text }

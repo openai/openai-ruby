@@ -13,12 +13,21 @@ module OpenAI
             }
 
           class ProjectSpendAlertDeleted < OpenAI::Internal::Type::BaseModel
+            # The deleted spend alert ID.
             attr_accessor id: String
 
+            # Whether the spend alert was deleted.
             attr_accessor deleted: bool
 
+            # Always `project.spend_alert.deleted`.
             attr_accessor object: :"project.spend_alert.deleted"
 
+            # @param id
+            #   The deleted spend alert ID.
+            # @param deleted
+            #   Whether the spend alert was deleted.
+            # @param object
+            #   Always `project.spend_alert.deleted`.
             def initialize: (
               id: String,
               deleted: bool,

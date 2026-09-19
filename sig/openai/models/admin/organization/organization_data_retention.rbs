@@ -11,10 +11,16 @@ module OpenAI
           }
 
         class OrganizationDataRetention < OpenAI::Internal::Type::BaseModel
+          # The object type, which is always `organization.data_retention`.
           attr_accessor object: :"organization.data_retention"
 
+          # The configured organization data retention type.
           attr_accessor type: OpenAI::Models::Admin::Organization::OrganizationDataRetention::type_
 
+          # @param type
+          #   The configured organization data retention type.
+          # @param object
+          #   The object type, which is always `organization.data_retention`.
           def initialize: (
             type: OpenAI::Models::Admin::Organization::OrganizationDataRetention::type_,
             ?object: :"organization.data_retention"

@@ -8,8 +8,11 @@ module OpenAI
         class TextContentBlock < OpenAI::Internal::Type::BaseModel
           attr_accessor text: OpenAI::Beta::Threads::Text
 
+          # Always `text`.
           attr_accessor type: :text
 
+          # @param type
+          #   Always `text`.
           def initialize: (
             text: OpenAI::Beta::Threads::Text,
             ?type: :text

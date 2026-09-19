@@ -9,16 +9,26 @@ module OpenAI
         }
 
       class AgentSessionInputMessageParam < OpenAI::Internal::Type::BaseModel
+        # The content of the message.
         attr_accessor content: ::Array[OpenAI::Models::Beta::input_content_param]
 
+        # The role of the message author. Always `user`.
         attr_accessor role: :user
 
+        # The type of the input item. Always `message`.
         attr_reader type: OpenAI::Models::Beta::AgentSessionInputMessageParam::type_?
 
+        # The type of the input item. Always `message`.
         def type=: (
           OpenAI::Models::Beta::AgentSessionInputMessageParam::type_
         ) -> OpenAI::Models::Beta::AgentSessionInputMessageParam::type_
 
+        # @param content
+        #   The content of the message.
+        # @param type
+        #   The type of the input item. Always `message`.
+        # @param role
+        #   The role of the message author. Always `user`.
         def initialize: (
           content: ::Array[OpenAI::Models::Beta::input_content_param],
           ?type: OpenAI::Models::Beta::AgentSessionInputMessageParam::type_,

@@ -14,8 +14,11 @@ module OpenAI
             type none = { ?type: :none }
 
             class None < OpenAI::Internal::Type::BaseModel
+              # The type of the object. Always `none`.
               attr_accessor type: :none
 
+              # @param type
+              #   The type of the object. Always `none`.
               def initialize: (?type: :none) -> void
 
               def to_hash: -> { ?type: :none }
@@ -24,8 +27,11 @@ module OpenAI
             type client_secret_basic = { ?type: :client_secret_basic }
 
             class ClientSecretBasic < OpenAI::Internal::Type::BaseModel
+              # The type of the object. Always `client_secret_basic`.
               attr_accessor type: :client_secret_basic
 
+              # @param type
+              #   The type of the object. Always `client_secret_basic`.
               def initialize: (?type: :client_secret_basic) -> void
 
               def to_hash: -> { ?type: :client_secret_basic }
@@ -34,8 +40,11 @@ module OpenAI
             type client_secret_post = { ?type: :client_secret_post }
 
             class ClientSecretPost < OpenAI::Internal::Type::BaseModel
+              # The type of the object. Always `client_secret_post`.
               attr_accessor type: :client_secret_post
 
+              # @param type
+              #   The type of the object. Always `client_secret_post`.
               def initialize: (?type: :client_secret_post) -> void
 
               def to_hash: -> { ?type: :client_secret_post }

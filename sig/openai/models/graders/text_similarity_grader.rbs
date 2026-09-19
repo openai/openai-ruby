@@ -13,16 +13,33 @@ module OpenAI
         }
 
       class TextSimilarityGrader < OpenAI::Internal::Type::BaseModel
+        # The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`, `gleu`,
+        # `meteor`, `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
         attr_accessor evaluation_metric: OpenAI::Models::Graders::TextSimilarityGrader::evaluation_metric
 
+        # The text being graded.
         attr_accessor input: String
 
+        # The name of the grader.
         attr_accessor name: String
 
+        # The text being graded against.
         attr_accessor reference: String
 
+        # The type of grader.
         attr_accessor type: :text_similarity
 
+        # @param evaluation_metric
+        #   The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`, `gleu`,
+        #   `meteor`, `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
+        # @param input
+        #   The text being graded.
+        # @param name
+        #   The name of the grader.
+        # @param reference
+        #   The text being graded against.
+        # @param type
+        #   The type of grader.
         def initialize: (
           evaluation_metric: OpenAI::Models::Graders::TextSimilarityGrader::evaluation_metric,
           input: String,

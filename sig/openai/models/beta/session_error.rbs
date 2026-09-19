@@ -5,14 +5,26 @@ module OpenAI
         { code: String?, message: String, param: String?, type: String }
 
       class SessionError < OpenAI::Internal::Type::BaseModel
+        # The machine-readable error code, if any.
         attr_accessor code: String?
 
+        # A customer-safe explanation of the error.
         attr_accessor message: String
 
+        # The request parameter associated with the error, if any.
         attr_accessor param: String?
 
+        # The error type.
         attr_accessor type: String
 
+        # @param code
+        #   The machine-readable error code, if any.
+        # @param message
+        #   A customer-safe explanation of the error.
+        # @param param
+        #   The request parameter associated with the error, if any.
+        # @param type
+        #   The error type.
         def initialize: (
           code: String?,
           message: String,

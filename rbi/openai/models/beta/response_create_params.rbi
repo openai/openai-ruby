@@ -1094,7 +1094,6 @@ module OpenAI
             :"gpt-3.5-turbo-16k-0613",
             OpenAI::Beta::ResponseCreateParams::Model::TaggedSymbol
           )
-          GPT_5_1_MINI = T.let(:"gpt-5.1-mini", OpenAI::Beta::ResponseCreateParams::Model::TaggedSymbol)
           O1_PRO = T.let(:"o1-pro", OpenAI::Beta::ResponseCreateParams::Model::TaggedSymbol)
           O1_PRO_2025_03_19 = T.let(:"o1-pro-2025-03-19", OpenAI::Beta::ResponseCreateParams::Model::TaggedSymbol)
           O3_PRO = T.let(:"o3-pro", OpenAI::Beta::ResponseCreateParams::Model::TaggedSymbol)

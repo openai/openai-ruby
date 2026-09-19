@@ -19,28 +19,67 @@ module OpenAI
             }
 
           class Turn < OpenAI::Internal::Type::BaseModel
+            # The ID of the turn.
             attr_accessor id: String
 
+            # The ID of the agent that ran the turn.
             attr_accessor agent_id: String
 
+            # The Unix timestamp, in seconds, when the turn reached a terminal state.
             attr_accessor completed_at: Integer?
 
+            # The Unix timestamp, in seconds, used to order the turn by creation time.
+            # Subagent turns use their start time, falling back to completion time or the
+            # subagent opening time when the preceding timestamps are unavailable.
             attr_accessor created_at: Integer
 
+            # A customer-safe error. Non-null only for a failed turn.
             attr_accessor error: OpenAI::Beta::SessionTurnError?
 
+            # The object type. Always `agent.session.turn`.
             attr_accessor object: :"agent.session.turn"
 
+            # The ID of the session that owns the turn.
             attr_accessor session_id: String
 
+            # The Unix timestamp, in seconds, when the turn started.
             attr_accessor started_at: Integer?
 
+            # The current status of the turn.
             attr_accessor status: OpenAI::Models::Beta::Agents::Sessions::Turn::status
 
+            # The ID of the subagent that ran the turn, if applicable.
             attr_accessor subagent_id: String?
 
+            # Best-effort token usage for the turn, or null if unknown. Recorded usage may
+            # change.
             attr_accessor usage: OpenAI::Beta::TokenUsage?
 
+            # @param id
+            #   The ID of the turn.
+            # @param agent_id
+            #   The ID of the agent that ran the turn.
+            # @param completed_at
+            #   The Unix timestamp, in seconds, when the turn reached a terminal state.
+            # @param created_at
+            #   The Unix timestamp, in seconds, used to order the turn by creation time.
+            #   Subagent turns use their start time, falling back to completion time or the
+            #   subagent opening time when the preceding timestamps are unavailable.
+            # @param error
+            #   A customer-safe error. Non-null only for a failed turn.
+            # @param session_id
+            #   The ID of the session that owns the turn.
+            # @param started_at
+            #   The Unix timestamp, in seconds, when the turn started.
+            # @param status
+            #   The current status of the turn.
+            # @param subagent_id
+            #   The ID of the subagent that ran the turn, if applicable.
+            # @param usage
+            #   Best-effort token usage for the turn, or null if unknown. Recorded usage may
+            #   change.
+            # @param object
+            #   The object type. Always `agent.session.turn`.
             def initialize: (
               id: String,
               agent_id: String,

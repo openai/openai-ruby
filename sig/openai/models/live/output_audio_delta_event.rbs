@@ -10,18 +10,43 @@ module OpenAI
         }
 
       class OutputAudioDeltaEvent < OpenAI::Internal::Type::BaseModel
+        # Base64-encoded raw audio. Primary WebSocket events use the session's configured
+        # format; reflected sideband events use mono PCM16LE at 24 kHz.
         attr_accessor delta: String
 
+        # The event type, always `session.output_audio.delta`.
         attr_accessor type: :"session.output_audio.delta"
 
+        # Exclusive session-relative end in milliseconds. Required on reflected sideband
+        # events; omitted on the primary WebSocket. Dropped output frames leave gaps
+        # between reflected ranges.
         attr_reader end_ms: Integer?
 
+        # Exclusive session-relative end in milliseconds. Required on reflected sideband
+        # events; omitted on the primary WebSocket. Dropped output frames leave gaps
+        # between reflected ranges.
         def end_ms=: (Integer) -> Integer
 
+        # Inclusive session-relative start in milliseconds. Required on reflected sideband
+        # events; omitted on the primary WebSocket.
         attr_reader start_ms: Integer?
 
+        # Inclusive session-relative start in milliseconds. Required on reflected sideband
+        # events; omitted on the primary WebSocket.
         def start_ms=: (Integer) -> Integer
 
+        # @param delta
+        #   Base64-encoded raw audio. Primary WebSocket events use the session's configured
+        #   format; reflected sideband events use mono PCM16LE at 24 kHz.
+        # @param end_ms
+        #   Exclusive session-relative end in milliseconds. Required on reflected sideband
+        #   events; omitted on the primary WebSocket. Dropped output frames leave gaps
+        #   between reflected ranges.
+        # @param start_ms
+        #   Inclusive session-relative start in milliseconds. Required on reflected sideband
+        #   events; omitted on the primary WebSocket.
+        # @param type
+        #   The event type, always `session.output_audio.delta`.
         def initialize: (
           delta: String,
           ?end_ms: Integer,

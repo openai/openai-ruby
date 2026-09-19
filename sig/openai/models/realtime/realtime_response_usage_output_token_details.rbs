@@ -5,14 +5,22 @@ module OpenAI
         { ?audio_tokens: Integer, ?text_tokens: Integer }
 
       class RealtimeResponseUsageOutputTokenDetails < OpenAI::Internal::Type::BaseModel
+        # The number of audio tokens used in the Response.
         attr_reader audio_tokens: Integer?
 
+        # The number of audio tokens used in the Response.
         def audio_tokens=: (Integer) -> Integer
 
+        # The number of text tokens used in the Response.
         attr_reader text_tokens: Integer?
 
+        # The number of text tokens used in the Response.
         def text_tokens=: (Integer) -> Integer
 
+        # @param audio_tokens
+        #   The number of audio tokens used in the Response.
+        # @param text_tokens
+        #   The number of text tokens used in the Response.
         def initialize: (?audio_tokens: Integer, ?text_tokens: Integer) -> void
 
         def to_hash: -> { ?audio_tokens: Integer, ?text_tokens: Integer }

@@ -12,18 +12,31 @@ module OpenAI
         }
 
       class BetaToolSearchTool < OpenAI::Internal::Type::BaseModel
+        # The type of the tool. Always `tool_search`.
         attr_accessor type: :tool_search
 
+        # Description shown to the model for a client-executed tool search tool.
         attr_accessor description: String?
 
+        # Whether tool search is executed by the server or by the client.
         attr_reader execution: OpenAI::Models::Beta::BetaToolSearchTool::execution?
 
+        # Whether tool search is executed by the server or by the client.
         def execution=: (
           OpenAI::Models::Beta::BetaToolSearchTool::execution
         ) -> OpenAI::Models::Beta::BetaToolSearchTool::execution
 
+        # Parameter schema for a client-executed tool search tool.
         attr_accessor parameters: top?
 
+        # @param description
+        #   Description shown to the model for a client-executed tool search tool.
+        # @param execution
+        #   Whether tool search is executed by the server or by the client.
+        # @param parameters
+        #   Parameter schema for a client-executed tool search tool.
+        # @param type
+        #   The type of the tool. Always `tool_search`.
         def initialize: (
           ?description: String?,
           ?execution: OpenAI::Models::Beta::BetaToolSearchTool::execution,

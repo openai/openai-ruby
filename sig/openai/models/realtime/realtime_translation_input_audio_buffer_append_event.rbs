@@ -9,14 +9,24 @@ module OpenAI
         }
 
       class RealtimeTranslationInputAudioBufferAppendEvent < OpenAI::Internal::Type::BaseModel
+        # Base64-encoded 24 kHz PCM16 mono audio bytes.
         attr_accessor audio: String
 
+        # The event type, must be `session.input_audio_buffer.append`.
         attr_accessor type: :"session.input_audio_buffer.append"
 
+        # Optional client-generated ID used to identify this event.
         attr_reader event_id: String?
 
+        # Optional client-generated ID used to identify this event.
         def event_id=: (String) -> String
 
+        # @param audio
+        #   Base64-encoded 24 kHz PCM16 mono audio bytes.
+        # @param event_id
+        #   Optional client-generated ID used to identify this event.
+        # @param type
+        #   The event type, must be `session.input_audio_buffer.append`.
         def initialize: (
           audio: String,
           ?event_id: String,

@@ -9,16 +9,30 @@ module OpenAI
           }
 
         class ImageURLDelta < OpenAI::Internal::Type::BaseModel
+          # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
+          # to high resolution using `high`.
           attr_reader detail: OpenAI::Models::Beta::Threads::ImageURLDelta::detail?
 
+          # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
+          # to high resolution using `high`.
           def detail=: (
             OpenAI::Models::Beta::Threads::ImageURLDelta::detail
           ) -> OpenAI::Models::Beta::Threads::ImageURLDelta::detail
 
+          # The URL of the image, must be a supported image types: jpeg, jpg, png, gif,
+          # webp.
           attr_reader url: String?
 
+          # The URL of the image, must be a supported image types: jpeg, jpg, png, gif,
+          # webp.
           def url=: (String) -> String
 
+          # @param detail
+          #   Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
+          #   to high resolution using `high`.
+          # @param url
+          #   The URL of the image, must be a supported image types: jpeg, jpg, png, gif,
+          #   webp.
           def initialize: (
             ?detail: OpenAI::Models::Beta::Threads::ImageURLDelta::detail,
             ?url: String

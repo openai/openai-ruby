@@ -12,12 +12,19 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # ID of the last webhook endpoint from the previous page.
         attr_accessor after: String?
 
+        # Maximum number of webhook endpoints to return. Defaults to 20.
         attr_reader limit: Integer?
 
+        # Maximum number of webhook endpoints to return. Defaults to 20.
         def limit=: (Integer) -> Integer
 
+        # @param after
+        #   ID of the last webhook endpoint from the previous page.
+        # @param limit
+        #   Maximum number of webhook endpoints to return. Defaults to 20.
         def initialize: (
           ?after: String?,
           ?limit: Integer,

@@ -14,22 +14,46 @@ module OpenAI
         }
 
       class ResponseFunctionCallArgumentsDoneEvent < OpenAI::Internal::Type::BaseModel
+        # The final arguments as a JSON string.
         attr_accessor arguments: String
 
+        # The ID of the function call.
         attr_accessor call_id: String
 
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The ID of the function call item.
         attr_accessor item_id: String
 
+        # The name of the function that was called.
         attr_accessor name: String
 
+        # The index of the output item in the response.
         attr_accessor output_index: Integer
 
+        # The ID of the response.
         attr_accessor response_id: String
 
+        # The event type, must be `response.function_call_arguments.done`.
         attr_accessor type: :"response.function_call_arguments.done"
 
+        # @param arguments
+        #   The final arguments as a JSON string.
+        # @param call_id
+        #   The ID of the function call.
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param item_id
+        #   The ID of the function call item.
+        # @param name
+        #   The name of the function that was called.
+        # @param output_index
+        #   The index of the output item in the response.
+        # @param response_id
+        #   The ID of the response.
+        # @param type
+        #   The event type, must be `response.function_call_arguments.done`.
         def initialize: (
           arguments: String,
           call_id: String,

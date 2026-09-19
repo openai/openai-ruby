@@ -18,8 +18,11 @@ module OpenAI
 
           attr_accessor run_id: String
 
+          # A list of tools for which the outputs are being submitted.
           attr_accessor tool_outputs: ::Array[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput]
 
+          # @param tool_outputs
+          #   A list of tools for which the outputs are being submitted.
           def initialize: (
             thread_id: String,
             run_id: String,
@@ -37,14 +40,25 @@ module OpenAI
           type tool_output = { ?output: String, ?tool_call_id: String }
 
           class ToolOutput < OpenAI::Internal::Type::BaseModel
+            # The output of the tool call to be submitted to continue the run.
             attr_reader output: String?
 
+            # The output of the tool call to be submitted to continue the run.
             def output=: (String) -> String
 
+            # The ID of the tool call in the `required_action` object within the run object
+            # the output is being submitted for.
             attr_reader tool_call_id: String?
 
+            # The ID of the tool call in the `required_action` object within the run object
+            # the output is being submitted for.
             def tool_call_id=: (String) -> String
 
+            # @param output
+            #   The output of the tool call to be submitted to continue the run.
+            # @param tool_call_id
+            #   The ID of the tool call in the `required_action` object within the run object
+            #   the output is being submitted for.
             def initialize: (?output: String, ?tool_call_id: String) -> void
 
             def to_hash: -> { ?output: String, ?tool_call_id: String }

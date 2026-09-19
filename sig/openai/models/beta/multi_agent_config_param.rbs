@@ -5,12 +5,19 @@ module OpenAI
         { enabled: bool, ?max_concurrent_subagents: Integer }
 
       class MultiAgentConfigParam < OpenAI::Internal::Type::BaseModel
+        # Whether subagent tools are enabled.
         attr_accessor enabled: bool
 
+        # Maximum number of subagents that may run concurrently. Defaults to 6.
         attr_reader max_concurrent_subagents: Integer?
 
+        # Maximum number of subagents that may run concurrently. Defaults to 6.
         def max_concurrent_subagents=: (Integer) -> Integer
 
+        # @param enabled
+        #   Whether subagent tools are enabled.
+        # @param max_concurrent_subagents
+        #   Maximum number of subagents that may run concurrently. Defaults to 6.
         def initialize: (
           enabled: bool,
           ?max_concurrent_subagents: Integer

@@ -11,16 +11,31 @@ module OpenAI
         }
 
       class RealtimeMcpApprovalResponse < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the approval response.
         attr_accessor id: String
 
+        # The ID of the approval request being answered.
         attr_accessor approval_request_id: String
 
+        # Whether the request was approved.
         attr_accessor approve: bool
 
+        # The type of the item. Always `mcp_approval_response`.
         attr_accessor type: :mcp_approval_response
 
+        # Optional reason for the decision.
         attr_accessor reason: String?
 
+        # @param id
+        #   The unique ID of the approval response.
+        # @param approval_request_id
+        #   The ID of the approval request being answered.
+        # @param approve
+        #   Whether the request was approved.
+        # @param reason
+        #   Optional reason for the decision.
+        # @param type
+        #   The type of the item. Always `mcp_approval_response`.
         def initialize: (
           id: String,
           approval_request_id: String,

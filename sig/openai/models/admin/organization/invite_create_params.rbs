@@ -14,16 +14,35 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # Send an email to this address
           attr_accessor email: String
 
+          # `owner` or `reader`
           attr_accessor role: OpenAI::Models::Admin::Organization::InviteCreateParams::role
 
+          # An array of projects to which membership is granted at the same time the org
+          # invite is accepted. If omitted, the user will be invited to the default project
+          # for compatibility with legacy behavior. If empty list is passed, the user will
+          # not be invited to any projects, including the default one.
           attr_reader projects: ::Array[OpenAI::Admin::Organization::InviteCreateParams::Project]?
 
+          # An array of projects to which membership is granted at the same time the org
+          # invite is accepted. If omitted, the user will be invited to the default project
+          # for compatibility with legacy behavior. If empty list is passed, the user will
+          # not be invited to any projects, including the default one.
           def projects=: (
             ::Array[OpenAI::Admin::Organization::InviteCreateParams::Project]
           ) -> ::Array[OpenAI::Admin::Organization::InviteCreateParams::Project]
 
+          # @param email
+          #   Send an email to this address
+          # @param role
+          #   `owner` or `reader`
+          # @param projects
+          #   An array of projects to which membership is granted at the same time the org
+          #   invite is accepted. If omitted, the user will be invited to the default project
+          #   for compatibility with legacy behavior. If empty list is passed, the user will
+          #   not be invited to any projects, including the default one.
           def initialize: (
             email: String,
             role: OpenAI::Models::Admin::Organization::InviteCreateParams::role,
@@ -56,10 +75,16 @@ module OpenAI
             }
 
           class Project < OpenAI::Internal::Type::BaseModel
+            # Project's public ID
             attr_accessor id: String
 
+            # Project membership role
             attr_accessor role: OpenAI::Models::Admin::Organization::InviteCreateParams::Project::role
 
+            # @param id
+            #   Project's public ID
+            # @param role
+            #   Project membership role
             def initialize: (
               id: String,
               role: OpenAI::Models::Admin::Organization::InviteCreateParams::Project::role

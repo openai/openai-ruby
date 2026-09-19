@@ -22,12 +22,34 @@ module OpenAI
 
             attr_accessor step_id: String
 
+            # A list of additional fields to include in the response. Currently the only
+            # supported value is `step_details.tool_calls[*].file_search.results[*].content`
+            # to fetch the file search result content.
+            #
+            # See the
+            # [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
+            # for more information.
             attr_reader include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include]?
 
+            # A list of additional fields to include in the response. Currently the only
+            # supported value is `step_details.tool_calls[*].file_search.results[*].content`
+            # to fetch the file search result content.
+            #
+            # See the
+            # [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
+            # for more information.
             def include=: (
               ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include]
             ) -> ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include]
 
+            # @param include
+            #   A list of additional fields to include in the response. Currently the only
+            #   supported value is `step_details.tool_calls[*].file_search.results[*].content`
+            #   to fetch the file search result content.
+            #
+            #   See the
+            #   [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
+            #   for more information.
             def initialize: (
               thread_id: String,
               run_id: String,

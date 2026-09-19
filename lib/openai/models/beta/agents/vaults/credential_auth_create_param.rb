@@ -43,7 +43,7 @@ module OpenAI
               optional :expires_at, String, nil?: true
 
               # @!attribute refresh
-              #   Configuration for refreshing the access token of an MCP OAuth credential.
+              #   Optional refresh configuration for an HTTPS OAuth token endpoint.
               #
               #   @return [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::McpOauth::Refresh, nil]
               optional(
@@ -65,7 +65,7 @@ module OpenAI
               #     When the OAuth access token expires, as an RFC 3339 timestamp, if known.
               #
               #   @param refresh [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::McpOauth::Refresh, nil]
-              #     Configuration for refreshing the access token of an MCP OAuth credential.
+              #     Optional refresh configuration for an HTTPS OAuth token endpoint.
               #
               #   @param type [Symbol, :mcp_oauth]
               #     The type of the object. Always `mcp_oauth`.
@@ -115,7 +115,7 @@ module OpenAI
                 optional :scope, String, nil?: true
 
                 # @!method initialize(client_id:, refresh_token:, token_endpoint:, token_endpoint_auth:, resource: nil, scope: nil)
-                #   Configuration for refreshing the access token of an MCP OAuth credential.
+                #   Optional refresh configuration for an HTTPS OAuth token endpoint.
                 #
                 #   @param client_id [String]
                 #     The OAuth client ID used when requesting a new access token.

@@ -48,7 +48,7 @@ module OpenAI
           sig { returns(T.nilable(String)) }
           attr_accessor :error
 
-          # The text or model-input content supplied as a function result.
+          # The function result, if the call succeeded.
           sig { returns(T.nilable(OpenAI::Beta::AgentFunctionCallOutput::Variants)) }
           attr_accessor :output
 
@@ -102,7 +102,7 @@ module OpenAI
             # The error message, if the call failed.
             error:,
 
-            # The text or model-input content supplied as a function result.
+            # The function result, if the call succeeded.
             output:,
 
             # The status of the function call.

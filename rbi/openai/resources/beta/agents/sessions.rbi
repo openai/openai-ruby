@@ -56,7 +56,10 @@ module OpenAI
             # The ID of a saved reusable agent. Omit `agent` to use its configuration
             # unchanged.
             agent_id: nil,
-            # Initial input submitted when creating a session.
+            # Initial input to submit when the session is created. A string is shorthand for a
+            # single user message. Required when `environment.type` is `none`, or when
+            # `stream` is `true` for an environment that is not `self_hosted`; optional for
+            # self-hosted and non-streaming execution environments.
             input: nil,
             # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
             # characters. Omission or null defaults to an empty map.
@@ -102,7 +105,10 @@ module OpenAI
             # The ID of a saved reusable agent. Omit `agent` to use its configuration
             # unchanged.
             agent_id: nil,
-            # Initial input submitted when creating a session.
+            # Initial input to submit when the session is created. A string is shorthand for a
+            # single user message. Required when `environment.type` is `none`, or when
+            # `stream` is `true` for an environment that is not `self_hosted`; optional for
+            # self-hosted and non-streaming execution environments.
             input: nil,
             # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
             # characters. Omission or null defaults to an empty map.

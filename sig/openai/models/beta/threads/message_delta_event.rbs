@@ -10,12 +10,21 @@ module OpenAI
           }
 
         class MessageDeltaEvent < OpenAI::Internal::Type::BaseModel
+          # The identifier of the message, which can be referenced in API endpoints.
           attr_accessor id: String
 
+          # The delta containing the fields that have changed on the Message.
           attr_accessor delta: OpenAI::Beta::Threads::MessageDelta
 
+          # The object type, which is always `thread.message.delta`.
           attr_accessor object: :"thread.message.delta"
 
+          # @param id
+          #   The identifier of the message, which can be referenced in API endpoints.
+          # @param delta
+          #   The delta containing the fields that have changed on the Message.
+          # @param object
+          #   The object type, which is always `thread.message.delta`.
           def initialize: (
             id: String,
             delta: OpenAI::Beta::Threads::MessageDelta,

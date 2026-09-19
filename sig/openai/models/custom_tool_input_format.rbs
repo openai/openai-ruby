@@ -10,8 +10,11 @@ module OpenAI
       type text = { ?type: :text }
 
       class Text < OpenAI::Internal::Type::BaseModel
+        # Unconstrained text format. Always `text`.
         attr_accessor type: :text
 
+        # @param type
+        #   Unconstrained text format. Always `text`.
         def initialize: (?type: :text) -> void
 
         def to_hash: -> { ?type: :text }
@@ -25,12 +28,21 @@ module OpenAI
         }
 
       class Grammar < OpenAI::Internal::Type::BaseModel
+        # The grammar definition.
         attr_accessor definition: String
 
+        # The syntax of the grammar definition. One of `lark` or `regex`.
         attr_accessor syntax: OpenAI::Models::CustomToolInputFormat::Grammar::syntax
 
+        # Grammar format. Always `grammar`.
         attr_accessor type: :grammar
 
+        # @param definition
+        #   The grammar definition.
+        # @param syntax
+        #   The syntax of the grammar definition. One of `lark` or `regex`.
+        # @param type
+        #   Grammar format. Always `grammar`.
         def initialize: (
           definition: String,
           syntax: OpenAI::Models::CustomToolInputFormat::Grammar::syntax,

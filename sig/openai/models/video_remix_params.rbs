@@ -13,8 +13,11 @@ module OpenAI
 
       attr_accessor video_id: String
 
+      # Updated text prompt that directs the remix generation.
       attr_accessor prompt: String
 
+      # @param prompt
+      #   Updated text prompt that directs the remix generation.
       def initialize: (
         video_id: String,
         prompt: String,

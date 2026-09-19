@@ -9,16 +9,33 @@ module OpenAI
           }
 
         class ImageFileDelta < OpenAI::Internal::Type::BaseModel
+          # Specifies the detail level of the image if specified by the user. `low` uses
+          # fewer tokens, you can opt in to high resolution using `high`.
           attr_reader detail: OpenAI::Models::Beta::Threads::ImageFileDelta::detail?
 
+          # Specifies the detail level of the image if specified by the user. `low` uses
+          # fewer tokens, you can opt in to high resolution using `high`.
           def detail=: (
             OpenAI::Models::Beta::Threads::ImageFileDelta::detail
           ) -> OpenAI::Models::Beta::Threads::ImageFileDelta::detail
 
+          # The [File](https://developers.openai.com/api/reference/resources/files) ID of
+          # the image in the message content. Set `purpose="vision"` when uploading the File
+          # if you need to later display the file content.
           attr_reader file_id: String?
 
+          # The [File](https://developers.openai.com/api/reference/resources/files) ID of
+          # the image in the message content. Set `purpose="vision"` when uploading the File
+          # if you need to later display the file content.
           def file_id=: (String) -> String
 
+          # @param detail
+          #   Specifies the detail level of the image if specified by the user. `low` uses
+          #   fewer tokens, you can opt in to high resolution using `high`.
+          # @param file_id
+          #   The [File](https://developers.openai.com/api/reference/resources/files) ID of
+          #   the image in the message content. Set `purpose="vision"` when uploading the File
+          #   if you need to later display the file content.
           def initialize: (
             ?detail: OpenAI::Models::Beta::Threads::ImageFileDelta::detail,
             ?file_id: String

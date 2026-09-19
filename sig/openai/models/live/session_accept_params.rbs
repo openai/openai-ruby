@@ -14,8 +14,13 @@ module OpenAI
 
         attr_accessor session_id: String
 
+        # Model and startup configuration for the Live session that answers the incoming
+        # SIP call.
         attr_accessor session: OpenAI::Live::SessionAcceptParams::Session
 
+        # @param session
+        #   Model and startup configuration for the Live session that answers the incoming
+        #   SIP call.
         def initialize: (
           session_id: String,
           session: OpenAI::Live::SessionAcceptParams::Session,
@@ -40,30 +45,83 @@ module OpenAI
           }
 
         class Session < OpenAI::Internal::Type::BaseModel
+          # The Live model to use for the accepted call.
           attr_accessor model: OpenAI::Models::Live::SessionAcceptParams::Session::model
 
+          # The session type. Always `live`.
           attr_accessor type: :live
 
+          # Startup audio output configuration. SIP negotiates the media format;
+          # audio.format is only accepted for primary WebSockets. Voice cannot change after
+          # startup.
           attr_reader audio: OpenAI::Live::SessionAcceptParams::Session::Audio?
 
+          # Startup audio output configuration. SIP negotiates the media format;
+          # audio.format is only accepted for primary WebSockets. Voice cannot change after
+          # startup.
           def audio=: (
             OpenAI::Live::SessionAcceptParams::Session::Audio
           ) -> OpenAI::Live::SessionAcceptParams::Session::Audio
 
+          # Who handles tasks delegated by the Live model. Omitted or null selects your
+          # application; use `responses` to let the API manage a Responses backend.
           attr_accessor delegation: OpenAI::Models::Live::SessionAcceptParams::Session::delegation?
 
+          # Ordered text-only history supplied before startup. Supports developer, user, and
+          # assistant messages with one text part each; at most 128 messages and 8,192
+          # rendered tokens in total.
           attr_reader input: ::Array[OpenAI::Models::Live::initial_item]?
 
+          # Ordered text-only history supplied before startup. Supports developer, user, and
+          # assistant messages with one text part each; at most 128 messages and 8,192
+          # rendered tokens in total.
           def input=: (
             ::Array[OpenAI::Models::Live::initial_item]
           ) -> ::Array[OpenAI::Models::Live::initial_item]
 
+          # Frontend instructions for voice, conversation, interruptions, and when to
+          # delegate. Start with the
+          # [Live prompting guide](https://developers.openai.com/api/docs/guides/live-prompting);
+          # put business rules and tool workflows in a separate
+          # [backend prompt](https://developers.openai.com/api/docs/guides/live-delegation#start-with-your-existing-backend-prompt).
+          # Limited to 16,384 client-supplied tokens. Omitted or blank instructions use
+          # server defaults. Immutable after startup.
           attr_accessor instructions: String?
 
+          # Whether to store the session for later forking and recording download. Defaults
+          # to false for new sessions.
           attr_reader store: bool?
 
+          # Whether to store the session for later forking and recording download. Defaults
+          # to false for new sessions.
           def store=: (bool) -> bool
 
+          # @param model
+          #   The Live model to use for the accepted call.
+          # @param audio
+          #   Startup audio output configuration. SIP negotiates the media format;
+          #   audio.format is only accepted for primary WebSockets. Voice cannot change after
+          #   startup.
+          # @param delegation
+          #   Who handles tasks delegated by the Live model. Omitted or null selects your
+          #   application; use `responses` to let the API manage a Responses backend.
+          # @param input
+          #   Ordered text-only history supplied before startup. Supports developer, user, and
+          #   assistant messages with one text part each; at most 128 messages and 8,192
+          #   rendered tokens in total.
+          # @param instructions
+          #   Frontend instructions for voice, conversation, interruptions, and when to
+          #   delegate. Start with the
+          #   [Live prompting guide](https://developers.openai.com/api/docs/guides/live-prompting);
+          #   put business rules and tool workflows in a separate
+          #   [backend prompt](https://developers.openai.com/api/docs/guides/live-delegation#start-with-your-existing-backend-prompt).
+          #   Limited to 16,384 client-supplied tokens. Omitted or blank instructions use
+          #   server defaults. Immutable after startup.
+          # @param store
+          #   Whether to store the session for later forking and recording download. Defaults
+          #   to false for new sessions.
+          # @param type
+          #   The session type. Always `live`.
           def initialize: (
             model: OpenAI::Models::Live::SessionAcceptParams::Session::model,
             ?audio: OpenAI::Live::SessionAcceptParams::Session::Audio,
@@ -100,12 +158,19 @@ module OpenAI
             }
 
           class Audio < OpenAI::Internal::Type::BaseModel
+            # Settings for speech generated by the Live model. Choose the voice before
+            # starting the session.
             attr_reader output: OpenAI::Live::SessionAcceptParams::Session::Audio::Output?
 
+            # Settings for speech generated by the Live model. Choose the voice before
+            # starting the session.
             def output=: (
               OpenAI::Live::SessionAcceptParams::Session::Audio::Output
             ) -> OpenAI::Live::SessionAcceptParams::Session::Audio::Output
 
+            # @param output
+            #   Settings for speech generated by the Live model. Choose the voice before
+            #   starting the session.
             def initialize: (
               ?output: OpenAI::Live::SessionAcceptParams::Session::Audio::Output
             ) -> void
@@ -120,12 +185,19 @@ module OpenAI
               }
 
             class Output < OpenAI::Internal::Type::BaseModel
+              # The voice used for Live speech, as a built-in voice name or a custom voice
+              # object containing its ID. Defaults to `marin` and cannot change after startup.
               attr_reader voice: OpenAI::Models::Live::SessionAcceptParams::Session::Audio::Output::voice?
 
+              # The voice used for Live speech, as a built-in voice name or a custom voice
+              # object containing its ID. Defaults to `marin` and cannot change after startup.
               def voice=: (
                 OpenAI::Models::Live::SessionAcceptParams::Session::Audio::Output::voice
               ) -> OpenAI::Models::Live::SessionAcceptParams::Session::Audio::Output::voice
 
+              # @param voice
+              #   The voice used for Live speech, as a built-in voice name or a custom voice
+              #   object containing its ID. Defaults to `marin` and cannot change after startup.
               def initialize: (
                 ?voice: OpenAI::Models::Live::SessionAcceptParams::Session::Audio::Output::voice
               ) -> void
@@ -161,10 +233,18 @@ module OpenAI
               }
 
             class Responses < OpenAI::Internal::Type::BaseModel
+              # Backend model, prompt, and tools used when the Live session delegates a task to
+              # Responses.
               attr_accessor responses: OpenAI::Live::ResponsesDelegationConfig
 
+              # The delegation owner. Always `responses` for tasks handled by the Responses API.
               attr_accessor type: :responses
 
+              # @param responses
+              #   Backend model, prompt, and tools used when the Live session delegates a task to
+              #   Responses.
+              # @param type
+              #   The delegation owner. Always `responses` for tasks handled by the Responses API.
               def initialize: (
                 responses: OpenAI::Live::ResponsesDelegationConfig,
                 ?type: :responses

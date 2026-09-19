@@ -10,8 +10,10 @@ module OpenAI
           }
 
         class TextDeltaBlock < OpenAI::Internal::Type::BaseModel
+          # The index of the content part in the message.
           attr_accessor index: Integer
 
+          # Always `text`.
           attr_accessor type: :text
 
           attr_reader text: OpenAI::Beta::Threads::TextDelta?
@@ -20,6 +22,10 @@ module OpenAI
             OpenAI::Beta::Threads::TextDelta
           ) -> OpenAI::Beta::Threads::TextDelta
 
+          # @param index
+          #   The index of the content part in the message.
+          # @param type
+          #   Always `text`.
           def initialize: (
             index: Integer,
             ?text: OpenAI::Beta::Threads::TextDelta,

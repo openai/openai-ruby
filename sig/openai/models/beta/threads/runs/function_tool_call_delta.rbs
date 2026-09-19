@@ -12,20 +12,36 @@ module OpenAI
             }
 
           class FunctionToolCallDelta < OpenAI::Internal::Type::BaseModel
+            # The index of the tool call in the tool calls array.
             attr_accessor index: Integer
 
+            # The type of tool call. This is always going to be `function` for this type of
+            # tool call.
             attr_accessor type: :function
 
+            # The ID of the tool call object.
             attr_reader id: String?
 
+            # The ID of the tool call object.
             def id=: (String) -> String
 
+            # The definition of the function that was called.
             attr_reader function: OpenAI::Beta::Threads::Runs::FunctionToolCallDelta::Function?
 
+            # The definition of the function that was called.
             def function=: (
               OpenAI::Beta::Threads::Runs::FunctionToolCallDelta::Function
             ) -> OpenAI::Beta::Threads::Runs::FunctionToolCallDelta::Function
 
+            # @param index
+            #   The index of the tool call in the tool calls array.
+            # @param id
+            #   The ID of the tool call object.
+            # @param function
+            #   The definition of the function that was called.
+            # @param type
+            #   The type of tool call. This is always going to be `function` for this type of
+            #   tool call.
             def initialize: (
               index: Integer,
               ?id: String,
@@ -44,16 +60,29 @@ module OpenAI
               { ?arguments: String, ?name: String, ?output: String? }
 
             class Function < OpenAI::Internal::Type::BaseModel
+              # The arguments passed to the function.
               attr_reader arguments: String?
 
+              # The arguments passed to the function.
               def arguments=: (String) -> String
 
+              # The name of the function.
               attr_reader name: String?
 
+              # The name of the function.
               def name=: (String) -> String
 
+              # The output of the function. This will be `null` if the outputs have not been
+              # [submitted](https://developers.openai.com/api/docs/assistants/migration) yet.
               attr_accessor output: String?
 
+              # @param arguments
+              #   The arguments passed to the function.
+              # @param name
+              #   The name of the function.
+              # @param output
+              #   The output of the function. This will be `null` if the outputs have not been
+              #   [submitted](https://developers.openai.com/api/docs/assistants/migration) yet.
               def initialize: (
                 ?arguments: String,
                 ?name: String,

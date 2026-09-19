@@ -6,12 +6,21 @@ module OpenAI
           { id: String, deleted: bool, ?object: :"vault.deleted" }
 
         class VaultDeleted < OpenAI::Internal::Type::BaseModel
+          # The ID of the deleted vault.
           attr_accessor id: String
 
+          # Whether the resource was deleted. Always `true`.
           attr_accessor deleted: bool
 
+          # The object type. Always `vault.deleted`.
           attr_accessor object: :"vault.deleted"
 
+          # @param id
+          #   The ID of the deleted vault.
+          # @param deleted
+          #   Whether the resource was deleted. Always `true`.
+          # @param object
+          #   The object type. Always `vault.deleted`.
           def initialize: (
             id: String,
             deleted: bool,

@@ -10,8 +10,19 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      # The image or audio file to check for supported OpenAI provenance signals.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       attr_accessor file: OpenAI::Internal::file_input
 
+      # @param file
+      #   The image or audio file to check for supported OpenAI provenance signals.
+      #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
       def initialize: (
         file: OpenAI::Internal::file_input,
         ?request_options: OpenAI::request_opts

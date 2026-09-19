@@ -18,7 +18,7 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :id
 
-        # An action performed by the web search tool.
+        # The action performed by the web search tool.
         sig { returns(T.nilable(OpenAI::Beta::WebSearchAction::Variants)) }
         attr_accessor :action
 
@@ -62,7 +62,7 @@ module OpenAI
           # The ID of the web search call.
           id:,
 
-          # An action performed by the web search tool.
+          # The action performed by the web search tool.
           action:,
 
           # The status of the web search call.

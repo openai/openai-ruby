@@ -10,10 +10,22 @@ module OpenAI
         }
 
       class FineTuningJobWandbIntegrationObject < OpenAI::Internal::Type::BaseModel
+        # The type of the integration being enabled for the fine-tuning job
         attr_accessor type: :wandb
 
+        # The settings for your integration with Weights and Biases. This payload
+        # specifies the project that metrics will be sent to. Optionally, you can set an
+        # explicit display name for your run, add tags to your run, and set a default
+        # entity (team, username, etc) to be associated with your run.
         attr_accessor wandb: OpenAI::FineTuning::FineTuningJobWandbIntegration
 
+        # @param wandb
+        #   The settings for your integration with Weights and Biases. This payload
+        #   specifies the project that metrics will be sent to. Optionally, you can set an
+        #   explicit display name for your run, add tags to your run, and set a default
+        #   entity (team, username, etc) to be associated with your run.
+        # @param type
+        #   The type of the integration being enabled for the fine-tuning job
         def initialize: (
           wandb: OpenAI::FineTuning::FineTuningJobWandbIntegration,
           ?type: :wandb

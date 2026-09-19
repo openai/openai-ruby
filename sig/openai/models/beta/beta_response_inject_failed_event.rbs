@@ -14,20 +14,42 @@ module OpenAI
         }
 
       class BetaResponseInjectFailedEvent < OpenAI::Internal::Type::BaseModel
+        # Information about why the input was not committed.
         attr_accessor error: OpenAI::Beta::BetaResponseInjectFailedEvent::Error
 
+        # The raw input items that were not committed.
         attr_accessor input: ::Array[OpenAI::Models::Beta::beta_response_input_item]
 
+        # The ID of the response that rejected the input.
         attr_accessor response_id: String
 
+        # The sequence number for this event.
         attr_accessor sequence_number: Integer
 
+        # The event discriminator. Always `response.inject.failed`.
         attr_accessor type: :"response.inject.failed"
 
+        # The multiplexed WebSocket stream that emitted the event. This field is present
+        # only when WebSocket multiplexing is enabled separately.
         attr_reader stream_id: String?
 
+        # The multiplexed WebSocket stream that emitted the event. This field is present
+        # only when WebSocket multiplexing is enabled separately.
         def stream_id=: (String) -> String
 
+        # @param error
+        #   Information about why the input was not committed.
+        # @param input
+        #   The raw input items that were not committed.
+        # @param response_id
+        #   The ID of the response that rejected the input.
+        # @param sequence_number
+        #   The sequence number for this event.
+        # @param stream_id
+        #   The multiplexed WebSocket stream that emitted the event. This field is present
+        #   only when WebSocket multiplexing is enabled separately.
+        # @param type
+        #   The event discriminator. Always `response.inject.failed`.
         def initialize: (
           error: OpenAI::Beta::BetaResponseInjectFailedEvent::Error,
           input: ::Array[OpenAI::Models::Beta::beta_response_input_item],
@@ -53,10 +75,16 @@ module OpenAI
           }
 
         class Error < OpenAI::Internal::Type::BaseModel
+          # A machine-readable error code.
           attr_accessor code: OpenAI::Models::Beta::BetaResponseInjectFailedEvent::Error::code
 
+          # A human-readable description of the error.
           attr_accessor message: String
 
+          # @param code
+          #   A machine-readable error code.
+          # @param message
+          #   A human-readable description of the error.
           def initialize: (
             code: OpenAI::Models::Beta::BetaResponseInjectFailedEvent::Error::code,
             message: String

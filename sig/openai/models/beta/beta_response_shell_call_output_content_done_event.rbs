@@ -15,24 +15,46 @@ module OpenAI
         }
 
       class BetaResponseShellCallOutputContentDoneEvent < OpenAI::Internal::Type::BaseModel
+        # The index of the shell command that produced output.
         attr_accessor command_index: Integer
 
+        # The ID of the output item that was updated.
         attr_accessor item_id: String
 
+        # The output contents emitted for the shell command.
         attr_accessor output: ::Array[OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Output]
 
+        # The index of the output item that was updated.
         attr_accessor output_index: Integer
 
+        # The sequence number of the event that was emitted.
         attr_accessor sequence_number: Integer
 
+        # The type of the event, always `response.shell_call_output_content.done`.
         attr_accessor type: :"response.shell_call_output_content.done"
 
+        # The agent that owns this multi-agent streaming event.
         attr_reader agent: OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent?
 
+        # The agent that owns this multi-agent streaming event.
         def agent=: (
           OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent
         ) -> OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent::Agent
 
+        # @param command_index
+        #   The index of the shell command that produced output.
+        # @param item_id
+        #   The ID of the output item that was updated.
+        # @param output
+        #   The output contents emitted for the shell command.
+        # @param output_index
+        #   The index of the output item that was updated.
+        # @param sequence_number
+        #   The sequence number of the event that was emitted.
+        # @param agent
+        #   The agent that owns this multi-agent streaming event.
+        # @param type
+        #   The type of the event, always `response.shell_call_output_content.done`.
         def initialize: (
           command_index: Integer,
           item_id: String,
@@ -62,16 +84,31 @@ module OpenAI
           }
 
         class Output < OpenAI::Internal::Type::BaseModel
+          # Represents either an exit outcome (with an exit code) or a timeout outcome for a
+          # shell call output chunk.
           attr_accessor outcome: OpenAI::Models::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::outcome
 
+          # The standard error output that was captured.
           attr_accessor stderr: String
 
+          # The standard output that was captured.
           attr_accessor stdout: String
 
+          # The identifier of the actor that created the item.
           attr_reader created_by: String?
 
+          # The identifier of the actor that created the item.
           def created_by=: (String) -> String
 
+          # @param outcome
+          #   Represents either an exit outcome (with an exit code) or a timeout outcome for a
+          #   shell call output chunk.
+          # @param stderr
+          #   The standard error output that was captured.
+          # @param stdout
+          #   The standard output that was captured.
+          # @param created_by
+          #   The identifier of the actor that created the item.
           def initialize: (
             outcome: OpenAI::Models::Beta::BetaResponseShellCallOutputContentDoneEvent::Output::outcome,
             stderr: String,
@@ -96,8 +133,11 @@ module OpenAI
             type timeout = { ?type: :timeout }
 
             class Timeout < OpenAI::Internal::Type::BaseModel
+              # The outcome type. Always `timeout`.
               attr_accessor type: :timeout
 
+              # @param type
+              #   The outcome type. Always `timeout`.
               def initialize: (?type: :timeout) -> void
 
               def to_hash: -> { ?type: :timeout }
@@ -106,10 +146,16 @@ module OpenAI
             type exit_ = { exit_code: Integer, ?type: :exit }
 
             class Exit < OpenAI::Internal::Type::BaseModel
+              # Exit code from the shell process.
               attr_accessor exit_code: Integer
 
+              # The outcome type. Always `exit`.
               attr_accessor type: :exit
 
+              # @param exit_code
+              #   Exit code from the shell process.
+              # @param type
+              #   The outcome type. Always `exit`.
               def initialize: (exit_code: Integer, ?type: :exit) -> void
 
               def to_hash: -> { exit_code: Integer, ?type: :exit }
@@ -122,8 +168,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }

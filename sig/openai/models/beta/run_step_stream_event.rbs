@@ -20,10 +20,13 @@ module OpenAI
           }
 
         class ThreadRunStepCreated < OpenAI::Internal::Type::BaseModel
+          # Represents a step in execution of a run.
           attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.created"
 
+          # @param data
+          #   Represents a step in execution of a run.
           def initialize: (
             data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.created"
@@ -42,10 +45,13 @@ module OpenAI
           }
 
         class ThreadRunStepInProgress < OpenAI::Internal::Type::BaseModel
+          # Represents a step in execution of a run.
           attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.in_progress"
 
+          # @param data
+          #   Represents a step in execution of a run.
           def initialize: (
             data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.in_progress"
@@ -64,10 +70,15 @@ module OpenAI
           }
 
         class ThreadRunStepDelta < OpenAI::Internal::Type::BaseModel
+          # Represents a run step delta i.e. any changed fields on a run step during
+          # streaming.
           attr_accessor data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent
 
           attr_accessor event: :"thread.run.step.delta"
 
+          # @param data
+          #   Represents a run step delta i.e. any changed fields on a run step during
+          #   streaming.
           def initialize: (
             data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent,
             ?event: :"thread.run.step.delta"
@@ -86,10 +97,13 @@ module OpenAI
           }
 
         class ThreadRunStepCompleted < OpenAI::Internal::Type::BaseModel
+          # Represents a step in execution of a run.
           attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.completed"
 
+          # @param data
+          #   Represents a step in execution of a run.
           def initialize: (
             data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.completed"
@@ -108,10 +122,13 @@ module OpenAI
           }
 
         class ThreadRunStepFailed < OpenAI::Internal::Type::BaseModel
+          # Represents a step in execution of a run.
           attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.failed"
 
+          # @param data
+          #   Represents a step in execution of a run.
           def initialize: (
             data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.failed"
@@ -130,10 +147,13 @@ module OpenAI
           }
 
         class ThreadRunStepCancelled < OpenAI::Internal::Type::BaseModel
+          # Represents a step in execution of a run.
           attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.cancelled"
 
+          # @param data
+          #   Represents a step in execution of a run.
           def initialize: (
             data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.cancelled"
@@ -152,10 +172,13 @@ module OpenAI
           }
 
         class ThreadRunStepExpired < OpenAI::Internal::Type::BaseModel
+          # Represents a step in execution of a run.
           attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.expired"
 
+          # @param data
+          #   Represents a step in execution of a run.
           def initialize: (
             data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.expired"

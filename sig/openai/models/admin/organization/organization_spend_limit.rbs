@@ -14,16 +14,33 @@ module OpenAI
           }
 
         class OrganizationSpendLimit < OpenAI::Internal::Type::BaseModel
+          # The currency for the threshold amount. Currently, only `USD` is supported.
           attr_accessor currency: OpenAI::Models::Admin::Organization::OrganizationSpendLimit::currency
 
+          # The current enforcement state of the hard spend limit.
           attr_accessor enforcement: OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement
 
+          # The time interval for evaluating spend against the threshold. Currently, only
+          # `month` is supported.
           attr_accessor interval: OpenAI::Models::Admin::Organization::OrganizationSpendLimit::interval
 
+          # The object type, which is always `organization.spend_limit`.
           attr_accessor object: :"organization.spend_limit"
 
+          # The hard spend limit amount, in cents.
           attr_accessor threshold_amount: Integer
 
+          # @param currency
+          #   The currency for the threshold amount. Currently, only `USD` is supported.
+          # @param enforcement
+          #   The current enforcement state of the hard spend limit.
+          # @param interval
+          #   The time interval for evaluating spend against the threshold. Currently, only
+          #   `month` is supported.
+          # @param threshold_amount
+          #   The hard spend limit amount, in cents.
+          # @param object
+          #   The object type, which is always `organization.spend_limit`.
           def initialize: (
             currency: OpenAI::Models::Admin::Organization::OrganizationSpendLimit::currency,
             enforcement: OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement,
@@ -56,8 +73,11 @@ module OpenAI
             }
 
           class Enforcement < OpenAI::Internal::Type::BaseModel
+            # Whether the hard spend limit is currently enforcing.
             attr_accessor status: OpenAI::Models::Admin::Organization::OrganizationSpendLimit::Enforcement::status
 
+            # @param status
+            #   Whether the hard spend limit is currently enforcing.
             def initialize: (
               status: OpenAI::Models::Admin::Organization::OrganizationSpendLimit::Enforcement::status
             ) -> void

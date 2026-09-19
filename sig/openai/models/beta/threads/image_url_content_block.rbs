@@ -8,8 +8,11 @@ module OpenAI
         class ImageURLContentBlock < OpenAI::Internal::Type::BaseModel
           attr_accessor image_url: OpenAI::Beta::Threads::ImageURL
 
+          # The type of the content part.
           attr_accessor type: :image_url
 
+          # @param type
+          #   The type of the content part.
           def initialize: (
             image_url: OpenAI::Beta::Threads::ImageURL,
             ?type: :image_url

@@ -9,10 +9,16 @@ module OpenAI
             { deleted: bool, ?object: :"project.model_permissions.deleted" }
 
           class ProjectModelPermissionsDeleted < OpenAI::Internal::Type::BaseModel
+            # Whether the project model permissions were deleted.
             attr_accessor deleted: bool
 
+            # The object type, which is always `project.model_permissions.deleted`.
             attr_accessor object: :"project.model_permissions.deleted"
 
+            # @param deleted
+            #   Whether the project model permissions were deleted.
+            # @param object
+            #   The object type, which is always `project.model_permissions.deleted`.
             def initialize: (
               deleted: bool,
               ?object: :"project.model_permissions.deleted"

@@ -180,8 +180,11 @@ module OpenAI
         optional :parallel_tool_calls, OpenAI::Internal::Type::Boolean
 
         # @!attribute prediction
-        #   Static predicted output content, such as the content of a text file that is
-        #   being regenerated.
+        #   Configuration for a
+        #   [Predicted Output](https://developers.openai.com/api/docs/guides/predicted-outputs),
+        #   which can greatly improve response times when large parts of the model response
+        #   are known ahead of time. This is most common when you are regenerating a file
+        #   with only minor changes to most of the content.
         #
         #   @return [OpenAI::Models::Chat::ChatCompletionPredictionContent, nil]
         optional :prediction, -> { OpenAI::Chat::ChatCompletionPredictionContent }, nil?: true
@@ -536,8 +539,11 @@ module OpenAI
         #     during tool use.
         #
         #   @param prediction [OpenAI::Models::Chat::ChatCompletionPredictionContent, nil]
-        #     Static predicted output content, such as the content of a text file that is
-        #     being regenerated.
+        #     Configuration for a
+        #     [Predicted Output](https://developers.openai.com/api/docs/guides/predicted-outputs),
+        #     which can greatly improve response times when large parts of the model response
+        #     are known ahead of time. This is most common when you are regenerating a file
+        #     with only minor changes to most of the content.
         #
         #   @param presence_penalty [Float, nil]
         #     Number between -2.0 and 2.0. Positive values penalize new tokens based on

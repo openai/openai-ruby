@@ -5,7 +5,7 @@ module OpenAI
     module Responses
       class ResponseOutputTextAnnotationAddedEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute annotation
-        #   An annotation that applies to a span of output text.
+        #   The annotation object being added. (See annotation schema for details.)
         #
         #   @return [OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::ContainerFileCitation, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::FilePath, nil]
         required(
@@ -54,7 +54,7 @@ module OpenAI
         #   Emitted when an annotation is added to output text content.
         #
         #   @param annotation [OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::ContainerFileCitation, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::FilePath, nil]
-        #     An annotation that applies to a span of output text.
+        #     The annotation object being added. (See annotation schema for details.)
         #
         #   @param annotation_index [Integer]
         #     The index of the annotation within the content part.
@@ -74,7 +74,7 @@ module OpenAI
         #   @param type [Symbol, :"response.output_text.annotation.added"]
         #     The type of the event. Always 'response.output_text.annotation.added'.
 
-        # An annotation that applies to a span of output text.
+        # The annotation object being added. (See annotation schema for details.)
         #
         # @see OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent#annotation
         module Annotation

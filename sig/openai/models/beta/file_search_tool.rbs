@@ -8,14 +8,21 @@ module OpenAI
         }
 
       class FileSearchTool < OpenAI::Internal::Type::BaseModel
+        # The type of tool being defined: `file_search`
         attr_accessor type: :file_search
 
+        # Overrides for the file search tool.
         attr_reader file_search: OpenAI::Beta::FileSearchTool::FileSearch?
 
+        # Overrides for the file search tool.
         def file_search=: (
           OpenAI::Beta::FileSearchTool::FileSearch
         ) -> OpenAI::Beta::FileSearchTool::FileSearch
 
+        # @param file_search
+        #   Overrides for the file search tool.
+        # @param type
+        #   The type of tool being defined: `file_search`
         def initialize: (
           ?file_search: OpenAI::Beta::FileSearchTool::FileSearch,
           ?type: :file_search
@@ -33,16 +40,60 @@ module OpenAI
           }
 
         class FileSearch < OpenAI::Internal::Type::BaseModel
+          # The maximum number of results the file search tool should output. The default is
+          # 20 for `gpt-4*` models and 5 for `gpt-3.5-turbo`. This number should be between
+          # 1 and 50 inclusive.
+          #
+          # Note that the file search tool may output fewer than `max_num_results` results.
+          # See the
+          # [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
+          # for more information.
           attr_reader max_num_results: Integer?
 
+          # The maximum number of results the file search tool should output. The default is
+          # 20 for `gpt-4*` models and 5 for `gpt-3.5-turbo`. This number should be between
+          # 1 and 50 inclusive.
+          #
+          # Note that the file search tool may output fewer than `max_num_results` results.
+          # See the
+          # [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
+          # for more information.
           def max_num_results=: (Integer) -> Integer
 
+          # The ranking options for the file search. If not specified, the file search tool
+          # will use the `auto` ranker and a score_threshold of 0.
+          #
+          # See the
+          # [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
+          # for more information.
           attr_reader ranking_options: OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions?
 
+          # The ranking options for the file search. If not specified, the file search tool
+          # will use the `auto` ranker and a score_threshold of 0.
+          #
+          # See the
+          # [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
+          # for more information.
           def ranking_options=: (
             OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions
           ) -> OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions
 
+          # @param max_num_results
+          #   The maximum number of results the file search tool should output. The default is
+          #   20 for `gpt-4*` models and 5 for `gpt-3.5-turbo`. This number should be between
+          #   1 and 50 inclusive.
+          #
+          #   Note that the file search tool may output fewer than `max_num_results` results.
+          #   See the
+          #   [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
+          #   for more information.
+          # @param ranking_options
+          #   The ranking options for the file search. If not specified, the file search tool
+          #   will use the `auto` ranker and a score_threshold of 0.
+          #
+          #   See the
+          #   [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
+          #   for more information.
           def initialize: (
             ?max_num_results: Integer,
             ?ranking_options: OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions
@@ -60,14 +111,26 @@ module OpenAI
             }
 
           class RankingOptions < OpenAI::Internal::Type::BaseModel
+            # The score threshold for the file search. All values must be a floating point
+            # number between 0 and 1.
             attr_accessor score_threshold: Float
 
+            # The ranker to use for the file search. If not specified will use the `auto`
+            # ranker.
             attr_reader ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker?
 
+            # The ranker to use for the file search. If not specified will use the `auto`
+            # ranker.
             def ranker=: (
               OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
             ) -> OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
 
+            # @param score_threshold
+            #   The score threshold for the file search. All values must be a floating point
+            #   number between 0 and 1.
+            # @param ranker
+            #   The ranker to use for the file search. If not specified will use the `auto`
+            #   ranker.
             def initialize: (
               score_threshold: Float,
               ?ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker

@@ -41,44 +41,154 @@ module OpenAI
           }
 
         class Mcp < OpenAI::Internal::Type::BaseModel
+          # A label for this MCP server, used to identify it in tool calls.
           attr_accessor server_label: String
 
+          # The type of the MCP tool. Always `mcp`.
           attr_accessor type: :mcp
 
+          # The tool invocation context(s).
           attr_accessor allowed_callers: ::Array[OpenAI::Models::Beta::BetaTool::Mcp::allowed_caller]?
 
+          # List of allowed tool names or a filter object.
           attr_accessor allowed_tools: OpenAI::Models::Beta::BetaTool::Mcp::allowed_tools?
 
+          # An OAuth access token that can be used with a remote MCP server, either with a
+          # custom MCP server URL or a service connector. Your application must handle the
+          # OAuth authorization flow and provide the token here.
           attr_reader authorization: String?
 
+          # An OAuth access token that can be used with a remote MCP server, either with a
+          # custom MCP server URL or a service connector. Your application must handle the
+          # OAuth authorization flow and provide the token here.
           def authorization=: (String) -> String
 
+          # Identifier for service connectors, like those available in ChatGPT. One of
+          # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
+          # service connectors
+          # [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+          #
+          # This field is deprecated for models released after September 1, 2026. Use
+          # `server_url` to connect to a remote MCP server, or `tunnel_id` to connect
+          # through a Secure MCP Tunnel.
+          #
+          # Currently supported `connector_id` values are:
+          #
+          # - Dropbox: `connector_dropbox`
+          # - Gmail: `connector_gmail`
+          # - Google Calendar: `connector_googlecalendar`
+          # - Google Drive: `connector_googledrive`
+          # - Microsoft Teams: `connector_microsoftteams`
+          # - Outlook Calendar: `connector_outlookcalendar`
+          # - Outlook Email: `connector_outlookemail`
+          # - SharePoint: `connector_sharepoint`
           attr_reader connector_id: OpenAI::Models::Beta::BetaTool::Mcp::connector_id?
 
+          # Identifier for service connectors, like those available in ChatGPT. One of
+          # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
+          # service connectors
+          # [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+          #
+          # This field is deprecated for models released after September 1, 2026. Use
+          # `server_url` to connect to a remote MCP server, or `tunnel_id` to connect
+          # through a Secure MCP Tunnel.
+          #
+          # Currently supported `connector_id` values are:
+          #
+          # - Dropbox: `connector_dropbox`
+          # - Gmail: `connector_gmail`
+          # - Google Calendar: `connector_googlecalendar`
+          # - Google Drive: `connector_googledrive`
+          # - Microsoft Teams: `connector_microsoftteams`
+          # - Outlook Calendar: `connector_outlookcalendar`
+          # - Outlook Email: `connector_outlookemail`
+          # - SharePoint: `connector_sharepoint`
           def connector_id=: (
             OpenAI::Models::Beta::BetaTool::Mcp::connector_id
           ) -> OpenAI::Models::Beta::BetaTool::Mcp::connector_id
 
+          # Whether this MCP tool is deferred and discovered via tool search.
           attr_reader defer_loading: bool?
 
+          # Whether this MCP tool is deferred and discovered via tool search.
           def defer_loading=: (bool) -> bool
 
+          # Optional HTTP headers to send to the MCP server. Use for authentication or other
+          # purposes.
           attr_accessor headers: ::Hash[Symbol, String]?
 
+          # Specify which of the MCP server's tools require approval.
           attr_accessor require_approval: OpenAI::Models::Beta::BetaTool::Mcp::require_approval?
 
+          # Optional description of the MCP server, used to provide more context.
           attr_reader server_description: String?
 
+          # Optional description of the MCP server, used to provide more context.
           def server_description=: (String) -> String
 
+          # The URL for the MCP server. One of `server_url`, `connector_id`, or `tunnel_id`
+          # must be provided.
           attr_reader server_url: String?
 
+          # The URL for the MCP server. One of `server_url`, `connector_id`, or `tunnel_id`
+          # must be provided.
           def server_url=: (String) -> String
 
+          # The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+          # `server_url`, `connector_id`, or `tunnel_id` must be provided.
           attr_reader tunnel_id: String?
 
+          # The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+          # `server_url`, `connector_id`, or `tunnel_id` must be provided.
           def tunnel_id=: (String) -> String
 
+          # @param server_label
+          #   A label for this MCP server, used to identify it in tool calls.
+          # @param allowed_callers
+          #   The tool invocation context(s).
+          # @param allowed_tools
+          #   List of allowed tool names or a filter object.
+          # @param authorization
+          #   An OAuth access token that can be used with a remote MCP server, either with a
+          #   custom MCP server URL or a service connector. Your application must handle the
+          #   OAuth authorization flow and provide the token here.
+          # @param connector_id
+          #   Identifier for service connectors, like those available in ChatGPT. One of
+          #   `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
+          #   service connectors
+          #   [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+          #
+          #   This field is deprecated for models released after September 1, 2026. Use
+          #   `server_url` to connect to a remote MCP server, or `tunnel_id` to connect
+          #   through a Secure MCP Tunnel.
+          #
+          #   Currently supported `connector_id` values are:
+          #
+          #   - Dropbox: `connector_dropbox`
+          #   - Gmail: `connector_gmail`
+          #   - Google Calendar: `connector_googlecalendar`
+          #   - Google Drive: `connector_googledrive`
+          #   - Microsoft Teams: `connector_microsoftteams`
+          #   - Outlook Calendar: `connector_outlookcalendar`
+          #   - Outlook Email: `connector_outlookemail`
+          #   - SharePoint: `connector_sharepoint`
+          # @param defer_loading
+          #   Whether this MCP tool is deferred and discovered via tool search.
+          # @param headers
+          #   Optional HTTP headers to send to the MCP server. Use for authentication or other
+          #   purposes.
+          # @param require_approval
+          #   Specify which of the MCP server's tools require approval.
+          # @param server_description
+          #   Optional description of the MCP server, used to provide more context.
+          # @param server_url
+          #   The URL for the MCP server. One of `server_url`, `connector_id`, or `tunnel_id`
+          #   must be provided.
+          # @param tunnel_id
+          #   The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+          #   `server_url`, `connector_id`, or `tunnel_id` must be provided.
+          # @param type
+          #   The type of the MCP tool. Always `mcp`.
           def initialize: (
             server_label: String,
             ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaTool::Mcp::allowed_caller]?,
@@ -131,14 +241,31 @@ module OpenAI
               { ?read_only: bool, ?tool_names: ::Array[String] }
 
             class McpToolFilter < OpenAI::Internal::Type::BaseModel
+              # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+              # is
+              # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+              # it will match this filter.
               attr_reader read_only: bool?
 
+              # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+              # is
+              # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+              # it will match this filter.
               def read_only=: (bool) -> bool
 
+              # List of allowed tool names.
               attr_reader tool_names: ::Array[String]?
 
+              # List of allowed tool names.
               def tool_names=: (::Array[String]) -> ::Array[String]
 
+              # @param read_only
+              #   Indicates whether or not a tool modifies data or is read-only. If an MCP server
+              #   is
+              #   [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+              #   it will match this filter.
+              # @param tool_names
+              #   List of allowed tool names.
               def initialize: (
                 ?read_only: bool,
                 ?tool_names: ::Array[String]
@@ -191,18 +318,26 @@ module OpenAI
               }
 
             class McpToolApprovalFilter < OpenAI::Internal::Type::BaseModel
+              # A filter object to specify which tools are allowed.
               attr_reader always: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always?
 
+              # A filter object to specify which tools are allowed.
               def always=: (
                 OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always
               ) -> OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always
 
+              # A filter object to specify which tools are allowed.
               attr_reader never: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never?
 
+              # A filter object to specify which tools are allowed.
               def never=: (
                 OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never
               ) -> OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never
 
+              # @param always
+              #   A filter object to specify which tools are allowed.
+              # @param never
+              #   A filter object to specify which tools are allowed.
               def initialize: (
                 ?always: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
                 ?never: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never
@@ -216,14 +351,31 @@ module OpenAI
               type always = { ?read_only: bool, ?tool_names: ::Array[String] }
 
               class Always < OpenAI::Internal::Type::BaseModel
+                # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                # is
+                # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                # it will match this filter.
                 attr_reader read_only: bool?
 
+                # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                # is
+                # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                # it will match this filter.
                 def read_only=: (bool) -> bool
 
+                # List of allowed tool names.
                 attr_reader tool_names: ::Array[String]?
 
+                # List of allowed tool names.
                 def tool_names=: (::Array[String]) -> ::Array[String]
 
+                # @param read_only
+                #   Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                #   is
+                #   [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                #   it will match this filter.
+                # @param tool_names
+                #   List of allowed tool names.
                 def initialize: (
                   ?read_only: bool,
                   ?tool_names: ::Array[String]
@@ -238,14 +390,31 @@ module OpenAI
               type never = { ?read_only: bool, ?tool_names: ::Array[String] }
 
               class Never < OpenAI::Internal::Type::BaseModel
+                # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                # is
+                # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                # it will match this filter.
                 attr_reader read_only: bool?
 
+                # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                # is
+                # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                # it will match this filter.
                 def read_only=: (bool) -> bool
 
+                # List of allowed tool names.
                 attr_reader tool_names: ::Array[String]?
 
+                # List of allowed tool names.
                 def tool_names=: (::Array[String]) -> ::Array[String]
 
+                # @param read_only
+                #   Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                #   is
+                #   [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                #   it will match this filter.
+                # @param tool_names
+                #   List of allowed tool names.
                 def initialize: (
                   ?read_only: bool,
                   ?tool_names: ::Array[String]
@@ -281,12 +450,25 @@ module OpenAI
           }
 
         class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+          # The code interpreter container. Can be a container ID or an object that
+          # specifies uploaded file IDs to make available to your code, along with an
+          # optional `memory_limit` setting.
           attr_accessor container: OpenAI::Models::Beta::BetaTool::CodeInterpreter::container
 
+          # The type of the code interpreter tool. Always `code_interpreter`.
           attr_accessor type: :code_interpreter
 
+          # The tool invocation context(s).
           attr_accessor allowed_callers: ::Array[OpenAI::Models::Beta::BetaTool::CodeInterpreter::allowed_caller]?
 
+          # @param container
+          #   The code interpreter container. Can be a container ID or an object that
+          #   specifies uploaded file IDs to make available to your code, along with an
+          #   optional `memory_limit` setting.
+          # @param allowed_callers
+          #   The tool invocation context(s).
+          # @param type
+          #   The type of the code interpreter tool. Always `code_interpreter`.
           def initialize: (
             container: OpenAI::Models::Beta::BetaTool::CodeInterpreter::container,
             ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaTool::CodeInterpreter::allowed_caller]?,
@@ -315,20 +497,34 @@ module OpenAI
               }
 
             class CodeInterpreterToolAuto < OpenAI::Internal::Type::BaseModel
+              # Always `auto`.
               attr_accessor type: :auto
 
+              # An optional list of uploaded files to make available to your code.
               attr_reader file_ids: ::Array[String]?
 
+              # An optional list of uploaded files to make available to your code.
               def file_ids=: (::Array[String]) -> ::Array[String]
 
+              # The memory limit for the code interpreter container.
               attr_accessor memory_limit: OpenAI::Models::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?
 
+              # Network access policy for the container.
               attr_reader network_policy: OpenAI::Models::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy?
 
+              # Network access policy for the container.
               def network_policy=: (
                 OpenAI::Models::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy
               ) -> OpenAI::Models::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy
 
+              # @param file_ids
+              #   An optional list of uploaded files to make available to your code.
+              # @param memory_limit
+              #   The memory limit for the code interpreter container.
+              # @param network_policy
+              #   Network access policy for the container.
+              # @param type
+              #   Always `auto`.
               def initialize: (
                 ?file_ids: ::Array[String],
                 ?memory_limit: OpenAI::Models::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?,
@@ -385,8 +581,11 @@ module OpenAI
         type programmatic_tool_calling = { ?type: :programmatic_tool_calling }
 
         class ProgrammaticToolCalling < OpenAI::Internal::Type::BaseModel
+          # The type of the tool. Always `programmatic_tool_calling`.
           attr_accessor type: :programmatic_tool_calling
 
+          # @param type
+          #   The type of the tool. Always `programmatic_tool_calling`.
           def initialize: (?type: :programmatic_tool_calling) -> void
 
           def to_hash: -> { ?type: :programmatic_tool_calling }
@@ -409,66 +608,203 @@ module OpenAI
           }
 
         class ImageGeneration < OpenAI::Internal::Type::BaseModel
+          # The type of the image generation tool. Always `image_generation`.
           attr_accessor type: :image_generation
 
+          # Whether to generate a new image or edit an existing image. Default: `auto`.
           attr_reader action: OpenAI::Models::Beta::BetaTool::ImageGeneration::action?
 
+          # Whether to generate a new image or edit an existing image. Default: `auto`.
           def action=: (
             OpenAI::Models::Beta::BetaTool::ImageGeneration::action
           ) -> OpenAI::Models::Beta::BetaTool::ImageGeneration::action
 
+          # Allows to set transparency for the background of the generated image(s). Must be
+          # one of `transparent`, `opaque`, or `auto` (default value). When `auto` is used,
+          # the model will automatically determine the best background for the image.
+          #
+          # `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including their `2026-09-08`
+          # snapshots, support `opaque` and `transparent` backgrounds. Transparent
+          # backgrounds are available for supported GPT Image models. For `gpt-image-2` and
+          # `gpt-image-2-2026-04-21`, this support is in preview. When using `transparent`,
+          # set the output format to `png` or `webp`.
           attr_reader background: OpenAI::Models::Beta::BetaTool::ImageGeneration::background?
 
+          # Allows to set transparency for the background of the generated image(s). Must be
+          # one of `transparent`, `opaque`, or `auto` (default value). When `auto` is used,
+          # the model will automatically determine the best background for the image.
+          #
+          # `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including their `2026-09-08`
+          # snapshots, support `opaque` and `transparent` backgrounds. Transparent
+          # backgrounds are available for supported GPT Image models. For `gpt-image-2` and
+          # `gpt-image-2-2026-04-21`, this support is in preview. When using `transparent`,
+          # set the output format to `png` or `webp`.
           def background=: (
             OpenAI::Models::Beta::BetaTool::ImageGeneration::background
           ) -> OpenAI::Models::Beta::BetaTool::ImageGeneration::background
 
+          # Controls fidelity to the original input image(s). This parameter is supported
+          # for GPT image models that support input fidelity. `gpt-image-2` and
+          # `gpt-image-2-2026-04-21` ignore this parameter.
           attr_accessor input_fidelity: OpenAI::Models::Beta::BetaTool::ImageGeneration::input_fidelity?
 
+          # Optional mask for inpainting. Contains `image_url` (string, optional) and
+          # `file_id` (string, optional).
           attr_reader input_image_mask: OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask?
 
+          # Optional mask for inpainting. Contains `image_url` (string, optional) and
+          # `file_id` (string, optional).
           def input_image_mask=: (
             OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask
           ) -> OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask
 
+          # The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
+          # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
+          # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
+          # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
+          # `chatgpt-image-latest`. Default: `gpt-image-1`.
           attr_reader model: OpenAI::Models::Beta::BetaTool::ImageGeneration::model?
 
+          # The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
+          # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
+          # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
+          # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
+          # `chatgpt-image-latest`. Default: `gpt-image-1`.
           def model=: (
             OpenAI::Models::Beta::BetaTool::ImageGeneration::model
           ) -> OpenAI::Models::Beta::BetaTool::ImageGeneration::model
 
+          # Moderation level for the generated image. Default: `auto`.
           attr_reader moderation: OpenAI::Models::Beta::BetaTool::ImageGeneration::moderation?
 
+          # Moderation level for the generated image. Default: `auto`.
           def moderation=: (
             OpenAI::Models::Beta::BetaTool::ImageGeneration::moderation
           ) -> OpenAI::Models::Beta::BetaTool::ImageGeneration::moderation
 
+          # Compression level for the output image. Default: 100.
           attr_reader output_compression: Integer?
 
+          # Compression level for the output image. Default: 100.
           def output_compression=: (Integer) -> Integer
 
+          # The output format of the generated image. One of `png`, `webp`, or `jpeg`.
+          # Default: `png`.
           attr_reader output_format: OpenAI::Models::Beta::BetaTool::ImageGeneration::output_format?
 
+          # The output format of the generated image. One of `png`, `webp`, or `jpeg`.
+          # Default: `png`.
           def output_format=: (
             OpenAI::Models::Beta::BetaTool::ImageGeneration::output_format
           ) -> OpenAI::Models::Beta::BetaTool::ImageGeneration::output_format
 
+          # Number of partial images to generate in streaming mode, from 0 (default value)
+          # to 3.
           attr_reader partial_images: Integer?
 
+          # Number of partial images to generate in streaming mode, from 0 (default value)
+          # to 3.
           def partial_images=: (Integer) -> Integer
 
+          # The quality of the generated image. The GPT image models support `low`,
+          # `medium`, and `high`. `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`,
+          # including their `2026-09-08` snapshots, also support `xhigh` and `max`. Default:
+          # `auto`.
           attr_reader quality: OpenAI::Models::Beta::BetaTool::ImageGeneration::quality?
 
+          # The quality of the generated image. The GPT image models support `low`,
+          # `medium`, and `high`. `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`,
+          # including their `2026-09-08` snapshots, also support `xhigh` and `max`. Default:
+          # `auto`.
           def quality=: (
             OpenAI::Models::Beta::BetaTool::ImageGeneration::quality
           ) -> OpenAI::Models::Beta::BetaTool::ImageGeneration::quality
 
+          # The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`,
+          # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
+          # `gpt-image-2.5-flare`, and `gpt-image-2.5-flare-2026-09-08`, arbitrary
+          # resolutions are supported as `WIDTHxHEIGHT` strings, for example `1536x864`.
+          # Width and height must both be divisible by 16 and the requested aspect ratio
+          # must be between 1:3 and 3:1. Resolutions above `2560x1440` are experimental, and
+          # the maximum supported resolution is `3840x2160`. The requested size must also
+          # satisfy the model's current pixel and edge limits. The standard sizes
+          # `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models;
+          # `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use
+          # one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of
+          # `1024x1024`, `1792x1024`, or `1024x1792`.
           attr_reader size: OpenAI::Models::Beta::BetaTool::ImageGeneration::size?
 
+          # The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`,
+          # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
+          # `gpt-image-2.5-flare`, and `gpt-image-2.5-flare-2026-09-08`, arbitrary
+          # resolutions are supported as `WIDTHxHEIGHT` strings, for example `1536x864`.
+          # Width and height must both be divisible by 16 and the requested aspect ratio
+          # must be between 1:3 and 3:1. Resolutions above `2560x1440` are experimental, and
+          # the maximum supported resolution is `3840x2160`. The requested size must also
+          # satisfy the model's current pixel and edge limits. The standard sizes
+          # `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models;
+          # `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use
+          # one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of
+          # `1024x1024`, `1792x1024`, or `1024x1792`.
           def size=: (
             OpenAI::Models::Beta::BetaTool::ImageGeneration::size
           ) -> OpenAI::Models::Beta::BetaTool::ImageGeneration::size
 
+          # @param action
+          #   Whether to generate a new image or edit an existing image. Default: `auto`.
+          # @param background
+          #   Allows to set transparency for the background of the generated image(s). Must be
+          #   one of `transparent`, `opaque`, or `auto` (default value). When `auto` is used,
+          #   the model will automatically determine the best background for the image.
+          #
+          #   `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including their `2026-09-08`
+          #   snapshots, support `opaque` and `transparent` backgrounds. Transparent
+          #   backgrounds are available for supported GPT Image models. For `gpt-image-2` and
+          #   `gpt-image-2-2026-04-21`, this support is in preview. When using `transparent`,
+          #   set the output format to `png` or `webp`.
+          # @param input_fidelity
+          #   Controls fidelity to the original input image(s). This parameter is supported
+          #   for GPT image models that support input fidelity. `gpt-image-2` and
+          #   `gpt-image-2-2026-04-21` ignore this parameter.
+          # @param input_image_mask
+          #   Optional mask for inpainting. Contains `image_url` (string, optional) and
+          #   `file_id` (string, optional).
+          # @param model
+          #   The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
+          #   `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
+          #   `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
+          #   `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
+          #   `chatgpt-image-latest`. Default: `gpt-image-1`.
+          # @param moderation
+          #   Moderation level for the generated image. Default: `auto`.
+          # @param output_compression
+          #   Compression level for the output image. Default: 100.
+          # @param output_format
+          #   The output format of the generated image. One of `png`, `webp`, or `jpeg`.
+          #   Default: `png`.
+          # @param partial_images
+          #   Number of partial images to generate in streaming mode, from 0 (default value)
+          #   to 3.
+          # @param quality
+          #   The quality of the generated image. The GPT image models support `low`,
+          #   `medium`, and `high`. `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`,
+          #   including their `2026-09-08` snapshots, also support `xhigh` and `max`. Default:
+          #   `auto`.
+          # @param size
+          #   The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`,
+          #   `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
+          #   `gpt-image-2.5-flare`, and `gpt-image-2.5-flare-2026-09-08`, arbitrary
+          #   resolutions are supported as `WIDTHxHEIGHT` strings, for example `1536x864`.
+          #   Width and height must both be divisible by 16 and the requested aspect ratio
+          #   must be between 1:3 and 3:1. Resolutions above `2560x1440` are experimental, and
+          #   the maximum supported resolution is `3840x2160`. The requested size must also
+          #   satisfy the model's current pixel and edge limits. The standard sizes
+          #   `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models;
+          #   `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use
+          #   one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of
+          #   `1024x1024`, `1792x1024`, or `1024x1792`.
+          # @param type
+          #   The type of the image generation tool. Always `image_generation`.
           def initialize: (
             ?action: OpenAI::Models::Beta::BetaTool::ImageGeneration::action,
             ?background: OpenAI::Models::Beta::BetaTool::ImageGeneration::background,
@@ -537,14 +873,22 @@ module OpenAI
           type input_image_mask = { ?file_id: String, ?image_url: String }
 
           class InputImageMask < OpenAI::Internal::Type::BaseModel
+            # File ID for the mask image.
             attr_reader file_id: String?
 
+            # File ID for the mask image.
             def file_id=: (String) -> String
 
+            # Base64-encoded mask image.
             attr_reader image_url: String?
 
+            # Base64-encoded mask image.
             def image_url=: (String) -> String
 
+            # @param file_id
+            #   File ID for the mask image.
+            # @param image_url
+            #   Base64-encoded mask image.
             def initialize: (?file_id: String, ?image_url: String) -> void
 
             def to_hash: -> { ?file_id: String, ?image_url: String }
@@ -636,8 +980,11 @@ module OpenAI
         type local_shell = { ?type: :local_shell }
 
         class LocalShell < OpenAI::Internal::Type::BaseModel
+          # The type of the local shell tool. Always `local_shell`.
           attr_accessor type: :local_shell
 
+          # @param type
+          #   The type of the local shell tool. Always `local_shell`.
           def initialize: (?type: :local_shell) -> void
 
           def to_hash: -> { ?type: :local_shell }

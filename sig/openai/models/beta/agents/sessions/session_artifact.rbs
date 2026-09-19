@@ -18,22 +18,46 @@ module OpenAI
             }
 
           class SessionArtifact < OpenAI::Internal::Type::BaseModel
+            # The immutable artifact ID.
             attr_accessor id: String
 
+            # The Unix timestamp, in seconds, when the artifact was published.
             attr_accessor created_at: Integer
 
+            # The ID of the environment that produced the artifact.
             attr_accessor environment_id: String
 
+            # The object type. Always `agent.session.artifact`.
             attr_accessor object: :"agent.session.artifact"
 
+            # The original absolute file path in the execution environment.
             attr_accessor path: String
 
+            # The ID of the session that owns the artifact.
             attr_accessor session_id: String
 
+            # The immutable artifact size in bytes.
             attr_accessor size_bytes: Integer
 
+            # The ID of the completed turn that published the artifact.
             attr_accessor turn_id: String
 
+            # @param id
+            #   The immutable artifact ID.
+            # @param created_at
+            #   The Unix timestamp, in seconds, when the artifact was published.
+            # @param environment_id
+            #   The ID of the environment that produced the artifact.
+            # @param path
+            #   The original absolute file path in the execution environment.
+            # @param session_id
+            #   The ID of the session that owns the artifact.
+            # @param size_bytes
+            #   The immutable artifact size in bytes.
+            # @param turn_id
+            #   The ID of the completed turn that published the artifact.
+            # @param object
+            #   The object type. Always `agent.session.artifact`.
             def initialize: (
               id: String,
               created_at: Integer,

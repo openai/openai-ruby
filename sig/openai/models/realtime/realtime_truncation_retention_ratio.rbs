@@ -9,16 +9,35 @@ module OpenAI
         }
 
       class RealtimeTruncationRetentionRatio < OpenAI::Internal::Type::BaseModel
+        # Fraction of post-instruction conversation tokens to retain (`0.0` - `1.0`) when
+        # the conversation exceeds the input token limit. Setting this to `0.8` means that
+        # messages will be dropped until 80% of the maximum allowed tokens are used. This
+        # helps reduce the frequency of truncations and improve cache rates.
         attr_accessor retention_ratio: Float
 
+        # Use retention ratio truncation.
         attr_accessor type: :retention_ratio
 
+        # Optional custom token limits for this truncation strategy. If not provided, the
+        # model's default token limits will be used.
         attr_reader token_limits: OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits?
 
+        # Optional custom token limits for this truncation strategy. If not provided, the
+        # model's default token limits will be used.
         def token_limits=: (
           OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits
         ) -> OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits
 
+        # @param retention_ratio
+        #   Fraction of post-instruction conversation tokens to retain (`0.0` - `1.0`) when
+        #   the conversation exceeds the input token limit. Setting this to `0.8` means that
+        #   messages will be dropped until 80% of the maximum allowed tokens are used. This
+        #   helps reduce the frequency of truncations and improve cache rates.
+        # @param token_limits
+        #   Optional custom token limits for this truncation strategy. If not provided, the
+        #   model's default token limits will be used.
+        # @param type
+        #   Use retention ratio truncation.
         def initialize: (
           retention_ratio: Float,
           ?token_limits: OpenAI::Realtime::RealtimeTruncationRetentionRatio::TokenLimits,
@@ -34,10 +53,26 @@ module OpenAI
         type token_limits = { ?post_instructions: Integer }
 
         class TokenLimits < OpenAI::Internal::Type::BaseModel
+          # Maximum tokens allowed in the conversation after instructions (which including
+          # tool definitions). For example, setting this to 5,000 would mean that truncation
+          # would occur when the conversation exceeds 5,000 tokens after instructions. This
+          # cannot be higher than the model's context window size minus the maximum output
+          # tokens.
           attr_reader post_instructions: Integer?
 
+          # Maximum tokens allowed in the conversation after instructions (which including
+          # tool definitions). For example, setting this to 5,000 would mean that truncation
+          # would occur when the conversation exceeds 5,000 tokens after instructions. This
+          # cannot be higher than the model's context window size minus the maximum output
+          # tokens.
           def post_instructions=: (Integer) -> Integer
 
+          # @param post_instructions
+          #   Maximum tokens allowed in the conversation after instructions (which including
+          #   tool definitions). For example, setting this to 5,000 would mean that truncation
+          #   would occur when the conversation exceeds 5,000 tokens after instructions. This
+          #   cannot be higher than the model's context window size minus the maximum output
+          #   tokens.
           def initialize: (?post_instructions: Integer) -> void
 
           def to_hash: -> { ?post_instructions: Integer }

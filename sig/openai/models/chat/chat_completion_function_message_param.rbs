@@ -7,12 +7,21 @@ module OpenAI
         { content: String?, name: String, ?role: :function }
 
       class ChatCompletionFunctionMessageParam < OpenAI::Internal::Type::BaseModel
+        # The contents of the function message.
         attr_accessor content: String?
 
+        # The name of the function to call.
         attr_accessor name: String
 
+        # The role of the messages author, in this case `function`.
         attr_accessor role: :function
 
+        # @param content
+        #   The contents of the function message.
+        # @param name
+        #   The name of the function to call.
+        # @param role
+        #   The role of the messages author, in this case `function`.
         def initialize: (
           content: String?,
           name: String,

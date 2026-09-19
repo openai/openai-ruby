@@ -8,10 +8,16 @@ module OpenAI
         }
 
       class AgentText < OpenAI::Internal::Type::BaseModel
+        # The effective output format. Defaults to ordinary text.
         attr_accessor format_: OpenAI::Models::Beta::text_format
 
+        # The amount of text produced by the agent. Defaults to `medium`.
         attr_accessor verbosity: OpenAI::Models::Beta::AgentText::verbosity
 
+        # @param format_
+        #   The effective output format. Defaults to ordinary text.
+        # @param verbosity
+        #   The amount of text produced by the agent. Defaults to `medium`.
         def initialize: (
           format_: OpenAI::Models::Beta::text_format,
           verbosity: OpenAI::Models::Beta::AgentText::verbosity

@@ -9,8 +9,11 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # Human readable name for the group.
           attr_accessor name: String
 
+          # @param name
+          #   Human readable name for the group.
           def initialize: (
             name: String,
             ?request_options: OpenAI::request_opts

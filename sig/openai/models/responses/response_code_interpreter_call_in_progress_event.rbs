@@ -10,14 +10,28 @@ module OpenAI
         }
 
       class ResponseCodeInterpreterCallInProgressEvent < OpenAI::Internal::Type::BaseModel
+        # The unique identifier of the code interpreter tool call item.
         attr_accessor item_id: String
 
+        # The index of the output item in the response for which the code interpreter call
+        # is in progress.
         attr_accessor output_index: Integer
 
+        # The sequence number of this event, used to order streaming events.
         attr_accessor sequence_number: Integer
 
+        # The type of the event. Always `response.code_interpreter_call.in_progress`.
         attr_accessor type: :"response.code_interpreter_call.in_progress"
 
+        # @param item_id
+        #   The unique identifier of the code interpreter tool call item.
+        # @param output_index
+        #   The index of the output item in the response for which the code interpreter call
+        #   is in progress.
+        # @param sequence_number
+        #   The sequence number of this event, used to order streaming events.
+        # @param type
+        #   The type of the event. Always `response.code_interpreter_call.in_progress`.
         def initialize: (
           item_id: String,
           output_index: Integer,

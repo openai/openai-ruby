@@ -11,16 +11,31 @@ module OpenAI
         }
 
       class HostedSkillReference < OpenAI::Internal::Type::BaseModel
+        # The installed skill description.
         attr_accessor description: String
 
+        # The installed skill name.
         attr_accessor name: String
 
+        # The referenced skill ID.
         attr_accessor skill_id: String
 
+        # The type of the object. Always `skill_reference`.
         attr_accessor type: :skill_reference
 
+        # The concrete skill version installed for this session.
         attr_accessor version: String
 
+        # @param description
+        #   The installed skill description.
+        # @param name
+        #   The installed skill name.
+        # @param skill_id
+        #   The referenced skill ID.
+        # @param version
+        #   The concrete skill version installed for this session.
+        # @param type
+        #   The type of the object. Always `skill_reference`.
         def initialize: (
           description: String,
           name: String,

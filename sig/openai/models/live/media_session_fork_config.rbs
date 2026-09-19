@@ -9,20 +9,41 @@ module OpenAI
         }
 
       class MediaSessionForkConfig < OpenAI::Internal::Type::BaseModel
+        # Startup-only capabilities for an untrusted frontend attached to a unified WebRTC
+        # session. Trusted sideband connections are unaffected.
         attr_reader client: OpenAI::Live::ClientConfig?
 
+        # Startup-only capabilities for an untrusted frontend attached to a unified WebRTC
+        # session. Trusted sideband connections are unaffected.
         def client=: (OpenAI::Live::ClientConfig) -> OpenAI::Live::ClientConfig
 
+        # Update the Responses backend for an existing Live session without changing
+        # delegation ownership.
         attr_reader delegation: OpenAI::Live::MediaSessionForkConfig::Delegation?
 
+        # Update the Responses backend for an existing Live session without changing
+        # delegation ownership.
         def delegation=: (
           OpenAI::Live::MediaSessionForkConfig::Delegation
         ) -> OpenAI::Live::MediaSessionForkConfig::Delegation
 
+        # Whether to store the forked session. Omission inherits the stored session's
+        # setting.
         attr_reader store: bool?
 
+        # Whether to store the forked session. Omission inherits the stored session's
+        # setting.
         def store=: (bool) -> bool
 
+        # @param client
+        #   Startup-only capabilities for an untrusted frontend attached to a unified WebRTC
+        #   session. Trusted sideband connections are unaffected.
+        # @param delegation
+        #   Update the Responses backend for an existing Live session without changing
+        #   delegation ownership.
+        # @param store
+        #   Whether to store the forked session. Omission inherits the stored session's
+        #   setting.
         def initialize: (
           ?client: OpenAI::Live::ClientConfig,
           ?delegation: OpenAI::Live::MediaSessionForkConfig::Delegation,
@@ -42,14 +63,24 @@ module OpenAI
           }
 
         class Delegation < OpenAI::Internal::Type::BaseModel
+          # The delegation owner. Always `responses` for tasks handled by the Responses API.
           attr_accessor type: :responses
 
+          # Responses backend settings to update. Omitted settings keep their existing
+          # values.
           attr_reader responses: OpenAI::Live::ResponsesDelegationUpdateConfig?
 
+          # Responses backend settings to update. Omitted settings keep their existing
+          # values.
           def responses=: (
             OpenAI::Live::ResponsesDelegationUpdateConfig
           ) -> OpenAI::Live::ResponsesDelegationUpdateConfig
 
+          # @param responses
+          #   Responses backend settings to update. Omitted settings keep their existing
+          #   values.
+          # @param type
+          #   The delegation owner. Always `responses` for tasks handled by the Responses API.
           def initialize: (
             ?responses: OpenAI::Live::ResponsesDelegationUpdateConfig,
             ?type: :responses

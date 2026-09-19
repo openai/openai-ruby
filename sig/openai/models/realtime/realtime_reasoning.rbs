@@ -5,12 +5,19 @@ module OpenAI
         { ?effort: OpenAI::Models::Realtime::realtime_reasoning_effort }
 
       class RealtimeReasoning < OpenAI::Internal::Type::BaseModel
+        # Constrains effort on reasoning for reasoning-capable Realtime models such as
+        # `gpt-realtime-2`.
         attr_reader effort: OpenAI::Models::Realtime::realtime_reasoning_effort?
 
+        # Constrains effort on reasoning for reasoning-capable Realtime models such as
+        # `gpt-realtime-2`.
         def effort=: (
           OpenAI::Models::Realtime::realtime_reasoning_effort
         ) -> OpenAI::Models::Realtime::realtime_reasoning_effort
 
+        # @param effort
+        #   Constrains effort on reasoning for reasoning-capable Realtime models such as
+        #   `gpt-realtime-2`.
         def initialize: (
           ?effort: OpenAI::Models::Realtime::realtime_reasoning_effort
         ) -> void

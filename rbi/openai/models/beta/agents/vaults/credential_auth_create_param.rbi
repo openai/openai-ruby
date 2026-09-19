@@ -44,7 +44,7 @@ module OpenAI
               sig { returns(T.nilable(String)) }
               attr_accessor :expires_at
 
-              # Configuration for refreshing the access token of an MCP OAuth credential.
+              # Optional refresh configuration for an HTTPS OAuth token endpoint.
               sig { returns(T.nilable(OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::McpOauth::Refresh)) }
               attr_reader :refresh
 
@@ -83,7 +83,7 @@ module OpenAI
                 # When the OAuth access token expires, as an RFC 3339 timestamp, if known.
                 expires_at: nil,
 
-                # Configuration for refreshing the access token of an MCP OAuth credential.
+                # Optional refresh configuration for an HTTPS OAuth token endpoint.
                 refresh: nil,
 
                 # The type of the object. Always `mcp_oauth`.
@@ -149,7 +149,7 @@ module OpenAI
                 sig { returns(T.nilable(String)) }
                 attr_accessor :scope
 
-                # Configuration for refreshing the access token of an MCP OAuth credential.
+                # Optional refresh configuration for an HTTPS OAuth token endpoint.
                 sig do
                   params(
 

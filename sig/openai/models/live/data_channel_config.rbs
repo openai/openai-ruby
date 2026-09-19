@@ -8,18 +8,41 @@ module OpenAI
         }
 
       class DataChannelConfig < OpenAI::Internal::Type::BaseModel
+        # Client event types that the frontend data channel may send. Use 'all' to allow
+        # every client event; an empty array allows none. Omission preserves the existing
+        # allow-all behavior.
         attr_reader allowed_client_events: OpenAI::Models::Live::DataChannelConfig::allowed_client_events?
 
+        # Client event types that the frontend data channel may send. Use 'all' to allow
+        # every client event; an empty array allows none. Omission preserves the existing
+        # allow-all behavior.
         def allowed_client_events=: (
           OpenAI::Models::Live::DataChannelConfig::allowed_client_events
         ) -> OpenAI::Models::Live::DataChannelConfig::allowed_client_events
 
+        # Server events that may be sent to the frontend data channel. Use 'all' to allow
+        # every server event; an empty array allows none. Omission preserves the existing
+        # allow-all behavior. Responses events use an object with type 'response.event'
+        # and a response_event selector.
         attr_reader allowed_server_events: OpenAI::Models::Live::DataChannelConfig::allowed_server_events?
 
+        # Server events that may be sent to the frontend data channel. Use 'all' to allow
+        # every server event; an empty array allows none. Omission preserves the existing
+        # allow-all behavior. Responses events use an object with type 'response.event'
+        # and a response_event selector.
         def allowed_server_events=: (
           OpenAI::Models::Live::DataChannelConfig::allowed_server_events
         ) -> OpenAI::Models::Live::DataChannelConfig::allowed_server_events
 
+        # @param allowed_client_events
+        #   Client event types that the frontend data channel may send. Use 'all' to allow
+        #   every client event; an empty array allows none. Omission preserves the existing
+        #   allow-all behavior.
+        # @param allowed_server_events
+        #   Server events that may be sent to the frontend data channel. Use 'all' to allow
+        #   every server event; an empty array allows none. Omission preserves the existing
+        #   allow-all behavior. Responses events use an object with type 'response.event'
+        #   and a response_event selector.
         def initialize: (
           ?allowed_client_events: OpenAI::Models::Live::DataChannelConfig::allowed_client_events,
           ?allowed_server_events: OpenAI::Models::Live::DataChannelConfig::allowed_server_events

@@ -12,18 +12,46 @@ module OpenAI
         }
 
       class Message < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the message.
         attr_accessor id: String
 
+        # The content of the message
         attr_accessor content: ::Array[OpenAI::Models::Conversations::Message::content]
 
+        # The role of the message. One of `unknown`, `user`, `assistant`, `system`,
+        # `critic`, `discriminator`, `developer`, or `tool`.
         attr_accessor role: OpenAI::Models::Conversations::Message::role
 
+        # The status of item. One of `in_progress`, `completed`, or `incomplete`.
+        # Populated when items are returned via API.
         attr_accessor status: OpenAI::Models::Conversations::Message::status
 
+        # The type of the message. Always set to `message`.
         attr_accessor type: :message
 
+        # Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
+        # sending follow-up requests, preserve and resend phase on all assistant messages
+        # — dropping it can degrade performance. Not used for user messages.
         attr_accessor phase: OpenAI::Models::Conversations::Message::phase?
 
+        # @param id
+        #   The unique ID of the message.
+        # @param content
+        #   The content of the message
+        # @param role
+        #   The role of the message. One of `unknown`, `user`, `assistant`, `system`,
+        #   `critic`, `discriminator`, `developer`, or `tool`.
+        # @param status
+        #   The status of item. One of `in_progress`, `completed`, or `incomplete`.
+        #   Populated when items are returned via API.
+        # @param phase
+        #   Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        #   final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
+        #   sending follow-up requests, preserve and resend phase on all assistant messages
+        #   — dropping it can degrade performance. Not used for user messages.
+        # @param type
+        #   The type of the message. Always set to `message`.
         def initialize: (
           id: String,
           content: ::Array[OpenAI::Models::Conversations::Message::content],
@@ -59,10 +87,16 @@ module OpenAI
           type reasoning_text = { text: String, ?type: :reasoning_text }
 
           class ReasoningText < OpenAI::Internal::Type::BaseModel
+            # The reasoning text from the model.
             attr_accessor text: String
 
+            # The type of the reasoning text. Always `reasoning_text`.
             attr_accessor type: :reasoning_text
 
+            # @param text
+            #   The reasoning text from the model.
+            # @param type
+            #   The type of the reasoning text. Always `reasoning_text`.
             def initialize: (text: String, ?type: :reasoning_text) -> void
 
             def to_hash: -> { text: String, ?type: :reasoning_text }

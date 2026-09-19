@@ -10,12 +10,29 @@ module OpenAI
           }
 
         class RequiredActionFunctionToolCall < OpenAI::Internal::Type::BaseModel
+          # The ID of the tool call. This ID must be referenced when you submit the tool
+          # outputs in using the
+          # [Submit tool outputs to run](https://developers.openai.com/api/docs/assistants/migration)
+          # endpoint.
           attr_accessor id: String
 
+          # The function definition.
           attr_accessor function: OpenAI::Beta::Threads::RequiredActionFunctionToolCall::Function
 
+          # The type of tool call the output is required for. For now, this is always
+          # `function`.
           attr_accessor type: :function
 
+          # @param id
+          #   The ID of the tool call. This ID must be referenced when you submit the tool
+          #   outputs in using the
+          #   [Submit tool outputs to run](https://developers.openai.com/api/docs/assistants/migration)
+          #   endpoint.
+          # @param function
+          #   The function definition.
+          # @param type
+          #   The type of tool call the output is required for. For now, this is always
+          #   `function`.
           def initialize: (
             id: String,
             function: OpenAI::Beta::Threads::RequiredActionFunctionToolCall::Function,
@@ -31,10 +48,16 @@ module OpenAI
           type function = { arguments: String, name: String }
 
           class Function < OpenAI::Internal::Type::BaseModel
+            # The arguments that the model expects you to pass to the function.
             attr_accessor arguments: String
 
+            # The name of the function.
             attr_accessor name: String
 
+            # @param arguments
+            #   The arguments that the model expects you to pass to the function.
+            # @param name
+            #   The name of the function.
             def initialize: (arguments: String, name: String) -> void
 
             def to_hash: -> { arguments: String, name: String }

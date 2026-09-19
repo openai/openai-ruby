@@ -11,24 +11,45 @@ module OpenAI
           }
 
         class ChatSessionWorkflowParam < OpenAI::Internal::Type::BaseModel
+          # Identifier for the workflow invoked by the session.
           attr_accessor id: String
 
+          # State variables forwarded to the workflow. Keys may be up to 64 characters,
+          # values must be primitive types, and the map defaults to an empty object.
           attr_reader state_variables: ::Hash[Symbol, OpenAI::Models::Beta::ChatKit::ChatSessionWorkflowParam::state_variable]?
 
+          # State variables forwarded to the workflow. Keys may be up to 64 characters,
+          # values must be primitive types, and the map defaults to an empty object.
           def state_variables=: (
             ::Hash[Symbol, OpenAI::Models::Beta::ChatKit::ChatSessionWorkflowParam::state_variable]
           ) -> ::Hash[Symbol, OpenAI::Models::Beta::ChatKit::ChatSessionWorkflowParam::state_variable]
 
+          # Optional tracing overrides for the workflow invocation. When omitted, tracing is
+          # enabled by default.
           attr_reader tracing: OpenAI::Beta::ChatKit::ChatSessionWorkflowParam::Tracing?
 
+          # Optional tracing overrides for the workflow invocation. When omitted, tracing is
+          # enabled by default.
           def tracing=: (
             OpenAI::Beta::ChatKit::ChatSessionWorkflowParam::Tracing
           ) -> OpenAI::Beta::ChatKit::ChatSessionWorkflowParam::Tracing
 
+          # Specific workflow version to run. Defaults to the latest deployed version.
           attr_reader version: String?
 
+          # Specific workflow version to run. Defaults to the latest deployed version.
           def version=: (String) -> String
 
+          # @param id
+          #   Identifier for the workflow invoked by the session.
+          # @param state_variables
+          #   State variables forwarded to the workflow. Keys may be up to 64 characters,
+          #   values must be primitive types, and the map defaults to an empty object.
+          # @param tracing
+          #   Optional tracing overrides for the workflow invocation. When omitted, tracing is
+          #   enabled by default.
+          # @param version
+          #   Specific workflow version to run. Defaults to the latest deployed version.
           def initialize: (
             id: String,
             ?state_variables: ::Hash[Symbol, OpenAI::Models::Beta::ChatKit::ChatSessionWorkflowParam::state_variable],
@@ -54,10 +75,14 @@ module OpenAI
           type tracing = { ?enabled: bool }
 
           class Tracing < OpenAI::Internal::Type::BaseModel
+            # Whether tracing is enabled during the session. Defaults to true.
             attr_reader enabled: bool?
 
+            # Whether tracing is enabled during the session. Defaults to true.
             def enabled=: (bool) -> bool
 
+            # @param enabled
+            #   Whether tracing is enabled during the session. Defaults to true.
             def initialize: (?enabled: bool) -> void
 
             def to_hash: -> { ?enabled: bool }

@@ -9,12 +9,21 @@ module OpenAI
         }
 
       class ConversationCreatedEvent < OpenAI::Internal::Type::BaseModel
+        # The conversation resource.
         attr_accessor conversation: OpenAI::Realtime::ConversationCreatedEvent::Conversation
 
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The event type, must be `conversation.created`.
         attr_accessor type: :"conversation.created"
 
+        # @param conversation
+        #   The conversation resource.
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param type
+        #   The event type, must be `conversation.created`.
         def initialize: (
           conversation: OpenAI::Realtime::ConversationCreatedEvent::Conversation,
           event_id: String,
@@ -34,16 +43,24 @@ module OpenAI
           }
 
         class Conversation < OpenAI::Internal::Type::BaseModel
+          # The unique ID of the conversation.
           attr_reader id: String?
 
+          # The unique ID of the conversation.
           def id=: (String) -> String
 
+          # The object type, must be `realtime.conversation`.
           attr_reader object: OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation::object?
 
+          # The object type, must be `realtime.conversation`.
           def object=: (
             OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation::object
           ) -> OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation::object
 
+          # @param id
+          #   The unique ID of the conversation.
+          # @param object
+          #   The object type, must be `realtime.conversation`.
           def initialize: (
             ?id: String,
             ?object: OpenAI::Models::Realtime::ConversationCreatedEvent::Conversation::object

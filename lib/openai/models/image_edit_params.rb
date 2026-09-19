@@ -51,10 +51,9 @@ module OpenAI
       optional :background, enum: -> { OpenAI::ImageEditParams::Background }, nil?: true
 
       # @!attribute input_fidelity
-      #   Control how much effort the model will exert to match the style and features,
-      #   especially facial features, of input images. This parameter is only supported
-      #   for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
-      #   `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
+      #   Controls fidelity to the original input image(s). This parameter is supported
+      #   for GPT image models that support input fidelity. `gpt-image-2` and
+      #   `gpt-image-2-2026-04-21` ignore this parameter.
       #
       #   @return [Symbol, OpenAI::Models::ImageEditParams::InputFidelity, nil]
       optional :input_fidelity, enum: -> { OpenAI::ImageEditParams::InputFidelity }, nil?: true
@@ -193,10 +192,9 @@ module OpenAI
       #     set the output format to `png` or `webp`.
       #
       #   @param input_fidelity [Symbol, OpenAI::Models::ImageEditParams::InputFidelity, nil]
-      #     Control how much effort the model will exert to match the style and features,
-      #     especially facial features, of input images. This parameter is only supported
-      #     for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
-      #     `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
+      #     Controls fidelity to the original input image(s). This parameter is supported
+      #     for GPT image models that support input fidelity. `gpt-image-2` and
+      #     `gpt-image-2-2026-04-21` ignore this parameter.
       #
       #   @param mask [Pathname, StringIO, IO, String, OpenAI::FilePart]
       #     An additional image whose fully transparent areas (e.g. where alpha is zero)
@@ -315,10 +313,9 @@ module OpenAI
         #   @return [Array<Symbol>]
       end
 
-      # Control how much effort the model will exert to match the style and features,
-      # especially facial features, of input images. This parameter is only supported
-      # for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
-      # `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
+      # Controls fidelity to the original input image(s). This parameter is supported
+      # for GPT image models that support input fidelity. `gpt-image-2` and
+      # `gpt-image-2-2026-04-21` ignore this parameter.
       module InputFidelity
         extend OpenAI::Internal::Type::Enum
 

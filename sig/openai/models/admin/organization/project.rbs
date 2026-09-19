@@ -15,26 +15,51 @@ module OpenAI
           }
 
         class Project < OpenAI::Internal::Type::BaseModel
+          # The identifier, which can be referenced in API endpoints
           attr_accessor id: String
 
+          # The Unix timestamp (in seconds) of when the project was created.
           attr_accessor created_at: Integer
 
+          # The object type, which is always `organization.project`
           attr_accessor object: :"organization.project"
 
+          # The Unix timestamp (in seconds) of when the project was archived or `null`.
           attr_accessor archived_at: Integer?
 
+          # The external key associated with the project.
           attr_accessor external_key_id: String?
 
+          # The name of the project. This appears in reporting.
           attr_accessor name: String?
 
+          # The residency configuration for the project.
           attr_reader residency: OpenAI::Models::Admin::Organization::project_residency?
 
+          # The residency configuration for the project.
           def residency=: (
             OpenAI::Models::Admin::Organization::project_residency
           ) -> OpenAI::Models::Admin::Organization::project_residency
 
+          # `active` or `archived`
           attr_accessor status: String?
 
+          # @param id
+          #   The identifier, which can be referenced in API endpoints
+          # @param created_at
+          #   The Unix timestamp (in seconds) of when the project was created.
+          # @param archived_at
+          #   The Unix timestamp (in seconds) of when the project was archived or `null`.
+          # @param external_key_id
+          #   The external key associated with the project.
+          # @param name
+          #   The name of the project. This appears in reporting.
+          # @param residency
+          #   The residency configuration for the project.
+          # @param status
+          #   `active` or `archived`
+          # @param object
+          #   The object type, which is always `organization.project`
           def initialize: (
             id: String,
             created_at: Integer,

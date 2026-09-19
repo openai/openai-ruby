@@ -18,24 +18,46 @@ module OpenAI
 
           attr_accessor thread_id: String
 
+          # List items created after this thread item ID. Defaults to null for the first
+          # page.
           attr_reader after: String?
 
+          # List items created after this thread item ID. Defaults to null for the first
+          # page.
           def after=: (String) -> String
 
+          # List items created before this thread item ID. Defaults to null for the newest
+          # results.
           attr_reader before: String?
 
+          # List items created before this thread item ID. Defaults to null for the newest
+          # results.
           def before=: (String) -> String
 
+          # Maximum number of thread items to return. Defaults to 20.
           attr_reader limit: Integer?
 
+          # Maximum number of thread items to return. Defaults to 20.
           def limit=: (Integer) -> Integer
 
+          # Sort order for results by creation time. Defaults to `desc`.
           attr_reader order: OpenAI::Models::Beta::ChatKit::ThreadListItemsParams::order?
 
+          # Sort order for results by creation time. Defaults to `desc`.
           def order=: (
             OpenAI::Models::Beta::ChatKit::ThreadListItemsParams::order
           ) -> OpenAI::Models::Beta::ChatKit::ThreadListItemsParams::order
 
+          # @param after
+          #   List items created after this thread item ID. Defaults to null for the first
+          #   page.
+          # @param before
+          #   List items created before this thread item ID. Defaults to null for the newest
+          #   results.
+          # @param limit
+          #   Maximum number of thread items to return. Defaults to 20.
+          # @param order
+          #   Sort order for results by creation time. Defaults to `desc`.
           def initialize: (
             thread_id: String,
             ?after: String,

@@ -12,18 +12,36 @@ module OpenAI
         }
 
       class AgentWaitForSubagentsCallItem < OpenAI::Internal::Type::BaseModel
+        # The ID of the tool call item.
         attr_accessor id: String
 
+        # The IDs of the agents to wait for.
         attr_accessor recipient_agent_ids: ::Array[String]
 
+        # The ID of the agent waiting for results.
         attr_accessor sender_agent_id: String
 
+        # The status of the tool call.
         attr_accessor status: OpenAI::Models::Beta::agent_function_call_status
 
+        # The ID of the turn that contains this item.
         attr_accessor turn_id: String
 
+        # The item type. Always `wait_for_subagents_call`.
         attr_accessor type: :wait_for_subagents_call
 
+        # @param id
+        #   The ID of the tool call item.
+        # @param recipient_agent_ids
+        #   The IDs of the agents to wait for.
+        # @param sender_agent_id
+        #   The ID of the agent waiting for results.
+        # @param status
+        #   The status of the tool call.
+        # @param turn_id
+        #   The ID of the turn that contains this item.
+        # @param type
+        #   The item type. Always `wait_for_subagents_call`.
         def initialize: (
           id: String,
           recipient_agent_ids: ::Array[String],

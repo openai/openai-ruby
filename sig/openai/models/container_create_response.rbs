@@ -14,38 +14,75 @@ module OpenAI
       }
 
     class ContainerCreateResponse < OpenAI::Internal::Type::BaseModel
+      # Unique identifier for the container.
       attr_accessor id: String
 
+      # Unix timestamp (in seconds) when the container was created.
       attr_accessor created_at: Integer
 
+      # Name of the container.
       attr_accessor name: String
 
+      # The type of this object.
       attr_accessor object: String
 
+      # Status of the container (e.g., active, deleted).
       attr_accessor status: String
 
+      # The container will expire after this time period. The anchor is the reference
+      # point for the expiration. The minutes is the number of minutes after the anchor
+      # before the container expires.
       attr_reader expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter?
 
+      # The container will expire after this time period. The anchor is the reference
+      # point for the expiration. The minutes is the number of minutes after the anchor
+      # before the container expires.
       def expires_after=: (
         OpenAI::Models::ContainerCreateResponse::ExpiresAfter
       ) -> OpenAI::Models::ContainerCreateResponse::ExpiresAfter
 
+      # Unix timestamp (in seconds) when the container was last active.
       attr_reader last_active_at: Integer?
 
+      # Unix timestamp (in seconds) when the container was last active.
       def last_active_at=: (Integer) -> Integer
 
+      # The memory limit configured for the container.
       attr_reader memory_limit: OpenAI::Models::ContainerCreateResponse::memory_limit?
 
+      # The memory limit configured for the container.
       def memory_limit=: (
         OpenAI::Models::ContainerCreateResponse::memory_limit
       ) -> OpenAI::Models::ContainerCreateResponse::memory_limit
 
+      # Network access policy for the container.
       attr_reader network_policy: OpenAI::Models::ContainerCreateResponse::NetworkPolicy?
 
+      # Network access policy for the container.
       def network_policy=: (
         OpenAI::Models::ContainerCreateResponse::NetworkPolicy
       ) -> OpenAI::Models::ContainerCreateResponse::NetworkPolicy
 
+      # @param id
+      #   Unique identifier for the container.
+      # @param created_at
+      #   Unix timestamp (in seconds) when the container was created.
+      # @param name
+      #   Name of the container.
+      # @param object
+      #   The type of this object.
+      # @param status
+      #   Status of the container (e.g., active, deleted).
+      # @param expires_after
+      #   The container will expire after this time period. The anchor is the reference
+      #   point for the expiration. The minutes is the number of minutes after the anchor
+      #   before the container expires.
+      # @param last_active_at
+      #   Unix timestamp (in seconds) when the container was last active.
+      # @param memory_limit
+      #   The memory limit configured for the container.
+      # @param network_policy
+      #   Network access policy for the container.
       def initialize: (
         id: String,
         created_at: Integer,
@@ -77,16 +114,24 @@ module OpenAI
         }
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
+        # The reference point for the expiration.
         attr_reader anchor: OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor?
 
+        # The reference point for the expiration.
         def anchor=: (
           OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor
         ) -> OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor
 
+        # The number of minutes after the anchor before the container expires.
         attr_reader minutes: Integer?
 
+        # The number of minutes after the anchor before the container expires.
         def minutes=: (Integer) -> Integer
 
+        # @param anchor
+        #   The reference point for the expiration.
+        # @param minutes
+        #   The number of minutes after the anchor before the container expires.
         def initialize: (
           ?anchor: OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor,
           ?minutes: Integer
@@ -128,12 +173,19 @@ module OpenAI
         }
 
       class NetworkPolicy < OpenAI::Internal::Type::BaseModel
+        # The network policy mode.
         attr_accessor type: OpenAI::Models::ContainerCreateResponse::NetworkPolicy::type_
 
+        # Allowed outbound domains when `type` is `allowlist`.
         attr_reader allowed_domains: ::Array[String]?
 
+        # Allowed outbound domains when `type` is `allowlist`.
         def allowed_domains=: (::Array[String]) -> ::Array[String]
 
+        # @param type
+        #   The network policy mode.
+        # @param allowed_domains
+        #   Allowed outbound domains when `type` is `allowlist`.
         def initialize: (
           type: OpenAI::Models::ContainerCreateResponse::NetworkPolicy::type_,
           ?allowed_domains: ::Array[String]

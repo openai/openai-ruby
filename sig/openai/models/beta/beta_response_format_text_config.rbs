@@ -14,8 +14,11 @@ module OpenAI
         type text = { ?type: :text }
 
         class Text < OpenAI::Internal::Type::BaseModel
+          # The type of response format being defined. Always `text`.
           attr_accessor type: :text
 
+          # @param type
+          #   The type of response format being defined. Always `text`.
           def initialize: (?type: :text) -> void
 
           def to_hash: -> { ?type: :text }
@@ -24,8 +27,11 @@ module OpenAI
         type json_object = { ?type: :json_object }
 
         class JSONObject < OpenAI::Internal::Type::BaseModel
+          # The type of response format being defined. Always `json_object`.
           attr_accessor type: :json_object
 
+          # @param type
+          #   The type of response format being defined. Always `json_object`.
           def initialize: (?type: :json_object) -> void
 
           def to_hash: -> { ?type: :json_object }

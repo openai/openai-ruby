@@ -9,12 +9,51 @@ module OpenAI
         }
 
       class ToolChoiceAllowed < OpenAI::Internal::Type::BaseModel
+        # Constrains the tools available to the model to a pre-defined set.
+        #
+        # `auto` allows the model to pick from among the allowed tools and generate a
+        # message.
+        #
+        # `required` requires the model to call one or more of the allowed tools.
         attr_accessor mode: OpenAI::Models::Responses::ToolChoiceAllowed::mode
 
+        # A list of tool definitions that the model should be allowed to call.
+        #
+        # For the Responses API, the list of tool definitions might look like:
+        #
+        # ```json
+        # [
+        #   { "type": "function", "name": "get_weather" },
+        #   { "type": "mcp", "server_label": "deepwiki" },
+        #   { "type": "image_generation" }
+        # ]
+        # ```
         attr_accessor tools: ::Array[::Hash[Symbol, top]]
 
+        # Allowed tool configuration type. Always `allowed_tools`.
         attr_accessor type: :allowed_tools
 
+        # @param mode
+        #   Constrains the tools available to the model to a pre-defined set.
+        #
+        #   `auto` allows the model to pick from among the allowed tools and generate a
+        #   message.
+        #
+        #   `required` requires the model to call one or more of the allowed tools.
+        # @param tools
+        #   A list of tool definitions that the model should be allowed to call.
+        #
+        #   For the Responses API, the list of tool definitions might look like:
+        #
+        #   ```json
+        #   [
+        #     { "type": "function", "name": "get_weather" },
+        #     { "type": "mcp", "server_label": "deepwiki" },
+        #     { "type": "image_generation" }
+        #   ]
+        #   ```
+        # @param type
+        #   Allowed tool configuration type. Always `allowed_tools`.
         def initialize: (
           mode: OpenAI::Models::Responses::ToolChoiceAllowed::mode,
           tools: ::Array[::Hash[Symbol, top]],

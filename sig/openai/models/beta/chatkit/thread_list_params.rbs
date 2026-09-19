@@ -16,28 +16,57 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # List items created after this thread item ID. Defaults to null for the first
+          # page.
           attr_reader after: String?
 
+          # List items created after this thread item ID. Defaults to null for the first
+          # page.
           def after=: (String) -> String
 
+          # List items created before this thread item ID. Defaults to null for the newest
+          # results.
           attr_reader before: String?
 
+          # List items created before this thread item ID. Defaults to null for the newest
+          # results.
           def before=: (String) -> String
 
+          # Maximum number of thread items to return. Defaults to 20.
           attr_reader limit: Integer?
 
+          # Maximum number of thread items to return. Defaults to 20.
           def limit=: (Integer) -> Integer
 
+          # Sort order for results by creation time. Defaults to `desc`.
           attr_reader order: OpenAI::Models::Beta::ChatKit::ThreadListParams::order?
 
+          # Sort order for results by creation time. Defaults to `desc`.
           def order=: (
             OpenAI::Models::Beta::ChatKit::ThreadListParams::order
           ) -> OpenAI::Models::Beta::ChatKit::ThreadListParams::order
 
+          # Filter threads that belong to this user identifier. Defaults to null to return
+          # all users.
           attr_reader user: String?
 
+          # Filter threads that belong to this user identifier. Defaults to null to return
+          # all users.
           def user=: (String) -> String
 
+          # @param after
+          #   List items created after this thread item ID. Defaults to null for the first
+          #   page.
+          # @param before
+          #   List items created before this thread item ID. Defaults to null for the newest
+          #   results.
+          # @param limit
+          #   Maximum number of thread items to return. Defaults to 20.
+          # @param order
+          #   Sort order for results by creation time. Defaults to `desc`.
+          # @param user
+          #   Filter threads that belong to this user identifier. Defaults to null to return
+          #   all users.
           def initialize: (
             ?after: String,
             ?before: String,

@@ -11,16 +11,31 @@ module OpenAI
         }
 
       class ConversationItemInputAudioTranscriptionFailedEvent < OpenAI::Internal::Type::BaseModel
+        # The index of the content part containing the audio.
         attr_accessor content_index: Integer
 
+        # Details of the transcription error.
         attr_accessor error: OpenAI::Realtime::ConversationItemInputAudioTranscriptionFailedEvent::Error
 
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The ID of the user message item.
         attr_accessor item_id: String
 
+        # The event type, must be `conversation.item.input_audio_transcription.failed`.
         attr_accessor type: :"conversation.item.input_audio_transcription.failed"
 
+        # @param content_index
+        #   The index of the content part containing the audio.
+        # @param error
+        #   Details of the transcription error.
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param item_id
+        #   The ID of the user message item.
+        # @param type
+        #   The event type, must be `conversation.item.input_audio_transcription.failed`.
         def initialize: (
           content_index: Integer,
           error: OpenAI::Realtime::ConversationItemInputAudioTranscriptionFailedEvent::Error,
@@ -41,22 +56,38 @@ module OpenAI
           { ?code: String, ?message: String, ?param: String, ?type: String }
 
         class Error < OpenAI::Internal::Type::BaseModel
+          # Error code, if any.
           attr_reader code: String?
 
+          # Error code, if any.
           def code=: (String) -> String
 
+          # A human-readable error message.
           attr_reader message: String?
 
+          # A human-readable error message.
           def message=: (String) -> String
 
+          # Parameter related to the error, if any.
           attr_reader param: String?
 
+          # Parameter related to the error, if any.
           def param=: (String) -> String
 
+          # The type of error.
           attr_reader type: String?
 
+          # The type of error.
           def type=: (String) -> String
 
+          # @param code
+          #   Error code, if any.
+          # @param message
+          #   A human-readable error message.
+          # @param param
+          #   Parameter related to the error, if any.
+          # @param type
+          #   The type of error.
           def initialize: (
             ?code: String,
             ?message: String,

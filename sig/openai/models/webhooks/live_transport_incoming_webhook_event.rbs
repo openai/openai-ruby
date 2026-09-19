@@ -11,20 +11,36 @@ module OpenAI
         }
 
       class LiveTransportIncomingWebhookEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the event.
         attr_accessor id: String
 
+        # The Unix timestamp (in seconds) of when the event was created.
         attr_accessor created_at: Integer
 
+        # Event data payload.
         attr_accessor data: OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data
 
+        # The type of the event. Always `live.transport.incoming`.
         attr_accessor type: :"live.transport.incoming"
 
+        # The object of the event. Always `event`.
         attr_reader object: OpenAI::Models::Webhooks::LiveTransportIncomingWebhookEvent::object?
 
+        # The object of the event. Always `event`.
         def object=: (
           OpenAI::Models::Webhooks::LiveTransportIncomingWebhookEvent::object
         ) -> OpenAI::Models::Webhooks::LiveTransportIncomingWebhookEvent::object
 
+        # @param id
+        #   The unique ID of the event.
+        # @param created_at
+        #   The Unix timestamp (in seconds) of when the event was created.
+        # @param data
+        #   Event data payload.
+        # @param object
+        #   The object of the event. Always `event`.
+        # @param type
+        #   The type of the event. Always `live.transport.incoming`.
         def initialize: (
           id: String,
           created_at: Integer,
@@ -49,12 +65,27 @@ module OpenAI
           }
 
         class Data < OpenAI::Internal::Type::BaseModel
+          # The `live_...` ID of the pending SIP session. Forward this value unchanged when
+          # accepting or rejecting the call through the Live API.
           attr_accessor session_id: String
 
+          # Headers from the SIP INVITE, excluding SIP authorization headers. Retained
+          # names, values, repeated entries, and order are preserved. Treat these values as
+          # untrusted call metadata.
           attr_accessor sip_headers: ::Array[OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data::SipHeader]
 
+          # The incoming transport type. Always `sip`.
           attr_accessor type: :sip
 
+          # @param session_id
+          #   The `live_...` ID of the pending SIP session. Forward this value unchanged when
+          #   accepting or rejecting the call through the Live API.
+          # @param sip_headers
+          #   Headers from the SIP INVITE, excluding SIP authorization headers. Retained
+          #   names, values, repeated entries, and order are preserved. Treat these values as
+          #   untrusted call metadata.
+          # @param type
+          #   The incoming transport type. Always `sip`.
           def initialize: (
             session_id: String,
             sip_headers: ::Array[OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data::SipHeader],
@@ -70,10 +101,16 @@ module OpenAI
           type sip_header = { name: String, value: String }
 
           class SipHeader < OpenAI::Internal::Type::BaseModel
+            # Name of the SIP Header.
             attr_accessor name: String
 
+            # Value of the SIP Header.
             attr_accessor value: String
 
+            # @param name
+            #   Name of the SIP Header.
+            # @param value
+            #   Value of the SIP Header.
             def initialize: (name: String, value: String) -> void
 
             def to_hash: -> { name: String, value: String }

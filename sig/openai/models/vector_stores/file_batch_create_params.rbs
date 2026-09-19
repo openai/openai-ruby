@@ -17,24 +17,80 @@ module OpenAI
 
         attr_accessor vector_store_id: String
 
+        # Set of 16 key-value pairs that can be attached to an object. This can be useful
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard. Keys are strings with a maximum
+        # length of 64 characters. Values are strings with a maximum length of 512
+        # characters, booleans, or numbers.
         attr_accessor attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::attribute]?
 
+        # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+        # strategy. Only applicable if `file_ids` is non-empty.
         attr_reader chunking_strategy: OpenAI::Models::file_chunking_strategy_param?
 
+        # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+        # strategy. Only applicable if `file_ids` is non-empty.
         def chunking_strategy=: (
           OpenAI::Models::file_chunking_strategy_param
         ) -> OpenAI::Models::file_chunking_strategy_param
 
+        # A list of [File](https://developers.openai.com/api/reference/resources/files)
+        # IDs that the vector store should use. Useful for tools like `file_search` that
+        # can access files. If `attributes` or `chunking_strategy` are provided, they will
+        # be applied to all files in the batch. The maximum batch size is 2000 files. This
+        # endpoint is recommended for multi-file ingestion and helps reduce
+        # per-vector-store write request pressure. Mutually exclusive with `files`.
         attr_reader file_ids: ::Array[String]?
 
+        # A list of [File](https://developers.openai.com/api/reference/resources/files)
+        # IDs that the vector store should use. Useful for tools like `file_search` that
+        # can access files. If `attributes` or `chunking_strategy` are provided, they will
+        # be applied to all files in the batch. The maximum batch size is 2000 files. This
+        # endpoint is recommended for multi-file ingestion and helps reduce
+        # per-vector-store write request pressure. Mutually exclusive with `files`.
         def file_ids=: (::Array[String]) -> ::Array[String]
 
+        # A list of objects that each include a `file_id` plus optional `attributes` or
+        # `chunking_strategy`. Use this when you need to override metadata for specific
+        # files. The global `attributes` or `chunking_strategy` will be ignored and must
+        # be specified for each file. The maximum batch size is 2000 files. This endpoint
+        # is recommended for multi-file ingestion and helps reduce per-vector-store write
+        # request pressure. Mutually exclusive with `file_ids`.
         attr_reader files: ::Array[OpenAI::VectorStores::FileBatchCreateParams::File]?
 
+        # A list of objects that each include a `file_id` plus optional `attributes` or
+        # `chunking_strategy`. Use this when you need to override metadata for specific
+        # files. The global `attributes` or `chunking_strategy` will be ignored and must
+        # be specified for each file. The maximum batch size is 2000 files. This endpoint
+        # is recommended for multi-file ingestion and helps reduce per-vector-store write
+        # request pressure. Mutually exclusive with `file_ids`.
         def files=: (
           ::Array[OpenAI::VectorStores::FileBatchCreateParams::File]
         ) -> ::Array[OpenAI::VectorStores::FileBatchCreateParams::File]
 
+        # @param attributes
+        #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #   for storing additional information about the object in a structured format, and
+        #   querying for objects via API or the dashboard. Keys are strings with a maximum
+        #   length of 64 characters. Values are strings with a maximum length of 512
+        #   characters, booleans, or numbers.
+        # @param chunking_strategy
+        #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+        #   strategy. Only applicable if `file_ids` is non-empty.
+        # @param file_ids
+        #   A list of [File](https://developers.openai.com/api/reference/resources/files)
+        #   IDs that the vector store should use. Useful for tools like `file_search` that
+        #   can access files. If `attributes` or `chunking_strategy` are provided, they will
+        #   be applied to all files in the batch. The maximum batch size is 2000 files. This
+        #   endpoint is recommended for multi-file ingestion and helps reduce
+        #   per-vector-store write request pressure. Mutually exclusive with `files`.
+        # @param files
+        #   A list of objects that each include a `file_id` plus optional `attributes` or
+        #   `chunking_strategy`. Use this when you need to override metadata for specific
+        #   files. The global `attributes` or `chunking_strategy` will be ignored and must
+        #   be specified for each file. The maximum batch size is 2000 files. This endpoint
+        #   is recommended for multi-file ingestion and helps reduce per-vector-store write
+        #   request pressure. Mutually exclusive with `file_ids`.
         def initialize: (
           vector_store_id: String,
           ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::attribute]?,
@@ -69,16 +125,45 @@ module OpenAI
           }
 
         class File < OpenAI::Internal::Type::BaseModel
+          # A [File](https://developers.openai.com/api/reference/resources/files) ID that
+          # the vector store should use. Useful for tools like `file_search` that can access
+          # files. For multi-file ingestion, we recommend
+          # [`file_batches`](https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/create)
+          # to minimize per-vector-store write requests.
           attr_accessor file_id: String
 
+          # Set of 16 key-value pairs that can be attached to an object. This can be useful
+          # for storing additional information about the object in a structured format, and
+          # querying for objects via API or the dashboard. Keys are strings with a maximum
+          # length of 64 characters. Values are strings with a maximum length of 512
+          # characters, booleans, or numbers.
           attr_accessor attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::File::attribute]?
 
+          # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+          # strategy. Only applicable if `file_ids` is non-empty.
           attr_reader chunking_strategy: OpenAI::Models::file_chunking_strategy_param?
 
+          # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+          # strategy. Only applicable if `file_ids` is non-empty.
           def chunking_strategy=: (
             OpenAI::Models::file_chunking_strategy_param
           ) -> OpenAI::Models::file_chunking_strategy_param
 
+          # @param file_id
+          #   A [File](https://developers.openai.com/api/reference/resources/files) ID that
+          #   the vector store should use. Useful for tools like `file_search` that can access
+          #   files. For multi-file ingestion, we recommend
+          #   [`file_batches`](https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/create)
+          #   to minimize per-vector-store write requests.
+          # @param attributes
+          #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+          #   for storing additional information about the object in a structured format, and
+          #   querying for objects via API or the dashboard. Keys are strings with a maximum
+          #   length of 64 characters. Values are strings with a maximum length of 512
+          #   characters, booleans, or numbers.
+          # @param chunking_strategy
+          #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+          #   strategy. Only applicable if `file_ids` is non-empty.
           def initialize: (
             file_id: String,
             ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::File::attribute]?,

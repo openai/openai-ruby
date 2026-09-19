@@ -22,14 +22,27 @@ module OpenAI
         class File < OpenAI::Internal::Type::BaseModel
           attr_accessor file: OpenAI::Chat::ChatCompletionContentPart::File::File
 
+          # The type of the content part. Always `file`.
           attr_accessor type: :file
 
+          # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+          # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+          # token block.
           attr_reader prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint?
 
+          # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+          # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+          # token block.
           def prompt_cache_breakpoint=: (
             OpenAI::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint
           ) -> OpenAI::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint
 
+          # @param prompt_cache_breakpoint
+          #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+          #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+          #   token block.
+          # @param type
+          #   The type of the content part. Always `file`.
           def initialize: (
             file: OpenAI::Chat::ChatCompletionContentPart::File::File,
             ?prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPart::File::PromptCacheBreakpoint,
@@ -46,18 +59,33 @@ module OpenAI
             { ?file_data: String, ?file_id: String, ?filename: String }
 
           class File < OpenAI::Internal::Type::BaseModel
+            # The base64 encoded file data, used when passing the file to the model as a
+            # string.
             attr_reader file_data: String?
 
+            # The base64 encoded file data, used when passing the file to the model as a
+            # string.
             def file_data=: (String) -> String
 
+            # The ID of an uploaded file to use as input.
             attr_reader file_id: String?
 
+            # The ID of an uploaded file to use as input.
             def file_id=: (String) -> String
 
+            # The name of the file, used when passing the file to the model as a string.
             attr_reader filename: String?
 
+            # The name of the file, used when passing the file to the model as a string.
             def filename=: (String) -> String
 
+            # @param file_data
+            #   The base64 encoded file data, used when passing the file to the model as a
+            #   string.
+            # @param file_id
+            #   The ID of an uploaded file to use as input.
+            # @param filename
+            #   The name of the file, used when passing the file to the model as a string.
             def initialize: (
               ?file_data: String,
               ?file_id: String,
@@ -74,8 +102,11 @@ module OpenAI
           type prompt_cache_breakpoint = { ?mode: :explicit }
 
           class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+            # The breakpoint mode. Always `explicit`.
             attr_accessor mode: :explicit
 
+            # @param mode
+            #   The breakpoint mode. Always `explicit`.
             def initialize: (?mode: :explicit) -> void
 
             def to_hash: -> { ?mode: :explicit }

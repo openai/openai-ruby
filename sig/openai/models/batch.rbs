@@ -29,78 +29,179 @@ module OpenAI
     class Batch < OpenAI::Internal::Type::BaseModel
       attr_accessor id: String
 
+      # The time frame within which the batch should be processed.
       attr_accessor completion_window: String
 
+      # The Unix timestamp (in seconds) for when the batch was created.
       attr_accessor created_at: Integer
 
+      # The OpenAI API endpoint used by the batch.
       attr_accessor endpoint: String
 
+      # The ID of the input file for the batch.
       attr_accessor input_file_id: String
 
+      # The object type, which is always `batch`.
       attr_accessor object: :batch
 
+      # The current status of the batch.
       attr_accessor status: OpenAI::Models::Batch::status
 
+      # The Unix timestamp (in seconds) for when the batch was cancelled.
       attr_reader cancelled_at: Integer?
 
+      # The Unix timestamp (in seconds) for when the batch was cancelled.
       def cancelled_at=: (Integer) -> Integer
 
+      # The Unix timestamp (in seconds) for when the batch started cancelling.
       attr_reader cancelling_at: Integer?
 
+      # The Unix timestamp (in seconds) for when the batch started cancelling.
       def cancelling_at=: (Integer) -> Integer
 
+      # The Unix timestamp (in seconds) for when the batch was completed.
       attr_reader completed_at: Integer?
 
+      # The Unix timestamp (in seconds) for when the batch was completed.
       def completed_at=: (Integer) -> Integer
 
+      # The ID of the file containing the outputs of requests with errors.
       attr_reader error_file_id: String?
 
+      # The ID of the file containing the outputs of requests with errors.
       def error_file_id=: (String) -> String
 
       attr_reader errors: OpenAI::Batch::Errors?
 
       def errors=: (OpenAI::Batch::Errors) -> OpenAI::Batch::Errors
 
+      # The Unix timestamp (in seconds) for when the batch expired.
       attr_reader expired_at: Integer?
 
+      # The Unix timestamp (in seconds) for when the batch expired.
       def expired_at=: (Integer) -> Integer
 
+      # The Unix timestamp (in seconds) for when the batch will expire.
       attr_reader expires_at: Integer?
 
+      # The Unix timestamp (in seconds) for when the batch will expire.
       def expires_at=: (Integer) -> Integer
 
+      # The Unix timestamp (in seconds) for when the batch failed.
       attr_reader failed_at: Integer?
 
+      # The Unix timestamp (in seconds) for when the batch failed.
       def failed_at=: (Integer) -> Integer
 
+      # The Unix timestamp (in seconds) for when the batch started finalizing.
       attr_reader finalizing_at: Integer?
 
+      # The Unix timestamp (in seconds) for when the batch started finalizing.
       def finalizing_at=: (Integer) -> Integer
 
+      # The Unix timestamp (in seconds) for when the batch started processing.
       attr_reader in_progress_at: Integer?
 
+      # The Unix timestamp (in seconds) for when the batch started processing.
       def in_progress_at=: (Integer) -> Integer
 
+      # Set of 16 key-value pairs that can be attached to an object. This can be useful
+      # for storing additional information about the object in a structured format, and
+      # querying for objects via API or the dashboard.
+      #
+      # Keys are strings with a maximum length of 64 characters. Values are strings with
+      # a maximum length of 512 characters.
       attr_accessor metadata: OpenAI::Models::metadata?
 
+      # Model ID used to process the batch, like `gpt-6-astra`. OpenAI offers a wide
+      # range of models with different capabilities, performance characteristics, and
+      # price points. Refer to the
+      # [model guide](https://developers.openai.com/api/docs/models) to browse and
+      # compare available models.
       attr_reader model: String?
 
+      # Model ID used to process the batch, like `gpt-6-astra`. OpenAI offers a wide
+      # range of models with different capabilities, performance characteristics, and
+      # price points. Refer to the
+      # [model guide](https://developers.openai.com/api/docs/models) to browse and
+      # compare available models.
       def model=: (String) -> String
 
+      # The ID of the file containing the outputs of successfully executed requests.
       attr_reader output_file_id: String?
 
+      # The ID of the file containing the outputs of successfully executed requests.
       def output_file_id=: (String) -> String
 
+      # The request counts for different statuses within the batch.
       attr_reader request_counts: OpenAI::BatchRequestCounts?
 
+      # The request counts for different statuses within the batch.
       def request_counts=: (
         OpenAI::BatchRequestCounts
       ) -> OpenAI::BatchRequestCounts
 
+      # Represents token usage details including input tokens, output tokens, a
+      # breakdown of output tokens, and the total tokens used. Only populated on batches
+      # created after September 7, 2025.
       attr_reader usage: OpenAI::BatchUsage?
 
+      # Represents token usage details including input tokens, output tokens, a
+      # breakdown of output tokens, and the total tokens used. Only populated on batches
+      # created after September 7, 2025.
       def usage=: (OpenAI::BatchUsage) -> OpenAI::BatchUsage
 
+      # @param completion_window
+      #   The time frame within which the batch should be processed.
+      # @param created_at
+      #   The Unix timestamp (in seconds) for when the batch was created.
+      # @param endpoint
+      #   The OpenAI API endpoint used by the batch.
+      # @param input_file_id
+      #   The ID of the input file for the batch.
+      # @param status
+      #   The current status of the batch.
+      # @param cancelled_at
+      #   The Unix timestamp (in seconds) for when the batch was cancelled.
+      # @param cancelling_at
+      #   The Unix timestamp (in seconds) for when the batch started cancelling.
+      # @param completed_at
+      #   The Unix timestamp (in seconds) for when the batch was completed.
+      # @param error_file_id
+      #   The ID of the file containing the outputs of requests with errors.
+      # @param expired_at
+      #   The Unix timestamp (in seconds) for when the batch expired.
+      # @param expires_at
+      #   The Unix timestamp (in seconds) for when the batch will expire.
+      # @param failed_at
+      #   The Unix timestamp (in seconds) for when the batch failed.
+      # @param finalizing_at
+      #   The Unix timestamp (in seconds) for when the batch started finalizing.
+      # @param in_progress_at
+      #   The Unix timestamp (in seconds) for when the batch started processing.
+      # @param metadata
+      #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #   for storing additional information about the object in a structured format, and
+      #   querying for objects via API or the dashboard.
+      #
+      #   Keys are strings with a maximum length of 64 characters. Values are strings with
+      #   a maximum length of 512 characters.
+      # @param model
+      #   Model ID used to process the batch, like `gpt-6-astra`. OpenAI offers a wide
+      #   range of models with different capabilities, performance characteristics, and
+      #   price points. Refer to the
+      #   [model guide](https://developers.openai.com/api/docs/models) to browse and
+      #   compare available models.
+      # @param output_file_id
+      #   The ID of the file containing the outputs of successfully executed requests.
+      # @param request_counts
+      #   The request counts for different statuses within the batch.
+      # @param usage
+      #   Represents token usage details including input tokens, output tokens, a
+      #   breakdown of output tokens, and the total tokens used. Only populated on batches
+      #   created after September 7, 2025.
+      # @param object
+      #   The object type, which is always `batch`.
       def initialize: (
         id: String,
         completion_window: String,
@@ -183,10 +284,14 @@ module OpenAI
 
         def data=: (::Array[OpenAI::BatchError]) -> ::Array[OpenAI::BatchError]
 
+        # The object type, which is always `list`.
         attr_reader object: String?
 
+        # The object type, which is always `list`.
         def object=: (String) -> String
 
+        # @param object
+        #   The object type, which is always `list`.
         def initialize: (
           ?data: ::Array[OpenAI::BatchError],
           ?object: String

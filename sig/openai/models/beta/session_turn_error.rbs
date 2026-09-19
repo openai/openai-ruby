@@ -5,10 +5,16 @@ module OpenAI
         { code: OpenAI::Models::Beta::SessionTurnError::code, message: String }
 
       class SessionTurnError < OpenAI::Internal::Type::BaseModel
+        # A stable, machine-readable failure category.
         attr_accessor code: OpenAI::Models::Beta::SessionTurnError::code
 
+        # A customer-safe explanation of the failure.
         attr_accessor message: String
 
+        # @param code
+        #   A stable, machine-readable failure category.
+        # @param message
+        #   A customer-safe explanation of the failure.
         def initialize: (
           code: OpenAI::Models::Beta::SessionTurnError::code,
           message: String

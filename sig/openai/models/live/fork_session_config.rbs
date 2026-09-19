@@ -10,26 +10,57 @@ module OpenAI
         }
 
       class ForkSessionConfig < OpenAI::Internal::Type::BaseModel
+        # Audio format for a WebSocket fork. WebRTC forks negotiate their audio format and
+        # must omit this field.
         attr_reader audio: OpenAI::Live::ForkSessionConfig::Audio?
 
+        # Audio format for a WebSocket fork. WebRTC forks negotiate their audio format and
+        # must omit this field.
         def audio=: (
           OpenAI::Live::ForkSessionConfig::Audio
         ) -> OpenAI::Live::ForkSessionConfig::Audio
 
+        # Frontend data-channel permissions for a WebRTC fork. Omitted permissions inherit
+        # the stored values. Not supported for WebSocket forks.
         attr_reader client: OpenAI::Live::ClientConfig?
 
+        # Frontend data-channel permissions for a WebRTC fork. Omitted permissions inherit
+        # the stored values. Not supported for WebSocket forks.
         def client=: (OpenAI::Live::ClientConfig) -> OpenAI::Live::ClientConfig
 
+        # Overrides for the stored session’s Responses backend. Only supported when the
+        # stored session already uses Responses delegation; the delegation type cannot
+        # change.
         attr_reader delegation: OpenAI::Live::ForkSessionConfig::Delegation?
 
+        # Overrides for the stored session’s Responses backend. Only supported when the
+        # stored session already uses Responses delegation; the delegation type cannot
+        # change.
         def delegation=: (
           OpenAI::Live::ForkSessionConfig::Delegation
         ) -> OpenAI::Live::ForkSessionConfig::Delegation
 
+        # Whether to store the forked session. Omission inherits the stored session's
+        # setting.
         attr_reader store: bool?
 
+        # Whether to store the forked session. Omission inherits the stored session's
+        # setting.
         def store=: (bool) -> bool
 
+        # @param audio
+        #   Audio format for a WebSocket fork. WebRTC forks negotiate their audio format and
+        #   must omit this field.
+        # @param client
+        #   Frontend data-channel permissions for a WebRTC fork. Omitted permissions inherit
+        #   the stored values. Not supported for WebSocket forks.
+        # @param delegation
+        #   Overrides for the stored session’s Responses backend. Only supported when the
+        #   stored session already uses Responses delegation; the delegation type cannot
+        #   change.
+        # @param store
+        #   Whether to store the forked session. Omission inherits the stored session's
+        #   setting.
         def initialize: (
           ?audio: OpenAI::Live::ForkSessionConfig::Audio,
           ?client: OpenAI::Live::ClientConfig,
@@ -47,12 +78,19 @@ module OpenAI
         type audio = { ?format_: OpenAI::Models::Live::audio_format }
 
         class Audio < OpenAI::Internal::Type::BaseModel
+          # Audio encoding and sample rate for audio sent and received over a Live WebSocket
+          # connection. WebRTC and SIP negotiate their media format separately.
           attr_reader format_: OpenAI::Models::Live::audio_format?
 
+          # Audio encoding and sample rate for audio sent and received over a Live WebSocket
+          # connection. WebRTC and SIP negotiate their media format separately.
           def format_=: (
             OpenAI::Models::Live::audio_format
           ) -> OpenAI::Models::Live::audio_format
 
+          # @param format_
+          #   Audio encoding and sample rate for audio sent and received over a Live WebSocket
+          #   connection. WebRTC and SIP negotiate their media format separately.
           def initialize: (?format_: OpenAI::Models::Live::audio_format) -> void
 
           def to_hash: -> { ?format_: OpenAI::Models::Live::audio_format }
@@ -65,14 +103,24 @@ module OpenAI
           }
 
         class Delegation < OpenAI::Internal::Type::BaseModel
+          # The delegation owner. Always `responses` for tasks handled by the Responses API.
           attr_accessor type: :responses
 
+          # Responses backend settings to update. Omitted settings keep their existing
+          # values.
           attr_reader responses: OpenAI::Live::ResponsesDelegationUpdateConfig?
 
+          # Responses backend settings to update. Omitted settings keep their existing
+          # values.
           def responses=: (
             OpenAI::Live::ResponsesDelegationUpdateConfig
           ) -> OpenAI::Live::ResponsesDelegationUpdateConfig
 
+          # @param responses
+          #   Responses backend settings to update. Omitted settings keep their existing
+          #   values.
+          # @param type
+          #   The delegation owner. Always `responses` for tasks handled by the Responses API.
           def initialize: (
             ?responses: OpenAI::Live::ResponsesDelegationUpdateConfig,
             ?type: :responses

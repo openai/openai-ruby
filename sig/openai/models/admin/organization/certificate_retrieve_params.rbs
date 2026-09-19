@@ -15,12 +15,19 @@ module OpenAI
 
           attr_accessor certificate_id: String
 
+          # A list of additional fields to include in the response. Currently the only
+          # supported value is `content` to fetch the PEM content of the certificate.
           attr_reader include: ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_]?
 
+          # A list of additional fields to include in the response. Currently the only
+          # supported value is `content` to fetch the PEM content of the certificate.
           def include=: (
             ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_]
           ) -> ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_]
 
+          # @param include
+          #   A list of additional fields to include in the response. Currently the only
+          #   supported value is `content` to fetch the PEM content of the certificate.
           def initialize: (
             certificate_id: String,
             ?include: ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_],

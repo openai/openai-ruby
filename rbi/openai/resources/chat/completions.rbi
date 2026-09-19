@@ -196,8 +196,11 @@ module OpenAI
           # [parallel function calling](https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling)
           # during tool use.
           parallel_tool_calls: nil,
-          # Static predicted output content, such as the content of a text file that is
-          # being regenerated.
+          # Configuration for a
+          # [Predicted Output](https://developers.openai.com/api/docs/guides/predicted-outputs),
+          # which can greatly improve response times when large parts of the model response
+          # are known ahead of time. This is most common when you are regenerating a file
+          # with only minor changes to most of the content.
           prediction: nil,
           # Number between -2.0 and 2.0. Positive values penalize new tokens based on
           # whether they appear in the text so far, increasing the model's likelihood to
@@ -538,8 +541,11 @@ module OpenAI
           # [parallel function calling](https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling)
           # during tool use.
           parallel_tool_calls: nil,
-          # Static predicted output content, such as the content of a text file that is
-          # being regenerated.
+          # Configuration for a
+          # [Predicted Output](https://developers.openai.com/api/docs/guides/predicted-outputs),
+          # which can greatly improve response times when large parts of the model response
+          # are known ahead of time. This is most common when you are regenerating a file
+          # with only minor changes to most of the content.
           prediction: nil,
           # Number between -2.0 and 2.0. Positive values penalize new tokens based on
           # whether they appear in the text so far, increasing the model's likelihood to

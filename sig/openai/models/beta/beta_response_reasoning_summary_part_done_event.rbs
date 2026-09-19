@@ -16,26 +16,54 @@ module OpenAI
         }
 
       class BetaResponseReasoningSummaryPartDoneEvent < OpenAI::Internal::Type::BaseModel
+        # The ID of the item this summary part is associated with.
         attr_accessor item_id: String
 
+        # The index of the output item this summary part is associated with.
         attr_accessor output_index: Integer
 
+        # The completed summary part.
         attr_accessor part: OpenAI::Beta::BetaResponseReasoningSummaryPartDoneEvent::Part
 
+        # The sequence number of this event.
         attr_accessor sequence_number: Integer
 
+        # The index of the summary part within the reasoning summary.
         attr_accessor summary_index: Integer
 
+        # The type of the event. Always `response.reasoning_summary_part.done`.
         attr_accessor type: :"response.reasoning_summary_part.done"
 
+        # The agent that owns this multi-agent streaming event.
         attr_accessor agent: OpenAI::Beta::BetaResponseReasoningSummaryPartDoneEvent::Agent?
 
+        # The completion status of the summary part. Omitted when the part completed
+        # normally and set to `incomplete` when generation was interrupted.
         attr_reader status: OpenAI::Models::Beta::BetaResponseReasoningSummaryPartDoneEvent::status?
 
+        # The completion status of the summary part. Omitted when the part completed
+        # normally and set to `incomplete` when generation was interrupted.
         def status=: (
           OpenAI::Models::Beta::BetaResponseReasoningSummaryPartDoneEvent::status
         ) -> OpenAI::Models::Beta::BetaResponseReasoningSummaryPartDoneEvent::status
 
+        # @param item_id
+        #   The ID of the item this summary part is associated with.
+        # @param output_index
+        #   The index of the output item this summary part is associated with.
+        # @param part
+        #   The completed summary part.
+        # @param sequence_number
+        #   The sequence number of this event.
+        # @param summary_index
+        #   The index of the summary part within the reasoning summary.
+        # @param agent
+        #   The agent that owns this multi-agent streaming event.
+        # @param status
+        #   The completion status of the summary part. Omitted when the part completed
+        #   normally and set to `incomplete` when generation was interrupted.
+        # @param type
+        #   The type of the event. Always `response.reasoning_summary_part.done`.
         def initialize: (
           item_id: String,
           output_index: Integer,
@@ -61,10 +89,16 @@ module OpenAI
         type part = { text: String, ?type: :summary_text }
 
         class Part < OpenAI::Internal::Type::BaseModel
+          # The text of the summary part.
           attr_accessor text: String
 
+          # The type of the summary part. Always `summary_text`.
           attr_accessor type: :summary_text
 
+          # @param text
+          #   The text of the summary part.
+          # @param type
+          #   The type of the summary part. Always `summary_text`.
           def initialize: (text: String, ?type: :summary_text) -> void
 
           def to_hash: -> { text: String, ?type: :summary_text }
@@ -73,8 +107,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }

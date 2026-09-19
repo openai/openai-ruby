@@ -9,8 +9,11 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # The ID of the API key to be deleted.
           attr_accessor key_id: String
 
+          # @param key_id
+          #   The ID of the API key to be deleted.
           def initialize: (
             key_id: String,
             ?request_options: OpenAI::request_opts

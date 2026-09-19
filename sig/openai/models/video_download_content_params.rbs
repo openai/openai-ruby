@@ -13,12 +13,16 @@ module OpenAI
 
       attr_accessor video_id: String
 
+      # Which downloadable asset to return. Defaults to the MP4 video.
       attr_reader variant: OpenAI::Models::VideoDownloadContentParams::variant?
 
+      # Which downloadable asset to return. Defaults to the MP4 video.
       def variant=: (
         OpenAI::Models::VideoDownloadContentParams::variant
       ) -> OpenAI::Models::VideoDownloadContentParams::variant
 
+      # @param variant
+      #   Which downloadable asset to return. Defaults to the MP4 video.
       def initialize: (
         video_id: String,
         ?variant: OpenAI::Models::VideoDownloadContentParams::variant,

@@ -16,56 +16,141 @@ module OpenAI
         }
 
       class ConversationItemWithReference < OpenAI::Internal::Type::BaseModel
+        # For an item of type (`message` | `function_call` | `function_call_output`) this
+        # field allows the client to assign the unique ID of the item. It is not required
+        # because the server will generate one if not provided.
+        #
+        # For an item of type `item_reference`, this field is required and is a reference
+        # to any item that has previously existed in the conversation.
         attr_reader id: String?
 
+        # For an item of type (`message` | `function_call` | `function_call_output`) this
+        # field allows the client to assign the unique ID of the item. It is not required
+        # because the server will generate one if not provided.
+        #
+        # For an item of type `item_reference`, this field is required and is a reference
+        # to any item that has previously existed in the conversation.
         def id=: (String) -> String
 
+        # The arguments of the function call (for `function_call` items).
         attr_reader arguments: String?
 
+        # The arguments of the function call (for `function_call` items).
         def arguments=: (String) -> String
 
+        # The ID of the function call (for `function_call` and `function_call_output`
+        # items). If passed on a `function_call_output` item, the server will check that a
+        # `function_call` item with the same ID exists in the conversation history.
         attr_reader call_id: String?
 
+        # The ID of the function call (for `function_call` and `function_call_output`
+        # items). If passed on a `function_call_output` item, the server will check that a
+        # `function_call` item with the same ID exists in the conversation history.
         def call_id=: (String) -> String
 
+        # The content of the message, applicable for `message` items.
+        #
+        # - Message items of role `system` support only `input_text` content
+        # - Message items of role `user` support `input_text` and `input_audio` content
+        # - Message items of role `assistant` support `text` content.
         attr_reader content: ::Array[OpenAI::Realtime::ConversationItemWithReference::Content]?
 
+        # The content of the message, applicable for `message` items.
+        #
+        # - Message items of role `system` support only `input_text` content
+        # - Message items of role `user` support `input_text` and `input_audio` content
+        # - Message items of role `assistant` support `text` content.
         def content=: (
           ::Array[OpenAI::Realtime::ConversationItemWithReference::Content]
         ) -> ::Array[OpenAI::Realtime::ConversationItemWithReference::Content]
 
+        # The name of the function being called (for `function_call` items).
         attr_reader name: String?
 
+        # The name of the function being called (for `function_call` items).
         def name=: (String) -> String
 
+        # Identifier for the API object being returned - always `realtime.item`.
         attr_reader object: OpenAI::Models::Realtime::ConversationItemWithReference::object?
 
+        # Identifier for the API object being returned - always `realtime.item`.
         def object=: (
           OpenAI::Models::Realtime::ConversationItemWithReference::object
         ) -> OpenAI::Models::Realtime::ConversationItemWithReference::object
 
+        # The output of the function call (for `function_call_output` items).
         attr_reader output: String?
 
+        # The output of the function call (for `function_call_output` items).
         def output=: (String) -> String
 
+        # The role of the message sender (`user`, `assistant`, `system`), only applicable
+        # for `message` items.
         attr_reader role: OpenAI::Models::Realtime::ConversationItemWithReference::role?
 
+        # The role of the message sender (`user`, `assistant`, `system`), only applicable
+        # for `message` items.
         def role=: (
           OpenAI::Models::Realtime::ConversationItemWithReference::role
         ) -> OpenAI::Models::Realtime::ConversationItemWithReference::role
 
+        # The status of the item (`completed`, `incomplete`, `in_progress`). These have no
+        # effect on the conversation, but are accepted for consistency with the
+        # `conversation.item.created` event.
         attr_reader status: OpenAI::Models::Realtime::ConversationItemWithReference::status?
 
+        # The status of the item (`completed`, `incomplete`, `in_progress`). These have no
+        # effect on the conversation, but are accepted for consistency with the
+        # `conversation.item.created` event.
         def status=: (
           OpenAI::Models::Realtime::ConversationItemWithReference::status
         ) -> OpenAI::Models::Realtime::ConversationItemWithReference::status
 
+        # The type of the item (`message`, `function_call`, `function_call_output`,
+        # `item_reference`).
         attr_reader type: OpenAI::Models::Realtime::ConversationItemWithReference::type_?
 
+        # The type of the item (`message`, `function_call`, `function_call_output`,
+        # `item_reference`).
         def type=: (
           OpenAI::Models::Realtime::ConversationItemWithReference::type_
         ) -> OpenAI::Models::Realtime::ConversationItemWithReference::type_
 
+        # @param id
+        #   For an item of type (`message` | `function_call` | `function_call_output`) this
+        #   field allows the client to assign the unique ID of the item. It is not required
+        #   because the server will generate one if not provided.
+        #
+        #   For an item of type `item_reference`, this field is required and is a reference
+        #   to any item that has previously existed in the conversation.
+        # @param arguments
+        #   The arguments of the function call (for `function_call` items).
+        # @param call_id
+        #   The ID of the function call (for `function_call` and `function_call_output`
+        #   items). If passed on a `function_call_output` item, the server will check that a
+        #   `function_call` item with the same ID exists in the conversation history.
+        # @param content
+        #   The content of the message, applicable for `message` items.
+        #
+        #   - Message items of role `system` support only `input_text` content
+        #   - Message items of role `user` support `input_text` and `input_audio` content
+        #   - Message items of role `assistant` support `text` content.
+        # @param name
+        #   The name of the function being called (for `function_call` items).
+        # @param object
+        #   Identifier for the API object being returned - always `realtime.item`.
+        # @param output
+        #   The output of the function call (for `function_call_output` items).
+        # @param role
+        #   The role of the message sender (`user`, `assistant`, `system`), only applicable
+        #   for `message` items.
+        # @param status
+        #   The status of the item (`completed`, `incomplete`, `in_progress`). These have no
+        #   effect on the conversation, but are accepted for consistency with the
+        #   `conversation.item.created` event.
+        # @param type
+        #   The type of the item (`message`, `function_call`, `function_call_output`,
+        #   `item_reference`).
         def initialize: (
           ?id: String,
           ?arguments: String,
@@ -102,28 +187,54 @@ module OpenAI
           }
 
         class Content < OpenAI::Internal::Type::BaseModel
+          # ID of a previous conversation item to reference (for `item_reference` content
+          # types in `response.create` events). These can reference both client and server
+          # created items.
           attr_reader id: String?
 
+          # ID of a previous conversation item to reference (for `item_reference` content
+          # types in `response.create` events). These can reference both client and server
+          # created items.
           def id=: (String) -> String
 
+          # Base64-encoded audio bytes, used for `input_audio` content type.
           attr_reader audio: String?
 
+          # Base64-encoded audio bytes, used for `input_audio` content type.
           def audio=: (String) -> String
 
+          # The text content, used for `input_text` and `text` content types.
           attr_reader text: String?
 
+          # The text content, used for `input_text` and `text` content types.
           def text=: (String) -> String
 
+          # The transcript of the audio, used for `input_audio` content type.
           attr_reader transcript: String?
 
+          # The transcript of the audio, used for `input_audio` content type.
           def transcript=: (String) -> String
 
+          # The content type (`input_text`, `input_audio`, `item_reference`, `text`).
           attr_reader type: OpenAI::Models::Realtime::ConversationItemWithReference::Content::type_?
 
+          # The content type (`input_text`, `input_audio`, `item_reference`, `text`).
           def type=: (
             OpenAI::Models::Realtime::ConversationItemWithReference::Content::type_
           ) -> OpenAI::Models::Realtime::ConversationItemWithReference::Content::type_
 
+          # @param id
+          #   ID of a previous conversation item to reference (for `item_reference` content
+          #   types in `response.create` events). These can reference both client and server
+          #   created items.
+          # @param audio
+          #   Base64-encoded audio bytes, used for `input_audio` content type.
+          # @param text
+          #   The text content, used for `input_text` and `text` content types.
+          # @param transcript
+          #   The transcript of the audio, used for `input_audio` content type.
+          # @param type
+          #   The content type (`input_text`, `input_audio`, `item_reference`, `text`).
           def initialize: (
             ?id: String,
             ?audio: String,

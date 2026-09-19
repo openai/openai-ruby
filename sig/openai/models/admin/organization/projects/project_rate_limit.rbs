@@ -19,32 +19,63 @@ module OpenAI
             }
 
           class ProjectRateLimit < OpenAI::Internal::Type::BaseModel
+            # The identifier, which can be referenced in API endpoints.
             attr_accessor id: String
 
+            # The maximum requests per minute.
             attr_accessor max_requests_per_1_minute: Integer
 
+            # The maximum tokens per minute.
             attr_accessor max_tokens_per_1_minute: Integer
 
+            # The model this rate limit applies to.
             attr_accessor model: String
 
+            # The object type, which is always `project.rate_limit`
             attr_accessor object: :"project.rate_limit"
 
+            # The maximum batch input tokens per day. Only present for relevant models.
             attr_reader batch_1_day_max_input_tokens: Integer?
 
+            # The maximum batch input tokens per day. Only present for relevant models.
             def batch_1_day_max_input_tokens=: (Integer) -> Integer
 
+            # The maximum audio megabytes per minute. Only present for relevant models.
             attr_reader max_audio_megabytes_per_1_minute: Integer?
 
+            # The maximum audio megabytes per minute. Only present for relevant models.
             def max_audio_megabytes_per_1_minute=: (Integer) -> Integer
 
+            # The maximum images per minute. Only present for relevant models.
             attr_reader max_images_per_1_minute: Integer?
 
+            # The maximum images per minute. Only present for relevant models.
             def max_images_per_1_minute=: (Integer) -> Integer
 
+            # The maximum requests per day. Only present for relevant models.
             attr_reader max_requests_per_1_day: Integer?
 
+            # The maximum requests per day. Only present for relevant models.
             def max_requests_per_1_day=: (Integer) -> Integer
 
+            # @param id
+            #   The identifier, which can be referenced in API endpoints.
+            # @param max_requests_per_1_minute
+            #   The maximum requests per minute.
+            # @param max_tokens_per_1_minute
+            #   The maximum tokens per minute.
+            # @param model
+            #   The model this rate limit applies to.
+            # @param batch_1_day_max_input_tokens
+            #   The maximum batch input tokens per day. Only present for relevant models.
+            # @param max_audio_megabytes_per_1_minute
+            #   The maximum audio megabytes per minute. Only present for relevant models.
+            # @param max_images_per_1_minute
+            #   The maximum images per minute. Only present for relevant models.
+            # @param max_requests_per_1_day
+            #   The maximum requests per day. Only present for relevant models.
+            # @param object
+            #   The object type, which is always `project.rate_limit`
             def initialize: (
               id: String,
               max_requests_per_1_minute: Integer,

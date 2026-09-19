@@ -13,20 +13,41 @@ module OpenAI
         }
 
       class ResponseContentPartDoneEvent < OpenAI::Internal::Type::BaseModel
+        # The index of the content part in the item's content array.
         attr_accessor content_index: Integer
 
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The ID of the item.
         attr_accessor item_id: String
 
+        # The index of the output item in the response.
         attr_accessor output_index: Integer
 
+        # The content part that is done.
         attr_accessor part: OpenAI::Realtime::ResponseContentPartDoneEvent::Part
 
+        # The ID of the response.
         attr_accessor response_id: String
 
+        # The event type, must be `response.content_part.done`.
         attr_accessor type: :"response.content_part.done"
 
+        # @param content_index
+        #   The index of the content part in the item's content array.
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param item_id
+        #   The ID of the item.
+        # @param output_index
+        #   The index of the output item in the response.
+        # @param part
+        #   The content part that is done.
+        # @param response_id
+        #   The ID of the response.
+        # @param type
+        #   The event type, must be `response.content_part.done`.
         def initialize: (
           content_index: Integer,
           event_id: String,
@@ -56,24 +77,40 @@ module OpenAI
           }
 
         class Part < OpenAI::Internal::Type::BaseModel
+          # Base64-encoded audio data (if type is "audio").
           attr_reader audio: String?
 
+          # Base64-encoded audio data (if type is "audio").
           def audio=: (String) -> String
 
+          # The text content (if type is "text").
           attr_reader text: String?
 
+          # The text content (if type is "text").
           def text=: (String) -> String
 
+          # The transcript of the audio (if type is "audio").
           attr_reader transcript: String?
 
+          # The transcript of the audio (if type is "audio").
           def transcript=: (String) -> String
 
+          # The content type ("text", "audio").
           attr_reader type: OpenAI::Models::Realtime::ResponseContentPartDoneEvent::Part::type_?
 
+          # The content type ("text", "audio").
           def type=: (
             OpenAI::Models::Realtime::ResponseContentPartDoneEvent::Part::type_
           ) -> OpenAI::Models::Realtime::ResponseContentPartDoneEvent::Part::type_
 
+          # @param audio
+          #   Base64-encoded audio data (if type is "audio").
+          # @param text
+          #   The text content (if type is "text").
+          # @param transcript
+          #   The transcript of the audio (if type is "audio").
+          # @param type
+          #   The content type ("text", "audio").
           def initialize: (
             ?audio: String,
             ?text: String,

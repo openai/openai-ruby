@@ -11,16 +11,35 @@ module OpenAI
         }
 
       class CompactedResponse < OpenAI::Internal::Type::BaseModel
+        # The unique identifier for the compacted response.
         attr_accessor id: String
 
+        # Unix timestamp (in seconds) when the compacted conversation was created.
         attr_accessor created_at: Integer
 
+        # The object type. Always `response.compaction`.
         attr_accessor object: :"response.compaction"
 
+        # The compacted list of output items. This is a list of all user messages,
+        # followed by a single compaction item.
         attr_accessor output: ::Array[OpenAI::Models::Responses::response_output_item]
 
+        # Token accounting for the compaction pass, including cached, reasoning, and total
+        # tokens.
         attr_accessor usage: OpenAI::Responses::ResponseUsage
 
+        # @param id
+        #   The unique identifier for the compacted response.
+        # @param created_at
+        #   Unix timestamp (in seconds) when the compacted conversation was created.
+        # @param output
+        #   The compacted list of output items. This is a list of all user messages,
+        #   followed by a single compaction item.
+        # @param usage
+        #   Token accounting for the compaction pass, including cached, reasoning, and total
+        #   tokens.
+        # @param object
+        #   The object type. Always `response.compaction`.
         def initialize: (
           id: String,
           created_at: Integer,

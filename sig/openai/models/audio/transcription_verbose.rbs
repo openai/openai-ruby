@@ -12,30 +12,51 @@ module OpenAI
         }
 
       class TranscriptionVerbose < OpenAI::Internal::Type::BaseModel
+        # The duration of the input audio.
         attr_accessor duration: Float
 
+        # The language of the input audio.
         attr_accessor language: String
 
+        # The transcribed text.
         attr_accessor text: String
 
+        # Segments of the transcribed text and their corresponding details.
         attr_reader segments: ::Array[OpenAI::Audio::TranscriptionSegment]?
 
+        # Segments of the transcribed text and their corresponding details.
         def segments=: (
           ::Array[OpenAI::Audio::TranscriptionSegment]
         ) -> ::Array[OpenAI::Audio::TranscriptionSegment]
 
+        # Usage statistics for models billed by audio input duration.
         attr_reader usage: OpenAI::Audio::TranscriptionVerbose::Usage?
 
+        # Usage statistics for models billed by audio input duration.
         def usage=: (
           OpenAI::Audio::TranscriptionVerbose::Usage
         ) -> OpenAI::Audio::TranscriptionVerbose::Usage
 
+        # Extracted words and their corresponding timestamps.
         attr_reader words: ::Array[OpenAI::Audio::TranscriptionWord]?
 
+        # Extracted words and their corresponding timestamps.
         def words=: (
           ::Array[OpenAI::Audio::TranscriptionWord]
         ) -> ::Array[OpenAI::Audio::TranscriptionWord]
 
+        # @param duration
+        #   The duration of the input audio.
+        # @param language
+        #   The language of the input audio.
+        # @param text
+        #   The transcribed text.
+        # @param segments
+        #   Segments of the transcribed text and their corresponding details.
+        # @param usage
+        #   Usage statistics for models billed by audio input duration.
+        # @param words
+        #   Extracted words and their corresponding timestamps.
         def initialize: (
           duration: Float,
           language: String,
@@ -57,10 +78,16 @@ module OpenAI
         type usage = { seconds: Float, ?type: :duration }
 
         class Usage < OpenAI::Internal::Type::BaseModel
+          # Duration of the input audio in seconds.
           attr_accessor seconds: Float
 
+          # The type of the usage object. Always `duration` for this variant.
           attr_accessor type: :duration
 
+          # @param seconds
+          #   Duration of the input audio in seconds.
+          # @param type
+          #   The type of the usage object. Always `duration` for this variant.
           def initialize: (seconds: Float, ?type: :duration) -> void
 
           def to_hash: -> { seconds: Float, ?type: :duration }

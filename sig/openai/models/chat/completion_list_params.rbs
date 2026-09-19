@@ -15,26 +15,52 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # Identifier for the last chat completion from the previous pagination request.
         attr_reader after: String?
 
+        # Identifier for the last chat completion from the previous pagination request.
         def after=: (String) -> String
 
+        # Number of Chat Completions to retrieve.
         attr_reader limit: Integer?
 
+        # Number of Chat Completions to retrieve.
         def limit=: (Integer) -> Integer
 
+        # A list of metadata keys to filter the Chat Completions by. Example:
+        #
+        # `metadata[key1]=value1&metadata[key2]=value2`
         attr_accessor metadata: OpenAI::Models::metadata?
 
+        # The model used to generate the Chat Completions.
         attr_reader model: String?
 
+        # The model used to generate the Chat Completions.
         def model=: (String) -> String
 
+        # Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
+        # `desc` for descending order. Defaults to `asc`.
         attr_reader order: OpenAI::Models::Chat::CompletionListParams::order?
 
+        # Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
+        # `desc` for descending order. Defaults to `asc`.
         def order=: (
           OpenAI::Models::Chat::CompletionListParams::order
         ) -> OpenAI::Models::Chat::CompletionListParams::order
 
+        # @param after
+        #   Identifier for the last chat completion from the previous pagination request.
+        # @param limit
+        #   Number of Chat Completions to retrieve.
+        # @param metadata
+        #   A list of metadata keys to filter the Chat Completions by. Example:
+        #
+        #   `metadata[key1]=value1&metadata[key2]=value2`
+        # @param model
+        #   The model used to generate the Chat Completions.
+        # @param order
+        #   Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
+        #   `desc` for descending order. Defaults to `asc`.
         def initialize: (
           ?after: String,
           ?limit: Integer,

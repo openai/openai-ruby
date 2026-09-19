@@ -11,20 +11,36 @@ module OpenAI
         }
 
       class TranscriptionDiarized < OpenAI::Internal::Type::BaseModel
+        # Duration of the input audio in seconds.
         attr_accessor duration: Float
 
+        # Segments of the transcript annotated with timestamps and speaker labels.
         attr_accessor segments: ::Array[OpenAI::Audio::TranscriptionDiarizedSegment]
 
+        # The type of task that was run. Always `transcribe`.
         attr_accessor task: :transcribe
 
+        # The concatenated transcript text for the entire audio input.
         attr_accessor text: String
 
+        # Token or duration usage statistics for the request.
         attr_reader usage: OpenAI::Models::Audio::TranscriptionDiarized::usage?
 
+        # Token or duration usage statistics for the request.
         def usage=: (
           OpenAI::Models::Audio::TranscriptionDiarized::usage
         ) -> OpenAI::Models::Audio::TranscriptionDiarized::usage
 
+        # @param duration
+        #   Duration of the input audio in seconds.
+        # @param segments
+        #   Segments of the transcript annotated with timestamps and speaker labels.
+        # @param text
+        #   The concatenated transcript text for the entire audio input.
+        # @param usage
+        #   Token or duration usage statistics for the request.
+        # @param task
+        #   The type of task that was run. Always `transcribe`.
         def initialize: (
           duration: Float,
           segments: ::Array[OpenAI::Audio::TranscriptionDiarizedSegment],
@@ -58,20 +74,36 @@ module OpenAI
             }
 
           class Tokens < OpenAI::Internal::Type::BaseModel
+            # Number of input tokens billed for this request.
             attr_accessor input_tokens: Integer
 
+            # Number of output tokens generated.
             attr_accessor output_tokens: Integer
 
+            # Total number of tokens used (input + output).
             attr_accessor total_tokens: Integer
 
+            # The type of the usage object. Always `tokens` for this variant.
             attr_accessor type: :tokens
 
+            # Details about the input tokens billed for this request.
             attr_reader input_token_details: OpenAI::Audio::TranscriptionDiarized::Usage::Tokens::InputTokenDetails?
 
+            # Details about the input tokens billed for this request.
             def input_token_details=: (
               OpenAI::Audio::TranscriptionDiarized::Usage::Tokens::InputTokenDetails
             ) -> OpenAI::Audio::TranscriptionDiarized::Usage::Tokens::InputTokenDetails
 
+            # @param input_tokens
+            #   Number of input tokens billed for this request.
+            # @param output_tokens
+            #   Number of output tokens generated.
+            # @param total_tokens
+            #   Total number of tokens used (input + output).
+            # @param input_token_details
+            #   Details about the input tokens billed for this request.
+            # @param type
+            #   The type of the usage object. Always `tokens` for this variant.
             def initialize: (
               input_tokens: Integer,
               output_tokens: Integer,
@@ -92,14 +124,22 @@ module OpenAI
               { ?audio_tokens: Integer, ?text_tokens: Integer }
 
             class InputTokenDetails < OpenAI::Internal::Type::BaseModel
+              # Number of audio tokens billed for this request.
               attr_reader audio_tokens: Integer?
 
+              # Number of audio tokens billed for this request.
               def audio_tokens=: (Integer) -> Integer
 
+              # Number of text tokens billed for this request.
               attr_reader text_tokens: Integer?
 
+              # Number of text tokens billed for this request.
               def text_tokens=: (Integer) -> Integer
 
+              # @param audio_tokens
+              #   Number of audio tokens billed for this request.
+              # @param text_tokens
+              #   Number of text tokens billed for this request.
               def initialize: (
                 ?audio_tokens: Integer,
                 ?text_tokens: Integer
@@ -112,10 +152,16 @@ module OpenAI
           type duration = { seconds: Float, ?type: :duration }
 
           class Duration < OpenAI::Internal::Type::BaseModel
+            # Duration of the input audio in seconds.
             attr_accessor seconds: Float
 
+            # The type of the usage object. Always `duration` for this variant.
             attr_accessor type: :duration
 
+            # @param seconds
+            #   Duration of the input audio in seconds.
+            # @param type
+            #   The type of the usage object. Always `duration` for this variant.
             def initialize: (seconds: Float, ?type: :duration) -> void
 
             def to_hash: -> { seconds: Float, ?type: :duration }

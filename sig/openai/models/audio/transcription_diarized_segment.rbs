@@ -12,18 +12,40 @@ module OpenAI
         }
 
       class TranscriptionDiarizedSegment < OpenAI::Internal::Type::BaseModel
+        # Unique identifier for the segment.
         attr_accessor id: String
 
+        # End timestamp of the segment in seconds.
         attr_accessor end_: Float
 
+        # Speaker label for this segment. When known speakers are provided, the label
+        # matches `known_speaker_names[]`. Otherwise speakers are labeled sequentially
+        # using capital letters (`A`, `B`, ...).
         attr_accessor speaker: String
 
+        # Start timestamp of the segment in seconds.
         attr_accessor start: Float
 
+        # Transcript text for this segment.
         attr_accessor text: String
 
+        # The type of the segment. Always `transcript.text.segment`.
         attr_accessor type: :"transcript.text.segment"
 
+        # @param id
+        #   Unique identifier for the segment.
+        # @param end_
+        #   End timestamp of the segment in seconds.
+        # @param speaker
+        #   Speaker label for this segment. When known speakers are provided, the label
+        #   matches `known_speaker_names[]`. Otherwise speakers are labeled sequentially
+        #   using capital letters (`A`, `B`, ...).
+        # @param start
+        #   Start timestamp of the segment in seconds.
+        # @param text
+        #   Transcript text for this segment.
+        # @param type
+        #   The type of the segment. Always `transcript.text.segment`.
         def initialize: (
           id: String,
           end_: Float,

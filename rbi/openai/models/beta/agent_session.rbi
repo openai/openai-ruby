@@ -57,7 +57,8 @@ module OpenAI
         sig { returns(OpenAI::Beta::AgentSession::Status::TaggedSymbol) }
         attr_accessor :status
 
-        # Recorded token usage for a session or turn. Usage is best effort and may change.
+        # Best-effort token usage for the session, or null if unknown. Recorded usage may
+        # change.
         sig { returns(T.nilable(OpenAI::Beta::TokenUsage)) }
         attr_reader :usage
 
@@ -136,7 +137,8 @@ module OpenAI
           # The current status of the session.
           status:,
 
-          # Recorded token usage for a session or turn. Usage is best effort and may change.
+          # Best-effort token usage for the session, or null if unknown. Recorded usage may
+          # change.
           usage:,
 
           # The IDs of vaults made available to the session.

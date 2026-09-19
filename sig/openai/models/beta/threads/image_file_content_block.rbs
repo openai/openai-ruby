@@ -8,8 +8,11 @@ module OpenAI
         class ImageFileContentBlock < OpenAI::Internal::Type::BaseModel
           attr_accessor image_file: OpenAI::Beta::Threads::ImageFile
 
+          # Always `image_file`.
           attr_accessor type: :image_file
 
+          # @param type
+          #   Always `image_file`.
           def initialize: (
             image_file: OpenAI::Beta::Threads::ImageFile,
             ?type: :image_file

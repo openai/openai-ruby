@@ -9,16 +9,26 @@ module OpenAI
         }
 
       class ResponseConfigurationUpdateItem < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the configuration update item.
         attr_accessor id: String
 
+        # The item type. Always `configuration_update`.
         attr_accessor type: :configuration_update
 
+        # The reasoning configuration applied by this update.
         attr_reader reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning?
 
+        # The reasoning configuration applied by this update.
         def reasoning=: (
           OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning
         ) -> OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning
 
+        # @param id
+        #   The unique ID of the configuration update item.
+        # @param reasoning
+        #   The reasoning configuration applied by this update.
+        # @param type
+        #   The item type. Always `configuration_update`.
         def initialize: (
           id: String,
           ?reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning,
@@ -34,8 +44,13 @@ module OpenAI
         type reasoning = { ?effort: OpenAI::Models::reasoning_effort? }
 
         class Reasoning < OpenAI::Internal::Type::BaseModel
+          # The reasoning effort used for subsequent responses until another configuration
+          # update replaces it.
           attr_accessor effort: OpenAI::Models::reasoning_effort?
 
+          # @param effort
+          #   The reasoning effort used for subsequent responses until another configuration
+          #   update replaces it.
           def initialize: (?effort: OpenAI::Models::reasoning_effort?) -> void
 
           def to_hash: -> { ?effort: OpenAI::Models::reasoning_effort? }

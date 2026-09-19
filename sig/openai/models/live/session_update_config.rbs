@@ -5,8 +5,13 @@ module OpenAI
         { ?delegation: OpenAI::Models::Live::SessionUpdateConfig::delegation? }
 
       class SessionUpdateConfig < OpenAI::Internal::Type::BaseModel
+        # Delegation settings to update. The delegation type must match the current
+        # session; omitted settings retain their values.
         attr_accessor delegation: OpenAI::Models::Live::SessionUpdateConfig::delegation?
 
+        # @param delegation
+        #   Delegation settings to update. The delegation type must match the current
+        #   session; omitted settings retain their values.
         def initialize: (
           ?delegation: OpenAI::Models::Live::SessionUpdateConfig::delegation?
         ) -> void
@@ -29,14 +34,24 @@ module OpenAI
             }
 
           class Responses < OpenAI::Internal::Type::BaseModel
+            # The delegation owner. Always `responses` for tasks handled by the Responses API.
             attr_accessor type: :responses
 
+            # Responses backend settings to update. Omitted settings keep their existing
+            # values.
             attr_reader responses: OpenAI::Live::ResponsesDelegationUpdateConfig?
 
+            # Responses backend settings to update. Omitted settings keep their existing
+            # values.
             def responses=: (
               OpenAI::Live::ResponsesDelegationUpdateConfig
             ) -> OpenAI::Live::ResponsesDelegationUpdateConfig
 
+            # @param responses
+            #   Responses backend settings to update. Omitted settings keep their existing
+            #   values.
+            # @param type
+            #   The delegation owner. Always `responses` for tasks handled by the Responses API.
             def initialize: (
               ?responses: OpenAI::Live::ResponsesDelegationUpdateConfig,
               ?type: :responses

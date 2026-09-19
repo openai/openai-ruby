@@ -14,10 +14,16 @@ module OpenAI
         type output_text = { text: String, ?type: :output_text }
 
         class OutputText < OpenAI::Internal::Type::BaseModel
+          # The text output from the model.
           attr_accessor text: String
 
+          # The type of the output text. Always `output_text`.
           attr_accessor type: :output_text
 
+          # @param text
+          #   The text output from the model.
+          # @param type
+          #   The type of the output text. Always `output_text`.
           def initialize: (text: String, ?type: :output_text) -> void
 
           def to_hash: -> { text: String, ?type: :output_text }
@@ -27,14 +33,27 @@ module OpenAI
           { image_url: String, ?type: :input_image, ?detail: String }
 
         class InputImage < OpenAI::Internal::Type::BaseModel
+          # The URL of the image input.
           attr_accessor image_url: String
 
+          # The type of the image input. Always `input_image`.
           attr_accessor type: :input_image
 
+          # The detail level of the image to be sent to the model. One of `high`, `low`, or
+          # `auto`. Defaults to `auto`.
           attr_reader detail: String?
 
+          # The detail level of the image to be sent to the model. One of `high`, `low`, or
+          # `auto`. Defaults to `auto`.
           def detail=: (String) -> String
 
+          # @param image_url
+          #   The URL of the image input.
+          # @param detail
+          #   The detail level of the image to be sent to the model. One of `high`, `low`, or
+          #   `auto`. Defaults to `auto`.
+          # @param type
+          #   The type of the image input. Always `input_image`.
           def initialize: (
             image_url: String,
             ?detail: String,

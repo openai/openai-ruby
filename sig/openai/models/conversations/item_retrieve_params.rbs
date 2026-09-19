@@ -17,12 +17,22 @@ module OpenAI
 
         attr_accessor item_id: String
 
+        # Additional fields to include in the response. See the `include` parameter for
+        # [listing Conversation items above](https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/list#%28resource%29%20conversations.items%20%3E%20%28method%29%20list%20%3E%20%28params%29%20default%20%3E%20%28param%29%20include%20%3E%20%28schema%29)
+        # for more information.
         attr_reader include: ::Array[OpenAI::Models::Responses::response_includable]?
 
+        # Additional fields to include in the response. See the `include` parameter for
+        # [listing Conversation items above](https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/list#%28resource%29%20conversations.items%20%3E%20%28method%29%20list%20%3E%20%28params%29%20default%20%3E%20%28param%29%20include%20%3E%20%28schema%29)
+        # for more information.
         def include=: (
           ::Array[OpenAI::Models::Responses::response_includable]
         ) -> ::Array[OpenAI::Models::Responses::response_includable]
 
+        # @param include
+        #   Additional fields to include in the response. See the `include` parameter for
+        #   [listing Conversation items above](https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/list#%28resource%29%20conversations.items%20%3E%20%28method%29%20list%20%3E%20%28params%29%20default%20%3E%20%28param%29%20include%20%3E%20%28schema%29)
+        #   for more information.
         def initialize: (
           conversation_id: String,
           item_id: String,

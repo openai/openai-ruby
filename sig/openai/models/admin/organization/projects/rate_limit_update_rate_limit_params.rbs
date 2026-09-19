@@ -24,30 +24,54 @@ module OpenAI
 
             attr_accessor rate_limit_id: String
 
+            # The maximum batch input tokens per day. Only relevant for certain models.
             attr_reader batch_1_day_max_input_tokens: Integer?
 
+            # The maximum batch input tokens per day. Only relevant for certain models.
             def batch_1_day_max_input_tokens=: (Integer) -> Integer
 
+            # The maximum audio megabytes per minute. Only relevant for certain models.
             attr_reader max_audio_megabytes_per_1_minute: Integer?
 
+            # The maximum audio megabytes per minute. Only relevant for certain models.
             def max_audio_megabytes_per_1_minute=: (Integer) -> Integer
 
+            # The maximum images per minute. Only relevant for certain models.
             attr_reader max_images_per_1_minute: Integer?
 
+            # The maximum images per minute. Only relevant for certain models.
             def max_images_per_1_minute=: (Integer) -> Integer
 
+            # The maximum requests per day. Only relevant for certain models.
             attr_reader max_requests_per_1_day: Integer?
 
+            # The maximum requests per day. Only relevant for certain models.
             def max_requests_per_1_day=: (Integer) -> Integer
 
+            # The maximum requests per minute.
             attr_reader max_requests_per_1_minute: Integer?
 
+            # The maximum requests per minute.
             def max_requests_per_1_minute=: (Integer) -> Integer
 
+            # The maximum tokens per minute.
             attr_reader max_tokens_per_1_minute: Integer?
 
+            # The maximum tokens per minute.
             def max_tokens_per_1_minute=: (Integer) -> Integer
 
+            # @param batch_1_day_max_input_tokens
+            #   The maximum batch input tokens per day. Only relevant for certain models.
+            # @param max_audio_megabytes_per_1_minute
+            #   The maximum audio megabytes per minute. Only relevant for certain models.
+            # @param max_images_per_1_minute
+            #   The maximum images per minute. Only relevant for certain models.
+            # @param max_requests_per_1_day
+            #   The maximum requests per day. Only relevant for certain models.
+            # @param max_requests_per_1_minute
+            #   The maximum requests per minute.
+            # @param max_tokens_per_1_minute
+            #   The maximum tokens per minute.
             def initialize: (
               project_id: String,
               rate_limit_id: String,

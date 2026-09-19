@@ -15,14 +15,24 @@ module OpenAI
 
         attr_accessor session_id: String
 
+        # WebRTC transport with an SDP offer for the new connection to the forked session.
         attr_accessor transport: OpenAI::Live::SessionForkParams::Transport
 
+        # Optional configuration overrides for the new Live session. Omit this object or
+        # send an empty object to inherit the stored session's settings.
         attr_reader session: OpenAI::Live::MediaSessionForkConfig?
 
+        # Optional configuration overrides for the new Live session. Omit this object or
+        # send an empty object to inherit the stored session's settings.
         def session=: (
           OpenAI::Live::MediaSessionForkConfig
         ) -> OpenAI::Live::MediaSessionForkConfig
 
+        # @param transport
+        #   WebRTC transport with an SDP offer for the new connection to the forked session.
+        # @param session
+        #   Optional configuration overrides for the new Live session. Omit this object or
+        #   send an empty object to inherit the stored session's settings.
         def initialize: (
           session_id: String,
           transport: OpenAI::Live::SessionForkParams::Transport,
@@ -40,10 +50,16 @@ module OpenAI
         type transport = { sdp: String, ?type: :webrtc }
 
         class Transport < OpenAI::Internal::Type::BaseModel
+          # Session Description Protocol message for the WebRTC connection.
           attr_accessor sdp: String
 
+          # The transport used for the Live session. Always `webrtc`.
           attr_accessor type: :webrtc
 
+          # @param sdp
+          #   Session Description Protocol message for the WebRTC connection.
+          # @param type
+          #   The transport used for the Live session. Always `webrtc`.
           def initialize: (sdp: String, ?type: :webrtc) -> void
 
           def to_hash: -> { sdp: String, ?type: :webrtc }

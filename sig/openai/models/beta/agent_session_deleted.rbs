@@ -5,12 +5,23 @@ module OpenAI
         { id: String, deleted: bool, ?object: :"agent.session.deleted" }
 
       class AgentSessionDeleted < OpenAI::Internal::Type::BaseModel
+        # The ID of the deleted session.
         attr_accessor id: String
 
+        # Whether the session has been removed from the public API. Always `true`.
+        # Physical cleanup may still be in progress.
         attr_accessor deleted: bool
 
+        # The object type. Always `agent.session.deleted`.
         attr_accessor object: :"agent.session.deleted"
 
+        # @param id
+        #   The ID of the deleted session.
+        # @param deleted
+        #   Whether the session has been removed from the public API. Always `true`.
+        #   Physical cleanup may still be in progress.
+        # @param object
+        #   The object type. Always `agent.session.deleted`.
         def initialize: (
           id: String,
           deleted: bool,

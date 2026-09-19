@@ -11,16 +11,31 @@ module OpenAI
         }
 
       class ResponseShellCallCommandAddedEvent < OpenAI::Internal::Type::BaseModel
+        # The shell command that was added.
         attr_accessor command: String
 
+        # The index of the shell command that was added.
         attr_accessor command_index: Integer
 
+        # The index of the output item that was updated.
         attr_accessor output_index: Integer
 
+        # The sequence number of the event that was emitted.
         attr_accessor sequence_number: Integer
 
+        # The type of the event, always `response.shell_call_command.added`.
         attr_accessor type: :"response.shell_call_command.added"
 
+        # @param command
+        #   The shell command that was added.
+        # @param command_index
+        #   The index of the shell command that was added.
+        # @param output_index
+        #   The index of the output item that was updated.
+        # @param sequence_number
+        #   The sequence number of the event that was emitted.
+        # @param type
+        #   The type of the event, always `response.shell_call_command.added`.
         def initialize: (
           command: String,
           command_index: Integer,

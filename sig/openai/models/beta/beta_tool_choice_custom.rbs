@@ -6,10 +6,16 @@ module OpenAI
       type beta_tool_choice_custom = { name: String, ?type: :custom }
 
       class BetaToolChoiceCustom < OpenAI::Internal::Type::BaseModel
+        # The name of the custom tool to call.
         attr_accessor name: String
 
+        # For custom tool calling, the type is always `custom`.
         attr_accessor type: :custom
 
+        # @param name
+        #   The name of the custom tool to call.
+        # @param type
+        #   For custom tool calling, the type is always `custom`.
         def initialize: (name: String, ?type: :custom) -> void
 
         def to_hash: -> { name: String, ?type: :custom }

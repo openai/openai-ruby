@@ -16,18 +16,36 @@ module OpenAI
             }
 
           class ProjectUser < OpenAI::Internal::Type::BaseModel
+            # The identifier, which can be referenced in API endpoints
             attr_accessor id: String
 
+            # The Unix timestamp (in seconds) of when the project was added.
             attr_accessor added_at: Integer
 
+            # The object type, which is always `organization.project.user`
             attr_accessor object: :"organization.project.user"
 
+            # `owner` or `member`
             attr_accessor role: String
 
+            # The email address of the user
             attr_accessor email: String?
 
+            # The name of the user
             attr_accessor name: String?
 
+            # @param id
+            #   The identifier, which can be referenced in API endpoints
+            # @param added_at
+            #   The Unix timestamp (in seconds) of when the project was added.
+            # @param role
+            #   `owner` or `member`
+            # @param email
+            #   The email address of the user
+            # @param name
+            #   The name of the user
+            # @param object
+            #   The object type, which is always `organization.project.user`
             def initialize: (
               id: String,
               added_at: Integer,

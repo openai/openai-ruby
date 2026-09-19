@@ -15,10 +15,17 @@ module OpenAI
 
           attr_accessor name: String
 
+          # The number of seconds until the API key expires. Omit this field for a key that
+          # does not expire.
           attr_reader expires_in_seconds: Integer?
 
+          # The number of seconds until the API key expires. Omit this field for a key that
+          # does not expire.
           def expires_in_seconds=: (Integer) -> Integer
 
+          # @param expires_in_seconds
+          #   The number of seconds until the API key expires. Omit this field for a key that
+          #   does not expire.
           def initialize: (
             name: String,
             ?expires_in_seconds: Integer,

@@ -10,20 +10,43 @@ module OpenAI
         }
 
       class TranscriptionTextDeltaEvent < OpenAI::Internal::Type::BaseModel
+        # The text delta that was additionally transcribed.
         attr_accessor delta: String
 
+        # The type of the event. Always `transcript.text.delta`.
         attr_accessor type: :"transcript.text.delta"
 
+        # The log probabilities of the delta. Only included if you
+        # [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
+        # with the `include[]` parameter set to `logprobs`.
         attr_reader logprobs: ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob]?
 
+        # The log probabilities of the delta. Only included if you
+        # [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
+        # with the `include[]` parameter set to `logprobs`.
         def logprobs=: (
           ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob]
         ) -> ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob]
 
+        # Identifier of the diarized segment that this delta belongs to. Only present when
+        # using `gpt-4o-transcribe-diarize`.
         attr_reader segment_id: String?
 
+        # Identifier of the diarized segment that this delta belongs to. Only present when
+        # using `gpt-4o-transcribe-diarize`.
         def segment_id=: (String) -> String
 
+        # @param delta
+        #   The text delta that was additionally transcribed.
+        # @param logprobs
+        #   The log probabilities of the delta. Only included if you
+        #   [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
+        #   with the `include[]` parameter set to `logprobs`.
+        # @param segment_id
+        #   Identifier of the diarized segment that this delta belongs to. Only present when
+        #   using `gpt-4o-transcribe-diarize`.
+        # @param type
+        #   The type of the event. Always `transcript.text.delta`.
         def initialize: (
           delta: String,
           ?logprobs: ::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob],
@@ -42,18 +65,30 @@ module OpenAI
           { ?token: String, ?bytes: ::Array[Integer], ?logprob: Float }
 
         class Logprob < OpenAI::Internal::Type::BaseModel
+          # The token that was used to generate the log probability.
           attr_reader token: String?
 
+          # The token that was used to generate the log probability.
           def token=: (String) -> String
 
+          # The bytes that were used to generate the log probability.
           attr_reader bytes: ::Array[Integer]?
 
+          # The bytes that were used to generate the log probability.
           def bytes=: (::Array[Integer]) -> ::Array[Integer]
 
+          # The log probability of the token.
           attr_reader logprob: Float?
 
+          # The log probability of the token.
           def logprob=: (Float) -> Float
 
+          # @param token
+          #   The token that was used to generate the log probability.
+          # @param bytes
+          #   The bytes that were used to generate the log probability.
+          # @param logprob
+          #   The log probability of the token.
           def initialize: (
             ?token: String,
             ?bytes: ::Array[Integer],

@@ -10,10 +10,16 @@ module OpenAI
         }
 
       class ChatCompletionCustomTool < OpenAI::Internal::Type::BaseModel
+        # Properties of the custom tool.
         attr_accessor custom: OpenAI::Chat::ChatCompletionCustomTool::Custom
 
+        # The type of the custom tool. Always `custom`.
         attr_accessor type: :custom
 
+        # @param custom
+        #   Properties of the custom tool.
+        # @param type
+        #   The type of the custom tool. Always `custom`.
         def initialize: (
           custom: OpenAI::Chat::ChatCompletionCustomTool::Custom,
           ?type: :custom
@@ -32,18 +38,29 @@ module OpenAI
           }
 
         class Custom < OpenAI::Internal::Type::BaseModel
+          # The name of the custom tool, used to identify it in tool calls.
           attr_accessor name: String
 
+          # Optional description of the custom tool, used to provide more context.
           attr_reader description: String?
 
+          # Optional description of the custom tool, used to provide more context.
           def description=: (String) -> String
 
+          # The input format for the custom tool. Default is unconstrained text.
           attr_reader format_: OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::format_?
 
+          # The input format for the custom tool. Default is unconstrained text.
           def format_=: (
             OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::format_
           ) -> OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::format_
 
+          # @param name
+          #   The name of the custom tool, used to identify it in tool calls.
+          # @param description
+          #   Optional description of the custom tool, used to provide more context.
+          # @param format_
+          #   The input format for the custom tool. Default is unconstrained text.
           def initialize: (
             name: String,
             ?description: String,
@@ -66,8 +83,11 @@ module OpenAI
             type text = { ?type: :text }
 
             class Text < OpenAI::Internal::Type::BaseModel
+              # Unconstrained text format. Always `text`.
               attr_accessor type: :text
 
+              # @param type
+              #   Unconstrained text format. Always `text`.
               def initialize: (?type: :text) -> void
 
               def to_hash: -> { ?type: :text }
@@ -80,10 +100,16 @@ module OpenAI
               }
 
             class Grammar < OpenAI::Internal::Type::BaseModel
+              # Your chosen grammar.
               attr_accessor grammar: OpenAI::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar
 
+              # Grammar format. Always `grammar`.
               attr_accessor type: :grammar
 
+              # @param grammar
+              #   Your chosen grammar.
+              # @param type
+              #   Grammar format. Always `grammar`.
               def initialize: (
                 grammar: OpenAI::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar,
                 ?type: :grammar
@@ -101,10 +127,16 @@ module OpenAI
                 }
 
               class Grammar < OpenAI::Internal::Type::BaseModel
+                # The grammar definition.
                 attr_accessor definition: String
 
+                # The syntax of the grammar definition. One of `lark` or `regex`.
                 attr_accessor syntax: OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar::syntax
 
+                # @param definition
+                #   The grammar definition.
+                # @param syntax
+                #   The syntax of the grammar definition. One of `lark` or `regex`.
                 def initialize: (
                   definition: String,
                   syntax: OpenAI::Models::Chat::ChatCompletionCustomTool::Custom::Format::Grammar::Grammar::syntax

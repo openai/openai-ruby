@@ -82,10 +82,25 @@ module OpenAI
           }
 
         class BetaResponseAudioWsDelta < OpenAI::Models::Beta::BetaResponseAudioDeltaEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param delta
+          #   A chunk of Base64 encoded response audio bytes.
+          # @param sequence_number
+          #   A sequence number for this chunk of the stream response.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.audio.delta`.
           def initialize: (
             delta: String,
             sequence_number: Integer,
@@ -112,10 +127,23 @@ module OpenAI
           }
 
         class BetaResponseAudioWsDone < OpenAI::Models::Beta::BetaResponseAudioDoneEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param sequence_number
+          #   The sequence number of the delta.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.audio.done`.
           def initialize: (
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseAudioDoneEvent::Agent?,
@@ -141,10 +169,25 @@ module OpenAI
           }
 
         class BetaResponseAudioTranscriptWsDelta < OpenAI::Models::Beta::BetaResponseAudioTranscriptDeltaEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param delta
+          #   The partial transcript of the audio response.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.audio.transcript.delta`.
           def initialize: (
             delta: String,
             sequence_number: Integer,
@@ -171,10 +214,23 @@ module OpenAI
           }
 
         class BetaResponseAudioTranscriptWsDone < OpenAI::Models::Beta::BetaResponseAudioTranscriptDoneEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.audio.transcript.done`.
           def initialize: (
             sequence_number: Integer,
             ?agent: OpenAI::Beta::BetaResponseAudioTranscriptDoneEvent::Agent?,
@@ -202,10 +258,30 @@ module OpenAI
           }
 
         class BetaResponseCodeInterpreterCallCodeWsDelta < OpenAI::Models::Beta::BetaResponseCodeInterpreterCallCodeDeltaEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param delta
+          #   The partial code snippet being streamed by the code interpreter.
+          # @param item_id
+          #   The unique identifier of the code interpreter tool call item.
+          # @param output_index
+          #   The index of the output item in the response for which the code is being
+          #   streamed.
+          # @param sequence_number
+          #   The sequence number of this event, used to order streaming events.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.code_interpreter_call_code.delta`.
           def initialize: (
             delta: String,
             item_id: String,
@@ -239,10 +315,29 @@ module OpenAI
           }
 
         class BetaResponseCodeInterpreterCallCodeWsDone < OpenAI::Models::Beta::BetaResponseCodeInterpreterCallCodeDoneEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param code
+          #   The final code snippet output by the code interpreter.
+          # @param item_id
+          #   The unique identifier of the code interpreter tool call item.
+          # @param output_index
+          #   The index of the output item in the response for which the code is finalized.
+          # @param sequence_number
+          #   The sequence number of this event, used to order streaming events.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.code_interpreter_call_code.done`.
           def initialize: (
             code: String,
             item_id: String,
@@ -275,10 +370,28 @@ module OpenAI
           }
 
         class BetaResponseCodeInterpreterCallWsCompleted < OpenAI::Models::Beta::BetaResponseCodeInterpreterCallCompletedEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The unique identifier of the code interpreter tool call item.
+          # @param output_index
+          #   The index of the output item in the response for which the code interpreter call
+          #   is completed.
+          # @param sequence_number
+          #   The sequence number of this event, used to order streaming events.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.code_interpreter_call.completed`.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -309,10 +422,28 @@ module OpenAI
           }
 
         class BetaResponseCodeInterpreterCallInWsProgress < OpenAI::Models::Beta::BetaResponseCodeInterpreterCallInProgressEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The unique identifier of the code interpreter tool call item.
+          # @param output_index
+          #   The index of the output item in the response for which the code interpreter call
+          #   is in progress.
+          # @param sequence_number
+          #   The sequence number of this event, used to order streaming events.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.code_interpreter_call.in_progress`.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -343,10 +474,28 @@ module OpenAI
           }
 
         class BetaResponseCodeInterpreterCallWsInterpreting < OpenAI::Models::Beta::BetaResponseCodeInterpreterCallInterpretingEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The unique identifier of the code interpreter tool call item.
+          # @param output_index
+          #   The index of the output item in the response for which the code interpreter is
+          #   interpreting code.
+          # @param sequence_number
+          #   The sequence number of this event, used to order streaming events.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.code_interpreter_call.interpreting`.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -377,10 +526,27 @@ module OpenAI
           }
 
         class BetaResponseCompactionWsCompacting < OpenAI::Models::Beta::BetaResponseCompactionCompactingEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The ID of the compaction output item.
+          # @param output_index
+          #   The index of the compaction output item.
+          # @param sequence_number
+          #   The sequence number of the event that was emitted.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event, always `response.compaction.compacting`.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -410,10 +576,25 @@ module OpenAI
           }
 
         class BetaResponseWsCompleted < OpenAI::Models::Beta::BetaResponseCompletedEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param response
+          #   Properties of the completed response.
+          # @param sequence_number
+          #   The sequence number for this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.completed`.
           def initialize: (
             response: OpenAI::Beta::BetaResponse,
             sequence_number: Integer,
@@ -444,10 +625,31 @@ module OpenAI
           }
 
         class BetaResponseContentPartWsAdded < OpenAI::Models::Beta::BetaResponseContentPartAddedEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param content_index
+          #   The index of the content part that was added.
+          # @param item_id
+          #   The ID of the output item that the content part was added to.
+          # @param output_index
+          #   The index of the output item that the content part was added to.
+          # @param part
+          #   The content part that was added.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.content_part.added`.
           def initialize: (
             content_index: Integer,
             item_id: String,
@@ -484,10 +686,31 @@ module OpenAI
           }
 
         class BetaResponseContentPartWsDone < OpenAI::Models::Beta::BetaResponseContentPartDoneEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param content_index
+          #   The index of the content part that is done.
+          # @param item_id
+          #   The ID of the output item that the content part was added to.
+          # @param output_index
+          #   The index of the output item that the content part was added to.
+          # @param part
+          #   The content part that is done.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.content_part.done`.
           def initialize: (
             content_index: Integer,
             item_id: String,
@@ -521,10 +744,25 @@ module OpenAI
           }
 
         class BetaResponseWsCreated < OpenAI::Models::Beta::BetaResponseCreatedEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param response
+          #   The response that was created.
+          # @param sequence_number
+          #   The sequence number for this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.created`.
           def initialize: (
             response: OpenAI::Beta::BetaResponse,
             sequence_number: Integer,
@@ -553,10 +791,27 @@ module OpenAI
           }
 
         class BetaResponseFileSearchCallWsCompleted < OpenAI::Models::Beta::BetaResponseFileSearchCallCompletedEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The ID of the output item that the file search call is initiated.
+          # @param output_index
+          #   The index of the output item that the file search call is initiated.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.file_search_call.completed`.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -587,10 +842,27 @@ module OpenAI
           }
 
         class BetaResponseFileSearchCallInWsProgress < OpenAI::Models::Beta::BetaResponseFileSearchCallInProgressEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The ID of the output item that the file search call is initiated.
+          # @param output_index
+          #   The index of the output item that the file search call is initiated.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.file_search_call.in_progress`.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -621,10 +893,27 @@ module OpenAI
           }
 
         class BetaResponseFileSearchCallWsSearching < OpenAI::Models::Beta::BetaResponseFileSearchCallSearchingEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The ID of the output item that the file search call is initiated.
+          # @param output_index
+          #   The index of the output item that the file search call is searching.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.file_search_call.searching`.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -656,10 +945,29 @@ module OpenAI
           }
 
         class BetaResponseFunctionCallArgumentsWsDelta < OpenAI::Models::Beta::BetaResponseFunctionCallArgumentsDeltaEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param delta
+          #   The function-call arguments delta that is added.
+          # @param item_id
+          #   The ID of the output item that the function-call arguments delta is added to.
+          # @param output_index
+          #   The index of the output item that the function-call arguments delta is added to.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.function_call_arguments.delta`.
           def initialize: (
             delta: String,
             item_id: String,
@@ -693,10 +1001,27 @@ module OpenAI
           }
 
         class BetaResponseFunctionCallArgumentsWsDone < OpenAI::Models::Beta::BetaResponseFunctionCallArgumentsDoneEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param arguments
+          #   The function-call arguments.
+          # @param item_id
+          #   The ID of the item.
+          # @param output_index
+          #   The index of the output item.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
           def initialize: (
             arguments: String,
             item_id: String,
@@ -730,10 +1055,29 @@ module OpenAI
           }
 
         class BetaResponseShellCallCommandWsAdded < OpenAI::Models::Beta::BetaResponseShellCallCommandAddedEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param command
+          #   The shell command that was added.
+          # @param command_index
+          #   The index of the shell command that was added.
+          # @param output_index
+          #   The index of the output item that was updated.
+          # @param sequence_number
+          #   The sequence number of the event that was emitted.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event, always `response.shell_call_command.added`.
           def initialize: (
             command: String,
             command_index: Integer,
@@ -768,10 +1112,31 @@ module OpenAI
           }
 
         class BetaResponseShellCallCommandWsDelta < OpenAI::Models::Beta::BetaResponseShellCallCommandDeltaEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param command_index
+          #   The index of the shell command that was updated.
+          # @param delta
+          #   The shell command delta that was appended.
+          # @param output_index
+          #   The index of the output item that was updated.
+          # @param sequence_number
+          #   The sequence number of the event that was emitted.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param obfuscation
+          #   An obfuscation string that was added to pad the event payload.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event, always `response.shell_call_command.delta`.
           def initialize: (
             command_index: Integer,
             delta: String,
@@ -807,10 +1172,29 @@ module OpenAI
           }
 
         class BetaResponseShellCallCommandWsDone < OpenAI::Models::Beta::BetaResponseShellCallCommandDoneEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param command
+          #   The final shell command that was emitted.
+          # @param command_index
+          #   The index of the shell command that was completed.
+          # @param output_index
+          #   The index of the output item that was updated.
+          # @param sequence_number
+          #   The sequence number of the event that was emitted.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event, always `response.shell_call_command.done`.
           def initialize: (
             command: String,
             command_index: Integer,
@@ -845,10 +1229,31 @@ module OpenAI
           }
 
         class BetaResponseShellCallOutputContentWsDelta < OpenAI::Models::Beta::BetaResponseShellCallOutputContentDeltaEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param command_index
+          #   The index of the shell command that produced output.
+          # @param delta
+          #   The stdout/stderr delta that was emitted.
+          # @param item_id
+          #   The ID of the output item that was updated.
+          # @param output_index
+          #   The index of the output item that was updated.
+          # @param sequence_number
+          #   The sequence number of the event that was emitted.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event, always `response.shell_call_output_content.delta`.
           def initialize: (
             command_index: Integer,
             delta: OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent::Delta,
@@ -885,10 +1290,31 @@ module OpenAI
           }
 
         class BetaResponseShellCallOutputContentWsDone < OpenAI::Models::Beta::BetaResponseShellCallOutputContentDoneEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param command_index
+          #   The index of the shell command that produced output.
+          # @param item_id
+          #   The ID of the output item that was updated.
+          # @param output
+          #   The output contents emitted for the shell command.
+          # @param output_index
+          #   The index of the output item that was updated.
+          # @param sequence_number
+          #   The sequence number of the event that was emitted.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event, always `response.shell_call_output_content.done`.
           def initialize: (
             command_index: Integer,
             item_id: String,
@@ -922,10 +1348,25 @@ module OpenAI
           }
 
         class BetaResponseInWsProgress < OpenAI::Models::Beta::BetaResponseInProgressEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param response
+          #   The response that is in progress.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.in_progress`.
           def initialize: (
             response: OpenAI::Beta::BetaResponse,
             sequence_number: Integer,
@@ -953,10 +1394,25 @@ module OpenAI
           }
 
         class BetaResponseWsFailed < OpenAI::Models::Beta::BetaResponseFailedEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param response
+          #   The response that failed.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.failed`.
           def initialize: (
             response: OpenAI::Beta::BetaResponse,
             sequence_number: Integer,
@@ -984,10 +1440,25 @@ module OpenAI
           }
 
         class BetaResponseWsIncomplete < OpenAI::Models::Beta::BetaResponseIncompleteEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param response
+          #   The response that was incomplete.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.incomplete`.
           def initialize: (
             response: OpenAI::Beta::BetaResponse,
             sequence_number: Integer,
@@ -1016,10 +1487,30 @@ module OpenAI
           }
 
         class BetaResponseOutputItemWsAdded < OpenAI::Models::Beta::BetaResponseOutputItemAddedEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item
+          #   The output item that was added. For reasoning items, `encrypted_content` may be
+          #   incomplete while the item is in progress. Use the reasoning item from the
+          #   corresponding `response.output_item.done` event when passing it as input to a
+          #   subsequent request.
+          # @param output_index
+          #   The index of the output item that was added.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.output_item.added`.
           def initialize: (
             item: OpenAI::Models::Beta::beta_response_output_item,
             output_index: Integer,
@@ -1050,10 +1541,27 @@ module OpenAI
           }
 
         class BetaResponseOutputItemWsDone < OpenAI::Models::Beta::BetaResponseOutputItemDoneEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item
+          #   The output item that was marked done.
+          # @param output_index
+          #   The index of the output item that was marked done.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.output_item.done`.
           def initialize: (
             item: OpenAI::Models::Beta::beta_response_output_item,
             output_index: Integer,
@@ -1086,10 +1594,31 @@ module OpenAI
           }
 
         class BetaResponseReasoningSummaryPartWsAdded < OpenAI::Models::Beta::BetaResponseReasoningSummaryPartAddedEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The ID of the item this summary part is associated with.
+          # @param output_index
+          #   The index of the output item this summary part is associated with.
+          # @param part
+          #   The summary part that was added.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param summary_index
+          #   The index of the summary part within the reasoning summary.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.reasoning_summary_part.added`.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -1127,10 +1656,34 @@ module OpenAI
           }
 
         class BetaResponseReasoningSummaryPartWsDone < OpenAI::Models::Beta::BetaResponseReasoningSummaryPartDoneEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The ID of the item this summary part is associated with.
+          # @param output_index
+          #   The index of the output item this summary part is associated with.
+          # @param part
+          #   The completed summary part.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param summary_index
+          #   The index of the summary part within the reasoning summary.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param status
+          #   The completion status of the summary part. Omitted when the part completed
+          #   normally and set to `incomplete` when generation was interrupted.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.reasoning_summary_part.done`.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -1169,10 +1722,31 @@ module OpenAI
           }
 
         class BetaResponseReasoningSummaryTextWsDelta < OpenAI::Models::Beta::BetaResponseReasoningSummaryTextDeltaEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param delta
+          #   The text delta that was added to the summary.
+          # @param item_id
+          #   The ID of the item this summary text delta is associated with.
+          # @param output_index
+          #   The index of the output item this summary text delta is associated with.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param summary_index
+          #   The index of the summary part within the reasoning summary.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.reasoning_summary_text.delta`.
           def initialize: (
             delta: String,
             item_id: String,
@@ -1209,10 +1783,31 @@ module OpenAI
           }
 
         class BetaResponseReasoningSummaryTextWsDone < OpenAI::Models::Beta::BetaResponseReasoningSummaryTextDoneEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The ID of the item this summary text is associated with.
+          # @param output_index
+          #   The index of the output item this summary text is associated with.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param summary_index
+          #   The index of the summary part within the reasoning summary.
+          # @param text
+          #   The full text of the completed reasoning summary.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.reasoning_summary_text.done`.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -1249,10 +1844,31 @@ module OpenAI
           }
 
         class BetaResponseReasoningTextWsDelta < OpenAI::Models::Beta::BetaResponseReasoningTextDeltaEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param content_index
+          #   The index of the reasoning content part this delta is associated with.
+          # @param delta
+          #   The text delta that was added to the reasoning content.
+          # @param item_id
+          #   The ID of the item this reasoning text delta is associated with.
+          # @param output_index
+          #   The index of the output item this reasoning text delta is associated with.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.reasoning_text.delta`.
           def initialize: (
             content_index: Integer,
             delta: String,
@@ -1289,10 +1905,31 @@ module OpenAI
           }
 
         class BetaResponseReasoningTextWsDone < OpenAI::Models::Beta::BetaResponseReasoningTextDoneEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param content_index
+          #   The index of the reasoning content part.
+          # @param item_id
+          #   The ID of the item this reasoning text is associated with.
+          # @param output_index
+          #   The index of the output item this reasoning text is associated with.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param text
+          #   The full text of the completed reasoning content.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.reasoning_text.done`.
           def initialize: (
             content_index: Integer,
             item_id: String,
@@ -1329,10 +1966,31 @@ module OpenAI
           }
 
         class BetaResponseRefusalWsDelta < OpenAI::Models::Beta::BetaResponseRefusalDeltaEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param content_index
+          #   The index of the content part that the refusal text is added to.
+          # @param delta
+          #   The refusal text that is added.
+          # @param item_id
+          #   The ID of the output item that the refusal text is added to.
+          # @param output_index
+          #   The index of the output item that the refusal text is added to.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.refusal.delta`.
           def initialize: (
             content_index: Integer,
             delta: String,
@@ -1369,10 +2027,31 @@ module OpenAI
           }
 
         class BetaResponseRefusalWsDone < OpenAI::Models::Beta::BetaResponseRefusalDoneEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param content_index
+          #   The index of the content part that the refusal text is finalized.
+          # @param item_id
+          #   The ID of the output item that the refusal text is finalized.
+          # @param output_index
+          #   The index of the output item that the refusal text is finalized.
+          # @param refusal
+          #   The refusal text that is finalized.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.refusal.done`.
           def initialize: (
             content_index: Integer,
             item_id: String,
@@ -1410,10 +2089,33 @@ module OpenAI
           }
 
         class BetaResponseTextWsDelta < OpenAI::Models::Beta::BetaResponseTextDeltaEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param content_index
+          #   The index of the content part that the text delta was added to.
+          # @param delta
+          #   The text delta that was added.
+          # @param item_id
+          #   The ID of the output item that the text delta was added to.
+          # @param logprobs
+          #   The log probabilities of the tokens in the delta.
+          # @param output_index
+          #   The index of the output item that the text delta was added to.
+          # @param sequence_number
+          #   The sequence number for this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.output_text.delta`.
           def initialize: (
             content_index: Integer,
             delta: String,
@@ -1453,10 +2155,33 @@ module OpenAI
           }
 
         class BetaResponseTextWsDone < OpenAI::Models::Beta::BetaResponseTextDoneEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param content_index
+          #   The index of the content part that the text content is finalized.
+          # @param item_id
+          #   The ID of the output item that the text content is finalized.
+          # @param logprobs
+          #   The log probabilities of the tokens in the delta.
+          # @param output_index
+          #   The index of the output item that the text content is finalized.
+          # @param sequence_number
+          #   The sequence number for this event.
+          # @param text
+          #   The text content that is finalized.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.output_text.done`.
           def initialize: (
             content_index: Integer,
             item_id: String,
@@ -1493,10 +2218,27 @@ module OpenAI
           }
 
         class BetaResponseWebSearchCallWsCompleted < OpenAI::Models::Beta::BetaResponseWebSearchCallCompletedEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   Unique ID for the output item associated with the web search call.
+          # @param output_index
+          #   The index of the output item that the web search call is associated with.
+          # @param sequence_number
+          #   The sequence number of the web search call being processed.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.web_search_call.completed`.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -1527,10 +2269,27 @@ module OpenAI
           }
 
         class BetaResponseWebSearchCallInWsProgress < OpenAI::Models::Beta::BetaResponseWebSearchCallInProgressEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   Unique ID for the output item associated with the web search call.
+          # @param output_index
+          #   The index of the output item that the web search call is associated with.
+          # @param sequence_number
+          #   The sequence number of the web search call being processed.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.web_search_call.in_progress`.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -1561,10 +2320,27 @@ module OpenAI
           }
 
         class BetaResponseWebSearchCallWsSearching < OpenAI::Models::Beta::BetaResponseWebSearchCallSearchingEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   Unique ID for the output item associated with the web search call.
+          # @param output_index
+          #   The index of the output item that the web search call is associated with.
+          # @param sequence_number
+          #   The sequence number of the web search call being processed.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `response.web_search_call.searching`.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -1595,10 +2371,27 @@ module OpenAI
           }
 
         class BetaResponseImageGenCallWsCompleted < OpenAI::Models::Beta::BetaResponseImageGenCallCompletedEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The unique identifier of the image generation item being processed.
+          # @param output_index
+          #   The index of the output item in the response's output array.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always 'response.image_generation_call.completed'.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -1629,10 +2422,27 @@ module OpenAI
           }
 
         class BetaResponseImageGenCallWsGenerating < OpenAI::Models::Beta::BetaResponseImageGenCallGeneratingEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The unique identifier of the image generation item being processed.
+          # @param output_index
+          #   The index of the output item in the response's output array.
+          # @param sequence_number
+          #   The sequence number of the image generation item being processed.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always 'response.image_generation_call.generating'.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -1663,10 +2473,27 @@ module OpenAI
           }
 
         class BetaResponseImageGenCallInWsProgress < OpenAI::Models::Beta::BetaResponseImageGenCallInProgressEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The unique identifier of the image generation item being processed.
+          # @param output_index
+          #   The index of the output item in the response's output array.
+          # @param sequence_number
+          #   The sequence number of the image generation item being processed.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always 'response.image_generation_call.in_progress'.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -1703,10 +2530,40 @@ module OpenAI
           }
 
         class BetaResponseImageGenCallPartialWsImage < OpenAI::Models::Beta::BetaResponseImageGenCallPartialImageEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The unique identifier of the image generation item being processed.
+          # @param output_index
+          #   The index of the output item in the response's output array.
+          # @param partial_image_b64
+          #   Base64-encoded partial image data, suitable for rendering as an image.
+          # @param partial_image_index
+          #   0-based index for the partial image (backend is 1-based, but this is 0-based for
+          #   the user).
+          # @param sequence_number
+          #   The sequence number of the image generation item being processed.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param background
+          #   The background setting that was used.
+          # @param output_format
+          #   The output format that was used.
+          # @param quality
+          #   The image quality that was used.
+          # @param size
+          #   The image size that was used.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always 'response.image_generation_call.partial_image'.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -1750,10 +2607,30 @@ module OpenAI
           }
 
         class BetaResponseMcpCallArgumentsWsDelta < OpenAI::Models::Beta::BetaResponseMcpCallArgumentsDeltaEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param delta
+          #   A JSON string containing the partial update to the arguments for the MCP tool
+          #   call.
+          # @param item_id
+          #   The unique identifier of the MCP tool call item being processed.
+          # @param output_index
+          #   The index of the output item in the response's output array.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always 'response.mcp_call_arguments.delta'.
           def initialize: (
             delta: String,
             item_id: String,
@@ -1787,10 +2664,29 @@ module OpenAI
           }
 
         class BetaResponseMcpCallArgumentsWsDone < OpenAI::Models::Beta::BetaResponseMcpCallArgumentsDoneEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param arguments
+          #   A JSON string containing the finalized arguments for the MCP tool call.
+          # @param item_id
+          #   The unique identifier of the MCP tool call item being processed.
+          # @param output_index
+          #   The index of the output item in the response's output array.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always 'response.mcp_call_arguments.done'.
           def initialize: (
             arguments: String,
             item_id: String,
@@ -1823,10 +2719,27 @@ module OpenAI
           }
 
         class BetaResponseMcpCallWsCompleted < OpenAI::Models::Beta::BetaResponseMcpCallCompletedEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The ID of the MCP tool call item that completed.
+          # @param output_index
+          #   The index of the output item that completed.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always 'response.mcp_call.completed'.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -1857,10 +2770,27 @@ module OpenAI
           }
 
         class BetaResponseMcpCallWsFailed < OpenAI::Models::Beta::BetaResponseMcpCallFailedEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The ID of the MCP tool call item that failed.
+          # @param output_index
+          #   The index of the output item that failed.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always 'response.mcp_call.failed'.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -1891,10 +2821,27 @@ module OpenAI
           }
 
         class BetaResponseMcpCallInWsProgress < OpenAI::Models::Beta::BetaResponseMcpCallInProgressEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The unique identifier of the MCP tool call item being processed.
+          # @param output_index
+          #   The index of the output item in the response's output array.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always 'response.mcp_call.in_progress'.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -1925,10 +2872,27 @@ module OpenAI
           }
 
         class BetaResponseMcpListToolsWsCompleted < OpenAI::Models::Beta::BetaResponseMcpListToolsCompletedEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The ID of the MCP tool call item that produced this output.
+          # @param output_index
+          #   The index of the output item that was processed.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always 'response.mcp_list_tools.completed'.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -1959,10 +2923,27 @@ module OpenAI
           }
 
         class BetaResponseMcpListToolsWsFailed < OpenAI::Models::Beta::BetaResponseMcpListToolsFailedEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The ID of the MCP tool call item that failed.
+          # @param output_index
+          #   The index of the output item that failed.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always 'response.mcp_list_tools.failed'.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -1993,10 +2974,27 @@ module OpenAI
           }
 
         class BetaResponseMcpListToolsInWsProgress < OpenAI::Models::Beta::BetaResponseMcpListToolsInProgressEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param item_id
+          #   The ID of the MCP tool call item that is being processed.
+          # @param output_index
+          #   The index of the output item that is being processed.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always 'response.mcp_list_tools.in_progress'.
           def initialize: (
             item_id: String,
             output_index: Integer,
@@ -2030,10 +3028,33 @@ module OpenAI
           }
 
         class BetaResponseOutputTextAnnotationWsAdded < OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param annotation
+          #   The annotation object being added. (See annotation schema for details.)
+          # @param annotation_index
+          #   The index of the annotation within the content part.
+          # @param content_index
+          #   The index of the content part within the output item.
+          # @param item_id
+          #   The unique identifier of the item to which the annotation is being added.
+          # @param output_index
+          #   The index of the output item in the response's output array.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always 'response.output_text.annotation.added'.
           def initialize: (
             annotation: OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::annotation?,
             annotation_index: Integer,
@@ -2069,10 +3090,25 @@ module OpenAI
           }
 
         class BetaResponseWsQueued < OpenAI::Models::Beta::BetaResponseQueuedEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param response
+          #   The full response object that is queued.
+          # @param sequence_number
+          #   The sequence number for this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always 'response.queued'.
           def initialize: (
             response: OpenAI::Beta::BetaResponse,
             sequence_number: Integer,
@@ -2102,10 +3138,29 @@ module OpenAI
           }
 
         class BetaResponseCustomToolCallInputWsDelta < OpenAI::Models::Beta::BetaResponseCustomToolCallInputDeltaEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param delta
+          #   The incremental input data (delta) for the custom tool call.
+          # @param item_id
+          #   Unique identifier for the API item associated with this event.
+          # @param output_index
+          #   The index of the output this delta applies to.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The event type identifier.
           def initialize: (
             delta: String,
             item_id: String,
@@ -2139,10 +3194,29 @@ module OpenAI
           }
 
         class BetaResponseCustomToolCallInputWsDone < OpenAI::Models::Beta::BetaResponseCustomToolCallInputDoneEvent
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id: -> String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String _) -> String
 
+          # @param input
+          #   The complete input data for the custom tool call.
+          # @param item_id
+          #   Unique identifier for the API item associated with this event.
+          # @param output_index
+          #   The index of the output this event applies to.
+          # @param sequence_number
+          #   The sequence number of this event.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The event type identifier.
           def initialize: (
             input: String,
             item_id: String,
@@ -2175,24 +3249,48 @@ module OpenAI
           }
 
         class BetaResponseWsError < OpenAI::Internal::Type::BaseModel
+          # Details about the error.
           attr_accessor error: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error
 
+          # The type of the event. Always `error`.
           attr_accessor type: :error
 
+          # The agent that owns this multi-agent streaming event.
           attr_accessor agent: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent?
 
+          # The sequence number of an error emitted by the response stream.
           attr_reader sequence_number: Integer?
 
+          # The sequence number of an error emitted by the response stream.
           def sequence_number=: (Integer) -> Integer
 
+          # The HTTP status code associated with a WebSocket protocol error.
           attr_reader status: Integer?
 
+          # The HTTP status code associated with a WebSocket protocol error.
           def status=: (Integer) -> Integer
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           attr_reader stream_id: String?
 
+          # The WebSocket lane that emitted this event. This field is present when the
+          # originating `response.create` event supplied a `stream_id`.
           def stream_id=: (String) -> String
 
+          # @param error
+          #   Details about the error.
+          # @param agent
+          #   The agent that owns this multi-agent streaming event.
+          # @param sequence_number
+          #   The sequence number of an error emitted by the response stream.
+          # @param status
+          #   The HTTP status code associated with a WebSocket protocol error.
+          # @param stream_id
+          #   The WebSocket lane that emitted this event. This field is present when the
+          #   originating `response.create` event supplied a `stream_id`.
+          # @param type
+          #   The type of the event. Always `error`.
           def initialize: (
             error: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error,
             ?agent: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Agent?,
@@ -2222,16 +3320,22 @@ module OpenAI
             }
 
           class Error < OpenAI::Internal::Type::BaseModel
+            # The error code that was emitted, if any.
             attr_accessor code: String?
 
+            # The human-readable error message that was emitted.
             attr_accessor message: String
 
+            # The parameter name that was associated with the error, if any.
             attr_accessor param: String?
 
+            # The error type that was emitted.
             attr_accessor type: String
 
+            # The response headers that were emitted with the error, if any.
             attr_reader headers: ::Hash[Symbol, String]?
 
+            # The response headers that were emitted with the error, if any.
             def headers=: (::Hash[Symbol, String]) -> ::Hash[Symbol, String]
 
             attr_reader misalignment: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment?
@@ -2240,6 +3344,16 @@ module OpenAI
               OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment
             ) -> OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment
 
+            # @param code
+            #   The error code that was emitted, if any.
+            # @param message
+            #   The human-readable error message that was emitted.
+            # @param param
+            #   The parameter name that was associated with the error, if any.
+            # @param type
+            #   The error type that was emitted.
+            # @param headers
+            #   The response headers that were emitted with the error, if any.
             def initialize: (
               code: String?,
               message: String,
@@ -2266,22 +3380,34 @@ module OpenAI
               }
 
             class Misalignment < OpenAI::Internal::Type::BaseModel
+              # The public explanation for this block.
               attr_reader detailed_explanation: String?
 
+              # The public explanation for this block.
               def detailed_explanation=: (String) -> String
 
+              # An optional classification; clients must accept additional values.
               attr_reader error_type: OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::error_type?
 
+              # An optional classification; clients must accept additional values.
               def error_type=: (
                 OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::error_type
               ) -> OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::error_type
 
+              # An optional public continuation instruction.
               attr_reader steer: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer?
 
+              # An optional public continuation instruction.
               def steer=: (
                 OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer
               ) -> OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer
 
+              # @param detailed_explanation
+              #   The public explanation for this block.
+              # @param error_type
+              #   An optional classification; clients must accept additional values.
+              # @param steer
+              #   An optional public continuation instruction.
               def initialize: (
                 ?detailed_explanation: String,
                 ?error_type: OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::error_type,
@@ -2315,8 +3441,11 @@ module OpenAI
               type steer = { message: String }
 
               class Steer < OpenAI::Internal::Type::BaseModel
+                # The public continuation instruction.
                 attr_accessor message: String
 
+                # @param message
+                #   The public continuation instruction.
                 def initialize: (message: String) -> void
 
                 def to_hash: -> { message: String }
@@ -2327,8 +3456,11 @@ module OpenAI
           type agent = { agent_name: String }
 
           class Agent < OpenAI::Internal::Type::BaseModel
+            # The canonical name of the agent that produced this item.
             attr_accessor agent_name: String
 
+            # @param agent_name
+            #   The canonical name of the agent that produced this item.
             def initialize: (agent_name: String) -> void
 
             def to_hash: -> { agent_name: String }

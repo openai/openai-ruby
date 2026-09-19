@@ -4,10 +4,16 @@ module OpenAI
       type setup_command_param = { command: String, ?cwd: String? }
 
       class SetupCommandParam < OpenAI::Internal::Type::BaseModel
+        # The shell command to execute.
         attr_accessor command: String
 
+        # The absolute working directory. Defaults to `/workspace`.
         attr_accessor cwd: String?
 
+        # @param command
+        #   The shell command to execute.
+        # @param cwd
+        #   The absolute working directory. Defaults to `/workspace`.
         def initialize: (command: String, ?cwd: String?) -> void
 
         def to_hash: -> { command: String, ?cwd: String? }

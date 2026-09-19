@@ -16,20 +16,47 @@ module OpenAI
 
         attr_accessor container_id: String
 
+        # A cursor for use in pagination. `after` is an object ID that defines your place
+        # in the list. For instance, if you make a list request and receive 100 objects,
+        # ending with obj_foo, your subsequent call can include after=obj_foo in order to
+        # fetch the next page of the list.
         attr_reader after: String?
 
+        # A cursor for use in pagination. `after` is an object ID that defines your place
+        # in the list. For instance, if you make a list request and receive 100 objects,
+        # ending with obj_foo, your subsequent call can include after=obj_foo in order to
+        # fetch the next page of the list.
         def after=: (String) -> String
 
+        # A limit on the number of objects to be returned. Limit can range between 1 and
+        # 100, and the default is 20.
         attr_reader limit: Integer?
 
+        # A limit on the number of objects to be returned. Limit can range between 1 and
+        # 100, and the default is 20.
         def limit=: (Integer) -> Integer
 
+        # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
+        # order and `desc` for descending order.
         attr_reader order: OpenAI::Models::Containers::FileListParams::order?
 
+        # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
+        # order and `desc` for descending order.
         def order=: (
           OpenAI::Models::Containers::FileListParams::order
         ) -> OpenAI::Models::Containers::FileListParams::order
 
+        # @param after
+        #   A cursor for use in pagination. `after` is an object ID that defines your place
+        #   in the list. For instance, if you make a list request and receive 100 objects,
+        #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+        #   fetch the next page of the list.
+        # @param limit
+        #   A limit on the number of objects to be returned. Limit can range between 1 and
+        #   100, and the default is 20.
+        # @param order
+        #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
+        #   order and `desc` for descending order.
         def initialize: (
           container_id: String,
           ?after: String,

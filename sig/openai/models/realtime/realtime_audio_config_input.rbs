@@ -10,26 +10,104 @@ module OpenAI
         }
 
       class RealtimeAudioConfigInput < OpenAI::Internal::Type::BaseModel
+        # The format of the input audio.
         attr_reader format_: OpenAI::Models::Realtime::realtime_audio_formats?
 
+        # The format of the input audio.
         def format_=: (
           OpenAI::Models::Realtime::realtime_audio_formats
         ) -> OpenAI::Models::Realtime::realtime_audio_formats
 
+        # Configuration for input audio noise reduction. This can be set to `null` to turn
+        # off. Noise reduction filters audio added to the input audio buffer before it is
+        # sent to VAD and the model. Filtering the audio can improve VAD and turn
+        # detection accuracy (reducing false positives) and model performance by improving
+        # perception of the input audio.
         attr_reader noise_reduction: OpenAI::Realtime::RealtimeAudioConfigInput::NoiseReduction?
 
+        # Configuration for input audio noise reduction. This can be set to `null` to turn
+        # off. Noise reduction filters audio added to the input audio buffer before it is
+        # sent to VAD and the model. Filtering the audio can improve VAD and turn
+        # detection accuracy (reducing false positives) and model performance by improving
+        # perception of the input audio.
         def noise_reduction=: (
           OpenAI::Realtime::RealtimeAudioConfigInput::NoiseReduction
         ) -> OpenAI::Realtime::RealtimeAudioConfigInput::NoiseReduction
 
+        # Configuration for input audio transcription, defaults to off and can be set to
+        # `null` to turn off once on. Input audio transcription is not native to the
+        # model, since the model consumes audio directly. Transcription runs
+        # asynchronously through
+        # [the /audio/transcriptions endpoint](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
+        # and should be treated as guidance of input audio content rather than precisely
+        # what the model heard. The client can optionally set the language and prompt for
+        # transcription, these offer additional guidance to the transcription service.
         attr_reader transcription: OpenAI::Realtime::AudioTranscription?
 
+        # Configuration for input audio transcription, defaults to off and can be set to
+        # `null` to turn off once on. Input audio transcription is not native to the
+        # model, since the model consumes audio directly. Transcription runs
+        # asynchronously through
+        # [the /audio/transcriptions endpoint](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
+        # and should be treated as guidance of input audio content rather than precisely
+        # what the model heard. The client can optionally set the language and prompt for
+        # transcription, these offer additional guidance to the transcription service.
         def transcription=: (
           OpenAI::Realtime::AudioTranscription
         ) -> OpenAI::Realtime::AudioTranscription
 
+        # Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
+        # set to `null` to turn off, in which case the client must manually trigger model
+        # response.
+        #
+        # Server VAD means that the model will detect the start and end of speech based on
+        # audio volume and respond at the end of user speech.
+        #
+        # Semantic VAD is more advanced and uses a turn detection model (in conjunction
+        # with VAD) to semantically estimate whether the user has finished speaking, then
+        # dynamically sets a timeout based on this probability. For example, if user audio
+        # trails off with "uhhm", the model will score a low probability of turn end and
+        # wait longer for the user to continue speaking. This can be useful for more
+        # natural conversations, but may have a higher latency.
+        #
+        # For `gpt-realtime-whisper` transcription sessions, turn detection must be set to
+        # `null`; VAD is not supported.
         attr_accessor turn_detection: OpenAI::Models::Realtime::realtime_audio_input_turn_detection?
 
+        # @param format_
+        #   The format of the input audio.
+        # @param noise_reduction
+        #   Configuration for input audio noise reduction. This can be set to `null` to turn
+        #   off. Noise reduction filters audio added to the input audio buffer before it is
+        #   sent to VAD and the model. Filtering the audio can improve VAD and turn
+        #   detection accuracy (reducing false positives) and model performance by improving
+        #   perception of the input audio.
+        # @param transcription
+        #   Configuration for input audio transcription, defaults to off and can be set to
+        #   `null` to turn off once on. Input audio transcription is not native to the
+        #   model, since the model consumes audio directly. Transcription runs
+        #   asynchronously through
+        #   [the /audio/transcriptions endpoint](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
+        #   and should be treated as guidance of input audio content rather than precisely
+        #   what the model heard. The client can optionally set the language and prompt for
+        #   transcription, these offer additional guidance to the transcription service.
+        # @param turn_detection
+        #   Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
+        #   set to `null` to turn off, in which case the client must manually trigger model
+        #   response.
+        #
+        #   Server VAD means that the model will detect the start and end of speech based on
+        #   audio volume and respond at the end of user speech.
+        #
+        #   Semantic VAD is more advanced and uses a turn detection model (in conjunction
+        #   with VAD) to semantically estimate whether the user has finished speaking, then
+        #   dynamically sets a timeout based on this probability. For example, if user audio
+        #   trails off with "uhhm", the model will score a low probability of turn end and
+        #   wait longer for the user to continue speaking. This can be useful for more
+        #   natural conversations, but may have a higher latency.
+        #
+        #   For `gpt-realtime-whisper` transcription sessions, turn detection must be set to
+        #   `null`; VAD is not supported.
         def initialize: (
           ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
           ?noise_reduction: OpenAI::Realtime::RealtimeAudioConfigInput::NoiseReduction,
@@ -48,12 +126,22 @@ module OpenAI
           { ?type: OpenAI::Models::Realtime::noise_reduction_type }
 
         class NoiseReduction < OpenAI::Internal::Type::BaseModel
+          # Type of noise reduction. `near_field` is for close-talking microphones such as
+          # headphones, `far_field` is for far-field microphones such as laptop or
+          # conference room microphones.
           attr_reader type: OpenAI::Models::Realtime::noise_reduction_type?
 
+          # Type of noise reduction. `near_field` is for close-talking microphones such as
+          # headphones, `far_field` is for far-field microphones such as laptop or
+          # conference room microphones.
           def type=: (
             OpenAI::Models::Realtime::noise_reduction_type
           ) -> OpenAI::Models::Realtime::noise_reduction_type
 
+          # @param type
+          #   Type of noise reduction. `near_field` is for close-talking microphones such as
+          #   headphones, `far_field` is for far-field microphones such as laptop or
+          #   conference room microphones.
           def initialize: (
             ?type: OpenAI::Models::Realtime::noise_reduction_type
           ) -> void

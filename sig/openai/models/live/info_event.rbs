@@ -11,18 +11,37 @@ module OpenAI
         }
 
       class InfoEvent < OpenAI::Internal::Type::BaseModel
+        # A machine-readable code for the notice, such as `data_channel_permissions`.
         attr_accessor code: String
 
+        # The unique ID of the Live server event.
         attr_accessor event_id: String
 
+        # A human-readable explanation of the Live session notice.
         attr_accessor message: String
 
+        # The event type, always `info`.
         attr_accessor type: :info
 
+        # The event_id of the client command associated with this server event, when
+        # supplied.
         attr_reader client_event_id: String?
 
+        # The event_id of the client command associated with this server event, when
+        # supplied.
         def client_event_id=: (String) -> String
 
+        # @param code
+        #   A machine-readable code for the notice, such as `data_channel_permissions`.
+        # @param event_id
+        #   The unique ID of the Live server event.
+        # @param message
+        #   A human-readable explanation of the Live session notice.
+        # @param client_event_id
+        #   The event_id of the client command associated with this server event, when
+        #   supplied.
+        # @param type
+        #   The event type, always `info`.
         def initialize: (
           code: String,
           event_id: String,

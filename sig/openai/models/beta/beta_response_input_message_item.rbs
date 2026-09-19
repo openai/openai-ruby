@@ -14,22 +14,46 @@ module OpenAI
         }
 
       class BetaResponseInputMessageItem < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the message input.
         attr_accessor id: String
 
+        # A list of one or many input items to the model, containing different content
+        # types.
         attr_accessor content: OpenAI::Models::Beta::beta_response_input_message_content_list
 
+        # The role of the message input. One of `user`, `system`, or `developer`.
         attr_accessor role: OpenAI::Models::Beta::BetaResponseInputMessageItem::role
 
+        # The type of the message input. Always set to `message`.
         attr_accessor type: :message
 
+        # The agent that produced this item.
         attr_accessor agent: OpenAI::Beta::BetaResponseInputMessageItem::Agent?
 
+        # The status of item. One of `in_progress`, `completed`, or `incomplete`.
+        # Populated when items are returned via API.
         attr_reader status: OpenAI::Models::Beta::BetaResponseInputMessageItem::status?
 
+        # The status of item. One of `in_progress`, `completed`, or `incomplete`.
+        # Populated when items are returned via API.
         def status=: (
           OpenAI::Models::Beta::BetaResponseInputMessageItem::status
         ) -> OpenAI::Models::Beta::BetaResponseInputMessageItem::status
 
+        # @param id
+        #   The unique ID of the message input.
+        # @param content
+        #   A list of one or many input items to the model, containing different content
+        #   types.
+        # @param role
+        #   The role of the message input. One of `user`, `system`, or `developer`.
+        # @param agent
+        #   The agent that produced this item.
+        # @param status
+        #   The status of item. One of `in_progress`, `completed`, or `incomplete`.
+        #   Populated when items are returned via API.
+        # @param type
+        #   The type of the message input. Always set to `message`.
         def initialize: (
           id: String,
           content: OpenAI::Models::Beta::beta_response_input_message_content_list,
@@ -63,8 +87,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }

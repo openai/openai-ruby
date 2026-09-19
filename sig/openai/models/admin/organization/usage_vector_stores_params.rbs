@@ -18,36 +18,84 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # Start time (Unix seconds) of the query time range, inclusive.
           attr_accessor start_time: Integer
 
+          # Width of each time bucket in response. Currently `1m`, `1h` and `1d` are
+          # supported, default to `1d`.
           attr_reader bucket_width: OpenAI::Models::Admin::Organization::UsageVectorStoresParams::bucket_width?
 
+          # Width of each time bucket in response. Currently `1m`, `1h` and `1d` are
+          # supported, default to `1d`.
           def bucket_width=: (
             OpenAI::Models::Admin::Organization::UsageVectorStoresParams::bucket_width
           ) -> OpenAI::Models::Admin::Organization::UsageVectorStoresParams::bucket_width
 
+          # End time (Unix seconds) of the query time range, exclusive.
           attr_reader end_time: Integer?
 
+          # End time (Unix seconds) of the query time range, exclusive.
           def end_time=: (Integer) -> Integer
 
+          # Group the usage data by the specified fields. Support fields include
+          # `project_id`.
           attr_reader group_by: ::Array[OpenAI::Models::Admin::Organization::UsageVectorStoresParams::group_by]?
 
+          # Group the usage data by the specified fields. Support fields include
+          # `project_id`.
           def group_by=: (
             ::Array[OpenAI::Models::Admin::Organization::UsageVectorStoresParams::group_by]
           ) -> ::Array[OpenAI::Models::Admin::Organization::UsageVectorStoresParams::group_by]
 
+          # Specifies the number of buckets to return.
+          #
+          # - `bucket_width=1d`: default: 7, max: 31
+          # - `bucket_width=1h`: default: 24, max: 168
+          # - `bucket_width=1m`: default: 60, max: 1440
           attr_reader limit: Integer?
 
+          # Specifies the number of buckets to return.
+          #
+          # - `bucket_width=1d`: default: 7, max: 31
+          # - `bucket_width=1h`: default: 24, max: 168
+          # - `bucket_width=1m`: default: 60, max: 1440
           def limit=: (Integer) -> Integer
 
+          # A cursor for use in pagination. Corresponding to the `next_page` field from the
+          # previous response.
           attr_reader page: String?
 
+          # A cursor for use in pagination. Corresponding to the `next_page` field from the
+          # previous response.
           def page=: (String) -> String
 
+          # Return only usage for these projects.
           attr_reader project_ids: ::Array[String]?
 
+          # Return only usage for these projects.
           def project_ids=: (::Array[String]) -> ::Array[String]
 
+          # @param start_time
+          #   Start time (Unix seconds) of the query time range, inclusive.
+          # @param bucket_width
+          #   Width of each time bucket in response. Currently `1m`, `1h` and `1d` are
+          #   supported, default to `1d`.
+          # @param end_time
+          #   End time (Unix seconds) of the query time range, exclusive.
+          # @param group_by
+          #   Group the usage data by the specified fields. Support fields include
+          #   `project_id`.
+          # @param limit
+          #   Specifies the number of buckets to return.
+          #
+          #   - `bucket_width=1d`: default: 7, max: 31
+          #   - `bucket_width=1h`: default: 24, max: 168
+          #   - `bucket_width=1m`: default: 60, max: 1440
+          # @param page
+          #   A cursor for use in pagination. Corresponding to the `next_page` field from the
+          #   previous response.
+          # @param project_ids
+          #   Return only usage for these projects.
           def initialize: (
             start_time: Integer,
             ?bucket_width: OpenAI::Models::Admin::Organization::UsageVectorStoresParams::bucket_width,

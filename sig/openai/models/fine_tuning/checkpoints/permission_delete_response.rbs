@@ -6,12 +6,21 @@ module OpenAI
           { id: String, deleted: bool, ?object: :"checkpoint.permission" }
 
         class PermissionDeleteResponse < OpenAI::Internal::Type::BaseModel
+          # The ID of the fine-tuned model checkpoint permission that was deleted.
           attr_accessor id: String
 
+          # Whether the fine-tuned model checkpoint permission was successfully deleted.
           attr_accessor deleted: bool
 
+          # The object type, which is always "checkpoint.permission".
           attr_accessor object: :"checkpoint.permission"
 
+          # @param id
+          #   The ID of the fine-tuned model checkpoint permission that was deleted.
+          # @param deleted
+          #   Whether the fine-tuned model checkpoint permission was successfully deleted.
+          # @param object
+          #   The object type, which is always "checkpoint.permission".
           def initialize: (
             id: String,
             deleted: bool,

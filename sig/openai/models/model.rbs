@@ -10,16 +10,31 @@ module OpenAI
       }
 
     class Model < OpenAI::Internal::Type::BaseModel
+      # The model identifier, which can be referenced in the API endpoints.
       attr_accessor id: String
 
+      # The Unix timestamp (in seconds) when the model was created.
       attr_accessor created: Integer
 
+      # The object type, which is always "model".
       attr_accessor object: :model
 
+      # The organization that owns the model.
       attr_accessor owned_by: String
 
+      # The date when the model will shut down, or null if not announced.
       attr_accessor shutdown_date: Date?
 
+      # @param id
+      #   The model identifier, which can be referenced in the API endpoints.
+      # @param created
+      #   The Unix timestamp (in seconds) when the model was created.
+      # @param owned_by
+      #   The organization that owns the model.
+      # @param shutdown_date
+      #   The date when the model will shut down, or null if not announced.
+      # @param object
+      #   The object type, which is always "model".
       def initialize: (
         id: String,
         created: Integer,

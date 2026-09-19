@@ -6,8 +6,11 @@ module OpenAI
       type beta_response_local_environment = { ?type: :local }
 
       class BetaResponseLocalEnvironment < OpenAI::Internal::Type::BaseModel
+        # The environment type. Always `local`.
         attr_accessor type: :local
 
+        # @param type
+        #   The environment type. Always `local`.
         def initialize: (?type: :local) -> void
 
         def to_hash: -> { ?type: :local }

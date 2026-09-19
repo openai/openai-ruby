@@ -22,7 +22,7 @@ module OpenAI
         sig { returns(T::Array[OpenAI::Beta::OutputText]) }
         attr_accessor :content
 
-        # The phase of an assistant message.
+        # The phase of the assistant message.
         sig { returns(T.nilable(OpenAI::Beta::AgentSessionAssistantMessage::Phase::TaggedSymbol)) }
         attr_accessor :phase
 
@@ -70,7 +70,7 @@ module OpenAI
           # The content of the message.
           content:,
 
-          # The phase of an assistant message.
+          # The phase of the assistant message.
           phase:,
 
           # The status of the message.
@@ -104,7 +104,7 @@ module OpenAI
         def to_hash
         end
 
-        # The phase of an assistant message.
+        # The phase of the assistant message.
         module Phase
           extend OpenAI::Internal::Type::Enum
 

@@ -11,20 +11,36 @@ module OpenAI
         }
 
       class EvalRunCanceledWebhookEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the event.
         attr_accessor id: String
 
+        # The Unix timestamp (in seconds) of when the eval run was canceled.
         attr_accessor created_at: Integer
 
+        # Event data payload.
         attr_accessor data: OpenAI::Webhooks::EvalRunCanceledWebhookEvent::Data
 
+        # The type of the event. Always `eval.run.canceled`.
         attr_accessor type: :"eval.run.canceled"
 
+        # The object of the event. Always `event`.
         attr_reader object: OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent::object?
 
+        # The object of the event. Always `event`.
         def object=: (
           OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent::object
         ) -> OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent::object
 
+        # @param id
+        #   The unique ID of the event.
+        # @param created_at
+        #   The Unix timestamp (in seconds) of when the eval run was canceled.
+        # @param data
+        #   Event data payload.
+        # @param object
+        #   The object of the event. Always `event`.
+        # @param type
+        #   The type of the event. Always `eval.run.canceled`.
         def initialize: (
           id: String,
           created_at: Integer,
@@ -44,8 +60,11 @@ module OpenAI
         type data = { id: String }
 
         class Data < OpenAI::Internal::Type::BaseModel
+          # The unique ID of the eval run.
           attr_accessor id: String
 
+          # @param id
+          #   The unique ID of the eval run.
           def initialize: (id: String) -> void
 
           def to_hash: -> { id: String }

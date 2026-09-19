@@ -18,7 +18,7 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :id
 
-        # An error reported while preparing a session environment.
+        # The error reported while preparing the environment, if any.
         sig { returns(T.nilable(OpenAI::Beta::AgentSessionEnvironmentState::Error)) }
         attr_reader :error
 
@@ -52,7 +52,7 @@ module OpenAI
           # The public ID of the environment.
           id:,
 
-          # An error reported while preparing a session environment.
+          # The error reported while preparing the environment, if any.
           error:,
 
           # The environment's connection status.
@@ -97,7 +97,7 @@ module OpenAI
           sig { returns(String) }
           attr_accessor :type
 
-          # An error reported while preparing a session environment.
+          # The error reported while preparing the environment, if any.
           sig do
             params(
 

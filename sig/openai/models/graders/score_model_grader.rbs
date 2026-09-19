@@ -14,24 +14,46 @@ module OpenAI
         }
 
       class ScoreModelGrader < OpenAI::Internal::Type::BaseModel
+        # The input messages evaluated by the grader. Supports text, output text, input
+        # image, and input audio content blocks, and may include template strings.
         attr_accessor input: ::Array[OpenAI::Graders::ScoreModelGrader::Input]
 
+        # The model to use for the evaluation.
         attr_accessor model: String
 
+        # The name of the grader.
         attr_accessor name: String
 
+        # The object type, which is always `score_model`.
         attr_accessor type: :score_model
 
+        # The range of the score. Defaults to `[0, 1]`.
         attr_reader range: ::Array[Float]?
 
+        # The range of the score. Defaults to `[0, 1]`.
         def range=: (::Array[Float]) -> ::Array[Float]
 
+        # The sampling parameters for the model.
         attr_reader sampling_params: OpenAI::Graders::ScoreModelGrader::SamplingParams?
 
+        # The sampling parameters for the model.
         def sampling_params=: (
           OpenAI::Graders::ScoreModelGrader::SamplingParams
         ) -> OpenAI::Graders::ScoreModelGrader::SamplingParams
 
+        # @param input
+        #   The input messages evaluated by the grader. Supports text, output text, input
+        #   image, and input audio content blocks, and may include template strings.
+        # @param model
+        #   The model to use for the evaluation.
+        # @param name
+        #   The name of the grader.
+        # @param range
+        #   The range of the score. Defaults to `[0, 1]`.
+        # @param sampling_params
+        #   The sampling parameters for the model.
+        # @param type
+        #   The object type, which is always `score_model`.
         def initialize: (
           input: ::Array[OpenAI::Graders::ScoreModelGrader::Input],
           model: String,
@@ -58,16 +80,30 @@ module OpenAI
           }
 
         class Input < OpenAI::Internal::Type::BaseModel
+          # Inputs to the model - can contain template strings. Supports text, output text,
+          # input images, and input audio, either as a single item or an array of items.
           attr_accessor content: OpenAI::Models::Graders::ScoreModelGrader::Input::content
 
+          # The role of the message input. One of `user`, `assistant`, `system`, or
+          # `developer`.
           attr_accessor role: OpenAI::Models::Graders::ScoreModelGrader::Input::role
 
+          # The type of the message input. Always `message`.
           attr_reader type: OpenAI::Models::Graders::ScoreModelGrader::Input::type_?
 
+          # The type of the message input. Always `message`.
           def type=: (
             OpenAI::Models::Graders::ScoreModelGrader::Input::type_
           ) -> OpenAI::Models::Graders::ScoreModelGrader::Input::type_
 
+          # @param content
+          #   Inputs to the model - can contain template strings. Supports text, output text,
+          #   input images, and input audio, either as a single item or an array of items.
+          # @param role
+          #   The role of the message input. One of `user`, `assistant`, `system`, or
+          #   `developer`.
+          # @param type
+          #   The type of the message input. Always `message`.
           def initialize: (
             content: OpenAI::Models::Graders::ScoreModelGrader::Input::content,
             role: OpenAI::Models::Graders::ScoreModelGrader::Input::role,
@@ -94,10 +130,16 @@ module OpenAI
             type output_text = { text: String, ?type: :output_text }
 
             class OutputText < OpenAI::Internal::Type::BaseModel
+              # The text output from the model.
               attr_accessor text: String
 
+              # The type of the output text. Always `output_text`.
               attr_accessor type: :output_text
 
+              # @param text
+              #   The text output from the model.
+              # @param type
+              #   The type of the output text. Always `output_text`.
               def initialize: (text: String, ?type: :output_text) -> void
 
               def to_hash: -> { text: String, ?type: :output_text }
@@ -107,14 +149,27 @@ module OpenAI
               { image_url: String, ?type: :input_image, ?detail: String }
 
             class InputImage < OpenAI::Internal::Type::BaseModel
+              # The URL of the image input.
               attr_accessor image_url: String
 
+              # The type of the image input. Always `input_image`.
               attr_accessor type: :input_image
 
+              # The detail level of the image to be sent to the model. One of `high`, `low`, or
+              # `auto`. Defaults to `auto`.
               attr_reader detail: String?
 
+              # The detail level of the image to be sent to the model. One of `high`, `low`, or
+              # `auto`. Defaults to `auto`.
               def detail=: (String) -> String
 
+              # @param image_url
+              #   The URL of the image input.
+              # @param detail
+              #   The detail level of the image to be sent to the model. One of `high`, `low`, or
+              #   `auto`. Defaults to `auto`.
+              # @param type
+              #   The type of the image input. Always `input_image`.
               def initialize: (
                 image_url: String,
                 ?detail: String,
@@ -165,16 +220,41 @@ module OpenAI
           }
 
         class SamplingParams < OpenAI::Internal::Type::BaseModel
+          # The maximum number of tokens the grader model may generate in its response.
           attr_accessor max_completions_tokens: Integer?
 
+          # Constrains effort on reasoning for reasoning models. Currently supported values
+          # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+          # reasoning effort can result in faster responses and fewer tokens used on
+          # reasoning in a response. Not all reasoning models support every value. See the
+          # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
+          # model-specific support.
           attr_accessor reasoning_effort: OpenAI::Models::reasoning_effort?
 
+          # A seed value to initialize the randomness, during sampling.
           attr_accessor seed: Integer?
 
+          # A higher temperature increases randomness in the outputs.
           attr_accessor temperature: Float?
 
+          # An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
           attr_accessor top_p: Float?
 
+          # @param max_completions_tokens
+          #   The maximum number of tokens the grader model may generate in its response.
+          # @param reasoning_effort
+          #   Constrains effort on reasoning for reasoning models. Currently supported values
+          #   are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+          #   reasoning effort can result in faster responses and fewer tokens used on
+          #   reasoning in a response. Not all reasoning models support every value. See the
+          #   [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
+          #   model-specific support.
+          # @param seed
+          #   A seed value to initialize the randomness, during sampling.
+          # @param temperature
+          #   A higher temperature increases randomness in the outputs.
+          # @param top_p
+          #   An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
           def initialize: (
             ?max_completions_tokens: Integer?,
             ?reasoning_effort: OpenAI::Models::reasoning_effort?,

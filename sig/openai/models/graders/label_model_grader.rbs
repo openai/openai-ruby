@@ -16,16 +16,31 @@ module OpenAI
       class LabelModelGrader < OpenAI::Internal::Type::BaseModel
         attr_accessor input: ::Array[OpenAI::Graders::LabelModelGrader::Input]
 
+        # The labels to assign to each item in the evaluation.
         attr_accessor labels: ::Array[String]
 
+        # The model to use for the evaluation. Must support structured outputs.
         attr_accessor model: String
 
+        # The name of the grader.
         attr_accessor name: String
 
+        # The labels that indicate a passing result. Must be a subset of labels.
         attr_accessor passing_labels: ::Array[String]
 
+        # The object type, which is always `label_model`.
         attr_accessor type: :label_model
 
+        # @param labels
+        #   The labels to assign to each item in the evaluation.
+        # @param model
+        #   The model to use for the evaluation. Must support structured outputs.
+        # @param name
+        #   The name of the grader.
+        # @param passing_labels
+        #   The labels that indicate a passing result. Must be a subset of labels.
+        # @param type
+        #   The object type, which is always `label_model`.
         def initialize: (
           input: ::Array[OpenAI::Graders::LabelModelGrader::Input],
           labels: ::Array[String],
@@ -52,16 +67,30 @@ module OpenAI
           }
 
         class Input < OpenAI::Internal::Type::BaseModel
+          # Inputs to the model - can contain template strings. Supports text, output text,
+          # input images, and input audio, either as a single item or an array of items.
           attr_accessor content: OpenAI::Models::Graders::LabelModelGrader::Input::content
 
+          # The role of the message input. One of `user`, `assistant`, `system`, or
+          # `developer`.
           attr_accessor role: OpenAI::Models::Graders::LabelModelGrader::Input::role
 
+          # The type of the message input. Always `message`.
           attr_reader type: OpenAI::Models::Graders::LabelModelGrader::Input::type_?
 
+          # The type of the message input. Always `message`.
           def type=: (
             OpenAI::Models::Graders::LabelModelGrader::Input::type_
           ) -> OpenAI::Models::Graders::LabelModelGrader::Input::type_
 
+          # @param content
+          #   Inputs to the model - can contain template strings. Supports text, output text,
+          #   input images, and input audio, either as a single item or an array of items.
+          # @param role
+          #   The role of the message input. One of `user`, `assistant`, `system`, or
+          #   `developer`.
+          # @param type
+          #   The type of the message input. Always `message`.
           def initialize: (
             content: OpenAI::Models::Graders::LabelModelGrader::Input::content,
             role: OpenAI::Models::Graders::LabelModelGrader::Input::role,
@@ -88,10 +117,16 @@ module OpenAI
             type output_text = { text: String, ?type: :output_text }
 
             class OutputText < OpenAI::Internal::Type::BaseModel
+              # The text output from the model.
               attr_accessor text: String
 
+              # The type of the output text. Always `output_text`.
               attr_accessor type: :output_text
 
+              # @param text
+              #   The text output from the model.
+              # @param type
+              #   The type of the output text. Always `output_text`.
               def initialize: (text: String, ?type: :output_text) -> void
 
               def to_hash: -> { text: String, ?type: :output_text }
@@ -101,14 +136,27 @@ module OpenAI
               { image_url: String, ?type: :input_image, ?detail: String }
 
             class InputImage < OpenAI::Internal::Type::BaseModel
+              # The URL of the image input.
               attr_accessor image_url: String
 
+              # The type of the image input. Always `input_image`.
               attr_accessor type: :input_image
 
+              # The detail level of the image to be sent to the model. One of `high`, `low`, or
+              # `auto`. Defaults to `auto`.
               attr_reader detail: String?
 
+              # The detail level of the image to be sent to the model. One of `high`, `low`, or
+              # `auto`. Defaults to `auto`.
               def detail=: (String) -> String
 
+              # @param image_url
+              #   The URL of the image input.
+              # @param detail
+              #   The detail level of the image to be sent to the model. One of `high`, `low`, or
+              #   `auto`. Defaults to `auto`.
+              # @param type
+              #   The type of the image input. Always `input_image`.
               def initialize: (
                 image_url: String,
                 ?detail: String,

@@ -4,10 +4,16 @@ module OpenAI
       type summary_text = { text: String, ?type: :summary_text }
 
       class SummaryText < OpenAI::Internal::Type::BaseModel
+        # The reasoning summary text.
         attr_accessor text: String
 
+        # The content type. Always `summary_text`.
         attr_accessor type: :summary_text
 
+        # @param text
+        #   The reasoning summary text.
+        # @param type
+        #   The content type. Always `summary_text`.
         def initialize: (text: String, ?type: :summary_text) -> void
 
         def to_hash: -> { text: String, ?type: :summary_text }

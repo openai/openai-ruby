@@ -14,22 +14,46 @@ module OpenAI
         }
 
       class AgentSessionTurnOutputTextDoneEvent < OpenAI::Internal::Type::BaseModel
+        # The index of the content part in the message.
         attr_accessor content_index: Integer
 
+        # The unique ID of the event.
         attr_accessor event_id: String
 
+        # The ID of the message item.
         attr_accessor item_id: String
 
+        # The index of the item in the turn output.
         attr_accessor output_index: Integer
 
+        # The ID of the session associated with the event.
         attr_accessor session_id: String
 
+        # The complete output text.
         attr_accessor text: String
 
+        # The ID of the turn associated with the event, when applicable.
         attr_accessor turn_id: String?
 
+        # The type of the object. Always `agent.session.turn.output_text.done`.
         attr_accessor type: :"agent.session.turn.output_text.done"
 
+        # @param content_index
+        #   The index of the content part in the message.
+        # @param event_id
+        #   The unique ID of the event.
+        # @param item_id
+        #   The ID of the message item.
+        # @param output_index
+        #   The index of the item in the turn output.
+        # @param session_id
+        #   The ID of the session associated with the event.
+        # @param text
+        #   The complete output text.
+        # @param turn_id
+        #   The ID of the turn associated with the event, when applicable.
+        # @param type
+        #   The type of the object. Always `agent.session.turn.output_text.done`.
         def initialize: (
           content_index: Integer,
           event_id: String,

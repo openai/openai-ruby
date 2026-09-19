@@ -12,18 +12,31 @@ module OpenAI
         }
 
       class BetaResponseConfigurationUpdateItemParam < OpenAI::Internal::Type::BaseModel
+        # The item type. Always `configuration_update`.
         attr_accessor type: :configuration_update
 
+        # The unique ID of the configuration update item.
         attr_accessor id: String?
 
+        # The agent that produced this item.
         attr_accessor agent: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Agent?
 
+        # Updates to reasoning configuration. Only effort is supported.
         attr_reader reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning?
 
+        # Updates to reasoning configuration. Only effort is supported.
         def reasoning=: (
           OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning
         ) -> OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning
 
+        # @param id
+        #   The unique ID of the configuration update item.
+        # @param agent
+        #   The agent that produced this item.
+        # @param reasoning
+        #   Updates to reasoning configuration. Only effort is supported.
+        # @param type
+        #   The item type. Always `configuration_update`.
         def initialize: (
           ?id: String?,
           ?agent: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Agent?,
@@ -41,8 +54,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }
@@ -54,8 +70,13 @@ module OpenAI
           }
 
         class Reasoning < OpenAI::Internal::Type::BaseModel
+          # The reasoning effort to use for subsequent responses until another configuration
+          # update replaces it.
           attr_accessor effort: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning::effort?
 
+          # @param effort
+          #   The reasoning effort to use for subsequent responses until another configuration
+          #   update replaces it.
           def initialize: (
             ?effort: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning::effort?
           ) -> void

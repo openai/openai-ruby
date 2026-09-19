@@ -215,7 +215,7 @@ module OpenAI
           required :context_size, enum: -> { OpenAI::Beta::PersistedAgentTool::WebSearch::ContextSize }
 
           # @!attribute location
-          #   Approximate user location used to localize web search results.
+          #   Approximate location used to localize search results, if provided.
           #
           #   @return [OpenAI::Models::Beta::PersistedAgentTool::WebSearch::Location, nil]
           required :location, -> { OpenAI::Beta::PersistedAgentTool::WebSearch::Location }, nil?: true
@@ -242,7 +242,7 @@ module OpenAI
           #     The amount of search context made available to the model. Defaults to `medium`.
           #
           #   @param location [OpenAI::Models::Beta::PersistedAgentTool::WebSearch::Location, nil]
-          #     Approximate user location used to localize web search results.
+          #     Approximate location used to localize search results, if provided.
           #
           #   @param mode [Symbol, OpenAI::Models::Beta::PersistedAgentTool::WebSearch::Mode]
           #     The source used for web search results.
@@ -291,7 +291,7 @@ module OpenAI
             required :timezone, String, nil?: true
 
             # @!method initialize(city:, country:, region:, timezone:)
-            #   Approximate user location used to localize web search results.
+            #   Approximate location used to localize search results, if provided.
             #
             #   @param city [String, nil]
             #     The city name.

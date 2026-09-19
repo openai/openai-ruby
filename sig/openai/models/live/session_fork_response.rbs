@@ -8,10 +8,18 @@ module OpenAI
         }
 
       class SessionForkResponse < OpenAI::Internal::Type::BaseModel
+        # The newly created Live session. Use its ID for session controls and sideband
+        # connections.
         attr_accessor session: OpenAI::Models::Live::SessionForkResponse::Session
 
+        # WebRTC transport with the SDP answer.
         attr_accessor transport: OpenAI::Models::Live::SessionForkResponse::Transport
 
+        # @param session
+        #   The newly created Live session. Use its ID for session controls and sideband
+        #   connections.
+        # @param transport
+        #   WebRTC transport with the SDP answer.
         def initialize: (
           session: OpenAI::Models::Live::SessionForkResponse::Session,
           transport: OpenAI::Models::Live::SessionForkResponse::Transport
@@ -25,8 +33,13 @@ module OpenAI
         type session = { id: String }
 
         class Session < OpenAI::Internal::Type::BaseModel
+          # Opaque session identifier. Preserve the returned value unchanged, including its
+          # prefix.
           attr_accessor id: String
 
+          # @param id
+          #   Opaque session identifier. Preserve the returned value unchanged, including its
+          #   prefix.
           def initialize: (id: String) -> void
 
           def to_hash: -> { id: String }
@@ -35,10 +48,16 @@ module OpenAI
         type transport = { sdp: String, ?type: :webrtc }
 
         class Transport < OpenAI::Internal::Type::BaseModel
+          # Session Description Protocol message for the WebRTC connection.
           attr_accessor sdp: String
 
+          # The transport used for the Live session. Always `webrtc`.
           attr_accessor type: :webrtc
 
+          # @param sdp
+          #   Session Description Protocol message for the WebRTC connection.
+          # @param type
+          #   The transport used for the Live session. Always `webrtc`.
           def initialize: (sdp: String, ?type: :webrtc) -> void
 
           def to_hash: -> { sdp: String, ?type: :webrtc }

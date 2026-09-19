@@ -15,10 +15,16 @@ module OpenAI
         type reasoning_text_content = { text: String, ?type: :reasoning_text }
 
         class ReasoningTextContent < OpenAI::Internal::Type::BaseModel
+          # The reasoning text from the model.
           attr_accessor text: String
 
+          # The type of the reasoning text. Always `reasoning_text`.
           attr_accessor type: :reasoning_text
 
+          # @param text
+          #   The reasoning text from the model.
+          # @param type
+          #   The type of the reasoning text. Always `reasoning_text`.
           def initialize: (text: String, ?type: :reasoning_text) -> void
 
           def to_hash: -> { text: String, ?type: :reasoning_text }

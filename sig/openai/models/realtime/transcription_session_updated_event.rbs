@@ -9,12 +9,29 @@ module OpenAI
         }
 
       class TranscriptionSessionUpdatedEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # A new Realtime transcription session configuration.
+        #
+        # When a session is created on the server via REST API, the session object also
+        # contains an ephemeral key. Default TTL for keys is 10 minutes. This property is
+        # not present when a session is updated via the WebSocket API.
         attr_accessor session: OpenAI::Realtime::TranscriptionSessionUpdatedEvent::Session
 
+        # The event type, must be `transcription_session.updated`.
         attr_accessor type: :"transcription_session.updated"
 
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param session
+        #   A new Realtime transcription session configuration.
+        #
+        #   When a session is created on the server via REST API, the session object also
+        #   contains an ephemeral key. Default TTL for keys is 10 minutes. This property is
+        #   not present when a session is updated via the WebSocket API.
+        # @param type
+        #   The event type, must be `transcription_session.updated`.
         def initialize: (
           event_id: String,
           session: OpenAI::Realtime::TranscriptionSessionUpdatedEvent::Session,
@@ -37,10 +54,14 @@ module OpenAI
           }
 
         class Session < OpenAI::Internal::Type::BaseModel
+          # Ephemeral key returned by the API. Only present when the session is created on
+          # the server via REST API.
           attr_accessor client_secret: OpenAI::Realtime::TranscriptionSessionUpdatedEvent::Session::ClientSecret
 
+          # The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
           attr_reader input_audio_format: String?
 
+          # The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
           def input_audio_format=: (String) -> String
 
           attr_reader input_audio_transcription: OpenAI::Realtime::AudioTranscription?
@@ -49,18 +70,40 @@ module OpenAI
             OpenAI::Realtime::AudioTranscription
           ) -> OpenAI::Realtime::AudioTranscription
 
+          # The set of modalities the model can respond with. To disable audio, set this to
+          # ["text"].
           attr_reader modalities: ::Array[OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session::modality]?
 
+          # The set of modalities the model can respond with. To disable audio, set this to
+          # ["text"].
           def modalities=: (
             ::Array[OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session::modality]
           ) -> ::Array[OpenAI::Models::Realtime::TranscriptionSessionUpdatedEvent::Session::modality]
 
+          # Configuration for turn detection. Can be set to `null` to turn off. Server VAD
+          # means that the model will detect the start and end of speech based on audio
+          # volume and respond at the end of user speech.
           attr_reader turn_detection: OpenAI::Realtime::TranscriptionSessionUpdatedEvent::Session::TurnDetection?
 
+          # Configuration for turn detection. Can be set to `null` to turn off. Server VAD
+          # means that the model will detect the start and end of speech based on audio
+          # volume and respond at the end of user speech.
           def turn_detection=: (
             OpenAI::Realtime::TranscriptionSessionUpdatedEvent::Session::TurnDetection
           ) -> OpenAI::Realtime::TranscriptionSessionUpdatedEvent::Session::TurnDetection
 
+          # @param client_secret
+          #   Ephemeral key returned by the API. Only present when the session is created on
+          #   the server via REST API.
+          # @param input_audio_format
+          #   The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+          # @param modalities
+          #   The set of modalities the model can respond with. To disable audio, set this to
+          #   ["text"].
+          # @param turn_detection
+          #   Configuration for turn detection. Can be set to `null` to turn off. Server VAD
+          #   means that the model will detect the start and end of speech based on audio
+          #   volume and respond at the end of user speech.
           def initialize: (
             client_secret: OpenAI::Realtime::TranscriptionSessionUpdatedEvent::Session::ClientSecret,
             ?input_audio_format: String,
@@ -80,10 +123,22 @@ module OpenAI
           type client_secret = { expires_at: Integer, value: String }
 
           class ClientSecret < OpenAI::Internal::Type::BaseModel
+            # Timestamp for when the token expires. Currently, all tokens expire after one
+            # minute.
             attr_accessor expires_at: Integer
 
+            # Ephemeral key usable in client environments to authenticate connections to the
+            # Realtime API. Use this in client-side environments rather than a standard API
+            # token, which should only be used server-side.
             attr_accessor value: String
 
+            # @param expires_at
+            #   Timestamp for when the token expires. Currently, all tokens expire after one
+            #   minute.
+            # @param value
+            #   Ephemeral key usable in client environments to authenticate connections to the
+            #   Realtime API. Use this in client-side environments rather than a standard API
+            #   token, which should only be used server-side.
             def initialize: (expires_at: Integer, value: String) -> void
 
             def to_hash: -> { expires_at: Integer, value: String }
@@ -109,22 +164,53 @@ module OpenAI
             }
 
           class TurnDetection < OpenAI::Internal::Type::BaseModel
+            # Amount of audio to include before the VAD detected speech (in milliseconds).
+            # Defaults to 300ms.
             attr_reader prefix_padding_ms: Integer?
 
+            # Amount of audio to include before the VAD detected speech (in milliseconds).
+            # Defaults to 300ms.
             def prefix_padding_ms=: (Integer) -> Integer
 
+            # Duration of silence to detect speech stop (in milliseconds). Defaults to 500ms.
+            # With shorter values the model will respond more quickly, but may jump in on
+            # short pauses from the user.
             attr_reader silence_duration_ms: Integer?
 
+            # Duration of silence to detect speech stop (in milliseconds). Defaults to 500ms.
+            # With shorter values the model will respond more quickly, but may jump in on
+            # short pauses from the user.
             def silence_duration_ms=: (Integer) -> Integer
 
+            # Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A higher
+            # threshold will require louder audio to activate the model, and thus might
+            # perform better in noisy environments.
             attr_reader threshold: Float?
 
+            # Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A higher
+            # threshold will require louder audio to activate the model, and thus might
+            # perform better in noisy environments.
             def threshold=: (Float) -> Float
 
+            # Type of turn detection, only `server_vad` is currently supported.
             attr_reader type: String?
 
+            # Type of turn detection, only `server_vad` is currently supported.
             def type=: (String) -> String
 
+            # @param prefix_padding_ms
+            #   Amount of audio to include before the VAD detected speech (in milliseconds).
+            #   Defaults to 300ms.
+            # @param silence_duration_ms
+            #   Duration of silence to detect speech stop (in milliseconds). Defaults to 500ms.
+            #   With shorter values the model will respond more quickly, but may jump in on
+            #   short pauses from the user.
+            # @param threshold
+            #   Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A higher
+            #   threshold will require louder audio to activate the model, and thus might
+            #   perform better in noisy environments.
+            # @param type
+            #   Type of turn detection, only `server_vad` is currently supported.
             def initialize: (
               ?prefix_padding_ms: Integer,
               ?silence_duration_ms: Integer,

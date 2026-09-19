@@ -12,8 +12,11 @@ module OpenAI
           class MessageCreationStepDetails < OpenAI::Internal::Type::BaseModel
             attr_accessor message_creation: OpenAI::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation
 
+            # Always `message_creation`.
             attr_accessor type: :message_creation
 
+            # @param type
+            #   Always `message_creation`.
             def initialize: (
               message_creation: OpenAI::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation,
               ?type: :message_creation
@@ -27,8 +30,11 @@ module OpenAI
             type message_creation = { message_id: String }
 
             class MessageCreation < OpenAI::Internal::Type::BaseModel
+              # The ID of the message that was created by this run step.
               attr_accessor message_id: String
 
+              # @param message_id
+              #   The ID of the message that was created by this run step.
               def initialize: (message_id: String) -> void
 
               def to_hash: -> { message_id: String }

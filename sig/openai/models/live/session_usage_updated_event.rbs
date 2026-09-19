@@ -11,22 +11,45 @@ module OpenAI
         }
 
       class SessionUsageUpdatedEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the Live server event.
         attr_accessor event_id: String
 
+        # The event type, always `session.usage.updated`.
         attr_accessor type: :"session.usage.updated"
 
+        # The cumulative Live audio usage so far.
         attr_accessor usage: OpenAI::Live::SessionUsage
 
+        # The event_id of the client command associated with this server event, when
+        # supplied.
         attr_reader client_event_id: String?
 
+        # The event_id of the client command associated with this server event, when
+        # supplied.
         def client_event_id=: (String) -> String
 
+        # The latest measured Live context-window usage. Omitted when the context limit is
+        # unknown.
         attr_reader context_window: OpenAI::Live::SessionUsageUpdatedEvent::ContextWindow?
 
+        # The latest measured Live context-window usage. Omitted when the context limit is
+        # unknown.
         def context_window=: (
           OpenAI::Live::SessionUsageUpdatedEvent::ContextWindow
         ) -> OpenAI::Live::SessionUsageUpdatedEvent::ContextWindow
 
+        # @param event_id
+        #   The unique ID of the Live server event.
+        # @param usage
+        #   The cumulative Live audio usage so far.
+        # @param client_event_id
+        #   The event_id of the client command associated with this server event, when
+        #   supplied.
+        # @param context_window
+        #   The latest measured Live context-window usage. Omitted when the context limit is
+        #   unknown.
+        # @param type
+        #   The event type, always `session.usage.updated`.
         def initialize: (
           event_id: String,
           usage: OpenAI::Live::SessionUsage,
@@ -46,8 +69,13 @@ module OpenAI
         type context_window = { usage_ratio: Float }
 
         class ContextWindow < OpenAI::Internal::Type::BaseModel
+          # The latest active context token count divided by the Live model context limit.
+          # Can decrease after compaction and may lag between measured audio frames.
           attr_accessor usage_ratio: Float
 
+          # @param usage_ratio
+          #   The latest active context token count divided by the Live model context limit.
+          #   Can decrease after compaction and may lag between measured audio frames.
           def initialize: (usage_ratio: Float) -> void
 
           def to_hash: -> { usage_ratio: Float }

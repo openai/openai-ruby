@@ -11,16 +11,31 @@ module OpenAI
         }
 
       class AgentReasoningItem < OpenAI::Internal::Type::BaseModel
+        # The ID of the reasoning item.
         attr_accessor id: String
 
+        # The status of the reasoning item.
         attr_accessor status: OpenAI::Models::Beta::agent_output_item_status?
 
+        # The reasoning summaries produced by the agent.
         attr_accessor summary: ::Array[OpenAI::Beta::SummaryText]
 
+        # The ID of the turn that contains this item.
         attr_accessor turn_id: String
 
+        # The item type. Always `reasoning`.
         attr_accessor type: :reasoning
 
+        # @param id
+        #   The ID of the reasoning item.
+        # @param status
+        #   The status of the reasoning item.
+        # @param summary
+        #   The reasoning summaries produced by the agent.
+        # @param turn_id
+        #   The ID of the turn that contains this item.
+        # @param type
+        #   The item type. Always `reasoning`.
         def initialize: (
           id: String,
           status: OpenAI::Models::Beta::agent_output_item_status?,

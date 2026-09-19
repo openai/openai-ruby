@@ -7,10 +7,18 @@ module OpenAI
       }
 
     class CompoundFilter < OpenAI::Internal::Type::BaseModel
+      # Array of filters to combine. Items can be `ComparisonFilter` or
+      # `CompoundFilter`.
       attr_accessor filters: ::Array[OpenAI::Models::CompoundFilter::filter]
 
+      # Type of operation: `and` or `or`.
       attr_accessor type: OpenAI::Models::CompoundFilter::type_
 
+      # @param filters
+      #   Array of filters to combine. Items can be `ComparisonFilter` or
+      #   `CompoundFilter`.
+      # @param type
+      #   Type of operation: `and` or `or`.
       def initialize: (
         filters: ::Array[OpenAI::Models::CompoundFilter::filter],
         type: OpenAI::Models::CompoundFilter::type_

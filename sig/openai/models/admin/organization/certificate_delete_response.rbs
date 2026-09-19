@@ -6,10 +6,16 @@ module OpenAI
           { id: String, ?object: :"certificate.deleted" }
 
         class CertificateDeleteResponse < OpenAI::Internal::Type::BaseModel
+          # The ID of the certificate that was deleted.
           attr_accessor id: String
 
+          # The object type, must be `certificate.deleted`.
           attr_accessor object: :"certificate.deleted"
 
+          # @param id
+          #   The ID of the certificate that was deleted.
+          # @param object
+          #   The object type, must be `certificate.deleted`.
           def initialize: (id: String, ?object: :"certificate.deleted") -> void
 
           def to_hash: -> { id: String, ?object: :"certificate.deleted" }

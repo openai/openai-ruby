@@ -4,8 +4,13 @@ module OpenAI
       type session_usage = { seconds: Float }
 
       class SessionUsage < OpenAI::Internal::Type::BaseModel
+        # The cumulative Live audio duration in seconds. Do not sum this value across
+        # usage events.
         attr_accessor seconds: Float
 
+        # @param seconds
+        #   The cumulative Live audio duration in seconds. Do not sum this value across
+        #   usage events.
         def initialize: (seconds: Float) -> void
 
         def to_hash: -> { seconds: Float }
