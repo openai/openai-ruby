@@ -4,6 +4,7 @@ module OpenAI
       type agent_session_event =
         OpenAI::Beta::AgentSessionErrorEvent
         | OpenAI::Beta::AgentSessionEnvironmentReadyEvent
+        | OpenAI::Beta::AgentSessionEnvironmentResetEvent
         | OpenAI::Beta::AgentOutputCommandExecutionOutputDeltaEvent
         | OpenAI::Beta::AgentSessionCreatedEvent
         | OpenAI::Beta::AgentSessionTurnCreatedEvent
