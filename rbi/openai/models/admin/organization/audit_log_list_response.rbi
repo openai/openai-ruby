@@ -183,6 +183,32 @@ module OpenAI
           attr_writer :external_key_removed
 
           # The details for events with this `type`.
+          sig {
+            returns(T.nilable(OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered))
+          }
+          attr_reader :external_storage_registered
+
+          sig {
+            params(
+              external_storage_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::OrHash
+            )
+              .void
+          }
+          attr_writer :external_storage_registered
+
+          # The details for events with this `type`.
+          sig { returns(T.nilable(OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRemoved)) }
+          attr_reader :external_storage_removed
+
+          sig {
+            params(
+              external_storage_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRemoved::OrHash
+            )
+              .void
+          }
+          attr_writer :external_storage_removed
+
+          # The details for events with this `type`.
           sig { returns(T.nilable(OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated)) }
           attr_reader :group_created
 
@@ -713,6 +739,10 @@ module OpenAI
 
               external_key_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved::OrHash,
 
+              external_storage_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::OrHash,
+
+              external_storage_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRemoved::OrHash,
+
               group_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated::OrHash,
 
               group_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted::OrHash,
@@ -853,6 +883,12 @@ module OpenAI
 
             # The details for events with this `type`.
             external_key_removed: nil,
+
+            # The details for events with this `type`.
+            external_storage_registered: nil,
+
+            # The details for events with this `type`.
+            external_storage_removed: nil,
 
             # The details for events with this `type`.
             group_created: nil,
@@ -1010,6 +1046,8 @@ module OpenAI
                 checkpoint_permission_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted,
                 external_key_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRegistered,
                 external_key_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved,
+                external_storage_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered,
+                external_storage_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRemoved,
                 group_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated,
                 group_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted,
                 group_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated,
@@ -1115,6 +1153,14 @@ module OpenAI
             )
             EXTERNAL_KEY_REMOVED = T.let(
               :"external_key.removed",
+              OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+            )
+            EXTERNAL_STORAGE_REGISTERED = T.let(
+              :"external_storage.registered",
+              OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
+            )
+            EXTERNAL_STORAGE_REMOVED = T.let(
+              :"external_storage.removed",
               OpenAI::Models::Admin::Organization::AuditLogListResponse::Type::TaggedSymbol
             )
             GROUP_CREATED = T.let(
@@ -2976,6 +3022,206 @@ module OpenAI
             def self.new(
 
               # The ID of the external key configuration.
+
+              id: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {id: String}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class ExternalStorageRegistered < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The ID of the external storage configuration.
+            sig { returns(T.nilable(String)) }
+            attr_reader :id
+
+            sig { params(id: String).void }
+            attr_writer :id
+
+            # The configuration for the external storage.
+            sig {
+              returns(
+                T.nilable(OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data)
+              )
+            }
+            attr_reader :data
+
+            sig {
+              params(
+                data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data::OrHash
+              )
+                .void
+            }
+            attr_writer :data
+
+            # The details for events with this `type`.
+            sig do
+              params(
+
+                id: String,
+
+                data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data::OrHash
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The ID of the external storage configuration.
+              id: nil,
+
+              # The configuration for the external storage.
+
+              data: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  id: String,
+                  data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data
+                }
+              )
+            end
+            def to_hash
+            end
+
+            class Data < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # The OpenAI geography derived from the storage region.
+              sig { returns(T.nilable(String)) }
+              attr_reader :geography
+
+              sig { params(geography: String).void }
+              attr_writer :geography
+
+              # The external storage provider configuration.
+              sig {
+                returns(
+                  T.nilable(
+                    OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data::Provider::Variants
+                  )
+                )
+              }
+              attr_reader :provider
+
+              sig {
+                params(
+                  provider: T.any(
+                    OpenAI::Admin::Organization::AwsExternalStorageProvider::OrHash,
+                    OpenAI::Admin::Organization::AzureExternalStorageProvider::OrHash
+                  )
+                )
+                  .void
+              }
+              attr_writer :provider
+
+              # The configuration for the external storage.
+              sig do
+                params(
+
+                  geography: String,
+
+                  provider: T.any(
+                    OpenAI::Admin::Organization::AwsExternalStorageProvider::OrHash,
+                    OpenAI::Admin::Organization::AzureExternalStorageProvider::OrHash
+                  )
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # The OpenAI geography derived from the storage region.
+                geography: nil,
+
+                # The external storage provider configuration.
+
+                provider: nil
+              )
+              end
+
+              sig do
+                override.returns(
+                  {
+                    geography: String,
+                    provider: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data::Provider::Variants
+                  }
+                )
+              end
+              def to_hash
+              end
+
+              # The external storage provider configuration.
+              module Provider
+                extend OpenAI::Internal::Type::Union
+
+                Variants = T.type_alias {
+                  T.any(
+                    OpenAI::Admin::Organization::AwsExternalStorageProvider,
+                    OpenAI::Admin::Organization::AzureExternalStorageProvider
+                  )
+                }
+
+                sig {
+                  override.returns(
+                    T::Array[
+                      OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data::Provider::Variants
+                    ]
+                  )
+                }
+                def self.variants
+                end
+
+              end
+            end
+          end
+
+          class ExternalStorageRemoved < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRemoved,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The ID of the external storage configuration.
+            sig { returns(T.nilable(String)) }
+            attr_reader :id
+
+            sig { params(id: String).void }
+            attr_writer :id
+
+            # The details for events with this `type`.
+            sig do
+              params(
+
+                id: String
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The ID of the external storage configuration.
 
               id: nil
             )

@@ -2,6 +2,8 @@ module OpenAI
   module Resources
     class Admin
       class Organization
+        attr_reader external_storage: OpenAI::Resources::Admin::Organization::ExternalStorage
+
         attr_reader audit_logs: OpenAI::Resources::Admin::Organization::AuditLogs
 
         attr_reader admin_api_keys: OpenAI::Resources::Admin::Organization::AdminAPIKeys

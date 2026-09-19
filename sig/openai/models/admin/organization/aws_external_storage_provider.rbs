@@ -1,0 +1,49 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type aws_external_storage_provider =
+          {
+            account_id: String,
+            bucket: String,
+            external_id: String,
+            region: String,
+            role_arn: String,
+            ?type: :aws
+          }
+
+        class AwsExternalStorageProvider < OpenAI::Internal::Type::BaseModel
+          attr_accessor account_id: String
+
+          attr_accessor bucket: String
+
+          attr_accessor external_id: String
+
+          attr_accessor region: String
+
+          attr_accessor role_arn: String
+
+          attr_accessor type: :aws
+
+          def initialize: (
+            account_id: String,
+            bucket: String,
+            external_id: String,
+            region: String,
+            role_arn: String,
+            ?type: :aws
+          ) -> void
+
+          def to_hash: -> {
+            account_id: String,
+            bucket: String,
+            external_id: String,
+            region: String,
+            role_arn: String,
+            ?type: :aws
+          }
+        end
+      end
+    end
+  end
+end

@@ -198,6 +198,8 @@ module OpenAI
             CHECKPOINT_PERMISSION_DELETED = :"checkpoint.permission.deleted"
             EXTERNAL_KEY_REGISTERED = :"external_key.registered"
             EXTERNAL_KEY_REMOVED = :"external_key.removed"
+            EXTERNAL_STORAGE_REGISTERED = :"external_storage.registered"
+            EXTERNAL_STORAGE_REMOVED = :"external_storage.removed"
             GROUP_CREATED = :"group.created"
             GROUP_UPDATED = :"group.updated"
             GROUP_DELETED = :"group.deleted"
