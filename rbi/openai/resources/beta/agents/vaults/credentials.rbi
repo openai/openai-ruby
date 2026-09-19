@@ -19,7 +19,8 @@ module OpenAI
                 vault_id: String,
                 auth: T.any(
                   OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::McpOauth::OrHash,
-                  OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer::OrHash
+                  OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer::OrHash,
+                  OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::EnvironmentVariable::OrHash
                 ),
                 name: String,
                 request_options: OpenAI::RequestOptions::OrHash
@@ -29,7 +30,7 @@ module OpenAI
             def create(
               # The ID of the vault.
               vault_id,
-              # The authentication method and secret values to store for the MCP server.
+              # The authentication method and write-only secret values to store.
               auth:,
               # The name is trimmed before storage. It must contain 1 to 256 UTF-8 bytes after
               # trimming.
@@ -63,7 +64,8 @@ module OpenAI
                 vault_id: String,
                 auth: T.any(
                   OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth::OrHash,
-                  OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer::OrHash
+                  OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer::OrHash,
+                  OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::EnvironmentVariable::OrHash
                 ),
                 request_options: OpenAI::RequestOptions::OrHash
               )

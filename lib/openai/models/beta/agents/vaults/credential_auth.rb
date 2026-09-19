@@ -5,8 +5,7 @@ module OpenAI
     module Beta
       module Agents
         module Vaults
-          # The MCP server and authentication configuration of a vault credential, excluding
-          # secrets.
+          # The authentication configuration of a vault credential, excluding secrets.
           module CredentialAuth
             extend OpenAI::Internal::Type::Union
 
@@ -17,6 +16,9 @@ module OpenAI
 
             # Metadata for a bearer-token credential, without automatic OAuth refresh.
             variant :static_bearer, -> { OpenAI::Beta::Agents::Vaults::CredentialAuth::StaticBearer }
+
+            # Metadata for an HTTP credential used only in OpenAI-hosted environments. Sandbox code receives a placeholder. The proxy substitutes the secret for allowed HTTPS destinations on ports 443 and 8443. The real secret is not available to sandbox code for local computation and is never returned in this resource.
+            variant :environment_variable, -> { OpenAI::Beta::Agents::Vaults::CredentialAuth::EnvironmentVariable }
 
             class McpOauth < OpenAI::Internal::Type::BaseModel
               # @!attribute expires_at
@@ -142,8 +144,45 @@ module OpenAI
               #     The type of the object. Always `static_bearer`.
             end
 
+            class EnvironmentVariable < OpenAI::Internal::Type::BaseModel
+              # @!attribute networking
+              #   The destinations where the proxy can substitute the secret, subject to the
+              #   environment network policy.
+              #
+              #   @return [OpenAI::Models::Beta::Agents::Vaults::CredentialNetworking::Unrestricted, OpenAI::Models::Beta::Agents::Vaults::CredentialNetworking::Limited]
+              required :networking, union: -> { OpenAI::Beta::Agents::Vaults::CredentialNetworking }
+
+              # @!attribute secret_name
+              #   The environment variable name that receives the placeholder in the sandbox.
+              #
+              #   @return [String]
+              required :secret_name, String
+
+              # @!attribute type
+              #   The type of the object. Always `environment_variable`.
+              #
+              #   @return [Symbol, :environment_variable]
+              required :type, const: :environment_variable
+
+              # @!method initialize(networking:, secret_name:, type: :environment_variable)
+              #   Metadata for an HTTP credential used only in OpenAI-hosted environments. Sandbox
+              #   code receives a placeholder. The proxy substitutes the secret for allowed HTTPS
+              #   destinations on ports 443 and 8443. The real secret is not available to sandbox
+              #   code for local computation and is never returned in this resource.
+              #
+              #   @param networking [OpenAI::Models::Beta::Agents::Vaults::CredentialNetworking::Unrestricted, OpenAI::Models::Beta::Agents::Vaults::CredentialNetworking::Limited]
+              #     The destinations where the proxy can substitute the secret, subject to the
+              #     environment network policy.
+              #
+              #   @param secret_name [String]
+              #     The environment variable name that receives the placeholder in the sandbox.
+              #
+              #   @param type [Symbol, :environment_variable]
+              #     The type of the object. Always `environment_variable`.
+            end
+
             # @!method self.variants
-            #   @return [Array(OpenAI::Models::Beta::Agents::Vaults::CredentialAuth::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuth::StaticBearer)]
+            #   @return [Array(OpenAI::Models::Beta::Agents::Vaults::CredentialAuth::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuth::StaticBearer, OpenAI::Models::Beta::Agents::Vaults::CredentialAuth::EnvironmentVariable)]
           end
         end
       end

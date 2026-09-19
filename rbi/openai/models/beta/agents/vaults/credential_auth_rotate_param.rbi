@@ -9,15 +9,16 @@ module OpenAI
 
         module Vaults
 
-          # Updates to a vault credential without changing its authentication method or MCP
-          # server.
+          # Updates to a vault credential without changing its authentication method or
+          # destination configuration.
           module CredentialAuthRotateParam
             extend OpenAI::Internal::Type::Union
 
             Variants = T.type_alias do
               T.any(
                 OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth,
-                OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer
+                OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer,
+                OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::EnvironmentVariable
               )
             end
 
@@ -227,6 +228,58 @@ module OpenAI
               sig do
                 override.returns(
                   {token: String, type: Symbol}
+                )
+              end
+              def to_hash
+              end
+
+            end
+
+            class EnvironmentVariable < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::EnvironmentVariable,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # The write-only replacement secret. Never returned in credential resources or
+              # supplied directly to sandbox code. Must be nonempty and must not contain
+              # carriage returns, newlines, or NUL bytes.
+              sig { returns(String) }
+              attr_accessor :secret_value
+
+              # The type of the object. Always `environment_variable`.
+              sig { returns(Symbol) }
+              attr_accessor :type
+
+              # Replace the secret for an OpenAI-hosted environment credential. The environment
+              # variable name and networking configuration remain unchanged.
+              sig do
+                params(
+
+                  secret_value: String,
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # The write-only replacement secret. Never returned in credential resources or
+                # supplied directly to sandbox code. Must be nonempty and must not contain
+                # carriage returns, newlines, or NUL bytes.
+                secret_value:,
+
+                # The type of the object. Always `environment_variable`.
+
+                type: :environment_variable
+              )
+              end
+
+              sig do
+                override.returns(
+                  {secret_value: String, type: Symbol}
                 )
               end
               def to_hash

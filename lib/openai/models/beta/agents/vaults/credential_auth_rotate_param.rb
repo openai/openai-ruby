@@ -5,8 +5,8 @@ module OpenAI
     module Beta
       module Agents
         module Vaults
-          # Updates to a vault credential without changing its authentication method or MCP
-          # server.
+          # Updates to a vault credential without changing its authentication method or
+          # destination configuration.
           module CredentialAuthRotateParam
             extend OpenAI::Internal::Type::Union
 
@@ -17,6 +17,12 @@ module OpenAI
 
             # Replace the bearer token for the credential's MCP server.
             variant :static_bearer, -> { OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer }
+
+            # Replace the secret for an OpenAI-hosted environment credential. The environment variable name and networking configuration remain unchanged.
+            variant(
+              :environment_variable,
+              -> { OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::EnvironmentVariable }
+            )
 
             class McpOauth < OpenAI::Internal::Type::BaseModel
               # @!attribute type
@@ -135,8 +141,36 @@ module OpenAI
               #     The type of the object. Always `static_bearer`.
             end
 
+            class EnvironmentVariable < OpenAI::Internal::Type::BaseModel
+              # @!attribute secret_value
+              #   The write-only replacement secret. Never returned in credential resources or
+              #   supplied directly to sandbox code. Must be nonempty and must not contain
+              #   carriage returns, newlines, or NUL bytes.
+              #
+              #   @return [String]
+              required :secret_value, String
+
+              # @!attribute type
+              #   The type of the object. Always `environment_variable`.
+              #
+              #   @return [Symbol, :environment_variable]
+              required :type, const: :environment_variable
+
+              # @!method initialize(secret_value:, type: :environment_variable)
+              #   Replace the secret for an OpenAI-hosted environment credential. The environment
+              #   variable name and networking configuration remain unchanged.
+              #
+              #   @param secret_value [String]
+              #     The write-only replacement secret. Never returned in credential resources or
+              #     supplied directly to sandbox code. Must be nonempty and must not contain
+              #     carriage returns, newlines, or NUL bytes.
+              #
+              #   @param type [Symbol, :environment_variable]
+              #     The type of the object. Always `environment_variable`.
+            end
+
             # @!method self.variants
-            #   @return [Array(OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer)]
+            #   @return [Array(OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::EnvironmentVariable)]
           end
         end
       end

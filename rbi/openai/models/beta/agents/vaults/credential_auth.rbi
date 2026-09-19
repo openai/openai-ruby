@@ -9,15 +9,15 @@ module OpenAI
 
         module Vaults
 
-          # The MCP server and authentication configuration of a vault credential, excluding
-          # secrets.
+          # The authentication configuration of a vault credential, excluding secrets.
           module CredentialAuth
             extend OpenAI::Internal::Type::Union
 
             Variants = T.type_alias do
               T.any(
                 OpenAI::Beta::Agents::Vaults::CredentialAuth::McpOauth,
-                OpenAI::Beta::Agents::Vaults::CredentialAuth::StaticBearer
+                OpenAI::Beta::Agents::Vaults::CredentialAuth::StaticBearer,
+                OpenAI::Beta::Agents::Vaults::CredentialAuth::EnvironmentVariable
               )
             end
 
@@ -222,6 +222,74 @@ module OpenAI
               sig do
                 override.returns(
                   {mcp_server_url: String, type: Symbol}
+                )
+              end
+              def to_hash
+              end
+
+            end
+
+            class EnvironmentVariable < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::Agents::Vaults::CredentialAuth::EnvironmentVariable,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # The destinations where the proxy can substitute the secret, subject to the
+              # environment network policy.
+              sig { returns(OpenAI::Beta::Agents::Vaults::CredentialNetworking::Variants) }
+              attr_accessor :networking
+
+              # The environment variable name that receives the placeholder in the sandbox.
+              sig { returns(String) }
+              attr_accessor :secret_name
+
+              # The type of the object. Always `environment_variable`.
+              sig { returns(Symbol) }
+              attr_accessor :type
+
+              # Metadata for an HTTP credential used only in OpenAI-hosted environments. Sandbox
+              # code receives a placeholder. The proxy substitutes the secret for allowed HTTPS
+              # destinations on ports 443 and 8443. The real secret is not available to sandbox
+              # code for local computation and is never returned in this resource.
+              sig do
+                params(
+
+                  networking: T.any(
+                    OpenAI::Beta::Agents::Vaults::CredentialNetworking::Unrestricted::OrHash,
+                    OpenAI::Beta::Agents::Vaults::CredentialNetworking::Limited::OrHash
+                  ),
+
+                  secret_name: String,
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # The destinations where the proxy can substitute the secret, subject to the
+                # environment network policy.
+                networking:,
+
+                # The environment variable name that receives the placeholder in the sandbox.
+                secret_name:,
+
+                # The type of the object. Always `environment_variable`.
+
+                type: :environment_variable
+              )
+              end
+
+              sig do
+                override.returns(
+                  {
+                    networking: OpenAI::Beta::Agents::Vaults::CredentialNetworking::Variants,
+                    secret_name: String,
+                    type: Symbol
+                  }
                 )
               end
               def to_hash

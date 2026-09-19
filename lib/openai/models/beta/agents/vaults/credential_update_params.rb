@@ -23,7 +23,7 @@ module OpenAI
             # @!attribute auth
             #   Replacement values for the credential's existing authentication method.
             #
-            #   @return [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer]
+            #   @return [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::EnvironmentVariable]
             required :auth, union: -> { OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam }
 
             # @!method initialize(vault_id:, credential_id:, auth:, request_options: {})
@@ -31,7 +31,7 @@ module OpenAI
             #
             #   @param credential_id [String]
             #
-            #   @param auth [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer]
+            #   @param auth [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::EnvironmentVariable]
             #     Replacement values for the credential's existing authentication method.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
