@@ -106,6 +106,7 @@ module OpenAI
     # @return [OpenAI::Resources::Admin]
     attr_reader :admin
 
+    # Create and manage model responses.
     # @return [OpenAI::Resources::Responses]
     attr_reader :responses
 

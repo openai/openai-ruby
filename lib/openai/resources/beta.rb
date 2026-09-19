@@ -6,6 +6,7 @@ module OpenAI
       # @return [OpenAI::Resources::Beta::Agents]
       attr_reader :agents
 
+      # Create and manage model responses.
       # @return [OpenAI::Resources::Beta::Responses]
       attr_reader :responses
 

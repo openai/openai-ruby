@@ -5,6 +5,7 @@ module OpenAI
 
     class Responses
 
+      # Create and manage model responses.
       class InputTokens
 
         # Returns input token counts of the request.
