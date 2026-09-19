@@ -3,10 +3,13 @@
 module OpenAI
   module Resources
     class Beta
+      # Create and manage model responses.
       class Responses
+        # Create and manage model responses.
         # @return [OpenAI::Resources::Beta::Responses::InputItems]
         attr_reader :input_items
 
+        # Create and manage model responses.
         # @return [OpenAI::Resources::Beta::Responses::InputTokens]
         attr_reader :input_tokens
 

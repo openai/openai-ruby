@@ -8,6 +8,7 @@ module OpenAI
       sig { returns(OpenAI::Resources::Beta::Agents) }
       attr_reader :agents
 
+      # Create and manage model responses.
       sig { returns(OpenAI::Resources::Beta::Responses) }
       attr_reader :responses
 

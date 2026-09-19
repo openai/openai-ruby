@@ -5,6 +5,7 @@ module OpenAI
 
     class Responses
 
+      # Create and manage model responses.
       class InputItems
 
         # Returns a list of input items for a given response.
