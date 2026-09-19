@@ -4,6 +4,9 @@ module OpenAI
   module Resources
     class Admin
       class Organization
+        # @return [OpenAI::Resources::Admin::Organization::ExternalStorage]
+        attr_reader :external_storage
+
         # List user actions and configuration changes within this organization.
         # @return [OpenAI::Resources::Admin::Organization::AuditLogs]
         attr_reader :audit_logs
@@ -46,6 +49,7 @@ module OpenAI
         # @param client [OpenAI::Client]
         def initialize(client:)
           @client = client
+          @external_storage = OpenAI::Resources::Admin::Organization::ExternalStorage.new(client: client)
           @audit_logs = OpenAI::Resources::Admin::Organization::AuditLogs.new(client: client)
           @admin_api_keys = OpenAI::Resources::Admin::Organization::AdminAPIKeys.new(client: client)
           @usage = OpenAI::Resources::Admin::Organization::Usage.new(client: client)

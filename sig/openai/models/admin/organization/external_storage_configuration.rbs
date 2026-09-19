@@ -1,0 +1,76 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type external_storage_configuration =
+          {
+            id: String,
+            created_at: Integer,
+            geography: String,
+            ?object: :"organization.external_storage",
+            project_id: String,
+            provider: OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::provider,
+            status: OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::status
+          }
+
+        class ExternalStorageConfiguration < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor created_at: Integer
+
+          attr_accessor geography: String
+
+          attr_accessor object: :"organization.external_storage"
+
+          attr_accessor project_id: String
+
+          attr_accessor provider: OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::provider
+
+          attr_accessor status: OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::status
+
+          def initialize: (
+            id: String,
+            created_at: Integer,
+            geography: String,
+            project_id: String,
+            provider: OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::provider,
+            status: OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::status,
+            ?object: :"organization.external_storage"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            created_at: Integer,
+            geography: String,
+            ?object: :"organization.external_storage",
+            project_id: String,
+            provider: OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::provider,
+            status: OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::status
+          }
+
+          type provider =
+            OpenAI::Admin::Organization::AwsExternalStorageProvider
+            | OpenAI::Admin::Organization::AzureExternalStorageProvider
+
+          module Provider
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::provider]
+          end
+
+          type status = :pending | :validated | :unhealthy
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            PENDING: :pending
+            VALIDATED: :validated
+            UNHEALTHY: :unhealthy
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::status]
+          end
+        end
+      end
+    end
+  end
+end

@@ -20,6 +20,8 @@ module OpenAI
             ?checkpoint_permission_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted,
             ?external_key_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRegistered,
             ?external_key_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved,
+            ?external_storage_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered,
+            ?external_storage_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRemoved,
             ?group_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated,
             ?group_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted,
             ?group_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated,
@@ -176,6 +178,22 @@ module OpenAI
           def external_key_removed=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved
+
+          # The details for events with this `type`.
+          attr_reader external_storage_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered?
+
+          # The details for events with this `type`.
+          def external_storage_registered=: (
+            OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered
+          ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered
+
+          # The details for events with this `type`.
+          attr_reader external_storage_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRemoved?
+
+          # The details for events with this `type`.
+          def external_storage_removed=: (
+            OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRemoved
+          ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRemoved
 
           # The details for events with this `type`.
           attr_reader group_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated?
@@ -562,6 +580,10 @@ module OpenAI
           #   The details for events with this `type`.
           # @param external_key_removed
           #   The details for events with this `type`.
+          # @param external_storage_registered
+          #   The details for events with this `type`.
+          # @param external_storage_removed
+          #   The details for events with this `type`.
           # @param group_created
           #   The details for events with this `type`.
           # @param group_deleted
@@ -669,6 +691,8 @@ module OpenAI
             ?checkpoint_permission_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted,
             ?external_key_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRegistered,
             ?external_key_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved,
+            ?external_storage_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered,
+            ?external_storage_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRemoved,
             ?group_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated,
             ?group_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted,
             ?group_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated,
@@ -732,6 +756,8 @@ module OpenAI
             ?checkpoint_permission_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted,
             ?external_key_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRegistered,
             ?external_key_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved,
+            ?external_storage_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered,
+            ?external_storage_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRemoved,
             ?group_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated,
             ?group_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted,
             ?group_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated,
@@ -791,6 +817,8 @@ module OpenAI
             | :"checkpoint.permission.deleted"
             | :"external_key.registered"
             | :"external_key.removed"
+            | :"external_storage.registered"
+            | :"external_storage.removed"
             | :"group.created"
             | :"group.updated"
             | :"group.deleted"
@@ -942,6 +970,8 @@ module OpenAI
             CHECKPOINT_PERMISSION_DELETED: :"checkpoint.permission.deleted"
             EXTERNAL_KEY_REGISTERED: :"external_key.registered"
             EXTERNAL_KEY_REMOVED: :"external_key.removed"
+            EXTERNAL_STORAGE_REGISTERED: :"external_storage.registered"
+            EXTERNAL_STORAGE_REMOVED: :"external_storage.removed"
             GROUP_CREATED: :"group.created"
             GROUP_UPDATED: :"group.updated"
             GROUP_DELETED: :"group.deleted"
@@ -1729,6 +1759,104 @@ module OpenAI
 
             # @param id
             #   The ID of the external key configuration.
+            def initialize: (?id: String) -> void
+
+            def to_hash: -> { ?id: String }
+          end
+
+          type external_storage_registered =
+            {
+              ?id: String,
+              ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data
+            }
+
+          class ExternalStorageRegistered < OpenAI::Internal::Type::BaseModel
+            # The ID of the external storage configuration.
+            attr_reader id: String?
+
+            # The ID of the external storage configuration.
+            def id=: (String) -> String
+
+            # The configuration for the external storage.
+            attr_reader data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data?
+
+            # The configuration for the external storage.
+            def data=: (
+              OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data
+            ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data
+
+            # @param id
+            #   The ID of the external storage configuration.
+            # @param data
+            #   The configuration for the external storage.
+            def initialize: (
+              ?id: String,
+              ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data
+            ) -> void
+
+            def to_hash: -> {
+              ?id: String,
+              ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data
+            }
+
+            type data =
+              {
+                ?geography: String,
+                ?provider: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data::provider
+              }
+
+            class Data < OpenAI::Internal::Type::BaseModel
+              # The OpenAI geography derived from the storage region.
+              attr_reader geography: String?
+
+              # The OpenAI geography derived from the storage region.
+              def geography=: (String) -> String
+
+              # The external storage provider configuration.
+              attr_reader provider: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data::provider?
+
+              # The external storage provider configuration.
+              def provider=: (
+                OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data::provider
+              ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data::provider
+
+              # @param geography
+              #   The OpenAI geography derived from the storage region.
+              # @param provider
+              #   The external storage provider configuration.
+              def initialize: (
+                ?geography: String,
+                ?provider: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data::provider
+              ) -> void
+
+              def to_hash: -> {
+                ?geography: String,
+                ?provider: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data::provider
+              }
+
+              type provider =
+                OpenAI::Admin::Organization::AwsExternalStorageProvider
+                | OpenAI::Admin::Organization::AzureExternalStorageProvider
+
+              module Provider
+                extend OpenAI::Internal::Type::Union
+
+                def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data::provider]
+              end
+            end
+          end
+
+          type external_storage_removed = { ?id: String }
+
+          class ExternalStorageRemoved < OpenAI::Internal::Type::BaseModel
+            # The ID of the external storage configuration.
+            attr_reader id: String?
+
+            # The ID of the external storage configuration.
+            def id=: (String) -> String
+
+            # @param id
+            #   The ID of the external storage configuration.
             def initialize: (?id: String) -> void
 
             def to_hash: -> { ?id: String }
