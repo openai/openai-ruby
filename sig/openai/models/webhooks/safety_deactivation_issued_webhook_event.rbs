@@ -1,0 +1,67 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type safety_deactivation_issued_webhook_event =
+        {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::SafetyDeactivationIssuedWebhookEvent::Data,
+          ?object: :event,
+          ?type: :"safety.deactivation_issued"
+        }
+
+      class SafetyDeactivationIssuedWebhookEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the webhook event.
+        attr_accessor id: String
+
+        # The Unix timestamp in seconds when the event was created.
+        attr_accessor created_at: Integer
+
+        attr_accessor data: OpenAI::Webhooks::SafetyDeactivationIssuedWebhookEvent::Data
+
+        # Always `event`.
+        attr_accessor object: :event
+
+        # Always `safety.deactivation_issued`.
+        attr_accessor type: :"safety.deactivation_issued"
+
+        # @param id
+        #   The unique ID of the webhook event.
+        # @param created_at
+        #   The Unix timestamp in seconds when the event was created.
+        # @param object
+        #   Always `event`.
+        # @param type
+        #   Always `safety.deactivation_issued`.
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::SafetyDeactivationIssuedWebhookEvent::Data,
+          ?object: :event,
+          ?type: :"safety.deactivation_issued"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::SafetyDeactivationIssuedWebhookEvent::Data,
+          ?object: :event,
+          ?type: :"safety.deactivation_issued"
+        }
+
+        type data = { id: String }
+
+        class Data < OpenAI::Internal::Type::BaseModel
+          # The safety case ID to pass to `GET /v1/safety/cases/{id}`.
+          attr_accessor id: String
+
+          # @param id
+          #   The safety case ID to pass to `GET /v1/safety/cases/{id}`.
+          def initialize: (id: String) -> void
+
+          def to_hash: -> { id: String }
+        end
+      end
+    end
+  end
+end

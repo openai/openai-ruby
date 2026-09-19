@@ -178,6 +178,39 @@ class OpenAI::Test::WebhookVerificationTest < OpenAI::Test::ResourceTest
     end
   end
 
+  def test_unwrap_safety_events
+    event_types = {
+      "safety.warning_issued" => OpenAI::Webhooks::SafetyWarningIssuedWebhookEvent,
+      "safety.deactivation_issued" => OpenAI::Webhooks::SafetyDeactivationIssuedWebhookEvent
+    }
+
+    event_types.each do |event_type, event_class|
+      @test_payload = JSON.generate(
+        id: "evt_safety_test",
+        object: "event",
+        created_at: Integer(@fixed_timestamp, 10),
+        type: event_type,
+        data: {id: "case_test"}
+      )
+      headers = signed_headers("fake-safety-webhook-secret")
+      event = @webhook_service.unwrap(@test_payload, headers, "fake-safety-webhook-secret")
+
+      assert_instance_of(event_class, event)
+      assert_equal("case_test", event.data.id)
+      assert_equal(JSON.parse(@test_payload), JSON.parse(event.to_json))
+
+      [@test_payload.sub("case_test", "case_tampered"), "{"].each do |tampered_payload|
+        assert_raises(OpenAI::Errors::InvalidWebhookSignatureError) do
+          @webhook_service.unwrap(tampered_payload, headers, "fake-safety-webhook-secret")
+        end
+      end
+
+      assert_raises(OpenAI::Errors::InvalidWebhookSignatureError) do
+        @webhook_service.unwrap(@test_payload, headers, "wrong-safety-webhook-secret")
+      end
+    end
+  end
+
   def test_unwrap_with_rack_request_environment
     request_environment = {
       "REQUEST_METHOD" => "POST",
