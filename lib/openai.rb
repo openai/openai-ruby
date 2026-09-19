@@ -554,6 +554,7 @@ require_relative "openai/models/beta/agent_session_environment_disconnected_even
 require_relative "openai/models/beta/agent_session_environment_failed_event"
 require_relative "openai/models/beta/agent_session_environment_pending_event"
 require_relative "openai/models/beta/agent_session_environment_ready_event"
+require_relative "openai/models/beta/agent_session_environment_reset_event"
 require_relative "openai/models/beta/agent_session_environment_state"
 require_relative "openai/models/beta/agent_session_error_event"
 require_relative "openai/models/beta/agent_session_event"
