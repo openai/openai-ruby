@@ -3,6 +3,8 @@ module OpenAI
     class Safety
       attr_reader alerts: OpenAI::Resources::Safety::Alerts
 
+      attr_reader cases: OpenAI::Resources::Safety::Cases
+
       def initialize: (client: OpenAI::Client) -> void
     end
   end
