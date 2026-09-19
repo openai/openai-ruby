@@ -71,11 +71,17 @@ module OpenAI
         # Sent when an approved safety alert is available for an API project.
         variant :"safety.alert.created", -> { OpenAI::Webhooks::SafetyAlertCreatedWebhookEvent }
 
+        # Sent when a deactivation is issued for a safety identifier in your organization.
+        variant :"safety.deactivation_issued", -> { OpenAI::Webhooks::SafetyDeactivationIssuedWebhookEvent }
+
         # Sent when an approved safety alert is available for an enterprise workspace.
         variant :"safety.org_alert.created", -> { OpenAI::Webhooks::SafetyOrgAlertCreatedWebhookEvent }
 
+        # Sent when a warning is issued for a safety identifier in your organization.
+        variant :"safety.warning_issued", -> { OpenAI::Webhooks::SafetyWarningIssuedWebhookEvent }
+
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Webhooks::BatchCancelledWebhookEvent, OpenAI::Models::Webhooks::BatchCompletedWebhookEvent, OpenAI::Models::Webhooks::BatchExpiredWebhookEvent, OpenAI::Models::Webhooks::BatchFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent, OpenAI::Models::Webhooks::EvalRunFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobFailedWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent, OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent, OpenAI::Models::Webhooks::LiveTransportIncomingWebhookEvent, OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent, OpenAI::Models::Webhooks::ResponseCancelledWebhookEvent, OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent, OpenAI::Models::Webhooks::ResponseFailedWebhookEvent, OpenAI::Models::Webhooks::ResponseIncompleteWebhookEvent, OpenAI::Models::Webhooks::SafetyAlertCreatedWebhookEvent, OpenAI::Models::Webhooks::SafetyOrgAlertCreatedWebhookEvent)]
+        #   @return [Array(OpenAI::Models::Webhooks::BatchCancelledWebhookEvent, OpenAI::Models::Webhooks::BatchCompletedWebhookEvent, OpenAI::Models::Webhooks::BatchExpiredWebhookEvent, OpenAI::Models::Webhooks::BatchFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent, OpenAI::Models::Webhooks::EvalRunFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobFailedWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent, OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent, OpenAI::Models::Webhooks::LiveTransportIncomingWebhookEvent, OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent, OpenAI::Models::Webhooks::ResponseCancelledWebhookEvent, OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent, OpenAI::Models::Webhooks::ResponseFailedWebhookEvent, OpenAI::Models::Webhooks::ResponseIncompleteWebhookEvent, OpenAI::Models::Webhooks::SafetyAlertCreatedWebhookEvent, OpenAI::Models::Webhooks::SafetyDeactivationIssuedWebhookEvent, OpenAI::Models::Webhooks::SafetyOrgAlertCreatedWebhookEvent, OpenAI::Models::Webhooks::SafetyWarningIssuedWebhookEvent)]
       end
     end
   end
