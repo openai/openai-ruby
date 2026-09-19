@@ -112,13 +112,42 @@ module OpenAI
           sig { returns(T::Array[OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader]) }
           attr_accessor :sip_headers
 
+          # Media protection selected on the SIP leg during SDP negotiation. `srtp`
+          # indicates SRTP; `rtp` indicates unencrypted RTP. Omitted when unknown. This does
+          # not describe SIP signaling security or confirm that media has flowed. Clients
+          # should handle unrecognized values as unknown.
+          sig {
+            returns(
+              T.nilable(
+                T.any(OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity::OrSymbol, String)
+              )
+            )
+          }
+          attr_reader :sip_media_security
+
+          sig {
+            params(
+              sip_media_security: T.any(
+                OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity::OrSymbol,
+                String
+              )
+            )
+              .void
+          }
+          attr_writer :sip_media_security
+
           # Event data payload.
           sig do
             params(
 
               call_id: String,
 
-              sip_headers: T::Array[OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader::OrHash]
+              sip_headers: T::Array[OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader::OrHash],
+
+              sip_media_security: T.any(
+                OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity::OrSymbol,
+                String
+              )
             )
               .returns(T.attached_class)
           end
@@ -132,8 +161,14 @@ module OpenAI
             # Headers from the SIP INVITE, excluding SIP authorization headers. Retained
             # names, values, repeated entries, and order are preserved. Treat these values as
             # untrusted call metadata.
+            sip_headers:,
 
-            sip_headers:
+            # Media protection selected on the SIP leg during SDP negotiation. `srtp`
+            # indicates SRTP; `rtp` indicates unencrypted RTP. Omitted when unknown. This does
+            # not describe SIP signaling security or confirm that media has flowed. Clients
+            # should handle unrecognized values as unknown.
+
+            sip_media_security: nil
           )
           end
 
@@ -141,7 +176,11 @@ module OpenAI
             override.returns(
               {
                 call_id: String,
-                sip_headers: T::Array[OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader]
+                sip_headers: T::Array[OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader],
+                sip_media_security: T.any(
+                  OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity::OrSymbol,
+                  String
+                )
               }
             )
           end
@@ -192,6 +231,39 @@ module OpenAI
             end
             def to_hash
             end
+
+          end
+
+          # Media protection selected on the SIP leg during SDP negotiation. `srtp`
+          # indicates SRTP; `rtp` indicates unencrypted RTP. Omitted when unknown. This does
+          # not describe SIP signaling security or confirm that media has flowed. Clients
+          # should handle unrecognized values as unknown.
+          module SipMediaSecurity
+            extend OpenAI::Internal::Type::Union
+
+            Variants = T.type_alias {
+              T.any(OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity::TaggedSymbol, String)
+            }
+
+            sig {
+              override.returns(
+                T::Array[OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity::Variants]
+              )
+            }
+            def self.variants
+            end
+
+            TaggedSymbol = T.type_alias do
+              T.all(Symbol, OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity)
+            end
+
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            RTP = T.let(:rtp, OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity::TaggedSymbol)
+            SRTP = T.let(
+              :srtp,
+              OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity::TaggedSymbol
+            )
 
           end
         end

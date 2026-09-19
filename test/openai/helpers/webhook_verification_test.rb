@@ -132,6 +132,52 @@ class OpenAI::Test::WebhookVerificationTest < OpenAI::Test::ResourceTest
     assert_equal("resp_123", event.data.id)
   end
 
+  def test_unwrap_sip_media_security
+    event_types = {
+      "live.call.incoming" => OpenAI::Webhooks::LiveCallIncomingWebhookEvent,
+      "live.transport.incoming" => OpenAI::Webhooks::LiveTransportIncomingWebhookEvent,
+      "realtime.call.incoming" => OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent
+    }
+
+    event_types.each do |event_type, event_class|
+      [nil, "rtp", "srtp", "future_media_security"].each do |media_security|
+        data = {sip_headers: [{name: "X-Test", value: "example"}]}
+        if event_type == "realtime.call.incoming"
+          data[:call_id] = "rtc_test"
+        else
+          data[:session_id] = "live_test"
+        end
+
+        data[:type] = "sip" if event_type == "live.transport.incoming"
+        data[:sip_media_security] = media_security unless media_security.nil?
+        @test_payload = JSON.generate(
+          id: "evt_sip_test",
+          object: "event",
+          created_at: Integer(@fixed_timestamp, 10),
+          type: event_type,
+          data: data
+        )
+
+        event = @webhook_service.unwrap(
+          @test_payload,
+          signed_headers("fake-sip-webhook-secret"),
+          "fake-sip-webhook-secret"
+        )
+
+        assert_instance_of(event_class, event)
+        if media_security.nil?
+          assert_nil(event.data.sip_media_security)
+          refute(event.data.to_h.key?(:sip_media_security))
+        else
+          expected = %w[rtp srtp].include?(media_security) ? media_security.to_sym : media_security
+          assert_equal(expected, event.data.sip_media_security)
+        end
+
+        assert_equal(JSON.parse(@test_payload), JSON.parse(event.to_json))
+      end
+    end
+  end
+
   def test_unwrap_with_rack_request_environment
     request_environment = {
       "REQUEST_METHOD" => "POST",

@@ -60,7 +60,8 @@ module OpenAI
         type data =
           {
             session_id: String,
-            sip_headers: ::Array[OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader]
+            sip_headers: ::Array[OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader],
+            ?sip_media_security: OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::sip_media_security
           }
 
         class Data < OpenAI::Internal::Type::BaseModel
@@ -74,6 +75,20 @@ module OpenAI
           # untrusted call metadata.
           attr_accessor sip_headers: ::Array[OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader]
 
+          # Media protection selected on the SIP leg during SDP negotiation. `srtp`
+          # indicates SRTP; `rtp` indicates unencrypted RTP. Omitted when unknown. This does
+          # not describe SIP signaling security or confirm that media has flowed. Clients
+          # should handle unrecognized values as unknown.
+          attr_reader sip_media_security: OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::sip_media_security?
+
+          # Media protection selected on the SIP leg during SDP negotiation. `srtp`
+          # indicates SRTP; `rtp` indicates unencrypted RTP. Omitted when unknown. This does
+          # not describe SIP signaling security or confirm that media has flowed. Clients
+          # should handle unrecognized values as unknown.
+          def sip_media_security=: (
+            OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::sip_media_security
+          ) -> OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::sip_media_security
+
           # @param session_id
           #   The `live_...` ID of the pending SIP session. Pass this value unchanged to Live
           #   call controls and sideband connections. The corresponding
@@ -82,14 +97,21 @@ module OpenAI
           #   Headers from the SIP INVITE, excluding SIP authorization headers. Retained
           #   names, values, repeated entries, and order are preserved. Treat these values as
           #   untrusted call metadata.
+          # @param sip_media_security
+          #   Media protection selected on the SIP leg during SDP negotiation. `srtp`
+          #   indicates SRTP; `rtp` indicates unencrypted RTP. Omitted when unknown. This does
+          #   not describe SIP signaling security or confirm that media has flowed. Clients
+          #   should handle unrecognized values as unknown.
           def initialize: (
             session_id: String,
-            sip_headers: ::Array[OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader]
+            sip_headers: ::Array[OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader],
+            ?sip_media_security: OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::sip_media_security
           ) -> void
 
           def to_hash: -> {
             session_id: String,
-            sip_headers: ::Array[OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader]
+            sip_headers: ::Array[OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader],
+            ?sip_media_security: OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::sip_media_security
           }
 
           type sip_header = { name: String, value: String }
@@ -108,6 +130,17 @@ module OpenAI
             def initialize: (name: String, value: String) -> void
 
             def to_hash: -> { name: String, value: String }
+          end
+
+          type sip_media_security = :rtp | :srtp | String
+
+          module SipMediaSecurity
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::sip_media_security]
+
+            RTP: :rtp
+            SRTP: :srtp
           end
         end
 
