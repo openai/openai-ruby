@@ -158,7 +158,9 @@ module OpenAI
               OpenAI::Webhooks::ResponseFailedWebhookEvent,
               OpenAI::Webhooks::ResponseIncompleteWebhookEvent,
               OpenAI::Webhooks::SafetyAlertCreatedWebhookEvent,
-              OpenAI::Webhooks::SafetyOrgAlertCreatedWebhookEvent
+              OpenAI::Webhooks::SafetyDeactivationIssuedWebhookEvent,
+              OpenAI::Webhooks::SafetyOrgAlertCreatedWebhookEvent,
+              OpenAI::Webhooks::SafetyWarningIssuedWebhookEvent
             )
           )
       }
