@@ -35,6 +35,8 @@ class OpenAI::Test::Resources::Admin::Organization::AuditLogsTest < OpenAI::Test
           checkpoint_permission_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted | nil,
           external_key_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRegistered | nil,
           external_key_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved | nil,
+          external_storage_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered | nil,
+          external_storage_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRemoved | nil,
           group_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated | nil,
           group_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted | nil,
           group_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated | nil,

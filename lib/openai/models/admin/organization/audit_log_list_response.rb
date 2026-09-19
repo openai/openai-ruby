@@ -151,6 +151,26 @@ module OpenAI
             api_name: :"external_key.removed"
           )
 
+          # @!attribute external_storage_registered
+          #   The details for events with this `type`.
+          #
+          #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered, nil]
+          optional(
+            :external_storage_registered,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered },
+            api_name: :"external_storage.registered"
+          )
+
+          # @!attribute external_storage_removed
+          #   The details for events with this `type`.
+          #
+          #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRemoved, nil]
+          optional(
+            :external_storage_removed,
+            -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRemoved },
+            api_name: :"external_storage.removed"
+          )
+
           # @!attribute group_created
           #   The details for events with this `type`.
           #
@@ -581,7 +601,7 @@ module OpenAI
             api_name: :"workload_identity_provider.updated"
           )
 
-          # @!method initialize(id:, effective_at:, type:, actor: nil, api_key_created: nil, api_key_deleted: nil, api_key_updated: nil, certificate_created: nil, certificate_deleted: nil, certificate_updated: nil, certificates_activated: nil, certificates_deactivated: nil, checkpoint_permission_created: nil, checkpoint_permission_deleted: nil, external_key_registered: nil, external_key_removed: nil, group_created: nil, group_deleted: nil, group_updated: nil, invite_accepted: nil, invite_deleted: nil, invite_sent: nil, ip_allowlist_config_activated: nil, ip_allowlist_config_deactivated: nil, ip_allowlist_created: nil, ip_allowlist_deleted: nil, ip_allowlist_updated: nil, login_failed: nil, login_succeeded: nil, logout_failed: nil, logout_succeeded: nil, organization_updated: nil, project: nil, project_archived: nil, project_created: nil, project_deleted: nil, project_updated: nil, rate_limit_deleted: nil, rate_limit_updated: nil, role_assignment_created: nil, role_assignment_deleted: nil, role_bound_to_resource: nil, role_created: nil, role_deleted: nil, role_unbound_from_resource: nil, role_updated: nil, scim_disabled: nil, scim_enabled: nil, service_account_created: nil, service_account_deleted: nil, service_account_updated: nil, user_added: nil, user_deleted: nil, user_updated: nil, workload_identity_provider_mapping_created: nil, workload_identity_provider_mapping_deleted: nil, workload_identity_provider_mapping_updated: nil, workload_identity_provider_created: nil, workload_identity_provider_deleted: nil, workload_identity_provider_updated: nil)
+          # @!method initialize(id:, effective_at:, type:, actor: nil, api_key_created: nil, api_key_deleted: nil, api_key_updated: nil, certificate_created: nil, certificate_deleted: nil, certificate_updated: nil, certificates_activated: nil, certificates_deactivated: nil, checkpoint_permission_created: nil, checkpoint_permission_deleted: nil, external_key_registered: nil, external_key_removed: nil, external_storage_registered: nil, external_storage_removed: nil, group_created: nil, group_deleted: nil, group_updated: nil, invite_accepted: nil, invite_deleted: nil, invite_sent: nil, ip_allowlist_config_activated: nil, ip_allowlist_config_deactivated: nil, ip_allowlist_created: nil, ip_allowlist_deleted: nil, ip_allowlist_updated: nil, login_failed: nil, login_succeeded: nil, logout_failed: nil, logout_succeeded: nil, organization_updated: nil, project: nil, project_archived: nil, project_created: nil, project_deleted: nil, project_updated: nil, rate_limit_deleted: nil, rate_limit_updated: nil, role_assignment_created: nil, role_assignment_deleted: nil, role_bound_to_resource: nil, role_created: nil, role_deleted: nil, role_unbound_from_resource: nil, role_updated: nil, scim_disabled: nil, scim_enabled: nil, service_account_created: nil, service_account_deleted: nil, service_account_updated: nil, user_added: nil, user_deleted: nil, user_updated: nil, workload_identity_provider_mapping_created: nil, workload_identity_provider_mapping_deleted: nil, workload_identity_provider_mapping_updated: nil, workload_identity_provider_created: nil, workload_identity_provider_deleted: nil, workload_identity_provider_updated: nil)
           #   A log of a user action or configuration change within this organization.
           #
           #   @param id [String]
@@ -631,6 +651,12 @@ module OpenAI
           #     The details for events with this `type`.
           #
           #   @param external_key_removed [OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved]
+          #     The details for events with this `type`.
+          #
+          #   @param external_storage_registered [OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered]
+          #     The details for events with this `type`.
+          #
+          #   @param external_storage_removed [OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRemoved]
           #     The details for events with this `type`.
           #
           #   @param group_created [OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated]
@@ -785,6 +811,8 @@ module OpenAI
             CHECKPOINT_PERMISSION_DELETED = :"checkpoint.permission.deleted"
             EXTERNAL_KEY_REGISTERED = :"external_key.registered"
             EXTERNAL_KEY_REMOVED = :"external_key.removed"
+            EXTERNAL_STORAGE_REGISTERED = :"external_storage.registered"
+            EXTERNAL_STORAGE_REMOVED = :"external_storage.removed"
             GROUP_CREATED = :"group.created"
             GROUP_UPDATED = :"group.updated"
             GROUP_DELETED = :"group.deleted"
@@ -1482,6 +1510,93 @@ module OpenAI
             #
             #   @param id [String]
             #     The ID of the external key configuration.
+          end
+
+          # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#external_storage_registered
+          class ExternalStorageRegistered < OpenAI::Internal::Type::BaseModel
+            # @!attribute id
+            #   The ID of the external storage configuration.
+            #
+            #   @return [String, nil]
+            optional :id, String
+
+            # @!attribute data
+            #   The configuration for the external storage.
+            #
+            #   @return [OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data, nil]
+            optional(
+              :data,
+              -> { OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data }
+            )
+
+            # @!method initialize(id: nil, data: nil)
+            #   The details for events with this `type`.
+            #
+            #   @param id [String]
+            #     The ID of the external storage configuration.
+            #
+            #   @param data [OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data]
+            #     The configuration for the external storage.
+
+            # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered#data
+            class Data < OpenAI::Internal::Type::BaseModel
+              # @!attribute geography
+              #   The OpenAI geography derived from the storage region.
+              #
+              #   @return [String, nil]
+              optional :geography, String
+
+              # @!attribute provider
+              #   The external storage provider configuration.
+              #
+              #   @return [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, nil]
+              optional(
+                :provider,
+                union: -> {
+                  OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data::Provider
+                }
+              )
+
+              # @!method initialize(geography: nil, provider: nil)
+              #   The configuration for the external storage.
+              #
+              #   @param geography [String]
+              #     The OpenAI geography derived from the storage region.
+              #
+              #   @param provider [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider]
+              #     The external storage provider configuration.
+
+              # The external storage provider configuration.
+              #
+              # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalStorageRegistered::Data#provider
+              module Provider
+                extend OpenAI::Internal::Type::Union
+
+                discriminator :type
+
+                variant :aws, -> { OpenAI::Admin::Organization::AwsExternalStorageProvider }
+
+                variant :azure, -> { OpenAI::Admin::Organization::AzureExternalStorageProvider }
+
+                # @!method self.variants
+                #   @return [Array(OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider)]
+              end
+            end
+          end
+
+          # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#external_storage_removed
+          class ExternalStorageRemoved < OpenAI::Internal::Type::BaseModel
+            # @!attribute id
+            #   The ID of the external storage configuration.
+            #
+            #   @return [String, nil]
+            optional :id, String
+
+            # @!method initialize(id: nil)
+            #   The details for events with this `type`.
+            #
+            #   @param id [String]
+            #     The ID of the external storage configuration.
           end
 
           # @see OpenAI::Models::Admin::Organization::AuditLogListResponse#group_created

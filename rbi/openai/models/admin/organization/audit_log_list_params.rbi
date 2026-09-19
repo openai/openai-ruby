@@ -342,6 +342,14 @@ module OpenAI
               :"external_key.removed",
               OpenAI::Admin::Organization::AuditLogListParams::EventType::TaggedSymbol
             )
+            EXTERNAL_STORAGE_REGISTERED = T.let(
+              :"external_storage.registered",
+              OpenAI::Admin::Organization::AuditLogListParams::EventType::TaggedSymbol
+            )
+            EXTERNAL_STORAGE_REMOVED = T.let(
+              :"external_storage.removed",
+              OpenAI::Admin::Organization::AuditLogListParams::EventType::TaggedSymbol
+            )
             GROUP_CREATED = T.let(
               :"group.created",
               OpenAI::Admin::Organization::AuditLogListParams::EventType::TaggedSymbol
