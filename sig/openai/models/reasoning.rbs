@@ -10,20 +10,80 @@ module OpenAI
       }
 
     class Reasoning < OpenAI::Internal::Type::BaseModel
+      # Controls which reasoning items are rendered back to the model on later turns. If
+      # omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
+      # model family defaults to `all_turns`; earlier models default to `current_turn`.
+      #
+      # When returned on a response, this is the effective reasoning context mode used
+      # for the response.
       attr_accessor context: OpenAI::Models::Reasoning::context?
 
+      # Constrains effort on reasoning for reasoning models. Currently supported values
+      # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+      # reasoning effort can result in faster responses and fewer tokens used on
+      # reasoning in a response. Not all reasoning models support every value. See the
+      # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
+      # model-specific support.
       attr_accessor effort: OpenAI::Models::reasoning_effort?
 
+      # **Deprecated:** use `summary` instead.
+      #
+      # A summary of the reasoning performed by the model. This can be useful for
+      # debugging and understanding the model's reasoning process. One of `auto`,
+      # `concise`, or `detailed`.
       attr_accessor generate_summary: OpenAI::Models::Reasoning::generate_summary?
 
+      # Controls the reasoning execution mode for the request.
+      #
+      # When returned on a response, this is the effective execution mode.
       attr_reader mode: OpenAI::Models::Reasoning::mode?
 
+      # Controls the reasoning execution mode for the request.
+      #
+      # When returned on a response, this is the effective execution mode.
       def mode=: (
         OpenAI::Models::Reasoning::mode
       ) -> OpenAI::Models::Reasoning::mode
 
+      # A summary of the reasoning performed by the model. This can be useful for
+      # debugging and understanding the model's reasoning process. One of `auto`,
+      # `concise`, or `detailed`.
+      #
+      # `concise` is supported for `computer-use-preview` models and all reasoning
+      # models after `gpt-5`.
       attr_accessor summary: OpenAI::Models::Reasoning::summary?
 
+      # @param context
+      #   Controls which reasoning items are rendered back to the model on later turns. If
+      #   omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
+      #   model family defaults to `all_turns`; earlier models default to `current_turn`.
+      #
+      #   When returned on a response, this is the effective reasoning context mode used
+      #   for the response.
+      # @param effort
+      #   Constrains effort on reasoning for reasoning models. Currently supported values
+      #   are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+      #   reasoning effort can result in faster responses and fewer tokens used on
+      #   reasoning in a response. Not all reasoning models support every value. See the
+      #   [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
+      #   model-specific support.
+      # @param generate_summary
+      #   **Deprecated:** use `summary` instead.
+      #
+      #   A summary of the reasoning performed by the model. This can be useful for
+      #   debugging and understanding the model's reasoning process. One of `auto`,
+      #   `concise`, or `detailed`.
+      # @param mode
+      #   Controls the reasoning execution mode for the request.
+      #
+      #   When returned on a response, this is the effective execution mode.
+      # @param summary
+      #   A summary of the reasoning performed by the model. This can be useful for
+      #   debugging and understanding the model's reasoning process. One of `auto`,
+      #   `concise`, or `detailed`.
+      #
+      #   `concise` is supported for `computer-use-preview` models and all reasoning
+      #   models after `gpt-5`.
       def initialize: (
         ?context: OpenAI::Models::Reasoning::context?,
         ?effort: OpenAI::Models::reasoning_effort?,

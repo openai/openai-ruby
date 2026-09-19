@@ -15,8 +15,11 @@ module OpenAI
 
           attr_accessor group_id: String
 
+          # New display name for the group.
           attr_accessor name: String
 
+          # @param name
+          #   New display name for the group.
           def initialize: (
             group_id: String,
             name: String,

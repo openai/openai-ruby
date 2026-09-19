@@ -8,14 +8,21 @@ module OpenAI
         }
 
       class ReinforcementMethod < OpenAI::Internal::Type::BaseModel
+        # The grader used for the fine-tuning job.
         attr_accessor grader: OpenAI::Models::FineTuning::ReinforcementMethod::grader
 
+        # The hyperparameters used for the reinforcement fine-tuning job.
         attr_reader hyperparameters: OpenAI::FineTuning::ReinforcementHyperparameters?
 
+        # The hyperparameters used for the reinforcement fine-tuning job.
         def hyperparameters=: (
           OpenAI::FineTuning::ReinforcementHyperparameters
         ) -> OpenAI::FineTuning::ReinforcementHyperparameters
 
+        # @param grader
+        #   The grader used for the fine-tuning job.
+        # @param hyperparameters
+        #   The hyperparameters used for the reinforcement fine-tuning job.
         def initialize: (
           grader: OpenAI::Models::FineTuning::ReinforcementMethod::grader,
           ?hyperparameters: OpenAI::FineTuning::ReinforcementHyperparameters

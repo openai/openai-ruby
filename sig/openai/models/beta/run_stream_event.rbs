@@ -20,10 +20,15 @@ module OpenAI
           { data: OpenAI::Beta::Threads::Run, ?event: :"thread.run.created" }
 
         class ThreadRunCreated < OpenAI::Internal::Type::BaseModel
+          # Represents an execution run on a
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.created"
 
+          # @param data
+          #   Represents an execution run on a
+          #   [thread](https://developers.openai.com/api/docs/assistants/migration).
           def initialize: (
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.created"
@@ -39,10 +44,15 @@ module OpenAI
           { data: OpenAI::Beta::Threads::Run, ?event: :"thread.run.queued" }
 
         class ThreadRunQueued < OpenAI::Internal::Type::BaseModel
+          # Represents an execution run on a
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.queued"
 
+          # @param data
+          #   Represents an execution run on a
+          #   [thread](https://developers.openai.com/api/docs/assistants/migration).
           def initialize: (
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.queued"
@@ -61,10 +71,15 @@ module OpenAI
           }
 
         class ThreadRunInProgress < OpenAI::Internal::Type::BaseModel
+          # Represents an execution run on a
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.in_progress"
 
+          # @param data
+          #   Represents an execution run on a
+          #   [thread](https://developers.openai.com/api/docs/assistants/migration).
           def initialize: (
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.in_progress"
@@ -83,10 +98,15 @@ module OpenAI
           }
 
         class ThreadRunRequiresAction < OpenAI::Internal::Type::BaseModel
+          # Represents an execution run on a
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.requires_action"
 
+          # @param data
+          #   Represents an execution run on a
+          #   [thread](https://developers.openai.com/api/docs/assistants/migration).
           def initialize: (
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.requires_action"
@@ -102,10 +122,15 @@ module OpenAI
           { data: OpenAI::Beta::Threads::Run, ?event: :"thread.run.completed" }
 
         class ThreadRunCompleted < OpenAI::Internal::Type::BaseModel
+          # Represents an execution run on a
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.completed"
 
+          # @param data
+          #   Represents an execution run on a
+          #   [thread](https://developers.openai.com/api/docs/assistants/migration).
           def initialize: (
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.completed"
@@ -121,10 +146,15 @@ module OpenAI
           { data: OpenAI::Beta::Threads::Run, ?event: :"thread.run.incomplete" }
 
         class ThreadRunIncomplete < OpenAI::Internal::Type::BaseModel
+          # Represents an execution run on a
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.incomplete"
 
+          # @param data
+          #   Represents an execution run on a
+          #   [thread](https://developers.openai.com/api/docs/assistants/migration).
           def initialize: (
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.incomplete"
@@ -140,10 +170,15 @@ module OpenAI
           { data: OpenAI::Beta::Threads::Run, ?event: :"thread.run.failed" }
 
         class ThreadRunFailed < OpenAI::Internal::Type::BaseModel
+          # Represents an execution run on a
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.failed"
 
+          # @param data
+          #   Represents an execution run on a
+          #   [thread](https://developers.openai.com/api/docs/assistants/migration).
           def initialize: (
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.failed"
@@ -159,10 +194,15 @@ module OpenAI
           { data: OpenAI::Beta::Threads::Run, ?event: :"thread.run.cancelling" }
 
         class ThreadRunCancelling < OpenAI::Internal::Type::BaseModel
+          # Represents an execution run on a
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.cancelling"
 
+          # @param data
+          #   Represents an execution run on a
+          #   [thread](https://developers.openai.com/api/docs/assistants/migration).
           def initialize: (
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.cancelling"
@@ -178,10 +218,15 @@ module OpenAI
           { data: OpenAI::Beta::Threads::Run, ?event: :"thread.run.cancelled" }
 
         class ThreadRunCancelled < OpenAI::Internal::Type::BaseModel
+          # Represents an execution run on a
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.cancelled"
 
+          # @param data
+          #   Represents an execution run on a
+          #   [thread](https://developers.openai.com/api/docs/assistants/migration).
           def initialize: (
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.cancelled"
@@ -197,10 +242,15 @@ module OpenAI
           { data: OpenAI::Beta::Threads::Run, ?event: :"thread.run.expired" }
 
         class ThreadRunExpired < OpenAI::Internal::Type::BaseModel
+          # Represents an execution run on a
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.expired"
 
+          # @param data
+          #   Represents an execution run on a
+          #   [thread](https://developers.openai.com/api/docs/assistants/migration).
           def initialize: (
             data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.expired"

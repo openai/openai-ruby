@@ -11,16 +11,31 @@ module OpenAI
         }
 
       class WebhookEndpointList < OpenAI::Internal::Type::BaseModel
+        # The webhook endpoints in this page.
         attr_accessor data: ::Array[OpenAI::Webhooks::WebhookEndpoint]
 
+        # The ID of the first endpoint in this page.
         attr_accessor first_id: String?
 
+        # Whether more webhook endpoints are available.
         attr_accessor has_more: bool
 
+        # The ID of the last endpoint in this page.
         attr_accessor last_id: String?
 
+        # The object type, which is always list.
         attr_accessor object: :list
 
+        # @param data
+        #   The webhook endpoints in this page.
+        # @param first_id
+        #   The ID of the first endpoint in this page.
+        # @param has_more
+        #   Whether more webhook endpoints are available.
+        # @param last_id
+        #   The ID of the last endpoint in this page.
+        # @param object
+        #   The object type, which is always list.
         def initialize: (
           data: ::Array[OpenAI::Webhooks::WebhookEndpoint],
           first_id: String?,

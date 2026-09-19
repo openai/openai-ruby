@@ -11,10 +11,24 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      # Text prompt that describes how to edit the source video.
       attr_accessor prompt: String
 
+      # Reference to the completed video to edit.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       attr_accessor video: OpenAI::Models::VideoEditParams::video
 
+      # @param prompt
+      #   Text prompt that describes how to edit the source video.
+      # @param video
+      #   Reference to the completed video to edit.
+      #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
       def initialize: (
         prompt: String,
         video: OpenAI::Models::VideoEditParams::video,
@@ -37,8 +51,11 @@ module OpenAI
         type video_reference_input_param = { id: String }
 
         class VideoReferenceInputParam < OpenAI::Internal::Type::BaseModel
+          # The identifier of the completed video.
           attr_accessor id: String
 
+          # @param id
+          #   The identifier of the completed video.
           def initialize: (id: String) -> void
 
           def to_hash: -> { id: String }

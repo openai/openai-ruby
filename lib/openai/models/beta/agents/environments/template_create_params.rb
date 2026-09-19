@@ -40,7 +40,8 @@ module OpenAI
             optional :name, String, nil?: true
 
             # @!attribute network
-            #   Network access for an OpenAI-hosted environment.
+            #   Network access policy for the environment. Defaults to disabled for GA requests
+            #   and enabled for alpha/beta requests.
             #
             #   @return [OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Network, nil]
             optional(
@@ -52,7 +53,7 @@ module OpenAI
             )
 
             # @!attribute packages
-            #   Packages to install in an OpenAI-hosted environment.
+            #   Packages to install in the environment. Defaults to empty package lists.
             #
             #   @return [OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Packages, nil]
             optional(
@@ -111,10 +112,11 @@ module OpenAI
             #     An optional human-readable display name for the template.
             #
             #   @param network [OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Network, nil]
-            #     Network access for an OpenAI-hosted environment.
+            #     Network access policy for the environment. Defaults to disabled for GA requests
+            #     and enabled for alpha/beta requests.
             #
             #   @param packages [OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Packages, nil]
-            #     Packages to install in an OpenAI-hosted environment.
+            #     Packages to install in the environment. Defaults to empty package lists.
             #
             #   @param plugins [Array<OpenAI::Models::Beta::HostedPluginParam>, nil]
             #     Plugins provided as inline ZIP archives. Defaults to an empty list.
@@ -142,7 +144,8 @@ module OpenAI
               optional :allowed_domains, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
               # @!method initialize(access:, allowed_domains: nil)
-              #   Network access for an OpenAI-hosted environment.
+              #   Network access policy for the environment. Defaults to disabled for GA requests
+              #   and enabled for alpha/beta requests.
               #
               #   @param access [Symbol, OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Network::Access]
               #     The environment's network access mode.
@@ -156,7 +159,7 @@ module OpenAI
               module Access
                 extend OpenAI::Internal::Type::Enum
 
-                # Allows unrestricted network access, matching an omitted network policy.
+                # Allows unrestricted network access.
                 ENABLED = :enabled
 
                 # Disables network access.
@@ -190,7 +193,7 @@ module OpenAI
               optional :system_, OpenAI::Internal::Type::ArrayOf[String], api_name: :system, nil?: true
 
               # @!method initialize(npm: nil, python: nil, system_: nil)
-              #   Packages to install in an OpenAI-hosted environment.
+              #   Packages to install in the environment. Defaults to empty package lists.
               #
               #   @param npm [Array<String>, nil]
               #     npm packages to install globally. Defaults to an empty list.

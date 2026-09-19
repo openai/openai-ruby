@@ -327,7 +327,7 @@ module OpenAI
           sig { returns(OpenAI::Beta::PersistedAgentTool::WebSearch::ContextSize::TaggedSymbol) }
           attr_accessor :context_size
 
-          # Approximate user location used to localize web search results.
+          # Approximate location used to localize search results, if provided.
           sig { returns(T.nilable(OpenAI::Beta::PersistedAgentTool::WebSearch::Location)) }
           attr_reader :location
 
@@ -366,7 +366,7 @@ module OpenAI
             # The amount of search context made available to the model. Defaults to `medium`.
             context_size:,
 
-            # Approximate user location used to localize web search results.
+            # Approximate location used to localize search results, if provided.
             location:,
 
             # The source used for web search results.
@@ -432,7 +432,7 @@ module OpenAI
             sig { returns(T.nilable(String)) }
             attr_accessor :timezone
 
-            # Approximate user location used to localize web search results.
+            # Approximate location used to localize search results, if provided.
             sig do
               params(
 

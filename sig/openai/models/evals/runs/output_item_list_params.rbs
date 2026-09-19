@@ -21,26 +21,48 @@ module OpenAI
 
           attr_accessor run_id: String
 
+          # Identifier for the last output item from the previous pagination request.
           attr_reader after: String?
 
+          # Identifier for the last output item from the previous pagination request.
           def after=: (String) -> String
 
+          # Number of output items to retrieve.
           attr_reader limit: Integer?
 
+          # Number of output items to retrieve.
           def limit=: (Integer) -> Integer
 
+          # Sort order for output items by timestamp. Use `asc` for ascending order or
+          # `desc` for descending order. Defaults to `asc`.
           attr_reader order: OpenAI::Models::Evals::Runs::OutputItemListParams::order?
 
+          # Sort order for output items by timestamp. Use `asc` for ascending order or
+          # `desc` for descending order. Defaults to `asc`.
           def order=: (
             OpenAI::Models::Evals::Runs::OutputItemListParams::order
           ) -> OpenAI::Models::Evals::Runs::OutputItemListParams::order
 
+          # Filter output items by status. Use `failed` to filter by failed output items or
+          # `pass` to filter by passed output items.
           attr_reader status: OpenAI::Models::Evals::Runs::OutputItemListParams::status?
 
+          # Filter output items by status. Use `failed` to filter by failed output items or
+          # `pass` to filter by passed output items.
           def status=: (
             OpenAI::Models::Evals::Runs::OutputItemListParams::status
           ) -> OpenAI::Models::Evals::Runs::OutputItemListParams::status
 
+          # @param after
+          #   Identifier for the last output item from the previous pagination request.
+          # @param limit
+          #   Number of output items to retrieve.
+          # @param order
+          #   Sort order for output items by timestamp. Use `asc` for ascending order or
+          #   `desc` for descending order. Defaults to `asc`.
+          # @param status
+          #   Filter output items by status. Use `failed` to filter by failed output items or
+          #   `pass` to filter by passed output items.
           def initialize: (
             eval_id: String,
             run_id: String,

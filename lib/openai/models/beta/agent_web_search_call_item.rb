@@ -11,7 +11,7 @@ module OpenAI
         required :id, String
 
         # @!attribute action
-        #   An action performed by the web search tool.
+        #   The action performed by the web search tool.
         #
         #   @return [OpenAI::Models::Beta::WebSearchAction::Search, OpenAI::Models::Beta::WebSearchAction::OpenPage, OpenAI::Models::Beta::WebSearchAction::FindInPage, OpenAI::Models::Beta::WebSearchAction::Other, nil]
         required :action, union: -> { OpenAI::Beta::WebSearchAction }, nil?: true
@@ -41,7 +41,7 @@ module OpenAI
         #     The ID of the web search call.
         #
         #   @param action [OpenAI::Models::Beta::WebSearchAction::Search, OpenAI::Models::Beta::WebSearchAction::OpenPage, OpenAI::Models::Beta::WebSearchAction::FindInPage, OpenAI::Models::Beta::WebSearchAction::Other, nil]
-        #     An action performed by the web search tool.
+        #     The action performed by the web search tool.
         #
         #   @param status [Symbol, OpenAI::Models::Beta::AgentOutputItemStatus]
         #     The status of the web search call.

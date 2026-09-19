@@ -11,10 +11,16 @@ module OpenAI
           { encrypted_content: String, ?type: :encrypted_content }
 
         class EncryptedContent < OpenAI::Internal::Type::BaseModel
+          # The encrypted content payload.
           attr_accessor encrypted_content: String
 
+          # The content type. Always `encrypted_content`.
           attr_accessor type: :encrypted_content
 
+          # @param encrypted_content
+          #   The encrypted content payload.
+          # @param type
+          #   The content type. Always `encrypted_content`.
           def initialize: (
             encrypted_content: String,
             ?type: :encrypted_content

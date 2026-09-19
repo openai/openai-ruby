@@ -18,20 +18,38 @@ module OpenAI
 
             attr_accessor group_id: String
 
+            # A cursor for use in pagination. Provide the ID of the last user from the
+            # previous list response to retrieve the next page.
             attr_reader after: String?
 
+            # A cursor for use in pagination. Provide the ID of the last user from the
+            # previous list response to retrieve the next page.
             def after=: (String) -> String
 
+            # A limit on the number of users to be returned. Limit can range between 0 and
+            # 1000, and the default is 100.
             attr_reader limit: Integer?
 
+            # A limit on the number of users to be returned. Limit can range between 0 and
+            # 1000, and the default is 100.
             def limit=: (Integer) -> Integer
 
+            # Specifies the sort order of users in the list.
             attr_reader order: OpenAI::Models::Admin::Organization::Groups::UserListParams::order?
 
+            # Specifies the sort order of users in the list.
             def order=: (
               OpenAI::Models::Admin::Organization::Groups::UserListParams::order
             ) -> OpenAI::Models::Admin::Organization::Groups::UserListParams::order
 
+            # @param after
+            #   A cursor for use in pagination. Provide the ID of the last user from the
+            #   previous list response to retrieve the next page.
+            # @param limit
+            #   A limit on the number of users to be returned. Limit can range between 0 and
+            #   1000, and the default is 100.
+            # @param order
+            #   Specifies the sort order of users in the list.
             def initialize: (
               group_id: String,
               ?after: String,

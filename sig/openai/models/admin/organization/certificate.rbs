@@ -13,20 +13,53 @@ module OpenAI
           }
 
         class Certificate < OpenAI::Internal::Type::BaseModel
+          # The identifier, which can be referenced in API endpoints
           attr_accessor id: String
 
           attr_accessor certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails
 
+          # The Unix timestamp (in seconds) of when the certificate was uploaded.
           attr_accessor created_at: Integer
 
+          # The name of the certificate.
           attr_accessor name: String?
 
+          # The object type.
+          #
+          # - If creating, updating, or getting a specific certificate, the object type is
+          #   `certificate`.
+          # - If listing, activating, or deactivating certificates for the organization, the
+          #   object type is `organization.certificate`.
+          # - If listing, activating, or deactivating certificates for a project, the object
+          #   type is `organization.project.certificate`.
           attr_accessor object: OpenAI::Models::Admin::Organization::Certificate::object
 
+          # Whether the certificate is currently active at the specified scope. Not returned
+          # when getting details for a specific certificate.
           attr_reader active: bool?
 
+          # Whether the certificate is currently active at the specified scope. Not returned
+          # when getting details for a specific certificate.
           def active=: (bool) -> bool
 
+          # @param id
+          #   The identifier, which can be referenced in API endpoints
+          # @param created_at
+          #   The Unix timestamp (in seconds) of when the certificate was uploaded.
+          # @param name
+          #   The name of the certificate.
+          # @param object
+          #   The object type.
+          #
+          #   - If creating, updating, or getting a specific certificate, the object type is
+          #     `certificate`.
+          #   - If listing, activating, or deactivating certificates for the organization, the
+          #     object type is `organization.certificate`.
+          #   - If listing, activating, or deactivating certificates for a project, the object
+          #     type is `organization.project.certificate`.
+          # @param active
+          #   Whether the certificate is currently active at the specified scope. Not returned
+          #   when getting details for a specific certificate.
           def initialize: (
             id: String,
             certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails,
@@ -49,18 +82,30 @@ module OpenAI
             { ?content: String, ?expires_at: Integer, ?valid_at: Integer }
 
           class CertificateDetails < OpenAI::Internal::Type::BaseModel
+            # The content of the certificate in PEM format.
             attr_reader content: String?
 
+            # The content of the certificate in PEM format.
             def content=: (String) -> String
 
+            # The Unix timestamp (in seconds) of when the certificate expires.
             attr_reader expires_at: Integer?
 
+            # The Unix timestamp (in seconds) of when the certificate expires.
             def expires_at=: (Integer) -> Integer
 
+            # The Unix timestamp (in seconds) of when the certificate becomes valid.
             attr_reader valid_at: Integer?
 
+            # The Unix timestamp (in seconds) of when the certificate becomes valid.
             def valid_at=: (Integer) -> Integer
 
+            # @param content
+            #   The content of the certificate in PEM format.
+            # @param expires_at
+            #   The Unix timestamp (in seconds) of when the certificate expires.
+            # @param valid_at
+            #   The Unix timestamp (in seconds) of when the certificate becomes valid.
             def initialize: (
               ?content: String,
               ?expires_at: Integer,

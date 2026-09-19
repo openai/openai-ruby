@@ -16,8 +16,11 @@ module OpenAI
 
             attr_accessor project_id: String
 
+            # The desired project data retention type.
             attr_accessor retention_type: OpenAI::Models::Admin::Organization::Projects::DataRetentionUpdateParams::retention_type
 
+            # @param retention_type
+            #   The desired project data retention type.
             def initialize: (
               project_id: String,
               retention_type: OpenAI::Models::Admin::Organization::Projects::DataRetentionUpdateParams::retention_type,

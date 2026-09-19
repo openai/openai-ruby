@@ -14,12 +14,21 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # Permissions to grant to the role.
           attr_accessor permissions: ::Array[String]
 
+          # Unique name for the role.
           attr_accessor role_name: String
 
+          # Optional description of the role.
           attr_accessor description: String?
 
+          # @param permissions
+          #   Permissions to grant to the role.
+          # @param role_name
+          #   Unique name for the role.
+          # @param description
+          #   Optional description of the role.
           def initialize: (
             permissions: ::Array[String],
             role_name: String,

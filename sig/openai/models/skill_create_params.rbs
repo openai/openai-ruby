@@ -10,12 +10,28 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      # Skill files to upload (directory upload) or a single zip file.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       attr_reader files: OpenAI::Models::SkillCreateParams::files?
 
+      # Skill files to upload (directory upload) or a single zip file.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       def files=: (
         OpenAI::Models::SkillCreateParams::files
       ) -> OpenAI::Models::SkillCreateParams::files
 
+      # @param files
+      #   Skill files to upload (directory upload) or a single zip file.
+      #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
       def initialize: (
         ?files: OpenAI::Models::SkillCreateParams::files,
         ?request_options: OpenAI::request_opts

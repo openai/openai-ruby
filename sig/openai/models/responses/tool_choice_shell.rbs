@@ -4,8 +4,11 @@ module OpenAI
       type tool_choice_shell = { ?type: :shell }
 
       class ToolChoiceShell < OpenAI::Internal::Type::BaseModel
+        # The tool to call. Always `shell`.
         attr_accessor type: :shell
 
+        # @param type
+        #   The tool to call. Always `shell`.
         def initialize: (?type: :shell) -> void
 
         def to_hash: -> { ?type: :shell }

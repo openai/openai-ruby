@@ -11,18 +11,41 @@ module OpenAI
         }
 
       class InstructionsAppendedEvent < OpenAI::Internal::Type::BaseModel
+        # The end of this event on the Live session timeline, in milliseconds from the
+        # beginning of the session. For appended context, this can equal start_ms.
         attr_accessor end_ms: Integer
 
+        # The unique ID of the Live server event.
         attr_accessor event_id: String
 
+        # The start of this event on the Live session timeline, in milliseconds from the
+        # beginning of the session.
         attr_accessor start_ms: Integer
 
+        # The event type, always `session.instructions.appended`.
         attr_accessor type: :"session.instructions.appended"
 
+        # The event_id of the client command associated with this server event, when
+        # supplied.
         attr_reader client_event_id: String?
 
+        # The event_id of the client command associated with this server event, when
+        # supplied.
         def client_event_id=: (String) -> String
 
+        # @param end_ms
+        #   The end of this event on the Live session timeline, in milliseconds from the
+        #   beginning of the session. For appended context, this can equal start_ms.
+        # @param event_id
+        #   The unique ID of the Live server event.
+        # @param start_ms
+        #   The start of this event on the Live session timeline, in milliseconds from the
+        #   beginning of the session.
+        # @param client_event_id
+        #   The event_id of the client command associated with this server event, when
+        #   supplied.
+        # @param type
+        #   The event type, always `session.instructions.appended`.
         def initialize: (
           end_ms: Integer,
           event_id: String,

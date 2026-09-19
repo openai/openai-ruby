@@ -19,8 +19,11 @@ module OpenAI
 
             attr_accessor user_id: String
 
+            # `owner` or `member`
             attr_accessor role: String?
 
+            # @param role
+            #   `owner` or `member`
             def initialize: (
               project_id: String,
               user_id: String,

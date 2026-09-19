@@ -10,8 +10,11 @@ module OpenAI
 
           attr_accessor deleted: bool
 
+          # The object type, which is always `organization.invite.deleted`
           attr_accessor object: :"organization.invite.deleted"
 
+          # @param object
+          #   The object type, which is always `organization.invite.deleted`
           def initialize: (
             id: String,
             deleted: bool,

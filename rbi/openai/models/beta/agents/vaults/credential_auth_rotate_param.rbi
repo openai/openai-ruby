@@ -43,7 +43,7 @@ module OpenAI
               sig { returns(T.nilable(String)) }
               attr_accessor :expires_at
 
-              # Updates to an MCP credential's existing OAuth refresh configuration.
+              # Optional write-only refresh-token and client-secret updates.
               sig { returns(T.nilable(OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth::Refresh)) }
               attr_reader :refresh
 
@@ -79,7 +79,7 @@ module OpenAI
                 # case the expiry is cleared.
                 expires_at: nil,
 
-                # Updates to an MCP credential's existing OAuth refresh configuration.
+                # Optional write-only refresh-token and client-secret updates.
                 refresh: nil,
 
                 # The type of the object. Always `mcp_oauth`.
@@ -119,8 +119,7 @@ module OpenAI
                 sig { returns(T.nilable(String)) }
                 attr_accessor :scope
 
-                # Client-secret updates that preserve the credential's OAuth authentication
-                # method.
+                # Client-secret updates for the existing token endpoint authentication method.
                 sig {
                   returns(
                     T.nilable(
@@ -133,7 +132,7 @@ module OpenAI
                 }
                 attr_accessor :token_endpoint_auth
 
-                # Updates to an MCP credential's existing OAuth refresh configuration.
+                # Optional write-only refresh-token and client-secret updates.
                 sig do
                   params(
 
@@ -160,8 +159,7 @@ module OpenAI
                   # scopes, or pass `null` to stop sending a scope parameter.
                   scope: nil,
 
-                  # Client-secret updates that preserve the credential's OAuth authentication
-                  # method.
+                  # Client-secret updates for the existing token endpoint authentication method.
 
                   token_endpoint_auth: nil
                 )

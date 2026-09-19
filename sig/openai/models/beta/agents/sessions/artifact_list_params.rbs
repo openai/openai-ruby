@@ -19,18 +19,31 @@ module OpenAI
 
             attr_accessor session_id: String
 
+            # Return artifacts after this immutable artifact ID.
             attr_accessor after: String?
 
+            # Restrict the listing to artifacts produced by this environment.
             attr_accessor environment_id: String?
 
+            # The maximum number of artifacts to return, between 1 and 100.
             attr_accessor limit: Integer?
 
+            # Sort by creation time and ID. Defaults to descending.
             attr_reader order: OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order?
 
+            # Sort by creation time and ID. Defaults to descending.
             def order=: (
               OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order
             ) -> OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order
 
+            # @param after
+            #   Return artifacts after this immutable artifact ID.
+            # @param environment_id
+            #   Restrict the listing to artifacts produced by this environment.
+            # @param limit
+            #   The maximum number of artifacts to return, between 1 and 100.
+            # @param order
+            #   Sort by creation time and ID. Defaults to descending.
             def initialize: (
               session_id: String,
               ?after: String?,

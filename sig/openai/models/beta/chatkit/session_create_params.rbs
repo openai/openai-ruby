@@ -16,28 +16,51 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # A free-form string that identifies your end user; ensures this Session can
+          # access other objects that have the same `user` scope.
           attr_accessor user: String
 
+          # Workflow that powers the session.
           attr_accessor workflow: OpenAI::Beta::ChatKit::ChatSessionWorkflowParam
 
+          # Optional overrides for ChatKit runtime configuration features
           attr_reader chatkit_configuration: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam?
 
+          # Optional overrides for ChatKit runtime configuration features
           def chatkit_configuration=: (
             OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam
           ) -> OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam
 
+          # Optional override for session expiration timing in seconds from creation.
+          # Defaults to 10 minutes.
           attr_reader expires_after: OpenAI::Beta::ChatKit::ChatSessionExpiresAfterParam?
 
+          # Optional override for session expiration timing in seconds from creation.
+          # Defaults to 10 minutes.
           def expires_after=: (
             OpenAI::Beta::ChatKit::ChatSessionExpiresAfterParam
           ) -> OpenAI::Beta::ChatKit::ChatSessionExpiresAfterParam
 
+          # Optional override for per-minute request limits. When omitted, defaults to 10.
           attr_reader rate_limits: OpenAI::Beta::ChatKit::ChatSessionRateLimitsParam?
 
+          # Optional override for per-minute request limits. When omitted, defaults to 10.
           def rate_limits=: (
             OpenAI::Beta::ChatKit::ChatSessionRateLimitsParam
           ) -> OpenAI::Beta::ChatKit::ChatSessionRateLimitsParam
 
+          # @param user
+          #   A free-form string that identifies your end user; ensures this Session can
+          #   access other objects that have the same `user` scope.
+          # @param workflow
+          #   Workflow that powers the session.
+          # @param chatkit_configuration
+          #   Optional overrides for ChatKit runtime configuration features
+          # @param expires_after
+          #   Optional override for session expiration timing in seconds from creation.
+          #   Defaults to 10 minutes.
+          # @param rate_limits
+          #   Optional override for per-minute request limits. When omitted, defaults to 10.
           def initialize: (
             user: String,
             workflow: OpenAI::Beta::ChatKit::ChatSessionWorkflowParam,

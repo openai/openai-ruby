@@ -14,11 +14,12 @@ module OpenAI
           )
         end
 
-        # The amount of reasoning effort used by an agent.
+        # The requested reasoning effort, or `null` when the model selects its own
+        # default.
         sig { returns(T.nilable(OpenAI::Beta::AgentReasoning::Effort::TaggedSymbol)) }
         attr_accessor :effort
 
-        # The reasoning summary format requested from an agent.
+        # The requested reasoning summary format, or `null` when summaries are disabled.
         sig { returns(T.nilable(OpenAI::Beta::AgentReasoning::Summary::TaggedSymbol)) }
         attr_accessor :summary
 
@@ -34,10 +35,11 @@ module OpenAI
         end
         def self.new(
 
-          # The amount of reasoning effort used by an agent.
+          # The requested reasoning effort, or `null` when the model selects its own
+          # default.
           effort:,
 
-          # The reasoning summary format requested from an agent.
+          # The requested reasoning summary format, or `null` when summaries are disabled.
 
           summary:
         )
@@ -54,7 +56,8 @@ module OpenAI
         def to_hash
         end
 
-        # The amount of reasoning effort used by an agent.
+        # The requested reasoning effort, or `null` when the model selects its own
+        # default.
         module Effort
           extend OpenAI::Internal::Type::Enum
 
@@ -74,7 +77,7 @@ module OpenAI
           end
         end
 
-        # The reasoning summary format requested from an agent.
+        # The requested reasoning summary format, or `null` when summaries are disabled.
         module Summary
           extend OpenAI::Internal::Type::Enum
 

@@ -12,6 +12,7 @@ module OpenAI
             }
 
           class RunStepDeltaMessageDelta < OpenAI::Internal::Type::BaseModel
+            # Always `message_creation`.
             attr_accessor type: :message_creation
 
             attr_reader message_creation: OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation?
@@ -20,6 +21,8 @@ module OpenAI
               OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
             ) -> OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
 
+            # @param type
+            #   Always `message_creation`.
             def initialize: (
               ?message_creation: OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
               ?type: :message_creation
@@ -33,10 +36,14 @@ module OpenAI
             type message_creation = { ?message_id: String }
 
             class MessageCreation < OpenAI::Internal::Type::BaseModel
+              # The ID of the message that was created by this run step.
               attr_reader message_id: String?
 
+              # The ID of the message that was created by this run step.
               def message_id=: (String) -> String
 
+              # @param message_id
+              #   The ID of the message that was created by this run step.
               def initialize: (?message_id: String) -> void
 
               def to_hash: -> { ?message_id: String }

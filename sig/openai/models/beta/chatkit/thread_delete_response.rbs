@@ -6,12 +6,21 @@ module OpenAI
           { id: String, deleted: bool, ?object: :"chatkit.thread.deleted" }
 
         class ThreadDeleteResponse < OpenAI::Internal::Type::BaseModel
+          # Identifier of the deleted thread.
           attr_accessor id: String
 
+          # Indicates that the thread has been deleted.
           attr_accessor deleted: bool
 
+          # Type discriminator that is always `chatkit.thread.deleted`.
           attr_accessor object: :"chatkit.thread.deleted"
 
+          # @param id
+          #   Identifier of the deleted thread.
+          # @param deleted
+          #   Indicates that the thread has been deleted.
+          # @param object
+          #   Type discriminator that is always `chatkit.thread.deleted`.
           def initialize: (
             id: String,
             deleted: bool,

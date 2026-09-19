@@ -9,8 +9,11 @@ module OpenAI
       class ChatCompletionFunctionTool < OpenAI::Internal::Type::BaseModel
         attr_accessor function: OpenAI::FunctionDefinition
 
+        # The type of the tool. Currently, only `function` is supported.
         attr_accessor type: :function
 
+        # @param type
+        #   The type of the tool. Currently, only `function` is supported.
         def initialize: (
           function: OpenAI::FunctionDefinition,
           ?type: :function

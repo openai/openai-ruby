@@ -51,7 +51,9 @@ module OpenAI
             sig { returns(T.nilable(String)) }
             attr_accessor :name
 
-            # Network access for an OpenAI-hosted environment.
+            # Network access available after setup completes. Omit to preserve the current
+            # policy, or pass `null` to reset to disabled for GA requests or enabled for
+            # alpha/beta requests.
             sig { returns(T.nilable(OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Network)) }
             attr_reader :network
 
@@ -60,7 +62,7 @@ module OpenAI
             }
             attr_writer :network
 
-            # Packages to install in an OpenAI-hosted environment.
+            # Packages installed before the runtime network policy applies.
             sig { returns(T.nilable(OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Packages)) }
             attr_reader :packages
 
@@ -147,10 +149,12 @@ module OpenAI
               # A replacement human-readable display name, or `null` to clear the name.
               name: nil,
 
-              # Network access for an OpenAI-hosted environment.
+              # Network access available after setup completes. Omit to preserve the current
+              # policy, or pass `null` to reset to disabled for GA requests or enabled for
+              # alpha/beta requests.
               network: nil,
 
-              # Packages to install in an OpenAI-hosted environment.
+              # Packages installed before the runtime network policy applies.
               packages: nil,
 
               # Replacement plugin configuration installed for each new session.
@@ -213,7 +217,9 @@ module OpenAI
               sig { returns(T.nilable(T::Array[String])) }
               attr_accessor :allowed_domains
 
-              # Network access for an OpenAI-hosted environment.
+              # Network access available after setup completes. Omit to preserve the current
+              # policy, or pass `null` to reset to disabled for GA requests or enabled for
+              # alpha/beta requests.
               sig do
                 params(
 
@@ -254,7 +260,7 @@ module OpenAI
                 }
                 OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-                # Allows unrestricted network access, matching an omitted network policy.
+                # Allows unrestricted network access.
                 ENABLED = T.let(
                   :enabled,
                   OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Network::Access::TaggedSymbol
@@ -302,7 +308,7 @@ module OpenAI
               sig { returns(T.nilable(T::Array[String])) }
               attr_accessor :system_
 
-              # Packages to install in an OpenAI-hosted environment.
+              # Packages installed before the runtime network policy applies.
               sig do
                 params(
 

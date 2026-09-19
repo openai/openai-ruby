@@ -5,12 +5,21 @@ module OpenAI
         { data: String, ?media_type: :"application/zip", ?type: :base64 }
 
       class InlineCapabilitySourceParam < OpenAI::Internal::Type::BaseModel
+        # Standard-base64 encoded ZIP archive bytes.
         attr_accessor data: String
 
+        # The archive media type, always `application/zip`.
         attr_accessor media_type: :"application/zip"
 
+        # The type of the object. Always `base64`.
         attr_accessor type: :base64
 
+        # @param data
+        #   Standard-base64 encoded ZIP archive bytes.
+        # @param media_type
+        #   The archive media type, always `application/zip`.
+        # @param type
+        #   The type of the object. Always `base64`.
         def initialize: (
           data: String,
           ?media_type: :"application/zip",

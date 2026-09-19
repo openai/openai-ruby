@@ -15,18 +15,36 @@ module OpenAI
           }
 
         class OrganizationSpendAlert < OpenAI::Internal::Type::BaseModel
+          # The identifier, which can be referenced in API endpoints.
           attr_accessor id: String
 
+          # The currency for the threshold amount.
           attr_accessor currency: OpenAI::Models::Admin::Organization::OrganizationSpendAlert::currency
 
+          # The time interval for evaluating spend against the threshold.
           attr_accessor interval: OpenAI::Models::Admin::Organization::OrganizationSpendAlert::interval
 
+          # Email notification settings for a spend alert.
           attr_accessor notification_channel: OpenAI::Admin::Organization::OrganizationSpendAlert::NotificationChannel
 
+          # The object type, which is always `organization.spend_alert`.
           attr_accessor object: :"organization.spend_alert"
 
+          # The alert threshold amount, in cents.
           attr_accessor threshold_amount: Integer
 
+          # @param id
+          #   The identifier, which can be referenced in API endpoints.
+          # @param currency
+          #   The currency for the threshold amount.
+          # @param interval
+          #   The time interval for evaluating spend against the threshold.
+          # @param notification_channel
+          #   Email notification settings for a spend alert.
+          # @param threshold_amount
+          #   The alert threshold amount, in cents.
+          # @param object
+          #   The object type, which is always `organization.spend_alert`.
           def initialize: (
             id: String,
             currency: OpenAI::Models::Admin::Organization::OrganizationSpendAlert::currency,
@@ -73,12 +91,21 @@ module OpenAI
             }
 
           class NotificationChannel < OpenAI::Internal::Type::BaseModel
+            # Email addresses that receive the spend alert notification.
             attr_accessor recipients: ::Array[String]
 
+            # The notification channel type. Currently only `email` is supported.
             attr_accessor type: :email
 
+            # Optional subject prefix for alert emails.
             attr_accessor subject_prefix: String?
 
+            # @param recipients
+            #   Email addresses that receive the spend alert notification.
+            # @param subject_prefix
+            #   Optional subject prefix for alert emails.
+            # @param type
+            #   The notification channel type. Currently only `email` is supported.
             def initialize: (
               recipients: ::Array[String],
               ?subject_prefix: String?,

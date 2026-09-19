@@ -9,12 +9,21 @@ module OpenAI
         }
 
       class RealtimeTranslationSessionCreatedEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The translation session configuration.
         attr_accessor session: OpenAI::Realtime::RealtimeTranslationSession
 
+        # The event type, must be `session.created`.
         attr_accessor type: :"session.created"
 
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param session
+        #   The translation session configuration.
+        # @param type
+        #   The event type, must be `session.created`.
         def initialize: (
           event_id: String,
           session: OpenAI::Realtime::RealtimeTranslationSession,

@@ -16,8 +16,11 @@ module OpenAI
 
         attr_accessor object: :"skill.version.deleted"
 
+        # The deleted skill version.
         attr_accessor version: String
 
+        # @param version
+        #   The deleted skill version.
         def initialize: (
           id: String,
           deleted: bool,

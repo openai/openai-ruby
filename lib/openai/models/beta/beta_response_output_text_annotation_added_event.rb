@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       class BetaResponseOutputTextAnnotationAddedEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute annotation
-        #   An annotation that applies to a span of output text.
+        #   The annotation object being added. (See annotation schema for details.)
         #
         #   @return [OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::FileCitation, OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::URLCitation, OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::ContainerFileCitation, OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::FilePath, nil]
         required(
@@ -60,7 +60,7 @@ module OpenAI
         #   Emitted when an annotation is added to output text content.
         #
         #   @param annotation [OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::FileCitation, OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::URLCitation, OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::ContainerFileCitation, OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent::Annotation::FilePath, nil]
-        #     An annotation that applies to a span of output text.
+        #     The annotation object being added. (See annotation schema for details.)
         #
         #   @param annotation_index [Integer]
         #     The index of the annotation within the content part.
@@ -83,7 +83,7 @@ module OpenAI
         #   @param type [Symbol, :"response.output_text.annotation.added"]
         #     The type of the event. Always 'response.output_text.annotation.added'.
 
-        # An annotation that applies to a span of output text.
+        # The annotation object being added. (See annotation schema for details.)
         #
         # @see OpenAI::Models::Beta::BetaResponseOutputTextAnnotationAddedEvent#annotation
         module Annotation

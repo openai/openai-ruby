@@ -10,16 +10,32 @@ module OpenAI
         }
 
       class ErrorEvent < OpenAI::Internal::Type::BaseModel
+        # Details of the Live error and the client command that caused it, when known.
         attr_accessor error: OpenAI::Live::Error
 
+        # The unique ID of the Live server event.
         attr_accessor event_id: String
 
+        # The event type, always `error`.
         attr_accessor type: :error
 
+        # The event_id of the client command associated with this server event, when
+        # supplied.
         attr_reader client_event_id: String?
 
+        # The event_id of the client command associated with this server event, when
+        # supplied.
         def client_event_id=: (String) -> String
 
+        # @param error
+        #   Details of the Live error and the client command that caused it, when known.
+        # @param event_id
+        #   The unique ID of the Live server event.
+        # @param client_event_id
+        #   The event_id of the client command associated with this server event, when
+        #   supplied.
+        # @param type
+        #   The event type, always `error`.
         def initialize: (
           error: OpenAI::Live::Error,
           event_id: String,

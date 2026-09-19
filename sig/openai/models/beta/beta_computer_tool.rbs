@@ -6,8 +6,11 @@ module OpenAI
       type beta_computer_tool = { ?type: :computer }
 
       class BetaComputerTool < OpenAI::Internal::Type::BaseModel
+        # The type of the computer tool. Always `computer`.
         attr_accessor type: :computer
 
+        # @param type
+        #   The type of the computer tool. Always `computer`.
         def initialize: (?type: :computer) -> void
 
         def to_hash: -> { ?type: :computer }

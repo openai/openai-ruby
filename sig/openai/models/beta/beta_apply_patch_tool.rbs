@@ -10,10 +10,16 @@ module OpenAI
         }
 
       class BetaApplyPatchTool < OpenAI::Internal::Type::BaseModel
+        # The type of the tool. Always `apply_patch`.
         attr_accessor type: :apply_patch
 
+        # The tool invocation context(s).
         attr_accessor allowed_callers: ::Array[OpenAI::Models::Beta::BetaApplyPatchTool::allowed_caller]?
 
+        # @param allowed_callers
+        #   The tool invocation context(s).
+        # @param type
+        #   The type of the tool. Always `apply_patch`.
         def initialize: (
           ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaApplyPatchTool::allowed_caller]?,
           ?type: :apply_patch

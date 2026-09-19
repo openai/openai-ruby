@@ -18,20 +18,35 @@ module OpenAI
 
             attr_accessor group_id: String
 
+            # Cursor for pagination. Provide the value from the previous response's `next`
+            # field to continue listing organization roles.
             attr_reader after: String?
 
+            # Cursor for pagination. Provide the value from the previous response's `next`
+            # field to continue listing organization roles.
             def after=: (String) -> String
 
+            # A limit on the number of organization role assignments to return.
             attr_reader limit: Integer?
 
+            # A limit on the number of organization role assignments to return.
             def limit=: (Integer) -> Integer
 
+            # Sort order for the returned organization roles.
             attr_reader order: OpenAI::Models::Admin::Organization::Groups::RoleListParams::order?
 
+            # Sort order for the returned organization roles.
             def order=: (
               OpenAI::Models::Admin::Organization::Groups::RoleListParams::order
             ) -> OpenAI::Models::Admin::Organization::Groups::RoleListParams::order
 
+            # @param after
+            #   Cursor for pagination. Provide the value from the previous response's `next`
+            #   field to continue listing organization roles.
+            # @param limit
+            #   A limit on the number of organization role assignments to return.
+            # @param order
+            #   Sort order for the returned organization roles.
             def initialize: (
               group_id: String,
               ?after: String,

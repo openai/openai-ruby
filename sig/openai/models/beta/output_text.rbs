@@ -4,10 +4,16 @@ module OpenAI
       type output_text = { text: String, ?type: :output_text }
 
       class OutputText < OpenAI::Internal::Type::BaseModel
+        # The text produced by the agent.
         attr_accessor text: String
 
+        # The content type. Always `output_text`.
         attr_accessor type: :output_text
 
+        # @param text
+        #   The text produced by the agent.
+        # @param type
+        #   The content type. Always `output_text`.
         def initialize: (text: String, ?type: :output_text) -> void
 
         def to_hash: -> { text: String, ?type: :output_text }

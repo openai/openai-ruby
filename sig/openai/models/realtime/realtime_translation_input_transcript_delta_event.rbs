@@ -10,14 +10,32 @@ module OpenAI
         }
 
       class RealtimeTranslationInputTranscriptDeltaEvent < OpenAI::Internal::Type::BaseModel
+        # Append-only source-language transcript text.
         attr_accessor delta: String
 
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The event type, must be `session.input_transcript.delta`.
         attr_accessor type: :"session.input_transcript.delta"
 
+        # Timing metadata for stream alignment, derived from the translation frame when
+        # available. It advances in 200 ms increments, but multiple transcript deltas may
+        # share the same `elapsed_ms`. Treat it as alignment metadata, not a unique
+        # transcript-delta identifier.
         attr_accessor elapsed_ms: Integer?
 
+        # @param delta
+        #   Append-only source-language transcript text.
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param elapsed_ms
+        #   Timing metadata for stream alignment, derived from the translation frame when
+        #   available. It advances in 200 ms increments, but multiple transcript deltas may
+        #   share the same `elapsed_ms`. Treat it as alignment metadata, not a unique
+        #   transcript-delta identifier.
+        # @param type
+        #   The event type, must be `session.input_transcript.delta`.
         def initialize: (
           delta: String,
           event_id: String,

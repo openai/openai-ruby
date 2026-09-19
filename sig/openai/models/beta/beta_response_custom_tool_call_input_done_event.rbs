@@ -14,18 +14,36 @@ module OpenAI
         }
 
       class BetaResponseCustomToolCallInputDoneEvent < OpenAI::Internal::Type::BaseModel
+        # The complete input data for the custom tool call.
         attr_accessor input: String
 
+        # Unique identifier for the API item associated with this event.
         attr_accessor item_id: String
 
+        # The index of the output this event applies to.
         attr_accessor output_index: Integer
 
+        # The sequence number of this event.
         attr_accessor sequence_number: Integer
 
+        # The event type identifier.
         attr_accessor type: :"response.custom_tool_call_input.done"
 
+        # The agent that owns this multi-agent streaming event.
         attr_accessor agent: OpenAI::Beta::BetaResponseCustomToolCallInputDoneEvent::Agent?
 
+        # @param input
+        #   The complete input data for the custom tool call.
+        # @param item_id
+        #   Unique identifier for the API item associated with this event.
+        # @param output_index
+        #   The index of the output this event applies to.
+        # @param sequence_number
+        #   The sequence number of this event.
+        # @param agent
+        #   The agent that owns this multi-agent streaming event.
+        # @param type
+        #   The event type identifier.
         def initialize: (
           input: String,
           item_id: String,
@@ -47,8 +65,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }

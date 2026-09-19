@@ -11,16 +11,31 @@ module OpenAI
         }
 
       class RealtimeMcpApprovalRequest < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the approval request.
         attr_accessor id: String
 
+        # A JSON string of arguments for the tool.
         attr_accessor arguments: String
 
+        # The name of the tool to run.
         attr_accessor name: String
 
+        # The label of the MCP server making the request.
         attr_accessor server_label: String
 
+        # The type of the item. Always `mcp_approval_request`.
         attr_accessor type: :mcp_approval_request
 
+        # @param id
+        #   The unique ID of the approval request.
+        # @param arguments
+        #   A JSON string of arguments for the tool.
+        # @param name
+        #   The name of the tool to run.
+        # @param server_label
+        #   The label of the MCP server making the request.
+        # @param type
+        #   The type of the item. Always `mcp_approval_request`.
         def initialize: (
           id: String,
           arguments: String,

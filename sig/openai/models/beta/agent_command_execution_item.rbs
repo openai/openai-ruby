@@ -15,24 +15,51 @@ module OpenAI
         }
 
       class AgentCommandExecutionItem < OpenAI::Internal::Type::BaseModel
+        # The ID of the command execution item.
         attr_accessor id: String
 
+        # The command that was executed.
         attr_accessor command: String
 
+        # The working directory used to execute the command.
         attr_accessor cwd: String?
 
+        # The command duration in milliseconds.
         attr_accessor duration_ms: Integer?
 
+        # The process exit code, if the command completed.
         attr_accessor exit_code: Integer?
 
+        # The command output, if available.
         attr_accessor output: String?
 
+        # The status of the command execution.
         attr_accessor status: OpenAI::Models::Beta::agent_function_call_status
 
+        # The ID of the turn that contains this item.
         attr_accessor turn_id: String
 
+        # The item type. Always `command_execution`.
         attr_accessor type: :command_execution
 
+        # @param id
+        #   The ID of the command execution item.
+        # @param command
+        #   The command that was executed.
+        # @param cwd
+        #   The working directory used to execute the command.
+        # @param duration_ms
+        #   The command duration in milliseconds.
+        # @param exit_code
+        #   The process exit code, if the command completed.
+        # @param output
+        #   The command output, if available.
+        # @param status
+        #   The status of the command execution.
+        # @param turn_id
+        #   The ID of the turn that contains this item.
+        # @param type
+        #   The item type. Always `command_execution`.
         def initialize: (
           id: String,
           command: String,

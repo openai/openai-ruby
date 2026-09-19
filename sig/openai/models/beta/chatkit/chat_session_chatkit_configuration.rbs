@@ -10,12 +10,21 @@ module OpenAI
           }
 
         class ChatSessionChatKitConfiguration < OpenAI::Internal::Type::BaseModel
+          # Automatic thread titling preferences.
           attr_accessor automatic_thread_titling: OpenAI::Beta::ChatKit::ChatSessionAutomaticThreadTitling
 
+          # Upload settings for the session.
           attr_accessor file_upload: OpenAI::Beta::ChatKit::ChatSessionFileUpload
 
+          # History retention configuration.
           attr_accessor history: OpenAI::Beta::ChatKit::ChatSessionHistory
 
+          # @param automatic_thread_titling
+          #   Automatic thread titling preferences.
+          # @param file_upload
+          #   Upload settings for the session.
+          # @param history
+          #   History retention configuration.
           def initialize: (
             automatic_thread_titling: OpenAI::Beta::ChatKit::ChatSessionAutomaticThreadTitling,
             file_upload: OpenAI::Beta::ChatKit::ChatSessionFileUpload,

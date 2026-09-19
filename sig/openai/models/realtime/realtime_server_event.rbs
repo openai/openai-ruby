@@ -60,12 +60,21 @@ module OpenAI
           }
 
         class ConversationItemRetrieved < OpenAI::Internal::Type::BaseModel
+          # The unique ID of the server event.
           attr_accessor event_id: String
 
+          # A single item within a Realtime conversation.
           attr_accessor item: OpenAI::Models::Realtime::conversation_item
 
+          # The event type, must be `conversation.item.retrieved`.
           attr_accessor type: :"conversation.item.retrieved"
 
+          # @param event_id
+          #   The unique ID of the server event.
+          # @param item
+          #   A single item within a Realtime conversation.
+          # @param type
+          #   The event type, must be `conversation.item.retrieved`.
           def initialize: (
             event_id: String,
             item: OpenAI::Models::Realtime::conversation_item,
@@ -87,12 +96,21 @@ module OpenAI
           }
 
         class OutputAudioBufferStarted < OpenAI::Internal::Type::BaseModel
+          # The unique ID of the server event.
           attr_accessor event_id: String
 
+          # The unique ID of the response that produced the audio.
           attr_accessor response_id: String
 
+          # The event type, must be `output_audio_buffer.started`.
           attr_accessor type: :"output_audio_buffer.started"
 
+          # @param event_id
+          #   The unique ID of the server event.
+          # @param response_id
+          #   The unique ID of the response that produced the audio.
+          # @param type
+          #   The event type, must be `output_audio_buffer.started`.
           def initialize: (
             event_id: String,
             response_id: String,
@@ -114,12 +132,21 @@ module OpenAI
           }
 
         class OutputAudioBufferStopped < OpenAI::Internal::Type::BaseModel
+          # The unique ID of the server event.
           attr_accessor event_id: String
 
+          # The unique ID of the response that produced the audio.
           attr_accessor response_id: String
 
+          # The event type, must be `output_audio_buffer.stopped`.
           attr_accessor type: :"output_audio_buffer.stopped"
 
+          # @param event_id
+          #   The unique ID of the server event.
+          # @param response_id
+          #   The unique ID of the response that produced the audio.
+          # @param type
+          #   The event type, must be `output_audio_buffer.stopped`.
           def initialize: (
             event_id: String,
             response_id: String,
@@ -141,12 +168,21 @@ module OpenAI
           }
 
         class OutputAudioBufferCleared < OpenAI::Internal::Type::BaseModel
+          # The unique ID of the server event.
           attr_accessor event_id: String
 
+          # The unique ID of the response that produced the audio.
           attr_accessor response_id: String
 
+          # The event type, must be `output_audio_buffer.cleared`.
           attr_accessor type: :"output_audio_buffer.cleared"
 
+          # @param event_id
+          #   The unique ID of the server event.
+          # @param response_id
+          #   The unique ID of the response that produced the audio.
+          # @param type
+          #   The event type, must be `output_audio_buffer.cleared`.
           def initialize: (
             event_id: String,
             response_id: String,

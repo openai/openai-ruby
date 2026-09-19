@@ -11,18 +11,41 @@ module OpenAI
         }
 
       class DelegationCreatedEvent < OpenAI::Internal::Type::BaseModel
+        # The delegated work identifier and destination. This object contains metadata,
+        # not the task text.
         attr_accessor delegation: OpenAI::Live::DelegationCreatedEvent::Delegation
 
+        # The unique ID of the Live server event.
         attr_accessor event_id: String
 
+        # The position on the Live session timeline where the delegation was created, in
+        # milliseconds from the beginning of the session.
         attr_accessor offset_ms: Integer
 
+        # The event type, always `session.delegation.created`.
         attr_accessor type: :"session.delegation.created"
 
+        # The event_id of the client command associated with this server event, when
+        # supplied.
         attr_reader client_event_id: String?
 
+        # The event_id of the client command associated with this server event, when
+        # supplied.
         def client_event_id=: (String) -> String
 
+        # @param delegation
+        #   The delegated work identifier and destination. This object contains metadata,
+        #   not the task text.
+        # @param event_id
+        #   The unique ID of the Live server event.
+        # @param offset_ms
+        #   The position on the Live session timeline where the delegation was created, in
+        #   milliseconds from the beginning of the session.
+        # @param client_event_id
+        #   The event_id of the client command associated with this server event, when
+        #   supplied.
+        # @param type
+        #   The event type, always `session.delegation.created`.
         def initialize: (
           delegation: OpenAI::Live::DelegationCreatedEvent::Delegation,
           event_id: String,
@@ -48,16 +71,36 @@ module OpenAI
           }
 
         class Delegation < OpenAI::Internal::Type::BaseModel
+          # The unique ID of the delegation. Use this as delegation_id when replying to
+          # client-owned work or correlating Responses events.
           attr_accessor id: String
 
+          # Where the Live model delegated the work: `client` for your application, or
+          # `responses` for the configured Responses backend.
           attr_accessor target: OpenAI::Models::Live::DelegationCreatedEvent::Delegation::target
 
+          # The object type, always `delegation`.
           attr_accessor type: :delegation
 
+          # The ID of the Responses API response associated with a Responses delegation.
+          # Omitted for client delegations.
           attr_reader response_id: String?
 
+          # The ID of the Responses API response associated with a Responses delegation.
+          # Omitted for client delegations.
           def response_id=: (String) -> String
 
+          # @param id
+          #   The unique ID of the delegation. Use this as delegation_id when replying to
+          #   client-owned work or correlating Responses events.
+          # @param target
+          #   Where the Live model delegated the work: `client` for your application, or
+          #   `responses` for the configured Responses backend.
+          # @param response_id
+          #   The ID of the Responses API response associated with a Responses delegation.
+          #   Omitted for client delegations.
+          # @param type
+          #   The object type, always `delegation`.
           def initialize: (
             id: String,
             target: OpenAI::Models::Live::DelegationCreatedEvent::Delegation::target,

@@ -8,10 +8,18 @@ module OpenAI
         }
 
       class AgentReasoningParam < OpenAI::Internal::Type::BaseModel
+        # The amount of reasoning effort the model should use. Omission lets the model
+        # select it.
         attr_accessor effort: OpenAI::Models::Beta::AgentReasoningParam::effort?
 
+        # Controls whether the response includes a reasoning summary.
         attr_accessor summary: OpenAI::Models::Beta::AgentReasoningParam::summary?
 
+        # @param effort
+        #   The amount of reasoning effort the model should use. Omission lets the model
+        #   select it.
+        # @param summary
+        #   Controls whether the response includes a reasoning summary.
         def initialize: (
           ?effort: OpenAI::Models::Beta::AgentReasoningParam::effort?,
           ?summary: OpenAI::Models::Beta::AgentReasoningParam::summary?

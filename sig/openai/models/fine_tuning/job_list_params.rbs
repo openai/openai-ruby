@@ -13,16 +13,29 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # Identifier for the last job from the previous pagination request.
         attr_reader after: String?
 
+        # Identifier for the last job from the previous pagination request.
         def after=: (String) -> String
 
+        # Number of fine-tuning jobs to retrieve.
         attr_reader limit: Integer?
 
+        # Number of fine-tuning jobs to retrieve.
         def limit=: (Integer) -> Integer
 
+        # Optional metadata filter. To filter, use the syntax `metadata[k]=v`.
+        # Alternatively, set `metadata=null` to indicate no metadata.
         attr_accessor metadata: ::Hash[Symbol, String]?
 
+        # @param after
+        #   Identifier for the last job from the previous pagination request.
+        # @param limit
+        #   Number of fine-tuning jobs to retrieve.
+        # @param metadata
+        #   Optional metadata filter. To filter, use the syntax `metadata[k]=v`.
+        #   Alternatively, set `metadata=null` to indicate no metadata.
         def initialize: (
           ?after: String,
           ?limit: Integer,

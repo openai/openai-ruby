@@ -13,12 +13,19 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # The certificate content in PEM format
           attr_accessor certificate: String
 
+          # An optional name for the certificate
           attr_reader name: String?
 
+          # An optional name for the certificate
           def name=: (String) -> String
 
+          # @param certificate
+          #   The certificate content in PEM format
+          # @param name
+          #   An optional name for the certificate
           def initialize: (
             certificate: String,
             ?name: String,

@@ -11,12 +11,21 @@ module OpenAI
         }
 
       class ChatCompletionToolMessageParam < OpenAI::Internal::Type::BaseModel
+        # The contents of the tool message.
         attr_accessor content: OpenAI::Models::Chat::ChatCompletionToolMessageParam::content
 
+        # The role of the messages author, in this case `tool`.
         attr_accessor role: :tool
 
+        # Tool call that this message is responding to.
         attr_accessor tool_call_id: String
 
+        # @param content
+        #   The contents of the tool message.
+        # @param tool_call_id
+        #   Tool call that this message is responding to.
+        # @param role
+        #   The role of the messages author, in this case `tool`.
         def initialize: (
           content: OpenAI::Models::Chat::ChatCompletionToolMessageParam::content,
           tool_call_id: String,

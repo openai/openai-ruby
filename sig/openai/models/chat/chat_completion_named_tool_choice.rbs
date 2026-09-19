@@ -12,8 +12,11 @@ module OpenAI
       class ChatCompletionNamedToolChoice < OpenAI::Internal::Type::BaseModel
         attr_accessor function: OpenAI::Chat::ChatCompletionNamedToolChoice::Function
 
+        # For function calling, the type is always `function`.
         attr_accessor type: :function
 
+        # @param type
+        #   For function calling, the type is always `function`.
         def initialize: (
           function: OpenAI::Chat::ChatCompletionNamedToolChoice::Function,
           ?type: :function
@@ -27,8 +30,11 @@ module OpenAI
         type function = { name: String }
 
         class Function < OpenAI::Internal::Type::BaseModel
+          # The name of the function to call.
           attr_accessor name: String
 
+          # @param name
+          #   The name of the function to call.
           def initialize: (name: String) -> void
 
           def to_hash: -> { name: String }

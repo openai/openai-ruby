@@ -11,16 +11,31 @@ module OpenAI
         }
 
       class ResponseOutputItemDoneEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # A single item within a Realtime conversation.
         attr_accessor item: OpenAI::Models::Realtime::conversation_item
 
+        # The index of the output item in the Response.
         attr_accessor output_index: Integer
 
+        # The ID of the Response to which the item belongs.
         attr_accessor response_id: String
 
+        # The event type, must be `response.output_item.done`.
         attr_accessor type: :"response.output_item.done"
 
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param item
+        #   A single item within a Realtime conversation.
+        # @param output_index
+        #   The index of the output item in the Response.
+        # @param response_id
+        #   The ID of the Response to which the item belongs.
+        # @param type
+        #   The event type, must be `response.output_item.done`.
         def initialize: (
           event_id: String,
           item: OpenAI::Models::Realtime::conversation_item,

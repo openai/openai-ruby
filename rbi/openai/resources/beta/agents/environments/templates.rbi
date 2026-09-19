@@ -53,9 +53,10 @@ module OpenAI
               files: nil,
               # An optional human-readable display name for the template.
               name: nil,
-              # Network access for an OpenAI-hosted environment.
+              # Network access policy for the environment. Defaults to disabled for GA requests
+              # and enabled for alpha/beta requests.
               network: nil,
-              # Packages to install in an OpenAI-hosted environment.
+              # Packages to install in the environment. Defaults to empty package lists.
               packages: nil,
               # Plugins provided as inline ZIP archives. Defaults to an empty list.
               plugins: nil,
@@ -127,9 +128,11 @@ module OpenAI
               files: nil,
               # A replacement human-readable display name, or `null` to clear the name.
               name: nil,
-              # Network access for an OpenAI-hosted environment.
+              # Network access available after setup completes. Omit to preserve the current
+              # policy, or pass `null` to reset to disabled for GA requests or enabled for
+              # alpha/beta requests.
               network: nil,
-              # Packages to install in an OpenAI-hosted environment.
+              # Packages installed before the runtime network policy applies.
               packages: nil,
               # Replacement plugin configuration installed for each new session.
               plugins: nil,

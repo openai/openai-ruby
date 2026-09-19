@@ -14,18 +14,38 @@ module OpenAI
         }
 
       class BetaResponseFileSearchToolCall < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the file search tool call.
         attr_accessor id: String
 
+        # The queries used to search for files.
         attr_accessor queries: ::Array[String]
 
+        # The status of the file search tool call. One of `in_progress`, `searching`,
+        # `incomplete` or `failed`,
         attr_accessor status: OpenAI::Models::Beta::BetaResponseFileSearchToolCall::status
 
+        # The type of the file search tool call. Always `file_search_call`.
         attr_accessor type: :file_search_call
 
+        # The agent that produced this item.
         attr_accessor agent: OpenAI::Beta::BetaResponseFileSearchToolCall::Agent?
 
+        # The results of the file search tool call.
         attr_accessor results: ::Array[OpenAI::Beta::BetaResponseFileSearchToolCall::Result]?
 
+        # @param id
+        #   The unique ID of the file search tool call.
+        # @param queries
+        #   The queries used to search for files.
+        # @param status
+        #   The status of the file search tool call. One of `in_progress`, `searching`,
+        #   `incomplete` or `failed`,
+        # @param agent
+        #   The agent that produced this item.
+        # @param results
+        #   The results of the file search tool call.
+        # @param type
+        #   The type of the file search tool call. Always `file_search_call`.
         def initialize: (
           id: String,
           queries: ::Array[String],
@@ -62,8 +82,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }
@@ -79,24 +102,51 @@ module OpenAI
           }
 
         class Result < OpenAI::Internal::Type::BaseModel
+          # Set of 16 key-value pairs that can be attached to an object. This can be useful
+          # for storing additional information about the object in a structured format, and
+          # querying for objects via API or the dashboard. Keys are strings with a maximum
+          # length of 64 characters. Values are strings with a maximum length of 512
+          # characters, booleans, or numbers.
           attr_accessor attributes: ::Hash[Symbol, OpenAI::Models::Beta::BetaResponseFileSearchToolCall::Result::attribute]?
 
+          # The unique ID of the file.
           attr_reader file_id: String?
 
+          # The unique ID of the file.
           def file_id=: (String) -> String
 
+          # The name of the file.
           attr_reader filename: String?
 
+          # The name of the file.
           def filename=: (String) -> String
 
+          # The relevance score of the file - a value between 0 and 1.
           attr_reader score: Float?
 
+          # The relevance score of the file - a value between 0 and 1.
           def score=: (Float) -> Float
 
+          # The text that was retrieved from the file.
           attr_reader text: String?
 
+          # The text that was retrieved from the file.
           def text=: (String) -> String
 
+          # @param attributes
+          #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+          #   for storing additional information about the object in a structured format, and
+          #   querying for objects via API or the dashboard. Keys are strings with a maximum
+          #   length of 64 characters. Values are strings with a maximum length of 512
+          #   characters, booleans, or numbers.
+          # @param file_id
+          #   The unique ID of the file.
+          # @param filename
+          #   The name of the file.
+          # @param score
+          #   The relevance score of the file - a value between 0 and 1.
+          # @param text
+          #   The text that was retrieved from the file.
           def initialize: (
             ?attributes: ::Hash[Symbol, OpenAI::Models::Beta::BetaResponseFileSearchToolCall::Result::attribute]?,
             ?file_id: String,

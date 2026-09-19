@@ -15,22 +15,43 @@ module OpenAI
           }
 
         class AdminAPIKey < OpenAI::Internal::Type::BaseModel
+          # The identifier, which can be referenced in API endpoints
           attr_accessor id: String
 
+          # The Unix timestamp (in seconds) of when the API key was created
           attr_accessor created_at: Integer
 
+          # The Unix timestamp (in seconds) of when the API key expires
           attr_accessor expires_at: Integer?
 
+          # The object type, which is always `organization.admin_api_key`
           attr_accessor object: :"organization.admin_api_key"
 
           attr_accessor owner: OpenAI::Admin::Organization::AdminAPIKey::Owner
 
+          # The redacted value of the API key
           attr_accessor redacted_value: String
 
+          # The Unix timestamp (in seconds) of when the API key was last used
           attr_accessor last_used_at: Integer?
 
+          # The name of the API key
           attr_accessor name: String?
 
+          # @param id
+          #   The identifier, which can be referenced in API endpoints
+          # @param created_at
+          #   The Unix timestamp (in seconds) of when the API key was created
+          # @param expires_at
+          #   The Unix timestamp (in seconds) of when the API key expires
+          # @param redacted_value
+          #   The redacted value of the API key
+          # @param last_used_at
+          #   The Unix timestamp (in seconds) of when the API key was last used
+          # @param name
+          #   The name of the API key
+          # @param object
+          #   The object type, which is always `organization.admin_api_key`
           def initialize: (
             id: String,
             created_at: Integer,
@@ -64,30 +85,54 @@ module OpenAI
             }
 
           class Owner < OpenAI::Internal::Type::BaseModel
+            # The identifier, which can be referenced in API endpoints
             attr_reader id: String?
 
+            # The identifier, which can be referenced in API endpoints
             def id=: (String) -> String
 
+            # The Unix timestamp (in seconds) of when the user was created
             attr_reader created_at: Integer?
 
+            # The Unix timestamp (in seconds) of when the user was created
             def created_at=: (Integer) -> Integer
 
+            # The name of the user
             attr_reader name: String?
 
+            # The name of the user
             def name=: (String) -> String
 
+            # The object type, which is always organization.user
             attr_reader object: String?
 
+            # The object type, which is always organization.user
             def object=: (String) -> String
 
+            # Always `owner`
             attr_reader role: String?
 
+            # Always `owner`
             def role=: (String) -> String
 
+            # Always `user`
             attr_reader type: String?
 
+            # Always `user`
             def type=: (String) -> String
 
+            # @param id
+            #   The identifier, which can be referenced in API endpoints
+            # @param created_at
+            #   The Unix timestamp (in seconds) of when the user was created
+            # @param name
+            #   The name of the user
+            # @param object
+            #   The object type, which is always organization.user
+            # @param role
+            #   Always `owner`
+            # @param type
+            #   Always `user`
             def initialize: (
               ?id: String,
               ?created_at: Integer,

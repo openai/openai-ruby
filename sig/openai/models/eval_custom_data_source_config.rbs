@@ -4,10 +4,18 @@ module OpenAI
       { schema: ::Hash[Symbol, top], ?type: :custom }
 
     class EvalCustomDataSourceConfig < OpenAI::Internal::Type::BaseModel
+      # The json schema for the run data source items. Learn how to build JSON schemas
+      # [here](https://json-schema.org/).
       attr_accessor schema: ::Hash[Symbol, top]
 
+      # The type of data source. Always `custom`.
       attr_accessor type: :custom
 
+      # @param schema
+      #   The json schema for the run data source items. Learn how to build JSON schemas
+      #   [here](https://json-schema.org/).
+      # @param type
+      #   The type of data source. Always `custom`.
       def initialize: (schema: ::Hash[Symbol, top], ?type: :custom) -> void
 
       def to_hash: -> { schema: ::Hash[Symbol, top], ?type: :custom }

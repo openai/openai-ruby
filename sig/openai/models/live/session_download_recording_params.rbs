@@ -8,8 +8,13 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # The ID of the stored Live session to download. Use the session ID returned when
+        # the session started with storage enabled.
         attr_accessor session_id: String
 
+        # @param session_id
+        #   The ID of the stored Live session to download. Use the session ID returned when
+        #   the session started with storage enabled.
         def initialize: (
           session_id: String,
           ?request_options: OpenAI::request_opts

@@ -9,14 +9,26 @@ module OpenAI
           }
 
         class ImageURL < OpenAI::Internal::Type::BaseModel
+          # The external URL of the image, must be a supported image types: jpeg, jpg, png,
+          # gif, webp.
           attr_accessor url: String
 
+          # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
+          # to high resolution using `high`. Default value is `auto`
           attr_reader detail: OpenAI::Models::Beta::Threads::ImageURL::detail?
 
+          # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
+          # to high resolution using `high`. Default value is `auto`
           def detail=: (
             OpenAI::Models::Beta::Threads::ImageURL::detail
           ) -> OpenAI::Models::Beta::Threads::ImageURL::detail
 
+          # @param url
+          #   The external URL of the image, must be a supported image types: jpeg, jpg, png,
+          #   gif, webp.
+          # @param detail
+          #   Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
+          #   to high resolution using `high`. Default value is `auto`
           def initialize: (
             url: String,
             ?detail: OpenAI::Models::Beta::Threads::ImageURL::detail

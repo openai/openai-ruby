@@ -9,14 +9,35 @@ module OpenAI
         }
 
       class SessionUpdateEvent < OpenAI::Internal::Type::BaseModel
+        # Update the Realtime session. Choose either a realtime session or a transcription
+        # session.
         attr_accessor session: OpenAI::Models::Realtime::SessionUpdateEvent::session
 
+        # The event type, must be `session.update`.
         attr_accessor type: :"session.update"
 
+        # Optional client-generated ID used to identify this event. This is an arbitrary
+        # string that a client may assign. It will be passed back if there is an error
+        # with the event, but the corresponding `session.updated` event will not include
+        # it.
         attr_reader event_id: String?
 
+        # Optional client-generated ID used to identify this event. This is an arbitrary
+        # string that a client may assign. It will be passed back if there is an error
+        # with the event, but the corresponding `session.updated` event will not include
+        # it.
         def event_id=: (String) -> String
 
+        # @param session
+        #   Update the Realtime session. Choose either a realtime session or a transcription
+        #   session.
+        # @param event_id
+        #   Optional client-generated ID used to identify this event. This is an arbitrary
+        #   string that a client may assign. It will be passed back if there is an error
+        #   with the event, but the corresponding `session.updated` event will not include
+        #   it.
+        # @param type
+        #   The event type, must be `session.update`.
         def initialize: (
           session: OpenAI::Models::Realtime::SessionUpdateEvent::session,
           ?event_id: String,

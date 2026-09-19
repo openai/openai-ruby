@@ -11,20 +11,36 @@ module OpenAI
         }
 
       class FineTuningJobCancelledWebhookEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the event.
         attr_accessor id: String
 
+        # The Unix timestamp (in seconds) of when the fine-tuning job was cancelled.
         attr_accessor created_at: Integer
 
+        # Event data payload.
         attr_accessor data: OpenAI::Webhooks::FineTuningJobCancelledWebhookEvent::Data
 
+        # The type of the event. Always `fine_tuning.job.cancelled`.
         attr_accessor type: :"fine_tuning.job.cancelled"
 
+        # The object of the event. Always `event`.
         attr_reader object: OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::object?
 
+        # The object of the event. Always `event`.
         def object=: (
           OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::object
         ) -> OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::object
 
+        # @param id
+        #   The unique ID of the event.
+        # @param created_at
+        #   The Unix timestamp (in seconds) of when the fine-tuning job was cancelled.
+        # @param data
+        #   Event data payload.
+        # @param object
+        #   The object of the event. Always `event`.
+        # @param type
+        #   The type of the event. Always `fine_tuning.job.cancelled`.
         def initialize: (
           id: String,
           created_at: Integer,
@@ -44,8 +60,11 @@ module OpenAI
         type data = { id: String }
 
         class Data < OpenAI::Internal::Type::BaseModel
+          # The unique ID of the fine-tuning job.
           attr_accessor id: String
 
+          # @param id
+          #   The unique ID of the fine-tuning job.
           def initialize: (id: String) -> void
 
           def to_hash: -> { id: String }

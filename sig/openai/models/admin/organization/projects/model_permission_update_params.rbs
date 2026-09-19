@@ -17,10 +17,16 @@ module OpenAI
 
             attr_accessor project_id: String
 
+            # The model permissions mode to apply.
             attr_accessor mode: OpenAI::Models::Admin::Organization::Projects::ModelPermissionUpdateParams::mode
 
+            # The model IDs included in this permissions policy.
             attr_accessor model_ids: ::Array[String]
 
+            # @param mode
+            #   The model permissions mode to apply.
+            # @param model_ids
+            #   The model IDs included in this permissions policy.
             def initialize: (
               project_id: String,
               mode: OpenAI::Models::Admin::Organization::Projects::ModelPermissionUpdateParams::mode,

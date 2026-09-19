@@ -13,18 +13,49 @@ module OpenAI
         }
 
       class BetaResponseFormatTextJSONSchemaConfig < OpenAI::Internal::Type::BaseModel
+        # The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
+        # and dashes, with a maximum length of 64.
         attr_accessor name: String
 
+        # The schema for the response format, described as a JSON Schema object. Learn how
+        # to build JSON schemas [here](https://json-schema.org/).
         attr_accessor schema: ::Hash[Symbol, top]
 
+        # The type of response format being defined. Always `json_schema`.
         attr_accessor type: :json_schema
 
+        # A description of what the response format is for, used by the model to determine
+        # how to respond in the format.
         attr_reader description: String?
 
+        # A description of what the response format is for, used by the model to determine
+        # how to respond in the format.
         def description=: (String) -> String
 
+        # Whether to enable strict schema adherence when generating the output. If set to
+        # true, the model will always follow the exact schema defined in the `schema`
+        # field. Only a subset of JSON Schema is supported when `strict` is `true`. To
+        # learn more, read the
+        # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
         attr_accessor strict: bool?
 
+        # @param name
+        #   The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
+        #   and dashes, with a maximum length of 64.
+        # @param schema
+        #   The schema for the response format, described as a JSON Schema object. Learn how
+        #   to build JSON schemas [here](https://json-schema.org/).
+        # @param description
+        #   A description of what the response format is for, used by the model to determine
+        #   how to respond in the format.
+        # @param strict
+        #   Whether to enable strict schema adherence when generating the output. If set to
+        #   true, the model will always follow the exact schema defined in the `schema`
+        #   field. Only a subset of JSON Schema is supported when `strict` is `true`. To
+        #   learn more, read the
+        #   [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
+        # @param type
+        #   The type of response format being defined. Always `json_schema`.
         def initialize: (
           name: String,
           schema: ::Hash[Symbol, top],

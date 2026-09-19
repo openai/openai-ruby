@@ -12,20 +12,51 @@ module OpenAI
       }
 
     class EvalUpdateResponse < OpenAI::Internal::Type::BaseModel
+      # Unique identifier for the evaluation.
       attr_accessor id: String
 
+      # The Unix timestamp (in seconds) for when the eval was created.
       attr_accessor created_at: Integer
 
+      # Configuration of data sources used in runs of the evaluation.
       attr_accessor data_source_config: OpenAI::Models::EvalUpdateResponse::data_source_config
 
+      # Set of 16 key-value pairs that can be attached to an object. This can be useful
+      # for storing additional information about the object in a structured format, and
+      # querying for objects via API or the dashboard.
+      #
+      # Keys are strings with a maximum length of 64 characters. Values are strings with
+      # a maximum length of 512 characters.
       attr_accessor metadata: OpenAI::Models::metadata?
 
+      # The name of the evaluation.
       attr_accessor name: String
 
+      # The object type.
       attr_accessor object: :eval
 
+      # A list of testing criteria.
       attr_accessor testing_criteria: ::Array[OpenAI::Models::EvalUpdateResponse::testing_criterion]
 
+      # @param id
+      #   Unique identifier for the evaluation.
+      # @param created_at
+      #   The Unix timestamp (in seconds) for when the eval was created.
+      # @param data_source_config
+      #   Configuration of data sources used in runs of the evaluation.
+      # @param metadata
+      #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #   for storing additional information about the object in a structured format, and
+      #   querying for objects via API or the dashboard.
+      #
+      #   Keys are strings with a maximum length of 64 characters. Values are strings with
+      #   a maximum length of 512 characters.
+      # @param name
+      #   The name of the evaluation.
+      # @param testing_criteria
+      #   A list of testing criteria.
+      # @param object
+      #   The object type.
       def initialize: (
         id: String,
         created_at: Integer,
@@ -62,12 +93,33 @@ module OpenAI
           }
 
         class Logs < OpenAI::Internal::Type::BaseModel
+          # The json schema for the run data source items. Learn how to build JSON schemas
+          # [here](https://json-schema.org/).
           attr_accessor schema: ::Hash[Symbol, top]
 
+          # The type of data source. Always `logs`.
           attr_accessor type: :logs
 
+          # Set of 16 key-value pairs that can be attached to an object. This can be useful
+          # for storing additional information about the object in a structured format, and
+          # querying for objects via API or the dashboard.
+          #
+          # Keys are strings with a maximum length of 64 characters. Values are strings with
+          # a maximum length of 512 characters.
           attr_accessor metadata: OpenAI::Models::metadata?
 
+          # @param schema
+          #   The json schema for the run data source items. Learn how to build JSON schemas
+          #   [here](https://json-schema.org/).
+          # @param metadata
+          #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+          #   for storing additional information about the object in a structured format, and
+          #   querying for objects via API or the dashboard.
+          #
+          #   Keys are strings with a maximum length of 64 characters. Values are strings with
+          #   a maximum length of 512 characters.
+          # @param type
+          #   The type of data source. Always `logs`.
           def initialize: (
             schema: ::Hash[Symbol, top],
             ?metadata: OpenAI::Models::metadata?,
@@ -105,10 +157,25 @@ module OpenAI
           }
 
         class EvalGraderTextSimilarity < OpenAI::Models::Graders::TextSimilarityGrader
+          # The threshold for the score.
           def pass_threshold: -> Float
 
+          # The threshold for the score.
           def pass_threshold=: (Float _) -> Float
 
+          # @param evaluation_metric
+          #   The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`, `gleu`,
+          #   `meteor`, `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
+          # @param input
+          #   The text being graded.
+          # @param name
+          #   The name of the grader.
+          # @param reference
+          #   The text being graded against.
+          # @param pass_threshold
+          #   The threshold for the score.
+          # @param type
+          #   The type of grader.
           def initialize: (
             evaluation_metric: OpenAI::Models::Graders::TextSimilarityGrader::evaluation_metric,
             input: String,
@@ -138,10 +205,22 @@ module OpenAI
           }
 
         class EvalGraderPython < OpenAI::Models::Graders::PythonGrader
+          # The threshold for the score.
           def pass_threshold: -> Float?
 
+          # The threshold for the score.
           def pass_threshold=: (Float _) -> Float
 
+          # @param name
+          #   The name of the grader.
+          # @param source
+          #   The source code of the python script.
+          # @param image_tag
+          #   The image tag to use for the python script.
+          # @param pass_threshold
+          #   The threshold for the score.
+          # @param type
+          #   The object type, which is always `python`.
           def initialize: (
             name: String,
             source: String,
@@ -171,10 +250,27 @@ module OpenAI
           }
 
         class EvalGraderScoreModel < OpenAI::Models::Graders::ScoreModelGrader
+          # The threshold for the score.
           def pass_threshold: -> Float?
 
+          # The threshold for the score.
           def pass_threshold=: (Float _) -> Float
 
+          # @param input
+          #   The input messages evaluated by the grader. Supports text, output text, input
+          #   image, and input audio content blocks, and may include template strings.
+          # @param model
+          #   The model to use for the evaluation.
+          # @param name
+          #   The name of the grader.
+          # @param range
+          #   The range of the score. Defaults to `[0, 1]`.
+          # @param sampling_params
+          #   The sampling parameters for the model.
+          # @param pass_threshold
+          #   The threshold for the score.
+          # @param type
+          #   The object type, which is always `score_model`.
           def initialize: (
             input: ::Array[OpenAI::Graders::ScoreModelGrader::Input],
             model: String,

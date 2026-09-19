@@ -4484,7 +4484,7 @@ module OpenAI
           end
           def self.new(
 
-            # An annotation that applies to a span of output text.
+            # The annotation object being added. (See annotation schema for details.)
             annotation:,
 
             # The index of the annotation within the content part.

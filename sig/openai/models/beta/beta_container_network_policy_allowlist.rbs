@@ -11,16 +11,26 @@ module OpenAI
         }
 
       class BetaContainerNetworkPolicyAllowlist < OpenAI::Internal::Type::BaseModel
+        # A list of allowed domains when type is `allowlist`.
         attr_accessor allowed_domains: ::Array[String]
 
+        # Allow outbound network access only to specified domains. Always `allowlist`.
         attr_accessor type: :allowlist
 
+        # Optional domain-scoped secrets for allowlisted domains.
         attr_reader domain_secrets: ::Array[OpenAI::Beta::BetaContainerNetworkPolicyDomainSecret]?
 
+        # Optional domain-scoped secrets for allowlisted domains.
         def domain_secrets=: (
           ::Array[OpenAI::Beta::BetaContainerNetworkPolicyDomainSecret]
         ) -> ::Array[OpenAI::Beta::BetaContainerNetworkPolicyDomainSecret]
 
+        # @param allowed_domains
+        #   A list of allowed domains when type is `allowlist`.
+        # @param domain_secrets
+        #   Optional domain-scoped secrets for allowlisted domains.
+        # @param type
+        #   Allow outbound network access only to specified domains. Always `allowlist`.
         def initialize: (
           allowed_domains: ::Array[String],
           ?domain_secrets: ::Array[OpenAI::Beta::BetaContainerNetworkPolicyDomainSecret],

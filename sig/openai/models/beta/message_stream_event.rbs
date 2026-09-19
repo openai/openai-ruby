@@ -18,10 +18,15 @@ module OpenAI
           }
 
         class ThreadMessageCreated < OpenAI::Internal::Type::BaseModel
+          # Represents a message within a
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           attr_accessor data: OpenAI::Beta::Threads::Message
 
           attr_accessor event: :"thread.message.created"
 
+          # @param data
+          #   Represents a message within a
+          #   [thread](https://developers.openai.com/api/docs/assistants/migration).
           def initialize: (
             data: OpenAI::Beta::Threads::Message,
             ?event: :"thread.message.created"
@@ -40,10 +45,15 @@ module OpenAI
           }
 
         class ThreadMessageInProgress < OpenAI::Internal::Type::BaseModel
+          # Represents a message within a
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           attr_accessor data: OpenAI::Beta::Threads::Message
 
           attr_accessor event: :"thread.message.in_progress"
 
+          # @param data
+          #   Represents a message within a
+          #   [thread](https://developers.openai.com/api/docs/assistants/migration).
           def initialize: (
             data: OpenAI::Beta::Threads::Message,
             ?event: :"thread.message.in_progress"
@@ -62,10 +72,15 @@ module OpenAI
           }
 
         class ThreadMessageDelta < OpenAI::Internal::Type::BaseModel
+          # Represents a message delta i.e. any changed fields on a message during
+          # streaming.
           attr_accessor data: OpenAI::Beta::Threads::MessageDeltaEvent
 
           attr_accessor event: :"thread.message.delta"
 
+          # @param data
+          #   Represents a message delta i.e. any changed fields on a message during
+          #   streaming.
           def initialize: (
             data: OpenAI::Beta::Threads::MessageDeltaEvent,
             ?event: :"thread.message.delta"
@@ -84,10 +99,15 @@ module OpenAI
           }
 
         class ThreadMessageCompleted < OpenAI::Internal::Type::BaseModel
+          # Represents a message within a
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           attr_accessor data: OpenAI::Beta::Threads::Message
 
           attr_accessor event: :"thread.message.completed"
 
+          # @param data
+          #   Represents a message within a
+          #   [thread](https://developers.openai.com/api/docs/assistants/migration).
           def initialize: (
             data: OpenAI::Beta::Threads::Message,
             ?event: :"thread.message.completed"
@@ -106,10 +126,15 @@ module OpenAI
           }
 
         class ThreadMessageIncomplete < OpenAI::Internal::Type::BaseModel
+          # Represents a message within a
+          # [thread](https://developers.openai.com/api/docs/assistants/migration).
           attr_accessor data: OpenAI::Beta::Threads::Message
 
           attr_accessor event: :"thread.message.incomplete"
 
+          # @param data
+          #   Represents a message within a
+          #   [thread](https://developers.openai.com/api/docs/assistants/migration).
           def initialize: (
             data: OpenAI::Beta::Threads::Message,
             ?event: :"thread.message.incomplete"

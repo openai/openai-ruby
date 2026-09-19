@@ -22,38 +22,132 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # The conversation that this response belongs to. Items from this conversation are
+        # prepended to `input_items` for this response request. Input items and output
+        # items from this response are automatically added to this conversation after this
+        # response completes.
         attr_accessor conversation: OpenAI::Models::Responses::InputTokenCountParams::conversation?
 
+        # Text, image, or file inputs to the model, used to generate a response
         attr_accessor input: OpenAI::Models::Responses::InputTokenCountParams::input?
 
+        # A system (or developer) message inserted into the model's context. When used
+        # along with `previous_response_id`, the instructions from a previous response
+        # will not be carried over to the next response. This makes it simple to swap out
+        # system (or developer) messages in new responses.
         attr_accessor instructions: String?
 
+        # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
+        # wide range of models with different capabilities, performance characteristics,
+        # and price points. Refer to the
+        # [model guide](https://developers.openai.com/api/docs/models) to browse and
+        # compare available models.
         attr_accessor model: String?
 
+        # Whether to allow the model to run tool calls in parallel.
         attr_accessor parallel_tool_calls: bool?
 
+        # A model-owned style preset to apply to this request. Omit this parameter to use
+        # the model's default style. Supported values may expand over time. Values must be
+        # at most 64 characters.
         attr_reader personality: OpenAI::Models::Responses::InputTokenCountParams::personality?
 
+        # A model-owned style preset to apply to this request. Omit this parameter to use
+        # the model's default style. Supported values may expand over time. Values must be
+        # at most 64 characters.
         def personality=: (
           OpenAI::Models::Responses::InputTokenCountParams::personality
         ) -> OpenAI::Models::Responses::InputTokenCountParams::personality
 
+        # The unique ID of the previous response to the model. Use this to create
+        # multi-turn conversations. Learn more about
+        # [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
+        # Cannot be used in conjunction with `conversation`.
         attr_accessor previous_response_id: String?
 
+        # **gpt-5 and o-series models only** Configuration options for
+        # [reasoning models](https://developers.openai.com/api/docs/guides/reasoning).
         attr_accessor reasoning: OpenAI::Reasoning?
 
+        # Configuration options for a text response from the model. Can be plain text or
+        # structured JSON data. Learn more:
+        #
+        # - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+        # - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
         attr_accessor text: OpenAI::Responses::InputTokenCountParams::Text?
 
+        # Controls which tool the model should use, if any.
         attr_accessor tool_choice: OpenAI::Models::Responses::InputTokenCountParams::tool_choice?
 
+        # An array of tools the model may call while generating a response. You can
+        # specify which tool to use by setting the `tool_choice` parameter.
         attr_accessor tools: ::Array[OpenAI::Models::Responses::tool]?
 
+        # The truncation strategy to use for the model response. - `auto`: If the input to
+        # this Response exceeds the model's context window size, the model will truncate
+        # the response to fit the context window by dropping items from the beginning of
+        # the conversation. - `disabled` (default): If the input size will exceed the
+        # context window size for a model, the request will fail with a 400 error.
         attr_reader truncation: OpenAI::Models::Responses::InputTokenCountParams::truncation?
 
+        # The truncation strategy to use for the model response. - `auto`: If the input to
+        # this Response exceeds the model's context window size, the model will truncate
+        # the response to fit the context window by dropping items from the beginning of
+        # the conversation. - `disabled` (default): If the input size will exceed the
+        # context window size for a model, the request will fail with a 400 error.
         def truncation=: (
           OpenAI::Models::Responses::InputTokenCountParams::truncation
         ) -> OpenAI::Models::Responses::InputTokenCountParams::truncation
 
+        # @param conversation
+        #   The conversation that this response belongs to. Items from this conversation are
+        #   prepended to `input_items` for this response request. Input items and output
+        #   items from this response are automatically added to this conversation after this
+        #   response completes.
+        # @param input
+        #   Text, image, or file inputs to the model, used to generate a response
+        # @param instructions
+        #   A system (or developer) message inserted into the model's context. When used
+        #   along with `previous_response_id`, the instructions from a previous response
+        #   will not be carried over to the next response. This makes it simple to swap out
+        #   system (or developer) messages in new responses.
+        # @param model
+        #   Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
+        #   wide range of models with different capabilities, performance characteristics,
+        #   and price points. Refer to the
+        #   [model guide](https://developers.openai.com/api/docs/models) to browse and
+        #   compare available models.
+        # @param parallel_tool_calls
+        #   Whether to allow the model to run tool calls in parallel.
+        # @param personality
+        #   A model-owned style preset to apply to this request. Omit this parameter to use
+        #   the model's default style. Supported values may expand over time. Values must be
+        #   at most 64 characters.
+        # @param previous_response_id
+        #   The unique ID of the previous response to the model. Use this to create
+        #   multi-turn conversations. Learn more about
+        #   [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
+        #   Cannot be used in conjunction with `conversation`.
+        # @param reasoning
+        #   **gpt-5 and o-series models only** Configuration options for
+        #   [reasoning models](https://developers.openai.com/api/docs/guides/reasoning).
+        # @param text
+        #   Configuration options for a text response from the model. Can be plain text or
+        #   structured JSON data. Learn more:
+        #
+        #   - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+        #   - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
+        # @param tool_choice
+        #   Controls which tool the model should use, if any.
+        # @param tools
+        #   An array of tools the model may call while generating a response. You can
+        #   specify which tool to use by setting the `tool_choice` parameter.
+        # @param truncation
+        #   The truncation strategy to use for the model response. - `auto`: If the input to
+        #   this Response exceeds the model's context window size, the model will truncate
+        #   the response to fit the context window by dropping items from the beginning of
+        #   the conversation. - `disabled` (default): If the input size will exceed the
+        #   context window size for a model, the request will fail with a 400 error.
         def initialize: (
           ?conversation: OpenAI::Models::Responses::InputTokenCountParams::conversation?,
           ?input: OpenAI::Models::Responses::InputTokenCountParams::input?,
@@ -124,14 +218,63 @@ module OpenAI
           }
 
         class Text < OpenAI::Internal::Type::BaseModel
+          # An object specifying the format that the model must output.
+          #
+          # Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
+          # ensures the model will match your supplied JSON schema. Learn more in the
+          # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
+          #
+          # The default format is `{ "type": "text" }` with no additional options.
+          #
+          # **Not recommended for gpt-4o and newer models:**
+          #
+          # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+          # ensures the message the model generates is valid JSON. Using `json_schema` is
+          # preferred for models that support it.
           attr_reader format_: OpenAI::Models::Responses::response_format_text_config?
 
+          # An object specifying the format that the model must output.
+          #
+          # Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
+          # ensures the model will match your supplied JSON schema. Learn more in the
+          # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
+          #
+          # The default format is `{ "type": "text" }` with no additional options.
+          #
+          # **Not recommended for gpt-4o and newer models:**
+          #
+          # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+          # ensures the message the model generates is valid JSON. Using `json_schema` is
+          # preferred for models that support it.
           def format_=: (
             OpenAI::Models::Responses::response_format_text_config
           ) -> OpenAI::Models::Responses::response_format_text_config
 
+          # Constrains the verbosity of the model's response. Lower values will result in
+          # more concise responses, while higher values will result in more verbose
+          # responses. Currently supported values are `low`, `medium`, and `high`. The
+          # default is `medium`.
           attr_accessor verbosity: OpenAI::Models::Responses::InputTokenCountParams::Text::verbosity?
 
+          # @param format_
+          #   An object specifying the format that the model must output.
+          #
+          #   Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
+          #   ensures the model will match your supplied JSON schema. Learn more in the
+          #   [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
+          #
+          #   The default format is `{ "type": "text" }` with no additional options.
+          #
+          #   **Not recommended for gpt-4o and newer models:**
+          #
+          #   Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+          #   ensures the message the model generates is valid JSON. Using `json_schema` is
+          #   preferred for models that support it.
+          # @param verbosity
+          #   Constrains the verbosity of the model's response. Lower values will result in
+          #   more concise responses, while higher values will result in more verbose
+          #   responses. Currently supported values are `low`, `medium`, and `high`. The
+          #   default is `medium`.
           def initialize: (
             ?format_: OpenAI::Models::Responses::response_format_text_config,
             ?verbosity: OpenAI::Models::Responses::InputTokenCountParams::Text::verbosity?
@@ -173,8 +316,11 @@ module OpenAI
             { ?type: :programmatic_tool_calling }
 
           class SpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
+            # The tool to call. Always `programmatic_tool_calling`.
             attr_accessor type: :programmatic_tool_calling
 
+            # @param type
+            #   The tool to call. Always `programmatic_tool_calling`.
             def initialize: (?type: :programmatic_tool_calling) -> void
 
             def to_hash: -> { ?type: :programmatic_tool_calling }

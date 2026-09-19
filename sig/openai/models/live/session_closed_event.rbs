@@ -12,20 +12,48 @@ module OpenAI
         }
 
       class SessionClosedEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the Live server event.
         attr_accessor event_id: String
 
+        # Why the Live session ended: `close_requested` for an application close or hangup
+        # request, `expired` for the session duration limit, `content` for a safety
+        # filter, `remote_hangup` for a graceful remote disconnect, or `connection_lost`
+        # for an unexpected primary or upstream disconnection.
         attr_accessor reason: OpenAI::Models::Live::SessionClosedEvent::reason
 
+        # The resolved Live session configuration and server-assigned session metadata.
         attr_accessor session: OpenAI::Live::SessionResource
 
+        # The event type, always `session.closed`.
         attr_accessor type: :"session.closed"
 
+        # The final cumulative Live audio usage after session finalization.
         attr_accessor usage: OpenAI::Live::SessionUsage
 
+        # The event_id of the client command associated with this server event, when
+        # supplied.
         attr_reader client_event_id: String?
 
+        # The event_id of the client command associated with this server event, when
+        # supplied.
         def client_event_id=: (String) -> String
 
+        # @param event_id
+        #   The unique ID of the Live server event.
+        # @param reason
+        #   Why the Live session ended: `close_requested` for an application close or hangup
+        #   request, `expired` for the session duration limit, `content` for a safety
+        #   filter, `remote_hangup` for a graceful remote disconnect, or `connection_lost`
+        #   for an unexpected primary or upstream disconnection.
+        # @param session
+        #   The resolved Live session configuration and server-assigned session metadata.
+        # @param usage
+        #   The final cumulative Live audio usage after session finalization.
+        # @param client_event_id
+        #   The event_id of the client command associated with this server event, when
+        #   supplied.
+        # @param type
+        #   The event type, always `session.closed`.
         def initialize: (
           event_id: String,
           reason: OpenAI::Models::Live::SessionClosedEvent::reason,

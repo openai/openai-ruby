@@ -11,20 +11,36 @@ module OpenAI
         }
 
       class BatchCompletedWebhookEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the event.
         attr_accessor id: String
 
+        # The Unix timestamp (in seconds) of when the batch API request was completed.
         attr_accessor created_at: Integer
 
+        # Event data payload.
         attr_accessor data: OpenAI::Webhooks::BatchCompletedWebhookEvent::Data
 
+        # The type of the event. Always `batch.completed`.
         attr_accessor type: :"batch.completed"
 
+        # The object of the event. Always `event`.
         attr_reader object: OpenAI::Models::Webhooks::BatchCompletedWebhookEvent::object?
 
+        # The object of the event. Always `event`.
         def object=: (
           OpenAI::Models::Webhooks::BatchCompletedWebhookEvent::object
         ) -> OpenAI::Models::Webhooks::BatchCompletedWebhookEvent::object
 
+        # @param id
+        #   The unique ID of the event.
+        # @param created_at
+        #   The Unix timestamp (in seconds) of when the batch API request was completed.
+        # @param data
+        #   Event data payload.
+        # @param object
+        #   The object of the event. Always `event`.
+        # @param type
+        #   The type of the event. Always `batch.completed`.
         def initialize: (
           id: String,
           created_at: Integer,
@@ -44,8 +60,11 @@ module OpenAI
         type data = { id: String }
 
         class Data < OpenAI::Internal::Type::BaseModel
+          # The unique ID of the batch API request.
           attr_accessor id: String
 
+          # @param id
+          #   The unique ID of the batch API request.
           def initialize: (id: String) -> void
 
           def to_hash: -> { id: String }

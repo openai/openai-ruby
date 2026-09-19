@@ -26,18 +26,41 @@ module OpenAI
           }
 
         class Output < OpenAI::Internal::Type::BaseModel
+          # The format of the output audio.
           attr_reader format_: OpenAI::Models::Realtime::realtime_audio_formats?
 
+          # The format of the output audio.
           def format_=: (
             OpenAI::Models::Realtime::realtime_audio_formats
           ) -> OpenAI::Models::Realtime::realtime_audio_formats
 
+          # The voice the model uses to respond. Supported built-in voices are `alloy`,
+          # `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
+          # `cedar`. You may also provide a custom voice object with an `id`, for example
+          # `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
+          # model has responded with audio at least once. We recommend `marin` and `cedar`
+          # for best quality.
           attr_reader voice: OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice?
 
+          # The voice the model uses to respond. Supported built-in voices are `alloy`,
+          # `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
+          # `cedar`. You may also provide a custom voice object with an `id`, for example
+          # `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
+          # model has responded with audio at least once. We recommend `marin` and `cedar`
+          # for best quality.
           def voice=: (
             OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice
           ) -> OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice
 
+          # @param format_
+          #   The format of the output audio.
+          # @param voice
+          #   The voice the model uses to respond. Supported built-in voices are `alloy`,
+          #   `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
+          #   `cedar`. You may also provide a custom voice object with an `id`, for example
+          #   `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
+          #   model has responded with audio at least once. We recommend `marin` and `cedar`
+          #   for best quality.
           def initialize: (
             ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
             ?voice: OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice
@@ -68,8 +91,11 @@ module OpenAI
             type id = { id: String }
 
             class ID < OpenAI::Internal::Type::BaseModel
+              # The custom voice ID, e.g. `voice_1234`.
               attr_accessor id: String
 
+              # @param id
+              #   The custom voice ID, e.g. `voice_1234`.
               def initialize: (id: String) -> void
 
               def to_hash: -> { id: String }

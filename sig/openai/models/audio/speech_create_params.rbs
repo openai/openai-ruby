@@ -17,32 +17,83 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # The text to generate audio for. The maximum length is 4096 characters.
         attr_accessor input: String
 
+        # One of the available
+        # [TTS models](https://developers.openai.com/api/docs/guides/text-to-speech):
+        # `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.
         attr_accessor model: OpenAI::Models::Audio::SpeechCreateParams::model
 
+        # The voice to use when generating the audio. Supported built-in voices are
+        # `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`,
+        # `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice
+        # object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the
+        # voices are available in the
+        # [Text to speech guide](https://developers.openai.com/api/docs/guides/text-to-speech#voice-options).
         attr_accessor voice: OpenAI::Models::Audio::SpeechCreateParams::voice
 
+        # Control the voice of your generated audio with additional instructions. Does not
+        # work with `tts-1` or `tts-1-hd`.
         attr_reader instructions: String?
 
+        # Control the voice of your generated audio with additional instructions. Does not
+        # work with `tts-1` or `tts-1-hd`.
         def instructions=: (String) -> String
 
+        # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
+        # `wav`, and `pcm`.
         attr_reader response_format: OpenAI::Models::Audio::SpeechCreateParams::response_format?
 
+        # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
+        # `wav`, and `pcm`.
         def response_format=: (
           OpenAI::Models::Audio::SpeechCreateParams::response_format
         ) -> OpenAI::Models::Audio::SpeechCreateParams::response_format
 
+        # The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
+        # the default.
         attr_reader speed: Float?
 
+        # The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
+        # the default.
         def speed=: (Float) -> Float
 
+        # The format to stream the audio in. Supported formats are `sse` and `audio`.
+        # `sse` is not supported for `tts-1` or `tts-1-hd`.
         attr_reader stream_format: OpenAI::Models::Audio::SpeechCreateParams::stream_format?
 
+        # The format to stream the audio in. Supported formats are `sse` and `audio`.
+        # `sse` is not supported for `tts-1` or `tts-1-hd`.
         def stream_format=: (
           OpenAI::Models::Audio::SpeechCreateParams::stream_format
         ) -> OpenAI::Models::Audio::SpeechCreateParams::stream_format
 
+        # @param input
+        #   The text to generate audio for. The maximum length is 4096 characters.
+        # @param model
+        #   One of the available
+        #   [TTS models](https://developers.openai.com/api/docs/guides/text-to-speech):
+        #   `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.
+        # @param voice
+        #   The voice to use when generating the audio. Supported built-in voices are
+        #   `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`,
+        #   `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice
+        #   object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the
+        #   voices are available in the
+        #   [Text to speech guide](https://developers.openai.com/api/docs/guides/text-to-speech#voice-options).
+        # @param instructions
+        #   Control the voice of your generated audio with additional instructions. Does not
+        #   work with `tts-1` or `tts-1-hd`.
+        # @param response_format
+        #   The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
+        #   `wav`, and `pcm`.
+        # @param speed
+        #   The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
+        #   the default.
+        # @param stream_format
+        #   The format to stream the audio in. Supported formats are `sse` and `audio`.
+        #   `sse` is not supported for `tts-1` or `tts-1-hd`.
         def initialize: (
           input: String,
           model: OpenAI::Models::Audio::SpeechCreateParams::model,
@@ -93,8 +144,11 @@ module OpenAI
           type id = { id: String }
 
           class ID < OpenAI::Internal::Type::BaseModel
+            # The custom voice ID, e.g. `voice_1234`.
             attr_accessor id: String
 
+            # @param id
+            #   The custom voice ID, e.g. `voice_1234`.
             def initialize: (id: String) -> void
 
             def to_hash: -> { id: String }

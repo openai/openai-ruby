@@ -19,24 +19,59 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # The model to use for the agent. The requested model name is preserved.
         attr_accessor model: String
 
+        # Additional instructions appended to the agent's default base instructions. Omit
+        # or set to null to add no custom instructions.
         attr_accessor instructions: String?
 
+        # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+        # characters. Omission or null defaults to an empty map.
         attr_accessor metadata: ::Hash[Symbol, String]?
 
+        # Configuration for creating and coordinating subagents. Subagent tools are
+        # disabled by default.
         attr_accessor multi_agent: OpenAI::Beta::MultiAgentConfigParam?
 
+        # A human-readable name for the agent. Omission or null leaves the agent unnamed.
         attr_accessor name: String?
 
+        # Configuration for model reasoning. Omission uses the model's default effort.
         attr_accessor reasoning: OpenAI::Beta::AgentReasoningParam?
 
+        # The service tier used for model requests. Defaults to `auto`.
         attr_accessor service_tier: OpenAI::Models::Beta::AgentCreateParams::service_tier?
 
+        # Configuration for generated text. Defaults to the `text` format and medium
+        # verbosity.
         attr_accessor text: OpenAI::Beta::AgentTextParam?
 
+        # Tools available to the agent. Defaults to an empty list.
         attr_accessor tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool_param]?
 
+        # @param model
+        #   The model to use for the agent. The requested model name is preserved.
+        # @param instructions
+        #   Additional instructions appended to the agent's default base instructions. Omit
+        #   or set to null to add no custom instructions.
+        # @param metadata
+        #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+        #   characters. Omission or null defaults to an empty map.
+        # @param multi_agent
+        #   Configuration for creating and coordinating subagents. Subagent tools are
+        #   disabled by default.
+        # @param name
+        #   A human-readable name for the agent. Omission or null leaves the agent unnamed.
+        # @param reasoning
+        #   Configuration for model reasoning. Omission uses the model's default effort.
+        # @param service_tier
+        #   The service tier used for model requests. Defaults to `auto`.
+        # @param text
+        #   Configuration for generated text. Defaults to the `text` format and medium
+        #   verbosity.
+        # @param tools
+        #   Tools available to the agent. Defaults to an empty list.
         def initialize: (
           model: String,
           ?instructions: String?,

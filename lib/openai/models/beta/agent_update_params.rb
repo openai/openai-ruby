@@ -35,7 +35,7 @@ module OpenAI
         optional :model, String
 
         # @!attribute multi_agent
-        #   Explicit configuration for creating and coordinating subagents.
+        #   Configuration for creating and coordinating subagents.
         #
         #   @return [OpenAI::Models::Beta::MultiAgentConfigParam, nil]
         optional :multi_agent, -> { OpenAI::Beta::MultiAgentConfigParam }, nil?: true
@@ -47,7 +47,8 @@ module OpenAI
         optional :name, String, nil?: true
 
         # @!attribute reasoning
-        #   Reasoning configuration for the agent.
+        #   Configuration for model reasoning. Omit to keep the current settings; pass
+        #   `null` to reset to the model's default effort.
         #
         #   @return [OpenAI::Models::Beta::AgentReasoningParam, nil]
         optional :reasoning, -> { OpenAI::Beta::AgentReasoningParam }, nil?: true
@@ -90,13 +91,14 @@ module OpenAI
         #     The model to use for the agent. The requested model name is preserved.
         #
         #   @param multi_agent [OpenAI::Models::Beta::MultiAgentConfigParam, nil]
-        #     Explicit configuration for creating and coordinating subagents.
+        #     Configuration for creating and coordinating subagents.
         #
         #   @param name [String, nil]
         #     A replacement name. Omit to leave unchanged, or pass null to clear it.
         #
         #   @param reasoning [OpenAI::Models::Beta::AgentReasoningParam, nil]
-        #     Reasoning configuration for the agent.
+        #     Configuration for model reasoning. Omit to keep the current settings; pass
+        #     `null` to reset to the model's default effort.
         #
         #   @param service_tier [Symbol, OpenAI::Models::Beta::AgentUpdateParams::ServiceTier, nil]
         #     The service tier used for model requests.

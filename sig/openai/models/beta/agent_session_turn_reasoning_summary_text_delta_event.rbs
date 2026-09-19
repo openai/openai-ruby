@@ -14,22 +14,48 @@ module OpenAI
         }
 
       class AgentSessionTurnReasoningSummaryTextDeltaEvent < OpenAI::Internal::Type::BaseModel
+        # The summary text that was appended.
         attr_accessor delta: String
 
+        # The unique ID of the event.
         attr_accessor event_id: String
 
+        # The ID of the reasoning item.
         attr_accessor item_id: String
 
+        # The index of the item in the turn output.
         attr_accessor output_index: Integer
 
+        # The ID of the session associated with the event.
         attr_accessor session_id: String
 
+        # The index of the summary content part.
         attr_accessor summary_index: Integer
 
+        # The ID of the turn associated with the event, when applicable.
         attr_accessor turn_id: String?
 
+        # The type of the object. Always
+        # `agent.session.turn.reasoning_summary_text.delta`.
         attr_accessor type: :"agent.session.turn.reasoning_summary_text.delta"
 
+        # @param delta
+        #   The summary text that was appended.
+        # @param event_id
+        #   The unique ID of the event.
+        # @param item_id
+        #   The ID of the reasoning item.
+        # @param output_index
+        #   The index of the item in the turn output.
+        # @param session_id
+        #   The ID of the session associated with the event.
+        # @param summary_index
+        #   The index of the summary content part.
+        # @param turn_id
+        #   The ID of the turn associated with the event, when applicable.
+        # @param type
+        #   The type of the object. Always
+        #   `agent.session.turn.reasoning_summary_text.delta`.
         def initialize: (
           delta: String,
           event_id: String,

@@ -12,18 +12,36 @@ module OpenAI
         }
 
       class AgentSessionTurnCompletedEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the event.
         attr_accessor event_id: String
 
+        # The ID of the session associated with the event.
         attr_accessor session_id: String
 
+        # The completed turn.
         attr_accessor turn: OpenAI::Beta::Agents::Sessions::Turn
 
+        # The ID of the turn associated with the event.
         attr_accessor turn_id: String
 
+        # The type of the object. Always `agent.session.turn.completed`.
         attr_accessor type: :"agent.session.turn.completed"
 
+        # Token usage by the root agent during the turn, when available.
         attr_accessor usage: OpenAI::Beta::TokenUsage?
 
+        # @param event_id
+        #   The unique ID of the event.
+        # @param session_id
+        #   The ID of the session associated with the event.
+        # @param turn
+        #   The completed turn.
+        # @param turn_id
+        #   The ID of the turn associated with the event.
+        # @param usage
+        #   Token usage by the root agent during the turn, when available.
+        # @param type
+        #   The type of the object. Always `agent.session.turn.completed`.
         def initialize: (
           event_id: String,
           session_id: String,

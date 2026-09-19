@@ -9,12 +9,21 @@ module OpenAI
         }
 
       class AgentSessionRequiresActionEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the event.
         attr_accessor event_id: String
 
+        # The session and its current required actions.
         attr_accessor session: OpenAI::Beta::AgentSession
 
+        # The type of the object. Always `agent.session.requires_action`.
         attr_accessor type: :"agent.session.requires_action"
 
+        # @param event_id
+        #   The unique ID of the event.
+        # @param session
+        #   The session and its current required actions.
+        # @param type
+        #   The type of the object. Always `agent.session.requires_action`.
         def initialize: (
           event_id: String,
           session: OpenAI::Beta::AgentSession,

@@ -4,18 +4,32 @@ module OpenAI
       { ?code: String, ?line: Integer?, ?message: String, ?param: String? }
 
     class BatchError < OpenAI::Internal::Type::BaseModel
+      # An error code identifying the error type.
       attr_reader code: String?
 
+      # An error code identifying the error type.
       def code=: (String) -> String
 
+      # The line number of the input file where the error occurred, if applicable.
       attr_accessor line: Integer?
 
+      # A human-readable message providing more details about the error.
       attr_reader message: String?
 
+      # A human-readable message providing more details about the error.
       def message=: (String) -> String
 
+      # The name of the parameter that caused the error, if applicable.
       attr_accessor param: String?
 
+      # @param code
+      #   An error code identifying the error type.
+      # @param line
+      #   The line number of the input file where the error occurred, if applicable.
+      # @param message
+      #   A human-readable message providing more details about the error.
+      # @param param
+      #   The name of the parameter that caused the error, if applicable.
       def initialize: (
         ?code: String,
         ?line: Integer?,

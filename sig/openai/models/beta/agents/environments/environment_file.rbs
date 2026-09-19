@@ -14,14 +14,26 @@ module OpenAI
             }
 
           class EnvironmentFile < OpenAI::Internal::Type::BaseModel
+            # The ID of the environment containing this file.
             attr_accessor environment_id: String
 
+            # The object type. Always `agent.environment.file`.
             attr_accessor object: :"agent.environment.file"
 
+            # The absolute file path inside the environment's workspace.
             attr_accessor path: String
 
+            # The file size in bytes.
             attr_accessor size_bytes: Integer
 
+            # @param environment_id
+            #   The ID of the environment containing this file.
+            # @param path
+            #   The absolute file path inside the environment's workspace.
+            # @param size_bytes
+            #   The file size in bytes.
+            # @param object
+            #   The object type. Always `agent.environment.file`.
             def initialize: (
               environment_id: String,
               path: String,

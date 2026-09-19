@@ -13,20 +13,41 @@ module OpenAI
         }
 
       class ResponseTextDeltaEvent < OpenAI::Internal::Type::BaseModel
+        # The index of the content part that the text delta was added to.
         attr_accessor content_index: Integer
 
+        # The text delta that was added.
         attr_accessor delta: String
 
+        # The ID of the output item that the text delta was added to.
         attr_accessor item_id: String
 
+        # The log probabilities of the tokens in the delta.
         attr_accessor logprobs: ::Array[OpenAI::Responses::ResponseTextDeltaEvent::Logprob]
 
+        # The index of the output item that the text delta was added to.
         attr_accessor output_index: Integer
 
+        # The sequence number for this event.
         attr_accessor sequence_number: Integer
 
+        # The type of the event. Always `response.output_text.delta`.
         attr_accessor type: :"response.output_text.delta"
 
+        # @param content_index
+        #   The index of the content part that the text delta was added to.
+        # @param delta
+        #   The text delta that was added.
+        # @param item_id
+        #   The ID of the output item that the text delta was added to.
+        # @param logprobs
+        #   The log probabilities of the tokens in the delta.
+        # @param output_index
+        #   The index of the output item that the text delta was added to.
+        # @param sequence_number
+        #   The sequence number for this event.
+        # @param type
+        #   The type of the event. Always `response.output_text.delta`.
         def initialize: (
           content_index: Integer,
           delta: String,
@@ -55,16 +76,26 @@ module OpenAI
           }
 
         class Logprob < OpenAI::Internal::Type::BaseModel
+          # A possible text token.
           attr_accessor token: String
 
+          # The log probability of this token.
           attr_accessor logprob: Float
 
+          # The log probabilities of up to 20 of the most likely tokens.
           attr_reader top_logprobs: ::Array[OpenAI::Responses::ResponseTextDeltaEvent::Logprob::TopLogprob]?
 
+          # The log probabilities of up to 20 of the most likely tokens.
           def top_logprobs=: (
             ::Array[OpenAI::Responses::ResponseTextDeltaEvent::Logprob::TopLogprob]
           ) -> ::Array[OpenAI::Responses::ResponseTextDeltaEvent::Logprob::TopLogprob]
 
+          # @param token
+          #   A possible text token.
+          # @param logprob
+          #   The log probability of this token.
+          # @param top_logprobs
+          #   The log probabilities of up to 20 of the most likely tokens.
           def initialize: (
             token: String,
             logprob: Float,
@@ -80,14 +111,22 @@ module OpenAI
           type top_logprob = { ?token: String, ?logprob: Float }
 
           class TopLogprob < OpenAI::Internal::Type::BaseModel
+            # A possible text token.
             attr_reader token: String?
 
+            # A possible text token.
             def token=: (String) -> String
 
+            # The log probability of this token.
             attr_reader logprob: Float?
 
+            # The log probability of this token.
             def logprob=: (Float) -> Float
 
+            # @param token
+            #   A possible text token.
+            # @param logprob
+            #   The log probability of this token.
             def initialize: (?token: String, ?logprob: Float) -> void
 
             def to_hash: -> { ?token: String, ?logprob: Float }

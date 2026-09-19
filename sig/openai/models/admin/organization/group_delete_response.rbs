@@ -6,12 +6,21 @@ module OpenAI
           { id: String, deleted: bool, ?object: :"group.deleted" }
 
         class GroupDeleteResponse < OpenAI::Internal::Type::BaseModel
+          # Identifier of the deleted group.
           attr_accessor id: String
 
+          # Whether the group was deleted.
           attr_accessor deleted: bool
 
+          # Always `group.deleted`.
           attr_accessor object: :"group.deleted"
 
+          # @param id
+          #   Identifier of the deleted group.
+          # @param deleted
+          #   Whether the group was deleted.
+          # @param object
+          #   Always `group.deleted`.
           def initialize: (
             id: String,
             deleted: bool,

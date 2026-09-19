@@ -8,8 +8,11 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # Project safety alert ID
         attr_accessor id: String
 
+        # @param id
+        #   Project safety alert ID
         def initialize: (
           id: String,
           ?request_options: OpenAI::request_opts

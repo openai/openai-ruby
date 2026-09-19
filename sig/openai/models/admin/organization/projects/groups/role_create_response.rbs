@@ -12,12 +12,21 @@ module OpenAI
               }
 
             class RoleCreateResponse < OpenAI::Internal::Type::BaseModel
+              # Summary information about a group returned in role assignment responses.
               attr_accessor group: OpenAI::Models::Admin::Organization::Projects::Groups::RoleCreateResponse::Group
 
+              # Always `group.role`.
               attr_accessor object: :"group.role"
 
+              # Details about a role that can be assigned through the public Roles API.
               attr_accessor role: OpenAI::Admin::Organization::Role
 
+              # @param group
+              #   Summary information about a group returned in role assignment responses.
+              # @param role
+              #   Details about a role that can be assigned through the public Roles API.
+              # @param object
+              #   Always `group.role`.
               def initialize: (
                 group: OpenAI::Models::Admin::Organization::Projects::Groups::RoleCreateResponse::Group,
                 role: OpenAI::Admin::Organization::Role,
@@ -40,16 +49,31 @@ module OpenAI
                 }
 
               class Group < OpenAI::Internal::Type::BaseModel
+                # Identifier for the group.
                 attr_accessor id: String
 
+                # Unix timestamp (in seconds) when the group was created.
                 attr_accessor created_at: Integer
 
+                # Display name of the group.
                 attr_accessor name: String
 
+                # Always `group`.
                 attr_accessor object: :group
 
+                # Whether the group is managed through SCIM.
                 attr_accessor scim_managed: bool
 
+                # @param id
+                #   Identifier for the group.
+                # @param created_at
+                #   Unix timestamp (in seconds) when the group was created.
+                # @param name
+                #   Display name of the group.
+                # @param scim_managed
+                #   Whether the group is managed through SCIM.
+                # @param object
+                #   Always `group`.
                 def initialize: (
                   id: String,
                   created_at: Integer,

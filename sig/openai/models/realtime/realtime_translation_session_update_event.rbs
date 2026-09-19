@@ -9,14 +9,26 @@ module OpenAI
         }
 
       class RealtimeTranslationSessionUpdateEvent < OpenAI::Internal::Type::BaseModel
+        # Translation session fields to update. The session `type` and `model` are set at
+        # creation and cannot be changed with `session.update`.
         attr_accessor session: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest
 
+        # The event type, must be `session.update`.
         attr_accessor type: :"session.update"
 
+        # Optional client-generated ID used to identify this event.
         attr_reader event_id: String?
 
+        # Optional client-generated ID used to identify this event.
         def event_id=: (String) -> String
 
+        # @param session
+        #   Translation session fields to update. The session `type` and `model` are set at
+        #   creation and cannot be changed with `session.update`.
+        # @param event_id
+        #   Optional client-generated ID used to identify this event.
+        # @param type
+        #   The event type, must be `session.update`.
         def initialize: (
           session: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest,
           ?event_id: String,

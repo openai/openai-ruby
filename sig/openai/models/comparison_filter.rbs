@@ -8,12 +8,43 @@ module OpenAI
       }
 
     class ComparisonFilter < OpenAI::Internal::Type::BaseModel
+      # The key to compare against the value.
       attr_accessor key: String
 
+      # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`,
+      # `nin`.
+      #
+      # - `eq`: equals
+      # - `ne`: not equal
+      # - `gt`: greater than
+      # - `gte`: greater than or equal
+      # - `lt`: less than
+      # - `lte`: less than or equal
+      # - `in`: in
+      # - `nin`: not in
       attr_accessor type: OpenAI::Models::ComparisonFilter::type_
 
+      # The value to compare against the attribute key; supports string, number, or
+      # boolean types.
       attr_accessor value: OpenAI::Models::ComparisonFilter::value
 
+      # @param key
+      #   The key to compare against the value.
+      # @param type
+      #   Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`,
+      #   `nin`.
+      #
+      #   - `eq`: equals
+      #   - `ne`: not equal
+      #   - `gt`: greater than
+      #   - `gte`: greater than or equal
+      #   - `lt`: less than
+      #   - `lte`: less than or equal
+      #   - `in`: in
+      #   - `nin`: not in
+      # @param value
+      #   The value to compare against the attribute key; supports string, number, or
+      #   boolean types.
       def initialize: (
         key: String,
         type: OpenAI::Models::ComparisonFilter::type_,

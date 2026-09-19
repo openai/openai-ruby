@@ -11,8 +11,10 @@ module OpenAI
             }
 
           class CodeInterpreterOutputImage < OpenAI::Internal::Type::BaseModel
+            # The index of the output in the outputs array.
             attr_accessor index: Integer
 
+            # Always `image`.
             attr_accessor type: :image
 
             attr_reader image: OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image?
@@ -21,6 +23,10 @@ module OpenAI
               OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
             ) -> OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
 
+            # @param index
+            #   The index of the output in the outputs array.
+            # @param type
+            #   Always `image`.
             def initialize: (
               index: Integer,
               ?image: OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image,
@@ -36,10 +42,17 @@ module OpenAI
             type image = { ?file_id: String }
 
             class Image < OpenAI::Internal::Type::BaseModel
+              # The [file](https://developers.openai.com/api/reference/resources/files) ID of
+              # the image.
               attr_reader file_id: String?
 
+              # The [file](https://developers.openai.com/api/reference/resources/files) ID of
+              # the image.
               def file_id=: (String) -> String
 
+              # @param file_id
+              #   The [file](https://developers.openai.com/api/reference/resources/files) ID of
+              #   the image.
               def initialize: (?file_id: String) -> void
 
               def to_hash: -> { ?file_id: String }

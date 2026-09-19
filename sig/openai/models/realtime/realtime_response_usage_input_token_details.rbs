@@ -11,28 +11,48 @@ module OpenAI
         }
 
       class RealtimeResponseUsageInputTokenDetails < OpenAI::Internal::Type::BaseModel
+        # The number of audio tokens used as input for the Response.
         attr_reader audio_tokens: Integer?
 
+        # The number of audio tokens used as input for the Response.
         def audio_tokens=: (Integer) -> Integer
 
+        # The number of cached tokens used as input for the Response.
         attr_reader cached_tokens: Integer?
 
+        # The number of cached tokens used as input for the Response.
         def cached_tokens=: (Integer) -> Integer
 
+        # Details about the cached tokens used as input for the Response.
         attr_reader cached_tokens_details: OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails::CachedTokensDetails?
 
+        # Details about the cached tokens used as input for the Response.
         def cached_tokens_details=: (
           OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails::CachedTokensDetails
         ) -> OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails::CachedTokensDetails
 
+        # The number of image tokens used as input for the Response.
         attr_reader image_tokens: Integer?
 
+        # The number of image tokens used as input for the Response.
         def image_tokens=: (Integer) -> Integer
 
+        # The number of text tokens used as input for the Response.
         attr_reader text_tokens: Integer?
 
+        # The number of text tokens used as input for the Response.
         def text_tokens=: (Integer) -> Integer
 
+        # @param audio_tokens
+        #   The number of audio tokens used as input for the Response.
+        # @param cached_tokens
+        #   The number of cached tokens used as input for the Response.
+        # @param cached_tokens_details
+        #   Details about the cached tokens used as input for the Response.
+        # @param image_tokens
+        #   The number of image tokens used as input for the Response.
+        # @param text_tokens
+        #   The number of text tokens used as input for the Response.
         def initialize: (
           ?audio_tokens: Integer,
           ?cached_tokens: Integer,
@@ -57,18 +77,30 @@ module OpenAI
           }
 
         class CachedTokensDetails < OpenAI::Internal::Type::BaseModel
+          # The number of cached audio tokens used as input for the Response.
           attr_reader audio_tokens: Integer?
 
+          # The number of cached audio tokens used as input for the Response.
           def audio_tokens=: (Integer) -> Integer
 
+          # The number of cached image tokens used as input for the Response.
           attr_reader image_tokens: Integer?
 
+          # The number of cached image tokens used as input for the Response.
           def image_tokens=: (Integer) -> Integer
 
+          # The number of cached text tokens used as input for the Response.
           attr_reader text_tokens: Integer?
 
+          # The number of cached text tokens used as input for the Response.
           def text_tokens=: (Integer) -> Integer
 
+          # @param audio_tokens
+          #   The number of cached audio tokens used as input for the Response.
+          # @param image_tokens
+          #   The number of cached image tokens used as input for the Response.
+          # @param text_tokens
+          #   The number of cached text tokens used as input for the Response.
           def initialize: (
             ?audio_tokens: Integer,
             ?image_tokens: Integer,

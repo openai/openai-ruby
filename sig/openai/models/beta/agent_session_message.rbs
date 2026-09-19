@@ -13,20 +13,43 @@ module OpenAI
         }
 
       class AgentSessionMessage < OpenAI::Internal::Type::BaseModel
+        # The ID of this item, or null for legacy user messages whose ID was not recorded.
         attr_accessor id: String?
 
+        # The content of the message. User messages contain input text or images;
+        # assistant messages contain output text.
         attr_accessor content: ::Array[OpenAI::Models::Beta::agent_session_message_content]
 
+        # The phase of an assistant message. Null for user messages.
         attr_accessor phase: OpenAI::Models::Beta::AgentSessionMessage::phase?
 
+        # The role of the message author.
         attr_accessor role: OpenAI::Models::Beta::AgentSessionMessage::role
 
+        # The status of the message. User messages are always `completed`.
         attr_accessor status: OpenAI::Models::Beta::agent_output_item_status
 
+        # The ID of the turn that contains this item.
         attr_accessor turn_id: String
 
+        # The item type. Always `message`.
         attr_accessor type: :message
 
+        # @param id
+        #   The ID of this item, or null for legacy user messages whose ID was not recorded.
+        # @param content
+        #   The content of the message. User messages contain input text or images;
+        #   assistant messages contain output text.
+        # @param phase
+        #   The phase of an assistant message. Null for user messages.
+        # @param role
+        #   The role of the message author.
+        # @param status
+        #   The status of the message. User messages are always `completed`.
+        # @param turn_id
+        #   The ID of the turn that contains this item.
+        # @param type
+        #   The item type. Always `message`.
         def initialize: (
           id: String?,
           content: ::Array[OpenAI::Models::Beta::agent_session_message_content],

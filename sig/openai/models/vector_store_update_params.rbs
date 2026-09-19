@@ -15,12 +15,31 @@ module OpenAI
 
       attr_accessor vector_store_id: String
 
+      # The expiration policy for a vector store.
       attr_accessor expires_after: OpenAI::VectorStoreUpdateParams::ExpiresAfter?
 
+      # Set of 16 key-value pairs that can be attached to an object. This can be useful
+      # for storing additional information about the object in a structured format, and
+      # querying for objects via API or the dashboard.
+      #
+      # Keys are strings with a maximum length of 64 characters. Values are strings with
+      # a maximum length of 512 characters.
       attr_accessor metadata: OpenAI::Models::metadata?
 
+      # The name of the vector store.
       attr_accessor name: String?
 
+      # @param expires_after
+      #   The expiration policy for a vector store.
+      # @param metadata
+      #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #   for storing additional information about the object in a structured format, and
+      #   querying for objects via API or the dashboard.
+      #
+      #   Keys are strings with a maximum length of 64 characters. Values are strings with
+      #   a maximum length of 512 characters.
+      # @param name
+      #   The name of the vector store.
       def initialize: (
         vector_store_id: String,
         ?expires_after: OpenAI::VectorStoreUpdateParams::ExpiresAfter?,
@@ -40,10 +59,18 @@ module OpenAI
       type expires_after = { ?anchor: :last_active_at, days: Integer }
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
+        # Anchor timestamp after which the expiration policy applies. Supported anchors:
+        # `last_active_at`.
         attr_accessor anchor: :last_active_at
 
+        # The number of days after the anchor time that the vector store will expire.
         attr_accessor days: Integer
 
+        # @param days
+        #   The number of days after the anchor time that the vector store will expire.
+        # @param anchor
+        #   Anchor timestamp after which the expiration policy applies. Supported anchors:
+        #   `last_active_at`.
         def initialize: (days: Integer, ?anchor: :last_active_at) -> void
 
         def to_hash: -> { ?anchor: :last_active_at, days: Integer }

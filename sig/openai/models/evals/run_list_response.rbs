@@ -20,34 +20,86 @@ module OpenAI
         }
 
       class RunListResponse < OpenAI::Internal::Type::BaseModel
+        # Unique identifier for the evaluation run.
         attr_accessor id: String
 
+        # Unix timestamp (in seconds) when the evaluation run was created.
         attr_accessor created_at: Integer
 
+        # Information about the run's data source.
         attr_accessor data_source: OpenAI::Models::Evals::RunListResponse::data_source
 
+        # An object representing an error response from the Eval API.
         attr_accessor error: OpenAI::Evals::EvalAPIError
 
+        # The identifier of the associated evaluation.
         attr_accessor eval_id: String
 
+        # Set of 16 key-value pairs that can be attached to an object. This can be useful
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard.
+        #
+        # Keys are strings with a maximum length of 64 characters. Values are strings with
+        # a maximum length of 512 characters.
         attr_accessor metadata: OpenAI::Models::metadata?
 
+        # The model that is evaluated, if applicable.
         attr_accessor model: String
 
+        # The name of the evaluation run.
         attr_accessor name: String
 
+        # The type of the object. Always "eval.run".
         attr_accessor object: :"eval.run"
 
+        # Usage statistics for each model during the evaluation run.
         attr_accessor per_model_usage: ::Array[OpenAI::Models::Evals::RunListResponse::PerModelUsage]
 
+        # Results per testing criteria applied during the evaluation run.
         attr_accessor per_testing_criteria_results: ::Array[OpenAI::Models::Evals::RunListResponse::PerTestingCriteriaResult]
 
+        # The URL to the rendered evaluation run report on the UI dashboard.
         attr_accessor report_url: String
 
+        # Counters summarizing the outcomes of the evaluation run.
         attr_accessor result_counts: OpenAI::Models::Evals::RunListResponse::ResultCounts
 
+        # The status of the evaluation run.
         attr_accessor status: String
 
+        # @param id
+        #   Unique identifier for the evaluation run.
+        # @param created_at
+        #   Unix timestamp (in seconds) when the evaluation run was created.
+        # @param data_source
+        #   Information about the run's data source.
+        # @param error
+        #   An object representing an error response from the Eval API.
+        # @param eval_id
+        #   The identifier of the associated evaluation.
+        # @param metadata
+        #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #   for storing additional information about the object in a structured format, and
+        #   querying for objects via API or the dashboard.
+        #
+        #   Keys are strings with a maximum length of 64 characters. Values are strings with
+        #   a maximum length of 512 characters.
+        # @param model
+        #   The model that is evaluated, if applicable.
+        # @param name
+        #   The name of the evaluation run.
+        # @param per_model_usage
+        #   Usage statistics for each model during the evaluation run.
+        # @param per_testing_criteria_results
+        #   Results per testing criteria applied during the evaluation run.
+        # @param report_url
+        #   The URL to the rendered evaluation run report on the UI dashboard.
+        # @param result_counts
+        #   Counters summarizing the outcomes of the evaluation run.
+        # @param status
+        #   The status of the evaluation run.
+        # @param object
+        #   The type of the object. Always "eval.run".
         def initialize: (
           id: String,
           created_at: Integer,
@@ -100,18 +152,30 @@ module OpenAI
             }
 
           class Responses < OpenAI::Internal::Type::BaseModel
+            # Determines what populates the `item` namespace in this run's data source.
             attr_accessor source: OpenAI::Models::Evals::RunListResponse::DataSource::Responses::source
 
+            # The type of run data source. Always `responses`.
             attr_accessor type: :responses
 
+            # Used when sampling from a model. Dictates the structure of the messages passed
+            # into the model. Can either be a reference to a prebuilt trajectory (ie,
+            # `item.input_trajectory`), or a template with variable references to the `item`
+            # namespace.
             attr_reader input_messages: OpenAI::Models::Evals::RunListResponse::DataSource::Responses::input_messages?
 
+            # Used when sampling from a model. Dictates the structure of the messages passed
+            # into the model. Can either be a reference to a prebuilt trajectory (ie,
+            # `item.input_trajectory`), or a template with variable references to the `item`
+            # namespace.
             def input_messages=: (
               OpenAI::Models::Evals::RunListResponse::DataSource::Responses::input_messages
             ) -> OpenAI::Models::Evals::RunListResponse::DataSource::Responses::input_messages
 
+            # The name of the model to use for generating completions (e.g. "o3-mini").
             attr_reader model: String?
 
+            # The name of the model to use for generating completions (e.g. "o3-mini").
             def model=: (String) -> String
 
             attr_reader sampling_params: OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams?
@@ -120,6 +184,17 @@ module OpenAI
               OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams
             ) -> OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams
 
+            # @param source
+            #   Determines what populates the `item` namespace in this run's data source.
+            # @param input_messages
+            #   Used when sampling from a model. Dictates the structure of the messages passed
+            #   into the model. Can either be a reference to a prebuilt trajectory (ie,
+            #   `item.input_trajectory`), or a template with variable references to the `item`
+            #   namespace.
+            # @param model
+            #   The name of the model to use for generating completions (e.g. "o3-mini").
+            # @param type
+            #   The type of run data source. Always `responses`.
             def initialize: (
               source: OpenAI::Models::Evals::RunListResponse::DataSource::Responses::source,
               ?input_messages: OpenAI::Models::Evals::RunListResponse::DataSource::Responses::input_messages,
@@ -151,10 +226,16 @@ module OpenAI
                 }
 
               class FileContent < OpenAI::Internal::Type::BaseModel
+                # The content of the jsonl file.
                 attr_accessor content: ::Array[OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::FileContent::Content]
 
+                # The type of jsonl source. Always `file_content`.
                 attr_accessor type: :file_content
 
+                # @param content
+                #   The content of the jsonl file.
+                # @param type
+                #   The type of jsonl source. Always `file_content`.
                 def initialize: (
                   content: ::Array[OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::FileContent::Content],
                   ?type: :file_content
@@ -190,10 +271,16 @@ module OpenAI
               type file_id = { id: String, ?type: :file_id }
 
               class FileID < OpenAI::Internal::Type::BaseModel
+                # The identifier of the file.
                 attr_accessor id: String
 
+                # The type of jsonl source. Always `file_id`.
                 attr_accessor type: :file_id
 
+                # @param id
+                #   The identifier of the file.
+                # @param type
+                #   The type of jsonl source. Always `file_id`.
                 def initialize: (id: String, ?type: :file_id) -> void
 
                 def to_hash: -> { id: String, ?type: :file_id }
@@ -215,28 +302,81 @@ module OpenAI
                 }
 
               class Responses < OpenAI::Internal::Type::BaseModel
+                # The type of run data source. Always `responses`.
                 attr_accessor type: :responses
 
+                # Only include items created after this timestamp (inclusive). This is a query
+                # parameter used to select responses.
                 attr_accessor created_after: Integer?
 
+                # Only include items created before this timestamp (inclusive). This is a query
+                # parameter used to select responses.
                 attr_accessor created_before: Integer?
 
+                # Optional string to search the 'instructions' field. This is a query parameter
+                # used to select responses.
                 attr_accessor instructions_search: String?
 
+                # Metadata filter for the responses. This is a query parameter used to select
+                # responses.
                 attr_accessor metadata: top?
 
+                # The name of the model to find responses for. This is a query parameter used to
+                # select responses.
                 attr_accessor model: String?
 
+                # Constrains effort on reasoning for reasoning models. Currently supported values
+                # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+                # reasoning effort can result in faster responses and fewer tokens used on
+                # reasoning in a response. Not all reasoning models support every value. See the
+                # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
+                # model-specific support.
                 attr_accessor reasoning_effort: OpenAI::Models::reasoning_effort?
 
+                # Sampling temperature. This is a query parameter used to select responses.
                 attr_accessor temperature: Float?
 
+                # List of tool names. This is a query parameter used to select responses.
                 attr_accessor tools: ::Array[String]?
 
+                # Nucleus sampling parameter. This is a query parameter used to select responses.
                 attr_accessor top_p: Float?
 
+                # List of user identifiers. This is a query parameter used to select responses.
                 attr_accessor users: ::Array[String]?
 
+                # @param created_after
+                #   Only include items created after this timestamp (inclusive). This is a query
+                #   parameter used to select responses.
+                # @param created_before
+                #   Only include items created before this timestamp (inclusive). This is a query
+                #   parameter used to select responses.
+                # @param instructions_search
+                #   Optional string to search the 'instructions' field. This is a query parameter
+                #   used to select responses.
+                # @param metadata
+                #   Metadata filter for the responses. This is a query parameter used to select
+                #   responses.
+                # @param model
+                #   The name of the model to find responses for. This is a query parameter used to
+                #   select responses.
+                # @param reasoning_effort
+                #   Constrains effort on reasoning for reasoning models. Currently supported values
+                #   are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+                #   reasoning effort can result in faster responses and fewer tokens used on
+                #   reasoning in a response. Not all reasoning models support every value. See the
+                #   [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
+                #   model-specific support.
+                # @param temperature
+                #   Sampling temperature. This is a query parameter used to select responses.
+                # @param tools
+                #   List of tool names. This is a query parameter used to select responses.
+                # @param top_p
+                #   Nucleus sampling parameter. This is a query parameter used to select responses.
+                # @param users
+                #   List of user identifiers. This is a query parameter used to select responses.
+                # @param type
+                #   The type of run data source. Always `responses`.
                 def initialize: (
                   ?created_after: Integer?,
                   ?created_before: Integer?,
@@ -283,10 +423,18 @@ module OpenAI
                 }
 
               class Template < OpenAI::Internal::Type::BaseModel
+                # A list of chat messages forming the prompt or context. May include variable
+                # references to the `item` namespace, ie {{item.name}}.
                 attr_accessor template: ::Array[OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::template]
 
+                # The type of input messages. Always `template`.
                 attr_accessor type: :template
 
+                # @param template
+                #   A list of chat messages forming the prompt or context. May include variable
+                #   references to the `item` namespace, ie {{item.name}}.
+                # @param type
+                #   The type of input messages. Always `template`.
                 def initialize: (
                   template: ::Array[OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::template],
                   ?type: :template
@@ -307,10 +455,16 @@ module OpenAI
                   type chat_message = { content: String, role: String }
 
                   class ChatMessage < OpenAI::Internal::Type::BaseModel
+                    # The content of the message.
                     attr_accessor content: String
 
+                    # The role of the message (e.g. "system", "assistant", "user").
                     attr_accessor role: String
 
+                    # @param content
+                    #   The content of the message.
+                    # @param role
+                    #   The role of the message (e.g. "system", "assistant", "user").
                     def initialize: (content: String, role: String) -> void
 
                     def to_hash: -> { content: String, role: String }
@@ -324,16 +478,30 @@ module OpenAI
                     }
 
                   class EvalItem < OpenAI::Internal::Type::BaseModel
+                    # Inputs to the model - can contain template strings. Supports text, output text,
+                    # input images, and input audio, either as a single item or an array of items.
                     attr_accessor content: OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::content
 
+                    # The role of the message input. One of `user`, `assistant`, `system`, or
+                    # `developer`.
                     attr_accessor role: OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::role
 
+                    # The type of the message input. Always `message`.
                     attr_reader type: OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::type_?
 
+                    # The type of the message input. Always `message`.
                     def type=: (
                       OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::type_
                     ) -> OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::type_
 
+                    # @param content
+                    #   Inputs to the model - can contain template strings. Supports text, output text,
+                    #   input images, and input audio, either as a single item or an array of items.
+                    # @param role
+                    #   The role of the message input. One of `user`, `assistant`, `system`, or
+                    #   `developer`.
+                    # @param type
+                    #   The type of the message input. Always `message`.
                     def initialize: (
                       content: OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::content,
                       role: OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::role,
@@ -360,10 +528,16 @@ module OpenAI
                       type output_text = { text: String, ?type: :output_text }
 
                       class OutputText < OpenAI::Internal::Type::BaseModel
+                        # The text output from the model.
                         attr_accessor text: String
 
+                        # The type of the output text. Always `output_text`.
                         attr_accessor type: :output_text
 
+                        # @param text
+                        #   The text output from the model.
+                        # @param type
+                        #   The type of the output text. Always `output_text`.
                         def initialize: (
                           text: String,
                           ?type: :output_text
@@ -380,14 +554,27 @@ module OpenAI
                         }
 
                       class InputImage < OpenAI::Internal::Type::BaseModel
+                        # The URL of the image input.
                         attr_accessor image_url: String
 
+                        # The type of the image input. Always `input_image`.
                         attr_accessor type: :input_image
 
+                        # The detail level of the image to be sent to the model. One of `high`, `low`, or
+                        # `auto`. Defaults to `auto`.
                         attr_reader detail: String?
 
+                        # The detail level of the image to be sent to the model. One of `high`, `low`, or
+                        # `auto`. Defaults to `auto`.
                         def detail=: (String) -> String
 
+                        # @param image_url
+                        #   The URL of the image input.
+                        # @param detail
+                        #   The detail level of the image to be sent to the model. One of `high`, `low`, or
+                        #   `auto`. Defaults to `auto`.
+                        # @param type
+                        #   The type of the image input. Always `input_image`.
                         def initialize: (
                           image_url: String,
                           ?detail: String,
@@ -436,10 +623,16 @@ module OpenAI
                 { item_reference: String, ?type: :item_reference }
 
               class ItemReference < OpenAI::Internal::Type::BaseModel
+                # A reference to a variable in the `item` namespace. Ie, "item.name"
                 attr_accessor item_reference: String
 
+                # The type of input messages. Always `item_reference`.
                 attr_accessor type: :item_reference
 
+                # @param item_reference
+                #   A reference to a variable in the `item` namespace. Ie, "item.name"
+                # @param type
+                #   The type of input messages. Always `item_reference`.
                 def initialize: (
                   item_reference: String,
                   ?type: :item_reference
@@ -466,36 +659,127 @@ module OpenAI
               }
 
             class SamplingParams < OpenAI::Internal::Type::BaseModel
+              # The maximum number of tokens in the generated output.
               attr_reader max_completion_tokens: Integer?
 
+              # The maximum number of tokens in the generated output.
               def max_completion_tokens=: (Integer) -> Integer
 
+              # Constrains effort on reasoning for reasoning models. Currently supported values
+              # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+              # reasoning effort can result in faster responses and fewer tokens used on
+              # reasoning in a response. Not all reasoning models support every value. See the
+              # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
+              # model-specific support.
               attr_accessor reasoning_effort: OpenAI::Models::reasoning_effort?
 
+              # A seed value to initialize the randomness, during sampling.
               attr_reader seed: Integer?
 
+              # A seed value to initialize the randomness, during sampling.
               def seed=: (Integer) -> Integer
 
+              # A higher temperature increases randomness in the outputs.
               attr_reader temperature: Float?
 
+              # A higher temperature increases randomness in the outputs.
               def temperature=: (Float) -> Float
 
+              # Configuration options for a text response from the model. Can be plain text or
+              # structured JSON data. Learn more:
+              #
+              # - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+              # - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
               attr_reader text: OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams::Text?
 
+              # Configuration options for a text response from the model. Can be plain text or
+              # structured JSON data. Learn more:
+              #
+              # - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+              # - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
               def text=: (
                 OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams::Text
               ) -> OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams::Text
 
+              # An array of tools the model may call while generating a response. You can
+              # specify which tool to use by setting the `tool_choice` parameter.
+              #
+              # The two categories of tools you can provide the model are:
+              #
+              # - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
+              #   capabilities, like
+              #   [web search](https://developers.openai.com/api/docs/guides/tools-web-search)
+              #   or
+              #   [file search](https://developers.openai.com/api/docs/guides/tools-file-search).
+              #   Learn more about
+              #   [built-in tools](https://developers.openai.com/api/docs/guides/tools).
+              # - **Function calls (custom tools)**: Functions that are defined by you, enabling
+              #   the model to call your own code. Learn more about
+              #   [function calling](https://developers.openai.com/api/docs/guides/function-calling).
               attr_reader tools: ::Array[OpenAI::Models::Responses::tool]?
 
+              # An array of tools the model may call while generating a response. You can
+              # specify which tool to use by setting the `tool_choice` parameter.
+              #
+              # The two categories of tools you can provide the model are:
+              #
+              # - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
+              #   capabilities, like
+              #   [web search](https://developers.openai.com/api/docs/guides/tools-web-search)
+              #   or
+              #   [file search](https://developers.openai.com/api/docs/guides/tools-file-search).
+              #   Learn more about
+              #   [built-in tools](https://developers.openai.com/api/docs/guides/tools).
+              # - **Function calls (custom tools)**: Functions that are defined by you, enabling
+              #   the model to call your own code. Learn more about
+              #   [function calling](https://developers.openai.com/api/docs/guides/function-calling).
               def tools=: (
                 ::Array[OpenAI::Models::Responses::tool]
               ) -> ::Array[OpenAI::Models::Responses::tool]
 
+              # An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
               attr_reader top_p: Float?
 
+              # An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
               def top_p=: (Float) -> Float
 
+              # @param max_completion_tokens
+              #   The maximum number of tokens in the generated output.
+              # @param reasoning_effort
+              #   Constrains effort on reasoning for reasoning models. Currently supported values
+              #   are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+              #   reasoning effort can result in faster responses and fewer tokens used on
+              #   reasoning in a response. Not all reasoning models support every value. See the
+              #   [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
+              #   model-specific support.
+              # @param seed
+              #   A seed value to initialize the randomness, during sampling.
+              # @param temperature
+              #   A higher temperature increases randomness in the outputs.
+              # @param text
+              #   Configuration options for a text response from the model. Can be plain text or
+              #   structured JSON data. Learn more:
+              #
+              #   - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+              #   - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
+              # @param tools
+              #   An array of tools the model may call while generating a response. You can
+              #   specify which tool to use by setting the `tool_choice` parameter.
+              #
+              #   The two categories of tools you can provide the model are:
+              #
+              #   - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
+              #     capabilities, like
+              #     [web search](https://developers.openai.com/api/docs/guides/tools-web-search)
+              #     or
+              #     [file search](https://developers.openai.com/api/docs/guides/tools-file-search).
+              #     Learn more about
+              #     [built-in tools](https://developers.openai.com/api/docs/guides/tools).
+              #   - **Function calls (custom tools)**: Functions that are defined by you, enabling
+              #     the model to call your own code. Learn more about
+              #     [function calling](https://developers.openai.com/api/docs/guides/function-calling).
+              # @param top_p
+              #   An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
               def initialize: (
                 ?max_completion_tokens: Integer,
                 ?reasoning_effort: OpenAI::Models::reasoning_effort?,
@@ -522,12 +806,52 @@ module OpenAI
                 }
 
               class Text < OpenAI::Internal::Type::BaseModel
+                # An object specifying the format that the model must output.
+                #
+                # Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
+                # ensures the model will match your supplied JSON schema. Learn more in the
+                # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
+                #
+                # The default format is `{ "type": "text" }` with no additional options.
+                #
+                # **Not recommended for gpt-4o and newer models:**
+                #
+                # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+                # ensures the message the model generates is valid JSON. Using `json_schema` is
+                # preferred for models that support it.
                 attr_reader format_: OpenAI::Models::Responses::response_format_text_config?
 
+                # An object specifying the format that the model must output.
+                #
+                # Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
+                # ensures the model will match your supplied JSON schema. Learn more in the
+                # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
+                #
+                # The default format is `{ "type": "text" }` with no additional options.
+                #
+                # **Not recommended for gpt-4o and newer models:**
+                #
+                # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+                # ensures the message the model generates is valid JSON. Using `json_schema` is
+                # preferred for models that support it.
                 def format_=: (
                   OpenAI::Models::Responses::response_format_text_config
                 ) -> OpenAI::Models::Responses::response_format_text_config
 
+                # @param format_
+                #   An object specifying the format that the model must output.
+                #
+                #   Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
+                #   ensures the model will match your supplied JSON schema. Learn more in the
+                #   [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
+                #
+                #   The default format is `{ "type": "text" }` with no additional options.
+                #
+                #   **Not recommended for gpt-4o and newer models:**
+                #
+                #   Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+                #   ensures the message the model generates is valid JSON. Using `json_schema` is
+                #   preferred for models that support it.
                 def initialize: (
                   ?format_: OpenAI::Models::Responses::response_format_text_config
                 ) -> void
@@ -553,18 +877,36 @@ module OpenAI
           }
 
         class PerModelUsage < OpenAI::Internal::Type::BaseModel
+          # The number of tokens retrieved from cache.
           attr_accessor cached_tokens: Integer
 
+          # The number of completion tokens generated.
           attr_accessor completion_tokens: Integer
 
+          # The number of invocations.
           attr_accessor invocation_count: Integer
 
+          # The name of the model.
           attr_accessor model_name: String
 
+          # The number of prompt tokens used.
           attr_accessor prompt_tokens: Integer
 
+          # The total number of tokens used.
           attr_accessor total_tokens: Integer
 
+          # @param cached_tokens
+          #   The number of tokens retrieved from cache.
+          # @param completion_tokens
+          #   The number of completion tokens generated.
+          # @param invocation_count
+          #   The number of invocations.
+          # @param model_name
+          #   The name of the model.
+          # @param prompt_tokens
+          #   The number of prompt tokens used.
+          # @param total_tokens
+          #   The total number of tokens used.
           def initialize: (
             cached_tokens: Integer,
             completion_tokens: Integer,
@@ -588,12 +930,21 @@ module OpenAI
           { failed: Integer, passed: Integer, testing_criteria: String }
 
         class PerTestingCriteriaResult < OpenAI::Internal::Type::BaseModel
+          # Number of tests failed for this criteria.
           attr_accessor failed: Integer
 
+          # Number of tests passed for this criteria.
           attr_accessor passed: Integer
 
+          # A description of the testing criteria.
           attr_accessor testing_criteria: String
 
+          # @param failed
+          #   Number of tests failed for this criteria.
+          # @param passed
+          #   Number of tests passed for this criteria.
+          # @param testing_criteria
+          #   A description of the testing criteria.
           def initialize: (
             failed: Integer,
             passed: Integer,
@@ -611,14 +962,26 @@ module OpenAI
           { errored: Integer, failed: Integer, passed: Integer, total: Integer }
 
         class ResultCounts < OpenAI::Internal::Type::BaseModel
+          # Number of output items that resulted in an error.
           attr_accessor errored: Integer
 
+          # Number of output items that failed to pass the evaluation.
           attr_accessor failed: Integer
 
+          # Number of output items that passed the evaluation.
           attr_accessor passed: Integer
 
+          # Total number of executed output items.
           attr_accessor total: Integer
 
+          # @param errored
+          #   Number of output items that resulted in an error.
+          # @param failed
+          #   Number of output items that failed to pass the evaluation.
+          # @param passed
+          #   Number of output items that passed the evaluation.
+          # @param total
+          #   Total number of executed output items.
           def initialize: (
             errored: Integer,
             failed: Integer,

@@ -19,20 +19,42 @@ module OpenAI
           }
 
         class Developer < OpenAI::Internal::Type::BaseModel
+          # The message content. Supply exactly one text part for the initial Live
+          # conversation history.
           attr_accessor content: ::Array[OpenAI::Live::InitialItem::Developer::Content]
 
+          # The author of this history message. Always `developer`.
           attr_accessor role: :developer
 
+          # An optional identifier for the supplied history message. Live uses the message’s
+          # role and text to initialize the conversation.
           attr_accessor id: String?
 
+          # The supplied message’s status. Live uses its text as history and does not resume
+          # an incomplete message.
           attr_accessor status: OpenAI::Models::Live::InitialItem::Developer::status?
 
+          # The history item type. Always `message`.
           attr_reader type: OpenAI::Models::Live::InitialItem::Developer::type_?
 
+          # The history item type. Always `message`.
           def type=: (
             OpenAI::Models::Live::InitialItem::Developer::type_
           ) -> OpenAI::Models::Live::InitialItem::Developer::type_
 
+          # @param content
+          #   The message content. Supply exactly one text part for the initial Live
+          #   conversation history.
+          # @param id
+          #   An optional identifier for the supplied history message. Live uses the message’s
+          #   role and text to initialize the conversation.
+          # @param status
+          #   The supplied message’s status. Live uses its text as history and does not resume
+          #   an incomplete message.
+          # @param type
+          #   The history item type. Always `message`.
+          # @param role
+          #   The author of this history message. Always `developer`.
           def initialize: (
             content: ::Array[OpenAI::Live::InitialItem::Developer::Content],
             ?id: String?,
@@ -56,14 +78,21 @@ module OpenAI
             }
 
           class Content < OpenAI::Internal::Type::BaseModel
+            # The message text to include in the Live session’s initial conversation history.
             attr_accessor text: String
 
+            # The text content type. Always `input_text`.
             attr_reader type: OpenAI::Models::Live::InitialItem::Developer::Content::type_?
 
+            # The text content type. Always `input_text`.
             def type=: (
               OpenAI::Models::Live::InitialItem::Developer::Content::type_
             ) -> OpenAI::Models::Live::InitialItem::Developer::Content::type_
 
+            # @param text
+            #   The message text to include in the Live session’s initial conversation history.
+            # @param type
+            #   The text content type. Always `input_text`.
             def initialize: (
               text: String,
               ?type: OpenAI::Models::Live::InitialItem::Developer::Content::type_
@@ -117,20 +146,42 @@ module OpenAI
           }
 
         class User < OpenAI::Internal::Type::BaseModel
+          # The message content. Supply exactly one text part for the initial Live
+          # conversation history.
           attr_accessor content: ::Array[OpenAI::Live::InitialItem::User::Content]
 
+          # The author of this history message. Always `user`.
           attr_accessor role: :user
 
+          # An optional identifier for the supplied history message. Live uses the message’s
+          # role and text to initialize the conversation.
           attr_accessor id: String?
 
+          # The supplied message’s status. Live uses its text as history and does not resume
+          # an incomplete message.
           attr_accessor status: OpenAI::Models::Live::InitialItem::User::status?
 
+          # The history item type. Always `message`.
           attr_reader type: OpenAI::Models::Live::InitialItem::User::type_?
 
+          # The history item type. Always `message`.
           def type=: (
             OpenAI::Models::Live::InitialItem::User::type_
           ) -> OpenAI::Models::Live::InitialItem::User::type_
 
+          # @param content
+          #   The message content. Supply exactly one text part for the initial Live
+          #   conversation history.
+          # @param id
+          #   An optional identifier for the supplied history message. Live uses the message’s
+          #   role and text to initialize the conversation.
+          # @param status
+          #   The supplied message’s status. Live uses its text as history and does not resume
+          #   an incomplete message.
+          # @param type
+          #   The history item type. Always `message`.
+          # @param role
+          #   The author of this history message. Always `user`.
           def initialize: (
             content: ::Array[OpenAI::Live::InitialItem::User::Content],
             ?id: String?,
@@ -154,14 +205,21 @@ module OpenAI
             }
 
           class Content < OpenAI::Internal::Type::BaseModel
+            # The message text to include in the Live session’s initial conversation history.
             attr_accessor text: String
 
+            # The text content type. Always `input_text`.
             attr_reader type: OpenAI::Models::Live::InitialItem::User::Content::type_?
 
+            # The text content type. Always `input_text`.
             def type=: (
               OpenAI::Models::Live::InitialItem::User::Content::type_
             ) -> OpenAI::Models::Live::InitialItem::User::Content::type_
 
+            # @param text
+            #   The message text to include in the Live session’s initial conversation history.
+            # @param type
+            #   The text content type. Always `input_text`.
             def initialize: (
               text: String,
               ?type: OpenAI::Models::Live::InitialItem::User::Content::type_
@@ -215,20 +273,42 @@ module OpenAI
           }
 
         class Assistant < OpenAI::Internal::Type::BaseModel
+          # The message content. Supply exactly one text part for the initial Live
+          # conversation history.
           attr_accessor content: ::Array[OpenAI::Models::Live::InitialItem::Assistant::content]
 
+          # The author of this history message. Always `assistant`.
           attr_accessor role: :assistant
 
+          # An optional identifier for the supplied history message. Live uses the message’s
+          # role and text to initialize the conversation.
           attr_accessor id: String?
 
+          # The supplied message’s status. Live uses its text as history and does not resume
+          # an incomplete message.
           attr_accessor status: OpenAI::Models::Live::InitialItem::Assistant::status?
 
+          # The history item type. Always `message`.
           attr_reader type: OpenAI::Models::Live::InitialItem::Assistant::type_?
 
+          # The history item type. Always `message`.
           def type=: (
             OpenAI::Models::Live::InitialItem::Assistant::type_
           ) -> OpenAI::Models::Live::InitialItem::Assistant::type_
 
+          # @param content
+          #   The message content. Supply exactly one text part for the initial Live
+          #   conversation history.
+          # @param id
+          #   An optional identifier for the supplied history message. Live uses the message’s
+          #   role and text to initialize the conversation.
+          # @param status
+          #   The supplied message’s status. Live uses its text as history and does not resume
+          #   an incomplete message.
+          # @param type
+          #   The history item type. Always `message`.
+          # @param role
+          #   The author of this history message. Always `assistant`.
           def initialize: (
             content: ::Array[OpenAI::Models::Live::InitialItem::Assistant::content],
             ?id: String?,
@@ -259,14 +339,21 @@ module OpenAI
               }
 
             class Text < OpenAI::Internal::Type::BaseModel
+              # The message text to include in the Live session’s initial conversation history.
               attr_accessor text: String
 
+              # The text content type. Always `text`.
               attr_reader type: OpenAI::Models::Live::InitialItem::Assistant::Content::Text::type_?
 
+              # The text content type. Always `text`.
               def type=: (
                 OpenAI::Models::Live::InitialItem::Assistant::Content::Text::type_
               ) -> OpenAI::Models::Live::InitialItem::Assistant::Content::Text::type_
 
+              # @param text
+              #   The message text to include in the Live session’s initial conversation history.
+              # @param type
+              #   The text content type. Always `text`.
               def initialize: (
                 text: String,
                 ?type: OpenAI::Models::Live::InitialItem::Assistant::Content::Text::type_
@@ -291,10 +378,16 @@ module OpenAI
             type output_text = { text: String, ?type: :output_text }
 
             class OutputText < OpenAI::Internal::Type::BaseModel
+              # The message text to include in the Live session’s initial conversation history.
               attr_accessor text: String
 
+              # The text content type. Always `output_text`.
               attr_accessor type: :output_text
 
+              # @param text
+              #   The message text to include in the Live session’s initial conversation history.
+              # @param type
+              #   The text content type. Always `output_text`.
               def initialize: (text: String, ?type: :output_text) -> void
 
               def to_hash: -> { text: String, ?type: :output_text }

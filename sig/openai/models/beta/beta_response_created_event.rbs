@@ -12,14 +12,26 @@ module OpenAI
         }
 
       class BetaResponseCreatedEvent < OpenAI::Internal::Type::BaseModel
+        # The response that was created.
         attr_accessor response: OpenAI::Beta::BetaResponse
 
+        # The sequence number for this event.
         attr_accessor sequence_number: Integer
 
+        # The type of the event. Always `response.created`.
         attr_accessor type: :"response.created"
 
+        # The agent that owns this multi-agent streaming event.
         attr_accessor agent: OpenAI::Beta::BetaResponseCreatedEvent::Agent?
 
+        # @param response
+        #   The response that was created.
+        # @param sequence_number
+        #   The sequence number for this event.
+        # @param agent
+        #   The agent that owns this multi-agent streaming event.
+        # @param type
+        #   The type of the event. Always `response.created`.
         def initialize: (
           response: OpenAI::Beta::BetaResponse,
           sequence_number: Integer,
@@ -37,8 +49,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }

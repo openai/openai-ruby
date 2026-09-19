@@ -11,12 +11,18 @@ module OpenAI
         }
 
       class BetaFunctionShellTool < OpenAI::Internal::Type::BaseModel
+        # The type of the shell tool. Always `shell`.
         attr_accessor type: :shell
 
+        # The tool invocation context(s).
         attr_accessor allowed_callers: ::Array[OpenAI::Models::Beta::BetaFunctionShellTool::allowed_caller]?
 
         attr_accessor environment: OpenAI::Models::Beta::BetaFunctionShellTool::environment?
 
+        # @param allowed_callers
+        #   The tool invocation context(s).
+        # @param type
+        #   The type of the shell tool. Always `shell`.
         def initialize: (
           ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaFunctionShellTool::allowed_caller]?,
           ?environment: OpenAI::Models::Beta::BetaFunctionShellTool::environment?,

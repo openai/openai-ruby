@@ -37,8 +37,7 @@ module OpenAI
               sig { returns(String) }
               attr_accessor :mcp_server_url
 
-              # Configuration used to refresh an MCP OAuth access token, excluding secret
-              # values.
+              # Public refresh metadata without refresh tokens or OAuth client secrets.
               sig { returns(T.nilable(OpenAI::Beta::Agents::Vaults::CredentialAuth::McpOauth::Refresh)) }
               attr_reader :refresh
 
@@ -74,8 +73,7 @@ module OpenAI
                 # The HTTPS MCP server URL authorized by this credential.
                 mcp_server_url:,
 
-                # Configuration used to refresh an MCP OAuth access token, excluding secret
-                # values.
+                # Public refresh metadata without refresh tokens or OAuth client secrets.
                 refresh:,
 
                 # The type of the object. Always `mcp_oauth`.
@@ -126,8 +124,7 @@ module OpenAI
                 sig { returns(OpenAI::Beta::Agents::Vaults::McpOauthTokenEndpointAuth::Variants) }
                 attr_accessor :token_endpoint_auth
 
-                # Configuration used to refresh an MCP OAuth access token, excluding secret
-                # values.
+                # Public refresh metadata without refresh tokens or OAuth client secrets.
                 sig do
                   params(
 

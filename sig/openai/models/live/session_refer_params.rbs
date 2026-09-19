@@ -14,8 +14,13 @@ module OpenAI
 
         attr_accessor session_id: String
 
+        # Nonblank URI for the SIP Refer-To header, such as tel:+14155550123 or
+        # sip:agent@example.com.
         attr_accessor target_uri: String
 
+        # @param target_uri
+        #   Nonblank URI for the SIP Refer-To header, such as tel:+14155550123 or
+        #   sip:agent@example.com.
         def initialize: (
           session_id: String,
           target_uri: String,

@@ -7,10 +7,16 @@ module OpenAI
             { deleted: bool, ?object: :"group.user.deleted" }
 
           class UserDeleteResponse < OpenAI::Internal::Type::BaseModel
+            # Whether the group membership was removed.
             attr_accessor deleted: bool
 
+            # Always `group.user.deleted`.
             attr_accessor object: :"group.user.deleted"
 
+            # @param deleted
+            #   Whether the group membership was removed.
+            # @param object
+            #   Always `group.user.deleted`.
             def initialize: (
               deleted: bool,
               ?object: :"group.user.deleted"

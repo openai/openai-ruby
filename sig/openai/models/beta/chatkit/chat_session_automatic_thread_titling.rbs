@@ -5,8 +5,11 @@ module OpenAI
         type chat_session_automatic_thread_titling = { enabled: bool }
 
         class ChatSessionAutomaticThreadTitling < OpenAI::Internal::Type::BaseModel
+          # Whether automatic thread titling is enabled.
           attr_accessor enabled: bool
 
+          # @param enabled
+          #   Whether automatic thread titling is enabled.
           def initialize: (enabled: bool) -> void
 
           def to_hash: -> { enabled: bool }

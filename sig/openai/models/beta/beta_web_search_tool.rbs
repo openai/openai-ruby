@@ -13,22 +13,48 @@ module OpenAI
         }
 
       class BetaWebSearchTool < OpenAI::Internal::Type::BaseModel
+        # The type of the web search tool. One of `web_search` or `web_search_2025_08_26`.
         attr_accessor type: OpenAI::Models::Beta::BetaWebSearchTool::type_
 
+        # Allow live internet access for web search. Defaults to true when omitted. When
+        # false, the web search tool runs in offline/cache-only mode and will not fetch
+        # new external content.
         attr_reader external_web_access: bool?
 
+        # Allow live internet access for web search. Defaults to true when omitted. When
+        # false, the web search tool runs in offline/cache-only mode and will not fetch
+        # new external content.
         def external_web_access=: (bool) -> bool
 
+        # Filters for the search.
         attr_accessor filters: OpenAI::Beta::BetaWebSearchTool::Filters?
 
+        # High level guidance for the amount of context window space to use for the
+        # search. One of `low`, `medium`, or `high`. `medium` is the default.
         attr_reader search_context_size: OpenAI::Models::Beta::BetaWebSearchTool::search_context_size?
 
+        # High level guidance for the amount of context window space to use for the
+        # search. One of `low`, `medium`, or `high`. `medium` is the default.
         def search_context_size=: (
           OpenAI::Models::Beta::BetaWebSearchTool::search_context_size
         ) -> OpenAI::Models::Beta::BetaWebSearchTool::search_context_size
 
+        # The approximate location of the user.
         attr_accessor user_location: OpenAI::Beta::BetaWebSearchTool::UserLocation?
 
+        # @param type
+        #   The type of the web search tool. One of `web_search` or `web_search_2025_08_26`.
+        # @param external_web_access
+        #   Allow live internet access for web search. Defaults to true when omitted. When
+        #   false, the web search tool runs in offline/cache-only mode and will not fetch
+        #   new external content.
+        # @param filters
+        #   Filters for the search.
+        # @param search_context_size
+        #   High level guidance for the amount of context window space to use for the
+        #   search. One of `low`, `medium`, or `high`. `medium` is the default.
+        # @param user_location
+        #   The approximate location of the user.
         def initialize: (
           type: OpenAI::Models::Beta::BetaWebSearchTool::type_,
           ?external_web_access: bool,
@@ -59,8 +85,17 @@ module OpenAI
         type filters = { ?allowed_domains: ::Array[String]? }
 
         class Filters < OpenAI::Internal::Type::BaseModel
+          # Allowed domains for the search. If not provided, all domains are allowed.
+          # Subdomains of the provided domains are allowed as well.
+          #
+          # Example: `["pubmed.ncbi.nlm.nih.gov"]`
           attr_accessor allowed_domains: ::Array[String]?
 
+          # @param allowed_domains
+          #   Allowed domains for the search. If not provided, all domains are allowed.
+          #   Subdomains of the provided domains are allowed as well.
+          #
+          #   Example: `["pubmed.ncbi.nlm.nih.gov"]`
           def initialize: (?allowed_domains: ::Array[String]?) -> void
 
           def to_hash: -> { ?allowed_domains: ::Array[String]? }
@@ -88,20 +123,40 @@ module OpenAI
           }
 
         class UserLocation < OpenAI::Internal::Type::BaseModel
+          # Free text input for the city of the user, e.g. `San Francisco`.
           attr_accessor city: String?
 
+          # The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
+          # the user, e.g. `US`.
           attr_accessor country: String?
 
+          # Free text input for the region of the user, e.g. `California`.
           attr_accessor region: String?
 
+          # The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
+          # user, e.g. `America/Los_Angeles`.
           attr_accessor timezone: String?
 
+          # The type of location approximation. Always `approximate`.
           attr_reader type: OpenAI::Models::Beta::BetaWebSearchTool::UserLocation::type_?
 
+          # The type of location approximation. Always `approximate`.
           def type=: (
             OpenAI::Models::Beta::BetaWebSearchTool::UserLocation::type_
           ) -> OpenAI::Models::Beta::BetaWebSearchTool::UserLocation::type_
 
+          # @param city
+          #   Free text input for the city of the user, e.g. `San Francisco`.
+          # @param country
+          #   The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
+          #   the user, e.g. `US`.
+          # @param region
+          #   Free text input for the region of the user, e.g. `California`.
+          # @param timezone
+          #   The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
+          #   user, e.g. `America/Los_Angeles`.
+          # @param type
+          #   The type of location approximation. Always `approximate`.
           def initialize: (
             ?city: String?,
             ?country: String?,

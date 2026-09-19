@@ -17,28 +17,50 @@ module OpenAI
 
       attr_accessor vector_store_id: String
 
+      # A query string for a search
       attr_accessor query: OpenAI::Models::VectorStoreSearchParams::query
 
+      # A filter to apply based on file attributes.
       attr_reader filters: OpenAI::Models::VectorStoreSearchParams::filters?
 
+      # A filter to apply based on file attributes.
       def filters=: (
         OpenAI::Models::VectorStoreSearchParams::filters
       ) -> OpenAI::Models::VectorStoreSearchParams::filters
 
+      # The maximum number of results to return. This number should be between 1 and 50
+      # inclusive.
       attr_reader max_num_results: Integer?
 
+      # The maximum number of results to return. This number should be between 1 and 50
+      # inclusive.
       def max_num_results=: (Integer) -> Integer
 
+      # Ranking options for search.
       attr_reader ranking_options: OpenAI::VectorStoreSearchParams::RankingOptions?
 
+      # Ranking options for search.
       def ranking_options=: (
         OpenAI::VectorStoreSearchParams::RankingOptions
       ) -> OpenAI::VectorStoreSearchParams::RankingOptions
 
+      # Whether to rewrite the natural language query for vector search.
       attr_reader rewrite_query: bool?
 
+      # Whether to rewrite the natural language query for vector search.
       def rewrite_query=: (bool) -> bool
 
+      # @param query
+      #   A query string for a search
+      # @param filters
+      #   A filter to apply based on file attributes.
+      # @param max_num_results
+      #   The maximum number of results to return. This number should be between 1 and 50
+      #   inclusive.
+      # @param ranking_options
+      #   Ranking options for search.
+      # @param rewrite_query
+      #   Whether to rewrite the natural language query for vector search.
       def initialize: (
         vector_store_id: String,
         query: OpenAI::Models::VectorStoreSearchParams::query,
@@ -84,8 +106,10 @@ module OpenAI
         }
 
       class RankingOptions < OpenAI::Internal::Type::BaseModel
+        # Enable re-ranking; set to `none` to disable, which can help reduce latency.
         attr_reader ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker?
 
+        # Enable re-ranking; set to `none` to disable, which can help reduce latency.
         def ranker=: (
           OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker
         ) -> OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker
@@ -94,6 +118,8 @@ module OpenAI
 
         def score_threshold=: (Float) -> Float
 
+        # @param ranker
+        #   Enable re-ranking; set to `none` to disable, which can help reduce latency.
         def initialize: (
           ?ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker,
           ?score_threshold: Float

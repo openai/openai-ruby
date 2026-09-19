@@ -4,8 +4,11 @@ module OpenAI
       type client_config = { data_channel: OpenAI::Live::DataChannelConfig }
 
       class ClientConfig < OpenAI::Internal::Type::BaseModel
+        # Client and server event permissions for the WebRTC frontend data channel.
         attr_accessor data_channel: OpenAI::Live::DataChannelConfig
 
+        # @param data_channel
+        #   Client and server event permissions for the WebRTC frontend data channel.
         def initialize: (data_channel: OpenAI::Live::DataChannelConfig) -> void
 
         def to_hash: -> { data_channel: OpenAI::Live::DataChannelConfig }

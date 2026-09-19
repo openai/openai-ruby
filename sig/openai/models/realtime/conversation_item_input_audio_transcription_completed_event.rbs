@@ -14,26 +14,56 @@ module OpenAI
         }
 
       class ConversationItemInputAudioTranscriptionCompletedEvent < OpenAI::Internal::Type::BaseModel
+        # The index of the content part containing the audio.
         attr_accessor content_index: Integer
 
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The ID of the item containing the audio that is being transcribed.
         attr_accessor item_id: String
 
+        # The transcribed text.
         attr_accessor transcript: String
 
+        # The event type, must be `conversation.item.input_audio_transcription.completed`.
         attr_accessor type: :"conversation.item.input_audio_transcription.completed"
 
+        # Usage statistics for the transcription, this is billed according to the ASR
+        # model's pricing rather than the realtime model's pricing.
         attr_accessor usage: OpenAI::Models::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::usage
 
+        # The languages detected in the audio. Returned by `gpt-transcribe`. An empty
+        # array indicates that no language could be reliably detected.
         attr_reader languages: ::Array[OpenAI::Audio::TranscriptionLanguage]?
 
+        # The languages detected in the audio. Returned by `gpt-transcribe`. An empty
+        # array indicates that no language could be reliably detected.
         def languages=: (
           ::Array[OpenAI::Audio::TranscriptionLanguage]
         ) -> ::Array[OpenAI::Audio::TranscriptionLanguage]
 
+        # The log probabilities of the transcription.
         attr_accessor logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
 
+        # @param content_index
+        #   The index of the content part containing the audio.
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param item_id
+        #   The ID of the item containing the audio that is being transcribed.
+        # @param transcript
+        #   The transcribed text.
+        # @param usage
+        #   Usage statistics for the transcription, this is billed according to the ASR
+        #   model's pricing rather than the realtime model's pricing.
+        # @param languages
+        #   The languages detected in the audio. Returned by `gpt-transcribe`. An empty
+        #   array indicates that no language could be reliably detected.
+        # @param logprobs
+        #   The log probabilities of the transcription.
+        # @param type
+        #   The event type, must be `conversation.item.input_audio_transcription.completed`.
         def initialize: (
           content_index: Integer,
           event_id: String,
@@ -73,20 +103,36 @@ module OpenAI
             }
 
           class TranscriptTextUsageTokens < OpenAI::Internal::Type::BaseModel
+            # Number of input tokens billed for this request.
             attr_accessor input_tokens: Integer
 
+            # Number of output tokens generated.
             attr_accessor output_tokens: Integer
 
+            # Total number of tokens used (input + output).
             attr_accessor total_tokens: Integer
 
+            # The type of the usage object. Always `tokens` for this variant.
             attr_accessor type: :tokens
 
+            # Details about the input tokens billed for this request.
             attr_reader input_token_details: OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails?
 
+            # Details about the input tokens billed for this request.
             def input_token_details=: (
               OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails
             ) -> OpenAI::Realtime::ConversationItemInputAudioTranscriptionCompletedEvent::Usage::TranscriptTextUsageTokens::InputTokenDetails
 
+            # @param input_tokens
+            #   Number of input tokens billed for this request.
+            # @param output_tokens
+            #   Number of output tokens generated.
+            # @param total_tokens
+            #   Total number of tokens used (input + output).
+            # @param input_token_details
+            #   Details about the input tokens billed for this request.
+            # @param type
+            #   The type of the usage object. Always `tokens` for this variant.
             def initialize: (
               input_tokens: Integer,
               output_tokens: Integer,
@@ -107,14 +153,22 @@ module OpenAI
               { ?audio_tokens: Integer, ?text_tokens: Integer }
 
             class InputTokenDetails < OpenAI::Internal::Type::BaseModel
+              # Number of audio tokens billed for this request.
               attr_reader audio_tokens: Integer?
 
+              # Number of audio tokens billed for this request.
               def audio_tokens=: (Integer) -> Integer
 
+              # Number of text tokens billed for this request.
               attr_reader text_tokens: Integer?
 
+              # Number of text tokens billed for this request.
               def text_tokens=: (Integer) -> Integer
 
+              # @param audio_tokens
+              #   Number of audio tokens billed for this request.
+              # @param text_tokens
+              #   Number of text tokens billed for this request.
               def initialize: (
                 ?audio_tokens: Integer,
                 ?text_tokens: Integer
@@ -128,10 +182,16 @@ module OpenAI
             { seconds: Float, ?type: :duration }
 
           class TranscriptTextUsageDuration < OpenAI::Internal::Type::BaseModel
+            # Duration of the input audio in seconds.
             attr_accessor seconds: Float
 
+            # The type of the usage object. Always `duration` for this variant.
             attr_accessor type: :duration
 
+            # @param seconds
+            #   Duration of the input audio in seconds.
+            # @param type
+            #   The type of the usage object. Always `duration` for this variant.
             def initialize: (seconds: Float, ?type: :duration) -> void
 
             def to_hash: -> { seconds: Float, ?type: :duration }

@@ -10,14 +10,26 @@ module OpenAI
         }
 
       class AgentSessionErrorEvent < OpenAI::Internal::Type::BaseModel
+        # The error that occurred.
         attr_accessor error: OpenAI::Beta::SessionError
 
+        # The unique ID of the event.
         attr_accessor event_id: String
 
+        # The ID of the session associated with the event.
         attr_accessor session_id: String
 
+        # The type of the object. Always `error`.
         attr_accessor type: :error
 
+        # @param error
+        #   The error that occurred.
+        # @param event_id
+        #   The unique ID of the event.
+        # @param session_id
+        #   The ID of the session associated with the event.
+        # @param type
+        #   The type of the object. Always `error`.
         def initialize: (
           error: OpenAI::Beta::SessionError,
           event_id: String,

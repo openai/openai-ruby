@@ -18,7 +18,7 @@ module OpenAI
         required :content, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AgentSessionMessageContent] }
 
         # @!attribute phase
-        #   The phase of an assistant message.
+        #   The phase of an assistant message. Null for user messages.
         #
         #   @return [Symbol, OpenAI::Models::Beta::AgentSessionMessage::Phase, nil]
         required :phase, enum: -> { OpenAI::Beta::AgentSessionMessage::Phase }, nil?: true
@@ -58,7 +58,7 @@ module OpenAI
         #     assistant messages contain output text.
         #
         #   @param phase [Symbol, OpenAI::Models::Beta::AgentSessionMessage::Phase, nil]
-        #     The phase of an assistant message.
+        #     The phase of an assistant message. Null for user messages.
         #
         #   @param role [Symbol, OpenAI::Models::Beta::AgentSessionMessage::Role]
         #     The role of the message author.
@@ -72,7 +72,7 @@ module OpenAI
         #   @param type [Symbol, :message]
         #     The item type. Always `message`.
 
-        # The phase of an assistant message.
+        # The phase of an assistant message. Null for user messages.
         #
         # @see OpenAI::Models::Beta::AgentSessionMessage#phase
         module Phase

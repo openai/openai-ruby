@@ -7,10 +7,16 @@ module OpenAI
       }
 
     class ModerationImageURLInput < OpenAI::Internal::Type::BaseModel
+      # Contains either an image URL or a data URL for a base64 encoded image.
       attr_accessor image_url: OpenAI::ModerationImageURLInput::ImageURL
 
+      # Always `image_url`.
       attr_accessor type: :image_url
 
+      # @param image_url
+      #   Contains either an image URL or a data URL for a base64 encoded image.
+      # @param type
+      #   Always `image_url`.
       def initialize: (
         image_url: OpenAI::ModerationImageURLInput::ImageURL,
         ?type: :image_url
@@ -24,8 +30,11 @@ module OpenAI
       type image_url = { url: String }
 
       class ImageURL < OpenAI::Internal::Type::BaseModel
+        # Either a URL of the image or the base64 encoded image data.
         attr_accessor url: String
 
+        # @param url
+        #   Either a URL of the image or the base64 encoded image data.
         def initialize: (url: String) -> void
 
         def to_hash: -> { url: String }

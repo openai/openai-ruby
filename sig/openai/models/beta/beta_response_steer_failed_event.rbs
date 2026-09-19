@@ -13,18 +13,37 @@ module OpenAI
         }
 
       class BetaResponseSteerFailedEvent < OpenAI::Internal::Type::BaseModel
+        # Information about why the input could not be committed.
         attr_accessor error: OpenAI::Beta::BetaResponseSteerFailedEvent::Error
 
+        # The sequence number for this event.
         attr_accessor sequence_number: Integer
 
+        # The steering submission that could not be committed.
         attr_accessor steer: OpenAI::Beta::BetaResponseSteerFailedEvent::Steer
 
+        # The event discriminator. Always `response.steer.failed`.
         attr_accessor type: :"response.steer.failed"
 
+        # The WebSocket lane that emitted this event, when the target response is
+        # available and its `response.create` event supplied a `stream_id`.
         attr_reader stream_id: String?
 
+        # The WebSocket lane that emitted this event, when the target response is
+        # available and its `response.create` event supplied a `stream_id`.
         def stream_id=: (String) -> String
 
+        # @param error
+        #   Information about why the input could not be committed.
+        # @param sequence_number
+        #   The sequence number for this event.
+        # @param steer
+        #   The steering submission that could not be committed.
+        # @param stream_id
+        #   The WebSocket lane that emitted this event, when the target response is
+        #   available and its `response.create` event supplied a `stream_id`.
+        # @param type
+        #   The event discriminator. Always `response.steer.failed`.
         def initialize: (
           error: OpenAI::Beta::BetaResponseSteerFailedEvent::Error,
           sequence_number: Integer,
@@ -49,12 +68,45 @@ module OpenAI
           }
 
         class Error < OpenAI::Internal::Type::BaseModel
+          # A machine-readable steering error code. Clients should handle unknown values
+          # because additional codes may be introduced. Known values include:
+          #
+          # - `response_not_found`: The target response is not available on this connection.
+          # - `invalid_input`: The event or input failed validation.
+          # - `steering_not_supported`: The model or response execution mode does not
+          #   support steering.
+          # - `too_many_pending_steers`: Too much steering input is pending for the
+          #   response.
+          # - `response_already_completed`: The response completed and is no longer
+          #   accepting steering input.
+          # - `response_not_active`: The response is no longer accepting steering input.
+          # - `successor_creation_failed`: The successor response could not be created.
           attr_accessor code: OpenAI::Models::Beta::beta_response_steer_error_code
 
+          # A human-readable description of the error.
           attr_accessor message: String
 
+          # The error type. Always `invalid_request_error`.
           attr_accessor type: :invalid_request_error
 
+          # @param code
+          #   A machine-readable steering error code. Clients should handle unknown values
+          #   because additional codes may be introduced. Known values include:
+          #
+          #   - `response_not_found`: The target response is not available on this connection.
+          #   - `invalid_input`: The event or input failed validation.
+          #   - `steering_not_supported`: The model or response execution mode does not
+          #     support steering.
+          #   - `too_many_pending_steers`: Too much steering input is pending for the
+          #     response.
+          #   - `response_already_completed`: The response completed and is no longer
+          #     accepting steering input.
+          #   - `response_not_active`: The response is no longer accepting steering input.
+          #   - `successor_creation_failed`: The successor response could not be created.
+          # @param message
+          #   A human-readable description of the error.
+          # @param type
+          #   The error type. Always `invalid_request_error`.
           def initialize: (
             code: OpenAI::Models::Beta::beta_response_steer_error_code,
             message: String,
@@ -76,14 +128,40 @@ module OpenAI
           }
 
         class Steer < OpenAI::Internal::Type::BaseModel
+          # Input to queue for a continuation of the response. Uses the same string or
+          # input-item shape as `response.create.input`, with a non-empty array when
+          # supplying input items.
+          #
+          # Steering accepts only messages with the `user` role. Each message may contain
+          # only `type`, `role`, and `content`, with `content` as a string or an array of
+          # `input_text`, `input_image`, and `input_file` parts. The optional `type` must be
+          # `message`. Other roles, tool outputs, and item types are not supported for
+          # steering.
           attr_accessor input: OpenAI::Models::Beta::beta_response_steer_input
 
+          # The ID of the response that was targeted for steering.
           attr_accessor previous_response_id: String
 
+          # The ID assigned to the steering submission, if one was allocated.
           attr_reader id: String?
 
+          # The ID assigned to the steering submission, if one was allocated.
           def id=: (String) -> String
 
+          # @param input
+          #   Input to queue for a continuation of the response. Uses the same string or
+          #   input-item shape as `response.create.input`, with a non-empty array when
+          #   supplying input items.
+          #
+          #   Steering accepts only messages with the `user` role. Each message may contain
+          #   only `type`, `role`, and `content`, with `content` as a string or an array of
+          #   `input_text`, `input_image`, and `input_file` parts. The optional `type` must be
+          #   `message`. Other roles, tool outputs, and item types are not supported for
+          #   steering.
+          # @param previous_response_id
+          #   The ID of the response that was targeted for steering.
+          # @param id
+          #   The ID assigned to the steering submission, if one was allocated.
           def initialize: (
             input: OpenAI::Models::Beta::beta_response_steer_input,
             previous_response_id: String,

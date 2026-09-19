@@ -10,14 +10,30 @@ module OpenAI
         }
 
       class InputAudioBufferSpeechStoppedEvent < OpenAI::Internal::Type::BaseModel
+        # Milliseconds since the session started when speech stopped. This will correspond
+        # to the end of audio sent to the model, and thus includes the
+        # `min_silence_duration_ms` configured in the Session.
         attr_accessor audio_end_ms: Integer
 
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The ID of the user message item that will be created.
         attr_accessor item_id: String
 
+        # The event type, must be `input_audio_buffer.speech_stopped`.
         attr_accessor type: :"input_audio_buffer.speech_stopped"
 
+        # @param audio_end_ms
+        #   Milliseconds since the session started when speech stopped. This will correspond
+        #   to the end of audio sent to the model, and thus includes the
+        #   `min_silence_duration_ms` configured in the Session.
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param item_id
+        #   The ID of the user message item that will be created.
+        # @param type
+        #   The event type, must be `input_audio_buffer.speech_stopped`.
         def initialize: (
           audio_end_ms: Integer,
           event_id: String,

@@ -14,20 +14,51 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      # The number of bytes in the file you are uploading.
       attr_accessor bytes: Integer
 
+      # The name of the file to upload.
       attr_accessor filename: String
 
+      # The MIME type of the file.
+      #
+      # This must fall within the supported MIME types for your file purpose. See the
+      # supported MIME types for assistants and vision.
       attr_accessor mime_type: String
 
+      # The intended purpose of the uploaded file.
+      #
+      # See the
+      # [documentation on File purposes](https://developers.openai.com/api/reference/resources/files/methods/create#%28resource%29%20files%20%3E%20%28method%29%20create%20%3E%20%28params%29%200%20%3E%20%28param%29%20purpose%20%3E%20%28schema%29).
       attr_accessor purpose: OpenAI::Models::file_purpose
 
+      # The expiration policy for a file. By default, files with `purpose=batch` expire
+      # after 30 days and all other files are persisted until they are manually deleted.
       attr_reader expires_after: OpenAI::UploadCreateParams::ExpiresAfter?
 
+      # The expiration policy for a file. By default, files with `purpose=batch` expire
+      # after 30 days and all other files are persisted until they are manually deleted.
       def expires_after=: (
         OpenAI::UploadCreateParams::ExpiresAfter
       ) -> OpenAI::UploadCreateParams::ExpiresAfter
 
+      # @param bytes
+      #   The number of bytes in the file you are uploading.
+      # @param filename
+      #   The name of the file to upload.
+      # @param mime_type
+      #   The MIME type of the file.
+      #
+      #   This must fall within the supported MIME types for your file purpose. See the
+      #   supported MIME types for assistants and vision.
+      # @param purpose
+      #   The intended purpose of the uploaded file.
+      #
+      #   See the
+      #   [documentation on File purposes](https://developers.openai.com/api/reference/resources/files/methods/create#%28resource%29%20files%20%3E%20%28method%29%20create%20%3E%20%28params%29%200%20%3E%20%28param%29%20purpose%20%3E%20%28schema%29).
+      # @param expires_after
+      #   The expiration policy for a file. By default, files with `purpose=batch` expire
+      #   after 30 days and all other files are persisted until they are manually deleted.
       def initialize: (
         bytes: Integer,
         filename: String,
@@ -49,10 +80,20 @@ module OpenAI
       type expires_after = { ?anchor: :created_at, seconds: Integer }
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
+        # Anchor timestamp after which the expiration policy applies. Supported anchors:
+        # `created_at`.
         attr_accessor anchor: :created_at
 
+        # The number of seconds after the anchor time that the file will expire. Must be
+        # between 3600 (1 hour) and 2592000 (30 days).
         attr_accessor seconds: Integer
 
+        # @param seconds
+        #   The number of seconds after the anchor time that the file will expire. Must be
+        #   between 3600 (1 hour) and 2592000 (30 days).
+        # @param anchor
+        #   Anchor timestamp after which the expiration policy applies. Supported anchors:
+        #   `created_at`.
         def initialize: (seconds: Integer, ?anchor: :created_at) -> void
 
         def to_hash: -> { ?anchor: :created_at, seconds: Integer }

@@ -16,28 +16,59 @@ module OpenAI
         }
 
       class BetaResponseComputerToolCallOutputItem < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the computer call tool output.
         attr_accessor id: String
 
+        # The ID of the computer tool call that produced the output.
         attr_accessor call_id: String
 
+        # A computer screenshot image used with the computer use tool.
         attr_accessor output: OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot
 
+        # The status of the message input. One of `in_progress`, `completed`, or
+        # `incomplete`. Populated when input items are returned via API.
         attr_accessor status: OpenAI::Models::Beta::BetaResponseComputerToolCallOutputItem::status
 
+        # The type of the computer tool call output. Always `computer_call_output`.
         attr_accessor type: :computer_call_output
 
+        # The safety checks reported by the API that have been acknowledged by the
+        # developer.
         attr_reader acknowledged_safety_checks: ::Array[OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]?
 
+        # The safety checks reported by the API that have been acknowledged by the
+        # developer.
         def acknowledged_safety_checks=: (
           ::Array[OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]
         ) -> ::Array[OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]
 
+        # The agent that produced this item.
         attr_accessor agent: OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent?
 
+        # The identifier of the actor that created the item.
         attr_reader created_by: String?
 
+        # The identifier of the actor that created the item.
         def created_by=: (String) -> String
 
+        # @param id
+        #   The unique ID of the computer call tool output.
+        # @param call_id
+        #   The ID of the computer tool call that produced the output.
+        # @param output
+        #   A computer screenshot image used with the computer use tool.
+        # @param status
+        #   The status of the message input. One of `in_progress`, `completed`, or
+        #   `incomplete`. Populated when input items are returned via API.
+        # @param acknowledged_safety_checks
+        #   The safety checks reported by the API that have been acknowledged by the
+        #   developer.
+        # @param agent
+        #   The agent that produced this item.
+        # @param created_by
+        #   The identifier of the actor that created the item.
+        # @param type
+        #   The type of the computer tool call output. Always `computer_call_output`.
         def initialize: (
           id: String,
           call_id: String,
@@ -77,12 +108,21 @@ module OpenAI
           { id: String, ?code: String?, ?message: String? }
 
         class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
+          # The ID of the pending safety check.
           attr_accessor id: String
 
+          # The type of the pending safety check.
           attr_accessor code: String?
 
+          # Details about the pending safety check.
           attr_accessor message: String?
 
+          # @param id
+          #   The ID of the pending safety check.
+          # @param code
+          #   The type of the pending safety check.
+          # @param message
+          #   Details about the pending safety check.
           def initialize: (
             id: String,
             ?code: String?,
@@ -95,8 +135,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }

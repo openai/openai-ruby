@@ -8,10 +8,16 @@ module OpenAI
         }
 
       class CreateEvalJSONLRunDataSource < OpenAI::Internal::Type::BaseModel
+        # Determines what populates the `item` namespace in the data source.
         attr_accessor source: OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::source
 
+        # The type of data source. Always `jsonl`.
         attr_accessor type: :jsonl
 
+        # @param source
+        #   Determines what populates the `item` namespace in the data source.
+        # @param type
+        #   The type of data source. Always `jsonl`.
         def initialize: (
           source: OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::source,
           ?type: :jsonl
@@ -36,10 +42,16 @@ module OpenAI
             }
 
           class FileContent < OpenAI::Internal::Type::BaseModel
+            # The content of the jsonl file.
             attr_accessor content: ::Array[OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content]
 
+            # The type of jsonl source. Always `file_content`.
             attr_accessor type: :file_content
 
+            # @param content
+            #   The content of the jsonl file.
+            # @param type
+            #   The type of jsonl source. Always `file_content`.
             def initialize: (
               content: ::Array[OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content],
               ?type: :file_content
@@ -75,10 +87,16 @@ module OpenAI
           type file_id = { id: String, ?type: :file_id }
 
           class FileID < OpenAI::Internal::Type::BaseModel
+            # The identifier of the file.
             attr_accessor id: String
 
+            # The type of jsonl source. Always `file_id`.
             attr_accessor type: :file_id
 
+            # @param id
+            #   The identifier of the file.
+            # @param type
+            #   The type of jsonl source. Always `file_id`.
             def initialize: (id: String, ?type: :file_id) -> void
 
             def to_hash: -> { id: String, ?type: :file_id }

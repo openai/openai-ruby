@@ -10,18 +10,56 @@ module OpenAI
         }
 
       class ConversationItemCreateEvent < OpenAI::Internal::Type::BaseModel
+        # A single item within a Realtime conversation.
         attr_accessor item: OpenAI::Models::Realtime::conversation_item
 
+        # The event type, must be `conversation.item.create`.
         attr_accessor type: :"conversation.item.create"
 
+        # Optional client-generated ID used to identify this event.
         attr_reader event_id: String?
 
+        # Optional client-generated ID used to identify this event.
         def event_id=: (String) -> String
 
+        # The ID of the preceding item after which the new item will be inserted. If not
+        # set, the new item will be appended to the end of the conversation.
+        #
+        # If set to `root`, the new item will be added to the beginning of the
+        # conversation.
+        #
+        # If set to an existing ID, it allows an item to be inserted mid-conversation. If
+        # the ID cannot be found, an error will be returned and the item will not be
+        # added.
         attr_reader previous_item_id: String?
 
+        # The ID of the preceding item after which the new item will be inserted. If not
+        # set, the new item will be appended to the end of the conversation.
+        #
+        # If set to `root`, the new item will be added to the beginning of the
+        # conversation.
+        #
+        # If set to an existing ID, it allows an item to be inserted mid-conversation. If
+        # the ID cannot be found, an error will be returned and the item will not be
+        # added.
         def previous_item_id=: (String) -> String
 
+        # @param item
+        #   A single item within a Realtime conversation.
+        # @param event_id
+        #   Optional client-generated ID used to identify this event.
+        # @param previous_item_id
+        #   The ID of the preceding item after which the new item will be inserted. If not
+        #   set, the new item will be appended to the end of the conversation.
+        #
+        #   If set to `root`, the new item will be added to the beginning of the
+        #   conversation.
+        #
+        #   If set to an existing ID, it allows an item to be inserted mid-conversation. If
+        #   the ID cannot be found, an error will be returned and the item will not be
+        #   added.
+        # @param type
+        #   The event type, must be `conversation.item.create`.
         def initialize: (
           item: OpenAI::Models::Realtime::conversation_item,
           ?event_id: String,

@@ -14,22 +14,46 @@ module OpenAI
         }
 
       class AgentCreateSubagentCallItem < OpenAI::Internal::Type::BaseModel
+        # The ID of the tool call item.
         attr_accessor id: String
 
+        # The ID of the agent that requested the subagent.
         attr_accessor agent_id: String
 
+        # The task given to the spawned agent.
         attr_accessor content: ::Array[OpenAI::Models::Beta::agent_content]
 
+        # The model requested for the spawned agent.
         attr_accessor model: String?
 
+        # The reasoning effort requested for the spawned agent.
         attr_accessor reasoning_effort: String?
 
+        # The status of the tool call.
         attr_accessor status: OpenAI::Models::Beta::agent_function_call_status
 
+        # The ID of the turn that contains this item.
         attr_accessor turn_id: String
 
+        # The item type. Always `create_subagent_call`.
         attr_accessor type: :create_subagent_call
 
+        # @param id
+        #   The ID of the tool call item.
+        # @param agent_id
+        #   The ID of the agent that requested the subagent.
+        # @param content
+        #   The task given to the spawned agent.
+        # @param model
+        #   The model requested for the spawned agent.
+        # @param reasoning_effort
+        #   The reasoning effort requested for the spawned agent.
+        # @param status
+        #   The status of the tool call.
+        # @param turn_id
+        #   The ID of the turn that contains this item.
+        # @param type
+        #   The item type. Always `create_subagent_call`.
         def initialize: (
           id: String,
           agent_id: String,

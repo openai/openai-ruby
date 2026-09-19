@@ -22,20 +22,35 @@ module OpenAI
 
               attr_accessor group_id: String
 
+              # Cursor for pagination. Provide the value from the previous response's `next`
+              # field to continue listing project roles.
               attr_reader after: String?
 
+              # Cursor for pagination. Provide the value from the previous response's `next`
+              # field to continue listing project roles.
               def after=: (String) -> String
 
+              # A limit on the number of project role assignments to return.
               attr_reader limit: Integer?
 
+              # A limit on the number of project role assignments to return.
               def limit=: (Integer) -> Integer
 
+              # Sort order for the returned project roles.
               attr_reader order: OpenAI::Models::Admin::Organization::Projects::Groups::RoleListParams::order?
 
+              # Sort order for the returned project roles.
               def order=: (
                 OpenAI::Models::Admin::Organization::Projects::Groups::RoleListParams::order
               ) -> OpenAI::Models::Admin::Organization::Projects::Groups::RoleListParams::order
 
+              # @param after
+              #   Cursor for pagination. Provide the value from the previous response's `next`
+              #   field to continue listing project roles.
+              # @param limit
+              #   A limit on the number of project role assignments to return.
+              # @param order
+              #   Sort order for the returned project roles.
               def initialize: (
                 project_id: String,
                 group_id: String,

@@ -5,12 +5,21 @@ module OpenAI
         { id: String, deleted: bool, ?object: :"agent.deleted" }
 
       class AgentDeleted < OpenAI::Internal::Type::BaseModel
+        # The ID of the deleted agent.
         attr_accessor id: String
 
+        # Whether the agent was deleted. Always `true`.
         attr_accessor deleted: bool
 
+        # The object type. Always `agent.deleted`.
         attr_accessor object: :"agent.deleted"
 
+        # @param id
+        #   The ID of the deleted agent.
+        # @param deleted
+        #   Whether the agent was deleted. Always `true`.
+        # @param object
+        #   The object type. Always `agent.deleted`.
         def initialize: (
           id: String,
           deleted: bool,

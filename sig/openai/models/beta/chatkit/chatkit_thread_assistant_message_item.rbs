@@ -15,18 +15,36 @@ module OpenAI
           }
 
         class ChatKitThreadAssistantMessageItem < OpenAI::Internal::Type::BaseModel
+          # Identifier of the thread item.
           attr_accessor id: String
 
+          # Ordered assistant response segments.
           attr_accessor content: ::Array[OpenAI::Beta::ChatKit::ChatKitResponseOutputText]
 
+          # Unix timestamp (in seconds) for when the item was created.
           attr_accessor created_at: Integer
 
+          # Type discriminator that is always `chatkit.thread_item`.
           attr_accessor object: :"chatkit.thread_item"
 
+          # Identifier of the parent thread.
           attr_accessor thread_id: String
 
+          # Type discriminator that is always `chatkit.assistant_message`.
           attr_accessor type: :"chatkit.assistant_message"
 
+          # @param id
+          #   Identifier of the thread item.
+          # @param content
+          #   Ordered assistant response segments.
+          # @param created_at
+          #   Unix timestamp (in seconds) for when the item was created.
+          # @param thread_id
+          #   Identifier of the parent thread.
+          # @param object
+          #   Type discriminator that is always `chatkit.thread_item`.
+          # @param type
+          #   Type discriminator that is always `chatkit.assistant_message`.
           def initialize: (
             id: String,
             content: ::Array[OpenAI::Beta::ChatKit::ChatKitResponseOutputText],

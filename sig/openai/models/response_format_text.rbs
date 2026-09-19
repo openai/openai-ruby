@@ -3,8 +3,11 @@ module OpenAI
     type response_format_text = { ?type: :text }
 
     class ResponseFormatText < OpenAI::Internal::Type::BaseModel
+      # The type of response format being defined. Always `text`.
       attr_accessor type: :text
 
+      # @param type
+      #   The type of response format being defined. Always `text`.
       def initialize: (?type: :text) -> void
 
       def to_hash: -> { ?type: :text }

@@ -5,10 +5,18 @@ module OpenAI
         type chat_session_history = { enabled: bool, recent_threads: Integer? }
 
         class ChatSessionHistory < OpenAI::Internal::Type::BaseModel
+          # Indicates if chat history is persisted for the session.
           attr_accessor enabled: bool
 
+          # Number of prior threads surfaced in history views. Defaults to null when all
+          # history is retained.
           attr_accessor recent_threads: Integer?
 
+          # @param enabled
+          #   Indicates if chat history is persisted for the session.
+          # @param recent_threads
+          #   Number of prior threads surfaced in history views. Defaults to null when all
+          #   history is retained.
           def initialize: (enabled: bool, recent_threads: Integer?) -> void
 
           def to_hash: -> { enabled: bool, recent_threads: Integer? }

@@ -13,8 +13,10 @@ module OpenAI
           }
 
         class FileCitationDeltaAnnotation < OpenAI::Internal::Type::BaseModel
+          # The index of the annotation in the text content part.
           attr_accessor index: Integer
 
+          # Always `file_citation`.
           attr_accessor type: :file_citation
 
           attr_reader end_index: Integer?
@@ -31,10 +33,18 @@ module OpenAI
 
           def start_index=: (Integer) -> Integer
 
+          # The text in the message content that needs to be replaced.
           attr_reader text: String?
 
+          # The text in the message content that needs to be replaced.
           def text=: (String) -> String
 
+          # @param index
+          #   The index of the annotation in the text content part.
+          # @param text
+          #   The text in the message content that needs to be replaced.
+          # @param type
+          #   Always `file_citation`.
           def initialize: (
             index: Integer,
             ?end_index: Integer,
@@ -56,14 +66,22 @@ module OpenAI
           type file_citation = { ?file_id: String, ?quote: String }
 
           class FileCitation < OpenAI::Internal::Type::BaseModel
+            # The ID of the specific File the citation is from.
             attr_reader file_id: String?
 
+            # The ID of the specific File the citation is from.
             def file_id=: (String) -> String
 
+            # The specific quote in the file.
             attr_reader quote: String?
 
+            # The specific quote in the file.
             def quote=: (String) -> String
 
+            # @param file_id
+            #   The ID of the specific File the citation is from.
+            # @param quote
+            #   The specific quote in the file.
             def initialize: (?file_id: String, ?quote: String) -> void
 
             def to_hash: -> { ?file_id: String, ?quote: String }

@@ -12,12 +12,31 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      # Updated text prompt that directs the extension generation.
       attr_accessor prompt: String
 
+      # Length of the newly generated extension segment in seconds (allowed values: 4,
+      # 8, 12, 16, 20).
       attr_accessor seconds: OpenAI::Models::video_seconds
 
+      # Reference to the completed video to extend.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       attr_accessor video: OpenAI::Models::VideoExtendParams::video
 
+      # @param prompt
+      #   Updated text prompt that directs the extension generation.
+      # @param seconds
+      #   Length of the newly generated extension segment in seconds (allowed values: 4,
+      #   8, 12, 16, 20).
+      # @param video
+      #   Reference to the completed video to extend.
+      #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
       def initialize: (
         prompt: String,
         seconds: OpenAI::Models::video_seconds,
@@ -42,8 +61,11 @@ module OpenAI
         type video_reference_input_param = { id: String }
 
         class VideoReferenceInputParam < OpenAI::Internal::Type::BaseModel
+          # The identifier of the completed video.
           attr_accessor id: String
 
+          # @param id
+          #   The identifier of the completed video.
           def initialize: (id: String) -> void
 
           def to_hash: -> { id: String }

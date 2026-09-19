@@ -14,22 +14,41 @@ module OpenAI
         }
 
       class BetaResponseShellCallCommandAddedEvent < OpenAI::Internal::Type::BaseModel
+        # The shell command that was added.
         attr_accessor command: String
 
+        # The index of the shell command that was added.
         attr_accessor command_index: Integer
 
+        # The index of the output item that was updated.
         attr_accessor output_index: Integer
 
+        # The sequence number of the event that was emitted.
         attr_accessor sequence_number: Integer
 
+        # The type of the event, always `response.shell_call_command.added`.
         attr_accessor type: :"response.shell_call_command.added"
 
+        # The agent that owns this multi-agent streaming event.
         attr_reader agent: OpenAI::Beta::BetaResponseShellCallCommandAddedEvent::Agent?
 
+        # The agent that owns this multi-agent streaming event.
         def agent=: (
           OpenAI::Beta::BetaResponseShellCallCommandAddedEvent::Agent
         ) -> OpenAI::Beta::BetaResponseShellCallCommandAddedEvent::Agent
 
+        # @param command
+        #   The shell command that was added.
+        # @param command_index
+        #   The index of the shell command that was added.
+        # @param output_index
+        #   The index of the output item that was updated.
+        # @param sequence_number
+        #   The sequence number of the event that was emitted.
+        # @param agent
+        #   The agent that owns this multi-agent streaming event.
+        # @param type
+        #   The type of the event, always `response.shell_call_command.added`.
         def initialize: (
           command: String,
           command_index: Integer,
@@ -51,8 +70,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }

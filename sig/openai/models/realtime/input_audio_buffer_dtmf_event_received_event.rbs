@@ -9,12 +9,21 @@ module OpenAI
         }
 
       class InputAudioBufferDtmfEventReceivedEvent < OpenAI::Internal::Type::BaseModel
+        # The telephone keypad that was pressed by the user.
         attr_accessor event: String
 
+        # UTC Unix Timestamp when DTMF Event was received by server.
         attr_accessor received_at: Integer
 
+        # The event type, must be `input_audio_buffer.dtmf_event_received`.
         attr_accessor type: :"input_audio_buffer.dtmf_event_received"
 
+        # @param event
+        #   The telephone keypad that was pressed by the user.
+        # @param received_at
+        #   UTC Unix Timestamp when DTMF Event was received by server.
+        # @param type
+        #   The event type, must be `input_audio_buffer.dtmf_event_received`.
         def initialize: (
           event: String,
           received_at: Integer,

@@ -14,13 +14,14 @@ module OpenAI
           )
         end
 
-        # The output format for generated text.
+        # The output format. Omission uses ordinary text (`{"type": "text"}`).
         sig {
           returns(T.nilable(T.any(OpenAI::Beta::TextFormatParam::Text, OpenAI::Beta::TextFormatParam::JSONSchema)))
         }
         attr_accessor :format_
 
-        # The amount of text the model should produce.
+        # The amount of text the model should produce. Defaults to `medium`, matching
+        # Responses.
         sig { returns(T.nilable(OpenAI::Beta::AgentTextParam::Verbosity::OrSymbol)) }
         attr_accessor :verbosity
 
@@ -38,10 +39,11 @@ module OpenAI
         end
         def self.new(
 
-          # The output format for generated text.
+          # The output format. Omission uses ordinary text (`{"type": "text"}`).
           format_: nil,
 
-          # The amount of text the model should produce.
+          # The amount of text the model should produce. Defaults to `medium`, matching
+          # Responses.
 
           verbosity: nil
         )
@@ -58,7 +60,8 @@ module OpenAI
         def to_hash
         end
 
-        # The amount of text the model should produce.
+        # The amount of text the model should produce. Defaults to `medium`, matching
+        # Responses.
         module Verbosity
           extend OpenAI::Internal::Type::Enum
 

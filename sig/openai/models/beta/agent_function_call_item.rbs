@@ -13,20 +13,41 @@ module OpenAI
         }
 
       class AgentFunctionCallItem < OpenAI::Internal::Type::BaseModel
+        # The ID of the function call item.
         attr_accessor id: String
 
+        # The arguments to pass to the function.
         attr_accessor arguments: top
 
+        # The ID used to submit the function result.
         attr_accessor call_id: String
 
+        # The name of the function to call.
         attr_accessor name: String
 
+        # The status of the function call.
         attr_accessor status: OpenAI::Models::Beta::agent_function_call_status
 
+        # The ID of the turn that contains this item.
         attr_accessor turn_id: String
 
+        # The item type. Always `function_call`.
         attr_accessor type: :function_call
 
+        # @param id
+        #   The ID of the function call item.
+        # @param arguments
+        #   The arguments to pass to the function.
+        # @param call_id
+        #   The ID used to submit the function result.
+        # @param name
+        #   The name of the function to call.
+        # @param status
+        #   The status of the function call.
+        # @param turn_id
+        #   The ID of the turn that contains this item.
+        # @param type
+        #   The item type. Always `function_call`.
         def initialize: (
           id: String,
           arguments: top,

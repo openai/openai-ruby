@@ -14,10 +14,18 @@ module OpenAI
               { ?type: :client_secret_basic, ?client_secret: String? }
 
             class ClientSecretBasic < OpenAI::Internal::Type::BaseModel
+              # The type of the object. Always `client_secret_basic`.
               attr_accessor type: :client_secret_basic
 
+              # The replacement OAuth client secret. Omit or pass `null` to keep the stored
+              # secret. This secret is never returned in resources.
               attr_accessor client_secret: String?
 
+              # @param client_secret
+              #   The replacement OAuth client secret. Omit or pass `null` to keep the stored
+              #   secret. This secret is never returned in resources.
+              # @param type
+              #   The type of the object. Always `client_secret_basic`.
               def initialize: (
                 ?client_secret: String?,
                 ?type: :client_secret_basic
@@ -33,10 +41,18 @@ module OpenAI
               { ?type: :client_secret_post, ?client_secret: String? }
 
             class ClientSecretPost < OpenAI::Internal::Type::BaseModel
+              # The type of the object. Always `client_secret_post`.
               attr_accessor type: :client_secret_post
 
+              # The replacement OAuth client secret. Omit or pass `null` to keep the stored
+              # secret. This secret is never returned in resources.
               attr_accessor client_secret: String?
 
+              # @param client_secret
+              #   The replacement OAuth client secret. Omit or pass `null` to keep the stored
+              #   secret. This secret is never returned in resources.
+              # @param type
+              #   The type of the object. Always `client_secret_post`.
               def initialize: (
                 ?client_secret: String?,
                 ?type: :client_secret_post

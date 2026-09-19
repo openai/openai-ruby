@@ -11,10 +11,24 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      # Display name for this API character.
       attr_accessor name: String
 
+      # Video file used to create a character.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
       attr_accessor video: OpenAI::Internal::file_input
 
+      # @param name
+      #   Display name for this API character.
+      # @param video
+      #   Video file used to create a character.
+      #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
       def initialize: (
         name: String,
         video: OpenAI::Internal::file_input,

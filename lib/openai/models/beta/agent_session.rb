@@ -68,7 +68,8 @@ module OpenAI
         required :status, enum: -> { OpenAI::Beta::AgentSession::Status }
 
         # @!attribute usage
-        #   Recorded token usage for a session or turn. Usage is best effort and may change.
+        #   Best-effort token usage for the session, or null if unknown. Recorded usage may
+        #   change.
         #
         #   @return [OpenAI::Models::Beta::TokenUsage, nil]
         required :usage, -> { OpenAI::Beta::TokenUsage }, nil?: true
@@ -110,7 +111,8 @@ module OpenAI
         #     The current status of the session.
         #
         #   @param usage [OpenAI::Models::Beta::TokenUsage, nil]
-        #     Recorded token usage for a session or turn. Usage is best effort and may change.
+        #     Best-effort token usage for the session, or null if unknown. Recorded usage may
+        #     change.
         #
         #   @param vault_ids [Array<String>]
         #     The IDs of vaults made available to the session.

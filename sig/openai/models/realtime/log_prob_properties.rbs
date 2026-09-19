@@ -5,12 +5,21 @@ module OpenAI
         { token: String, bytes: ::Array[Integer], logprob: Float }
 
       class LogProbProperties < OpenAI::Internal::Type::BaseModel
+        # The token that was used to generate the log probability.
         attr_accessor token: String
 
+        # The bytes that were used to generate the log probability.
         attr_accessor bytes: ::Array[Integer]
 
+        # The log probability of the token.
         attr_accessor logprob: Float
 
+        # @param token
+        #   The token that was used to generate the log probability.
+        # @param bytes
+        #   The bytes that were used to generate the log probability.
+        # @param logprob
+        #   The log probability of the token.
         def initialize: (
           token: String,
           bytes: ::Array[Integer],

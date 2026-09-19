@@ -13,20 +13,41 @@ module OpenAI
         }
 
       class FileCreateResponse < OpenAI::Internal::Type::BaseModel
+        # Unique identifier for the file.
         attr_accessor id: String
 
+        # Size of the file in bytes.
         attr_accessor bytes: Integer
 
+        # The container this file belongs to.
         attr_accessor container_id: String
 
+        # Unix timestamp (in seconds) when the file was created.
         attr_accessor created_at: Integer
 
+        # The type of this object (`container.file`).
         attr_accessor object: :"container.file"
 
+        # Path of the file in the container.
         attr_accessor path: String
 
+        # Source of the file (e.g., `user`, `assistant`).
         attr_accessor source: String
 
+        # @param id
+        #   Unique identifier for the file.
+        # @param bytes
+        #   Size of the file in bytes.
+        # @param container_id
+        #   The container this file belongs to.
+        # @param created_at
+        #   Unix timestamp (in seconds) when the file was created.
+        # @param path
+        #   Path of the file in the container.
+        # @param source
+        #   Source of the file (e.g., `user`, `assistant`).
+        # @param object
+        #   The type of this object (`container.file`).
         def initialize: (
           id: String,
           bytes: Integer,

@@ -7,12 +7,21 @@ module OpenAI
             { group_id: String, ?object: :"group.user", user_id: String }
 
           class UserCreateResponse < OpenAI::Internal::Type::BaseModel
+            # Identifier of the group the user was added to.
             attr_accessor group_id: String
 
+            # Always `group.user`.
             attr_accessor object: :"group.user"
 
+            # Identifier of the user that was added.
             attr_accessor user_id: String
 
+            # @param group_id
+            #   Identifier of the group the user was added to.
+            # @param user_id
+            #   Identifier of the user that was added.
+            # @param object
+            #   Always `group.user`.
             def initialize: (
               group_id: String,
               user_id: String,

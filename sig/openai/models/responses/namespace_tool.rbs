@@ -10,14 +10,26 @@ module OpenAI
         }
 
       class NamespaceTool < OpenAI::Internal::Type::BaseModel
+        # A description of the namespace shown to the model.
         attr_accessor description: String
 
+        # The namespace name used in tool calls (for example, `crm`).
         attr_accessor name: String
 
+        # The function/custom tools available inside this namespace.
         attr_accessor tools: ::Array[OpenAI::Models::Responses::NamespaceTool::tool]
 
+        # The type of the tool. Always `namespace`.
         attr_accessor type: :namespace
 
+        # @param description
+        #   A description of the namespace shown to the model.
+        # @param name
+        #   The namespace name used in tool calls (for example, `crm`).
+        # @param tools
+        #   The function/custom tools available inside this namespace.
+        # @param type
+        #   The type of the tool. Always `namespace`.
         def initialize: (
           description: String,
           name: String,
@@ -57,24 +69,50 @@ module OpenAI
 
             attr_accessor type: :function
 
+            # The tool invocation context(s).
             attr_accessor allowed_callers: ::Array[OpenAI::Models::Responses::NamespaceTool::Tool::Function::allowed_caller]?
 
+            # Whether the tool response can be returned asynchronously versus immediately
+            # returned on next response creation.
             attr_reader async: bool?
 
+            # Whether the tool response can be returned asynchronously versus immediately
+            # returned on next response creation.
             def async=: (bool) -> bool
 
+            # Whether this function should be deferred and discovered via tool search.
             attr_reader defer_loading: bool?
 
+            # Whether this function should be deferred and discovered via tool search.
             def defer_loading=: (bool) -> bool
 
             attr_accessor description: String?
 
+            # A JSON Schema describing the JSON value encoded in string outputs for this
+            # function tool. This does not describe content-array outputs.
             attr_accessor output_schema: ::Hash[Symbol, top]?
 
             attr_accessor parameters: top?
 
+            # Whether to enforce strict parameter validation. If omitted, Responses attempts
+            # to use strict validation when the schema is compatible, and falls back to
+            # non-strict validation otherwise.
             attr_accessor strict: bool?
 
+            # @param allowed_callers
+            #   The tool invocation context(s).
+            # @param async
+            #   Whether the tool response can be returned asynchronously versus immediately
+            #   returned on next response creation.
+            # @param defer_loading
+            #   Whether this function should be deferred and discovered via tool search.
+            # @param output_schema
+            #   A JSON Schema describing the JSON value encoded in string outputs for this
+            #   function tool. This does not describe content-array outputs.
+            # @param strict
+            #   Whether to enforce strict parameter validation. If omitted, Responses attempts
+            #   to use strict validation when the schema is compatible, and falls back to
+            #   non-strict validation otherwise.
             def initialize: (
               name: String,
               ?allowed_callers: ::Array[OpenAI::Models::Responses::NamespaceTool::Tool::Function::allowed_caller]?,

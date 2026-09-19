@@ -12,8 +12,11 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # The desired organization data retention type.
           attr_accessor retention_type: OpenAI::Models::Admin::Organization::DataRetentionUpdateParams::retention_type
 
+          # @param retention_type
+          #   The desired organization data retention type.
           def initialize: (
             retention_type: OpenAI::Models::Admin::Organization::DataRetentionUpdateParams::retention_type,
             ?request_options: OpenAI::request_opts

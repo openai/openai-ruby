@@ -99,7 +99,7 @@ module OpenAI
             sig { params(reasoning: OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning::OrHash).void }
             attr_writer :reasoning
 
-            # The service tier used for model requests.
+            # Omit to keep the current tier. Null resets it to auto.
             sig { returns(T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::Agent::ServiceTier::OrSymbol)) }
             attr_accessor :service_tier
 
@@ -123,7 +123,7 @@ module OpenAI
               # Reasoning settings to update. Omit to keep the current effort.
               reasoning: nil,
 
-              # The service tier used for model requests.
+              # Omit to keep the current tier. Null resets it to auto.
 
               service_tier: nil
             )
@@ -149,7 +149,7 @@ module OpenAI
                 )
               end
 
-              # The amount of reasoning effort the model should use.
+              # Omit to keep the current effort. Null selects the model's default effort.
               sig { returns(T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning::Effort::OrSymbol)) }
               attr_accessor :effort
 
@@ -163,7 +163,7 @@ module OpenAI
               end
               def self.new(
 
-                # The amount of reasoning effort the model should use.
+                # Omit to keep the current effort. Null selects the model's default effort.
 
                 effort: nil
               )
@@ -177,7 +177,7 @@ module OpenAI
               def to_hash
               end
 
-              # The amount of reasoning effort the model should use.
+              # Omit to keep the current effort. Null selects the model's default effort.
               module Effort
                 extend OpenAI::Internal::Type::Enum
 
@@ -210,7 +210,7 @@ module OpenAI
               end
             end
 
-            # The service tier used for model requests.
+            # Omit to keep the current tier. Null resets it to auto.
             module ServiceTier
               extend OpenAI::Internal::Type::Enum
 

@@ -14,12 +14,21 @@ module OpenAI
           { queries: ::Array[String]?, query: String?, ?type: :search }
 
         class Search < OpenAI::Internal::Type::BaseModel
+          # The search queries, when multiple queries were used.
           attr_accessor queries: ::Array[String]?
 
+          # The search query, when a single query was used.
           attr_accessor query: String?
 
+          # The type of the object. Always `search`.
           attr_accessor type: :search
 
+          # @param queries
+          #   The search queries, when multiple queries were used.
+          # @param query
+          #   The search query, when a single query was used.
+          # @param type
+          #   The type of the object. Always `search`.
           def initialize: (
             queries: ::Array[String]?,
             query: String?,
@@ -36,10 +45,16 @@ module OpenAI
         type open_page = { ?type: :open_page, url: String? }
 
         class OpenPage < OpenAI::Internal::Type::BaseModel
+          # The type of the object. Always `open_page`.
           attr_accessor type: :open_page
 
+          # The URL of the page that was opened.
           attr_accessor url: String?
 
+          # @param url
+          #   The URL of the page that was opened.
+          # @param type
+          #   The type of the object. Always `open_page`.
           def initialize: (url: String?, ?type: :open_page) -> void
 
           def to_hash: -> { ?type: :open_page, url: String? }
@@ -49,12 +64,21 @@ module OpenAI
           { pattern: String?, ?type: :find_in_page, url: String? }
 
         class FindInPage < OpenAI::Internal::Type::BaseModel
+          # The text pattern that was searched for.
           attr_accessor pattern: String?
 
+          # The type of the object. Always `find_in_page`.
           attr_accessor type: :find_in_page
 
+          # The URL of the page that was searched.
           attr_accessor url: String?
 
+          # @param pattern
+          #   The text pattern that was searched for.
+          # @param url
+          #   The URL of the page that was searched.
+          # @param type
+          #   The type of the object. Always `find_in_page`.
           def initialize: (
             pattern: String?,
             url: String?,
@@ -71,8 +95,11 @@ module OpenAI
         type other = { ?type: :other }
 
         class Other < OpenAI::Internal::Type::BaseModel
+          # The type of the object. Always `other`.
           attr_accessor type: :other
 
+          # @param type
+          #   The type of the object. Always `other`.
           def initialize: (?type: :other) -> void
 
           def to_hash: -> { ?type: :other }

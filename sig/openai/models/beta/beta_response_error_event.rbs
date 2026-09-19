@@ -14,18 +14,36 @@ module OpenAI
         }
 
       class BetaResponseErrorEvent < OpenAI::Internal::Type::BaseModel
+        # The error code.
         attr_accessor code: String?
 
+        # The error message.
         attr_accessor message: String
 
+        # The error parameter.
         attr_accessor param: String?
 
+        # The sequence number of this event.
         attr_accessor sequence_number: Integer
 
+        # The type of the event. Always `error`.
         attr_accessor type: :error
 
+        # The agent that owns this multi-agent streaming event.
         attr_accessor agent: OpenAI::Beta::BetaResponseErrorEvent::Agent?
 
+        # @param code
+        #   The error code.
+        # @param message
+        #   The error message.
+        # @param param
+        #   The error parameter.
+        # @param sequence_number
+        #   The sequence number of this event.
+        # @param agent
+        #   The agent that owns this multi-agent streaming event.
+        # @param type
+        #   The type of the event. Always `error`.
         def initialize: (
           code: String?,
           message: String,
@@ -47,8 +65,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }

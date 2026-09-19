@@ -17,20 +17,35 @@ module OpenAI
 
           attr_accessor completion_id: String
 
+          # Identifier for the last message from the previous pagination request.
           attr_reader after: String?
 
+          # Identifier for the last message from the previous pagination request.
           def after=: (String) -> String
 
+          # Number of messages to retrieve.
           attr_reader limit: Integer?
 
+          # Number of messages to retrieve.
           def limit=: (Integer) -> Integer
 
+          # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
+          # for descending order. Defaults to `asc`.
           attr_reader order: OpenAI::Models::Chat::Completions::MessageListParams::order?
 
+          # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
+          # for descending order. Defaults to `asc`.
           def order=: (
             OpenAI::Models::Chat::Completions::MessageListParams::order
           ) -> OpenAI::Models::Chat::Completions::MessageListParams::order
 
+          # @param after
+          #   Identifier for the last message from the previous pagination request.
+          # @param limit
+          #   Number of messages to retrieve.
+          # @param order
+          #   Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
+          #   for descending order. Defaults to `asc`.
           def initialize: (
             completion_id: String,
             ?after: String,

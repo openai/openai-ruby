@@ -9,12 +9,25 @@ module OpenAI
         }
 
       class ResponseItemCreateEvent < OpenAI::Internal::Type::BaseModel
+        # An input item to append to the Responses backend conversation, such as a user
+        # message or a function tool result.
         attr_accessor item: OpenAI::Models::Responses::response_input_item
 
+        # The Live client event type. Always `response.item.create`.
         attr_accessor type: :"response.item.create"
 
+        # Optional client identifier for correlating this command with a server event's
+        # client_event_id or error.client_event_id.
         attr_accessor event_id: String?
 
+        # @param item
+        #   An input item to append to the Responses backend conversation, such as a user
+        #   message or a function tool result.
+        # @param event_id
+        #   Optional client identifier for correlating this command with a server event's
+        #   client_event_id or error.client_event_id.
+        # @param type
+        #   The Live client event type. Always `response.item.create`.
         def initialize: (
           item: OpenAI::Models::Responses::response_input_item,
           ?event_id: String?,

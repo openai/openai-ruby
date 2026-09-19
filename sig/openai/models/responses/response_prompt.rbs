@@ -9,12 +9,25 @@ module OpenAI
         }
 
       class ResponsePrompt < OpenAI::Internal::Type::BaseModel
+        # The unique identifier of the prompt template to use.
         attr_accessor id: String
 
+        # Optional map of values to substitute in for variables in your prompt. The
+        # substitution values can either be strings, or other Response input types like
+        # images or files.
         attr_accessor variables: ::Hash[Symbol, OpenAI::Models::Responses::ResponsePrompt::variable]?
 
+        # Optional version of the prompt template.
         attr_accessor version: String?
 
+        # @param id
+        #   The unique identifier of the prompt template to use.
+        # @param variables
+        #   Optional map of values to substitute in for variables in your prompt. The
+        #   substitution values can either be strings, or other Response input types like
+        #   images or files.
+        # @param version
+        #   Optional version of the prompt template.
         def initialize: (
           id: String,
           ?variables: ::Hash[Symbol, OpenAI::Models::Responses::ResponsePrompt::variable]?,

@@ -11,16 +11,33 @@ module OpenAI
         }
 
       class WebhookEndpointTestResult < OpenAI::Internal::Type::BaseModel
+        # The event type sent in the test.
         attr_accessor event_type: String
 
+        # The object type, which is always webhook_endpoint.test.
         attr_accessor object: :"webhook_endpoint.test"
 
+        # The HTTP status code returned by the endpoint.
         attr_accessor status_code: Integer
 
+        # Whether the test request completed. Always true for returned results; use
+        # status_code to determine the endpoint response.
         attr_accessor success: bool
 
+        # The ID of the webhook endpoint that received the test.
         attr_accessor webhook_endpoint_id: String
 
+        # @param event_type
+        #   The event type sent in the test.
+        # @param status_code
+        #   The HTTP status code returned by the endpoint.
+        # @param success
+        #   Whether the test request completed. Always true for returned results; use
+        #   status_code to determine the endpoint response.
+        # @param webhook_endpoint_id
+        #   The ID of the webhook endpoint that received the test.
+        # @param object
+        #   The object type, which is always webhook_endpoint.test.
         def initialize: (
           event_type: String,
           status_code: Integer,

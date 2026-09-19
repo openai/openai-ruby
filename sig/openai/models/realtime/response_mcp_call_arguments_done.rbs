@@ -12,18 +12,36 @@ module OpenAI
         }
 
       class ResponseMcpCallArgumentsDone < OpenAI::Internal::Type::BaseModel
+        # The final JSON-encoded arguments string.
         attr_accessor arguments: String
 
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The ID of the MCP tool call item.
         attr_accessor item_id: String
 
+        # The index of the output item in the response.
         attr_accessor output_index: Integer
 
+        # The ID of the response.
         attr_accessor response_id: String
 
+        # The event type, must be `response.mcp_call_arguments.done`.
         attr_accessor type: :"response.mcp_call_arguments.done"
 
+        # @param arguments
+        #   The final JSON-encoded arguments string.
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param item_id
+        #   The ID of the MCP tool call item.
+        # @param output_index
+        #   The index of the output item in the response.
+        # @param response_id
+        #   The ID of the response.
+        # @param type
+        #   The event type, must be `response.mcp_call_arguments.done`.
         def initialize: (
           arguments: String,
           event_id: String,

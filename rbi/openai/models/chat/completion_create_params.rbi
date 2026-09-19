@@ -188,8 +188,11 @@ module OpenAI
         sig { params(parallel_tool_calls: T::Boolean).void }
         attr_writer :parallel_tool_calls
 
-        # Static predicted output content, such as the content of a text file that is
-        # being regenerated.
+        # Configuration for a
+        # [Predicted Output](https://developers.openai.com/api/docs/guides/predicted-outputs),
+        # which can greatly improve response times when large parts of the model response
+        # are known ahead of time. This is most common when you are regenerating a file
+        # with only minor changes to most of the content.
         sig { returns(T.nilable(OpenAI::Chat::ChatCompletionPredictionContent)) }
         attr_reader :prediction
 
@@ -687,8 +690,11 @@ module OpenAI
           # during tool use.
           parallel_tool_calls: nil,
 
-          # Static predicted output content, such as the content of a text file that is
-          # being regenerated.
+          # Configuration for a
+          # [Predicted Output](https://developers.openai.com/api/docs/guides/predicted-outputs),
+          # which can greatly improve response times when large parts of the model response
+          # are known ahead of time. This is most common when you are regenerating a file
+          # with only minor changes to most of the content.
           prediction: nil,
 
           # Number between -2.0 and 2.0. Positive values penalize new tokens based on

@@ -96,7 +96,7 @@ module OpenAI
           optional :error, String, nil?: true
 
           # @!attribute output
-          #   A function result represented as text or supported model-input content.
+          #   The function result when the call succeeded.
           #
           #   @return [String, Array<OpenAI::Models::Beta::InputContentParam::InputText, OpenAI::Models::Beta::InputContentParam::InputImage>, nil]
           optional :output, union: -> { OpenAI::Beta::AgentFunctionCallOutputParam }, nil?: true
@@ -117,7 +117,7 @@ module OpenAI
           #     The error message when the call failed.
           #
           #   @param output [String, Array<OpenAI::Models::Beta::InputContentParam::InputText, OpenAI::Models::Beta::InputContentParam::InputImage>, nil]
-          #     A function result represented as text or supported model-input content.
+          #     The function result when the call succeeded.
           #
           #   @param type [Symbol, :"agent.session.input.tool_result"]
           #     The type of the object. Always `agent.session.input.tool_result`.

@@ -14,18 +14,45 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # A cursor for use in pagination. `after` is an object ID that defines your place
+          # in the list. For instance, if you make a list request and receive 100 objects,
+          # ending with obj_foo, your subsequent call can include after=obj_foo in order to
+          # fetch the next page of the list.
           attr_reader after: String?
 
+          # A cursor for use in pagination. `after` is an object ID that defines your place
+          # in the list. For instance, if you make a list request and receive 100 objects,
+          # ending with obj_foo, your subsequent call can include after=obj_foo in order to
+          # fetch the next page of the list.
           def after=: (String) -> String
 
+          # If `true` returns all projects including those that have been `archived`.
+          # Archived projects are not included by default.
           attr_reader include_archived: bool?
 
+          # If `true` returns all projects including those that have been `archived`.
+          # Archived projects are not included by default.
           def include_archived=: (bool) -> bool
 
+          # A limit on the number of objects to be returned. Limit can range between 1 and
+          # 100, and the default is 20.
           attr_reader limit: Integer?
 
+          # A limit on the number of objects to be returned. Limit can range between 1 and
+          # 100, and the default is 20.
           def limit=: (Integer) -> Integer
 
+          # @param after
+          #   A cursor for use in pagination. `after` is an object ID that defines your place
+          #   in the list. For instance, if you make a list request and receive 100 objects,
+          #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+          #   fetch the next page of the list.
+          # @param include_archived
+          #   If `true` returns all projects including those that have been `archived`.
+          #   Archived projects are not included by default.
+          # @param limit
+          #   A limit on the number of objects to be returned. Limit can range between 1 and
+          #   100, and the default is 20.
           def initialize: (
             ?after: String,
             ?include_archived: bool,

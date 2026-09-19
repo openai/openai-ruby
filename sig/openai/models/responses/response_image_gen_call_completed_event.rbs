@@ -10,14 +10,26 @@ module OpenAI
         }
 
       class ResponseImageGenCallCompletedEvent < OpenAI::Internal::Type::BaseModel
+        # The unique identifier of the image generation item being processed.
         attr_accessor item_id: String
 
+        # The index of the output item in the response's output array.
         attr_accessor output_index: Integer
 
+        # The sequence number of this event.
         attr_accessor sequence_number: Integer
 
+        # The type of the event. Always 'response.image_generation_call.completed'.
         attr_accessor type: :"response.image_generation_call.completed"
 
+        # @param item_id
+        #   The unique identifier of the image generation item being processed.
+        # @param output_index
+        #   The index of the output item in the response's output array.
+        # @param sequence_number
+        #   The sequence number of this event.
+        # @param type
+        #   The type of the event. Always 'response.image_generation_call.completed'.
         def initialize: (
           item_id: String,
           output_index: Integer,

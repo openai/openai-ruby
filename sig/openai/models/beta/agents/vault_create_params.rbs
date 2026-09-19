@@ -13,12 +13,24 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # Key-value pairs to associate with the vault, such as an application or team
+          # identifier.
           attr_accessor metadata: ::Hash[Symbol, String]?
 
+          # The name is trimmed before storage. It must contain 1 to 256 UTF-8 bytes after
+          # trimming.
           attr_reader name: String?
 
+          # The name is trimmed before storage. It must contain 1 to 256 UTF-8 bytes after
+          # trimming.
           def name=: (String) -> String
 
+          # @param metadata
+          #   Key-value pairs to associate with the vault, such as an application or team
+          #   identifier.
+          # @param name
+          #   The name is trimmed before storage. It must contain 1 to 256 UTF-8 bytes after
+          #   trimming.
           def initialize: (
             ?metadata: ::Hash[Symbol, String]?,
             ?name: String,

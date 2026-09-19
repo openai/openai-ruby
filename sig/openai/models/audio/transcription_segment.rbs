@@ -16,26 +16,62 @@ module OpenAI
         }
 
       class TranscriptionSegment < OpenAI::Internal::Type::BaseModel
+        # Unique identifier of the segment.
         attr_accessor id: Integer
 
+        # Average logprob of the segment. If the value is lower than -1, consider the
+        # logprobs failed.
         attr_accessor avg_logprob: Float
 
+        # Compression ratio of the segment. If the value is greater than 2.4, consider the
+        # compression failed.
         attr_accessor compression_ratio: Float
 
+        # End time of the segment in seconds.
         attr_accessor end_: Float
 
+        # Probability of no speech in the segment. If the value is higher than 1.0 and the
+        # `avg_logprob` is below -1, consider this segment silent.
         attr_accessor no_speech_prob: Float
 
+        # Seek offset of the segment.
         attr_accessor seek: Integer
 
+        # Start time of the segment in seconds.
         attr_accessor start: Float
 
+        # Temperature parameter used for generating the segment.
         attr_accessor temperature: Float
 
+        # Text content of the segment.
         attr_accessor text: String
 
+        # Array of token IDs for the text content.
         attr_accessor tokens: ::Array[Integer]
 
+        # @param id
+        #   Unique identifier of the segment.
+        # @param avg_logprob
+        #   Average logprob of the segment. If the value is lower than -1, consider the
+        #   logprobs failed.
+        # @param compression_ratio
+        #   Compression ratio of the segment. If the value is greater than 2.4, consider the
+        #   compression failed.
+        # @param end_
+        #   End time of the segment in seconds.
+        # @param no_speech_prob
+        #   Probability of no speech in the segment. If the value is higher than 1.0 and the
+        #   `avg_logprob` is below -1, consider this segment silent.
+        # @param seek
+        #   Seek offset of the segment.
+        # @param start
+        #   Start time of the segment in seconds.
+        # @param temperature
+        #   Temperature parameter used for generating the segment.
+        # @param text
+        #   Text content of the segment.
+        # @param tokens
+        #   Array of token IDs for the text content.
         def initialize: (
           id: Integer,
           avg_logprob: Float,

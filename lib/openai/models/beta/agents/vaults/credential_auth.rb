@@ -32,8 +32,7 @@ module OpenAI
               required :mcp_server_url, String
 
               # @!attribute refresh
-              #   Configuration used to refresh an MCP OAuth access token, excluding secret
-              #   values.
+              #   Public refresh metadata without refresh tokens or OAuth client secrets.
               #
               #   @return [OpenAI::Models::Beta::Agents::Vaults::CredentialAuth::McpOauth::Refresh, nil]
               required(
@@ -61,8 +60,7 @@ module OpenAI
               #     The HTTPS MCP server URL authorized by this credential.
               #
               #   @param refresh [OpenAI::Models::Beta::Agents::Vaults::CredentialAuth::McpOauth::Refresh, nil]
-              #     Configuration used to refresh an MCP OAuth access token, excluding secret
-              #     values.
+              #     Public refresh metadata without refresh tokens or OAuth client secrets.
               #
               #   @param type [Symbol, :mcp_oauth]
               #     The type of the object. Always `mcp_oauth`.
@@ -101,8 +99,7 @@ module OpenAI
                 required :token_endpoint_auth, union: -> { OpenAI::Beta::Agents::Vaults::McpOauthTokenEndpointAuth }
 
                 # @!method initialize(client_id:, resource:, scope:, token_endpoint:, token_endpoint_auth:)
-                #   Configuration used to refresh an MCP OAuth access token, excluding secret
-                #   values.
+                #   Public refresh metadata without refresh tokens or OAuth client secrets.
                 #
                 #   @param client_id [String]
                 #     The OAuth client ID used when requesting a new access token.

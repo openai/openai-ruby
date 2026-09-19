@@ -14,20 +14,43 @@ module OpenAI
           }
 
         class Role < OpenAI::Internal::Type::BaseModel
+          # Identifier for the role.
           attr_accessor id: String
 
+          # Optional description of the role.
           attr_accessor description: String?
 
+          # Unique name for the role.
           attr_accessor name: String
 
+          # Always `role`.
           attr_accessor object: :role
 
+          # Permissions granted by the role.
           attr_accessor permissions: ::Array[String]
 
+          # Whether the role is predefined and managed by OpenAI.
           attr_accessor predefined_role: bool
 
+          # Resource type the role is bound to (for example `api.organization` or
+          # `api.project`).
           attr_accessor resource_type: String
 
+          # @param id
+          #   Identifier for the role.
+          # @param description
+          #   Optional description of the role.
+          # @param name
+          #   Unique name for the role.
+          # @param permissions
+          #   Permissions granted by the role.
+          # @param predefined_role
+          #   Whether the role is predefined and managed by OpenAI.
+          # @param resource_type
+          #   Resource type the role is bound to (for example `api.organization` or
+          #   `api.project`).
+          # @param object
+          #   Always `role`.
           def initialize: (
             id: String,
             description: String?,

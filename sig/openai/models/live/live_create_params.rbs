@@ -12,10 +12,16 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # Startup configuration for the Live session.
         attr_accessor session: OpenAI::Live::MediaSessionConfig
 
+        # WebRTC transport with the browser's SDP offer.
         attr_accessor transport: OpenAI::Live::LiveCreateParams::Transport
 
+        # @param session
+        #   Startup configuration for the Live session.
+        # @param transport
+        #   WebRTC transport with the browser's SDP offer.
         def initialize: (
           session: OpenAI::Live::MediaSessionConfig,
           transport: OpenAI::Live::LiveCreateParams::Transport,
@@ -31,10 +37,16 @@ module OpenAI
         type transport = { sdp: String, ?type: :webrtc }
 
         class Transport < OpenAI::Internal::Type::BaseModel
+          # Session Description Protocol message for the WebRTC connection.
           attr_accessor sdp: String
 
+          # The transport used for the Live session. Always `webrtc`.
           attr_accessor type: :webrtc
 
+          # @param sdp
+          #   Session Description Protocol message for the WebRTC connection.
+          # @param type
+          #   The transport used for the Live session. Always `webrtc`.
           def initialize: (sdp: String, ?type: :webrtc) -> void
 
           def to_hash: -> { sdp: String, ?type: :webrtc }

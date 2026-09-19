@@ -13,20 +13,46 @@ module OpenAI
         }
 
       class BetaResponseInputImage < OpenAI::Internal::Type::BaseModel
+        # The detail level of the image to be sent to the model. One of `high`, `low`,
+        # `auto`, or `original`. Defaults to `auto`.
         attr_accessor detail: OpenAI::Models::Beta::BetaResponseInputImage::detail
 
+        # The type of the input item. Always `input_image`.
         attr_accessor type: :input_image
 
+        # The ID of the file to be sent to the model.
         attr_accessor file_id: String?
 
+        # The URL of the image to be sent to the model. A fully qualified URL or base64
+        # encoded image in a data URL.
         attr_accessor image_url: String?
 
+        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        # token block.
         attr_reader prompt_cache_breakpoint: OpenAI::Beta::BetaResponseInputImage::PromptCacheBreakpoint?
 
+        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        # token block.
         def prompt_cache_breakpoint=: (
           OpenAI::Beta::BetaResponseInputImage::PromptCacheBreakpoint
         ) -> OpenAI::Beta::BetaResponseInputImage::PromptCacheBreakpoint
 
+        # @param detail
+        #   The detail level of the image to be sent to the model. One of `high`, `low`,
+        #   `auto`, or `original`. Defaults to `auto`.
+        # @param file_id
+        #   The ID of the file to be sent to the model.
+        # @param image_url
+        #   The URL of the image to be sent to the model. A fully qualified URL or base64
+        #   encoded image in a data URL.
+        # @param prompt_cache_breakpoint
+        #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        #   token block.
+        # @param type
+        #   The type of the input item. Always `input_image`.
         def initialize: (
           detail: OpenAI::Models::Beta::BetaResponseInputImage::detail,
           ?file_id: String?,
@@ -59,8 +85,11 @@ module OpenAI
         type prompt_cache_breakpoint = { ?mode: :explicit }
 
         class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+          # The breakpoint mode. Always `explicit`.
           attr_accessor mode: :explicit
 
+          # @param mode
+          #   The breakpoint mode. Always `explicit`.
           def initialize: (?mode: :explicit) -> void
 
           def to_hash: -> { ?mode: :explicit }

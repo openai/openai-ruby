@@ -12,16 +12,31 @@ module OpenAI
             }
 
           class FileSearchToolCallDelta < OpenAI::Internal::Type::BaseModel
+            # For now, this is always going to be an empty object.
             attr_accessor file_search: top
 
+            # The index of the tool call in the tool calls array.
             attr_accessor index: Integer
 
+            # The type of tool call. This is always going to be `file_search` for this type of
+            # tool call.
             attr_accessor type: :file_search
 
+            # The ID of the tool call object.
             attr_reader id: String?
 
+            # The ID of the tool call object.
             def id=: (String) -> String
 
+            # @param file_search
+            #   For now, this is always going to be an empty object.
+            # @param index
+            #   The index of the tool call in the tool calls array.
+            # @param id
+            #   The ID of the tool call object.
+            # @param type
+            #   The type of tool call. This is always going to be `file_search` for this type of
+            #   tool call.
             def initialize: (
               file_search: top,
               index: Integer,

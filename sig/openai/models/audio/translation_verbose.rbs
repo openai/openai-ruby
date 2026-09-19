@@ -10,18 +10,31 @@ module OpenAI
         }
 
       class TranslationVerbose < OpenAI::Internal::Type::BaseModel
+        # The duration of the input audio.
         attr_accessor duration: Float
 
+        # The language of the output translation (always `english`).
         attr_accessor language: String
 
+        # The translated text.
         attr_accessor text: String
 
+        # Segments of the translated text and their corresponding details.
         attr_reader segments: ::Array[OpenAI::Audio::TranscriptionSegment]?
 
+        # Segments of the translated text and their corresponding details.
         def segments=: (
           ::Array[OpenAI::Audio::TranscriptionSegment]
         ) -> ::Array[OpenAI::Audio::TranscriptionSegment]
 
+        # @param duration
+        #   The duration of the input audio.
+        # @param language
+        #   The language of the output translation (always `english`).
+        # @param text
+        #   The translated text.
+        # @param segments
+        #   Segments of the translated text and their corresponding details.
         def initialize: (
           duration: Float,
           language: String,

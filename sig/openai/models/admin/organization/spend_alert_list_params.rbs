@@ -15,24 +15,46 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # Cursor for pagination. Provide the ID of the last spend alert from the previous
+          # response to fetch the next page.
           attr_reader after: String?
 
+          # Cursor for pagination. Provide the ID of the last spend alert from the previous
+          # response to fetch the next page.
           def after=: (String) -> String
 
+          # Cursor for pagination. Provide the ID of the first spend alert from the previous
+          # response to fetch the previous page.
           attr_reader before: String?
 
+          # Cursor for pagination. Provide the ID of the first spend alert from the previous
+          # response to fetch the previous page.
           def before=: (String) -> String
 
+          # A limit on the number of spend alerts to return. Defaults to 20.
           attr_reader limit: Integer?
 
+          # A limit on the number of spend alerts to return. Defaults to 20.
           def limit=: (Integer) -> Integer
 
+          # Sort order for the returned spend alerts.
           attr_reader order: OpenAI::Models::Admin::Organization::SpendAlertListParams::order?
 
+          # Sort order for the returned spend alerts.
           def order=: (
             OpenAI::Models::Admin::Organization::SpendAlertListParams::order
           ) -> OpenAI::Models::Admin::Organization::SpendAlertListParams::order
 
+          # @param after
+          #   Cursor for pagination. Provide the ID of the last spend alert from the previous
+          #   response to fetch the next page.
+          # @param before
+          #   Cursor for pagination. Provide the ID of the first spend alert from the previous
+          #   response to fetch the previous page.
+          # @param limit
+          #   A limit on the number of spend alerts to return. Defaults to 20.
+          # @param order
+          #   Sort order for the returned spend alerts.
           def initialize: (
             ?after: String,
             ?before: String,

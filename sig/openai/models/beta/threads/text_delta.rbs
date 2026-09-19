@@ -15,10 +15,14 @@ module OpenAI
             ::Array[OpenAI::Models::Beta::Threads::annotation_delta]
           ) -> ::Array[OpenAI::Models::Beta::Threads::annotation_delta]
 
+          # The data that makes up the text.
           attr_reader value: String?
 
+          # The data that makes up the text.
           def value=: (String) -> String
 
+          # @param value
+          #   The data that makes up the text.
           def initialize: (
             ?annotations: ::Array[OpenAI::Models::Beta::Threads::annotation_delta],
             ?value: String

@@ -36,7 +36,7 @@ module OpenAI
             sig { returns(Integer) }
             attr_accessor :created_at
 
-            # A customer-safe error describing why a session request failed.
+            # A customer-safe error. Non-null only for a failed turn.
             sig { returns(T.nilable(OpenAI::Beta::SessionTurnError)) }
             attr_reader :error
 
@@ -63,7 +63,8 @@ module OpenAI
             sig { returns(T.nilable(String)) }
             attr_accessor :subagent_id
 
-            # Recorded token usage for a session or turn. Usage is best effort and may change.
+            # Best-effort token usage for the turn, or null if unknown. Recorded usage may
+            # change.
             sig { returns(T.nilable(OpenAI::Beta::TokenUsage)) }
             attr_reader :usage
 
@@ -114,7 +115,7 @@ module OpenAI
               # subagent opening time when the preceding timestamps are unavailable.
               created_at:,
 
-              # A customer-safe error describing why a session request failed.
+              # A customer-safe error. Non-null only for a failed turn.
               error:,
 
               # The ID of the session that owns the turn.
@@ -129,7 +130,8 @@ module OpenAI
               # The ID of the subagent that ran the turn, if applicable.
               subagent_id:,
 
-              # Recorded token usage for a session or turn. Usage is best effort and may change.
+              # Best-effort token usage for the turn, or null if unknown. Recorded usage may
+              # change.
               usage:,
 
               # The object type. Always `agent.session.turn`.

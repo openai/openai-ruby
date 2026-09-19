@@ -14,20 +14,41 @@ module OpenAI
           }
 
         class EnvironmentInfo < OpenAI::Internal::Type::BaseModel
+          # The ID of the environment.
           attr_accessor id: String
 
+          # Files installed in the environment, without their contents.
           attr_accessor files: ::Array[OpenAI::Models::Beta::hosted_environment_file]
 
+          # The object type. Always `agent.environment`.
           attr_accessor object: :"agent.environment"
 
+          # Plugins installed in the environment, without their archive contents.
           attr_accessor plugins: ::Array[OpenAI::Beta::HostedPlugin]
 
+          # Skills installed in the environment, without their archive contents.
           attr_accessor skills: ::Array[OpenAI::Models::Beta::hosted_skill]
 
+          # The current environment connection status.
           attr_accessor status: OpenAI::Models::Beta::Agents::EnvironmentInfo::status
 
+          # Whether the environment is hosted by OpenAI or by the application.
           attr_accessor type: OpenAI::Models::Beta::Agents::EnvironmentInfo::type_
 
+          # @param id
+          #   The ID of the environment.
+          # @param files
+          #   Files installed in the environment, without their contents.
+          # @param plugins
+          #   Plugins installed in the environment, without their archive contents.
+          # @param skills
+          #   Skills installed in the environment, without their archive contents.
+          # @param status
+          #   The current environment connection status.
+          # @param type
+          #   Whether the environment is hosted by OpenAI or by the application.
+          # @param object
+          #   The object type. Always `agent.environment`.
           def initialize: (
             id: String,
             files: ::Array[OpenAI::Models::Beta::hosted_environment_file],

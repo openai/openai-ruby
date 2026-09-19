@@ -17,26 +17,48 @@ module OpenAI
 
         attr_accessor eval_id: String
 
+        # Identifier for the last run from the previous pagination request.
         attr_reader after: String?
 
+        # Identifier for the last run from the previous pagination request.
         def after=: (String) -> String
 
+        # Number of runs to retrieve.
         attr_reader limit: Integer?
 
+        # Number of runs to retrieve.
         def limit=: (Integer) -> Integer
 
+        # Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for
+        # descending order. Defaults to `asc`.
         attr_reader order: OpenAI::Models::Evals::RunListParams::order?
 
+        # Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for
+        # descending order. Defaults to `asc`.
         def order=: (
           OpenAI::Models::Evals::RunListParams::order
         ) -> OpenAI::Models::Evals::RunListParams::order
 
+        # Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+        # | `canceled`.
         attr_reader status: OpenAI::Models::Evals::RunListParams::status?
 
+        # Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+        # | `canceled`.
         def status=: (
           OpenAI::Models::Evals::RunListParams::status
         ) -> OpenAI::Models::Evals::RunListParams::status
 
+        # @param after
+        #   Identifier for the last run from the previous pagination request.
+        # @param limit
+        #   Number of runs to retrieve.
+        # @param order
+        #   Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for
+        #   descending order. Defaults to `asc`.
+        # @param status
+        #   Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+        #   | `canceled`.
         def initialize: (
           eval_id: String,
           ?after: String,

@@ -10,16 +10,29 @@ module OpenAI
         }
 
       class RealtimeMcpListTools < OpenAI::Internal::Type::BaseModel
+        # The label of the MCP server.
         attr_accessor server_label: String
 
+        # The tools available on the server.
         attr_accessor tools: ::Array[OpenAI::Realtime::RealtimeMcpListTools::Tool]
 
+        # The type of the item. Always `mcp_list_tools`.
         attr_accessor type: :mcp_list_tools
 
+        # The unique ID of the list.
         attr_reader id: String?
 
+        # The unique ID of the list.
         def id=: (String) -> String
 
+        # @param server_label
+        #   The label of the MCP server.
+        # @param tools
+        #   The tools available on the server.
+        # @param id
+        #   The unique ID of the list.
+        # @param type
+        #   The type of the item. Always `mcp_list_tools`.
         def initialize: (
           server_label: String,
           tools: ::Array[OpenAI::Realtime::RealtimeMcpListTools::Tool],
@@ -43,14 +56,26 @@ module OpenAI
           }
 
         class Tool < OpenAI::Internal::Type::BaseModel
+          # The JSON schema describing the tool's input.
           attr_accessor input_schema: top
 
+          # The name of the tool.
           attr_accessor name: String
 
+          # Additional annotations about the tool.
           attr_accessor annotations: top?
 
+          # The description of the tool.
           attr_accessor description: String?
 
+          # @param input_schema
+          #   The JSON schema describing the tool's input.
+          # @param name
+          #   The name of the tool.
+          # @param annotations
+          #   Additional annotations about the tool.
+          # @param description
+          #   The description of the tool.
           def initialize: (
             input_schema: top,
             name: String,

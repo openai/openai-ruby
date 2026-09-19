@@ -15,8 +15,11 @@ module OpenAI
 
           attr_accessor fine_tuned_model_checkpoint: String
 
+          # The project identifiers to grant access to.
           attr_accessor project_ids: ::Array[String]
 
+          # @param project_ids
+          #   The project identifiers to grant access to.
           def initialize: (
             fine_tuned_model_checkpoint: String,
             project_ids: ::Array[String],

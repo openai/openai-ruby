@@ -7,16 +7,29 @@ module OpenAI
         { ?type: :computer_screenshot, ?file_id: String, ?image_url: String }
 
       class BetaResponseComputerToolCallOutputScreenshot < OpenAI::Internal::Type::BaseModel
+        # Specifies the event type. For a computer screenshot, this property is always set
+        # to `computer_screenshot`.
         attr_accessor type: :computer_screenshot
 
+        # The identifier of an uploaded file that contains the screenshot.
         attr_reader file_id: String?
 
+        # The identifier of an uploaded file that contains the screenshot.
         def file_id=: (String) -> String
 
+        # The URL of the screenshot image.
         attr_reader image_url: String?
 
+        # The URL of the screenshot image.
         def image_url=: (String) -> String
 
+        # @param file_id
+        #   The identifier of an uploaded file that contains the screenshot.
+        # @param image_url
+        #   The URL of the screenshot image.
+        # @param type
+        #   Specifies the event type. For a computer screenshot, this property is always set
+        #   to `computer_screenshot`.
         def initialize: (
           ?file_id: String,
           ?image_url: String,

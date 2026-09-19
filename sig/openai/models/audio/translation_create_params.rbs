@@ -15,24 +15,82 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # The audio file object (not file name) translate, in one of these formats: flac,
+        # mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm. The request must include enough
+        # format metadata for the file to be identified. We recommend an extension-bearing
+        # filename and an appropriate content type.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
         attr_accessor file: OpenAI::Internal::file_input
 
+        # ID of the model to use. Only `whisper-1` (which is powered by our open source
+        # Whisper V2 model) is currently available.
         attr_accessor model: OpenAI::Models::Audio::TranslationCreateParams::model
 
+        # An optional text to guide the model's style or continue a previous audio
+        # segment. The
+        # [prompt](https://developers.openai.com/api/docs/guides/speech-to-text#prompting)
+        # should be in English.
         attr_reader prompt: String?
 
+        # An optional text to guide the model's style or continue a previous audio
+        # segment. The
+        # [prompt](https://developers.openai.com/api/docs/guides/speech-to-text#prompting)
+        # should be in English.
         def prompt=: (String) -> String
 
+        # The format of the output, in one of these options: `json`, `text`, `srt`,
+        # `verbose_json`, or `vtt`.
         attr_reader response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format?
 
+        # The format of the output, in one of these options: `json`, `text`, `srt`,
+        # `verbose_json`, or `vtt`.
         def response_format=: (
           OpenAI::Models::Audio::TranslationCreateParams::response_format
         ) -> OpenAI::Models::Audio::TranslationCreateParams::response_format
 
+        # The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
+        # output more random, while lower values like 0.2 will make it more focused and
+        # deterministic. If set to 0, the model will use
+        # [log probability](https://en.wikipedia.org/wiki/Log_probability) to
+        # automatically increase the temperature until certain thresholds are hit.
         attr_reader temperature: Float?
 
+        # The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
+        # output more random, while lower values like 0.2 will make it more focused and
+        # deterministic. If set to 0, the model will use
+        # [log probability](https://en.wikipedia.org/wiki/Log_probability) to
+        # automatically increase the temperature until certain thresholds are hit.
         def temperature=: (Float) -> Float
 
+        # @param file
+        #   The audio file object (not file name) translate, in one of these formats: flac,
+        #   mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm. The request must include enough
+        #   format metadata for the file to be identified. We recommend an extension-bearing
+        #   filename and an appropriate content type.
+        #
+        #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        #   content type.
+        # @param model
+        #   ID of the model to use. Only `whisper-1` (which is powered by our open source
+        #   Whisper V2 model) is currently available.
+        # @param prompt
+        #   An optional text to guide the model's style or continue a previous audio
+        #   segment. The
+        #   [prompt](https://developers.openai.com/api/docs/guides/speech-to-text#prompting)
+        #   should be in English.
+        # @param response_format
+        #   The format of the output, in one of these options: `json`, `text`, `srt`,
+        #   `verbose_json`, or `vtt`.
+        # @param temperature
+        #   The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
+        #   output more random, while lower values like 0.2 will make it more focused and
+        #   deterministic. If set to 0, the model will use
+        #   [log probability](https://en.wikipedia.org/wiki/Log_probability) to
+        #   automatically increase the temperature until certain thresholds are hit.
         def initialize: (
           file: OpenAI::Internal::file_input,
           model: OpenAI::Models::Audio::TranslationCreateParams::model,

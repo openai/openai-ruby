@@ -35,7 +35,7 @@ module OpenAI
         required :type, const: :"agent.session.turn.failed"
 
         # @!attribute usage
-        #   Recorded token usage for a session or turn. Usage is best effort and may change.
+        #   Token usage by the root agent during the turn, when available.
         #
         #   @return [OpenAI::Models::Beta::TokenUsage, nil]
         required :usage, -> { OpenAI::Beta::TokenUsage }, nil?: true
@@ -56,7 +56,7 @@ module OpenAI
         #     The ID of the turn associated with the event.
         #
         #   @param usage [OpenAI::Models::Beta::TokenUsage, nil]
-        #     Recorded token usage for a session or turn. Usage is best effort and may change.
+        #     Token usage by the root agent during the turn, when available.
         #
         #   @param type [Symbol, :"agent.session.turn.failed"]
         #     The type of the object. Always `agent.session.turn.failed`.

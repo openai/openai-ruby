@@ -10,24 +10,45 @@ module OpenAI
           }
 
         class ChatSessionChatKitConfigurationParam < OpenAI::Internal::Type::BaseModel
+          # Configuration for automatic thread titling. When omitted, automatic thread
+          # titling is enabled by default.
           attr_reader automatic_thread_titling: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::AutomaticThreadTitling?
 
+          # Configuration for automatic thread titling. When omitted, automatic thread
+          # titling is enabled by default.
           def automatic_thread_titling=: (
             OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::AutomaticThreadTitling
           ) -> OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::AutomaticThreadTitling
 
+          # Configuration for upload enablement and limits. When omitted, uploads are
+          # disabled by default (max_files 10, max_file_size 512 MB).
           attr_reader file_upload: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::FileUpload?
 
+          # Configuration for upload enablement and limits. When omitted, uploads are
+          # disabled by default (max_files 10, max_file_size 512 MB).
           def file_upload=: (
             OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::FileUpload
           ) -> OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::FileUpload
 
+          # Configuration for chat history retention. When omitted, history is enabled by
+          # default with no limit on recent_threads (null).
           attr_reader history: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::History?
 
+          # Configuration for chat history retention. When omitted, history is enabled by
+          # default with no limit on recent_threads (null).
           def history=: (
             OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::History
           ) -> OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::History
 
+          # @param automatic_thread_titling
+          #   Configuration for automatic thread titling. When omitted, automatic thread
+          #   titling is enabled by default.
+          # @param file_upload
+          #   Configuration for upload enablement and limits. When omitted, uploads are
+          #   disabled by default (max_files 10, max_file_size 512 MB).
+          # @param history
+          #   Configuration for chat history retention. When omitted, history is enabled by
+          #   default with no limit on recent_threads (null).
           def initialize: (
             ?automatic_thread_titling: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::AutomaticThreadTitling,
             ?file_upload: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::FileUpload,
@@ -43,10 +64,14 @@ module OpenAI
           type automatic_thread_titling = { ?enabled: bool }
 
           class AutomaticThreadTitling < OpenAI::Internal::Type::BaseModel
+            # Enable automatic thread title generation. Defaults to true.
             attr_reader enabled: bool?
 
+            # Enable automatic thread title generation. Defaults to true.
             def enabled=: (bool) -> bool
 
+            # @param enabled
+            #   Enable automatic thread title generation. Defaults to true.
             def initialize: (?enabled: bool) -> void
 
             def to_hash: -> { ?enabled: bool }
@@ -56,18 +81,33 @@ module OpenAI
             { ?enabled: bool, ?max_file_size: Integer, ?max_files: Integer }
 
           class FileUpload < OpenAI::Internal::Type::BaseModel
+            # Enable uploads for this session. Defaults to false.
             attr_reader enabled: bool?
 
+            # Enable uploads for this session. Defaults to false.
             def enabled=: (bool) -> bool
 
+            # Maximum size in megabytes for each uploaded file. Defaults to 512 MB, which is
+            # the maximum allowable size.
             attr_reader max_file_size: Integer?
 
+            # Maximum size in megabytes for each uploaded file. Defaults to 512 MB, which is
+            # the maximum allowable size.
             def max_file_size=: (Integer) -> Integer
 
+            # Maximum number of files that can be uploaded to the session. Defaults to 10.
             attr_reader max_files: Integer?
 
+            # Maximum number of files that can be uploaded to the session. Defaults to 10.
             def max_files=: (Integer) -> Integer
 
+            # @param enabled
+            #   Enable uploads for this session. Defaults to false.
+            # @param max_file_size
+            #   Maximum size in megabytes for each uploaded file. Defaults to 512 MB, which is
+            #   the maximum allowable size.
+            # @param max_files
+            #   Maximum number of files that can be uploaded to the session. Defaults to 10.
             def initialize: (
               ?enabled: bool,
               ?max_file_size: Integer,
@@ -84,14 +124,25 @@ module OpenAI
           type history = { ?enabled: bool, ?recent_threads: Integer }
 
           class History < OpenAI::Internal::Type::BaseModel
+            # Enables chat users to access previous ChatKit threads. Defaults to true.
             attr_reader enabled: bool?
 
+            # Enables chat users to access previous ChatKit threads. Defaults to true.
             def enabled=: (bool) -> bool
 
+            # Number of recent ChatKit threads users have access to. Defaults to unlimited
+            # when unset.
             attr_reader recent_threads: Integer?
 
+            # Number of recent ChatKit threads users have access to. Defaults to unlimited
+            # when unset.
             def recent_threads=: (Integer) -> Integer
 
+            # @param enabled
+            #   Enables chat users to access previous ChatKit threads. Defaults to true.
+            # @param recent_threads
+            #   Number of recent ChatKit threads users have access to. Defaults to unlimited
+            #   when unset.
             def initialize: (?enabled: bool, ?recent_threads: Integer) -> void
 
             def to_hash: -> { ?enabled: bool, ?recent_threads: Integer }

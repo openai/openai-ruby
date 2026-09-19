@@ -13,20 +13,36 @@ module OpenAI
         }
 
       class BetaResponseCompactionCompactingEvent < OpenAI::Internal::Type::BaseModel
+        # The ID of the compaction output item.
         attr_accessor item_id: String
 
+        # The index of the compaction output item.
         attr_accessor output_index: Integer
 
+        # The sequence number of the event that was emitted.
         attr_accessor sequence_number: Integer
 
+        # The type of the event, always `response.compaction.compacting`.
         attr_accessor type: :"response.compaction.compacting"
 
+        # The agent that owns this multi-agent streaming event.
         attr_reader agent: OpenAI::Beta::BetaResponseCompactionCompactingEvent::Agent?
 
+        # The agent that owns this multi-agent streaming event.
         def agent=: (
           OpenAI::Beta::BetaResponseCompactionCompactingEvent::Agent
         ) -> OpenAI::Beta::BetaResponseCompactionCompactingEvent::Agent
 
+        # @param item_id
+        #   The ID of the compaction output item.
+        # @param output_index
+        #   The index of the compaction output item.
+        # @param sequence_number
+        #   The sequence number of the event that was emitted.
+        # @param agent
+        #   The agent that owns this multi-agent streaming event.
+        # @param type
+        #   The type of the event, always `response.compaction.compacting`.
         def initialize: (
           item_id: String,
           output_index: Integer,
@@ -46,8 +62,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }

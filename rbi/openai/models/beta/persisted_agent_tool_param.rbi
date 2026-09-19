@@ -220,7 +220,7 @@ module OpenAI
           sig { returns(T.nilable(T::Array[String])) }
           attr_accessor :allowed_tools
 
-          # Where outbound MCP HTTP connections originate.
+          # Selects where outbound MCP HTTP connections originate.
           sig { returns(T.nilable(OpenAI::Beta::PersistedAgentToolParam::Mcp::ConnectionOrigin::OrSymbol)) }
           attr_accessor :connection_origin
 
@@ -277,7 +277,7 @@ module OpenAI
             # The MCP tools the agent may call. All server tools are allowed when omitted.
             allowed_tools: nil,
 
-            # Where outbound MCP HTTP connections originate.
+            # Selects where outbound MCP HTTP connections originate.
             connection_origin: nil,
 
             # The vault credential selected for this MCP server. Optional when exactly one
@@ -317,7 +317,7 @@ module OpenAI
           def to_hash
           end
 
-          # Where outbound MCP HTTP connections originate.
+          # Selects where outbound MCP HTTP connections originate.
           module ConnectionOrigin
             extend OpenAI::Internal::Type::Enum
 
@@ -357,18 +357,18 @@ module OpenAI
           sig { returns(T.nilable(T::Array[String])) }
           attr_accessor :allowed_domains
 
-          # The amount of web search context made available to the model.
+          # The amount of search context made available to the model. Defaults to `medium`.
           sig { returns(T.nilable(OpenAI::Beta::PersistedAgentToolParam::WebSearch::ContextSize::OrSymbol)) }
           attr_accessor :context_size
 
-          # Approximate user location used to localize web search results.
+          # Approximate location used to localize search results.
           sig { returns(T.nilable(OpenAI::Beta::PersistedAgentToolParam::WebSearch::Location)) }
           attr_reader :location
 
           sig { params(location: T.nilable(OpenAI::Beta::PersistedAgentToolParam::WebSearch::Location::OrHash)).void }
           attr_writer :location
 
-          # The source used for web search results.
+          # The source used for web search results. Defaults to `live`.
           sig { returns(T.nilable(OpenAI::Beta::PersistedAgentToolParam::WebSearch::Mode::OrSymbol)) }
           attr_accessor :mode
 
@@ -393,13 +393,13 @@ module OpenAI
             # Domains the search may include.
             allowed_domains: nil,
 
-            # The amount of web search context made available to the model.
+            # The amount of search context made available to the model. Defaults to `medium`.
             context_size: nil,
 
-            # Approximate user location used to localize web search results.
+            # Approximate location used to localize search results.
             location: nil,
 
-            # The source used for web search results.
+            # The source used for web search results. Defaults to `live`.
             mode: nil,
 
             # The type of the object. Always `web_search`.
@@ -422,7 +422,7 @@ module OpenAI
           def to_hash
           end
 
-          # The amount of web search context made available to the model.
+          # The amount of search context made available to the model. Defaults to `medium`.
           module ContextSize
             extend OpenAI::Internal::Type::Enum
 
@@ -466,7 +466,7 @@ module OpenAI
             sig { returns(T.nilable(String)) }
             attr_accessor :timezone
 
-            # Approximate user location used to localize web search results.
+            # Approximate location used to localize search results.
             sig do
               params(
 
@@ -512,7 +512,7 @@ module OpenAI
 
           end
 
-          # The source used for web search results.
+          # The source used for web search results. Defaults to `live`.
           module Mode
             extend OpenAI::Internal::Type::Enum
 

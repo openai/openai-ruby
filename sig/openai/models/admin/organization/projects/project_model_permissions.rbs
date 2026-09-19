@@ -13,12 +13,21 @@ module OpenAI
             }
 
           class ProjectModelPermissions < OpenAI::Internal::Type::BaseModel
+            # Whether the project uses an allowlist or a denylist.
             attr_accessor mode: OpenAI::Models::Admin::Organization::Projects::ProjectModelPermissions::mode
 
+            # The model IDs included in the model permissions policy.
             attr_accessor model_ids: ::Array[String]
 
+            # The object type, which is always `project.model_permissions`.
             attr_accessor object: :"project.model_permissions"
 
+            # @param mode
+            #   Whether the project uses an allowlist or a denylist.
+            # @param model_ids
+            #   The model IDs included in the model permissions policy.
+            # @param object
+            #   The object type, which is always `project.model_permissions`.
             def initialize: (
               mode: OpenAI::Models::Admin::Organization::Projects::ProjectModelPermissions::mode,
               model_ids: ::Array[String],

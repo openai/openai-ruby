@@ -15,20 +15,41 @@ module OpenAI
         }
 
       class BetaResponseReasoningSummaryTextDeltaEvent < OpenAI::Internal::Type::BaseModel
+        # The text delta that was added to the summary.
         attr_accessor delta: String
 
+        # The ID of the item this summary text delta is associated with.
         attr_accessor item_id: String
 
+        # The index of the output item this summary text delta is associated with.
         attr_accessor output_index: Integer
 
+        # The sequence number of this event.
         attr_accessor sequence_number: Integer
 
+        # The index of the summary part within the reasoning summary.
         attr_accessor summary_index: Integer
 
+        # The type of the event. Always `response.reasoning_summary_text.delta`.
         attr_accessor type: :"response.reasoning_summary_text.delta"
 
+        # The agent that owns this multi-agent streaming event.
         attr_accessor agent: OpenAI::Beta::BetaResponseReasoningSummaryTextDeltaEvent::Agent?
 
+        # @param delta
+        #   The text delta that was added to the summary.
+        # @param item_id
+        #   The ID of the item this summary text delta is associated with.
+        # @param output_index
+        #   The index of the output item this summary text delta is associated with.
+        # @param sequence_number
+        #   The sequence number of this event.
+        # @param summary_index
+        #   The index of the summary part within the reasoning summary.
+        # @param agent
+        #   The agent that owns this multi-agent streaming event.
+        # @param type
+        #   The type of the event. Always `response.reasoning_summary_text.delta`.
         def initialize: (
           delta: String,
           item_id: String,
@@ -52,8 +73,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }

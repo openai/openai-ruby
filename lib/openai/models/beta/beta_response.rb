@@ -830,8 +830,6 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_3_5_TURBO_16K_0613 }
 
-          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_5_1_MINI }
-
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::O1_PRO }
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::O1_PRO_2025_03_19 }
@@ -966,7 +964,6 @@ module OpenAI
           GPT_3_5_TURBO_1106 = :"gpt-3.5-turbo-1106"
           GPT_3_5_TURBO_0125 = :"gpt-3.5-turbo-0125"
           GPT_3_5_TURBO_16K_0613 = :"gpt-3.5-turbo-16k-0613"
-          GPT_5_1_MINI = :"gpt-5.1-mini"
           O1_PRO = :"o1-pro"
           O1_PRO_2025_03_19 = :"o1-pro-2025-03-19"
           O3_PRO = :"o3-pro"

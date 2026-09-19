@@ -11,16 +11,31 @@ module OpenAI
         }
 
       class ResponseErrorEvent < OpenAI::Internal::Type::BaseModel
+        # The error code.
         attr_accessor code: String?
 
+        # The error message.
         attr_accessor message: String
 
+        # The error parameter.
         attr_accessor param: String?
 
+        # The sequence number of this event.
         attr_accessor sequence_number: Integer
 
+        # The type of the event. Always `error`.
         attr_accessor type: :error
 
+        # @param code
+        #   The error code.
+        # @param message
+        #   The error message.
+        # @param param
+        #   The error parameter.
+        # @param sequence_number
+        #   The sequence number of this event.
+        # @param type
+        #   The type of the event. Always `error`.
         def initialize: (
           code: String?,
           message: String,

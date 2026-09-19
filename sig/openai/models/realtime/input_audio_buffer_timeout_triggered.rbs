@@ -11,16 +11,35 @@ module OpenAI
         }
 
       class InputAudioBufferTimeoutTriggered < OpenAI::Internal::Type::BaseModel
+        # Millisecond offset of audio written to the input audio buffer at the time the
+        # timeout was triggered.
         attr_accessor audio_end_ms: Integer
 
+        # Millisecond offset of audio written to the input audio buffer that was after the
+        # playback time of the last model response.
         attr_accessor audio_start_ms: Integer
 
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The ID of the item associated with this segment.
         attr_accessor item_id: String
 
+        # The event type, must be `input_audio_buffer.timeout_triggered`.
         attr_accessor type: :"input_audio_buffer.timeout_triggered"
 
+        # @param audio_end_ms
+        #   Millisecond offset of audio written to the input audio buffer at the time the
+        #   timeout was triggered.
+        # @param audio_start_ms
+        #   Millisecond offset of audio written to the input audio buffer that was after the
+        #   playback time of the last model response.
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param item_id
+        #   The ID of the item associated with this segment.
+        # @param type
+        #   The event type, must be `input_audio_buffer.timeout_triggered`.
         def initialize: (
           audio_end_ms: Integer,
           audio_start_ms: Integer,

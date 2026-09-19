@@ -9,24 +9,45 @@ module OpenAI
         }
 
       class SupervisedHyperparameters < OpenAI::Internal::Type::BaseModel
+        # Number of examples in each batch. A larger batch size means that model
+        # parameters are updated less frequently, but with lower variance.
         attr_reader batch_size: OpenAI::Models::FineTuning::SupervisedHyperparameters::batch_size?
 
+        # Number of examples in each batch. A larger batch size means that model
+        # parameters are updated less frequently, but with lower variance.
         def batch_size=: (
           OpenAI::Models::FineTuning::SupervisedHyperparameters::batch_size
         ) -> OpenAI::Models::FineTuning::SupervisedHyperparameters::batch_size
 
+        # Scaling factor for the learning rate. A smaller learning rate may be useful to
+        # avoid overfitting.
         attr_reader learning_rate_multiplier: OpenAI::Models::FineTuning::SupervisedHyperparameters::learning_rate_multiplier?
 
+        # Scaling factor for the learning rate. A smaller learning rate may be useful to
+        # avoid overfitting.
         def learning_rate_multiplier=: (
           OpenAI::Models::FineTuning::SupervisedHyperparameters::learning_rate_multiplier
         ) -> OpenAI::Models::FineTuning::SupervisedHyperparameters::learning_rate_multiplier
 
+        # The number of epochs to train the model for. An epoch refers to one full cycle
+        # through the training dataset.
         attr_reader n_epochs: OpenAI::Models::FineTuning::SupervisedHyperparameters::n_epochs?
 
+        # The number of epochs to train the model for. An epoch refers to one full cycle
+        # through the training dataset.
         def n_epochs=: (
           OpenAI::Models::FineTuning::SupervisedHyperparameters::n_epochs
         ) -> OpenAI::Models::FineTuning::SupervisedHyperparameters::n_epochs
 
+        # @param batch_size
+        #   Number of examples in each batch. A larger batch size means that model
+        #   parameters are updated less frequently, but with lower variance.
+        # @param learning_rate_multiplier
+        #   Scaling factor for the learning rate. A smaller learning rate may be useful to
+        #   avoid overfitting.
+        # @param n_epochs
+        #   The number of epochs to train the model for. An epoch refers to one full cycle
+        #   through the training dataset.
         def initialize: (
           ?batch_size: OpenAI::Models::FineTuning::SupervisedHyperparameters::batch_size,
           ?learning_rate_multiplier: OpenAI::Models::FineTuning::SupervisedHyperparameters::learning_rate_multiplier,

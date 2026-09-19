@@ -16,8 +16,11 @@ module OpenAI
 
             attr_accessor group_id: String
 
+            # Identifier of the role to assign.
             attr_accessor role_id: String
 
+            # @param role_id
+            #   Identifier of the role to assign.
             def initialize: (
               group_id: String,
               role_id: String,

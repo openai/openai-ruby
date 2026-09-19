@@ -5,14 +5,24 @@ module OpenAI
         { skill_id: String, ?type: :skill_reference, ?version: String }
 
       class SkillReference < OpenAI::Internal::Type::BaseModel
+        # The ID of the referenced skill.
         attr_accessor skill_id: String
 
+        # References a skill created with the /v1/skills endpoint.
         attr_accessor type: :skill_reference
 
+        # Optional skill version. Use a positive integer or 'latest'. Omit for default.
         attr_reader version: String?
 
+        # Optional skill version. Use a positive integer or 'latest'. Omit for default.
         def version=: (String) -> String
 
+        # @param skill_id
+        #   The ID of the referenced skill.
+        # @param version
+        #   Optional skill version. Use a positive integer or 'latest'. Omit for default.
+        # @param type
+        #   References a skill created with the /v1/skills endpoint.
         def initialize: (
           skill_id: String,
           ?version: String,

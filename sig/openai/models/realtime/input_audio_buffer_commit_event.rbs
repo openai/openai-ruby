@@ -5,12 +5,19 @@ module OpenAI
         { ?type: :"input_audio_buffer.commit", ?event_id: String }
 
       class InputAudioBufferCommitEvent < OpenAI::Internal::Type::BaseModel
+        # The event type, must be `input_audio_buffer.commit`.
         attr_accessor type: :"input_audio_buffer.commit"
 
+        # Optional client-generated ID used to identify this event.
         attr_reader event_id: String?
 
+        # Optional client-generated ID used to identify this event.
         def event_id=: (String) -> String
 
+        # @param event_id
+        #   Optional client-generated ID used to identify this event.
+        # @param type
+        #   The event type, must be `input_audio_buffer.commit`.
         def initialize: (
           ?event_id: String,
           ?type: :"input_audio_buffer.commit"

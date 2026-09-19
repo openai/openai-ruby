@@ -11,16 +11,31 @@ module OpenAI
         }
 
       class ResponseCustomToolCallInputDeltaEvent < OpenAI::Internal::Type::BaseModel
+        # The incremental input data (delta) for the custom tool call.
         attr_accessor delta: String
 
+        # Unique identifier for the API item associated with this event.
         attr_accessor item_id: String
 
+        # The index of the output this delta applies to.
         attr_accessor output_index: Integer
 
+        # The sequence number of this event.
         attr_accessor sequence_number: Integer
 
+        # The event type identifier.
         attr_accessor type: :"response.custom_tool_call_input.delta"
 
+        # @param delta
+        #   The incremental input data (delta) for the custom tool call.
+        # @param item_id
+        #   Unique identifier for the API item associated with this event.
+        # @param output_index
+        #   The index of the output this delta applies to.
+        # @param sequence_number
+        #   The sequence number of this event.
+        # @param type
+        #   The event type identifier.
         def initialize: (
           delta: String,
           item_id: String,

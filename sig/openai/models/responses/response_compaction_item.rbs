@@ -10,16 +10,29 @@ module OpenAI
         }
 
       class ResponseCompactionItem < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the compaction item.
         attr_accessor id: String
 
+        # The encrypted content that was produced by compaction.
         attr_accessor encrypted_content: String
 
+        # The type of the item. Always `compaction`.
         attr_accessor type: :compaction
 
+        # The identifier of the actor that created the item.
         attr_reader created_by: String?
 
+        # The identifier of the actor that created the item.
         def created_by=: (String) -> String
 
+        # @param id
+        #   The unique ID of the compaction item.
+        # @param encrypted_content
+        #   The encrypted content that was produced by compaction.
+        # @param created_by
+        #   The identifier of the actor that created the item.
+        # @param type
+        #   The type of the item. Always `compaction`.
         def initialize: (
           id: String,
           encrypted_content: String,

@@ -10,14 +10,27 @@ module OpenAI
             }
 
           class ToolCallDeltaObject < OpenAI::Internal::Type::BaseModel
+            # Always `tool_calls`.
             attr_accessor type: :tool_calls
 
+            # An array of tool calls the run step was involved in. These can be associated
+            # with one of three types of tools: `code_interpreter`, `file_search`, or
+            # `function`.
             attr_reader tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call_delta]?
 
+            # An array of tool calls the run step was involved in. These can be associated
+            # with one of three types of tools: `code_interpreter`, `file_search`, or
+            # `function`.
             def tool_calls=: (
               ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call_delta]
             ) -> ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call_delta]
 
+            # @param tool_calls
+            #   An array of tool calls the run step was involved in. These can be associated
+            #   with one of three types of tools: `code_interpreter`, `file_search`, or
+            #   `function`.
+            # @param type
+            #   Always `tool_calls`.
             def initialize: (
               ?tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call_delta],
               ?type: :tool_calls

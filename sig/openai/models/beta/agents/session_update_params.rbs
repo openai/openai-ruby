@@ -16,14 +16,25 @@ module OpenAI
 
           attr_accessor session_id: String
 
+          # Model settings for subsequent turns. Omitted fields stay unchanged.
           attr_reader agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent?
 
+          # Model settings for subsequent turns. Omitted fields stay unchanged.
           def agent=: (
             OpenAI::Beta::Agents::SessionUpdateParams::Agent
           ) -> OpenAI::Beta::Agents::SessionUpdateParams::Agent
 
+          # Replaces all metadata. Omit to leave unchanged, or pass null or {} to clear it.
+          # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+          # characters.
           attr_accessor metadata: ::Hash[Symbol, String]?
 
+          # @param agent
+          #   Model settings for subsequent turns. Omitted fields stay unchanged.
+          # @param metadata
+          #   Replaces all metadata. Omit to leave unchanged, or pass null or {} to clear it.
+          #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+          #   characters.
           def initialize: (
             session_id: String,
             ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
@@ -46,18 +57,29 @@ module OpenAI
             }
 
           class Agent < OpenAI::Internal::Type::BaseModel
+            # The model for subsequent turns. Omit to keep the current model.
             attr_reader model: String?
 
+            # The model for subsequent turns. Omit to keep the current model.
             def model=: (String) -> String
 
+            # Reasoning settings to update. Omit to keep the current effort.
             attr_reader reasoning: OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning?
 
+            # Reasoning settings to update. Omit to keep the current effort.
             def reasoning=: (
               OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning
             ) -> OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning
 
+            # Omit to keep the current tier. Null resets it to auto.
             attr_accessor service_tier: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier?
 
+            # @param model
+            #   The model for subsequent turns. Omit to keep the current model.
+            # @param reasoning
+            #   Reasoning settings to update. Omit to keep the current effort.
+            # @param service_tier
+            #   Omit to keep the current tier. Null resets it to auto.
             def initialize: (
               ?model: String,
               ?reasoning: OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning,
@@ -76,8 +98,11 @@ module OpenAI
               }
 
             class Reasoning < OpenAI::Internal::Type::BaseModel
+              # Omit to keep the current effort. Null selects the model's default effort.
               attr_accessor effort: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::Reasoning::effort?
 
+              # @param effort
+              #   Omit to keep the current effort. Null selects the model's default effort.
               def initialize: (
                 ?effort: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::Reasoning::effort?
               ) -> void

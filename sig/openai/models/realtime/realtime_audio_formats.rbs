@@ -16,18 +16,26 @@ module OpenAI
           }
 
         class AudioPCM < OpenAI::Internal::Type::BaseModel
+          # The sample rate of the audio. Always `24000`.
           attr_reader rate: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::rate?
 
+          # The sample rate of the audio. Always `24000`.
           def rate=: (
             OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::rate
           ) -> OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::rate
 
+          # The audio format. Always `audio/pcm`.
           attr_reader type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::type_?
 
+          # The audio format. Always `audio/pcm`.
           def type=: (
             OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::type_
           ) -> OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::type_
 
+          # @param rate
+          #   The sample rate of the audio. Always `24000`.
+          # @param type
+          #   The audio format. Always `audio/pcm`.
           def initialize: (
             ?rate: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::rate,
             ?type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM::type_
@@ -65,12 +73,16 @@ module OpenAI
           }
 
         class AudioPCMU < OpenAI::Internal::Type::BaseModel
+          # The audio format. Always `audio/pcmu`.
           attr_reader type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU::type_?
 
+          # The audio format. Always `audio/pcmu`.
           def type=: (
             OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU::type_
           ) -> OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU::type_
 
+          # @param type
+          #   The audio format. Always `audio/pcmu`.
           def initialize: (
             ?type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU::type_
           ) -> void
@@ -96,12 +108,16 @@ module OpenAI
           }
 
         class AudioPCMA < OpenAI::Internal::Type::BaseModel
+          # The audio format. Always `audio/pcma`.
           attr_reader type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA::type_?
 
+          # The audio format. Always `audio/pcma`.
           def type=: (
             OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA::type_
           ) -> OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA::type_
 
+          # @param type
+          #   The audio format. Always `audio/pcma`.
           def initialize: (
             ?type: OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA::type_
           ) -> void

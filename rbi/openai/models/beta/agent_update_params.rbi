@@ -38,7 +38,7 @@ module OpenAI
         sig { params(model: String).void }
         attr_writer :model
 
-        # Explicit configuration for creating and coordinating subagents.
+        # Configuration for creating and coordinating subagents.
         sig { returns(T.nilable(OpenAI::Beta::MultiAgentConfigParam)) }
         attr_reader :multi_agent
 
@@ -49,7 +49,8 @@ module OpenAI
         sig { returns(T.nilable(String)) }
         attr_accessor :name
 
-        # Reasoning configuration for the agent.
+        # Configuration for model reasoning. Omit to keep the current settings; pass
+        # `null` to reset to the model's default effort.
         sig { returns(T.nilable(OpenAI::Beta::AgentReasoningParam)) }
         attr_reader :reasoning
 
@@ -138,13 +139,14 @@ module OpenAI
           # The model to use for the agent. The requested model name is preserved.
           model: nil,
 
-          # Explicit configuration for creating and coordinating subagents.
+          # Configuration for creating and coordinating subagents.
           multi_agent: nil,
 
           # A replacement name. Omit to leave unchanged, or pass null to clear it.
           name: nil,
 
-          # Reasoning configuration for the agent.
+          # Configuration for model reasoning. Omit to keep the current settings; pass
+          # `null` to reset to the model's default effort.
           reasoning: nil,
 
           # The service tier used for model requests.

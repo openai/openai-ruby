@@ -9,18 +9,26 @@ module OpenAI
           }
 
         class MessageDelta < OpenAI::Internal::Type::BaseModel
+          # The content of the message in array of text and/or images.
           attr_reader content: ::Array[OpenAI::Models::Beta::Threads::message_content_delta]?
 
+          # The content of the message in array of text and/or images.
           def content=: (
             ::Array[OpenAI::Models::Beta::Threads::message_content_delta]
           ) -> ::Array[OpenAI::Models::Beta::Threads::message_content_delta]
 
+          # The entity that produced the message. One of `user` or `assistant`.
           attr_reader role: OpenAI::Models::Beta::Threads::MessageDelta::role?
 
+          # The entity that produced the message. One of `user` or `assistant`.
           def role=: (
             OpenAI::Models::Beta::Threads::MessageDelta::role
           ) -> OpenAI::Models::Beta::Threads::MessageDelta::role
 
+          # @param content
+          #   The content of the message in array of text and/or images.
+          # @param role
+          #   The entity that produced the message. One of `user` or `assistant`.
           def initialize: (
             ?content: ::Array[OpenAI::Models::Beta::Threads::message_content_delta],
             ?role: OpenAI::Models::Beta::Threads::MessageDelta::role

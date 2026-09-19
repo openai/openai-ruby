@@ -974,7 +974,6 @@ module OpenAI
           GPT_3_5_TURBO_1106 = T.let(:"gpt-3.5-turbo-1106", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
           GPT_3_5_TURBO_0125 = T.let(:"gpt-3.5-turbo-0125", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
           GPT_3_5_TURBO_16K_0613 = T.let(:"gpt-3.5-turbo-16k-0613", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
-          GPT_5_1_MINI = T.let(:"gpt-5.1-mini", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
           O1_PRO = T.let(:"o1-pro", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
           O1_PRO_2025_03_19 = T.let(:"o1-pro-2025-03-19", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
           O3_PRO = T.let(:"o3-pro", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)

@@ -9,22 +9,67 @@ module OpenAI
         }
 
       class RealtimeAudioConfigOutput < OpenAI::Internal::Type::BaseModel
+        # The format of the output audio.
         attr_reader format_: OpenAI::Models::Realtime::realtime_audio_formats?
 
+        # The format of the output audio.
         def format_=: (
           OpenAI::Models::Realtime::realtime_audio_formats
         ) -> OpenAI::Models::Realtime::realtime_audio_formats
 
+        # The speed of the model's spoken response as a multiple of the original speed.
+        # 1.0 is the default speed. 0.25 is the minimum speed. 1.5 is the maximum speed.
+        # This value can only be changed in between model turns, not while a response is
+        # in progress.
+        #
+        # This parameter is a post-processing adjustment to the audio after it is
+        # generated, it's also possible to prompt the model to speak faster or slower.
         attr_reader speed: Float?
 
+        # The speed of the model's spoken response as a multiple of the original speed.
+        # 1.0 is the default speed. 0.25 is the minimum speed. 1.5 is the maximum speed.
+        # This value can only be changed in between model turns, not while a response is
+        # in progress.
+        #
+        # This parameter is a post-processing adjustment to the audio after it is
+        # generated, it's also possible to prompt the model to speak faster or slower.
         def speed=: (Float) -> Float
 
+        # The voice the model uses to respond. Supported built-in voices are `alloy`,
+        # `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
+        # `cedar`. You may also provide a custom voice object with an `id`, for example
+        # `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
+        # model has responded with audio at least once. We recommend `marin` and `cedar`
+        # for best quality.
         attr_reader voice: OpenAI::Models::Realtime::RealtimeAudioConfigOutput::voice?
 
+        # The voice the model uses to respond. Supported built-in voices are `alloy`,
+        # `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
+        # `cedar`. You may also provide a custom voice object with an `id`, for example
+        # `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
+        # model has responded with audio at least once. We recommend `marin` and `cedar`
+        # for best quality.
         def voice=: (
           OpenAI::Models::Realtime::RealtimeAudioConfigOutput::voice
         ) -> OpenAI::Models::Realtime::RealtimeAudioConfigOutput::voice
 
+        # @param format_
+        #   The format of the output audio.
+        # @param speed
+        #   The speed of the model's spoken response as a multiple of the original speed.
+        #   1.0 is the default speed. 0.25 is the minimum speed. 1.5 is the maximum speed.
+        #   This value can only be changed in between model turns, not while a response is
+        #   in progress.
+        #
+        #   This parameter is a post-processing adjustment to the audio after it is
+        #   generated, it's also possible to prompt the model to speak faster or slower.
+        # @param voice
+        #   The voice the model uses to respond. Supported built-in voices are `alloy`,
+        #   `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
+        #   `cedar`. You may also provide a custom voice object with an `id`, for example
+        #   `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
+        #   model has responded with audio at least once. We recommend `marin` and `cedar`
+        #   for best quality.
         def initialize: (
           ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
           ?speed: Float,
@@ -57,8 +102,11 @@ module OpenAI
           type id = { id: String }
 
           class ID < OpenAI::Internal::Type::BaseModel
+            # The custom voice ID, e.g. `voice_1234`.
             attr_accessor id: String
 
+            # @param id
+            #   The custom voice ID, e.g. `voice_1234`.
             def initialize: (id: String) -> void
 
             def to_hash: -> { id: String }

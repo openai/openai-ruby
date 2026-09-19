@@ -15,10 +15,14 @@ module OpenAI
 
           attr_accessor certificate_id: String
 
+          # The updated name for the certificate
           attr_reader name: String?
 
+          # The updated name for the certificate
           def name=: (String) -> String
 
+          # @param name
+          #   The updated name for the certificate
           def initialize: (
             certificate_id: String,
             ?name: String,
