@@ -115,6 +115,30 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
+          # Media protection selected on the SIP leg during SDP negotiation. `srtp`
+          # indicates SRTP; `rtp` indicates unencrypted RTP. Omitted when unknown. This does
+          # not describe SIP signaling security or confirm that media has flowed. Clients
+          # should handle unrecognized values as unknown.
+          sig {
+            returns(
+              T.nilable(
+                T.any(OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data::SipMediaSecurity::OrSymbol, String)
+              )
+            )
+          }
+          attr_reader :sip_media_security
+
+          sig {
+            params(
+              sip_media_security: T.any(
+                OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data::SipMediaSecurity::OrSymbol,
+                String
+              )
+            )
+              .void
+          }
+          attr_writer :sip_media_security
+
           # Event data payload.
           sig do
             params(
@@ -122,6 +146,11 @@ module OpenAI
               session_id: String,
 
               sip_headers: T::Array[OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data::SipHeader::OrHash],
+
+              sip_media_security: T.any(
+                OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data::SipMediaSecurity::OrSymbol,
+                String
+              ),
 
               type: Symbol
             )
@@ -138,6 +167,12 @@ module OpenAI
             # untrusted call metadata.
             sip_headers:,
 
+            # Media protection selected on the SIP leg during SDP negotiation. `srtp`
+            # indicates SRTP; `rtp` indicates unencrypted RTP. Omitted when unknown. This does
+            # not describe SIP signaling security or confirm that media has flowed. Clients
+            # should handle unrecognized values as unknown.
+            sip_media_security: nil,
+
             # The incoming transport type. Always `sip`.
 
             type: :sip
@@ -149,7 +184,11 @@ module OpenAI
               {
                 session_id: String,
                 sip_headers: T::Array[OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data::SipHeader],
-                type: Symbol
+                type: Symbol,
+                sip_media_security: T.any(
+                  OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data::SipMediaSecurity::OrSymbol,
+                  String
+                )
               }
             )
           end
@@ -200,6 +239,39 @@ module OpenAI
             end
             def to_hash
             end
+
+          end
+
+          # Media protection selected on the SIP leg during SDP negotiation. `srtp`
+          # indicates SRTP; `rtp` indicates unencrypted RTP. Omitted when unknown. This does
+          # not describe SIP signaling security or confirm that media has flowed. Clients
+          # should handle unrecognized values as unknown.
+          module SipMediaSecurity
+            extend OpenAI::Internal::Type::Union
+
+            Variants = T.type_alias {
+              T.any(OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data::SipMediaSecurity::TaggedSymbol, String)
+            }
+
+            sig {
+              override.returns(
+                T::Array[OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data::SipMediaSecurity::Variants]
+              )
+            }
+            def self.variants
+            end
+
+            TaggedSymbol = T.type_alias do
+              T.all(Symbol, OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data::SipMediaSecurity)
+            end
+
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            RTP = T.let(:rtp, OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data::SipMediaSecurity::TaggedSymbol)
+            SRTP = T.let(
+              :srtp,
+              OpenAI::Webhooks::LiveTransportIncomingWebhookEvent::Data::SipMediaSecurity::TaggedSymbol
+            )
 
           end
         end
