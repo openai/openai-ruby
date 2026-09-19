@@ -38,8 +38,7 @@ module OpenAI
           required :object, const: :vault
 
           # @!method initialize(id:, created_at:, metadata:, name:, object: :vault)
-          #   A collection of credentials that agent tools can use to authenticate to MCP
-          #   servers.
+          #   A collection of credentials for MCP servers and OpenAI-hosted environments.
           #
           #   @param id [String]
           #     The ID of the vault.

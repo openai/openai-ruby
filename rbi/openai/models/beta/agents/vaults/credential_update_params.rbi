@@ -32,7 +32,8 @@ module OpenAI
               returns(
                 T.any(
                   OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth,
-                  OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer
+                  OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer,
+                  OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::EnvironmentVariable
                 )
               )
             }
@@ -47,7 +48,8 @@ module OpenAI
 
                 auth: T.any(
                   OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth::OrHash,
-                  OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer::OrHash
+                  OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer::OrHash,
+                  OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::EnvironmentVariable::OrHash
                 ),
 
                 request_options: OpenAI::RequestOptions::OrHash
@@ -74,7 +76,8 @@ module OpenAI
                   credential_id: String,
                   auth: T.any(
                     OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth,
-                    OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer
+                    OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer,
+                    OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::EnvironmentVariable
                   ),
                   request_options: OpenAI::RequestOptions
                 }

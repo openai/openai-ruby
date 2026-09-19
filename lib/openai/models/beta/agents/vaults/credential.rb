@@ -14,9 +14,9 @@ module OpenAI
             required :id, String
 
             # @!attribute auth
-            #   The authentication method and non-secret configuration for the MCP server.
+            #   The authentication method and non-secret configuration of the credential.
             #
-            #   @return [OpenAI::Models::Beta::Agents::Vaults::CredentialAuth::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuth::StaticBearer]
+            #   @return [OpenAI::Models::Beta::Agents::Vaults::CredentialAuth::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuth::StaticBearer, OpenAI::Models::Beta::Agents::Vaults::CredentialAuth::EnvironmentVariable]
             required :auth, union: -> { OpenAI::Beta::Agents::Vaults::CredentialAuth }
 
             # @!attribute created_at
@@ -50,13 +50,13 @@ module OpenAI
             required :vault_id, String
 
             # @!method initialize(id:, auth:, created_at:, name:, updated_at:, vault_id:, object: :"vault.credential")
-            #   Metadata for a stored MCP server credential. Secret values are never returned.
+            #   Metadata for a stored credential. Secret values are never returned.
             #
             #   @param id [String]
             #     The ID of the credential.
             #
-            #   @param auth [OpenAI::Models::Beta::Agents::Vaults::CredentialAuth::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuth::StaticBearer]
-            #     The authentication method and non-secret configuration for the MCP server.
+            #   @param auth [OpenAI::Models::Beta::Agents::Vaults::CredentialAuth::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuth::StaticBearer, OpenAI::Models::Beta::Agents::Vaults::CredentialAuth::EnvironmentVariable]
+            #     The authentication method and non-secret configuration of the credential.
             #
             #   @param created_at [Integer]
             #     The Unix timestamp, in seconds, when the credential was created.

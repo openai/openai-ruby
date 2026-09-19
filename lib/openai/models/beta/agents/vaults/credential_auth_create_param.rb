@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Agents
         module Vaults
-          # Authentication credentials for an MCP server used by agent tools.
+          # Authentication credentials for an MCP server or an OpenAI-hosted environment.
           module CredentialAuthCreateParam
             extend OpenAI::Internal::Type::Union
 
@@ -16,6 +16,12 @@ module OpenAI
 
             # A bearer token for an MCP server, without automatic OAuth refresh.
             variant :static_bearer, -> { OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer }
+
+            # An HTTP credential for OpenAI-hosted environments only. The sandbox receives an environment variable containing a placeholder, not the secret. Use the placeholder unchanged in outgoing requests. The egress proxy replaces the placeholder with the secret for allowed HTTPS destinations on ports 443 and 8443. Sandbox code cannot read the real secret or use it for local computation, such as signing a request.
+            variant(
+              :environment_variable,
+              -> { OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::EnvironmentVariable }
+            )
 
             class McpOauth < OpenAI::Internal::Type::BaseModel
               # @!attribute access_token
@@ -174,8 +180,66 @@ module OpenAI
               #     The type of the object. Always `static_bearer`.
             end
 
+            class EnvironmentVariable < OpenAI::Internal::Type::BaseModel
+              # @!attribute networking
+              #   The destinations where the proxy can substitute this secret. The environment
+              #   network policy must also allow them.
+              #
+              #   @return [OpenAI::Models::Beta::Agents::Vaults::CredentialNetworkingParam::Unrestricted, OpenAI::Models::Beta::Agents::Vaults::CredentialNetworkingParam::Limited]
+              required :networking, union: -> { OpenAI::Beta::Agents::Vaults::CredentialNetworkingParam }
+
+              # @!attribute secret_name
+              #   The environment variable name that receives the placeholder, such as
+              #   `SERVICE_API_KEY`. Use ASCII letters, digits, and underscores, starting with a
+              #   letter or underscore. Names starting with `CODEX_` and managed proxy or
+              #   certificate variable names are reserved.
+              #
+              #   @return [String]
+              required :secret_name, String
+
+              # @!attribute secret_value
+              #   The write-only secret to store. Never returned in credential resources or
+              #   supplied directly to sandbox code. Must be nonempty and must not contain
+              #   carriage returns, newlines, or NUL bytes.
+              #
+              #   @return [String]
+              required :secret_value, String
+
+              # @!attribute type
+              #   The type of the object. Always `environment_variable`.
+              #
+              #   @return [Symbol, :environment_variable]
+              required :type, const: :environment_variable
+
+              # @!method initialize(networking:, secret_name:, secret_value:, type: :environment_variable)
+              #   An HTTP credential for OpenAI-hosted environments only. The sandbox receives an
+              #   environment variable containing a placeholder, not the secret. Use the
+              #   placeholder unchanged in outgoing requests. The egress proxy replaces the
+              #   placeholder with the secret for allowed HTTPS destinations on ports 443 and
+              #   8443. Sandbox code cannot read the real secret or use it for local computation,
+              #   such as signing a request.
+              #
+              #   @param networking [OpenAI::Models::Beta::Agents::Vaults::CredentialNetworkingParam::Unrestricted, OpenAI::Models::Beta::Agents::Vaults::CredentialNetworkingParam::Limited]
+              #     The destinations where the proxy can substitute this secret. The environment
+              #     network policy must also allow them.
+              #
+              #   @param secret_name [String]
+              #     The environment variable name that receives the placeholder, such as
+              #     `SERVICE_API_KEY`. Use ASCII letters, digits, and underscores, starting with a
+              #     letter or underscore. Names starting with `CODEX_` and managed proxy or
+              #     certificate variable names are reserved.
+              #
+              #   @param secret_value [String]
+              #     The write-only secret to store. Never returned in credential resources or
+              #     supplied directly to sandbox code. Must be nonempty and must not contain
+              #     carriage returns, newlines, or NUL bytes.
+              #
+              #   @param type [Symbol, :environment_variable]
+              #     The type of the object. Always `environment_variable`.
+            end
+
             # @!method self.variants
-            #   @return [Array(OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer)]
+            #   @return [Array(OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::EnvironmentVariable)]
           end
         end
       end

@@ -9,14 +9,15 @@ module OpenAI
 
         module Vaults
 
-          # Authentication credentials for an MCP server used by agent tools.
+          # Authentication credentials for an MCP server or an OpenAI-hosted environment.
           module CredentialAuthCreateParam
             extend OpenAI::Internal::Type::Union
 
             Variants = T.type_alias do
               T.any(
                 OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::McpOauth,
-                OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer
+                OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer,
+                OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::EnvironmentVariable
               )
             end
 
@@ -270,6 +271,106 @@ module OpenAI
               sig do
                 override.returns(
                   {token: String, mcp_server_url: String, type: Symbol}
+                )
+              end
+              def to_hash
+              end
+
+            end
+
+            class EnvironmentVariable < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::EnvironmentVariable,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # The destinations where the proxy can substitute this secret. The environment
+              # network policy must also allow them.
+              sig {
+                returns(
+                  T.any(
+                    OpenAI::Beta::Agents::Vaults::CredentialNetworkingParam::Unrestricted,
+                    OpenAI::Beta::Agents::Vaults::CredentialNetworkingParam::Limited
+                  )
+                )
+              }
+              attr_accessor :networking
+
+              # The environment variable name that receives the placeholder, such as
+              # `SERVICE_API_KEY`. Use ASCII letters, digits, and underscores, starting with a
+              # letter or underscore. Names starting with `CODEX_` and managed proxy or
+              # certificate variable names are reserved.
+              sig { returns(String) }
+              attr_accessor :secret_name
+
+              # The write-only secret to store. Never returned in credential resources or
+              # supplied directly to sandbox code. Must be nonempty and must not contain
+              # carriage returns, newlines, or NUL bytes.
+              sig { returns(String) }
+              attr_accessor :secret_value
+
+              # The type of the object. Always `environment_variable`.
+              sig { returns(Symbol) }
+              attr_accessor :type
+
+              # An HTTP credential for OpenAI-hosted environments only. The sandbox receives an
+              # environment variable containing a placeholder, not the secret. Use the
+              # placeholder unchanged in outgoing requests. The egress proxy replaces the
+              # placeholder with the secret for allowed HTTPS destinations on ports 443 and
+              # 8443. Sandbox code cannot read the real secret or use it for local computation,
+              # such as signing a request.
+              sig do
+                params(
+
+                  networking: T.any(
+                    OpenAI::Beta::Agents::Vaults::CredentialNetworkingParam::Unrestricted::OrHash,
+                    OpenAI::Beta::Agents::Vaults::CredentialNetworkingParam::Limited::OrHash
+                  ),
+
+                  secret_name: String,
+
+                  secret_value: String,
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # The destinations where the proxy can substitute this secret. The environment
+                # network policy must also allow them.
+                networking:,
+
+                # The environment variable name that receives the placeholder, such as
+                # `SERVICE_API_KEY`. Use ASCII letters, digits, and underscores, starting with a
+                # letter or underscore. Names starting with `CODEX_` and managed proxy or
+                # certificate variable names are reserved.
+                secret_name:,
+
+                # The write-only secret to store. Never returned in credential resources or
+                # supplied directly to sandbox code. Must be nonempty and must not contain
+                # carriage returns, newlines, or NUL bytes.
+                secret_value:,
+
+                # The type of the object. Always `environment_variable`.
+
+                type: :environment_variable
+              )
+              end
+
+              sig do
+                override.returns(
+                  {
+                    networking: T.any(
+                      OpenAI::Beta::Agents::Vaults::CredentialNetworkingParam::Unrestricted,
+                      OpenAI::Beta::Agents::Vaults::CredentialNetworkingParam::Limited
+                    ),
+                    secret_name: String,
+                    secret_value: String,
+                    type: Symbol
+                  }
                 )
               end
               def to_hash

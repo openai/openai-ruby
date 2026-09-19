@@ -16,9 +16,9 @@ module OpenAI
             required :vault_id, String
 
             # @!attribute auth
-            #   The authentication method and secret values to store for the MCP server.
+            #   The authentication method and write-only secret values to store.
             #
-            #   @return [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer]
+            #   @return [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::EnvironmentVariable]
             required :auth, union: -> { OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam }
 
             # @!attribute name
@@ -31,8 +31,8 @@ module OpenAI
             # @!method initialize(vault_id:, auth:, name:, request_options: {})
             #   @param vault_id [String]
             #
-            #   @param auth [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer]
-            #     The authentication method and secret values to store for the MCP server.
+            #   @param auth [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::EnvironmentVariable]
+            #     The authentication method and write-only secret values to store.
             #
             #   @param name [String]
             #     The name is trimmed before storage. It must contain 1 to 256 UTF-8 bytes after

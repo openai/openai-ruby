@@ -37,8 +37,7 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :object
 
-          # A collection of credentials that agent tools can use to authenticate to MCP
-          # servers.
+          # A collection of credentials for MCP servers and OpenAI-hosted environments.
           sig do
             params(
 
