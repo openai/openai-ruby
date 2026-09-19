@@ -13,22 +13,42 @@ module OpenAI
         }
 
       class BetaFileSearchTool < OpenAI::Internal::Type::BaseModel
+        # The type of the file search tool. Always `file_search`.
         attr_accessor type: :file_search
 
+        # The IDs of the vector stores to search.
         attr_accessor vector_store_ids: ::Array[String]
 
+        # A filter to apply.
         attr_accessor filters: OpenAI::Models::Beta::BetaFileSearchTool::filters?
 
+        # The maximum number of results to return. This number should be between 1 and 50
+        # inclusive.
         attr_reader max_num_results: Integer?
 
+        # The maximum number of results to return. This number should be between 1 and 50
+        # inclusive.
         def max_num_results=: (Integer) -> Integer
 
+        # Ranking options for search.
         attr_reader ranking_options: OpenAI::Beta::BetaFileSearchTool::RankingOptions?
 
+        # Ranking options for search.
         def ranking_options=: (
           OpenAI::Beta::BetaFileSearchTool::RankingOptions
         ) -> OpenAI::Beta::BetaFileSearchTool::RankingOptions
 
+        # @param vector_store_ids
+        #   The IDs of the vector stores to search.
+        # @param filters
+        #   A filter to apply.
+        # @param max_num_results
+        #   The maximum number of results to return. This number should be between 1 and 50
+        #   inclusive.
+        # @param ranking_options
+        #   Ranking options for search.
+        # @param type
+        #   The type of the file search tool. Always `file_search`.
         def initialize: (
           vector_store_ids: ::Array[String],
           ?filters: OpenAI::Models::Beta::BetaFileSearchTool::filters?,
@@ -60,12 +80,43 @@ module OpenAI
             }
 
           class ComparisonFilter < OpenAI::Internal::Type::BaseModel
+            # The key to compare against the value.
             attr_accessor key: String
 
+            # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`,
+            # `nin`.
+            #
+            # - `eq`: equals
+            # - `ne`: not equal
+            # - `gt`: greater than
+            # - `gte`: greater than or equal
+            # - `lt`: less than
+            # - `lte`: less than or equal
+            # - `in`: in
+            # - `nin`: not in
             attr_accessor type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::ComparisonFilter::type_
 
+            # The value to compare against the attribute key; supports string, number, or
+            # boolean types.
             attr_accessor value: OpenAI::Models::Beta::BetaFileSearchTool::Filters::ComparisonFilter::value
 
+            # @param key
+            #   The key to compare against the value.
+            # @param type
+            #   Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`,
+            #   `nin`.
+            #
+            #   - `eq`: equals
+            #   - `ne`: not equal
+            #   - `gt`: greater than
+            #   - `gte`: greater than or equal
+            #   - `lt`: less than
+            #   - `lte`: less than or equal
+            #   - `in`: in
+            #   - `nin`: not in
+            # @param value
+            #   The value to compare against the attribute key; supports string, number, or
+            #   boolean types.
             def initialize: (
               key: String,
               type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::ComparisonFilter::type_,
@@ -125,10 +176,18 @@ module OpenAI
             }
 
           class CompoundFilter < OpenAI::Internal::Type::BaseModel
+            # Array of filters to combine. Items can be `ComparisonFilter` or
+            # `CompoundFilter`.
             attr_accessor filters: ::Array[OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::filter]
 
+            # Type of operation: `and` or `or`.
             attr_accessor type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::type_
 
+            # @param filters
+            #   Array of filters to combine. Items can be `ComparisonFilter` or
+            #   `CompoundFilter`.
+            # @param type
+            #   Type of operation: `and` or `or`.
             def initialize: (
               filters: ::Array[OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::filter],
               type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::type_
@@ -154,12 +213,43 @@ module OpenAI
                 }
 
               class ComparisonFilter < OpenAI::Internal::Type::BaseModel
+                # The key to compare against the value.
                 attr_accessor key: String
 
+                # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`,
+                # `nin`.
+                #
+                # - `eq`: equals
+                # - `ne`: not equal
+                # - `gt`: greater than
+                # - `gte`: greater than or equal
+                # - `lt`: less than
+                # - `lte`: less than or equal
+                # - `in`: in
+                # - `nin`: not in
                 attr_accessor type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::type_
 
+                # The value to compare against the attribute key; supports string, number, or
+                # boolean types.
                 attr_accessor value: OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::value
 
+                # @param key
+                #   The key to compare against the value.
+                # @param type
+                #   Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`,
+                #   `nin`.
+                #
+                #   - `eq`: equals
+                #   - `ne`: not equal
+                #   - `gt`: greater than
+                #   - `gte`: greater than or equal
+                #   - `lt`: less than
+                #   - `lte`: less than or equal
+                #   - `in`: in
+                #   - `nin`: not in
+                # @param value
+                #   The value to compare against the attribute key; supports string, number, or
+                #   boolean types.
                 def initialize: (
                   key: String,
                   type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::type_,
@@ -238,22 +328,43 @@ module OpenAI
           }
 
         class RankingOptions < OpenAI::Internal::Type::BaseModel
+          # Weights that control how reciprocal rank fusion balances semantic embedding
+          # matches versus sparse keyword matches when hybrid search is enabled.
           attr_reader hybrid_search: OpenAI::Beta::BetaFileSearchTool::RankingOptions::HybridSearch?
 
+          # Weights that control how reciprocal rank fusion balances semantic embedding
+          # matches versus sparse keyword matches when hybrid search is enabled.
           def hybrid_search=: (
             OpenAI::Beta::BetaFileSearchTool::RankingOptions::HybridSearch
           ) -> OpenAI::Beta::BetaFileSearchTool::RankingOptions::HybridSearch
 
+          # The ranker to use for the file search.
           attr_reader ranker: OpenAI::Models::Beta::BetaFileSearchTool::RankingOptions::ranker?
 
+          # The ranker to use for the file search.
           def ranker=: (
             OpenAI::Models::Beta::BetaFileSearchTool::RankingOptions::ranker
           ) -> OpenAI::Models::Beta::BetaFileSearchTool::RankingOptions::ranker
 
+          # The score threshold for the file search, a number between 0 and 1. Numbers
+          # closer to 1 will attempt to return only the most relevant results, but may
+          # return fewer results.
           attr_reader score_threshold: Float?
 
+          # The score threshold for the file search, a number between 0 and 1. Numbers
+          # closer to 1 will attempt to return only the most relevant results, but may
+          # return fewer results.
           def score_threshold=: (Float) -> Float
 
+          # @param hybrid_search
+          #   Weights that control how reciprocal rank fusion balances semantic embedding
+          #   matches versus sparse keyword matches when hybrid search is enabled.
+          # @param ranker
+          #   The ranker to use for the file search.
+          # @param score_threshold
+          #   The score threshold for the file search, a number between 0 and 1. Numbers
+          #   closer to 1 will attempt to return only the most relevant results, but may
+          #   return fewer results.
           def initialize: (
             ?hybrid_search: OpenAI::Beta::BetaFileSearchTool::RankingOptions::HybridSearch,
             ?ranker: OpenAI::Models::Beta::BetaFileSearchTool::RankingOptions::ranker,
@@ -269,10 +380,16 @@ module OpenAI
           type hybrid_search = { embedding_weight: Float, text_weight: Float }
 
           class HybridSearch < OpenAI::Internal::Type::BaseModel
+            # The weight of the embedding in the reciprocal ranking fusion.
             attr_accessor embedding_weight: Float
 
+            # The weight of the text in the reciprocal ranking fusion.
             attr_accessor text_weight: Float
 
+            # @param embedding_weight
+            #   The weight of the embedding in the reciprocal ranking fusion.
+            # @param text_weight
+            #   The weight of the text in the reciprocal ranking fusion.
             def initialize: (
               embedding_weight: Float,
               text_weight: Float

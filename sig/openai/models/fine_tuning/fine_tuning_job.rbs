@@ -27,48 +27,140 @@ module OpenAI
         }
 
       class FineTuningJob < OpenAI::Internal::Type::BaseModel
+        # The object identifier, which can be referenced in the API endpoints.
         attr_accessor id: String
 
+        # The Unix timestamp (in seconds) for when the fine-tuning job was created.
         attr_accessor created_at: Integer
 
+        # For fine-tuning jobs that have `failed`, this will contain more information on
+        # the cause of the failure.
         attr_accessor error: OpenAI::FineTuning::FineTuningJob::Error?
 
+        # The name of the fine-tuned model that is being created. The value will be null
+        # if the fine-tuning job is still running.
         attr_accessor fine_tuned_model: String?
 
+        # The Unix timestamp (in seconds) for when the fine-tuning job was finished. The
+        # value will be null if the fine-tuning job is still running.
         attr_accessor finished_at: Integer?
 
+        # The hyperparameters used for the fine-tuning job. This value will only be
+        # returned when running `supervised` jobs.
         attr_accessor hyperparameters: OpenAI::FineTuning::FineTuningJob::Hyperparameters
 
+        # The base model that is being fine-tuned.
         attr_accessor model: String
 
+        # The object type, which is always "fine_tuning.job".
         attr_accessor object: :"fine_tuning.job"
 
+        # The organization that owns the fine-tuning job.
         attr_accessor organization_id: String
 
+        # The compiled results file ID(s) for the fine-tuning job. You can retrieve the
+        # results with the
+        # [Files API](https://developers.openai.com/api/reference/resources/files/methods/content).
         attr_accessor result_files: ::Array[String]
 
+        # The seed used for the fine-tuning job.
         attr_accessor seed: Integer
 
+        # The current status of the fine-tuning job, which can be either
+        # `validating_files`, `queued`, `running`, `succeeded`, `failed`, or `cancelled`.
         attr_accessor status: OpenAI::Models::FineTuning::FineTuningJob::status
 
+        # The total number of billable tokens processed by this fine-tuning job. The value
+        # will be null if the fine-tuning job is still running.
         attr_accessor trained_tokens: Integer?
 
+        # The file ID used for training. You can retrieve the training data with the
+        # [Files API](https://developers.openai.com/api/reference/resources/files/methods/content).
         attr_accessor training_file: String
 
+        # The file ID used for validation. You can retrieve the validation results with
+        # the
+        # [Files API](https://developers.openai.com/api/reference/resources/files/methods/content).
         attr_accessor validation_file: String?
 
+        # The Unix timestamp (in seconds) for when the fine-tuning job is estimated to
+        # finish. The value will be null if the fine-tuning job is not running.
         attr_accessor estimated_finish: Integer?
 
+        # A list of integrations to enable for this fine-tuning job.
         attr_accessor integrations: ::Array[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]?
 
+        # Set of 16 key-value pairs that can be attached to an object. This can be useful
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard.
+        #
+        # Keys are strings with a maximum length of 64 characters. Values are strings with
+        # a maximum length of 512 characters.
         attr_accessor metadata: OpenAI::Models::metadata?
 
+        # The method used for fine-tuning.
         attr_reader method_: OpenAI::FineTuning::FineTuningJob::Method?
 
+        # The method used for fine-tuning.
         def method_=: (
           OpenAI::FineTuning::FineTuningJob::Method
         ) -> OpenAI::FineTuning::FineTuningJob::Method
 
+        # @param id
+        #   The object identifier, which can be referenced in the API endpoints.
+        # @param created_at
+        #   The Unix timestamp (in seconds) for when the fine-tuning job was created.
+        # @param error
+        #   For fine-tuning jobs that have `failed`, this will contain more information on
+        #   the cause of the failure.
+        # @param fine_tuned_model
+        #   The name of the fine-tuned model that is being created. The value will be null
+        #   if the fine-tuning job is still running.
+        # @param finished_at
+        #   The Unix timestamp (in seconds) for when the fine-tuning job was finished. The
+        #   value will be null if the fine-tuning job is still running.
+        # @param hyperparameters
+        #   The hyperparameters used for the fine-tuning job. This value will only be
+        #   returned when running `supervised` jobs.
+        # @param model
+        #   The base model that is being fine-tuned.
+        # @param organization_id
+        #   The organization that owns the fine-tuning job.
+        # @param result_files
+        #   The compiled results file ID(s) for the fine-tuning job. You can retrieve the
+        #   results with the
+        #   [Files API](https://developers.openai.com/api/reference/resources/files/methods/content).
+        # @param seed
+        #   The seed used for the fine-tuning job.
+        # @param status
+        #   The current status of the fine-tuning job, which can be either
+        #   `validating_files`, `queued`, `running`, `succeeded`, `failed`, or `cancelled`.
+        # @param trained_tokens
+        #   The total number of billable tokens processed by this fine-tuning job. The value
+        #   will be null if the fine-tuning job is still running.
+        # @param training_file
+        #   The file ID used for training. You can retrieve the training data with the
+        #   [Files API](https://developers.openai.com/api/reference/resources/files/methods/content).
+        # @param validation_file
+        #   The file ID used for validation. You can retrieve the validation results with
+        #   the
+        #   [Files API](https://developers.openai.com/api/reference/resources/files/methods/content).
+        # @param estimated_finish
+        #   The Unix timestamp (in seconds) for when the fine-tuning job is estimated to
+        #   finish. The value will be null if the fine-tuning job is not running.
+        # @param integrations
+        #   A list of integrations to enable for this fine-tuning job.
+        # @param metadata
+        #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #   for storing additional information about the object in a structured format, and
+        #   querying for objects via API or the dashboard.
+        #
+        #   Keys are strings with a maximum length of 64 characters. Values are strings with
+        #   a maximum length of 512 characters.
+        # @param method_
+        #   The method used for fine-tuning.
+        # @param object
+        #   The object type, which is always "fine_tuning.job".
         def initialize: (
           id: String,
           created_at: Integer,
@@ -116,12 +208,23 @@ module OpenAI
         type error = { code: String, message: String, param: String? }
 
         class Error < OpenAI::Internal::Type::BaseModel
+          # A machine-readable error code.
           attr_accessor code: String
 
+          # A human-readable error message.
           attr_accessor message: String
 
+          # The parameter that was invalid, usually `training_file` or `validation_file`.
+          # This field will be null if the failure was not parameter-specific.
           attr_accessor param: String?
 
+          # @param code
+          #   A machine-readable error code.
+          # @param message
+          #   A human-readable error message.
+          # @param param
+          #   The parameter that was invalid, usually `training_file` or `validation_file`.
+          #   This field will be null if the failure was not parameter-specific.
           def initialize: (
             code: String,
             message: String,
@@ -139,20 +242,39 @@ module OpenAI
           }
 
         class Hyperparameters < OpenAI::Internal::Type::BaseModel
+          # Number of examples in each batch. A larger batch size means that model
+          # parameters are updated less frequently, but with lower variance.
           attr_accessor batch_size: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::batch_size?
 
+          # Scaling factor for the learning rate. A smaller learning rate may be useful to
+          # avoid overfitting.
           attr_reader learning_rate_multiplier: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::learning_rate_multiplier?
 
+          # Scaling factor for the learning rate. A smaller learning rate may be useful to
+          # avoid overfitting.
           def learning_rate_multiplier=: (
             OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::learning_rate_multiplier
           ) -> OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::learning_rate_multiplier
 
+          # The number of epochs to train the model for. An epoch refers to one full cycle
+          # through the training dataset.
           attr_reader n_epochs: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::n_epochs?
 
+          # The number of epochs to train the model for. An epoch refers to one full cycle
+          # through the training dataset.
           def n_epochs=: (
             OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::n_epochs
           ) -> OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::n_epochs
 
+          # @param batch_size
+          #   Number of examples in each batch. A larger batch size means that model
+          #   parameters are updated less frequently, but with lower variance.
+          # @param learning_rate_multiplier
+          #   Scaling factor for the learning rate. A smaller learning rate may be useful to
+          #   avoid overfitting.
+          # @param n_epochs
+          #   The number of epochs to train the model for. An epoch refers to one full cycle
+          #   through the training dataset.
           def initialize: (
             ?batch_size: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::batch_size?,
             ?learning_rate_multiplier: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::learning_rate_multiplier,
@@ -220,26 +342,41 @@ module OpenAI
           }
 
         class Method < OpenAI::Internal::Type::BaseModel
+          # The type of method. Is either `supervised`, `dpo`, or `reinforcement`.
           attr_accessor type: OpenAI::Models::FineTuning::FineTuningJob::Method::type_
 
+          # Configuration for the DPO fine-tuning method.
           attr_reader dpo: OpenAI::FineTuning::DpoMethod?
 
+          # Configuration for the DPO fine-tuning method.
           def dpo=: (
             OpenAI::FineTuning::DpoMethod
           ) -> OpenAI::FineTuning::DpoMethod
 
+          # Configuration for the reinforcement fine-tuning method.
           attr_reader reinforcement: OpenAI::FineTuning::ReinforcementMethod?
 
+          # Configuration for the reinforcement fine-tuning method.
           def reinforcement=: (
             OpenAI::FineTuning::ReinforcementMethod
           ) -> OpenAI::FineTuning::ReinforcementMethod
 
+          # Configuration for the supervised fine-tuning method.
           attr_reader supervised: OpenAI::FineTuning::SupervisedMethod?
 
+          # Configuration for the supervised fine-tuning method.
           def supervised=: (
             OpenAI::FineTuning::SupervisedMethod
           ) -> OpenAI::FineTuning::SupervisedMethod
 
+          # @param type
+          #   The type of method. Is either `supervised`, `dpo`, or `reinforcement`.
+          # @param dpo
+          #   Configuration for the DPO fine-tuning method.
+          # @param reinforcement
+          #   Configuration for the reinforcement fine-tuning method.
+          # @param supervised
+          #   Configuration for the supervised fine-tuning method.
           def initialize: (
             type: OpenAI::Models::FineTuning::FineTuningJob::Method::type_,
             ?dpo: OpenAI::FineTuning::DpoMethod,

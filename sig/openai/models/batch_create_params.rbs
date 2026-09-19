@@ -14,20 +14,79 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      # The time frame within which the batch should be processed. Currently only `24h`
+      # is supported.
       attr_accessor completion_window: OpenAI::Models::BatchCreateParams::completion_window
 
+      # The endpoint to be used for all requests in the batch. Currently
+      # `/v1/responses`, `/v1/chat/completions`, `/v1/embeddings`, `/v1/completions`,
+      # `/v1/moderations`, `/v1/images/generations`, `/v1/images/edits`, and
+      # `/v1/videos` are supported. Note that `/v1/embeddings` batches are also
+      # restricted to a maximum of 50,000 embedding inputs across all requests in the
+      # batch.
       attr_accessor endpoint: OpenAI::Models::BatchCreateParams::endpoint
 
+      # The ID of an uploaded file that contains requests for the new batch.
+      #
+      # See
+      # [upload file](https://developers.openai.com/api/reference/resources/files/methods/create)
+      # for how to upload a file.
+      #
+      # Your input file must be formatted as a
+      # [JSONL file](https://developers.openai.com/api/docs/guides/batch#1-prepare-your-batch-file),
+      # and must be uploaded with the purpose `batch`. The file can contain up to 50,000
+      # requests, and can be up to 200 MB in size.
       attr_accessor input_file_id: String
 
+      # Set of 16 key-value pairs that can be attached to an object. This can be useful
+      # for storing additional information about the object in a structured format, and
+      # querying for objects via API or the dashboard.
+      #
+      # Keys are strings with a maximum length of 64 characters. Values are strings with
+      # a maximum length of 512 characters.
       attr_accessor metadata: OpenAI::Models::metadata?
 
+      # The expiration policy for the output and/or error file that are generated for a
+      # batch.
       attr_reader output_expires_after: OpenAI::BatchCreateParams::OutputExpiresAfter?
 
+      # The expiration policy for the output and/or error file that are generated for a
+      # batch.
       def output_expires_after=: (
         OpenAI::BatchCreateParams::OutputExpiresAfter
       ) -> OpenAI::BatchCreateParams::OutputExpiresAfter
 
+      # @param completion_window
+      #   The time frame within which the batch should be processed. Currently only `24h`
+      #   is supported.
+      # @param endpoint
+      #   The endpoint to be used for all requests in the batch. Currently
+      #   `/v1/responses`, `/v1/chat/completions`, `/v1/embeddings`, `/v1/completions`,
+      #   `/v1/moderations`, `/v1/images/generations`, `/v1/images/edits`, and
+      #   `/v1/videos` are supported. Note that `/v1/embeddings` batches are also
+      #   restricted to a maximum of 50,000 embedding inputs across all requests in the
+      #   batch.
+      # @param input_file_id
+      #   The ID of an uploaded file that contains requests for the new batch.
+      #
+      #   See
+      #   [upload file](https://developers.openai.com/api/reference/resources/files/methods/create)
+      #   for how to upload a file.
+      #
+      #   Your input file must be formatted as a
+      #   [JSONL file](https://developers.openai.com/api/docs/guides/batch#1-prepare-your-batch-file),
+      #   and must be uploaded with the purpose `batch`. The file can contain up to 50,000
+      #   requests, and can be up to 200 MB in size.
+      # @param metadata
+      #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #   for storing additional information about the object in a structured format, and
+      #   querying for objects via API or the dashboard.
+      #
+      #   Keys are strings with a maximum length of 64 characters. Values are strings with
+      #   a maximum length of 512 characters.
+      # @param output_expires_after
+      #   The expiration policy for the output and/or error file that are generated for a
+      #   batch.
       def initialize: (
         completion_window: OpenAI::Models::BatchCreateParams::completion_window,
         endpoint: OpenAI::Models::BatchCreateParams::endpoint,
@@ -84,10 +143,22 @@ module OpenAI
       type output_expires_after = { ?anchor: :created_at, seconds: Integer }
 
       class OutputExpiresAfter < OpenAI::Internal::Type::BaseModel
+        # Anchor timestamp after which the expiration policy applies. Supported anchors:
+        # `created_at`. Note that the anchor is the file creation time, not the time the
+        # batch is created.
         attr_accessor anchor: :created_at
 
+        # The number of seconds after the anchor time that the file will expire. Must be
+        # between 3600 (1 hour) and 2592000 (30 days).
         attr_accessor seconds: Integer
 
+        # @param seconds
+        #   The number of seconds after the anchor time that the file will expire. Must be
+        #   between 3600 (1 hour) and 2592000 (30 days).
+        # @param anchor
+        #   Anchor timestamp after which the expiration policy applies. Supported anchors:
+        #   `created_at`. Note that the anchor is the file creation time, not the time the
+        #   batch is created.
         def initialize: (seconds: Integer, ?anchor: :created_at) -> void
 
         def to_hash: -> { ?anchor: :created_at, seconds: Integer }

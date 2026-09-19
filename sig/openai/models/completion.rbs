@@ -12,24 +12,56 @@ module OpenAI
       }
 
     class Completion < OpenAI::Internal::Type::BaseModel
+      # A unique identifier for the completion.
       attr_accessor id: String
 
+      # The list of completion choices the model generated for the input prompt.
       attr_accessor choices: ::Array[OpenAI::CompletionChoice]
 
+      # The Unix timestamp (in seconds) of when the completion was created.
       attr_accessor created: Integer
 
+      # The model used for completion.
       attr_accessor model: String
 
+      # The object type, which is always "text_completion"
       attr_accessor object: :text_completion
 
+      # This fingerprint represents the backend configuration that the model runs with.
+      #
+      # Can be used in conjunction with the `seed` request parameter to understand when
+      # backend changes have been made that might impact determinism.
       attr_reader system_fingerprint: String?
 
+      # This fingerprint represents the backend configuration that the model runs with.
+      #
+      # Can be used in conjunction with the `seed` request parameter to understand when
+      # backend changes have been made that might impact determinism.
       def system_fingerprint=: (String) -> String
 
+      # Usage statistics for the completion request.
       attr_reader usage: OpenAI::CompletionUsage?
 
+      # Usage statistics for the completion request.
       def usage=: (OpenAI::CompletionUsage) -> OpenAI::CompletionUsage
 
+      # @param id
+      #   A unique identifier for the completion.
+      # @param choices
+      #   The list of completion choices the model generated for the input prompt.
+      # @param created
+      #   The Unix timestamp (in seconds) of when the completion was created.
+      # @param model
+      #   The model used for completion.
+      # @param system_fingerprint
+      #   This fingerprint represents the backend configuration that the model runs with.
+      #
+      #   Can be used in conjunction with the `seed` request parameter to understand when
+      #   backend changes have been made that might impact determinism.
+      # @param usage
+      #   Usage statistics for the completion request.
+      # @param object
+      #   The object type, which is always "text_completion"
       def initialize: (
         id: String,
         choices: ::Array[OpenAI::CompletionChoice],

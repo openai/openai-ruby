@@ -12,16 +12,33 @@ module OpenAI
           }
 
         class Group < OpenAI::Internal::Type::BaseModel
+          # Identifier for the group.
           attr_accessor id: String
 
+          # Unix timestamp (in seconds) when the group was created.
           attr_accessor created_at: Integer
 
+          # The type of the group.
           attr_accessor group_type: OpenAI::Models::Admin::Organization::Group::group_type
 
+          # Whether the group is managed through SCIM and controlled by your identity
+          # provider.
           attr_accessor is_scim_managed: bool
 
+          # Display name of the group.
           attr_accessor name: String
 
+          # @param id
+          #   Identifier for the group.
+          # @param created_at
+          #   Unix timestamp (in seconds) when the group was created.
+          # @param group_type
+          #   The type of the group.
+          # @param is_scim_managed
+          #   Whether the group is managed through SCIM and controlled by your identity
+          #   provider.
+          # @param name
+          #   Display name of the group.
           def initialize: (
             id: String,
             created_at: Integer,

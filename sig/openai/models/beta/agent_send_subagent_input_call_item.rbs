@@ -13,20 +13,41 @@ module OpenAI
         }
 
       class AgentSendSubagentInputCallItem < OpenAI::Internal::Type::BaseModel
+        # The ID of the tool call item.
         attr_accessor id: String
 
+        # The input sent to the receiving agent.
         attr_accessor content: ::Array[OpenAI::Models::Beta::agent_content]
 
+        # The ID of the agent receiving the input.
         attr_accessor recipient_agent_id: String
 
+        # The ID of the agent sending the input.
         attr_accessor sender_agent_id: String
 
+        # The status of the tool call.
         attr_accessor status: OpenAI::Models::Beta::agent_function_call_status
 
+        # The ID of the turn that contains this item.
         attr_accessor turn_id: String
 
+        # The item type. Always `send_subagent_input_call`.
         attr_accessor type: :send_subagent_input_call
 
+        # @param id
+        #   The ID of the tool call item.
+        # @param content
+        #   The input sent to the receiving agent.
+        # @param recipient_agent_id
+        #   The ID of the agent receiving the input.
+        # @param sender_agent_id
+        #   The ID of the agent sending the input.
+        # @param status
+        #   The status of the tool call.
+        # @param turn_id
+        #   The ID of the turn that contains this item.
+        # @param type
+        #   The item type. Always `send_subagent_input_call`.
         def initialize: (
           id: String,
           content: ::Array[OpenAI::Models::Beta::agent_content],

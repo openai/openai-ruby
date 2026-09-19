@@ -21,34 +21,98 @@ module OpenAI
           }
 
         class Message < OpenAI::Internal::Type::BaseModel
+          # The identifier, which can be referenced in API endpoints.
           attr_accessor id: String
 
+          # If applicable, the ID of the
+          # [assistant](https://developers.openai.com/api/docs/assistants/migration) that
+          # authored this message.
           attr_accessor assistant_id: String?
 
+          # A list of files attached to the message, and the tools they were added to.
           attr_accessor attachments: ::Array[OpenAI::Beta::Threads::Message::Attachment]?
 
+          # The Unix timestamp (in seconds) for when the message was completed.
           attr_accessor completed_at: Integer?
 
+          # The content of the message in array of text and/or images.
           attr_accessor content: ::Array[OpenAI::Models::Beta::Threads::message_content]
 
+          # The Unix timestamp (in seconds) for when the message was created.
           attr_accessor created_at: Integer
 
+          # The Unix timestamp (in seconds) for when the message was marked as incomplete.
           attr_accessor incomplete_at: Integer?
 
+          # On an incomplete message, details about why the message is incomplete.
           attr_accessor incomplete_details: OpenAI::Beta::Threads::Message::IncompleteDetails?
 
+          # Set of 16 key-value pairs that can be attached to an object. This can be useful
+          # for storing additional information about the object in a structured format, and
+          # querying for objects via API or the dashboard.
+          #
+          # Keys are strings with a maximum length of 64 characters. Values are strings with
+          # a maximum length of 512 characters.
           attr_accessor metadata: OpenAI::Models::metadata?
 
+          # The object type, which is always `thread.message`.
           attr_accessor object: :"thread.message"
 
+          # The entity that produced the message. One of `user` or `assistant`.
           attr_accessor role: OpenAI::Models::Beta::Threads::Message::role
 
+          # The ID of the [run](https://developers.openai.com/api/docs/assistants/migration)
+          # associated with the creation of this message. Value is `null` when messages are
+          # created manually using the create message or create thread endpoints.
           attr_accessor run_id: String?
 
+          # The status of the message, which can be either `in_progress`, `incomplete`, or
+          # `completed`.
           attr_accessor status: OpenAI::Models::Beta::Threads::Message::status
 
+          # The [thread](https://developers.openai.com/api/docs/assistants/migration) ID
+          # that this message belongs to.
           attr_accessor thread_id: String
 
+          # @param id
+          #   The identifier, which can be referenced in API endpoints.
+          # @param assistant_id
+          #   If applicable, the ID of the
+          #   [assistant](https://developers.openai.com/api/docs/assistants/migration) that
+          #   authored this message.
+          # @param attachments
+          #   A list of files attached to the message, and the tools they were added to.
+          # @param completed_at
+          #   The Unix timestamp (in seconds) for when the message was completed.
+          # @param content
+          #   The content of the message in array of text and/or images.
+          # @param created_at
+          #   The Unix timestamp (in seconds) for when the message was created.
+          # @param incomplete_at
+          #   The Unix timestamp (in seconds) for when the message was marked as incomplete.
+          # @param incomplete_details
+          #   On an incomplete message, details about why the message is incomplete.
+          # @param metadata
+          #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+          #   for storing additional information about the object in a structured format, and
+          #   querying for objects via API or the dashboard.
+          #
+          #   Keys are strings with a maximum length of 64 characters. Values are strings with
+          #   a maximum length of 512 characters.
+          # @param role
+          #   The entity that produced the message. One of `user` or `assistant`.
+          # @param run_id
+          #   The ID of the [run](https://developers.openai.com/api/docs/assistants/migration)
+          #   associated with the creation of this message. Value is `null` when messages are
+          #   created manually using the create message or create thread endpoints.
+          # @param status
+          #   The status of the message, which can be either `in_progress`, `incomplete`, or
+          #   `completed`.
+          # @param thread_id
+          #   The [thread](https://developers.openai.com/api/docs/assistants/migration) ID
+          #   that this message belongs to.
+          # @param object
+          #   The object type, which is always `thread.message`.
           def initialize: (
             id: String,
             assistant_id: String?,
@@ -90,16 +154,24 @@ module OpenAI
             }
 
           class Attachment < OpenAI::Internal::Type::BaseModel
+            # The ID of the file to attach to the message.
             attr_reader file_id: String?
 
+            # The ID of the file to attach to the message.
             def file_id=: (String) -> String
 
+            # The tools to add this file to.
             attr_reader tools: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]?
 
+            # The tools to add this file to.
             def tools=: (
               ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
             ) -> ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
 
+            # @param file_id
+            #   The ID of the file to attach to the message.
+            # @param tools
+            #   The tools to add this file to.
             def initialize: (
               ?file_id: String,
               ?tools: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
@@ -121,8 +193,11 @@ module OpenAI
                 { ?type: :file_search }
 
               class AssistantToolsFileSearchTypeOnly < OpenAI::Internal::Type::BaseModel
+                # The type of tool being defined: `file_search`
                 attr_accessor type: :file_search
 
+                # @param type
+                #   The type of tool being defined: `file_search`
                 def initialize: (?type: :file_search) -> void
 
                 def to_hash: -> { ?type: :file_search }
@@ -138,8 +213,11 @@ module OpenAI
             }
 
           class IncompleteDetails < OpenAI::Internal::Type::BaseModel
+            # The reason the message is incomplete.
             attr_accessor reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::reason
 
+            # @param reason
+            #   The reason the message is incomplete.
             def initialize: (
               reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::reason
             ) -> void

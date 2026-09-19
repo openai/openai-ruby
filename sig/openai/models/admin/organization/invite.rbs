@@ -16,24 +16,51 @@ module OpenAI
           }
 
         class Invite < OpenAI::Internal::Type::BaseModel
+          # The identifier, which can be referenced in API endpoints
           attr_accessor id: String
 
+          # The Unix timestamp (in seconds) of when the invite was sent.
           attr_accessor created_at: Integer
 
+          # The email address of the individual to whom the invite was sent
           attr_accessor email: String
 
+          # The object type, which is always `organization.invite`
           attr_accessor object: :"organization.invite"
 
+          # The projects that were granted membership upon acceptance of the invite.
           attr_accessor projects: ::Array[OpenAI::Admin::Organization::Invite::Project]
 
+          # `owner` or `reader`
           attr_accessor role: OpenAI::Models::Admin::Organization::Invite::role
 
+          # `accepted`,`expired`, or `pending`
           attr_accessor status: OpenAI::Models::Admin::Organization::Invite::status
 
+          # The Unix timestamp (in seconds) of when the invite was accepted.
           attr_accessor accepted_at: Integer?
 
+          # The Unix timestamp (in seconds) of when the invite expires.
           attr_accessor expires_at: Integer?
 
+          # @param id
+          #   The identifier, which can be referenced in API endpoints
+          # @param created_at
+          #   The Unix timestamp (in seconds) of when the invite was sent.
+          # @param email
+          #   The email address of the individual to whom the invite was sent
+          # @param projects
+          #   The projects that were granted membership upon acceptance of the invite.
+          # @param role
+          #   `owner` or `reader`
+          # @param status
+          #   `accepted`,`expired`, or `pending`
+          # @param accepted_at
+          #   The Unix timestamp (in seconds) of when the invite was accepted.
+          # @param expires_at
+          #   The Unix timestamp (in seconds) of when the invite expires.
+          # @param object
+          #   The object type, which is always `organization.invite`
           def initialize: (
             id: String,
             created_at: Integer,
@@ -65,10 +92,16 @@ module OpenAI
             }
 
           class Project < OpenAI::Internal::Type::BaseModel
+            # Project's public ID
             attr_accessor id: String
 
+            # Project membership role
             attr_accessor role: OpenAI::Models::Admin::Organization::Invite::Project::role
 
+            # @param id
+            #   Project's public ID
+            # @param role
+            #   Project membership role
             def initialize: (
               id: String,
               role: OpenAI::Models::Admin::Organization::Invite::Project::role

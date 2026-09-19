@@ -55,7 +55,7 @@ module OpenAI
             optional :reasoning, -> { OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning }
 
             # @!attribute service_tier
-            #   The service tier used for model requests.
+            #   Omit to keep the current tier. Null resets it to auto.
             #
             #   @return [Symbol, OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::ServiceTier, nil]
             optional(
@@ -74,12 +74,12 @@ module OpenAI
             #     Reasoning settings to update. Omit to keep the current effort.
             #
             #   @param service_tier [Symbol, OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::ServiceTier, nil]
-            #     The service tier used for model requests.
+            #     Omit to keep the current tier. Null resets it to auto.
 
             # @see OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent#reasoning
             class Reasoning < OpenAI::Internal::Type::BaseModel
               # @!attribute effort
-              #   The amount of reasoning effort the model should use.
+              #   Omit to keep the current effort. Null selects the model's default effort.
               #
               #   @return [Symbol, OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::Reasoning::Effort, nil]
               optional(
@@ -92,9 +92,9 @@ module OpenAI
               #   Reasoning settings to update. Omit to keep the current effort.
               #
               #   @param effort [Symbol, OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::Reasoning::Effort, nil]
-              #     The amount of reasoning effort the model should use.
+              #     Omit to keep the current effort. Null selects the model's default effort.
 
-              # The amount of reasoning effort the model should use.
+              # Omit to keep the current effort. Null selects the model's default effort.
               #
               # @see OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::Reasoning#effort
               module Effort
@@ -113,7 +113,7 @@ module OpenAI
               end
             end
 
-            # The service tier used for model requests.
+            # Omit to keep the current tier. Null resets it to auto.
             #
             # @see OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent#service_tier
             module ServiceTier

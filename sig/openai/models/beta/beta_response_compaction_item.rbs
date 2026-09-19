@@ -13,22 +13,39 @@ module OpenAI
         }
 
       class BetaResponseCompactionItem < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the compaction item.
         attr_accessor id: String
 
+        # The encrypted content that was produced by compaction.
         attr_accessor encrypted_content: String
 
+        # The type of the item. Always `compaction`.
         attr_accessor type: :compaction
 
+        # The agent that produced this item.
         attr_reader agent: OpenAI::Beta::BetaResponseCompactionItem::Agent?
 
+        # The agent that produced this item.
         def agent=: (
           OpenAI::Beta::BetaResponseCompactionItem::Agent
         ) -> OpenAI::Beta::BetaResponseCompactionItem::Agent
 
+        # The identifier of the actor that created the item.
         attr_reader created_by: String?
 
+        # The identifier of the actor that created the item.
         def created_by=: (String) -> String
 
+        # @param id
+        #   The unique ID of the compaction item.
+        # @param encrypted_content
+        #   The encrypted content that was produced by compaction.
+        # @param agent
+        #   The agent that produced this item.
+        # @param created_by
+        #   The identifier of the actor that created the item.
+        # @param type
+        #   The type of the item. Always `compaction`.
         def initialize: (
           id: String,
           encrypted_content: String,
@@ -48,8 +65,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }

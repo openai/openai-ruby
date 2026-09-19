@@ -13,20 +13,41 @@ module OpenAI
         }
 
       class ResponseAudioDeltaEvent < OpenAI::Internal::Type::BaseModel
+        # The index of the content part in the item's content array.
         attr_accessor content_index: Integer
 
+        # Base64-encoded audio data delta.
         attr_accessor delta: String
 
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The ID of the item.
         attr_accessor item_id: String
 
+        # The index of the output item in the response.
         attr_accessor output_index: Integer
 
+        # The ID of the response.
         attr_accessor response_id: String
 
+        # The event type, must be `response.output_audio.delta`.
         attr_accessor type: :"response.output_audio.delta"
 
+        # @param content_index
+        #   The index of the content part in the item's content array.
+        # @param delta
+        #   Base64-encoded audio data delta.
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param item_id
+        #   The ID of the item.
+        # @param output_index
+        #   The index of the output item in the response.
+        # @param response_id
+        #   The ID of the response.
+        # @param type
+        #   The event type, must be `response.output_audio.delta`.
         def initialize: (
           content_index: Integer,
           delta: String,

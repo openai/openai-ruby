@@ -9,14 +9,27 @@ module OpenAI
         }
 
       class InputAudioUnmutedEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the Live server event.
         attr_accessor event_id: String
 
+        # The event type, always `session.input_audio.unmuted`.
         attr_accessor type: :"session.input_audio.unmuted"
 
+        # The event_id of the client command associated with this server event, when
+        # supplied.
         attr_reader client_event_id: String?
 
+        # The event_id of the client command associated with this server event, when
+        # supplied.
         def client_event_id=: (String) -> String
 
+        # @param event_id
+        #   The unique ID of the Live server event.
+        # @param client_event_id
+        #   The event_id of the client command associated with this server event, when
+        #   supplied.
+        # @param type
+        #   The event type, always `session.input_audio.unmuted`.
         def initialize: (
           event_id: String,
           ?client_event_id: String,

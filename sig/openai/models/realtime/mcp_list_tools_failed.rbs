@@ -5,12 +5,21 @@ module OpenAI
         { event_id: String, item_id: String, ?type: :"mcp_list_tools.failed" }
 
       class McpListToolsFailed < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The ID of the MCP list tools item.
         attr_accessor item_id: String
 
+        # The event type, must be `mcp_list_tools.failed`.
         attr_accessor type: :"mcp_list_tools.failed"
 
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param item_id
+        #   The ID of the MCP list tools item.
+        # @param type
+        #   The event type, must be `mcp_list_tools.failed`.
         def initialize: (
           event_id: String,
           item_id: String,

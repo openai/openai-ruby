@@ -12,8 +12,11 @@ module OpenAI
         type none = { ?type: :none }
 
         class None < OpenAI::Internal::Type::BaseModel
+          # The type of the object. Always `none`.
           attr_accessor type: :none
 
+          # @param type
+          #   The type of the object. Always `none`.
           def initialize: (?type: :none) -> void
 
           def to_hash: -> { ?type: :none }
@@ -32,22 +35,46 @@ module OpenAI
           }
 
         class OpenAIHosted < OpenAI::Internal::Type::BaseModel
+          # The public ID of the environment.
           attr_accessor id: String
 
+          # Directories that contain capabilities exposed to the agent.
           attr_accessor capability_directories: ::Array[String]
 
+          # Files available in the environment, excluding their contents.
           attr_accessor files: ::Array[OpenAI::Models::Beta::hosted_environment_file]
 
+          # The effective network access policy for the environment.
           attr_accessor network: OpenAI::Beta::Environment::OpenAIHosted::Network
 
+          # Packages installed in the environment.
           attr_accessor packages: OpenAI::Beta::Environment::OpenAIHosted::Packages
 
+          # Plugins installed in the environment, excluding their archive contents.
           attr_accessor plugins: ::Array[OpenAI::Beta::HostedPlugin]
 
+          # Skills installed in the environment, excluding their archive contents.
           attr_accessor skills: ::Array[OpenAI::Models::Beta::hosted_skill]
 
+          # The type of the object. Always `openai_hosted`.
           attr_accessor type: :openai_hosted
 
+          # @param id
+          #   The public ID of the environment.
+          # @param capability_directories
+          #   Directories that contain capabilities exposed to the agent.
+          # @param files
+          #   Files available in the environment, excluding their contents.
+          # @param network
+          #   The effective network access policy for the environment.
+          # @param packages
+          #   Packages installed in the environment.
+          # @param plugins
+          #   Plugins installed in the environment, excluding their archive contents.
+          # @param skills
+          #   Skills installed in the environment, excluding their archive contents.
+          # @param type
+          #   The type of the object. Always `openai_hosted`.
           def initialize: (
             id: String,
             capability_directories: ::Array[String],
@@ -77,10 +104,16 @@ module OpenAI
             }
 
           class Network < OpenAI::Internal::Type::BaseModel
+            # The environment's network access mode.
             attr_accessor access: OpenAI::Models::Beta::Environment::OpenAIHosted::Network::access
 
+            # Domains the environment may access when network access is restricted.
             attr_accessor allowed_domains: ::Array[String]
 
+            # @param access
+            #   The environment's network access mode.
+            # @param allowed_domains
+            #   Domains the environment may access when network access is restricted.
             def initialize: (
               access: OpenAI::Models::Beta::Environment::OpenAIHosted::Network::access,
               allowed_domains: ::Array[String]
@@ -117,12 +150,21 @@ module OpenAI
             }
 
           class Packages < OpenAI::Internal::Type::BaseModel
+            # npm packages installed globally in the environment.
             attr_accessor npm: ::Array[String]
 
+            # Python packages installed in the environment.
             attr_accessor python: ::Array[String]
 
+            # System packages installed in the environment.
             attr_accessor system_: ::Array[String]
 
+            # @param npm
+            #   npm packages installed globally in the environment.
+            # @param python
+            #   Python packages installed in the environment.
+            # @param system_
+            #   System packages installed in the environment.
             def initialize: (
               npm: ::Array[String],
               python: ::Array[String],
@@ -147,16 +189,33 @@ module OpenAI
           }
 
         class SelfHosted < OpenAI::Internal::Type::BaseModel
+          # The public ID of the environment.
           attr_accessor id: String
 
+          # Directories that contain capabilities exposed to the agent.
           attr_accessor capability_directories: ::Array[String]
 
+          # Pass this URL unchanged to `codex exec-server --remote` when connecting this
+          # environment.
           attr_accessor remote_url: String
 
+          # The type of the object. Always `self_hosted`.
           attr_accessor type: :self_hosted
 
+          # The absolute project directory inside the environment. Defaults to `/workspace`.
           attr_accessor workspace_directory: String
 
+          # @param id
+          #   The public ID of the environment.
+          # @param capability_directories
+          #   Directories that contain capabilities exposed to the agent.
+          # @param remote_url
+          #   Pass this URL unchanged to `codex exec-server --remote` when connecting this
+          #   environment.
+          # @param workspace_directory
+          #   The absolute project directory inside the environment. Defaults to `/workspace`.
+          # @param type
+          #   The type of the object. Always `self_hosted`.
           def initialize: (
             id: String,
             capability_directories: ::Array[String],

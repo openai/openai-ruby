@@ -15,24 +15,57 @@ module OpenAI
         }
 
       class Subagent < OpenAI::Internal::Type::BaseModel
+        # The ID of the subagent.
         attr_accessor id: String
 
+        # The Unix timestamp, in seconds, when the subagent was closed. Null while active,
+        # including after resume.
         attr_accessor closed_at: Integer?
 
+        # Initial task content, or null when unavailable. Text may contain placeholders
+        # for images or audio when only a preview is available.
         attr_accessor instructions: ::Array[OpenAI::Models::Beta::agent_content]?
 
+        # The runner-assigned nickname, or null when unavailable.
         attr_accessor name: String?
 
+        # The object type. Always `agent.session.subagent`.
         attr_accessor object: :"agent.session.subagent"
 
+        # The Unix timestamp, in seconds, when the subagent was first opened. Resuming
+        # does not change it.
         attr_accessor opened_at: Integer
 
+        # The ID of the agent that created this subagent.
         attr_accessor parent_agent_id: String
 
+        # The ID of the session that owns the subagent.
         attr_accessor session_id: String
 
+        # The current status of the subagent.
         attr_accessor status: OpenAI::Models::Beta::Subagent::status
 
+        # @param id
+        #   The ID of the subagent.
+        # @param closed_at
+        #   The Unix timestamp, in seconds, when the subagent was closed. Null while active,
+        #   including after resume.
+        # @param instructions
+        #   Initial task content, or null when unavailable. Text may contain placeholders
+        #   for images or audio when only a preview is available.
+        # @param name
+        #   The runner-assigned nickname, or null when unavailable.
+        # @param opened_at
+        #   The Unix timestamp, in seconds, when the subagent was first opened. Resuming
+        #   does not change it.
+        # @param parent_agent_id
+        #   The ID of the agent that created this subagent.
+        # @param session_id
+        #   The ID of the session that owns the subagent.
+        # @param status
+        #   The current status of the subagent.
+        # @param object
+        #   The object type. Always `agent.session.subagent`.
         def initialize: (
           id: String,
           closed_at: Integer?,

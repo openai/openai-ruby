@@ -6,8 +6,11 @@ module OpenAI
     class StaticFileChunkingStrategyObject < OpenAI::Internal::Type::BaseModel
       attr_accessor static: OpenAI::StaticFileChunkingStrategy
 
+      # Always `static`.
       attr_accessor type: :static
 
+      # @param type
+      #   Always `static`.
       def initialize: (
         static: OpenAI::StaticFileChunkingStrategy,
         ?type: :static

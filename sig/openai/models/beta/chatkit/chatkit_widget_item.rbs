@@ -15,18 +15,36 @@ module OpenAI
           }
 
         class ChatKitWidgetItem < OpenAI::Internal::Type::BaseModel
+          # Identifier of the thread item.
           attr_accessor id: String
 
+          # Unix timestamp (in seconds) for when the item was created.
           attr_accessor created_at: Integer
 
+          # Type discriminator that is always `chatkit.thread_item`.
           attr_accessor object: :"chatkit.thread_item"
 
+          # Identifier of the parent thread.
           attr_accessor thread_id: String
 
+          # Type discriminator that is always `chatkit.widget`.
           attr_accessor type: :"chatkit.widget"
 
+          # Serialized widget payload rendered in the UI.
           attr_accessor widget: String
 
+          # @param id
+          #   Identifier of the thread item.
+          # @param created_at
+          #   Unix timestamp (in seconds) for when the item was created.
+          # @param thread_id
+          #   Identifier of the parent thread.
+          # @param widget
+          #   Serialized widget payload rendered in the UI.
+          # @param object
+          #   Type discriminator that is always `chatkit.thread_item`.
+          # @param type
+          #   Type discriminator that is always `chatkit.widget`.
           def initialize: (
             id: String,
             created_at: Integer,

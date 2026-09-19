@@ -26,10 +26,11 @@ module OpenAI
             #   An optional human-readable display name for the template.
             #
             # @param network [OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Network, nil]
-            #   Network access for an OpenAI-hosted environment.
+            #   Network access policy for the environment. Defaults to disabled for GA requests
+            #   and enabled for alpha/beta requests.
             #
             # @param packages [OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Packages, nil]
-            #   Packages to install in an OpenAI-hosted environment.
+            #   Packages to install in the environment. Defaults to empty package lists.
             #
             # @param plugins [Array<OpenAI::Models::Beta::HostedPluginParam>, nil]
             #   Plugins provided as inline ZIP archives. Defaults to an empty list.
@@ -104,10 +105,12 @@ module OpenAI
             #   A replacement human-readable display name, or `null` to clear the name.
             #
             # @param network [OpenAI::Models::Beta::Agents::Environments::TemplateUpdateParams::Network, nil]
-            #   Network access for an OpenAI-hosted environment.
+            #   Network access available after setup completes. Omit to preserve the current
+            #   policy, or pass `null` to reset to disabled for GA requests or enabled for
+            #   alpha/beta requests.
             #
             # @param packages [OpenAI::Models::Beta::Agents::Environments::TemplateUpdateParams::Packages, nil]
-            #   Packages to install in an OpenAI-hosted environment.
+            #   Packages installed before the runtime network policy applies.
             #
             # @param plugins [Array<OpenAI::Models::Beta::HostedPluginParam>, nil]
             #   Replacement plugin configuration installed for each new session.

@@ -4,8 +4,11 @@ module OpenAI
       type response_conversation_param = { id: String }
 
       class ResponseConversationParam < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the conversation.
         attr_accessor id: String
 
+        # @param id
+        #   The unique ID of the conversation.
         def initialize: (id: String) -> void
 
         def to_hash: -> { id: String }

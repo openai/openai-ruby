@@ -10,14 +10,26 @@ module OpenAI
         }
 
       class AgentSessionEnvironmentState < OpenAI::Internal::Type::BaseModel
+        # The public ID of the environment.
         attr_accessor id: String
 
+        # The error reported while preparing the environment, if any.
         attr_accessor error: OpenAI::Beta::AgentSessionEnvironmentState::Error?
 
+        # The environment's connection status.
         attr_accessor status: OpenAI::Models::Beta::AgentSessionEnvironmentState::status
 
+        # The environment type.
         attr_accessor type: String
 
+        # @param id
+        #   The public ID of the environment.
+        # @param error
+        #   The error reported while preparing the environment, if any.
+        # @param status
+        #   The environment's connection status.
+        # @param type
+        #   The environment type.
         def initialize: (
           id: String,
           error: OpenAI::Beta::AgentSessionEnvironmentState::Error?,
@@ -35,12 +47,21 @@ module OpenAI
         type error = { code: String, message: String, type: String }
 
         class Error < OpenAI::Internal::Type::BaseModel
+          # A machine-readable error code.
           attr_accessor code: String
 
+          # A human-readable error message.
           attr_accessor message: String
 
+          # The error type.
           attr_accessor type: String
 
+          # @param code
+          #   A machine-readable error code.
+          # @param message
+          #   A human-readable error message.
+          # @param type
+          #   The error type.
           def initialize: (code: String, message: String, type: String) -> void
 
           def to_hash: -> { code: String, message: String, type: String }

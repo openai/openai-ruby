@@ -32,7 +32,10 @@ module OpenAI
           optional :agent_id, String
 
           # @!attribute input
-          #   Initial input submitted when creating a session.
+          #   Initial input to submit when the session is created. A string is shorthand for a
+          #   single user message. Required when `environment.type` is `none`, or when
+          #   `stream` is `true` for an environment that is not `self_hosted`; optional for
+          #   self-hosted and non-streaming execution environments.
           #
           #   @return [String, Array<OpenAI::Models::Beta::AgentSessionInputMessageParam>, nil]
           optional :input, union: -> { OpenAI::Beta::Agents::SessionCreateParams::Input }, nil?: true
@@ -63,7 +66,10 @@ module OpenAI
           #     unchanged.
           #
           #   @param input [String, Array<OpenAI::Models::Beta::AgentSessionInputMessageParam>, nil]
-          #     Initial input submitted when creating a session.
+          #     Initial input to submit when the session is created. A string is shorthand for a
+          #     single user message. Required when `environment.type` is `none`, or when
+          #     `stream` is `true` for an environment that is not `self_hosted`; optional for
+          #     self-hosted and non-streaming execution environments.
           #
           #   @param metadata [Hash{Symbol=>String}, nil]
           #     Up to 16 string key-value pairs, with keys up to 64 and values up to 512
@@ -89,13 +95,14 @@ module OpenAI
             optional :model, String
 
             # @!attribute multi_agent
-            #   Explicit configuration for creating and coordinating subagents.
+            #   Configuration for creating and coordinating subagents.
             #
             #   @return [OpenAI::Models::Beta::MultiAgentConfigParam, nil]
             optional :multi_agent, -> { OpenAI::Beta::MultiAgentConfigParam }, nil?: true
 
             # @!attribute reasoning
-            #   Reasoning configuration for the agent.
+            #   Configuration for model reasoning. Omit to keep the current settings; pass
+            #   `null` to reset to the model's default effort.
             #
             #   @return [OpenAI::Models::Beta::AgentReasoningParam, nil]
             optional :reasoning, -> { OpenAI::Beta::AgentReasoningParam }, nil?: true
@@ -140,10 +147,11 @@ module OpenAI
             #     The model to use for the agent. The requested model name is preserved.
             #
             #   @param multi_agent [OpenAI::Models::Beta::MultiAgentConfigParam, nil]
-            #     Explicit configuration for creating and coordinating subagents.
+            #     Configuration for creating and coordinating subagents.
             #
             #   @param reasoning [OpenAI::Models::Beta::AgentReasoningParam, nil]
-            #     Reasoning configuration for the agent.
+            #     Configuration for model reasoning. Omit to keep the current settings; pass
+            #     `null` to reset to the model's default effort.
             #
             #   @param service_tier [Symbol, OpenAI::Models::Beta::Agents::SessionCreateParams::Agent::ServiceTier, nil]
             #     The service tier used for model requests.
@@ -180,7 +188,10 @@ module OpenAI
             end
           end
 
-          # Initial input submitted when creating a session.
+          # Initial input to submit when the session is created. A string is shorthand for a
+          # single user message. Required when `environment.type` is `none`, or when
+          # `stream` is `true` for an environment that is not `self_hosted`; optional for
+          # self-hosted and non-streaming execution environments.
           module Input
             extend OpenAI::Internal::Type::Union
 

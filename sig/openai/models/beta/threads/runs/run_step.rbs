@@ -26,38 +26,114 @@ module OpenAI
             }
 
           class RunStep < OpenAI::Internal::Type::BaseModel
+            # The identifier of the run step, which can be referenced in API endpoints.
             attr_accessor id: String
 
+            # The ID of the
+            # [assistant](https://developers.openai.com/api/docs/assistants/migration)
+            # associated with the run step.
             attr_accessor assistant_id: String
 
+            # The Unix timestamp (in seconds) for when the run step was cancelled.
             attr_accessor cancelled_at: Integer?
 
+            # The Unix timestamp (in seconds) for when the run step completed.
             attr_accessor completed_at: Integer?
 
+            # The Unix timestamp (in seconds) for when the run step was created.
             attr_accessor created_at: Integer
 
+            # The Unix timestamp (in seconds) for when the run step expired. A step is
+            # considered expired if the parent run is expired.
             attr_accessor expired_at: Integer?
 
+            # The Unix timestamp (in seconds) for when the run step failed.
             attr_accessor failed_at: Integer?
 
+            # The last error associated with this run step. Will be `null` if there are no
+            # errors.
             attr_accessor last_error: OpenAI::Beta::Threads::Runs::RunStep::LastError?
 
+            # Set of 16 key-value pairs that can be attached to an object. This can be useful
+            # for storing additional information about the object in a structured format, and
+            # querying for objects via API or the dashboard.
+            #
+            # Keys are strings with a maximum length of 64 characters. Values are strings with
+            # a maximum length of 512 characters.
             attr_accessor metadata: OpenAI::Models::metadata?
 
+            # The object type, which is always `thread.run.step`.
             attr_accessor object: :"thread.run.step"
 
+            # The ID of the [run](https://developers.openai.com/api/docs/assistants/migration)
+            # that this run step is a part of.
             attr_accessor run_id: String
 
+            # The status of the run step, which can be either `in_progress`, `cancelled`,
+            # `failed`, `completed`, or `expired`.
             attr_accessor status: OpenAI::Models::Beta::Threads::Runs::RunStep::status
 
+            # The details of the run step.
             attr_accessor step_details: OpenAI::Models::Beta::Threads::Runs::RunStep::step_details
 
+            # The ID of the
+            # [thread](https://developers.openai.com/api/docs/assistants/migration) that was
+            # run.
             attr_accessor thread_id: String
 
+            # The type of run step, which can be either `message_creation` or `tool_calls`.
             attr_accessor type: OpenAI::Models::Beta::Threads::Runs::RunStep::type_
 
+            # Usage statistics related to the run step. This value will be `null` while the
+            # run step's status is `in_progress`.
             attr_accessor usage: OpenAI::Beta::Threads::Runs::RunStep::Usage?
 
+            # @param id
+            #   The identifier of the run step, which can be referenced in API endpoints.
+            # @param assistant_id
+            #   The ID of the
+            #   [assistant](https://developers.openai.com/api/docs/assistants/migration)
+            #   associated with the run step.
+            # @param cancelled_at
+            #   The Unix timestamp (in seconds) for when the run step was cancelled.
+            # @param completed_at
+            #   The Unix timestamp (in seconds) for when the run step completed.
+            # @param created_at
+            #   The Unix timestamp (in seconds) for when the run step was created.
+            # @param expired_at
+            #   The Unix timestamp (in seconds) for when the run step expired. A step is
+            #   considered expired if the parent run is expired.
+            # @param failed_at
+            #   The Unix timestamp (in seconds) for when the run step failed.
+            # @param last_error
+            #   The last error associated with this run step. Will be `null` if there are no
+            #   errors.
+            # @param metadata
+            #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+            #   for storing additional information about the object in a structured format, and
+            #   querying for objects via API or the dashboard.
+            #
+            #   Keys are strings with a maximum length of 64 characters. Values are strings with
+            #   a maximum length of 512 characters.
+            # @param run_id
+            #   The ID of the [run](https://developers.openai.com/api/docs/assistants/migration)
+            #   that this run step is a part of.
+            # @param status
+            #   The status of the run step, which can be either `in_progress`, `cancelled`,
+            #   `failed`, `completed`, or `expired`.
+            # @param step_details
+            #   The details of the run step.
+            # @param thread_id
+            #   The ID of the
+            #   [thread](https://developers.openai.com/api/docs/assistants/migration) that was
+            #   run.
+            # @param type
+            #   The type of run step, which can be either `message_creation` or `tool_calls`.
+            # @param usage
+            #   Usage statistics related to the run step. This value will be `null` while the
+            #   run step's status is `in_progress`.
+            # @param object
+            #   The object type, which is always `thread.run.step`.
             def initialize: (
               id: String,
               assistant_id: String,
@@ -103,10 +179,16 @@ module OpenAI
               }
 
             class LastError < OpenAI::Internal::Type::BaseModel
+              # One of `server_error` or `rate_limit_exceeded`.
               attr_accessor code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::code
 
+              # A human-readable description of the error.
               attr_accessor message: String
 
+              # @param code
+              #   One of `server_error` or `rate_limit_exceeded`.
+              # @param message
+              #   A human-readable description of the error.
               def initialize: (
                 code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::code,
                 message: String
@@ -173,12 +255,21 @@ module OpenAI
               }
 
             class Usage < OpenAI::Internal::Type::BaseModel
+              # Number of completion tokens used over the course of the run step.
               attr_accessor completion_tokens: Integer
 
+              # Number of prompt tokens used over the course of the run step.
               attr_accessor prompt_tokens: Integer
 
+              # Total number of tokens used (prompt + completion).
               attr_accessor total_tokens: Integer
 
+              # @param completion_tokens
+              #   Number of completion tokens used over the course of the run step.
+              # @param prompt_tokens
+              #   Number of prompt tokens used over the course of the run step.
+              # @param total_tokens
+              #   Total number of tokens used (prompt + completion).
               def initialize: (
                 completion_tokens: Integer,
                 prompt_tokens: Integer,

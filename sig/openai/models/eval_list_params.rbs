@@ -13,26 +13,48 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      # Identifier for the last eval from the previous pagination request.
       attr_reader after: String?
 
+      # Identifier for the last eval from the previous pagination request.
       def after=: (String) -> String
 
+      # Number of evals to retrieve.
       attr_reader limit: Integer?
 
+      # Number of evals to retrieve.
       def limit=: (Integer) -> Integer
 
+      # Sort order for evals by timestamp. Use `asc` for ascending order or `desc` for
+      # descending order.
       attr_reader order: OpenAI::Models::EvalListParams::order?
 
+      # Sort order for evals by timestamp. Use `asc` for ascending order or `desc` for
+      # descending order.
       def order=: (
         OpenAI::Models::EvalListParams::order
       ) -> OpenAI::Models::EvalListParams::order
 
+      # Evals can be ordered by creation time or last updated time. Use `created_at` for
+      # creation time or `updated_at` for last updated time.
       attr_reader order_by: OpenAI::Models::EvalListParams::order_by?
 
+      # Evals can be ordered by creation time or last updated time. Use `created_at` for
+      # creation time or `updated_at` for last updated time.
       def order_by=: (
         OpenAI::Models::EvalListParams::order_by
       ) -> OpenAI::Models::EvalListParams::order_by
 
+      # @param after
+      #   Identifier for the last eval from the previous pagination request.
+      # @param limit
+      #   Number of evals to retrieve.
+      # @param order
+      #   Sort order for evals by timestamp. Use `asc` for ascending order or `desc` for
+      #   descending order.
+      # @param order_by
+      #   Evals can be ordered by creation time or last updated time. Use `created_at` for
+      #   creation time or `updated_at` for last updated time.
       def initialize: (
         ?after: String,
         ?limit: Integer,

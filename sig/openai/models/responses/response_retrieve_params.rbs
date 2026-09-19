@@ -16,20 +16,50 @@ module OpenAI
 
         attr_accessor response_id: String
 
+        # Additional fields to include in the response. See the `include` parameter for
+        # Response creation above for more information.
         attr_reader include: ::Array[OpenAI::Models::Responses::response_includable]?
 
+        # Additional fields to include in the response. See the `include` parameter for
+        # Response creation above for more information.
         def include=: (
           ::Array[OpenAI::Models::Responses::response_includable]
         ) -> ::Array[OpenAI::Models::Responses::response_includable]
 
+        # When true, stream obfuscation will be enabled. Stream obfuscation adds random
+        # characters to an `obfuscation` field on streaming delta events to normalize
+        # payload sizes as a mitigation to certain side-channel attacks. These obfuscation
+        # fields are included by default, but add a small amount of overhead to the data
+        # stream. You can set `include_obfuscation` to false to optimize for bandwidth if
+        # you trust the network links between your application and the OpenAI API.
         attr_reader include_obfuscation: bool?
 
+        # When true, stream obfuscation will be enabled. Stream obfuscation adds random
+        # characters to an `obfuscation` field on streaming delta events to normalize
+        # payload sizes as a mitigation to certain side-channel attacks. These obfuscation
+        # fields are included by default, but add a small amount of overhead to the data
+        # stream. You can set `include_obfuscation` to false to optimize for bandwidth if
+        # you trust the network links between your application and the OpenAI API.
         def include_obfuscation=: (bool) -> bool
 
+        # The sequence number of the event after which to start streaming.
         attr_reader starting_after: Integer?
 
+        # The sequence number of the event after which to start streaming.
         def starting_after=: (Integer) -> Integer
 
+        # @param include
+        #   Additional fields to include in the response. See the `include` parameter for
+        #   Response creation above for more information.
+        # @param include_obfuscation
+        #   When true, stream obfuscation will be enabled. Stream obfuscation adds random
+        #   characters to an `obfuscation` field on streaming delta events to normalize
+        #   payload sizes as a mitigation to certain side-channel attacks. These obfuscation
+        #   fields are included by default, but add a small amount of overhead to the data
+        #   stream. You can set `include_obfuscation` to false to optimize for bandwidth if
+        #   you trust the network links between your application and the OpenAI API.
+        # @param starting_after
+        #   The sequence number of the event after which to start streaming.
         def initialize: (
           response_id: String,
           ?include: ::Array[OpenAI::Models::Responses::response_includable],

@@ -11,12 +11,37 @@ module OpenAI
         }
 
       class BetaResponseSteerEvent < OpenAI::Internal::Type::BaseModel
+        # Input to queue for a continuation of the response. Uses the same string or
+        # input-item shape as `response.create.input`, with a non-empty array when
+        # supplying input items.
+        #
+        # Steering accepts only messages with the `user` role. Each message may contain
+        # only `type`, `role`, and `content`, with `content` as a string or an array of
+        # `input_text`, `input_image`, and `input_file` parts. The optional `type` must be
+        # `message`. Other roles, tool outputs, and item types are not supported for
+        # steering.
         attr_accessor input: OpenAI::Models::Beta::beta_response_steer_input
 
+        # The ID of the response to steer on this WebSocket connection.
         attr_accessor previous_response_id: String
 
+        # The event discriminator. Always `response.steer`.
         attr_accessor type: :"response.steer"
 
+        # @param input
+        #   Input to queue for a continuation of the response. Uses the same string or
+        #   input-item shape as `response.create.input`, with a non-empty array when
+        #   supplying input items.
+        #
+        #   Steering accepts only messages with the `user` role. Each message may contain
+        #   only `type`, `role`, and `content`, with `content` as a string or an array of
+        #   `input_text`, `input_image`, and `input_file` parts. The optional `type` must be
+        #   `message`. Other roles, tool outputs, and item types are not supported for
+        #   steering.
+        # @param previous_response_id
+        #   The ID of the response to steer on this WebSocket connection.
+        # @param type
+        #   The event discriminator. Always `response.steer`.
         def initialize: (
           input: OpenAI::Models::Beta::beta_response_steer_input,
           previous_response_id: String,

@@ -14,8 +14,11 @@ module OpenAI
 
         attr_accessor webhook_endpoint_id: String
 
+        # The event type to send as a sample delivery.
         attr_accessor event_type: OpenAI::Models::Webhooks::WebhookTestParams::event_type
 
+        # @param event_type
+        #   The event type to send as a sample delivery.
         def initialize: (
           webhook_endpoint_id: String,
           event_type: OpenAI::Models::Webhooks::WebhookTestParams::event_type,

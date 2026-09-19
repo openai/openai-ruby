@@ -6,10 +6,14 @@ module OpenAI
           { ?:max_requests_per_1_minute => Integer }
 
         class ChatSessionRateLimitsParam < OpenAI::Internal::Type::BaseModel
+          # Maximum number of requests allowed per minute for the session. Defaults to 10.
           attr_reader max_requests_per_1_minute: Integer?
 
+          # Maximum number of requests allowed per minute for the session. Defaults to 10.
           def max_requests_per_1_minute=: (Integer) -> Integer
 
+          # @param max_requests_per_1_minute
+          #   Maximum number of requests allowed per minute for the session. Defaults to 10.
           def initialize: (?max_requests_per_1_minute: Integer) -> void
 
           def to_hash: -> { ?:max_requests_per_1_minute => Integer }

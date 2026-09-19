@@ -18,10 +18,16 @@ module OpenAI
 
           attr_accessor start_index: Integer
 
+          # The text in the message content that needs to be replaced.
           attr_accessor text: String
 
+          # Always `file_path`.
           attr_accessor type: :file_path
 
+          # @param text
+          #   The text in the message content that needs to be replaced.
+          # @param type
+          #   Always `file_path`.
           def initialize: (
             end_index: Integer,
             file_path: OpenAI::Beta::Threads::FilePathAnnotation::FilePath,
@@ -41,8 +47,11 @@ module OpenAI
           type file_path = { file_id: String }
 
           class FilePath < OpenAI::Internal::Type::BaseModel
+            # The ID of the file that was generated.
             attr_accessor file_id: String
 
+            # @param file_id
+            #   The ID of the file that was generated.
             def initialize: (file_id: String) -> void
 
             def to_hash: -> { file_id: String }

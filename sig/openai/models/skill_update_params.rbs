@@ -13,8 +13,11 @@ module OpenAI
 
       attr_accessor skill_id: String
 
+      # The skill version number to set as default.
       attr_accessor default_version: String
 
+      # @param default_version
+      #   The skill version number to set as default.
       def initialize: (
         skill_id: String,
         default_version: String,

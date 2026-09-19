@@ -11,28 +11,58 @@ module OpenAI
         }
 
       class TranscriptionTextDoneEvent < OpenAI::Internal::Type::BaseModel
+        # The text that was transcribed.
         attr_accessor text: String
 
+        # The type of the event. Always `transcript.text.done`.
         attr_accessor type: :"transcript.text.done"
 
+        # The languages detected in the audio. Returned by `gpt-transcribe`. An empty
+        # array indicates that no language could be reliably detected.
         attr_reader languages: ::Array[OpenAI::Audio::TranscriptionLanguage]?
 
+        # The languages detected in the audio. Returned by `gpt-transcribe`. An empty
+        # array indicates that no language could be reliably detected.
         def languages=: (
           ::Array[OpenAI::Audio::TranscriptionLanguage]
         ) -> ::Array[OpenAI::Audio::TranscriptionLanguage]
 
+        # The log probabilities of the individual tokens in the transcription. Only
+        # included if you
+        # [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
+        # with the `include[]` parameter set to `logprobs`.
         attr_reader logprobs: ::Array[OpenAI::Audio::TranscriptionTextDoneEvent::Logprob]?
 
+        # The log probabilities of the individual tokens in the transcription. Only
+        # included if you
+        # [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
+        # with the `include[]` parameter set to `logprobs`.
         def logprobs=: (
           ::Array[OpenAI::Audio::TranscriptionTextDoneEvent::Logprob]
         ) -> ::Array[OpenAI::Audio::TranscriptionTextDoneEvent::Logprob]
 
+        # Usage statistics for models billed by token usage.
         attr_reader usage: OpenAI::Audio::TranscriptionTextDoneEvent::Usage?
 
+        # Usage statistics for models billed by token usage.
         def usage=: (
           OpenAI::Audio::TranscriptionTextDoneEvent::Usage
         ) -> OpenAI::Audio::TranscriptionTextDoneEvent::Usage
 
+        # @param text
+        #   The text that was transcribed.
+        # @param languages
+        #   The languages detected in the audio. Returned by `gpt-transcribe`. An empty
+        #   array indicates that no language could be reliably detected.
+        # @param logprobs
+        #   The log probabilities of the individual tokens in the transcription. Only
+        #   included if you
+        #   [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
+        #   with the `include[]` parameter set to `logprobs`.
+        # @param usage
+        #   Usage statistics for models billed by token usage.
+        # @param type
+        #   The type of the event. Always `transcript.text.done`.
         def initialize: (
           text: String,
           ?languages: ::Array[OpenAI::Audio::TranscriptionLanguage],
@@ -53,18 +83,30 @@ module OpenAI
           { ?token: String, ?bytes: ::Array[Integer], ?logprob: Float }
 
         class Logprob < OpenAI::Internal::Type::BaseModel
+          # The token that was used to generate the log probability.
           attr_reader token: String?
 
+          # The token that was used to generate the log probability.
           def token=: (String) -> String
 
+          # The bytes that were used to generate the log probability.
           attr_reader bytes: ::Array[Integer]?
 
+          # The bytes that were used to generate the log probability.
           def bytes=: (::Array[Integer]) -> ::Array[Integer]
 
+          # The log probability of the token.
           attr_reader logprob: Float?
 
+          # The log probability of the token.
           def logprob=: (Float) -> Float
 
+          # @param token
+          #   The token that was used to generate the log probability.
+          # @param bytes
+          #   The bytes that were used to generate the log probability.
+          # @param logprob
+          #   The log probability of the token.
           def initialize: (
             ?token: String,
             ?bytes: ::Array[Integer],
@@ -88,20 +130,36 @@ module OpenAI
           }
 
         class Usage < OpenAI::Internal::Type::BaseModel
+          # Number of input tokens billed for this request.
           attr_accessor input_tokens: Integer
 
+          # Number of output tokens generated.
           attr_accessor output_tokens: Integer
 
+          # Total number of tokens used (input + output).
           attr_accessor total_tokens: Integer
 
+          # The type of the usage object. Always `tokens` for this variant.
           attr_accessor type: :tokens
 
+          # Details about the input tokens billed for this request.
           attr_reader input_token_details: OpenAI::Audio::TranscriptionTextDoneEvent::Usage::InputTokenDetails?
 
+          # Details about the input tokens billed for this request.
           def input_token_details=: (
             OpenAI::Audio::TranscriptionTextDoneEvent::Usage::InputTokenDetails
           ) -> OpenAI::Audio::TranscriptionTextDoneEvent::Usage::InputTokenDetails
 
+          # @param input_tokens
+          #   Number of input tokens billed for this request.
+          # @param output_tokens
+          #   Number of output tokens generated.
+          # @param total_tokens
+          #   Total number of tokens used (input + output).
+          # @param input_token_details
+          #   Details about the input tokens billed for this request.
+          # @param type
+          #   The type of the usage object. Always `tokens` for this variant.
           def initialize: (
             input_tokens: Integer,
             output_tokens: Integer,
@@ -122,14 +180,22 @@ module OpenAI
             { ?audio_tokens: Integer, ?text_tokens: Integer }
 
           class InputTokenDetails < OpenAI::Internal::Type::BaseModel
+            # Number of audio tokens billed for this request.
             attr_reader audio_tokens: Integer?
 
+            # Number of audio tokens billed for this request.
             def audio_tokens=: (Integer) -> Integer
 
+            # Number of text tokens billed for this request.
             attr_reader text_tokens: Integer?
 
+            # Number of text tokens billed for this request.
             def text_tokens=: (Integer) -> Integer
 
+            # @param audio_tokens
+            #   Number of audio tokens billed for this request.
+            # @param text_tokens
+            #   Number of text tokens billed for this request.
             def initialize: (
               ?audio_tokens: Integer,
               ?text_tokens: Integer

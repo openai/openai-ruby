@@ -9,12 +9,27 @@ module OpenAI
         }
 
       class SessionStartEvent < OpenAI::Internal::Type::BaseModel
+        # Initial configuration for a primary WebSocket. Send session.start first and wait
+        # for session.started before application commands. WebRTC creation already starts
+        # the session; do not send this event again on its data channel.
         attr_accessor session: OpenAI::Live::SessionConfig
 
+        # The Live client event type. Always `session.start`.
         attr_accessor type: :"session.start"
 
+        # Optional client identifier for correlating this command with a server event's
+        # client_event_id or error.client_event_id.
         attr_accessor event_id: String?
 
+        # @param session
+        #   Initial configuration for a primary WebSocket. Send session.start first and wait
+        #   for session.started before application commands. WebRTC creation already starts
+        #   the session; do not send this event again on its data channel.
+        # @param event_id
+        #   Optional client identifier for correlating this command with a server event's
+        #   client_event_id or error.client_event_id.
+        # @param type
+        #   The Live client event type. Always `session.start`.
         def initialize: (
           session: OpenAI::Live::SessionConfig,
           ?event_id: String?,

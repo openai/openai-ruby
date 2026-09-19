@@ -3,10 +3,16 @@ module OpenAI
     type response_format_text_grammar = { grammar: String, ?type: :grammar }
 
     class ResponseFormatTextGrammar < OpenAI::Internal::Type::BaseModel
+      # The custom grammar for the model to follow.
       attr_accessor grammar: String
 
+      # The type of response format being defined. Always `grammar`.
       attr_accessor type: :grammar
 
+      # @param grammar
+      #   The custom grammar for the model to follow.
+      # @param type
+      #   The type of response format being defined. Always `grammar`.
       def initialize: (grammar: String, ?type: :grammar) -> void
 
       def to_hash: -> { grammar: String, ?type: :grammar }

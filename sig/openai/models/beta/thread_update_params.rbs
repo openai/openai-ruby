@@ -15,10 +15,32 @@ module OpenAI
 
         attr_accessor thread_id: String
 
+        # Set of 16 key-value pairs that can be attached to an object. This can be useful
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard.
+        #
+        # Keys are strings with a maximum length of 64 characters. Values are strings with
+        # a maximum length of 512 characters.
         attr_accessor metadata: OpenAI::Models::metadata?
 
+        # A set of resources that are made available to the assistant's tools in this
+        # thread. The resources are specific to the type of tool. For example, the
+        # `code_interpreter` tool requires a list of file IDs, while the `file_search`
+        # tool requires a list of vector store IDs.
         attr_accessor tool_resources: OpenAI::Beta::ThreadUpdateParams::ToolResources?
 
+        # @param metadata
+        #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #   for storing additional information about the object in a structured format, and
+        #   querying for objects via API or the dashboard.
+        #
+        #   Keys are strings with a maximum length of 64 characters. Values are strings with
+        #   a maximum length of 512 characters.
+        # @param tool_resources
+        #   A set of resources that are made available to the assistant's tools in this
+        #   thread. The resources are specific to the type of tool. For example, the
+        #   `code_interpreter` tool requires a list of file IDs, while the `file_search`
+        #   tool requires a list of vector store IDs.
         def initialize: (
           thread_id: String,
           ?metadata: OpenAI::Models::metadata?,
@@ -65,10 +87,20 @@ module OpenAI
           type code_interpreter = { ?file_ids: ::Array[String] }
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+            # A list of [file](https://developers.openai.com/api/reference/resources/files)
+            # IDs made available to the `code_interpreter` tool. There can be a maximum of 20
+            # files associated with the tool.
             attr_reader file_ids: ::Array[String]?
 
+            # A list of [file](https://developers.openai.com/api/reference/resources/files)
+            # IDs made available to the `code_interpreter` tool. There can be a maximum of 20
+            # files associated with the tool.
             def file_ids=: (::Array[String]) -> ::Array[String]
 
+            # @param file_ids
+            #   A list of [file](https://developers.openai.com/api/reference/resources/files)
+            #   IDs made available to the `code_interpreter` tool. There can be a maximum of 20
+            #   files associated with the tool.
             def initialize: (?file_ids: ::Array[String]) -> void
 
             def to_hash: -> { ?file_ids: ::Array[String] }
@@ -77,10 +109,23 @@ module OpenAI
           type file_search = { ?vector_store_ids: ::Array[String] }
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
+            # The
+            # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+            # attached to this thread. There can be a maximum of 1 vector store attached to
+            # the thread.
             attr_reader vector_store_ids: ::Array[String]?
 
+            # The
+            # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+            # attached to this thread. There can be a maximum of 1 vector store attached to
+            # the thread.
             def vector_store_ids=: (::Array[String]) -> ::Array[String]
 
+            # @param vector_store_ids
+            #   The
+            #   [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+            #   attached to this thread. There can be a maximum of 1 vector store attached to
+            #   the thread.
             def initialize: (?vector_store_ids: ::Array[String]) -> void
 
             def to_hash: -> { ?vector_store_ids: ::Array[String] }

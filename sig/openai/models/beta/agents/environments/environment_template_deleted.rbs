@@ -13,12 +13,21 @@ module OpenAI
             }
 
           class EnvironmentTemplateDeleted < OpenAI::Internal::Type::BaseModel
+            # The ID of the deleted environment template.
             attr_accessor id: String
 
+            # Whether the environment template was deleted. Always `true`.
             attr_accessor deleted: bool
 
+            # The object type. Always `agent.environment.template.deleted`.
             attr_accessor object: :"agent.environment.template.deleted"
 
+            # @param id
+            #   The ID of the deleted environment template.
+            # @param deleted
+            #   Whether the environment template was deleted. Always `true`.
+            # @param object
+            #   The object type. Always `agent.environment.template.deleted`.
             def initialize: (
               id: String,
               deleted: bool,

@@ -13,12 +13,21 @@ module OpenAI
             }
 
           class RunStepDeltaEvent < OpenAI::Internal::Type::BaseModel
+            # The identifier of the run step, which can be referenced in API endpoints.
             attr_accessor id: String
 
+            # The delta containing the fields that have changed on the run step.
             attr_accessor delta: OpenAI::Beta::Threads::Runs::RunStepDelta
 
+            # The object type, which is always `thread.run.step.delta`.
             attr_accessor object: :"thread.run.step.delta"
 
+            # @param id
+            #   The identifier of the run step, which can be referenced in API endpoints.
+            # @param delta
+            #   The delta containing the fields that have changed on the run step.
+            # @param object
+            #   The object type, which is always `thread.run.step.delta`.
             def initialize: (
               id: String,
               delta: OpenAI::Beta::Threads::Runs::RunStepDelta,

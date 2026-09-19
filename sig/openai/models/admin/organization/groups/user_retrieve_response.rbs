@@ -14,18 +14,36 @@ module OpenAI
             }
 
           class UserRetrieveResponse < OpenAI::Internal::Type::BaseModel
+            # Identifier for the user.
             attr_accessor id: String
 
+            # Email address of the user, or `null` for users without an email.
             attr_accessor email: String?
 
+            # Whether the user is a service account.
             attr_accessor is_service_account: bool?
 
+            # Display name of the user.
             attr_accessor name: String
 
+            # URL of the user's profile picture, if available.
             attr_accessor picture: String?
 
+            # The type of user.
             attr_accessor user_type: OpenAI::Models::Admin::Organization::Groups::UserRetrieveResponse::user_type
 
+            # @param id
+            #   Identifier for the user.
+            # @param email
+            #   Email address of the user, or `null` for users without an email.
+            # @param is_service_account
+            #   Whether the user is a service account.
+            # @param name
+            #   Display name of the user.
+            # @param picture
+            #   URL of the user's profile picture, if available.
+            # @param user_type
+            #   The type of user.
             def initialize: (
               id: String,
               email: String?,

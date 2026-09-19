@@ -13,12 +13,21 @@ module OpenAI
             }
 
           class SessionArtifactDeleted < OpenAI::Internal::Type::BaseModel
+            # The ID of the deleted session artifact.
             attr_accessor id: String
 
+            # Whether the session artifact was deleted. Always `true`.
             attr_accessor deleted: bool
 
+            # The object type. Always `agent.session.artifact.deleted`.
             attr_accessor object: :"agent.session.artifact.deleted"
 
+            # @param id
+            #   The ID of the deleted session artifact.
+            # @param deleted
+            #   Whether the session artifact was deleted. Always `true`.
+            # @param object
+            #   The object type. Always `agent.session.artifact.deleted`.
             def initialize: (
               id: String,
               deleted: bool,

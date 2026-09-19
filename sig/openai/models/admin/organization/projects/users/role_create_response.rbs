@@ -12,12 +12,21 @@ module OpenAI
               }
 
             class RoleCreateResponse < OpenAI::Internal::Type::BaseModel
+              # Always `user.role`.
               attr_accessor object: :"user.role"
 
+              # Details about a role that can be assigned through the public Roles API.
               attr_accessor role: OpenAI::Admin::Organization::Role
 
+              # Represents an individual `user` within an organization.
               attr_accessor user: OpenAI::Admin::Organization::OrganizationUser
 
+              # @param role
+              #   Details about a role that can be assigned through the public Roles API.
+              # @param user
+              #   Represents an individual `user` within an organization.
+              # @param object
+              #   Always `user.role`.
               def initialize: (
                 role: OpenAI::Admin::Organization::Role,
                 user: OpenAI::Admin::Organization::OrganizationUser,

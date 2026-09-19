@@ -15,34 +15,78 @@ module OpenAI
         }
 
       class BetaResponseInputFile < OpenAI::Internal::Type::BaseModel
+        # The type of the input item. Always `input_file`.
         attr_accessor type: :input_file
 
+        # The detail level of the file to be sent to the model. Use `auto` to let the
+        # system select the detail level; for GPT-5.6 and later models, `auto` uses
+        # high-quality rendering, which may increase input token usage. Use `low` for
+        # lower-cost rendering, or `high` to render the file at higher quality. Defaults
+        # to `auto`.
         attr_reader detail: OpenAI::Models::Beta::BetaResponseInputFile::detail?
 
+        # The detail level of the file to be sent to the model. Use `auto` to let the
+        # system select the detail level; for GPT-5.6 and later models, `auto` uses
+        # high-quality rendering, which may increase input token usage. Use `low` for
+        # lower-cost rendering, or `high` to render the file at higher quality. Defaults
+        # to `auto`.
         def detail=: (
           OpenAI::Models::Beta::BetaResponseInputFile::detail
         ) -> OpenAI::Models::Beta::BetaResponseInputFile::detail
 
+        # The content of the file to be sent to the model.
         attr_reader file_data: String?
 
+        # The content of the file to be sent to the model.
         def file_data=: (String) -> String
 
+        # The ID of the file to be sent to the model.
         attr_accessor file_id: String?
 
+        # The URL of the file to be sent to the model.
         attr_reader file_url: String?
 
+        # The URL of the file to be sent to the model.
         def file_url=: (String) -> String
 
+        # The name of the file to be sent to the model.
         attr_reader filename: String?
 
+        # The name of the file to be sent to the model.
         def filename=: (String) -> String
 
+        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        # token block.
         attr_reader prompt_cache_breakpoint: OpenAI::Beta::BetaResponseInputFile::PromptCacheBreakpoint?
 
+        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        # token block.
         def prompt_cache_breakpoint=: (
           OpenAI::Beta::BetaResponseInputFile::PromptCacheBreakpoint
         ) -> OpenAI::Beta::BetaResponseInputFile::PromptCacheBreakpoint
 
+        # @param detail
+        #   The detail level of the file to be sent to the model. Use `auto` to let the
+        #   system select the detail level; for GPT-5.6 and later models, `auto` uses
+        #   high-quality rendering, which may increase input token usage. Use `low` for
+        #   lower-cost rendering, or `high` to render the file at higher quality. Defaults
+        #   to `auto`.
+        # @param file_data
+        #   The content of the file to be sent to the model.
+        # @param file_id
+        #   The ID of the file to be sent to the model.
+        # @param file_url
+        #   The URL of the file to be sent to the model.
+        # @param filename
+        #   The name of the file to be sent to the model.
+        # @param prompt_cache_breakpoint
+        #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        #   token block.
+        # @param type
+        #   The type of the input item. Always `input_file`.
         def initialize: (
           ?detail: OpenAI::Models::Beta::BetaResponseInputFile::detail,
           ?file_data: String,
@@ -78,8 +122,11 @@ module OpenAI
         type prompt_cache_breakpoint = { ?mode: :explicit }
 
         class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+          # The breakpoint mode. Always `explicit`.
           attr_accessor mode: :explicit
 
+          # @param mode
+          #   The breakpoint mode. Always `explicit`.
           def initialize: (?mode: :explicit) -> void
 
           def to_hash: -> { ?mode: :explicit }

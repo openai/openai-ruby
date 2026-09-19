@@ -9,12 +9,25 @@ module OpenAI
         }
 
       class ResponseInputTextContent < OpenAI::Internal::Type::BaseModel
+        # The text input to the model.
         attr_accessor text: String
 
+        # The type of the input item. Always `input_text`.
         attr_accessor type: :input_text
 
+        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        # token block.
         attr_accessor prompt_cache_breakpoint: OpenAI::Responses::ResponseInputTextContent::PromptCacheBreakpoint?
 
+        # @param text
+        #   The text input to the model.
+        # @param prompt_cache_breakpoint
+        #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        #   token block.
+        # @param type
+        #   The type of the input item. Always `input_text`.
         def initialize: (
           text: String,
           ?prompt_cache_breakpoint: OpenAI::Responses::ResponseInputTextContent::PromptCacheBreakpoint?,
@@ -30,8 +43,11 @@ module OpenAI
         type prompt_cache_breakpoint = { ?mode: :explicit }
 
         class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+          # The breakpoint mode. Always `explicit`.
           attr_accessor mode: :explicit
 
+          # @param mode
+          #   The breakpoint mode. Always `explicit`.
           def initialize: (?mode: :explicit) -> void
 
           def to_hash: -> { ?mode: :explicit }

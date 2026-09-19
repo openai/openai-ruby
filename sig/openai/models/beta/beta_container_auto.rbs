@@ -13,26 +13,44 @@ module OpenAI
         }
 
       class BetaContainerAuto < OpenAI::Internal::Type::BaseModel
+        # Automatically creates a container for this request
         attr_accessor type: :container_auto
 
+        # An optional list of uploaded files to make available to your code.
         attr_reader file_ids: ::Array[String]?
 
+        # An optional list of uploaded files to make available to your code.
         def file_ids=: (::Array[String]) -> ::Array[String]
 
+        # The memory limit for the container.
         attr_accessor memory_limit: OpenAI::Models::Beta::BetaContainerAuto::memory_limit?
 
+        # Network access policy for the container.
         attr_reader network_policy: OpenAI::Models::Beta::BetaContainerAuto::network_policy?
 
+        # Network access policy for the container.
         def network_policy=: (
           OpenAI::Models::Beta::BetaContainerAuto::network_policy
         ) -> OpenAI::Models::Beta::BetaContainerAuto::network_policy
 
+        # An optional list of skills referenced by id or inline data.
         attr_reader skills: ::Array[OpenAI::Models::Beta::BetaContainerAuto::skill]?
 
+        # An optional list of skills referenced by id or inline data.
         def skills=: (
           ::Array[OpenAI::Models::Beta::BetaContainerAuto::skill]
         ) -> ::Array[OpenAI::Models::Beta::BetaContainerAuto::skill]
 
+        # @param file_ids
+        #   An optional list of uploaded files to make available to your code.
+        # @param memory_limit
+        #   The memory limit for the container.
+        # @param network_policy
+        #   Network access policy for the container.
+        # @param skills
+        #   An optional list of skills referenced by id or inline data.
+        # @param type
+        #   Automatically creates a container for this request
         def initialize: (
           ?file_ids: ::Array[String],
           ?memory_limit: OpenAI::Models::Beta::BetaContainerAuto::memory_limit?,

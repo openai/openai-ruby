@@ -6,10 +6,16 @@ module OpenAI
       type beta_tool_choice_function = { name: String, ?type: :function }
 
       class BetaToolChoiceFunction < OpenAI::Internal::Type::BaseModel
+        # The name of the function to call.
         attr_accessor name: String
 
+        # For function calling, the type is always `function`.
         attr_accessor type: :function
 
+        # @param name
+        #   The name of the function to call.
+        # @param type
+        #   For function calling, the type is always `function`.
         def initialize: (name: String, ?type: :function) -> void
 
         def to_hash: -> { name: String, ?type: :function }

@@ -632,10 +632,9 @@ module OpenAI
           optional :background, enum: -> { OpenAI::Beta::BetaTool::ImageGeneration::Background }
 
           # @!attribute input_fidelity
-          #   Control how much effort the model will exert to match the style and features,
-          #   especially facial features, of input images. This parameter is only supported
-          #   for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
-          #   `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
+          #   Controls fidelity to the original input image(s). This parameter is supported
+          #   for GPT image models that support input fidelity. `gpt-image-2` and
+          #   `gpt-image-2-2026-04-21` ignore this parameter.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaTool::ImageGeneration::InputFidelity, nil]
           optional(
@@ -733,10 +732,9 @@ module OpenAI
           #     set the output format to `png` or `webp`.
           #
           #   @param input_fidelity [Symbol, OpenAI::Models::Beta::BetaTool::ImageGeneration::InputFidelity, nil]
-          #     Control how much effort the model will exert to match the style and features,
-          #     especially facial features, of input images. This parameter is only supported
-          #     for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
-          #     `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
+          #     Controls fidelity to the original input image(s). This parameter is supported
+          #     for GPT image models that support input fidelity. `gpt-image-2` and
+          #     `gpt-image-2-2026-04-21` ignore this parameter.
           #
           #   @param input_image_mask [OpenAI::Models::Beta::BetaTool::ImageGeneration::InputImageMask]
           #     Optional mask for inpainting. Contains `image_url` (string, optional) and
@@ -822,10 +820,9 @@ module OpenAI
             #   @return [Array<Symbol>]
           end
 
-          # Control how much effort the model will exert to match the style and features,
-          # especially facial features, of input images. This parameter is only supported
-          # for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
-          # `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
+          # Controls fidelity to the original input image(s). This parameter is supported
+          # for GPT image models that support input fidelity. `gpt-image-2` and
+          # `gpt-image-2-2026-04-21` ignore this parameter.
           #
           # @see OpenAI::Models::Beta::BetaTool::ImageGeneration#input_fidelity
           module InputFidelity

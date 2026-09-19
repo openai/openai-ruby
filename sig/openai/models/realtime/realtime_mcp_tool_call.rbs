@@ -14,22 +14,46 @@ module OpenAI
         }
 
       class RealtimeMcpToolCall < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the tool call.
         attr_accessor id: String
 
+        # A JSON string of the arguments passed to the tool.
         attr_accessor arguments: String
 
+        # The name of the tool that was run.
         attr_accessor name: String
 
+        # The label of the MCP server running the tool.
         attr_accessor server_label: String
 
+        # The type of the item. Always `mcp_call`.
         attr_accessor type: :mcp_call
 
+        # The ID of an associated approval request, if any.
         attr_accessor approval_request_id: String?
 
+        # The error from the tool call, if any.
         attr_accessor error: OpenAI::Models::Realtime::RealtimeMcpToolCall::error?
 
+        # The output from the tool call.
         attr_accessor output: String?
 
+        # @param id
+        #   The unique ID of the tool call.
+        # @param arguments
+        #   A JSON string of the arguments passed to the tool.
+        # @param name
+        #   The name of the tool that was run.
+        # @param server_label
+        #   The label of the MCP server running the tool.
+        # @param approval_request_id
+        #   The ID of an associated approval request, if any.
+        # @param error
+        #   The error from the tool call, if any.
+        # @param output
+        #   The output from the tool call.
+        # @param type
+        #   The type of the item. Always `mcp_call`.
         def initialize: (
           id: String,
           arguments: String,

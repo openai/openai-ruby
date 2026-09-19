@@ -8,12 +8,16 @@ module OpenAI
           }
 
         class GraderValidateResponse < OpenAI::Internal::Type::BaseModel
+          # The grader used for the fine-tuning job.
           attr_reader grader: OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader?
 
+          # The grader used for the fine-tuning job.
           def grader=: (
             OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader
           ) -> OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader
 
+          # @param grader
+          #   The grader used for the fine-tuning job.
           def initialize: (
             ?grader: OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader
           ) -> void

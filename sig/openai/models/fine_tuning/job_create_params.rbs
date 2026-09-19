@@ -19,32 +19,148 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # The name of the model to fine-tune. You can select one of the
+        # [supported models](https://developers.openai.com/api/docs/guides/model-optimization#fine-tuning-methods).
         attr_accessor model: OpenAI::Models::FineTuning::JobCreateParams::model
 
+        # The ID of an uploaded file that contains training data.
+        #
+        # See
+        # [upload file](https://developers.openai.com/api/reference/resources/files/methods/create)
+        # for how to upload a file.
+        #
+        # Your dataset must be formatted as a JSONL file. Additionally, you must upload
+        # your file with the purpose `fine-tune`.
+        #
+        # The contents of the file should differ depending on if the model uses the
+        # [chat](https://developers.openai.com/api/docs/guides/supervised-fine-tuning#formatting-your-data),
+        # [completions](https://developers.openai.com/api/docs/guides/supervised-fine-tuning#formatting-your-data)
+        # format, or if the fine-tuning method uses the
+        # [preference](https://developers.openai.com/api/docs/guides/direct-preference-optimization)
+        # format.
+        #
+        # See the
+        # [fine-tuning guide](https://developers.openai.com/api/docs/guides/model-optimization)
+        # for more details.
         attr_accessor training_file: String
 
+        # The hyperparameters used for the fine-tuning job. This value is now deprecated
+        # in favor of `method`, and should be passed in under the `method` parameter.
         attr_reader hyperparameters: OpenAI::FineTuning::JobCreateParams::Hyperparameters?
 
+        # The hyperparameters used for the fine-tuning job. This value is now deprecated
+        # in favor of `method`, and should be passed in under the `method` parameter.
         def hyperparameters=: (
           OpenAI::FineTuning::JobCreateParams::Hyperparameters
         ) -> OpenAI::FineTuning::JobCreateParams::Hyperparameters
 
+        # A list of integrations to enable for your fine-tuning job.
         attr_accessor integrations: ::Array[OpenAI::FineTuning::JobCreateParams::Integration]?
 
+        # Set of 16 key-value pairs that can be attached to an object. This can be useful
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard.
+        #
+        # Keys are strings with a maximum length of 64 characters. Values are strings with
+        # a maximum length of 512 characters.
         attr_accessor metadata: OpenAI::Models::metadata?
 
+        # The method used for fine-tuning.
         attr_reader method_: OpenAI::FineTuning::JobCreateParams::Method?
 
+        # The method used for fine-tuning.
         def method_=: (
           OpenAI::FineTuning::JobCreateParams::Method
         ) -> OpenAI::FineTuning::JobCreateParams::Method
 
+        # The seed controls the reproducibility of the job. Passing in the same seed and
+        # job parameters should produce the same results, but may differ in rare cases. If
+        # a seed is not specified, one will be generated for you.
         attr_accessor seed: Integer?
 
+        # A string of up to 64 characters that will be added to your fine-tuned model
+        # name.
+        #
+        # For example, a `suffix` of "custom-model-name" would produce a model name like
+        # `ft:gpt-4o-mini:openai:custom-model-name:7p4lURel`.
         attr_accessor suffix: String?
 
+        # The ID of an uploaded file that contains validation data.
+        #
+        # If you provide this file, the data is used to generate validation metrics
+        # periodically during fine-tuning. These metrics can be viewed in the fine-tuning
+        # results file. The same data should not be present in both train and validation
+        # files.
+        #
+        # Your dataset must be formatted as a JSONL file. You must upload your file with
+        # the purpose `fine-tune`.
+        #
+        # See the
+        # [fine-tuning guide](https://developers.openai.com/api/docs/guides/model-optimization)
+        # for more details.
         attr_accessor validation_file: String?
 
+        # @param model
+        #   The name of the model to fine-tune. You can select one of the
+        #   [supported models](https://developers.openai.com/api/docs/guides/model-optimization#fine-tuning-methods).
+        # @param training_file
+        #   The ID of an uploaded file that contains training data.
+        #
+        #   See
+        #   [upload file](https://developers.openai.com/api/reference/resources/files/methods/create)
+        #   for how to upload a file.
+        #
+        #   Your dataset must be formatted as a JSONL file. Additionally, you must upload
+        #   your file with the purpose `fine-tune`.
+        #
+        #   The contents of the file should differ depending on if the model uses the
+        #   [chat](https://developers.openai.com/api/docs/guides/supervised-fine-tuning#formatting-your-data),
+        #   [completions](https://developers.openai.com/api/docs/guides/supervised-fine-tuning#formatting-your-data)
+        #   format, or if the fine-tuning method uses the
+        #   [preference](https://developers.openai.com/api/docs/guides/direct-preference-optimization)
+        #   format.
+        #
+        #   See the
+        #   [fine-tuning guide](https://developers.openai.com/api/docs/guides/model-optimization)
+        #   for more details.
+        # @param hyperparameters
+        #   The hyperparameters used for the fine-tuning job. This value is now deprecated
+        #   in favor of `method`, and should be passed in under the `method` parameter.
+        # @param integrations
+        #   A list of integrations to enable for your fine-tuning job.
+        # @param metadata
+        #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #   for storing additional information about the object in a structured format, and
+        #   querying for objects via API or the dashboard.
+        #
+        #   Keys are strings with a maximum length of 64 characters. Values are strings with
+        #   a maximum length of 512 characters.
+        # @param method_
+        #   The method used for fine-tuning.
+        # @param seed
+        #   The seed controls the reproducibility of the job. Passing in the same seed and
+        #   job parameters should produce the same results, but may differ in rare cases. If
+        #   a seed is not specified, one will be generated for you.
+        # @param suffix
+        #   A string of up to 64 characters that will be added to your fine-tuned model
+        #   name.
+        #
+        #   For example, a `suffix` of "custom-model-name" would produce a model name like
+        #   `ft:gpt-4o-mini:openai:custom-model-name:7p4lURel`.
+        # @param validation_file
+        #   The ID of an uploaded file that contains validation data.
+        #
+        #   If you provide this file, the data is used to generate validation metrics
+        #   periodically during fine-tuning. These metrics can be viewed in the fine-tuning
+        #   results file. The same data should not be present in both train and validation
+        #   files.
+        #
+        #   Your dataset must be formatted as a JSONL file. You must upload your file with
+        #   the purpose `fine-tune`.
+        #
+        #   See the
+        #   [fine-tuning guide](https://developers.openai.com/api/docs/guides/model-optimization)
+        #   for more details.
         def initialize: (
           model: OpenAI::Models::FineTuning::JobCreateParams::model,
           training_file: String,
@@ -97,24 +213,45 @@ module OpenAI
           }
 
         class Hyperparameters < OpenAI::Internal::Type::BaseModel
+          # Number of examples in each batch. A larger batch size means that model
+          # parameters are updated less frequently, but with lower variance.
           attr_reader batch_size: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::batch_size?
 
+          # Number of examples in each batch. A larger batch size means that model
+          # parameters are updated less frequently, but with lower variance.
           def batch_size=: (
             OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::batch_size
           ) -> OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::batch_size
 
+          # Scaling factor for the learning rate. A smaller learning rate may be useful to
+          # avoid overfitting.
           attr_reader learning_rate_multiplier: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::learning_rate_multiplier?
 
+          # Scaling factor for the learning rate. A smaller learning rate may be useful to
+          # avoid overfitting.
           def learning_rate_multiplier=: (
             OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::learning_rate_multiplier
           ) -> OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::learning_rate_multiplier
 
+          # The number of epochs to train the model for. An epoch refers to one full cycle
+          # through the training dataset.
           attr_reader n_epochs: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::n_epochs?
 
+          # The number of epochs to train the model for. An epoch refers to one full cycle
+          # through the training dataset.
           def n_epochs=: (
             OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::n_epochs
           ) -> OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::n_epochs
 
+          # @param batch_size
+          #   Number of examples in each batch. A larger batch size means that model
+          #   parameters are updated less frequently, but with lower variance.
+          # @param learning_rate_multiplier
+          #   Scaling factor for the learning rate. A smaller learning rate may be useful to
+          #   avoid overfitting.
+          # @param n_epochs
+          #   The number of epochs to train the model for. An epoch refers to one full cycle
+          #   through the training dataset.
           def initialize: (
             ?batch_size: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::batch_size,
             ?learning_rate_multiplier: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::learning_rate_multiplier,
@@ -159,10 +296,24 @@ module OpenAI
           }
 
         class Integration < OpenAI::Internal::Type::BaseModel
+          # The type of integration to enable. Currently, only "wandb" (Weights and Biases)
+          # is supported.
           attr_accessor type: :wandb
 
+          # The settings for your integration with Weights and Biases. This payload
+          # specifies the project that metrics will be sent to. Optionally, you can set an
+          # explicit display name for your run, add tags to your run, and set a default
+          # entity (team, username, etc) to be associated with your run.
           attr_accessor wandb: OpenAI::FineTuning::JobCreateParams::Integration::Wandb
 
+          # @param wandb
+          #   The settings for your integration with Weights and Biases. This payload
+          #   specifies the project that metrics will be sent to. Optionally, you can set an
+          #   explicit display name for your run, add tags to your run, and set a default
+          #   entity (team, username, etc) to be associated with your run.
+          # @param type
+          #   The type of integration to enable. Currently, only "wandb" (Weights and Biases)
+          #   is supported.
           def initialize: (
             wandb: OpenAI::FineTuning::JobCreateParams::Integration::Wandb,
             ?type: :wandb
@@ -182,16 +333,41 @@ module OpenAI
             }
 
           class Wandb < OpenAI::Internal::Type::BaseModel
+            # The name of the project that the new run will be created under.
             attr_accessor project: String
 
+            # The entity to use for the run. This allows you to set the team or username of
+            # the WandB user that you would like associated with the run. If not set, the
+            # default entity for the registered WandB API key is used.
             attr_accessor entity: String?
 
+            # A display name to set for the run. If not set, we will use the Job ID as the
+            # name.
             attr_accessor name: String?
 
+            # A list of tags to be attached to the newly created run. These tags are passed
+            # through directly to WandB. Some default tags are generated by OpenAI:
+            # "openai/finetune", "openai/{base-model}", "openai/{ftjob-abcdef}".
             attr_reader tags: ::Array[String]?
 
+            # A list of tags to be attached to the newly created run. These tags are passed
+            # through directly to WandB. Some default tags are generated by OpenAI:
+            # "openai/finetune", "openai/{base-model}", "openai/{ftjob-abcdef}".
             def tags=: (::Array[String]) -> ::Array[String]
 
+            # @param project
+            #   The name of the project that the new run will be created under.
+            # @param entity
+            #   The entity to use for the run. This allows you to set the team or username of
+            #   the WandB user that you would like associated with the run. If not set, the
+            #   default entity for the registered WandB API key is used.
+            # @param name
+            #   A display name to set for the run. If not set, we will use the Job ID as the
+            #   name.
+            # @param tags
+            #   A list of tags to be attached to the newly created run. These tags are passed
+            #   through directly to WandB. Some default tags are generated by OpenAI:
+            #   "openai/finetune", "openai/{base-model}", "openai/{ftjob-abcdef}".
             def initialize: (
               project: String,
               ?entity: String?,
@@ -217,26 +393,41 @@ module OpenAI
           }
 
         class Method < OpenAI::Internal::Type::BaseModel
+          # The type of method. Is either `supervised`, `dpo`, or `reinforcement`.
           attr_accessor type: OpenAI::Models::FineTuning::JobCreateParams::Method::type_
 
+          # Configuration for the DPO fine-tuning method.
           attr_reader dpo: OpenAI::FineTuning::DpoMethod?
 
+          # Configuration for the DPO fine-tuning method.
           def dpo=: (
             OpenAI::FineTuning::DpoMethod
           ) -> OpenAI::FineTuning::DpoMethod
 
+          # Configuration for the reinforcement fine-tuning method.
           attr_reader reinforcement: OpenAI::FineTuning::ReinforcementMethod?
 
+          # Configuration for the reinforcement fine-tuning method.
           def reinforcement=: (
             OpenAI::FineTuning::ReinforcementMethod
           ) -> OpenAI::FineTuning::ReinforcementMethod
 
+          # Configuration for the supervised fine-tuning method.
           attr_reader supervised: OpenAI::FineTuning::SupervisedMethod?
 
+          # Configuration for the supervised fine-tuning method.
           def supervised=: (
             OpenAI::FineTuning::SupervisedMethod
           ) -> OpenAI::FineTuning::SupervisedMethod
 
+          # @param type
+          #   The type of method. Is either `supervised`, `dpo`, or `reinforcement`.
+          # @param dpo
+          #   Configuration for the DPO fine-tuning method.
+          # @param reinforcement
+          #   Configuration for the reinforcement fine-tuning method.
+          # @param supervised
+          #   Configuration for the supervised fine-tuning method.
           def initialize: (
             type: OpenAI::Models::FineTuning::JobCreateParams::Method::type_,
             ?dpo: OpenAI::FineTuning::DpoMethod,

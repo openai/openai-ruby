@@ -67,346 +67,591 @@ module OpenAI
           }
 
         class AuditLogListResponse < OpenAI::Internal::Type::BaseModel
+          # The ID of this log.
           attr_accessor id: String
 
+          # The Unix timestamp (in seconds) of the event.
           attr_accessor effective_at: Integer
 
+          # The event type.
           attr_accessor type: OpenAI::Models::Admin::Organization::AuditLogListResponse::type_
 
+          # The actor who performed the audit logged action.
           attr_accessor actor: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor?
 
+          # The details for events with this `type`.
           attr_reader api_key_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated?
 
+          # The details for events with this `type`.
           def api_key_created=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated
 
+          # The details for events with this `type`.
           attr_reader api_key_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyDeleted?
 
+          # The details for events with this `type`.
           def api_key_deleted=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyDeleted
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyDeleted
 
+          # The details for events with this `type`.
           attr_reader api_key_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated?
 
+          # The details for events with this `type`.
           def api_key_updated=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated
 
+          # The details for events with this `type`.
           attr_reader certificate_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateCreated?
 
+          # The details for events with this `type`.
           def certificate_created=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateCreated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateCreated
 
+          # The details for events with this `type`.
           attr_reader certificate_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateDeleted?
 
+          # The details for events with this `type`.
           def certificate_deleted=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateDeleted
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateDeleted
 
+          # The details for events with this `type`.
           attr_reader certificate_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateUpdated?
 
+          # The details for events with this `type`.
           def certificate_updated=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateUpdated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificateUpdated
 
+          # The details for events with this `type`.
           attr_reader certificates_activated: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated?
 
+          # The details for events with this `type`.
           def certificates_activated=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesActivated
 
+          # The details for events with this `type`.
           attr_reader certificates_deactivated: OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated?
 
+          # The details for events with this `type`.
           def certificates_deactivated=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::CertificatesDeactivated
 
+          # The project and fine-tuned model checkpoint that the checkpoint permission was
+          # created for.
           attr_reader checkpoint_permission_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated?
 
+          # The project and fine-tuned model checkpoint that the checkpoint permission was
+          # created for.
           def checkpoint_permission_created=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated
 
+          # The details for events with this `type`.
           attr_reader checkpoint_permission_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted?
 
+          # The details for events with this `type`.
           def checkpoint_permission_deleted=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionDeleted
 
+          # The details for events with this `type`.
           attr_reader external_key_registered: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRegistered?
 
+          # The details for events with this `type`.
           def external_key_registered=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRegistered
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRegistered
 
+          # The details for events with this `type`.
           attr_reader external_key_removed: OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved?
 
+          # The details for events with this `type`.
           def external_key_removed=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ExternalKeyRemoved
 
+          # The details for events with this `type`.
           attr_reader group_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated?
 
+          # The details for events with this `type`.
           def group_created=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated
 
+          # The details for events with this `type`.
           attr_reader group_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted?
 
+          # The details for events with this `type`.
           def group_deleted=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupDeleted
 
+          # The details for events with this `type`.
           attr_reader group_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated?
 
+          # The details for events with this `type`.
           def group_updated=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated
 
+          # The details for events with this `type`.
           attr_reader invite_accepted: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteAccepted?
 
+          # The details for events with this `type`.
           def invite_accepted=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteAccepted
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteAccepted
 
+          # The details for events with this `type`.
           attr_reader invite_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteDeleted?
 
+          # The details for events with this `type`.
           def invite_deleted=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteDeleted
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteDeleted
 
+          # The details for events with this `type`.
           attr_reader invite_sent: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent?
 
+          # The details for events with this `type`.
           def invite_sent=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent
 
+          # The details for events with this `type`.
           attr_reader ip_allowlist_config_activated: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated?
 
+          # The details for events with this `type`.
           def ip_allowlist_config_activated=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated
 
+          # The details for events with this `type`.
           attr_reader ip_allowlist_config_deactivated: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated?
 
+          # The details for events with this `type`.
           def ip_allowlist_config_deactivated=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated
 
+          # The details for events with this `type`.
           attr_reader ip_allowlist_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistCreated?
 
+          # The details for events with this `type`.
           def ip_allowlist_created=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistCreated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistCreated
 
+          # The details for events with this `type`.
           attr_reader ip_allowlist_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistDeleted?
 
+          # The details for events with this `type`.
           def ip_allowlist_deleted=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistDeleted
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistDeleted
 
+          # The details for events with this `type`.
           attr_reader ip_allowlist_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistUpdated?
 
+          # The details for events with this `type`.
           def ip_allowlist_updated=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistUpdated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistUpdated
 
+          # The details for events with this `type`.
           attr_reader login_failed: OpenAI::Models::Admin::Organization::AuditLogListResponse::LoginFailed?
 
+          # The details for events with this `type`.
           def login_failed=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::LoginFailed
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::LoginFailed
 
+          # This event has no additional fields beyond the standard audit log attributes.
           attr_reader login_succeeded: top?
 
+          # This event has no additional fields beyond the standard audit log attributes.
           def login_succeeded=: (top) -> top
 
+          # The details for events with this `type`.
           attr_reader logout_failed: OpenAI::Models::Admin::Organization::AuditLogListResponse::LogoutFailed?
 
+          # The details for events with this `type`.
           def logout_failed=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::LogoutFailed
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::LogoutFailed
 
+          # This event has no additional fields beyond the standard audit log attributes.
           attr_reader logout_succeeded: top?
 
+          # This event has no additional fields beyond the standard audit log attributes.
           def logout_succeeded=: (top) -> top
 
+          # The details for events with this `type`.
           attr_reader organization_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated?
 
+          # The details for events with this `type`.
           def organization_updated=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated
 
+          # The project that the action was scoped to. Absent for actions not scoped to
+          # projects. Note that any admin actions taken via Admin API keys are associated
+          # with the default project.
           attr_reader project: OpenAI::Models::Admin::Organization::AuditLogListResponse::Project?
 
+          # The project that the action was scoped to. Absent for actions not scoped to
+          # projects. Note that any admin actions taken via Admin API keys are associated
+          # with the default project.
           def project=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::Project
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::Project
 
+          # The details for events with this `type`.
           attr_reader project_archived: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectArchived?
 
+          # The details for events with this `type`.
           def project_archived=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectArchived
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectArchived
 
+          # The details for events with this `type`.
           attr_reader project_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated?
 
+          # The details for events with this `type`.
           def project_created=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated
 
+          # The details for events with this `type`.
           attr_reader project_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectDeleted?
 
+          # The details for events with this `type`.
           def project_deleted=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectDeleted
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectDeleted
 
+          # The details for events with this `type`.
           attr_reader project_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated?
 
+          # The details for events with this `type`.
           def project_updated=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated
 
+          # The details for events with this `type`.
           attr_reader rate_limit_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitDeleted?
 
+          # The details for events with this `type`.
           def rate_limit_deleted=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitDeleted
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitDeleted
 
+          # The details for events with this `type`.
           attr_reader rate_limit_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated?
 
+          # The details for events with this `type`.
           def rate_limit_updated=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated
 
+          # The details for events with this `type`.
           attr_reader role_assignment_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentCreated?
 
+          # The details for events with this `type`.
           def role_assignment_created=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentCreated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentCreated
 
+          # The details for events with this `type`.
           attr_reader role_assignment_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted?
 
+          # The details for events with this `type`.
           def role_assignment_deleted=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleAssignmentDeleted
 
+          # The details for events with this `type`.
           attr_reader role_bound_to_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource?
 
+          # The details for events with this `type`.
           def role_bound_to_resource=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource
 
+          # The details for events with this `type`.
           attr_reader role_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated?
 
+          # The details for events with this `type`.
           def role_created=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleCreated
 
+          # The details for events with this `type`.
           attr_reader role_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted?
 
+          # The details for events with this `type`.
           def role_deleted=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleDeleted
 
+          # The details for events with this `type`.
           attr_reader role_unbound_from_resource: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource?
 
+          # The details for events with this `type`.
           def role_unbound_from_resource=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource
 
+          # The details for events with this `type`.
           attr_reader role_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated?
 
+          # The details for events with this `type`.
           def role_updated=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated
 
+          # The details for events with this `type`.
           attr_reader scim_disabled: OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimDisabled?
 
+          # The details for events with this `type`.
           def scim_disabled=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimDisabled
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimDisabled
 
+          # The details for events with this `type`.
           attr_reader scim_enabled: OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimEnabled?
 
+          # The details for events with this `type`.
           def scim_enabled=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimEnabled
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ScimEnabled
 
+          # The details for events with this `type`.
           attr_reader service_account_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated?
 
+          # The details for events with this `type`.
           def service_account_created=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated
 
+          # The details for events with this `type`.
           attr_reader service_account_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted?
 
+          # The details for events with this `type`.
           def service_account_deleted=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountDeleted
 
+          # The details for events with this `type`.
           attr_reader service_account_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated?
 
+          # The details for events with this `type`.
           def service_account_updated=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated
 
+          # The details for events with this `type`.
           attr_reader user_added: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded?
 
+          # The details for events with this `type`.
           def user_added=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded
 
+          # The details for events with this `type`.
           attr_reader user_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted?
 
+          # The details for events with this `type`.
           def user_deleted=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::UserDeleted
 
+          # The details for events with this `type`.
           attr_reader user_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated?
 
+          # The details for events with this `type`.
           def user_updated=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated
 
+          # The details for events with this `type`.
           attr_reader workload_identity_provider_mapping_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated?
 
+          # The details for events with this `type`.
           def workload_identity_provider_mapping_created=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingCreated
 
+          # The details for events with this `type`.
           attr_reader workload_identity_provider_mapping_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted?
 
+          # The details for events with this `type`.
           def workload_identity_provider_mapping_deleted=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingDeleted
 
+          # The details for events with this `type`.
           attr_reader workload_identity_provider_mapping_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated?
 
+          # The details for events with this `type`.
           def workload_identity_provider_mapping_updated=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderMappingUpdated
 
+          # The details for events with this `type`.
           attr_reader workload_identity_provider_created: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated?
 
+          # The details for events with this `type`.
           def workload_identity_provider_created=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderCreated
 
+          # The details for events with this `type`.
           attr_reader workload_identity_provider_deleted: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted?
 
+          # The details for events with this `type`.
           def workload_identity_provider_deleted=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderDeleted
 
+          # The details for events with this `type`.
           attr_reader workload_identity_provider_updated: OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated?
 
+          # The details for events with this `type`.
           def workload_identity_provider_updated=: (
             OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated
           ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::WorkloadIdentityProviderUpdated
 
+          # @param id
+          #   The ID of this log.
+          # @param effective_at
+          #   The Unix timestamp (in seconds) of the event.
+          # @param type
+          #   The event type.
+          # @param actor
+          #   The actor who performed the audit logged action.
+          # @param api_key_created
+          #   The details for events with this `type`.
+          # @param api_key_deleted
+          #   The details for events with this `type`.
+          # @param api_key_updated
+          #   The details for events with this `type`.
+          # @param certificate_created
+          #   The details for events with this `type`.
+          # @param certificate_deleted
+          #   The details for events with this `type`.
+          # @param certificate_updated
+          #   The details for events with this `type`.
+          # @param certificates_activated
+          #   The details for events with this `type`.
+          # @param certificates_deactivated
+          #   The details for events with this `type`.
+          # @param checkpoint_permission_created
+          #   The project and fine-tuned model checkpoint that the checkpoint permission was
+          #   created for.
+          # @param checkpoint_permission_deleted
+          #   The details for events with this `type`.
+          # @param external_key_registered
+          #   The details for events with this `type`.
+          # @param external_key_removed
+          #   The details for events with this `type`.
+          # @param group_created
+          #   The details for events with this `type`.
+          # @param group_deleted
+          #   The details for events with this `type`.
+          # @param group_updated
+          #   The details for events with this `type`.
+          # @param invite_accepted
+          #   The details for events with this `type`.
+          # @param invite_deleted
+          #   The details for events with this `type`.
+          # @param invite_sent
+          #   The details for events with this `type`.
+          # @param ip_allowlist_config_activated
+          #   The details for events with this `type`.
+          # @param ip_allowlist_config_deactivated
+          #   The details for events with this `type`.
+          # @param ip_allowlist_created
+          #   The details for events with this `type`.
+          # @param ip_allowlist_deleted
+          #   The details for events with this `type`.
+          # @param ip_allowlist_updated
+          #   The details for events with this `type`.
+          # @param login_failed
+          #   The details for events with this `type`.
+          # @param login_succeeded
+          #   This event has no additional fields beyond the standard audit log attributes.
+          # @param logout_failed
+          #   The details for events with this `type`.
+          # @param logout_succeeded
+          #   This event has no additional fields beyond the standard audit log attributes.
+          # @param organization_updated
+          #   The details for events with this `type`.
+          # @param project
+          #   The project that the action was scoped to. Absent for actions not scoped to
+          #   projects. Note that any admin actions taken via Admin API keys are associated
+          #   with the default project.
+          # @param project_archived
+          #   The details for events with this `type`.
+          # @param project_created
+          #   The details for events with this `type`.
+          # @param project_deleted
+          #   The details for events with this `type`.
+          # @param project_updated
+          #   The details for events with this `type`.
+          # @param rate_limit_deleted
+          #   The details for events with this `type`.
+          # @param rate_limit_updated
+          #   The details for events with this `type`.
+          # @param role_assignment_created
+          #   The details for events with this `type`.
+          # @param role_assignment_deleted
+          #   The details for events with this `type`.
+          # @param role_bound_to_resource
+          #   The details for events with this `type`.
+          # @param role_created
+          #   The details for events with this `type`.
+          # @param role_deleted
+          #   The details for events with this `type`.
+          # @param role_unbound_from_resource
+          #   The details for events with this `type`.
+          # @param role_updated
+          #   The details for events with this `type`.
+          # @param scim_disabled
+          #   The details for events with this `type`.
+          # @param scim_enabled
+          #   The details for events with this `type`.
+          # @param service_account_created
+          #   The details for events with this `type`.
+          # @param service_account_deleted
+          #   The details for events with this `type`.
+          # @param service_account_updated
+          #   The details for events with this `type`.
+          # @param user_added
+          #   The details for events with this `type`.
+          # @param user_deleted
+          #   The details for events with this `type`.
+          # @param user_updated
+          #   The details for events with this `type`.
+          # @param workload_identity_provider_mapping_created
+          #   The details for events with this `type`.
+          # @param workload_identity_provider_mapping_deleted
+          #   The details for events with this `type`.
+          # @param workload_identity_provider_mapping_updated
+          #   The details for events with this `type`.
+          # @param workload_identity_provider_created
+          #   The details for events with this `type`.
+          # @param workload_identity_provider_deleted
+          #   The details for events with this `type`.
+          # @param workload_identity_provider_updated
+          #   The details for events with this `type`.
           def initialize: (
             id: String,
             effective_at: Integer,
@@ -844,24 +1089,36 @@ module OpenAI
             }
 
           class Actor < OpenAI::Internal::Type::BaseModel
+            # The API Key used to perform the audit logged action.
             attr_reader api_key: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey?
 
+            # The API Key used to perform the audit logged action.
             def api_key=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey
 
+            # The session in which the audit logged action was performed.
             attr_reader session: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session?
 
+            # The session in which the audit logged action was performed.
             def session=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session
 
+            # The type of actor. Is either `session` or `api_key`.
             attr_reader type: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::type_?
 
+            # The type of actor. Is either `session` or `api_key`.
             def type=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::type_
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::type_
 
+            # @param api_key
+            #   The API Key used to perform the audit logged action.
+            # @param session
+            #   The session in which the audit logged action was performed.
+            # @param type
+            #   The type of actor. Is either `session` or `api_key`.
             def initialize: (
               ?api_key: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey,
               ?session: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session,
@@ -883,28 +1140,44 @@ module OpenAI
               }
 
             class APIKey < OpenAI::Internal::Type::BaseModel
+              # The tracking id of the API key.
               attr_reader id: String?
 
+              # The tracking id of the API key.
               def id=: (String) -> String
 
+              # The service account that performed the audit logged action.
               attr_reader service_account: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::ServiceAccount?
 
+              # The service account that performed the audit logged action.
               def service_account=: (
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::ServiceAccount
               ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::ServiceAccount
 
+              # The type of API key. Can be either `user` or `service_account`.
               attr_reader type: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::type_?
 
+              # The type of API key. Can be either `user` or `service_account`.
               def type=: (
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::type_
               ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::type_
 
+              # The user who performed the audit logged action.
               attr_reader user: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::User?
 
+              # The user who performed the audit logged action.
               def user=: (
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::User
               ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::User
 
+              # @param id
+              #   The tracking id of the API key.
+              # @param service_account
+              #   The service account that performed the audit logged action.
+              # @param type
+              #   The type of API key. Can be either `user` or `service_account`.
+              # @param user
+              #   The user who performed the audit logged action.
               def initialize: (
                 ?id: String,
                 ?service_account: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::APIKey::ServiceAccount,
@@ -922,10 +1195,14 @@ module OpenAI
               type service_account = { ?id: String }
 
               class ServiceAccount < OpenAI::Internal::Type::BaseModel
+                # The service account id.
                 attr_reader id: String?
 
+                # The service account id.
                 def id=: (String) -> String
 
+                # @param id
+                #   The service account id.
                 def initialize: (?id: String) -> void
 
                 def to_hash: -> { ?id: String }
@@ -945,14 +1222,22 @@ module OpenAI
               type user = { ?id: String, ?email: String }
 
               class User < OpenAI::Internal::Type::BaseModel
+                # The user id.
                 attr_reader id: String?
 
+                # The user id.
                 def id=: (String) -> String
 
+                # The user email.
                 attr_reader email: String?
 
+                # The user email.
                 def email=: (String) -> String
 
+                # @param id
+                #   The user id.
+                # @param email
+                #   The user email.
                 def initialize: (?id: String, ?email: String) -> void
 
                 def to_hash: -> { ?id: String, ?email: String }
@@ -966,16 +1251,24 @@ module OpenAI
               }
 
             class Session < OpenAI::Internal::Type::BaseModel
+              # The IP address from which the action was performed.
               attr_reader ip_address: String?
 
+              # The IP address from which the action was performed.
               def ip_address=: (String) -> String
 
+              # The user who performed the audit logged action.
               attr_reader user: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session::User?
 
+              # The user who performed the audit logged action.
               def user=: (
                 OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session::User
               ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session::User
 
+              # @param ip_address
+              #   The IP address from which the action was performed.
+              # @param user
+              #   The user who performed the audit logged action.
               def initialize: (
                 ?ip_address: String,
                 ?user: OpenAI::Models::Admin::Organization::AuditLogListResponse::Actor::Session::User
@@ -989,14 +1282,22 @@ module OpenAI
               type user = { ?id: String, ?email: String }
 
               class User < OpenAI::Internal::Type::BaseModel
+                # The user id.
                 attr_reader id: String?
 
+                # The user id.
                 def id=: (String) -> String
 
+                # The user email.
                 attr_reader email: String?
 
+                # The user email.
                 def email=: (String) -> String
 
+                # @param id
+                #   The user id.
+                # @param email
+                #   The user email.
                 def initialize: (?id: String, ?email: String) -> void
 
                 def to_hash: -> { ?id: String, ?email: String }
@@ -1022,16 +1323,24 @@ module OpenAI
             }
 
           class APIKeyCreated < OpenAI::Internal::Type::BaseModel
+            # The tracking ID of the API key.
             attr_reader id: String?
 
+            # The tracking ID of the API key.
             def id=: (String) -> String
 
+            # The payload used to create the API key.
             attr_reader data: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated::Data?
 
+            # The payload used to create the API key.
             def data=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated::Data
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated::Data
 
+            # @param id
+            #   The tracking ID of the API key.
+            # @param data
+            #   The payload used to create the API key.
             def initialize: (
               ?id: String,
               ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyCreated::Data
@@ -1045,10 +1354,14 @@ module OpenAI
             type data = { ?scopes: ::Array[String] }
 
             class Data < OpenAI::Internal::Type::BaseModel
+              # A list of scopes allowed for the API key, e.g. `["api.model.request"]`
               attr_reader scopes: ::Array[String]?
 
+              # A list of scopes allowed for the API key, e.g. `["api.model.request"]`
               def scopes=: (::Array[String]) -> ::Array[String]
 
+              # @param scopes
+              #   A list of scopes allowed for the API key, e.g. `["api.model.request"]`
               def initialize: (?scopes: ::Array[String]) -> void
 
               def to_hash: -> { ?scopes: ::Array[String] }
@@ -1058,10 +1371,14 @@ module OpenAI
           type api_key_deleted = { ?id: String }
 
           class APIKeyDeleted < OpenAI::Internal::Type::BaseModel
+            # The tracking ID of the API key.
             attr_reader id: String?
 
+            # The tracking ID of the API key.
             def id=: (String) -> String
 
+            # @param id
+            #   The tracking ID of the API key.
             def initialize: (?id: String) -> void
 
             def to_hash: -> { ?id: String }
@@ -1074,16 +1391,24 @@ module OpenAI
             }
 
           class APIKeyUpdated < OpenAI::Internal::Type::BaseModel
+            # The tracking ID of the API key.
             attr_reader id: String?
 
+            # The tracking ID of the API key.
             def id=: (String) -> String
 
+            # The payload used to update the API key.
             attr_reader changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated::ChangesRequested?
 
+            # The payload used to update the API key.
             def changes_requested=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated::ChangesRequested
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated::ChangesRequested
 
+            # @param id
+            #   The tracking ID of the API key.
+            # @param changes_requested
+            #   The payload used to update the API key.
             def initialize: (
               ?id: String,
               ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated::ChangesRequested
@@ -1097,10 +1422,14 @@ module OpenAI
             type changes_requested = { ?scopes: ::Array[String] }
 
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
+              # A list of scopes allowed for the API key, e.g. `["api.model.request"]`
               attr_reader scopes: ::Array[String]?
 
+              # A list of scopes allowed for the API key, e.g. `["api.model.request"]`
               def scopes=: (::Array[String]) -> ::Array[String]
 
+              # @param scopes
+              #   A list of scopes allowed for the API key, e.g. `["api.model.request"]`
               def initialize: (?scopes: ::Array[String]) -> void
 
               def to_hash: -> { ?scopes: ::Array[String] }
@@ -1110,14 +1439,22 @@ module OpenAI
           type certificate_created = { ?id: String, ?name: String }
 
           class CertificateCreated < OpenAI::Internal::Type::BaseModel
+            # The certificate ID.
             attr_reader id: String?
 
+            # The certificate ID.
             def id=: (String) -> String
 
+            # The name of the certificate.
             attr_reader name: String?
 
+            # The name of the certificate.
             def name=: (String) -> String
 
+            # @param id
+            #   The certificate ID.
+            # @param name
+            #   The name of the certificate.
             def initialize: (?id: String, ?name: String) -> void
 
             def to_hash: -> { ?id: String, ?name: String }
@@ -1127,18 +1464,30 @@ module OpenAI
             { ?id: String, ?certificate: String, ?name: String }
 
           class CertificateDeleted < OpenAI::Internal::Type::BaseModel
+            # The certificate ID.
             attr_reader id: String?
 
+            # The certificate ID.
             def id=: (String) -> String
 
+            # The certificate content in PEM format.
             attr_reader certificate: String?
 
+            # The certificate content in PEM format.
             def certificate=: (String) -> String
 
+            # The name of the certificate.
             attr_reader name: String?
 
+            # The name of the certificate.
             def name=: (String) -> String
 
+            # @param id
+            #   The certificate ID.
+            # @param certificate
+            #   The certificate content in PEM format.
+            # @param name
+            #   The name of the certificate.
             def initialize: (
               ?id: String,
               ?certificate: String,
@@ -1151,14 +1500,22 @@ module OpenAI
           type certificate_updated = { ?id: String, ?name: String }
 
           class CertificateUpdated < OpenAI::Internal::Type::BaseModel
+            # The certificate ID.
             attr_reader id: String?
 
+            # The certificate ID.
             def id=: (String) -> String
 
+            # The name of the certificate.
             attr_reader name: String?
 
+            # The name of the certificate.
             def name=: (String) -> String
 
+            # @param id
+            #   The certificate ID.
+            # @param name
+            #   The name of the certificate.
             def initialize: (?id: String, ?name: String) -> void
 
             def to_hash: -> { ?id: String, ?name: String }
@@ -1187,14 +1544,22 @@ module OpenAI
             type certificate = { ?id: String, ?name: String }
 
             class Certificate < OpenAI::Internal::Type::BaseModel
+              # The certificate ID.
               attr_reader id: String?
 
+              # The certificate ID.
               def id=: (String) -> String
 
+              # The name of the certificate.
               attr_reader name: String?
 
+              # The name of the certificate.
               def name=: (String) -> String
 
+              # @param id
+              #   The certificate ID.
+              # @param name
+              #   The name of the certificate.
               def initialize: (?id: String, ?name: String) -> void
 
               def to_hash: -> { ?id: String, ?name: String }
@@ -1224,14 +1589,22 @@ module OpenAI
             type certificate = { ?id: String, ?name: String }
 
             class Certificate < OpenAI::Internal::Type::BaseModel
+              # The certificate ID.
               attr_reader id: String?
 
+              # The certificate ID.
               def id=: (String) -> String
 
+              # The name of the certificate.
               attr_reader name: String?
 
+              # The name of the certificate.
               def name=: (String) -> String
 
+              # @param id
+              #   The certificate ID.
+              # @param name
+              #   The name of the certificate.
               def initialize: (?id: String, ?name: String) -> void
 
               def to_hash: -> { ?id: String, ?name: String }
@@ -1245,16 +1618,24 @@ module OpenAI
             }
 
           class CheckpointPermissionCreated < OpenAI::Internal::Type::BaseModel
+            # The ID of the checkpoint permission.
             attr_reader id: String?
 
+            # The ID of the checkpoint permission.
             def id=: (String) -> String
 
+            # The payload used to create the checkpoint permission.
             attr_reader data: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated::Data?
 
+            # The payload used to create the checkpoint permission.
             def data=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated::Data
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated::Data
 
+            # @param id
+            #   The ID of the checkpoint permission.
+            # @param data
+            #   The payload used to create the checkpoint permission.
             def initialize: (
               ?id: String,
               ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::CheckpointPermissionCreated::Data
@@ -1269,14 +1650,22 @@ module OpenAI
               { ?fine_tuned_model_checkpoint: String, ?project_id: String }
 
             class Data < OpenAI::Internal::Type::BaseModel
+              # The ID of the fine-tuned model checkpoint.
               attr_reader fine_tuned_model_checkpoint: String?
 
+              # The ID of the fine-tuned model checkpoint.
               def fine_tuned_model_checkpoint=: (String) -> String
 
+              # The ID of the project that the checkpoint permission was created for.
               attr_reader project_id: String?
 
+              # The ID of the project that the checkpoint permission was created for.
               def project_id=: (String) -> String
 
+              # @param fine_tuned_model_checkpoint
+              #   The ID of the fine-tuned model checkpoint.
+              # @param project_id
+              #   The ID of the project that the checkpoint permission was created for.
               def initialize: (
                 ?fine_tuned_model_checkpoint: String,
                 ?project_id: String
@@ -1292,10 +1681,14 @@ module OpenAI
           type checkpoint_permission_deleted = { ?id: String }
 
           class CheckpointPermissionDeleted < OpenAI::Internal::Type::BaseModel
+            # The ID of the checkpoint permission.
             attr_reader id: String?
 
+            # The ID of the checkpoint permission.
             def id=: (String) -> String
 
+            # @param id
+            #   The ID of the checkpoint permission.
             def initialize: (?id: String) -> void
 
             def to_hash: -> { ?id: String }
@@ -1304,14 +1697,22 @@ module OpenAI
           type external_key_registered = { ?id: String, ?data: top }
 
           class ExternalKeyRegistered < OpenAI::Internal::Type::BaseModel
+            # The ID of the external key configuration.
             attr_reader id: String?
 
+            # The ID of the external key configuration.
             def id=: (String) -> String
 
+            # The configuration for the external key.
             attr_reader data: top?
 
+            # The configuration for the external key.
             def data=: (top) -> top
 
+            # @param id
+            #   The ID of the external key configuration.
+            # @param data
+            #   The configuration for the external key.
             def initialize: (?id: String, ?data: top) -> void
 
             def to_hash: -> { ?id: String, ?data: top }
@@ -1320,10 +1721,14 @@ module OpenAI
           type external_key_removed = { ?id: String }
 
           class ExternalKeyRemoved < OpenAI::Internal::Type::BaseModel
+            # The ID of the external key configuration.
             attr_reader id: String?
 
+            # The ID of the external key configuration.
             def id=: (String) -> String
 
+            # @param id
+            #   The ID of the external key configuration.
             def initialize: (?id: String) -> void
 
             def to_hash: -> { ?id: String }
@@ -1336,16 +1741,24 @@ module OpenAI
             }
 
           class GroupCreated < OpenAI::Internal::Type::BaseModel
+            # The ID of the group.
             attr_reader id: String?
 
+            # The ID of the group.
             def id=: (String) -> String
 
+            # Information about the created group.
             attr_reader data: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated::Data?
 
+            # Information about the created group.
             def data=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated::Data
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated::Data
 
+            # @param id
+            #   The ID of the group.
+            # @param data
+            #   Information about the created group.
             def initialize: (
               ?id: String,
               ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupCreated::Data
@@ -1359,10 +1772,14 @@ module OpenAI
             type data = { ?group_name: String }
 
             class Data < OpenAI::Internal::Type::BaseModel
+              # The group name.
               attr_reader group_name: String?
 
+              # The group name.
               def group_name=: (String) -> String
 
+              # @param group_name
+              #   The group name.
               def initialize: (?group_name: String) -> void
 
               def to_hash: -> { ?group_name: String }
@@ -1372,10 +1789,14 @@ module OpenAI
           type group_deleted = { ?id: String }
 
           class GroupDeleted < OpenAI::Internal::Type::BaseModel
+            # The ID of the group.
             attr_reader id: String?
 
+            # The ID of the group.
             def id=: (String) -> String
 
+            # @param id
+            #   The ID of the group.
             def initialize: (?id: String) -> void
 
             def to_hash: -> { ?id: String }
@@ -1388,16 +1809,24 @@ module OpenAI
             }
 
           class GroupUpdated < OpenAI::Internal::Type::BaseModel
+            # The ID of the group.
             attr_reader id: String?
 
+            # The ID of the group.
             def id=: (String) -> String
 
+            # The payload used to update the group.
             attr_reader changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated::ChangesRequested?
 
+            # The payload used to update the group.
             def changes_requested=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated::ChangesRequested
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated::ChangesRequested
 
+            # @param id
+            #   The ID of the group.
+            # @param changes_requested
+            #   The payload used to update the group.
             def initialize: (
               ?id: String,
               ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::GroupUpdated::ChangesRequested
@@ -1411,10 +1840,14 @@ module OpenAI
             type changes_requested = { ?group_name: String }
 
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
+              # The updated group name.
               attr_reader group_name: String?
 
+              # The updated group name.
               def group_name=: (String) -> String
 
+              # @param group_name
+              #   The updated group name.
               def initialize: (?group_name: String) -> void
 
               def to_hash: -> { ?group_name: String }
@@ -1424,10 +1857,14 @@ module OpenAI
           type invite_accepted = { ?id: String }
 
           class InviteAccepted < OpenAI::Internal::Type::BaseModel
+            # The ID of the invite.
             attr_reader id: String?
 
+            # The ID of the invite.
             def id=: (String) -> String
 
+            # @param id
+            #   The ID of the invite.
             def initialize: (?id: String) -> void
 
             def to_hash: -> { ?id: String }
@@ -1436,10 +1873,14 @@ module OpenAI
           type invite_deleted = { ?id: String }
 
           class InviteDeleted < OpenAI::Internal::Type::BaseModel
+            # The ID of the invite.
             attr_reader id: String?
 
+            # The ID of the invite.
             def id=: (String) -> String
 
+            # @param id
+            #   The ID of the invite.
             def initialize: (?id: String) -> void
 
             def to_hash: -> { ?id: String }
@@ -1452,16 +1893,24 @@ module OpenAI
             }
 
           class InviteSent < OpenAI::Internal::Type::BaseModel
+            # The ID of the invite.
             attr_reader id: String?
 
+            # The ID of the invite.
             def id=: (String) -> String
 
+            # The payload used to create the invite.
             attr_reader data: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent::Data?
 
+            # The payload used to create the invite.
             def data=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent::Data
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent::Data
 
+            # @param id
+            #   The ID of the invite.
+            # @param data
+            #   The payload used to create the invite.
             def initialize: (
               ?id: String,
               ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::InviteSent::Data
@@ -1475,14 +1924,22 @@ module OpenAI
             type data = { ?email: String, ?role: String }
 
             class Data < OpenAI::Internal::Type::BaseModel
+              # The email invited to the organization.
               attr_reader email: String?
 
+              # The email invited to the organization.
               def email=: (String) -> String
 
+              # The role the email was invited to be. Is either `owner` or `member`.
               attr_reader role: String?
 
+              # The role the email was invited to be. Is either `owner` or `member`.
               def role=: (String) -> String
 
+              # @param email
+              #   The email invited to the organization.
+              # @param role
+              #   The role the email was invited to be. Is either `owner` or `member`.
               def initialize: (?email: String, ?role: String) -> void
 
               def to_hash: -> { ?email: String, ?role: String }
@@ -1495,12 +1952,16 @@ module OpenAI
             }
 
           class IPAllowlistConfigActivated < OpenAI::Internal::Type::BaseModel
+            # The configurations that were activated.
             attr_reader configs: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated::Config]?
 
+            # The configurations that were activated.
             def configs=: (
               ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated::Config]
             ) -> ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated::Config]
 
+            # @param configs
+            #   The configurations that were activated.
             def initialize: (
               ?configs: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigActivated::Config]
             ) -> void
@@ -1512,14 +1973,22 @@ module OpenAI
             type config = { ?id: String, ?name: String }
 
             class Config < OpenAI::Internal::Type::BaseModel
+              # The ID of the IP allowlist configuration.
               attr_reader id: String?
 
+              # The ID of the IP allowlist configuration.
               def id=: (String) -> String
 
+              # The name of the IP allowlist configuration.
               attr_reader name: String?
 
+              # The name of the IP allowlist configuration.
               def name=: (String) -> String
 
+              # @param id
+              #   The ID of the IP allowlist configuration.
+              # @param name
+              #   The name of the IP allowlist configuration.
               def initialize: (?id: String, ?name: String) -> void
 
               def to_hash: -> { ?id: String, ?name: String }
@@ -1532,12 +2001,16 @@ module OpenAI
             }
 
           class IPAllowlistConfigDeactivated < OpenAI::Internal::Type::BaseModel
+            # The configurations that were deactivated.
             attr_reader configs: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated::Config]?
 
+            # The configurations that were deactivated.
             def configs=: (
               ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated::Config]
             ) -> ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated::Config]
 
+            # @param configs
+            #   The configurations that were deactivated.
             def initialize: (
               ?configs: ::Array[OpenAI::Models::Admin::Organization::AuditLogListResponse::IPAllowlistConfigDeactivated::Config]
             ) -> void
@@ -1549,14 +2022,22 @@ module OpenAI
             type config = { ?id: String, ?name: String }
 
             class Config < OpenAI::Internal::Type::BaseModel
+              # The ID of the IP allowlist configuration.
               attr_reader id: String?
 
+              # The ID of the IP allowlist configuration.
               def id=: (String) -> String
 
+              # The name of the IP allowlist configuration.
               attr_reader name: String?
 
+              # The name of the IP allowlist configuration.
               def name=: (String) -> String
 
+              # @param id
+              #   The ID of the IP allowlist configuration.
+              # @param name
+              #   The name of the IP allowlist configuration.
               def initialize: (?id: String, ?name: String) -> void
 
               def to_hash: -> { ?id: String, ?name: String }
@@ -1567,18 +2048,30 @@ module OpenAI
             { ?id: String, ?allowed_ips: ::Array[String], ?name: String }
 
           class IPAllowlistCreated < OpenAI::Internal::Type::BaseModel
+            # The ID of the IP allowlist configuration.
             attr_reader id: String?
 
+            # The ID of the IP allowlist configuration.
             def id=: (String) -> String
 
+            # The IP addresses or CIDR ranges included in the configuration.
             attr_reader allowed_ips: ::Array[String]?
 
+            # The IP addresses or CIDR ranges included in the configuration.
             def allowed_ips=: (::Array[String]) -> ::Array[String]
 
+            # The name of the IP allowlist configuration.
             attr_reader name: String?
 
+            # The name of the IP allowlist configuration.
             def name=: (String) -> String
 
+            # @param id
+            #   The ID of the IP allowlist configuration.
+            # @param allowed_ips
+            #   The IP addresses or CIDR ranges included in the configuration.
+            # @param name
+            #   The name of the IP allowlist configuration.
             def initialize: (
               ?id: String,
               ?allowed_ips: ::Array[String],
@@ -1596,18 +2089,30 @@ module OpenAI
             { ?id: String, ?allowed_ips: ::Array[String], ?name: String }
 
           class IPAllowlistDeleted < OpenAI::Internal::Type::BaseModel
+            # The ID of the IP allowlist configuration.
             attr_reader id: String?
 
+            # The ID of the IP allowlist configuration.
             def id=: (String) -> String
 
+            # The IP addresses or CIDR ranges that were in the configuration.
             attr_reader allowed_ips: ::Array[String]?
 
+            # The IP addresses or CIDR ranges that were in the configuration.
             def allowed_ips=: (::Array[String]) -> ::Array[String]
 
+            # The name of the IP allowlist configuration.
             attr_reader name: String?
 
+            # The name of the IP allowlist configuration.
             def name=: (String) -> String
 
+            # @param id
+            #   The ID of the IP allowlist configuration.
+            # @param allowed_ips
+            #   The IP addresses or CIDR ranges that were in the configuration.
+            # @param name
+            #   The name of the IP allowlist configuration.
             def initialize: (
               ?id: String,
               ?allowed_ips: ::Array[String],
@@ -1625,14 +2130,22 @@ module OpenAI
             { ?id: String, ?allowed_ips: ::Array[String] }
 
           class IPAllowlistUpdated < OpenAI::Internal::Type::BaseModel
+            # The ID of the IP allowlist configuration.
             attr_reader id: String?
 
+            # The ID of the IP allowlist configuration.
             def id=: (String) -> String
 
+            # The updated set of IP addresses or CIDR ranges in the configuration.
             attr_reader allowed_ips: ::Array[String]?
 
+            # The updated set of IP addresses or CIDR ranges in the configuration.
             def allowed_ips=: (::Array[String]) -> ::Array[String]
 
+            # @param id
+            #   The ID of the IP allowlist configuration.
+            # @param allowed_ips
+            #   The updated set of IP addresses or CIDR ranges in the configuration.
             def initialize: (?id: String, ?allowed_ips: ::Array[String]) -> void
 
             def to_hash: -> { ?id: String, ?allowed_ips: ::Array[String] }
@@ -1641,14 +2154,22 @@ module OpenAI
           type login_failed = { ?error_code: String, ?error_message: String }
 
           class LoginFailed < OpenAI::Internal::Type::BaseModel
+            # The error code of the failure.
             attr_reader error_code: String?
 
+            # The error code of the failure.
             def error_code=: (String) -> String
 
+            # The error message of the failure.
             attr_reader error_message: String?
 
+            # The error message of the failure.
             def error_message=: (String) -> String
 
+            # @param error_code
+            #   The error code of the failure.
+            # @param error_message
+            #   The error message of the failure.
             def initialize: (
               ?error_code: String,
               ?error_message: String
@@ -1660,14 +2181,22 @@ module OpenAI
           type logout_failed = { ?error_code: String, ?error_message: String }
 
           class LogoutFailed < OpenAI::Internal::Type::BaseModel
+            # The error code of the failure.
             attr_reader error_code: String?
 
+            # The error code of the failure.
             def error_code=: (String) -> String
 
+            # The error message of the failure.
             attr_reader error_message: String?
 
+            # The error message of the failure.
             def error_message=: (String) -> String
 
+            # @param error_code
+            #   The error code of the failure.
+            # @param error_message
+            #   The error message of the failure.
             def initialize: (
               ?error_code: String,
               ?error_message: String
@@ -1683,16 +2212,24 @@ module OpenAI
             }
 
           class OrganizationUpdated < OpenAI::Internal::Type::BaseModel
+            # The organization ID.
             attr_reader id: String?
 
+            # The organization ID.
             def id=: (String) -> String
 
+            # The payload used to update the organization settings.
             attr_reader changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated::ChangesRequested?
 
+            # The payload used to update the organization settings.
             def changes_requested=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated::ChangesRequested
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated::ChangesRequested
 
+            # @param id
+            #   The organization ID.
+            # @param changes_requested
+            #   The payload used to update the organization settings.
             def initialize: (
               ?id: String,
               ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::OrganizationUpdated::ChangesRequested
@@ -1715,34 +2252,77 @@ module OpenAI
               }
 
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
+              # How your organization logs data from supported API calls. One of `disabled`,
+              # `enabled_per_call`, `enabled_for_all_projects`, or
+              # `enabled_for_selected_projects`
               attr_reader api_call_logging: String?
 
+              # How your organization logs data from supported API calls. One of `disabled`,
+              # `enabled_per_call`, `enabled_for_all_projects`, or
+              # `enabled_for_selected_projects`
               def api_call_logging=: (String) -> String
 
+              # The list of project ids if api_call_logging is set to
+              # `enabled_for_selected_projects`
               attr_reader api_call_logging_project_ids: String?
 
+              # The list of project ids if api_call_logging is set to
+              # `enabled_for_selected_projects`
               def api_call_logging_project_ids=: (String) -> String
 
+              # The organization description.
               attr_reader description: String?
 
+              # The organization description.
               def description=: (String) -> String
 
+              # The organization name.
               attr_reader name: String?
 
+              # The organization name.
               def name=: (String) -> String
 
+              # Visibility of the threads page which shows messages created with the Assistants
+              # API and Playground. One of `ANY_ROLE`, `OWNERS`, or `NONE`.
               attr_reader threads_ui_visibility: String?
 
+              # Visibility of the threads page which shows messages created with the Assistants
+              # API and Playground. One of `ANY_ROLE`, `OWNERS`, or `NONE`.
               def threads_ui_visibility=: (String) -> String
 
+              # The organization title.
               attr_reader title: String?
 
+              # The organization title.
               def title=: (String) -> String
 
+              # Visibility of the usage dashboard which shows activity and costs for your
+              # organization. One of `ANY_ROLE` or `OWNERS`.
               attr_reader usage_dashboard_visibility: String?
 
+              # Visibility of the usage dashboard which shows activity and costs for your
+              # organization. One of `ANY_ROLE` or `OWNERS`.
               def usage_dashboard_visibility=: (String) -> String
 
+              # @param api_call_logging
+              #   How your organization logs data from supported API calls. One of `disabled`,
+              #   `enabled_per_call`, `enabled_for_all_projects`, or
+              #   `enabled_for_selected_projects`
+              # @param api_call_logging_project_ids
+              #   The list of project ids if api_call_logging is set to
+              #   `enabled_for_selected_projects`
+              # @param description
+              #   The organization description.
+              # @param name
+              #   The organization name.
+              # @param threads_ui_visibility
+              #   Visibility of the threads page which shows messages created with the Assistants
+              #   API and Playground. One of `ANY_ROLE`, `OWNERS`, or `NONE`.
+              # @param title
+              #   The organization title.
+              # @param usage_dashboard_visibility
+              #   Visibility of the usage dashboard which shows activity and costs for your
+              #   organization. One of `ANY_ROLE` or `OWNERS`.
               def initialize: (
                 ?api_call_logging: String,
                 ?api_call_logging_project_ids: String,
@@ -1768,14 +2348,22 @@ module OpenAI
           type project = { ?id: String, ?name: String }
 
           class Project < OpenAI::Internal::Type::BaseModel
+            # The project ID.
             attr_reader id: String?
 
+            # The project ID.
             def id=: (String) -> String
 
+            # The project title.
             attr_reader name: String?
 
+            # The project title.
             def name=: (String) -> String
 
+            # @param id
+            #   The project ID.
+            # @param name
+            #   The project title.
             def initialize: (?id: String, ?name: String) -> void
 
             def to_hash: -> { ?id: String, ?name: String }
@@ -1784,10 +2372,14 @@ module OpenAI
           type project_archived = { ?id: String }
 
           class ProjectArchived < OpenAI::Internal::Type::BaseModel
+            # The project ID.
             attr_reader id: String?
 
+            # The project ID.
             def id=: (String) -> String
 
+            # @param id
+            #   The project ID.
             def initialize: (?id: String) -> void
 
             def to_hash: -> { ?id: String }
@@ -1800,16 +2392,24 @@ module OpenAI
             }
 
           class ProjectCreated < OpenAI::Internal::Type::BaseModel
+            # The project ID.
             attr_reader id: String?
 
+            # The project ID.
             def id=: (String) -> String
 
+            # The payload used to create the project.
             attr_reader data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated::Data?
 
+            # The payload used to create the project.
             def data=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated::Data
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated::Data
 
+            # @param id
+            #   The project ID.
+            # @param data
+            #   The payload used to create the project.
             def initialize: (
               ?id: String,
               ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectCreated::Data
@@ -1823,14 +2423,22 @@ module OpenAI
             type data = { ?name: String, ?title: String }
 
             class Data < OpenAI::Internal::Type::BaseModel
+              # The project name.
               attr_reader name: String?
 
+              # The project name.
               def name=: (String) -> String
 
+              # The title of the project as seen on the dashboard.
               attr_reader title: String?
 
+              # The title of the project as seen on the dashboard.
               def title=: (String) -> String
 
+              # @param name
+              #   The project name.
+              # @param title
+              #   The title of the project as seen on the dashboard.
               def initialize: (?name: String, ?title: String) -> void
 
               def to_hash: -> { ?name: String, ?title: String }
@@ -1840,10 +2448,14 @@ module OpenAI
           type project_deleted = { ?id: String }
 
           class ProjectDeleted < OpenAI::Internal::Type::BaseModel
+            # The project ID.
             attr_reader id: String?
 
+            # The project ID.
             def id=: (String) -> String
 
+            # @param id
+            #   The project ID.
             def initialize: (?id: String) -> void
 
             def to_hash: -> { ?id: String }
@@ -1856,16 +2468,24 @@ module OpenAI
             }
 
           class ProjectUpdated < OpenAI::Internal::Type::BaseModel
+            # The project ID.
             attr_reader id: String?
 
+            # The project ID.
             def id=: (String) -> String
 
+            # The payload used to update the project.
             attr_reader changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated::ChangesRequested?
 
+            # The payload used to update the project.
             def changes_requested=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated::ChangesRequested
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated::ChangesRequested
 
+            # @param id
+            #   The project ID.
+            # @param changes_requested
+            #   The payload used to update the project.
             def initialize: (
               ?id: String,
               ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::ProjectUpdated::ChangesRequested
@@ -1879,10 +2499,14 @@ module OpenAI
             type changes_requested = { ?title: String }
 
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
+              # The title of the project as seen on the dashboard.
               attr_reader title: String?
 
+              # The title of the project as seen on the dashboard.
               def title=: (String) -> String
 
+              # @param title
+              #   The title of the project as seen on the dashboard.
               def initialize: (?title: String) -> void
 
               def to_hash: -> { ?title: String }
@@ -1892,10 +2516,14 @@ module OpenAI
           type rate_limit_deleted = { ?id: String }
 
           class RateLimitDeleted < OpenAI::Internal::Type::BaseModel
+            # The rate limit ID
             attr_reader id: String?
 
+            # The rate limit ID
             def id=: (String) -> String
 
+            # @param id
+            #   The rate limit ID
             def initialize: (?id: String) -> void
 
             def to_hash: -> { ?id: String }
@@ -1908,16 +2536,24 @@ module OpenAI
             }
 
           class RateLimitUpdated < OpenAI::Internal::Type::BaseModel
+            # The rate limit ID
             attr_reader id: String?
 
+            # The rate limit ID
             def id=: (String) -> String
 
+            # The payload used to update the rate limits.
             attr_reader changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated::ChangesRequested?
 
+            # The payload used to update the rate limits.
             def changes_requested=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated::ChangesRequested
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated::ChangesRequested
 
+            # @param id
+            #   The rate limit ID
+            # @param changes_requested
+            #   The payload used to update the rate limits.
             def initialize: (
               ?id: String,
               ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::RateLimitUpdated::ChangesRequested
@@ -1939,30 +2575,54 @@ module OpenAI
               }
 
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
+              # The maximum batch input tokens per day. Only relevant for certain models.
               attr_reader batch_1_day_max_input_tokens: Integer?
 
+              # The maximum batch input tokens per day. Only relevant for certain models.
               def batch_1_day_max_input_tokens=: (Integer) -> Integer
 
+              # The maximum audio megabytes per minute. Only relevant for certain models.
               attr_reader max_audio_megabytes_per_1_minute: Integer?
 
+              # The maximum audio megabytes per minute. Only relevant for certain models.
               def max_audio_megabytes_per_1_minute=: (Integer) -> Integer
 
+              # The maximum images per minute. Only relevant for certain models.
               attr_reader max_images_per_1_minute: Integer?
 
+              # The maximum images per minute. Only relevant for certain models.
               def max_images_per_1_minute=: (Integer) -> Integer
 
+              # The maximum requests per day. Only relevant for certain models.
               attr_reader max_requests_per_1_day: Integer?
 
+              # The maximum requests per day. Only relevant for certain models.
               def max_requests_per_1_day=: (Integer) -> Integer
 
+              # The maximum requests per minute.
               attr_reader max_requests_per_1_minute: Integer?
 
+              # The maximum requests per minute.
               def max_requests_per_1_minute=: (Integer) -> Integer
 
+              # The maximum tokens per minute.
               attr_reader max_tokens_per_1_minute: Integer?
 
+              # The maximum tokens per minute.
               def max_tokens_per_1_minute=: (Integer) -> Integer
 
+              # @param batch_1_day_max_input_tokens
+              #   The maximum batch input tokens per day. Only relevant for certain models.
+              # @param max_audio_megabytes_per_1_minute
+              #   The maximum audio megabytes per minute. Only relevant for certain models.
+              # @param max_images_per_1_minute
+              #   The maximum images per minute. Only relevant for certain models.
+              # @param max_requests_per_1_day
+              #   The maximum requests per day. Only relevant for certain models.
+              # @param max_requests_per_1_minute
+              #   The maximum requests per minute.
+              # @param max_tokens_per_1_minute
+              #   The maximum tokens per minute.
               def initialize: (
                 ?batch_1_day_max_input_tokens: Integer,
                 ?max_audio_megabytes_per_1_minute: Integer,
@@ -1993,26 +2653,46 @@ module OpenAI
             }
 
           class RoleAssignmentCreated < OpenAI::Internal::Type::BaseModel
+            # The identifier of the role assignment.
             attr_reader id: String?
 
+            # The identifier of the role assignment.
             def id=: (String) -> String
 
+            # The principal (user or group) that received the role.
             attr_reader principal_id: String?
 
+            # The principal (user or group) that received the role.
             def principal_id=: (String) -> String
 
+            # The type of principal (user or group) that received the role.
             attr_reader principal_type: String?
 
+            # The type of principal (user or group) that received the role.
             def principal_type=: (String) -> String
 
+            # The resource the role assignment is scoped to.
             attr_reader resource_id: String?
 
+            # The resource the role assignment is scoped to.
             def resource_id=: (String) -> String
 
+            # The type of resource the role assignment is scoped to.
             attr_reader resource_type: String?
 
+            # The type of resource the role assignment is scoped to.
             def resource_type=: (String) -> String
 
+            # @param id
+            #   The identifier of the role assignment.
+            # @param principal_id
+            #   The principal (user or group) that received the role.
+            # @param principal_type
+            #   The type of principal (user or group) that received the role.
+            # @param resource_id
+            #   The resource the role assignment is scoped to.
+            # @param resource_type
+            #   The type of resource the role assignment is scoped to.
             def initialize: (
               ?id: String,
               ?principal_id: String,
@@ -2040,26 +2720,46 @@ module OpenAI
             }
 
           class RoleAssignmentDeleted < OpenAI::Internal::Type::BaseModel
+            # The identifier of the role assignment.
             attr_reader id: String?
 
+            # The identifier of the role assignment.
             def id=: (String) -> String
 
+            # The principal (user or group) that had the role removed.
             attr_reader principal_id: String?
 
+            # The principal (user or group) that had the role removed.
             def principal_id=: (String) -> String
 
+            # The type of principal (user or group) that had the role removed.
             attr_reader principal_type: String?
 
+            # The type of principal (user or group) that had the role removed.
             def principal_type=: (String) -> String
 
+            # The resource the role assignment was scoped to.
             attr_reader resource_id: String?
 
+            # The resource the role assignment was scoped to.
             def resource_id=: (String) -> String
 
+            # The type of resource the role assignment was scoped to.
             attr_reader resource_type: String?
 
+            # The type of resource the role assignment was scoped to.
             def resource_type=: (String) -> String
 
+            # @param id
+            #   The identifier of the role assignment.
+            # @param principal_id
+            #   The principal (user or group) that had the role removed.
+            # @param principal_type
+            #   The type of principal (user or group) that had the role removed.
+            # @param resource_id
+            #   The resource the role assignment was scoped to.
+            # @param resource_type
+            #   The type of resource the role assignment was scoped to.
             def initialize: (
               ?id: String,
               ?principal_id: String,
@@ -2092,48 +2792,94 @@ module OpenAI
             }
 
           class RoleBoundToResource < OpenAI::Internal::Type::BaseModel
+            # The ID of the resource the role was bound to. ChatGPT workspace connector
+            # resources use `<workspace_id>__<connector_id>`.
             attr_reader id: String?
 
+            # The ID of the resource the role was bound to. ChatGPT workspace connector
+            # resources use `<workspace_id>__<connector_id>`.
             def id=: (String) -> String
 
+            # The connector ID for a ChatGPT workspace connector resource.
             attr_reader connector_id: String?
 
+            # The connector ID for a ChatGPT workspace connector resource.
             def connector_id=: (String) -> String
 
+            # The connector display name for a ChatGPT workspace connector resource, or the
+            # connector ID when the display name could not be resolved.
             attr_reader connector_name: String?
 
+            # The connector display name for a ChatGPT workspace connector resource, or the
+            # connector ID when the display name could not be resolved.
             def connector_name=: (String) -> String
 
+            # Whether the connector is enabled for the role.
             attr_reader enabled: bool?
 
+            # Whether the connector is enabled for the role.
             def enabled=: (bool) -> bool
 
+            # The permissions granted to the role for the resource.
             attr_reader permissions: ::Array[String]?
 
+            # The permissions granted to the role for the resource.
             def permissions=: (::Array[String]) -> ::Array[String]
 
+            # The ID of the resource the role was bound to.
             attr_reader resource_id: String?
 
+            # The ID of the resource the role was bound to.
             def resource_id=: (String) -> String
 
+            # The type of resource the role was bound to.
             attr_reader resource_type: String?
 
+            # The type of resource the role was bound to.
             def resource_type=: (String) -> String
 
+            # The ID of the role that was bound to the resource.
             attr_reader role_id: String?
 
+            # The ID of the role that was bound to the resource.
             def role_id=: (String) -> String
 
+            # The connector role mutation path that produced the event.
             attr_reader source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::source?
 
+            # The connector role mutation path that produced the event.
             def source=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::source
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleBoundToResource::source
 
+            # The workspace ID for a ChatGPT workspace connector resource.
             attr_reader workspace_id: String?
 
+            # The workspace ID for a ChatGPT workspace connector resource.
             def workspace_id=: (String) -> String
 
+            # @param id
+            #   The ID of the resource the role was bound to. ChatGPT workspace connector
+            #   resources use `<workspace_id>__<connector_id>`.
+            # @param connector_id
+            #   The connector ID for a ChatGPT workspace connector resource.
+            # @param connector_name
+            #   The connector display name for a ChatGPT workspace connector resource, or the
+            #   connector ID when the display name could not be resolved.
+            # @param enabled
+            #   Whether the connector is enabled for the role.
+            # @param permissions
+            #   The permissions granted to the role for the resource.
+            # @param resource_id
+            #   The ID of the resource the role was bound to.
+            # @param resource_type
+            #   The type of resource the role was bound to.
+            # @param role_id
+            #   The ID of the role that was bound to the resource.
+            # @param source
+            #   The connector role mutation path that produced the event.
+            # @param workspace_id
+            #   The workspace ID for a ChatGPT workspace connector resource.
             def initialize: (
               ?id: String,
               ?connector_id: String,
@@ -2190,26 +2936,46 @@ module OpenAI
             }
 
           class RoleCreated < OpenAI::Internal::Type::BaseModel
+            # The role ID.
             attr_reader id: String?
 
+            # The role ID.
             def id=: (String) -> String
 
+            # The permissions granted by the role.
             attr_reader permissions: ::Array[String]?
 
+            # The permissions granted by the role.
             def permissions=: (::Array[String]) -> ::Array[String]
 
+            # The resource the role is scoped to.
             attr_reader resource_id: String?
 
+            # The resource the role is scoped to.
             def resource_id=: (String) -> String
 
+            # The type of resource the role belongs to.
             attr_reader resource_type: String?
 
+            # The type of resource the role belongs to.
             def resource_type=: (String) -> String
 
+            # The name of the role.
             attr_reader role_name: String?
 
+            # The name of the role.
             def role_name=: (String) -> String
 
+            # @param id
+            #   The role ID.
+            # @param permissions
+            #   The permissions granted by the role.
+            # @param resource_id
+            #   The resource the role is scoped to.
+            # @param resource_type
+            #   The type of resource the role belongs to.
+            # @param role_name
+            #   The name of the role.
             def initialize: (
               ?id: String,
               ?permissions: ::Array[String],
@@ -2230,10 +2996,14 @@ module OpenAI
           type role_deleted = { ?id: String }
 
           class RoleDeleted < OpenAI::Internal::Type::BaseModel
+            # The role ID.
             attr_reader id: String?
 
+            # The role ID.
             def id=: (String) -> String
 
+            # @param id
+            #   The role ID.
             def initialize: (?id: String) -> void
 
             def to_hash: -> { ?id: String }
@@ -2254,48 +3024,94 @@ module OpenAI
             }
 
           class RoleUnboundFromResource < OpenAI::Internal::Type::BaseModel
+            # The ID of the resource the role was unbound from. ChatGPT workspace connector
+            # resources use `<workspace_id>__<connector_id>`.
             attr_reader id: String?
 
+            # The ID of the resource the role was unbound from. ChatGPT workspace connector
+            # resources use `<workspace_id>__<connector_id>`.
             def id=: (String) -> String
 
+            # The connector ID for a ChatGPT workspace connector resource.
             attr_reader connector_id: String?
 
+            # The connector ID for a ChatGPT workspace connector resource.
             def connector_id=: (String) -> String
 
+            # The connector display name for a ChatGPT workspace connector resource, or the
+            # connector ID when the display name could not be resolved.
             attr_reader connector_name: String?
 
+            # The connector display name for a ChatGPT workspace connector resource, or the
+            # connector ID when the display name could not be resolved.
             def connector_name=: (String) -> String
 
+            # Whether the connector is enabled for the role.
             attr_reader enabled: bool?
 
+            # Whether the connector is enabled for the role.
             def enabled=: (bool) -> bool
 
+            # The permissions remaining for the role after the change.
             attr_reader permissions: ::Array[String]?
 
+            # The permissions remaining for the role after the change.
             def permissions=: (::Array[String]) -> ::Array[String]
 
+            # The ID of the resource the role was unbound from.
             attr_reader resource_id: String?
 
+            # The ID of the resource the role was unbound from.
             def resource_id=: (String) -> String
 
+            # The type of resource the role was unbound from.
             attr_reader resource_type: String?
 
+            # The type of resource the role was unbound from.
             def resource_type=: (String) -> String
 
+            # The ID of the role that was unbound from the resource.
             attr_reader role_id: String?
 
+            # The ID of the role that was unbound from the resource.
             def role_id=: (String) -> String
 
+            # The connector role mutation path that produced the event.
             attr_reader source: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::source?
 
+            # The connector role mutation path that produced the event.
             def source=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::source
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUnboundFromResource::source
 
+            # The workspace ID for a ChatGPT workspace connector resource.
             attr_reader workspace_id: String?
 
+            # The workspace ID for a ChatGPT workspace connector resource.
             def workspace_id=: (String) -> String
 
+            # @param id
+            #   The ID of the resource the role was unbound from. ChatGPT workspace connector
+            #   resources use `<workspace_id>__<connector_id>`.
+            # @param connector_id
+            #   The connector ID for a ChatGPT workspace connector resource.
+            # @param connector_name
+            #   The connector display name for a ChatGPT workspace connector resource, or the
+            #   connector ID when the display name could not be resolved.
+            # @param enabled
+            #   Whether the connector is enabled for the role.
+            # @param permissions
+            #   The permissions remaining for the role after the change.
+            # @param resource_id
+            #   The ID of the resource the role was unbound from.
+            # @param resource_type
+            #   The type of resource the role was unbound from.
+            # @param role_id
+            #   The ID of the role that was unbound from the resource.
+            # @param source
+            #   The connector role mutation path that produced the event.
+            # @param workspace_id
+            #   The workspace ID for a ChatGPT workspace connector resource.
             def initialize: (
               ?id: String,
               ?connector_id: String,
@@ -2349,16 +3165,24 @@ module OpenAI
             }
 
           class RoleUpdated < OpenAI::Internal::Type::BaseModel
+            # The role ID.
             attr_reader id: String?
 
+            # The role ID.
             def id=: (String) -> String
 
+            # The payload used to update the role.
             attr_reader changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated::ChangesRequested?
 
+            # The payload used to update the role.
             def changes_requested=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated::ChangesRequested
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated::ChangesRequested
 
+            # @param id
+            #   The role ID.
+            # @param changes_requested
+            #   The payload used to update the role.
             def initialize: (
               ?id: String,
               ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::RoleUpdated::ChangesRequested
@@ -2381,34 +3205,62 @@ module OpenAI
               }
 
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
+              # The updated role description, when provided.
               attr_reader description: String?
 
+              # The updated role description, when provided.
               def description=: (String) -> String
 
+              # Additional metadata stored on the role.
               attr_reader metadata: top?
 
+              # Additional metadata stored on the role.
               def metadata=: (top) -> top
 
+              # The permissions added to the role.
               attr_reader permissions_added: ::Array[String]?
 
+              # The permissions added to the role.
               def permissions_added=: (::Array[String]) -> ::Array[String]
 
+              # The permissions removed from the role.
               attr_reader permissions_removed: ::Array[String]?
 
+              # The permissions removed from the role.
               def permissions_removed=: (::Array[String]) -> ::Array[String]
 
+              # The resource the role is scoped to.
               attr_reader resource_id: String?
 
+              # The resource the role is scoped to.
               def resource_id=: (String) -> String
 
+              # The type of resource the role belongs to.
               attr_reader resource_type: String?
 
+              # The type of resource the role belongs to.
               def resource_type=: (String) -> String
 
+              # The updated role name, when provided.
               attr_reader role_name: String?
 
+              # The updated role name, when provided.
               def role_name=: (String) -> String
 
+              # @param description
+              #   The updated role description, when provided.
+              # @param metadata
+              #   Additional metadata stored on the role.
+              # @param permissions_added
+              #   The permissions added to the role.
+              # @param permissions_removed
+              #   The permissions removed from the role.
+              # @param resource_id
+              #   The resource the role is scoped to.
+              # @param resource_type
+              #   The type of resource the role belongs to.
+              # @param role_name
+              #   The updated role name, when provided.
               def initialize: (
                 ?description: String,
                 ?metadata: top,
@@ -2434,10 +3286,14 @@ module OpenAI
           type scim_disabled = { ?id: String }
 
           class ScimDisabled < OpenAI::Internal::Type::BaseModel
+            # The ID of the SCIM was disabled for.
             attr_reader id: String?
 
+            # The ID of the SCIM was disabled for.
             def id=: (String) -> String
 
+            # @param id
+            #   The ID of the SCIM was disabled for.
             def initialize: (?id: String) -> void
 
             def to_hash: -> { ?id: String }
@@ -2446,10 +3302,14 @@ module OpenAI
           type scim_enabled = { ?id: String }
 
           class ScimEnabled < OpenAI::Internal::Type::BaseModel
+            # The ID of the SCIM was enabled for.
             attr_reader id: String?
 
+            # The ID of the SCIM was enabled for.
             def id=: (String) -> String
 
+            # @param id
+            #   The ID of the SCIM was enabled for.
             def initialize: (?id: String) -> void
 
             def to_hash: -> { ?id: String }
@@ -2462,16 +3322,24 @@ module OpenAI
             }
 
           class ServiceAccountCreated < OpenAI::Internal::Type::BaseModel
+            # The service account ID.
             attr_reader id: String?
 
+            # The service account ID.
             def id=: (String) -> String
 
+            # The payload used to create the service account.
             attr_reader data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated::Data?
 
+            # The payload used to create the service account.
             def data=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated::Data
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated::Data
 
+            # @param id
+            #   The service account ID.
+            # @param data
+            #   The payload used to create the service account.
             def initialize: (
               ?id: String,
               ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountCreated::Data
@@ -2485,10 +3353,14 @@ module OpenAI
             type data = { ?role: String }
 
             class Data < OpenAI::Internal::Type::BaseModel
+              # The role of the service account. Is either `owner` or `member`.
               attr_reader role: String?
 
+              # The role of the service account. Is either `owner` or `member`.
               def role=: (String) -> String
 
+              # @param role
+              #   The role of the service account. Is either `owner` or `member`.
               def initialize: (?role: String) -> void
 
               def to_hash: -> { ?role: String }
@@ -2498,10 +3370,14 @@ module OpenAI
           type service_account_deleted = { ?id: String }
 
           class ServiceAccountDeleted < OpenAI::Internal::Type::BaseModel
+            # The service account ID.
             attr_reader id: String?
 
+            # The service account ID.
             def id=: (String) -> String
 
+            # @param id
+            #   The service account ID.
             def initialize: (?id: String) -> void
 
             def to_hash: -> { ?id: String }
@@ -2514,16 +3390,24 @@ module OpenAI
             }
 
           class ServiceAccountUpdated < OpenAI::Internal::Type::BaseModel
+            # The service account ID.
             attr_reader id: String?
 
+            # The service account ID.
             def id=: (String) -> String
 
+            # The payload used to updated the service account.
             attr_reader changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated::ChangesRequested?
 
+            # The payload used to updated the service account.
             def changes_requested=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated::ChangesRequested
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated::ChangesRequested
 
+            # @param id
+            #   The service account ID.
+            # @param changes_requested
+            #   The payload used to updated the service account.
             def initialize: (
               ?id: String,
               ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::ServiceAccountUpdated::ChangesRequested
@@ -2537,10 +3421,14 @@ module OpenAI
             type changes_requested = { ?role: String }
 
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
+              # The role of the service account. Is either `owner` or `member`.
               attr_reader role: String?
 
+              # The role of the service account. Is either `owner` or `member`.
               def role=: (String) -> String
 
+              # @param role
+              #   The role of the service account. Is either `owner` or `member`.
               def initialize: (?role: String) -> void
 
               def to_hash: -> { ?role: String }
@@ -2554,16 +3442,24 @@ module OpenAI
             }
 
           class UserAdded < OpenAI::Internal::Type::BaseModel
+            # The user ID.
             attr_reader id: String?
 
+            # The user ID.
             def id=: (String) -> String
 
+            # The payload used to add the user to the project.
             attr_reader data: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded::Data?
 
+            # The payload used to add the user to the project.
             def data=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded::Data
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded::Data
 
+            # @param id
+            #   The user ID.
+            # @param data
+            #   The payload used to add the user to the project.
             def initialize: (
               ?id: String,
               ?data: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserAdded::Data
@@ -2577,10 +3473,14 @@ module OpenAI
             type data = { ?role: String }
 
             class Data < OpenAI::Internal::Type::BaseModel
+              # The role of the user. Is either `owner` or `member`.
               attr_reader role: String?
 
+              # The role of the user. Is either `owner` or `member`.
               def role=: (String) -> String
 
+              # @param role
+              #   The role of the user. Is either `owner` or `member`.
               def initialize: (?role: String) -> void
 
               def to_hash: -> { ?role: String }
@@ -2590,10 +3490,14 @@ module OpenAI
           type user_deleted = { ?id: String }
 
           class UserDeleted < OpenAI::Internal::Type::BaseModel
+            # The user ID.
             attr_reader id: String?
 
+            # The user ID.
             def id=: (String) -> String
 
+            # @param id
+            #   The user ID.
             def initialize: (?id: String) -> void
 
             def to_hash: -> { ?id: String }
@@ -2606,16 +3510,24 @@ module OpenAI
             }
 
           class UserUpdated < OpenAI::Internal::Type::BaseModel
+            # The project ID.
             attr_reader id: String?
 
+            # The project ID.
             def id=: (String) -> String
 
+            # The payload used to update the user.
             attr_reader changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated::ChangesRequested?
 
+            # The payload used to update the user.
             def changes_requested=: (
               OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated::ChangesRequested
             ) -> OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated::ChangesRequested
 
+            # @param id
+            #   The project ID.
+            # @param changes_requested
+            #   The payload used to update the user.
             def initialize: (
               ?id: String,
               ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::UserUpdated::ChangesRequested
@@ -2629,10 +3541,14 @@ module OpenAI
             type changes_requested = { ?role: String }
 
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
+              # The role of the user. Is either `owner` or `member`.
               attr_reader role: String?
 
+              # The role of the user. Is either `owner` or `member`.
               def role=: (String) -> String
 
+              # @param role
+              #   The role of the user. Is either `owner` or `member`.
               def initialize: (?role: String) -> void
 
               def to_hash: -> { ?role: String }
@@ -2643,18 +3559,30 @@ module OpenAI
             { ?id: String, ?data: top, ?identity_provider_id: String }
 
           class WorkloadIdentityProviderMappingCreated < OpenAI::Internal::Type::BaseModel
+            # The workload identity provider mapping ID.
             attr_reader id: String?
 
+            # The workload identity provider mapping ID.
             def id=: (String) -> String
 
+            # The payload used to create the workload identity provider mapping.
             attr_reader data: top?
 
+            # The payload used to create the workload identity provider mapping.
             def data=: (top) -> top
 
+            # The workload identity provider ID.
             attr_reader identity_provider_id: String?
 
+            # The workload identity provider ID.
             def identity_provider_id=: (String) -> String
 
+            # @param id
+            #   The workload identity provider mapping ID.
+            # @param data
+            #   The payload used to create the workload identity provider mapping.
+            # @param identity_provider_id
+            #   The workload identity provider ID.
             def initialize: (
               ?id: String,
               ?data: top,
@@ -2677,22 +3605,38 @@ module OpenAI
             }
 
           class WorkloadIdentityProviderMappingDeleted < OpenAI::Internal::Type::BaseModel
+            # The workload identity provider mapping ID.
             attr_reader id: String?
 
+            # The workload identity provider mapping ID.
             def id=: (String) -> String
 
+            # The workload identity provider ID.
             attr_reader identity_provider_id: String?
 
+            # The workload identity provider ID.
             def identity_provider_id=: (String) -> String
 
+            # The project ID.
             attr_reader project_id: String?
 
+            # The project ID.
             def project_id=: (String) -> String
 
+            # The mapped service account ID.
             attr_reader service_account_id: String?
 
+            # The mapped service account ID.
             def service_account_id=: (String) -> String
 
+            # @param id
+            #   The workload identity provider mapping ID.
+            # @param identity_provider_id
+            #   The workload identity provider ID.
+            # @param project_id
+            #   The project ID.
+            # @param service_account_id
+            #   The mapped service account ID.
             def initialize: (
               ?id: String,
               ?identity_provider_id: String,
@@ -2716,18 +3660,30 @@ module OpenAI
             }
 
           class WorkloadIdentityProviderMappingUpdated < OpenAI::Internal::Type::BaseModel
+            # The workload identity provider mapping ID.
             attr_reader id: String?
 
+            # The workload identity provider mapping ID.
             def id=: (String) -> String
 
+            # The payload used to update the workload identity provider mapping.
             attr_reader changes_requested: top?
 
+            # The payload used to update the workload identity provider mapping.
             def changes_requested=: (top) -> top
 
+            # The workload identity provider ID.
             attr_reader identity_provider_id: String?
 
+            # The workload identity provider ID.
             def identity_provider_id=: (String) -> String
 
+            # @param id
+            #   The workload identity provider mapping ID.
+            # @param changes_requested
+            #   The payload used to update the workload identity provider mapping.
+            # @param identity_provider_id
+            #   The workload identity provider ID.
             def initialize: (
               ?id: String,
               ?changes_requested: top,
@@ -2744,14 +3700,22 @@ module OpenAI
           type workload_identity_provider_created = { ?id: String, ?data: top }
 
           class WorkloadIdentityProviderCreated < OpenAI::Internal::Type::BaseModel
+            # The workload identity provider ID.
             attr_reader id: String?
 
+            # The workload identity provider ID.
             def id=: (String) -> String
 
+            # The payload used to create the workload identity provider.
             attr_reader data: top?
 
+            # The payload used to create the workload identity provider.
             def data=: (top) -> top
 
+            # @param id
+            #   The workload identity provider ID.
+            # @param data
+            #   The payload used to create the workload identity provider.
             def initialize: (?id: String, ?data: top) -> void
 
             def to_hash: -> { ?id: String, ?data: top }
@@ -2761,14 +3725,22 @@ module OpenAI
             { ?id: String, ?name: String }
 
           class WorkloadIdentityProviderDeleted < OpenAI::Internal::Type::BaseModel
+            # The workload identity provider ID.
             attr_reader id: String?
 
+            # The workload identity provider ID.
             def id=: (String) -> String
 
+            # The workload identity provider name.
             attr_reader name: String?
 
+            # The workload identity provider name.
             def name=: (String) -> String
 
+            # @param id
+            #   The workload identity provider ID.
+            # @param name
+            #   The workload identity provider name.
             def initialize: (?id: String, ?name: String) -> void
 
             def to_hash: -> { ?id: String, ?name: String }
@@ -2778,14 +3750,22 @@ module OpenAI
             { ?id: String, ?changes_requested: top }
 
           class WorkloadIdentityProviderUpdated < OpenAI::Internal::Type::BaseModel
+            # The workload identity provider ID.
             attr_reader id: String?
 
+            # The workload identity provider ID.
             def id=: (String) -> String
 
+            # The payload used to update the workload identity provider.
             attr_reader changes_requested: top?
 
+            # The payload used to update the workload identity provider.
             def changes_requested=: (top) -> top
 
+            # @param id
+            #   The workload identity provider ID.
+            # @param changes_requested
+            #   The payload used to update the workload identity provider.
             def initialize: (?id: String, ?changes_requested: top) -> void
 
             def to_hash: -> { ?id: String, ?changes_requested: top }

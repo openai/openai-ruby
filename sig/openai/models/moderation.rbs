@@ -9,14 +9,26 @@ module OpenAI
       }
 
     class Moderation < OpenAI::Internal::Type::BaseModel
+      # A list of the categories, and whether they are flagged or not.
       attr_accessor categories: OpenAI::Moderation::Categories
 
+      # A list of the categories along with the input type(s) that the score applies to.
       attr_accessor category_applied_input_types: OpenAI::Moderation::CategoryAppliedInputTypes
 
+      # A list of the categories along with their scores as predicted by model.
       attr_accessor category_scores: OpenAI::Moderation::CategoryScores
 
+      # Whether any of the below categories are flagged.
       attr_accessor flagged: bool
 
+      # @param categories
+      #   A list of the categories, and whether they are flagged or not.
+      # @param category_applied_input_types
+      #   A list of the categories along with the input type(s) that the score applies to.
+      # @param category_scores
+      #   A list of the categories along with their scores as predicted by model.
+      # @param flagged
+      #   Whether any of the below categories are flagged.
       def initialize: (
         categories: OpenAI::Moderation::Categories,
         category_applied_input_types: OpenAI::Moderation::CategoryAppliedInputTypes,
@@ -49,32 +61,105 @@ module OpenAI
         }
 
       class Categories < OpenAI::Internal::Type::BaseModel
+        # Content that expresses, incites, or promotes harassing language towards any
+        # target.
         attr_accessor harassment: bool
 
+        # Harassment content that also includes violence or serious harm towards any
+        # target.
         attr_accessor harassment_threatening: bool
 
+        # Content that expresses, incites, or promotes hate based on race, gender,
+        # ethnicity, religion, nationality, sexual orientation, disability status, or
+        # caste. Hateful content aimed at non-protected groups (e.g., chess players) is
+        # harassment.
         attr_accessor hate: bool
 
+        # Hateful content that also includes violence or serious harm towards the targeted
+        # group based on race, gender, ethnicity, religion, nationality, sexual
+        # orientation, disability status, or caste.
         attr_accessor hate_threatening: bool
 
+        # Content that includes instructions or advice that facilitate the planning or
+        # execution of wrongdoing, or that gives advice or instruction on how to commit
+        # illicit acts. For example, "how to shoplift" would fit this category.
         attr_accessor illicit: bool?
 
+        # Content that includes instructions or advice that facilitate the planning or
+        # execution of wrongdoing that also includes violence, or that gives advice or
+        # instruction on the procurement of any weapon.
         attr_accessor illicit_violent: bool?
 
+        # Content that promotes, encourages, or depicts acts of self-harm, such as
+        # suicide, cutting, and eating disorders.
         attr_accessor self_harm: bool
 
+        # Content that encourages performing acts of self-harm, such as suicide, cutting,
+        # and eating disorders, or that gives instructions or advice on how to commit such
+        # acts.
         attr_accessor self_harm_instructions: bool
 
+        # Content where the speaker expresses that they are engaging or intend to engage
+        # in acts of self-harm, such as suicide, cutting, and eating disorders.
         attr_accessor self_harm_intent: bool
 
+        # Content meant to arouse sexual excitement, such as the description of sexual
+        # activity, or that promotes sexual services (excluding sex education and
+        # wellness).
         attr_accessor sexual: bool
 
+        # Sexual content that includes an individual who is under 18 years old.
         attr_accessor sexual_minors: bool
 
+        # Content that depicts death, violence, or physical injury.
         attr_accessor violence: bool
 
+        # Content that depicts death, violence, or physical injury in graphic detail.
         attr_accessor violence_graphic: bool
 
+        # @param harassment
+        #   Content that expresses, incites, or promotes harassing language towards any
+        #   target.
+        # @param harassment_threatening
+        #   Harassment content that also includes violence or serious harm towards any
+        #   target.
+        # @param hate
+        #   Content that expresses, incites, or promotes hate based on race, gender,
+        #   ethnicity, religion, nationality, sexual orientation, disability status, or
+        #   caste. Hateful content aimed at non-protected groups (e.g., chess players) is
+        #   harassment.
+        # @param hate_threatening
+        #   Hateful content that also includes violence or serious harm towards the targeted
+        #   group based on race, gender, ethnicity, religion, nationality, sexual
+        #   orientation, disability status, or caste.
+        # @param illicit
+        #   Content that includes instructions or advice that facilitate the planning or
+        #   execution of wrongdoing, or that gives advice or instruction on how to commit
+        #   illicit acts. For example, "how to shoplift" would fit this category.
+        # @param illicit_violent
+        #   Content that includes instructions or advice that facilitate the planning or
+        #   execution of wrongdoing that also includes violence, or that gives advice or
+        #   instruction on the procurement of any weapon.
+        # @param self_harm
+        #   Content that promotes, encourages, or depicts acts of self-harm, such as
+        #   suicide, cutting, and eating disorders.
+        # @param self_harm_instructions
+        #   Content that encourages performing acts of self-harm, such as suicide, cutting,
+        #   and eating disorders, or that gives instructions or advice on how to commit such
+        #   acts.
+        # @param self_harm_intent
+        #   Content where the speaker expresses that they are engaging or intend to engage
+        #   in acts of self-harm, such as suicide, cutting, and eating disorders.
+        # @param sexual
+        #   Content meant to arouse sexual excitement, such as the description of sexual
+        #   activity, or that promotes sexual services (excluding sex education and
+        #   wellness).
+        # @param sexual_minors
+        #   Sexual content that includes an individual who is under 18 years old.
+        # @param violence
+        #   Content that depicts death, violence, or physical injury.
+        # @param violence_graphic
+        #   Content that depicts death, violence, or physical injury in graphic detail.
         def initialize: (
           harassment: bool,
           harassment_threatening: bool,
@@ -126,32 +211,71 @@ module OpenAI
         }
 
       class CategoryAppliedInputTypes < OpenAI::Internal::Type::BaseModel
+        # The applied input type(s) for the category 'harassment'.
         attr_accessor harassment: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::harassment]
 
+        # The applied input type(s) for the category 'harassment/threatening'.
         attr_accessor harassment_threatening: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::harassment_threatening]
 
+        # The applied input type(s) for the category 'hate'.
         attr_accessor hate: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::hate]
 
+        # The applied input type(s) for the category 'hate/threatening'.
         attr_accessor hate_threatening: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::hate_threatening]
 
+        # The applied input type(s) for the category 'illicit'.
         attr_accessor illicit: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::illicit]
 
+        # The applied input type(s) for the category 'illicit/violent'.
         attr_accessor illicit_violent: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::illicit_violent]
 
+        # The applied input type(s) for the category 'self-harm'.
         attr_accessor self_harm: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::self_harm]
 
+        # The applied input type(s) for the category 'self-harm/instructions'.
         attr_accessor self_harm_instructions: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::self_harm_instruction]
 
+        # The applied input type(s) for the category 'self-harm/intent'.
         attr_accessor self_harm_intent: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::self_harm_intent]
 
+        # The applied input type(s) for the category 'sexual'.
         attr_accessor sexual: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::sexual]
 
+        # The applied input type(s) for the category 'sexual/minors'.
         attr_accessor sexual_minors: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::sexual_minor]
 
+        # The applied input type(s) for the category 'violence'.
         attr_accessor violence: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::violence]
 
+        # The applied input type(s) for the category 'violence/graphic'.
         attr_accessor violence_graphic: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::violence_graphic]
 
+        # @param harassment
+        #   The applied input type(s) for the category 'harassment'.
+        # @param harassment_threatening
+        #   The applied input type(s) for the category 'harassment/threatening'.
+        # @param hate
+        #   The applied input type(s) for the category 'hate'.
+        # @param hate_threatening
+        #   The applied input type(s) for the category 'hate/threatening'.
+        # @param illicit
+        #   The applied input type(s) for the category 'illicit'.
+        # @param illicit_violent
+        #   The applied input type(s) for the category 'illicit/violent'.
+        # @param self_harm
+        #   The applied input type(s) for the category 'self-harm'.
+        # @param self_harm_instructions
+        #   The applied input type(s) for the category 'self-harm/instructions'.
+        # @param self_harm_intent
+        #   The applied input type(s) for the category 'self-harm/intent'.
+        # @param sexual
+        #   The applied input type(s) for the category 'sexual'.
+        # @param sexual_minors
+        #   The applied input type(s) for the category 'sexual/minors'.
+        # @param violence
+        #   The applied input type(s) for the category 'violence'.
+        # @param violence_graphic
+        #   The applied input type(s) for the category 'violence/graphic'.
         def initialize: (
           harassment: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::harassment],
           harassment_threatening: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::harassment_threatening],
@@ -339,32 +463,71 @@ module OpenAI
         }
 
       class CategoryScores < OpenAI::Internal::Type::BaseModel
+        # The score for the category 'harassment'.
         attr_accessor harassment: Float
 
+        # The score for the category 'harassment/threatening'.
         attr_accessor harassment_threatening: Float
 
+        # The score for the category 'hate'.
         attr_accessor hate: Float
 
+        # The score for the category 'hate/threatening'.
         attr_accessor hate_threatening: Float
 
+        # The score for the category 'illicit'.
         attr_accessor illicit: Float
 
+        # The score for the category 'illicit/violent'.
         attr_accessor illicit_violent: Float
 
+        # The score for the category 'self-harm'.
         attr_accessor self_harm: Float
 
+        # The score for the category 'self-harm/instructions'.
         attr_accessor self_harm_instructions: Float
 
+        # The score for the category 'self-harm/intent'.
         attr_accessor self_harm_intent: Float
 
+        # The score for the category 'sexual'.
         attr_accessor sexual: Float
 
+        # The score for the category 'sexual/minors'.
         attr_accessor sexual_minors: Float
 
+        # The score for the category 'violence'.
         attr_accessor violence: Float
 
+        # The score for the category 'violence/graphic'.
         attr_accessor violence_graphic: Float
 
+        # @param harassment
+        #   The score for the category 'harassment'.
+        # @param harassment_threatening
+        #   The score for the category 'harassment/threatening'.
+        # @param hate
+        #   The score for the category 'hate'.
+        # @param hate_threatening
+        #   The score for the category 'hate/threatening'.
+        # @param illicit
+        #   The score for the category 'illicit'.
+        # @param illicit_violent
+        #   The score for the category 'illicit/violent'.
+        # @param self_harm
+        #   The score for the category 'self-harm'.
+        # @param self_harm_instructions
+        #   The score for the category 'self-harm/instructions'.
+        # @param self_harm_intent
+        #   The score for the category 'self-harm/intent'.
+        # @param sexual
+        #   The score for the category 'sexual'.
+        # @param sexual_minors
+        #   The score for the category 'sexual/minors'.
+        # @param violence
+        #   The score for the category 'violence'.
+        # @param violence_graphic
+        #   The score for the category 'violence/graphic'.
         def initialize: (
           harassment: Float,
           harassment_threatening: Float,

@@ -12,12 +12,21 @@ module OpenAI
           }
 
         class ChatKitResponseOutputText < OpenAI::Internal::Type::BaseModel
+          # Ordered list of annotations attached to the response text.
           attr_accessor annotations: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::annotation]
 
+          # Assistant generated text.
           attr_accessor text: String
 
+          # Type discriminator that is always `output_text`.
           attr_accessor type: :output_text
 
+          # @param annotations
+          #   Ordered list of annotations attached to the response text.
+          # @param text
+          #   Assistant generated text.
+          # @param type
+          #   Type discriminator that is always `output_text`.
           def initialize: (
             annotations: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::annotation],
             text: String,
@@ -44,10 +53,16 @@ module OpenAI
               }
 
             class File < OpenAI::Internal::Type::BaseModel
+              # File attachment referenced by the annotation.
               attr_accessor source: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::File::Source
 
+              # Type discriminator that is always `file` for this annotation.
               attr_accessor type: :file
 
+              # @param source
+              #   File attachment referenced by the annotation.
+              # @param type
+              #   Type discriminator that is always `file` for this annotation.
               def initialize: (
                 source: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::File::Source,
                 ?type: :file
@@ -61,10 +76,16 @@ module OpenAI
               type source = { filename: String, ?type: :file }
 
               class Source < OpenAI::Internal::Type::BaseModel
+                # Filename referenced by the annotation.
                 attr_accessor filename: String
 
+                # Type discriminator that is always `file`.
                 attr_accessor type: :file
 
+                # @param filename
+                #   Filename referenced by the annotation.
+                # @param type
+                #   Type discriminator that is always `file`.
                 def initialize: (filename: String, ?type: :file) -> void
 
                 def to_hash: -> { filename: String, ?type: :file }
@@ -78,10 +99,16 @@ module OpenAI
               }
 
             class URL < OpenAI::Internal::Type::BaseModel
+              # URL referenced by the annotation.
               attr_accessor source: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::URL::Source
 
+              # Type discriminator that is always `url` for this annotation.
               attr_accessor type: :url
 
+              # @param source
+              #   URL referenced by the annotation.
+              # @param type
+              #   Type discriminator that is always `url` for this annotation.
               def initialize: (
                 source: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::URL::Source,
                 ?type: :url
@@ -95,10 +122,16 @@ module OpenAI
               type source = { ?type: :url, url: String }
 
               class Source < OpenAI::Internal::Type::BaseModel
+                # Type discriminator that is always `url`.
                 attr_accessor type: :url
 
+                # URL referenced by the annotation.
                 attr_accessor url: String
 
+                # @param url
+                #   URL referenced by the annotation.
+                # @param type
+                #   Type discriminator that is always `url`.
                 def initialize: (url: String, ?type: :url) -> void
 
                 def to_hash: -> { ?type: :url, url: String }

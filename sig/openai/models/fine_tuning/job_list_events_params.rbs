@@ -15,14 +15,22 @@ module OpenAI
 
         attr_accessor fine_tuning_job_id: String
 
+        # Identifier for the last event from the previous pagination request.
         attr_reader after: String?
 
+        # Identifier for the last event from the previous pagination request.
         def after=: (String) -> String
 
+        # Number of events to retrieve.
         attr_reader limit: Integer?
 
+        # Number of events to retrieve.
         def limit=: (Integer) -> Integer
 
+        # @param after
+        #   Identifier for the last event from the previous pagination request.
+        # @param limit
+        #   Number of events to retrieve.
         def initialize: (
           fine_tuning_job_id: String,
           ?after: String,

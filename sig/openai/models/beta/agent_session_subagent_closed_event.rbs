@@ -9,12 +9,21 @@ module OpenAI
         }
 
       class AgentSessionSubagentClosedEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the event.
         attr_accessor event_id: String
 
+        # The subagent that was closed.
         attr_accessor subagent: OpenAI::Beta::Subagent
 
+        # The type of the object. Always `agent.session.subagent.closed`.
         attr_accessor type: :"agent.session.subagent.closed"
 
+        # @param event_id
+        #   The unique ID of the event.
+        # @param subagent
+        #   The subagent that was closed.
+        # @param type
+        #   The type of the object. Always `agent.session.subagent.closed`.
         def initialize: (
           event_id: String,
           subagent: OpenAI::Beta::Subagent,

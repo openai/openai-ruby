@@ -5,12 +5,21 @@ module OpenAI
         { data: String, ?media_type: :"application/zip", ?type: :base64 }
 
       class InlineSkillSource < OpenAI::Internal::Type::BaseModel
+        # Base64-encoded skill zip bundle.
         attr_accessor data: String
 
+        # The media type of the inline skill payload. Must be `application/zip`.
         attr_accessor media_type: :"application/zip"
 
+        # The type of the inline skill source. Must be `base64`.
         attr_accessor type: :base64
 
+        # @param data
+        #   Base64-encoded skill zip bundle.
+        # @param media_type
+        #   The media type of the inline skill payload. Must be `application/zip`.
+        # @param type
+        #   The type of the inline skill source. Must be `base64`.
         def initialize: (
           data: String,
           ?media_type: :"application/zip",

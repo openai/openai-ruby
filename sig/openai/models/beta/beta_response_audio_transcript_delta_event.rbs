@@ -12,14 +12,26 @@ module OpenAI
         }
 
       class BetaResponseAudioTranscriptDeltaEvent < OpenAI::Internal::Type::BaseModel
+        # The partial transcript of the audio response.
         attr_accessor delta: String
 
+        # The sequence number of this event.
         attr_accessor sequence_number: Integer
 
+        # The type of the event. Always `response.audio.transcript.delta`.
         attr_accessor type: :"response.audio.transcript.delta"
 
+        # The agent that owns this multi-agent streaming event.
         attr_accessor agent: OpenAI::Beta::BetaResponseAudioTranscriptDeltaEvent::Agent?
 
+        # @param delta
+        #   The partial transcript of the audio response.
+        # @param sequence_number
+        #   The sequence number of this event.
+        # @param agent
+        #   The agent that owns this multi-agent streaming event.
+        # @param type
+        #   The type of the event. Always `response.audio.transcript.delta`.
         def initialize: (
           delta: String,
           sequence_number: Integer,
@@ -37,8 +49,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }

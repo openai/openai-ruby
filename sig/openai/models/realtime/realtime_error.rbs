@@ -11,16 +11,31 @@ module OpenAI
         }
 
       class RealtimeError < OpenAI::Internal::Type::BaseModel
+        # A human-readable error message.
         attr_accessor message: String
 
+        # The type of error (e.g., "invalid_request_error", "server_error").
         attr_accessor type: String
 
+        # Error code, if any.
         attr_accessor code: String?
 
+        # The event_id of the client event that caused the error, if applicable.
         attr_accessor event_id: String?
 
+        # Parameter related to the error, if any.
         attr_accessor param: String?
 
+        # @param message
+        #   A human-readable error message.
+        # @param type
+        #   The type of error (e.g., "invalid_request_error", "server_error").
+        # @param code
+        #   Error code, if any.
+        # @param event_id
+        #   The event_id of the client event that caused the error, if applicable.
+        # @param param
+        #   Parameter related to the error, if any.
         def initialize: (
           message: String,
           type: String,

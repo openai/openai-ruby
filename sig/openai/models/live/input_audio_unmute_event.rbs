@@ -5,10 +5,18 @@ module OpenAI
         { ?type: :"session.input_audio.unmute", ?event_id: String? }
 
       class InputAudioUnmuteEvent < OpenAI::Internal::Type::BaseModel
+        # The Live client event type. Always `session.input_audio.unmute`.
         attr_accessor type: :"session.input_audio.unmute"
 
+        # Optional client identifier for correlating this command with a server event's
+        # client_event_id or error.client_event_id.
         attr_accessor event_id: String?
 
+        # @param event_id
+        #   Optional client identifier for correlating this command with a server event's
+        #   client_event_id or error.client_event_id.
+        # @param type
+        #   The Live client event type. Always `session.input_audio.unmute`.
         def initialize: (
           ?event_id: String?,
           ?type: :"session.input_audio.unmute"

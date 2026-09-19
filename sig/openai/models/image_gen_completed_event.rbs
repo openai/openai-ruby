@@ -13,22 +13,48 @@ module OpenAI
       }
 
     class ImageGenCompletedEvent < OpenAI::Internal::Type::BaseModel
+      # Base64-encoded image data, suitable for rendering as an image.
       attr_accessor b64_json: String
 
+      # The background setting for the generated image.
       attr_accessor background: OpenAI::Models::ImageGenCompletedEvent::background
 
+      # The Unix timestamp when the event was created.
       attr_accessor created_at: Integer
 
+      # The output format for the generated image.
       attr_accessor output_format: OpenAI::Models::ImageGenCompletedEvent::output_format
 
+      # The quality setting for the generated image.
       attr_accessor quality: OpenAI::Models::ImageGenCompletedEvent::quality
 
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       attr_accessor size: OpenAI::Models::ImageGenCompletedEvent::size
 
+      # The type of the event. Always `image_generation.completed`.
       attr_accessor type: :"image_generation.completed"
 
+      # For the GPT image models only, the token usage information for the image
+      # generation.
       attr_accessor usage: OpenAI::ImageGenCompletedEvent::Usage
 
+      # @param b64_json
+      #   Base64-encoded image data, suitable for rendering as an image.
+      # @param background
+      #   The background setting for the generated image.
+      # @param created_at
+      #   The Unix timestamp when the event was created.
+      # @param output_format
+      #   The output format for the generated image.
+      # @param quality
+      #   The quality setting for the generated image.
+      # @param size
+      #   The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+      # @param usage
+      #   For the GPT image models only, the token usage information for the image
+      #   generation.
+      # @param type
+      #   The type of the event. Always `image_generation.completed`.
       def initialize: (
         b64_json: String,
         background: OpenAI::Models::ImageGenCompletedEvent::background,
@@ -117,14 +143,26 @@ module OpenAI
         }
 
       class Usage < OpenAI::Internal::Type::BaseModel
+        # The number of tokens (images and text) in the input prompt.
         attr_accessor input_tokens: Integer
 
+        # The input tokens detailed information for the image generation.
         attr_accessor input_tokens_details: OpenAI::ImageGenCompletedEvent::Usage::InputTokensDetails
 
+        # The number of image tokens in the output image.
         attr_accessor output_tokens: Integer
 
+        # The total number of tokens (images and text) used for the image generation.
         attr_accessor total_tokens: Integer
 
+        # @param input_tokens
+        #   The number of tokens (images and text) in the input prompt.
+        # @param input_tokens_details
+        #   The input tokens detailed information for the image generation.
+        # @param output_tokens
+        #   The number of image tokens in the output image.
+        # @param total_tokens
+        #   The total number of tokens (images and text) used for the image generation.
         def initialize: (
           input_tokens: Integer,
           input_tokens_details: OpenAI::ImageGenCompletedEvent::Usage::InputTokensDetails,
@@ -143,10 +181,16 @@ module OpenAI
           { image_tokens: Integer, text_tokens: Integer }
 
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
+          # The number of image tokens in the input prompt.
           attr_accessor image_tokens: Integer
 
+          # The number of text tokens in the input prompt.
           attr_accessor text_tokens: Integer
 
+          # @param image_tokens
+          #   The number of image tokens in the input prompt.
+          # @param text_tokens
+          #   The number of text tokens in the input prompt.
           def initialize: (image_tokens: Integer, text_tokens: Integer) -> void
 
           def to_hash: -> { image_tokens: Integer, text_tokens: Integer }

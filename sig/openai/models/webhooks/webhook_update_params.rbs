@@ -16,20 +16,32 @@ module OpenAI
 
         attr_accessor webhook_endpoint_id: String
 
+        # The complete set of event types that should trigger deliveries.
         attr_reader event_types: ::Array[OpenAI::Models::Webhooks::WebhookUpdateParams::event_type]?
 
+        # The complete set of event types that should trigger deliveries.
         def event_types=: (
           ::Array[OpenAI::Models::Webhooks::WebhookUpdateParams::event_type]
         ) -> ::Array[OpenAI::Models::Webhooks::WebhookUpdateParams::event_type]
 
+        # A new human-readable name for the webhook endpoint.
         attr_reader name: String?
 
+        # A new human-readable name for the webhook endpoint.
         def name=: (String) -> String
 
+        # A new HTTPS URL that receives webhook deliveries.
         attr_reader url: String?
 
+        # A new HTTPS URL that receives webhook deliveries.
         def url=: (String) -> String
 
+        # @param event_types
+        #   The complete set of event types that should trigger deliveries.
+        # @param name
+        #   A new human-readable name for the webhook endpoint.
+        # @param url
+        #   A new HTTPS URL that receives webhook deliveries.
         def initialize: (
           webhook_endpoint_id: String,
           ?event_types: ::Array[OpenAI::Models::Webhooks::WebhookUpdateParams::event_type],

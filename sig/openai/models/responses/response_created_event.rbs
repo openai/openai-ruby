@@ -9,12 +9,21 @@ module OpenAI
         }
 
       class ResponseCreatedEvent < OpenAI::Internal::Type::BaseModel
+        # The response that was created.
         attr_accessor response: OpenAI::Responses::Response
 
+        # The sequence number for this event.
         attr_accessor sequence_number: Integer
 
+        # The type of the event. Always `response.created`.
         attr_accessor type: :"response.created"
 
+        # @param response
+        #   The response that was created.
+        # @param sequence_number
+        #   The sequence number for this event.
+        # @param type
+        #   The type of the event. Always `response.created`.
         def initialize: (
           response: OpenAI::Responses::Response,
           sequence_number: Integer,

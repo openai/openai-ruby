@@ -12,18 +12,36 @@ module OpenAI
         }
 
       class ResponseShellCallOutputContentDeltaEvent < OpenAI::Internal::Type::BaseModel
+        # The index of the shell command that produced output.
         attr_accessor command_index: Integer
 
+        # The stdout/stderr delta that was emitted.
         attr_accessor delta: OpenAI::Responses::ResponseShellCallOutputContentDeltaEvent::Delta
 
+        # The ID of the output item that was updated.
         attr_accessor item_id: String
 
+        # The index of the output item that was updated.
         attr_accessor output_index: Integer
 
+        # The sequence number of the event that was emitted.
         attr_accessor sequence_number: Integer
 
+        # The type of the event, always `response.shell_call_output_content.delta`.
         attr_accessor type: :"response.shell_call_output_content.delta"
 
+        # @param command_index
+        #   The index of the shell command that produced output.
+        # @param delta
+        #   The stdout/stderr delta that was emitted.
+        # @param item_id
+        #   The ID of the output item that was updated.
+        # @param output_index
+        #   The index of the output item that was updated.
+        # @param sequence_number
+        #   The sequence number of the event that was emitted.
+        # @param type
+        #   The type of the event, always `response.shell_call_output_content.delta`.
         def initialize: (
           command_index: Integer,
           delta: OpenAI::Responses::ResponseShellCallOutputContentDeltaEvent::Delta,
@@ -45,14 +63,22 @@ module OpenAI
         type delta = { ?stderr: String, ?stdout: String }
 
         class Delta < OpenAI::Internal::Type::BaseModel
+          # The stderr delta that was emitted.
           attr_reader stderr: String?
 
+          # The stderr delta that was emitted.
           def stderr=: (String) -> String
 
+          # The stdout delta that was emitted.
           attr_reader stdout: String?
 
+          # The stdout delta that was emitted.
           def stdout=: (String) -> String
 
+          # @param stderr
+          #   The stderr delta that was emitted.
+          # @param stdout
+          #   The stdout delta that was emitted.
           def initialize: (?stderr: String, ?stdout: String) -> void
 
           def to_hash: -> { ?stderr: String, ?stdout: String }

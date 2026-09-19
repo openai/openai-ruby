@@ -9,12 +9,21 @@ module OpenAI
         }
 
       class AgentSessionCreatedEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the event.
         attr_accessor event_id: String
 
+        # The session that was created.
         attr_accessor session: OpenAI::Beta::AgentSession
 
+        # The type of the object. Always `agent.session.created`.
         attr_accessor type: :"agent.session.created"
 
+        # @param event_id
+        #   The unique ID of the event.
+        # @param session
+        #   The session that was created.
+        # @param type
+        #   The type of the object. Always `agent.session.created`.
         def initialize: (
           event_id: String,
           session: OpenAI::Beta::AgentSession,

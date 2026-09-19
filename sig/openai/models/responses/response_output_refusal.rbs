@@ -4,10 +4,16 @@ module OpenAI
       type response_output_refusal = { refusal: String, ?type: :refusal }
 
       class ResponseOutputRefusal < OpenAI::Internal::Type::BaseModel
+        # The refusal explanation from the model.
         attr_accessor refusal: String
 
+        # The type of the refusal. Always `refusal`.
         attr_accessor type: :refusal
 
+        # @param refusal
+        #   The refusal explanation from the model.
+        # @param type
+        #   The type of the refusal. Always `refusal`.
         def initialize: (refusal: String, ?type: :refusal) -> void
 
         def to_hash: -> { refusal: String, ?type: :refusal }

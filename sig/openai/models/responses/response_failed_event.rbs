@@ -9,12 +9,21 @@ module OpenAI
         }
 
       class ResponseFailedEvent < OpenAI::Internal::Type::BaseModel
+        # The response that failed.
         attr_accessor response: OpenAI::Responses::Response
 
+        # The sequence number of this event.
         attr_accessor sequence_number: Integer
 
+        # The type of the event. Always `response.failed`.
         attr_accessor type: :"response.failed"
 
+        # @param response
+        #   The response that failed.
+        # @param sequence_number
+        #   The sequence number of this event.
+        # @param type
+        #   The type of the event. Always `response.failed`.
         def initialize: (
           response: OpenAI::Responses::Response,
           sequence_number: Integer,

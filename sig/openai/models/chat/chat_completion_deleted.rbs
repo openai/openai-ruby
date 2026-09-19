@@ -7,12 +7,21 @@ module OpenAI
         { id: String, deleted: bool, ?object: :"chat.completion.deleted" }
 
       class ChatCompletionDeleted < OpenAI::Internal::Type::BaseModel
+        # The ID of the chat completion that was deleted.
         attr_accessor id: String
 
+        # Whether the chat completion was deleted.
         attr_accessor deleted: bool
 
+        # The type of object being deleted.
         attr_accessor object: :"chat.completion.deleted"
 
+        # @param id
+        #   The ID of the chat completion that was deleted.
+        # @param deleted
+        #   Whether the chat completion was deleted.
+        # @param object
+        #   The type of object being deleted.
         def initialize: (
           id: String,
           deleted: bool,

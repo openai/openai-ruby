@@ -16,32 +16,77 @@ module OpenAI
       }
 
     class VectorStore < OpenAI::Internal::Type::BaseModel
+      # The identifier, which can be referenced in API endpoints.
       attr_accessor id: String
 
+      # The Unix timestamp (in seconds) for when the vector store was created.
       attr_accessor created_at: Integer
 
       attr_accessor file_counts: OpenAI::VectorStore::FileCounts
 
+      # The Unix timestamp (in seconds) for when the vector store was last active.
       attr_accessor last_active_at: Integer?
 
+      # Set of 16 key-value pairs that can be attached to an object. This can be useful
+      # for storing additional information about the object in a structured format, and
+      # querying for objects via API or the dashboard.
+      #
+      # Keys are strings with a maximum length of 64 characters. Values are strings with
+      # a maximum length of 512 characters.
       attr_accessor metadata: OpenAI::Models::metadata?
 
+      # The name of the vector store.
       attr_accessor name: String
 
+      # The object type, which is always `vector_store`.
       attr_accessor object: :vector_store
 
+      # The status of the vector store, which can be either `expired`, `in_progress`, or
+      # `completed`. A status of `completed` indicates that the vector store is ready
+      # for use.
       attr_accessor status: OpenAI::Models::VectorStore::status
 
+      # The total number of bytes used by the files in the vector store.
       attr_accessor usage_bytes: Integer
 
+      # The expiration policy for a vector store.
       attr_reader expires_after: OpenAI::VectorStore::ExpiresAfter?
 
+      # The expiration policy for a vector store.
       def expires_after=: (
         OpenAI::VectorStore::ExpiresAfter
       ) -> OpenAI::VectorStore::ExpiresAfter
 
+      # The Unix timestamp (in seconds) for when the vector store will expire.
       attr_accessor expires_at: Integer?
 
+      # @param id
+      #   The identifier, which can be referenced in API endpoints.
+      # @param created_at
+      #   The Unix timestamp (in seconds) for when the vector store was created.
+      # @param last_active_at
+      #   The Unix timestamp (in seconds) for when the vector store was last active.
+      # @param metadata
+      #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #   for storing additional information about the object in a structured format, and
+      #   querying for objects via API or the dashboard.
+      #
+      #   Keys are strings with a maximum length of 64 characters. Values are strings with
+      #   a maximum length of 512 characters.
+      # @param name
+      #   The name of the vector store.
+      # @param status
+      #   The status of the vector store, which can be either `expired`, `in_progress`, or
+      #   `completed`. A status of `completed` indicates that the vector store is ready
+      #   for use.
+      # @param usage_bytes
+      #   The total number of bytes used by the files in the vector store.
+      # @param expires_after
+      #   The expiration policy for a vector store.
+      # @param expires_at
+      #   The Unix timestamp (in seconds) for when the vector store will expire.
+      # @param object
+      #   The object type, which is always `vector_store`.
       def initialize: (
         id: String,
         created_at: Integer,
@@ -80,16 +125,31 @@ module OpenAI
         }
 
       class FileCounts < OpenAI::Internal::Type::BaseModel
+        # The number of files that were cancelled.
         attr_accessor cancelled: Integer
 
+        # The number of files that have been successfully processed.
         attr_accessor completed: Integer
 
+        # The number of files that have failed to process.
         attr_accessor failed: Integer
 
+        # The number of files that are currently being processed.
         attr_accessor in_progress: Integer
 
+        # The total number of files.
         attr_accessor total: Integer
 
+        # @param cancelled
+        #   The number of files that were cancelled.
+        # @param completed
+        #   The number of files that have been successfully processed.
+        # @param failed
+        #   The number of files that have failed to process.
+        # @param in_progress
+        #   The number of files that are currently being processed.
+        # @param total
+        #   The total number of files.
         def initialize: (
           cancelled: Integer,
           completed: Integer,
@@ -122,10 +182,18 @@ module OpenAI
       type expires_after = { ?anchor: :last_active_at, days: Integer }
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
+        # Anchor timestamp after which the expiration policy applies. Supported anchors:
+        # `last_active_at`.
         attr_accessor anchor: :last_active_at
 
+        # The number of days after the anchor time that the vector store will expire.
         attr_accessor days: Integer
 
+        # @param days
+        #   The number of days after the anchor time that the vector store will expire.
+        # @param anchor
+        #   Anchor timestamp after which the expiration policy applies. Supported anchors:
+        #   `last_active_at`.
         def initialize: (days: Integer, ?anchor: :last_active_at) -> void
 
         def to_hash: -> { ?anchor: :last_active_at, days: Integer }

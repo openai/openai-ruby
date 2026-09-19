@@ -10,8 +10,10 @@ module OpenAI
           }
 
         class ImageURLDeltaBlock < OpenAI::Internal::Type::BaseModel
+          # The index of the content part in the message.
           attr_accessor index: Integer
 
+          # Always `image_url`.
           attr_accessor type: :image_url
 
           attr_reader image_url: OpenAI::Beta::Threads::ImageURLDelta?
@@ -20,6 +22,10 @@ module OpenAI
             OpenAI::Beta::Threads::ImageURLDelta
           ) -> OpenAI::Beta::Threads::ImageURLDelta
 
+          # @param index
+          #   The index of the content part in the message.
+          # @param type
+          #   Always `image_url`.
           def initialize: (
             index: Integer,
             ?image_url: OpenAI::Beta::Threads::ImageURLDelta,

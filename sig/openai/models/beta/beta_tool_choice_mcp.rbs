@@ -7,12 +7,21 @@ module OpenAI
         { server_label: String, ?type: :mcp, ?name: String? }
 
       class BetaToolChoiceMcp < OpenAI::Internal::Type::BaseModel
+        # The label of the MCP server to use.
         attr_accessor server_label: String
 
+        # For MCP tools, the type is always `mcp`.
         attr_accessor type: :mcp
 
+        # The name of the tool to call on the server.
         attr_accessor name: String?
 
+        # @param server_label
+        #   The label of the MCP server to use.
+        # @param name
+        #   The name of the tool to call on the server.
+        # @param type
+        #   For MCP tools, the type is always `mcp`.
         def initialize: (
           server_label: String,
           ?name: String?,

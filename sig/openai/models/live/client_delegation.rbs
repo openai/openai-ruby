@@ -4,8 +4,11 @@ module OpenAI
       type client_delegation = { ?type: :client }
 
       class ClientDelegation < OpenAI::Internal::Type::BaseModel
+        # The delegation owner. Always `client` for tasks handled by your application.
         attr_accessor type: :client
 
+        # @param type
+        #   The delegation owner. Always `client` for tasks handled by your application.
         def initialize: (?type: :client) -> void
 
         def to_hash: -> { ?type: :client }

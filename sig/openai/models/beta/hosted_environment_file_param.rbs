@@ -11,12 +11,21 @@ module OpenAI
         type file_id = { file_id: String, path: String, ?type: :file_id }
 
         class FileID < OpenAI::Internal::Type::BaseModel
+          # The ID of the uploaded file.
           attr_accessor file_id: String
 
+          # The absolute destination path inside `/workspace`.
           attr_accessor path: String
 
+          # The type of the object. Always `file_id`.
           attr_accessor type: :file_id
 
+          # @param file_id
+          #   The ID of the uploaded file.
+          # @param path
+          #   The absolute destination path inside `/workspace`.
+          # @param type
+          #   The type of the object. Always `file_id`.
           def initialize: (
             file_id: String,
             path: String,
@@ -29,12 +38,21 @@ module OpenAI
         type inline = { data: String, path: String, ?type: :inline }
 
         class Inline < OpenAI::Internal::Type::BaseModel
+          # The standard-base64-encoded file contents.
           attr_accessor data: String
 
+          # The absolute destination path inside `/workspace`.
           attr_accessor path: String
 
+          # The type of the object. Always `inline`.
           attr_accessor type: :inline
 
+          # @param data
+          #   The standard-base64-encoded file contents.
+          # @param path
+          #   The absolute destination path inside `/workspace`.
+          # @param type
+          #   The type of the object. Always `inline`.
           def initialize: (data: String, path: String, ?type: :inline) -> void
 
           def to_hash: -> { data: String, path: String, ?type: :inline }

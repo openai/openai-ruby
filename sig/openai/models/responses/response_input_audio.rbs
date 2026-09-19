@@ -10,8 +10,11 @@ module OpenAI
       class ResponseInputAudio < OpenAI::Internal::Type::BaseModel
         attr_accessor input_audio: OpenAI::Responses::ResponseInputAudio::InputAudio
 
+        # The type of the input item. Always `input_audio`.
         attr_accessor type: :input_audio
 
+        # @param type
+        #   The type of the input item. Always `input_audio`.
         def initialize: (
           input_audio: OpenAI::Responses::ResponseInputAudio::InputAudio,
           ?type: :input_audio
@@ -29,10 +32,16 @@ module OpenAI
           }
 
         class InputAudio < OpenAI::Internal::Type::BaseModel
+          # Base64-encoded audio data.
           attr_accessor data: String
 
+          # The format of the audio data. Currently supported formats are `mp3` and `wav`.
           attr_accessor format_: OpenAI::Models::Responses::ResponseInputAudio::InputAudio::format_
 
+          # @param data
+          #   Base64-encoded audio data.
+          # @param format_
+          #   The format of the audio data. Currently supported formats are `mp3` and `wav`.
           def initialize: (
             data: String,
             format_: OpenAI::Models::Responses::ResponseInputAudio::InputAudio::format_

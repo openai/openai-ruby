@@ -4,12 +4,25 @@ module OpenAI
       { embedding: ::Array[Float], index: Integer, ?object: :embedding }
 
     class Embedding < OpenAI::Internal::Type::BaseModel
+      # The embedding vector, which is a list of floats. The length of vector depends on
+      # the model as listed in the
+      # [embedding guide](https://developers.openai.com/api/docs/guides/embeddings).
       attr_accessor embedding: ::Array[Float]
 
+      # The index of the embedding in the list of embeddings.
       attr_accessor index: Integer
 
+      # The object type, which is always "embedding".
       attr_accessor object: :embedding
 
+      # @param embedding
+      #   The embedding vector, which is a list of floats. The length of vector depends on
+      #   the model as listed in the
+      #   [embedding guide](https://developers.openai.com/api/docs/guides/embeddings).
+      # @param index
+      #   The index of the embedding in the list of embeddings.
+      # @param object
+      #   The object type, which is always "embedding".
       def initialize: (
         embedding: ::Array[Float],
         index: Integer,

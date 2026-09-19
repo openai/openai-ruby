@@ -16,10 +16,28 @@ module OpenAI
           }
 
         class AdminAPIKeyCreateResponse < OpenAI::Models::Admin::Organization::AdminAPIKey
+          # The value of the API key. Only shown on create.
           def value: -> String
 
+          # The value of the API key. Only shown on create.
           def value=: (String _) -> String
 
+          # @param id
+          #   The identifier, which can be referenced in API endpoints
+          # @param created_at
+          #   The Unix timestamp (in seconds) of when the API key was created
+          # @param expires_at
+          #   The Unix timestamp (in seconds) of when the API key expires
+          # @param redacted_value
+          #   The redacted value of the API key
+          # @param value
+          #   The value of the API key. Only shown on create.
+          # @param last_used_at
+          #   The Unix timestamp (in seconds) of when the API key was last used
+          # @param name
+          #   The name of the API key
+          # @param object
+          #   The object type, which is always `organization.admin_api_key`
           def initialize: (
             id: String,
             created_at: Integer,

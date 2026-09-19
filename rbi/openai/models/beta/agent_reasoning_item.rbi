@@ -18,7 +18,7 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :id
 
-        # The status of an agent output item.
+        # The status of the reasoning item.
         sig { returns(T.nilable(OpenAI::Beta::AgentOutputItemStatus::TaggedSymbol)) }
         attr_accessor :status
 
@@ -55,7 +55,7 @@ module OpenAI
           # The ID of the reasoning item.
           id:,
 
-          # The status of an agent output item.
+          # The status of the reasoning item.
           status:,
 
           # The reasoning summaries produced by the agent.

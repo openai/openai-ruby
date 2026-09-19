@@ -13,16 +13,47 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      # The configuration for the data source used for the evaluation runs. Dictates the
+      # schema of the data used in the evaluation.
       attr_accessor data_source_config: OpenAI::Models::EvalCreateParams::data_source_config
 
+      # A list of graders for all eval runs in this group. Graders can reference
+      # variables in the data source using double curly braces notation, like
+      # `{{item.variable_name}}`. To reference the model's output, use the `sample`
+      # namespace (ie, `{{sample.output_text}}`).
       attr_accessor testing_criteria: ::Array[OpenAI::Models::EvalCreateParams::testing_criterion]
 
+      # Set of 16 key-value pairs that can be attached to an object. This can be useful
+      # for storing additional information about the object in a structured format, and
+      # querying for objects via API or the dashboard.
+      #
+      # Keys are strings with a maximum length of 64 characters. Values are strings with
+      # a maximum length of 512 characters.
       attr_accessor metadata: OpenAI::Models::metadata?
 
+      # The name of the evaluation.
       attr_reader name: String?
 
+      # The name of the evaluation.
       def name=: (String) -> String
 
+      # @param data_source_config
+      #   The configuration for the data source used for the evaluation runs. Dictates the
+      #   schema of the data used in the evaluation.
+      # @param testing_criteria
+      #   A list of graders for all eval runs in this group. Graders can reference
+      #   variables in the data source using double curly braces notation, like
+      #   `{{item.variable_name}}`. To reference the model's output, use the `sample`
+      #   namespace (ie, `{{sample.output_text}}`).
+      # @param metadata
+      #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #   for storing additional information about the object in a structured format, and
+      #   querying for objects via API or the dashboard.
+      #
+      #   Keys are strings with a maximum length of 64 characters. Values are strings with
+      #   a maximum length of 512 characters.
+      # @param name
+      #   The name of the evaluation.
       def initialize: (
         data_source_config: OpenAI::Models::EvalCreateParams::data_source_config,
         testing_criteria: ::Array[OpenAI::Models::EvalCreateParams::testing_criterion],
@@ -55,14 +86,27 @@ module OpenAI
           }
 
         class Custom < OpenAI::Internal::Type::BaseModel
+          # The json schema for each row in the data source.
           attr_accessor item_schema: ::Hash[Symbol, top]
 
+          # The type of data source. Always `custom`.
           attr_accessor type: :custom
 
+          # Whether the eval should expect you to populate the sample namespace (ie, by
+          # generating responses off of your data source)
           attr_reader include_sample_schema: bool?
 
+          # Whether the eval should expect you to populate the sample namespace (ie, by
+          # generating responses off of your data source)
           def include_sample_schema=: (bool) -> bool
 
+          # @param item_schema
+          #   The json schema for each row in the data source.
+          # @param include_sample_schema
+          #   Whether the eval should expect you to populate the sample namespace (ie, by
+          #   generating responses off of your data source)
+          # @param type
+          #   The type of data source. Always `custom`.
           def initialize: (
             item_schema: ::Hash[Symbol, top],
             ?include_sample_schema: bool,
@@ -79,12 +123,19 @@ module OpenAI
         type logs = { ?type: :logs, ?metadata: ::Hash[Symbol, top] }
 
         class Logs < OpenAI::Internal::Type::BaseModel
+          # The type of data source. Always `logs`.
           attr_accessor type: :logs
 
+          # Metadata filters for the logs data source.
           attr_reader metadata: ::Hash[Symbol, top]?
 
+          # Metadata filters for the logs data source.
           def metadata=: (::Hash[Symbol, top]) -> ::Hash[Symbol, top]
 
+          # @param metadata
+          #   Metadata filters for the logs data source.
+          # @param type
+          #   The type of data source. Always `logs`.
           def initialize: (?metadata: ::Hash[Symbol, top], ?type: :logs) -> void
 
           def to_hash: -> { ?type: :logs, ?metadata: ::Hash[Symbol, top] }
@@ -94,12 +145,19 @@ module OpenAI
           { ?type: :stored_completions, ?metadata: ::Hash[Symbol, top] }
 
         class StoredCompletions < OpenAI::Internal::Type::BaseModel
+          # The type of data source. Always `stored_completions`.
           attr_accessor type: :stored_completions
 
+          # Metadata filters for the stored completions data source.
           attr_reader metadata: ::Hash[Symbol, top]?
 
+          # Metadata filters for the stored completions data source.
           def metadata=: (::Hash[Symbol, top]) -> ::Hash[Symbol, top]
 
+          # @param metadata
+          #   Metadata filters for the stored completions data source.
+          # @param type
+          #   The type of data source. Always `stored_completions`.
           def initialize: (
             ?metadata: ::Hash[Symbol, top],
             ?type: :stored_completions
@@ -135,18 +193,38 @@ module OpenAI
           }
 
         class LabelModel < OpenAI::Internal::Type::BaseModel
+          # A list of chat messages forming the prompt or context. May include variable
+          # references to the `item` namespace, ie {{item.name}}.
           attr_accessor input: ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::input]
 
+          # The labels to classify to each item in the evaluation.
           attr_accessor labels: ::Array[String]
 
+          # The model to use for the evaluation. Must support structured outputs.
           attr_accessor model: String
 
+          # The name of the grader.
           attr_accessor name: String
 
+          # The labels that indicate a passing result. Must be a subset of labels.
           attr_accessor passing_labels: ::Array[String]
 
+          # The object type, which is always `label_model`.
           attr_accessor type: :label_model
 
+          # @param input
+          #   A list of chat messages forming the prompt or context. May include variable
+          #   references to the `item` namespace, ie {{item.name}}.
+          # @param labels
+          #   The labels to classify to each item in the evaluation.
+          # @param model
+          #   The model to use for the evaluation. Must support structured outputs.
+          # @param name
+          #   The name of the grader.
+          # @param passing_labels
+          #   The labels that indicate a passing result. Must be a subset of labels.
+          # @param type
+          #   The object type, which is always `label_model`.
           def initialize: (
             input: ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::input],
             labels: ::Array[String],
@@ -175,10 +253,16 @@ module OpenAI
             type simple_input_message = { content: String, role: String }
 
             class SimpleInputMessage < OpenAI::Internal::Type::BaseModel
+              # The content of the message.
               attr_accessor content: String
 
+              # The role of the message (e.g. "system", "assistant", "user").
               attr_accessor role: String
 
+              # @param content
+              #   The content of the message.
+              # @param role
+              #   The role of the message (e.g. "system", "assistant", "user").
               def initialize: (content: String, role: String) -> void
 
               def to_hash: -> { content: String, role: String }
@@ -192,16 +276,30 @@ module OpenAI
               }
 
             class EvalItem < OpenAI::Internal::Type::BaseModel
+              # Inputs to the model - can contain template strings. Supports text, output text,
+              # input images, and input audio, either as a single item or an array of items.
               attr_accessor content: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content
 
+              # The role of the message input. One of `user`, `assistant`, `system`, or
+              # `developer`.
               attr_accessor role: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::role
 
+              # The type of the message input. Always `message`.
               attr_reader type: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_?
 
+              # The type of the message input. Always `message`.
               def type=: (
                 OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_
               ) -> OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_
 
+              # @param content
+              #   Inputs to the model - can contain template strings. Supports text, output text,
+              #   input images, and input audio, either as a single item or an array of items.
+              # @param role
+              #   The role of the message input. One of `user`, `assistant`, `system`, or
+              #   `developer`.
+              # @param type
+              #   The type of the message input. Always `message`.
               def initialize: (
                 content: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content,
                 role: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::role,
@@ -228,10 +326,16 @@ module OpenAI
                 type output_text = { text: String, ?type: :output_text }
 
                 class OutputText < OpenAI::Internal::Type::BaseModel
+                  # The text output from the model.
                   attr_accessor text: String
 
+                  # The type of the output text. Always `output_text`.
                   attr_accessor type: :output_text
 
+                  # @param text
+                  #   The text output from the model.
+                  # @param type
+                  #   The type of the output text. Always `output_text`.
                   def initialize: (text: String, ?type: :output_text) -> void
 
                   def to_hash: -> { text: String, ?type: :output_text }
@@ -241,14 +345,27 @@ module OpenAI
                   { image_url: String, ?type: :input_image, ?detail: String }
 
                 class InputImage < OpenAI::Internal::Type::BaseModel
+                  # The URL of the image input.
                   attr_accessor image_url: String
 
+                  # The type of the image input. Always `input_image`.
                   attr_accessor type: :input_image
 
+                  # The detail level of the image to be sent to the model. One of `high`, `low`, or
+                  # `auto`. Defaults to `auto`.
                   attr_reader detail: String?
 
+                  # The detail level of the image to be sent to the model. One of `high`, `low`, or
+                  # `auto`. Defaults to `auto`.
                   def detail=: (String) -> String
 
+                  # @param image_url
+                  #   The URL of the image input.
+                  # @param detail
+                  #   The detail level of the image to be sent to the model. One of `high`, `low`, or
+                  #   `auto`. Defaults to `auto`.
+                  # @param type
+                  #   The type of the image input. Always `input_image`.
                   def initialize: (
                     image_url: String,
                     ?detail: String,
@@ -304,10 +421,25 @@ module OpenAI
           }
 
         class TextSimilarity < OpenAI::Models::Graders::TextSimilarityGrader
+          # The threshold for the score.
           def pass_threshold: -> Float
 
+          # The threshold for the score.
           def pass_threshold=: (Float _) -> Float
 
+          # @param evaluation_metric
+          #   The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`, `gleu`,
+          #   `meteor`, `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
+          # @param input
+          #   The text being graded.
+          # @param name
+          #   The name of the grader.
+          # @param reference
+          #   The text being graded against.
+          # @param pass_threshold
+          #   The threshold for the score.
+          # @param type
+          #   The type of grader.
           def initialize: (
             evaluation_metric: OpenAI::Models::Graders::TextSimilarityGrader::evaluation_metric,
             input: String,
@@ -337,10 +469,22 @@ module OpenAI
           }
 
         class Python < OpenAI::Models::Graders::PythonGrader
+          # The threshold for the score.
           def pass_threshold: -> Float?
 
+          # The threshold for the score.
           def pass_threshold=: (Float _) -> Float
 
+          # @param name
+          #   The name of the grader.
+          # @param source
+          #   The source code of the python script.
+          # @param image_tag
+          #   The image tag to use for the python script.
+          # @param pass_threshold
+          #   The threshold for the score.
+          # @param type
+          #   The object type, which is always `python`.
           def initialize: (
             name: String,
             source: String,
@@ -370,10 +514,27 @@ module OpenAI
           }
 
         class ScoreModel < OpenAI::Models::Graders::ScoreModelGrader
+          # The threshold for the score.
           def pass_threshold: -> Float?
 
+          # The threshold for the score.
           def pass_threshold=: (Float _) -> Float
 
+          # @param input
+          #   The input messages evaluated by the grader. Supports text, output text, input
+          #   image, and input audio content blocks, and may include template strings.
+          # @param model
+          #   The model to use for the evaluation.
+          # @param name
+          #   The name of the grader.
+          # @param range
+          #   The range of the score. Defaults to `[0, 1]`.
+          # @param sampling_params
+          #   The sampling parameters for the model.
+          # @param pass_threshold
+          #   The threshold for the score.
+          # @param type
+          #   The object type, which is always `score_model`.
           def initialize: (
             input: ::Array[OpenAI::Graders::ScoreModelGrader::Input],
             model: String,

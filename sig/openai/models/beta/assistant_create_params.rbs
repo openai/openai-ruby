@@ -21,32 +21,158 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # ID of the model to use. You can use the
+        # [List models](https://developers.openai.com/api/reference/resources/models/methods/list)
+        # API to see all of your available models, or see our
+        # [Model overview](https://developers.openai.com/api/docs/models) for descriptions
+        # of them.
         attr_accessor model: OpenAI::Models::Beta::AssistantCreateParams::model
 
+        # The description of the assistant. The maximum length is 512 characters.
         attr_accessor description: String?
 
+        # The system instructions that the assistant uses. The maximum length is 256,000
+        # characters.
         attr_accessor instructions: String?
 
+        # Set of 16 key-value pairs that can be attached to an object. This can be useful
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard.
+        #
+        # Keys are strings with a maximum length of 64 characters. Values are strings with
+        # a maximum length of 512 characters.
         attr_accessor metadata: OpenAI::Models::metadata?
 
+        # The name of the assistant. The maximum length is 256 characters.
         attr_accessor name: String?
 
+        # Constrains effort on reasoning for reasoning models. Currently supported values
+        # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+        # reasoning effort can result in faster responses and fewer tokens used on
+        # reasoning in a response. Not all reasoning models support every value. See the
+        # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
+        # model-specific support.
         attr_accessor reasoning_effort: OpenAI::Models::reasoning_effort?
 
+        # Specifies the format that the model must output. Compatible with
+        # [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+        # [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+        # all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+        #
+        # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
+        # Outputs which ensures the model will match your supplied JSON schema. Learn more
+        # in the
+        # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
+        #
+        # Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
+        # message the model generates is valid JSON.
+        #
+        # **Important:** when using JSON mode, you **must** also instruct the model to
+        # produce JSON yourself via a system or user message. Without this, the model may
+        # generate an unending stream of whitespace until the generation reaches the token
+        # limit, resulting in a long-running and seemingly "stuck" request. Also note that
+        # the message content may be partially cut off if `finish_reason="length"`, which
+        # indicates the generation exceeded `max_tokens` or the conversation exceeded the
+        # max context length.
         attr_accessor response_format: OpenAI::Models::Beta::assistant_response_format_option?
 
+        # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+        # make the output more random, while lower values like 0.2 will make it more
+        # focused and deterministic.
         attr_accessor temperature: Float?
 
+        # A set of resources that are used by the assistant's tools. The resources are
+        # specific to the type of tool. For example, the `code_interpreter` tool requires
+        # a list of file IDs, while the `file_search` tool requires a list of vector store
+        # IDs.
         attr_accessor tool_resources: OpenAI::Beta::AssistantCreateParams::ToolResources?
 
+        # A list of tool enabled on the assistant. There can be a maximum of 128 tools per
+        # assistant. Tools can be of types `code_interpreter`, `file_search`, or
+        # `function`.
         attr_reader tools: ::Array[OpenAI::Models::Beta::assistant_tool]?
 
+        # A list of tool enabled on the assistant. There can be a maximum of 128 tools per
+        # assistant. Tools can be of types `code_interpreter`, `file_search`, or
+        # `function`.
         def tools=: (
           ::Array[OpenAI::Models::Beta::assistant_tool]
         ) -> ::Array[OpenAI::Models::Beta::assistant_tool]
 
+        # An alternative to sampling with temperature, called nucleus sampling, where the
+        # model considers the results of the tokens with top_p probability mass. So 0.1
+        # means only the tokens comprising the top 10% probability mass are considered.
+        #
+        # We generally recommend altering this or temperature but not both.
         attr_accessor top_p: Float?
 
+        # @param model
+        #   ID of the model to use. You can use the
+        #   [List models](https://developers.openai.com/api/reference/resources/models/methods/list)
+        #   API to see all of your available models, or see our
+        #   [Model overview](https://developers.openai.com/api/docs/models) for descriptions
+        #   of them.
+        # @param description
+        #   The description of the assistant. The maximum length is 512 characters.
+        # @param instructions
+        #   The system instructions that the assistant uses. The maximum length is 256,000
+        #   characters.
+        # @param metadata
+        #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #   for storing additional information about the object in a structured format, and
+        #   querying for objects via API or the dashboard.
+        #
+        #   Keys are strings with a maximum length of 64 characters. Values are strings with
+        #   a maximum length of 512 characters.
+        # @param name
+        #   The name of the assistant. The maximum length is 256 characters.
+        # @param reasoning_effort
+        #   Constrains effort on reasoning for reasoning models. Currently supported values
+        #   are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+        #   reasoning effort can result in faster responses and fewer tokens used on
+        #   reasoning in a response. Not all reasoning models support every value. See the
+        #   [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
+        #   model-specific support.
+        # @param response_format
+        #   Specifies the format that the model must output. Compatible with
+        #   [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+        #   [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+        #   all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+        #
+        #   Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
+        #   Outputs which ensures the model will match your supplied JSON schema. Learn more
+        #   in the
+        #   [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
+        #
+        #   Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
+        #   message the model generates is valid JSON.
+        #
+        #   **Important:** when using JSON mode, you **must** also instruct the model to
+        #   produce JSON yourself via a system or user message. Without this, the model may
+        #   generate an unending stream of whitespace until the generation reaches the token
+        #   limit, resulting in a long-running and seemingly "stuck" request. Also note that
+        #   the message content may be partially cut off if `finish_reason="length"`, which
+        #   indicates the generation exceeded `max_tokens` or the conversation exceeded the
+        #   max context length.
+        # @param temperature
+        #   What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+        #   make the output more random, while lower values like 0.2 will make it more
+        #   focused and deterministic.
+        # @param tool_resources
+        #   A set of resources that are used by the assistant's tools. The resources are
+        #   specific to the type of tool. For example, the `code_interpreter` tool requires
+        #   a list of file IDs, while the `file_search` tool requires a list of vector store
+        #   IDs.
+        # @param tools
+        #   A list of tool enabled on the assistant. There can be a maximum of 128 tools per
+        #   assistant. Tools can be of types `code_interpreter`, `file_search`, or
+        #   `function`.
+        # @param top_p
+        #   An alternative to sampling with temperature, called nucleus sampling, where the
+        #   model considers the results of the tokens with top_p probability mass. So 0.1
+        #   means only the tokens comprising the top 10% probability mass are considered.
+        #
+        #   We generally recommend altering this or temperature but not both.
         def initialize: (
           model: OpenAI::Models::Beta::AssistantCreateParams::model,
           ?description: String?,
@@ -117,10 +243,20 @@ module OpenAI
           type code_interpreter = { ?file_ids: ::Array[String] }
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+            # A list of [file](https://developers.openai.com/api/reference/resources/files)
+            # IDs made available to the `code_interpreter` tool. There can be a maximum of 20
+            # files associated with the tool.
             attr_reader file_ids: ::Array[String]?
 
+            # A list of [file](https://developers.openai.com/api/reference/resources/files)
+            # IDs made available to the `code_interpreter` tool. There can be a maximum of 20
+            # files associated with the tool.
             def file_ids=: (::Array[String]) -> ::Array[String]
 
+            # @param file_ids
+            #   A list of [file](https://developers.openai.com/api/reference/resources/files)
+            #   IDs made available to the `code_interpreter` tool. There can be a maximum of 20
+            #   files associated with the tool.
             def initialize: (?file_ids: ::Array[String]) -> void
 
             def to_hash: -> { ?file_ids: ::Array[String] }
@@ -133,16 +269,42 @@ module OpenAI
             }
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
+            # The
+            # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+            # attached to this assistant. There can be a maximum of 1 vector store attached to
+            # the assistant.
             attr_reader vector_store_ids: ::Array[String]?
 
+            # The
+            # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+            # attached to this assistant. There can be a maximum of 1 vector store attached to
+            # the assistant.
             def vector_store_ids=: (::Array[String]) -> ::Array[String]
 
+            # A helper to create a
+            # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+            # with file_ids and attach it to this assistant. There can be a maximum of 1
+            # vector store attached to the assistant.
             attr_reader vector_stores: ::Array[OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore]?
 
+            # A helper to create a
+            # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+            # with file_ids and attach it to this assistant. There can be a maximum of 1
+            # vector store attached to the assistant.
             def vector_stores=: (
               ::Array[OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore]
             ) -> ::Array[OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore]
 
+            # @param vector_store_ids
+            #   The
+            #   [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+            #   attached to this assistant. There can be a maximum of 1 vector store attached to
+            #   the assistant.
+            # @param vector_stores
+            #   A helper to create a
+            #   [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+            #   with file_ids and attach it to this assistant. There can be a maximum of 1
+            #   vector store attached to the assistant.
             def initialize: (
               ?vector_store_ids: ::Array[String],
               ?vector_stores: ::Array[OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore]
@@ -161,18 +323,51 @@ module OpenAI
               }
 
             class VectorStore < OpenAI::Internal::Type::BaseModel
+              # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+              # strategy.
               attr_reader chunking_strategy: OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::chunking_strategy?
 
+              # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+              # strategy.
               def chunking_strategy=: (
                 OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::chunking_strategy
               ) -> OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::chunking_strategy
 
+              # A list of [file](https://developers.openai.com/api/reference/resources/files)
+              # IDs to add to the vector store. For vector stores created before Nov 2025, there
+              # can be a maximum of 10,000 files in a vector store. For vector stores created
+              # starting in Nov 2025, the limit is 100,000,000 files.
               attr_reader file_ids: ::Array[String]?
 
+              # A list of [file](https://developers.openai.com/api/reference/resources/files)
+              # IDs to add to the vector store. For vector stores created before Nov 2025, there
+              # can be a maximum of 10,000 files in a vector store. For vector stores created
+              # starting in Nov 2025, the limit is 100,000,000 files.
               def file_ids=: (::Array[String]) -> ::Array[String]
 
+              # Set of 16 key-value pairs that can be attached to an object. This can be useful
+              # for storing additional information about the object in a structured format, and
+              # querying for objects via API or the dashboard.
+              #
+              # Keys are strings with a maximum length of 64 characters. Values are strings with
+              # a maximum length of 512 characters.
               attr_accessor metadata: OpenAI::Models::metadata?
 
+              # @param chunking_strategy
+              #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+              #   strategy.
+              # @param file_ids
+              #   A list of [file](https://developers.openai.com/api/reference/resources/files)
+              #   IDs to add to the vector store. For vector stores created before Nov 2025, there
+              #   can be a maximum of 10,000 files in a vector store. For vector stores created
+              #   starting in Nov 2025, the limit is 100,000,000 files.
+              # @param metadata
+              #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+              #   for storing additional information about the object in a structured format, and
+              #   querying for objects via API or the dashboard.
+              #
+              #   Keys are strings with a maximum length of 64 characters. Values are strings with
+              #   a maximum length of 512 characters.
               def initialize: (
                 ?chunking_strategy: OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::chunking_strategy,
                 ?file_ids: ::Array[String],
@@ -195,8 +390,11 @@ module OpenAI
                 type auto = { ?type: :auto }
 
                 class Auto < OpenAI::Internal::Type::BaseModel
+                  # Always `auto`.
                   attr_accessor type: :auto
 
+                  # @param type
+                  #   Always `auto`.
                   def initialize: (?type: :auto) -> void
 
                   def to_hash: -> { ?type: :auto }
@@ -211,8 +409,11 @@ module OpenAI
                 class Static < OpenAI::Internal::Type::BaseModel
                   attr_accessor static: OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
 
+                  # Always `static`.
                   attr_accessor type: :static
 
+                  # @param type
+                  #   Always `static`.
                   def initialize: (
                     static: OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
                     ?type: :static
@@ -230,10 +431,22 @@ module OpenAI
                     }
 
                   class Static < OpenAI::Internal::Type::BaseModel
+                    # The number of tokens that overlap between chunks. The default value is `400`.
+                    #
+                    # Note that the overlap must not exceed half of `max_chunk_size_tokens`.
                     attr_accessor chunk_overlap_tokens: Integer
 
+                    # The maximum number of tokens in each chunk. The default value is `800`. The
+                    # minimum value is `100` and the maximum value is `4096`.
                     attr_accessor max_chunk_size_tokens: Integer
 
+                    # @param chunk_overlap_tokens
+                    #   The number of tokens that overlap between chunks. The default value is `400`.
+                    #
+                    #   Note that the overlap must not exceed half of `max_chunk_size_tokens`.
+                    # @param max_chunk_size_tokens
+                    #   The maximum number of tokens in each chunk. The default value is `800`. The
+                    #   minimum value is `100` and the maximum value is `4096`.
                     def initialize: (
                       chunk_overlap_tokens: Integer,
                       max_chunk_size_tokens: Integer

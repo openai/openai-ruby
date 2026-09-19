@@ -14,8 +14,11 @@ module OpenAI
 
         attr_accessor session_id: String
 
+        # SIP rejection status sent to the caller. This field is required.
         attr_accessor status_code: Integer
 
+        # @param status_code
+        #   SIP rejection status sent to the caller. This field is required.
         def initialize: (
           session_id: String,
           status_code: Integer,

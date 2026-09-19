@@ -11,16 +11,31 @@ module OpenAI
         }
 
       class HostedEnvironmentFileID < OpenAI::Internal::Type::BaseModel
+        # The session-scoped ID of the file in the execution environment.
         attr_accessor id: String
 
+        # The ID of the uploaded file.
         attr_accessor file_id: String
 
+        # The file's absolute path inside the environment.
         attr_accessor path: String
 
+        # The decoded file size in bytes.
         attr_accessor size_bytes: Integer
 
+        # The type of the object. Always `file_id`.
         attr_accessor type: :file_id
 
+        # @param id
+        #   The session-scoped ID of the file in the execution environment.
+        # @param file_id
+        #   The ID of the uploaded file.
+        # @param path
+        #   The file's absolute path inside the environment.
+        # @param size_bytes
+        #   The decoded file size in bytes.
+        # @param type
+        #   The type of the object. Always `file_id`.
         def initialize: (
           id: String,
           file_id: String,

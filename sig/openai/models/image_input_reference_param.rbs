@@ -7,10 +7,14 @@ module OpenAI
 
       def file_id=: (String) -> String
 
+      # A fully qualified URL or base64-encoded data URL.
       attr_reader image_url: String?
 
+      # A fully qualified URL or base64-encoded data URL.
       def image_url=: (String) -> String
 
+      # @param image_url
+      #   A fully qualified URL or base64-encoded data URL.
       def initialize: (?file_id: String, ?image_url: String) -> void
 
       def to_hash: -> { ?file_id: String, ?image_url: String }

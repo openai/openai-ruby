@@ -9,12 +9,21 @@ module OpenAI
         }
 
       class ResponseDoneEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The response resource.
         attr_accessor response: OpenAI::Realtime::RealtimeResponse
 
+        # The event type, must be `response.done`.
         attr_accessor type: :"response.done"
 
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param response
+        #   The response resource.
+        # @param type
+        #   The event type, must be `response.done`.
         def initialize: (
           event_id: String,
           response: OpenAI::Realtime::RealtimeResponse,

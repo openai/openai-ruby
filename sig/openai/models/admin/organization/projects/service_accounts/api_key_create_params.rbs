@@ -18,20 +18,37 @@ module OpenAI
               extend OpenAI::Internal::Type::RequestParameters::Converter
               include OpenAI::Internal::Type::RequestParameters
 
+              # The ID of the project.
               attr_accessor project_id: String
 
+              # The ID of the service account.
               attr_accessor service_account_id: String
 
+              # Number of seconds until the API key expires.
               attr_accessor expires_in_seconds: Integer?
 
+              # API key name.
               attr_reader name: String?
 
+              # API key name.
               def name=: (String) -> String
 
+              # API key scopes.
               attr_reader scopes: ::Array[String]?
 
+              # API key scopes.
               def scopes=: (::Array[String]) -> ::Array[String]
 
+              # @param project_id
+              #   The ID of the project.
+              # @param service_account_id
+              #   The ID of the service account.
+              # @param expires_in_seconds
+              #   Number of seconds until the API key expires.
+              # @param name
+              #   API key name.
+              # @param scopes
+              #   API key scopes.
               def initialize: (
                 project_id: String,
                 service_account_id: String,

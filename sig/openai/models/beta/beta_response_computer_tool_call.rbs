@@ -16,30 +16,61 @@ module OpenAI
         }
 
       class BetaResponseComputerToolCall < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the computer call.
         attr_accessor id: String
 
+        # An identifier used when responding to the tool call with output.
         attr_accessor call_id: String
 
+        # The pending safety checks for the computer call.
         attr_accessor pending_safety_checks: ::Array[OpenAI::Beta::BetaResponseComputerToolCall::PendingSafetyCheck]
 
+        # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+        # Populated when items are returned via API.
         attr_accessor status: OpenAI::Models::Beta::BetaResponseComputerToolCall::status
 
+        # The type of the computer call. Always `computer_call`.
         attr_accessor type: OpenAI::Models::Beta::BetaResponseComputerToolCall::type_
 
+        # A click action.
         attr_reader action: OpenAI::Models::Beta::beta_computer_action?
 
+        # A click action.
         def action=: (
           OpenAI::Models::Beta::beta_computer_action
         ) -> OpenAI::Models::Beta::beta_computer_action
 
+        # Flattened batched actions for `computer_use`. Each action includes an `type`
+        # discriminator and action-specific fields.
         attr_reader actions: OpenAI::Models::Beta::beta_computer_action_list?
 
+        # Flattened batched actions for `computer_use`. Each action includes an `type`
+        # discriminator and action-specific fields.
         def actions=: (
           OpenAI::Models::Beta::beta_computer_action_list
         ) -> OpenAI::Models::Beta::beta_computer_action_list
 
+        # The agent that produced this item.
         attr_accessor agent: OpenAI::Beta::BetaResponseComputerToolCall::Agent?
 
+        # @param id
+        #   The unique ID of the computer call.
+        # @param call_id
+        #   An identifier used when responding to the tool call with output.
+        # @param pending_safety_checks
+        #   The pending safety checks for the computer call.
+        # @param status
+        #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+        #   Populated when items are returned via API.
+        # @param type
+        #   The type of the computer call. Always `computer_call`.
+        # @param action
+        #   A click action.
+        # @param actions
+        #   Flattened batched actions for `computer_use`. Each action includes an `type`
+        #   discriminator and action-specific fields.
+        # @param agent
+        #   The agent that produced this item.
         def initialize: (
           id: String,
           call_id: String,
@@ -66,12 +97,21 @@ module OpenAI
           { id: String, ?code: String?, ?message: String? }
 
         class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel
+          # The ID of the pending safety check.
           attr_accessor id: String
 
+          # The type of the pending safety check.
           attr_accessor code: String?
 
+          # Details about the pending safety check.
           attr_accessor message: String?
 
+          # @param id
+          #   The ID of the pending safety check.
+          # @param code
+          #   The type of the pending safety check.
+          # @param message
+          #   Details about the pending safety check.
           def initialize: (
             id: String,
             ?code: String?,
@@ -106,8 +146,11 @@ module OpenAI
         type agent = { agent_name: String }
 
         class Agent < OpenAI::Internal::Type::BaseModel
+          # The canonical name of the agent that produced this item.
           attr_accessor agent_name: String
 
+          # @param agent_name
+          #   The canonical name of the agent that produced this item.
           def initialize: (agent_name: String) -> void
 
           def to_hash: -> { agent_name: String }

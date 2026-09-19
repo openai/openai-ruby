@@ -14,18 +14,43 @@ module OpenAI
         }
 
       class VectorStoreFileBatch < OpenAI::Internal::Type::BaseModel
+        # The identifier, which can be referenced in API endpoints.
         attr_accessor id: String
 
+        # The Unix timestamp (in seconds) for when the vector store files batch was
+        # created.
         attr_accessor created_at: Integer
 
         attr_accessor file_counts: OpenAI::VectorStores::VectorStoreFileBatch::FileCounts
 
+        # The object type, which is always `vector_store.file_batch`.
         attr_accessor object: :"vector_store.files_batch"
 
+        # The status of the vector store files batch, which can be either `in_progress`,
+        # `completed`, `cancelled` or `failed`.
         attr_accessor status: OpenAI::Models::VectorStores::VectorStoreFileBatch::status
 
+        # The ID of the
+        # [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+        # that the [File](https://developers.openai.com/api/reference/resources/files) is
+        # attached to.
         attr_accessor vector_store_id: String
 
+        # @param id
+        #   The identifier, which can be referenced in API endpoints.
+        # @param created_at
+        #   The Unix timestamp (in seconds) for when the vector store files batch was
+        #   created.
+        # @param status
+        #   The status of the vector store files batch, which can be either `in_progress`,
+        #   `completed`, `cancelled` or `failed`.
+        # @param vector_store_id
+        #   The ID of the
+        #   [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+        #   that the [File](https://developers.openai.com/api/reference/resources/files) is
+        #   attached to.
+        # @param object
+        #   The object type, which is always `vector_store.file_batch`.
         def initialize: (
           id: String,
           created_at: Integer,
@@ -54,16 +79,31 @@ module OpenAI
           }
 
         class FileCounts < OpenAI::Internal::Type::BaseModel
+          # The number of files that where cancelled.
           attr_accessor cancelled: Integer
 
+          # The number of files that have been processed.
           attr_accessor completed: Integer
 
+          # The number of files that have failed to process.
           attr_accessor failed: Integer
 
+          # The number of files that are currently being processed.
           attr_accessor in_progress: Integer
 
+          # The total number of files.
           attr_accessor total: Integer
 
+          # @param cancelled
+          #   The number of files that where cancelled.
+          # @param completed
+          #   The number of files that have been processed.
+          # @param failed
+          #   The number of files that have failed to process.
+          # @param in_progress
+          #   The number of files that are currently being processed.
+          # @param total
+          #   The total number of files.
           def initialize: (
             cancelled: Integer,
             completed: Integer,

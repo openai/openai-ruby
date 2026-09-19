@@ -7,8 +7,11 @@ module OpenAI
       class FunctionTool < OpenAI::Internal::Type::BaseModel
         attr_accessor function: OpenAI::FunctionDefinition
 
+        # The type of tool being defined: `function`
         attr_accessor type: :function
 
+        # @param type
+        #   The type of tool being defined: `function`
         def initialize: (
           function: OpenAI::FunctionDefinition,
           ?type: :function

@@ -14,28 +14,58 @@ module OpenAI
         }
 
       class RealtimeTranscriptionSessionCreateResponse < OpenAI::Internal::Type::BaseModel
+        # Unique identifier for the session that looks like `sess_1234567890abcdef`.
         attr_accessor id: String
 
+        # The object type. Always `realtime.transcription_session`.
         attr_accessor object: String
 
+        # The type of session. Always `transcription` for transcription sessions.
         attr_accessor type: :transcription
 
+        # Configuration for input audio for the session.
         attr_reader audio: OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio?
 
+        # Configuration for input audio for the session.
         def audio=: (
           OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio
         ) -> OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio
 
+        # Expiration timestamp for the session, in seconds since epoch.
         attr_reader expires_at: Integer?
 
+        # Expiration timestamp for the session, in seconds since epoch.
         def expires_at=: (Integer) -> Integer
 
+        # Additional fields to include in server outputs.
+        #
+        # - `item.input_audio_transcription.logprobs`: Include logprobs for input audio
+        #   transcription.
         attr_reader include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::include_]?
 
+        # Additional fields to include in server outputs.
+        #
+        # - `item.input_audio_transcription.logprobs`: Include logprobs for input audio
+        #   transcription.
         def include=: (
           ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::include_]
         ) -> ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::include_]
 
+        # @param id
+        #   Unique identifier for the session that looks like `sess_1234567890abcdef`.
+        # @param object
+        #   The object type. Always `realtime.transcription_session`.
+        # @param audio
+        #   Configuration for input audio for the session.
+        # @param expires_at
+        #   Expiration timestamp for the session, in seconds since epoch.
+        # @param include
+        #   Additional fields to include in server outputs.
+        #
+        #   - `item.input_audio_transcription.logprobs`: Include logprobs for input audio
+        #     transcription.
+        # @param type
+        #   The type of session. Always `transcription` for transcription sessions.
         def initialize: (
           id: String,
           object: String,
@@ -83,14 +113,18 @@ module OpenAI
             }
 
           class Input < OpenAI::Internal::Type::BaseModel
+            # The PCM audio format. Only a 24kHz sample rate is supported.
             attr_reader format_: OpenAI::Models::Realtime::realtime_audio_formats?
 
+            # The PCM audio format. Only a 24kHz sample rate is supported.
             def format_=: (
               OpenAI::Models::Realtime::realtime_audio_formats
             ) -> OpenAI::Models::Realtime::realtime_audio_formats
 
+            # Configuration for input audio noise reduction.
             attr_reader noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input::NoiseReduction?
 
+            # Configuration for input audio noise reduction.
             def noise_reduction=: (
               OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input::NoiseReduction
             ) -> OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input::NoiseReduction
@@ -101,8 +135,21 @@ module OpenAI
               OpenAI::Realtime::AudioTranscription
             ) -> OpenAI::Realtime::AudioTranscription
 
+            # Configuration for turn detection. Can be set to `null` to turn off. Server VAD
+            # means that the model will detect the start and end of speech based on audio
+            # volume and respond at the end of user speech. For `gpt-realtime-whisper`, this
+            # must be `null`; VAD is not supported.
             attr_accessor turn_detection: OpenAI::Realtime::RealtimeTranscriptionSessionTurnDetection?
 
+            # @param format_
+            #   The PCM audio format. Only a 24kHz sample rate is supported.
+            # @param noise_reduction
+            #   Configuration for input audio noise reduction.
+            # @param turn_detection
+            #   Configuration for turn detection. Can be set to `null` to turn off. Server VAD
+            #   means that the model will detect the start and end of speech based on audio
+            #   volume and respond at the end of user speech. For `gpt-realtime-whisper`, this
+            #   must be `null`; VAD is not supported.
             def initialize: (
               ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
               ?noise_reduction: OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input::NoiseReduction,
@@ -121,12 +168,22 @@ module OpenAI
               { ?type: OpenAI::Models::Realtime::noise_reduction_type }
 
             class NoiseReduction < OpenAI::Internal::Type::BaseModel
+              # Type of noise reduction. `near_field` is for close-talking microphones such as
+              # headphones, `far_field` is for far-field microphones such as laptop or
+              # conference room microphones.
               attr_reader type: OpenAI::Models::Realtime::noise_reduction_type?
 
+              # Type of noise reduction. `near_field` is for close-talking microphones such as
+              # headphones, `far_field` is for far-field microphones such as laptop or
+              # conference room microphones.
               def type=: (
                 OpenAI::Models::Realtime::noise_reduction_type
               ) -> OpenAI::Models::Realtime::noise_reduction_type
 
+              # @param type
+              #   Type of noise reduction. `near_field` is for close-talking microphones such as
+              #   headphones, `far_field` is for far-field microphones such as laptop or
+              #   conference room microphones.
               def initialize: (
                 ?type: OpenAI::Models::Realtime::noise_reduction_type
               ) -> void

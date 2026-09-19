@@ -19,24 +19,50 @@ module OpenAI
             }
 
           class ProjectAPIKey < OpenAI::Internal::Type::BaseModel
+            # The identifier, which can be referenced in API endpoints
             attr_accessor id: String
 
+            # The Unix timestamp (in seconds) of when the API key was created
             attr_accessor created_at: Integer
 
+            # The Unix timestamp (in seconds) of when the API key was last used.
             attr_accessor last_used_at: Integer?
 
+            # The name of the API key
             attr_accessor name: String
 
+            # The object type, which is always `organization.project.api_key`
             attr_accessor object: :"organization.project.api_key"
 
             attr_accessor owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner
 
+            # Whether the API key's owner currently has effective access to the project.
             attr_accessor owner_project_access: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::owner_project_access
 
+            # The redacted value of the API key
             attr_accessor redacted_value: String
 
+            # The Unix timestamp (in seconds) when the API key expires, or null if it does not
+            # expire.
             attr_accessor expires_at: Integer?
 
+            # @param id
+            #   The identifier, which can be referenced in API endpoints
+            # @param created_at
+            #   The Unix timestamp (in seconds) of when the API key was created
+            # @param last_used_at
+            #   The Unix timestamp (in seconds) of when the API key was last used.
+            # @param name
+            #   The name of the API key
+            # @param owner_project_access
+            #   Whether the API key's owner currently has effective access to the project.
+            # @param redacted_value
+            #   The redacted value of the API key
+            # @param expires_at
+            #   The Unix timestamp (in seconds) when the API key expires, or null if it does not
+            #   expire.
+            # @param object
+            #   The object type, which is always `organization.project.api_key`
             def initialize: (
               id: String,
               created_at: Integer,
@@ -69,24 +95,36 @@ module OpenAI
               }
 
             class Owner < OpenAI::Internal::Type::BaseModel
+              # The service account that owns a project API key.
               attr_reader service_account: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount?
 
+              # The service account that owns a project API key.
               def service_account=: (
                 OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount
               ) -> OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount
 
+              # `user` or `service_account`
               attr_reader type: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_?
 
+              # `user` or `service_account`
               def type=: (
                 OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_
               ) -> OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_
 
+              # The user that owns a project API key.
               attr_reader user: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::User?
 
+              # The user that owns a project API key.
               def user=: (
                 OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::User
               ) -> OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::User
 
+              # @param service_account
+              #   The service account that owns a project API key.
+              # @param type
+              #   `user` or `service_account`
+              # @param user
+              #   The user that owns a project API key.
               def initialize: (
                 ?service_account: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner::ServiceAccount,
                 ?type: OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey::Owner::type_,
@@ -103,14 +141,26 @@ module OpenAI
                 { id: String, created_at: Integer, name: String, role: String }
 
               class ServiceAccount < OpenAI::Internal::Type::BaseModel
+                # The identifier, which can be referenced in API endpoints
                 attr_accessor id: String
 
+                # The Unix timestamp (in seconds) of when the service account was created.
                 attr_accessor created_at: Integer
 
+                # The name of the service account.
                 attr_accessor name: String
 
+                # The service account's project role.
                 attr_accessor role: String
 
+                # @param id
+                #   The identifier, which can be referenced in API endpoints
+                # @param created_at
+                #   The Unix timestamp (in seconds) of when the service account was created.
+                # @param name
+                #   The name of the service account.
+                # @param role
+                #   The service account's project role.
                 def initialize: (
                   id: String,
                   created_at: Integer,
@@ -147,16 +197,31 @@ module OpenAI
                 }
 
               class User < OpenAI::Internal::Type::BaseModel
+                # The identifier, which can be referenced in API endpoints
                 attr_accessor id: String
 
+                # The Unix timestamp (in seconds) of when the user was created.
                 attr_accessor created_at: Integer
 
+                # The email address of the user.
                 attr_accessor email: String
 
+                # The name of the user.
                 attr_accessor name: String
 
+                # The user's project role.
                 attr_accessor role: String
 
+                # @param id
+                #   The identifier, which can be referenced in API endpoints
+                # @param created_at
+                #   The Unix timestamp (in seconds) of when the user was created.
+                # @param email
+                #   The email address of the user.
+                # @param name
+                #   The name of the user.
+                # @param role
+                #   The user's project role.
                 def initialize: (
                   id: String,
                   created_at: Integer,

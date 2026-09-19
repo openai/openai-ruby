@@ -9,14 +9,23 @@ module OpenAI
         }
 
       class ThreadStreamEvent < OpenAI::Internal::Type::BaseModel
+        # Represents a thread that contains
+        # [messages](https://developers.openai.com/api/docs/assistants/migration).
         attr_accessor data: OpenAI::Beta::Thread
 
         attr_accessor event: :"thread.created"
 
+        # Whether to enable input audio transcription.
         attr_reader enabled: bool?
 
+        # Whether to enable input audio transcription.
         def enabled=: (bool) -> bool
 
+        # @param data
+        #   Represents a thread that contains
+        #   [messages](https://developers.openai.com/api/docs/assistants/migration).
+        # @param enabled
+        #   Whether to enable input audio transcription.
         def initialize: (
           data: OpenAI::Beta::Thread,
           ?enabled: bool,

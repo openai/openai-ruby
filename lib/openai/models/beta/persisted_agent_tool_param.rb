@@ -139,7 +139,7 @@ module OpenAI
           optional :allowed_tools, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
           # @!attribute connection_origin
-          #   Where outbound MCP HTTP connections originate.
+          #   Selects where outbound MCP HTTP connections originate.
           #
           #   @return [Symbol, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp::ConnectionOrigin, nil]
           optional(
@@ -185,7 +185,7 @@ module OpenAI
           #     The MCP tools the agent may call. All server tools are allowed when omitted.
           #
           #   @param connection_origin [Symbol, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp::ConnectionOrigin, nil]
-          #     Where outbound MCP HTTP connections originate.
+          #     Selects where outbound MCP HTTP connections originate.
           #
           #   @param credential_id [String, nil]
           #     The vault credential selected for this MCP server. Optional when exactly one
@@ -201,7 +201,7 @@ module OpenAI
           #   @param type [Symbol, :mcp]
           #     The type of the object. Always `mcp`.
 
-          # Where outbound MCP HTTP connections originate.
+          # Selects where outbound MCP HTTP connections originate.
           #
           # @see OpenAI::Models::Beta::PersistedAgentToolParam::Mcp#connection_origin
           module ConnectionOrigin
@@ -232,7 +232,7 @@ module OpenAI
           optional :allowed_domains, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
           # @!attribute context_size
-          #   The amount of web search context made available to the model.
+          #   The amount of search context made available to the model. Defaults to `medium`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch::ContextSize, nil]
           optional(
@@ -242,13 +242,13 @@ module OpenAI
           )
 
           # @!attribute location
-          #   Approximate user location used to localize web search results.
+          #   Approximate location used to localize search results.
           #
           #   @return [OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch::Location, nil]
           optional :location, -> { OpenAI::Beta::PersistedAgentToolParam::WebSearch::Location }, nil?: true
 
           # @!attribute mode
-          #   The source used for web search results.
+          #   The source used for web search results. Defaults to `live`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch::Mode, nil]
           optional :mode, enum: -> { OpenAI::Beta::PersistedAgentToolParam::WebSearch::Mode }, nil?: true
@@ -260,18 +260,18 @@ module OpenAI
           #     Domains the search may include.
           #
           #   @param context_size [Symbol, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch::ContextSize, nil]
-          #     The amount of web search context made available to the model.
+          #     The amount of search context made available to the model. Defaults to `medium`.
           #
           #   @param location [OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch::Location, nil]
-          #     Approximate user location used to localize web search results.
+          #     Approximate location used to localize search results.
           #
           #   @param mode [Symbol, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch::Mode, nil]
-          #     The source used for web search results.
+          #     The source used for web search results. Defaults to `live`.
           #
           #   @param type [Symbol, :web_search]
           #     The type of the object. Always `web_search`.
 
-          # The amount of web search context made available to the model.
+          # The amount of search context made available to the model. Defaults to `medium`.
           #
           # @see OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch#context_size
           module ContextSize
@@ -312,7 +312,7 @@ module OpenAI
             optional :timezone, String, nil?: true
 
             # @!method initialize(city: nil, country: nil, region: nil, timezone: nil)
-            #   Approximate user location used to localize web search results.
+            #   Approximate location used to localize search results.
             #
             #   @param city [String, nil]
             #     The city name.
@@ -327,7 +327,7 @@ module OpenAI
             #     The IANA timezone, such as `America/Los_Angeles`.
           end
 
-          # The source used for web search results.
+          # The source used for web search results. Defaults to `live`.
           #
           # @see OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch#mode
           module Mode

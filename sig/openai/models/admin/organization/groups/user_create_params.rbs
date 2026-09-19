@@ -16,8 +16,11 @@ module OpenAI
 
             attr_accessor group_id: String
 
+            # Identifier of the user to add to the group.
             attr_accessor user_id: String
 
+            # @param user_id
+            #   Identifier of the user to add to the group.
             def initialize: (
               group_id: String,
               user_id: String,

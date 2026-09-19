@@ -10,12 +10,21 @@ module OpenAI
         type inline = { description: String, name: String, ?type: :inline }
 
         class Inline < OpenAI::Internal::Type::BaseModel
+          # The installed skill description.
           attr_accessor description: String
 
+          # The installed skill name.
           attr_accessor name: String
 
+          # The type of the object. Always `inline`.
           attr_accessor type: :inline
 
+          # @param description
+          #   The installed skill description.
+          # @param name
+          #   The installed skill name.
+          # @param type
+          #   The type of the object. Always `inline`.
           def initialize: (
             description: String,
             name: String,

@@ -10,24 +10,43 @@ module OpenAI
         }
 
       class RealtimeFunctionTool < OpenAI::Internal::Type::BaseModel
+        # The description of the function, including guidance on when and how to call it,
+        # and guidance about what to tell the user when calling (if anything).
         attr_reader description: String?
 
+        # The description of the function, including guidance on when and how to call it,
+        # and guidance about what to tell the user when calling (if anything).
         def description=: (String) -> String
 
+        # The name of the function.
         attr_reader name: String?
 
+        # The name of the function.
         def name=: (String) -> String
 
+        # Parameters of the function in JSON Schema.
         attr_reader parameters: top?
 
+        # Parameters of the function in JSON Schema.
         def parameters=: (top) -> top
 
+        # The type of the tool, i.e. `function`.
         attr_reader type: OpenAI::Models::Realtime::RealtimeFunctionTool::type_?
 
+        # The type of the tool, i.e. `function`.
         def type=: (
           OpenAI::Models::Realtime::RealtimeFunctionTool::type_
         ) -> OpenAI::Models::Realtime::RealtimeFunctionTool::type_
 
+        # @param description
+        #   The description of the function, including guidance on when and how to call it,
+        #   and guidance about what to tell the user when calling (if anything).
+        # @param name
+        #   The name of the function.
+        # @param parameters
+        #   Parameters of the function in JSON Schema.
+        # @param type
+        #   The type of the tool, i.e. `function`.
         def initialize: (
           ?description: String,
           ?name: String,

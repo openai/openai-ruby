@@ -9,12 +9,21 @@ module OpenAI
         }
 
       class ResponseAudioTranscriptDeltaEvent < OpenAI::Internal::Type::BaseModel
+        # The partial transcript of the audio response.
         attr_accessor delta: String
 
+        # The sequence number of this event.
         attr_accessor sequence_number: Integer
 
+        # The type of the event. Always `response.audio.transcript.delta`.
         attr_accessor type: :"response.audio.transcript.delta"
 
+        # @param delta
+        #   The partial transcript of the audio response.
+        # @param sequence_number
+        #   The sequence number of this event.
+        # @param type
+        #   The type of the event. Always `response.audio.transcript.delta`.
         def initialize: (
           delta: String,
           sequence_number: Integer,

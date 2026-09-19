@@ -24,24 +24,55 @@ module OpenAI
 
             attr_accessor environment_template_id: String
 
+            # Directories that expose capabilities to the agent.
             attr_accessor capability_directories: ::Array[String]?
 
+            # Replacement confidential environment values.
             attr_accessor env: ::Hash[Symbol, String]?
 
+            # Replacement file configuration materialized for each new session.
             attr_accessor files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?
 
+            # A replacement human-readable display name, or `null` to clear the name.
             attr_accessor name: String?
 
+            # Network access available after setup completes. Omit to preserve the current
+            # policy, or pass `null` to reset to disabled for GA requests or enabled for
+            # alpha/beta requests.
             attr_accessor network: OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Network?
 
+            # Packages installed before the runtime network policy applies.
             attr_accessor packages: OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Packages?
 
+            # Replacement plugin configuration installed for each new session.
             attr_accessor plugins: ::Array[OpenAI::Beta::HostedPluginParam]?
 
+            # Replacement confidential setup commands, never included in returned resources.
             attr_accessor setup_commands: ::Array[OpenAI::Beta::SetupCommandParam]?
 
+            # Replacement skill configuration installed for each new session.
             attr_accessor skills: ::Array[OpenAI::Models::Beta::hosted_skill_param]?
 
+            # @param capability_directories
+            #   Directories that expose capabilities to the agent.
+            # @param env
+            #   Replacement confidential environment values.
+            # @param files
+            #   Replacement file configuration materialized for each new session.
+            # @param name
+            #   A replacement human-readable display name, or `null` to clear the name.
+            # @param network
+            #   Network access available after setup completes. Omit to preserve the current
+            #   policy, or pass `null` to reset to disabled for GA requests or enabled for
+            #   alpha/beta requests.
+            # @param packages
+            #   Packages installed before the runtime network policy applies.
+            # @param plugins
+            #   Replacement plugin configuration installed for each new session.
+            # @param setup_commands
+            #   Replacement confidential setup commands, never included in returned resources.
+            # @param skills
+            #   Replacement skill configuration installed for each new session.
             def initialize: (
               environment_template_id: String,
               ?capability_directories: ::Array[String]?,
@@ -77,10 +108,16 @@ module OpenAI
               }
 
             class Network < OpenAI::Internal::Type::BaseModel
+              # The environment's network access mode.
               attr_accessor access: OpenAI::Models::Beta::Agents::Environments::TemplateUpdateParams::Network::access
 
+              # Domains the environment may access when network access is restricted.
               attr_accessor allowed_domains: ::Array[String]?
 
+              # @param access
+              #   The environment's network access mode.
+              # @param allowed_domains
+              #   Domains the environment may access when network access is restricted.
               def initialize: (
                 access: OpenAI::Models::Beta::Agents::Environments::TemplateUpdateParams::Network::access,
                 ?allowed_domains: ::Array[String]?
@@ -96,7 +133,7 @@ module OpenAI
               module Access
                 extend OpenAI::Internal::Type::Enum
 
-                # Allows unrestricted network access, matching an omitted network policy.
+                # Allows unrestricted network access.
                 ENABLED: :enabled
 
                 # Disables network access.
@@ -117,12 +154,21 @@ module OpenAI
               }
 
             class Packages < OpenAI::Internal::Type::BaseModel
+              # npm packages to install globally. Defaults to an empty list.
               attr_accessor npm: ::Array[String]?
 
+              # Python packages to install. Defaults to an empty list.
               attr_accessor python: ::Array[String]?
 
+              # System packages to install. Defaults to an empty list.
               attr_accessor system_: ::Array[String]?
 
+              # @param npm
+              #   npm packages to install globally. Defaults to an empty list.
+              # @param python
+              #   Python packages to install. Defaults to an empty list.
+              # @param system_
+              #   System packages to install. Defaults to an empty list.
               def initialize: (
                 ?npm: ::Array[String]?,
                 ?python: ::Array[String]?,

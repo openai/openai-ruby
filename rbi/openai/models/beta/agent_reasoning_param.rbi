@@ -14,11 +14,12 @@ module OpenAI
           )
         end
 
-        # The amount of reasoning effort the model should use.
+        # The amount of reasoning effort the model should use. Omission lets the model
+        # select it.
         sig { returns(T.nilable(OpenAI::Beta::AgentReasoningParam::Effort::OrSymbol)) }
         attr_accessor :effort
 
-        # The reasoning summary format requested from the model.
+        # Controls whether the response includes a reasoning summary.
         sig { returns(T.nilable(OpenAI::Beta::AgentReasoningParam::Summary::OrSymbol)) }
         attr_accessor :summary
 
@@ -34,10 +35,11 @@ module OpenAI
         end
         def self.new(
 
-          # The amount of reasoning effort the model should use.
+          # The amount of reasoning effort the model should use. Omission lets the model
+          # select it.
           effort: nil,
 
-          # The reasoning summary format requested from the model.
+          # Controls whether the response includes a reasoning summary.
 
           summary: nil
         )
@@ -54,7 +56,8 @@ module OpenAI
         def to_hash
         end
 
-        # The amount of reasoning effort the model should use.
+        # The amount of reasoning effort the model should use. Omission lets the model
+        # select it.
         module Effort
           extend OpenAI::Internal::Type::Enum
 
@@ -74,7 +77,7 @@ module OpenAI
           end
         end
 
-        # The reasoning summary format requested from the model.
+        # Controls whether the response includes a reasoning summary.
         module Summary
           extend OpenAI::Internal::Type::Enum
 

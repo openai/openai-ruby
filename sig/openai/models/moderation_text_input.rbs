@@ -3,10 +3,16 @@ module OpenAI
     type moderation_text_input = { text: String, ?type: :text }
 
     class ModerationTextInput < OpenAI::Internal::Type::BaseModel
+      # A string of text to classify.
       attr_accessor text: String
 
+      # Always `text`.
       attr_accessor type: :text
 
+      # @param text
+      #   A string of text to classify.
+      # @param type
+      #   Always `text`.
       def initialize: (text: String, ?type: :text) -> void
 
       def to_hash: -> { text: String, ?type: :text }

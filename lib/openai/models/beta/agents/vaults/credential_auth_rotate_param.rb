@@ -40,7 +40,7 @@ module OpenAI
               optional :expires_at, String, nil?: true
 
               # @!attribute refresh
-              #   Updates to an MCP credential's existing OAuth refresh configuration.
+              #   Optional write-only refresh-token and client-secret updates.
               #
               #   @return [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth::Refresh, nil]
               optional(
@@ -61,7 +61,7 @@ module OpenAI
               #     case the expiry is cleared.
               #
               #   @param refresh [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth::Refresh, nil]
-              #     Updates to an MCP credential's existing OAuth refresh configuration.
+              #     Optional write-only refresh-token and client-secret updates.
               #
               #   @param type [Symbol, :mcp_oauth]
               #     The type of the object. Always `mcp_oauth`.
@@ -83,8 +83,7 @@ module OpenAI
                 optional :scope, String, nil?: true
 
                 # @!attribute token_endpoint_auth
-                #   Client-secret updates that preserve the credential's OAuth authentication
-                #   method.
+                #   Client-secret updates for the existing token endpoint authentication method.
                 #
                 #   @return [OpenAI::Models::Beta::Agents::Vaults::McpOauthTokenEndpointAuthRotateParam::ClientSecretBasic, OpenAI::Models::Beta::Agents::Vaults::McpOauthTokenEndpointAuthRotateParam::ClientSecretPost, nil]
                 optional(
@@ -96,7 +95,7 @@ module OpenAI
                 )
 
                 # @!method initialize(refresh_token: nil, scope: nil, token_endpoint_auth: nil)
-                #   Updates to an MCP credential's existing OAuth refresh configuration.
+                #   Optional write-only refresh-token and client-secret updates.
                 #
                 #   @param refresh_token [String, nil]
                 #     The replacement refresh token. Omit or pass `null` to keep the stored token.
@@ -107,8 +106,7 @@ module OpenAI
                 #     scopes, or pass `null` to stop sending a scope parameter.
                 #
                 #   @param token_endpoint_auth [OpenAI::Models::Beta::Agents::Vaults::McpOauthTokenEndpointAuthRotateParam::ClientSecretBasic, OpenAI::Models::Beta::Agents::Vaults::McpOauthTokenEndpointAuthRotateParam::ClientSecretPost, nil]
-                #     Client-secret updates that preserve the credential's OAuth authentication
-                #     method.
+                #     Client-secret updates for the existing token endpoint authentication method.
               end
             end
 

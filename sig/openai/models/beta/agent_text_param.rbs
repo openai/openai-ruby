@@ -8,10 +8,18 @@ module OpenAI
         }
 
       class AgentTextParam < OpenAI::Internal::Type::BaseModel
+        # The output format. Omission uses ordinary text (`{"type": "text"}`).
         attr_accessor format_: OpenAI::Models::Beta::text_format_param?
 
+        # The amount of text the model should produce. Defaults to `medium`, matching
+        # Responses.
         attr_accessor verbosity: OpenAI::Models::Beta::AgentTextParam::verbosity?
 
+        # @param format_
+        #   The output format. Omission uses ordinary text (`{"type": "text"}`).
+        # @param verbosity
+        #   The amount of text the model should produce. Defaults to `medium`, matching
+        #   Responses.
         def initialize: (
           ?format_: OpenAI::Models::Beta::text_format_param?,
           ?verbosity: OpenAI::Models::Beta::AgentTextParam::verbosity?

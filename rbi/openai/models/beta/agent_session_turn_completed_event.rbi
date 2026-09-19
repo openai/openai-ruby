@@ -37,7 +37,7 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
-        # Recorded token usage for a session or turn. Usage is best effort and may change.
+        # Token usage by the root agent during the turn, when available.
         sig { returns(T.nilable(OpenAI::Beta::TokenUsage)) }
         attr_reader :usage
 
@@ -76,7 +76,7 @@ module OpenAI
           # The ID of the turn associated with the event.
           turn_id:,
 
-          # Recorded token usage for a session or turn. Usage is best effort and may change.
+          # Token usage by the root agent during the turn, when available.
           usage:,
 
           # The type of the object. Always `agent.session.turn.completed`.

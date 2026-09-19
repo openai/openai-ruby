@@ -2018,7 +2018,7 @@ module OpenAI
           #   Emitted when an annotation is added to output text content.
           #
           #   @param annotation [OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::ContainerFileCitation, OpenAI::Models::Responses::ResponseOutputTextAnnotationAddedEvent::Annotation::FilePath, nil]
-          #     An annotation that applies to a span of output text.
+          #     The annotation object being added. (See annotation schema for details.)
           #
           #   @param annotation_index [Integer]
           #     The index of the annotation within the content part.

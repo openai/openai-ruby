@@ -41,7 +41,10 @@ module OpenAI
           #   unchanged.
           #
           # @param input [String, Array<OpenAI::Models::Beta::AgentSessionInputMessageParam>, nil]
-          #   Initial input submitted when creating a session.
+          #   Initial input to submit when the session is created. A string is shorthand for a
+          #   single user message. Required when `environment.type` is `none`, or when
+          #   `stream` is `true` for an environment that is not `self_hosted`; optional for
+          #   self-hosted and non-streaming execution environments.
           #
           # @param metadata [Hash{Symbol=>String}, nil]
           #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
@@ -93,7 +96,10 @@ module OpenAI
           #   unchanged.
           #
           # @param input [String, Array<OpenAI::Models::Beta::AgentSessionInputMessageParam>, nil]
-          #   Initial input submitted when creating a session.
+          #   Initial input to submit when the session is created. A string is shorthand for a
+          #   single user message. Required when `environment.type` is `none`, or when
+          #   `stream` is `true` for an environment that is not `self_hosted`; optional for
+          #   self-hosted and non-streaming execution environments.
           #
           # @param metadata [Hash{Symbol=>String}, nil]
           #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
@@ -224,7 +230,9 @@ module OpenAI
           end
 
           # Removes a managed agent session from the public API and returns a deletion
-          # confirmation. Physical cleanup may continue asynchronously. See
+          # confirmation. If backend execution has ended, deletion can cancel a still-open
+          # public turn and abandon unpublished outputs. Running execution must be cancelled
+          # first. Physical cleanup may continue asynchronously. See
           # [managing sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions/manage).
           #
           # @overload delete(session_id, request_options: {})

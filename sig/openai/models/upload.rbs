@@ -14,24 +14,55 @@ module OpenAI
       }
 
     class Upload < OpenAI::Internal::Type::BaseModel
+      # The Upload unique identifier, which can be referenced in API endpoints.
       attr_accessor id: String
 
+      # The intended number of bytes to be uploaded.
       attr_accessor bytes: Integer
 
+      # The Unix timestamp (in seconds) for when the Upload was created.
       attr_accessor created_at: Integer
 
+      # The Unix timestamp (in seconds) for when the Upload will expire.
       attr_accessor expires_at: Integer
 
+      # The name of the file to be uploaded.
       attr_accessor filename: String
 
+      # The object type, which is always "upload".
       attr_accessor object: :upload
 
+      # The intended purpose of the file.
+      # [Please refer here](https://developers.openai.com/api/reference/resources/files#%28resource%29%20files%20%3E%20%28model%29%20file_object%20%3E%20%28schema%29%20%3E%20%28property%29%20purpose)
+      # for acceptable values.
       attr_accessor purpose: String
 
+      # The status of the Upload.
       attr_accessor status: OpenAI::Models::Upload::status
 
+      # The `File` object represents a document that has been uploaded to OpenAI.
       attr_accessor file: OpenAI::FileObject?
 
+      # @param id
+      #   The Upload unique identifier, which can be referenced in API endpoints.
+      # @param bytes
+      #   The intended number of bytes to be uploaded.
+      # @param created_at
+      #   The Unix timestamp (in seconds) for when the Upload was created.
+      # @param expires_at
+      #   The Unix timestamp (in seconds) for when the Upload will expire.
+      # @param filename
+      #   The name of the file to be uploaded.
+      # @param purpose
+      #   The intended purpose of the file.
+      #   [Please refer here](https://developers.openai.com/api/reference/resources/files#%28resource%29%20files%20%3E%20%28model%29%20file_object%20%3E%20%28schema%29%20%3E%20%28property%29%20purpose)
+      #   for acceptable values.
+      # @param status
+      #   The status of the Upload.
+      # @param file
+      #   The `File` object represents a document that has been uploaded to OpenAI.
+      # @param object
+      #   The object type, which is always "upload".
       def initialize: (
         id: String,
         bytes: Integer,

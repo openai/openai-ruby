@@ -11,10 +11,16 @@ module OpenAI
         type input_text = { text: String, ?type: :input_text }
 
         class InputText < OpenAI::Internal::Type::BaseModel
+          # The text supplied to the agent.
           attr_accessor text: String
 
+          # The type of the object. Always `input_text`.
           attr_accessor type: :input_text
 
+          # @param text
+          #   The text supplied to the agent.
+          # @param type
+          #   The type of the object. Always `input_text`.
           def initialize: (text: String, ?type: :input_text) -> void
 
           def to_hash: -> { text: String, ?type: :input_text }
@@ -23,10 +29,18 @@ module OpenAI
         type input_image = { image_url: String, ?type: :input_image }
 
         class InputImage < OpenAI::Internal::Type::BaseModel
+          # The URL of the image supplied to the agent, which may be a base64-encoded data
+          # URL.
           attr_accessor image_url: String
 
+          # The type of the object. Always `input_image`.
           attr_accessor type: :input_image
 
+          # @param image_url
+          #   The URL of the image supplied to the agent, which may be a base64-encoded data
+          #   URL.
+          # @param type
+          #   The type of the object. Always `input_image`.
           def initialize: (image_url: String, ?type: :input_image) -> void
 
           def to_hash: -> { image_url: String, ?type: :input_image }

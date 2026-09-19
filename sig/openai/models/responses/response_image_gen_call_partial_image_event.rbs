@@ -16,34 +16,70 @@ module OpenAI
         }
 
       class ResponseImageGenCallPartialImageEvent < OpenAI::Internal::Type::BaseModel
+        # The unique identifier of the image generation item being processed.
         attr_accessor item_id: String
 
+        # The index of the output item in the response's output array.
         attr_accessor output_index: Integer
 
+        # Base64-encoded partial image data, suitable for rendering as an image.
         attr_accessor partial_image_b64: String
 
+        # 0-based index for the partial image (backend is 1-based, but this is 0-based for
+        # the user).
         attr_accessor partial_image_index: Integer
 
+        # The sequence number of the image generation item being processed.
         attr_accessor sequence_number: Integer
 
+        # The type of the event. Always 'response.image_generation_call.partial_image'.
         attr_accessor type: :"response.image_generation_call.partial_image"
 
+        # The background setting that was used.
         attr_reader background: String?
 
+        # The background setting that was used.
         def background=: (String) -> String
 
+        # The output format that was used.
         attr_reader output_format: String?
 
+        # The output format that was used.
         def output_format=: (String) -> String
 
+        # The image quality that was used.
         attr_reader quality: String?
 
+        # The image quality that was used.
         def quality=: (String) -> String
 
+        # The image size that was used.
         attr_reader size: String?
 
+        # The image size that was used.
         def size=: (String) -> String
 
+        # @param item_id
+        #   The unique identifier of the image generation item being processed.
+        # @param output_index
+        #   The index of the output item in the response's output array.
+        # @param partial_image_b64
+        #   Base64-encoded partial image data, suitable for rendering as an image.
+        # @param partial_image_index
+        #   0-based index for the partial image (backend is 1-based, but this is 0-based for
+        #   the user).
+        # @param sequence_number
+        #   The sequence number of the image generation item being processed.
+        # @param background
+        #   The background setting that was used.
+        # @param output_format
+        #   The output format that was used.
+        # @param quality
+        #   The image quality that was used.
+        # @param size
+        #   The image size that was used.
+        # @param type
+        #   The type of the event. Always 'response.image_generation_call.partial_image'.
         def initialize: (
           item_id: String,
           output_index: Integer,

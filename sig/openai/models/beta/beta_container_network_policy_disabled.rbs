@@ -6,8 +6,11 @@ module OpenAI
       type beta_container_network_policy_disabled = { ?type: :disabled }
 
       class BetaContainerNetworkPolicyDisabled < OpenAI::Internal::Type::BaseModel
+        # Disable outbound network access. Always `disabled`.
         attr_accessor type: :disabled
 
+        # @param type
+        #   Disable outbound network access. Always `disabled`.
         def initialize: (?type: :disabled) -> void
 
         def to_hash: -> { ?type: :disabled }

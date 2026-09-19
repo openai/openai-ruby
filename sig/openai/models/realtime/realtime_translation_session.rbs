@@ -11,16 +11,33 @@ module OpenAI
         }
 
       class RealtimeTranslationSession < OpenAI::Internal::Type::BaseModel
+        # Unique identifier for the session that looks like `sess_1234567890abcdef`.
         attr_accessor id: String
 
+        # Configuration for translation input and output audio.
         attr_accessor audio: OpenAI::Realtime::RealtimeTranslationSession::Audio
 
+        # Expiration timestamp for the session, in seconds since epoch.
         attr_accessor expires_at: Integer
 
+        # The Realtime translation model used for this session. This field is set at
+        # session creation and cannot be changed with `session.update`.
         attr_accessor model: String
 
+        # The session type. Always `translation` for Realtime translation sessions.
         attr_accessor type: :translation
 
+        # @param id
+        #   Unique identifier for the session that looks like `sess_1234567890abcdef`.
+        # @param audio
+        #   Configuration for translation input and output audio.
+        # @param expires_at
+        #   Expiration timestamp for the session, in seconds since epoch.
+        # @param model
+        #   The Realtime translation model used for this session. This field is set at
+        #   session creation and cannot be changed with `session.update`.
+        # @param type
+        #   The session type. Always `translation` for Realtime translation sessions.
         def initialize: (
           id: String,
           audio: OpenAI::Realtime::RealtimeTranslationSession::Audio,
@@ -73,10 +90,20 @@ module OpenAI
             }
 
           class Input < OpenAI::Internal::Type::BaseModel
+            # Optional input noise reduction.
             attr_accessor noise_reduction: OpenAI::Realtime::RealtimeTranslationSession::Audio::Input::NoiseReduction?
 
+            # Optional source-language transcription. When configured, the server emits
+            # `session.input_transcript.delta` events. Translation itself still runs from the
+            # input audio stream.
             attr_accessor transcription: OpenAI::Realtime::RealtimeTranslationSession::Audio::Input::Transcription?
 
+            # @param noise_reduction
+            #   Optional input noise reduction.
+            # @param transcription
+            #   Optional source-language transcription. When configured, the server emits
+            #   `session.input_transcript.delta` events. Translation itself still runs from the
+            #   input audio stream.
             def initialize: (
               ?noise_reduction: OpenAI::Realtime::RealtimeTranslationSession::Audio::Input::NoiseReduction?,
               ?transcription: OpenAI::Realtime::RealtimeTranslationSession::Audio::Input::Transcription?
@@ -91,8 +118,15 @@ module OpenAI
               { type: OpenAI::Models::Realtime::noise_reduction_type }
 
             class NoiseReduction < OpenAI::Internal::Type::BaseModel
+              # Type of noise reduction. `near_field` is for close-talking microphones such as
+              # headphones, `far_field` is for far-field microphones such as laptop or
+              # conference room microphones.
               attr_accessor type: OpenAI::Models::Realtime::noise_reduction_type
 
+              # @param type
+              #   Type of noise reduction. `near_field` is for close-talking microphones such as
+              #   headphones, `far_field` is for far-field microphones such as laptop or
+              #   conference room microphones.
               def initialize: (
                 type: OpenAI::Models::Realtime::noise_reduction_type
               ) -> void
@@ -105,8 +139,11 @@ module OpenAI
             type transcription = { model: String }
 
             class Transcription < OpenAI::Internal::Type::BaseModel
+              # The transcription model used for source transcript deltas.
               attr_accessor model: String
 
+              # @param model
+              #   The transcription model used for source transcript deltas.
               def initialize: (model: String) -> void
 
               def to_hash: -> { model: String }
@@ -116,10 +153,14 @@ module OpenAI
           type output = { ?language: String }
 
           class Output < OpenAI::Internal::Type::BaseModel
+            # Target language for translated output audio and transcript deltas.
             attr_reader language: String?
 
+            # Target language for translated output audio and transcript deltas.
             def language=: (String) -> String
 
+            # @param language
+            #   Target language for translated output audio and transcript deltas.
             def initialize: (?language: String) -> void
 
             def to_hash: -> { ?language: String }

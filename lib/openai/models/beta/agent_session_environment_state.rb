@@ -11,7 +11,7 @@ module OpenAI
         required :id, String
 
         # @!attribute error
-        #   An error reported while preparing a session environment.
+        #   The error reported while preparing the environment, if any.
         #
         #   @return [OpenAI::Models::Beta::AgentSessionEnvironmentState::Error, nil]
         required :error, -> { OpenAI::Beta::AgentSessionEnvironmentState::Error }, nil?: true
@@ -35,7 +35,7 @@ module OpenAI
         #     The public ID of the environment.
         #
         #   @param error [OpenAI::Models::Beta::AgentSessionEnvironmentState::Error, nil]
-        #     An error reported while preparing a session environment.
+        #     The error reported while preparing the environment, if any.
         #
         #   @param status [Symbol, OpenAI::Models::Beta::AgentSessionEnvironmentState::Status]
         #     The environment's connection status.
@@ -64,7 +64,7 @@ module OpenAI
           required :type, String
 
           # @!method initialize(code:, message:, type:)
-          #   An error reported while preparing a session environment.
+          #   The error reported while preparing the environment, if any.
           #
           #   @param code [String]
           #     A machine-readable error code.

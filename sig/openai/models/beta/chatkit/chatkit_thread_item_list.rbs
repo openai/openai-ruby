@@ -14,16 +14,31 @@ module OpenAI
           }
 
         class ChatKitThreadItemList < OpenAI::Internal::Type::BaseModel
+          # A list of items
           attr_accessor data: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::data]
 
+          # The ID of the first item in the list.
           attr_accessor first_id: String?
 
+          # Whether there are more items available.
           attr_accessor has_more: bool
 
+          # The ID of the last item in the list.
           attr_accessor last_id: String?
 
+          # The type of object returned, must be `list`.
           attr_accessor object: :list
 
+          # @param data
+          #   A list of items
+          # @param first_id
+          #   The ID of the first item in the list.
+          # @param has_more
+          #   Whether there are more items available.
+          # @param last_id
+          #   The ID of the last item in the list.
+          # @param object
+          #   The type of object returned, must be `list`.
           def initialize: (
             data: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::data],
             first_id: String?,
@@ -66,26 +81,58 @@ module OpenAI
               }
 
             class ChatKitClientToolCall < OpenAI::Internal::Type::BaseModel
+              # Identifier of the thread item.
               attr_accessor id: String
 
+              # JSON-encoded arguments that were sent to the tool.
               attr_accessor arguments: String
 
+              # Identifier for the client tool call.
               attr_accessor call_id: String
 
+              # Unix timestamp (in seconds) for when the item was created.
               attr_accessor created_at: Integer
 
+              # Tool name that was invoked.
               attr_accessor name: String
 
+              # Type discriminator that is always `chatkit.thread_item`.
               attr_accessor object: :"chatkit.thread_item"
 
+              # JSON-encoded output captured from the tool. Defaults to null while execution is
+              # in progress.
               attr_accessor output: String?
 
+              # Execution status for the tool call.
               attr_accessor status: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::status
 
+              # Identifier of the parent thread.
               attr_accessor thread_id: String
 
+              # Type discriminator that is always `chatkit.client_tool_call`.
               attr_accessor type: :"chatkit.client_tool_call"
 
+              # @param id
+              #   Identifier of the thread item.
+              # @param arguments
+              #   JSON-encoded arguments that were sent to the tool.
+              # @param call_id
+              #   Identifier for the client tool call.
+              # @param created_at
+              #   Unix timestamp (in seconds) for when the item was created.
+              # @param name
+              #   Tool name that was invoked.
+              # @param output
+              #   JSON-encoded output captured from the tool. Defaults to null while execution is
+              #   in progress.
+              # @param status
+              #   Execution status for the tool call.
+              # @param thread_id
+              #   Identifier of the parent thread.
+              # @param object
+              #   Type discriminator that is always `chatkit.thread_item`.
+              # @param type
+              #   Type discriminator that is always `chatkit.client_tool_call`.
               def initialize: (
                 id: String,
                 arguments: String,
@@ -137,22 +184,46 @@ module OpenAI
               }
 
             class ChatKitTask < OpenAI::Internal::Type::BaseModel
+              # Identifier of the thread item.
               attr_accessor id: String
 
+              # Unix timestamp (in seconds) for when the item was created.
               attr_accessor created_at: Integer
 
+              # Optional heading for the task. Defaults to null when not provided.
               attr_accessor heading: String?
 
+              # Type discriminator that is always `chatkit.thread_item`.
               attr_accessor object: :"chatkit.thread_item"
 
+              # Optional summary that describes the task. Defaults to null when omitted.
               attr_accessor summary: String?
 
+              # Subtype for the task.
               attr_accessor task_type: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::task_type
 
+              # Identifier of the parent thread.
               attr_accessor thread_id: String
 
+              # Type discriminator that is always `chatkit.task`.
               attr_accessor type: :"chatkit.task"
 
+              # @param id
+              #   Identifier of the thread item.
+              # @param created_at
+              #   Unix timestamp (in seconds) for when the item was created.
+              # @param heading
+              #   Optional heading for the task. Defaults to null when not provided.
+              # @param summary
+              #   Optional summary that describes the task. Defaults to null when omitted.
+              # @param task_type
+              #   Subtype for the task.
+              # @param thread_id
+              #   Identifier of the parent thread.
+              # @param object
+              #   Type discriminator that is always `chatkit.thread_item`.
+              # @param type
+              #   Type discriminator that is always `chatkit.task`.
               def initialize: (
                 id: String,
                 created_at: Integer,
@@ -198,18 +269,36 @@ module OpenAI
               }
 
             class ChatKitTaskGroup < OpenAI::Internal::Type::BaseModel
+              # Identifier of the thread item.
               attr_accessor id: String
 
+              # Unix timestamp (in seconds) for when the item was created.
               attr_accessor created_at: Integer
 
+              # Type discriminator that is always `chatkit.thread_item`.
               attr_accessor object: :"chatkit.thread_item"
 
+              # Tasks included in the group.
               attr_accessor tasks: ::Array[OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task]
 
+              # Identifier of the parent thread.
               attr_accessor thread_id: String
 
+              # Type discriminator that is always `chatkit.task_group`.
               attr_accessor type: :"chatkit.task_group"
 
+              # @param id
+              #   Identifier of the thread item.
+              # @param created_at
+              #   Unix timestamp (in seconds) for when the item was created.
+              # @param tasks
+              #   Tasks included in the group.
+              # @param thread_id
+              #   Identifier of the parent thread.
+              # @param object
+              #   Type discriminator that is always `chatkit.thread_item`.
+              # @param type
+              #   Type discriminator that is always `chatkit.task_group`.
               def initialize: (
                 id: String,
                 created_at: Integer,
@@ -236,12 +325,21 @@ module OpenAI
                 }
 
               class Task < OpenAI::Internal::Type::BaseModel
+                # Optional heading for the grouped task. Defaults to null when not provided.
                 attr_accessor heading: String?
 
+                # Optional summary that describes the grouped task. Defaults to null when omitted.
                 attr_accessor summary: String?
 
+                # Subtype for the grouped task.
                 attr_accessor type: OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task::type_
 
+                # @param heading
+                #   Optional heading for the grouped task. Defaults to null when not provided.
+                # @param summary
+                #   Optional summary that describes the grouped task. Defaults to null when omitted.
+                # @param type
+                #   Subtype for the grouped task.
                 def initialize: (
                   heading: String?,
                   summary: String?,

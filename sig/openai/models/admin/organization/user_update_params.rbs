@@ -18,14 +18,26 @@ module OpenAI
 
           attr_accessor user_id: String
 
+          # Developer persona metadata.
           attr_accessor developer_persona: String?
 
+          # `owner` or `reader`
           attr_accessor role: String?
 
+          # Role ID to assign to the user.
           attr_accessor role_id: String?
 
+          # Technical level metadata.
           attr_accessor technical_level: String?
 
+          # @param developer_persona
+          #   Developer persona metadata.
+          # @param role
+          #   `owner` or `reader`
+          # @param role_id
+          #   Role ID to assign to the user.
+          # @param technical_level
+          #   Technical level metadata.
           def initialize: (
             user_id: String,
             ?developer_persona: String?,

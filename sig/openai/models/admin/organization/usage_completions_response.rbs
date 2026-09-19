@@ -107,74 +107,178 @@ module OpenAI
                 }
 
               class OrganizationUsageCompletionsResult < OpenAI::Internal::Type::BaseModel
+                # The aggregated number of input tokens used, including cached and cache-write
+                # tokens. This includes text, audio, and image tokens. For customers subscribed to
+                # Scale Tier, this includes Scale Tier tokens.
                 attr_accessor input_tokens: Integer
 
+                # The count of requests made to the model.
                 attr_accessor num_model_requests: Integer
 
                 attr_accessor object: :"organization.usage.completions.result"
 
+                # The aggregated number of output tokens used across text, audio, and image
+                # outputs. For customers subscribed to Scale Tier, this includes Scale Tier
+                # tokens.
                 attr_accessor output_tokens: Integer
 
+                # When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                # usage result.
                 attr_accessor api_key_id: String?
 
+                # When `group_by=batch`, this field tells whether the grouped usage result is
+                # batch or not.
                 attr_accessor batch: bool?
 
+                # The aggregated number of uncached audio input tokens used.
                 attr_reader input_audio_tokens: Integer?
 
+                # The aggregated number of uncached audio input tokens used.
                 def input_audio_tokens=: (Integer) -> Integer
 
+                # The aggregated number of input tokens written to the cache.
                 attr_reader input_cache_write_tokens: Integer?
 
+                # The aggregated number of input tokens written to the cache.
                 def input_cache_write_tokens=: (Integer) -> Integer
 
+                # The aggregated number of cached audio input tokens used.
                 attr_reader input_cached_audio_tokens: Integer?
 
+                # The aggregated number of cached audio input tokens used.
                 def input_cached_audio_tokens=: (Integer) -> Integer
 
+                # The aggregated number of cached image input tokens used.
                 attr_reader input_cached_image_tokens: Integer?
 
+                # The aggregated number of cached image input tokens used.
                 def input_cached_image_tokens=: (Integer) -> Integer
 
+                # The aggregated number of cached text input tokens used.
                 attr_reader input_cached_text_tokens: Integer?
 
+                # The aggregated number of cached text input tokens used.
                 def input_cached_text_tokens=: (Integer) -> Integer
 
+                # The aggregated number of cached input tokens used across text, audio, and image
+                # inputs. For customers subscribed to Scale Tier, this includes Scale Tier tokens.
                 attr_reader input_cached_tokens: Integer?
 
+                # The aggregated number of cached input tokens used across text, audio, and image
+                # inputs. For customers subscribed to Scale Tier, this includes Scale Tier tokens.
                 def input_cached_tokens=: (Integer) -> Integer
 
+                # The aggregated number of uncached image input tokens used.
                 attr_reader input_image_tokens: Integer?
 
+                # The aggregated number of uncached image input tokens used.
                 def input_image_tokens=: (Integer) -> Integer
 
+                # The aggregated number of uncached text input tokens used, excluding cache-write
+                # tokens.
                 attr_reader input_text_tokens: Integer?
 
+                # The aggregated number of uncached text input tokens used, excluding cache-write
+                # tokens.
                 def input_text_tokens=: (Integer) -> Integer
 
+                # The aggregated number of uncached input tokens used across text, audio, and
+                # image inputs, excluding cache-write tokens.
                 attr_reader input_uncached_tokens: Integer?
 
+                # The aggregated number of uncached input tokens used across text, audio, and
+                # image inputs, excluding cache-write tokens.
                 def input_uncached_tokens=: (Integer) -> Integer
 
+                # When `group_by=model`, this field provides the model name of the grouped usage
+                # result.
                 attr_accessor model: String?
 
+                # The aggregated number of audio output tokens used.
                 attr_reader output_audio_tokens: Integer?
 
+                # The aggregated number of audio output tokens used.
                 def output_audio_tokens=: (Integer) -> Integer
 
+                # The aggregated number of image output tokens used.
                 attr_reader output_image_tokens: Integer?
 
+                # The aggregated number of image output tokens used.
                 def output_image_tokens=: (Integer) -> Integer
 
+                # The aggregated number of text output tokens used.
                 attr_reader output_text_tokens: Integer?
 
+                # The aggregated number of text output tokens used.
                 def output_text_tokens=: (Integer) -> Integer
 
+                # When `group_by=project_id`, this field provides the project ID of the grouped
+                # usage result.
                 attr_accessor project_id: String?
 
+                # When `group_by=service_tier`, this field provides the service tier of the
+                # grouped usage result.
                 attr_accessor service_tier: String?
 
+                # When `group_by=user_id`, this field provides the user ID of the grouped usage
+                # result.
                 attr_accessor user_id: String?
 
+                # @param input_tokens
+                #   The aggregated number of input tokens used, including cached and cache-write
+                #   tokens. This includes text, audio, and image tokens. For customers subscribed to
+                #   Scale Tier, this includes Scale Tier tokens.
+                # @param num_model_requests
+                #   The count of requests made to the model.
+                # @param output_tokens
+                #   The aggregated number of output tokens used across text, audio, and image
+                #   outputs. For customers subscribed to Scale Tier, this includes Scale Tier
+                #   tokens.
+                # @param api_key_id
+                #   When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #   usage result.
+                # @param batch
+                #   When `group_by=batch`, this field tells whether the grouped usage result is
+                #   batch or not.
+                # @param input_audio_tokens
+                #   The aggregated number of uncached audio input tokens used.
+                # @param input_cache_write_tokens
+                #   The aggregated number of input tokens written to the cache.
+                # @param input_cached_audio_tokens
+                #   The aggregated number of cached audio input tokens used.
+                # @param input_cached_image_tokens
+                #   The aggregated number of cached image input tokens used.
+                # @param input_cached_text_tokens
+                #   The aggregated number of cached text input tokens used.
+                # @param input_cached_tokens
+                #   The aggregated number of cached input tokens used across text, audio, and image
+                #   inputs. For customers subscribed to Scale Tier, this includes Scale Tier tokens.
+                # @param input_image_tokens
+                #   The aggregated number of uncached image input tokens used.
+                # @param input_text_tokens
+                #   The aggregated number of uncached text input tokens used, excluding cache-write
+                #   tokens.
+                # @param input_uncached_tokens
+                #   The aggregated number of uncached input tokens used across text, audio, and
+                #   image inputs, excluding cache-write tokens.
+                # @param model
+                #   When `group_by=model`, this field provides the model name of the grouped usage
+                #   result.
+                # @param output_audio_tokens
+                #   The aggregated number of audio output tokens used.
+                # @param output_image_tokens
+                #   The aggregated number of image output tokens used.
+                # @param output_text_tokens
+                #   The aggregated number of text output tokens used.
+                # @param project_id
+                #   When `group_by=project_id`, this field provides the project ID of the grouped
+                #   usage result.
+                # @param service_tier
+                #   When `group_by=service_tier`, this field provides the service tier of the
+                #   grouped usage result.
+                # @param user_id
+                #   When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #   result.
                 def initialize: (
                   input_tokens: Integer,
                   num_model_requests: Integer,
@@ -238,20 +342,46 @@ module OpenAI
                 }
 
               class OrganizationUsageEmbeddingsResult < OpenAI::Internal::Type::BaseModel
+                # The aggregated number of input tokens used.
                 attr_accessor input_tokens: Integer
 
+                # The count of requests made to the model.
                 attr_accessor num_model_requests: Integer
 
                 attr_accessor object: :"organization.usage.embeddings.result"
 
+                # When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                # usage result.
                 attr_accessor api_key_id: String?
 
+                # When `group_by=model`, this field provides the model name of the grouped usage
+                # result.
                 attr_accessor model: String?
 
+                # When `group_by=project_id`, this field provides the project ID of the grouped
+                # usage result.
                 attr_accessor project_id: String?
 
+                # When `group_by=user_id`, this field provides the user ID of the grouped usage
+                # result.
                 attr_accessor user_id: String?
 
+                # @param input_tokens
+                #   The aggregated number of input tokens used.
+                # @param num_model_requests
+                #   The count of requests made to the model.
+                # @param api_key_id
+                #   When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #   usage result.
+                # @param model
+                #   When `group_by=model`, this field provides the model name of the grouped usage
+                #   result.
+                # @param project_id
+                #   When `group_by=project_id`, this field provides the project ID of the grouped
+                #   usage result.
+                # @param user_id
+                #   When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #   result.
                 def initialize: (
                   input_tokens: Integer,
                   num_model_requests: Integer,
@@ -285,20 +415,46 @@ module OpenAI
                 }
 
               class OrganizationUsageModerationsResult < OpenAI::Internal::Type::BaseModel
+                # The aggregated number of input tokens used.
                 attr_accessor input_tokens: Integer
 
+                # The count of requests made to the model.
                 attr_accessor num_model_requests: Integer
 
                 attr_accessor object: :"organization.usage.moderations.result"
 
+                # When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                # usage result.
                 attr_accessor api_key_id: String?
 
+                # When `group_by=model`, this field provides the model name of the grouped usage
+                # result.
                 attr_accessor model: String?
 
+                # When `group_by=project_id`, this field provides the project ID of the grouped
+                # usage result.
                 attr_accessor project_id: String?
 
+                # When `group_by=user_id`, this field provides the user ID of the grouped usage
+                # result.
                 attr_accessor user_id: String?
 
+                # @param input_tokens
+                #   The aggregated number of input tokens used.
+                # @param num_model_requests
+                #   The count of requests made to the model.
+                # @param api_key_id
+                #   When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #   usage result.
+                # @param model
+                #   When `group_by=model`, this field provides the model name of the grouped usage
+                #   result.
+                # @param project_id
+                #   When `group_by=project_id`, this field provides the project ID of the grouped
+                #   usage result.
+                # @param user_id
+                #   When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #   result.
                 def initialize: (
                   input_tokens: Integer,
                   num_model_requests: Integer,
@@ -334,24 +490,60 @@ module OpenAI
                 }
 
               class OrganizationUsageImagesResult < OpenAI::Internal::Type::BaseModel
+                # The number of images processed.
                 attr_accessor images: Integer
 
+                # The count of requests made to the model.
                 attr_accessor num_model_requests: Integer
 
                 attr_accessor object: :"organization.usage.images.result"
 
+                # When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                # usage result.
                 attr_accessor api_key_id: String?
 
+                # When `group_by=model`, this field provides the model name of the grouped usage
+                # result.
                 attr_accessor model: String?
 
+                # When `group_by=project_id`, this field provides the project ID of the grouped
+                # usage result.
                 attr_accessor project_id: String?
 
+                # When `group_by=size`, this field provides the image size of the grouped usage
+                # result.
                 attr_accessor size: String?
 
+                # When `group_by=source`, this field provides the source of the grouped usage
+                # result, possible values are `image.generation`, `image.edit`, `image.variation`.
                 attr_accessor source: String?
 
+                # When `group_by=user_id`, this field provides the user ID of the grouped usage
+                # result.
                 attr_accessor user_id: String?
 
+                # @param images
+                #   The number of images processed.
+                # @param num_model_requests
+                #   The count of requests made to the model.
+                # @param api_key_id
+                #   When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #   usage result.
+                # @param model
+                #   When `group_by=model`, this field provides the model name of the grouped usage
+                #   result.
+                # @param project_id
+                #   When `group_by=project_id`, this field provides the project ID of the grouped
+                #   usage result.
+                # @param size
+                #   When `group_by=size`, this field provides the image size of the grouped usage
+                #   result.
+                # @param source
+                #   When `group_by=source`, this field provides the source of the grouped usage
+                #   result, possible values are `image.generation`, `image.edit`, `image.variation`.
+                # @param user_id
+                #   When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #   result.
                 def initialize: (
                   images: Integer,
                   num_model_requests: Integer,
@@ -389,20 +581,46 @@ module OpenAI
                 }
 
               class OrganizationUsageAudioSpeechesResult < OpenAI::Internal::Type::BaseModel
+                # The number of characters processed.
                 attr_accessor characters: Integer
 
+                # The count of requests made to the model.
                 attr_accessor num_model_requests: Integer
 
                 attr_accessor object: :"organization.usage.audio_speeches.result"
 
+                # When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                # usage result.
                 attr_accessor api_key_id: String?
 
+                # When `group_by=model`, this field provides the model name of the grouped usage
+                # result.
                 attr_accessor model: String?
 
+                # When `group_by=project_id`, this field provides the project ID of the grouped
+                # usage result.
                 attr_accessor project_id: String?
 
+                # When `group_by=user_id`, this field provides the user ID of the grouped usage
+                # result.
                 attr_accessor user_id: String?
 
+                # @param characters
+                #   The number of characters processed.
+                # @param num_model_requests
+                #   The count of requests made to the model.
+                # @param api_key_id
+                #   When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #   usage result.
+                # @param model
+                #   When `group_by=model`, this field provides the model name of the grouped usage
+                #   result.
+                # @param project_id
+                #   When `group_by=project_id`, this field provides the project ID of the grouped
+                #   usage result.
+                # @param user_id
+                #   When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #   result.
                 def initialize: (
                   characters: Integer,
                   num_model_requests: Integer,
@@ -436,20 +654,46 @@ module OpenAI
                 }
 
               class OrganizationUsageAudioTranscriptionsResult < OpenAI::Internal::Type::BaseModel
+                # The count of requests made to the model.
                 attr_accessor num_model_requests: Integer
 
                 attr_accessor object: :"organization.usage.audio_transcriptions.result"
 
+                # The number of seconds processed.
                 attr_accessor seconds: Integer
 
+                # When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                # usage result.
                 attr_accessor api_key_id: String?
 
+                # When `group_by=model`, this field provides the model name of the grouped usage
+                # result.
                 attr_accessor model: String?
 
+                # When `group_by=project_id`, this field provides the project ID of the grouped
+                # usage result.
                 attr_accessor project_id: String?
 
+                # When `group_by=user_id`, this field provides the user ID of the grouped usage
+                # result.
                 attr_accessor user_id: String?
 
+                # @param num_model_requests
+                #   The count of requests made to the model.
+                # @param seconds
+                #   The number of seconds processed.
+                # @param api_key_id
+                #   When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #   usage result.
+                # @param model
+                #   When `group_by=model`, this field provides the model name of the grouped usage
+                #   result.
+                # @param project_id
+                #   When `group_by=project_id`, this field provides the project ID of the grouped
+                #   usage result.
+                # @param user_id
+                #   When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #   result.
                 def initialize: (
                   num_model_requests: Integer,
                   seconds: Integer,
@@ -481,10 +725,18 @@ module OpenAI
               class OrganizationUsageVectorStoresResult < OpenAI::Internal::Type::BaseModel
                 attr_accessor object: :"organization.usage.vector_stores.result"
 
+                # The vector stores usage in bytes.
                 attr_accessor usage_bytes: Integer
 
+                # When `group_by=project_id`, this field provides the project ID of the grouped
+                # usage result.
                 attr_accessor project_id: String?
 
+                # @param usage_bytes
+                #   The vector stores usage in bytes.
+                # @param project_id
+                #   When `group_by=project_id`, this field provides the project ID of the grouped
+                #   usage result.
                 def initialize: (
                   usage_bytes: Integer,
                   ?project_id: String?,
@@ -506,12 +758,20 @@ module OpenAI
                 }
 
               class OrganizationUsageCodeInterpreterSessionsResult < OpenAI::Internal::Type::BaseModel
+                # The number of code interpreter sessions.
                 attr_accessor num_sessions: Integer
 
                 attr_accessor object: :"organization.usage.code_interpreter_sessions.result"
 
+                # When `group_by=project_id`, this field provides the project ID of the grouped
+                # usage result.
                 attr_accessor project_id: String?
 
+                # @param num_sessions
+                #   The number of code interpreter sessions.
+                # @param project_id
+                #   When `group_by=project_id`, this field provides the project ID of the grouped
+                #   usage result.
                 def initialize: (
                   num_sessions: Integer,
                   ?project_id: String?,
@@ -536,18 +796,41 @@ module OpenAI
                 }
 
               class OrganizationUsageFileSearchesResult < OpenAI::Internal::Type::BaseModel
+                # The count of file search calls.
                 attr_accessor num_requests: Integer
 
                 attr_accessor object: :"organization.usage.file_searches.result"
 
+                # When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                # usage result.
                 attr_accessor api_key_id: String?
 
+                # When `group_by=project_id`, this field provides the project ID of the grouped
+                # usage result.
                 attr_accessor project_id: String?
 
+                # When `group_by=user_id`, this field provides the user ID of the grouped usage
+                # result.
                 attr_accessor user_id: String?
 
+                # When `group_by=vector_store_id`, this field provides the vector store ID of the
+                # grouped usage result.
                 attr_accessor vector_store_id: String?
 
+                # @param num_requests
+                #   The count of file search calls.
+                # @param api_key_id
+                #   When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #   usage result.
+                # @param project_id
+                #   When `group_by=project_id`, this field provides the project ID of the grouped
+                #   usage result.
+                # @param user_id
+                #   When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #   result.
+                # @param vector_store_id
+                #   When `group_by=vector_store_id`, this field provides the vector store ID of the
+                #   grouped usage result.
                 def initialize: (
                   num_requests: Integer,
                   ?api_key_id: String?,
@@ -580,22 +863,53 @@ module OpenAI
                 }
 
               class OrganizationUsageWebSearchesResult < OpenAI::Internal::Type::BaseModel
+                # The count of model requests.
                 attr_accessor num_model_requests: Integer
 
+                # The count of web search calls.
                 attr_accessor num_requests: Integer
 
                 attr_accessor object: :"organization.usage.web_searches.result"
 
+                # When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                # usage result.
                 attr_accessor api_key_id: String?
 
+                # When `group_by=context_level`, this field provides the search context size of
+                # the grouped usage result.
                 attr_accessor context_level: String?
 
+                # When `group_by=model`, this field provides the model name of the grouped usage
+                # result.
                 attr_accessor model: String?
 
+                # When `group_by=project_id`, this field provides the project ID of the grouped
+                # usage result.
                 attr_accessor project_id: String?
 
+                # When `group_by=user_id`, this field provides the user ID of the grouped usage
+                # result.
                 attr_accessor user_id: String?
 
+                # @param num_model_requests
+                #   The count of model requests.
+                # @param num_requests
+                #   The count of web search calls.
+                # @param api_key_id
+                #   When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #   usage result.
+                # @param context_level
+                #   When `group_by=context_level`, this field provides the search context size of
+                #   the grouped usage result.
+                # @param model
+                #   When `group_by=model`, this field provides the model name of the grouped usage
+                #   result.
+                # @param project_id
+                #   When `group_by=project_id`, this field provides the project ID of the grouped
+                #   usage result.
+                # @param user_id
+                #   When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #   result.
                 def initialize: (
                   num_model_requests: Integer,
                   num_requests: Integer,
@@ -633,22 +947,51 @@ module OpenAI
               class OrganizationCostsResult < OpenAI::Internal::Type::BaseModel
                 attr_accessor object: :"organization.costs.result"
 
+                # The monetary value in its associated currency.
                 attr_reader amount: OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationCostsResult::Amount?
 
+                # The monetary value in its associated currency.
                 def amount=: (
                   OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationCostsResult::Amount
                 ) -> OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationCostsResult::Amount
 
+                # When `group_by=api_key_id`, this field provides the API Key ID of the grouped
+                # costs result.
                 attr_accessor api_key_id: String?
 
+                # When `group_by=line_item`, this field provides the line item of the grouped
+                # costs result.
                 attr_accessor line_item: String?
 
+                # When `group_by=project_id`, this field provides the project ID of the grouped
+                # costs result.
                 attr_accessor project_id: String?
 
+                # When `group_by=line_item`, this field provides the quantity of the grouped costs
+                # result.
                 attr_accessor quantity: Float?
 
+                # The unit of the `quantity` value. If no single supported unit applies to the
+                # result, this field is `null`.
                 attr_accessor quantity_unit: OpenAI::Models::Admin::Organization::cost_quantity_unit?
 
+                # @param amount
+                #   The monetary value in its associated currency.
+                # @param api_key_id
+                #   When `group_by=api_key_id`, this field provides the API Key ID of the grouped
+                #   costs result.
+                # @param line_item
+                #   When `group_by=line_item`, this field provides the line item of the grouped
+                #   costs result.
+                # @param project_id
+                #   When `group_by=project_id`, this field provides the project ID of the grouped
+                #   costs result.
+                # @param quantity
+                #   When `group_by=line_item`, this field provides the quantity of the grouped costs
+                #   result.
+                # @param quantity_unit
+                #   The unit of the `quantity` value. If no single supported unit applies to the
+                #   result, this field is `null`.
                 def initialize: (
                   ?amount: OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data::Result::OrganizationCostsResult::Amount,
                   ?api_key_id: String?,
@@ -672,14 +1015,22 @@ module OpenAI
                 type amount = { ?currency: String, ?value: Float }
 
                 class Amount < OpenAI::Internal::Type::BaseModel
+                  # Lowercase ISO-4217 currency e.g. "usd"
                   attr_reader currency: String?
 
+                  # Lowercase ISO-4217 currency e.g. "usd"
                   def currency=: (String) -> String
 
+                  # The numeric value of the cost.
                   attr_reader value: Float?
 
+                  # The numeric value of the cost.
                   def value=: (Float) -> Float
 
+                  # @param currency
+                  #   Lowercase ISO-4217 currency e.g. "usd"
+                  # @param value
+                  #   The numeric value of the cost.
                   def initialize: (?currency: String, ?value: Float) -> void
 
                   def to_hash: -> { ?currency: String, ?value: Float }

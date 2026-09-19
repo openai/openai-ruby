@@ -18,10 +18,16 @@ module OpenAI
 
           attr_accessor start_index: Integer
 
+          # The text in the message content that needs to be replaced.
           attr_accessor text: String
 
+          # Always `file_citation`.
           attr_accessor type: :file_citation
 
+          # @param text
+          #   The text in the message content that needs to be replaced.
+          # @param type
+          #   Always `file_citation`.
           def initialize: (
             end_index: Integer,
             file_citation: OpenAI::Beta::Threads::FileCitationAnnotation::FileCitation,
@@ -41,8 +47,11 @@ module OpenAI
           type file_citation = { file_id: String }
 
           class FileCitation < OpenAI::Internal::Type::BaseModel
+            # The ID of the specific File the citation is from.
             attr_accessor file_id: String
 
+            # @param file_id
+            #   The ID of the specific File the citation is from.
             def initialize: (file_id: String) -> void
 
             def to_hash: -> { file_id: String }

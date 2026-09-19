@@ -5,10 +5,16 @@ module OpenAI
         { event_id: String, ?type: :"input_audio_buffer.cleared" }
 
       class InputAudioBufferClearedEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The event type, must be `input_audio_buffer.cleared`.
         attr_accessor type: :"input_audio_buffer.cleared"
 
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param type
+        #   The event type, must be `input_audio_buffer.cleared`.
         def initialize: (
           event_id: String,
           ?type: :"input_audio_buffer.cleared"

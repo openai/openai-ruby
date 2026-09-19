@@ -9,18 +9,29 @@ module OpenAI
         }
 
       class ResponseCreateEvent < OpenAI::Internal::Type::BaseModel
+        # The event type, must be `response.create`.
         attr_accessor type: :"response.create"
 
+        # Optional client-generated ID used to identify this event.
         attr_reader event_id: String?
 
+        # Optional client-generated ID used to identify this event.
         def event_id=: (String) -> String
 
+        # Create a new Realtime response with these parameters
         attr_reader response: OpenAI::Realtime::RealtimeResponseCreateParams?
 
+        # Create a new Realtime response with these parameters
         def response=: (
           OpenAI::Realtime::RealtimeResponseCreateParams
         ) -> OpenAI::Realtime::RealtimeResponseCreateParams
 
+        # @param event_id
+        #   Optional client-generated ID used to identify this event.
+        # @param response
+        #   Create a new Realtime response with these parameters
+        # @param type
+        #   The event type, must be `response.create`.
         def initialize: (
           ?event_id: String,
           ?response: OpenAI::Realtime::RealtimeResponseCreateParams,

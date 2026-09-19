@@ -11,12 +11,16 @@ module OpenAI
             }
 
           class RunStepDelta < OpenAI::Internal::Type::BaseModel
+            # The details of the run step.
             attr_reader step_details: OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details?
 
+            # The details of the run step.
             def step_details=: (
               OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
             ) -> OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
 
+            # @param step_details
+            #   The details of the run step.
             def initialize: (
               ?step_details: OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
             ) -> void

@@ -5,13 +5,14 @@ module OpenAI
     module Beta
       class AgentReasoning < OpenAI::Internal::Type::BaseModel
         # @!attribute effort
-        #   The amount of reasoning effort used by an agent.
+        #   The requested reasoning effort, or `null` when the model selects its own
+        #   default.
         #
         #   @return [Symbol, OpenAI::Models::Beta::AgentReasoning::Effort, nil]
         required :effort, enum: -> { OpenAI::Beta::AgentReasoning::Effort }, nil?: true
 
         # @!attribute summary
-        #   The reasoning summary format requested from an agent.
+        #   The requested reasoning summary format, or `null` when summaries are disabled.
         #
         #   @return [Symbol, OpenAI::Models::Beta::AgentReasoning::Summary, nil]
         required :summary, enum: -> { OpenAI::Beta::AgentReasoning::Summary }, nil?: true
@@ -20,12 +21,14 @@ module OpenAI
         #   The reasoning configuration used by an agent.
         #
         #   @param effort [Symbol, OpenAI::Models::Beta::AgentReasoning::Effort, nil]
-        #     The amount of reasoning effort used by an agent.
+        #     The requested reasoning effort, or `null` when the model selects its own
+        #     default.
         #
         #   @param summary [Symbol, OpenAI::Models::Beta::AgentReasoning::Summary, nil]
-        #     The reasoning summary format requested from an agent.
+        #     The requested reasoning summary format, or `null` when summaries are disabled.
 
-        # The amount of reasoning effort used by an agent.
+        # The requested reasoning effort, or `null` when the model selects its own
+        # default.
         #
         # @see OpenAI::Models::Beta::AgentReasoning#effort
         module Effort
@@ -43,7 +46,7 @@ module OpenAI
           #   @return [Array<Symbol>]
         end
 
-        # The reasoning summary format requested from an agent.
+        # The requested reasoning summary format, or `null` when summaries are disabled.
         #
         # @see OpenAI::Models::Beta::AgentReasoning#summary
         module Summary

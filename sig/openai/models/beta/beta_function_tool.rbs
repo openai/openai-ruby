@@ -17,28 +17,57 @@ module OpenAI
         }
 
       class BetaFunctionTool < OpenAI::Internal::Type::BaseModel
+        # The name of the function to call.
         attr_accessor name: String
 
+        # A JSON schema object describing the parameters of the function.
         attr_accessor parameters: ::Hash[Symbol, top]?
 
+        # Whether strict parameter validation is enforced for this function tool.
         attr_accessor strict: bool?
 
+        # The type of the function tool. Always `function`.
         attr_accessor type: :function
 
+        # The tool invocation context(s).
         attr_accessor allowed_callers: ::Array[OpenAI::Models::Beta::BetaFunctionTool::allowed_caller]?
 
         attr_reader async: bool?
 
         def async=: (bool) -> bool
 
+        # Whether this function is deferred and loaded via tool search.
         attr_reader defer_loading: bool?
 
+        # Whether this function is deferred and loaded via tool search.
         def defer_loading=: (bool) -> bool
 
+        # A description of the function. Used by the model to determine whether or not to
+        # call the function.
         attr_accessor description: String?
 
+        # A JSON schema object describing the JSON value encoded in string outputs for
+        # this function.
         attr_accessor output_schema: ::Hash[Symbol, top]?
 
+        # @param name
+        #   The name of the function to call.
+        # @param parameters
+        #   A JSON schema object describing the parameters of the function.
+        # @param strict
+        #   Whether strict parameter validation is enforced for this function tool.
+        # @param allowed_callers
+        #   The tool invocation context(s).
+        # @param defer_loading
+        #   Whether this function is deferred and loaded via tool search.
+        # @param description
+        #   A description of the function. Used by the model to determine whether or not to
+        #   call the function.
+        # @param output_schema
+        #   A JSON schema object describing the JSON value encoded in string outputs for
+        #   this function.
+        # @param type
+        #   The type of the function tool. Always `function`.
         def initialize: (
           name: String,
           parameters: ::Hash[Symbol, top]?,

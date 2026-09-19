@@ -12,20 +12,36 @@ module OpenAI
             }
 
           class CodeInterpreterToolCallDelta < OpenAI::Internal::Type::BaseModel
+            # The index of the tool call in the tool calls array.
             attr_accessor index: Integer
 
+            # The type of tool call. This is always going to be `code_interpreter` for this
+            # type of tool call.
             attr_accessor type: :code_interpreter
 
+            # The ID of the tool call.
             attr_reader id: String?
 
+            # The ID of the tool call.
             def id=: (String) -> String
 
+            # The Code Interpreter tool call definition.
             attr_reader code_interpreter: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter?
 
+            # The Code Interpreter tool call definition.
             def code_interpreter=: (
               OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
             ) -> OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
 
+            # @param index
+            #   The index of the tool call in the tool calls array.
+            # @param id
+            #   The ID of the tool call.
+            # @param code_interpreter
+            #   The Code Interpreter tool call definition.
+            # @param type
+            #   The type of tool call. This is always going to be `code_interpreter` for this
+            #   type of tool call.
             def initialize: (
               index: Integer,
               ?id: String,
@@ -47,16 +63,30 @@ module OpenAI
               }
 
             class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+              # The input to the Code Interpreter tool call.
               attr_reader input: String?
 
+              # The input to the Code Interpreter tool call.
               def input=: (String) -> String
 
+              # The outputs from the Code Interpreter tool call. Code Interpreter can output one
+              # or more items, including text (`logs`) or images (`image`). Each of these are
+              # represented by a different object type.
               attr_reader outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]?
 
+              # The outputs from the Code Interpreter tool call. Code Interpreter can output one
+              # or more items, including text (`logs`) or images (`image`). Each of these are
+              # represented by a different object type.
               def outputs=: (
                 ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
               ) -> ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
 
+              # @param input
+              #   The input to the Code Interpreter tool call.
+              # @param outputs
+              #   The outputs from the Code Interpreter tool call. Code Interpreter can output one
+              #   or more items, including text (`logs`) or images (`image`). Each of these are
+              #   represented by a different object type.
               def initialize: (
                 ?input: String,
                 ?outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]

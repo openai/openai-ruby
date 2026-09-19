@@ -9,12 +9,21 @@ module OpenAI
         }
 
       class RateLimitsUpdatedEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # List of rate limit information.
         attr_accessor rate_limits: ::Array[OpenAI::Realtime::RateLimitsUpdatedEvent::RateLimit]
 
+        # The event type, must be `rate_limits.updated`.
         attr_accessor type: :"rate_limits.updated"
 
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param rate_limits
+        #   List of rate limit information.
+        # @param type
+        #   The event type, must be `rate_limits.updated`.
         def initialize: (
           event_id: String,
           rate_limits: ::Array[OpenAI::Realtime::RateLimitsUpdatedEvent::RateLimit],
@@ -36,24 +45,40 @@ module OpenAI
           }
 
         class RateLimit < OpenAI::Internal::Type::BaseModel
+          # The maximum allowed value for the rate limit.
           attr_reader limit: Integer?
 
+          # The maximum allowed value for the rate limit.
           def limit=: (Integer) -> Integer
 
+          # The name of the rate limit (`requests`, `tokens`).
           attr_reader name: OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit::name_?
 
+          # The name of the rate limit (`requests`, `tokens`).
           def name=: (
             OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit::name_
           ) -> OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit::name_
 
+          # The remaining value before the limit is reached.
           attr_reader remaining: Integer?
 
+          # The remaining value before the limit is reached.
           def remaining=: (Integer) -> Integer
 
+          # Seconds until the rate limit resets.
           attr_reader reset_seconds: Float?
 
+          # Seconds until the rate limit resets.
           def reset_seconds=: (Float) -> Float
 
+          # @param limit
+          #   The maximum allowed value for the rate limit.
+          # @param name
+          #   The name of the rate limit (`requests`, `tokens`).
+          # @param remaining
+          #   The remaining value before the limit is reached.
+          # @param reset_seconds
+          #   Seconds until the rate limit resets.
           def initialize: (
             ?limit: Integer,
             ?name: OpenAI::Models::Realtime::RateLimitsUpdatedEvent::RateLimit::name_,

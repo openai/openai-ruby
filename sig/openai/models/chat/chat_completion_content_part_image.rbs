@@ -13,14 +13,27 @@ module OpenAI
       class ChatCompletionContentPartImage < OpenAI::Internal::Type::BaseModel
         attr_accessor image_url: OpenAI::Chat::ChatCompletionContentPartImage::ImageURL
 
+        # The type of the content part.
         attr_accessor type: :image_url
 
+        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        # token block.
         attr_reader prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPartImage::PromptCacheBreakpoint?
 
+        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        # token block.
         def prompt_cache_breakpoint=: (
           OpenAI::Chat::ChatCompletionContentPartImage::PromptCacheBreakpoint
         ) -> OpenAI::Chat::ChatCompletionContentPartImage::PromptCacheBreakpoint
 
+        # @param prompt_cache_breakpoint
+        #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        #   token block.
+        # @param type
+        #   The type of the content part.
         def initialize: (
           image_url: OpenAI::Chat::ChatCompletionContentPartImage::ImageURL,
           ?prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPartImage::PromptCacheBreakpoint,
@@ -40,14 +53,24 @@ module OpenAI
           }
 
         class ImageURL < OpenAI::Internal::Type::BaseModel
+          # Either a URL of the image or the base64 encoded image data.
           attr_accessor url: String
 
+          # Specifies the detail level of the image. Learn more in the
+          # [Vision guide](https://developers.openai.com/api/docs/guides/images-vision#choose-an-image-detail-level).
           attr_reader detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail?
 
+          # Specifies the detail level of the image. Learn more in the
+          # [Vision guide](https://developers.openai.com/api/docs/guides/images-vision#choose-an-image-detail-level).
           def detail=: (
             OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail
           ) -> OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail
 
+          # @param url
+          #   Either a URL of the image or the base64 encoded image data.
+          # @param detail
+          #   Specifies the detail level of the image. Learn more in the
+          #   [Vision guide](https://developers.openai.com/api/docs/guides/images-vision#choose-an-image-detail-level).
           def initialize: (
             url: String,
             ?detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail
@@ -74,8 +97,11 @@ module OpenAI
         type prompt_cache_breakpoint = { ?mode: :explicit }
 
         class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+          # The breakpoint mode. Always `explicit`.
           attr_accessor mode: :explicit
 
+          # @param mode
+          #   The breakpoint mode. Always `explicit`.
           def initialize: (?mode: :explicit) -> void
 
           def to_hash: -> { ?mode: :explicit }

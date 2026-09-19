@@ -47,7 +47,10 @@ module OpenAI
           sig { params(agent_id: String).void }
           attr_writer :agent_id
 
-          # Initial input submitted when creating a session.
+          # Initial input to submit when the session is created. A string is shorthand for a
+          # single user message. Required when `environment.type` is `none`, or when
+          # `stream` is `true` for an environment that is not `self_hosted`; optional for
+          # self-hosted and non-streaming execution environments.
           sig { returns(T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants)) }
           attr_accessor :input
 
@@ -96,7 +99,10 @@ module OpenAI
             # unchanged.
             agent_id: nil,
 
-            # Initial input submitted when creating a session.
+            # Initial input to submit when the session is created. A string is shorthand for a
+            # single user message. Required when `environment.type` is `none`, or when
+            # `stream` is `true` for an environment that is not `self_hosted`; optional for
+            # self-hosted and non-streaming execution environments.
             input: nil,
 
             # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
@@ -150,14 +156,15 @@ module OpenAI
             sig { params(model: String).void }
             attr_writer :model
 
-            # Explicit configuration for creating and coordinating subagents.
+            # Configuration for creating and coordinating subagents.
             sig { returns(T.nilable(OpenAI::Beta::MultiAgentConfigParam)) }
             attr_reader :multi_agent
 
             sig { params(multi_agent: T.nilable(OpenAI::Beta::MultiAgentConfigParam::OrHash)).void }
             attr_writer :multi_agent
 
-            # Reasoning configuration for the agent.
+            # Configuration for model reasoning. Omit to keep the current settings; pass
+            # `null` to reset to the model's default effort.
             sig { returns(T.nilable(OpenAI::Beta::AgentReasoningParam)) }
             attr_reader :reasoning
 
@@ -233,10 +240,11 @@ module OpenAI
               # The model to use for the agent. The requested model name is preserved.
               model: nil,
 
-              # Explicit configuration for creating and coordinating subagents.
+              # Configuration for creating and coordinating subagents.
               multi_agent: nil,
 
-              # Reasoning configuration for the agent.
+              # Configuration for model reasoning. Omit to keep the current settings; pass
+              # `null` to reset to the model's default effort.
               reasoning: nil,
 
               # The service tier used for model requests.
@@ -309,7 +317,10 @@ module OpenAI
             end
           end
 
-          # Initial input submitted when creating a session.
+          # Initial input to submit when the session is created. A string is shorthand for a
+          # single user message. Required when `environment.type` is `none`, or when
+          # `stream` is `true` for an environment that is not `self_hosted`; optional for
+          # self-hosted and non-streaming execution environments.
           module Input
             extend OpenAI::Internal::Type::Union
 

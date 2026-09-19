@@ -15,26 +15,54 @@ module OpenAI
         }
 
       class AgentSessionTurnReasoningSummaryPartDoneEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the event.
         attr_accessor event_id: String
 
+        # The ID of the reasoning item.
         attr_accessor item_id: String
 
+        # The index of the item in the turn output.
         attr_accessor output_index: Integer
 
+        # The completed summary part.
         attr_accessor part: OpenAI::Beta::SummaryText
 
+        # The ID of the session associated with the event.
         attr_accessor session_id: String
 
+        # Present as `incomplete` when summary generation was interrupted.
         attr_reader status: :incomplete
 
+        # Present as `incomplete` when summary generation was interrupted.
         def status=: (:incomplete?) -> :incomplete?
 
+        # The index of the summary part.
         attr_accessor summary_index: Integer
 
+        # The ID of the turn associated with the event, when applicable.
         attr_accessor turn_id: String?
 
+        # The type of the object. Always `agent.session.turn.reasoning_summary_part.done`.
         attr_accessor type: :"agent.session.turn.reasoning_summary_part.done"
 
+        # @param event_id
+        #   The unique ID of the event.
+        # @param item_id
+        #   The ID of the reasoning item.
+        # @param output_index
+        #   The index of the item in the turn output.
+        # @param part
+        #   The completed summary part.
+        # @param session_id
+        #   The ID of the session associated with the event.
+        # @param summary_index
+        #   The index of the summary part.
+        # @param turn_id
+        #   The ID of the turn associated with the event, when applicable.
+        # @param status
+        #   Present as `incomplete` when summary generation was interrupted.
+        # @param type
+        #   The type of the object. Always `agent.session.turn.reasoning_summary_part.done`.
         def initialize: (
           event_id: String,
           item_id: String,

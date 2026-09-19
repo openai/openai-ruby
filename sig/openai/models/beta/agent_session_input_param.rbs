@@ -16,10 +16,16 @@ module OpenAI
           }
 
         class AgentSessionInputMessage < OpenAI::Internal::Type::BaseModel
+          # The user messages to add to the session.
           attr_accessor input: ::Array[OpenAI::Beta::AgentSessionInputMessageParam]
 
+          # The type of the object. Always `agent.session.input.message`.
           attr_accessor type: :"agent.session.input.message"
 
+          # @param input
+          #   The user messages to add to the session.
+          # @param type
+          #   The type of the object. Always `agent.session.input.message`.
           def initialize: (
             input: ::Array[OpenAI::Beta::AgentSessionInputMessageParam],
             ?type: :"agent.session.input.message"
@@ -35,8 +41,11 @@ module OpenAI
           { ?type: :"agent.session.input.cancel" }
 
         class AgentSessionInputCancel < OpenAI::Internal::Type::BaseModel
+          # The type of the object. Always `agent.session.input.cancel`.
           attr_accessor type: :"agent.session.input.cancel"
 
+          # @param type
+          #   The type of the object. Always `agent.session.input.cancel`.
           def initialize: (?type: :"agent.session.input.cancel") -> void
 
           def to_hash: -> { ?type: :"agent.session.input.cancel" }
@@ -53,18 +62,36 @@ module OpenAI
           }
 
         class AgentSessionInputToolResult < OpenAI::Internal::Type::BaseModel
+          # The ID of the function call.
           attr_accessor call_id: String
 
+          # Whether the function call succeeded.
           attr_accessor success: bool
 
+          # The ID of the turn that requested the function call.
           attr_accessor turn_id: String
 
+          # The type of the object. Always `agent.session.input.tool_result`.
           attr_accessor type: :"agent.session.input.tool_result"
 
+          # The error message when the call failed.
           attr_accessor error: String?
 
+          # The function result when the call succeeded.
           attr_accessor output: OpenAI::Models::Beta::agent_function_call_output_param?
 
+          # @param call_id
+          #   The ID of the function call.
+          # @param success
+          #   Whether the function call succeeded.
+          # @param turn_id
+          #   The ID of the turn that requested the function call.
+          # @param error
+          #   The error message when the call failed.
+          # @param output
+          #   The function result when the call succeeded.
+          # @param type
+          #   The type of the object. Always `agent.session.input.tool_result`.
           def initialize: (
             call_id: String,
             success: bool,

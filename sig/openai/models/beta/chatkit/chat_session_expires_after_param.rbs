@@ -6,10 +6,16 @@ module OpenAI
           { ?anchor: :created_at, seconds: Integer }
 
         class ChatSessionExpiresAfterParam < OpenAI::Internal::Type::BaseModel
+          # Base timestamp used to calculate expiration. Currently fixed to `created_at`.
           attr_accessor anchor: :created_at
 
+          # Number of seconds after the anchor when the session expires.
           attr_accessor seconds: Integer
 
+          # @param seconds
+          #   Number of seconds after the anchor when the session expires.
+          # @param anchor
+          #   Base timestamp used to calculate expiration. Currently fixed to `created_at`.
           def initialize: (seconds: Integer, ?anchor: :created_at) -> void
 
           def to_hash: -> { ?anchor: :created_at, seconds: Integer }

@@ -18,32 +18,73 @@ module OpenAI
       }
 
     class Video < OpenAI::Internal::Type::BaseModel
+      # Unique identifier for the video job.
       attr_accessor id: String
 
+      # Unix timestamp (seconds) for when the job completed, if finished.
       attr_accessor completed_at: Integer?
 
+      # Unix timestamp (seconds) for when the job was created.
       attr_accessor created_at: Integer
 
+      # Error payload that explains why generation failed, if applicable.
       attr_accessor error: OpenAI::VideoCreateError?
 
+      # Unix timestamp (seconds) for when the downloadable assets expire, if set.
       attr_accessor expires_at: Integer?
 
+      # The video generation model that produced the job.
       attr_accessor model: OpenAI::Models::video_model
 
+      # The object type, which is always `video`.
       attr_accessor object: :video
 
+      # Approximate completion percentage for the generation task.
       attr_accessor progress: Integer
 
+      # The prompt that was used to generate the video.
       attr_accessor prompt: String?
 
+      # Identifier of the source video if this video is a remix.
       attr_accessor remixed_from_video_id: String?
 
+      # Duration of the generated clip in seconds. For extensions, this is the stitched
+      # total duration.
       attr_accessor seconds: OpenAI::Models::Video::seconds
 
+      # The resolution of the generated video.
       attr_accessor size: OpenAI::Models::video_size
 
+      # Current lifecycle status of the video job.
       attr_accessor status: OpenAI::Models::Video::status
 
+      # @param id
+      #   Unique identifier for the video job.
+      # @param completed_at
+      #   Unix timestamp (seconds) for when the job completed, if finished.
+      # @param created_at
+      #   Unix timestamp (seconds) for when the job was created.
+      # @param error
+      #   Error payload that explains why generation failed, if applicable.
+      # @param expires_at
+      #   Unix timestamp (seconds) for when the downloadable assets expire, if set.
+      # @param model
+      #   The video generation model that produced the job.
+      # @param progress
+      #   Approximate completion percentage for the generation task.
+      # @param prompt
+      #   The prompt that was used to generate the video.
+      # @param remixed_from_video_id
+      #   Identifier of the source video if this video is a remix.
+      # @param seconds
+      #   Duration of the generated clip in seconds. For extensions, this is the stitched
+      #   total duration.
+      # @param size
+      #   The resolution of the generated video.
+      # @param status
+      #   Current lifecycle status of the video job.
+      # @param object
+      #   The object type, which is always `video`.
       def initialize: (
         id: String,
         completed_at: Integer?,

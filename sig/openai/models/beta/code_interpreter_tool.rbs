@@ -4,8 +4,11 @@ module OpenAI
       type code_interpreter_tool = { ?type: :code_interpreter }
 
       class CodeInterpreterTool < OpenAI::Internal::Type::BaseModel
+        # The type of tool being defined: `code_interpreter`
         attr_accessor type: :code_interpreter
 
+        # @param type
+        #   The type of tool being defined: `code_interpreter`
         def initialize: (?type: :code_interpreter) -> void
 
         def to_hash: -> { ?type: :code_interpreter }

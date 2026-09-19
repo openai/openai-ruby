@@ -13,18 +13,29 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # Return resources after this resource ID in the selected order.
         attr_reader after: String?
 
+        # Return resources after this resource ID in the selected order.
         def after=: (String) -> String
 
+        # The maximum number of resources to return.
         attr_accessor limit: Integer?
 
+        # The order in which resources are returned. Defaults to `desc`.
         attr_reader order: OpenAI::Models::Beta::AgentListParams::order?
 
+        # The order in which resources are returned. Defaults to `desc`.
         def order=: (
           OpenAI::Models::Beta::AgentListParams::order
         ) -> OpenAI::Models::Beta::AgentListParams::order
 
+        # @param after
+        #   Return resources after this resource ID in the selected order.
+        # @param limit
+        #   The maximum number of resources to return.
+        # @param order
+        #   The order in which resources are returned. Defaults to `desc`.
         def initialize: (
           ?after: String,
           ?limit: Integer?,

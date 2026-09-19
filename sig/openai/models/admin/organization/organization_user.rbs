@@ -25,50 +25,103 @@ module OpenAI
           }
 
         class OrganizationUser < OpenAI::Internal::Type::BaseModel
+          # The identifier, which can be referenced in API endpoints
           attr_accessor id: String
 
+          # The Unix timestamp (in seconds) of when the user was added.
           attr_accessor added_at: Integer
 
+          # The object type, which is always `organization.user`
           attr_accessor object: :"organization.user"
 
+          # The Unix timestamp (in seconds) of the user's last API key usage.
           attr_accessor api_key_last_used_at: Integer?
 
+          # The Unix timestamp (in seconds) of when the user was created.
           attr_reader created: Integer?
 
+          # The Unix timestamp (in seconds) of when the user was created.
           def created=: (Integer) -> Integer
 
+          # The developer persona metadata for the user.
           attr_accessor developer_persona: String?
 
+          # The email address of the user
           attr_accessor email: String?
 
+          # Whether this is the organization's default user.
           attr_reader is_default: bool?
 
+          # Whether this is the organization's default user.
           def is_default=: (bool) -> bool
 
+          # Whether the user is an authorized purchaser for Scale Tier.
           attr_accessor is_scale_tier_authorized_purchaser: bool?
 
+          # Whether the user is managed through SCIM.
           attr_reader is_scim_managed: bool?
 
+          # Whether the user is managed through SCIM.
           def is_scim_managed=: (bool) -> bool
 
+          # Whether the user is a service account.
           attr_reader is_service_account: bool?
 
+          # Whether the user is a service account.
           def is_service_account=: (bool) -> bool
 
+          # The name of the user
           attr_accessor name: String?
 
+          # Projects associated with the user, if included.
           attr_accessor projects: OpenAI::Admin::Organization::OrganizationUser::Projects?
 
+          # `owner` or `reader`
           attr_accessor role: String?
 
+          # The technical level metadata for the user.
           attr_accessor technical_level: String?
 
+          # Nested user details.
           attr_reader user: OpenAI::Admin::Organization::OrganizationUser::User?
 
+          # Nested user details.
           def user=: (
             OpenAI::Admin::Organization::OrganizationUser::User
           ) -> OpenAI::Admin::Organization::OrganizationUser::User
 
+          # @param id
+          #   The identifier, which can be referenced in API endpoints
+          # @param added_at
+          #   The Unix timestamp (in seconds) of when the user was added.
+          # @param api_key_last_used_at
+          #   The Unix timestamp (in seconds) of the user's last API key usage.
+          # @param created
+          #   The Unix timestamp (in seconds) of when the user was created.
+          # @param developer_persona
+          #   The developer persona metadata for the user.
+          # @param email
+          #   The email address of the user
+          # @param is_default
+          #   Whether this is the organization's default user.
+          # @param is_scale_tier_authorized_purchaser
+          #   Whether the user is an authorized purchaser for Scale Tier.
+          # @param is_scim_managed
+          #   Whether the user is managed through SCIM.
+          # @param is_service_account
+          #   Whether the user is a service account.
+          # @param name
+          #   The name of the user
+          # @param projects
+          #   Projects associated with the user, if included.
+          # @param role
+          #   `owner` or `reader`
+          # @param technical_level
+          #   The technical level metadata for the user.
+          # @param user
+          #   Nested user details.
+          # @param object
+          #   The object type, which is always `organization.user`
           def initialize: (
             id: String,
             added_at: Integer,

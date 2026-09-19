@@ -15,24 +15,47 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # Return resources after this resource ID in the selected order.
           attr_reader after: String?
 
+          # Return resources after this resource ID in the selected order.
           def after=: (String) -> String
 
+          # The maximum number of resources to return. Defaults to 20. Values are clamped
+          # between 1 and 100.
           attr_accessor limit: Integer?
 
+          # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
+          # `desc` for descending order. Defaults to `desc`.
           attr_reader order: OpenAI::Models::Beta::Agents::VaultListParams::order?
 
+          # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
+          # `desc` for descending order. Defaults to `desc`.
           def order=: (
             OpenAI::Models::Beta::Agents::VaultListParams::order
           ) -> OpenAI::Models::Beta::Agents::VaultListParams::order
 
+          # Filter by one status or a list, such as `status=active` or
+          # `status[]=active&status[]=archived`. Both statuses are included by default.
           attr_reader status: OpenAI::Models::Beta::Agents::vault_status_filter?
 
+          # Filter by one status or a list, such as `status=active` or
+          # `status[]=active&status[]=archived`. Both statuses are included by default.
           def status=: (
             OpenAI::Models::Beta::Agents::vault_status_filter
           ) -> OpenAI::Models::Beta::Agents::vault_status_filter
 
+          # @param after
+          #   Return resources after this resource ID in the selected order.
+          # @param limit
+          #   The maximum number of resources to return. Defaults to 20. Values are clamped
+          #   between 1 and 100.
+          # @param order
+          #   Sort order by the `created_at` timestamp. Use `asc` for ascending order or
+          #   `desc` for descending order. Defaults to `desc`.
+          # @param status
+          #   Filter by one status or a list, such as `status=active` or
+          #   `status[]=active&status[]=archived`. Both statuses are included by default.
           def initialize: (
             ?after: String,
             ?limit: Integer?,

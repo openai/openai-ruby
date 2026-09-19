@@ -11,8 +11,10 @@ module OpenAI
         }
 
       class BetaResponseError < OpenAI::Internal::Type::BaseModel
+        # The error code for the response.
         attr_accessor code: OpenAI::Models::Beta::BetaResponseError::code
 
+        # A human-readable description of the error.
         attr_accessor message: String
 
         attr_reader misalignment: OpenAI::Beta::BetaResponseError::Misalignment?
@@ -21,6 +23,10 @@ module OpenAI
           OpenAI::Beta::BetaResponseError::Misalignment
         ) -> OpenAI::Beta::BetaResponseError::Misalignment
 
+        # @param code
+        #   The error code for the response.
+        # @param message
+        #   A human-readable description of the error.
         def initialize: (
           code: OpenAI::Models::Beta::BetaResponseError::code,
           message: String,
@@ -92,22 +98,34 @@ module OpenAI
           }
 
         class Misalignment < OpenAI::Internal::Type::BaseModel
+          # The public explanation for this block.
           attr_reader detailed_explanation: String?
 
+          # The public explanation for this block.
           def detailed_explanation=: (String) -> String
 
+          # An optional classification; clients must accept additional values.
           attr_reader error_type: OpenAI::Models::Beta::BetaResponseError::Misalignment::error_type?
 
+          # An optional classification; clients must accept additional values.
           def error_type=: (
             OpenAI::Models::Beta::BetaResponseError::Misalignment::error_type
           ) -> OpenAI::Models::Beta::BetaResponseError::Misalignment::error_type
 
+          # An optional public continuation instruction.
           attr_reader steer: OpenAI::Beta::BetaResponseError::Misalignment::Steer?
 
+          # An optional public continuation instruction.
           def steer=: (
             OpenAI::Beta::BetaResponseError::Misalignment::Steer
           ) -> OpenAI::Beta::BetaResponseError::Misalignment::Steer
 
+          # @param detailed_explanation
+          #   The public explanation for this block.
+          # @param error_type
+          #   An optional classification; clients must accept additional values.
+          # @param steer
+          #   An optional public continuation instruction.
           def initialize: (
             ?detailed_explanation: String,
             ?error_type: OpenAI::Models::Beta::BetaResponseError::Misalignment::error_type,
@@ -141,8 +159,11 @@ module OpenAI
           type steer = { message: String }
 
           class Steer < OpenAI::Internal::Type::BaseModel
+            # The public continuation instruction.
             attr_accessor message: String
 
+            # @param message
+            #   The public continuation instruction.
             def initialize: (message: String) -> void
 
             def to_hash: -> { message: String }

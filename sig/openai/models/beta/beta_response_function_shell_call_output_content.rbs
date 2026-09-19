@@ -11,12 +11,21 @@ module OpenAI
         }
 
       class BetaResponseFunctionShellCallOutputContent < OpenAI::Internal::Type::BaseModel
+        # The exit or timeout outcome associated with this shell call.
         attr_accessor outcome: OpenAI::Models::Beta::BetaResponseFunctionShellCallOutputContent::outcome
 
+        # Captured stderr output for the shell call.
         attr_accessor stderr: String
 
+        # Captured stdout output for the shell call.
         attr_accessor stdout: String
 
+        # @param outcome
+        #   The exit or timeout outcome associated with this shell call.
+        # @param stderr
+        #   Captured stderr output for the shell call.
+        # @param stdout
+        #   Captured stdout output for the shell call.
         def initialize: (
           outcome: OpenAI::Models::Beta::BetaResponseFunctionShellCallOutputContent::outcome,
           stderr: String,
@@ -39,8 +48,11 @@ module OpenAI
           type timeout = { ?type: :timeout }
 
           class Timeout < OpenAI::Internal::Type::BaseModel
+            # The outcome type. Always `timeout`.
             attr_accessor type: :timeout
 
+            # @param type
+            #   The outcome type. Always `timeout`.
             def initialize: (?type: :timeout) -> void
 
             def to_hash: -> { ?type: :timeout }
@@ -49,10 +61,16 @@ module OpenAI
           type exit_ = { exit_code: Integer, ?type: :exit }
 
           class Exit < OpenAI::Internal::Type::BaseModel
+            # The exit code returned by the shell process.
             attr_accessor exit_code: Integer
 
+            # The outcome type. Always `exit`.
             attr_accessor type: :exit
 
+            # @param exit_code
+            #   The exit code returned by the shell process.
+            # @param type
+            #   The outcome type. Always `exit`.
             def initialize: (exit_code: Integer, ?type: :exit) -> void
 
             def to_hash: -> { exit_code: Integer, ?type: :exit }

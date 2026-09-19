@@ -11,16 +11,33 @@ module OpenAI
         }
 
       class FunctionTool < OpenAI::Internal::Type::BaseModel
+        # The name the delegated Responses model uses when calling this function.
         attr_accessor name: String
 
+        # The tool type. Always `function`.
         attr_accessor type: :function
 
+        # What the function does and when the delegated Responses model should call it.
         attr_accessor description: String?
 
+        # A JSON Schema object describing the arguments accepted by the function.
         attr_accessor parameters: ::Hash[Symbol, top]?
 
+        # Whether the delegated Responses model must follow the function’s parameter
+        # schema exactly.
         attr_accessor strict: bool?
 
+        # @param name
+        #   The name the delegated Responses model uses when calling this function.
+        # @param description
+        #   What the function does and when the delegated Responses model should call it.
+        # @param parameters
+        #   A JSON Schema object describing the arguments accepted by the function.
+        # @param strict
+        #   Whether the delegated Responses model must follow the function’s parameter
+        #   schema exactly.
+        # @param type
+        #   The tool type. Always `function`.
         def initialize: (
           name: String,
           ?description: String?,

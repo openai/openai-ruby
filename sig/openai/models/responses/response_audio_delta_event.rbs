@@ -9,12 +9,21 @@ module OpenAI
         }
 
       class ResponseAudioDeltaEvent < OpenAI::Internal::Type::BaseModel
+        # A chunk of Base64 encoded response audio bytes.
         attr_accessor delta: String
 
+        # A sequence number for this chunk of the stream response.
         attr_accessor sequence_number: Integer
 
+        # The type of the event. Always `response.audio.delta`.
         attr_accessor type: :"response.audio.delta"
 
+        # @param delta
+        #   A chunk of Base64 encoded response audio bytes.
+        # @param sequence_number
+        #   A sequence number for this chunk of the stream response.
+        # @param type
+        #   The type of the event. Always `response.audio.delta`.
         def initialize: (
           delta: String,
           sequence_number: Integer,

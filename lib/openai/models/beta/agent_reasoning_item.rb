@@ -11,7 +11,7 @@ module OpenAI
         required :id, String
 
         # @!attribute status
-        #   The status of an agent output item.
+        #   The status of the reasoning item.
         #
         #   @return [Symbol, OpenAI::Models::Beta::AgentOutputItemStatus, nil]
         required :status, enum: -> { OpenAI::Beta::AgentOutputItemStatus }, nil?: true
@@ -41,7 +41,7 @@ module OpenAI
         #     The ID of the reasoning item.
         #
         #   @param status [Symbol, OpenAI::Models::Beta::AgentOutputItemStatus, nil]
-        #     The status of an agent output item.
+        #     The status of the reasoning item.
         #
         #   @param summary [Array<OpenAI::Models::Beta::SummaryText>]
         #     The reasoning summaries produced by the agent.

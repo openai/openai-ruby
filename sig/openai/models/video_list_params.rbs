@@ -12,20 +12,35 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      # Identifier for the last item from the previous pagination request
       attr_reader after: String?
 
+      # Identifier for the last item from the previous pagination request
       def after=: (String) -> String
 
+      # Number of items to retrieve
       attr_reader limit: Integer?
 
+      # Number of items to retrieve
       def limit=: (Integer) -> Integer
 
+      # Sort order of results by timestamp. Use `asc` for ascending order or `desc` for
+      # descending order.
       attr_reader order: OpenAI::Models::VideoListParams::order?
 
+      # Sort order of results by timestamp. Use `asc` for ascending order or `desc` for
+      # descending order.
       def order=: (
         OpenAI::Models::VideoListParams::order
       ) -> OpenAI::Models::VideoListParams::order
 
+      # @param after
+      #   Identifier for the last item from the previous pagination request
+      # @param limit
+      #   Number of items to retrieve
+      # @param order
+      #   Sort order of results by timestamp. Use `asc` for ascending order or `desc` for
+      #   descending order.
       def initialize: (
         ?after: String,
         ?limit: Integer,

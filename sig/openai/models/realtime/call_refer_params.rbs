@@ -14,8 +14,13 @@ module OpenAI
 
         attr_accessor call_id: String
 
+        # URI that should appear in the SIP Refer-To header. Supports values like
+        # `tel:+14155550123` or `sip:agent@example.com`.
         attr_accessor target_uri: String
 
+        # @param target_uri
+        #   URI that should appear in the SIP Refer-To header. Supports values like
+        #   `tel:+14155550123` or `sip:agent@example.com`.
         def initialize: (
           call_id: String,
           target_uri: String,

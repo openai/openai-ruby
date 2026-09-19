@@ -9,12 +9,18 @@ module OpenAI
         }
 
       class FunctionShellTool < OpenAI::Internal::Type::BaseModel
+        # The type of the shell tool. Always `shell`.
         attr_accessor type: :shell
 
+        # The tool invocation context(s).
         attr_accessor allowed_callers: ::Array[OpenAI::Models::Responses::FunctionShellTool::allowed_caller]?
 
         attr_accessor environment: OpenAI::Models::Responses::FunctionShellTool::environment?
 
+        # @param allowed_callers
+        #   The tool invocation context(s).
+        # @param type
+        #   The type of the shell tool. Always `shell`.
         def initialize: (
           ?allowed_callers: ::Array[OpenAI::Models::Responses::FunctionShellTool::allowed_caller]?,
           ?environment: OpenAI::Models::Responses::FunctionShellTool::environment?,

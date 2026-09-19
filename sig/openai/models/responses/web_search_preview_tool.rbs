@@ -10,6 +10,8 @@ module OpenAI
         }
 
       class WebSearchPreviewTool < OpenAI::Internal::Type::BaseModel
+        # The type of the web search tool. One of `web_search_preview` or
+        # `web_search_preview_2025_03_11`.
         attr_accessor type: OpenAI::Models::Responses::WebSearchPreviewTool::type_
 
         attr_reader search_content_types: ::Array[OpenAI::Models::Responses::WebSearchPreviewTool::search_content_type]?
@@ -18,14 +20,27 @@ module OpenAI
           ::Array[OpenAI::Models::Responses::WebSearchPreviewTool::search_content_type]
         ) -> ::Array[OpenAI::Models::Responses::WebSearchPreviewTool::search_content_type]
 
+        # High level guidance for the amount of context window space to use for the
+        # search. One of `low`, `medium`, or `high`. `medium` is the default.
         attr_reader search_context_size: OpenAI::Models::Responses::WebSearchPreviewTool::search_context_size?
 
+        # High level guidance for the amount of context window space to use for the
+        # search. One of `low`, `medium`, or `high`. `medium` is the default.
         def search_context_size=: (
           OpenAI::Models::Responses::WebSearchPreviewTool::search_context_size
         ) -> OpenAI::Models::Responses::WebSearchPreviewTool::search_context_size
 
+        # The user's location.
         attr_accessor user_location: OpenAI::Responses::WebSearchPreviewTool::UserLocation?
 
+        # @param type
+        #   The type of the web search tool. One of `web_search_preview` or
+        #   `web_search_preview_2025_03_11`.
+        # @param search_context_size
+        #   High level guidance for the amount of context window space to use for the
+        #   search. One of `low`, `medium`, or `high`. `medium` is the default.
+        # @param user_location
+        #   The user's location.
         def initialize: (
           type: OpenAI::Models::Responses::WebSearchPreviewTool::type_,
           ?search_content_types: ::Array[OpenAI::Models::Responses::WebSearchPreviewTool::search_content_type],
@@ -84,16 +99,35 @@ module OpenAI
           }
 
         class UserLocation < OpenAI::Internal::Type::BaseModel
+          # The type of location approximation. Always `approximate`.
           attr_accessor type: :approximate
 
+          # Free text input for the city of the user, e.g. `San Francisco`.
           attr_accessor city: String?
 
+          # The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
+          # the user, e.g. `US`.
           attr_accessor country: String?
 
+          # Free text input for the region of the user, e.g. `California`.
           attr_accessor region: String?
 
+          # The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
+          # user, e.g. `America/Los_Angeles`.
           attr_accessor timezone: String?
 
+          # @param city
+          #   Free text input for the city of the user, e.g. `San Francisco`.
+          # @param country
+          #   The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
+          #   the user, e.g. `US`.
+          # @param region
+          #   Free text input for the region of the user, e.g. `California`.
+          # @param timezone
+          #   The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
+          #   user, e.g. `America/Los_Angeles`.
+          # @param type
+          #   The type of location approximation. Always `approximate`.
           def initialize: (
             ?city: String?,
             ?country: String?,

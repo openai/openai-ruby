@@ -16,10 +16,16 @@ module OpenAI
           }
 
         class AudioPCM < OpenAI::Internal::Type::BaseModel
+          # Audio sample rate in hertz. Live WebSocket PCM audio supports 16000 or 24000 Hz.
           attr_accessor rate: OpenAI::Models::Live::AudioFormat::AudioPCM::rate
 
+          # The audio encoding. Always `audio/pcm`.
           attr_accessor type: :"audio/pcm"
 
+          # @param rate
+          #   Audio sample rate in hertz. Live WebSocket PCM audio supports 16000 or 24000 Hz.
+          # @param type
+          #   The audio encoding. Always `audio/pcm`.
           def initialize: (
             rate: OpenAI::Models::Live::AudioFormat::AudioPCM::rate,
             ?type: :"audio/pcm"
@@ -45,10 +51,16 @@ module OpenAI
         type audio_pcmu = { rate: Integer, ?type: :"audio/pcmu" }
 
         class AudioPCMU < OpenAI::Internal::Type::BaseModel
+          # Audio sample rate in hertz. G.711 audio uses 8000 Hz.
           attr_accessor rate: Integer
 
+          # The audio encoding. Always `audio/pcmu`.
           attr_accessor type: :"audio/pcmu"
 
+          # @param rate
+          #   Audio sample rate in hertz. G.711 audio uses 8000 Hz.
+          # @param type
+          #   The audio encoding. Always `audio/pcmu`.
           def initialize: (rate: Integer, ?type: :"audio/pcmu") -> void
 
           def to_hash: -> { rate: Integer, ?type: :"audio/pcmu" }
@@ -57,10 +69,16 @@ module OpenAI
         type audio_pcma = { rate: Integer, ?type: :"audio/pcma" }
 
         class AudioPCMA < OpenAI::Internal::Type::BaseModel
+          # Audio sample rate in hertz. G.711 audio uses 8000 Hz.
           attr_accessor rate: Integer
 
+          # The audio encoding. Always `audio/pcma`.
           attr_accessor type: :"audio/pcma"
 
+          # @param rate
+          #   Audio sample rate in hertz. G.711 audio uses 8000 Hz.
+          # @param type
+          #   The audio encoding. Always `audio/pcma`.
           def initialize: (rate: Integer, ?type: :"audio/pcma") -> void
 
           def to_hash: -> { rate: Integer, ?type: :"audio/pcma" }

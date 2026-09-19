@@ -5,14 +5,21 @@ module OpenAI
         { ?type: :local, ?skills: ::Array[OpenAI::Responses::LocalSkill] }
 
       class LocalEnvironment < OpenAI::Internal::Type::BaseModel
+        # Use a local computer environment.
         attr_accessor type: :local
 
+        # An optional list of skills.
         attr_reader skills: ::Array[OpenAI::Responses::LocalSkill]?
 
+        # An optional list of skills.
         def skills=: (
           ::Array[OpenAI::Responses::LocalSkill]
         ) -> ::Array[OpenAI::Responses::LocalSkill]
 
+        # @param skills
+        #   An optional list of skills.
+        # @param type
+        #   Use a local computer environment.
         def initialize: (
           ?skills: ::Array[OpenAI::Responses::LocalSkill],
           ?type: :local

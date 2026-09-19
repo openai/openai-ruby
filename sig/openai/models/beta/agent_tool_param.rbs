@@ -21,18 +21,37 @@ module OpenAI
           }
 
         class Function < OpenAI::Internal::Type::BaseModel
+          # A description of what the function does.
           attr_accessor description: String
 
+          # The name of the function.
           attr_accessor name: String
 
+          # A JSON Schema object describing the function's arguments.
           attr_accessor parameters: ::Hash[Symbol, top]
 
+          # The type of the object. Always `function`.
           attr_accessor type: :function
 
+          # Whether this function is deferred and discovered through tool search. Defaults
+          # to `false`.
           attr_reader defer_loading: bool?
 
+          # Whether this function is deferred and discovered through tool search. Defaults
+          # to `false`.
           def defer_loading=: (bool) -> bool
 
+          # @param description
+          #   A description of what the function does.
+          # @param name
+          #   The name of the function.
+          # @param parameters
+          #   A JSON Schema object describing the function's arguments.
+          # @param defer_loading
+          #   Whether this function is deferred and discovered through tool search. Defaults
+          #   to `false`.
+          # @param type
+          #   The type of the object. Always `function`.
           def initialize: (
             description: String,
             name: String,
@@ -53,8 +72,11 @@ module OpenAI
         type tool_search = { ?type: :tool_search }
 
         class ToolSearch < OpenAI::Internal::Type::BaseModel
+          # The type of the object. Always `tool_search`.
           attr_accessor type: :tool_search
 
+          # @param type
+          #   The type of the object. Always `tool_search`.
           def initialize: (?type: :tool_search) -> void
 
           def to_hash: -> { ?type: :tool_search }
@@ -64,12 +86,19 @@ module OpenAI
           { ?type: :programmatic_tool_calling, ?enabled: bool }
 
         class ProgrammaticToolCalling < OpenAI::Internal::Type::BaseModel
+          # The type of the object. Always `programmatic_tool_calling`.
           attr_accessor type: :programmatic_tool_calling
 
+          # Whether tools can be called from model-generated code. Defaults to `true`.
           attr_reader enabled: bool?
 
+          # Whether tools can be called from model-generated code. Defaults to `true`.
           def enabled=: (bool) -> bool
 
+          # @param enabled
+          #   Whether tools can be called from model-generated code. Defaults to `true`.
+          # @param type
+          #   The type of the object. Always `programmatic_tool_calling`.
           def initialize: (
             ?enabled: bool,
             ?type: :programmatic_tool_calling
@@ -91,24 +120,58 @@ module OpenAI
           }
 
         class Mcp < OpenAI::Internal::Type::BaseModel
+          # A label used to identify the MCP server in tool calls.
           attr_accessor server_label: String
 
+          # The transport used to connect to the MCP server.
           attr_accessor transport: OpenAI::Models::Beta::mcp_transport_param
 
+          # The type of the object. Always `mcp`.
           attr_accessor type: :mcp
 
+          # The MCP tools the agent may call. All server tools are allowed when omitted.
           attr_accessor allowed_tools: ::Array[String]?
 
+          # Selects where outbound MCP HTTP connections originate. Omitted or `service` uses
+          # the Managed Agents service network; `environment` uses the session's selected
+          # environment.
           attr_accessor connection_origin: OpenAI::Models::Beta::AgentToolParam::Mcp::connection_origin?
 
+          # The attached vault credential used to authenticate this MCP server. Optional
+          # when exactly one attached credential matches the server URL.
           attr_accessor credential_id: String?
 
+          # Metadata included with requests to this MCP server.
           attr_accessor request_metadata: ::Hash[Symbol, top]?
 
+          # Whether this MCP server must initialize before the first turn. Defaults to
+          # `false`.
           attr_reader required: bool?
 
+          # Whether this MCP server must initialize before the first turn. Defaults to
+          # `false`.
           def required=: (bool) -> bool
 
+          # @param server_label
+          #   A label used to identify the MCP server in tool calls.
+          # @param transport
+          #   The transport used to connect to the MCP server.
+          # @param allowed_tools
+          #   The MCP tools the agent may call. All server tools are allowed when omitted.
+          # @param connection_origin
+          #   Selects where outbound MCP HTTP connections originate. Omitted or `service` uses
+          #   the Managed Agents service network; `environment` uses the session's selected
+          #   environment.
+          # @param credential_id
+          #   The attached vault credential used to authenticate this MCP server. Optional
+          #   when exactly one attached credential matches the server URL.
+          # @param request_metadata
+          #   Metadata included with requests to this MCP server.
+          # @param required
+          #   Whether this MCP server must initialize before the first turn. Defaults to
+          #   `false`.
+          # @param type
+          #   The type of the object. Always `mcp`.
           def initialize: (
             server_label: String,
             transport: OpenAI::Models::Beta::mcp_transport_param,
@@ -156,16 +219,31 @@ module OpenAI
           }
 
         class WebSearch < OpenAI::Internal::Type::BaseModel
+          # The type of the object. Always `web_search`.
           attr_accessor type: :web_search
 
+          # Domains the search may include.
           attr_accessor allowed_domains: ::Array[String]?
 
+          # The amount of search context made available to the model. Defaults to `medium`.
           attr_accessor context_size: OpenAI::Models::Beta::AgentToolParam::WebSearch::context_size?
 
+          # Approximate location used to localize search results.
           attr_accessor location: OpenAI::Beta::AgentToolParam::WebSearch::Location?
 
+          # The source used for web search results. Defaults to `live`.
           attr_accessor mode: OpenAI::Models::Beta::AgentToolParam::WebSearch::mode?
 
+          # @param allowed_domains
+          #   Domains the search may include.
+          # @param context_size
+          #   The amount of search context made available to the model. Defaults to `medium`.
+          # @param location
+          #   Approximate location used to localize search results.
+          # @param mode
+          #   The source used for web search results. Defaults to `live`.
+          # @param type
+          #   The type of the object. Always `web_search`.
           def initialize: (
             ?allowed_domains: ::Array[String]?,
             ?context_size: OpenAI::Models::Beta::AgentToolParam::WebSearch::context_size?,
@@ -203,14 +281,26 @@ module OpenAI
             }
 
           class Location < OpenAI::Internal::Type::BaseModel
+            # The city name.
             attr_accessor city: String?
 
+            # The two-letter ISO country code, such as `US`.
             attr_accessor country: String?
 
+            # The region or state name.
             attr_accessor region: String?
 
+            # The IANA timezone, such as `America/Los_Angeles`.
             attr_accessor timezone: String?
 
+            # @param city
+            #   The city name.
+            # @param country
+            #   The two-letter ISO country code, such as `US`.
+            # @param region
+            #   The region or state name.
+            # @param timezone
+            #   The IANA timezone, such as `America/Los_Angeles`.
             def initialize: (
               ?city: String?,
               ?country: String?,

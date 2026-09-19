@@ -17,22 +17,43 @@ module OpenAI
           }
 
         class ChatKitThreadUserMessageItem < OpenAI::Internal::Type::BaseModel
+          # Identifier of the thread item.
           attr_accessor id: String
 
+          # Attachments associated with the user message. Defaults to an empty list.
           attr_accessor attachments: ::Array[OpenAI::Beta::ChatKit::ChatKitAttachment]
 
+          # Ordered content elements supplied by the user.
           attr_accessor content: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::content]
 
+          # Unix timestamp (in seconds) for when the item was created.
           attr_accessor created_at: Integer
 
+          # Inference overrides applied to the message. Defaults to null when unset.
           attr_accessor inference_options: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions?
 
+          # Type discriminator that is always `chatkit.thread_item`.
           attr_accessor object: :"chatkit.thread_item"
 
+          # Identifier of the parent thread.
           attr_accessor thread_id: String
 
           attr_accessor type: :"chatkit.user_message"
 
+          # @param id
+          #   Identifier of the thread item.
+          # @param attachments
+          #   Attachments associated with the user message. Defaults to an empty list.
+          # @param content
+          #   Ordered content elements supplied by the user.
+          # @param created_at
+          #   Unix timestamp (in seconds) for when the item was created.
+          # @param inference_options
+          #   Inference overrides applied to the message. Defaults to null when unset.
+          # @param thread_id
+          #   Identifier of the parent thread.
+          # @param object
+          #   Type discriminator that is always `chatkit.thread_item`.
           def initialize: (
             id: String,
             attachments: ::Array[OpenAI::Beta::ChatKit::ChatKitAttachment],
@@ -65,10 +86,16 @@ module OpenAI
             type input_text = { text: String, ?type: :input_text }
 
             class InputText < OpenAI::Internal::Type::BaseModel
+              # Plain-text content supplied by the user.
               attr_accessor text: String
 
+              # Type discriminator that is always `input_text`.
               attr_accessor type: :input_text
 
+              # @param text
+              #   Plain-text content supplied by the user.
+              # @param type
+              #   Type discriminator that is always `input_text`.
               def initialize: (text: String, ?type: :input_text) -> void
 
               def to_hash: -> { text: String, ?type: :input_text }
@@ -77,10 +104,16 @@ module OpenAI
             type quoted_text = { text: String, ?type: :quoted_text }
 
             class QuotedText < OpenAI::Internal::Type::BaseModel
+              # Quoted text content.
               attr_accessor text: String
 
+              # Type discriminator that is always `quoted_text`.
               attr_accessor type: :quoted_text
 
+              # @param text
+              #   Quoted text content.
+              # @param type
+              #   Type discriminator that is always `quoted_text`.
               def initialize: (text: String, ?type: :quoted_text) -> void
 
               def to_hash: -> { text: String, ?type: :quoted_text }
@@ -96,10 +129,18 @@ module OpenAI
             }
 
           class InferenceOptions < OpenAI::Internal::Type::BaseModel
+            # Model name that generated the response. Defaults to null when using the session
+            # default.
             attr_accessor model: String?
 
+            # Preferred tool to invoke. Defaults to null when ChatKit should auto-select.
             attr_accessor tool_choice: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice?
 
+            # @param model
+            #   Model name that generated the response. Defaults to null when using the session
+            #   default.
+            # @param tool_choice
+            #   Preferred tool to invoke. Defaults to null when ChatKit should auto-select.
             def initialize: (
               model: String?,
               tool_choice: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice?
@@ -113,8 +154,11 @@ module OpenAI
             type tool_choice = { id: String }
 
             class ToolChoice < OpenAI::Internal::Type::BaseModel
+              # Identifier of the requested tool.
               attr_accessor id: String
 
+              # @param id
+              #   Identifier of the requested tool.
               def initialize: (id: String) -> void
 
               def to_hash: -> { id: String }

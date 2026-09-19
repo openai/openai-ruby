@@ -18,24 +18,40 @@ module OpenAI
 
           attr_accessor fine_tuned_model_checkpoint: String
 
+          # Identifier for the last permission ID from the previous pagination request.
           attr_reader after: String?
 
+          # Identifier for the last permission ID from the previous pagination request.
           def after=: (String) -> String
 
+          # Number of permissions to retrieve.
           attr_reader limit: Integer?
 
+          # Number of permissions to retrieve.
           def limit=: (Integer) -> Integer
 
+          # The order in which to retrieve permissions.
           attr_reader order: OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::order?
 
+          # The order in which to retrieve permissions.
           def order=: (
             OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::order
           ) -> OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::order
 
+          # The ID of the project to get permissions for.
           attr_reader project_id: String?
 
+          # The ID of the project to get permissions for.
           def project_id=: (String) -> String
 
+          # @param after
+          #   Identifier for the last permission ID from the previous pagination request.
+          # @param limit
+          #   Number of permissions to retrieve.
+          # @param order
+          #   The order in which to retrieve permissions.
+          # @param project_id
+          #   The ID of the project to get permissions for.
           def initialize: (
             fine_tuned_model_checkpoint: String,
             ?after: String,

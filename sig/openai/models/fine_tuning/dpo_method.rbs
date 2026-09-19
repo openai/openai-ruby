@@ -5,12 +5,16 @@ module OpenAI
         { ?hyperparameters: OpenAI::FineTuning::DpoHyperparameters }
 
       class DpoMethod < OpenAI::Internal::Type::BaseModel
+        # The hyperparameters used for the DPO fine-tuning job.
         attr_reader hyperparameters: OpenAI::FineTuning::DpoHyperparameters?
 
+        # The hyperparameters used for the DPO fine-tuning job.
         def hyperparameters=: (
           OpenAI::FineTuning::DpoHyperparameters
         ) -> OpenAI::FineTuning::DpoHyperparameters
 
+        # @param hyperparameters
+        #   The hyperparameters used for the DPO fine-tuning job.
         def initialize: (
           ?hyperparameters: OpenAI::FineTuning::DpoHyperparameters
         ) -> void

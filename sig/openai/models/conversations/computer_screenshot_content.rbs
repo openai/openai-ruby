@@ -11,20 +11,46 @@ module OpenAI
         }
 
       class ComputerScreenshotContent < OpenAI::Internal::Type::BaseModel
+        # The detail level of the screenshot image to be sent to the model. One of `high`,
+        # `low`, `auto`, or `original`. Defaults to `auto`.
         attr_accessor detail: OpenAI::Models::Conversations::ComputerScreenshotContent::detail
 
+        # The identifier of an uploaded file that contains the screenshot.
         attr_accessor file_id: String?
 
+        # The URL of the screenshot image.
         attr_accessor image_url: String?
 
+        # Specifies the event type. For a computer screenshot, this property is always set
+        # to `computer_screenshot`.
         attr_accessor type: :computer_screenshot
 
+        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        # token block.
         attr_reader prompt_cache_breakpoint: OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint?
 
+        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        # token block.
         def prompt_cache_breakpoint=: (
           OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint
         ) -> OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint
 
+        # @param detail
+        #   The detail level of the screenshot image to be sent to the model. One of `high`,
+        #   `low`, `auto`, or `original`. Defaults to `auto`.
+        # @param file_id
+        #   The identifier of an uploaded file that contains the screenshot.
+        # @param image_url
+        #   The URL of the screenshot image.
+        # @param prompt_cache_breakpoint
+        #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        #   token block.
+        # @param type
+        #   Specifies the event type. For a computer screenshot, this property is always set
+        #   to `computer_screenshot`.
         def initialize: (
           detail: OpenAI::Models::Conversations::ComputerScreenshotContent::detail,
           file_id: String?,
@@ -57,8 +83,11 @@ module OpenAI
         type prompt_cache_breakpoint = { ?mode: :explicit }
 
         class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+          # The breakpoint mode. Always `explicit`.
           attr_accessor mode: :explicit
 
+          # @param mode
+          #   The breakpoint mode. Always `explicit`.
           def initialize: (?mode: :explicit) -> void
 
           def to_hash: -> { ?mode: :explicit }

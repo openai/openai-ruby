@@ -11,20 +11,36 @@ module OpenAI
         }
 
       class BatchCancelledWebhookEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the event.
         attr_accessor id: String
 
+        # The Unix timestamp (in seconds) of when the batch API request was cancelled.
         attr_accessor created_at: Integer
 
+        # Event data payload.
         attr_accessor data: OpenAI::Webhooks::BatchCancelledWebhookEvent::Data
 
+        # The type of the event. Always `batch.cancelled`.
         attr_accessor type: :"batch.cancelled"
 
+        # The object of the event. Always `event`.
         attr_reader object: OpenAI::Models::Webhooks::BatchCancelledWebhookEvent::object?
 
+        # The object of the event. Always `event`.
         def object=: (
           OpenAI::Models::Webhooks::BatchCancelledWebhookEvent::object
         ) -> OpenAI::Models::Webhooks::BatchCancelledWebhookEvent::object
 
+        # @param id
+        #   The unique ID of the event.
+        # @param created_at
+        #   The Unix timestamp (in seconds) of when the batch API request was cancelled.
+        # @param data
+        #   Event data payload.
+        # @param object
+        #   The object of the event. Always `event`.
+        # @param type
+        #   The type of the event. Always `batch.cancelled`.
         def initialize: (
           id: String,
           created_at: Integer,
@@ -44,8 +60,11 @@ module OpenAI
         type data = { id: String }
 
         class Data < OpenAI::Internal::Type::BaseModel
+          # The unique ID of the batch API request.
           attr_accessor id: String
 
+          # @param id
+          #   The unique ID of the batch API request.
           def initialize: (id: String) -> void
 
           def to_hash: -> { id: String }

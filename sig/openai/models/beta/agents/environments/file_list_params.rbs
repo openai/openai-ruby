@@ -19,20 +19,34 @@ module OpenAI
 
             attr_accessor environment_id: String
 
+            # The maximum number of files to return, between 1 and 100.
             attr_accessor limit: Integer?
 
+            # Sort by case-sensitive path components. Defaults to descending.
             attr_reader order: OpenAI::Models::Beta::Agents::Environments::FileListParams::order?
 
+            # Sort by case-sensitive path components. Defaults to descending.
             def order=: (
               OpenAI::Models::Beta::Agents::Environments::FileListParams::order
             ) -> OpenAI::Models::Beta::Agents::Environments::FileListParams::order
 
+            # The opaque token from the previous page. Keep the same path, order, and limit.
             attr_reader page: String?
 
+            # The opaque token from the previous page. Keep the same path, order, and limit.
             def page=: (String) -> String
 
+            # Restrict the listing to this absolute workspace directory.
             attr_accessor path: String?
 
+            # @param limit
+            #   The maximum number of files to return, between 1 and 100.
+            # @param order
+            #   Sort by case-sensitive path components. Defaults to descending.
+            # @param page
+            #   The opaque token from the previous page. Keep the same path, order, and limit.
+            # @param path
+            #   Restrict the listing to this absolute workspace directory.
             def initialize: (
               environment_id: String,
               ?limit: Integer?,

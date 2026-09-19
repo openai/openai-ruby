@@ -130,7 +130,7 @@ module OpenAI
           sig { returns(T.nilable(String)) }
           attr_accessor :error
 
-          # A function result represented as text or supported model-input content.
+          # The function result when the call succeeded.
           sig {
             returns(
               T.nilable(
@@ -187,7 +187,7 @@ module OpenAI
             # The error message when the call failed.
             error: nil,
 
-            # A function result represented as text or supported model-input content.
+            # The function result when the call succeeded.
             output: nil,
 
             # The type of the object. Always `agent.session.input.tool_result`.

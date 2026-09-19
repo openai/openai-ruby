@@ -13,16 +13,31 @@ module OpenAI
         }
 
       class StringCheckGrader < OpenAI::Internal::Type::BaseModel
+        # The input text. This may include template strings.
         attr_accessor input: String
 
+        # The name of the grader.
         attr_accessor name: String
 
+        # The string check operation to perform. One of `eq`, `ne`, `like`, or `ilike`.
         attr_accessor operation: OpenAI::Models::Graders::StringCheckGrader::operation
 
+        # The reference text. This may include template strings.
         attr_accessor reference: String
 
+        # The object type, which is always `string_check`.
         attr_accessor type: :string_check
 
+        # @param input
+        #   The input text. This may include template strings.
+        # @param name
+        #   The name of the grader.
+        # @param operation
+        #   The string check operation to perform. One of `eq`, `ne`, `like`, or `ilike`.
+        # @param reference
+        #   The reference text. This may include template strings.
+        # @param type
+        #   The object type, which is always `string_check`.
         def initialize: (
           input: String,
           name: String,

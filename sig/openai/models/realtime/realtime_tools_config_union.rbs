@@ -25,44 +25,154 @@ module OpenAI
           }
 
         class Mcp < OpenAI::Internal::Type::BaseModel
+          # A label for this MCP server, used to identify it in tool calls.
           attr_accessor server_label: String
 
+          # The type of the MCP tool. Always `mcp`.
           attr_accessor type: :mcp
 
+          # The tool invocation context(s).
           attr_accessor allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp::allowed_caller]?
 
+          # List of allowed tool names or a filter object.
           attr_accessor allowed_tools: OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp::allowed_tools?
 
+          # An OAuth access token that can be used with a remote MCP server, either with a
+          # custom MCP server URL or a service connector. Your application must handle the
+          # OAuth authorization flow and provide the token here.
           attr_reader authorization: String?
 
+          # An OAuth access token that can be used with a remote MCP server, either with a
+          # custom MCP server URL or a service connector. Your application must handle the
+          # OAuth authorization flow and provide the token here.
           def authorization=: (String) -> String
 
+          # Identifier for service connectors, like those available in ChatGPT. One of
+          # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
+          # service connectors
+          # [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+          #
+          # This field is deprecated for models released after September 1, 2026. Use
+          # `server_url` to connect to a remote MCP server, or `tunnel_id` to connect
+          # through a Secure MCP Tunnel.
+          #
+          # Currently supported `connector_id` values are:
+          #
+          # - Dropbox: `connector_dropbox`
+          # - Gmail: `connector_gmail`
+          # - Google Calendar: `connector_googlecalendar`
+          # - Google Drive: `connector_googledrive`
+          # - Microsoft Teams: `connector_microsoftteams`
+          # - Outlook Calendar: `connector_outlookcalendar`
+          # - Outlook Email: `connector_outlookemail`
+          # - SharePoint: `connector_sharepoint`
           attr_reader connector_id: OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp::connector_id?
 
+          # Identifier for service connectors, like those available in ChatGPT. One of
+          # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
+          # service connectors
+          # [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+          #
+          # This field is deprecated for models released after September 1, 2026. Use
+          # `server_url` to connect to a remote MCP server, or `tunnel_id` to connect
+          # through a Secure MCP Tunnel.
+          #
+          # Currently supported `connector_id` values are:
+          #
+          # - Dropbox: `connector_dropbox`
+          # - Gmail: `connector_gmail`
+          # - Google Calendar: `connector_googlecalendar`
+          # - Google Drive: `connector_googledrive`
+          # - Microsoft Teams: `connector_microsoftteams`
+          # - Outlook Calendar: `connector_outlookcalendar`
+          # - Outlook Email: `connector_outlookemail`
+          # - SharePoint: `connector_sharepoint`
           def connector_id=: (
             OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp::connector_id
           ) -> OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp::connector_id
 
+          # Whether this MCP tool is deferred and discovered via tool search.
           attr_reader defer_loading: bool?
 
+          # Whether this MCP tool is deferred and discovered via tool search.
           def defer_loading=: (bool) -> bool
 
+          # Optional HTTP headers to send to the MCP server. Use for authentication or other
+          # purposes.
           attr_accessor headers: ::Hash[Symbol, String]?
 
+          # Specify which of the MCP server's tools require approval.
           attr_accessor require_approval: OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp::require_approval?
 
+          # Optional description of the MCP server, used to provide more context.
           attr_reader server_description: String?
 
+          # Optional description of the MCP server, used to provide more context.
           def server_description=: (String) -> String
 
+          # The URL for the MCP server. One of `server_url`, `connector_id`, or `tunnel_id`
+          # must be provided.
           attr_reader server_url: String?
 
+          # The URL for the MCP server. One of `server_url`, `connector_id`, or `tunnel_id`
+          # must be provided.
           def server_url=: (String) -> String
 
+          # The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+          # `server_url`, `connector_id`, or `tunnel_id` must be provided.
           attr_reader tunnel_id: String?
 
+          # The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+          # `server_url`, `connector_id`, or `tunnel_id` must be provided.
           def tunnel_id=: (String) -> String
 
+          # @param server_label
+          #   A label for this MCP server, used to identify it in tool calls.
+          # @param allowed_callers
+          #   The tool invocation context(s).
+          # @param allowed_tools
+          #   List of allowed tool names or a filter object.
+          # @param authorization
+          #   An OAuth access token that can be used with a remote MCP server, either with a
+          #   custom MCP server URL or a service connector. Your application must handle the
+          #   OAuth authorization flow and provide the token here.
+          # @param connector_id
+          #   Identifier for service connectors, like those available in ChatGPT. One of
+          #   `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
+          #   service connectors
+          #   [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+          #
+          #   This field is deprecated for models released after September 1, 2026. Use
+          #   `server_url` to connect to a remote MCP server, or `tunnel_id` to connect
+          #   through a Secure MCP Tunnel.
+          #
+          #   Currently supported `connector_id` values are:
+          #
+          #   - Dropbox: `connector_dropbox`
+          #   - Gmail: `connector_gmail`
+          #   - Google Calendar: `connector_googlecalendar`
+          #   - Google Drive: `connector_googledrive`
+          #   - Microsoft Teams: `connector_microsoftteams`
+          #   - Outlook Calendar: `connector_outlookcalendar`
+          #   - Outlook Email: `connector_outlookemail`
+          #   - SharePoint: `connector_sharepoint`
+          # @param defer_loading
+          #   Whether this MCP tool is deferred and discovered via tool search.
+          # @param headers
+          #   Optional HTTP headers to send to the MCP server. Use for authentication or other
+          #   purposes.
+          # @param require_approval
+          #   Specify which of the MCP server's tools require approval.
+          # @param server_description
+          #   Optional description of the MCP server, used to provide more context.
+          # @param server_url
+          #   The URL for the MCP server. One of `server_url`, `connector_id`, or `tunnel_id`
+          #   must be provided.
+          # @param tunnel_id
+          #   The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+          #   `server_url`, `connector_id`, or `tunnel_id` must be provided.
+          # @param type
+          #   The type of the MCP tool. Always `mcp`.
           def initialize: (
             server_label: String,
             ?allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeToolsConfigUnion::Mcp::allowed_caller]?,
@@ -115,14 +225,31 @@ module OpenAI
               { ?read_only: bool, ?tool_names: ::Array[String] }
 
             class McpToolFilter < OpenAI::Internal::Type::BaseModel
+              # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+              # is
+              # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+              # it will match this filter.
               attr_reader read_only: bool?
 
+              # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+              # is
+              # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+              # it will match this filter.
               def read_only=: (bool) -> bool
 
+              # List of allowed tool names.
               attr_reader tool_names: ::Array[String]?
 
+              # List of allowed tool names.
               def tool_names=: (::Array[String]) -> ::Array[String]
 
+              # @param read_only
+              #   Indicates whether or not a tool modifies data or is read-only. If an MCP server
+              #   is
+              #   [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+              #   it will match this filter.
+              # @param tool_names
+              #   List of allowed tool names.
               def initialize: (
                 ?read_only: bool,
                 ?tool_names: ::Array[String]
@@ -175,18 +302,26 @@ module OpenAI
               }
 
             class McpToolApprovalFilter < OpenAI::Internal::Type::BaseModel
+              # A filter object to specify which tools are allowed.
               attr_reader always: OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp::RequireApproval::McpToolApprovalFilter::Always?
 
+              # A filter object to specify which tools are allowed.
               def always=: (
                 OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp::RequireApproval::McpToolApprovalFilter::Always
               ) -> OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp::RequireApproval::McpToolApprovalFilter::Always
 
+              # A filter object to specify which tools are allowed.
               attr_reader never: OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp::RequireApproval::McpToolApprovalFilter::Never?
 
+              # A filter object to specify which tools are allowed.
               def never=: (
                 OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp::RequireApproval::McpToolApprovalFilter::Never
               ) -> OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp::RequireApproval::McpToolApprovalFilter::Never
 
+              # @param always
+              #   A filter object to specify which tools are allowed.
+              # @param never
+              #   A filter object to specify which tools are allowed.
               def initialize: (
                 ?always: OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp::RequireApproval::McpToolApprovalFilter::Always,
                 ?never: OpenAI::Realtime::RealtimeToolsConfigUnion::Mcp::RequireApproval::McpToolApprovalFilter::Never
@@ -200,14 +335,31 @@ module OpenAI
               type always = { ?read_only: bool, ?tool_names: ::Array[String] }
 
               class Always < OpenAI::Internal::Type::BaseModel
+                # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                # is
+                # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                # it will match this filter.
                 attr_reader read_only: bool?
 
+                # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                # is
+                # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                # it will match this filter.
                 def read_only=: (bool) -> bool
 
+                # List of allowed tool names.
                 attr_reader tool_names: ::Array[String]?
 
+                # List of allowed tool names.
                 def tool_names=: (::Array[String]) -> ::Array[String]
 
+                # @param read_only
+                #   Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                #   is
+                #   [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                #   it will match this filter.
+                # @param tool_names
+                #   List of allowed tool names.
                 def initialize: (
                   ?read_only: bool,
                   ?tool_names: ::Array[String]
@@ -222,14 +374,31 @@ module OpenAI
               type never = { ?read_only: bool, ?tool_names: ::Array[String] }
 
               class Never < OpenAI::Internal::Type::BaseModel
+                # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                # is
+                # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                # it will match this filter.
                 attr_reader read_only: bool?
 
+                # Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                # is
+                # [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                # it will match this filter.
                 def read_only=: (bool) -> bool
 
+                # List of allowed tool names.
                 attr_reader tool_names: ::Array[String]?
 
+                # List of allowed tool names.
                 def tool_names=: (::Array[String]) -> ::Array[String]
 
+                # @param read_only
+                #   Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                #   is
+                #   [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                #   it will match this filter.
+                # @param tool_names
+                #   List of allowed tool names.
                 def initialize: (
                   ?read_only: bool,
                   ?tool_names: ::Array[String]

@@ -17,26 +17,56 @@ module OpenAI
           }
 
         class OutputItemListResponse < OpenAI::Internal::Type::BaseModel
+          # Unique identifier for the evaluation run output item.
           attr_accessor id: String
 
+          # Unix timestamp (in seconds) when the evaluation run was created.
           attr_accessor created_at: Integer
 
+          # Details of the input data source item.
           attr_accessor datasource_item: ::Hash[Symbol, top]
 
+          # The identifier for the data source item.
           attr_accessor datasource_item_id: Integer
 
+          # The identifier of the evaluation group.
           attr_accessor eval_id: String
 
+          # The type of the object. Always "eval.run.output_item".
           attr_accessor object: :"eval.run.output_item"
 
+          # A list of grader results for this output item.
           attr_accessor results: ::Array[OpenAI::Models::Evals::Runs::OutputItemListResponse::Result]
 
+          # The identifier of the evaluation run associated with this output item.
           attr_accessor run_id: String
 
+          # A sample containing the input and output of the evaluation run.
           attr_accessor sample: OpenAI::Models::Evals::Runs::OutputItemListResponse::Sample
 
+          # The status of the evaluation run.
           attr_accessor status: String
 
+          # @param id
+          #   Unique identifier for the evaluation run output item.
+          # @param created_at
+          #   Unix timestamp (in seconds) when the evaluation run was created.
+          # @param datasource_item
+          #   Details of the input data source item.
+          # @param datasource_item_id
+          #   The identifier for the data source item.
+          # @param eval_id
+          #   The identifier of the evaluation group.
+          # @param results
+          #   A list of grader results for this output item.
+          # @param run_id
+          #   The identifier of the evaluation run associated with this output item.
+          # @param sample
+          #   A sample containing the input and output of the evaluation run.
+          # @param status
+          #   The status of the evaluation run.
+          # @param object
+          #   The type of the object. Always "eval.run.output_item".
           def initialize: (
             id: String,
             created_at: Integer,
@@ -73,18 +103,34 @@ module OpenAI
             }
 
           class Result < OpenAI::Internal::Type::BaseModel
+            # The name of the grader.
             attr_accessor name: String
 
+            # Whether the grader considered the output a pass.
             attr_accessor passed: bool
 
+            # The numeric score produced by the grader.
             attr_accessor score: Float
 
+            # Optional sample or intermediate data produced by the grader.
             attr_accessor sample: ::Hash[Symbol, top]?
 
+            # The grader type (for example, "string-check-grader").
             attr_reader type: String?
 
+            # The grader type (for example, "string-check-grader").
             def type=: (String) -> String
 
+            # @param name
+            #   The name of the grader.
+            # @param passed
+            #   Whether the grader considered the output a pass.
+            # @param score
+            #   The numeric score produced by the grader.
+            # @param sample
+            #   Optional sample or intermediate data produced by the grader.
+            # @param type
+            #   The grader type (for example, "string-check-grader").
             def initialize: (
               name: String,
               passed: bool,
@@ -117,26 +163,56 @@ module OpenAI
             }
 
           class Sample < OpenAI::Internal::Type::BaseModel
+            # An object representing an error response from the Eval API.
             attr_accessor error: OpenAI::Evals::EvalAPIError
 
+            # The reason why the sample generation was finished.
             attr_accessor finish_reason: String
 
+            # An array of input messages.
             attr_accessor input: ::Array[OpenAI::Models::Evals::Runs::OutputItemListResponse::Sample::Input]
 
+            # The maximum number of tokens allowed for completion.
             attr_accessor max_completion_tokens: Integer
 
+            # The model used for generating the sample.
             attr_accessor model: String
 
+            # An array of output messages.
             attr_accessor output: ::Array[OpenAI::Models::Evals::Runs::OutputItemListResponse::Sample::Output]
 
+            # The seed used for generating the sample.
             attr_accessor seed: Integer
 
+            # The sampling temperature used.
             attr_accessor temperature: Float
 
+            # The top_p value used for sampling.
             attr_accessor top_p: Float
 
+            # Token usage details for the sample.
             attr_accessor usage: OpenAI::Models::Evals::Runs::OutputItemListResponse::Sample::Usage
 
+            # @param error
+            #   An object representing an error response from the Eval API.
+            # @param finish_reason
+            #   The reason why the sample generation was finished.
+            # @param input
+            #   An array of input messages.
+            # @param max_completion_tokens
+            #   The maximum number of tokens allowed for completion.
+            # @param model
+            #   The model used for generating the sample.
+            # @param output
+            #   An array of output messages.
+            # @param seed
+            #   The seed used for generating the sample.
+            # @param temperature
+            #   The sampling temperature used.
+            # @param top_p
+            #   The top_p value used for sampling.
+            # @param usage
+            #   Token usage details for the sample.
             def initialize: (
               error: OpenAI::Evals::EvalAPIError,
               finish_reason: String,
@@ -166,10 +242,16 @@ module OpenAI
             type input = { content: String, role: String }
 
             class Input < OpenAI::Internal::Type::BaseModel
+              # The content of the message.
               attr_accessor content: String
 
+              # The role of the message sender (e.g., system, user, developer).
               attr_accessor role: String
 
+              # @param content
+              #   The content of the message.
+              # @param role
+              #   The role of the message sender (e.g., system, user, developer).
               def initialize: (content: String, role: String) -> void
 
               def to_hash: -> { content: String, role: String }
@@ -178,14 +260,22 @@ module OpenAI
             type output = { ?content: String, ?role: String }
 
             class Output < OpenAI::Internal::Type::BaseModel
+              # The content of the message.
               attr_reader content: String?
 
+              # The content of the message.
               def content=: (String) -> String
 
+              # The role of the message (e.g. "system", "assistant", "user").
               attr_reader role: String?
 
+              # The role of the message (e.g. "system", "assistant", "user").
               def role=: (String) -> String
 
+              # @param content
+              #   The content of the message.
+              # @param role
+              #   The role of the message (e.g. "system", "assistant", "user").
               def initialize: (?content: String, ?role: String) -> void
 
               def to_hash: -> { ?content: String, ?role: String }
@@ -200,14 +290,26 @@ module OpenAI
               }
 
             class Usage < OpenAI::Internal::Type::BaseModel
+              # The number of tokens retrieved from cache.
               attr_accessor cached_tokens: Integer
 
+              # The number of completion tokens generated.
               attr_accessor completion_tokens: Integer
 
+              # The number of prompt tokens used.
               attr_accessor prompt_tokens: Integer
 
+              # The total number of tokens used.
               attr_accessor total_tokens: Integer
 
+              # @param cached_tokens
+              #   The number of tokens retrieved from cache.
+              # @param completion_tokens
+              #   The number of completion tokens generated.
+              # @param prompt_tokens
+              #   The number of prompt tokens used.
+              # @param total_tokens
+              #   The total number of tokens used.
               def initialize: (
                 cached_tokens: Integer,
                 completion_tokens: Integer,

@@ -19,12 +19,16 @@ module OpenAI
 
             attr_accessor group_id: String
 
+            # The type of group to retrieve.
             attr_reader group_type: OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::group_type?
 
+            # The type of group to retrieve.
             def group_type=: (
               OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::group_type
             ) -> OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::group_type
 
+            # @param group_type
+            #   The type of group to retrieve.
             def initialize: (
               project_id: String,
               group_id: String,
