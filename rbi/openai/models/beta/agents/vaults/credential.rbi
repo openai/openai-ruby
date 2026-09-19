@@ -22,7 +22,7 @@ module OpenAI
             sig { returns(String) }
             attr_accessor :id
 
-            # The authentication method and non-secret configuration for the MCP server.
+            # The authentication method and non-secret configuration of the credential.
             sig { returns(OpenAI::Beta::Agents::Vaults::CredentialAuth::Variants) }
             attr_accessor :auth
 
@@ -46,7 +46,7 @@ module OpenAI
             sig { returns(String) }
             attr_accessor :vault_id
 
-            # Metadata for a stored MCP server credential. Secret values are never returned.
+            # Metadata for a stored credential. Secret values are never returned.
             sig do
               params(
 
@@ -54,7 +54,8 @@ module OpenAI
 
                 auth: T.any(
                   OpenAI::Beta::Agents::Vaults::CredentialAuth::McpOauth::OrHash,
-                  OpenAI::Beta::Agents::Vaults::CredentialAuth::StaticBearer::OrHash
+                  OpenAI::Beta::Agents::Vaults::CredentialAuth::StaticBearer::OrHash,
+                  OpenAI::Beta::Agents::Vaults::CredentialAuth::EnvironmentVariable::OrHash
                 ),
 
                 created_at: Integer,
@@ -74,7 +75,7 @@ module OpenAI
               # The ID of the credential.
               id:,
 
-              # The authentication method and non-secret configuration for the MCP server.
+              # The authentication method and non-secret configuration of the credential.
               auth:,
 
               # The Unix timestamp, in seconds, when the credential was created.

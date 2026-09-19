@@ -15,8 +15,8 @@ module OpenAI
             # @param vault_id [String]
             #   The ID of the vault.
             #
-            # @param auth [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer]
-            #   The authentication method and secret values to store for the MCP server.
+            # @param auth [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::EnvironmentVariable]
+            #   The authentication method and write-only secret values to store.
             #
             # @param name [String]
             #   The name is trimmed before storage. It must contain 1 to 256 UTF-8 bytes after
@@ -82,7 +82,7 @@ module OpenAI
             # @param vault_id [String]
             #   Path param: The ID of the vault.
             #
-            # @param auth [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer]
+            # @param auth [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::EnvironmentVariable]
             #   Body param: Replacement values for the credential's existing authentication
             #   method.
             #

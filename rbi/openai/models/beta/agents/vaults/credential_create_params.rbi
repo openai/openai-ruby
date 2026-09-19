@@ -24,12 +24,13 @@ module OpenAI
             sig { returns(String) }
             attr_accessor :vault_id
 
-            # The authentication method and secret values to store for the MCP server.
+            # The authentication method and write-only secret values to store.
             sig {
               returns(
                 T.any(
                   OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::McpOauth,
-                  OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer
+                  OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer,
+                  OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::EnvironmentVariable
                 )
               )
             }
@@ -47,7 +48,8 @@ module OpenAI
 
                 auth: T.any(
                   OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::McpOauth::OrHash,
-                  OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer::OrHash
+                  OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer::OrHash,
+                  OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::EnvironmentVariable::OrHash
                 ),
 
                 name: String,
@@ -60,7 +62,7 @@ module OpenAI
 
               vault_id:,
 
-              # The authentication method and secret values to store for the MCP server.
+              # The authentication method and write-only secret values to store.
               auth:,
 
               # The name is trimmed before storage. It must contain 1 to 256 UTF-8 bytes after
@@ -77,7 +79,8 @@ module OpenAI
                   vault_id: String,
                   auth: T.any(
                     OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::McpOauth,
-                    OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer
+                    OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer,
+                    OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::EnvironmentVariable
                   ),
                   name: String,
                   request_options: OpenAI::RequestOptions
