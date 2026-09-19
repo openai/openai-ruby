@@ -91,6 +91,7 @@ module OpenAI
     sig { returns(OpenAI::Resources::Admin) }
     attr_reader :admin
 
+    # Create and manage model responses.
     sig { returns(OpenAI::Resources::Responses) }
     attr_reader :responses
 

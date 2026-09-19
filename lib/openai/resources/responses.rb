@@ -2,10 +2,13 @@
 
 module OpenAI
   module Resources
+    # Create and manage model responses.
     class Responses
+      # Create and manage model responses.
       # @return [OpenAI::Resources::Responses::InputItems]
       attr_reader :input_items
 
+      # Create and manage model responses.
       # @return [OpenAI::Resources::Responses::InputTokens]
       attr_reader :input_tokens
 
