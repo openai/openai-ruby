@@ -1,0 +1,65 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session_environment_reset_event =
+        {
+          environment_id: String,
+          event_id: String,
+          reset_count: Integer,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.session.environment.reset"
+        }
+
+      class AgentSessionEnvironmentResetEvent < OpenAI::Internal::Type::BaseModel
+        # The stable environment ID, retained across sandbox replacements.
+        attr_accessor environment_id: String
+
+        # The unique ID of the event.
+        attr_accessor event_id: String
+
+        # Monotonically increasing reset number. Repeated notifications share this number.
+        attr_accessor reset_count: Integer
+
+        # The ID of the session associated with the event.
+        attr_accessor session_id: String
+
+        # The associated turn, when applicable.
+        attr_accessor turn_id: String?
+
+        # The type of the object. Always `agent.session.environment.reset`.
+        attr_accessor type: :"agent.session.environment.reset"
+
+        # @param environment_id
+        #   The stable environment ID, retained across sandbox replacements.
+        # @param event_id
+        #   The unique ID of the event.
+        # @param reset_count
+        #   Monotonically increasing reset number. Repeated notifications share this number.
+        # @param session_id
+        #   The ID of the session associated with the event.
+        # @param turn_id
+        #   The associated turn, when applicable.
+        # @param type
+        #   The type of the object. Always `agent.session.environment.reset`.
+        def initialize: (
+          environment_id: String,
+          event_id: String,
+          reset_count: Integer,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.session.environment.reset"
+        ) -> void
+
+        def to_hash: -> {
+          environment_id: String,
+          event_id: String,
+          reset_count: Integer,
+          session_id: String,
+          turn_id: String?,
+          ?type: :"agent.session.environment.reset"
+        }
+      end
+    end
+  end
+end
