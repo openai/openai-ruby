@@ -11,11 +11,9 @@ module OpenAI
         required :calculate_output, String
 
         # @!attribute graders
-        #   A StringCheckGrader object that performs a string comparison between input and
-        #   reference using a specified operation.
         #
-        #   @return [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::LabelModelGrader]
-        required :graders, union: -> { OpenAI::Graders::MultiGrader::Graders }
+        #   @return [Hash{Symbol=>OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::LabelModelGrader}]
+        required :graders, -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Graders::MultiGrader::Grader] }
 
         # @!attribute name
         #   The name of the grader.
@@ -36,9 +34,7 @@ module OpenAI
         #   @param calculate_output [String]
         #     A formula to calculate the output based on grader results.
         #
-        #   @param graders [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::LabelModelGrader]
-        #     A StringCheckGrader object that performs a string comparison between input and
-        #     reference using a specified operation.
+        #   @param graders [Hash{Symbol=>OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::LabelModelGrader}]
         #
         #   @param name [String]
         #     The name of the grader.
@@ -48,26 +44,26 @@ module OpenAI
 
         # A StringCheckGrader object that performs a string comparison between input and
         # reference using a specified operation.
-        #
-        # @see OpenAI::Models::Graders::MultiGrader#graders
-        module Graders
+        module Grader
           extend OpenAI::Internal::Type::Union
 
+          discriminator :type
+
           # A StringCheckGrader object that performs a string comparison between input and reference using a specified operation.
-          variant -> { OpenAI::Graders::StringCheckGrader }
+          variant :string_check, -> { OpenAI::Graders::StringCheckGrader }
 
           # A TextSimilarityGrader object which grades text based on similarity metrics.
-          variant -> { OpenAI::Graders::TextSimilarityGrader }
+          variant :text_similarity, -> { OpenAI::Graders::TextSimilarityGrader }
 
           # A PythonGrader object that runs a python script on the input.
-          variant -> { OpenAI::Graders::PythonGrader }
+          variant :python, -> { OpenAI::Graders::PythonGrader }
 
           # A ScoreModelGrader object that uses a model to assign a score to the input.
-          variant -> { OpenAI::Graders::ScoreModelGrader }
+          variant :score_model, -> { OpenAI::Graders::ScoreModelGrader }
 
           # A LabelModelGrader object which uses a model to assign labels to each item
           # in the evaluation.
-          variant -> { OpenAI::Graders::LabelModelGrader }
+          variant :label_model, -> { OpenAI::Graders::LabelModelGrader }
 
           # @!method self.variants
           #   @return [Array(OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::LabelModelGrader)]
