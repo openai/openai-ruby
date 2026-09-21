@@ -46,17 +46,25 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Models::Audio::Translation, OpenAI::Models::Audio::TranslationVerbose]
+        # @return [OpenAI::Models::Audio::Translation, OpenAI::Models::Audio::TranslationVerbose, StringIO]
         #
         # @see OpenAI::Models::Audio::TranslationCreateParams
         def create(params)
           parsed, options = OpenAI::Audio::TranslationCreateParams.dump_request(params)
+          body = OpenAI::Internal::Transport::RequestBodyMerge.merge(parsed, options[:extra_body])
+          model = case body.fetch(:response_format) { body["response_format"] }
+          in :verbose_json | "verbose_json"
+            OpenAI::UnionOf[OpenAI::Audio::TranslationVerbose, OpenAI::Audio::TranslationCreateResponse]
+          else
+            OpenAI::Audio::TranslationCreateResponse
+          end
+
           @client.request(
             method: :post,
             path: "audio/translations",
             headers: {"content-type" => "multipart/form-data"},
             body: parsed,
-            model: OpenAI::Models::Audio::TranslationCreateResponse,
+            model: model,
             security: {bearer_auth: true},
             options: options
           )

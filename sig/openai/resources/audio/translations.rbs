@@ -9,7 +9,7 @@ module OpenAI
           ?response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format,
           ?temperature: Float,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Models::Audio::translation_create_response
+        ) -> (OpenAI::Models::Audio::translation_create_response | StringIO)
 
         def initialize: (client: OpenAI::Client) -> void
       end
