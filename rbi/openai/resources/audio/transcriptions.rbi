@@ -14,7 +14,8 @@ module OpenAI
         # Transcribes audio into the input language.
         #
         # Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
-        # format, or a stream of transcript events.
+        # format, plain text in `text`, `srt`, or `vtt` format, or a stream of transcript
+        # events. Supported formats depend on the model.
         sig {
           params(
             file: OpenAI::Internal::FileInput,
@@ -35,7 +36,7 @@ module OpenAI
             stream: T.noreturn,
             request_options: OpenAI::RequestOptions::OrHash
           )
-            .returns(OpenAI::Models::Audio::TranscriptionCreateResponse::Variants)
+            .returns(T.any(OpenAI::Models::Audio::TranscriptionCreateResponse::Variants, StringIO))
         }
         def create(
           # The audio file object (not file name) to transcribe, in one of these formats:
@@ -125,7 +126,8 @@ module OpenAI
         # Transcribes audio into the input language.
         #
         # Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
-        # format, or a stream of transcript events.
+        # format, plain text in `text`, `srt`, or `vtt` format, or a stream of transcript
+        # events. Supported formats depend on the model.
         sig {
           params(
             file: OpenAI::Internal::FileInput,
