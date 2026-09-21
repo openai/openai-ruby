@@ -39,6 +39,24 @@ module OpenAI
           return OpenAI::Realtime::UnknownServerEvent.new(data: parsed)
         end
 
+        session_union = case type.to_s
+        when "session.created"
+          OpenAI::Realtime::SessionCreatedEvent::Session
+        when "session.updated"
+          OpenAI::Realtime::SessionUpdatedEvent::Session
+        end
+
+        if session_union
+          session = parsed[:session]
+          unless session.is_a?(Hash) && session[:type].is_a?(String)
+            raise ArgumentError, "Realtime session must be an object with a string type"
+          end
+
+          unless discriminator_values(session_union).key?(session[:type])
+            raise ArgumentError, "Unsupported Realtime session type"
+          end
+        end
+
         state = OpenAI::Internal::Type::Converter.new_coerce_state
         event = OpenAI::Internal::Type::Converter.coerce(
           OpenAI::Realtime::RealtimeServerEvent,
