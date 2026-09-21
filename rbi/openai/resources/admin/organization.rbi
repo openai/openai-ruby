@@ -7,6 +7,9 @@ module OpenAI
 
       class Organization
 
+        sig { returns(OpenAI::Resources::Admin::Organization::ExternalStorage) }
+        attr_reader :external_storage
+
         # List user actions and configuration changes within this organization.
         sig { returns(OpenAI::Resources::Admin::Organization::AuditLogs) }
         attr_reader :audit_logs
@@ -31,9 +34,6 @@ module OpenAI
 
         sig { returns(OpenAI::Resources::Admin::Organization::DataRetention) }
         attr_reader :data_retention
-
-        sig { returns(OpenAI::Resources::Admin::Organization::ExternalStorage) }
-        attr_reader :external_storage
 
         sig { returns(OpenAI::Resources::Admin::Organization::SpendLimit) }
         attr_reader :spend_limit
