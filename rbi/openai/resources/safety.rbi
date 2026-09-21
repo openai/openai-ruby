@@ -5,11 +5,11 @@ module OpenAI
 
     class Safety
 
-      sig { returns(OpenAI::Resources::Safety::Cases) }
-      attr_reader :cases
-
       sig { returns(OpenAI::Resources::Safety::Alerts) }
       attr_reader :alerts
+
+      sig { returns(OpenAI::Resources::Safety::Cases) }
+      attr_reader :cases
 
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }

@@ -11,8 +11,7 @@ module OpenAI
         # Transcribes audio into the input language.
         #
         # Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
-        # format, plain text in `text`, `srt`, or `vtt` format, or a stream of transcript
-        # events. Supported formats depend on the model.
+        # format, or a stream of transcript events.
         #
         # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
         # metadata. Use `OpenAI::FilePart` when you need to override the filename or
@@ -109,7 +108,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionDiarized, OpenAI::Models::Audio::TranscriptionVerbose, StringIO]
+        # @return [OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionDiarized, OpenAI::Models::Audio::TranscriptionVerbose]
         #
         # @see OpenAI::Models::Audio::TranscriptionCreateParams
         def create(params)
@@ -119,22 +118,12 @@ module OpenAI
             raise ArgumentError.new(message)
           end
 
-          body = OpenAI::Internal::Transport::RequestBodyMerge.merge(parsed, options[:extra_body])
-          model = case body.fetch(:response_format) { body["response_format"] }
-          in :verbose_json | "verbose_json"
-            OpenAI::UnionOf[OpenAI::Audio::TranscriptionVerbose, OpenAI::Audio::TranscriptionCreateResponse]
-          in :diarized_json | "diarized_json"
-            OpenAI::UnionOf[OpenAI::Audio::TranscriptionDiarized, OpenAI::Audio::TranscriptionCreateResponse]
-          else
-            OpenAI::Audio::TranscriptionCreateResponse
-          end
-
           @client.request(
             method: :post,
             path: "audio/transcriptions",
             headers: {"content-type" => "multipart/form-data"},
             body: parsed,
-            model: model,
+            model: OpenAI::Models::Audio::TranscriptionCreateResponse,
             security: {bearer_auth: true},
             options: options
           )
@@ -146,8 +135,7 @@ module OpenAI
         # Transcribes audio into the input language.
         #
         # Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
-        # format, plain text in `text`, `srt`, or `vtt` format, or a stream of transcript
-        # events. Supported formats depend on the model.
+        # format, or a stream of transcript events.
         #
         # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
         # metadata. Use `OpenAI::FilePart` when you need to override the filename or

@@ -18,7 +18,7 @@ module OpenAI
             temperature: Float,
             request_options: OpenAI::RequestOptions::OrHash
           )
-            .returns(T.any(OpenAI::Models::Audio::TranslationCreateResponse::Variants, StringIO))
+            .returns(OpenAI::Models::Audio::TranslationCreateResponse::Variants)
         }
         def create(
           # The audio file object (not file name) translate, in one of these formats: flac,
