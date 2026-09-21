@@ -41,11 +41,13 @@ module OpenAI
         module Session
           extend OpenAI::Internal::Type::Union
 
+          discriminator :type
+
           # Realtime session object configuration.
-          variant -> { OpenAI::Realtime::RealtimeSessionCreateRequest }
+          variant :realtime, -> { OpenAI::Realtime::RealtimeSessionCreateRequest }
 
           # Realtime transcription session object configuration.
-          variant -> { OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest }
+          variant :transcription, -> { OpenAI::Realtime::RealtimeTranscriptionSessionCreateRequest }
 
           # @!method self.variants
           #   @return [Array(OpenAI::Models::Realtime::RealtimeSessionCreateRequest, OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest)]
