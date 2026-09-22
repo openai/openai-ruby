@@ -1005,6 +1005,7 @@ module OpenAI
           GPT_DAYBREAK_BLUE_LATEST = T.let(:"gpt-daybreak-blue-latest", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
           GPT_DAYBREAK_RED_LATEST = T.let(:"gpt-daybreak-red-latest", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
           GPT_5_6_CYBER = T.let(:"gpt-5.6-cyber", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
+          GPT_ROSALIND_RESEARCH = T.let(:"gpt-rosalind-research", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
 
         end
 

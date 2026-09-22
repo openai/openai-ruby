@@ -12,7 +12,7 @@ module OpenAI
         # Runs the agent without an execution environment.
         variant :none, -> { OpenAI::Beta::EnvironmentParam::None }
 
-        # An OpenAI-hosted environment, optionally based on a reusable template.
+        # An existing OpenAI-hosted environment or new inline/template-based hosted configuration.
         variant :openai_hosted, -> { OpenAI::Beta::EnvironmentParam::OpenAIHosted }
 
         # An application-hosted environment configured inline.
@@ -116,7 +116,8 @@ module OpenAI
           )
 
           # @!method initialize(capability_directories: nil, env: nil, environment_template_id: nil, files: nil, network: nil, packages: nil, plugins: nil, setup_commands: nil, skills: nil, type: :openai_hosted)
-          #   An OpenAI-hosted environment, optionally based on a reusable template.
+          #   An existing OpenAI-hosted environment or new inline/template-based hosted
+          #   configuration.
           #
           #   @param capability_directories [Array<String>, nil]
           #     Directories that contain capabilities exposed to the agent. Defaults to an empty
