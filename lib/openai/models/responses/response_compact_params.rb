@@ -207,6 +207,8 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_1_CODEX }
 
+          variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_1_MINI }
+
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5_1_CHAT_LATEST }
 
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_5 }
@@ -424,6 +426,7 @@ module OpenAI
           GPT_5_1 = :"gpt-5.1"
           GPT_5_1_2025_11_13 = :"gpt-5.1-2025-11-13"
           GPT_5_1_CODEX = :"gpt-5.1-codex"
+          GPT_5_1_MINI = :"gpt-5.1-mini"
           GPT_5_1_CHAT_LATEST = :"gpt-5.1-chat-latest"
           GPT_5 = :"gpt-5"
           GPT_5_MINI = :"gpt-5-mini"

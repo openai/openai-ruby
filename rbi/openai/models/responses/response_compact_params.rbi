@@ -258,6 +258,7 @@ module OpenAI
             OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
           )
           GPT_5_1_CODEX = T.let(:"gpt-5.1-codex", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_1_MINI = T.let(:"gpt-5.1-mini", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
           GPT_5_1_CHAT_LATEST = T.let(
             :"gpt-5.1-chat-latest",
             OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
