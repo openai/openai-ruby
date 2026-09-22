@@ -80,7 +80,10 @@ module OpenAI
             )
           end
 
-          # Soft-delete one customer-managed external storage configuration.
+          # Disconnect a customer-managed external storage configuration. Removing the
+          # project's last configuration restores organization-default retention if
+          # customer-managed retention was active. Repeating a deletion also completes any
+          # interrupted retention update. Cloud storage is unchanged.
           #
           # @overload delete(external_storage_id, request_options: {})
           #
