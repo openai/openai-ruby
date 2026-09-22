@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.94.0](https://github.com/openai/openai-ruby/compare/v0.93.0...v0.94.0) (2026-09-22)
+
+
+### Features
+
+* **api:** add GPT-6 Sol and Luna model identifiers ([#743](https://github.com/openai/openai-ruby/issues/743)) ([906ef5f](https://github.com/openai/openai-ruby/commit/906ef5fa5317188096d690079e7308931fbee187))
+
+
+### Reverts
+
+* defer API error response documentation ([#741](https://github.com/openai/openai-ruby/issues/741)) ([687aef9](https://github.com/openai/openai-ruby/commit/687aef9e2e7b4cdea1634ea139c4240e0fdf370d))
+
+
+### Chores
+
+* **api:** document API error response contracts ([#728](https://github.com/openai/openai-ruby/issues/728)) ([475318f](https://github.com/openai/openai-ruby/commit/475318f0815207cbe1beee8f4d6839dd92870dba))
+* **deps-dev:** update development dependencies compatibly ([#738](https://github.com/openai/openai-ruby/issues/738)) ([3e790c2](https://github.com/openai/openai-ruby/commit/3e790c2d260ed6f98845cd44cc7c77b19e72547b))
+* **deps:** bump the codeql group with 2 updates ([#735](https://github.com/openai/openai-ruby/issues/735)) ([c41a312](https://github.com/openai/openai-ruby/commit/c41a3121d0500f0db3deb613896b9302dd3202f4))
+
 ## [0.93.0](https://github.com/openai/openai-ruby/compare/v0.92.0...v0.93.0) (2026-09-22)
 
 
