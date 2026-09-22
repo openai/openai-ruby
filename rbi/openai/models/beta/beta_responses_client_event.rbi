@@ -1049,6 +1049,11 @@ module OpenAI
               :"gpt-6-astra",
               OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
             )
+            GPT_6_SOL = T.let(:"gpt-6-sol", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
+            GPT_6_LUNA = T.let(
+              :"gpt-6-luna",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
             GPT_5_6_SOL = T.let(
               :"gpt-5.6-sol",
               OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
