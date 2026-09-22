@@ -4,9 +4,6 @@ module OpenAI
   module Resources
     class Admin
       class Organization
-        # @return [OpenAI::Resources::Admin::Organization::ExternalStorage]
-        attr_reader :external_storage
-
         # List user actions and configuration changes within this organization.
         # @return [OpenAI::Resources::Admin::Organization::AuditLogs]
         attr_reader :audit_logs
@@ -32,6 +29,9 @@ module OpenAI
         # @return [OpenAI::Resources::Admin::Organization::DataRetention]
         attr_reader :data_retention
 
+        # @return [OpenAI::Resources::Admin::Organization::ExternalStorage]
+        attr_reader :external_storage
+
         # @return [OpenAI::Resources::Admin::Organization::SpendLimit]
         attr_reader :spend_limit
 
@@ -49,7 +49,6 @@ module OpenAI
         # @param client [OpenAI::Client]
         def initialize(client:)
           @client = client
-          @external_storage = OpenAI::Resources::Admin::Organization::ExternalStorage.new(client: client)
           @audit_logs = OpenAI::Resources::Admin::Organization::AuditLogs.new(client: client)
           @admin_api_keys = OpenAI::Resources::Admin::Organization::AdminAPIKeys.new(client: client)
           @usage = OpenAI::Resources::Admin::Organization::Usage.new(client: client)
@@ -58,6 +57,7 @@ module OpenAI
           @groups = OpenAI::Resources::Admin::Organization::Groups.new(client: client)
           @roles = OpenAI::Resources::Admin::Organization::Roles.new(client: client)
           @data_retention = OpenAI::Resources::Admin::Organization::DataRetention.new(client: client)
+          @external_storage = OpenAI::Resources::Admin::Organization::ExternalStorage.new(client: client)
           @spend_limit = OpenAI::Resources::Admin::Organization::SpendLimit.new(client: client)
           @spend_alerts = OpenAI::Resources::Admin::Organization::SpendAlerts.new(client: client)
           @certificates = OpenAI::Resources::Admin::Organization::Certificates.new(client: client)

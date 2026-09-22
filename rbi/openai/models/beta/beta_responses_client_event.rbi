@@ -1113,6 +1113,10 @@ module OpenAI
               :"gpt-5.1-codex",
               OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
             )
+            GPT_5_1_MINI = T.let(
+              :"gpt-5.1-mini",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
             GPT_5_1_CHAT_LATEST = T.let(
               :"gpt-5.1-chat-latest",
               OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol

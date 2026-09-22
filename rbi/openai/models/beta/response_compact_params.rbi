@@ -251,6 +251,7 @@ module OpenAI
           GPT_5_1 = T.let(:"gpt-5.1", OpenAI::Beta::ResponseCompactParams::Model::TaggedSymbol)
           GPT_5_1_2025_11_13 = T.let(:"gpt-5.1-2025-11-13", OpenAI::Beta::ResponseCompactParams::Model::TaggedSymbol)
           GPT_5_1_CODEX = T.let(:"gpt-5.1-codex", OpenAI::Beta::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_5_1_MINI = T.let(:"gpt-5.1-mini", OpenAI::Beta::ResponseCompactParams::Model::TaggedSymbol)
           GPT_5_1_CHAT_LATEST = T.let(:"gpt-5.1-chat-latest", OpenAI::Beta::ResponseCompactParams::Model::TaggedSymbol)
           GPT_5 = T.let(:"gpt-5", OpenAI::Beta::ResponseCompactParams::Model::TaggedSymbol)
           GPT_5_MINI = T.let(:"gpt-5-mini", OpenAI::Beta::ResponseCompactParams::Model::TaggedSymbol)
