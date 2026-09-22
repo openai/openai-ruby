@@ -3129,7 +3129,8 @@ module OpenAI
                 params(
                   provider: T.any(
                     OpenAI::Admin::Organization::AwsExternalStorageProvider::OrHash,
-                    OpenAI::Admin::Organization::AzureExternalStorageProvider::OrHash
+                    OpenAI::Admin::Organization::AzureExternalStorageProvider::OrHash,
+                    OpenAI::Admin::Organization::GcpExternalStorageProvider::OrHash
                   )
                 )
                   .void
@@ -3144,7 +3145,8 @@ module OpenAI
 
                   provider: T.any(
                     OpenAI::Admin::Organization::AwsExternalStorageProvider::OrHash,
-                    OpenAI::Admin::Organization::AzureExternalStorageProvider::OrHash
+                    OpenAI::Admin::Organization::AzureExternalStorageProvider::OrHash,
+                    OpenAI::Admin::Organization::GcpExternalStorageProvider::OrHash
                   )
                 )
                   .returns(T.attached_class)
@@ -3178,7 +3180,8 @@ module OpenAI
                 Variants = T.type_alias {
                   T.any(
                     OpenAI::Admin::Organization::AwsExternalStorageProvider,
-                    OpenAI::Admin::Organization::AzureExternalStorageProvider
+                    OpenAI::Admin::Organization::AzureExternalStorageProvider,
+                    OpenAI::Admin::Organization::GcpExternalStorageProvider
                   )
                 }
 

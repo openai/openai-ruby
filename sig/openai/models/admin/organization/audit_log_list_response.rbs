@@ -1837,6 +1837,7 @@ module OpenAI
               type provider =
                 OpenAI::Admin::Organization::AwsExternalStorageProvider
                 | OpenAI::Admin::Organization::AzureExternalStorageProvider
+                | OpenAI::Admin::Organization::GcpExternalStorageProvider
 
               module Provider
                 extend OpenAI::Internal::Type::Union

@@ -4,6 +4,7 @@ module OpenAI
       {
         code: String,
         message: String,
+        ?headers: ::Hash[Symbol, String],
         ?misalignment: OpenAI::VideoCreateError::Misalignment
       }
 
@@ -13,6 +14,14 @@ module OpenAI
 
       # A human-readable description of the error that was returned.
       attr_accessor message: String
+
+      # The Retry-After and Retry-After-Ms headers returned with the original error, if
+      # any.
+      attr_reader headers: ::Hash[Symbol, String]?
+
+      # The Retry-After and Retry-After-Ms headers returned with the original error, if
+      # any.
+      def headers=: (::Hash[Symbol, String]) -> ::Hash[Symbol, String]
 
       attr_reader misalignment: OpenAI::VideoCreateError::Misalignment?
 
@@ -24,15 +33,20 @@ module OpenAI
       #   A machine-readable error code that was returned.
       # @param message
       #   A human-readable description of the error that was returned.
+      # @param headers
+      #   The Retry-After and Retry-After-Ms headers returned with the original error, if
+      #   any.
       def initialize: (
         code: String,
         message: String,
+        ?headers: ::Hash[Symbol, String],
         ?misalignment: OpenAI::VideoCreateError::Misalignment
       ) -> void
 
       def to_hash: -> {
         code: String,
         message: String,
+        ?headers: ::Hash[Symbol, String],
         ?misalignment: OpenAI::VideoCreateError::Misalignment
       }
 

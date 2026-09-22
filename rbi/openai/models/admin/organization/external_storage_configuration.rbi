@@ -50,7 +50,8 @@ module OpenAI
 
               provider: T.any(
                 OpenAI::Admin::Organization::AwsExternalStorageProvider::OrHash,
-                OpenAI::Admin::Organization::AzureExternalStorageProvider::OrHash
+                OpenAI::Admin::Organization::AzureExternalStorageProvider::OrHash,
+                OpenAI::Admin::Organization::GcpExternalStorageProvider::OrHash
               ),
 
               status: OpenAI::Admin::Organization::ExternalStorageConfiguration::Status::OrSymbol,
@@ -99,7 +100,8 @@ module OpenAI
             Variants = T.type_alias {
               T.any(
                 OpenAI::Admin::Organization::AwsExternalStorageProvider,
-                OpenAI::Admin::Organization::AzureExternalStorageProvider
+                OpenAI::Admin::Organization::AzureExternalStorageProvider,
+                OpenAI::Admin::Organization::GcpExternalStorageProvider
               )
             }
 

@@ -20,6 +20,14 @@ module OpenAI
       sig { returns(String) }
       attr_accessor :message
 
+      # The Retry-After and Retry-After-Ms headers returned with the original error, if
+      # any.
+      sig { returns(T.nilable(T::Hash[Symbol, String])) }
+      attr_reader :headers
+
+      sig { params(headers: T::Hash[Symbol, String]).void }
+      attr_writer :headers
+
       sig { returns(T.nilable(OpenAI::VideoCreateError::Misalignment)) }
       attr_reader :misalignment
 
@@ -34,6 +42,8 @@ module OpenAI
 
           message: String,
 
+          headers: T::Hash[Symbol, String],
+
           misalignment: OpenAI::VideoCreateError::Misalignment::OrHash
         )
           .returns(T.attached_class)
@@ -46,13 +56,22 @@ module OpenAI
         # A human-readable description of the error that was returned.
         message:,
 
+        # The Retry-After and Retry-After-Ms headers returned with the original error, if
+        # any.
+        headers: nil,
+
         misalignment: nil
       )
       end
 
       sig do
         override.returns(
-          {code: String, message: String, misalignment: OpenAI::VideoCreateError::Misalignment}
+          {
+            code: String,
+            message: String,
+            headers: T::Hash[Symbol, String],
+            misalignment: OpenAI::VideoCreateError::Misalignment
+          }
         )
       end
       def to_hash
