@@ -468,6 +468,10 @@ module OpenAI
             OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
           )
           GPT_5_6_CYBER = T.let(:"gpt-5.6-cyber", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_ROSALIND_RESEARCH = T.let(
+            :"gpt-rosalind-research",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
 
         end
 

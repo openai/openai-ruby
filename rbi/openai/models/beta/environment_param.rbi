@@ -133,7 +133,8 @@ module OpenAI
           }
           attr_accessor :skills
 
-          # An OpenAI-hosted environment, optionally based on a reusable template.
+          # An existing OpenAI-hosted environment or new inline/template-based hosted
+          # configuration.
           sig do
             params(
 

@@ -51,6 +51,7 @@ module OpenAI
         )
         GPT_DAYBREAK_RED_LATEST = T.let(:"gpt-daybreak-red-latest", OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol)
         GPT_5_6_CYBER = T.let(:"gpt-5.6-cyber", OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol)
+        GPT_ROSALIND_RESEARCH = T.let(:"gpt-rosalind-research", OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol]) }
         def self.values
