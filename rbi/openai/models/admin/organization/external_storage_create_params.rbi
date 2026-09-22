@@ -26,7 +26,8 @@ module OpenAI
             returns(
               T.any(
                 OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Aws,
-                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Azure
+                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Azure,
+                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp
               )
             )
           }
@@ -39,7 +40,8 @@ module OpenAI
 
               provider: T.any(
                 OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Aws::OrHash,
-                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Azure::OrHash
+                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Azure::OrHash,
+                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp::OrHash
               ),
 
               request_options: OpenAI::RequestOptions::OrHash
@@ -62,7 +64,8 @@ module OpenAI
                 project_id: String,
                 provider: T.any(
                   OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Aws,
-                  OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Azure
+                  OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Azure,
+                  OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp
                 ),
                 request_options: OpenAI::RequestOptions
               }
@@ -77,7 +80,8 @@ module OpenAI
             Variants = T.type_alias {
               T.any(
                 OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Aws,
-                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Azure
+                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Azure,
+                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp
               )
             }
 
@@ -197,6 +201,74 @@ module OpenAI
                     subscription_id: String,
                     tenant_id: String,
                     type: Symbol
+                  }
+                )
+              end
+              def to_hash
+              end
+
+            end
+
+            class Gcp < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              sig { returns(String) }
+              attr_accessor :bucket
+
+              sig { returns(Symbol) }
+              attr_accessor :type
+
+              sig { returns(String) }
+              attr_accessor :workload_identity_pool_id
+
+              sig { returns(String) }
+              attr_accessor :workload_identity_project_number
+
+              sig { returns(String) }
+              attr_accessor :workload_identity_provider_id
+
+              sig do
+                params(
+
+                  bucket: String,
+
+                  workload_identity_pool_id: String,
+
+                  workload_identity_project_number: String,
+
+                  workload_identity_provider_id: String,
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                bucket:,
+
+                workload_identity_pool_id:,
+
+                workload_identity_project_number:,
+
+                workload_identity_provider_id:,
+
+                type: :gcp
+              )
+              end
+
+              sig do
+                override.returns(
+                  {
+                    bucket: String,
+                    type: Symbol,
+                    workload_identity_pool_id: String,
+                    workload_identity_project_number: String,
+                    workload_identity_provider_id: String
                   }
                 )
               end

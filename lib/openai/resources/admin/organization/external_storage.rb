@@ -10,7 +10,7 @@ module OpenAI
           # @overload create(project_id:, provider:, request_options: {})
           #
           # @param project_id [String]
-          # @param provider [OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Aws, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Azure]
+          # @param provider [OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Aws, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Azure, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp]
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
           # @return [OpenAI::Models::Admin::Organization::ExternalStorageConfiguration]

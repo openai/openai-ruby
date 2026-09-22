@@ -32,6 +32,7 @@ module OpenAI
           type provider =
             OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Aws
             | OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Azure
+            | OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp
 
           module Provider
             extend OpenAI::Internal::Type::Union
@@ -93,6 +94,43 @@ module OpenAI
                 subscription_id: String,
                 tenant_id: String,
                 ?type: :azure
+              }
+            end
+
+            type gcp =
+              {
+                bucket: String,
+                ?type: :gcp,
+                workload_identity_pool_id: String,
+                workload_identity_project_number: String,
+                workload_identity_provider_id: String
+              }
+
+            class Gcp < OpenAI::Internal::Type::BaseModel
+              attr_accessor bucket: String
+
+              attr_accessor type: :gcp
+
+              attr_accessor workload_identity_pool_id: String
+
+              attr_accessor workload_identity_project_number: String
+
+              attr_accessor workload_identity_provider_id: String
+
+              def initialize: (
+                bucket: String,
+                workload_identity_pool_id: String,
+                workload_identity_project_number: String,
+                workload_identity_provider_id: String,
+                ?type: :gcp
+              ) -> void
+
+              def to_hash: -> {
+                bucket: String,
+                ?type: :gcp,
+                workload_identity_pool_id: String,
+                workload_identity_project_number: String,
+                workload_identity_provider_id: String
               }
             end
 

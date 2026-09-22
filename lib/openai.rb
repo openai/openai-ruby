@@ -233,6 +233,7 @@ require_relative "openai/models/admin/organization/external_storage_delete_param
 require_relative "openai/models/admin/organization/external_storage_list_params"
 require_relative "openai/models/admin/organization/external_storage_retrieve_params"
 require_relative "openai/models/admin/organization/external_storage_validate_params"
+require_relative "openai/models/admin/organization/gcp_external_storage_provider"
 require_relative "openai/models/admin/organization/group"
 require_relative "openai/models/admin/organization/group_create_params"
 require_relative "openai/models/admin/organization/group_delete_params"

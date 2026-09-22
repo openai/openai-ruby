@@ -33,7 +33,7 @@ module OpenAI
 
           # @!attribute provider
           #
-          #   @return [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider]
+          #   @return [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider]
           required :provider, union: -> { OpenAI::Admin::Organization::ExternalStorageConfiguration::Provider }
 
           # @!attribute status
@@ -46,7 +46,7 @@ module OpenAI
           #   @param created_at [Integer]
           #   @param geography [String]
           #   @param project_id [String]
-          #   @param provider [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider]
+          #   @param provider [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider]
           #   @param status [Symbol, OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::Status]
           #   @param object [Symbol, :"organization.external_storage"]
 
@@ -60,8 +60,10 @@ module OpenAI
 
             variant :azure, -> { OpenAI::Admin::Organization::AzureExternalStorageProvider }
 
+            variant :gcp, -> { OpenAI::Admin::Organization::GcpExternalStorageProvider }
+
             # @!method self.variants
-            #   @return [Array(OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider)]
+            #   @return [Array(OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider)]
           end
 
           # @see OpenAI::Models::Admin::Organization::ExternalStorageConfiguration#status
