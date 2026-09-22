@@ -3,10 +3,6 @@
 ## [0.93.0](https://github.com/openai/openai-ruby/compare/v0.92.0...v0.93.0) (2026-09-22)
 
 
-### ⚠ BREAKING CHANGES
-
-* **api:** correct model types and network policy docs ([#718](https://github.com/openai/openai-ruby/issues/718))
-
 ### Features
 
 * **api:** add external storage configuration management ([#724](https://github.com/openai/openai-ruby/issues/724)) ([8d1179a](https://github.com/openai/openai-ruby/commit/8d1179aab1cebd3b394d5c91cc48ba447be1993a))
