@@ -15,7 +15,8 @@ module OpenAI
               project_id: String,
               provider: T.any(
                 OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Aws::OrHash,
-                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Azure::OrHash
+                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Azure::OrHash,
+                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp::OrHash
               ),
               request_options: OpenAI::RequestOptions::OrHash
             )

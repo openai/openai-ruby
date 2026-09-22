@@ -1549,7 +1549,7 @@ module OpenAI
               # @!attribute provider
               #   The external storage provider configuration.
               #
-              #   @return [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, nil]
+              #   @return [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider, nil]
               optional(
                 :provider,
                 union: -> {
@@ -1563,7 +1563,7 @@ module OpenAI
               #   @param geography [String]
               #     The OpenAI geography derived from the storage region.
               #
-              #   @param provider [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider]
+              #   @param provider [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider]
               #     The external storage provider configuration.
 
               # The external storage provider configuration.
@@ -1578,8 +1578,10 @@ module OpenAI
 
                 variant :azure, -> { OpenAI::Admin::Organization::AzureExternalStorageProvider }
 
+                variant :gcp, -> { OpenAI::Admin::Organization::GcpExternalStorageProvider }
+
                 # @!method self.variants
-                #   @return [Array(OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider)]
+                #   @return [Array(OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider)]
               end
             end
           end

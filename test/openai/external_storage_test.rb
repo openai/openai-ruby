@@ -83,6 +83,36 @@ class OpenAI::Test::ExternalStorageTest < Minitest::Test
     assert_equal(JSON.parse(payload.to_json), JSON.parse(response.to_json))
   end
 
+  def test_create_gcp_provider_with_distinct_response_metadata
+    provider = Organization::ExternalStorageCreateParams::Provider::Gcp.new(
+      bucket: "test-bucket",
+      workload_identity_pool_id: "test-pool",
+      workload_identity_project_number: "000000000000",
+      workload_identity_provider_id: "test-provider"
+    )
+    request_provider = {
+      type: "gcp",
+      bucket: "test-bucket",
+      workload_identity_pool_id: "test-pool",
+      workload_identity_project_number: "000000000000",
+      workload_identity_provider_id: "test-provider"
+    }
+    payload = configuration(
+      {**request_provider, audience: "test-audience", region: "us-central1", future_provider_field: true}
+    )
+    stub_request(:post, COLLECTION_URL)
+      .with(body: {project_id: "proj_test", provider: request_provider}, headers: ADMIN_HEADERS)
+      .to_return_json(body: payload)
+
+    response = @openai.admin.organization.external_storage.create(project_id: "proj_test", provider: provider)
+
+    assert_requested(:post, COLLECTION_URL, times: 1)
+    assert_instance_of(Organization::GcpExternalStorageProvider, response.provider)
+    assert_equal("test-audience", response.provider.audience)
+    assert_equal("us-central1", response.provider.region)
+    assert_equal(JSON.parse(payload.to_json), JSON.parse(response.to_json))
+  end
+
   def test_id_operations_escape_paths_and_preserve_future_provider
     url = "#{COLLECTION_URL}/ext%2Fstorage%3Ftest"
     payload = configuration({type: "future", future_provider_field: true}, "ext/storage?test")

@@ -15,12 +15,19 @@ module OpenAI
       #   @return [String]
       required :message, String
 
+      # @!attribute headers
+      #   The Retry-After and Retry-After-Ms headers returned with the original error, if
+      #   any.
+      #
+      #   @return [Hash{Symbol=>String}, nil]
+      optional :headers, OpenAI::Internal::Type::HashOf[String]
+
       # @!attribute misalignment
       #
       #   @return [OpenAI::Models::VideoCreateError::Misalignment, nil]
       optional :misalignment, -> { OpenAI::VideoCreateError::Misalignment }
 
-      # @!method initialize(code:, message:, misalignment: nil)
+      # @!method initialize(code:, message:, headers: nil, misalignment: nil)
       #   An error that occurred while generating the response.
       #
       #   @param code [String]
@@ -28,6 +35,10 @@ module OpenAI
       #
       #   @param message [String]
       #     A human-readable description of the error that was returned.
+      #
+      #   @param headers [Hash{Symbol=>String}]
+      #     The Retry-After and Retry-After-Ms headers returned with the original error, if
+      #     any.
       #
       #   @param misalignment [OpenAI::Models::VideoCreateError::Misalignment]
 
