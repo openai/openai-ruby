@@ -132,6 +132,8 @@ Lint/LambdaWithoutLiteralBlock:
   Enabled: true
 Lint/LiteralAssignmentInCondition:
   Enabled: true
+Lint/MisplacedMagicComment:
+  Enabled: true
 Lint/MixedCaseRange:
   Enabled: true
 Lint/NameTypo:
