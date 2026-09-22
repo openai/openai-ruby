@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.93.0](https://github.com/openai/openai-ruby/compare/v0.92.0...v0.93.0) (2026-09-22)
+
+
+### Features
+
+* **api:** add external storage configuration management ([#724](https://github.com/openai/openai-ruby/issues/724)) ([8d1179a](https://github.com/openai/openai-ruby/commit/8d1179aab1cebd3b394d5c91cc48ba447be1993a))
+* **api:** add safety case retrieval ([#725](https://github.com/openai/openai-ruby/issues/725)) ([fb153b4](https://github.com/openai/openai-ruby/commit/fb153b452adc316fae50584b55eafe7d16b68047))
+* **api:** add safety warning and deactivation webhook events ([#723](https://github.com/openai/openai-ruby/issues/723)) ([60886ae](https://github.com/openai/openai-ruby/commit/60886ae1a0481110426541d5e3292bb844c54b4d))
+* **api:** add session environment reset events ([#727](https://github.com/openai/openai-ruby/issues/727)) ([3343547](https://github.com/openai/openai-ruby/commit/33435479c2d98603b93c810183d314bc55cd1ee7))
+* **api:** add SIP media security to incoming call events ([#722](https://github.com/openai/openai-ruby/issues/722)) ([fba1557](https://github.com/openai/openai-ruby/commit/fba155790dabef0d5adc185b19d22fd6c67d0fdf))
+* **api:** support environment variable vault credentials ([#721](https://github.com/openai/openai-ruby/issues/721)) ([06d3e17](https://github.com/openai/openai-ruby/commit/06d3e178112b5a64c8afd8420c538587ea305070))
+
+
+### Bug Fixes
+
+* **api:** correct model types and network policy docs ([#718](https://github.com/openai/openai-ruby/issues/718)) ([a25e46d](https://github.com/openai/openai-ruby/commit/a25e46d55c4d00cca4426b43d3ac2a0663c12248))
+* **api:** preserve legacy model choices ([#737](https://github.com/openai/openai-ruby/issues/737)) ([c6414c5](https://github.com/openai/openai-ruby/commit/c6414c5d28b4fdee30ba600f31cb9b02b04dd6c2))
+
+
+### Chores
+
+* **api:** document response management resources ([#726](https://github.com/openai/openai-ruby/issues/726)) ([7f521df](https://github.com/openai/openai-ruby/commit/7f521dff687c2ff66ab870c954ecec59820b7acd))
+* **deps:** bump ruby/setup-ruby from 1.323.0 to 1.324.0 ([#719](https://github.com/openai/openai-ruby/issues/719)) ([654eba5](https://github.com/openai/openai-ruby/commit/654eba5d1761501d73f317d2ed99c8d035ac9e23))
+
 ## [0.92.0](https://github.com/openai/openai-ruby/compare/v0.91.0...v0.92.0) (2026-09-18)
 
 
