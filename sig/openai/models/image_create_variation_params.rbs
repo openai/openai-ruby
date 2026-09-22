@@ -15,28 +15,30 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      # The image to use as the basis for the variation(s). Must be a valid PNG file,
-      # less than 4MB, and square.
+      # The input image for the legacy variations endpoint. The legacy format requires a
+      # valid PNG file, less than 4MB, and square.
       #
       # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
       # metadata. Use `OpenAI::FilePart` when you need to override the filename or
       # content type.
       attr_accessor image: OpenAI::Internal::file_input
 
-      # The model to use for image generation. Only `dall-e-2` is supported at this
-      # time.
+      # Legacy model selection for the variations endpoint, which was designed for
+      # `dall-e-2`. DALL·E 2 was retired from the API on May 12, 2026; see
+      # [deprecations](https://developers.openai.com/api/docs/deprecations). Use image
+      # edits with a supported GPT Image model for new integrations.
       attr_accessor model: OpenAI::Models::ImageCreateVariationParams::model?
 
-      # The number of images to generate. Must be between 1 and 10.
+      # The number of images requested from the legacy variations endpoint. Must be
+      # between 1 and 10.
       attr_accessor n: Integer?
 
-      # The format in which the generated images are returned. Must be one of `url` or
-      # `b64_json`. URLs are only valid for 60 minutes after the image has been
-      # generated.
+      # The response format for the legacy variations endpoint: `url` or `b64_json`.
+      # Returned URLs were valid for 60 minutes after image generation.
       attr_accessor response_format: OpenAI::Models::ImageCreateVariationParams::response_format?
 
-      # The size of the generated images. Must be one of `256x256`, `512x512`, or
-      # `1024x1024`.
+      # The requested image size for the legacy variations endpoint. Must be one of
+      # `256x256`, `512x512`, or `1024x1024`.
       attr_accessor size: OpenAI::Models::ImageCreateVariationParams::size?
 
       # A unique identifier representing your end-user, which can help OpenAI to monitor
@@ -50,24 +52,26 @@ module OpenAI
       def user=: (String) -> String
 
       # @param image
-      #   The image to use as the basis for the variation(s). Must be a valid PNG file,
-      #   less than 4MB, and square.
+      #   The input image for the legacy variations endpoint. The legacy format requires a
+      #   valid PNG file, less than 4MB, and square.
       #
       #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
       #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
       #   content type.
       # @param model
-      #   The model to use for image generation. Only `dall-e-2` is supported at this
-      #   time.
+      #   Legacy model selection for the variations endpoint, which was designed for
+      #   `dall-e-2`. DALL·E 2 was retired from the API on May 12, 2026; see
+      #   [deprecations](https://developers.openai.com/api/docs/deprecations). Use image
+      #   edits with a supported GPT Image model for new integrations.
       # @param n
-      #   The number of images to generate. Must be between 1 and 10.
+      #   The number of images requested from the legacy variations endpoint. Must be
+      #   between 1 and 10.
       # @param response_format
-      #   The format in which the generated images are returned. Must be one of `url` or
-      #   `b64_json`. URLs are only valid for 60 minutes after the image has been
-      #   generated.
+      #   The response format for the legacy variations endpoint: `url` or `b64_json`.
+      #   Returned URLs were valid for 60 minutes after image generation.
       # @param size
-      #   The size of the generated images. Must be one of `256x256`, `512x512`, or
-      #   `1024x1024`.
+      #   The requested image size for the legacy variations endpoint. Must be one of
+      #   `256x256`, `512x512`, or `1024x1024`.
       # @param user
       #   A unique identifier representing your end-user, which can help OpenAI to monitor
       #   and detect abuse.

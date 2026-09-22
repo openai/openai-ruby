@@ -15,8 +15,8 @@ module OpenAI
         )
       end
 
-      # The image to use as the basis for the variation(s). Must be a valid PNG file,
-      # less than 4MB, and square.
+      # The input image for the legacy variations endpoint. The legacy format requires a
+      # valid PNG file, less than 4MB, and square.
       #
       # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
       # metadata. Use `OpenAI::FilePart` when you need to override the filename or
@@ -24,23 +24,25 @@ module OpenAI
       sig { returns(OpenAI::Internal::FileInput) }
       attr_accessor :image
 
-      # The model to use for image generation. Only `dall-e-2` is supported at this
-      # time.
+      # Legacy model selection for the variations endpoint, which was designed for
+      # `dall-e-2`. DALL·E 2 was retired from the API on May 12, 2026; see
+      # [deprecations](https://developers.openai.com/api/docs/deprecations). Use image
+      # edits with a supported GPT Image model for new integrations.
       sig { returns(T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol))) }
       attr_accessor :model
 
-      # The number of images to generate. Must be between 1 and 10.
+      # The number of images requested from the legacy variations endpoint. Must be
+      # between 1 and 10.
       sig { returns(T.nilable(Integer)) }
       attr_accessor :n
 
-      # The format in which the generated images are returned. Must be one of `url` or
-      # `b64_json`. URLs are only valid for 60 minutes after the image has been
-      # generated.
+      # The response format for the legacy variations endpoint: `url` or `b64_json`.
+      # Returned URLs were valid for 60 minutes after image generation.
       sig { returns(T.nilable(OpenAI::ImageCreateVariationParams::ResponseFormat::OrSymbol)) }
       attr_accessor :response_format
 
-      # The size of the generated images. Must be one of `256x256`, `512x512`, or
-      # `1024x1024`.
+      # The requested image size for the legacy variations endpoint. Must be one of
+      # `256x256`, `512x512`, or `1024x1024`.
       sig { returns(T.nilable(OpenAI::ImageCreateVariationParams::Size::OrSymbol)) }
       attr_accessor :size
 
@@ -74,28 +76,30 @@ module OpenAI
       end
       def self.new(
 
-        # The image to use as the basis for the variation(s). Must be a valid PNG file,
-        # less than 4MB, and square.
+        # The input image for the legacy variations endpoint. The legacy format requires a
+        # valid PNG file, less than 4MB, and square.
         #
         # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
         # metadata. Use `OpenAI::FilePart` when you need to override the filename or
         # content type.
         image:,
 
-        # The model to use for image generation. Only `dall-e-2` is supported at this
-        # time.
+        # Legacy model selection for the variations endpoint, which was designed for
+        # `dall-e-2`. DALL·E 2 was retired from the API on May 12, 2026; see
+        # [deprecations](https://developers.openai.com/api/docs/deprecations). Use image
+        # edits with a supported GPT Image model for new integrations.
         model: nil,
 
-        # The number of images to generate. Must be between 1 and 10.
+        # The number of images requested from the legacy variations endpoint. Must be
+        # between 1 and 10.
         n: nil,
 
-        # The format in which the generated images are returned. Must be one of `url` or
-        # `b64_json`. URLs are only valid for 60 minutes after the image has been
-        # generated.
+        # The response format for the legacy variations endpoint: `url` or `b64_json`.
+        # Returned URLs were valid for 60 minutes after image generation.
         response_format: nil,
 
-        # The size of the generated images. Must be one of `256x256`, `512x512`, or
-        # `1024x1024`.
+        # The requested image size for the legacy variations endpoint. Must be one of
+        # `256x256`, `512x512`, or `1024x1024`.
         size: nil,
 
         # A unique identifier representing your end-user, which can help OpenAI to monitor
@@ -123,8 +127,10 @@ module OpenAI
       def to_hash
       end
 
-      # The model to use for image generation. Only `dall-e-2` is supported at this
-      # time.
+      # Legacy model selection for the variations endpoint, which was designed for
+      # `dall-e-2`. DALL·E 2 was retired from the API on May 12, 2026; see
+      # [deprecations](https://developers.openai.com/api/docs/deprecations). Use image
+      # edits with a supported GPT Image model for new integrations.
       module Model
         extend OpenAI::Internal::Type::Union
 
@@ -136,9 +142,8 @@ module OpenAI
 
       end
 
-      # The format in which the generated images are returned. Must be one of `url` or
-      # `b64_json`. URLs are only valid for 60 minutes after the image has been
-      # generated.
+      # The response format for the legacy variations endpoint: `url` or `b64_json`.
+      # Returned URLs were valid for 60 minutes after image generation.
       module ResponseFormat
         extend OpenAI::Internal::Type::Enum
 
@@ -153,8 +158,8 @@ module OpenAI
         end
       end
 
-      # The size of the generated images. Must be one of `256x256`, `512x512`, or
-      # `1024x1024`.
+      # The requested image size for the legacy variations endpoint. Must be one of
+      # `256x256`, `512x512`, or `1024x1024`.
       module Size
         extend OpenAI::Internal::Type::Enum
 

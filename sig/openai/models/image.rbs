@@ -3,42 +3,45 @@ module OpenAI
     type image = { ?:b64_json => String, ?revised_prompt: String, ?url: String }
 
     class Image < OpenAI::Internal::Type::BaseModel
-      # The base64-encoded JSON of the generated image. Returned by default for the GPT
-      # image models, and only present if `response_format` is set to `b64_json` for
-      # `dall-e-2` and `dall-e-3`.
+      # The base64-encoded image data. Returned by default for the GPT image models. For
+      # the retired `dall-e-2` and `dall-e-3` models, this field was present only when
+      # `response_format` was set to `b64_json`.
       attr_reader b64_json: String?
 
-      # The base64-encoded JSON of the generated image. Returned by default for the GPT
-      # image models, and only present if `response_format` is set to `b64_json` for
-      # `dall-e-2` and `dall-e-3`.
+      # The base64-encoded image data. Returned by default for the GPT image models. For
+      # the retired `dall-e-2` and `dall-e-3` models, this field was present only when
+      # `response_format` was set to `b64_json`.
       def b64_json=: (String) -> String
 
-      # For `dall-e-3` only, the revised prompt that was used to generate the image.
+      # Legacy field for the retired `dall-e-3` model: the revised prompt that was used
+      # to generate the image.
       attr_reader revised_prompt: String?
 
-      # For `dall-e-3` only, the revised prompt that was used to generate the image.
+      # Legacy field for the retired `dall-e-3` model: the revised prompt that was used
+      # to generate the image.
       def revised_prompt=: (String) -> String
 
-      # When using `dall-e-2` or `dall-e-3`, the URL of the generated image if
-      # `response_format` is set to `url` (default value). Unsupported for the GPT image
-      # models.
+      # Legacy field for the retired `dall-e-2` and `dall-e-3` models: the URL of the
+      # generated image when `response_format` was set to `url`, the legacy default.
+      # Unsupported for the GPT image models.
       attr_reader url: String?
 
-      # When using `dall-e-2` or `dall-e-3`, the URL of the generated image if
-      # `response_format` is set to `url` (default value). Unsupported for the GPT image
-      # models.
+      # Legacy field for the retired `dall-e-2` and `dall-e-3` models: the URL of the
+      # generated image when `response_format` was set to `url`, the legacy default.
+      # Unsupported for the GPT image models.
       def url=: (String) -> String
 
       # @param b64_json
-      #   The base64-encoded JSON of the generated image. Returned by default for the GPT
-      #   image models, and only present if `response_format` is set to `b64_json` for
-      #   `dall-e-2` and `dall-e-3`.
+      #   The base64-encoded image data. Returned by default for the GPT image models. For
+      #   the retired `dall-e-2` and `dall-e-3` models, this field was present only when
+      #   `response_format` was set to `b64_json`.
       # @param revised_prompt
-      #   For `dall-e-3` only, the revised prompt that was used to generate the image.
+      #   Legacy field for the retired `dall-e-3` model: the revised prompt that was used
+      #   to generate the image.
       # @param url
-      #   When using `dall-e-2` or `dall-e-3`, the URL of the generated image if
-      #   `response_format` is set to `url` (default value). Unsupported for the GPT image
-      #   models.
+      #   Legacy field for the retired `dall-e-2` and `dall-e-3` models: the URL of the
+      #   generated image when `response_format` was set to `url`, the legacy default.
+      #   Unsupported for the GPT image models.
       def initialize: (
         ?b64_json: String,
         ?revised_prompt: String,
