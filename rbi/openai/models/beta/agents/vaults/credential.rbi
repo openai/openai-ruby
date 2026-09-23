@@ -30,6 +30,10 @@ module OpenAI
             sig { returns(Integer) }
             attr_accessor :created_at
 
+            # Application-defined key-value pairs associated with this credential.
+            sig { returns(T::Hash[Symbol, String]) }
+            attr_accessor :metadata
+
             # The human-readable name of the credential.
             sig { returns(String) }
             attr_accessor :name
@@ -60,6 +64,8 @@ module OpenAI
 
                 created_at: Integer,
 
+                metadata: T::Hash[Symbol, String],
+
                 name: String,
 
                 updated_at: Integer,
@@ -80,6 +86,9 @@ module OpenAI
 
               # The Unix timestamp, in seconds, when the credential was created.
               created_at:,
+
+              # Application-defined key-value pairs associated with this credential.
+              metadata:,
 
               # The human-readable name of the credential.
               name:,
@@ -102,6 +111,7 @@ module OpenAI
                   id: String,
                   auth: OpenAI::Beta::Agents::Vaults::CredentialAuth::Variants,
                   created_at: Integer,
+                  metadata: T::Hash[Symbol, String],
                   name: String,
                   object: Symbol,
                   updated_at: Integer,

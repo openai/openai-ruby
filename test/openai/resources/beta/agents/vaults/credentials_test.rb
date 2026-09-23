@@ -19,6 +19,7 @@ class OpenAI::Test::Resources::Beta::Agents::Vaults::CredentialsTest < OpenAI::T
           id: String,
           auth: OpenAI::Beta::Agents::Vaults::CredentialAuth,
           created_at: Integer,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]),
           name: String,
           object: Symbol,
           updated_at: Integer,
@@ -39,6 +40,7 @@ class OpenAI::Test::Resources::Beta::Agents::Vaults::CredentialsTest < OpenAI::T
           id: String,
           auth: OpenAI::Beta::Agents::Vaults::CredentialAuth,
           created_at: Integer,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]),
           name: String,
           object: Symbol,
           updated_at: Integer,
@@ -48,11 +50,7 @@ class OpenAI::Test::Resources::Beta::Agents::Vaults::CredentialsTest < OpenAI::T
   end
 
   def test_update_required_params
-    response = @openai.beta.agents.vaults.credentials.update(
-      "credential_id",
-      vault_id: "vault_id",
-      auth: {type: :mcp_oauth}
-    )
+    response = @openai.beta.agents.vaults.credentials.update("credential_id", vault_id: "vault_id")
 
     assert_pattern do
       response => OpenAI::Beta::Agents::Vaults::Credential
@@ -63,6 +61,7 @@ class OpenAI::Test::Resources::Beta::Agents::Vaults::CredentialsTest < OpenAI::T
           id: String,
           auth: OpenAI::Beta::Agents::Vaults::CredentialAuth,
           created_at: Integer,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]),
           name: String,
           object: Symbol,
           updated_at: Integer,
@@ -90,6 +89,7 @@ class OpenAI::Test::Resources::Beta::Agents::Vaults::CredentialsTest < OpenAI::T
           id: String,
           auth: OpenAI::Beta::Agents::Vaults::CredentialAuth,
           created_at: Integer,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]),
           name: String,
           object: Symbol,
           updated_at: Integer,

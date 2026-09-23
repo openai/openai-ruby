@@ -41,6 +41,14 @@ module OpenAI
             sig { returns(String) }
             attr_accessor :name
 
+            # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+            # characters. Defaults to an empty map.
+            sig { returns(T.nilable(T::Hash[Symbol, String])) }
+            attr_reader :metadata
+
+            sig { params(metadata: T::Hash[Symbol, String]).void }
+            attr_writer :metadata
+
             sig do
               params(
 
@@ -53,6 +61,8 @@ module OpenAI
                 ),
 
                 name: String,
+
+                metadata: T::Hash[Symbol, String],
 
                 request_options: OpenAI::RequestOptions::OrHash
               )
@@ -69,6 +79,10 @@ module OpenAI
               # trimming.
               name:,
 
+              # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+              # characters. Defaults to an empty map.
+              metadata: nil,
+
               request_options: {}
             )
             end
@@ -83,6 +97,7 @@ module OpenAI
                     OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::EnvironmentVariable
                   ),
                   name: String,
+                  metadata: T::Hash[Symbol, String],
                   request_options: OpenAI::RequestOptions
                 }
               )
