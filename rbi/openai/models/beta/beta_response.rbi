@@ -20,6 +20,12 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :id
 
+        sig { returns(T.nilable(OpenAI::Beta::BetaResponse::AccessPrograms)) }
+        attr_reader :access_programs
+
+        sig { params(access_programs: T.nilable(OpenAI::Beta::BetaResponse::AccessPrograms::OrHash)).void }
+        attr_writer :access_programs
+
         # Unix timestamp (in seconds) of when this Response was created.
         sig { returns(Float) }
         attr_accessor :created_at
@@ -335,6 +341,8 @@ module OpenAI
 
             id: String,
 
+            access_programs: T.nilable(OpenAI::Beta::BetaResponse::AccessPrograms::OrHash),
+
             created_at: Float,
 
             error: T.nilable(OpenAI::Beta::BetaResponseError::OrHash),
@@ -477,6 +485,8 @@ module OpenAI
 
           # Unique identifier for this Response.
           id:,
+
+          access_programs:,
 
           # Unix timestamp (in seconds) of when this Response was created.
           created_at:,
@@ -715,6 +725,7 @@ module OpenAI
           override.returns(
             {
               id: String,
+              access_programs: T.nilable(OpenAI::Beta::BetaResponse::AccessPrograms),
               created_at: Float,
               error: T.nilable(OpenAI::Beta::BetaResponseError),
               incomplete_details: T.nilable(OpenAI::Beta::BetaResponse::IncompleteDetails),
@@ -753,6 +764,58 @@ module OpenAI
           )
         end
         def to_hash
+        end
+
+        class AccessPrograms < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaResponse::AccessPrograms,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The effective Cyber access program used for this response.
+          sig { returns(OpenAI::Beta::BetaResponse::AccessPrograms::Cyber::TaggedSymbol) }
+          attr_accessor :cyber
+
+          sig do
+            params(
+
+              cyber: OpenAI::Beta::BetaResponse::AccessPrograms::Cyber::OrSymbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # The effective Cyber access program used for this response.
+
+            cyber:
+          )
+          end
+
+          sig do
+            override.returns(
+              {cyber: OpenAI::Beta::BetaResponse::AccessPrograms::Cyber::TaggedSymbol}
+            )
+          end
+          def to_hash
+          end
+
+          # The effective Cyber access program used for this response.
+          module Cyber
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaResponse::AccessPrograms::Cyber) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            STANDARD = T.let(:standard, OpenAI::Beta::BetaResponse::AccessPrograms::Cyber::TaggedSymbol)
+            DAYBREAK_BLUE = T.let(:daybreak_blue, OpenAI::Beta::BetaResponse::AccessPrograms::Cyber::TaggedSymbol)
+            DAYBREAK_RED = T.let(:daybreak_red, OpenAI::Beta::BetaResponse::AccessPrograms::Cyber::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Beta::BetaResponse::AccessPrograms::Cyber::TaggedSymbol]) }
+            def self.values
+            end
+          end
         end
 
         class IncompleteDetails < OpenAI::Internal::Type::BaseModel

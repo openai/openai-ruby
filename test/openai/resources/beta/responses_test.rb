@@ -13,6 +13,7 @@ class OpenAI::Test::Resources::Beta::ResponsesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
           id: String,
+          access_programs: OpenAI::Beta::BetaResponse::AccessPrograms | nil,
           created_at: Float,
           error: OpenAI::Beta::BetaResponseError | nil,
           incomplete_details: OpenAI::Beta::BetaResponse::IncompleteDetails | nil,
@@ -61,6 +62,7 @@ class OpenAI::Test::Resources::Beta::ResponsesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
           id: String,
+          access_programs: OpenAI::Beta::BetaResponse::AccessPrograms | nil,
           created_at: Float,
           error: OpenAI::Beta::BetaResponseError | nil,
           incomplete_details: OpenAI::Beta::BetaResponse::IncompleteDetails | nil,
@@ -117,6 +119,7 @@ class OpenAI::Test::Resources::Beta::ResponsesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
           id: String,
+          access_programs: OpenAI::Beta::BetaResponse::AccessPrograms | nil,
           created_at: Float,
           error: OpenAI::Beta::BetaResponseError | nil,
           incomplete_details: OpenAI::Beta::BetaResponse::IncompleteDetails | nil,
