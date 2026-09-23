@@ -1293,4 +1293,7 @@ This line will not receive separate maintenance.
 
 ## Contributing
 
-See [the contributing documentation](https://github.com/openai/openai-ruby/tree/main/CONTRIBUTING.md).
+Please share bug reports and feature requests through [GitHub issues](https://github.com/openai/openai-ruby/issues).
+Pull requests are limited to repository collaborators; we do not accept pull requests from non-collaborators.
+See [CONTRIBUTING.md](https://github.com/openai/openai-ruby/blob/main/CONTRIBUTING.md) for the contribution policy and development guide.
+For security vulnerabilities, follow [SECURITY.md](https://github.com/openai/openai-ruby/blob/main/SECURITY.md).
