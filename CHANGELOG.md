@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.95.0](https://github.com/openai/openai-ruby/compare/v0.94.0...v0.95.0) (2026-09-23)
+
+
+### Features
+
+* **api:** Add GCP external storage support ([#746](https://github.com/openai/openai-ruby/issues/746)) ([194a9dc](https://github.com/openai/openai-ruby/commit/194a9dcd2e23f0a561a3ed25f284171557881201))
+* **api:** add GPT-Rosalind research model ([#744](https://github.com/openai/openai-ruby/issues/744)) ([eb275f3](https://github.com/openai/openai-ruby/commit/eb275f334dfcec58bdca4bb739613efb68cf593f))
+
+
+### Chores
+
+* **api:** document exact Chat Completions seed bounds ([#747](https://github.com/openai/openai-ruby/issues/747)) ([6948496](https://github.com/openai/openai-ruby/commit/6948496b0750cb8a7f44a85bfa749f4a9ba5529f))
+
 ## [0.94.0](https://github.com/openai/openai-ruby/compare/v0.93.0...v0.94.0) (2026-09-22)
 
 
