@@ -25,6 +25,12 @@ module OpenAI
             #   @return [Integer]
             required :created_at, Integer
 
+            # @!attribute metadata
+            #   Application-defined key-value pairs associated with this credential.
+            #
+            #   @return [Hash{Symbol=>String}]
+            required :metadata, OpenAI::Internal::Type::HashOf[String]
+
             # @!attribute name
             #   The human-readable name of the credential.
             #
@@ -49,7 +55,7 @@ module OpenAI
             #   @return [String]
             required :vault_id, String
 
-            # @!method initialize(id:, auth:, created_at:, name:, updated_at:, vault_id:, object: :"vault.credential")
+            # @!method initialize(id:, auth:, created_at:, metadata:, name:, updated_at:, vault_id:, object: :"vault.credential")
             #   Metadata for a stored credential. Secret values are never returned.
             #
             #   @param id [String]
@@ -60,6 +66,9 @@ module OpenAI
             #
             #   @param created_at [Integer]
             #     The Unix timestamp, in seconds, when the credential was created.
+            #
+            #   @param metadata [Hash{Symbol=>String}]
+            #     Application-defined key-value pairs associated with this credential.
             #
             #   @param name [String]
             #     The human-readable name of the credential.

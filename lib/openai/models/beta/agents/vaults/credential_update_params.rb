@@ -23,16 +23,27 @@ module OpenAI
             # @!attribute auth
             #   Replacement values for the credential's existing authentication method.
             #
-            #   @return [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::EnvironmentVariable]
-            required :auth, union: -> { OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam }
+            #   @return [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::EnvironmentVariable, nil]
+            optional :auth, union: -> { OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam }
 
-            # @!method initialize(vault_id:, credential_id:, auth:, request_options: {})
+            # @!attribute metadata
+            #   Replaces all metadata. Omit to preserve it, or pass {} to clear it. Up to 16
+            #   string key-value pairs, with keys up to 64 and values up to 512 characters.
+            #
+            #   @return [Hash{Symbol=>String}, nil]
+            optional :metadata, OpenAI::Internal::Type::HashOf[String]
+
+            # @!method initialize(vault_id:, credential_id:, auth: nil, metadata: nil, request_options: {})
             #   @param vault_id [String]
             #
             #   @param credential_id [String]
             #
             #   @param auth [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::EnvironmentVariable]
             #     Replacement values for the credential's existing authentication method.
+            #
+            #   @param metadata [Hash{Symbol=>String}]
+            #     Replaces all metadata. Omit to preserve it, or pass {} to clear it. Up to 16
+            #     string key-value pairs, with keys up to 64 and values up to 512 characters.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
           end

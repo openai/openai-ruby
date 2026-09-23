@@ -23,6 +23,7 @@ module OpenAI
                   OpenAI::Beta::Agents::Vaults::CredentialAuthCreateParam::EnvironmentVariable::OrHash
                 ),
                 name: String,
+                metadata: T::Hash[Symbol, String],
                 request_options: OpenAI::RequestOptions::OrHash
               )
                 .returns(OpenAI::Beta::Agents::Vaults::Credential)
@@ -35,6 +36,9 @@ module OpenAI
               # The name is trimmed before storage. It must contain 1 to 256 UTF-8 bytes after
               # trimming.
               name:,
+              # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+              # characters. Defaults to an empty map.
+              metadata: nil,
               request_options: {}
             )
             end
@@ -55,8 +59,7 @@ module OpenAI
             )
             end
 
-            # Rotates a vault credential's write-only secret and returns only credential
-            # metadata. See
+            # Updates credential metadata or rotates its write-only secret. See
             # [vaults](https://developers.openai.com/api/docs/guides/agents-api/tools/vaults).
             sig {
               params(
@@ -67,6 +70,7 @@ module OpenAI
                   OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer::OrHash,
                   OpenAI::Beta::Agents::Vaults::CredentialAuthRotateParam::EnvironmentVariable::OrHash
                 ),
+                metadata: T::Hash[Symbol, String],
                 request_options: OpenAI::RequestOptions::OrHash
               )
                 .returns(OpenAI::Beta::Agents::Vaults::Credential)
@@ -78,7 +82,11 @@ module OpenAI
               vault_id:,
               # Body param: Replacement values for the credential's existing authentication
               # method.
-              auth:,
+              auth: nil,
+              # Body param: Replaces all metadata. Omit to preserve it, or pass {} to clear it.
+              # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+              # characters.
+              metadata: nil,
               request_options: {}
             )
             end

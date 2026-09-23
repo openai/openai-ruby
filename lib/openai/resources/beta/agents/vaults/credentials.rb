@@ -10,7 +10,7 @@ module OpenAI
             # See
             # [vaults](https://developers.openai.com/api/docs/guides/agents-api/tools/vaults).
             #
-            # @overload create(vault_id, auth:, name:, request_options: {})
+            # @overload create(vault_id, auth:, name:, metadata: nil, request_options: {})
             #
             # @param vault_id [String]
             #   The ID of the vault.
@@ -21,6 +21,10 @@ module OpenAI
             # @param name [String]
             #   The name is trimmed before storage. It must contain 1 to 256 UTF-8 bytes after
             #   trimming.
+            #
+            # @param metadata [Hash{Symbol=>String}]
+            #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+            #   characters. Defaults to an empty map.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -70,11 +74,10 @@ module OpenAI
               )
             end
 
-            # Rotates a vault credential's write-only secret and returns only credential
-            # metadata. See
+            # Updates credential metadata or rotates its write-only secret. See
             # [vaults](https://developers.openai.com/api/docs/guides/agents-api/tools/vaults).
             #
-            # @overload update(credential_id, vault_id:, auth:, request_options: {})
+            # @overload update(credential_id, vault_id:, auth: nil, metadata: nil, request_options: {})
             #
             # @param credential_id [String]
             #   Path param: The ID of the vault credential.
@@ -85,6 +88,11 @@ module OpenAI
             # @param auth [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::StaticBearer, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthRotateParam::EnvironmentVariable]
             #   Body param: Replacement values for the credential's existing authentication
             #   method.
+            #
+            # @param metadata [Hash{Symbol=>String}]
+            #   Body param: Replaces all metadata. Omit to preserve it, or pass {} to clear it.
+            #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+            #   characters.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #

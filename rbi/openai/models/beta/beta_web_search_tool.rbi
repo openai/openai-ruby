@@ -44,7 +44,9 @@ module OpenAI
         sig { params(search_context_size: OpenAI::Beta::BetaWebSearchTool::SearchContextSize::OrSymbol).void }
         attr_writer :search_context_size
 
-        # The approximate location of the user.
+        # The approximate location of the user. If omitted or null, defaults to the United
+        # States. To avoid this fallback, pass `{"type": "approximate"}` without location
+        # fields. To localize results, provide the relevant location fields.
         sig { returns(T.nilable(OpenAI::Beta::BetaWebSearchTool::UserLocation)) }
         attr_reader :user_location
 
@@ -85,7 +87,9 @@ module OpenAI
           # search. One of `low`, `medium`, or `high`. `medium` is the default.
           search_context_size: nil,
 
-          # The approximate location of the user.
+          # The approximate location of the user. If omitted or null, defaults to the United
+          # States. To avoid this fallback, pass `{"type": "approximate"}` without location
+          # fields. To localize results, provide the relevant location fields.
 
           user_location: nil
         )
@@ -214,7 +218,9 @@ module OpenAI
           sig { params(type: OpenAI::Beta::BetaWebSearchTool::UserLocation::Type::OrSymbol).void }
           attr_writer :type
 
-          # The approximate location of the user.
+          # The approximate location of the user. If omitted or null, defaults to the United
+          # States. To avoid this fallback, pass `{"type": "approximate"}` without location
+          # fields. To localize results, provide the relevant location fields.
           sig do
             params(
 
