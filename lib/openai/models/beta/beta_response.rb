@@ -13,6 +13,11 @@ module OpenAI
         #   @return [String]
         required :id, String
 
+        # @!attribute access_programs
+        #
+        #   @return [OpenAI::Models::Beta::BetaResponse::AccessPrograms, nil]
+        required :access_programs, -> { OpenAI::Beta::BetaResponse::AccessPrograms }, nil?: true
+
         # @!attribute created_at
         #   Unix timestamp (in seconds) of when this Response was created.
         #
@@ -353,9 +358,11 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(id:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, completed_at: nil, conversation: nil, max_output_tokens: nil, max_tool_calls: nil, moderation: nil, previous_response_id: nil, prompt: nil, prompt_cache_diagnostics: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
+        # @!method initialize(id:, access_programs:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, completed_at: nil, conversation: nil, max_output_tokens: nil, max_tool_calls: nil, moderation: nil, previous_response_id: nil, prompt: nil, prompt_cache_diagnostics: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
         #   @param id [String]
         #     Unique identifier for this Response.
+        #
+        #   @param access_programs [OpenAI::Models::Beta::BetaResponse::AccessPrograms, nil]
         #
         #   @param created_at [Float]
         #     Unix timestamp (in seconds) of when this Response was created.
@@ -586,6 +593,33 @@ module OpenAI
         #
         #   @param object [Symbol, :response]
         #     The object type of this resource - always set to `response`.
+
+        # @see OpenAI::Models::Beta::BetaResponse#access_programs
+        class AccessPrograms < OpenAI::Internal::Type::BaseModel
+          # @!attribute cyber
+          #   The effective Cyber access program used for this response.
+          #
+          #   @return [Symbol, OpenAI::Models::Beta::BetaResponse::AccessPrograms::Cyber]
+          required :cyber, enum: -> { OpenAI::Beta::BetaResponse::AccessPrograms::Cyber }
+
+          # @!method initialize(cyber:)
+          #   @param cyber [Symbol, OpenAI::Models::Beta::BetaResponse::AccessPrograms::Cyber]
+          #     The effective Cyber access program used for this response.
+
+          # The effective Cyber access program used for this response.
+          #
+          # @see OpenAI::Models::Beta::BetaResponse::AccessPrograms#cyber
+          module Cyber
+            extend OpenAI::Internal::Type::Enum
+
+            STANDARD = :standard
+            DAYBREAK_BLUE = :daybreak_blue
+            DAYBREAK_RED = :daybreak_red
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+        end
 
         # @see OpenAI::Models::Beta::BetaResponse#incomplete_details
         class IncompleteDetails < OpenAI::Internal::Type::BaseModel

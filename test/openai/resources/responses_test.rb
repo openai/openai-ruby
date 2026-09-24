@@ -13,6 +13,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
           id: String,
+          access_programs: OpenAI::Responses::Response::AccessPrograms | nil,
           created_at: Float,
           error: OpenAI::Responses::ResponseError | nil,
           incomplete_details: OpenAI::Responses::Response::IncompleteDetails | nil,
@@ -61,6 +62,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
           id: String,
+          access_programs: OpenAI::Responses::Response::AccessPrograms | nil,
           created_at: Float,
           error: OpenAI::Responses::ResponseError | nil,
           incomplete_details: OpenAI::Responses::Response::IncompleteDetails | nil,
@@ -117,6 +119,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
           id: String,
+          access_programs: OpenAI::Responses::Response::AccessPrograms | nil,
           created_at: Float,
           error: OpenAI::Responses::ResponseError | nil,
           incomplete_details: OpenAI::Responses::Response::IncompleteDetails | nil,
