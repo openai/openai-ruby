@@ -32,9 +32,7 @@ module OpenAI
         optional :search_context_size, enum: -> { OpenAI::Responses::WebSearchTool::SearchContextSize }
 
         # @!attribute user_location
-        #   The approximate location of the user. If omitted or null, defaults to the United
-        #   States. To avoid this fallback, pass `{"type": "approximate"}` without location
-        #   fields. To localize results, provide the relevant location fields.
+        #   The approximate location of the user.
         #
         #   @return [OpenAI::Models::Responses::WebSearchTool::UserLocation, nil]
         optional :user_location, -> { OpenAI::Responses::WebSearchTool::UserLocation }, nil?: true
@@ -59,9 +57,7 @@ module OpenAI
         #     search. One of `low`, `medium`, or `high`. `medium` is the default.
         #
         #   @param user_location [OpenAI::Models::Responses::WebSearchTool::UserLocation, nil]
-        #     The approximate location of the user. If omitted or null, defaults to the United
-        #     States. To avoid this fallback, pass `{"type": "approximate"}` without location
-        #     fields. To localize results, provide the relevant location fields.
+        #     The approximate location of the user.
 
         # The type of the web search tool. One of `web_search` or `web_search_2025_08_26`.
         #
@@ -147,9 +143,7 @@ module OpenAI
           optional :type, enum: -> { OpenAI::Responses::WebSearchTool::UserLocation::Type }
 
           # @!method initialize(city: nil, country: nil, region: nil, timezone: nil, type: nil)
-          #   The approximate location of the user. If omitted or null, defaults to the United
-          #   States. To avoid this fallback, pass `{"type": "approximate"}` without location
-          #   fields. To localize results, provide the relevant location fields.
+          #   The approximate location of the user.
           #
           #   @param city [String, nil]
           #     Free text input for the city of the user, e.g. `San Francisco`.

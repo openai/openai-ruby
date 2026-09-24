@@ -6,6 +6,7 @@ module OpenAI
       type beta_response =
         {
           id: String,
+          access_programs: OpenAI::Beta::BetaResponse::AccessPrograms?,
           created_at: Float,
           error: OpenAI::Beta::BetaResponseError?,
           incomplete_details: OpenAI::Beta::BetaResponse::IncompleteDetails?,
@@ -45,6 +46,8 @@ module OpenAI
       class BetaResponse < OpenAI::Internal::Type::BaseModel
         # Unique identifier for this Response.
         attr_accessor id: String
+
+        attr_accessor access_programs: OpenAI::Beta::BetaResponse::AccessPrograms?
 
         # Unix timestamp (in seconds) of when this Response was created.
         attr_accessor created_at: Float
@@ -515,6 +518,7 @@ module OpenAI
         #   The object type of this resource - always set to `response`.
         def initialize: (
           id: String,
+          access_programs: OpenAI::Beta::BetaResponse::AccessPrograms?,
           created_at: Float,
           error: OpenAI::Beta::BetaResponseError?,
           incomplete_details: OpenAI::Beta::BetaResponse::IncompleteDetails?,
@@ -553,6 +557,7 @@ module OpenAI
 
         def to_hash: -> {
           id: String,
+          access_programs: OpenAI::Beta::BetaResponse::AccessPrograms?,
           created_at: Float,
           error: OpenAI::Beta::BetaResponseError?,
           incomplete_details: OpenAI::Beta::BetaResponse::IncompleteDetails?,
@@ -588,6 +593,36 @@ module OpenAI
           ?usage: OpenAI::Beta::BetaResponseUsage,
           ?user: String
         }
+
+        type access_programs =
+          { cyber: OpenAI::Models::Beta::BetaResponse::AccessPrograms::cyber }
+
+        class AccessPrograms < OpenAI::Internal::Type::BaseModel
+          # The effective Cyber access program used for this response.
+          attr_accessor cyber: OpenAI::Models::Beta::BetaResponse::AccessPrograms::cyber
+
+          # @param cyber
+          #   The effective Cyber access program used for this response.
+          def initialize: (
+            cyber: OpenAI::Models::Beta::BetaResponse::AccessPrograms::cyber
+          ) -> void
+
+          def to_hash: -> {
+            cyber: OpenAI::Models::Beta::BetaResponse::AccessPrograms::cyber
+          }
+
+          type cyber = :standard | :daybreak_blue | :daybreak_red
+
+          module Cyber
+            extend OpenAI::Internal::Type::Enum
+
+            STANDARD: :standard
+            DAYBREAK_BLUE: :daybreak_blue
+            DAYBREAK_RED: :daybreak_red
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::AccessPrograms::cyber]
+          end
+        end
 
         type incomplete_details =
           {

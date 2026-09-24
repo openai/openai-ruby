@@ -32,9 +32,7 @@ module OpenAI
           OpenAI::Models::Beta::BetaWebSearchPreviewTool::search_context_size
         ) -> OpenAI::Models::Beta::BetaWebSearchPreviewTool::search_context_size
 
-        # The approximate location of the user. If omitted or null, defaults to the United
-        # States. To avoid this fallback, pass `{"type": "approximate"}` without location
-        # fields. To localize results, provide the relevant location fields.
+        # The user's location.
         attr_accessor user_location: OpenAI::Beta::BetaWebSearchPreviewTool::UserLocation?
 
         # @param type
@@ -44,9 +42,7 @@ module OpenAI
         #   High level guidance for the amount of context window space to use for the
         #   search. One of `low`, `medium`, or `high`. `medium` is the default.
         # @param user_location
-        #   The approximate location of the user. If omitted or null, defaults to the United
-        #   States. To avoid this fallback, pass `{"type": "approximate"}` without location
-        #   fields. To localize results, provide the relevant location fields.
+        #   The user's location.
         def initialize: (
           type: OpenAI::Models::Beta::BetaWebSearchPreviewTool::type_,
           ?search_content_types: ::Array[OpenAI::Models::Beta::BetaWebSearchPreviewTool::search_content_type],

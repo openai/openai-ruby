@@ -17,6 +17,13 @@ module OpenAI
           )
         end
 
+        # Domain-specific access programs to use for this request.
+        sig { returns(T.nilable(OpenAI::Beta::ResponseCreateParams::AccessPrograms)) }
+        attr_reader :access_programs
+
+        sig { params(access_programs: OpenAI::Beta::ResponseCreateParams::AccessPrograms::OrHash).void }
+        attr_writer :access_programs
+
         # Whether to run the model response in the background.
         # [Learn more](https://developers.openai.com/api/docs/guides/background).
         sig { returns(T.nilable(T::Boolean)) }
@@ -421,6 +428,8 @@ module OpenAI
         sig do
           params(
 
+            access_programs: OpenAI::Beta::ResponseCreateParams::AccessPrograms::OrHash,
+
             background: T.nilable(T::Boolean),
 
             context_management: T.nilable(T::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement::OrHash]),
@@ -519,6 +528,9 @@ module OpenAI
             .returns(T.attached_class)
         end
         def self.new(
+
+          # Domain-specific access programs to use for this request.
+          access_programs: nil,
 
           # Whether to run the model response in the background.
           # [Learn more](https://developers.openai.com/api/docs/guides/background).
@@ -777,6 +789,7 @@ module OpenAI
         sig do
           override.returns(
             {
+              access_programs: OpenAI::Beta::ResponseCreateParams::AccessPrograms,
               background: T.nilable(T::Boolean),
               context_management: T.nilable(T::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement]),
               conversation: T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam)),
@@ -843,6 +856,92 @@ module OpenAI
           )
         end
         def to_hash
+        end
+
+        class AccessPrograms < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::ResponseCreateParams::AccessPrograms,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The Cyber access program to use for this request. Supported values are
+          # `standard`, `daybreak_blue`, and `daybreak_red`. If omitted, the API resolves
+          # the program from the model's Cyber tier and your organization and project
+          # access, subject to model-specific eligibility restrictions. By default, models
+          # without a Cyber tier use Standard. Blue-tier models use Daybreak Blue when
+          # authorized; otherwise they fall back to Standard unless the model requires
+          # Daybreak access. Red-tier models use Daybreak Red and require authorization.
+          # Requests that require unavailable Daybreak access return 403. An implicit
+          # Standard fallback is represented by null in the response's access_programs
+          # field, rather than an explicit Standard selection.
+          sig { returns(T.nilable(OpenAI::Beta::ResponseCreateParams::AccessPrograms::Cyber::OrSymbol)) }
+          attr_reader :cyber
+
+          sig { params(cyber: OpenAI::Beta::ResponseCreateParams::AccessPrograms::Cyber::OrSymbol).void }
+          attr_writer :cyber
+
+          # Domain-specific access programs to use for this request.
+          sig do
+            params(
+
+              cyber: OpenAI::Beta::ResponseCreateParams::AccessPrograms::Cyber::OrSymbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # The Cyber access program to use for this request. Supported values are
+            # `standard`, `daybreak_blue`, and `daybreak_red`. If omitted, the API resolves
+            # the program from the model's Cyber tier and your organization and project
+            # access, subject to model-specific eligibility restrictions. By default, models
+            # without a Cyber tier use Standard. Blue-tier models use Daybreak Blue when
+            # authorized; otherwise they fall back to Standard unless the model requires
+            # Daybreak access. Red-tier models use Daybreak Red and require authorization.
+            # Requests that require unavailable Daybreak access return 403. An implicit
+            # Standard fallback is represented by null in the response's access_programs
+            # field, rather than an explicit Standard selection.
+
+            cyber: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {cyber: OpenAI::Beta::ResponseCreateParams::AccessPrograms::Cyber::OrSymbol}
+            )
+          end
+          def to_hash
+          end
+
+          # The Cyber access program to use for this request. Supported values are
+          # `standard`, `daybreak_blue`, and `daybreak_red`. If omitted, the API resolves
+          # the program from the model's Cyber tier and your organization and project
+          # access, subject to model-specific eligibility restrictions. By default, models
+          # without a Cyber tier use Standard. Blue-tier models use Daybreak Blue when
+          # authorized; otherwise they fall back to Standard unless the model requires
+          # Daybreak access. Red-tier models use Daybreak Red and require authorization.
+          # Requests that require unavailable Daybreak access return 403. An implicit
+          # Standard fallback is represented by null in the response's access_programs
+          # field, rather than an explicit Standard selection.
+          module Cyber
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::ResponseCreateParams::AccessPrograms::Cyber) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            STANDARD = T.let(:standard, OpenAI::Beta::ResponseCreateParams::AccessPrograms::Cyber::TaggedSymbol)
+            DAYBREAK_BLUE = T.let(
+              :daybreak_blue,
+              OpenAI::Beta::ResponseCreateParams::AccessPrograms::Cyber::TaggedSymbol
+            )
+            DAYBREAK_RED = T.let(:daybreak_red, OpenAI::Beta::ResponseCreateParams::AccessPrograms::Cyber::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Beta::ResponseCreateParams::AccessPrograms::Cyber::TaggedSymbol]) }
+            def self.values
+            end
+          end
         end
 
         class ContextManagement < OpenAI::Internal::Type::BaseModel

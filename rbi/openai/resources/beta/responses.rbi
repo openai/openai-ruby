@@ -31,6 +31,7 @@ module OpenAI
         # to use your own data as input for the model's response.
         sig {
           params(
+            access_programs: OpenAI::Beta::ResponseCreateParams::AccessPrograms::OrHash,
             background: T.nilable(T::Boolean),
             context_management: T.nilable(T::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement::OrHash]),
             conversation: T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam::OrHash)),
@@ -98,6 +99,8 @@ module OpenAI
             .returns(OpenAI::Beta::BetaResponse)
         }
         def create(
+          # Body param: Domain-specific access programs to use for this request.
+          access_programs: nil,
           # Body param: Whether to run the model response in the background.
           # [Learn more](https://developers.openai.com/api/docs/guides/background).
           background: nil,
@@ -346,6 +349,7 @@ module OpenAI
         # to use your own data as input for the model's response.
         sig {
           params(
+            access_programs: OpenAI::Beta::ResponseCreateParams::AccessPrograms::OrHash,
             background: T.nilable(T::Boolean),
             context_management: T.nilable(T::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement::OrHash]),
             conversation: T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam::OrHash)),
@@ -417,6 +421,8 @@ module OpenAI
             )
         }
         def stream_raw(
+          # Body param: Domain-specific access programs to use for this request.
+          access_programs: nil,
           # Body param: Whether to run the model response in the background.
           # [Learn more](https://developers.openai.com/api/docs/guides/background).
           background: nil,

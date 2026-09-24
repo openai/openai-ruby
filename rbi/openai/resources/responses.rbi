@@ -29,6 +29,7 @@ module OpenAI
       # to use your own data as input for the model's response.
       sig {
         params(
+          access_programs: OpenAI::Responses::ResponseCreateParams::AccessPrograms::OrHash,
           background: T.nilable(T::Boolean),
           context_management: T.nilable(T::Array[OpenAI::Responses::ResponseCreateParams::ContextManagement::OrHash]),
           conversation: T.nilable(T.any(String, OpenAI::Responses::ResponseConversationParam::OrHash)),
@@ -94,6 +95,8 @@ module OpenAI
           .returns(OpenAI::Responses::Response)
       }
       def create(
+        # Domain-specific access programs to use for this request.
+        access_programs: nil,
         # Whether to run the model response in the background.
         # [Learn more](https://developers.openai.com/api/docs/guides/background).
         background: nil,
@@ -331,6 +334,7 @@ module OpenAI
       # to use your own data as input for the model's response.
       sig {
         params(
+          access_programs: OpenAI::Responses::ResponseCreateParams::AccessPrograms::OrHash,
           background: T.nilable(T::Boolean),
           context_management: T.nilable(T::Array[OpenAI::Responses::ResponseCreateParams::ContextManagement::OrHash]),
           conversation: T.nilable(T.any(String, OpenAI::Responses::ResponseConversationParam::OrHash)),
@@ -400,6 +404,8 @@ module OpenAI
           )
       }
       def stream_raw(
+        # Domain-specific access programs to use for this request.
+        access_programs: nil,
         # Whether to run the model response in the background.
         # [Learn more](https://developers.openai.com/api/docs/guides/background).
         background: nil,
@@ -812,6 +818,7 @@ module OpenAI
         class Response
           sig do
             params(
+              access_programs: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::OrHash,
               background: T.nilable(T::Boolean),
               context_management: T.nilable(
                 T::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement::OrHash]
@@ -882,6 +889,7 @@ module OpenAI
               .void
           end
           def create(
+            access_programs: nil,
             background: nil,
             context_management: nil,
             conversation: nil,

@@ -10,6 +10,12 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # @!attribute access_programs
+        #   Domain-specific access programs to use for this request.
+        #
+        #   @return [OpenAI::Models::Responses::ResponseCreateParams::AccessPrograms, nil]
+        optional :access_programs, -> { OpenAI::Responses::ResponseCreateParams::AccessPrograms }
+
         # @!attribute background
         #   Whether to run the model response in the background.
         #   [Learn more](https://developers.openai.com/api/docs/guides/background).
@@ -371,7 +377,10 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
+        # @!method initialize(access_programs: nil, background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
+        #   @param access_programs [OpenAI::Models::Responses::ResponseCreateParams::AccessPrograms]
+        #     Domain-specific access programs to use for this request.
+        #
         #   @param background [Boolean, nil]
         #     Whether to run the model response in the background.
         #     [Learn more](https://developers.openai.com/api/docs/guides/background).
@@ -618,6 +627,61 @@ module OpenAI
         #     [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
+
+        class AccessPrograms < OpenAI::Internal::Type::BaseModel
+          # @!attribute cyber
+          #   The Cyber access program to use for this request. Supported values are
+          #   `standard`, `daybreak_blue`, and `daybreak_red`. If omitted, the API resolves
+          #   the program from the model's Cyber tier and your organization and project
+          #   access, subject to model-specific eligibility restrictions. By default, models
+          #   without a Cyber tier use Standard. Blue-tier models use Daybreak Blue when
+          #   authorized; otherwise they fall back to Standard unless the model requires
+          #   Daybreak access. Red-tier models use Daybreak Red and require authorization.
+          #   Requests that require unavailable Daybreak access return 403. An implicit
+          #   Standard fallback is represented by null in the response's access_programs
+          #   field, rather than an explicit Standard selection.
+          #
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseCreateParams::AccessPrograms::Cyber, nil]
+          optional :cyber, enum: -> { OpenAI::Responses::ResponseCreateParams::AccessPrograms::Cyber }
+
+          # @!method initialize(cyber: nil)
+          #   Domain-specific access programs to use for this request.
+          #
+          #   @param cyber [Symbol, OpenAI::Models::Responses::ResponseCreateParams::AccessPrograms::Cyber]
+          #     The Cyber access program to use for this request. Supported values are
+          #     `standard`, `daybreak_blue`, and `daybreak_red`. If omitted, the API resolves
+          #     the program from the model's Cyber tier and your organization and project
+          #     access, subject to model-specific eligibility restrictions. By default, models
+          #     without a Cyber tier use Standard. Blue-tier models use Daybreak Blue when
+          #     authorized; otherwise they fall back to Standard unless the model requires
+          #     Daybreak access. Red-tier models use Daybreak Red and require authorization.
+          #     Requests that require unavailable Daybreak access return 403. An implicit
+          #     Standard fallback is represented by null in the response's access_programs
+          #     field, rather than an explicit Standard selection.
+
+          # The Cyber access program to use for this request. Supported values are
+          # `standard`, `daybreak_blue`, and `daybreak_red`. If omitted, the API resolves
+          # the program from the model's Cyber tier and your organization and project
+          # access, subject to model-specific eligibility restrictions. By default, models
+          # without a Cyber tier use Standard. Blue-tier models use Daybreak Blue when
+          # authorized; otherwise they fall back to Standard unless the model requires
+          # Daybreak access. Red-tier models use Daybreak Red and require authorization.
+          # Requests that require unavailable Daybreak access return 403. An implicit
+          # Standard fallback is represented by null in the response's access_programs
+          # field, rather than an explicit Standard selection.
+          #
+          # @see OpenAI::Models::Responses::ResponseCreateParams::AccessPrograms#cyber
+          module Cyber
+            extend OpenAI::Internal::Type::Enum
+
+            STANDARD = :standard
+            DAYBREAK_BLUE = :daybreak_blue
+            DAYBREAK_RED = :daybreak_red
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+        end
 
         class ContextManagement < OpenAI::Internal::Type::BaseModel
           # @!attribute type
