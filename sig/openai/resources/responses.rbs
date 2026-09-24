@@ -6,6 +6,7 @@ module OpenAI
       attr_reader input_tokens: OpenAI::Resources::Responses::InputTokens
 
       def create: (
+        ?access_programs: OpenAI::Responses::ResponseCreateParams::AccessPrograms,
         ?background: bool?,
         ?context_management: ::Array[OpenAI::Responses::ResponseCreateParams::ContextManagement]?,
         ?conversation: OpenAI::Models::Responses::ResponseCreateParams::conversation?,
@@ -40,6 +41,7 @@ module OpenAI
       ) -> OpenAI::Responses::Response
 
       def stream_raw: (
+        ?access_programs: OpenAI::Responses::ResponseCreateParams::AccessPrograms,
         ?background: bool?,
         ?context_management: ::Array[OpenAI::Responses::ResponseCreateParams::ContextManagement]?,
         ?conversation: OpenAI::Models::Responses::ResponseCreateParams::conversation?,
@@ -75,6 +77,7 @@ module OpenAI
       | OpenAI::Streaming::UnknownStreamEvent)]
 
       def stream: (
+        ?access_programs: OpenAI::Responses::ResponseCreateParams::AccessPrograms,
         ?background: bool?,
         ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
         ?input: OpenAI::Models::Responses::ResponseCreateParams::input,
@@ -156,6 +159,7 @@ module OpenAI
       module ConnectionResources
         class Response
           def create: (
+            ?access_programs: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms,
             ?background: bool?,
             ?context_management: ::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]?,
             ?conversation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::conversation?,

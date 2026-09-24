@@ -11,6 +11,7 @@ module OpenAI
         type response_create =
           {
             ?type: :"response.create",
+            ?access_programs: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms,
             ?background: bool?,
             ?context_management: ::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]?,
             ?conversation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::conversation?,
@@ -48,6 +49,14 @@ module OpenAI
         class ResponseCreate < OpenAI::Internal::Type::BaseModel
           # The type of the client event. Always `response.create`.
           attr_accessor type: :"response.create"
+
+          # Domain-specific access programs to use for this request.
+          attr_reader access_programs: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms?
+
+          # Domain-specific access programs to use for this request.
+          def access_programs=: (
+            OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms
+          ) -> OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms
 
           # Whether to run the model response in the background.
           # [Learn more](https://developers.openai.com/api/docs/guides/background).
@@ -398,6 +407,8 @@ module OpenAI
           # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
           def user=: (String) -> String
 
+          # @param access_programs
+          #   Domain-specific access programs to use for this request.
           # @param background
           #   Whether to run the model response in the background.
           #   [Learn more](https://developers.openai.com/api/docs/guides/background).
@@ -629,6 +640,7 @@ module OpenAI
           # @param type
           #   The type of the client event. Always `response.create`.
           def initialize: (
+            ?access_programs: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms,
             ?background: bool?,
             ?context_management: ::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]?,
             ?conversation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::conversation?,
@@ -666,6 +678,7 @@ module OpenAI
 
           def to_hash: -> {
             ?type: :"response.create",
+            ?access_programs: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms,
             ?background: bool?,
             ?context_management: ::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]?,
             ?conversation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::conversation?,
@@ -699,6 +712,70 @@ module OpenAI
             ?truncation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::truncation?,
             ?user: String
           }
+
+          type access_programs =
+            {
+              ?cyber: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::cyber
+            }
+
+          class AccessPrograms < OpenAI::Internal::Type::BaseModel
+            # The Cyber access program to use for this request. Supported values are
+            # `standard`, `daybreak_blue`, and `daybreak_red`. If omitted, the API resolves
+            # the program from the model's Cyber tier and your organization and project
+            # access, subject to model-specific eligibility restrictions. By default, models
+            # without a Cyber tier use Standard. Blue-tier models use Daybreak Blue when
+            # authorized; otherwise they fall back to Standard unless the model requires
+            # Daybreak access. Red-tier models use Daybreak Red and require authorization.
+            # Requests that require unavailable Daybreak access return 403. An implicit
+            # Standard fallback is represented by null in the response's access_programs
+            # field, rather than an explicit Standard selection.
+            attr_reader cyber: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::cyber?
+
+            # The Cyber access program to use for this request. Supported values are
+            # `standard`, `daybreak_blue`, and `daybreak_red`. If omitted, the API resolves
+            # the program from the model's Cyber tier and your organization and project
+            # access, subject to model-specific eligibility restrictions. By default, models
+            # without a Cyber tier use Standard. Blue-tier models use Daybreak Blue when
+            # authorized; otherwise they fall back to Standard unless the model requires
+            # Daybreak access. Red-tier models use Daybreak Red and require authorization.
+            # Requests that require unavailable Daybreak access return 403. An implicit
+            # Standard fallback is represented by null in the response's access_programs
+            # field, rather than an explicit Standard selection.
+            def cyber=: (
+              OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::cyber
+            ) -> OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::cyber
+
+            # @param cyber
+            #   The Cyber access program to use for this request. Supported values are
+            #   `standard`, `daybreak_blue`, and `daybreak_red`. If omitted, the API resolves
+            #   the program from the model's Cyber tier and your organization and project
+            #   access, subject to model-specific eligibility restrictions. By default, models
+            #   without a Cyber tier use Standard. Blue-tier models use Daybreak Blue when
+            #   authorized; otherwise they fall back to Standard unless the model requires
+            #   Daybreak access. Red-tier models use Daybreak Red and require authorization.
+            #   Requests that require unavailable Daybreak access return 403. An implicit
+            #   Standard fallback is represented by null in the response's access_programs
+            #   field, rather than an explicit Standard selection.
+            def initialize: (
+              ?cyber: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::cyber
+            ) -> void
+
+            def to_hash: -> {
+              ?cyber: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::cyber
+            }
+
+            type cyber = :standard | :daybreak_blue | :daybreak_red
+
+            module Cyber
+              extend OpenAI::Internal::Type::Enum
+
+              STANDARD: :standard
+              DAYBREAK_BLUE: :daybreak_blue
+              DAYBREAK_RED: :daybreak_red
+
+              def self?.values: -> ::Array[OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::cyber]
+            end
+          end
 
           type context_management =
             { type: String, ?compact_threshold: Integer? }
