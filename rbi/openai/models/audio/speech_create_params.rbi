@@ -249,6 +249,9 @@ module OpenAI
           VERSE = T.let(:verse, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
           MARIN = T.let(:marin, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
           CEDAR = T.let(:cedar, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          FABLE = T.let(:fable, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          ONYX = T.let(:onyx, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          NOVA = T.let(:nova, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol)
 
         end
 

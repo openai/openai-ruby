@@ -54,7 +54,7 @@ module OpenAI
               # An optional human-readable display name for the template.
               name: nil,
               # Network access policy for the environment. Defaults to disabled for GA requests
-              # and enabled for alpha/beta requests.
+              # and enabled for beta requests.
               network: nil,
               # Packages to install in the environment. Defaults to empty package lists.
               packages: nil,
@@ -129,8 +129,8 @@ module OpenAI
               # A replacement human-readable display name, or `null` to clear the name.
               name: nil,
               # Network access available after setup completes. Omit to preserve the current
-              # policy, or pass `null` to reset to disabled for GA requests or enabled for
-              # alpha/beta requests.
+              # policy, or pass `null` to reset to disabled for GA requests or enabled for beta
+              # requests.
               network: nil,
               # Packages installed before the runtime network policy applies.
               packages: nil,

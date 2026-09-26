@@ -136,6 +136,9 @@ module OpenAI
           | :verse
           | :marin
           | :cedar
+          | :fable
+          | :onyx
+          | :nova
           | OpenAI::Audio::SpeechCreateParams::Voice::ID
 
         module Voice
@@ -166,6 +169,9 @@ module OpenAI
           VERSE: :verse
           MARIN: :marin
           CEDAR: :cedar
+          FABLE: :fable
+          ONYX: :onyx
+          NOVA: :nova
         end
 
         type response_format = :mp3 | :opus | :aac | :flac | :wav | :pcm

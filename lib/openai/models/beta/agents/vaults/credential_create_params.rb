@@ -28,7 +28,14 @@ module OpenAI
             #   @return [String]
             required :name, String
 
-            # @!method initialize(vault_id:, auth:, name:, request_options: {})
+            # @!attribute metadata
+            #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+            #   characters. Defaults to an empty map.
+            #
+            #   @return [Hash{Symbol=>String}, nil]
+            optional :metadata, OpenAI::Internal::Type::HashOf[String]
+
+            # @!method initialize(vault_id:, auth:, name:, metadata: nil, request_options: {})
             #   @param vault_id [String]
             #
             #   @param auth [OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::McpOauth, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::StaticBearer, OpenAI::Models::Beta::Agents::Vaults::CredentialAuthCreateParam::EnvironmentVariable]
@@ -37,6 +44,10 @@ module OpenAI
             #   @param name [String]
             #     The name is trimmed before storage. It must contain 1 to 256 UTF-8 bytes after
             #     trimming.
+            #
+            #   @param metadata [Hash{Symbol=>String}]
+            #     Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+            #     characters. Defaults to an empty map.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
           end
