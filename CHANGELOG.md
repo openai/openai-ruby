@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.96.0](https://github.com/openai/openai-ruby/compare/v0.95.0...v0.96.0) (2026-09-26)
+
+
+### Features
+
+* **api:** add Cyber access programs to Responses ([#757](https://github.com/openai/openai-ruby/issues/757)) ([f484e4e](https://github.com/openai/openai-ruby/commit/f484e4ee112023c2aadc71f9af549e3adf130bc1))
+
+
+### Chores
+
+* **api:** clarify approximate web search location defaults ([#755](https://github.com/openai/openai-ruby/issues/755)) ([f83af03](https://github.com/openai/openai-ruby/commit/f83af03a667a7045dde39d2a9ca328432e3d109b))
+* **api:** clarify documented API error responses ([#765](https://github.com/openai/openai-ruby/issues/765)) ([6f786c6](https://github.com/openai/openai-ruby/commit/6f786c6a752a0a2773ecf7c1b0b4490a94104c15))
+* **api:** clarify Realtime modality array definitions ([#756](https://github.com/openai/openai-ruby/issues/756)) ([9e18acf](https://github.com/openai/openai-ruby/commit/9e18acfc93ba6fbedaae37bb89956b1a4cc24b49))
+* **api:** correct fine-tuning bounds and Realtime response reference ([#752](https://github.com/openai/openai-ruby/issues/752)) ([4c1cd58](https://github.com/openai/openai-ruby/commit/4c1cd583ee2b79b0355fcc30f3b340c68dcfc337))
+* **api:** document batch error responses ([#760](https://github.com/openai/openai-ruby/issues/760)) ([38fec96](https://github.com/openai/openai-ruby/commit/38fec96d1c3bb77616e741e3c0d5d11b1f385b46))
+* **api:** document files and uploads error responses ([#759](https://github.com/openai/openai-ruby/issues/759)) ([6cdd7b1](https://github.com/openai/openai-ruby/commit/6cdd7b1785989cdaed5e81fb956cac2ccadd2361))
+* **api:** document fine-tuning and model errors ([#764](https://github.com/openai/openai-ruby/issues/764)) ([4b3b043](https://github.com/openai/openai-ruby/commit/4b3b043176413f6c70309290bf8f4129a8961c16))
+* **api:** document Responses not-found errors ([#758](https://github.com/openai/openai-ruby/issues/758)) ([1d556e2](https://github.com/openai/openai-ruby/commit/1d556e20aef0e30bd6990dda1b7d9059b1d0817e))
+* **api:** document stored chat completion errors ([#763](https://github.com/openai/openai-ruby/issues/763)) ([ddd1a68](https://github.com/openai/openai-ruby/commit/ddd1a68179ad1ec90af55f39f71310a59f92ddcf))
+* **deps:** bump ruby/setup-ruby from 1.324.0 to 1.326.0 ([#749](https://github.com/openai/openai-ruby/issues/749)) ([5aae05c](https://github.com/openai/openai-ruby/commit/5aae05c4b42f9d509bdf084282a7e33ef8758adc))
+* **deps:** bump ruby/setup-ruby from 1.326.0 to 1.327.0 ([#762](https://github.com/openai/openai-ruby/issues/762)) ([3921459](https://github.com/openai/openai-ruby/commit/39214594edf3c07ed2ce71c603946462735fa6ad))
+* **deps:** bump the codeql group with 2 updates ([#761](https://github.com/openai/openai-ruby/issues/761)) ([0185fa1](https://github.com/openai/openai-ruby/commit/0185fa1c637f1dbc9d3b3fa85c4c46a199702188))
+
+
+### Documentation
+
+* clarify collaborator-only pull request policy ([#750](https://github.com/openai/openai-ruby/issues/750)) ([c704778](https://github.com/openai/openai-ruby/commit/c7047782ff2ae38a859a08ef199e67a79c16b9fe))
+
 ## [0.95.0](https://github.com/openai/openai-ruby/compare/v0.94.0...v0.95.0) (2026-09-23)
 
 
