@@ -235,9 +235,20 @@ module OpenAI
 
           with_websocket_connection_retry(
             error_class: OpenAI::Errors::LiveConnectionError,
-            build: build,
-            &block
-          )
+            build: build
+          ) do |request, mark_handshake_completed|
+            handshake_completed = false
+            mark_open = lambda do
+              handshake_completed = true
+              mark_handshake_completed.call
+            end
+
+            block.call(request, mark_open)
+          rescue StandardError => e
+            raise if handshake_completed
+            status = e.http_status if e.is_a?(OpenAI::Errors::WebSocketConnectionError)
+            raise OpenAI::Errors::LiveConnectionError.new(url: request.fetch(:url), http_status: status), cause: nil
+          end
         end
 
         private def validate_live_websocket_request!

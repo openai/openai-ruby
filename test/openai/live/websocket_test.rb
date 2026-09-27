@@ -543,6 +543,35 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     assert_equal("wss://other.example/v1", base_url)
   end
 
+  def test_custom_handshake_errors_are_redacted_before_the_socket_is_yielded
+    [nil, 403].each do |status|
+      transport = Object.new
+      transport.define_singleton_method(:open) do |url:, **|
+        if status
+          raise(
+            OpenAI::Errors::LiveConnectionError.new(
+              url: url,
+              http_status: status,
+              message: "private-payload",
+              cause: IOError.new("fake-token")
+            )
+          )
+        end
+
+        raise IOError, "private-payload fake-token"
+      end
+
+      error = assert_raises(OpenAI::Errors::LiveConnectionError) do
+        client.live.connect(transport: transport) { flunk("Handshake was rejected") }
+      end
+
+      status ? assert_equal(status, error.http_status) : assert_nil(error.http_status)
+      assert_nil(error.cause)
+      refute_includes(error.full_message, "private-payload")
+      refute_includes(error.full_message, "fake-token")
+    end
+  end
+
   def test_post_upgrade_401_and_early_eof_never_reconnect_or_report_readiness
     configured = workload_identity_client
     socket = FakeSocket.new
