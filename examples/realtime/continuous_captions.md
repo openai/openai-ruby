@@ -27,7 +27,7 @@ No new SDK API is introduced.
 
 | User goal | Model and service entry point | Ruby starting point / example decision |
 | --- | --- | --- |
-| Talk with an assistant that listens while speaking and handles interruptions | `gpt-live-1`; Live API. Browser session creation: `POST /v1/live/sessions`. Server audio: `wss://api.openai.com/v1/live/sessions`. | Prefer a Live reference. Browser control starts with `client.live.create` and [`../live/webrtc.rb`](../live/webrtc.rb); see the availability qualification below. |
+| Talk with an assistant that listens while speaking and handles interruptions | `gpt-live-1`; Live API. Browser session creation: `POST /v1/live/sessions`. Server audio: `wss://api.openai.com/v1/live/sessions`. | Browser control starts with `client.live.create` and [`../live/webrtc.rb`](../live/webrtc.rb). For primary server WebSockets, use `client.live.connect` and [`../live/websocket.rb`](../live/websocket.rb). |
 | Show captions as someone speaks, without an assistant reply | `gpt-live-transcribe`; **Realtime transcription**, despite “live” in the model name. The existing Ruby WebSocket helper opens `/v1/realtime?intent=transcription`; configure `type: :transcription` and the model in `session.update`. | `client.realtime.connect_transcription`. A future example must demonstrate captions before commit and serve a distinct transcription-only need. |
 | Transcribe an explicitly completed turn within a Realtime session | `gpt-transcribe`; the same Realtime transcription WebSocket, with explicit audio-buffer commit. | Keep [`websocket_transcription.rb`](websocket_transcription.rb), clearly labeled as a committed-turn protocol example. Do not promote it as the default live-caption workflow. |
 | Transcribe an existing recording | A file-transcription model such as `gpt-transcribe`; `POST /v1/audio/transcriptions`. | `client.audio.transcriptions.create` or `create_streaming`; prefer this simpler path for recorded files. Streaming the transcript response does not make the source a live microphone session. |
@@ -58,14 +58,11 @@ small browser-offer/backend-answer example. Its request carries
 The response supplies the session ID and answer SDP. This is session creation,
 not a complete conversation or media-lifecycle example.
 
-The checked Ruby tree does **not** expose a Live WebSocket `connect` helper;
-`Live::Sideband` is an empty generated resource. Published Live WebSocket
-support and the SDK's existing bidirectional Realtime transport therefore must
-not be described as an already shipped Ruby Live socket workflow. Recheck the
-installed release and any subsequently merged Live helper before implementing
-a reference; do not invent a method name or route Live through
-`client.realtime.connect`. Live startup uses `session.start` / `session.started`,
-which differs from Realtime session configuration.
+Primary Live WebSockets use `client.live.connect`, scoped to a block. The
+[primary example](../live/websocket.rb) sends `session.start` and waits for
+`session.started`; opening the transport alone does not start a session.
+Sideband and fork WebSocket helpers remain separate work. Use
+`client.realtime.connect` only for Realtime workflows.
 
 The existing `connect_transcription` still yields the broad public
 `OpenAI::Realtime::Connection`. Keep its methods and matching signatures intact.

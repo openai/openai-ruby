@@ -5,6 +5,7 @@ require "async/http/endpoint"
 require "async/http/server"
 require "async/websocket/adapters/http"
 require "async/websocket/server"
+require "async/websocket/client"
 require "socket"
 
 class OpenAI::Test::LiveWebSocketTransportTest < Minitest::Test
@@ -22,7 +23,11 @@ class OpenAI::Test::LiveWebSocketTransportTest < Minitest::Test
       message = JSON.parse(connection.read.to_str)
       wire << message
       connection.write(
-        JSON.generate(type: "session.started", event_id: "start_1", session: {id: "sess_local", model: "gpt-live-1"})
+        JSON.generate(
+          type: "session.started",
+          event_id: "start_1",
+          session: {id: "sess_local", model: "gpt-live-1", expires_at: 2000000000, status: "active"}
+        )
       )
       connection.flush
       wire << JSON.parse(connection.read.to_str)
@@ -30,8 +35,9 @@ class OpenAI::Test::LiveWebSocketTransportTest < Minitest::Test
         JSON.generate(
           type: "session.closed",
           event_id: "close_1",
-          session: {id: "sess_local", model: "gpt-live-1"},
-          reason: "client_requested"
+          session: {id: "sess_local", model: "gpt-live-1", expires_at: 2000000000, status: "active"},
+          reason: "close_requested",
+          usage: {seconds: 0}
         )
       )
       connection.flush
@@ -68,5 +74,17 @@ class OpenAI::Test::LiveWebSocketTransportTest < Minitest::Test
     ensure
       server_task&.stop
     end
+  end
+
+  def test_default_transport_does_not_chain_raw_handshake_errors
+    failure = -> (*) { raise IOError, "private-payload" }
+    error = Async::WebSocket::Client.stub(:open, failure) do
+      assert_raises(OpenAI::Errors::LiveConnectionError) do
+        OpenAI::Client.new(api_key: "fake-key", base_url: "http://127.0.0.1:12345/v1").live.connect { flunk }
+      end
+    end
+
+    assert_nil(error.cause)
+    refute_includes(error.full_message, "private-payload")
   end
 end

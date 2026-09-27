@@ -51,11 +51,22 @@ module OpenAI
       def initialize(socket:, url:)
         super
         @server_event_names = discriminator_values(OpenAI::Live::ServerEvent)
+        @client_event_names = discriminator_values(OpenAI::Live::ClientEvent)
       end
 
       def send_event(event)
+        send_raw(encode_client_event(event))
+      end
+
+      private def encode_client_event(event)
         payload = OpenAI::Internal::Type::Converter.dump(OpenAI::Live::ClientEvent, event)
-        send_raw(JSON.generate(payload))
+        type = payload[:type] || payload["type"] if payload.is_a?(Hash)
+        raise ArgumentError unless type && @client_event_names.key?(type.to_s)
+
+        coerced = coerce_event(OpenAI::Live::ClientEvent, payload)
+        JSON.generate(OpenAI::Internal::Type::Converter.dump(OpenAI::Live::ClientEvent, coerced))
+      rescue StandardError
+        raise ArgumentError, "Invalid Live client event.", cause: nil
       end
 
       private def parse_event(data)
@@ -64,11 +75,18 @@ module OpenAI
         unless @server_event_names.key?(type.to_s)
           return OpenAI::Live::UnknownServerEvent.new(data: parsed)
         end
-        # Keep the converter's forward-compatible handling for nested response
-        # events and extra fields, just as generated Live REST models do.
-        OpenAI::Internal::Type::Converter.coerce(OpenAI::Live::ServerEvent, parsed)
+
+        coerce_event(OpenAI::Live::ServerEvent, parsed)
       rescue StandardError
         raise OpenAI::Errors::LiveProtocolError.new, cause: nil
+      end
+
+      private def coerce_event(union, payload)
+        state = OpenAI::Internal::Type::Converter.new_coerce_state
+        event = OpenAI::Internal::Type::Converter.coerce(union, payload, state: state)
+        raise ArgumentError if state[:error] || !state.fetch(:exactness).fetch(:no).zero?
+
+        event
       end
 
       private def connection_error(message)
@@ -138,7 +156,9 @@ module OpenAI
             OpenAI::WebSocket::AsyncWebSocketTransport.new(
               product_name: "Live",
               error_class: OpenAI::Errors::LiveConnectionError,
-              error_factory: -> (**args) { OpenAI::Errors::LiveConnectionError.new(**args) }
+              error_factory: -> (url:, message: nil, http_status: nil, **) {
+                OpenAI::Errors::LiveConnectionError.new(url: url, message: message, http_status: http_status)
+              }
             )
           end
 

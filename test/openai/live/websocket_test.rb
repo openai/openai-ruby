@@ -26,7 +26,11 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
 
   def test_typed_startup_and_session_terminal_are_visible
     socket = FakeSocket.new(
-      JSON.generate(type: "session.started", event_id: "evt_started", session: {id: "sess_1", model: "gpt-live-1"}),
+      JSON.generate(
+        type: "session.started",
+        event_id: "evt_started",
+        session: {id: "sess_1", model: "gpt-live-1", expires_at: 2000000000, status: "active"}
+      ),
       JSON.generate(
         type: "error",
         event_id: "evt_error",
@@ -35,9 +39,9 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
       JSON.generate(
         type: "session.closed",
         event_id: "evt_closed",
-        reason: "client_requested",
-        session: {id: "sess_1", model: "gpt-live-1"},
-        usage: {total_audio_input_seconds: 0, total_audio_output_seconds: 0}
+        reason: "close_requested",
+        session: {id: "sess_1", model: "gpt-live-1", expires_at: 2000000000, status: "active"},
+        usage: {seconds: 0}
       )
     )
     client.live.connect(transport: FakeTransport.new(socket)) do |connection|
@@ -107,6 +111,43 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
 
       refute_includes(error.full_message, "private-payload")
       assert(socket.aborted?)
+    end
+  end
+
+  def test_known_events_need_required_fields_before_they_can_confirm_startup
+    [
+      {type: "session.started"},
+      {type: "session.started", event_id: "evt_1", session: {id: "private-payload"}},
+      {type: "session.input_transcript.delta", event_id: "evt_1", delta: "private-payload"}
+    ].each do |payload|
+      socket = FakeSocket.new(JSON.generate(payload))
+      error = assert_raises(OpenAI::Errors::LiveProtocolError) do
+        client.live.connect(transport: FakeTransport.new(socket), &:receive)
+      end
+
+      assert_nil(error.cause)
+      refute_includes(error.full_message, "private-payload")
+      assert(socket.aborted?)
+    end
+  end
+
+  def test_invalid_typed_sends_never_reach_the_wire_but_the_connection_remains_usable
+    socket = FakeSocket.new
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      [
+        {type: "future.unknown", secret: "private-payload"},
+        {"type" => "future.unknown", "secret" => "private-payload"},
+        {type: "session.start", session: {instructions: "private-payload"}},
+        OpenAI::Live::SessionStartEvent.new(session: {instructions: "private-payload"})
+      ].each do |invalid|
+        error = assert_raises(ArgumentError) { connection.send_event(invalid) }
+        assert_nil(error.cause)
+        refute_includes(error.full_message, "private-payload")
+        assert_empty(socket.writes)
+      end
+
+      connection.send_event({"type" => "session.start", "session" => {"model" => "gpt-live-1"}})
+      assert_equal("gpt-live-1", JSON.parse(socket.writes.fetch(0)).dig("session", "model"))
     end
   end
 
