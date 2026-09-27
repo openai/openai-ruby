@@ -65,6 +65,117 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
     end
   end
 
+  def test_warmup_continuation_waits_for_fork_readiness_before_advancing_source
+    handler = lambda do |socket, _request|
+      warmup = read(socket)
+      assert_equal("response.create", warmup["type"])
+      assert_equal(false, warmup["generate"])
+      refute(warmup.key?("previous_response_id"))
+      terminal(socket, nil, id: "resp_warm")
+      continuation = read(socket)
+      assert_equal("resp_warm", continuation["previous_response_id"])
+      assert_equal("Continue", continuation["input"])
+      refute(continuation.key?("generate"))
+      terminal(socket, nil, id: "resp_parent")
+      fork = read(socket)
+      assert_equal(["fork", "resp_parent", false], fork.values_at("stream_id", "previous_response_id", "store"))
+      write(
+        socket,
+        type: "response.created",
+        stream_id: "fork",
+        response: {id: "resp_fork", status: "in_progress", output: []}
+      )
+      write(
+        socket,
+        type: "response.in_progress",
+        stream_id: "fork",
+        response: {id: "resp_fork", status: "in_progress", output: []}
+      )
+      advance = read(socket)
+      assert_equal("resp_parent", advance["previous_response_id"])
+      refute(advance.key?("stream_id"))
+      terminal(socket, nil, id: "resp_source")
+      terminal(socket, "fork", id: "resp_fork")
+    end
+
+    with_server(handler) do |client|
+      OpenAI::Responses::Session.open(client: client, limits: limits) do |session|
+        source = session.default
+        source.send_event(type: "response.create", model: "gpt-4o-mini", input: "Seed", generate: false)
+        warmup = source.get_final_response
+        assert_empty(warmup.output)
+        source.send_event(
+          type: "response.create",
+          model: "gpt-4o-mini",
+          input: "Continue",
+          previous_response_id: warmup.id
+        )
+        parent = source.get_final_response
+        fork = session.lane("fork")
+        fork.send_event(
+          type: "response.create",
+          model: "gpt-4o-mini",
+          input: "Alternative",
+          previous_response_id: parent.id,
+          store: false
+        )
+        assert_equal("response.created", fork.receive.type.to_s)
+        assert_equal("response.in_progress", fork.receive.type.to_s)
+        source.send_event(
+          type: "response.create",
+          model: "gpt-4o-mini",
+          input: "Advance",
+          previous_response_id: parent.id
+        )
+        assert_equal("resp_source", source.get_final_response.id)
+        assert_equal("resp_fork", fork.get_final_response.id)
+      end
+    end
+  end
+
+  def test_http_compaction_window_starts_a_fresh_websocket_chain
+    output = [
+      {
+        "type" => "message",
+        "id" => "msg_kept",
+        "role" => "user",
+        "status" => "completed",
+        "content" => [{"type" => "input_text", "text" => "Keep this"}]
+      },
+      {"type" => "compaction", "id" => "cmp_item", "encrypted_content" => "opaque", "future_field" => "preserve"}
+    ]
+    http_handler = lambda do |request|
+      assert_equal("POST", request.method)
+      command = JSON.parse(request.body.join)
+      assert_equal("gpt-4o-mini", command["model"])
+      assert_equal("Compact this conversation", command["input"])
+      body = {
+        id: "cmp_resource",
+        object: "response.compaction",
+        created_at: 1,
+        output: output,
+        usage: {input_tokens: 1, output_tokens: 1, total_tokens: 2}
+      }
+      Protocol::HTTP::Response[200, {"content-type" => "application/json"}, [JSON.generate(body)]]
+    end
+
+    handler = lambda do |socket, _request|
+      command = read(socket)
+      assert_equal("response.create", command["type"])
+      assert_equal(output, command["input"])
+      refute(command.key?("previous_response_id"))
+      terminal(socket, nil, id: "resp_fresh")
+    end
+
+    with_server(handler, http_handler: http_handler) do |client|
+      compacted = client.responses.compact(model: "gpt-4o-mini", input: "Compact this conversation")
+      OpenAI::Responses::Session.open(client: client, limits: limits) do |session|
+        session.default.send_event(type: "response.create", model: "gpt-4o-mini", input: compacted.output)
+        assert_equal("resp_fresh", session.default.get_final_response.id)
+      end
+    end
+  end
+
   def test_named_lane_steering_and_automatic_successor
     command = {type: "response.steer", previous_response_id: "resp_parent", input: "Change course"}
     handler = lambda do |socket, _request|
@@ -1213,7 +1324,7 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
     )
   end
 
-  private def with_server(handler, headers: {}, wait_for_close: true)
+  private def with_server(handler, headers: {}, wait_for_close: true, http_handler: nil)
     Sync do |task|
       task.with_timeout(15) do
         endpoint = Async::HTTP::Endpoint.parse("http://127.0.0.1:0")
@@ -1221,14 +1332,18 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
         port = bound.sockets.first.local_address.ip_port
         failures = []
         app = lambda do |request|
-          Async::WebSocket::Adapters::HTTP.open(request) do |socket|
-            handler.call(socket, request)
-            assert_nil(socket.read) if wait_for_close
-          rescue EOFError, Protocol::WebSocket::ClosedError
-            # The session aborts its owned reader when its block exits.
-            nil
-          rescue StandardError, Minitest::Assertion => error
-            failures << error
+          if http_handler && request.path == "/v1/responses/compact"
+            http_handler.call(request)
+          else
+            Async::WebSocket::Adapters::HTTP.open(request) do |socket|
+              handler.call(socket, request)
+              assert_nil(socket.read) if wait_for_close
+            rescue EOFError, Protocol::WebSocket::ClosedError
+              # The session aborts its owned reader when its block exits.
+              nil
+            rescue StandardError, Minitest::Assertion => error
+              failures << error
+            end
           end
         end
 
