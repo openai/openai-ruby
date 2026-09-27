@@ -485,7 +485,7 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     end
 
     tokens = ["stale-fake", "fresh-fake"]
-    configured.workload_identity_auth.stub(:get_token, -> (deadline:) { tokens.shift }) do
+    configured.workload_identity_auth.stub(:get_token, -> (**) { tokens.shift }) do
       configured.workload_identity_auth.stub(:invalidate_token, -> { }) do
         configured.live.connect(websocket_base_url: base_url, transport: transport) { |_connection| nil }
       end
