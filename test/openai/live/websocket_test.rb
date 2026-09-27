@@ -151,6 +151,84 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     end
   end
 
+  def test_required_nullable_append_fields_must_be_present_but_may_be_nil
+    socket = FakeSocket.new
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      %w[instructions thinking commentary].each do |kind|
+        type = "session.#{kind}.append"
+        error = assert_raises(ArgumentError) { connection.send_event(type: type, content: "private-payload") }
+        refute_includes(error.full_message, "private-payload")
+        connection.send_event({"type" => type, "content" => "valid", "delegation_id" => nil})
+        connection.send_event(type: type, content: "valid", delegation_id: "del_1")
+      end
+    end
+
+    assert_equal([nil, "del_1"] * 3, socket.writes.map { JSON.parse(_1).fetch("delegation_id") })
+  end
+
+  def test_uncertain_write_cannot_be_replayed_on_later_sends_or_cleanup
+    %i[typed raw].product([true, false]).each do |mode, explicit_close|
+      socket = FakeSocket.new
+      socket.define_singleton_method(:write) do |message|
+        super(message)
+        raise OpenAI::Errors::LiveConnectionError.new(url: URI("wss://example.com/v1/live/sessions"))
+      end
+
+      client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+        assert_raises(OpenAI::Errors::LiveConnectionError) do
+          mode == :typed ? connection.send_event(type: "session.close") : connection.send_raw("{}")
+        end
+
+        assert(connection.closed?)
+        assert_raises(OpenAI::Errors::LiveConnectionError) { connection.send_event(type: "session.close") }
+        assert_raises(OpenAI::Errors::LiveConnectionError) { connection.send_raw("{}") }
+        connection.close if explicit_close
+      end
+
+      assert_equal(1, socket.writes.size)
+      assert(socket.aborted?)
+      assert_nil(socket.close_args)
+    end
+  end
+
+  def test_bad_utf8_preflight_does_not_poison_a_live_connection
+    socket = FakeSocket.new
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      assert_raises(ArgumentError) { connection.send_raw("\xFF".b) }
+      refute(connection.closed?)
+      assert_empty(socket.writes)
+      connection.send_event(type: "session.close")
+    end
+
+    assert_equal(1, socket.writes.size)
+    refute(socket.aborted?)
+  end
+
+  def test_cyclic_invalid_events_are_rejected_and_shared_valid_values_are_allowed
+    hash = {type: "session.close", content: "private-payload"}
+    hash[:extra] = hash
+    array = ["private-payload"]
+    array << array
+    model = OpenAI::Live::SessionCloseEvent.new
+    model.to_h[:extra] = model
+    shared = {content: ["some text"]}
+    socket = FakeSocket.new
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      [hash, {type: "session.close", extra: array}, model].each do |invalid|
+        error = assert_raises(ArgumentError) { connection.send_event(invalid) }
+        assert_nil(error.cause)
+        refute_includes(error.full_message, "private-payload")
+        assert_empty(socket.writes)
+      end
+
+      connection.send_event(type: "session.close", first: shared, second: shared)
+      payload = JSON.parse(socket.writes.fetch(0))
+      assert_equal(payload.fetch("first"), payload.fetch("second"))
+    end
+
+    refute(socket.aborted?)
+  end
+
   def test_client_credentials_headers_and_transport_options_follow_existing_request_pipeline
     api = client(organization: "org_fake", project: "proj_fake")
     socket = FakeSocket.new

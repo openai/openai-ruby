@@ -39,17 +39,20 @@ module OpenAI
       alias to_s inspect
 
       private def freeze_json(value)
-        case value
-        when Hash
-          value.each { |key, item|
-            freeze_json(key)
-            freeze_json(item)
-          }
-        when Array
-          value.each { |item| freeze_json(item) }
+        pending = [value]
+        until pending.empty?
+          item = pending.pop
+          case item
+          when Hash
+            item.each { |key, val| pending.push(key, val) }
+          when Array
+            pending.concat(item)
+          end
+
+          item.freeze
         end
 
-        value.freeze
+        value
       end
     end
 
@@ -61,6 +64,7 @@ module OpenAI
       # @api private
       def initialize(socket:, url:)
         super
+        @poisoned = false
         @server_event_names = discriminator_values(OpenAI::Live::ServerEvent)
         @client_event_names = discriminator_values(OpenAI::Live::ClientEvent)
       end
@@ -69,19 +73,33 @@ module OpenAI
         send_raw(encode_client_event(event))
       end
 
+      def closed? = @poisoned || super
+
+      def close(code: 1000, reason: "")
+        @poisoned ? abort : super
+      end
+
+      private def write_text(text)
+        super
+      rescue StandardError
+        @poisoned = true
+        raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
+      end
+
       private def encode_client_event(event)
+        validate_acyclic!(event)
         payload = OpenAI::Internal::Type::Converter.dump(OpenAI::Live::ClientEvent, event)
         type = payload[:type] || payload["type"] if payload.is_a?(Hash)
         raise ArgumentError unless type && @client_event_names.key?(type.to_s)
 
         coerced = coerce_event(OpenAI::Live::ClientEvent, payload)
-        JSON.generate(OpenAI::Internal::Type::Converter.dump(OpenAI::Live::ClientEvent, coerced))
+        JSON.generate(OpenAI::Internal::Type::Converter.dump(OpenAI::Live::ClientEvent, coerced), max_nesting: false)
       rescue StandardError
         raise ArgumentError, "Invalid Live client event.", cause: nil
       end
 
       private def parse_event(data)
-        parsed = JSON.parse(data, symbolize_names: true)
+        parsed = JSON.parse(data, symbolize_names: true, max_nesting: false)
         type = event_type(parsed, message: "Live server event must be an object with a string type")
         unless @server_event_names.key?(type.to_s)
           return OpenAI::Live::UnknownServerEvent.new(data: parsed)
@@ -96,8 +114,46 @@ module OpenAI
         state = OpenAI::Internal::Type::Converter.new_coerce_state
         event = OpenAI::Internal::Type::Converter.coerce(union, payload, state: state)
         raise ArgumentError if state[:error] || !state.fetch(:exactness).fetch(:no).zero?
+        if event.is_a?(OpenAI::Internal::Type::BaseModel)
+          event.class.fields.each do |name, field|
+            if field.fetch(:required) &&
+                field.fetch(:mode) != :dump &&
+                field.fetch(:const) == OpenAI::Internal::OMIT &&
+                !event.to_h.key?(name)
+              raise ArgumentError
+            end
+          end
+        end
 
         event
+      end
+
+      private def validate_acyclic!(event)
+        ancestors = {}.compare_by_identity
+        pending = [[event, false]]
+        until pending.empty?
+          value, exiting = pending.pop
+          if exiting
+            ancestors.delete(value)
+            next
+          end
+
+          children = case value
+          when OpenAI::Internal::Type::BaseModel
+            value.to_h.values
+          when Hash
+            value.values
+          when Array
+            value
+          else
+            next
+          end
+
+          raise ArgumentError if ancestors.key?(value)
+          ancestors[value] = true
+          pending << [value, true]
+          children.each { |child| pending << [child, false] }
+        end
       end
 
       private def connection_error(message)

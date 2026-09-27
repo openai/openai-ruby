@@ -14,6 +14,8 @@ class OpenAI::Test::LiveWebSocketSorbetTest < Minitest::Test
       client.live.connect(request_options: {timeout: 7.0, extra_headers: {"X-Live" => "example"}}) do |connection|
         T.assert_type!(connection, OpenAI::Live::Connection)
         connection.send_event(type: "session.start", session: {model: "gpt-live-1"})
+        raw_event = T.let({"type" => "session.start", "session" => {"model" => "gpt-live-1"}}, T::Hash[String, T.anything])
+        connection.send_event(raw_event)
       end
       client.live.connect(request_options: OpenAI::RequestOptions.new(timeout: 7.0)) { |connection| connection.close }
 

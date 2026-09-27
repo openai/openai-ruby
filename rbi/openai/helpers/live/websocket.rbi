@@ -57,7 +57,10 @@ module OpenAI
       class Connection
         include Enumerable
         ServerEvent = T.type_alias { T.any(OpenAI::Live::ServerEvent::Variants, OpenAI::Live::UnknownServerEvent) }
-        ClientEvent = T.type_alias { T.any(OpenAI::Live::ClientEvent::Variants, OpenAI::Internal::AnyHash) }
+        ClientEvent = T.type_alias do
+          T.any(OpenAI::Live::ClientEvent::Variants, T::Hash[T.any(String, Symbol), T.anything])
+        end
+
         Elem = type_member { {fixed: ServerEvent} }
         sig { returns(URI::Generic) }
         attr_reader :url
