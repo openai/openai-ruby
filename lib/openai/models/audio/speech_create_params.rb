@@ -142,6 +142,12 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::CEDAR }
 
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::FABLE }
+
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::ONYX }
+
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::NOVA }
+
           # Custom voice reference.
           variant -> { OpenAI::Audio::SpeechCreateParams::Voice::ID }
 
@@ -184,6 +190,9 @@ module OpenAI
           VERSE = :verse
           MARIN = :marin
           CEDAR = :cedar
+          FABLE = :fable
+          ONYX = :onyx
+          NOVA = :nova
 
           # @!endgroup
         end

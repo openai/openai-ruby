@@ -319,6 +319,7 @@ module OpenAI
             FLEX = T.let(:flex, OpenAI::Beta::AgentSession::Agent::ServiceTier::TaggedSymbol)
             PRIORITY = T.let(:priority, OpenAI::Beta::AgentSession::Agent::ServiceTier::TaggedSymbol)
             FAST = T.let(:fast, OpenAI::Beta::AgentSession::Agent::ServiceTier::TaggedSymbol)
+            ULTRAFAST = T.let(:ultrafast, OpenAI::Beta::AgentSession::Agent::ServiceTier::TaggedSymbol)
 
             sig { override.returns(T::Array[OpenAI::Beta::AgentSession::Agent::ServiceTier::TaggedSymbol]) }
             def self.values
