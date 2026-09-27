@@ -101,7 +101,10 @@ module OpenAI
 
       # @api private
       class ResponseStreamState
-        def initialize: (text_format: untyped, ?starting_after: Integer?) -> void
+        def initialize: (
+          text_format: untyped,
+          ?starting_after: Integer?
+        ) -> void
         def accumulate_output: (untyped event, Array[untyped] items) -> void
       end
     end

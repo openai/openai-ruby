@@ -38,10 +38,11 @@ module OpenAI
         case event
         when OpenAI::Responses::UnknownServerEvent
           return
-        when OpenAI::Responses::ResponseCompletedEvent,
-          OpenAI::Responses::ResponseFailedEvent,
-          OpenAI::Responses::ResponseIncompleteEvent,
-          OpenAI::Responses::ResponsesServerEvent::ResponseWsError
+        when
+            OpenAI::Responses::ResponseCompletedEvent,
+            OpenAI::Responses::ResponseFailedEvent,
+            OpenAI::Responses::ResponseIncompleteEvent,
+            OpenAI::Responses::ResponsesServerEvent::ResponseWsError
           reset
           @terminal_event = copy(event)
           @phase = :terminal
@@ -55,16 +56,20 @@ module OpenAI
           reset
           @output = response[:output] || []
           @phase = :provisional
-        when OpenAI::Responses::ResponseOutputItemAddedEvent,
-          OpenAI::Responses::ResponseOutputItemDoneEvent,
-          OpenAI::Responses::ResponseContentPartAddedEvent,
-          OpenAI::Responses::ResponseContentPartDoneEvent,
-          OpenAI::Responses::ResponseTextDeltaEvent,
-          OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent
+        when
+            OpenAI::Responses::ResponseOutputItemAddedEvent,
+            OpenAI::Responses::ResponseOutputItemDoneEvent,
+            OpenAI::Responses::ResponseContentPartAddedEvent,
+            OpenAI::Responses::ResponseContentPartDoneEvent,
+            OpenAI::Responses::ResponseTextDeltaEvent,
+            OpenAI::Responses::ResponseTextDoneEvent,
+            OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent,
+            OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent
           return if @phase == :unavailable || @phase == :terminal
 
           apply_output(copy(event))
         end
+
         nil
       end
 
@@ -85,18 +90,31 @@ module OpenAI
           return unavailable unless index == @output.length
 
           @state.accumulate_output(event, @output)
+        when OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent
+          item = @output[index]
+          unless item.is_a?(OpenAI::Responses::ResponseFunctionToolCall) &&
+              item.id == event.item_id &&
+              event[:arguments].is_a?(String)
+            return unavailable
+          end
+
+          item.arguments = event[:arguments]
         else
           item = @output[index]
           if event.is_a?(OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent)
             unless item.is_a?(OpenAI::Responses::ResponseFunctionToolCall) &&
-                item.id == event.item_id && event.delta.is_a?(String)
+                item.id == event.item_id &&
+                event.delta.is_a?(String)
               return unavailable
             end
           else
             part_index = event.content_index
-            unless item.is_a?(OpenAI::Responses::ResponseOutputMessage) && item.id == event.item_id &&
+            unless item.is_a?(OpenAI::Responses::ResponseOutputMessage) &&
+                item.id == event.item_id &&
                 item.content.is_a?(Array) &&
-                part_index.is_a?(Integer) && part_index >= 0 && part_index <= item.content.length
+                part_index.is_a?(Integer) &&
+                part_index >= 0 &&
+                part_index <= item.content.length
               return unavailable
             end
 
@@ -106,14 +124,24 @@ module OpenAI
               return
             when OpenAI::Responses::ResponseContentPartAddedEvent
               return unavailable unless part_index == item.content.length
+            when OpenAI::Responses::ResponseTextDoneEvent
+              part = item.content[part_index]
+              unless part.is_a?(OpenAI::Responses::ResponseOutputText) && event[:text].is_a?(String)
+                return unavailable
+              end
+
+              part.text = event[:text]
+              return
             when OpenAI::Responses::ResponseTextDeltaEvent
               part = item.content[part_index]
-              unless part.is_a?(OpenAI::Responses::ResponseOutputText) && part.text.is_a?(String) &&
+              unless part.is_a?(OpenAI::Responses::ResponseOutputText) &&
+                  part.text.is_a?(String) &&
                   event.delta.is_a?(String)
                 return unavailable
               end
             end
           end
+
           @state.accumulate_output(event, @output)
         end
       end

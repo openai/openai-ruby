@@ -70,13 +70,31 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
       assert_equal(%w[left right], [read(socket)["stream_id"], read(socket)["stream_id"]])
       write(socket, type: "response.created", stream_id: "left", sequence_number: 0, response: {id: "resp_left"})
       write(socket, type: "response.future", stream_id: "right", metadata: {value: "raw"})
-      write(socket, type: "response.output_item.added", stream_id: "left", sequence_number: 1, output_index: 0,
-        item: {type: "function_call", id: "fc", call_id: "call", name: "data_only", arguments: ""})
+      write(
+        socket,
+        type: "response.output_item.added",
+        stream_id: "left",
+        sequence_number: 1,
+        output_index: 0,
+        item: {type: "function_call", id: "fc", call_id: "call", name: "data_only", arguments: ""}
+      )
       terminal(socket, "right")
-      write(socket, type: "response.function_call_arguments.delta", stream_id: "left", sequence_number: 2,
-        item_id: "fc", output_index: 0, delta: "{\"preview\":true}")
-      write(socket, type: "response.incomplete", stream_id: "left", sequence_number: 3,
-        response: {id: "resp_left", status: "incomplete", incomplete_details: {reason: "max_output_tokens"}})
+      write(
+        socket,
+        type: "response.function_call_arguments.delta",
+        stream_id: "left",
+        sequence_number: 2,
+        item_id: "fc",
+        output_index: 0,
+        delta: "{\"preview\":true}"
+      )
+      write(
+        socket,
+        type: "response.incomplete",
+        stream_id: "left",
+        sequence_number: 3,
+        response: {id: "resp_left", status: "incomplete", incomplete_details: {reason: "max_output_tokens"}}
+      )
       assert_equal("response.create", read(socket)["type"])
       terminal(socket, "left", id: "resp_reused")
     end
@@ -88,7 +106,11 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
         preview = OpenAI::Responses::IncrementalResponse.new
         left.send_event(type: "response.create")
         right.send_event(type: "response.create")
-        received = 3.times.map { event = left.receive; preview.add(event); event }
+        received = 3.times.map {
+          event = left.receive
+          preview.add(event)
+          event
+        }
         assert_equal({value: "raw"}, right.receive.to_h[:metadata])
         assert_equal("resp_right", right.get_final_response.id)
         assert_equal("{\"preview\":true}", preview.output.first.arguments)
@@ -111,16 +133,37 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
   def test_preview_rejects_invalid_created_response_without_losing_last_valid_state
     malformed = [{}, {response: nil}, {response: 42}, {response: {id: "bad", output: "invalid"}}]
     handler = lambda do |socket, _request|
-      write(socket, type: "response.created", sequence_number: 0,
-        response: {id: "resp_valid", output: [{type: "message", id: "msg", content: [
-          {type: "output_text", text: "retained", annotations: []}
-        ]}]})
+      write(
+        socket,
+        type: "response.created",
+        sequence_number: 0,
+        response: {
+          id: "resp_valid",
+          output: [
+            {
+              type: "message",
+              id: "msg",
+              content: [
+                {type: "output_text", text: "retained", annotations: []}
+              ]
+            }
+          ]
+        }
+      )
       malformed.each do |data|
         write(socket, type: "response.in_progress", sequence_number: 1, **data)
         write(socket, type: "response.created", sequence_number: 2, **data)
       end
-      write(socket, type: "response.output_text.delta", sequence_number: 3,
-        item_id: "msg", output_index: 0, content_index: 0, delta: " after")
+
+      write(
+        socket,
+        type: "response.output_text.delta",
+        sequence_number: 3,
+        item_id: "msg",
+        output_index: 0,
+        content_index: 0,
+        delta: " after"
+      )
       terminal(socket, nil, id: "resp_valid")
     end
 
@@ -144,6 +187,7 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
           assert_equal(before, preview.output.map(&:to_h))
           assert_nil(preview.terminal_event)
         end
+
         preview.add(connection.receive)
         assert_equal("retained after", preview.output.first.content.first.text)
         preview.add(connection.receive)
@@ -151,7 +195,6 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
       end
     end
   end
-
 
   def test_warmup_continuation_waits_for_fork_readiness_before_advancing_source
     handler = lambda do |socket, _request|

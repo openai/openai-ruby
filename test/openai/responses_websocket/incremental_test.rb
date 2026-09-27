@@ -23,13 +23,26 @@ class OpenAI::Test::ResponsesWebSocketIncrementalTest < Minitest::Test
     events = [
       ws(type: "response.created", response: {id: "resp_test", output: []}),
       ws(type: "response.output_item.added", output_index: 0, item: message_item),
-      ws(type: "response.content_part.added", output_index: 0, content_index: 0,
-        item_id: "msg_test", part: text_part),
-      delta(text: "Hel"), delta(text: "lo 🌍"),
-      ws(type: "response.output_item.added", output_index: 1,
-        item: {type: "function_call", id: "fc_test", call_id: "call_test", name: "tool", arguments: ""}),
-      ws(type: "response.function_call_arguments.delta", output_index: 1,
-        item_id: "fc_test", delta: "{\"ok\":"),
+      ws(
+        type: "response.content_part.added",
+        output_index: 0,
+        content_index: 0,
+        item_id: "msg_test",
+        part: text_part
+      ),
+      delta(text: "Hel"),
+      delta(text: "lo 🌍"),
+      ws(
+        type: "response.output_item.added",
+        output_index: 1,
+        item: {type: "function_call", id: "fc_test", call_id: "call_test", name: "tool", arguments: ""}
+      ),
+      ws(
+        type: "response.function_call_arguments.delta",
+        output_index: 1,
+        item_id: "fc_test",
+        delta: "{\"ok\":"
+      ),
       ws(type: "response.function_call_arguments.delta", output_index: 1, item_id: "fc_test", delta: "true}")
     ]
     snapshots = events.map do |event|
@@ -49,8 +62,10 @@ class OpenAI::Test::ResponsesWebSocketIncrementalTest < Minitest::Test
 
   def test_preview_copies_input_and_snapshot_strings_and_replaces_corrected_items
     preview = OpenAI::Responses::IncrementalResponse.new
-    created = ws(type: "response.created",
-      response: {id: "resp_test", output: [message_item(content: [text_part(text: +"a"), text_part(text: "stale")])]})
+    created = ws(
+      type: "response.created",
+      response: {id: "resp_test", output: [message_item(content: [text_part(text: +"a"), text_part(text: "stale")])]}
+    )
     preview.add(created)
     first = preview.output
     created.response.output.first.content.first.text.replace("incoming changed")
@@ -58,14 +73,79 @@ class OpenAI::Test::ResponsesWebSocketIncrementalTest < Minitest::Test
     preview.add(delta(text: "b"))
     assert_equal("ab", preview.output.first.content.first.text)
 
-    preview.add(ws(type: "response.output_item.done", output_index: 0,
-      item: message_item(id: "msg_corrected", content: [text_part(text: "c")])))
+    preview.add(
+      ws(
+        type: "response.output_item.done",
+        output_index: 0,
+        item: message_item(id: "msg_corrected", content: [text_part(text: "c")])
+      )
+    )
     assert_equal(["c"], preview.output.first.content.map(&:text))
     preview.add(delta(item_id: "msg_corrected", text: "d"))
     assert_equal("cd", preview.output.first.content.first.text)
     preview.add(delta(item_id: "msg_test", text: "wrong old ID"))
     assert_equal(:unavailable, preview.phase)
     assert_nil(preview.output)
+  end
+
+  def test_text_done_replaces_partial_text_without_waiting_for_content_part_done
+    preview = OpenAI::Responses::IncrementalResponse.new
+    preview.add(
+      ws(
+        type: "response.created",
+        response: {id: "resp_test", output: [message_item(content: [text_part])]}
+      )
+    )
+    preview.add(delta(text: "incorrect prefix"))
+    before = preview.output
+    done = ws(
+      type: "response.output_text.done",
+      item_id: "msg_test",
+      output_index: 0,
+      content_index: 0,
+      text: +"corrected",
+      logprobs: []
+    )
+    preview.add(done)
+    assert_equal("corrected", preview.output.first.content.first.text)
+    assert_equal("incorrect prefix", before.first.content.first.text)
+    done.text.replace("changed raw value")
+    assert_equal("corrected", preview.output.first.content.first.text)
+    assert_equal(:provisional, preview.phase)
+    assert_nil(preview.terminal_event)
+  end
+
+  def test_arguments_done_retains_empty_authoritative_arguments_before_item_done
+    preview = OpenAI::Responses::IncrementalResponse.new
+    preview.add(ws(type: "response.created", response: {id: "resp_test", output: []}))
+    preview.add(
+      ws(
+        type: "response.output_item.added",
+        output_index: 0,
+        item: {type: "function_call", id: "fc_test", call_id: "call_test", name: "never_run", arguments: ""}
+      )
+    )
+    preview.add(
+      ws(
+        type: "response.function_call_arguments.delta",
+        output_index: 0,
+        item_id: "fc_test",
+        delta: "{\"stale\":true}"
+      )
+    )
+    before = preview.output
+    preview.add(
+      ws(
+        type: "response.function_call_arguments.done",
+        output_index: 0,
+        item_id: "fc_test",
+        arguments: ""
+      )
+    )
+    assert_equal("", preview.output.first.arguments)
+    assert_equal("{\"stale\":true}", before.first.arguments)
+    assert_equal(:provisional, preview.phase)
+    assert_nil(preview.terminal_event)
   end
 
   def test_missing_scaffolding_is_explicit_and_resets_at_the_next_created_event
@@ -80,8 +160,15 @@ class OpenAI::Test::ResponsesWebSocketIncrementalTest < Minitest::Test
     preview.add(ws(type: "response.output_item.added", output_index: 0, item: message_item))
     preview.add(delta)
     assert_equal(:unavailable, preview.phase)
-    preview.add(ws(type: "response.content_part.added", output_index: 0, content_index: 0,
-      item_id: "msg_test", part: text_part))
+    preview.add(
+      ws(
+        type: "response.content_part.added",
+        output_index: 0,
+        content_index: 0,
+        item_id: "msg_test",
+        part: text_part
+      )
+    )
     assert_nil(preview.output)
     preview.reset
     assert_nil(preview.phase)
@@ -92,8 +179,12 @@ class OpenAI::Test::ResponsesWebSocketIncrementalTest < Minitest::Test
     %w[completed failed incomplete].each do |status|
       [{}, {output: nil}, {output: []}].each do |output_field|
         preview = OpenAI::Responses::IncrementalResponse.new
-        preview.add(ws(type: "response.created",
-          response: {id: "resp_test", output: [message_item(content: [text_part])]}))
+        preview.add(
+          ws(
+            type: "response.created",
+            response: {id: "resp_test", output: [message_item(content: [text_part])]}
+          )
+        )
         preview.add(delta(text: "unfinished"))
         event = ws(type: "response.#{status}", response: {id: "resp_test", status: status}.merge(output_field))
         wire = event.to_h
@@ -129,7 +220,8 @@ class OpenAI::Test::ResponsesWebSocketIncrementalTest < Minitest::Test
 
   private def ws(**data)
     OpenAI::Internal::Type::Converter.coerce(
-      OpenAI::Responses::ResponsesServerEvent, {sequence_number: 0, stream_id: "test"}.merge(data)
+      OpenAI::Responses::ResponsesServerEvent,
+      {sequence_number: 0, stream_id: "test"}.merge(data)
     )
   end
 
@@ -143,8 +235,12 @@ class OpenAI::Test::ResponsesWebSocketIncrementalTest < Minitest::Test
 
   private def delta(item_id: "msg_test", content_index: 0, text: "Hi")
     ws(
-      type: "response.output_text.delta", item_id: item_id, output_index: 0, content_index: content_index,
-      delta: text, logprobs: []
+      type: "response.output_text.delta",
+      item_id: item_id,
+      output_index: 0,
+      content_index: content_index,
+      delta: text,
+      logprobs: []
     )
   end
 end
