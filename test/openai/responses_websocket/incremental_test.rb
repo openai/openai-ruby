@@ -148,6 +148,160 @@ class OpenAI::Test::ResponsesWebSocketIncrementalTest < Minitest::Test
     assert_nil(preview.terminal_event)
   end
 
+  def test_custom_tool_input_is_visible_before_item_done_and_remains_data
+    preview = OpenAI::Responses::IncrementalResponse.new
+    created = ws(
+      type: "response.created",
+      response: {
+        id: "resp_test",
+        output: [
+          {
+            type: "custom_tool_call",
+            id: "ct_test",
+            status: "in_progress",
+            call_id: "call_test",
+            name: "never_run",
+            input: ""
+          }
+        ]
+      }
+    )
+    preview.add(created)
+    input = ws(type: "response.custom_tool_call_input.delta", output_index: 0, item_id: "ct_test", delta: +"code")
+    preview.add(input)
+    before = preview.output
+    assert_equal("code", before.first.input)
+    input.delta.replace("raw change")
+    preview.add(ws(type: "response.custom_tool_call_input.delta", output_index: 0, item_id: "ct_test", delta: " more"))
+    assert_equal("code more", preview.output.first.input)
+    done = ws(type: "response.custom_tool_call_input.done", output_index: 0, item_id: "ct_test", input: "")
+    preview.add(done)
+    assert_equal("", preview.output.first.input)
+    assert_equal("code", before.first.input)
+    assert_equal("", created.response.output.first.input)
+    assert_equal(:provisional, preview.phase)
+    assert_nil(preview.terminal_event)
+  end
+
+  def test_refusal_deltas_and_done_correct_a_preview_before_part_done
+    preview = OpenAI::Responses::IncrementalResponse.new
+    created = ws(
+      type: "response.created",
+      response: {id: "resp_test", output: [message_item(content: [{type: "refusal", refusal: ""}])]}
+    )
+    preview.add(created)
+    received = ws(type: "response.refusal.delta", output_index: 0, content_index: 0, item_id: "msg_test", delta: +"No")
+    preview.add(received)
+    before = preview.output
+    assert_equal("No", before.first.content.first.refusal)
+    received.delta.replace("raw change")
+    preview.add(
+      ws(type: "response.refusal.delta", output_index: 0, content_index: 0, item_id: "msg_test", delta: " longer")
+    )
+    assert_equal("No longer", preview.output.first.content.first.refusal)
+    done = ws(
+      type: "response.refusal.done",
+      output_index: 0,
+      content_index: 0,
+      item_id: "msg_test",
+      refusal: +"Declined"
+    )
+    preview.add(done)
+    done.refusal.replace("raw done change")
+    assert_equal("Declined", preview.output.first.content.first.refusal)
+    assert_equal("No", before.first.content.first.refusal)
+    assert_equal("", created.response.output.first.content.first.refusal)
+    assert_nil(preview.terminal_event)
+  end
+
+  def test_text_annotations_are_typed_visible_and_isolated_when_they_arrive
+    preview = OpenAI::Responses::IncrementalResponse.new
+    preview.add(
+      ws(
+        type: "response.created",
+        response: {id: "resp_test", output: [message_item(content: [text_part(text: "Source")])]}
+      )
+    )
+    preview.add(
+      ws(
+        type: "response.output_text.annotation.added",
+        output_index: 0,
+        content_index: 0,
+        item_id: "msg_test",
+        annotation_index: 0,
+        annotation: {type: "url_citation", start_index: 0, end_index: 6, title: +"Source", url: "https://example.test"}
+      )
+    )
+    before = preview.output
+    annotation = before.first.content.first.annotations.fetch(0)
+    assert_kind_of(OpenAI::Responses::ResponseOutputText::Annotation::URLCitation, annotation)
+    assert_equal("Source", annotation.title)
+    annotation.title.replace("snapshot change")
+    received = ws(
+      type: "response.output_text.annotation.added",
+      output_index: 0,
+      content_index: 0,
+      item_id: "msg_test",
+      annotation_index: 1,
+      annotation: {type: "file_citation", index: 1, filename: +"source.txt", file_id: "file_synthetic"}
+    )
+    preview.add(received)
+    received.annotation.filename.replace("raw change")
+    snapshot = preview.output
+    assert_equal(
+      %w[Source source.txt],
+      [
+        snapshot.first.content.first.annotations.fetch(0).title,
+        snapshot.first.content.first.annotations.fetch(1).filename
+      ]
+    )
+    assert_equal("Source", snapshot.first.content.first.text)
+    assert_equal(:provisional, preview.phase)
+    assert_nil(preview.terminal_event)
+  end
+
+  def test_missing_and_invalid_scaffolds_cannot_produce_custom_refusal_or_annotation_output
+    cases = [
+      {type: "response.custom_tool_call_input.delta", output_index: 0, item_id: "msg_test", delta: "wrong kind"},
+      {type: "response.custom_tool_call_input.done", output_index: 1, item_id: "ct_missing", input: "missing"},
+      {type: "response.custom_tool_call_input.done", output_index: "bad", item_id: "ct_missing", input: "invalid"},
+      {type: "response.refusal.delta", output_index: 0, content_index: 0, item_id: "msg_test", delta: "wrong part"},
+      {type: "response.refusal.done", output_index: 0, content_index: 1, item_id: "msg_test", refusal: "missing"},
+      {type: "response.refusal.done", output_index: 0, content_index: "bad", item_id: "msg_test", refusal: "invalid"},
+      {
+        type: "response.output_text.annotation.added",
+        output_index: 0,
+        content_index: 0,
+        item_id: "msg_test",
+        annotation_index: 2,
+        annotation: {type: "file_path", index: 0, file_id: "file_missing"}
+      },
+      {
+        type: "response.output_text.annotation.added",
+        output_index: 0,
+        content_index: 0,
+        item_id: "msg_test",
+        annotation_index: 0,
+        annotation: nil
+      }
+    ]
+    cases.each do |data|
+      preview = OpenAI::Responses::IncrementalResponse.new
+      preview.add(
+        ws(type: "response.created", response: {id: "resp_test", output: [message_item(content: [text_part])]})
+      )
+      received = ws(**data)
+      original = received.to_h
+      preview.add(received)
+      assert_equal(:unavailable, preview.phase, data[:type])
+      assert_nil(preview.output)
+      assert_equal(original, received.to_h)
+      terminal = ws(type: "response.incomplete", response: {id: "resp_test"})
+      preview.add(terminal)
+      assert_equal(terminal.to_h, preview.terminal_event.to_h)
+    end
+  end
+
   def test_missing_scaffolding_is_explicit_and_resets_at_the_next_created_event
     preview = OpenAI::Responses::IncrementalResponse.new
     preview.add(delta)

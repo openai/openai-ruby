@@ -64,7 +64,12 @@ module OpenAI
             OpenAI::Responses::ResponseTextDeltaEvent,
             OpenAI::Responses::ResponseTextDoneEvent,
             OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent,
-            OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent
+            OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent,
+            OpenAI::Responses::ResponseCustomToolCallInputDeltaEvent,
+            OpenAI::Responses::ResponseCustomToolCallInputDoneEvent,
+            OpenAI::Responses::ResponseRefusalDeltaEvent,
+            OpenAI::Responses::ResponseRefusalDoneEvent,
+            OpenAI::Responses::ResponseOutputTextAnnotationAddedEvent
           return if @phase == :unavailable || @phase == :terminal
 
           apply_output(copy(event))
@@ -76,7 +81,7 @@ module OpenAI
       private
 
       def apply_output(event)
-        index = event.output_index
+        index = event[:output_index]
         unless @output && index.is_a?(Integer) && index >= 0 && index <= @output.length
           return unavailable
         end
@@ -99,6 +104,23 @@ module OpenAI
           end
 
           item.arguments = event[:arguments]
+        when
+            OpenAI::Responses::ResponseCustomToolCallInputDeltaEvent,
+            OpenAI::Responses::ResponseCustomToolCallInputDoneEvent
+          item = @output[index]
+          unless item.is_a?(OpenAI::Responses::ResponseCustomToolCall) && item.id == event.item_id
+            return unavailable
+          end
+
+          if event.is_a?(OpenAI::Responses::ResponseCustomToolCallInputDeltaEvent)
+            return unavailable unless item[:input].is_a?(String) && event[:delta].is_a?(String)
+
+            item.input << event[:delta]
+          else
+            return unavailable unless event[:input].is_a?(String)
+
+            item.input = event[:input]
+          end
         else
           item = @output[index]
           if event.is_a?(OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent)
@@ -108,7 +130,7 @@ module OpenAI
               return unavailable
             end
           else
-            part_index = event.content_index
+            part_index = event[:content_index]
             unless item.is_a?(OpenAI::Responses::ResponseOutputMessage) &&
                 item.id == event.item_id &&
                 item.content.is_a?(Array) &&
@@ -139,6 +161,38 @@ module OpenAI
                   event.delta.is_a?(String)
                 return unavailable
               end
+
+            when OpenAI::Responses::ResponseRefusalDeltaEvent, OpenAI::Responses::ResponseRefusalDoneEvent
+              part = item.content[part_index]
+              return unavailable unless part.is_a?(OpenAI::Responses::ResponseOutputRefusal)
+
+              if event.is_a?(OpenAI::Responses::ResponseRefusalDeltaEvent)
+                return unavailable unless part[:refusal].is_a?(String) && event[:delta].is_a?(String)
+
+                part.refusal << event[:delta]
+              else
+                return unavailable unless event[:refusal].is_a?(String)
+
+                part.refusal = event[:refusal]
+              end
+
+              return
+            when OpenAI::Responses::ResponseOutputTextAnnotationAddedEvent
+              part = item.content[part_index]
+              annotation_index = event[:annotation_index]
+              unless part.is_a?(OpenAI::Responses::ResponseOutputText) &&
+                  part[:annotations].is_a?(Array) &&
+                  annotation_index.is_a?(Integer) &&
+                  annotation_index >= 0 &&
+                  annotation_index <= part[:annotations].length &&
+                  (event[:annotation].is_a?(OpenAI::Internal::Type::BaseModel) || event[:annotation].is_a?(Hash))
+                return unavailable
+              end
+
+              # The event and output use distinct annotation union types.
+              # Snapshot copying reconstructs this value as an output annotation.
+              part[:annotations][annotation_index] = event[:annotation]
+              return
             end
           end
 
