@@ -11,7 +11,8 @@ module OpenAI
         # Transcribes audio into the input language.
         #
         # Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
-        # format, or a stream of transcript events.
+        # format, plain text in `text`, `srt`, or `vtt` format, or a stream of transcript
+        # events. Supported formats depend on the model.
         #
         # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
         # metadata. Use `OpenAI::FilePart` when you need to override the filename or
@@ -135,7 +136,8 @@ module OpenAI
         # Transcribes audio into the input language.
         #
         # Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
-        # format, or a stream of transcript events.
+        # format, plain text in `text`, `srt`, or `vtt` format, or a stream of transcript
+        # events. Supported formats depend on the model.
         #
         # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
         # metadata. Use `OpenAI::FilePart` when you need to override the filename or
