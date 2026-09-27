@@ -1,0 +1,14 @@
+module OpenAI
+  module Models
+    module Responses
+      class IncrementalResponse
+        attr_reader phase: (:provisional | :unavailable | :terminal)?
+        def initialize: -> void
+        def output: -> Array[response_output_item | Hash[Symbol, untyped]]?
+        def terminal_event: -> connection_server_event?
+        def add: (connection_server_event event) -> void
+        def reset: -> void
+      end
+    end
+  end
+end

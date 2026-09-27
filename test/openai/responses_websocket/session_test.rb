@@ -65,6 +65,49 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
     end
   end
 
+  def test_caller_fed_preview_reset_does_not_steal_a_reader_or_replace_lane_finals
+    handler = lambda do |socket, _request|
+      assert_equal(%w[left right], [read(socket)["stream_id"], read(socket)["stream_id"]])
+      write(socket, type: "response.created", stream_id: "left", sequence_number: 0, response: {id: "resp_left"})
+      write(socket, type: "response.future", stream_id: "right", metadata: {value: "raw"})
+      write(socket, type: "response.output_item.added", stream_id: "left", sequence_number: 1, output_index: 0,
+        item: {type: "function_call", id: "fc", call_id: "call", name: "data_only", arguments: ""})
+      terminal(socket, "right")
+      write(socket, type: "response.function_call_arguments.delta", stream_id: "left", sequence_number: 2,
+        item_id: "fc", output_index: 0, delta: "{\"preview\":true}")
+      write(socket, type: "response.incomplete", stream_id: "left", sequence_number: 3,
+        response: {id: "resp_left", status: "incomplete", incomplete_details: {reason: "max_output_tokens"}})
+      assert_equal("response.create", read(socket)["type"])
+      terminal(socket, "left", id: "resp_reused")
+    end
+
+    with_server(handler) do |client|
+      OpenAI::Responses::Session.open(client: client, limits: limits) do |session|
+        left = session.lane("left")
+        right = session.lane("right")
+        preview = OpenAI::Responses::IncrementalResponse.new
+        left.send_event(type: "response.create")
+        right.send_event(type: "response.create")
+        received = 3.times.map { event = left.receive; preview.add(event); event }
+        assert_equal({value: "raw"}, right.receive.to_h[:metadata])
+        assert_equal("resp_right", right.get_final_response.id)
+        assert_equal("{\"preview\":true}", preview.output.first.arguments)
+        assert_equal("", received.fetch(1).item.arguments)
+        preview.reset
+        incomplete = left.receive
+        preview.add(incomplete)
+        assert_equal(incomplete.to_h, preview.terminal_event.to_h)
+        assert_nil(preview.terminal_event.response.output)
+        assert_nil(preview.output)
+        # The existing lane collector owns its own final response and may safely
+        # normalize omitted output to its done items. The optional helper does not.
+        assert_empty(left.get_final_response.output)
+        left.send_event(type: "response.create")
+        assert_equal("resp_reused", left.get_final_response.id)
+      end
+    end
+  end
+
   def test_named_lane_steering_and_automatic_successor
     command = {type: "response.steer", previous_response_id: "resp_parent", input: "Change course"}
     handler = lambda do |socket, _request|
