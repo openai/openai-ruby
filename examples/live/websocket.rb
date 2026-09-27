@@ -16,6 +16,7 @@ client.live.connect do |connection|
     when OpenAI::Live::ErrorEvent
       # Do not log audio, session configuration, or unredacted server errors.
       warn("Live reported a session error; check the event in your application.")
+      break
     when OpenAI::Live::SessionClosedEvent
       puts("Live session closed")
       break

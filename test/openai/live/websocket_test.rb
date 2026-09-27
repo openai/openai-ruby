@@ -3,6 +3,7 @@
 require_relative "../test_helper"
 require_relative "../responses_websocket/connection_test_support"
 require "open3"
+require "timeout"
 
 class OpenAI::Test::LiveWebSocketTest < Minitest::Test
   include OpenAI::Test::ResponsesWebSocketConnectionTestSupport
@@ -202,6 +203,56 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
 
     assert_equal(1, socket.writes.size)
     refute(socket.aborted?)
+  end
+
+  def test_custom_read_failures_are_safe_and_terminal_for_typed_or_raw_receive
+    %i[receive receive_raw].each do |method|
+      socket = FailingReadSocket.new
+      client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+        error = assert_raises(OpenAI::Errors::LiveConnectionError) { connection.public_send(method) }
+        assert_nil(error.cause)
+        refute_includes(error.full_message, "sensitive-body")
+        assert(connection.closed?)
+        assert_raises(OpenAI::Errors::LiveConnectionError) { connection.send_event(type: "session.close") }
+        assert_raises(OpenAI::Errors::LiveConnectionError) { connection.send_raw("{}") }
+        assert_empty(socket.writes)
+      end
+
+      assert(socket.aborted?)
+      assert_nil(socket.close_args)
+    end
+  end
+
+  def test_peer_eof_closes_sends_even_if_the_transport_reports_open
+    %i[receive receive_raw].each do |method|
+      socket = FakeSocket.new
+      client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+        assert_nil(connection.public_send(method))
+        refute(socket.closed?)
+        assert(connection.closed?)
+        assert_nil(connection.receive)
+        assert_raises(OpenAI::Errors::LiveConnectionError) { connection.send_event(type: "session.close") }
+        assert_raises(OpenAI::Errors::LiveConnectionError) { connection.send_raw("{}") }
+        assert_empty(socket.writes)
+      end
+    end
+  end
+
+  def test_direct_unknown_event_construction_freezes_cyclic_and_prefrozen_containers
+    data = {type: "session.future", child: ["private-payload"]}
+    array = data.fetch(:child)
+    array << data
+    array << array
+    leaf = ["mutable"]
+    data[:prefrozen] = {leaf: leaf}.freeze
+    event = Timeout.timeout(2) { OpenAI::Live::UnknownServerEvent.new(data: data) }
+    assert_equal(:"session.future", event.type)
+    assert_same(data, event.to_h)
+    assert_predicate(data, :frozen?)
+    assert_predicate(array, :frozen?)
+    assert_predicate(leaf, :frozen?)
+    assert_predicate(leaf.first, :frozen?)
+    refute_includes(event.inspect, "private-payload")
   end
 
   def test_cyclic_invalid_events_are_rejected_and_shared_valid_values_are_allowed

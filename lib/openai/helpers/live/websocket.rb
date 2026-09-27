@@ -40,8 +40,11 @@ module OpenAI
 
       private def freeze_json(value)
         pending = [value]
+        visited = {}.compare_by_identity
         until pending.empty?
           item = pending.pop
+          next if visited.key?(item)
+          visited[item] = true
           case item
           when Hash
             item.each { |key, val| pending.push(key, val) }
@@ -65,6 +68,7 @@ module OpenAI
       def initialize(socket:, url:)
         super
         @poisoned = false
+        @peer_closed = false
         @server_event_names = discriminator_values(OpenAI::Live::ServerEvent)
         @client_event_names = discriminator_values(OpenAI::Live::ClientEvent)
       end
@@ -73,7 +77,7 @@ module OpenAI
         send_raw(encode_client_event(event))
       end
 
-      def closed? = @poisoned || super
+      def closed? = @poisoned || @peer_closed || super
 
       def close(code: 1000, reason: "")
         @poisoned ? abort : super
@@ -81,6 +85,17 @@ module OpenAI
 
       private def write_text(text)
         super
+      rescue StandardError
+        @poisoned = true
+        raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
+      end
+
+      private def read_raw_message
+        raise connection_error("Cannot read from a failed Live WebSocket.") if @poisoned
+        return nil if @peer_closed
+        text = super
+        @peer_closed = text.nil?
+        text
       rescue StandardError
         @poisoned = true
         raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
