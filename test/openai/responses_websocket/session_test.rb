@@ -228,6 +228,14 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
       [
         {type: "shell_call", id: "item", call_id: "call_synthetic", action: {commands: []}, status: "in_progress"},
         {type: "response.shell_call_command.added", command_index: 0, command: "data only"}
+      ],
+      [
+        {type: "image_generation_call", id: "item", status: "in_progress", result: nil},
+        {
+          type: "response.image_generation_call.partial_image",
+          partial_image_index: 0,
+          partial_image_b64: "c3ludGhldGlj"
+        }
       ]
     ]
     handler = lambda do |socket, _request|

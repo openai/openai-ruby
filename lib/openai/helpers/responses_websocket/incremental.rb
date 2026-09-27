@@ -18,6 +18,13 @@ module OpenAI
       end
 
       # A detached provisional output snapshot, or nil when unavailable/terminal.
+      #
+      # This materializes the whole output and costs time proportional to its
+      # size. Use the original event's delta for per-delta progress. Read output
+      # at boundaries such as response.output_item.done when a full, corrected
+      # view is needed; replace a displayed view instead of appending its prefix.
+      # Repeated full snapshots of a growing response necessarily copy growing
+      # amounts of data.
       def output
         @output&.map { |item| copy(item) }
       end
@@ -79,7 +86,7 @@ module OpenAI
           # indexed updates. Unknown raw events and progress events are not output.
           if @phase != :terminal &&
               event.class.known_fields.key?(:output_index) &&
-              event[:type].to_s.end_with?(".added", ".delta", ".done")
+              event[:type].to_s.end_with?(".added", ".delta", ".done", ".partial_image")
             unavailable
           end
         end
@@ -157,18 +164,28 @@ module OpenAI
               return unavailable unless part_index == item.content.length
             when OpenAI::Responses::ResponseTextDoneEvent
               part = item.content[part_index]
-              unless part.is_a?(OpenAI::Responses::ResponseOutputText) && event[:text].is_a?(String)
+              unless part.is_a?(OpenAI::Responses::ResponseOutputText) &&
+                  event[:text].is_a?(String) &&
+                  (event[:logprobs].nil? || event[:logprobs].is_a?(Array))
                 return unavailable
               end
 
               part.text = event[:text]
+              part.logprobs = event[:logprobs] unless event[:logprobs].nil?
               return
             when OpenAI::Responses::ResponseTextDeltaEvent
               part = item.content[part_index]
               unless part.is_a?(OpenAI::Responses::ResponseOutputText) &&
                   part.text.is_a?(String) &&
-                  event.delta.is_a?(String)
+                  event.delta.is_a?(String) &&
+                  (event[:logprobs].nil? || event[:logprobs].is_a?(Array)) &&
+                  (part[:logprobs].nil? || part[:logprobs].is_a?(Array))
                 return unavailable
+              end
+
+              unless event[:logprobs].nil?
+                part.logprobs = [] if part[:logprobs].nil?
+                part[:logprobs].concat(event[:logprobs])
               end
 
             when OpenAI::Responses::ResponseRefusalDeltaEvent, OpenAI::Responses::ResponseRefusalDoneEvent

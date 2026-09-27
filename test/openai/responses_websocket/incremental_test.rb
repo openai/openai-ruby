@@ -115,6 +115,65 @@ class OpenAI::Test::ResponsesWebSocketIncrementalTest < Minitest::Test
     assert_nil(preview.terminal_event)
   end
 
+  def test_text_logprobs_follow_deltas_and_done_without_mutating_raw_or_prior_snapshots
+    preview = OpenAI::Responses::IncrementalResponse.new
+    created = ws(
+      type: "response.created",
+      response: {id: "resp_test", output: [message_item(content: [text_part])]}
+    )
+    preview.add(created)
+    left = ws(
+      type: "response.output_text.delta",
+      output_index: 0,
+      content_index: 0,
+      item_id: "msg_test",
+      delta: "one ",
+      logprobs: [{token: +"one", logprob: -0.1, top_logprobs: []}]
+    )
+    preview.add(left)
+    before = preview.output
+    assert_equal(["one"], before.first.content.first.logprobs.map(&:token))
+    left.logprobs.first.token.replace("raw change")
+    preview.add(
+      ws(
+        type: "response.output_text.delta",
+        output_index: 0,
+        content_index: 0,
+        item_id: "msg_test",
+        delta: "two",
+        logprobs: [{token: "two", logprob: -0.2, top_logprobs: []}]
+      )
+    )
+    assert_equal(%w[one two], preview.output.first.content.first.logprobs.map(&:token))
+    assert_equal(["one"], before.first.content.first.logprobs.map(&:token))
+    done = ws(
+      type: "response.output_text.done",
+      output_index: 0,
+      content_index: 0,
+      item_id: "msg_test",
+      text: "fixed",
+      logprobs: [{token: +"fixed", logprob: -0.3, top_logprobs: []}]
+    )
+    preview.add(done)
+    done.logprobs.first.token.replace("raw done change")
+    after = preview.output
+    assert_equal("fixed", after.first.content.first.text)
+    assert_equal(["fixed"], after.first.content.first.logprobs.map(&:token))
+    assert_empty(created.response.output.first.content.first.logprobs)
+    preview.add(
+      ws(
+        type: "response.output_text.done",
+        output_index: 0,
+        content_index: 0,
+        item_id: "msg_test",
+        text: "no logprobs",
+        logprobs: []
+      )
+    )
+    assert_empty(preview.output.first.content.first.logprobs)
+    assert_equal(["fixed"], after.first.content.first.logprobs.map(&:token))
+  end
+
   def test_arguments_done_retains_empty_authoritative_arguments_before_item_done
     preview = OpenAI::Responses::IncrementalResponse.new
     preview.add(ws(type: "response.created", response: {id: "resp_test", output: []}))
