@@ -183,6 +183,9 @@ module OpenAI
               # Uses the fast service tier.
               FAST = :fast
 
+              # Uses the ultrafast service tier.
+              ULTRAFAST = :ultrafast
+
               # @!method self.values
               #   @return [Array<Symbol>]
             end

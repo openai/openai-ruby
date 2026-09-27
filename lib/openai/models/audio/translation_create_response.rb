@@ -11,8 +11,11 @@ module OpenAI
 
         variant -> { OpenAI::Audio::TranslationVerbose }
 
+        # Text, SRT, and VTT responses retain the SDK's readable IO return value.
+        variant StringIO
+
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Audio::Translation, OpenAI::Models::Audio::TranslationVerbose)]
+        #   @return [Array(OpenAI::Models::Audio::Translation, OpenAI::Models::Audio::TranslationVerbose, StringIO)]
       end
     end
   end

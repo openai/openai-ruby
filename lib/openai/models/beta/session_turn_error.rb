@@ -52,6 +52,9 @@ module OpenAI
           # The request was rejected by a safety policy.
           CYBER_POLICY = :cyber_policy
 
+          # The request was blocked by the safety systems.
+          MISALIGNMENT_POLICY_VIOLATION = :misalignment_policy_violation
+
           # The request could not connect to the model service.
           CONNECTION_FAILED = :connection_failed
 

@@ -37,8 +37,8 @@ module OpenAI
             attr_accessor name: String?
 
             # Network access available after setup completes. Omit to preserve the current
-            # policy, or pass `null` to reset to disabled for GA requests or enabled for
-            # alpha/beta requests.
+            # policy, or pass `null` to reset to disabled for GA requests or enabled for beta
+            # requests.
             attr_accessor network: OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Network?
 
             # Packages installed before the runtime network policy applies.
@@ -63,8 +63,8 @@ module OpenAI
             #   A replacement human-readable display name, or `null` to clear the name.
             # @param network
             #   Network access available after setup completes. Omit to preserve the current
-            #   policy, or pass `null` to reset to disabled for GA requests or enabled for
-            #   alpha/beta requests.
+            #   policy, or pass `null` to reset to disabled for GA requests or enabled for beta
+            #   requests.
             # @param packages
             #   Packages installed before the runtime network policy applies.
             # @param plugins

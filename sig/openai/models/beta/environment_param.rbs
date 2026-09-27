@@ -59,7 +59,7 @@ module OpenAI
           attr_accessor files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?
 
           # Network access policy for the environment. Defaults to disabled for GA requests
-          # and enabled for alpha/beta requests.
+          # and enabled for beta requests.
           attr_accessor network: OpenAI::Beta::EnvironmentParam::OpenAIHosted::Network?
 
           # Packages to install in the environment. Defaults to empty package lists.
@@ -87,7 +87,7 @@ module OpenAI
           #   Files available before the agent starts. Defaults to an empty list.
           # @param network
           #   Network access policy for the environment. Defaults to disabled for GA requests
-          #   and enabled for alpha/beta requests.
+          #   and enabled for beta requests.
           # @param packages
           #   Packages to install in the environment. Defaults to empty package lists.
           # @param plugins

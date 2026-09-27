@@ -41,7 +41,7 @@ module OpenAI
 
             # @!attribute network
             #   Network access policy for the environment. Defaults to disabled for GA requests
-            #   and enabled for alpha/beta requests.
+            #   and enabled for beta requests.
             #
             #   @return [OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Network, nil]
             optional(
@@ -113,7 +113,7 @@ module OpenAI
             #
             #   @param network [OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Network, nil]
             #     Network access policy for the environment. Defaults to disabled for GA requests
-            #     and enabled for alpha/beta requests.
+            #     and enabled for beta requests.
             #
             #   @param packages [OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Packages, nil]
             #     Packages to install in the environment. Defaults to empty package lists.
@@ -145,7 +145,7 @@ module OpenAI
 
               # @!method initialize(access:, allowed_domains: nil)
               #   Network access policy for the environment. Defaults to disabled for GA requests
-              #   and enabled for alpha/beta requests.
+              #   and enabled for beta requests.
               #
               #   @param access [Symbol, OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Network::Access]
               #     The environment's network access mode.

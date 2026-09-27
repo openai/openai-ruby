@@ -14,6 +14,6 @@ VOICE = "marin"
 client = OpenAI::Client.new
 clip = OpenAI::LocalAudio.record(duration: 5, timeout: 10)
 transcription = client.audio.transcriptions.create(model: TRANSCRIPTION_MODEL, file: clip)
-puts(transcription.text)
+puts(transcription.is_a?(StringIO) ? transcription.read : transcription.text)
 speech = client.audio.speech.create(model: SPEECH_MODEL, voice: VOICE, input: "Recording complete.")
 OpenAI::LocalAudio.play(speech, timeout: 30)

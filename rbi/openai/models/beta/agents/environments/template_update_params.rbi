@@ -52,8 +52,8 @@ module OpenAI
             attr_accessor :name
 
             # Network access available after setup completes. Omit to preserve the current
-            # policy, or pass `null` to reset to disabled for GA requests or enabled for
-            # alpha/beta requests.
+            # policy, or pass `null` to reset to disabled for GA requests or enabled for beta
+            # requests.
             sig { returns(T.nilable(OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Network)) }
             attr_reader :network
 
@@ -150,8 +150,8 @@ module OpenAI
               name: nil,
 
               # Network access available after setup completes. Omit to preserve the current
-              # policy, or pass `null` to reset to disabled for GA requests or enabled for
-              # alpha/beta requests.
+              # policy, or pass `null` to reset to disabled for GA requests or enabled for beta
+              # requests.
               network: nil,
 
               # Packages installed before the runtime network policy applies.
@@ -218,8 +218,8 @@ module OpenAI
               attr_accessor :allowed_domains
 
               # Network access available after setup completes. Omit to preserve the current
-              # policy, or pass `null` to reset to disabled for GA requests or enabled for
-              # alpha/beta requests.
+              # policy, or pass `null` to reset to disabled for GA requests or enabled for beta
+              # requests.
               sig do
                 params(
 

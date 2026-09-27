@@ -82,6 +82,12 @@ module OpenAI
           # The request was rejected by a safety policy.
           CYBER_POLICY = T.let(:cyber_policy, OpenAI::Beta::SessionTurnError::Code::TaggedSymbol)
 
+          # The request was blocked by the safety systems.
+          MISALIGNMENT_POLICY_VIOLATION = T.let(
+            :misalignment_policy_violation,
+            OpenAI::Beta::SessionTurnError::Code::TaggedSymbol
+          )
+
           # The request could not connect to the model service.
           CONNECTION_FAILED = T.let(:connection_failed, OpenAI::Beta::SessionTurnError::Code::TaggedSymbol)
 
