@@ -6,7 +6,17 @@ module OpenAI
       # @api private
       # The established Live display policy, driven only by public text intervals.
       class Grouping
-        Turn = Struct.new(:id, :previous_id, :speaker, :text, :start_ms, :end_ms, :emitted, :can_drop, :acknowledgment) do
+        Turn = Struct.new(
+          :id,
+          :previous_id,
+          :speaker,
+          :text,
+          :start_ms,
+          :end_ms,
+          :emitted_bytes,
+          :can_drop,
+          :acknowledgment
+        ) do
           def snapshot
             Segment.new(id, previous_id, speaker, text.dup.freeze, start_ms, end_ms)
           end
@@ -57,7 +67,7 @@ module OpenAI
           return [] unless first
 
           emitted = []
-          while (due = deadline) && due < first.start_ms
+          while (due = deadline) && due <= first.start_ms
             emitted.concat(advance(due))
           end
 
@@ -100,6 +110,14 @@ module OpenAI
           end
 
           @current.end_ms + @options.assistant_silence_ms if speaker == :assistant
+        end
+
+        def update_pending?
+          @current && @current.emitted_bytes && @current.text.bytesize > @current.emitted_bytes
+        end
+
+        def flush_update
+          update_pending? ? emit(@current, true) : []
         end
 
         def close(time_ms, reason)
@@ -166,12 +184,12 @@ module OpenAI
         def new_turn(fragment)
           id = "#{@id_prefix}_#{@next_id}".freeze
           @next_id += 1
-          Turn.new(id, nil, fragment.speaker, fragment.text, fragment.start_ms, fragment.end_ms, false, true, nil)
+          Turn.new(id, nil, fragment.speaker, fragment.text.dup, fragment.start_ms, fragment.end_ms, nil, true, nil)
         end
 
         def append(turn, fragment, separate = false)
           separator = separate && /[\p{L}\p{N}]\z/.match?(turn.text) && /\A[\p{L}\p{N}]/.match?(fragment.text) ? " " : ""
-          turn.text += separator + fragment.text
+          turn.text << separator << fragment.text
           turn.end_ms = [turn.end_ms, fragment.end_ms].max
         end
 
@@ -203,16 +221,20 @@ module OpenAI
 
         def finish(turn, reason)
           @last_assistant_end = turn.end_ms if turn.speaker == :assistant
-          turn.emitted ? [Update.new(turn.snapshot, reason)] : []
+          turn.emitted_bytes ? emit(turn, true) + [Update.new(turn.snapshot, reason)] : []
         end
 
-        def emit(turn)
+        def emit(turn, force = false)
           return [] if turn.text.empty?
-          unless turn.emitted
+          bytes = turn.text.bytesize
+          if turn.emitted_bytes
+            return [] if bytes == turn.emitted_bytes || (!force && bytes < turn.emitted_bytes * 2)
+          else
             turn.previous_id = @last_id
             @last_id = turn.id
-            turn.emitted = true
           end
+
+          turn.emitted_bytes = bytes
 
           [Update.new(turn.snapshot, nil)]
         end

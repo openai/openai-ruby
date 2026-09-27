@@ -22,7 +22,9 @@ class OpenAI::Test::LiveTranscriptGrouperTest < Minitest::Test
         end
 
         @now += [0, delay].max
-        should_drain = @lock.synchronize { enqueue(flush_pending + @grouping.advance(source_now)) }
+        should_drain = @lock.synchronize {
+          enqueue(flush_pending + @grouping.advance(source_now) + @grouping.flush_update)
+        }
         drain if should_drain
       end
 
@@ -318,6 +320,69 @@ class OpenAI::Test::LiveTranscriptGrouperTest < Minitest::Test
     @grouper.advance(1)
     finish([:assistant, "Old"], [:assistant, "New"])
     assert_equal([:timestamp_reset, :inactivity], @closed.map(&:reason))
+  end
+
+  def test_exact_separation_deadline_preserves_the_intervening_reply
+    feed("Question", :user, start: 0, finish: 200)
+    feed("Answer", start: 200, finish: 400)
+    feed("More", :user, start: 700, finish: 900)
+    finish([:user, "Question"], [:assistant, "Answer"], [:user, "More"])
+    assert_equal([:speaker_change, :speaker_change, :manual], @closed.map(&:reason))
+  end
+
+  def test_delayed_other_speaker_is_not_a_timeline_reset
+    feed("Answer", start: 1000, finish: 1200)
+    @grouper.advance(50)
+    feed("Wait", :user, start: 900, finish: 1100)
+    @grouper.advance(50)
+    finish([:assistant, "Answer"], [:user, "Wait"])
+    assert_equal([:speaker_change, :manual], @closed.map(&:reason))
+  end
+
+  def test_timestamp_reset_clears_prior_positions_of_both_speakers
+    feed("Old answer", start: 1000, finish: 1200)
+    @grouper.advance(50)
+    feed("Old user", :user, start: 1100, finish: 1300)
+    @grouper.advance(50)
+    feed("New user", :user, start: 0, finish: 100)
+    feed("New answer", start: 100, finish: 300)
+    finish([:assistant, "Old answer"], [:user, "Old user"], [:user, "New user"], [:assistant, "New answer"])
+    assert_equal([:speaker_change, :timestamp_reset, :manual, :manual], @closed.map(&:reason))
+  end
+
+  def test_bursts_coalesce_complete_snapshots_and_flush_on_timer_or_close
+    feed("Initial", :user)
+    @grouper.advance(50)
+    80.times { |i| feed("x", :user, start: 200 + i, finish: 300 + i) }
+    # Display callbacks may read every snapshot. Bursts must not copy all text
+    # per single-character fragment, and the last update must arrive promptly.
+    assert_operator(@updated.size, :<=, 6)
+    @grouper.advance(50)
+    latest = @updated.last
+    assert_equal("Initial" + ("x" * 80), latest.text)
+    assert_equal(latest.text, latest.to_h[:text])
+    assert_equal(latest.text, latest.deconstruct[3])
+    assert_equal(latest.text, latest.deconstruct_keys([:text])[:text])
+    feed("tail", :user, start: 400)
+    assert_equal("Initial" + ("x" * 80), latest.text)
+    finish([:user, "Initial" + ("x" * 80) + "tail"])
+  end
+
+  def test_many_small_deltas_do_not_copy_quadratically_for_reading_callbacks
+    bytes_read = 0
+    last = nil
+    @grouper = create(
+      on_segment_updated: -> (segment) {
+        bytes_read += segment.text.bytesize
+        last = segment
+      }
+    )
+    fragment = "x" * 32
+    16_000.times { |i| feed(fragment, :user, start: i, finish: i + 1) }
+    @grouper.close
+    assert_equal(fragment * 16_000, last.text)
+    assert_equal(last, @closed.last.segment)
+    assert_operator(bytes_read, :<=, last.text.bytesize * 4)
   end
 
   def test_session_closed_finalizes_once_and_rejects_further_input

@@ -52,6 +52,11 @@ are ignored. Invalid fields raise `ArgumentError` or the generated model's
 50 ms. A monotonic local clock supplies an inactivity fallback when source
 timestamps stop arriving, so delivery delays can affect grouping.
 
+Successive updates within a burst may be coalesced for up to 50 ms. The first
+snapshot of a segment, periodic complete updates and its final snapshot are
+still delivered. This avoids copying an entire long turn for every tiny delta;
+it does not limit transcript size.
+
 Create one helper per session and close it on transport loss or teardown.
 `SessionClosedEvent` also finalizes it. Closing flushes buffered text, cancels
 the timer and rejects further `push` calls; it never closes or reconnects a

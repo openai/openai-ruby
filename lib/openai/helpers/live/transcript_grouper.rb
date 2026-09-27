@@ -63,6 +63,7 @@ module OpenAI
         @lock = Mutex.new
         @wake = ConditionVariable.new
         @seen_ids = {}
+        @last_start_ms = {}
         @pending = []
         @updates = []
         @closed = false
@@ -160,12 +161,13 @@ module OpenAI
         return [] unless first
 
         emitted = []
-        if @last_start_ms && first.start_ms < @last_start_ms
+        if fragments.any? { |part| @last_start_ms[part.speaker] && part.start_ms < @last_start_ms[part.speaker] }
           emitted.concat(@grouping.close(source_now, :timestamp_reset))
+          @last_start_ms.clear
           @anchor_source_ms = nil
         end
 
-        @last_start_ms = first.start_ms
+        fragments.each { |part| @last_start_ms[part.speaker] = part.start_ms }
         @anchor_source_ms = [@anchor_source_ms || 0, *fragments.map(&:end_ms)].max
         @anchor_received_at = fragments.map(&:received_at).max
         emitted.concat(@grouping.process(fragments))
@@ -184,11 +186,17 @@ module OpenAI
       end
 
       def timer_delay
-        if (first = @pending.first)
+        delay = if (first = @pending.first)
           first.received_at + 50 - now_ms
         elsif (deadline = @grouping.deadline)
           deadline - source_now
         end
+
+        @update_due_ms = if @grouping.update_pending?
+          @update_due_ms || (now_ms + 50)
+        end
+
+        [delay, @update_due_ms && (@update_due_ms - now_ms)].compact.min
       end
 
       def start_timer
@@ -205,7 +213,9 @@ module OpenAI
               return if @closed
 
               delay = timer_delay
-              break enqueue(flush_pending + @grouping.advance(source_now)) if delay && delay <= 0
+              if delay && delay <= 0
+                break enqueue(flush_pending + @grouping.advance(source_now) + @grouping.flush_update)
+              end
 
               @wake.wait(@lock, delay && (delay / 1000.0))
             end
