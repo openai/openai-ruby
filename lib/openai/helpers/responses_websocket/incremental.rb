@@ -7,8 +7,9 @@ module OpenAI
     # This helper never reads, closes, or writes to a connection. Tools are data.
     #
     # Output is provisional and may be unavailable when the wire omitted its
-    # scaffolding. Terminal events are retained exactly as received, never filled
-    # from provisional output. Call reset to discard all retained state.
+    # scaffolding, or a known output update cannot be represented. Terminal events
+    # are retained exactly as received, never filled from provisional output.
+    # Call reset to discard all retained state.
     class IncrementalResponse
       attr_reader :phase
 
@@ -73,6 +74,14 @@ module OpenAI
           return if @phase == :unavailable || @phase == :terminal
 
           apply_output(copy(event))
+        else
+          # A full output snapshot must not leave stale fields after unsupported
+          # indexed updates. Unknown raw events and progress events are not output.
+          if @phase != :terminal &&
+              event.class.known_fields.key?(:output_index) &&
+              event[:type].to_s.end_with?(".added", ".delta", ".done")
+            unavailable
+          end
         end
 
         nil

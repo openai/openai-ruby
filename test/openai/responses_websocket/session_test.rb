@@ -196,6 +196,87 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
     end
   end
 
+  def test_unrepresented_output_updates_never_leave_a_stale_provisional_snapshot
+    frames = [
+      [
+        {type: "mcp_call", id: "item", name: "data_only", arguments: "", server_label: "test"},
+        {type: "response.mcp_call_arguments.done", arguments: "corrected"}
+      ],
+      [
+        {type: "reasoning", id: "item", summary: []},
+        {
+          type: "response.reasoning_summary_part.added",
+          summary_index: 0,
+          part: {type: "summary_text", text: "new"}
+        }
+      ],
+      [
+        {
+          type: "code_interpreter_call",
+          id: "item",
+          code: nil,
+          container_id: "cn_synthetic",
+          status: "in_progress",
+          outputs: []
+        },
+        {type: "response.code_interpreter_call_code.delta", delta: "print('data only')"}
+      ],
+      [
+        {type: "reasoning", id: "item", summary: [], content: [{type: "reasoning_text", text: ""}]},
+        {type: "response.reasoning_text.done", content_index: 0, text: "corrected"}
+      ],
+      [
+        {type: "shell_call", id: "item", call_id: "call_synthetic", action: {commands: []}, status: "in_progress"},
+        {type: "response.shell_call_command.added", command_index: 0, command: "data only"}
+      ]
+    ]
+    handler = lambda do |socket, _request|
+      frames.each do |item, update|
+        write(socket, type: "response.created", sequence_number: 0, response: {id: "resp_test", output: [item]})
+        write(socket, type: "response.in_progress", sequence_number: 1, response: {id: "resp_test"})
+        write(socket, type: "response.future.delta", output_index: 0, sequence_number: 2, opaque: "available")
+        write(socket, output_index: 0, item_id: "item", sequence_number: 3, **update)
+        write(
+          socket,
+          type: "response.incomplete",
+          sequence_number: 4,
+          response: {id: "resp_test", status: "incomplete", incomplete_details: {reason: "max_output_tokens"}}
+        )
+      end
+    end
+
+    with_server(handler) do |client|
+      client.responses.connect do |connection|
+        preview = OpenAI::Responses::IncrementalResponse.new
+        frames.each do |_item, update|
+          preview.add(connection.receive)
+          initial = preview.output
+          preview.add(connection.receive)
+          raw_future = connection.receive
+          assert_kind_of(OpenAI::Responses::UnknownServerEvent, raw_future)
+          preview.add(raw_future)
+          assert_equal("available", raw_future.to_h.fetch(:opaque))
+          assert_equal(initial, preview.output)
+          assert_equal(:provisional, preview.phase)
+          event = connection.receive
+          refute_kind_of(OpenAI::Responses::UnknownServerEvent, event)
+          before = event.to_h
+          preview.add(event)
+          assert_equal(:unavailable, preview.phase, update[:type])
+          assert_nil(preview.output)
+          assert_equal(before, event.to_h)
+          terminal = connection.receive
+          preview.add(terminal)
+          assert_equal(:terminal, preview.phase)
+          assert_equal(terminal.to_h, preview.terminal_event.to_h)
+          assert_nil(preview.output)
+          preview.add(event)
+          assert_equal(terminal.to_h, preview.terminal_event.to_h)
+        end
+      end
+    end
+  end
+
   def test_warmup_continuation_waits_for_fork_readiness_before_advancing_source
     handler = lambda do |socket, _request|
       warmup = read(socket)
