@@ -80,7 +80,7 @@ module OpenAI
       def closed? = @poisoned || @peer_closed || super
 
       def close(code: 1000, reason: "")
-        @poisoned ? abort : super
+        @poisoned || @peer_closed ? abort : super
       rescue StandardError
         @poisoned = true
         raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
@@ -107,6 +107,13 @@ module OpenAI
         text = super
         @peer_closed = text.nil?
         text
+      rescue StandardError
+        @poisoned = true
+        raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
+      end
+
+      private def socket_closed?
+        super
       rescue StandardError
         @poisoned = true
         raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil

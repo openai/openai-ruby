@@ -255,6 +255,53 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     end
   end
 
+  def test_clean_peer_eof_releases_the_socket_without_graceful_close_writes
+    socket = FakeSocket.new
+    socket.define_singleton_method(:close) { |**| raise IOError, "cannot write a close after EOF" }
+    result = client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      assert_nil(connection.receive)
+      :completed
+    end
+
+    assert_equal(:completed, result)
+    assert_predicate(socket, :closed?)
+    assert_predicate(socket, :aborted?)
+    assert_nil(socket.close_args)
+  end
+
+  def test_custom_socket_state_probe_errors_are_sanitized_before_direct_or_send_use
+    socket = FakeSocket.new
+    socket.define_singleton_method(:closed?) { raise IOError, "private-payload" }
+    transport = FakeTransport.new(socket)
+    client.live.connect(transport: transport) do |connection|
+      error = assert_raises(OpenAI::Errors::LiveConnectionError) { connection.closed? }
+      assert_nil(error.cause)
+      refute_includes(error.full_message, "private-payload")
+      assert_predicate(connection, :closed?)
+      assert_raises(OpenAI::Errors::LiveConnectionError) { connection.send_raw("{}") }
+      assert_empty(socket.writes)
+      # Cleanup must not replace the caller's error with a raw probe failure.
+      raise "caller abort"
+    end
+
+  rescue RuntimeError => error
+    assert_equal("caller abort", error.message)
+  end
+
+  def test_send_probe_failure_has_no_payload_even_when_cleanup_fails_too
+    socket = FakeSocket.new
+    socket.define_singleton_method(:closed?) { raise IOError, "private-payload" }
+    error = assert_raises(OpenAI::Errors::LiveConnectionError) do
+      client.live.connect(transport: FakeTransport.new(socket)) { |connection|
+        connection.send_event(type: "session.close")
+      }
+    end
+
+    assert_nil(error.cause)
+    refute_includes(error.full_message, "private-payload")
+    assert_empty(socket.writes)
+  end
+
   def test_direct_unknown_event_construction_freezes_cyclic_and_prefrozen_containers
     data = {type: "session.future", child: ["private-payload"]}
     array = data.fetch(:child)
