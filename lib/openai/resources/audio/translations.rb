@@ -46,7 +46,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Models::Audio::Translation, OpenAI::Models::Audio::TranslationVerbose]
+        # @return [OpenAI::Models::Audio::Translation, OpenAI::Models::Audio::TranslationVerbose, StringIO]
         #
         # @see OpenAI::Models::Audio::TranslationCreateParams
         def create(params)

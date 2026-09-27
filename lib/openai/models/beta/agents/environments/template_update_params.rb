@@ -45,8 +45,8 @@ module OpenAI
 
             # @!attribute network
             #   Network access available after setup completes. Omit to preserve the current
-            #   policy, or pass `null` to reset to disabled for GA requests or enabled for
-            #   alpha/beta requests.
+            #   policy, or pass `null` to reset to disabled for GA requests or enabled for beta
+            #   requests.
             #
             #   @return [OpenAI::Models::Beta::Agents::Environments::TemplateUpdateParams::Network, nil]
             optional(
@@ -118,8 +118,8 @@ module OpenAI
             #
             #   @param network [OpenAI::Models::Beta::Agents::Environments::TemplateUpdateParams::Network, nil]
             #     Network access available after setup completes. Omit to preserve the current
-            #     policy, or pass `null` to reset to disabled for GA requests or enabled for
-            #     alpha/beta requests.
+            #     policy, or pass `null` to reset to disabled for GA requests or enabled for beta
+            #     requests.
             #
             #   @param packages [OpenAI::Models::Beta::Agents::Environments::TemplateUpdateParams::Packages, nil]
             #     Packages installed before the runtime network policy applies.
@@ -150,8 +150,8 @@ module OpenAI
 
               # @!method initialize(access:, allowed_domains: nil)
               #   Network access available after setup completes. Omit to preserve the current
-              #   policy, or pass `null` to reset to disabled for GA requests or enabled for
-              #   alpha/beta requests.
+              #   policy, or pass `null` to reset to disabled for GA requests or enabled for beta
+              #   requests.
               #
               #   @param access [Symbol, OpenAI::Models::Beta::Agents::Environments::TemplateUpdateParams::Network::Access]
               #     The environment's network access mode.

@@ -163,7 +163,8 @@ module OpenAI
               ?tools: ::Array[OpenAI::Models::Beta::agent_tool_param]?
             }
 
-            type service_tier = :auto | :default | :flex | :priority | :fast
+            type service_tier =
+              :auto | :default | :flex | :priority | :fast | :ultrafast
 
             module ServiceTier
               extend OpenAI::Internal::Type::Enum
@@ -182,6 +183,9 @@ module OpenAI
 
               # Uses the fast service tier.
               FAST: :fast
+
+              # Uses the ultrafast service tier.
+              ULTRAFAST: :ultrafast
 
               def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::SessionCreateParams::Agent::service_tier]
             end

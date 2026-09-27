@@ -21,8 +21,11 @@ module OpenAI
         # Represents a transcription response returned by model, based on the provided input.
         variant -> { OpenAI::Audio::Transcription }
 
+        # Text, SRT, and VTT responses retain the SDK's readable IO return value.
+        variant StringIO
+
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Audio::TranscriptionVerbose, OpenAI::Models::Audio::TranscriptionDiarized, OpenAI::Models::Audio::Transcription)]
+        #   @return [Array(OpenAI::Models::Audio::TranscriptionVerbose, OpenAI::Models::Audio::TranscriptionDiarized, OpenAI::Models::Audio::Transcription, StringIO)]
       end
     end
   end

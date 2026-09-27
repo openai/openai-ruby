@@ -138,6 +138,7 @@ module OpenAI
           FLEX = :flex
           PRIORITY = :priority
           FAST = :fast
+          ULTRAFAST = :ultrafast
 
           # @!method self.values
           #   @return [Array<Symbol>]

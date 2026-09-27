@@ -2,7 +2,9 @@ module OpenAI
   module Models
     module Audio
       type translation_create_response =
-        OpenAI::Audio::Translation | OpenAI::Audio::TranslationVerbose
+        OpenAI::Audio::Translation
+        | OpenAI::Audio::TranslationVerbose
+        | StringIO
 
       module TranslationCreateResponse
         extend OpenAI::Internal::Type::Union
