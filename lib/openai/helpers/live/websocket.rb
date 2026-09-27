@@ -4,6 +4,17 @@ module OpenAI
   module Errors
     class LiveConnectionError < OpenAI::Errors::WebSocketConnectionError
       private def default_message = "Live WebSocket connection error."
+
+      private def sanitized_error_url(url)
+        sanitized = url.dup
+        sanitized.user = nil if sanitized.respond_to?(:user=)
+        sanitized.password = nil if sanitized.respond_to?(:password=)
+        sanitized.query = nil if sanitized.respond_to?(:query=)
+        sanitized.fragment = nil if sanitized.respond_to?(:fragment=)
+        sanitized
+      rescue ArgumentError, URI::Error
+        URI("wss://invalid")
+      end
     end
 
     class LiveProtocolError < OpenAI::Errors::WebSocketProtocolError
@@ -101,6 +112,7 @@ module OpenAI
       module ClientExtension
         include OpenAI::WebSocket::ClientRequest
 
+        # @api private
         def with_live_websocket_connection_request(websocket_base_url: nil, options: nil, &block)
           build = lambda do |deadline|
             build_shared_websocket_connection_request(

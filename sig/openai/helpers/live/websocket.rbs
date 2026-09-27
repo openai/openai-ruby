@@ -1,4 +1,17 @@
 module OpenAI
+  class Client
+    # @api private
+    def with_live_websocket_connection_request: (
+      ?websocket_base_url: String?,
+      ?options: OpenAI::request_opts?
+    ) {
+      (
+        OpenAI::Internal::Transport::BaseClient::request_input request,
+        ^-> void mark_handshake_completed
+      ) -> top
+    } -> top
+  end
+
   module Errors
     class LiveConnectionError < OpenAI::Errors::WebSocketConnectionError
     end

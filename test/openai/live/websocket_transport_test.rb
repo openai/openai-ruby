@@ -87,4 +87,28 @@ class OpenAI::Test::LiveWebSocketTransportTest < Minitest::Test
     assert_nil(error.cause)
     refute_includes(error.full_message, "private-payload")
   end
+
+  def test_default_transport_failure_keeps_client_base_url_credentials_out_of_errors
+    source_url = "http://fake-live-user:fake-live-secret@127.0.0.1:12345/v1"
+    api = OpenAI::Client.new(api_key: "fake-key", base_url: source_url)
+    requested = nil
+    failure = lambda do |endpoint, **|
+      requested = endpoint.url.dup
+      raise IOError, "fake-live-private-body"
+    end
+
+    error = Async::WebSocket::Client.stub(:open, failure) do
+      assert_raises(OpenAI::Errors::LiveConnectionError) { api.live.connect { flunk } }
+    end
+
+    assert_equal("fake-live-user:fake-live-secret", requested.userinfo)
+    assert_equal("http://fake-live-user:fake-live-secret@127.0.0.1:12345/v1", source_url)
+    assert_nil(error.url.userinfo)
+    assert_nil(error.cause)
+    assert_equal("/v1/live/sessions", error.url.path)
+    ["fake-live-user", "fake-live-secret", "fake-live-private-body"].each do |secret|
+      refute_includes(error.url.to_s, secret)
+      refute_includes(error.full_message, secret)
+    end
+  end
 end

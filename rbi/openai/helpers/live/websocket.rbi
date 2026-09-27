@@ -1,6 +1,26 @@
 # typed: strong
 
 module OpenAI
+  class Client < OpenAI::Internal::Transport::BaseClient
+    # @api private
+    sig do
+      params(
+        websocket_base_url: T.nilable(String),
+        options: T.nilable(OpenAI::RequestOptions::OrHash),
+        block: T
+          .proc
+          .params(
+            request: OpenAI::Internal::Transport::BaseClient::RequestInput,
+            mark_handshake_completed: T.proc.void
+          )
+          .returns(T.anything)
+      )
+        .returns(T.anything)
+    end
+    def with_live_websocket_connection_request(websocket_base_url: nil, options: nil, &block)
+    end
+  end
+
   module Errors
     class LiveConnectionError < OpenAI::Errors::WebSocketConnectionError
     end
@@ -90,7 +110,7 @@ module OpenAI
         type_parameters(:T)
           .params(
             websocket_base_url: T.nilable(String),
-            request_options: T.nilable(OpenAI::RequestOptions),
+            request_options: T.nilable(OpenAI::RequestOptions::OrHash),
             transport: T.untyped,
             transport_options: T::Hash[Symbol, T.anything],
             block: T.proc.params(connection: OpenAI::Live::Connection).returns(T.type_parameter(:T))
