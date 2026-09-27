@@ -29,7 +29,7 @@ module OpenAI
       attr_reader :type, :data
 
       def initialize(data:)
-        @type = data.fetch(:type).to_sym
+        @type = data.fetch(:type) { data.fetch("type") }.to_sym
         @data = freeze_json(data)
         freeze
       end
@@ -81,6 +81,17 @@ module OpenAI
 
       def close(code: 1000, reason: "")
         @poisoned ? abort : super
+      rescue StandardError
+        @poisoned = true
+        raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
+      end
+
+      # @api private
+      def abort
+        super
+      rescue StandardError
+        @poisoned = true
+        raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
       end
 
       private def write_text(text)
@@ -129,14 +140,25 @@ module OpenAI
         state = OpenAI::Internal::Type::Converter.new_coerce_state
         event = OpenAI::Internal::Type::Converter.coerce(union, payload, state: state)
         raise ArgumentError if state[:error] || !state.fetch(:exactness).fetch(:no).zero?
-        if event.is_a?(OpenAI::Internal::Type::BaseModel)
-          event.class.fields.each do |name, field|
-            if field.fetch(:required) &&
-                field.fetch(:mode) != :dump &&
-                field.fetch(:const) == OpenAI::Internal::OMIT &&
-                !event.to_h.key?(name)
-              raise ArgumentError
+        pending = [event]
+        until pending.empty?
+          value = pending.pop
+          case value
+          when OpenAI::Internal::Type::BaseModel
+            value.class.fields.each do |name, field|
+              if field.fetch(:required) &&
+                  field.fetch(:mode) != :dump &&
+                  field.fetch(:const) == OpenAI::Internal::OMIT &&
+                  !value.to_h.key?(name)
+                raise ArgumentError
+              end
             end
+
+            pending.concat(value.to_h.values)
+          when Hash
+            pending.concat(value.values)
+          when Array
+            pending.concat(value)
           end
         end
 
@@ -185,6 +207,7 @@ module OpenAI
 
         # @api private
         def with_live_websocket_connection_request(websocket_base_url: nil, options: nil, &block)
+          websocket_base_url = websocket_base_url&.to_s&.dup&.freeze
           build = lambda do |deadline|
             build_shared_websocket_connection_request(
               path: "live/sessions",

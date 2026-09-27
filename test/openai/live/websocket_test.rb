@@ -167,6 +167,23 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     assert_equal([nil, "del_1"] * 3, socket.writes.map { JSON.parse(_1).fetch("delegation_id") })
   end
 
+  def test_required_nullable_fields_in_selected_nested_models
+    socket = FakeSocket.new
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      tool = {type: "function", name: "lookup"}
+      event = {type: "response.item.create", item: {type: "additional_tools", role: "developer", tools: [tool]}}
+      error = assert_raises(ArgumentError) { connection.send_event(event) }
+      refute_includes(error.full_message, "lookup")
+      assert_empty(socket.writes)
+      tool[:parameters] = nil
+      tool[:strict] = nil
+      connection.send_event(event)
+      sent_tool = JSON.parse(socket.writes.fetch(0)).fetch("item").fetch("tools").first
+      assert_nil(sent_tool.fetch("parameters"))
+      assert_nil(sent_tool.fetch("strict"))
+    end
+  end
+
   def test_uncertain_write_cannot_be_replayed_on_later_sends_or_cleanup
     %i[typed raw].product([true, false]).each do |mode, explicit_close|
       socket = FakeSocket.new
@@ -253,6 +270,43 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     assert_predicate(leaf, :frozen?)
     assert_predicate(leaf.first, :frozen?)
     refute_includes(event.inspect, "private-payload")
+  end
+
+  def test_unknown_event_string_keys_keep_their_original_shape
+    source = {"type" => "session.future", "data" => ["private-payload"]}
+    event = OpenAI::Live::UnknownServerEvent.new(data: source)
+    assert_equal(:"session.future", event.type)
+    assert_same(source, event.data)
+    assert_equal(["private-payload"], event.to_h.fetch("data"))
+    assert_predicate(event.data.fetch("data"), :frozen?)
+    refute_includes(event.inspect, "private-payload")
+  end
+
+  def test_custom_cleanup_failures_are_sanitized_and_do_not_replace_application_errors
+    %i[close abort].each do |method|
+      socket = FakeSocket.new
+      socket.define_singleton_method(method) { |**| raise IOError, "private-payload" }
+      error = assert_raises(OpenAI::Errors::LiveConnectionError) do
+        client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+          if method == :abort
+            socket.define_singleton_method(:write) { |*| raise IOError, "write-private-payload" }
+            assert_raises(OpenAI::Errors::LiveConnectionError) { connection.send_event(type: "session.close") }
+          end
+        end
+      end
+
+      assert_nil(error.cause)
+      refute_includes(error.full_message, "private-payload")
+    end
+
+    socket = FakeSocket.new
+    socket.define_singleton_method(:abort) { raise IOError, "private-payload" }
+    original = RuntimeError.new("application failure")
+    error = assert_raises(RuntimeError) do
+      client.live.connect(transport: FakeTransport.new(socket)) { raise original }
+    end
+
+    assert_same(original, error)
   end
 
   def test_cyclic_invalid_events_are_rejected_and_shared_valid_values_are_allowed
@@ -412,6 +466,34 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
       attempts.map { |request| request.fetch(:headers).fetch("authorization") }
     )
     assert(socket.closed?)
+  end
+
+  def test_upgrade_retry_keeps_the_origin_selected_before_the_first_handshake
+    configured = workload_identity_client
+    base_url = +"wss://first.example/v1"
+    socket = FakeSocket.new
+    attempts = []
+    transport = Object.new
+    transport.define_singleton_method(:open) do |url:, headers:, **, &connection_block|
+      attempts << {url: url.to_s, auth: headers.fetch("authorization")}
+      if attempts.one?
+        base_url.replace("wss://other.example/v1")
+        raise OpenAI::Errors::LiveConnectionError.new(url: url, http_status: 401)
+      end
+
+      connection_block.call(socket)
+    end
+
+    tokens = ["stale-fake", "fresh-fake"]
+    configured.workload_identity_auth.stub(:get_token, -> (deadline:) { tokens.shift }) do
+      configured.workload_identity_auth.stub(:invalidate_token, -> { }) do
+        configured.live.connect(websocket_base_url: base_url, transport: transport) { |_connection| nil }
+      end
+    end
+
+    assert_equal(["wss://first.example/v1/live/sessions"] * 2, attempts.map { _1.fetch(:url) })
+    assert_equal(["Bearer stale-fake", "Bearer fresh-fake"], attempts.map { _1.fetch(:auth) })
+    assert_equal("wss://other.example/v1", base_url)
   end
 
   def test_post_upgrade_401_and_early_eof_never_reconnect_or_report_readiness

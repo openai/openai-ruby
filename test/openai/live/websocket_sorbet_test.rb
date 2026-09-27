@@ -23,6 +23,10 @@ class OpenAI::Test::LiveWebSocketSorbetTest < Minitest::Test
         T.assert_type!(request, OpenAI::Internal::Transport::BaseClient::RequestInput)
         mark_handshake_completed.call
       end
+
+      future_data = T.let({"type" => "session.future"}, T::Hash[String, T.anything])
+      future = OpenAI::Live::UnknownServerEvent.new(data: future_data)
+      T.assert_type!(future.data, T::Hash[T.any(String, Symbol), T.anything])
     RUBY
 
     root = File.expand_path("../../..", __dir__)

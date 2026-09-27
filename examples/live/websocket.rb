@@ -7,6 +7,7 @@ require "openai"
 # server's session.started before sending application commands.
 client = OpenAI::Client.new
 client.live.connect do |connection|
+  finished = false
   connection.send_event(type: "session.start", session: {model: "gpt-live-1", store: false})
   connection.each do |event|
     case event
@@ -16,10 +17,14 @@ client.live.connect do |connection|
     when OpenAI::Live::ErrorEvent
       # Do not log audio, session configuration, or unredacted server errors.
       warn("Live reported a session error; check the event in your application.")
+      finished = true
       break
     when OpenAI::Live::SessionClosedEvent
       puts("Live session closed")
+      finished = true
       break
     end
   end
+
+  warn("Live disconnected before session.closed; finalization was not confirmed.") unless finished
 end

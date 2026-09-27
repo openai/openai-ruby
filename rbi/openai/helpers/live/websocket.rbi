@@ -37,13 +37,13 @@ module OpenAI
       class UnknownServerEvent
         sig { returns(Symbol) }
         attr_reader :type
-        sig { returns(OpenAI::Internal::AnyHash) }
+        sig { returns(T::Hash[T.any(String, Symbol), T.anything]) }
         attr_reader :data
-        sig { params(data: OpenAI::Internal::AnyHash).returns(T.attached_class) }
+        sig { params(data: T::Hash[T.any(String, Symbol), T.anything]).returns(T.attached_class) }
         def self.new(data:)
         end
 
-        sig { returns(OpenAI::Internal::AnyHash) }
+        sig { returns(T::Hash[T.any(String, Symbol), T.anything]) }
         def to_h
         end
 
