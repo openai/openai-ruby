@@ -433,7 +433,7 @@ class OpenAI::Test::LiveTranscriptGrouperTest < Minitest::Test
     assert(caller.join(5))
     assert_equal(["Hello", "Hello world", :manual], 3.times.map { delivered.pop(timeout: 5) })
   ensure
-    release << true
+    release&.push(true)
     caller&.join(5)
     closer&.join(5)
   end
