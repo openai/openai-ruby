@@ -96,6 +96,11 @@ module OpenAI
         def accumulate_event(event:, current_snapshot:)
         end
 
+        # @api private
+        sig { params(event: T.untyped, items: T::Array[T.untyped]).void }
+        def accumulate_output(event, items)
+        end
+
         private
 
         sig { params(value: String, delta: String).returns(String) }

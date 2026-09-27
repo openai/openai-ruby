@@ -207,40 +207,48 @@ module OpenAI
             return nil
           end
 
+          if event.is_a?(OpenAI::Models::Responses::ResponseCompletedEvent)
+            @completed_response = event.response
+          else
+            accumulate_output(event, current_snapshot.output)
+          end
+
+          current_snapshot
+        end
+
+        # @api private
+        def accumulate_output(event, items)
           case event
           when OpenAI::Models::Responses::ResponseOutputItemAddedEvent
-            current_snapshot.output.push(isolated_value(event.item))
+            items.push(isolated_value(event.item))
 
           when OpenAI::Models::Responses::ResponseContentPartAddedEvent
-            output = current_snapshot.output[event.output_index]
+            output = items[event.output_index]
             if output.is_a?(OpenAI::Models::Responses::ResponseOutputMessage)
               output.content.push(isolated_value(event.part))
-              current_snapshot.output[event.output_index] = output
+              items[event.output_index] = output
             end
 
           when OpenAI::Models::Responses::ResponseTextDeltaEvent
-            output = current_snapshot.output[event.output_index]
+            output = items[event.output_index]
             if output.is_a?(OpenAI::Models::Responses::ResponseOutputMessage)
               content = output.content[event.content_index]
               if content.is_a?(OpenAI::Models::Responses::ResponseOutputText)
                 content.text = append_delta(content.text, event.delta)
                 output.content[event.content_index] = content
-                current_snapshot.output[event.output_index] = output
+                items[event.output_index] = output
               end
             end
 
           when OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent
-            output = current_snapshot.output[event.output_index]
+            output = items[event.output_index]
             if output.is_a?(OpenAI::Models::Responses::ResponseFunctionToolCall)
               output.arguments = append_delta(output.arguments || "", event.delta)
-              current_snapshot.output[event.output_index] = output
+              items[event.output_index] = output
             end
-
-          when OpenAI::Models::Responses::ResponseCompletedEvent
-            @completed_response = event.response
           end
 
-          current_snapshot
+          nil
         end
 
         private

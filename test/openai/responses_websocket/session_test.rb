@@ -65,6 +65,226 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
     end
   end
 
+  def test_caller_fed_preview_reset_does_not_steal_a_reader_or_replace_lane_finals
+    handler = lambda do |socket, _request|
+      assert_equal(%w[left right], [read(socket)["stream_id"], read(socket)["stream_id"]])
+      write(socket, type: "response.created", stream_id: "left", sequence_number: 0, response: {id: "resp_left"})
+      write(socket, type: "response.future", stream_id: "right", metadata: {value: "raw"})
+      write(
+        socket,
+        type: "response.output_item.added",
+        stream_id: "left",
+        sequence_number: 1,
+        output_index: 0,
+        item: {type: "function_call", id: "fc", call_id: "call", name: "data_only", arguments: ""}
+      )
+      terminal(socket, "right")
+      write(
+        socket,
+        type: "response.function_call_arguments.delta",
+        stream_id: "left",
+        sequence_number: 2,
+        item_id: "fc",
+        output_index: 0,
+        delta: "{\"preview\":true}"
+      )
+      write(
+        socket,
+        type: "response.incomplete",
+        stream_id: "left",
+        sequence_number: 3,
+        response: {id: "resp_left", status: "incomplete", incomplete_details: {reason: "max_output_tokens"}}
+      )
+      assert_equal("response.create", read(socket)["type"])
+      terminal(socket, "left", id: "resp_reused")
+    end
+
+    with_server(handler) do |client|
+      OpenAI::Responses::Session.open(client: client, limits: limits) do |session|
+        left = session.lane("left")
+        right = session.lane("right")
+        preview = OpenAI::Responses::IncrementalResponse.new
+        left.send_event(type: "response.create")
+        right.send_event(type: "response.create")
+        received = 3.times.map {
+          event = left.receive
+          preview.add(event)
+          event
+        }
+        assert_equal({value: "raw"}, right.receive.to_h[:metadata])
+        assert_equal("resp_right", right.get_final_response.id)
+        assert_equal("{\"preview\":true}", preview.output.first.arguments)
+        assert_equal("", received.fetch(1).item.arguments)
+        preview.reset
+        incomplete = left.receive
+        preview.add(incomplete)
+        assert_equal(incomplete.to_h, preview.terminal_event.to_h)
+        assert_nil(preview.terminal_event.response.output)
+        assert_nil(preview.output)
+        # The existing lane collector owns its own final response and may safely
+        # normalize omitted output to its done items. The optional helper does not.
+        assert_empty(left.get_final_response.output)
+        left.send_event(type: "response.create")
+        assert_equal("resp_reused", left.get_final_response.id)
+      end
+    end
+  end
+
+  def test_preview_rejects_invalid_created_response_without_losing_last_valid_state
+    malformed = [{}, {response: nil}, {response: 42}, {response: {id: "bad", output: "invalid"}}]
+    handler = lambda do |socket, _request|
+      write(
+        socket,
+        type: "response.created",
+        sequence_number: 0,
+        response: {
+          id: "resp_valid",
+          output: [
+            {
+              type: "message",
+              id: "msg",
+              content: [
+                {type: "output_text", text: "retained", annotations: []}
+              ]
+            }
+          ]
+        }
+      )
+      malformed.each do |data|
+        write(socket, type: "response.in_progress", sequence_number: 1, **data)
+        write(socket, type: "response.created", sequence_number: 2, **data)
+      end
+
+      write(
+        socket,
+        type: "response.output_text.delta",
+        sequence_number: 3,
+        item_id: "msg",
+        output_index: 0,
+        content_index: 0,
+        delta: " after"
+      )
+      terminal(socket, nil, id: "resp_valid")
+    end
+
+    with_server(handler) do |client|
+      client.responses.connect do |connection|
+        preview = OpenAI::Responses::IncrementalResponse.new
+        preview.add(connection.receive)
+        before = preview.output.map(&:to_h)
+        malformed.each do |_data|
+          # In-progress is unselected by this output-only helper. Raw lifecycle
+          # metadata stays available to the caller and does not replace output.
+          in_progress = connection.receive
+          assert_kind_of(OpenAI::Responses::ResponseInProgressEvent, in_progress)
+          preview.add(in_progress)
+          assert_equal(before, preview.output.map(&:to_h))
+          created = connection.receive
+          assert_kind_of(OpenAI::Responses::ResponseCreatedEvent, created)
+          error = assert_raises(OpenAI::Responses::SessionError) { preview.add(created) }
+          assert_equal("Invalid Responses WebSocket created response.", error.message)
+          assert_equal(:provisional, preview.phase)
+          assert_equal(before, preview.output.map(&:to_h))
+          assert_nil(preview.terminal_event)
+        end
+
+        preview.add(connection.receive)
+        assert_equal("retained after", preview.output.first.content.first.text)
+        preview.add(connection.receive)
+        assert_equal("resp_valid", preview.terminal_event.response.id)
+      end
+    end
+  end
+
+  def test_unrepresented_output_updates_never_leave_a_stale_provisional_snapshot
+    frames = [
+      [
+        {type: "mcp_call", id: "item", name: "data_only", arguments: "", server_label: "test"},
+        {type: "response.mcp_call_arguments.done", arguments: "corrected"}
+      ],
+      [
+        {type: "reasoning", id: "item", summary: []},
+        {
+          type: "response.reasoning_summary_part.added",
+          summary_index: 0,
+          part: {type: "summary_text", text: "new"}
+        }
+      ],
+      [
+        {
+          type: "code_interpreter_call",
+          id: "item",
+          code: nil,
+          container_id: "cn_synthetic",
+          status: "in_progress",
+          outputs: []
+        },
+        {type: "response.code_interpreter_call_code.delta", delta: "print('data only')"}
+      ],
+      [
+        {type: "reasoning", id: "item", summary: [], content: [{type: "reasoning_text", text: ""}]},
+        {type: "response.reasoning_text.done", content_index: 0, text: "corrected"}
+      ],
+      [
+        {type: "shell_call", id: "item", call_id: "call_synthetic", action: {commands: []}, status: "in_progress"},
+        {type: "response.shell_call_command.added", command_index: 0, command: "data only"}
+      ],
+      [
+        {type: "image_generation_call", id: "item", status: "in_progress", result: nil},
+        {
+          type: "response.image_generation_call.partial_image",
+          partial_image_index: 0,
+          partial_image_b64: "c3ludGhldGlj"
+        }
+      ]
+    ]
+    handler = lambda do |socket, _request|
+      frames.each do |item, update|
+        write(socket, type: "response.created", sequence_number: 0, response: {id: "resp_test", output: [item]})
+        write(socket, type: "response.in_progress", sequence_number: 1, response: {id: "resp_test"})
+        write(socket, type: "response.future.delta", output_index: 0, sequence_number: 2, opaque: "available")
+        write(socket, output_index: 0, item_id: "item", sequence_number: 3, **update)
+        write(
+          socket,
+          type: "response.incomplete",
+          sequence_number: 4,
+          response: {id: "resp_test", status: "incomplete", incomplete_details: {reason: "max_output_tokens"}}
+        )
+      end
+    end
+
+    with_server(handler) do |client|
+      client.responses.connect do |connection|
+        preview = OpenAI::Responses::IncrementalResponse.new
+        frames.each do |_item, update|
+          preview.add(connection.receive)
+          initial = preview.output
+          preview.add(connection.receive)
+          raw_future = connection.receive
+          assert_kind_of(OpenAI::Responses::UnknownServerEvent, raw_future)
+          preview.add(raw_future)
+          assert_equal("available", raw_future.to_h.fetch(:opaque))
+          assert_equal(initial, preview.output)
+          assert_equal(:provisional, preview.phase)
+          event = connection.receive
+          refute_kind_of(OpenAI::Responses::UnknownServerEvent, event)
+          before = event.to_h
+          preview.add(event)
+          assert_equal(:unavailable, preview.phase, update[:type])
+          assert_nil(preview.output)
+          assert_equal(before, event.to_h)
+          terminal = connection.receive
+          preview.add(terminal)
+          assert_equal(:terminal, preview.phase)
+          assert_equal(terminal.to_h, preview.terminal_event.to_h)
+          assert_nil(preview.output)
+          preview.add(event)
+          assert_equal(terminal.to_h, preview.terminal_event.to_h)
+        end
+      end
+    end
+  end
+
   def test_warmup_continuation_waits_for_fork_readiness_before_advancing_source
     handler = lambda do |socket, _request|
       warmup = read(socket)

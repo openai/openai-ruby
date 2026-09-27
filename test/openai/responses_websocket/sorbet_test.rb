@@ -61,6 +61,11 @@ class OpenAI::Test::ResponsesWebSocketSorbetTest < Minitest::Test
         lane = session.lane("main")
         lane.send_event(type: "response.create", model: "example-model")
         T.assert_type!(lane.receive, OpenAI::Responses::Connection::ServerEvent)
+        preview = OpenAI::Responses::IncrementalResponse.new
+        preview.add(lane.receive)
+        T.assert_type!(preview.phase, T.nilable(Symbol))
+        T.assert_type!(preview.terminal_event, T.nilable(OpenAI::Responses::Connection::ServerEvent))
+        preview.reset
         T.assert_type!(lane.get_final_response, OpenAI::Responses::Response)
         session.reconnect(restore: ->(current) { current.default.send_event(type: "response.create") })
       end
