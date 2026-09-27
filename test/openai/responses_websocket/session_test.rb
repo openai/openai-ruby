@@ -108,6 +108,50 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
     end
   end
 
+  def test_preview_rejects_invalid_created_response_without_losing_last_valid_state
+    malformed = [{}, {response: nil}, {response: 42}, {response: {id: "bad", output: "invalid"}}]
+    handler = lambda do |socket, _request|
+      write(socket, type: "response.created", sequence_number: 0,
+        response: {id: "resp_valid", output: [{type: "message", id: "msg", content: [
+          {type: "output_text", text: "retained", annotations: []}
+        ]}]})
+      malformed.each do |data|
+        write(socket, type: "response.in_progress", sequence_number: 1, **data)
+        write(socket, type: "response.created", sequence_number: 2, **data)
+      end
+      write(socket, type: "response.output_text.delta", sequence_number: 3,
+        item_id: "msg", output_index: 0, content_index: 0, delta: " after")
+      terminal(socket, nil, id: "resp_valid")
+    end
+
+    with_server(handler) do |client|
+      client.responses.connect do |connection|
+        preview = OpenAI::Responses::IncrementalResponse.new
+        preview.add(connection.receive)
+        before = preview.output.map(&:to_h)
+        malformed.each do |_data|
+          # In-progress is unselected by this output-only helper. Raw lifecycle
+          # metadata stays available to the caller and does not replace output.
+          in_progress = connection.receive
+          assert_kind_of(OpenAI::Responses::ResponseInProgressEvent, in_progress)
+          preview.add(in_progress)
+          assert_equal(before, preview.output.map(&:to_h))
+          created = connection.receive
+          assert_kind_of(OpenAI::Responses::ResponseCreatedEvent, created)
+          error = assert_raises(OpenAI::Responses::SessionError) { preview.add(created) }
+          assert_equal("Invalid Responses WebSocket created response.", error.message)
+          assert_equal(:provisional, preview.phase)
+          assert_equal(before, preview.output.map(&:to_h))
+          assert_nil(preview.terminal_event)
+        end
+        preview.add(connection.receive)
+        assert_equal("retained after", preview.output.first.content.first.text)
+        preview.add(connection.receive)
+        assert_equal("resp_valid", preview.terminal_event.response.id)
+      end
+    end
+  end
+
   def test_named_lane_steering_and_automatic_successor
     command = {type: "response.steer", previous_response_id: "resp_parent", input: "Change course"}
     handler = lambda do |socket, _request|

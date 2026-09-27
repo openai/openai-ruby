@@ -101,11 +101,6 @@ module OpenAI
         def accumulate_output(event, items)
         end
 
-        # @api private
-        sig { params(value: T.untyped).returns(T.untyped) }
-        def isolated_value(value)
-        end
-
         private
 
         sig { params(value: String, delta: String).returns(String) }

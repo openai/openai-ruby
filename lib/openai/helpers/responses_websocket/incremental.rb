@@ -46,11 +46,14 @@ module OpenAI
           @terminal_event = copy(event)
           @phase = :terminal
         when OpenAI::Responses::ResponseCreatedEvent
-          reset
-          response = copy(event).response
-          @output = response.output || []
-          return unavailable unless @output.is_a?(Array)
+          response = copy(event)[:response]
+          unless response.is_a?(OpenAI::Responses::Response) &&
+              (response[:output].nil? || response[:output].is_a?(Array))
+            raise SessionError, "Invalid Responses WebSocket created response."
+          end
 
+          reset
+          @output = response[:output] || []
           @phase = :provisional
         when OpenAI::Responses::ResponseOutputItemAddedEvent,
           OpenAI::Responses::ResponseOutputItemDoneEvent,

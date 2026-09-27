@@ -103,7 +103,6 @@ module OpenAI
       class ResponseStreamState
         def initialize: (text_format: untyped, ?starting_after: Integer?) -> void
         def accumulate_output: (untyped event, Array[untyped] items) -> void
-        def isolated_value: (untyped value) -> untyped
       end
     end
   end

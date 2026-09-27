@@ -251,17 +251,6 @@ module OpenAI
           nil
         end
 
-        # Materialize fresh containers before snapshot accumulation mutates them.
-        # Coercing an already-typed model returns it unchanged, so first use the
-        # model's recursive raw representation. Unknown union fallbacks stay raw.
-        # @api private
-        def isolated_value(value)
-          raw = OpenAI::Internal::Type::BaseModel.recursively_to_h(value, convert: false)
-          return raw unless value.is_a?(OpenAI::Internal::Type::BaseModel)
-
-          OpenAI::Internal::Type::Converter.coerce(value.class, raw)
-        end
-
         private
 
         # Reuse a buffer only until it becomes a caller-visible snapshot. The
@@ -272,6 +261,16 @@ module OpenAI
           buffer = value + delta
           @unexposed_buffers[buffer] = true
           buffer
+        end
+
+        # Materialize fresh containers before snapshot accumulation mutates them.
+        # Coercing an already-typed model returns it unchanged, so first use the
+        # model's recursive raw representation. Unknown union fallbacks stay raw.
+        def isolated_value(value)
+          raw = OpenAI::Internal::Type::BaseModel.recursively_to_h(value, convert: false)
+          return raw unless value.is_a?(OpenAI::Internal::Type::BaseModel)
+
+          OpenAI::Internal::Type::Converter.coerce(value.class, raw)
         end
 
         def parse_structured_text(text)
