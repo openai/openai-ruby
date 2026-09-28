@@ -20,11 +20,10 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :calculate_output
 
-        # A StringCheckGrader object that performs a string comparison between input and
-        # reference using a specified operation.
         sig {
           returns(
             T.any(
+              T::Hash[Symbol, OpenAI::Graders::MultiGrader::Grader::Variants],
               OpenAI::Graders::StringCheckGrader,
               OpenAI::Graders::TextSimilarityGrader,
               OpenAI::Graders::PythonGrader,
@@ -51,6 +50,16 @@ module OpenAI
             calculate_output: String,
 
             graders: T.any(
+              T::Hash[
+                Symbol,
+                T.any(
+                  OpenAI::Graders::StringCheckGrader::OrHash,
+                  OpenAI::Graders::TextSimilarityGrader::OrHash,
+                  OpenAI::Graders::PythonGrader::OrHash,
+                  OpenAI::Graders::ScoreModelGrader::OrHash,
+                  OpenAI::Graders::LabelModelGrader::OrHash
+                )
+              ],
               OpenAI::Graders::StringCheckGrader::OrHash,
               OpenAI::Graders::TextSimilarityGrader::OrHash,
               OpenAI::Graders::PythonGrader::OrHash,
@@ -69,8 +78,6 @@ module OpenAI
           # A formula to calculate the output based on grader results.
           calculate_output:,
 
-          # A StringCheckGrader object that performs a string comparison between input and
-          # reference using a specified operation.
           graders:,
 
           # The name of the grader.
@@ -87,6 +94,7 @@ module OpenAI
             {
               calculate_output: String,
               graders: T.any(
+                T::Hash[Symbol, OpenAI::Graders::MultiGrader::Grader::Variants],
                 OpenAI::Graders::StringCheckGrader,
                 OpenAI::Graders::TextSimilarityGrader,
                 OpenAI::Graders::PythonGrader,
@@ -120,6 +128,31 @@ module OpenAI
           def self.variants
           end
 
+        end
+
+        module Grader
+          extend OpenAI::Internal::Type::Union
+
+          Variants = T.type_alias { OpenAI::Graders::MultiGrader::Graders::Variants }
+
+          sig { override.returns(T::Array[OpenAI::Graders::MultiGrader::Grader::Variants]) }
+          def self.variants
+          end
+        end
+
+        module GradersValue
+          extend OpenAI::Internal::Type::Union
+
+          Variants = T.type_alias {
+            T.any(
+              T::Hash[Symbol, OpenAI::Graders::MultiGrader::Grader::Variants],
+              OpenAI::Graders::MultiGrader::Graders::Variants
+            )
+          }
+
+          sig { override.returns(T::Array[OpenAI::Graders::MultiGrader::GradersValue::Variants]) }
+          def self.variants
+          end
         end
 
       end
