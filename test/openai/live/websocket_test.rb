@@ -257,6 +257,18 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     end
   end
 
+  def test_non_string_or_symbol_key_cannot_select_a_different_wire_command
+    key = Object.new
+    key.define_singleton_method(:to_s) { "type" }
+    socket = FakeSocket.new
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      assert_raises(ArgumentError) { connection.send_event({:type => "session.close", key => "response.create"}) }
+      assert_empty(socket.writes)
+      connection.send_event("type" => "session.close")
+      assert_equal("session.close", JSON.parse(socket.writes.first).fetch("type"))
+    end
+  end
+
   def test_a_typed_model_cannot_dispatch_a_different_event_by_overriding_its_constant
     socket = FakeSocket.new
     client.live.connect(transport: FakeTransport.new(socket)) do |connection|

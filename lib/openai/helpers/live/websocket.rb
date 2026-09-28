@@ -210,7 +210,7 @@ module OpenAI
           when Hash
             keys = {}
             value.each_key do |key|
-              next unless key.is_a?(String) || key.is_a?(Symbol)
+              raise ArgumentError unless key.is_a?(String) || key.is_a?(Symbol)
               name = key.to_s
               raise ArgumentError if keys.key?(name)
               keys[name] = true
