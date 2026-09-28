@@ -245,6 +245,161 @@ class OpenAI::Test::ResponsesWebSocketWorkflowsTest < Minitest::Test
     GC.start
   end
 
+  def test_bounded_receive_counts_utf8_fragments_allows_ping_and_resets_between_messages
+    data = JSON.generate(delta_event("hello 🌍", lane: "main"))
+    handler = lambda do |socket|
+      read_event(socket)
+      midpoint = data.b.index("🌍".b) + 1
+      2.times do
+        socket.write_frame(Protocol::WebSocket::TextFrame.new(false).pack(data.byteslice(0, midpoint)))
+        # Control frames must work even when they exceed the remaining message bytes.
+        socket.write_frame(Protocol::WebSocket::PingFrame.new.pack("p" * 125))
+        socket.write_frame(Protocol::WebSocket::ContinuationFrame.new(true).pack(data.byteslice(midpoint..)))
+        socket.flush
+      end
+
+      2.times do
+        pong = socket.read_frame
+        assert_instance_of(Protocol::WebSocket::PongFrame, pong)
+        assert_equal("p" * 125, pong.unpack)
+      end
+    end
+
+    with_server(handler) do |client|
+      client
+        .responses
+        .connect(
+          transport_options: {max_message_bytes: data.bytesize, max_message_frames: 2}
+        ) do |connection|
+          connection.response.create(model: "example-model", input: "test", stream_id: "main")
+          2.times do
+            event = connection.receive
+            assert_kind_of(OpenAI::Responses::ResponseTextDeltaEvent, event)
+            assert_equal("hello 🌍", event.delta)
+          end
+          # Native pongs flush on the next read. The server then closes after both.
+          assert_nil(connection.receive)
+        end
+    end
+  end
+
+  def test_bounded_receive_rejects_truncated_oversized_frame_before_waiting_for_payload
+    peer_closed = Async::Queue.new
+    handler = lambda do |socket|
+      read_event(socket)
+      # Write a real extended-length header with no body, leaving the peer open.
+      # An unbounded reader waits for data that will never arrive.
+      frame = Protocol::WebSocket::TextFrame.new.pack("")
+      def frame.length = 1_048_576
+      socket.write_frame(frame)
+      socket.flush
+      begin
+        assert_nil(socket.read)
+      rescue EOFError, Protocol::WebSocket::ClosedError
+        nil
+      ensure
+        peer_closed.enqueue(true)
+      end
+    end
+
+    with_server(handler) do |client|
+      client.responses.connect(transport_options: {max_message_bytes: 1_024}) do |connection|
+        connection.response.create(model: "example-model", input: "test")
+        # An assertion cannot be sanitized as a transport error if this times out.
+        Async::Task.current.with_timeout(2, Minitest::Assertion) do
+          assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive }
+          assert(peer_closed.dequeue)
+        end
+
+        assert_predicate(connection, :closed?)
+        assert_raises(OpenAI::Errors::ResponsesConnectionError) do
+          connection.response.create(model: "example-model", input: "must not replay")
+        end
+      end
+    end
+  end
+
+  def test_bounded_receive_rejects_message_one_byte_past_budget
+    data = JSON.generate(delta_event("synthetic private text 🌍", lane: "main"))
+    handler = lambda do |socket|
+      read_event(socket)
+      midpoint = data.b.index("🌍".b) + 1
+      socket.write_frame(Protocol::WebSocket::TextFrame.new(false).pack(data.byteslice(0, midpoint)))
+      socket.write_frame(Protocol::WebSocket::ContinuationFrame.new(true).pack(data.byteslice(midpoint..)))
+      socket.flush
+    end
+
+    with_server(handler) do |client|
+      client.responses.connect(transport_options: {max_message_bytes: data.bytesize - 1}) do |connection|
+        connection.response.create(model: "example-model", input: "test")
+        error = assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive }
+        refute_includes(error.full_message, "synthetic private text")
+        assert_predicate(connection, :closed?)
+      end
+    end
+  end
+
+  def test_bounded_receive_rejects_empty_continuations_before_unbounded_frame_buffering
+    peer_closed = Async::Queue.new
+    handler = lambda do |socket|
+      read_event(socket)
+      socket.write_frame(Protocol::WebSocket::TextFrame.new(false).pack("{"))
+      3.times { socket.write_frame(Protocol::WebSocket::ContinuationFrame.new(false).pack("")) }
+      socket.flush
+      begin
+        assert_nil(socket.read)
+      rescue EOFError, Protocol::WebSocket::ClosedError
+        nil
+      ensure
+        peer_closed.enqueue(true)
+      end
+    end
+
+    with_server(handler) do |client|
+      client.responses.connect(transport_options: {max_message_bytes: 1_024, max_message_frames: 3}) do |connection|
+        connection.response.create(model: "example-model", input: "test")
+        Async::Task.current.with_timeout(2, Minitest::Assertion) do
+          assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive }
+          assert(peer_closed.dequeue)
+        end
+
+        assert_predicate(connection, :closed?)
+      end
+    end
+  end
+
+  def test_frame_only_limit_rejects_large_fourth_frame_before_reading_its_body
+    peer_closed = Async::Queue.new
+    handler = lambda do |socket|
+      read_event(socket)
+      socket.write_frame(Protocol::WebSocket::TextFrame.new(false).pack("{"))
+      2.times { socket.write_frame(Protocol::WebSocket::ContinuationFrame.new(false).pack("")) }
+      frame = Protocol::WebSocket::ContinuationFrame.new(false).pack("")
+      def frame.length = 1_048_576
+      socket.write_frame(frame)
+      socket.flush
+      begin
+        assert_nil(socket.read)
+      rescue EOFError, Protocol::WebSocket::ClosedError
+        nil
+      ensure
+        peer_closed.enqueue(true)
+      end
+    end
+
+    with_server(handler) do |client|
+      client.responses.connect(transport_options: {max_message_frames: 3}) do |connection|
+        connection.response.create(model: "example-model", input: "test")
+        Async::Task.current.with_timeout(2, Minitest::Assertion) do
+          assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive }
+          assert(peer_closed.dequeue)
+        end
+
+        assert_predicate(connection, :closed?)
+      end
+    end
+  end
+
   def test_operation_deadline_interrupts_an_idle_read_and_does_not_replay
     requests = []
     peer_closed = Async::Queue.new
