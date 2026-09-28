@@ -186,8 +186,8 @@ module OpenAI
           when OpenAI::Internal::Type::BaseModel
             data = value.to_h
             field = value.class.known_fields[:type]
-            if field && field.fetch(:const) != OpenAI::Internal::OMIT && data.key?(:type)
-              type = data.fetch(:type)
+            if field && field.fetch(:const) != OpenAI::Internal::OMIT && (data.key?(:type) || data.key?("type"))
+              type = data.fetch(:type) { data.fetch("type") }
               unless (type.is_a?(String) || type.is_a?(Symbol)) && type.to_s == field.fetch(:const).to_s
                 raise ArgumentError
               end

@@ -233,6 +233,22 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     end
   end
 
+  def test_string_keyed_typed_models_cannot_override_or_collide_discriminators
+    socket = FakeSocket.new
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      [
+        OpenAI::Live::SessionCloseEvent.new("type" => "response.create"),
+        OpenAI::Live::SessionCloseEvent.new(:type => :"session.close", "type" => "response.create")
+      ].each do |invalid|
+        assert_raises(ArgumentError) { connection.send_event(invalid) }
+        assert_empty(socket.writes)
+      end
+
+      connection.send_event(OpenAI::Live::SessionCloseEvent.new("type" => "session.close"))
+      assert_equal("session.close", JSON.parse(socket.writes.first).fetch("type"))
+    end
+  end
+
   def test_uncertain_write_cannot_be_replayed_on_later_sends_or_cleanup
     %i[typed raw].product([true, false]).each do |mode, explicit_close|
       socket = FakeSocket.new
