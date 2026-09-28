@@ -124,9 +124,6 @@ module OpenAI
           end
         end
 
-        # rubocop:disable Style/HashEachMethods
-        # rubocop:disable Style/CaseEquality
-
         # @api public
         #
         # @param other [Object]
@@ -255,9 +252,6 @@ module OpenAI
             T.any(*types)
           end
         end
-
-        # rubocop:enable Style/CaseEquality
-        # rubocop:enable Style/HashEachMethods
 
         # @api private
         #

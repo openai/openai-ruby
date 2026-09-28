@@ -188,7 +188,6 @@ module OpenAI
           #
           # @return [Object]
           def coerce(target, value, state: OpenAI::Internal::Type::Converter.new_coerce_state)
-            # rubocop:disable Metrics/BlockNesting
             exactness = state.fetch(:exactness)
 
             case target
@@ -278,7 +277,6 @@ module OpenAI
 
             exactness[:no] += 1
             value
-            # rubocop:enable Metrics/BlockNesting
           end
 
           # @api private

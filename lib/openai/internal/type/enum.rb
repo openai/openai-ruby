@@ -62,9 +62,7 @@ module OpenAI
         #
         # @return [Boolean]
         def ==(other)
-          # rubocop:disable Style/CaseEquality
           OpenAI::Internal::Type::Enum === other && other.values.to_set == values.to_set
-          # rubocop:enable Style/CaseEquality
         end
 
         # @api public

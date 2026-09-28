@@ -17,7 +17,6 @@ module OpenAI
       #
       # @return [Enumerable<generic<Elem>>]
       private def iterator
-        # rubocop:disable Metrics/BlockLength
         @iterator ||= OpenAI::Internal::Util.chain_fused(@stream) do |y|
           consume = false
           decoder = OpenAI::Helpers::Streaming::ResponseEventDecoder.new(model: @model)
@@ -62,7 +61,6 @@ module OpenAI
             end
           end
         end
-        # rubocop:enable Metrics/BlockLength
       end
     end
   end

@@ -246,7 +246,6 @@ module OpenAI
       finished = false
       request_may_have_been_sent = false
 
-      # rubocop:disable Metrics/BlockLength
       enum = Enumerator.new do |y|
         next if finished
 
@@ -331,7 +330,6 @@ module OpenAI
           )
         )
       end
-      # rubocop:enable Metrics/BlockLength
 
       _, response = enum.next
       body = OpenAI::Internal::Util.fused_enum(enum, external: true) do

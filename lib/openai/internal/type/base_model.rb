@@ -97,8 +97,6 @@ module OpenAI
               end
             end
 
-            # rubocop:disable Style/CaseEquality
-            # rubocop:disable Metrics/BlockLength
             define_method(name_sym) do
               target = type_fn.call
 
@@ -142,8 +140,6 @@ module OpenAI
                 end
               end
             end
-            # rubocop:enable Metrics/BlockLength
-            # rubocop:enable Style/CaseEquality
           end
 
           # @api private
@@ -301,7 +297,6 @@ module OpenAI
             data = instance.to_h
             viability = instance.instance_variable_get(:@coerced)
 
-            # rubocop:disable Metrics/BlockLength
             fields.each do |name, field|
               mode, required, target = field.fetch_values(:mode, :required, :type)
               api_name, nilable, const = field.fetch_values(:api_name, :nilable, :const)
@@ -337,7 +332,6 @@ module OpenAI
               viability.store(name, state.fetch(:error) || true)
               data.store(name, converted)
             end
-            # rubocop:enable Metrics/BlockLength
 
             keys.each { data.store(_1, val.fetch(_1)) }
             instance
