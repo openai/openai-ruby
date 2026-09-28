@@ -363,7 +363,7 @@ class OpenAI::Test::RealtimeTranslationTransportTest < Minitest::Test
       server_task = task.async { server.run.wait }
       api = OpenAI::Client.new(api_key: "fake-local", base_url: "http://127.0.0.1:#{port}/v1", timeout: 5)
       task.with_timeout(5) do
-        cancelled = Class.new(StandardError).new("consumer stopped")
+        cancelled = Timeout::Error.new("consumer's own timeout")
         raised = assert_raises(cancelled.class) do
           api.realtime.connect_translation(model: "gpt-realtime-translate") do |connection|
             connection.finish(timeout: 1) do |event|

@@ -48,6 +48,52 @@ class OpenAI::Test::RealtimeTranslationConnectionTest < Minitest::Test
     assert_predicate(socket, :closed?)
   end
 
+  def test_injected_threaded_reader_and_finish_do_not_steal_each_others_events
+    entered = Queue.new
+    release = Queue.new
+    socket = FakeSocket.new(
+      JSON.generate(type: "session.input_transcript.delta", event_id: "i1", delta: "input"),
+      JSON.generate(type: "session.output_transcript.delta", event_id: "o1", delta: "last"),
+      JSON.generate(type: "session.closed", event_id: "s1")
+    )
+    socket.define_singleton_method(:read) do
+      entered << :reading
+      release.pop
+      super()
+    end
+
+    client.realtime.connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |c|
+      reader = Thread.new { c.receive }
+      assert_equal(:reading, entered.pop(timeout: 1))
+      assert_raises(OpenAI::Errors::TranslationConnectionError) { c.finish(timeout: 2) { flunk } }
+      assert_empty(socket.writes, "finish cannot send a close while another reader is in flight")
+      release << true
+      assert_equal("input", reader.value.delta)
+
+      events = []
+      finisher = Thread.new { c.finish(timeout: 2) { |event| events << event } }
+      assert_equal(:reading, entered.pop(timeout: 1))
+      assert_raises(OpenAI::Errors::TranslationConnectionError) { c.receive }
+      assert_raises(OpenAI::Errors::TranslationConnectionError) { c.receive_raw }
+      assert_raises(OpenAI::Errors::TranslationConnectionError) { c.finish(timeout: 2) { flunk } }
+      release << true
+      assert_equal(:reading, entered.pop(timeout: 1))
+      release << true
+      terminal = finisher.value
+      assert_equal("last", events.first.delta)
+      assert_same(terminal, events.last)
+      assert_same(terminal, c.finish(timeout: 1) { flunk("must not replay") })
+      assert_equal([{"type" => "session.close"}], socket.writes.map { |message| JSON.parse(message) })
+    ensure
+      reader&.kill
+      finisher&.kill
+      reader&.join
+      finisher&.join
+    end
+
+    assert_predicate(socket, :closed?)
+  end
+
   def test_translation_drains_final_output_after_the_close_command
     socket = FakeSocket.new(
       JSON.generate(

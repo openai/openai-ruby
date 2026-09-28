@@ -54,12 +54,22 @@ module OpenAI
     class TranslationConnection < OpenAI::WebSocket::Connection
       include OpenAI::WebSocket::Protocol
 
+      # Timeout implementations before Ruby 4 raise StandardError through the
+      # scheduler. Cross transport error wrappers without changing raw callers.
+      # rubocop:disable Lint/InheritException
+      class FinishTimeout < Exception
+      end
+      # rubocop:enable Lint/InheritException
+
+      private_constant :FinishTimeout
+
       # @api private
       def initialize(socket:, url:)
         super
         @poisoned = false
         @closed = false
         @write_mutex = Mutex.new
+        @read_state_mutex = Mutex.new
         @active_reads = 0
         @server_event_types = OpenAI::Realtime::RealtimeTranslationServerEvent.variants.to_h do |variant|
           [variant.fields.fetch(:type).fetch(:const).to_s, variant]
@@ -87,22 +97,25 @@ module OpenAI
           raise ArgumentError, "Translation finish timeout must be finite and positive."
         end
 
-        return @finish_terminal if @finish_terminal
-        raise @finish_error if @finish_error
-        if @active_reads.positive? || @finish_requested || @finish_owner
-          raise connection_error("Translation finish must run on the existing receive owner, between reads.")
-        end
-
         require "timeout"
 
-        @finish_owner = Fiber.current
+        @read_state_mutex.synchronize do
+          return @finish_terminal if @finish_terminal
+          raise @finish_error if @finish_error
+          if @active_reads.positive? || @finish_requested || @finish_owner
+            raise connection_error("Translation finish must run on the existing receive owner, between reads.")
+          end
+
+          @finish_owner = Fiber.current
+        end
+
         begin
-          Timeout.timeout(seconds) do
+          Timeout.timeout(seconds, FinishTimeout) do
             write_text(encode_client_event(type: "session.close"), finish: true)
             while (event = receive)
               yield(event)
               if event.is_a?(OpenAI::Realtime::RealtimeTranslationSessionClosedEvent)
-                @finish_terminal = event
+                @read_state_mutex.synchronize { @finish_terminal = event }
                 return event
               end
             end
@@ -110,11 +123,15 @@ module OpenAI
             raise connection_error("Translation socket closed before session.closed.")
           end
 
+        rescue FinishTimeout
+          error = Timeout::Error.new("Timed out finishing the Translation session.")
+          @read_state_mutex.synchronize { @finish_error = error }
+          raise error, cause: nil
         rescue StandardError => error
-          @finish_error = error
+          @read_state_mutex.synchronize { @finish_error = error }
           raise
         ensure
-          @finish_owner = nil
+          @read_state_mutex.synchronize { @finish_owner = nil }
         end
       end
 
@@ -163,11 +180,14 @@ module OpenAI
       end
 
       private def read_raw_message
-        if @finish_owner && @finish_owner != Fiber.current
-          raise connection_error("Translation finish must run on the existing receive owner, between reads.")
+        @read_state_mutex.synchronize do
+          if @finish_owner && @finish_owner != Fiber.current
+            raise connection_error("Translation finish must run on the existing receive owner, between reads.")
+          end
+
+          @active_reads += 1
         end
 
-        @active_reads += 1
         begin
           raise connection_error("Cannot read from a failed Realtime Translation WebSocket.") if @poisoned
           return nil if @closed
@@ -178,7 +198,7 @@ module OpenAI
           @poisoned = true
           raise OpenAI::Errors::TranslationConnectionError.new(url: @url), cause: nil
         ensure
-          @active_reads -= 1
+          @read_state_mutex.synchronize { @active_reads -= 1 }
         end
       end
 
