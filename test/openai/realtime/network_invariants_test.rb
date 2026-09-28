@@ -305,6 +305,50 @@ class OpenAI::Test::RealtimeNetworkInvariantsTest < Minitest::Test
     end
   end
 
+  def test_translation_proxy_uses_default_ports_when_the_sdk_request_did_not_supply_one
+    [["https", 443], ["http", 80]].each do |scheme, expected_port|
+      proxy = TCPServer.new("127.0.0.1", 0)
+      request = Queue.new
+      proxy_thread = Thread.new do
+        downstream = proxy.accept
+        request << read_http_headers(downstream)
+        downstream.write("HTTP/1.1 407 Proxy Authentication Required\r\nContent-Length: 0\r\n\r\n")
+      ensure
+        downstream&.close
+      end
+
+      url = "http://proxy-user:proxy-pass@127.0.0.1:#{proxy.local_address.ip_port}"
+      with_env(
+        "http_proxy" => url,
+        "https_proxy" => url,
+        "HTTP_PROXY" => nil,
+        "HTTPS_PROXY" => nil,
+        "no_proxy" => "",
+        "NO_PROXY" => ""
+      ) do
+        client = OpenAI::Client.new(
+          api_key: "origin-secret",
+          base_url: "#{scheme}://realtime-proxy-test.invalid/v1",
+          timeout: 2,
+          max_retries: 0
+        )
+        assert_raises(OpenAI::Errors::TranslationConnectionError) do
+          client.realtime.connect_translation(model: "gpt-realtime-translate") { flunk("Proxy rejected the tunnel") }
+        end
+      end
+
+      connect = request.pop(timeout: 1)
+      refute_nil(connect)
+      assert_match(%r{\ACONNECT realtime-proxy-test\.invalid:#{expected_port} HTTP/1\.1\r\n}, connect)
+      assert_includes(connect.downcase, "proxy-authorization: basic ")
+      refute_includes(connect, "origin-secret")
+    ensure
+      proxy_thread&.kill
+      proxy_thread&.join
+      proxy&.close
+    end
+  end
+
   def test_sideband_proxy_keeps_call_ids_and_both_credentials_out_of_traces
     Traces::Backend::Capture.spans.clear
     wire_target = nil
