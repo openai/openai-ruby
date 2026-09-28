@@ -114,6 +114,7 @@ module OpenAI
       end
 
       private def encode_client_event(event)
+        validate_client_keys!(event)
         union = OpenAI::Realtime::RealtimeTranslationClientEvent
         payload = OpenAI::Internal::Type::Converter.dump(union, event)
         type = payload[:type] || payload["type"] if payload.is_a?(Hash)
@@ -123,6 +124,33 @@ module OpenAI
         JSON.generate(OpenAI::Internal::Type::Converter.dump(union, coerced), max_nesting: false)
       rescue StandardError, SystemStackError
         raise ArgumentError, "Invalid Realtime Translation client event.", cause: nil
+      end
+
+      # A merged string-keyed JSON event and symbol-keyed override must not
+      # silently change the command or the configuration that is sent.
+      private def validate_client_keys!(event)
+        visited = {}.compare_by_identity
+        pending = [event]
+        until pending.empty?
+          item = pending.pop
+          next if visited.key?(item)
+          visited[item] = true
+          case item
+          when OpenAI::Internal::Type::BaseModel
+            pending << item.to_h
+          when Hash
+            names = {}
+            item.each do |key, value|
+              name = key.to_s
+              raise ArgumentError if names.key?(name)
+              names[name] = true
+              pending << value
+            end
+
+          when Array
+            pending.concat(item)
+          end
+        end
       end
 
       private def parse_event(data)
@@ -152,16 +180,26 @@ module OpenAI
 
           children = case value
           when OpenAI::Internal::Type::BaseModel
+            data = value.to_h
             value.class.fields.each do |name, field|
+              const = field.fetch(:const)
               if field.fetch(:required) &&
                   field.fetch(:mode) != (outbound ? :coerce : :dump) &&
-                  (!outbound || field.fetch(:const) == OpenAI::Internal::OMIT) &&
-                  !value.to_h.key?(name)
+                  (!outbound || const == OpenAI::Internal::OMIT) &&
+                  !data.key?(name)
+                raise ArgumentError
+              end
+
+              next if const == OpenAI::Internal::OMIT || !data.key?(name)
+              actual = data.fetch(name)
+              if const.is_a?(Symbol)
+                raise ArgumentError unless (actual.is_a?(String) || actual.is_a?(Symbol)) && actual.to_s == const.to_s
+              elsif actual != const
                 raise ArgumentError
               end
             end
 
-            value.to_h.values
+            data.values
           when Hash
             value.values
           when Array

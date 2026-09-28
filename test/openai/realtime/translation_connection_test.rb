@@ -325,4 +325,45 @@ class OpenAI::Test::RealtimeTranslationConnectionTest < Minitest::Test
         assert_equal("fake-private-transcript", current.fetch(:value))
       end
   end
+
+  def test_known_events_cannot_contain_a_different_session_type
+    session = {id: "rt_fake", type: "realtime", model: "gpt-realtime-translate", expires_at: 2_000_000_000, audio: {}}
+    socket = FakeSocket.new(
+      JSON.generate(type: "session.created", event_id: "e1", session: session),
+      JSON.generate(type: "session.updated", event_id: "e2", session: session.merge(type: "transcription")),
+      JSON.generate(type: "session.updated", event_id: "e3", session: session.merge(type: "translation"))
+    )
+    client.realtime.connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |c|
+      2.times do
+        error = assert_raises(OpenAI::Errors::TranslationProtocolError) { c.receive }
+        assert_nil(error.cause)
+      end
+
+      valid = c.receive
+      assert_instance_of(OpenAI::Realtime::RealtimeTranslationSessionUpdatedEvent, valid)
+      assert_equal(:translation, valid.session.type)
+    end
+  end
+
+  def test_symbol_overrides_cannot_change_a_different_string_keyed_command
+    socket = FakeSocket.new
+    client.realtime.connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |c|
+      [
+        {:type => "session.close", "type" => "session.input_audio_buffer.append", :audio => "AA=="},
+        {"type" => "session.input_audio_buffer.append", :audio => "AA==", :type => "session.close"},
+        {type: "session.update", session: {audio: {output: {"language" => "fr", :language => "en"}}}},
+        {
+          :type => "session.update",
+          "session" => {audio: {output: {language: "fr"}}},
+          :session => {audio: {output: {language: "en"}}}
+        }
+      ].each do |conflicting|
+        assert_raises(ArgumentError) { c.send_event(conflicting) }
+      end
+
+      assert_empty(socket.writes)
+      c.send_event({"type" => "session.update", "session" => {"audio" => {"output" => {"language" => "fr"}}}})
+      assert_equal("fr", JSON.parse(socket.writes.fetch(0)).dig("session", "audio", "output", "language"))
+    end
+  end
 end
