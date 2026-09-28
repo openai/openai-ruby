@@ -249,6 +249,54 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     end
   end
 
+  def test_typed_initial_user_cannot_send_as_developer_but_legitimate_roles_remain_available
+    socket = FakeSocket.new
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      content = [{text: "private-payload"}]
+      [
+        OpenAI::Live::InitialItem::User.new(content: content, role: :developer),
+        OpenAI::Live::InitialItem::User.new("content" => content, "role" => "developer")
+      ].each do |item|
+        error = assert_raises(ArgumentError) do
+          connection.send_event(type: "session.start", session: {model: "gpt-live-1", input: [item]})
+        end
+
+        assert_nil(error.cause)
+        refute_includes(error.full_message, "private-payload")
+        assert_empty(socket.writes)
+      end
+
+      [
+        OpenAI::Live::InitialItem::User.new(content: content),
+        OpenAI::Live::InitialItem::Developer.new(content: content, role: "developer"),
+        {role: "user", content: content}
+      ].each do |item|
+        connection.send_event(type: "session.start", session: {model: "gpt-live-1", input: [item]})
+      end
+
+      assert_equal(%w[user developer user], socket.writes.map { JSON.parse(_1).dig("session", "input", 0, "role") })
+    end
+  end
+
+  def test_typed_audio_wire_alias_cannot_overwrite_selected_format
+    socket = FakeSocket.new
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      trusted = {type: "audio/pcm", rate: 24_000}
+      other = {type: "audio/pcmu", rate: 8000}
+      invalid = OpenAI::Live::SessionConfig::Audio.new(:format_ => trusted, "format" => other)
+      assert_raises(ArgumentError) do
+        connection.send_event(type: "session.start", session: {model: "gpt-live-1", audio: invalid})
+      end
+
+      assert_empty(socket.writes)
+      connection.send_event(
+        type: "session.start",
+        session: {model: "gpt-live-1", audio: OpenAI::Live::SessionConfig::Audio.new(format_: trusted)}
+      )
+      assert_equal(trusted.transform_keys(&:to_s), JSON.parse(socket.writes.first).dig("session", "audio", "format"))
+    end
+  end
+
   def test_uncertain_write_cannot_be_replayed_on_later_sends_or_cleanup
     %i[typed raw].product([true, false]).each do |mode, explicit_close|
       socket = FakeSocket.new
@@ -660,6 +708,27 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     end
 
     assert_same(original, captured)
+  end
+
+  def test_application_failure_survives_custom_transport_ensure_with_its_original_cause
+    socket = FakeSocket.new
+    transport = Object.new
+    transport.define_singleton_method(:open) do |**, &connection_block|
+      connection_block.call(socket)
+    ensure
+      raise IOError, "private-payload fake-token"
+    end
+
+    original_cause = RuntimeError.new("application cause")
+    original = RuntimeError.new("application failure")
+    captured = assert_raises(RuntimeError) do
+      client.live.connect(transport: transport) { raise original, cause: original_cause }
+    end
+
+    assert_same(original, captured)
+    assert_same(original_cause, captured.cause)
+    refute_includes(captured.full_message, "fake-token")
+    assert(socket.aborted?)
   end
 
   def test_post_upgrade_401_and_early_eof_never_reconnect_or_report_readiness

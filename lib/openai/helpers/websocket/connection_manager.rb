@@ -72,7 +72,8 @@ module OpenAI
             end
 
         rescue StandardError => error
-          raise if @transport_error_factory.nil? || error.equal?(block_error)
+          raise if @transport_error_factory.nil?
+          raise block_error, cause: block_error.cause if block_error
           raise @transport_error_factory.call(url: request.fetch(:url), error: error), cause: nil
         end
       end

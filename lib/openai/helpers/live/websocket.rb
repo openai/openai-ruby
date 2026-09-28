@@ -139,7 +139,7 @@ module OpenAI
         end
 
         coerce_event(OpenAI::Live::ServerEvent, parsed)
-      rescue StandardError
+      rescue StandardError, SystemStackError
         raise OpenAI::Errors::LiveProtocolError.new, cause: nil
       end
 
@@ -185,10 +185,19 @@ module OpenAI
           children = case value
           when OpenAI::Internal::Type::BaseModel
             data = value.to_h
-            field = value.class.known_fields[:type]
-            if field && field.fetch(:const) != OpenAI::Internal::OMIT && (data.key?(:type) || data.key?("type"))
-              type = data.fetch(:type) { data.fetch("type") }
-              unless (type.is_a?(String) || type.is_a?(Symbol)) && type.to_s == field.fetch(:const).to_s
+            keys = {}
+            data.each do |key, val|
+              name = key.is_a?(String) ? key.to_sym : key
+              field = value.class.known_fields[name]
+              serialized_name = field ? field.fetch(:api_name).to_s : name.to_s
+              raise ArgumentError if keys.key?(serialized_name)
+              keys[serialized_name] = true
+              next unless field
+              const = field.fetch(:const)
+              next if const == OpenAI::Internal::OMIT
+              if const.is_a?(Symbol)
+                raise ArgumentError unless (val.is_a?(String) || val.is_a?(Symbol)) && val.to_s == const.to_s
+              elsif val != const
                 raise ArgumentError
               end
             end

@@ -49,4 +49,27 @@ class OpenAI::Test::LiveWebSocketLargePayloadTest < Minitest::Test
     end
   end
 
+  def test_native_parser_resource_exhaustion_cannot_escape_as_system_stack_error
+    levels = 100_000
+    json = "{\"type\":\"session.future\",\"data\":" +
+      ("{\"nested\":" * levels) +
+      "\"private-payload\"" +
+      ("}" * levels) +
+      "}"
+    socket = FakeSocket.new(json)
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      # The native parser's supported depth varies by Ruby and JSON version.
+      begin
+        event = connection.receive
+        assert_instance_of(OpenAI::Live::UnknownServerEvent, event)
+        data = event.data.fetch(:data)
+        levels.times { data = data.fetch(:nested) }
+        assert_equal("private-payload", data)
+      rescue OpenAI::Errors::LiveProtocolError => error
+        assert_nil(error.cause)
+        refute_includes(error.full_message, "private-payload")
+      end
+    end
+  end
+
 end
