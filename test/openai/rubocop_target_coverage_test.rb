@@ -28,6 +28,7 @@ class OpenAI::Test::RubocopTargetCoverageTest < Minitest::Test
       %w[
         Gemfile
         Rakefile
+        Steepfile
         openai.gemspec
         docs/Gemfile
         scripts/validate-rubocop-directives
