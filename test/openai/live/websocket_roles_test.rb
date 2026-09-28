@@ -102,4 +102,29 @@ class OpenAI::Test::LiveWebSocketRolesTest < Minitest::Test
       assert_nil(transport.open_args)
     end
   end
+
+  def test_sideband_graceful_close_is_tristate_and_never_moves_to_other_live_roles
+    [true, false, nil].each do |setting|
+      transport = FakeTransport.new(FakeSocket.new)
+      client.live.sideband.connect("live_a", graceful_close: setting, transport: transport) { |_c| nil }
+      url = transport.open_args.fetch(:url)
+      expected = setting.nil? ? [] : [["graceful_close", setting.to_s]]
+      assert_equal(expected, URI.decode_www_form(url.query.to_s))
+    end
+
+    [client.live, client.live.forks].each do |resource|
+      transport = FakeTransport.new(FakeSocket.new)
+      positional = resource == client.live ? [] : ["live_a"]
+      assert_raises(ArgumentError) {
+        resource.connect(*positional, graceful_close: true, transport: transport) { |_c| nil }
+      }
+      assert_nil(transport.open_args)
+    end
+
+    transport = FakeTransport.new(FakeSocket.new)
+    assert_raises(ArgumentError) {
+      client.live.sideband.connect("live_a", graceful_close: "false", transport: transport) { |_c| nil }
+    }
+    assert_nil(transport.open_args)
+  end
 end

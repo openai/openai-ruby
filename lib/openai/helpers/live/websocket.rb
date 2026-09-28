@@ -287,13 +287,20 @@ module OpenAI
         include OpenAI::WebSocket::ClientRequest
 
         # @api private
-        def with_live_websocket_connection_request(path: "live/sessions", websocket_base_url: nil, options: nil, &block)
+        def with_live_websocket_connection_request(
+          path: "live/sessions",
+          query: {},
+          websocket_base_url: nil,
+          options: nil,
+          &block
+        )
           path = OpenAI::Internal::Util.interpolate_path(path).freeze
+          query = query.dup.freeze
           websocket_base_url = websocket_base_url&.to_s&.dup&.freeze
           build = lambda do |deadline|
             build_shared_websocket_connection_request(
               path: path,
-              query: {},
+              query: query,
               websocket_base_url: websocket_base_url,
               options: options,
               deadline: deadline,
@@ -348,6 +355,7 @@ module OpenAI
           request_options:,
           transport:,
           transport_options:,
+          query: {},
           &block
         )
           raise ArgumentError, "A block is required to open a Live WebSocket." unless block
@@ -355,6 +363,7 @@ module OpenAI
           request = lambda do |&request_block|
             @client.with_live_websocket_connection_request(
               path: path,
+              query: query,
               websocket_base_url: websocket_base_url,
               options: request_options,
               &request_block
@@ -400,9 +409,22 @@ class OpenAI::Resources::Live::Sideband
 
   # Attach to an eligible existing session with its selected observer credentials.
   # The service may replay recent events; attachment does not start a new session.
-  def connect(session_id, websocket_base_url: nil, request_options: nil, transport: nil, transport_options: {}, &block)
+  def connect(
+    session_id,
+    graceful_close: nil,
+    websocket_base_url: nil,
+    request_options: nil,
+    transport: nil,
+    transport_options: {},
+    &block
+  )
+    unless graceful_close.nil? || graceful_close == true || graceful_close == false
+      raise ArgumentError, "graceful_close must be true, false, or nil"
+    end
+
     open_live_websocket(
       path: ["live/sessions/%1$s/attach", session_id],
+      query: graceful_close.nil? ? {} : {"graceful_close" => graceful_close.to_s},
       connection_class: OpenAI::Live::SidebandConnection,
       websocket_base_url: websocket_base_url,
       request_options: request_options,

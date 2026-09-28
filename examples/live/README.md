@@ -101,7 +101,7 @@ Do not send `session.start` or input audio on the sideband. It accepts normal
 session commands such as muting, delegation updates, and instruction appends:
 
 ```ruby
-client.live.sideband.connect(live_session_id) do |sideband|
+client.live.sideband.connect(live_session_id, graceful_close: true) do |sideband|
   sideband.send_event(type: "session.input_audio.mute")
   sideband.each do |event|
     break if event.is_a?(OpenAI::Live::SessionClosedEvent) || event.is_a?(OpenAI::Live::ErrorEvent)
@@ -109,6 +109,9 @@ client.live.sideband.connect(live_session_id) do |sideband|
   end
 end
 ```
+
+`graceful_close: true` opts into the service's graceful closing handshake.
+Pass `false` to opt out, or omit it to use the server's default.
 
 A project-owned stored recording must be available and finalized before it can
 be forked. A fork inherits the source session's model and history. Send

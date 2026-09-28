@@ -10,7 +10,7 @@ class OpenAI::Test::LiveWebSocketSorbetTest < Minitest::Test
     source = <<~RUBY
       # typed: strict
       client = OpenAI::Client.new
-      client.live.sideband.connect("live_source", request_options: {timeout: 7.0}) do |connection|
+      client.live.sideband.connect("live_source", graceful_close: false, request_options: {timeout: 7.0}) do |connection|
         T.assert_type!(connection, OpenAI::Live::SidebandConnection)
         T.assert_type!(connection.receive, T.nilable(OpenAI::Live::Connection::ServerEvent))
         connection.send_event(OpenAI::Live::InputAudioMuteEvent.new)
@@ -45,6 +45,28 @@ class OpenAI::Test::LiveWebSocketSorbetTest < Minitest::Test
       stdout, stderr, status = Open3.capture3({"SRB_SKIP_GEM_RBIS" => "1"}, "srb", "typecheck", file.path, chdir: root)
       refute_predicate(status, :success?, "#{stdout}\n#{stderr}")
       assert_includes("#{stdout}\n#{stderr}", "SessionStartEvent")
+      assert_includes("#{stdout}\n#{stderr}", "send_event")
+    end
+  end
+
+  def test_sideband_typing_rejects_primary_startup_and_audio
+    source = <<~RUBY
+      # typed: strict
+      OpenAI::Client.new.live.sideband.connect("live_existing") do |connection|
+        primary = OpenAI::Live::SessionStartEvent.new(session: OpenAI::Live::SessionConfig.new(model: "gpt-live-1"))
+        audio = OpenAI::Live::InputAudioAppendEvent.new(audio: "AA==")
+        connection.send_event(primary)
+        connection.send_event(audio)
+      end
+    RUBY
+    root = File.expand_path("../../..", __dir__)
+    Tempfile.create(["live-sideband-invalid", ".rb"]) do |file|
+      file.write(source)
+      file.flush
+      stdout, stderr, status = Open3.capture3({"SRB_SKIP_GEM_RBIS" => "1"}, "srb", "typecheck", file.path, chdir: root)
+      refute_predicate(status, :success?, "#{stdout}\n#{stderr}")
+      assert_includes("#{stdout}\n#{stderr}", "SessionStartEvent")
+      assert_includes("#{stdout}\n#{stderr}", "InputAudioAppendEvent")
       assert_includes("#{stdout}\n#{stderr}", "send_event")
     end
   end
