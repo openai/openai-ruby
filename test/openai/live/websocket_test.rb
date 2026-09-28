@@ -225,6 +225,33 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     end
   end
 
+  def test_incoming_known_snapshot_rejects_a_wrong_constant_as_well_as_omission
+    socket = FakeSocket.new(
+      JSON.generate(
+        type: "session.started",
+        event_id: "evt_1",
+        session: {
+          id: "sess_1",
+          model: "gpt-live-1",
+          expires_at: 2_000_000_000,
+          status: "closed",
+          instructions: "private-payload"
+        }
+      ),
+      JSON.generate(
+        type: "session.started",
+        event_id: "evt_2",
+        session: {id: "sess_1", model: "gpt-live-1", expires_at: 2_000_000_000, status: "active"}
+      )
+    )
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      error = assert_raises(OpenAI::Errors::LiveProtocolError) { connection.receive }
+      assert_nil(error.cause)
+      refute_includes(error.full_message, "private-payload")
+      assert_equal(:active, connection.receive.session.status)
+    end
+  end
+
   def test_duplicate_string_and_symbol_keys_cannot_change_the_command_or_nested_data
     socket = FakeSocket.new
     client.live.connect(transport: FakeTransport.new(socket)) do |connection|
@@ -266,6 +293,20 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
       assert_empty(socket.writes)
       connection.send_event("type" => "session.close")
       assert_equal("session.close", JSON.parse(socket.writes.first).fetch("type"))
+    end
+  end
+
+  def test_custom_json_leaf_cannot_inject_a_second_event_type
+    fragment = Object.new
+    fragment.define_singleton_method(:to_json) { |*| "null,\"type\":\"response.create\"" }
+    socket = FakeSocket.new
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      assert_raises(ArgumentError) { connection.send_event(type: "session.close", extra: fragment) }
+      assert_empty(socket.writes)
+      connection.send_event(type: "session.close", extra: {"safe" => [1, true, false, nil, :symbol, 0.5]})
+      written = JSON.parse(socket.writes.first)
+      assert_equal("session.close", written.fetch("type"))
+      assert_equal([1, true, false, nil, "symbol", 0.5], written.dig("extra", "safe"))
     end
   end
 
@@ -798,6 +839,24 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     assert_same(original_cause, captured.cause)
     refute_includes(captured.full_message, "fake-token")
     assert(socket.aborted?)
+  end
+
+  def test_application_shutdown_survives_custom_transport_ensure
+    [Interrupt.new("app interrupt"), SystemExit.new(3, "app shutdown")].each do |original|
+      socket = FakeSocket.new
+      transport = Object.new
+      transport.define_singleton_method(:open) do |**, &connection_block|
+        connection_block.call(socket)
+      ensure
+        raise IOError, "private-payload fake-token"
+      end
+
+      captured = assert_raises(original.class) { client.live.connect(transport: transport) { raise original } }
+      assert_same(original, captured)
+      assert_nil(captured.cause)
+      refute_includes(captured.full_message, "fake-token")
+      assert(socket.aborted?)
+    end
   end
 
   def test_post_upgrade_401_and_early_eof_never_reconnect_or_report_readiness

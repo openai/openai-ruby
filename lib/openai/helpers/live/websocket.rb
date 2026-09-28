@@ -130,7 +130,9 @@ module OpenAI
         raise ArgumentError unless (type.is_a?(String) || type.is_a?(Symbol)) && @client_event_names.key?(type.to_s)
 
         coerced = coerce_event(OpenAI::Live::ClientEvent, payload, outbound: true)
-        JSON.generate(OpenAI::Internal::Type::Converter.dump(OpenAI::Live::ClientEvent, coerced), max_nesting: false)
+        serialized = OpenAI::Internal::Type::Converter.dump(OpenAI::Live::ClientEvent, coerced)
+        validate_event_tree!(serialized, json_only: true)
+        JSON.generate(serialized, max_nesting: false)
       rescue StandardError, SystemStackError
         raise ArgumentError, "Invalid Live client event.", cause: nil
       end
@@ -142,7 +144,9 @@ module OpenAI
           return OpenAI::Live::UnknownServerEvent.new(data: parsed)
         end
 
-        coerce_event(OpenAI::Live::ServerEvent, parsed)
+        event = coerce_event(OpenAI::Live::ServerEvent, parsed)
+        validate_event_tree!(event)
+        event
       rescue StandardError, SystemStackError
         raise OpenAI::Errors::LiveProtocolError.new, cause: nil
       end
@@ -176,7 +180,7 @@ module OpenAI
         event
       end
 
-      private def validate_event_tree!(event)
+      private def validate_event_tree!(event, json_only: false)
         ancestors = {}.compare_by_identity
         pending = [[event, false]]
         until pending.empty?
@@ -188,6 +192,7 @@ module OpenAI
 
           children = case value
           when OpenAI::Internal::Type::BaseModel
+            raise ArgumentError if json_only
             data = value.to_h
             keys = {}
             data.each do |key, val|
@@ -219,7 +224,10 @@ module OpenAI
             value.values
           when Array
             value
+          when NilClass, TrueClass, FalseClass, String, Integer, Float, Symbol
+            next
           else
+            raise ArgumentError if json_only
             next
           end
 

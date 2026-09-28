@@ -63,10 +63,8 @@ module OpenAI
               connection = @connection_class.new(socket: socket, url: request.fetch(:url))
               begin
                 yield(connection)
-              rescue StandardError => error
-                block_error = error
-                raise
               ensure
+                block_error = $ERROR_INFO
                 cleanup(connection)
               end
             end
