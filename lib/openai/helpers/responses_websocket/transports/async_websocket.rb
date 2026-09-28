@@ -10,6 +10,7 @@ module OpenAI
         # HTTP/1's buffered stream can inspect RSV1 without consuming bytes.
         # Leave every part of frame parsing to the installed native protocol gem.
         module PeekableFramer
+          # @api private
           def next_frame_compressed?
             first_byte = @stream.peek(1)&.getbyte(0) || 0
             (first_byte & (::Protocol::WebSocket::Frame::RSV1 << 4)) != 0
@@ -33,6 +34,7 @@ module OpenAI
             @compression_negotiated = false
           end
 
+          # @api private
           attr_writer :compression_negotiated
 
           def read_frame
@@ -103,6 +105,7 @@ module OpenAI
         # inflation before collecting its full output; Zlib yields at most a
         # native output chunk beyond the configured decoded-message limit.
         module BoundedInflate
+          # @api private
           def bound_decoded_messages(max_bytes, framer)
             @responses_decoded_limit = max_bytes
             @responses_bounded_framer = framer
