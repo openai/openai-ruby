@@ -59,7 +59,10 @@ module OpenAI
         super
         @poisoned = false
         @closed = false
-        @server_event_names = discriminator_values(OpenAI::Realtime::RealtimeTranslationServerEvent)
+        @server_event_types = OpenAI::Realtime::RealtimeTranslationServerEvent.variants.to_h do |variant|
+          [variant.fields.fetch(:type).fetch(:const).to_s, variant]
+        end
+
         @client_event_names = discriminator_values(OpenAI::Realtime::RealtimeTranslationClientEvent)
       end
 
@@ -145,6 +148,7 @@ module OpenAI
           when Hash
             names = {}
             item.each do |key, value|
+              raise ArgumentError unless key.is_a?(String) || key.is_a?(Symbol)
               name = key.to_s
               raise ArgumentError if names.key?(name)
               names[name] = true
@@ -178,8 +182,15 @@ module OpenAI
       private def parse_event(data)
         parsed = JSON.parse(data, symbolize_names: true, max_nesting: false)
         type = event_type(parsed, message: "Realtime Translation server event must be an object with a string type")
-        unless @server_event_names.key?(type.to_s)
+        model = @server_event_types[type.to_s]
+        unless model
           return OpenAI::Realtime::UnknownTranslationServerEvent.new(data: parsed)
+        end
+
+        # The converter copies unknown wire fields after known ones. A wire
+        # key spelled like a renamed Ruby field must not overwrite typed data.
+        model.fields.each do |name, field|
+          raise ArgumentError if name != field.fetch(:api_name) && parsed.key?(name)
         end
 
         coerce_event(OpenAI::Realtime::RealtimeTranslationServerEvent, parsed)

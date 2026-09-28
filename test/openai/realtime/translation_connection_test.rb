@@ -395,4 +395,31 @@ class OpenAI::Test::RealtimeTranslationConnectionTest < Minitest::Test
       assert_equal({"labels" => ["valid", nil], "numeric" => 1}, JSON.parse(socket.writes.fetch(0)).fetch("metadata"))
     end
   end
+
+  def test_only_string_and_symbol_client_event_keys_are_accepted
+    socket = FakeSocket.new
+    key = Object.new
+    key.define_singleton_method(:to_s) { "extra" }
+    client.realtime.connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |c|
+      assert_raises(ArgumentError) { c.send_event(:type => "session.close", key => "fake-data") }
+      assert_raises(ArgumentError) { c.send_event(type: "session.update", session: {metadata: {1 => "fake-data"}}) }
+      assert_empty(socket.writes)
+    end
+  end
+
+  def test_audio_format_cannot_be_overridden_using_the_internal_sdk_field_name
+    audio = {type: "session.output_audio.delta", event_id: "a1", delta: "AA==", format: "pcm16"}
+    socket = FakeSocket.new(
+      JSON.generate(audio.merge(format_: "future")),
+      JSON.generate(audio.merge(format_: "pcm16")),
+      JSON.generate(audio.merge(future_audio_field: "keep"))
+    )
+    client.realtime.connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |c|
+      2.times { assert_raises(OpenAI::Errors::TranslationProtocolError) { c.receive } }
+      event = c.receive
+      assert_instance_of(OpenAI::Realtime::RealtimeTranslationOutputAudioDeltaEvent, event)
+      assert_equal(:pcm16, event.format_)
+      assert_equal("keep", event.to_h.fetch(:future_audio_field))
+    end
+  end
 end
