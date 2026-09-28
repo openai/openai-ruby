@@ -7,6 +7,17 @@ module OpenAI
       #
       # @api private
       class AsyncWebSocket < OpenAI::WebSocket::AsyncWebSocketTransport
+        # HTTP/1's buffered stream can inspect RSV1 without consuming bytes.
+        # Leave every part of frame parsing to the installed native protocol gem.
+        module PeekableFramer
+          def next_frame_compressed?
+            first_byte = @stream.peek(1)&.getbyte(0) || 0
+            (first_byte & (::Protocol::WebSocket::Frame::RSV1 << 4)) != 0
+          end
+        end
+
+        private_constant :PeekableFramer
+
         # Native frame parsing bounds each allocation before reading its body. Keep
         # room for legal control frames, then enforce the exact data-only total.
         class BoundedFramer
@@ -19,20 +30,36 @@ module OpenAI
             @message_frames = 0
             @aborted = false
             @compressed = false
+            @compression_negotiated = false
           end
 
+          attr_writer :compression_negotiated
+
           def read_frame
+            limit = @max_bytes
+            if @max_plain_bytes
+              # Continuations of compressed messages never set RSV1 themselves.
+              # An unsolicited RSV1 cannot enlarge the limit when no compression
+              # was negotiated. The gem still validates reserved bits and opcodes.
+              compressed = @compression_negotiated &&
+                (@message_frames.zero? ? @framer.next_frame_compressed? : @compressed)
+              limit = [limit, @max_plain_bytes].min unless compressed
+            end
+
             maximum_size = if @max_frames && @message_frames >= @max_frames
               125
-            elsif @max_bytes
-              [@max_bytes - @message_bytes, 125].max
+            elsif limit
+              [limit - @message_bytes, 125].max
             else
               ::Protocol::WebSocket::MAXIMUM_ALLOWED_FRAME_SIZE
             end
 
             frame = @framer.read_frame(maximum_size)
             unless frame.control?
-              @compressed = frame.flag?(::Protocol::WebSocket::Frame::RSV1) if @message_frames.zero?
+              if @message_frames.zero?
+                @compressed = @compression_negotiated && frame.flag?(::Protocol::WebSocket::Frame::RSV1)
+              end
+
               @message_bytes += frame.length
               @message_frames += 1
               if (@max_bytes && @message_bytes > @max_bytes) ||
@@ -151,7 +178,7 @@ module OpenAI
           end
 
           handler = lambda do |framer, protocol, extensions, **options|
-            framer.extend(AbortableFramer)
+            framer.extend(AbortableFramer, PeekableFramer)
             bounded = BoundedFramer.new(
               framer,
               max_bytes: max_wire_bytes || max_bytes,
@@ -164,6 +191,7 @@ module OpenAI
                 connection.reader.is_a?(::Protocol::WebSocket::Extension::Compression::Inflate)
               connection.reader.extend(BoundedInflate)
               connection.reader.bound_decoded_messages(max_bytes, bounded)
+              bounded.compression_negotiated = true
             end
 
             connection

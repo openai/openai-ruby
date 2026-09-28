@@ -485,6 +485,78 @@ class OpenAI::Test::ResponsesWebSocketWorkflowsTest < Minitest::Test
     end
   end
 
+  def test_plain_header_obeys_smaller_decoded_cap_before_first_or_continued_body
+    [false, true].each do |compression|
+      [false, true].each do |continued|
+        peer_closed = Async::Queue.new
+        handler = lambda do |socket|
+          read_event(socket)
+          assert_equal(compression, socket.writer.is_a?(Protocol::WebSocket::Extension::Compression::Deflate))
+          if continued
+            socket.write_frame(Protocol::WebSocket::TextFrame.new(false).pack("{"))
+            socket.write_frame(Protocol::WebSocket::PingFrame.new.pack("p" * 125))
+          end
+          # This uncompressed header fits the wire cap but not the decoded cap.
+          # Leave the peer open without a body; waiting for it isn't bounded receive.
+          header = continued ? 0x80 : 0x81
+          socket.framer.instance_variable_get(:@stream).write([header, 0x7F, 1_048_576].pack("CCQ>"))
+          socket.flush
+          begin
+            assert_nil(socket.read)
+          rescue EOFError, Protocol::WebSocket::ClosedError
+            nil
+          ensure
+            peer_closed.enqueue(true)
+          end
+        end
+
+        extensions = compression ? Protocol::WebSocket::Extensions::Server.default : nil
+        with_server(handler, extensions: extensions) do |client|
+          client
+            .responses
+            .connect(
+              transport_options: {max_wire_message_bytes: 2_097_152, max_message_bytes: 1_024}
+            ) do |connection|
+              connection.response.create(model: "example-model", input: "test")
+              Async::Task.current.with_timeout(2, Minitest::Assertion) do
+                assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive }
+                assert(peer_closed.dequeue)
+              end
+
+              assert_predicate(connection, :closed?)
+            end
+        end
+      end
+    end
+  end
+
+  def test_wire_budget_can_fit_a_valid_compressed_message_larger_than_its_decoded_budget
+    text = "full wire block 🌍 " * 20
+    data = JSON.generate(delta_event(text, lane: "main"))
+    compression = Protocol::WebSocket::Extension::Compression
+    extensions = Protocol::WebSocket::Extensions::Server.new([[compression, {level: Zlib::NO_COMPRESSION}]])
+    handler = lambda do |socket|
+      read_event(socket)
+      frame = socket.writer.pack_text_frame(data)
+      # A valid stored DEFLATE block can exceed decoded size, above the control
+      # frame allowance too. A blanket min(wire, decoded) would reject it.
+      assert_operator(frame.length, :>, data.bytesize)
+      socket.write_frame(frame)
+      socket.flush
+    end
+
+    with_server(handler, extensions: extensions) do |client|
+      client
+        .responses
+        .connect(
+          transport_options: {max_wire_message_bytes: 1_024, max_message_bytes: data.bytesize}
+        ) do |connection|
+          connection.response.create(model: "example-model", input: "test")
+          assert_equal(text, connection.receive.delta)
+        end
+    end
+  end
+
   def test_new_wire_limit_rejects_oversized_header_without_reading_an_unavailable_payload
     peer_closed = Async::Queue.new
     handler = lambda do |socket|
