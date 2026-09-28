@@ -166,11 +166,12 @@ module OpenAI
       end
 
       private def validate_model_constants!(model)
-        data = model.to_h
-        model.class.fields.each do |name, field|
+        model.to_h.each do |name, actual|
+          key = name.is_a?(String) ? name.to_sym : name
+          field = model.class.known_fields[key]
+          next unless field
           const = field.fetch(:const)
-          next if const == OpenAI::Internal::OMIT || !data.key?(name)
-          actual = data.fetch(name)
+          next if const == OpenAI::Internal::OMIT
           if const.is_a?(Symbol)
             raise ArgumentError unless (actual.is_a?(String) || actual.is_a?(Symbol)) && actual.to_s == const.to_s
           elsif actual != const

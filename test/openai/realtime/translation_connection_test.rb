@@ -422,4 +422,25 @@ class OpenAI::Test::RealtimeTranslationConnectionTest < Minitest::Test
       assert_equal("keep", event.to_h.fetch(:future_audio_field))
     end
   end
+
+  def test_string_keyed_typed_constructor_cannot_change_event_discriminator
+    socket = FakeSocket.new
+    client.realtime.connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |c|
+      bad = OpenAI::Realtime::RealtimeTranslationSessionCloseEvent.new(
+        {"type" => "session.input_audio_buffer.append", "audio" => "AA=="}
+      )
+      assert_raises(ArgumentError) { c.send_event(bad) }
+      assert_empty(socket.writes)
+      c.send_event(OpenAI::Realtime::RealtimeTranslationSessionCloseEvent.new({"type" => "session.close"}))
+      c.send_event(
+        OpenAI::Realtime::RealtimeTranslationInputAudioBufferAppendEvent.new(
+          {"type" => "session.input_audio_buffer.append", "audio" => "AA=="}
+        )
+      )
+      assert_equal(
+        ["session.close", "session.input_audio_buffer.append"],
+        socket.writes.map { JSON.parse(_1).fetch("type") }
+      )
+    end
+  end
 end
