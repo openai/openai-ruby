@@ -366,4 +366,33 @@ class OpenAI::Test::RealtimeTranslationConnectionTest < Minitest::Test
       assert_equal("fr", JSON.parse(socket.writes.fetch(0)).dig("session", "audio", "output", "language"))
     end
   end
+
+  def test_typed_client_event_cannot_select_another_valid_discriminator
+    socket = FakeSocket.new
+    client.realtime.connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |c|
+      close = OpenAI::Realtime::RealtimeTranslationSessionCloseEvent.new(
+        type: :"session.update",
+        session: {audio: {output: {language: "fr"}}}
+      )
+      assert_raises(ArgumentError) { c.send_event(close) }
+      assert_empty(socket.writes)
+      c.send_event(OpenAI::Realtime::RealtimeTranslationSessionCloseEvent.new)
+      assert_equal({"type" => "session.close"}, JSON.parse(socket.writes.fetch(0)))
+    end
+  end
+
+  def test_custom_json_leaf_cannot_rewrite_an_encoded_command
+    socket = FakeSocket.new
+    leaf = Object.new
+    leaf.define_singleton_method(:to_json) do |*_args|
+      "null,\"type\":\"session.input_audio_buffer.append\",\"audio\":\"AA==\""
+    end
+
+    client.realtime.connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |c|
+      assert_raises(ArgumentError) { c.send_event(type: "session.close", extra: leaf) }
+      assert_empty(socket.writes)
+      c.send_event(type: "session.close", metadata: {labels: ["valid", nil], numeric: 1})
+      assert_equal({"labels" => ["valid", nil], "numeric" => 1}, JSON.parse(socket.writes.fetch(0)).fetch("metadata"))
+    end
+  end
 end

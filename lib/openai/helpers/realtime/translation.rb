@@ -114,21 +114,23 @@ module OpenAI
       end
 
       private def encode_client_event(event)
-        validate_client_keys!(event)
+        validate_client_tree!(event)
         union = OpenAI::Realtime::RealtimeTranslationClientEvent
         payload = OpenAI::Internal::Type::Converter.dump(union, event)
         type = payload[:type] || payload["type"] if payload.is_a?(Hash)
         raise ArgumentError unless (type.is_a?(String) || type.is_a?(Symbol)) && @client_event_names.key?(type.to_s)
 
         coerced = coerce_event(union, payload, outbound: true)
-        JSON.generate(OpenAI::Internal::Type::Converter.dump(union, coerced), max_nesting: false)
+        serialized = OpenAI::Internal::Type::Converter.dump(union, coerced)
+        validate_client_tree!(serialized, json_only: true)
+        JSON.generate(serialized, max_nesting: false)
       rescue StandardError, SystemStackError
         raise ArgumentError, "Invalid Realtime Translation client event.", cause: nil
       end
 
       # A merged string-keyed JSON event and symbol-keyed override must not
       # silently change the command or the configuration that is sent.
-      private def validate_client_keys!(event)
+      private def validate_client_tree!(event, json_only: false)
         visited = {}.compare_by_identity
         pending = [event]
         until pending.empty?
@@ -137,6 +139,8 @@ module OpenAI
           visited[item] = true
           case item
           when OpenAI::Internal::Type::BaseModel
+            raise ArgumentError if json_only
+            validate_model_constants!(item)
             pending << item.to_h
           when Hash
             names = {}
@@ -149,6 +153,24 @@ module OpenAI
 
           when Array
             pending.concat(item)
+          when NilClass, TrueClass, FalseClass, String, Integer, Float, Symbol
+            next
+          else
+            raise ArgumentError if json_only
+          end
+        end
+      end
+
+      private def validate_model_constants!(model)
+        data = model.to_h
+        model.class.fields.each do |name, field|
+          const = field.fetch(:const)
+          next if const == OpenAI::Internal::OMIT || !data.key?(name)
+          actual = data.fetch(name)
+          if const.is_a?(Symbol)
+            raise ArgumentError unless (actual.is_a?(String) || actual.is_a?(Symbol)) && actual.to_s == const.to_s
+          elsif actual != const
+            raise ArgumentError
           end
         end
       end
@@ -181,20 +203,13 @@ module OpenAI
           children = case value
           when OpenAI::Internal::Type::BaseModel
             data = value.to_h
+            validate_model_constants!(value)
             value.class.fields.each do |name, field|
               const = field.fetch(:const)
               if field.fetch(:required) &&
                   field.fetch(:mode) != (outbound ? :coerce : :dump) &&
                   (!outbound || const == OpenAI::Internal::OMIT) &&
                   !data.key?(name)
-                raise ArgumentError
-              end
-
-              next if const == OpenAI::Internal::OMIT || !data.key?(name)
-              actual = data.fetch(name)
-              if const.is_a?(Symbol)
-                raise ArgumentError unless (actual.is_a?(String) || actual.is_a?(Symbol)) && actual.to_s == const.to_s
-              elsif actual != const
                 raise ArgumentError
               end
             end
