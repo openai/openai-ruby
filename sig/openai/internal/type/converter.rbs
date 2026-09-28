@@ -9,6 +9,7 @@ module OpenAI
         type coerce_state =
           {
             translate_names: bool,
+            request_only: bool,
             strictness: bool,
             exactness: { yes: Integer, no: Integer, maybe: Integer },
             error: StandardError?,
@@ -57,7 +58,8 @@ module OpenAI
         ) -> ::Hash[Symbol, top]
 
         def self.new_coerce_state: (
-          ?translate_names: bool
+          ?translate_names: bool,
+          ?request_only: bool
         ) -> OpenAI::Internal::Type::Converter::coerce_state
 
         def self.coerce: (

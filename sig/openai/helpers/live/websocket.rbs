@@ -1,0 +1,72 @@
+module OpenAI
+  class Client
+    # @api private
+    def with_live_websocket_connection_request: (
+      ?websocket_base_url: String?,
+      ?options: OpenAI::request_opts?
+    ) {
+      (
+        OpenAI::Internal::Transport::BaseClient::request_input request,
+        ^-> void mark_handshake_completed
+      ) -> top
+    } -> top
+  end
+
+  module Errors
+    class LiveConnectionError < OpenAI::Errors::WebSocketConnectionError
+    end
+    class LiveProtocolError < OpenAI::Errors::WebSocketProtocolError
+      def initialize: -> void
+    end
+  end
+
+  module Models
+    module Live
+      type connection_server_event =
+        OpenAI::Models::Live::server_event | OpenAI::Live::UnknownServerEvent
+      type connection_client_event =
+        OpenAI::Models::Live::client_event | ::Hash[Symbol | String, untyped]
+
+      class UnknownServerEvent
+        attr_reader type: Symbol
+        attr_reader data: ::Hash[Symbol | String, untyped]
+        def initialize: (data: ::Hash[Symbol | String, untyped]) -> void
+        def to_h: -> ::Hash[(Symbol | String), untyped]
+        def inspect: -> String
+        alias to_s inspect
+      end
+      class Connection
+        include Enumerable[OpenAI::Models::Live::connection_server_event]
+        attr_reader url: URI::Generic
+        def initialize: (socket: top, url: URI::Generic) -> void
+        def each:
+          -> Enumerator[OpenAI::Models::Live::connection_server_event, self]
+          | {
+            (OpenAI::Models::Live::connection_server_event event) -> void
+          } -> self
+        def receive: -> OpenAI::Models::Live::connection_server_event?
+        def receive_raw: -> String?
+        def send_event: (
+          OpenAI::Models::Live::connection_client_event event
+        ) -> nil
+        def send_raw: (String data) -> nil
+        def close: (?code: Integer, ?reason: String) -> nil
+        def abort: -> nil
+        def closed?: -> bool
+      end
+    end
+  end
+
+  module Resources
+    class Live
+      def connect: [T] (
+        ?websocket_base_url: String?,
+        ?request_options: OpenAI::request_opts?,
+        ?transport: top,
+        ?transport_options: ::Hash[Symbol, top]
+      ) {
+        (OpenAI::Live::Connection connection) -> T
+      } -> T
+    end
+  end
+end

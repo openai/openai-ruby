@@ -306,6 +306,10 @@ module OpenAI
               mode, required, target = field.fetch_values(:mode, :required, :type)
               api_name, nilable, const = field.fetch_values(:api_name, :nilable, :const)
               src_name = state.fetch(:translate_names) ? api_name : name
+              if state[:request_only] && mode == :coerce
+                keys.delete(src_name)
+                next
+              end
 
               unless val.key?(src_name)
                 if required && mode != :dump && const == OpenAI::Internal::OMIT

@@ -1,0 +1,114 @@
+# frozen_string_literal: true
+
+require_relative "../test_helper"
+require "async/http/endpoint"
+require "async/http/server"
+require "async/websocket/adapters/http"
+require "async/websocket/server"
+require "async/websocket/client"
+require "socket"
+
+class OpenAI::Test::LiveWebSocketTransportTest < Minitest::Test
+  extend Minitest::Serial
+
+  def test_live_primary_handshake_start_ready_flow_on_local_socket
+    accept = Queue.new
+    wire = Queue.new
+    listener = TCPServer.new("127.0.0.1", 0)
+    port = listener.local_address.ip_port
+    listener.close
+    endpoint = Async::HTTP::Endpoint.parse("http://127.0.0.1:#{port}")
+    fallback = -> (_) { Protocol::HTTP::Response[404, {}, []] }
+    websocket = Async::WebSocket::Server.new(fallback) do |connection|
+      message = JSON.parse(connection.read.to_str)
+      wire << message
+      connection.write(
+        JSON.generate(
+          type: "session.started",
+          event_id: "start_1",
+          session: {id: "sess_local", model: "gpt-live-1", expires_at: 2000000000, status: "active"}
+        )
+      )
+      connection.flush
+      wire << JSON.parse(connection.read.to_str)
+      connection.write(
+        JSON.generate(
+          type: "session.closed",
+          event_id: "close_1",
+          session: {id: "sess_local", model: "gpt-live-1", expires_at: 2000000000, status: "active"},
+          reason: "close_requested",
+          usage: {seconds: 0}
+        )
+      )
+      connection.flush
+    end
+
+    app = lambda do |request|
+      accept << [request.path, request.headers["authorization"], request.headers["x-live-test"]]
+      websocket.call(request)
+    end
+
+    server = Async::HTTP::Server.new(app, endpoint)
+    Sync do |task|
+      server_task = task.async { server.run.wait }
+      api = OpenAI::Client.new(api_key: "sk-test-local", base_url: "http://127.0.0.1:#{port}/v1", timeout: 5)
+      task.with_timeout(5) do
+        result = api.live.connect(request_options: {extra_headers: {"X-Live-Test" => "value"}}) do |connection|
+          assert_equal(["/v1/live/sessions", "Bearer sk-test-local", ["value"]], accept.pop(timeout: 1))
+          assert(wire.empty?, "the SDK must not send startup before the caller chooses to")
+          connection.send_event(type: "session.start", session: {model: "gpt-live-1", store: false})
+          ready = connection.receive
+          assert_instance_of(OpenAI::Live::SessionStartedEvent, ready)
+          assert_equal("sess_local", ready.session.id)
+          connection.send_event(type: "session.close")
+          closed = connection.receive
+          assert_instance_of(OpenAI::Live::SessionClosedEvent, closed)
+          :finished
+        end
+
+        assert_equal(:finished, result)
+      end
+
+      assert_equal("session.start", wire.pop(timeout: 1).fetch("type"))
+      assert_equal("session.close", wire.pop(timeout: 1).fetch("type"))
+    ensure
+      server_task&.stop
+    end
+  end
+
+  def test_default_transport_does_not_chain_raw_handshake_errors
+    failure = -> (*) { raise IOError, "private-payload" }
+    error = Async::WebSocket::Client.stub(:open, failure) do
+      assert_raises(OpenAI::Errors::LiveConnectionError) do
+        OpenAI::Client.new(api_key: "fake-key", base_url: "http://127.0.0.1:12345/v1").live.connect { flunk }
+      end
+    end
+
+    assert_nil(error.cause)
+    refute_includes(error.full_message, "private-payload")
+  end
+
+  def test_default_transport_failure_keeps_client_base_url_credentials_out_of_errors
+    source_url = "http://fake-live-user:fake-live-secret@127.0.0.1:12345/v1"
+    api = OpenAI::Client.new(api_key: "fake-key", base_url: source_url)
+    requested = nil
+    failure = lambda do |endpoint, **|
+      requested = endpoint.url.dup
+      raise IOError, "fake-live-private-body"
+    end
+
+    error = Async::WebSocket::Client.stub(:open, failure) do
+      assert_raises(OpenAI::Errors::LiveConnectionError) { api.live.connect { flunk } }
+    end
+
+    assert_equal("fake-live-user:fake-live-secret", requested.userinfo)
+    assert_equal("http://fake-live-user:fake-live-secret@127.0.0.1:12345/v1", source_url)
+    assert_nil(error.url.userinfo)
+    assert_nil(error.cause)
+    assert_equal("/v1/live/sessions", error.url.path)
+    ["fake-live-user", "fake-live-secret", "fake-live-private-body"].each do |secret|
+      refute_includes(error.url.to_s, secret)
+      refute_includes(error.full_message, secret)
+    end
+  end
+end

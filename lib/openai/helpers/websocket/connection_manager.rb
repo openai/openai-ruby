@@ -27,6 +27,7 @@ module OpenAI
         request:,
         block_error_message:,
         abort_after_block:,
+        transport_error_factory: nil,
         transport_error_message: "transport must respond to open",
         reserved_options_error_message: nil
       )
@@ -36,6 +37,7 @@ module OpenAI
         @request = request
         @block_error_message = block_error_message
         @abort_after_block = abort_after_block
+        @transport_error_factory = transport_error_factory
         @transport_error_message = transport_error_message
         @reserved_options_error_message = reserved_options_error_message
         @transport_options = validated_transport_options(transport_options)
@@ -49,6 +51,7 @@ module OpenAI
         raise ArgumentError, @transport_error_message unless transport.respond_to?(:open)
 
         @request.call do |request, mark_handshake_completed|
+          block_error = nil
           transport
             .open(
               url: request.fetch(:url),
@@ -61,9 +64,15 @@ module OpenAI
               begin
                 yield(connection)
               ensure
+                block_error = $ERROR_INFO
                 cleanup(connection)
               end
             end
+
+        rescue StandardError => error
+          raise if @transport_error_factory.nil?
+          raise block_error, cause: block_error.cause if block_error
+          raise @transport_error_factory.call(url: request.fetch(:url), error: error), cause: nil
         end
       end
 

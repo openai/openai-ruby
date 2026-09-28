@@ -132,10 +132,13 @@ module OpenAI
           #
           # @param translate_names [Boolean]
           #
+          # @param request_only [Boolean] Exclude fields omitted by the request serializer.
+          #
           # @return [Hash{Symbol=>Object}]
-          def new_coerce_state(translate_names: true)
+          def new_coerce_state(translate_names: true, request_only: false)
             {
               translate_names: translate_names,
+              request_only: request_only,
               strictness: true,
               exactness: {yes: 0, no: 0, maybe: 0},
               error: nil,
@@ -345,6 +348,7 @@ module OpenAI
           T.type_alias do
             {
               translate_names: T::Boolean,
+              request_only: T::Boolean,
               strictness: T::Boolean,
               exactness: {yes: Integer, no: Integer, maybe: Integer},
               error: T.nilable(StandardError),
