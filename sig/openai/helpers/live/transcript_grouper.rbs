@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Live
+      class TranscriptGrouper
+        type speaker = :user | :assistant
+        type close_reason =
+          :speaker_change
+          | :inactivity
+          | :timestamp_reset
+          | :session_closed
+          | :manual
+
+        class Segment < Data
+          attr_reader id: String
+          attr_reader previous_id: String?
+          attr_reader speaker: TranscriptGrouper::speaker
+          attr_reader text: String
+          attr_reader start_ms: Integer
+          attr_reader end_ms: Integer
+        end
+
+        class ClosedSegment < Data
+          attr_reader segment: Segment
+          attr_reader reason: TranscriptGrouper::close_reason
+        end
+
+        def initialize: (
+          ?on_segment_updated: (^(Segment) -> void)?,
+          ?on_segment_closed: (^(ClosedSegment) -> void)?,
+          ?min_turn_separation_ms: Integer | Float,
+          ?assistant_silence_ms: Integer | Float,
+          ?backchannel_max_duration_ms: Integer | Float,
+          ?backchannel_isolation_ms: Integer | Float,
+          ?additional_acknowledgments: Array[String]
+        ) -> void
+
+        def push: (top event) -> void
+        def close: -> void
+      end
+    end
+  end
+end
