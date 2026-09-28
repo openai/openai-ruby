@@ -6,6 +6,8 @@ require_relative "../test_helper"
 require_relative "../responses_websocket/connection_test_support"
 
 class OpenAI::Test::RealtimeTranslationConnectionTest < Minitest::Test
+  extend Minitest::Serial
+
   include OpenAI::Test::ResponsesWebSocketConnectionTestSupport
 
   def test_translation_drains_final_output_after_the_close_command
@@ -275,5 +277,52 @@ class OpenAI::Test::RealtimeTranslationConnectionTest < Minitest::Test
     RUBY
     output, status = Open3.capture2e(RbConfig.ruby, "-Ilib", "-e", code)
     assert_predicate(status, :success?, output)
+  end
+
+  def test_cycles_fail_promptly_but_shared_acyclic_extras_remain_valid
+    socket = FakeSocket.new
+    client
+      .realtime
+      .connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |connection|
+        cycle = {}
+        cycle[:next] = cycle
+        assert_raises(ArgumentError) do
+          # Interrupt bypasses the connection's StandardError handler: a stalled
+          # validation must fail this test, not be mistaken for its ArgumentError.
+          Timeout.timeout(1, Interrupt) do
+            connection.send_event(type: "session.update", session: {audio: {output: {language: "fr", extra: cycle}}})
+          end
+        end
+
+        assert_empty(socket.writes)
+        shared = {tags: ["same", "fake-value"]}
+        connection.send_event(type: "session.update", session: {first: shared, second: shared})
+        sent = JSON.parse(socket.writes.fetch(0))
+        assert_equal({"tags" => ["same", "fake-value"]}, sent.dig("session", "first"))
+        assert_equal(sent.dig("session", "first"), sent.dig("session", "second"))
+      end
+  end
+
+  def test_deep_future_events_preserve_and_freeze_all_data
+    raw = +"{\"type\":\"future.translation\",\"value\":"
+    raw << ("{\"next\":" * 12_000)
+    raw << "{\"value\":\"fake-private-transcript\"}"
+    raw << ("}" * 12_001)
+    socket = FakeSocket.new(raw)
+    client
+      .realtime
+      .connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |connection|
+        event = connection.receive
+        assert_instance_of(OpenAI::Realtime::UnknownTranslationServerEvent, event)
+        refute_includes(event.inspect, "fake-private-transcript")
+        current = event.data.fetch(:value)
+        12_000.times do
+          assert_predicate(current, :frozen?)
+          current = current.fetch(:next)
+        end
+
+        assert_predicate(current, :frozen?)
+        assert_equal("fake-private-transcript", current.fetch(:value))
+      end
   end
 end

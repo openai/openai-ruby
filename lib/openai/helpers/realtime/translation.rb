@@ -27,6 +27,26 @@ module OpenAI
     class UnknownTranslationServerEvent < OpenAI::Realtime::UnknownServerEvent
       def inspect = "#<#{self.class} type=#{@type.inspect}>"
       alias to_s inspect
+
+      private def freeze_json(value)
+        pending = [value]
+        visited = {}.compare_by_identity
+        until pending.empty?
+          item = pending.pop
+          next if visited.key?(item)
+          visited[item] = true
+          case item
+          when Hash
+            item.each { |key, val| pending.push(key, val) }
+          when Array
+            pending.concat(item)
+          end
+
+          item.freeze
+        end
+
+        value
+      end
     end
 
     # Opening does not send any events. session.close flushes remaining output;
@@ -121,10 +141,16 @@ module OpenAI
         state = OpenAI::Internal::Type::Converter.new_coerce_state(request_only: outbound)
         event = OpenAI::Internal::Type::Converter.coerce(union, payload, state: state)
         raise ArgumentError if state[:error] || !state.fetch(:exactness).fetch(:no).zero?
-        pending = [event]
+        ancestors = {}.compare_by_identity
+        pending = [[event, false]]
         until pending.empty?
-          value = pending.pop
-          case value
+          value, exiting = pending.pop
+          if exiting
+            ancestors.delete(value)
+            next
+          end
+
+          children = case value
           when OpenAI::Internal::Type::BaseModel
             value.class.fields.each do |name, field|
               if field.fetch(:required) &&
@@ -135,12 +161,19 @@ module OpenAI
               end
             end
 
-            pending.concat(value.to_h.values)
+            value.to_h.values
           when Hash
-            pending.concat(value.values)
+            value.values
           when Array
-            pending.concat(value)
+            value
+          else
+            next
           end
+
+          raise ArgumentError if ancestors.key?(value)
+          ancestors[value] = true
+          pending << [value, true]
+          children.each { |child| pending << [child, false] }
         end
 
         event
