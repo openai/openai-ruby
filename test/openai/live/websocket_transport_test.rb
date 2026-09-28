@@ -206,4 +206,113 @@ class OpenAI::Test::LiveWebSocketTransportTest < Minitest::Test
       server_task&.stop
     end
   end
+
+  %i[primary fork sideband].each do |role|
+    define_method("test_#{role}_early_iteration_keeps_reading_after_storage_failure_and_closes_on_block_exit") do
+      wire = Queue.new
+      listener = TCPServer.new("127.0.0.1", 0)
+      port = listener.local_address.ip_port
+      listener.close
+      endpoint = Async::HTTP::Endpoint.parse("http://127.0.0.1:#{port}")
+      fallback = -> (_) { Protocol::HTTP::Response[404, {}, []] }
+      server = Async::HTTP::Server.new(
+        Async::WebSocket::Server.new(fallback) do |socket|
+          unless role == :sideband
+            wire << JSON.parse(socket.read.to_str)
+            socket.write(
+              JSON.generate(
+                type: "session.started",
+                event_id: "start_1",
+                session: {id: "sess_local", model: "gpt-live-1", expires_at: 2_000_000_000, status: "active"}
+              )
+            )
+          end
+
+          socket.write(JSON.generate(type: "future.server.event", nested: {choices: [nil, "future-value"]}))
+          socket.flush
+          # The peer waits for the caller after they stop iterating. An early
+          # break must leave the same socket available for sending and receiving.
+          wire << JSON.parse(socket.read.to_str)
+          socket.write(
+            JSON.generate(
+              type: "error",
+              event_id: "failure_1",
+              error: {type: "server_error", code: "session_storage_failed", message: "not stored"}
+            )
+          )
+          socket.write(
+            JSON.generate(
+              type: "session.closed",
+              event_id: "close_1",
+              session: {id: "sess_local", model: "gpt-live-1", expires_at: 2_000_000_000, status: "active"},
+              reason: "close_requested",
+              usage: {seconds: 0}
+            )
+          )
+          socket.flush
+          wire << [:eof, socket.read]
+        end,
+        endpoint
+      )
+
+      Sync do |task|
+        server_task = task.async { server.run.wait }
+        api = OpenAI::Client.new(api_key: "sk-test-local", base_url: "http://127.0.0.1:#{port}/v1", timeout: 5)
+        task.with_timeout(5) do
+          live_connection = nil
+          consume = lambda do |connection|
+            live_connection = connection
+            assert(wire.empty?, "opening the transport cannot send a startup event")
+            case role
+            when :primary
+              connection.send_event(type: "session.start", session: {model: "gpt-live-1", store: false})
+            when :fork
+              connection.send_event(OpenAI::Live::ForkSessionStartEvent.new(session: {}))
+            end
+
+            unless role == :sideband
+              assert_instance_of(OpenAI::Live::SessionStartedEvent, connection.receive)
+              assert_equal("session.start", wire.pop(timeout: 1).fetch("type"))
+            end
+
+            future = connection.each do |event|
+              break event if event.is_a?(OpenAI::Live::UnknownServerEvent)
+            end
+
+            assert_instance_of(OpenAI::Live::UnknownServerEvent, future)
+            assert_equal({type: "future.server.event", nested: {choices: [nil, "future-value"]}}, future.data)
+            assert_raises(FrozenError) { future.data.fetch(:nested).fetch(:choices) << "changed" }
+            refute_predicate(connection, :closed?)
+            connection.send_event(type: "session.close")
+            failed = connection.receive
+            assert_instance_of(OpenAI::Live::ErrorEvent, failed)
+            assert_equal("session_storage_failed", failed.error.code)
+            closed = connection.receive
+            assert_instance_of(OpenAI::Live::SessionClosedEvent, closed)
+            assert_equal(:close_requested, closed.reason)
+            refute_predicate(connection, :closed?, "a session.closed event is not the socket close")
+            :finished
+          end
+
+          result = case role
+          when :primary
+            api.live.connect(&consume)
+          when :fork
+            api.live.forks.connect("sess_stored", &consume)
+          when :sideband
+            api.live.sideband.connect("sess_live", &consume)
+          end
+
+          assert_equal(:finished, result)
+          assert_predicate(live_connection, :closed?)
+          assert_equal({"type" => "session.close"}, wire.pop(timeout: 1))
+          assert_equal([:eof, nil], wire.pop(timeout: 1), "peer saw EOF on the same socket after block exit")
+          assert(wire.empty?, "no invented startup, reconnect or additional frames")
+        end
+
+      ensure
+        server_task&.stop
+      end
+    end
+  end
 end
