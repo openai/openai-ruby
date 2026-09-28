@@ -68,7 +68,7 @@ module OpenAI
       def initialize(socket:, url:)
         super
         @poisoned = false
-        @peer_closed = false
+        @closed = false
         @server_event_names = discriminator_values(OpenAI::Live::ServerEvent)
         @client_event_names = discriminator_values(OpenAI::Live::ClientEvent)
       end
@@ -77,10 +77,12 @@ module OpenAI
         send_raw(encode_client_event(event))
       end
 
-      def closed? = @poisoned || @peer_closed || super
+      def closed? = @poisoned || @closed || super
 
       def close(code: 1000, reason: "")
-        @poisoned || @peer_closed ? abort : super
+        @poisoned || @closed ? abort : super
+        @closed = true
+        nil
       rescue StandardError
         @poisoned = true
         raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
@@ -89,6 +91,8 @@ module OpenAI
       # @api private
       def abort
         super
+        @closed = true
+        nil
       rescue StandardError
         @poisoned = true
         raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
@@ -103,9 +107,9 @@ module OpenAI
 
       private def read_raw_message
         raise connection_error("Cannot read from a failed Live WebSocket.") if @poisoned
-        return nil if @peer_closed
+        return nil if @closed
         text = super
-        @peer_closed = text.nil?
+        @closed = text.nil?
         text
       rescue StandardError
         @poisoned = true

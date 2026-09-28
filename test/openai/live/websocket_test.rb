@@ -409,6 +409,22 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     end
   end
 
+  def test_local_close_is_terminal_when_transport_waits_for_peer_handshake
+    socket = FakeSocket.new(JSON.generate(type: "session.future"))
+    socket.define_singleton_method(:close) { |**| nil }
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      connection.send_event(type: "session.close")
+      connection.close
+      assert_predicate(connection, :closed?)
+      assert_nil(connection.receive)
+      assert_raises(OpenAI::Errors::LiveConnectionError) { connection.send_event(type: "response.create") }
+      assert_raises(OpenAI::Errors::LiveConnectionError) { connection.send_raw("{}") }
+      assert_equal(["session.close"], socket.writes.map { JSON.parse(_1).fetch("type") })
+    end
+
+    assert(socket.aborted?)
+  end
+
   def test_clean_peer_eof_releases_the_socket_without_graceful_close_writes
     socket = FakeSocket.new
     socket.define_singleton_method(:close) { |**| raise IOError, "cannot write a close after EOF" }
