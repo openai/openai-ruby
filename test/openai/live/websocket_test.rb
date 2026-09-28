@@ -216,6 +216,23 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     end
   end
 
+  def test_a_typed_model_cannot_dispatch_a_different_event_by_overriding_its_constant
+    socket = FakeSocket.new
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      invalid = OpenAI::Live::SessionCloseEvent.new(
+        type: :"session.start",
+        session: {model: "gpt-live-1", instructions: "private-payload"}
+      )
+      error = assert_raises(ArgumentError) { connection.send_event(invalid) }
+      assert_nil(error.cause)
+      refute_includes(error.full_message, "private-payload")
+      assert_empty(socket.writes)
+      connection.send_event(OpenAI::Live::SessionCloseEvent.new(type: "session.close"))
+      connection.send_event(OpenAI::Live::SessionCloseEvent.new)
+      assert_equal(["session.close"] * 2, socket.writes.map { JSON.parse(_1).fetch("type") })
+    end
+  end
+
   def test_uncertain_write_cannot_be_replayed_on_later_sends_or_cleanup
     %i[typed raw].product([true, false]).each do |mode, explicit_close|
       socket = FakeSocket.new
