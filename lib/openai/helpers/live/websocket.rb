@@ -120,10 +120,10 @@ module OpenAI
       end
 
       private def encode_client_event(event)
-        validate_acyclic!(event)
+        validate_event_tree!(event)
         payload = OpenAI::Internal::Type::Converter.dump(OpenAI::Live::ClientEvent, event)
         type = payload[:type] || payload["type"] if payload.is_a?(Hash)
-        raise ArgumentError unless type && @client_event_names.key?(type.to_s)
+        raise ArgumentError unless (type.is_a?(String) || type.is_a?(Symbol)) && @client_event_names.key?(type.to_s)
 
         coerced = coerce_event(OpenAI::Live::ClientEvent, payload)
         JSON.generate(OpenAI::Internal::Type::Converter.dump(OpenAI::Live::ClientEvent, coerced), max_nesting: false)
@@ -172,7 +172,7 @@ module OpenAI
         event
       end
 
-      private def validate_acyclic!(event)
+      private def validate_event_tree!(event)
         ancestors = {}.compare_by_identity
         pending = [[event, false]]
         until pending.empty?
@@ -184,8 +184,16 @@ module OpenAI
 
           children = case value
           when OpenAI::Internal::Type::BaseModel
-            value.to_h.values
+            [value.to_h]
           when Hash
+            keys = {}
+            value.each_key do |key|
+              next unless key.is_a?(String) || key.is_a?(Symbol)
+              name = key.to_s
+              raise ArgumentError if keys.key?(name)
+              keys[name] = true
+            end
+
             value.values
           when Array
             value
@@ -235,20 +243,9 @@ module OpenAI
 
           with_websocket_connection_retry(
             error_class: OpenAI::Errors::LiveConnectionError,
-            build: build
-          ) do |request, mark_handshake_completed|
-            handshake_completed = false
-            mark_open = lambda do
-              handshake_completed = true
-              mark_handshake_completed.call
-            end
-
-            block.call(request, mark_open)
-          rescue StandardError => e
-            raise if handshake_completed
-            status = e.http_status if e.is_a?(OpenAI::Errors::WebSocketConnectionError)
-            raise OpenAI::Errors::LiveConnectionError.new(url: request.fetch(:url), http_status: status), cause: nil
-          end
+            build: build,
+            &block
+          )
         end
 
         private def validate_live_websocket_request!
@@ -294,7 +291,11 @@ module OpenAI
               connection_class: OpenAI::Live::Connection,
               request: request,
               block_error_message: "A block is required to open a Live WebSocket.",
-              abort_after_block: -> (_connection, pending_error) { !pending_error.nil? }
+              abort_after_block: -> (_connection, pending_error) { !pending_error.nil? },
+              transport_error_factory: -> (url:, error:) {
+                status = error.http_status if error.is_a?(OpenAI::Errors::WebSocketConnectionError)
+                OpenAI::Errors::LiveConnectionError.new(url: url, http_status: status)
+              }
             )
             .open(&block)
         end

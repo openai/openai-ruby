@@ -184,6 +184,38 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     end
   end
 
+  def test_duplicate_string_and_symbol_keys_cannot_change_the_command_or_nested_data
+    socket = FakeSocket.new
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      [
+        {:type => "session.close", "type" => "session.start", "session" => {"model" => "gpt-live-1"}},
+        {type: "session.start", session: {:model => "gpt-live-1", "model" => "different-model"}},
+        {type: "session.close", extra: [{:secret => "private-payload", "secret" => "other"}]}
+      ].each do |event|
+        error = assert_raises(ArgumentError) { connection.send_event(event) }
+        refute_includes(error.full_message, "private-payload")
+        assert_empty(socket.writes)
+      end
+
+      connection.send_event({"type" => "session.close"})
+      assert_equal("session.close", JSON.parse(socket.writes.first).fetch("type"))
+    end
+  end
+
+  def test_only_string_or_symbol_types_can_select_a_client_event
+    impostor = Object.new
+    impostor.define_singleton_method(:to_s) { "session.start" }
+    socket = FakeSocket.new
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      error = assert_raises(ArgumentError) { connection.send_event(type: impostor, secret: "private-payload") }
+      assert_nil(error.cause)
+      refute_includes(error.full_message, "private-payload")
+      assert_empty(socket.writes)
+      connection.send_event(type: :"session.close")
+      assert_equal(1, socket.writes.size)
+    end
+  end
+
   def test_uncertain_write_cannot_be_replayed_on_later_sends_or_cleanup
     %i[typed raw].product([true, false]).each do |mode, explicit_close|
       socket = FakeSocket.new
@@ -570,6 +602,31 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
       refute_includes(error.full_message, "private-payload")
       refute_includes(error.full_message, "fake-token")
     end
+  end
+
+  def test_custom_transport_errors_after_yield_are_redacted_but_application_errors_survive
+    socket = FakeSocket.new
+    transport = Object.new
+    transport.define_singleton_method(:open) do |**, &connection_block|
+      connection_block.call(socket)
+      raise IOError, "private-payload fake-token"
+    end
+
+    error = assert_raises(OpenAI::Errors::LiveConnectionError) do
+      client.live.connect(transport: transport) { |_connection| :returned }
+    end
+
+    assert_nil(error.cause)
+    refute_includes(error.full_message, "private-payload")
+    refute_includes(error.full_message, "fake-token")
+    assert_predicate(socket, :closed?)
+
+    original = RuntimeError.new("application failure")
+    captured = assert_raises(RuntimeError) do
+      client.live.connect(transport: transport) { raise original }
+    end
+
+    assert_same(original, captured)
   end
 
   def test_post_upgrade_401_and_early_eof_never_reconnect_or_report_readiness
