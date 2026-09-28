@@ -2,6 +2,8 @@ module OpenAI
   class Client
     # @api private
     def with_live_websocket_connection_request: (
+      ?path: String | ::Array[String],
+      ?query: ::Hash[String, String],
       ?websocket_base_url: String?,
       ?options: OpenAI::request_opts?
     ) {
@@ -26,6 +28,23 @@ module OpenAI
         OpenAI::Models::Live::server_event | OpenAI::Live::UnknownServerEvent
       type connection_client_event =
         OpenAI::Models::Live::client_event | ::Hash[Symbol | String, untyped]
+      type fork_connection_server_event =
+        OpenAI::Models::Live::fork_server_event
+        | OpenAI::Live::UnknownServerEvent
+      type fork_connection_client_event =
+        OpenAI::Models::Live::fork_client_event
+        | ::Hash[Symbol | String, untyped]
+      type sideband_connection_client_event =
+        OpenAI::Models::Live::SessionUpdateEvent
+        | OpenAI::Models::Live::InputAudioMuteEvent
+        | OpenAI::Models::Live::InputAudioUnmuteEvent
+        | OpenAI::Models::Live::InstructionsAppendEvent
+        | OpenAI::Models::Live::ThinkingAppendEvent
+        | OpenAI::Models::Live::CommentaryAppendEvent
+        | OpenAI::Models::Live::ResponseItemCreateEvent
+        | OpenAI::Models::Live::ResponseCreateEvent
+        | OpenAI::Models::Live::SessionCloseEvent
+        | ::Hash[Symbol | String, untyped]
 
       class UnknownServerEvent
         attr_reader type: Symbol
@@ -54,6 +73,44 @@ module OpenAI
         def abort: -> nil
         def closed?: -> bool
       end
+      class SidebandConnection
+        include Enumerable[OpenAI::Models::Live::connection_server_event]
+        attr_reader url: URI::Generic
+        def initialize: (socket: top, url: URI::Generic) -> void
+        def each:
+          -> Enumerator[OpenAI::Models::Live::connection_server_event, self]
+          | {
+            (OpenAI::Models::Live::connection_server_event event) -> void
+          } -> self
+        def receive: -> OpenAI::Models::Live::connection_server_event?
+        def receive_raw: -> String?
+        def send_event: (
+          OpenAI::Models::Live::sideband_connection_client_event event
+        ) -> nil
+        def send_raw: (String data) -> nil
+        def close: (?code: Integer, ?reason: String) -> nil
+        def abort: -> nil
+        def closed?: -> bool
+      end
+      class ForkConnection
+        include Enumerable[OpenAI::Models::Live::fork_connection_server_event]
+        attr_reader url: URI::Generic
+        def initialize: (socket: top, url: URI::Generic) -> void
+        def each:
+          -> Enumerator[OpenAI::Models::Live::fork_connection_server_event, self]
+          | {
+            (OpenAI::Models::Live::fork_connection_server_event event) -> void
+          } -> self
+        def receive: -> OpenAI::Models::Live::fork_connection_server_event?
+        def receive_raw: -> String?
+        def send_event: (
+          OpenAI::Models::Live::fork_connection_client_event event
+        ) -> nil
+        def send_raw: (String data) -> nil
+        def close: (?code: Integer, ?reason: String) -> nil
+        def abort: -> nil
+        def closed?: -> bool
+      end
     end
   end
 
@@ -67,6 +124,29 @@ module OpenAI
       ) {
         (OpenAI::Live::Connection connection) -> T
       } -> T
+      class Sideband
+        def connect: [T] (
+          String session_id,
+          ?graceful_close: bool?,
+          ?websocket_base_url: String?,
+          ?request_options: OpenAI::request_opts?,
+          ?transport: top,
+          ?transport_options: ::Hash[Symbol, top]
+        ) {
+          (OpenAI::Live::SidebandConnection connection) -> T
+        } -> T
+      end
+      class Forks
+        def connect: [T] (
+          String session_id,
+          ?websocket_base_url: String?,
+          ?request_options: OpenAI::request_opts?,
+          ?transport: top,
+          ?transport_options: ::Hash[Symbol, top]
+        ) {
+          (OpenAI::Live::ForkConnection connection) -> T
+        } -> T
+      end
     end
   end
 end

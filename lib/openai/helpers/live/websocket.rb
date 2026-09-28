@@ -69,8 +69,8 @@ module OpenAI
         super
         @poisoned = false
         @closed = false
-        @server_event_names = discriminator_values(OpenAI::Live::ServerEvent)
-        @client_event_names = discriminator_values(OpenAI::Live::ClientEvent)
+        @server_event_names = discriminator_values(server_event_type)
+        @client_event_names = discriminator_values(client_event_type)
       end
 
       def send_event(event)
@@ -125,12 +125,12 @@ module OpenAI
 
       private def encode_client_event(event)
         validate_event_tree!(event)
-        payload = OpenAI::Internal::Type::Converter.dump(OpenAI::Live::ClientEvent, event)
+        payload = OpenAI::Internal::Type::Converter.dump(client_event_type, event)
         type = payload[:type] || payload["type"] if payload.is_a?(Hash)
         raise ArgumentError unless (type.is_a?(String) || type.is_a?(Symbol)) && @client_event_names.key?(type.to_s)
 
-        coerced = coerce_event(OpenAI::Live::ClientEvent, payload, outbound: true)
-        serialized = OpenAI::Internal::Type::Converter.dump(OpenAI::Live::ClientEvent, coerced)
+        coerced = coerce_event(client_event_type, payload, outbound: true)
+        serialized = OpenAI::Internal::Type::Converter.dump(client_event_type, coerced)
         validate_event_tree!(serialized, json_only: true)
         JSON.generate(serialized, max_nesting: false)
       rescue StandardError, SystemStackError
@@ -144,7 +144,7 @@ module OpenAI
           return OpenAI::Live::UnknownServerEvent.new(data: parsed)
         end
 
-        event = coerce_event(OpenAI::Live::ServerEvent, parsed)
+        event = coerce_event(server_event_type, parsed)
         validate_event_tree!(event)
         event
       rescue StandardError, SystemStackError
@@ -241,6 +241,42 @@ module OpenAI
       private def connection_error(message)
         OpenAI::Errors::LiveConnectionError.new(url: @url, message: message)
       end
+
+      private def client_event_type = OpenAI::Live::ClientEvent
+      private def server_event_type = OpenAI::Live::ServerEvent
+    end
+
+    # Attached to an existing session; no new session.start handshake is sent.
+    class SidebandConnection < Connection
+      # @api private
+      def initialize(socket:, url:)
+        super
+        @client_event_names = @client_event_names.except("session.start", "session.input_audio.append")
+      end
+    end
+
+    # Caller-driven startup using overrides for an eligible stored session.
+    class ForkConnection < Connection
+      def send_event(event)
+        if event.is_a?(OpenAI::Live::SessionStartEvent)
+          raise ArgumentError, "Invalid Live client event."
+        end
+
+        super
+      end
+
+      private def client_event_type = OpenAI::Live::ForkClientEvent
+      private def server_event_type = OpenAI::Live::ForkServerEvent
+
+      private def coerce_event(union, payload, outbound: false)
+        event = super
+        if outbound && event.is_a?(OpenAI::Live::ForkSessionStartEvent)
+          overrides = event.session.to_h
+          raise ArgumentError if overrides.key?(:model) || overrides.key?(:client)
+        end
+
+        event
+      end
     end
   end
 
@@ -251,12 +287,20 @@ module OpenAI
         include OpenAI::WebSocket::ClientRequest
 
         # @api private
-        def with_live_websocket_connection_request(websocket_base_url: nil, options: nil, &block)
+        def with_live_websocket_connection_request(
+          path: "live/sessions",
+          query: {},
+          websocket_base_url: nil,
+          options: nil,
+          &block
+        )
+          path = OpenAI::Internal::Util.interpolate_path(path).freeze
+          query = query.dup.freeze
           websocket_base_url = websocket_base_url&.to_s&.dup&.freeze
           build = lambda do |deadline|
             build_shared_websocket_connection_request(
-              path: "live/sessions",
-              query: {},
+              path: path,
+              query: query,
               websocket_base_url: websocket_base_url,
               options: options,
               deadline: deadline,
@@ -293,10 +337,33 @@ module OpenAI
         # Open a primary Live WebSocket; the model is supplied in session.start,
         # not in the URL. This opens only the transport, never starts a session.
         def connect(websocket_base_url: nil, request_options: nil, transport: nil, transport_options: {}, &block)
+          open_live_websocket(
+            path: "live/sessions",
+            connection_class: OpenAI::Live::Connection,
+            websocket_base_url: websocket_base_url,
+            request_options: request_options,
+            transport: transport,
+            transport_options: transport_options,
+            &block
+          )
+        end
+
+        private def open_live_websocket(
+          path:,
+          connection_class:,
+          websocket_base_url:,
+          request_options:,
+          transport:,
+          transport_options:,
+          query: {},
+          &block
+        )
           raise ArgumentError, "A block is required to open a Live WebSocket." unless block
 
           request = lambda do |&request_block|
             @client.with_live_websocket_connection_request(
+              path: path,
+              query: query,
               websocket_base_url: websocket_base_url,
               options: request_options,
               &request_block
@@ -318,7 +385,7 @@ module OpenAI
               transport: transport,
               transport_options: transport_options,
               default_transport: default_transport,
-              connection_class: OpenAI::Live::Connection,
+              connection_class: connection_class,
               request: request,
               block_error_message: "A block is required to open a Live WebSocket.",
               abort_after_block: -> (_connection, pending_error) { !pending_error.nil? },
@@ -336,3 +403,52 @@ end
 
 OpenAI::Client.include(OpenAI::Helpers::LiveWebSocket::ClientExtension)
 OpenAI::Resources::Live.include(OpenAI::Helpers::LiveWebSocket::Connections)
+
+class OpenAI::Resources::Live::Sideband
+  include OpenAI::Helpers::LiveWebSocket::Connections
+
+  # Attach to an eligible existing session with its selected observer credentials.
+  # The service may replay recent events; attachment does not start a new session.
+  def connect(
+    session_id,
+    graceful_close: nil,
+    websocket_base_url: nil,
+    request_options: nil,
+    transport: nil,
+    transport_options: {},
+    &block
+  )
+    unless graceful_close.nil? || graceful_close == true || graceful_close == false
+      raise ArgumentError, "graceful_close must be true, false, or nil"
+    end
+
+    open_live_websocket(
+      path: ["live/sessions/%1$s/attach", session_id],
+      query: graceful_close.nil? ? {} : {"graceful_close" => graceful_close.to_s},
+      connection_class: OpenAI::Live::SidebandConnection,
+      websocket_base_url: websocket_base_url,
+      request_options: request_options,
+      transport: transport,
+      transport_options: transport_options,
+      &block
+    )
+  end
+end
+
+class OpenAI::Resources::Live::Forks
+  include OpenAI::Helpers::LiveWebSocket::Connections
+
+  # Open a fork of an eligible stored recording. Send session.start with
+  # session: {} to inherit the recording, then wait for session.started.
+  def connect(session_id, websocket_base_url: nil, request_options: nil, transport: nil, transport_options: {}, &block)
+    open_live_websocket(
+      path: ["live/sessions/%1$s/fork", session_id],
+      connection_class: OpenAI::Live::ForkConnection,
+      websocket_base_url: websocket_base_url,
+      request_options: request_options,
+      transport: transport,
+      transport_options: transport_options,
+      &block
+    )
+  end
+end
