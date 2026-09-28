@@ -380,9 +380,10 @@ module OpenAI
         host = url.hostname
         host = "[#{host}]" if host.include?(":")
         default_port = %w[https wss].include?(url.scheme) ? 443 : 80
-        return host if !include_default_port && url.port == default_port
+        port = url.port || default_port
+        return host if !include_default_port && port == default_port
 
-        "#{host}:#{url.port}"
+        "#{host}:#{port}"
       end
 
       private def proxy_uri(url)
