@@ -72,4 +72,35 @@ class OpenAI::Test::LiveWebSocketLargePayloadTest < Minitest::Test
     end
   end
 
+  def test_native_generator_resource_exhaustion_cannot_escape_or_poison_connection
+    schema = {type: "string"}
+    100_000.times { schema = {nested: schema} }
+    socket = FakeSocket.new
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      begin
+        connection.send_event(
+          type: "session.start",
+          session: {
+            model: "gpt-live-1",
+            delegation: {
+              type: "responses",
+              responses: {
+                model: "gpt-live-1",
+                tools: [{type: "function", name: "private-payload", parameters: schema}]
+              }
+            }
+          }
+        )
+        assert_equal(1, socket.writes.size)
+      rescue ArgumentError => error
+        assert_nil(error.cause)
+        refute_includes(error.full_message, "private-payload")
+        assert_empty(socket.writes)
+      end
+
+      connection.send_event(type: "session.close")
+      assert_equal("session.close", JSON.parse(socket.writes.last).fetch("type"))
+    end
+  end
+
 end

@@ -14,6 +14,7 @@ module OpenAI
         CoerceState = T.type_alias do
           {
             translate_names: T::Boolean,
+            request_only: T::Boolean,
             strictness: T::Boolean,
             exactness: {
               yes: Integer,
@@ -122,11 +123,11 @@ module OpenAI
 
           # @api private
           sig do
-            params(translate_names: T::Boolean).returns(
+            params(translate_names: T::Boolean, request_only: T::Boolean).returns(
               OpenAI::Internal::Type::Converter::CoerceState
             )
           end
-          def self.new_coerce_state(translate_names: true)
+          def self.new_coerce_state(translate_names: true, request_only: false)
           end
 
           # @api private

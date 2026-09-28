@@ -125,9 +125,9 @@ module OpenAI
         type = payload[:type] || payload["type"] if payload.is_a?(Hash)
         raise ArgumentError unless (type.is_a?(String) || type.is_a?(Symbol)) && @client_event_names.key?(type.to_s)
 
-        coerced = coerce_event(OpenAI::Live::ClientEvent, payload)
+        coerced = coerce_event(OpenAI::Live::ClientEvent, payload, outbound: true)
         JSON.generate(OpenAI::Internal::Type::Converter.dump(OpenAI::Live::ClientEvent, coerced), max_nesting: false)
-      rescue StandardError
+      rescue StandardError, SystemStackError
         raise ArgumentError, "Invalid Live client event.", cause: nil
       end
 
@@ -143,8 +143,8 @@ module OpenAI
         raise OpenAI::Errors::LiveProtocolError.new, cause: nil
       end
 
-      private def coerce_event(union, payload)
-        state = OpenAI::Internal::Type::Converter.new_coerce_state
+      private def coerce_event(union, payload, outbound: false)
+        state = OpenAI::Internal::Type::Converter.new_coerce_state(request_only: outbound)
         event = OpenAI::Internal::Type::Converter.coerce(union, payload, state: state)
         raise ArgumentError if state[:error] || !state.fetch(:exactness).fetch(:no).zero?
         pending = [event]
@@ -154,8 +154,8 @@ module OpenAI
           when OpenAI::Internal::Type::BaseModel
             value.class.fields.each do |name, field|
               if field.fetch(:required) &&
-                  field.fetch(:mode) != :dump &&
-                  field.fetch(:const) == OpenAI::Internal::OMIT &&
+                  field.fetch(:mode) != (outbound ? :coerce : :dump) &&
+                  (!outbound || field.fetch(:const) == OpenAI::Internal::OMIT) &&
                   !value.to_h.key?(name)
                 raise ArgumentError
               end

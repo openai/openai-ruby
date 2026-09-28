@@ -184,6 +184,47 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     end
   end
 
+  def test_function_call_input_does_not_require_or_send_response_only_parsed_data
+    socket = FakeSocket.new
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      item = {type: "function_call", call_id: "call_1", name: "lookup", arguments: "{}"}
+      connection.send_event(type: "response.item.create", item: item)
+      connection.send_event(
+        OpenAI::Live::ResponseItemCreateEvent.new(
+          item: OpenAI::Responses::ResponseFunctionToolCall.new(**item, parsed: {"private" => "response-only"})
+        )
+      )
+      assert_equal([item.transform_keys(&:to_s)] * 2, socket.writes.map { JSON.parse(_1).fetch("item") })
+    end
+  end
+
+  def test_incoming_known_snapshot_cannot_fabricate_a_missing_constant
+    socket = FakeSocket.new(
+      JSON.generate(
+        type: "session.started",
+        event_id: "evt_1",
+        session: {
+          id: "sess_1",
+          model: "gpt-live-1",
+          expires_at: 2_000_000_000,
+          instructions: "private-payload"
+        }
+      ),
+      JSON.generate(
+        type: "session.started",
+        event_id: "evt_2",
+        session: {id: "sess_1", model: "gpt-live-1", expires_at: 2_000_000_000, status: "active"}
+      )
+    )
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      error = assert_raises(OpenAI::Errors::LiveProtocolError) { connection.receive }
+      assert_nil(error.cause)
+      refute_includes(error.full_message, "private-payload")
+      started = connection.receive
+      assert_equal(:active, started.session.status)
+    end
+  end
+
   def test_duplicate_string_and_symbol_keys_cannot_change_the_command_or_nested_data
     socket = FakeSocket.new
     client.live.connect(transport: FakeTransport.new(socket)) do |connection|
