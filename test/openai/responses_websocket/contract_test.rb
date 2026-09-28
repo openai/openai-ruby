@@ -65,8 +65,11 @@ class OpenAI::Test::ResponsesWebSocketContractTest < Minitest::Test
     [
       [{}, true],
       [{max_message_bytes: nil, max_message_frames: nil}, true],
+      [{max_wire_message_bytes: nil, max_message_bytes: 1_024}, false],
       [{max_message_frames: 2}, true],
-      [{max_message_bytes: 1_024, max_message_frames: 2}, false]
+      [{max_message_bytes: 1_024, max_message_frames: 2}, false],
+      [{max_wire_message_bytes: 1_024}, true],
+      [{max_wire_message_bytes: 1_024, max_message_bytes: 1_024, max_message_frames: 2}, true]
     ].each do |options, compressed|
       with_server(scenario, expected_compression: compressed) do |client|
         client
