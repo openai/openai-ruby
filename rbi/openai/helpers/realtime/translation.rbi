@@ -83,6 +83,13 @@ module OpenAI
         def send_event(event)
         end
 
+        sig do
+          params(timeout: Numeric, block: T.proc.params(event: ServerEvent).void)
+            .returns(OpenAI::Realtime::RealtimeTranslationSessionClosedEvent)
+        end
+        def finish(timeout:, &block)
+        end
+
         sig { params(data: String).void }
         def send_raw(data)
         end

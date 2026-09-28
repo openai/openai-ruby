@@ -50,6 +50,13 @@ module OpenAI
         def send_event: (
           OpenAI::Models::Realtime::translation_connection_client_event event
         ) -> nil
+        def finish: (
+          timeout: Numeric
+        ) {
+          (
+            OpenAI::Models::Realtime::translation_connection_server_event event
+          ) -> void
+        } -> OpenAI::Realtime::RealtimeTranslationSessionClosedEvent
         def send_raw: (String data) -> nil
         def close: (?code: Integer, ?reason: String) -> nil
         def abort: -> nil

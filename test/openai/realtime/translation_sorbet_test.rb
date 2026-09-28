@@ -19,6 +19,10 @@ class OpenAI::Test::RealtimeTranslationSorbetTest < Minitest::Test
         connection.send_event(type: "session.close")
         raw = T.let({"type" => "session.close"}, T::Hash[String, T.anything])
         connection.send_event(raw)
+        terminal = connection.finish(timeout: 3.0) do |event|
+          T.assert_type!(event, OpenAI::Realtime::TranslationConnection::ServerEvent)
+        end
+        T.assert_type!(terminal, OpenAI::Realtime::RealtimeTranslationSessionClosedEvent)
         :finished
       end
       T.assert_type!(result, Symbol)

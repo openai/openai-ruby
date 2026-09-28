@@ -10,6 +10,44 @@ class OpenAI::Test::RealtimeTranslationConnectionTest < Minitest::Test
 
   include OpenAI::Test::ResponsesWebSocketConnectionTestSupport
 
+  def test_finish_waits_for_an_admitted_injected_write_without_losing_its_reader
+    release = Async::Condition.new
+    socket = FakeSocket.new(
+      JSON.generate(type: "session.output_transcript.delta", event_id: "o1", delta: "last"),
+      JSON.generate(type: "session.closed", event_id: "s1")
+    )
+    socket.define_singleton_method(:write) do |message|
+      release.wait if JSON.parse(message).fetch("type") == "session.input_audio_buffer.append"
+      super(message)
+    end
+
+    Sync do |task|
+      task.with_timeout(3) do
+        client
+          .realtime
+          .connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |c|
+            sender = task.async { c.send_event(type: "session.input_audio_buffer.append", audio: "AA==") }
+            events = []
+            finisher = task.async { c.finish(timeout: 2) { |event| events << event } }
+            assert_raises(OpenAI::Errors::TranslationConnectionError) { c.receive }
+            assert_raises(OpenAI::Errors::TranslationConnectionError) { c.receive_raw }
+            release.signal
+            assert_nil(sender.wait)
+            terminal = finisher.wait
+            assert_instance_of(OpenAI::Realtime::RealtimeTranslationSessionClosedEvent, terminal)
+            assert_equal("last", events.first.delta)
+            assert_same(terminal, events.last)
+            assert_equal(
+              %w[session.input_audio_buffer.append session.close],
+              socket.writes.map { |message| JSON.parse(message).fetch("type") }
+            )
+          end
+      end
+    end
+
+    assert_predicate(socket, :closed?)
+  end
+
   def test_translation_drains_final_output_after_the_close_command
     socket = FakeSocket.new(
       JSON.generate(
