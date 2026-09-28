@@ -60,6 +60,41 @@ event types arrive as `OpenAI::Responses::UnknownServerEvent`. Preserve or handl
 them explicitly where your application needs them. Do not assume every event
 has a response, text delta, or lane ID.
 
+## Receive limits
+
+The default Responses transport accepts `max_message_bytes` and
+`max_message_frames` in `transport_options`. Both are optional positive
+integers; omitted or `nil` keeps the existing unlimited default. Choose values
+for your application's legitimate largest message, including images and tool
+results. These are caller budgets, not API limits.
+
+```ruby
+client.responses.connect(
+  transport_options: {max_message_bytes: 64 * 1024 * 1024, max_message_frames: 4_096}
+) do |connection|
+  connection.response.create(model: "gpt-5.2", input: "Hello")
+  while (event = connection.receive)
+    puts event.type
+  end
+end
+```
+
+The byte budget covers the uncompressed WebSocket payload of each complete
+message, including all its fragments. Oversized frame headers are rejected
+before the advertised payload is read (with up to 125 bytes allowed for a legal
+interleaved control frame). The frame budget counts text, binary and continuation
+frames, including empty continuations; ping/pong and close frames don't count.
+Set both when you need to bound both payload and frame-buffer memory.
+Counters reset at the end of each message.
+
+To enforce a decoded-byte limit before allocation, a connection configured with
+`max_message_bytes` does not negotiate WebSocket compression. Without a byte
+limit (including a frame-only limit) compression negotiation is unchanged.
+Exceeding either chosen limit aborts the socket, releases its pool slot, and
+raises `OpenAI::Errors::ResponsesConnectionError`; no requests are replayed.
+Managed sessions accept the same `transport_options`. An injected transport
+still receives its options unchanged and owns their meaning.
+
 ## Managed sessions
 
 `OpenAI::Responses::Session.open` adds routed lanes and final-response collection
