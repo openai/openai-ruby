@@ -1,0 +1,279 @@
+# frozen_string_literal: true
+
+require "open3"
+
+require_relative "../test_helper"
+require_relative "../responses_websocket/connection_test_support"
+
+class OpenAI::Test::RealtimeTranslationConnectionTest < Minitest::Test
+  include OpenAI::Test::ResponsesWebSocketConnectionTestSupport
+
+  def test_translation_drains_final_output_after_the_close_command
+    socket = FakeSocket.new(
+      JSON.generate(
+        type: "session.created",
+        event_id: "e1",
+        session: {
+          id: "rt_fake",
+          type: "translation",
+          model: "gpt-realtime-translate",
+          expires_at: 2_000_000_000,
+          audio: {}
+        }
+      ),
+      JSON.generate(type: "session.output_transcript.delta", event_id: "e2", delta: "bon"),
+      JSON.generate(type: "session.output_transcript.delta", event_id: "e3", delta: "jour"),
+      JSON.generate(type: "session.closed", event_id: "e4")
+    )
+    transport = FakeTransport.new(socket)
+    result = client.realtime.connect_translation(model: "gpt-realtime-translate", transport: transport) do |connection|
+      ready = connection.receive
+      assert_instance_of(OpenAI::Realtime::RealtimeTranslationSessionCreatedEvent, ready)
+      assert_empty(socket.writes)
+      connection.send_event(OpenAI::Realtime::RealtimeTranslationInputAudioBufferAppendEvent.new(audio: "AA=="))
+      connection.send_event(OpenAI::Realtime::RealtimeTranslationSessionCloseEvent.new)
+      text = +""
+      connection.each do |event|
+        case event
+        when OpenAI::Realtime::RealtimeTranslationOutputTranscriptDeltaEvent
+          text << event.delta
+        when OpenAI::Realtime::RealtimeTranslationSessionClosedEvent
+          break
+        end
+      end
+
+      text
+    end
+
+    assert_equal("bonjour", result)
+    assert_equal(
+      ["session.input_audio_buffer.append", "session.close"],
+      socket.writes.map { JSON.parse(_1).fetch("type") }
+    )
+    assert_equal("/v1/realtime/translations", transport.open_args.fetch(:url).path)
+    assert_equal([["model", "gpt-realtime-translate"]], URI.decode_www_form(transport.open_args.fetch(:url).query))
+    assert_predicate(socket, :closed?)
+  end
+
+  def test_invalid_commands_are_rejected_without_closing_and_errors_stay_nonterminal
+    private_text = "fake private transcript"
+    socket = FakeSocket.new(
+      JSON.generate(type: "error", event_id: "err1", error: {type: "invalid_request_error", message: "bad"}),
+      JSON.generate(type: "session.output_transcript.delta", event_id: "d1", delta: "salut"),
+      JSON.generate(type: "future.translation", text: private_text)
+    )
+    client.realtime.connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |c|
+      assert_raises(ArgumentError) { c.send_event(type: "response.create", response: {instructions: private_text}) }
+      assert_empty(socket.writes)
+      assert_instance_of(OpenAI::Realtime::RealtimeErrorEvent, c.receive)
+      assert_equal("salut", c.receive.delta)
+      unknown = c.receive
+      assert_equal(private_text, unknown.data.fetch(:text))
+      refute_includes(unknown.inspect, private_text)
+      c.send_event(type: "session.close")
+    end
+
+    assert_equal(["session.close"], socket.writes.map { JSON.parse(_1).fetch("type") })
+  end
+
+  def test_each_connection_uses_current_credentials_and_never_replays_audio
+    api = OpenAI::Client.new(api_key: "fake-first", base_url: "https://api.example/v1")
+    first = FakeTransport.new(FakeSocket.new)
+    api.realtime.connect_translation(model: "gpt-realtime-translate", transport: first) do |c|
+      c.send_event(type: "session.input_audio_buffer.append", audio: "AA==")
+    end
+
+    second_socket = FakeSocket.new
+    second = FakeTransport.new(second_socket)
+    api
+      .realtime
+      .connect_translation(
+        model: "gpt-realtime-translate",
+        transport: second,
+        request_options: {extra_headers: {"Authorization" => "Bearer fake-second"}, timeout: 8}
+      ) { |_c| :fresh }
+    assert_equal("Bearer fake-first", first.open_args.fetch(:headers).fetch("authorization"))
+    assert_equal("Bearer fake-second", second.open_args.fetch(:headers).fetch("authorization"))
+    assert_empty(second_socket.writes)
+  end
+
+  def test_malformed_frame_does_not_expose_transcript
+    private_text = "fake private transcript"
+    socket = FakeSocket.new("{\"type\":\"session.output_transcript.delta\",\"delta\":\"#{private_text}\"")
+    client.realtime.connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |c|
+      error = assert_raises(OpenAI::Errors::WebSocketProtocolError) { c.receive }
+      refute_includes(error.full_message, private_text)
+      assert_nil(error.cause)
+    end
+  end
+
+  def test_missing_or_invalid_required_fields_are_safely_rejected
+    socket = FakeSocket.new(
+      JSON.generate(type: "session.output_transcript.delta", delta: "fake-private-transcript"),
+      JSON.generate(
+        type: "session.created",
+        event_id: "e2",
+        session: {type: "translation", model: "fake-private-model"}
+      ),
+      JSON.generate(type: "session.closed", event_id: "e3")
+    )
+    client
+      .realtime
+      .connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |connection|
+        [
+          {type: "session.input_audio_buffer.append"},
+          {type: "session.update", session: {audio: {output: {language: ["fake-private-language"]}}}},
+          {type: "response.create", response: {instructions: "fake-private-transcript"}}
+        ].each do |invalid|
+          error = assert_raises(ArgumentError) { connection.send_event(invalid) }
+          assert_nil(error.cause)
+          refute_includes(error.full_message, "fake-private")
+        end
+
+        2.times do
+          error = assert_raises(OpenAI::Errors::TranslationProtocolError) { connection.receive }
+          assert_nil(error.cause)
+          refute_includes(error.full_message, "fake-private")
+        end
+
+        assert_empty(socket.writes)
+        assert_instance_of(OpenAI::Realtime::RealtimeTranslationSessionClosedEvent, connection.receive)
+      end
+  end
+
+  def test_failed_read_never_reconnects_or_leaks_transport_details
+    socket = FailingReadSocket.new
+    transport = FakeTransport.new(socket)
+    client.realtime.connect_translation(model: "gpt-realtime-translate", transport: transport) do |connection|
+      error = assert_raises(OpenAI::Errors::TranslationConnectionError) { connection.receive }
+      assert_nil(error.cause)
+      refute_includes(error.full_message, "sensitive-body")
+      assert_predicate(connection, :closed?)
+      assert_raises(OpenAI::Errors::TranslationConnectionError) do
+        connection.send_event(type: "session.close")
+      end
+    end
+
+    assert_empty(socket.writes)
+    assert_predicate(socket, :aborted?)
+  end
+
+  def test_open_failure_suppresses_raw_credentials_and_keeps_the_http_status
+    api = OpenAI::Client.new(api_key: "fake-key", base_url: "https://fake-user:fake-password@example.com/v1")
+    transport = Object.new
+    transport.define_singleton_method(:open) do |url:, **|
+      raise(
+        OpenAI::Errors::TranslationConnectionError.new(
+          url: url,
+          message: "fake-private-body",
+          cause: IOError.new("fake-private-credential"),
+          http_status: 403
+        )
+      )
+    end
+
+    error = assert_raises(OpenAI::Errors::TranslationConnectionError) do
+      api.realtime.connect_translation(model: "fake-private-model", transport: transport) { flunk }
+    end
+
+    assert_equal(403, error.http_status)
+    assert_nil(error.cause)
+    assert_nil(error.url.userinfo)
+    assert_nil(error.url.query)
+    assert_equal("/v1/realtime/translations", error.url.path)
+    %w[fake-user fake-password fake-private-body fake-private-credential fake-private-model].each do |private_text|
+      refute_includes(error.full_message, private_text)
+      refute_includes(error.url.to_s, private_text)
+    end
+  end
+
+  def test_workload_identity_upgrade_can_refresh_once_but_cannot_replay_after_open
+    api = workload_identity_client
+    socket = FakeSocket.new
+    attempts = []
+    transport = Object.new
+    transport.define_singleton_method(:open) do |url:, headers:, **, &block|
+      attempts << headers.fetch("authorization")
+      raise OpenAI::Errors::TranslationConnectionError.new(url: url, http_status: 401) if attempts.one?
+      block.call(socket)
+    end
+
+    tokens = ["fake-first", "fake-refreshed"]
+    invalidations = 0
+    api.workload_identity_auth.stub(:get_token, -> (**) { tokens.shift }) do
+      api.workload_identity_auth.stub(:invalidate_token, -> { invalidations += 1 }) do
+        assert_raises(OpenAI::Errors::TranslationConnectionError) do
+          api.realtime.connect_translation(model: "gpt-realtime-translate", transport: transport) do |connection|
+            connection.send_event(type: "session.input_audio_buffer.append", audio: "AA==")
+            raise OpenAI::Errors::TranslationConnectionError.new(url: connection.url, http_status: 401)
+          end
+        end
+      end
+    end
+
+    assert_equal(["Bearer fake-first", "Bearer fake-refreshed"], attempts)
+    assert_equal(1, invalidations)
+    assert_equal(["session.input_audio_buffer.append"], socket.writes.map { JSON.parse(_1).fetch("type") })
+    assert_predicate(socket, :aborted?)
+  end
+
+  def test_unsupported_provider_and_conflicting_model_query_never_send_credentials
+    transport = FakeTransport.new(FakeSocket.new)
+    azure = OpenAI::Client.new(
+      provider: OpenAI::Providers.azure(endpoint: "https://resource.openai.azure.com", api_key: "fake-azure-key")
+    )
+    assert_raises(OpenAI::Errors::Error) do
+      azure.realtime.connect_translation(model: "gpt-realtime-translate", transport: transport) { flunk }
+    end
+
+    assert_raises(ArgumentError) do
+      client
+        .realtime
+        .connect_translation(
+          model: "gpt-realtime-translate",
+          transport: transport,
+          request_options: {extra_query: {model: "fake-override"}}
+        ) { flunk }
+    end
+
+    assert_raises(ArgumentError) do
+      client.realtime.connect_translation(model: "gpt-realtime-translate", transport: transport)
+    end
+
+    assert_nil(transport.open_args)
+  end
+
+  def test_early_exit_and_application_error_cleanup_preserve_caller_control
+    socket = FakeSocket.new
+    result = client
+      .realtime
+      .connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |_c|
+        break :early
+      end
+
+    assert_equal(:early, result)
+    assert_equal({code: 1000, reason: ""}, socket.close_args)
+    other = FakeSocket.new
+    original = RuntimeError.new("application error")
+    returned = assert_raises(RuntimeError) do
+      client.realtime.connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(other)) {
+        raise original
+      }
+    end
+
+    assert_same(original, returned)
+    assert_predicate(other, :aborted?)
+  end
+
+  def test_rest_require_keeps_websocket_dependency_optional
+    code = <<~RUBY
+      require "openai"
+      abort "loaded websocket dependency" if $LOADED_FEATURES.any? { |name| name.include?("async/websocket") }
+      realtime = OpenAI::Client.new(api_key: "fake").realtime
+      abort "translation missing" unless realtime.respond_to?(:connect_translation)
+      abort "existing API lost" unless realtime.respond_to?(:connect_transcription) && realtime.respond_to?(:calls)
+    RUBY
+    output, status = Open3.capture2e(RbConfig.ruby, "-Ilib", "-e", code)
+    assert_predicate(status, :success?, output)
+  end
+end

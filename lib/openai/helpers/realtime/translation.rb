@@ -1,0 +1,249 @@
+# frozen_string_literal: true
+
+module OpenAI
+  module Errors
+    class TranslationConnectionError < OpenAI::Errors::WebSocketConnectionError
+      private def default_message = "Realtime Translation WebSocket connection error."
+
+      private def sanitized_error_url(url)
+        sanitized = url.dup
+        sanitized.user = nil if sanitized.respond_to?(:user=)
+        sanitized.password = nil if sanitized.respond_to?(:password=)
+        sanitized.query = nil if sanitized.respond_to?(:query=)
+        sanitized.fragment = nil if sanitized.respond_to?(:fragment=)
+        sanitized
+      rescue ArgumentError, URI::Error
+        URI("wss://invalid")
+      end
+    end
+
+    class TranslationProtocolError < OpenAI::Errors::WebSocketProtocolError
+      def initialize = super("Invalid Realtime Translation WebSocket event.")
+    end
+  end
+
+  module Realtime
+    # Future event data is accessible explicitly without leaking in diagnostics.
+    class UnknownTranslationServerEvent < OpenAI::Realtime::UnknownServerEvent
+      def inspect = "#<#{self.class} type=#{@type.inspect}>"
+      alias to_s inspect
+    end
+
+    # Opening does not send any events. session.close flushes remaining output;
+    # read through session.closed before leaving the block to consume it.
+    class TranslationConnection < OpenAI::WebSocket::Connection
+      include OpenAI::WebSocket::Protocol
+
+      # @api private
+      def initialize(socket:, url:)
+        super
+        @poisoned = false
+        @closed = false
+        @server_event_names = discriminator_values(OpenAI::Realtime::RealtimeTranslationServerEvent)
+        @client_event_names = discriminator_values(OpenAI::Realtime::RealtimeTranslationClientEvent)
+      end
+
+      def send_event(event)
+        send_raw(encode_client_event(event))
+      end
+
+      def closed? = @poisoned || @closed || super
+
+      def close(code: 1000, reason: "")
+        @poisoned || @closed ? abort : super
+        @closed = true
+        nil
+      rescue StandardError
+        @poisoned = true
+        raise OpenAI::Errors::TranslationConnectionError.new(url: @url), cause: nil
+      end
+
+      # @api private
+      def abort
+        super
+        @closed = true
+        nil
+      rescue StandardError
+        @poisoned = true
+        raise OpenAI::Errors::TranslationConnectionError.new(url: @url), cause: nil
+      end
+
+      private def write_text(text)
+        super
+      rescue StandardError
+        @poisoned = true
+        raise OpenAI::Errors::TranslationConnectionError.new(url: @url), cause: nil
+      end
+
+      private def read_raw_message
+        raise connection_error("Cannot read from a failed Realtime Translation WebSocket.") if @poisoned
+        return nil if @closed
+        text = super
+        @closed = text.nil?
+        text
+      rescue StandardError
+        @poisoned = true
+        raise OpenAI::Errors::TranslationConnectionError.new(url: @url), cause: nil
+      end
+
+      private def socket_closed?
+        super
+      rescue StandardError
+        @poisoned = true
+        raise OpenAI::Errors::TranslationConnectionError.new(url: @url), cause: nil
+      end
+
+      private def encode_client_event(event)
+        union = OpenAI::Realtime::RealtimeTranslationClientEvent
+        payload = OpenAI::Internal::Type::Converter.dump(union, event)
+        type = payload[:type] || payload["type"] if payload.is_a?(Hash)
+        raise ArgumentError unless (type.is_a?(String) || type.is_a?(Symbol)) && @client_event_names.key?(type.to_s)
+
+        coerced = coerce_event(union, payload, outbound: true)
+        JSON.generate(OpenAI::Internal::Type::Converter.dump(union, coerced), max_nesting: false)
+      rescue StandardError, SystemStackError
+        raise ArgumentError, "Invalid Realtime Translation client event.", cause: nil
+      end
+
+      private def parse_event(data)
+        parsed = JSON.parse(data, symbolize_names: true, max_nesting: false)
+        type = event_type(parsed, message: "Realtime Translation server event must be an object with a string type")
+        unless @server_event_names.key?(type.to_s)
+          return OpenAI::Realtime::UnknownTranslationServerEvent.new(data: parsed)
+        end
+
+        coerce_event(OpenAI::Realtime::RealtimeTranslationServerEvent, parsed)
+      rescue StandardError, SystemStackError
+        raise OpenAI::Errors::TranslationProtocolError.new, cause: nil
+      end
+
+      private def coerce_event(union, payload, outbound: false)
+        state = OpenAI::Internal::Type::Converter.new_coerce_state(request_only: outbound)
+        event = OpenAI::Internal::Type::Converter.coerce(union, payload, state: state)
+        raise ArgumentError if state[:error] || !state.fetch(:exactness).fetch(:no).zero?
+        pending = [event]
+        until pending.empty?
+          value = pending.pop
+          case value
+          when OpenAI::Internal::Type::BaseModel
+            value.class.fields.each do |name, field|
+              if field.fetch(:required) &&
+                  field.fetch(:mode) != (outbound ? :coerce : :dump) &&
+                  (!outbound || field.fetch(:const) == OpenAI::Internal::OMIT) &&
+                  !value.to_h.key?(name)
+                raise ArgumentError
+              end
+            end
+
+            pending.concat(value.to_h.values)
+          when Hash
+            pending.concat(value.values)
+          when Array
+            pending.concat(value)
+          end
+        end
+
+        event
+      end
+
+      private def connection_error(message)
+        OpenAI::Errors::TranslationConnectionError.new(url: @url, message: message)
+      end
+    end
+  end
+
+  module Helpers
+    module Realtime
+      module ClientExtension
+        # @api private
+        def with_translation_connection_request(model:, websocket_base_url: nil, options: nil, &block)
+          websocket_base_url = websocket_base_url&.to_s&.dup&.freeze
+          query = {"model" => model.to_s.dup.freeze}.freeze
+          build = lambda do |deadline|
+            build_shared_websocket_connection_request(
+              path: "realtime/translations",
+              query: query,
+              websocket_base_url: websocket_base_url,
+              options: options,
+              deadline: deadline,
+              validate: -> (_) { validate_translation_websocket_request! },
+              invalid_base_url_message: "websocket_base_url must be an absolute HTTP or WebSocket URL " \
+                "without credentials, query, or fragment",
+              malformed_base_url_message: "websocket_base_url is not a valid URL",
+              preserve_base_url_cause: false,
+              extra_query_message: "request_options extra_query is not supported for Realtime Translation WebSockets",
+              max_retries_message: "request_options max_retries is not supported for Realtime Translation WebSockets",
+              timeout_error: -> (url, _) { OpenAI::Errors::TranslationConnectionError.new(url: url) }
+            )
+          end
+
+          with_websocket_connection_retry(
+            error_class: OpenAI::Errors::TranslationConnectionError,
+            build: build,
+            &block
+          )
+        end
+
+        private def validate_translation_websocket_request!
+          if x509_identity?(@copy_options.fetch(:workload_identity))
+            raise OpenAI::Errors::Error, "X.509 workload identity does not support Realtime Translation WebSockets"
+          end
+
+          if @provider_runtime
+            raise OpenAI::Errors::Error, "Realtime Translation WebSockets are not supported by providers."
+          end
+        end
+      end
+
+      module Connections
+        # Open a Translation socket with its own protocol. The server creates the
+        # session; session.close requests a flush without closing this reader.
+        def connect_translation(
+          model:,
+          websocket_base_url: nil,
+          request_options: nil,
+          transport: nil,
+          transport_options: {},
+          &block
+        )
+          raise ArgumentError, "A block is required to open a Realtime Translation WebSocket." unless block
+
+          request = lambda do |&request_block|
+            @client.with_translation_connection_request(
+              model: model,
+              websocket_base_url: websocket_base_url,
+              options: request_options,
+              &request_block
+            )
+          end
+
+          default_transport = lambda do
+            OpenAI::WebSocket::AsyncWebSocketTransport.new(
+              product_name: "Realtime Translation",
+              error_class: OpenAI::Errors::TranslationConnectionError,
+              error_factory: -> (url:, message: nil, http_status: nil, **) {
+                OpenAI::Errors::TranslationConnectionError.new(url: url, message: message, http_status: http_status)
+              }
+            )
+          end
+
+          OpenAI::WebSocket::ConnectionManager
+            .new(
+              transport: transport,
+              transport_options: transport_options,
+              default_transport: default_transport,
+              connection_class: OpenAI::Realtime::TranslationConnection,
+              request: request,
+              block_error_message: "A block is required to open a Realtime Translation WebSocket.",
+              abort_after_block: -> (_connection, pending_error) { !pending_error.nil? },
+              transport_error_factory: -> (url:, error:) {
+                status = error.http_status if error.is_a?(OpenAI::Errors::WebSocketConnectionError)
+                OpenAI::Errors::TranslationConnectionError.new(url: url, http_status: status)
+              }
+            )
+            .open(&block)
+        end
+      end
+    end
+  end
+end
