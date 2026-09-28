@@ -1,0 +1,74 @@
+module OpenAI
+  class Client
+    # @api private
+    def with_translation_connection_request: (
+      model: String,
+      ?websocket_base_url: String?,
+      ?options: OpenAI::request_opts?
+    ) {
+      (
+        OpenAI::Internal::Transport::BaseClient::request_input request,
+        ^-> void mark_handshake_completed
+      ) -> top
+    } -> top
+  end
+
+  module Errors
+    class TranslationConnectionError < OpenAI::Errors::WebSocketConnectionError
+    end
+    class TranslationProtocolError < OpenAI::Errors::WebSocketProtocolError
+      def initialize: -> void
+    end
+  end
+
+  module Models
+    module Realtime
+      type translation_connection_server_event =
+        OpenAI::Models::Realtime::realtime_translation_server_event
+        | OpenAI::Realtime::UnknownTranslationServerEvent
+      type translation_connection_client_event =
+        OpenAI::Models::Realtime::realtime_translation_client_event
+        | ::Hash[Symbol | String, untyped]
+
+      class UnknownTranslationServerEvent < OpenAI::Realtime::UnknownServerEvent
+        def inspect: -> String
+        alias to_s inspect
+      end
+      class TranslationConnection
+        include Enumerable[OpenAI::Models::Realtime::translation_connection_server_event]
+        attr_reader url: URI::Generic
+        def initialize: (socket: top, url: URI::Generic) -> void
+        def each:
+          -> Enumerator[OpenAI::Models::Realtime::translation_connection_server_event, self]
+          | {
+            (
+              OpenAI::Models::Realtime::translation_connection_server_event event
+            ) -> void
+          } -> self
+        def receive: -> OpenAI::Models::Realtime::translation_connection_server_event?
+        def receive_raw: -> String?
+        def send_event: (
+          OpenAI::Models::Realtime::translation_connection_client_event event
+        ) -> nil
+        def send_raw: (String data) -> nil
+        def close: (?code: Integer, ?reason: String) -> nil
+        def abort: -> nil
+        def closed?: -> bool
+      end
+    end
+  end
+
+  module Resources
+    class Realtime
+      def connect_translation: [T] (
+        model: String,
+        ?websocket_base_url: String?,
+        ?request_options: OpenAI::request_opts?,
+        ?transport: top,
+        ?transport_options: ::Hash[Symbol, top]
+      ) {
+        (OpenAI::Realtime::TranslationConnection connection) -> T
+      } -> T
+    end
+  end
+end
