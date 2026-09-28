@@ -53,7 +53,9 @@ class OpenAI::Test::LiveWebSocketRolesTest < Minitest::Test
       [
         {type: "session.start", session: {model: "gpt-live-1"}},
         OpenAI::Live::SessionStartEvent.new(session: {model: "gpt-live-1"}),
-        {type: "session.start", session: {client: {data_channel: {}}}}
+        {type: "session.start", session: {client: {data_channel: {}}}},
+        OpenAI::Live::ForkSessionStartEvent.new(session: {"model" => "gpt-live-1"}),
+        OpenAI::Live::ForkSessionStartEvent.new(session: {"client" => {data_channel: {}}})
       ].each { |event| assert_raises(ArgumentError) { connection.send_event(event) } }
       assert_empty(socket.writes)
       connection.send_event(OpenAI::Live::ForkSessionStartEvent.new(session: {}))
