@@ -6,6 +6,49 @@ require "tempfile"
 require_relative "../test_helper"
 
 class OpenAI::Test::LiveWebSocketSorbetTest < Minitest::Test
+  def test_live_role_connections_keep_their_shipped_protocol_types
+    source = <<~RUBY
+      # typed: strict
+      client = OpenAI::Client.new
+      client.live.sideband.connect("live_source", request_options: {timeout: 7.0}) do |connection|
+        T.assert_type!(connection, OpenAI::Live::SidebandConnection)
+        T.assert_type!(connection.receive, T.nilable(OpenAI::Live::Connection::ServerEvent))
+        connection.send_event(OpenAI::Live::InputAudioMuteEvent.new)
+      end
+      client.live.forks.connect("live_stored", request_options: OpenAI::RequestOptions.new(timeout: 4.0)) do |connection|
+        T.assert_type!(connection, OpenAI::Live::ForkConnection)
+        T.assert_type!(connection.receive, T.nilable(OpenAI::Live::ForkConnection::ServerEvent))
+        connection.send_event(OpenAI::Live::ForkSessionStartEvent.new(session: OpenAI::Live::ForkSessionConfig.new))
+      end
+    RUBY
+    root = File.expand_path("../../..", __dir__)
+    Tempfile.create(["live-websocket-roles-sorbet", ".rb"]) do |file|
+      file.write(source)
+      file.flush
+      stdout, stderr, status = Open3.capture3({"SRB_SKIP_GEM_RBIS" => "1"}, "srb", "typecheck", file.path, chdir: root)
+      assert_predicate(status, :success?, "#{stdout}\n#{stderr}")
+    end
+  end
+
+  def test_fork_typing_rejects_primary_startup_models
+    source = <<~RUBY
+      # typed: strict
+      OpenAI::Client.new.live.forks.connect("live_stored") do |connection|
+        primary = OpenAI::Live::SessionStartEvent.new(session: OpenAI::Live::SessionConfig.new(model: "gpt-live-1"))
+        connection.send_event(primary)
+      end
+    RUBY
+    root = File.expand_path("../../..", __dir__)
+    Tempfile.create(["live-websocket-wrong-role-sorbet", ".rb"]) do |file|
+      file.write(source)
+      file.flush
+      stdout, stderr, status = Open3.capture3({"SRB_SKIP_GEM_RBIS" => "1"}, "srb", "typecheck", file.path, chdir: root)
+      refute_predicate(status, :success?, "#{stdout}\n#{stderr}")
+      assert_includes("#{stdout}\n#{stderr}", "SessionStartEvent")
+      assert_includes("#{stdout}\n#{stderr}", "send_event")
+    end
+  end
+
   def test_live_connect_and_internal_client_dispatch_accept_request_option_hashes
     source = <<~RUBY
       # typed: strict

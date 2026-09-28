@@ -91,3 +91,44 @@ applications that already have a browser UI. See the
 [workflow decision](../realtime/continuous_captions.md) for Live versus standalone
 transcription, and the official [Live WebRTC guide](https://developers.openai.com/api/docs/guides/voice-webrtc?api=live)
 for the service contract.
+
+## Backend WebSocket attachment and forks
+
+For an eligible existing Live session, its backend can attach using the credential
+bound to that session or its observer. A connection opens the transport; the
+service may replay recent events instead of sending a new `session.started`.
+Do not send `session.start` or input audio on the sideband. It accepts normal
+session commands such as muting, delegation updates, and instruction appends:
+
+```ruby
+client.live.sideband.connect(live_session_id) do |sideband|
+  sideband.send_event(type: "session.input_audio.mute")
+  sideband.each do |event|
+    break if event.is_a?(OpenAI::Live::SessionClosedEvent) || event.is_a?(OpenAI::Live::ErrorEvent)
+    # Process reflected audio, transcripts, or delegated responses.
+  end
+end
+```
+
+A project-owned stored recording must be available and finalized before it can
+be forked. A fork inherits the source session's model and history. Send
+`session: {}` to keep its stored configuration, or use `ForkSessionConfig` for
+supported overrides. A WebSocket fork cannot override the model or WebRTC
+frontend client configuration:
+
+```ruby
+client.live.forks.connect(stored_session_id) do |fork|
+  fork.send_event(OpenAI::Live::ForkSessionStartEvent.new(session: {}))
+  ready = fork.receive
+  if ready.is_a?(OpenAI::Live::SessionStartedEvent)
+    fork.send_event(type: "session.input_audio.append", audio: encoded_pcm)
+  end
+end
+```
+
+These methods use the same optional `async-websocket` dependency as the primary
+`client.live.connect`. They preserve `request_options` headers and timeouts,
+including an explicitly selected observer credential in `extra_headers`. The
+service owns authorization and session eligibility; project access alone does
+not guarantee attachment or a stored fork. Reopening a transport does not
+restore a session or replay commands.
