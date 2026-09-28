@@ -38,10 +38,9 @@ Lint/UnusedMethodArgument:
 Lint/UselessAssignment:
   AutoCorrect: false
 
-# Existing narrow suppressions are harmless while the formatting policy changes.
-# The directive guard still rejects broad or unowned suppressions.
+# Keep suppressions limited to active offenses as the policy evolves.
 Lint/RedundantCopDisableDirective:
-  Enabled: false
+  Enabled: true
 # Every enable directive must still close an active disable.
 Lint/RedundantCopEnableDirective:
   Enabled: true

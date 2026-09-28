@@ -629,7 +629,6 @@ module OpenAI
         #
         # @return [Object]
         def encode_content(headers, body)
-          # rubocop:disable Style/CaseEquality
           content_type = headers["content-type"]
           case [content_type, body]
           in [OpenAI::Internal::Util::JSON_CONTENT, Hash | Array | -> { primitive?(_1) }]
@@ -652,7 +651,6 @@ module OpenAI
           else
             [headers, body]
           end
-          # rubocop:enable Style/CaseEquality
         end
 
         # @api private
@@ -934,7 +932,6 @@ module OpenAI
         #
         # @return [Enumerable<Hash{Symbol=>Object}>]
         def decode_sse(lines)
-          # rubocop:disable Metrics/BlockLength
           chain_fused(lines) do |y|
             blank = {event: nil, data: nil, id: nil, retry: nil}
             current = {}
@@ -973,7 +970,6 @@ module OpenAI
               else
               end
             end
-            # rubocop:enable Metrics/BlockLength
 
             y << {**blank, **current} unless current.empty?
           end

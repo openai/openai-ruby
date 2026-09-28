@@ -9,7 +9,6 @@ module OpenAI
       module ChatCompletionParser
         # @api private
         def self.build_unwrap(model, tool_models)
-          # rubocop:disable Metrics/BlockLength
           -> (raw) do
             if model.is_a?(OpenAI::StructuredOutput::JsonSchemaConverter)
               raw[:choices]&.each do |choice|
@@ -47,7 +46,6 @@ module OpenAI
 
             raw
           end
-          # rubocop:enable Metrics/BlockLength
         end
 
         # @api private
