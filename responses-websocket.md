@@ -62,9 +62,9 @@ has a response, text delta, or lane ID.
 
 ## Receive limits
 
-The default Responses transport accepts `max_message_bytes` and
-`max_message_frames` in `transport_options`. Both are optional positive
-integers; omitted or `nil` keeps the existing unlimited default. Choose values
+The default Responses transport accepts `max_message_bytes`,
+`max_wire_message_bytes`, and `max_message_frames` in `transport_options`.
+Each is an optional positive integer; omitted or `nil` keeps its unlimited default. Choose values
 for your application's legitimate largest message, including images and tool
 results. These are caller budgets, not API limits.
 
@@ -79,18 +79,38 @@ client.responses.connect(
 end
 ```
 
-The byte budget covers the uncompressed WebSocket payload of each complete
-message, including all its fragments. Oversized frame headers are rejected
+The decoded byte budget (`max_message_bytes`) covers the payload of each complete
+message after decompression, including all its fragments. The optional wire budget
+(`max_wire_message_bytes`) covers data payload bytes before decompression across those
+fragments, excluding frame headers and control frames. A wire budget alone does
+not impose a decoded byte limit. Oversized frame headers are rejected
 before the advertised payload is read (with up to 125 bytes allowed for a legal
 interleaved control frame). The frame budget counts text, binary and continuation
 frames, including empty continuations; ping/pong and close frames don't count.
 Set both when you need to bound both payload and frame-buffer memory.
 Counters reset at the end of each message.
 
-To enforce a decoded-byte limit before allocation, a connection configured with
-`max_message_bytes` does not negotiate WebSocket compression. Without a byte
-limit (including a frame-only limit) compression negotiation is unchanged.
-Exceeding either chosen limit aborts the socket, releases its pool slot, and
+To use WebSocket compression with independently bounded wire and decoded sizes:
+
+```ruby
+limits = {
+  max_wire_message_bytes: 8 * 1024 * 1024,
+  max_message_bytes: 64 * 1024 * 1024,
+  max_message_frames: 4_096
+}
+client.responses.connect(transport_options: limits) do |connection|
+  connection.response.create(model: "gpt-5.2", input: "Hello")
+  while (event = connection.receive)
+    puts event.type
+  end
+end
+```
+
+The server can still decline compression, in which case both byte budgets apply
+to the uncompressed message. Existing byte-only configurations continue to
+decline compression, as before; no-limit and frame-only configurations retain
+their normal compression negotiation.
+Exceeding any chosen limit aborts the socket, releases its pool slot, and
 raises `OpenAI::Errors::ResponsesConnectionError`; no requests are replayed.
 Managed sessions accept the same `transport_options`. An injected transport
 still receives its options unchanged and owns their meaning.
