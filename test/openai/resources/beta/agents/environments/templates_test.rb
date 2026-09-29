@@ -24,7 +24,8 @@ class OpenAI::Test::Resources::Beta::Agents::Environments::TemplatesTest < OpenA
           skills: ^(OpenAI::Internal::Type::ArrayOf[
             union: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Skill
           ]),
-          updated_at: Integer
+          updated_at: Integer,
+          desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop | nil
         }
     end
   end
@@ -50,7 +51,8 @@ class OpenAI::Test::Resources::Beta::Agents::Environments::TemplatesTest < OpenA
           skills: ^(OpenAI::Internal::Type::ArrayOf[
             union: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Skill
           ]),
-          updated_at: Integer
+          updated_at: Integer,
+          desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop | nil
         }
     end
   end
@@ -76,7 +78,8 @@ class OpenAI::Test::Resources::Beta::Agents::Environments::TemplatesTest < OpenA
           skills: ^(OpenAI::Internal::Type::ArrayOf[
             union: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Skill
           ]),
-          updated_at: Integer
+          updated_at: Integer,
+          desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop | nil
         }
     end
   end
@@ -109,7 +112,8 @@ class OpenAI::Test::Resources::Beta::Agents::Environments::TemplatesTest < OpenA
           skills: ^(OpenAI::Internal::Type::ArrayOf[
             union: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Skill
           ]),
-          updated_at: Integer
+          updated_at: Integer,
+          desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop | nil
         }
     end
   end

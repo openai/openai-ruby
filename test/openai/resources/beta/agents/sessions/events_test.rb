@@ -8,8 +8,13 @@ class OpenAI::Test::Resources::Beta::Agents::Sessions::EventsTest < OpenAI::Test
       "session_id",
       events: [
         {
-          input: [{content: [{text: "text", type: :input_text}], role: :user}],
-          type: :"agent.session.input.message"
+          request_id: "request_id",
+          response: {
+            action: "submit",
+            fields: [{field_id: "field_id", value: "value"}],
+            type: :browser_authentication
+          },
+          type: :"agent.session.input.computer_use_approval_request_result"
         }
       ]
     )

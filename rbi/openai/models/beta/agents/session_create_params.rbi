@@ -192,7 +192,8 @@ module OpenAI
                       OpenAI::Beta::AgentToolParam::ToolSearch,
                       OpenAI::Beta::AgentToolParam::ProgrammaticToolCalling,
                       OpenAI::Beta::AgentToolParam::Mcp,
-                      OpenAI::Beta::AgentToolParam::WebSearch
+                      OpenAI::Beta::AgentToolParam::WebSearch,
+                      OpenAI::Beta::AgentToolParam::ComputerUse
                     )
                   ]
                 )
@@ -224,7 +225,8 @@ module OpenAI
                       OpenAI::Beta::AgentToolParam::ToolSearch::OrHash,
                       OpenAI::Beta::AgentToolParam::ProgrammaticToolCalling::OrHash,
                       OpenAI::Beta::AgentToolParam::Mcp::OrHash,
-                      OpenAI::Beta::AgentToolParam::WebSearch::OrHash
+                      OpenAI::Beta::AgentToolParam::WebSearch::OrHash,
+                      OpenAI::Beta::AgentToolParam::ComputerUse::OrHash
                     )
                   ]
                 )
@@ -275,7 +277,8 @@ module OpenAI
                         OpenAI::Beta::AgentToolParam::ToolSearch,
                         OpenAI::Beta::AgentToolParam::ProgrammaticToolCalling,
                         OpenAI::Beta::AgentToolParam::Mcp,
-                        OpenAI::Beta::AgentToolParam::WebSearch
+                        OpenAI::Beta::AgentToolParam::WebSearch,
+                        OpenAI::Beta::AgentToolParam::ComputerUse
                       )
                     ]
                   )

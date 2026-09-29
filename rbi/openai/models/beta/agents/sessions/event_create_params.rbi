@@ -29,6 +29,7 @@ module OpenAI
               returns(
                 T::Array[
                   T.any(
+                    OpenAI::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult,
                     OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMessage,
                     OpenAI::Beta::AgentSessionInputParam::AgentSessionInputCancel,
                     OpenAI::Beta::AgentSessionInputParam::AgentSessionInputToolResult
@@ -51,6 +52,7 @@ module OpenAI
 
                 events: T::Array[
                   T.any(
+                    OpenAI::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult::OrHash,
                     OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMessage::OrHash,
                     OpenAI::Beta::AgentSessionInputParam::AgentSessionInputCancel::OrHash,
                     OpenAI::Beta::AgentSessionInputParam::AgentSessionInputToolResult::OrHash
@@ -82,6 +84,7 @@ module OpenAI
                   session_id: String,
                   events: T::Array[
                     T.any(
+                      OpenAI::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult,
                       OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMessage,
                       OpenAI::Beta::AgentSessionInputParam::AgentSessionInputCancel,
                       OpenAI::Beta::AgentSessionInputParam::AgentSessionInputToolResult

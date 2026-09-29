@@ -7,6 +7,7 @@ module OpenAI
         | OpenAI::Beta::PersistedAgentToolParam::ProgrammaticToolCalling
         | OpenAI::Beta::PersistedAgentToolParam::Mcp
         | OpenAI::Beta::PersistedAgentToolParam::WebSearch
+        | OpenAI::Beta::PersistedAgentToolParam::ComputerUse
 
       module PersistedAgentToolParam
         extend OpenAI::Internal::Type::Union
@@ -328,6 +329,30 @@ module OpenAI
 
             def self?.values: -> ::Array[OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch::mode]
           end
+        end
+
+        type computer_use = { ?type: :computer_use, ?include_screenshots: bool }
+
+        class ComputerUse < OpenAI::Internal::Type::BaseModel
+          # The type of the object. Always `computer_use`.
+          attr_accessor type: :computer_use
+
+          # Whether computer tool outputs include screenshots. Defaults to `false`.
+          attr_reader include_screenshots: bool?
+
+          # Whether computer tool outputs include screenshots. Defaults to `false`.
+          def include_screenshots=: (bool) -> bool
+
+          # @param include_screenshots
+          #   Whether computer tool outputs include screenshots. Defaults to `false`.
+          # @param type
+          #   The type of the object. Always `computer_use`.
+          def initialize: (
+            ?include_screenshots: bool,
+            ?type: :computer_use
+          ) -> void
+
+          def to_hash: -> { ?type: :computer_use, ?include_screenshots: bool }
         end
 
         def self?.variants: -> ::Array[OpenAI::Models::Beta::persisted_agent_tool_param]

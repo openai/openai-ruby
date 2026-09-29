@@ -15,7 +15,8 @@ module OpenAI
             OpenAI::Beta::PersistedAgentTool::ToolSearch,
             OpenAI::Beta::PersistedAgentTool::ProgrammaticToolCalling,
             OpenAI::Beta::PersistedAgentTool::Mcp,
-            OpenAI::Beta::PersistedAgentTool::WebSearch
+            OpenAI::Beta::PersistedAgentTool::WebSearch,
+            OpenAI::Beta::PersistedAgentTool::ComputerUse
           )
         end
 
@@ -493,6 +494,53 @@ module OpenAI
             def self.values
             end
           end
+        end
+
+        class ComputerUse < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::PersistedAgentTool::ComputerUse,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Whether computer tool outputs include screenshots.
+          sig { returns(T::Boolean) }
+          attr_accessor :include_screenshots
+
+          # The type of the object. Always `computer_use`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # Browser use in an OpenAI-hosted session.
+          sig do
+            params(
+
+              include_screenshots: T::Boolean,
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Whether computer tool outputs include screenshots.
+            include_screenshots:,
+
+            # The type of the object. Always `computer_use`.
+
+            type: :computer_use
+          )
+          end
+
+          sig do
+            override.returns(
+              {include_screenshots: T::Boolean, type: Symbol}
+            )
+          end
+          def to_hash
+          end
+
         end
 
         sig { override.returns(T::Array[OpenAI::Beta::PersistedAgentTool::Variants]) }

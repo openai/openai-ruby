@@ -83,7 +83,13 @@ module OpenAI
             #   @return [Integer]
             required :updated_at, Integer
 
-            # @!method initialize(id:, capability_directories:, created_at:, files:, name:, network:, packages:, plugins:, skills:, updated_at:, object: :"agent.environment.template")
+            # @!attribute desktop
+            #   Desktop configuration for each OpenAI-hosted environment.
+            #
+            #   @return [OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::Desktop, nil]
+            optional :desktop, -> { OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop }
+
+            # @!method initialize(id:, capability_directories:, created_at:, files:, name:, network:, packages:, plugins:, skills:, updated_at:, desktop: nil, object: :"agent.environment.template")
             #   Reusable configuration that provisions a fresh OpenAI-hosted environment for
             #   each session.
             #
@@ -116,6 +122,9 @@ module OpenAI
             #
             #   @param updated_at [Integer]
             #     The Unix timestamp, in seconds, when the template was last updated.
+            #
+            #   @param desktop [OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::Desktop]
+            #     Desktop configuration for each OpenAI-hosted environment.
             #
             #   @param object [Symbol, :"agent.environment.template"]
             #     The object type. Always `agent.environment.template`.
@@ -235,7 +244,7 @@ module OpenAI
                 # Disables network access.
                 DISABLED = :disabled
 
-                # Allows access only to configured domains.
+                # Applies the configured domain restrictions.
                 RESTRICTED = :restricted
 
                 # @!method self.values
@@ -357,6 +366,21 @@ module OpenAI
 
               # @!method self.variants
               #   @return [Array(OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::Skill::SkillReference, OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::Skill::Inline)]
+            end
+
+            # @see OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate#desktop
+            class Desktop < OpenAI::Internal::Type::BaseModel
+              # @!attribute enabled
+              #   Whether the environment provisions a desktop and browser proxy.
+              #
+              #   @return [Boolean]
+              required :enabled, OpenAI::Internal::Type::Boolean
+
+              # @!method initialize(enabled:)
+              #   Desktop configuration for each OpenAI-hosted environment.
+              #
+              #   @param enabled [Boolean]
+              #     Whether the environment provisions a desktop and browser proxy.
             end
           end
         end

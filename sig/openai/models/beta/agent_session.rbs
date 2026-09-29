@@ -213,11 +213,225 @@ module OpenAI
         end
 
         type required_action =
-          OpenAI::Beta::AgentSession::RequiredAction::FunctionCall
+          OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest
+          | OpenAI::Beta::AgentSession::RequiredAction::FunctionCall
           | OpenAI::Beta::AgentSession::RequiredAction::EnvironmentConnection
 
         module RequiredAction
           extend OpenAI::Internal::Type::Union
+
+          type computer_use_approval_request =
+            {
+              request: OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::request,
+              request_id: String,
+              turn_id: String,
+              ?type: :computer_use_approval_request
+            }
+
+          class ComputerUseApprovalRequest < OpenAI::Internal::Type::BaseModel
+            # The information needed to render the request.
+            attr_accessor request: OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::request
+
+            # The registered request ID to echo when responding.
+            attr_accessor request_id: String
+
+            # The turn that requested approval.
+            attr_accessor turn_id: String
+
+            # The type of the object. Always `computer_use_approval_request`.
+            attr_accessor type: :computer_use_approval_request
+
+            # @param request
+            #   The information needed to render the request.
+            # @param request_id
+            #   The registered request ID to echo when responding.
+            # @param turn_id
+            #   The turn that requested approval.
+            # @param type
+            #   The type of the object. Always `computer_use_approval_request`.
+            def initialize: (
+              request: OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::request,
+              request_id: String,
+              turn_id: String,
+              ?type: :computer_use_approval_request
+            ) -> void
+
+            def to_hash: -> {
+              request: OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::request,
+              request_id: String,
+              turn_id: String,
+              ?type: :computer_use_approval_request
+            }
+
+            type request =
+              OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication
+              | OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserOriginAccess
+
+            module Request
+              extend OpenAI::Internal::Type::Union
+
+              type browser_authentication =
+                {
+                  credential_origin: String?,
+                  fields: ::Array[OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Field],
+                  options: ::Array[OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Option],
+                  reason: String?,
+                  ?type: :browser_authentication
+                }
+
+              class BrowserAuthentication < OpenAI::Internal::Type::BaseModel
+                # The registered form or frame origin where values will be entered.
+                attr_accessor credential_origin: String?
+
+                # Controls to render. All submitted values are sensitive.
+                attr_accessor fields: ::Array[OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Field]
+
+                # Sign-in methods. Empty for a plain form.
+                attr_accessor options: ::Array[OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Option]
+
+                # Why the agent needs the user to sign in.
+                attr_accessor reason: String?
+
+                # The type of the object. Always `browser_authentication`.
+                attr_accessor type: :browser_authentication
+
+                # @param credential_origin
+                #   The registered form or frame origin where values will be entered.
+                # @param fields
+                #   Controls to render. All submitted values are sensitive.
+                # @param options
+                #   Sign-in methods. Empty for a plain form.
+                # @param reason
+                #   Why the agent needs the user to sign in.
+                # @param type
+                #   The type of the object. Always `browser_authentication`.
+                def initialize: (
+                  credential_origin: String?,
+                  fields: ::Array[OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Field],
+                  options: ::Array[OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Option],
+                  reason: String?,
+                  ?type: :browser_authentication
+                ) -> void
+
+                def to_hash: -> {
+                  credential_origin: String?,
+                  fields: ::Array[OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Field],
+                  options: ::Array[OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Option],
+                  reason: String?,
+                  ?type: :browser_authentication
+                }
+
+                type field =
+                  { id: String, label: String, required: bool, type: String }
+
+                class Field < OpenAI::Internal::Type::BaseModel
+                  # The field ID to submit as field_id in a fields entry.
+                  attr_accessor id: String
+
+                  # The label to display beside the control.
+                  attr_accessor label: String
+
+                  # Whether this control requires a nonempty value.
+                  attr_accessor required: bool
+
+                  # The rendering type, such as email, password, or text.
+                  attr_accessor type: String
+
+                  # @param id
+                  #   The field ID to submit as field_id in a fields entry.
+                  # @param label
+                  #   The label to display beside the control.
+                  # @param required
+                  #   Whether this control requires a nonempty value.
+                  # @param type
+                  #   The rendering type, such as email, password, or text.
+                  def initialize: (
+                    id: String,
+                    label: String,
+                    required: bool,
+                    type: String
+                  ) -> void
+
+                  def to_hash: -> {
+                    id: String,
+                    label: String,
+                    required: bool,
+                    type: String
+                  }
+                end
+
+                type option =
+                  { id: String, field_ids: ::Array[String], label: String }
+
+                class Option < OpenAI::Internal::Type::BaseModel
+                  # The option ID to submit as selected_option.
+                  attr_accessor id: String
+
+                  # IDs from the registered fields that this method accepts.
+                  attr_accessor field_ids: ::Array[String]
+
+                  # The method label to display.
+                  attr_accessor label: String
+
+                  # @param id
+                  #   The option ID to submit as selected_option.
+                  # @param field_ids
+                  #   IDs from the registered fields that this method accepts.
+                  # @param label
+                  #   The method label to display.
+                  def initialize: (
+                    id: String,
+                    field_ids: ::Array[String],
+                    label: String
+                  ) -> void
+
+                  def to_hash: -> {
+                    id: String,
+                    field_ids: ::Array[String],
+                    label: String
+                  }
+                end
+              end
+
+              type browser_origin_access =
+                {
+                  origin: String,
+                  reason: String?,
+                  ?type: :browser_origin_access
+                }
+
+              class BrowserOriginAccess < OpenAI::Internal::Type::BaseModel
+                # The origin the browser needs permission to access.
+                attr_accessor origin: String
+
+                # The browser's explanation for this request, or null when unavailable.
+                attr_accessor reason: String?
+
+                # The type of the object. Always `browser_origin_access`.
+                attr_accessor type: :browser_origin_access
+
+                # @param origin
+                #   The origin the browser needs permission to access.
+                # @param reason
+                #   The browser's explanation for this request, or null when unavailable.
+                # @param type
+                #   The type of the object. Always `browser_origin_access`.
+                def initialize: (
+                  origin: String,
+                  reason: String?,
+                  ?type: :browser_origin_access
+                ) -> void
+
+                def to_hash: -> {
+                  origin: String,
+                  reason: String?,
+                  ?type: :browser_origin_access
+                }
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::request]
+            end
+          end
 
           type function_call =
             {

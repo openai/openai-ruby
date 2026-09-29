@@ -2,12 +2,62 @@ module OpenAI
   module Models
     module Beta
       type agent_session_input_param =
-        OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMessage
+        OpenAI::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult
+        | OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMessage
         | OpenAI::Beta::AgentSessionInputParam::AgentSessionInputCancel
         | OpenAI::Beta::AgentSessionInputParam::AgentSessionInputToolResult
 
       module AgentSessionInputParam
         extend OpenAI::Internal::Type::Union
+
+        type agent_session_input_computer_use_approval_request_result =
+          {
+            request_id: String,
+            response: OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult::response,
+            ?type: :"agent.session.input.computer_use_approval_request_result"
+          }
+
+        class AgentSessionInputComputerUseApprovalRequestResult < OpenAI::Internal::Type::BaseModel
+          # The registered request ID from the required action.
+          attr_accessor request_id: String
+
+          # The response for this request type.
+          attr_accessor response: OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult::response
+
+          # The type of the object. Always
+          # `agent.session.input.computer_use_approval_request_result`.
+          attr_accessor type: :"agent.session.input.computer_use_approval_request_result"
+
+          # @param request_id
+          #   The registered request ID from the required action.
+          # @param response
+          #   The response for this request type.
+          # @param type
+          #   The type of the object. Always
+          #   `agent.session.input.computer_use_approval_request_result`.
+          def initialize: (
+            request_id: String,
+            response: OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult::response,
+            ?type: :"agent.session.input.computer_use_approval_request_result"
+          ) -> void
+
+          def to_hash: -> {
+            request_id: String,
+            response: OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult::response,
+            ?type: :"agent.session.input.computer_use_approval_request_result"
+          }
+
+          type response =
+            OpenAI::Beta::AgentBrowserAuthenticationSubmitParam
+            | OpenAI::Beta::AgentBrowserAuthenticationCancelParam
+            | OpenAI::Beta::AgentBrowserOriginAccessParam
+
+          module Response
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult::response]
+          end
+        end
 
         type agent_session_input_message =
           {
