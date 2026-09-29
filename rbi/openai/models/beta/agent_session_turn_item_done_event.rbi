@@ -49,6 +49,8 @@ module OpenAI
               OpenAI::Beta::AgentReasoningItem::OrHash,
               OpenAI::Beta::AgentFunctionCallItem::OrHash,
               OpenAI::Beta::AgentMcpCallItem::OrHash,
+              OpenAI::Beta::AgentOutputItem::ComputerUseCall::OrHash,
+              OpenAI::Beta::AgentOutputItem::ComputerUseApprovalRequest::OrHash,
               OpenAI::Beta::AgentWebSearchCallItem::OrHash,
               OpenAI::Beta::AgentCommandExecutionItem::OrHash,
               OpenAI::Beta::AgentCreateSubagentCallItem::OrHash,
