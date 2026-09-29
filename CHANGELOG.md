@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.97.0](https://github.com/openai/openai-ruby/compare/v0.96.0...v0.97.0) (2026-09-29)
+
+
+### Features
+
+* **api:** add computer use to beta agents ([#782](https://github.com/openai/openai-ruby/issues/782)) ([c765120](https://github.com/openai/openai-ruby/commit/c765120933dfab5c9a4cfb1e5eec83faa9b35ee1))
+
 ## [0.96.0](https://github.com/openai/openai-ruby/compare/v0.95.0...v0.96.0) (2026-09-29)
 
 
