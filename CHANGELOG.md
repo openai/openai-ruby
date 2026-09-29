@@ -1,5 +1,49 @@
 # Changelog
 
+## [0.96.0](https://github.com/openai/openai-ruby/compare/v0.95.0...v0.96.0) (2026-09-29)
+
+
+### Features
+
+* **api:** add Agents credential and session options ([#766](https://github.com/openai/openai-ruby/issues/766)) ([27acf38](https://github.com/openai/openai-ruby/commit/27acf382abf7e94c051d35ca3d48870064ff9d27))
+* **api:** add Cyber access programs to Responses ([#757](https://github.com/openai/openai-ruby/issues/757)) ([f484e4e](https://github.com/openai/openai-ruby/commit/f484e4ee112023c2aadc71f9af549e3adf130bc1))
+* **api:** add GPT-6.1 Sol model identifier ([#781](https://github.com/openai/openai-ruby/issues/781)) ([a97c14f](https://github.com/openai/openai-ruby/commit/a97c14f89620aaccda51d593b00e7c7a16507eb6))
+* **live:** add optional transcript grouping over typed events ([#769](https://github.com/openai/openai-ruby/issues/769)) ([d6f2548](https://github.com/openai/openai-ruby/commit/d6f254810754f6310ead16928069a929c8a1a675))
+* **live:** add sideband attachment and stored fork WebSockets ([#771](https://github.com/openai/openai-ruby/issues/771)) ([7c6cf76](https://github.com/openai/openai-ruby/commit/7c6cf76e5c381707a1c2c6b4c8a8f6e347ee2ddb))
+* **live:** support caller-started primary WebSockets ([#770](https://github.com/openai/openai-ruby/issues/770)) ([dc3566d](https://github.com/openai/openai-ruby/commit/dc3566ddd9bfff7dd47a0214d8596dc95207284d))
+* **realtime:** add bounded finish for Translation WebSocket consumers ([#778](https://github.com/openai/openai-ruby/issues/778)) ([a92b422](https://github.com/openai/openai-ruby/commit/a92b422402da28c0f96b9fbd4cd635ee693211c9))
+* **realtime:** add typed Translation WebSocket connection ([#772](https://github.com/openai/openai-ruby/issues/772)) ([b3706d8](https://github.com/openai/openai-ruby/commit/b3706d84fbb68e700bb726559fba0da0393de567))
+* **responses:** add opt-in WebSocket incremental output ([#768](https://github.com/openai/openai-ruby/issues/768)) ([e190303](https://github.com/openai/openai-ruby/commit/e1903035d709a6b8aa40c0049ea8305c63eccc61))
+* **responses:** allow bounded WebSocket messages before allocation ([#775](https://github.com/openai/openai-ruby/issues/775)) ([bef7b8b](https://github.com/openai/openai-ruby/commit/bef7b8bc66d5feb42e8342fc4b3ef708fde129c5))
+* **responses:** bound compressed WebSocket wire and decoded sizes ([#776](https://github.com/openai/openai-ruby/issues/776)) ([0cc6b15](https://github.com/openai/openai-ruby/commit/0cc6b15a6049b43145ea806b129e1708c8836800))
+
+
+### Bug Fixes
+
+* **websocket:** include default ports in proxy tunnels ([#780](https://github.com/openai/openai-ruby/issues/780)) ([c496e6b](https://github.com/openai/openai-ruby/commit/c496e6b301834ed5aea18ba09c514411eabf5776))
+
+
+### Chores
+
+* **api:** clarify approximate web search location defaults ([#755](https://github.com/openai/openai-ruby/issues/755)) ([f83af03](https://github.com/openai/openai-ruby/commit/f83af03a667a7045dde39d2a9ca328432e3d109b))
+* **api:** clarify documented API error responses ([#765](https://github.com/openai/openai-ruby/issues/765)) ([6f786c6](https://github.com/openai/openai-ruby/commit/6f786c6a752a0a2773ecf7c1b0b4490a94104c15))
+* **api:** clarify Realtime modality array definitions ([#756](https://github.com/openai/openai-ruby/issues/756)) ([9e18acf](https://github.com/openai/openai-ruby/commit/9e18acfc93ba6fbedaae37bb89956b1a4cc24b49))
+* **api:** correct fine-tuning bounds and Realtime response reference ([#752](https://github.com/openai/openai-ruby/issues/752)) ([4c1cd58](https://github.com/openai/openai-ruby/commit/4c1cd583ee2b79b0355fcc30f3b340c68dcfc337))
+* **api:** document batch error responses ([#760](https://github.com/openai/openai-ruby/issues/760)) ([38fec96](https://github.com/openai/openai-ruby/commit/38fec96d1c3bb77616e741e3c0d5d11b1f385b46))
+* **api:** document files and uploads error responses ([#759](https://github.com/openai/openai-ruby/issues/759)) ([6cdd7b1](https://github.com/openai/openai-ruby/commit/6cdd7b1785989cdaed5e81fb956cac2ccadd2361))
+* **api:** document fine-tuning and model errors ([#764](https://github.com/openai/openai-ruby/issues/764)) ([4b3b043](https://github.com/openai/openai-ruby/commit/4b3b043176413f6c70309290bf8f4129a8961c16))
+* **api:** document Responses not-found errors ([#758](https://github.com/openai/openai-ruby/issues/758)) ([1d556e2](https://github.com/openai/openai-ruby/commit/1d556e20aef0e30bd6990dda1b7d9059b1d0817e))
+* **api:** document stored chat completion errors ([#763](https://github.com/openai/openai-ruby/issues/763)) ([ddd1a68](https://github.com/openai/openai-ruby/commit/ddd1a68179ad1ec90af55f39f71310a59f92ddcf))
+* **deps-dev:** bump sorbet-runtime from 0.6.13499 to 0.6.13506 in the development-dependencies group ([#773](https://github.com/openai/openai-ruby/issues/773)) ([be9c528](https://github.com/openai/openai-ruby/commit/be9c5289d5d7eea7c71e78be640c192f81c6544d))
+* **deps:** bump ruby/setup-ruby from 1.324.0 to 1.326.0 ([#749](https://github.com/openai/openai-ruby/issues/749)) ([5aae05c](https://github.com/openai/openai-ruby/commit/5aae05c4b42f9d509bdf084282a7e33ef8758adc))
+* **deps:** bump ruby/setup-ruby from 1.326.0 to 1.327.0 ([#762](https://github.com/openai/openai-ruby/issues/762)) ([3921459](https://github.com/openai/openai-ruby/commit/39214594edf3c07ed2ce71c603946462735fa6ad))
+* **deps:** bump the codeql group with 2 updates ([#761](https://github.com/openai/openai-ruby/issues/761)) ([0185fa1](https://github.com/openai/openai-ruby/commit/0185fa1c637f1dbc9d3b3fa85c4c46a199702188))
+
+
+### Documentation
+
+* clarify collaborator-only pull request policy ([#750](https://github.com/openai/openai-ruby/issues/750)) ([c704778](https://github.com/openai/openai-ruby/commit/c7047782ff2ae38a859a08ef199e67a79c16b9fe))
+
 ## [0.95.0](https://github.com/openai/openai-ruby/compare/v0.94.0...v0.95.0) (2026-09-23)
 
 
