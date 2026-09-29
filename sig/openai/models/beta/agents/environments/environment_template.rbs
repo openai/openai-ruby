@@ -17,7 +17,8 @@ module OpenAI
               packages: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Packages,
               plugins: ::Array[OpenAI::Beta::HostedPlugin],
               skills: ::Array[OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::skill],
-              updated_at: Integer
+              updated_at: Integer,
+              ?desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop
             }
 
           class EnvironmentTemplate < OpenAI::Internal::Type::BaseModel
@@ -54,6 +55,14 @@ module OpenAI
             # The Unix timestamp, in seconds, when the template was last updated.
             attr_accessor updated_at: Integer
 
+            # Desktop configuration for each OpenAI-hosted environment.
+            attr_reader desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop?
+
+            # Desktop configuration for each OpenAI-hosted environment.
+            def desktop=: (
+              OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop
+            ) -> OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop
+
             # @param id
             #   The ID of the reusable environment template.
             # @param capability_directories
@@ -74,6 +83,8 @@ module OpenAI
             #   Safe skill metadata, preserving unresolved version selectors.
             # @param updated_at
             #   The Unix timestamp, in seconds, when the template was last updated.
+            # @param desktop
+            #   Desktop configuration for each OpenAI-hosted environment.
             # @param object
             #   The object type. Always `agent.environment.template`.
             def initialize: (
@@ -87,6 +98,7 @@ module OpenAI
               plugins: ::Array[OpenAI::Beta::HostedPlugin],
               skills: ::Array[OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::skill],
               updated_at: Integer,
+              ?desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop,
               ?object: :"agent.environment.template"
             ) -> void
 
@@ -101,7 +113,8 @@ module OpenAI
               packages: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Packages,
               plugins: ::Array[OpenAI::Beta::HostedPlugin],
               skills: ::Array[OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::skill],
-              updated_at: Integer
+              updated_at: Integer,
+              ?desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop
             }
 
             type file =
@@ -215,7 +228,7 @@ module OpenAI
                 # Disables network access.
                 DISABLED: :disabled
 
-                # Allows access only to configured domains.
+                # Applies the configured domain restrictions.
                 RESTRICTED: :restricted
 
                 def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::Network::access]
@@ -330,6 +343,19 @@ module OpenAI
               end
 
               def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::skill]
+            end
+
+            type desktop = { enabled: bool }
+
+            class Desktop < OpenAI::Internal::Type::BaseModel
+              # Whether the environment provisions a desktop and browser proxy.
+              attr_accessor enabled: bool
+
+              # @param enabled
+              #   Whether the environment provisions a desktop and browser proxy.
+              def initialize: (enabled: bool) -> void
+
+              def to_hash: -> { enabled: bool }
             end
           end
         end

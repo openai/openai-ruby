@@ -63,7 +63,7 @@ module OpenAI
         # @!attribute tools
         #   Tools available to the agent. Defaults to an empty list.
         #
-        #   @return [Array<OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch>, nil]
+        #   @return [Array<OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ComputerUse>, nil]
         optional(
           :tools,
           -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::PersistedAgentToolParam] },
@@ -99,7 +99,7 @@ module OpenAI
         #     Configuration for generated text. Defaults to the `text` format and medium
         #     verbosity.
         #
-        #   @param tools [Array<OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch>, nil]
+        #   @param tools [Array<OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ComputerUse>, nil]
         #     Tools available to the agent. Defaults to an empty list.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]

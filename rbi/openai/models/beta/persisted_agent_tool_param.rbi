@@ -15,7 +15,8 @@ module OpenAI
             OpenAI::Beta::PersistedAgentToolParam::ToolSearch,
             OpenAI::Beta::PersistedAgentToolParam::ProgrammaticToolCalling,
             OpenAI::Beta::PersistedAgentToolParam::Mcp,
-            OpenAI::Beta::PersistedAgentToolParam::WebSearch
+            OpenAI::Beta::PersistedAgentToolParam::WebSearch,
+            OpenAI::Beta::PersistedAgentToolParam::ComputerUse
           )
         end
 
@@ -532,6 +533,56 @@ module OpenAI
             def self.values
             end
           end
+        end
+
+        class ComputerUse < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::PersistedAgentToolParam::ComputerUse,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The type of the object. Always `computer_use`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # Whether computer tool outputs include screenshots. Defaults to `false`.
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_reader :include_screenshots
+
+          sig { params(include_screenshots: T::Boolean).void }
+          attr_writer :include_screenshots
+
+          # Browser use in an OpenAI-hosted session.
+          sig do
+            params(
+
+              include_screenshots: T::Boolean,
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Whether computer tool outputs include screenshots. Defaults to `false`.
+            include_screenshots: nil,
+
+            # The type of the object. Always `computer_use`.
+
+            type: :computer_use
+          )
+          end
+
+          sig do
+            override.returns(
+              {type: Symbol, include_screenshots: T::Boolean}
+            )
+          end
+          def to_hash
+          end
+
         end
 
         sig { override.returns(T::Array[OpenAI::Beta::PersistedAgentToolParam::Variants]) }

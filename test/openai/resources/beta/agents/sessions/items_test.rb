@@ -20,7 +20,7 @@ class OpenAI::Test::Resources::Beta::Agents::Sessions::ItemsTest < OpenAI::Test:
     assert_pattern do
       case row
       in (
-        OpenAI::Beta::AgentSessionMessage | OpenAI::Beta::AgentReasoningItem | OpenAI::Beta::AgentFunctionCallItem | OpenAI::Beta::AgentSessionItem::FunctionCallOutput | OpenAI::Beta::AgentSessionItem::AgentMessage | OpenAI::Beta::AgentMcpCallItem | OpenAI::Beta::AgentWebSearchCallItem | OpenAI::Beta::AgentCommandExecutionItem | OpenAI::Beta::AgentCreateSubagentCallItem | OpenAI::Beta::AgentSendSubagentInputCallItem | OpenAI::Beta::AgentResumeSubagentCallItem | OpenAI::Beta::AgentWaitForSubagentsCallItem | OpenAI::Beta::AgentInterruptSubagentCallItem | OpenAI::Beta::AgentCloseSubagentCallItem
+        OpenAI::Beta::AgentSessionMessage | OpenAI::Beta::AgentReasoningItem | OpenAI::Beta::AgentFunctionCallItem | OpenAI::Beta::AgentSessionItem::FunctionCallOutput | OpenAI::Beta::AgentSessionItem::AgentMessage | OpenAI::Beta::AgentMcpCallItem | OpenAI::Beta::AgentSessionItem::ComputerUseCall | OpenAI::Beta::AgentSessionItem::ComputerUseApprovalRequest | OpenAI::Beta::AgentSessionItem::ComputerUseApprovalRequestResult | OpenAI::Beta::AgentWebSearchCallItem | OpenAI::Beta::AgentCommandExecutionItem | OpenAI::Beta::AgentCreateSubagentCallItem | OpenAI::Beta::AgentSendSubagentInputCallItem | OpenAI::Beta::AgentResumeSubagentCallItem | OpenAI::Beta::AgentWaitForSubagentsCallItem | OpenAI::Beta::AgentInterruptSubagentCallItem | OpenAI::Beta::AgentCloseSubagentCallItem
       )
         nil
       end
@@ -75,6 +75,25 @@ class OpenAI::Test::Resources::Beta::Agents::Sessions::ItemsTest < OpenAI::Test:
             output: OpenAI::Internal::Type::Unknown,
             server_label: String,
             status: OpenAI::Beta::AgentFunctionCallStatus,
+            turn_id: String
+          } | {
+            type: :computer_use_call,
+            id: String,
+            output: OpenAI::Beta::AgentSessionItem::ComputerUseCall::Output | nil,
+            status: OpenAI::Beta::AgentFunctionCallStatus,
+            title: String | nil,
+            turn_id: String
+          } | {
+            type: :computer_use_approval_request,
+            id: String,
+            request: OpenAI::Beta::AgentSessionItem::ComputerUseApprovalRequest::Request,
+            request_id: String,
+            turn_id: String
+          } | {
+            type: :computer_use_approval_request_result,
+            id: String,
+            request_id: String,
+            response: OpenAI::Beta::AgentSessionItem::ComputerUseApprovalRequestResult::Response,
             turn_id: String
           } | {
             type: :web_search_call,

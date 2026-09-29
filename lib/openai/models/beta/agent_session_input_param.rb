@@ -9,6 +9,12 @@ module OpenAI
 
         discriminator :type
 
+        # Responds to a pending Computer Use approval request.
+        variant(
+          :"agent.session.input.computer_use_approval_request_result",
+          -> { OpenAI::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult }
+        )
+
         # Adds one or more user messages and starts a turn.
         variant(
           :"agent.session.input.message",
@@ -26,6 +32,63 @@ module OpenAI
           :"agent.session.input.tool_result",
           -> { OpenAI::Beta::AgentSessionInputParam::AgentSessionInputToolResult }
         )
+
+        class AgentSessionInputComputerUseApprovalRequestResult < OpenAI::Internal::Type::BaseModel
+          # @!attribute request_id
+          #   The registered request ID from the required action.
+          #
+          #   @return [String]
+          required :request_id, String
+
+          # @!attribute response
+          #   The response for this request type.
+          #
+          #   @return [OpenAI::Models::Beta::AgentBrowserAuthenticationSubmitParam, OpenAI::Models::Beta::AgentBrowserAuthenticationCancelParam, OpenAI::Models::Beta::AgentBrowserOriginAccessParam]
+          required(
+            :response,
+            union: -> {
+              OpenAI::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult::Response
+            }
+          )
+
+          # @!attribute type
+          #   The type of the object. Always
+          #   `agent.session.input.computer_use_approval_request_result`.
+          #
+          #   @return [Symbol, :"agent.session.input.computer_use_approval_request_result"]
+          required :type, const: :"agent.session.input.computer_use_approval_request_result"
+
+          # @!method initialize(request_id:, response:, type: :"agent.session.input.computer_use_approval_request_result")
+          #   Responds to a pending Computer Use approval request.
+          #
+          #   @param request_id [String]
+          #     The registered request ID from the required action.
+          #
+          #   @param response [OpenAI::Models::Beta::AgentBrowserAuthenticationSubmitParam, OpenAI::Models::Beta::AgentBrowserAuthenticationCancelParam, OpenAI::Models::Beta::AgentBrowserOriginAccessParam]
+          #     The response for this request type.
+          #
+          #   @param type [Symbol, :"agent.session.input.computer_use_approval_request_result"]
+          #     The type of the object. Always
+          #     `agent.session.input.computer_use_approval_request_result`.
+
+          # The response for this request type.
+          #
+          # @see OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult#response
+          module Response
+            extend OpenAI::Internal::Type::Union
+
+            discriminator :type
+
+            variant :browser_authentication, -> { OpenAI::Beta::AgentBrowserAuthenticationSubmitParam }
+
+            variant :browser_authentication, -> { OpenAI::Beta::AgentBrowserAuthenticationCancelParam }
+
+            variant :browser_origin_access, -> { OpenAI::Beta::AgentBrowserOriginAccessParam }
+
+            # @!method self.variants
+            #   @return [Array(OpenAI::Models::Beta::AgentBrowserAuthenticationSubmitParam, OpenAI::Models::Beta::AgentBrowserAuthenticationCancelParam, OpenAI::Models::Beta::AgentBrowserOriginAccessParam)]
+          end
+        end
 
         class AgentSessionInputMessage < OpenAI::Internal::Type::BaseModel
           # @!attribute input
@@ -124,7 +187,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMessage, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputCancel, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputToolResult)]
+        #   @return [Array(OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMessage, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputCancel, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputToolResult)]
       end
     end
   end

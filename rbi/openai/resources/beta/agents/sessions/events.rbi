@@ -22,6 +22,7 @@ module OpenAI
                 session_id: String,
                 events: T::Array[
                   T.any(
+                    OpenAI::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult::OrHash,
                     OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMessage::OrHash,
                     OpenAI::Beta::AgentSessionInputParam::AgentSessionInputCancel::OrHash,
                     OpenAI::Beta::AgentSessionInputParam::AgentSessionInputToolResult::OrHash

@@ -24,6 +24,9 @@ module OpenAI
         # Web search.
         variant :web_search, -> { OpenAI::Beta::AgentToolParam::WebSearch }
 
+        # Browser use in an OpenAI-hosted session.
+        variant :computer_use, -> { OpenAI::Beta::AgentToolParam::ComputerUse }
+
         class Function < OpenAI::Internal::Type::BaseModel
           # @!attribute description
           #   A description of what the function does.
@@ -357,8 +360,31 @@ module OpenAI
           end
         end
 
+        class ComputerUse < OpenAI::Internal::Type::BaseModel
+          # @!attribute type
+          #   The type of the object. Always `computer_use`.
+          #
+          #   @return [Symbol, :computer_use]
+          required :type, const: :computer_use
+
+          # @!attribute include_screenshots
+          #   Whether computer tool outputs include screenshots. Defaults to `false`.
+          #
+          #   @return [Boolean, nil]
+          optional :include_screenshots, OpenAI::Internal::Type::Boolean
+
+          # @!method initialize(include_screenshots: nil, type: :computer_use)
+          #   Browser use in an OpenAI-hosted session.
+          #
+          #   @param include_screenshots [Boolean]
+          #     Whether computer tool outputs include screenshots. Defaults to `false`.
+          #
+          #   @param type [Symbol, :computer_use]
+          #     The type of the object. Always `computer_use`.
+        end
+
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Beta::AgentToolParam::Function, OpenAI::Models::Beta::AgentToolParam::ToolSearch, OpenAI::Models::Beta::AgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::AgentToolParam::Mcp, OpenAI::Models::Beta::AgentToolParam::WebSearch)]
+        #   @return [Array(OpenAI::Models::Beta::AgentToolParam::Function, OpenAI::Models::Beta::AgentToolParam::ToolSearch, OpenAI::Models::Beta::AgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::AgentToolParam::Mcp, OpenAI::Models::Beta::AgentToolParam::WebSearch, OpenAI::Models::Beta::AgentToolParam::ComputerUse)]
       end
     end
   end

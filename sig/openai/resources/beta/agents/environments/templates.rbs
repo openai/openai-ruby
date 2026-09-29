@@ -6,6 +6,7 @@ module OpenAI
           class Templates
             def create: (
               ?capability_directories: ::Array[String]?,
+              ?desktop: OpenAI::Beta::Agents::Environments::TemplateCreateParams::Desktop?,
               ?env: ::Hash[Symbol, String]?,
               ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
               ?name: String?,
@@ -25,6 +26,7 @@ module OpenAI
             def update: (
               String environment_template_id,
               ?capability_directories: ::Array[String]?,
+              ?desktop: OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Desktop?,
               ?env: ::Hash[Symbol, String]?,
               ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
               ?name: String?,

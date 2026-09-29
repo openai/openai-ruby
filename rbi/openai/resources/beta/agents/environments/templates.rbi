@@ -17,6 +17,7 @@ module OpenAI
             sig {
               params(
                 capability_directories: T.nilable(T::Array[String]),
+                desktop: T.nilable(OpenAI::Beta::Agents::Environments::TemplateCreateParams::Desktop::OrHash),
                 env: T.nilable(T::Hash[Symbol, String]),
                 files: T.nilable(
                   T::Array[
@@ -47,6 +48,9 @@ module OpenAI
               # Directories that contain capabilities exposed to the agent. Defaults to an empty
               # list.
               capability_directories: nil,
+              # Desktop provisioning. Omission or null inherits the template setting, or
+              # defaults to disabled.
+              desktop: nil,
               # Environment variables made available to the agent.
               env: nil,
               # Files available before the agent starts. Defaults to an empty list.
@@ -91,6 +95,7 @@ module OpenAI
               params(
                 environment_template_id: String,
                 capability_directories: T.nilable(T::Array[String]),
+                desktop: T.nilable(OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Desktop::OrHash),
                 env: T.nilable(T::Hash[Symbol, String]),
                 files: T.nilable(
                   T::Array[
@@ -122,6 +127,8 @@ module OpenAI
               environment_template_id,
               # Directories that expose capabilities to the agent.
               capability_directories: nil,
+              # Replacement desktop configuration, or null to disable the desktop.
+              desktop: nil,
               # Replacement confidential environment values.
               env: nil,
               # Replacement file configuration materialized for each new session.
