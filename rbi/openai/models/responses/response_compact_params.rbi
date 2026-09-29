@@ -215,6 +215,7 @@ module OpenAI
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           GPT_6_ASTRA = T.let(:"gpt-6-astra", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_6_1_SOL = T.let(:"gpt-6.1-sol", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
           GPT_6_SOL = T.let(:"gpt-6-sol", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
           GPT_6_LUNA = T.let(:"gpt-6-luna", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
           GPT_5_6_SOL = T.let(:"gpt-5.6-sol", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
