@@ -209,18 +209,14 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
     end
   end
 
-  def test_empty_success_differs_from_unclassified_or_unfinished_output
+  def test_empty_success_and_legacy_message_phase
     [false, true].each do |creation|
       configure([turn("created"), turn("completed"), idle])
       assert_equal("", stream(creation: creation).get_final_result.output_text)
-      [[answer_event(phase: nil), :output_selection], [answer_event(done: false), :incomplete]].each do |item, reason|
-        configure([turn("created"), item, turn("completed"), idle])
-        error = assert_raises(OpenAI::Helpers::Beta::Agents::ResultError) {
-          stream(creation: creation).get_final_result
-        }
-        assert_equal(reason, error.reason)
-        assert_equal("turn_root", error.turn_id)
-      end
+      configure([turn("created"), answer_event(phase: nil), turn("completed"), idle])
+      result = stream(creation: creation).get_final_result
+      assert_equal("Answer", result.output_text)
+      assert_nil(result.messages.first.phase)
     end
   end
 
@@ -293,20 +289,19 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
     end
   end
 
-  def test_text_deltas_without_a_completed_message_are_not_final_output
+  def test_completed_items_are_authoritative_instead_of_text_deltas
     delta = {
       type: "agent.session.turn.output_text.delta",
       session_id: "session_test",
       turn_id: "turn_root",
-      item_id: "missing",
+      item_id: "message_test",
       output_index: 0,
       content_index: 0,
       delta: "Partial"
     }
     [false, true].each do |creation|
-      configure([turn("created"), delta, turn("completed"), idle])
-      error = assert_raises(OpenAI::Helpers::Beta::Agents::ResultError) { stream(creation: creation).get_final_result }
-      assert_equal(:incomplete, error.reason)
+      configure([turn("created"), delta, answer_event, turn("completed"), idle])
+      assert_equal("Answer", stream(creation: creation).get_final_result.output_text)
     end
   end
 
@@ -343,12 +338,9 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
     assert_equal("Answer", stream(creation: true).get_final_result.output_text)
   end
 
-  def test_nullable_added_envelope_uses_item_turn_identity
+  def test_nullable_added_envelope_does_not_affect_completed_item_collection
     [false, true].each do |creation|
       added = answer_event("Partial", done: false).merge(turn_id: nil, output_index: nil)
-      configure([turn("created"), added, turn("completed"), idle])
-      error = assert_raises(OpenAI::Helpers::Beta::Agents::ResultError) { stream(creation: creation).get_final_result }
-      assert_equal(:incomplete, error.reason)
       configure([turn("created"), added, answer_event, turn("completed"), idle])
       assert_equal("Answer", stream(creation: creation).get_final_result.output_text)
     end
@@ -405,7 +397,7 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
     end
   end
 
-  def test_collector_retains_only_compact_state_for_nonfinal_messages_and_releases_completed_state
+  def test_collector_discards_nonfinal_messages_and_releases_completed_state
     collector = OpenAI::Helpers::Beta::Agents::ResultCollector.new
     events = [
       turn("created"),
@@ -418,9 +410,7 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
       collector.observe(event)
     end
 
-    states = collector.instance_variable_get(:@messages).values
-    assert_equal(2, states.size)
-    assert(states.all? { |state| state.message.nil? })
+    assert_empty(collector.instance_variable_get(:@messages))
     [answer_event(id: "answer"), turn("completed"), idle].each_with_index do |raw, index|
       event = OpenAI::Internal::Type::Converter.coerce(
         OpenAI::Beta::AgentSessionEvent,
@@ -433,6 +423,29 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
     assert_equal("Answer", result.output_text)
     assert_empty(collector.instance_variable_get(:@messages))
     assert_same(result, collector.result)
+  end
+
+  def test_error_transfers_final_messages_and_releases_accumulator_state
+    %w[failed cancelled transport].each do |outcome|
+      collector = OpenAI::Helpers::Beta::Agents::ResultCollector.new
+      events = [turn("created"), answer_event("final" * 100_000)]
+      events << turn(outcome) unless outcome == "transport"
+      events.each_with_index do |raw, index|
+        event = OpenAI::Internal::Type::Converter.coerce(
+          OpenAI::Beta::AgentSessionEvent,
+          raw.merge(event_id: index.to_s)
+        )
+        collector.observe(event)
+      end
+
+      original = collector.instance_variable_get(:@messages).values.first.last
+      collector.observe_error(RuntimeError.new("fixture interruption")) if outcome == "transport"
+      error = assert_raises(OpenAI::Helpers::Beta::Agents::ResultError) { collector.result }
+      assert_same(original, error.messages.first)
+      assert_equal("final" * 100_000, error.messages.first.output_text)
+      assert_empty(collector.instance_variable_get(:@messages))
+      assert_same(error, assert_raises(OpenAI::Helpers::Beta::Agents::ResultError) { collector.result })
+    end
   end
 
 end

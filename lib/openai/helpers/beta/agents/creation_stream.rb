@@ -9,6 +9,7 @@ module OpenAI
         # A typed creation event stream with beta turn-result collection.
         # Existing event iteration and HTTP metadata access remain available.
         class CreationStream < OpenAI::Internal::Stream
+          # Requires initial input in create_streaming.
           # Consume events through the initial root turn's terminal/idle boundary.
           # Calling this again returns the same result without making requests.
           # @return [OpenAI::Helpers::Beta::Agents::TurnResult]

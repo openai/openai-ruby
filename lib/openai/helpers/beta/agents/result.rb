@@ -42,14 +42,10 @@ module OpenAI
 
         # @api private
         class ResultCollector
-          MessageState = Struct.new(:index, :phase, :done, :complete, :message, keyword_init: true)
-          private_constant :MessageState
-
           def initialize(session_id: nil, handler_names: [])
             @session_id = session_id
             @handler_names = handler_names
             @messages = {}
-            @unfinished = {}
             @required_actions = []
           end
 
@@ -72,30 +68,15 @@ module OpenAI
                 @required_actions = []
               end
 
-            when :"agent.session.turn.item.added", :"agent.session.turn.item.done"
-              if @turn && event.item.type == :message && event.item.turn_id == @turn.id && event.item.role == :assistant
-                item = event.item
-                done = event.type == :"agent.session.turn.item.done"
-                # A replayed added snapshot must not replace a completed item.
-                return if !done && @messages[item.id]&.done
-
-                phase = item.phase if [:final_answer, :commentary].include?(item.phase)
-                complete = done && item.status == :completed
-                @messages[item.id] = MessageState.new(
-                  index: event.output_index,
-                  phase: phase,
-                  done: done,
-                  complete: complete,
-                  message: (copy(item) if complete && phase == :final_answer)
-                )
-                @unfinished.delete(item.id) if done
-              end
-
-            when :"agent.session.turn.output_text.delta", :"agent.session.turn.output_text.done"
+            when :"agent.session.turn.item.done"
+              item = event.item
               if @turn &&
-                  (event.turn_id == @turn.id || @messages.key?(event.item_id)) &&
-                  !@messages[event.item_id]&.done
-                @unfinished[event.item_id] = true
+                  item.type == :message &&
+                  item.turn_id == @turn.id &&
+                  item.role == :assistant &&
+                  item.status == :completed &&
+                  item.phase != :commentary
+                @messages[item.id] = [event.output_index, copy(item, OpenAI::Models::Beta::AgentSessionMessage)]
               end
 
             when :"agent.session.requires_action"
@@ -123,56 +104,37 @@ module OpenAI
 
           def result
             return @result if @result
+            raise @result_error if @result_error
             raise error(:observation_error), cause: @cause if @cause
             raise error(@failure) if @failure
             raise error(@turn.status) if @terminal && @turn.status != :completed
             raise error(:requires_action) unless @required_actions.empty?
             raise error(:incomplete) unless @finished && @turn&.status == :completed
 
-            raise error(:incomplete) unless @unfinished.empty?
-
-            entries = @messages.values
-            raise error(:output_selection) if entries.any? { |state| state.phase.nil? }
-            if entries.any? { |state|
-                state.phase == :final_answer && (!state.complete || !state.index.is_a?(Integer))
-              }
-              raise error(:incomplete)
-            end
-
-            @result = TurnResult.new(turn: @turn, messages: final_messages)
-            @messages.clear
-            @unfinished.clear
-            @result
+            @result = TurnResult.new(turn: @turn, messages: take_messages)
           end
 
           private
 
-          def final_messages
-            @messages
-              .values
-              .select { |state| state.message && state.index.is_a?(Integer) }
-              .sort_by(&:index)
-              .map do |state|
-                OpenAI::Internal::Type::Converter.coerce(
-                  OpenAI::Models::Beta::AgentSessionMessage,
-                  state.message.deep_to_h
-                )
-              end
+          def take_messages
+            messages = @messages.values.sort_by(&:first).map(&:last)
+            @messages.clear
+            messages
           end
 
           def error(reason)
-            ResultError.new(
+            @result_error = ResultError.new(
               reason: reason,
               session_id: @session_id,
               turn: @turn,
-              messages: final_messages,
+              messages: take_messages,
               required_actions: @required_actions
             )
           end
 
-          def copy(value)
+          def copy(value, model = value.class)
             raw = JSON.parse(JSON.generate(value), symbolize_names: true)
-            OpenAI::Internal::Type::Converter.coerce(value.class, raw)
+            OpenAI::Internal::Type::Converter.coerce(model, raw)
           end
         end
       end
