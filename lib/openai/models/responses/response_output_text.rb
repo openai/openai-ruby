@@ -87,7 +87,7 @@ module OpenAI
             required :filename, String
 
             # @!attribute index
-            #   The index of the file in the list of files.
+            #   The index in the output text at which to insert the file citation.
             #
             #   @return [Integer]
             required :index, Integer
@@ -108,7 +108,7 @@ module OpenAI
             #     The filename of the file cited.
             #
             #   @param index [Integer]
-            #     The index of the file in the list of files.
+            #     The index in the output text at which to insert the file citation.
             #
             #   @param type [Symbol, :file_citation]
             #     The type of the file citation. Always `file_citation`.

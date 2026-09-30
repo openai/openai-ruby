@@ -21,6 +21,9 @@ module OpenAI
           sig { returns(OpenAI::Resources::Beta::Agents::Sessions::Events) }
           attr_reader :events
 
+          sig { returns(OpenAI::Resources::Beta::Agents::Sessions::Traces) }
+          attr_reader :traces
+
           sig { returns(OpenAI::Resources::Beta::Agents::Sessions::Turns) }
           attr_reader :turns
 

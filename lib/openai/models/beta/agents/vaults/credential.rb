@@ -55,7 +55,11 @@ module OpenAI
             #   @return [String]
             required :vault_id, String
 
-            # @!method initialize(id:, auth:, created_at:, metadata:, name:, updated_at:, vault_id:, object: :"vault.credential")
+            def initialize(data = {})
+              super({metadata: {}, **data})
+            end
+
+            # @!method initialize(id:, auth:, created_at:, name:, updated_at:, vault_id:, metadata: {}, object: :"vault.credential")
             #   Metadata for a stored credential. Secret values are never returned.
             #
             #   @param id [String]
@@ -67,9 +71,6 @@ module OpenAI
             #   @param created_at [Integer]
             #     The Unix timestamp, in seconds, when the credential was created.
             #
-            #   @param metadata [Hash{Symbol=>String}]
-            #     Application-defined key-value pairs associated with this credential.
-            #
             #   @param name [String]
             #     The human-readable name of the credential.
             #
@@ -78,6 +79,9 @@ module OpenAI
             #
             #   @param vault_id [String]
             #     The ID of the vault containing this credential.
+            #
+            #   @param metadata [Hash{Symbol=>String}]
+            #     Application-defined key-value pairs associated with this credential.
             #
             #   @param object [Symbol, :"vault.credential"]
             #     The object type. Always `vault.credential`.

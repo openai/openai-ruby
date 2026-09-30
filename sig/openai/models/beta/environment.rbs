@@ -32,6 +32,7 @@ module OpenAI
             plugins: ::Array[OpenAI::Beta::HostedPlugin],
             skills: ::Array[OpenAI::Models::Beta::hosted_skill],
             ?type: :openai_hosted,
+            ?container_size: OpenAI::Models::Beta::Environment::OpenAIHosted::container_size?,
             ?desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop
           }
 
@@ -60,6 +61,10 @@ module OpenAI
           # The type of the object. Always `openai_hosted`.
           attr_accessor type: :openai_hosted
 
+          # The effective CPU and memory tier, or null when unknown or outside the public
+          # tiers.
+          attr_accessor container_size: OpenAI::Models::Beta::Environment::OpenAIHosted::container_size?
+
           # The effective desktop configuration.
           attr_reader desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop?
 
@@ -82,6 +87,9 @@ module OpenAI
           #   Plugins installed in the environment, excluding their archive contents.
           # @param skills
           #   Skills installed in the environment, excluding their archive contents.
+          # @param container_size
+          #   The effective CPU and memory tier, or null when unknown or outside the public
+          #   tiers.
           # @param desktop
           #   The effective desktop configuration.
           # @param type
@@ -94,6 +102,7 @@ module OpenAI
             packages: OpenAI::Beta::Environment::OpenAIHosted::Packages,
             plugins: ::Array[OpenAI::Beta::HostedPlugin],
             skills: ::Array[OpenAI::Models::Beta::hosted_skill],
+            ?container_size: OpenAI::Models::Beta::Environment::OpenAIHosted::container_size?,
             ?desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop,
             ?type: :openai_hosted
           ) -> void
@@ -107,6 +116,7 @@ module OpenAI
             plugins: ::Array[OpenAI::Beta::HostedPlugin],
             skills: ::Array[OpenAI::Models::Beta::hosted_skill],
             ?type: :openai_hosted,
+            ?container_size: OpenAI::Models::Beta::Environment::OpenAIHosted::container_size?,
             ?desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop
           }
 
@@ -189,6 +199,18 @@ module OpenAI
               python: ::Array[String],
               system_: ::Array[String]
             }
+          end
+
+          type container_size = :small | :medium | :large
+
+          module ContainerSize
+            extend OpenAI::Internal::Type::Enum
+
+            SMALL: :small
+            MEDIUM: :medium
+            LARGE: :large
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Environment::OpenAIHosted::container_size]
           end
 
           type desktop = { enabled: bool }

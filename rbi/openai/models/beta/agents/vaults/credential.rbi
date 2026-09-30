@@ -64,13 +64,13 @@ module OpenAI
 
                 created_at: Integer,
 
-                metadata: T::Hash[Symbol, String],
-
                 name: String,
 
                 updated_at: Integer,
 
                 vault_id: String,
+
+                metadata: T::Hash[Symbol, String],
 
                 object: Symbol
               )
@@ -87,9 +87,6 @@ module OpenAI
               # The Unix timestamp, in seconds, when the credential was created.
               created_at:,
 
-              # Application-defined key-value pairs associated with this credential.
-              metadata:,
-
               # The human-readable name of the credential.
               name:,
 
@@ -98,6 +95,9 @@ module OpenAI
 
               # The ID of the vault containing this credential.
               vault_id:,
+
+              # Application-defined key-value pairs associated with this credential.
+              metadata: {},
 
               # The object type. Always `vault.credential`.
 
