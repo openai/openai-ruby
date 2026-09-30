@@ -22,8 +22,9 @@ client.beta.agents.sessions.stream(
 ) { |stream| stream.until_done }
 ```
 
-The callback receives a `Transfer` instance. Credentials and application approval
-stay in `wallet`. Combine bindings with `transfer.handlers.merge(other.handlers)`;
+The callback receives a `Transfer` instance using the SDK's `BaseModel` parsing,
+not JSON Schema validation. Validate constraints and approval in `wallet` before
+side effects. Combine bindings with `transfer.handlers.merge(other.handlers)`;
 existing hash-based handlers continue to work.
 
 ## Responses API

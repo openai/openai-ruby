@@ -63,46 +63,54 @@ class OpenAI::Test::BetaAgentFunctionToolTest < Minitest::Test
     assert_equal("1.00", @tool.call(JSON.generate(@arguments))[:amount])
   end
 
-  def test_invalid_arguments_never_reach_the_application
-    [
-      @arguments.except(:amount),
-      @arguments.except(:memo),
-      @arguments.merge(amount: 1),
-      @arguments.merge(asset: "UNKNOWN"),
-      @arguments.merge(extra: true),
-      @arguments.merge(recipient: {}),
-      @arguments.merge(recipient: {wallet_address: "fake-address", extra: true}),
-      @arguments.merge(recipient: {wallet_address: 42}),
-      @arguments.merge(memo: false),
-      [],
-      nil,
-      "{broken"
-    ].each do |arguments|
+  def test_non_objects_and_malformed_json_never_reach_the_application
+    [[], nil, "\"text\"", "{broken", @arguments.except(:amount), @arguments.merge(amount: [])].each do |arguments|
       assert_raises(ArgumentError, JSON::ParserError) { @tool.call(arguments) }
     end
 
     assert_empty(@wallet.transfers)
   end
 
-  def test_arrays_nullable_fields_constants_and_unions
-    child = Class.new(OpenAI::BaseModel) { required(:count, Integer) }
-    model = Class.new(OpenAI::BaseModel) do
-      required(:children, OpenAI::ArrayOf[child])
-      required(:choice, OpenAI::UnionOf[String, Integer])
-      required(:version, const: 1)
+  def test_native_parser_accepts_integral_floats_and_preserves_union_data
+    first = Class.new(OpenAI::BaseModel) { required(:x, String) }
+    second = Class.new(OpenAI::BaseModel) do
+      required(:x, String)
+      required(:y, String)
     end
 
-    tool = OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "batch", arguments: model) { _1 }
-    parsed = tool.call(children: [{count: 2}], choice: 3, version: 1)
-    assert_equal(2, parsed.children.first.count)
-    assert_equal(3, parsed.choice)
-    assert_raises(ArgumentError) { tool.call(children: [{count: "2"}], choice: 3, version: 1) }
-    assert_raises(ArgumentError) { tool.call(children: [{}], choice: 3, version: 1) }
-    assert_raises(ArgumentError) { tool.call(children: [], choice: true, version: 1) }
-    assert_raises(ArgumentError) { tool.call(children: [], choice: "ok", version: 2) }
+    model = Class.new(OpenAI::BaseModel) do
+      required(:count, Integer)
+      required(:choice, OpenAI::UnionOf[first, second])
+    end
+
+    tool = OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "parse", arguments: model) { _1 }
+    parsed = tool.call(count: 1.0, choice: {x: "x", y: "y"})
+    assert_instance_of(model, parsed)
+    assert_equal(1, parsed.count)
+    # Existing BaseModel parsing chooses the first matching union model and retains
+    # fields it does not recognize, just as the structured-output helpers do.
+    assert_instance_of(first, parsed.choice)
+    assert_equal("y", parsed.choice[:y])
+  end
+
+  def test_application_validates_constraints_before_side_effects
+    model = Class.new(OpenAI::BaseModel) { required(:code, String, pattern: "^[a-z]+$") }
+    actions = []
+    tool = OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "action", arguments: model) do |args|
+      raise ArgumentError, "invalid action code" unless args.code.is_a?(String) && args.code.match?(/\A[a-z]+\z/)
+      actions << args.code
+      "approved"
+    end
+
+    assert_equal("^[a-z]+$", tool.definition[:parameters][:properties][:code][:pattern])
+    assert_raises(ArgumentError) { tool.call(code: "ABC") }
+    assert_empty(actions)
+    assert_equal("approved", tool.call(code: "valid"))
+    assert_equal(["valid"], actions)
   end
 
   def test_requires_a_model_and_explicit_callback
+
     assert_raises(ArgumentError) {
       OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "bad", arguments: Hash) { nil }
     }
@@ -110,5 +118,31 @@ class OpenAI::Test::BetaAgentFunctionToolTest < Minitest::Test
     assert_raises(ArgumentError) {
       OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "", arguments: Transfer) { nil }
     }
+  end
+
+  def test_symbol_fields_and_nonfinite_schema_constants_follow_native_parsing
+    model = Class.new(OpenAI::BaseModel) do
+      required(:kind, Symbol)
+      required(:value, const: Float::INFINITY)
+    end
+
+    tool = OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "parse", arguments: model) { _1 }
+    parsed = tool.call(kind: "hello", value: 1)
+    assert_equal(:hello, parsed.kind)
+    assert_equal(1, parsed.value)
+    assert_equal({type: "number"}, tool.definition[:parameters][:properties][:value])
+  end
+
+  def test_constructor_snapshots_caller_owned_description_and_metadata
+    description = +"Original description"
+    field_doc = +"Original field"
+    model = Class.new(OpenAI::BaseModel) { required(:value, String, doc: field_doc) }
+    tool = OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "parse", arguments: model, description: description) {
+      _1
+    }
+    description.replace("Changed")
+    field_doc.replace("Changed")
+    assert_equal("Original description", tool.definition[:description])
+    assert_equal("Original field", tool.definition[:parameters][:properties][:value][:description])
   end
 end

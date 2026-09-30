@@ -7,7 +7,7 @@ module OpenAI
 
           def initialize: (
             name: String,
-            arguments: singleton(OpenAI::BaseModel),
+            arguments: Class,
             ?description: String
           ) {
             (untyped) -> OpenAI::Helpers::Agents::tool_output

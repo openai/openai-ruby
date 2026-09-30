@@ -24,51 +24,41 @@ module OpenAI
             @name = name.dup.freeze
             @arguments = arguments
             @handler = handler
-            @definition = {type: :function, name: @name, parameters: arguments.to_json_schema, description: description}
+            @definition = JSON
+              .generate(
+                type: :function,
+                name: @name,
+                parameters: arguments.to_json_schema,
+                description: description
+              )
+              .freeze
           end
 
           # Supply this definition in the agent's tools at creation.
           # @return [Hash{Symbol=>Object}]
-          def definition = JSON.parse(JSON.generate(@definition), symbolize_names: true)
+          def definition = JSON.parse(@definition, symbolize_names: true)
 
           # Pass these local bindings to sessions.stream(tool_handlers: ...).
           # @return [Hash{String=>Proc}]
           def handlers = {name => method(:call).to_proc}
 
-          # Parse model arguments and invoke the application callback.
+          # Parse using the SDK's BaseModel conventions, then invoke the callback.
+          # This is not JSON Schema validation; validate application constraints
+          # and authorization in the callback before performing side effects.
           # @param arguments [Hash{String=>Object}, String]
           # @return [Object]
           def call(arguments)
             values = JSON.parse(arguments.is_a?(String) ? arguments : JSON.generate(arguments), symbolize_names: true)
+            raise ArgumentError, "Tool arguments must be a JSON object" unless values.is_a?(Hash)
             state = OpenAI::Internal::Type::Converter.new_coerce_state
             parsed = OpenAI::Internal::Type::Converter.coerce(@arguments, values, state: state)
-            unless state[:exactness].values_at(:no, :maybe).all?(&:zero?) && complete?(parsed)
-              raise ArgumentError, "Tool arguments do not match the argument model"
+            unless parsed.is_a?(@arguments) && state[:exactness][:no].zero?
+              raise ArgumentError, "Tool arguments cannot be parsed into the argument model"
             end
 
             @handler.call(parsed)
           end
 
-          private
-
-          # The SDK parser tolerates absent/unknown fields for forward compatibility.
-          # Local application callbacks require the declared fields, including nullable ones.
-          def complete?(value)
-            case value
-            when OpenAI::BaseModel
-              fields = value.class.fields
-              data = value.to_h
-              data.keys.to_set == fields.keys.to_set &&
-                fields.all? do |key, field|
-                  const = field[:const]
-                  (const == OpenAI::Internal::OMIT || data[key] == const) && complete?(data[key])
-                end
-            when Array
-              value.all? { complete?(_1) }
-            else
-              true
-            end
-          end
         end
       end
     end

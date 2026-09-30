@@ -248,6 +248,12 @@ module OpenAI
                   state[:error] = TypeError.new("#{value.class} can't be coerced into #{String}")
                 end
 
+              in -> { _1 <= Symbol }
+                if value.is_a?(String)
+                  exactness[:yes] += 1
+                  return value.to_sym
+                end
+
               in -> { _1 <= Date || _1 <= Time }
                 Kernel.then do
                   return target.parse(value).tap { exactness[:yes] += 1 }

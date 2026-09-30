@@ -428,6 +428,7 @@ class OpenAI::Test::AgentSessionStreamTest < Minitest::Test
     model = Class.new(OpenAI::BaseModel) { required(:query, String) }
     calls = []
     tool = OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "search", arguments: model) do |args|
+      raise ArgumentError, "query must be a string" unless args.query.is_a?(String)
       calls << args.query
       {receipt: "fake-receipt"}
     end
@@ -439,7 +440,7 @@ class OpenAI::Test::AgentSessionStreamTest < Minitest::Test
     assert_equal("{\"receipt\":\"fake-receipt\"}", @server.submissions.last["output"])
     assert_equal(true, @server.submissions.last["success"])
 
-    configure([turn("created"), call("{\"query\":42}"), turn("completed"), idle])
+    configure([turn("created"), call("{\"query\":[]}"), turn("completed"), idle])
     @sessions.stream("session_test", input: "Hi", tool_handlers: tool.handlers).until_done
     assert_equal(["hello"], calls)
     assert_equal(false, @server.submissions.last["success"])
