@@ -390,4 +390,49 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
     assert_equal(:environment_connection, error.required_actions.first.type)
   end
 
+  def test_unknown_added_phase_resolves_to_completed_commentary
+    [false, true].each do |creation|
+      configure(
+        [
+          turn("created"),
+          answer_event("Working", phase: nil, done: false),
+          answer_event("Working", phase: "commentary"),
+          turn("completed"),
+          idle
+        ]
+      )
+      assert_equal("", stream(creation: creation).get_final_result.output_text)
+    end
+  end
+
+  def test_collector_retains_only_compact_state_for_nonfinal_messages_and_releases_completed_state
+    collector = OpenAI::Helpers::Beta::Agents::ResultCollector.new
+    events = [
+      turn("created"),
+      answer_event("pending" * 100_000, phase: nil, done: false),
+      answer_event("commentary" * 100_000, phase: "commentary"),
+      answer_event("partial final" * 100_000, id: "answer", done: false)
+    ]
+    events.each_with_index do |raw, index|
+      event = OpenAI::Internal::Type::Converter.coerce(OpenAI::Beta::AgentSessionEvent, raw.merge(event_id: index.to_s))
+      collector.observe(event)
+    end
+
+    states = collector.instance_variable_get(:@messages).values
+    assert_equal(2, states.size)
+    assert(states.all? { |state| state.message.nil? })
+    [answer_event(id: "answer"), turn("completed"), idle].each_with_index do |raw, index|
+      event = OpenAI::Internal::Type::Converter.coerce(
+        OpenAI::Beta::AgentSessionEvent,
+        raw.merge(event_id: (index + 10).to_s)
+      )
+      collector.observe(event)
+    end
+
+    result = collector.result
+    assert_equal("Answer", result.output_text)
+    assert_empty(collector.instance_variable_get(:@messages))
+    assert_same(result, collector.result)
+  end
+
 end

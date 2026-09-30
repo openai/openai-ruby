@@ -42,6 +42,9 @@ module OpenAI
 
         # @api private
         class ResultCollector
+          MessageState = Struct.new(:index, :phase, :done, :complete, :message, keyword_init: true)
+          private_constant :MessageState
+
           def initialize(session_id: nil, handler_names: [])
             @session_id = session_id
             @handler_names = handler_names
@@ -74,16 +77,24 @@ module OpenAI
                 item = event.item
                 done = event.type == :"agent.session.turn.item.done"
                 # A replayed added snapshot must not replace a completed item.
-                return if !done && @messages[item.id]&.last
+                return if !done && @messages[item.id]&.done
 
-                @messages[item.id] = [event.output_index, copy(item), done]
+                phase = item.phase if [:final_answer, :commentary].include?(item.phase)
+                complete = done && item.status == :completed
+                @messages[item.id] = MessageState.new(
+                  index: event.output_index,
+                  phase: phase,
+                  done: done,
+                  complete: complete,
+                  message: (copy(item) if complete && phase == :final_answer)
+                )
                 @unfinished.delete(item.id) if done
               end
 
             when :"agent.session.turn.output_text.delta", :"agent.session.turn.output_text.done"
               if @turn &&
                   (event.turn_id == @turn.id || @messages.key?(event.item_id)) &&
-                  !@messages[event.item_id]&.last
+                  !@messages[event.item_id]&.done
                 @unfinished[event.item_id] = true
               end
 
@@ -121,14 +132,17 @@ module OpenAI
             raise error(:incomplete) unless @unfinished.empty?
 
             entries = @messages.values
-            raise error(:output_selection) if entries.any? { |_, item, _| item.phase.nil? }
-            if entries.any? { |index, item, done|
-                item.phase == :final_answer && (!done || item.status != :completed || !index.is_a?(Integer))
+            raise error(:output_selection) if entries.any? { |state| state.phase.nil? }
+            if entries.any? { |state|
+                state.phase == :final_answer && (!state.complete || !state.index.is_a?(Integer))
               }
               raise error(:incomplete)
             end
 
             @result = TurnResult.new(turn: @turn, messages: final_messages)
+            @messages.clear
+            @unfinished.clear
+            @result
           end
 
           private
@@ -136,12 +150,13 @@ module OpenAI
           def final_messages
             @messages
               .values
-              .select { |index, item, done|
-                done && item.phase == :final_answer && item.status == :completed && index.is_a?(Integer)
-              }
-              .sort_by(&:first)
-              .map do |_, item, _|
-                OpenAI::Internal::Type::Converter.coerce(OpenAI::Models::Beta::AgentSessionMessage, item.deep_to_h)
+              .select { |state| state.message && state.index.is_a?(Integer) }
+              .sort_by(&:index)
+              .map do |state|
+                OpenAI::Internal::Type::Converter.coerce(
+                  OpenAI::Models::Beta::AgentSessionMessage,
+                  state.message.deep_to_h
+                )
               end
           end
 

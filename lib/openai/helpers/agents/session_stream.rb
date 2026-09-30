@@ -89,6 +89,7 @@ module OpenAI
           self
         end
 
+        # @beta
         # Consume the remaining events and handlers, then return this turn's final
         # answer. Failed, blocked, or incomplete observation raises ResultError.
         # @return [OpenAI::Helpers::Beta::Agents::TurnResult]
