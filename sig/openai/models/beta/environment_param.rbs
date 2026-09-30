@@ -26,6 +26,7 @@ module OpenAI
           {
             ?type: :openai_hosted,
             ?capability_directories: ::Array[String]?,
+            ?container_size: OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::container_size,
             ?desktop: OpenAI::Beta::EnvironmentParam::OpenAIHosted::Desktop?,
             ?env: ::Hash[Symbol, String]?,
             ?environment_template_id: String,
@@ -44,6 +45,14 @@ module OpenAI
           # Directories that contain capabilities exposed to the agent. Defaults to an empty
           # list.
           attr_accessor capability_directories: ::Array[String]?
+
+          # The hosted container size. Omission selects the medium tier.
+          attr_reader container_size: OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::container_size?
+
+          # The hosted container size. Omission selects the medium tier.
+          def container_size=: (
+            OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::container_size
+          ) -> OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::container_size
 
           # Desktop provisioning. Omission or null inherits the template setting, or
           # defaults to disabled.
@@ -83,6 +92,8 @@ module OpenAI
           # @param capability_directories
           #   Directories that contain capabilities exposed to the agent. Defaults to an empty
           #   list.
+          # @param container_size
+          #   The hosted container size. Omission selects the medium tier.
           # @param desktop
           #   Desktop provisioning. Omission or null inherits the template setting, or
           #   defaults to disabled.
@@ -109,6 +120,7 @@ module OpenAI
           #   The type of the object. Always `openai_hosted`.
           def initialize: (
             ?capability_directories: ::Array[String]?,
+            ?container_size: OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::container_size,
             ?desktop: OpenAI::Beta::EnvironmentParam::OpenAIHosted::Desktop?,
             ?env: ::Hash[Symbol, String]?,
             ?environment_template_id: String,
@@ -124,6 +136,7 @@ module OpenAI
           def to_hash: -> {
             ?type: :openai_hosted,
             ?capability_directories: ::Array[String]?,
+            ?container_size: OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::container_size,
             ?desktop: OpenAI::Beta::EnvironmentParam::OpenAIHosted::Desktop?,
             ?env: ::Hash[Symbol, String]?,
             ?environment_template_id: String,
@@ -134,6 +147,18 @@ module OpenAI
             ?setup_commands: ::Array[OpenAI::Beta::SetupCommandParam]?,
             ?skills: ::Array[OpenAI::Models::Beta::hosted_skill_param]?
           }
+
+          type container_size = :small | :medium | :large
+
+          module ContainerSize
+            extend OpenAI::Internal::Type::Enum
+
+            SMALL: :small
+            MEDIUM: :medium
+            LARGE: :large
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::container_size]
+          end
 
           type desktop = { enabled: bool }
 

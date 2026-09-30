@@ -17,6 +17,9 @@ module OpenAI
           # @return [OpenAI::Resources::Beta::Agents::Sessions::Events]
           attr_reader :events
 
+          # @return [OpenAI::Resources::Beta::Agents::Sessions::Traces]
+          attr_reader :traces
+
           # @return [OpenAI::Resources::Beta::Agents::Sessions::Turns]
           attr_reader :turns
 
@@ -264,6 +267,7 @@ module OpenAI
             @artifacts = OpenAI::Resources::Beta::Agents::Sessions::Artifacts.new(client: client)
             @items = OpenAI::Resources::Beta::Agents::Sessions::Items.new(client: client)
             @events = OpenAI::Resources::Beta::Agents::Sessions::Events.new(client: client)
+            @traces = OpenAI::Resources::Beta::Agents::Sessions::Traces.new(client: client)
             @turns = OpenAI::Resources::Beta::Agents::Sessions::Turns.new(client: client)
           end
         end
