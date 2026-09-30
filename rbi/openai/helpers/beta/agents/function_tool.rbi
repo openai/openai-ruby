@@ -1,0 +1,40 @@
+# typed: strong
+
+module OpenAI
+  module Helpers
+    module Beta
+      module Agents
+        class FunctionTool
+          sig { returns(String) }
+          attr_reader :name
+
+          sig do
+            params(
+              name: String,
+              arguments: T.class_of(OpenAI::BaseModel),
+              description: String,
+              handler: T.proc.params(arguments: T.untyped).returns(OpenAI::Helpers::Agents::ToolOutput)
+            )
+              .void
+          end
+          def initialize(name:, arguments:, description: "", &handler)
+          end
+
+          sig { returns(OpenAI::Internal::AnyHash) }
+          def definition
+          end
+
+          sig { returns(T::Hash[String, OpenAI::Helpers::Agents::ToolHandler]) }
+          def handlers
+          end
+
+          sig {
+            params(arguments: T.any(String, OpenAI::Internal::AnyHash)).returns(OpenAI::Helpers::Agents::ToolOutput)
+          }
+          def call(arguments)
+          end
+        end
+      end
+    end
+  end
+end

@@ -1,5 +1,31 @@
 # Streaming Helpers
 
+## Beta Agents: typed application tools
+
+Bind an argument model to a block or bound application method:
+
+```ruby
+class Transfer < OpenAI::BaseModel
+  required :destination, String
+  required :amount, String
+end
+
+transfer = OpenAI::Helpers::Beta::Agents::FunctionTool.new(
+  name: "transfer", arguments: Transfer, description: "Transfer an approved amount.",
+  &wallet.method(:transfer)
+)
+
+# At creation, include transfer.definition in agent: {model: MODEL, tools: [...]}.
+# For a configured idle session, reuse the local binding:
+client.beta.agents.sessions.stream(
+  session_id, input: "Transfer the approved amount", tool_handlers: transfer.handlers
+) { |stream| stream.until_done }
+```
+
+The callback receives a `Transfer` instance. Credentials and application approval
+stay in `wallet`. Combine bindings with `transfer.handlers.merge(other.handlers)`;
+existing hash-based handlers continue to work.
+
 ## Responses API
 
 ```ruby

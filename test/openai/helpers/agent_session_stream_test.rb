@@ -424,6 +424,28 @@ class OpenAI::Test::AgentSessionStreamTest < Minitest::Test
     end
   end
 
+  def test_typed_tool_binding_uses_existing_dispatch_and_submission_retry
+    model = Class.new(OpenAI::BaseModel) { required(:query, String) }
+    calls = []
+    tool = OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "search", arguments: model) do |args|
+      calls << args.query
+      {receipt: "fake-receipt"}
+    end
+
+    configure([turn("created"), call("{\"query\":\"hello\"}"), call("{\"query\":\"hello\"}"), turn("completed"), idle])
+    @server.tool_errors = ["Unknown pending tool call: call_test"]
+    @sessions.stream("session_test", input: "Hi", tool_handlers: tool.handlers).until_done
+    assert_equal(["hello"], calls)
+    assert_equal("{\"receipt\":\"fake-receipt\"}", @server.submissions.last["output"])
+    assert_equal(true, @server.submissions.last["success"])
+
+    configure([turn("created"), call("{\"query\":42}"), turn("completed"), idle])
+    @sessions.stream("session_test", input: "Hi", tool_handlers: tool.handlers).until_done
+    assert_equal(["hello"], calls)
+    assert_equal(false, @server.submissions.last["success"])
+    assert_equal("Tool handler failed.", @server.submissions.last["error"])
+  end
+
   private
 
   def turn(kind, id = "turn_root", subagent_id = nil)
