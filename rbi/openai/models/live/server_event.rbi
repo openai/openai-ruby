@@ -159,7 +159,14 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
-          # A SIP DTMF keypress successfully sent by the hosted tool. Delivered only to
+          # The event_id of the client command, when supplied.
+          sig { returns(T.nilable(String)) }
+          attr_reader :client_event_id
+
+          sig { params(client_event_id: String).void }
+          attr_writer :client_event_id
+
+          # A SIP DTMF keypress successfully sent to the SIP trunk. Delivered only to
           # sideband observers; this is not a client command.
           sig do
             params(
@@ -167,6 +174,8 @@ module OpenAI
               event: String,
 
               event_id: String,
+
+              client_event_id: String,
 
               type: Symbol
             )
@@ -178,13 +187,16 @@ module OpenAI
 
             event_id:,
 
+            # The event_id of the client command, when supplied.
+            client_event_id: nil,
+
             type: :"transport.dtmf.send"
           )
           end
 
           sig do
             override.returns(
-              {event: String, event_id: String, type: Symbol}
+              {event: String, event_id: String, type: Symbol, client_event_id: T.nilable(String)}
             )
           end
           def to_hash

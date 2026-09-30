@@ -72,6 +72,13 @@ module OpenAI
           sig { returns(T.nilable(T::Array[String])) }
           attr_accessor :capability_directories
 
+          # The hosted container size. Omission selects the medium tier.
+          sig { returns(T.nilable(OpenAI::Beta::EnvironmentParam::OpenAIHosted::ContainerSize::OrSymbol)) }
+          attr_reader :container_size
+
+          sig { params(container_size: OpenAI::Beta::EnvironmentParam::OpenAIHosted::ContainerSize::OrSymbol).void }
+          attr_writer :container_size
+
           # Desktop provisioning. Omission or null inherits the template setting, or
           # defaults to disabled.
           sig { returns(T.nilable(OpenAI::Beta::EnvironmentParam::OpenAIHosted::Desktop)) }
@@ -148,6 +155,8 @@ module OpenAI
 
               capability_directories: T.nilable(T::Array[String]),
 
+              container_size: OpenAI::Beta::EnvironmentParam::OpenAIHosted::ContainerSize::OrSymbol,
+
               desktop: T.nilable(OpenAI::Beta::EnvironmentParam::OpenAIHosted::Desktop::OrHash),
 
               env: T.nilable(T::Hash[Symbol, String]),
@@ -189,6 +198,9 @@ module OpenAI
             # Directories that contain capabilities exposed to the agent. Defaults to an empty
             # list.
             capability_directories: nil,
+
+            # The hosted container size. Omission selects the medium tier.
+            container_size: nil,
 
             # Desktop provisioning. Omission or null inherits the template setting, or
             # defaults to disabled.
@@ -232,6 +244,7 @@ module OpenAI
               {
                 type: Symbol,
                 capability_directories: T.nilable(T::Array[String]),
+                container_size: OpenAI::Beta::EnvironmentParam::OpenAIHosted::ContainerSize::OrSymbol,
                 desktop: T.nilable(OpenAI::Beta::EnvironmentParam::OpenAIHosted::Desktop),
                 env: T.nilable(T::Hash[Symbol, String]),
                 environment_template_id: String,
@@ -256,6 +269,24 @@ module OpenAI
             )
           end
           def to_hash
+          end
+
+          # The hosted container size. Omission selects the medium tier.
+          module ContainerSize
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::EnvironmentParam::OpenAIHosted::ContainerSize) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            SMALL = T.let(:small, OpenAI::Beta::EnvironmentParam::OpenAIHosted::ContainerSize::TaggedSymbol)
+            MEDIUM = T.let(:medium, OpenAI::Beta::EnvironmentParam::OpenAIHosted::ContainerSize::TaggedSymbol)
+            LARGE = T.let(:large, OpenAI::Beta::EnvironmentParam::OpenAIHosted::ContainerSize::TaggedSymbol)
+
+            sig {
+              override.returns(T::Array[OpenAI::Beta::EnvironmentParam::OpenAIHosted::ContainerSize::TaggedSymbol])
+            }
+            def self.values
+            end
           end
 
           class Desktop < OpenAI::Internal::Type::BaseModel

@@ -46,6 +46,12 @@ module OpenAI
           #   @return [Array<String>, nil]
           optional :capability_directories, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
+          # @!attribute container_size
+          #   The hosted container size. Omission selects the medium tier.
+          #
+          #   @return [Symbol, OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::ContainerSize, nil]
+          optional :container_size, enum: -> { OpenAI::Beta::EnvironmentParam::OpenAIHosted::ContainerSize }
+
           # @!attribute desktop
           #   Desktop provisioning. Omission or null inherits the template setting, or
           #   defaults to disabled.
@@ -122,13 +128,16 @@ module OpenAI
             nil?: true
           )
 
-          # @!method initialize(capability_directories: nil, desktop: nil, env: nil, environment_template_id: nil, files: nil, network: nil, packages: nil, plugins: nil, setup_commands: nil, skills: nil, type: :openai_hosted)
+          # @!method initialize(capability_directories: nil, container_size: nil, desktop: nil, env: nil, environment_template_id: nil, files: nil, network: nil, packages: nil, plugins: nil, setup_commands: nil, skills: nil, type: :openai_hosted)
           #   An existing OpenAI-hosted environment or new inline/template-based hosted
           #   configuration.
           #
           #   @param capability_directories [Array<String>, nil]
           #     Directories that contain capabilities exposed to the agent. Defaults to an empty
           #     list.
+          #
+          #   @param container_size [Symbol, OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::ContainerSize]
+          #     The hosted container size. Omission selects the medium tier.
           #
           #   @param desktop [OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::Desktop, nil]
           #     Desktop provisioning. Omission or null inherits the template setting, or
@@ -163,6 +172,20 @@ module OpenAI
           #
           #   @param type [Symbol, :openai_hosted]
           #     The type of the object. Always `openai_hosted`.
+
+          # The hosted container size. Omission selects the medium tier.
+          #
+          # @see OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted#container_size
+          module ContainerSize
+            extend OpenAI::Internal::Type::Enum
+
+            SMALL = :small
+            MEDIUM = :medium
+            LARGE = :large
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
 
           # @see OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted#desktop
           class Desktop < OpenAI::Internal::Type::BaseModel

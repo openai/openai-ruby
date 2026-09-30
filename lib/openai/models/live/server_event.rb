@@ -67,7 +67,7 @@ module OpenAI
         # A SIP DTMF keypress received from the caller. Delivered only to sideband observers.
         variant :"transport.dtmf.received", -> { OpenAI::Live::ServerEvent::TransportDtmfReceived }
 
-        # A SIP DTMF keypress successfully sent by the hosted tool. Delivered only to sideband observers; this is not a client command.
+        # A SIP DTMF keypress successfully sent to the SIP trunk. Delivered only to sideband observers; this is not a client command.
         variant :"transport.dtmf.send", -> { OpenAI::Live::ServerEvent::TransportDtmfSend }
 
         # The outbound SIP provider leg is ringing or providing early media. Delivered only to sideband observers.
@@ -148,12 +148,23 @@ module OpenAI
           #   @return [Symbol, :"transport.dtmf.send"]
           required :type, const: :"transport.dtmf.send"
 
-          # @!method initialize(event:, event_id:, type: :"transport.dtmf.send")
-          #   A SIP DTMF keypress successfully sent by the hosted tool. Delivered only to
+          # @!attribute client_event_id
+          #   The event_id of the client command, when supplied.
+          #
+          #   @return [String, nil]
+          optional :client_event_id, String
+
+          # @!method initialize(event:, event_id:, client_event_id: nil, type: :"transport.dtmf.send")
+          #   A SIP DTMF keypress successfully sent to the SIP trunk. Delivered only to
           #   sideband observers; this is not a client command.
           #
           #   @param event [String]
+          #
           #   @param event_id [String]
+          #
+          #   @param client_event_id [String]
+          #     The event_id of the client command, when supplied.
+          #
           #   @param type [Symbol, :"transport.dtmf.send"]
         end
 

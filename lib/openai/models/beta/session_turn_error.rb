@@ -46,6 +46,9 @@ module OpenAI
           # The request exceeds the available rate limit.
           RATE_LIMIT_EXCEEDED = :rate_limit_exceeded
 
+          # Flex processing is temporarily unavailable.
+          FLEX_UNAVAILABLE = :flex_unavailable
+
           # The model service is temporarily overloaded.
           SERVER_OVERLOADED = :server_overloaded
 
