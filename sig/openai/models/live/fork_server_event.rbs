@@ -81,7 +81,12 @@ module OpenAI
         end
 
         type transport_dtmf_send =
-          { event: String, event_id: String, ?type: :"transport.dtmf.send" }
+          {
+            event: String,
+            event_id: String,
+            ?type: :"transport.dtmf.send",
+            ?client_event_id: String
+          }
 
         class TransportDtmfSend < OpenAI::Internal::Type::BaseModel
           attr_accessor event: String
@@ -90,16 +95,26 @@ module OpenAI
 
           attr_accessor type: :"transport.dtmf.send"
 
+          # The event_id of the client command, when supplied.
+          attr_reader client_event_id: String?
+
+          # The event_id of the client command, when supplied.
+          def client_event_id=: (String) -> String
+
+          # @param client_event_id
+          #   The event_id of the client command, when supplied.
           def initialize: (
             event: String,
             event_id: String,
+            ?client_event_id: String,
             ?type: :"transport.dtmf.send"
           ) -> void
 
           def to_hash: -> {
             event: String,
             event_id: String,
-            ?type: :"transport.dtmf.send"
+            ?type: :"transport.dtmf.send",
+            ?client_event_id: String
           }
         end
 

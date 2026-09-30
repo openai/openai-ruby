@@ -11,6 +11,8 @@ module OpenAI
 
           attr_reader events: OpenAI::Resources::Beta::Agents::Sessions::Events
 
+          attr_reader traces: OpenAI::Resources::Beta::Agents::Sessions::Traces
+
           attr_reader turns: OpenAI::Resources::Beta::Agents::Sessions::Turns
 
           def create: (

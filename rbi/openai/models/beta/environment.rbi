@@ -102,6 +102,11 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
+          # The effective CPU and memory tier, or null when unknown or outside the public
+          # tiers.
+          sig { returns(T.nilable(OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol)) }
+          attr_accessor :container_size
+
           # The effective desktop configuration.
           sig { returns(T.nilable(OpenAI::Beta::Environment::OpenAIHosted::Desktop)) }
           attr_reader :desktop
@@ -134,6 +139,8 @@ module OpenAI
                 T.any(OpenAI::Beta::HostedSkillReference::OrHash, OpenAI::Beta::HostedSkill::Inline::OrHash)
               ],
 
+              container_size: T.nilable(OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::OrSymbol),
+
               desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop::OrHash,
 
               type: Symbol
@@ -163,6 +170,10 @@ module OpenAI
             # Skills installed in the environment, excluding their archive contents.
             skills:,
 
+            # The effective CPU and memory tier, or null when unknown or outside the public
+            # tiers.
+            container_size: nil,
+
             # The effective desktop configuration.
             desktop: nil,
 
@@ -183,6 +194,7 @@ module OpenAI
                 plugins: T::Array[OpenAI::Beta::HostedPlugin],
                 skills: T::Array[OpenAI::Beta::HostedSkill::Variants],
                 type: Symbol,
+                container_size: T.nilable(OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol),
                 desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop
               }
             )
@@ -316,6 +328,23 @@ module OpenAI
             def to_hash
             end
 
+          end
+
+          # The effective CPU and memory tier, or null when unknown or outside the public
+          # tiers.
+          module ContainerSize
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::Environment::OpenAIHosted::ContainerSize) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            SMALL = T.let(:small, OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol)
+            MEDIUM = T.let(:medium, OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol)
+            LARGE = T.let(:large, OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol]) }
+            def self.values
+            end
           end
 
           class Desktop < OpenAI::Internal::Type::BaseModel
