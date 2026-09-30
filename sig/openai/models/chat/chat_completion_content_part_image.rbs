@@ -81,7 +81,7 @@ module OpenAI
             ?detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail
           }
 
-          type detail = :auto | :low | :high
+          type detail = :auto | :low | :high | :original
 
           module Detail
             extend OpenAI::Internal::Type::Enum
@@ -89,6 +89,7 @@ module OpenAI
             AUTO: :auto
             LOW: :low
             HIGH: :high
+            ORIGINAL: :original
 
             def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail]
           end
