@@ -72,6 +72,13 @@ module OpenAI
           sig { returns(T::Array[String]) }
           attr_accessor :capability_directories
 
+          # The effective desktop configuration.
+          sig { returns(OpenAI::Beta::Environment::OpenAIHosted::Desktop) }
+          attr_reader :desktop
+
+          sig { params(desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop::OrHash).void }
+          attr_writer :desktop
+
           # Files available in the environment, excluding their contents.
           sig { returns(T::Array[OpenAI::Beta::HostedEnvironmentFile::Variants]) }
           attr_accessor :files
@@ -102,12 +109,10 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
-          # The effective desktop configuration.
-          sig { returns(T.nilable(OpenAI::Beta::Environment::OpenAIHosted::Desktop)) }
-          attr_reader :desktop
-
-          sig { params(desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop::OrHash).void }
-          attr_writer :desktop
+          # The effective CPU and memory tier, or null when unknown or outside the public
+          # tiers.
+          sig { returns(T.nilable(OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol)) }
+          attr_accessor :container_size
 
           # An environment hosted by OpenAI.
           sig do
@@ -116,6 +121,8 @@ module OpenAI
               id: String,
 
               capability_directories: T::Array[String],
+
+              desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop::OrHash,
 
               files: T::Array[
                 T.any(
@@ -134,7 +141,7 @@ module OpenAI
                 T.any(OpenAI::Beta::HostedSkillReference::OrHash, OpenAI::Beta::HostedSkill::Inline::OrHash)
               ],
 
-              desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop::OrHash,
+              container_size: T.nilable(OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::OrSymbol),
 
               type: Symbol
             )
@@ -147,6 +154,9 @@ module OpenAI
 
             # Directories that contain capabilities exposed to the agent.
             capability_directories:,
+
+            # The effective desktop configuration.
+            desktop:,
 
             # Files available in the environment, excluding their contents.
             files:,
@@ -163,8 +173,9 @@ module OpenAI
             # Skills installed in the environment, excluding their archive contents.
             skills:,
 
-            # The effective desktop configuration.
-            desktop: nil,
+            # The effective CPU and memory tier, or null when unknown or outside the public
+            # tiers.
+            container_size: nil,
 
             # The type of the object. Always `openai_hosted`.
 
@@ -177,17 +188,56 @@ module OpenAI
               {
                 id: String,
                 capability_directories: T::Array[String],
+                desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop,
                 files: T::Array[OpenAI::Beta::HostedEnvironmentFile::Variants],
                 network: OpenAI::Beta::Environment::OpenAIHosted::Network,
                 packages: OpenAI::Beta::Environment::OpenAIHosted::Packages,
                 plugins: T::Array[OpenAI::Beta::HostedPlugin],
                 skills: T::Array[OpenAI::Beta::HostedSkill::Variants],
                 type: Symbol,
-                desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop
+                container_size: T.nilable(OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol)
               }
             )
           end
           def to_hash
+          end
+
+          class Desktop < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Environment::OpenAIHosted::Desktop,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Whether the environment provisions a desktop and browser proxy.
+            sig { returns(T::Boolean) }
+            attr_accessor :enabled
+
+            # The effective desktop configuration.
+            sig do
+              params(
+
+                enabled: T::Boolean
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Whether the environment provisions a desktop and browser proxy.
+
+              enabled:
+            )
+            end
+
+            sig do
+              override.returns(
+                {enabled: T::Boolean}
+              )
+            end
+            def to_hash
+            end
+
           end
 
           class Network < OpenAI::Internal::Type::BaseModel
@@ -318,42 +368,21 @@ module OpenAI
 
           end
 
-          class Desktop < OpenAI::Internal::Type::BaseModel
-            OrHash = T.type_alias do
-              T.any(
-                OpenAI::Beta::Environment::OpenAIHosted::Desktop,
-                OpenAI::Internal::AnyHash
-              )
+          # The effective CPU and memory tier, or null when unknown or outside the public
+          # tiers.
+          module ContainerSize
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::Environment::OpenAIHosted::ContainerSize) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            SMALL = T.let(:small, OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol)
+            MEDIUM = T.let(:medium, OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol)
+            LARGE = T.let(:large, OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol]) }
+            def self.values
             end
-
-            # Whether the environment provisions a desktop and browser proxy.
-            sig { returns(T::Boolean) }
-            attr_accessor :enabled
-
-            # The effective desktop configuration.
-            sig do
-              params(
-
-                enabled: T::Boolean
-              )
-                .returns(T.attached_class)
-            end
-            def self.new(
-
-              # Whether the environment provisions a desktop and browser proxy.
-
-              enabled:
-            )
-            end
-
-            sig do
-              override.returns(
-                {enabled: T::Boolean}
-              )
-            end
-            def to_hash
-            end
-
           end
         end
 

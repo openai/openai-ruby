@@ -15,6 +15,7 @@ class OpenAI::Test::Resources::Beta::Agents::Environments::TemplatesTest < OpenA
           id: String,
           capability_directories: ^(OpenAI::Internal::Type::ArrayOf[String]),
           created_at: Integer,
+          desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop,
           files: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::File]),
           name: String | nil,
           network: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Network,
@@ -24,8 +25,7 @@ class OpenAI::Test::Resources::Beta::Agents::Environments::TemplatesTest < OpenA
           skills: ^(OpenAI::Internal::Type::ArrayOf[
             union: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Skill
           ]),
-          updated_at: Integer,
-          desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop | nil
+          updated_at: Integer
         }
     end
   end
@@ -42,6 +42,7 @@ class OpenAI::Test::Resources::Beta::Agents::Environments::TemplatesTest < OpenA
           id: String,
           capability_directories: ^(OpenAI::Internal::Type::ArrayOf[String]),
           created_at: Integer,
+          desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop,
           files: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::File]),
           name: String | nil,
           network: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Network,
@@ -51,8 +52,7 @@ class OpenAI::Test::Resources::Beta::Agents::Environments::TemplatesTest < OpenA
           skills: ^(OpenAI::Internal::Type::ArrayOf[
             union: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Skill
           ]),
-          updated_at: Integer,
-          desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop | nil
+          updated_at: Integer
         }
     end
   end
@@ -69,6 +69,7 @@ class OpenAI::Test::Resources::Beta::Agents::Environments::TemplatesTest < OpenA
           id: String,
           capability_directories: ^(OpenAI::Internal::Type::ArrayOf[String]),
           created_at: Integer,
+          desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop,
           files: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::File]),
           name: String | nil,
           network: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Network,
@@ -78,8 +79,7 @@ class OpenAI::Test::Resources::Beta::Agents::Environments::TemplatesTest < OpenA
           skills: ^(OpenAI::Internal::Type::ArrayOf[
             union: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Skill
           ]),
-          updated_at: Integer,
-          desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop | nil
+          updated_at: Integer
         }
     end
   end
@@ -103,6 +103,7 @@ class OpenAI::Test::Resources::Beta::Agents::Environments::TemplatesTest < OpenA
           id: String,
           capability_directories: ^(OpenAI::Internal::Type::ArrayOf[String]),
           created_at: Integer,
+          desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop,
           files: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::File]),
           name: String | nil,
           network: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Network,
@@ -112,8 +113,7 @@ class OpenAI::Test::Resources::Beta::Agents::Environments::TemplatesTest < OpenA
           skills: ^(OpenAI::Internal::Type::ArrayOf[
             union: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Skill
           ]),
-          updated_at: Integer,
-          desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop | nil
+          updated_at: Integer
         }
     end
   end

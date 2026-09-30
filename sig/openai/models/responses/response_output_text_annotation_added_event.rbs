@@ -92,7 +92,7 @@ module OpenAI
             # The filename of the file cited.
             attr_accessor filename: String
 
-            # The index of the file in the list of files.
+            # The index in the output text at which to insert the file citation.
             attr_accessor index: Integer
 
             # The type of the file citation. Always `file_citation`.
@@ -103,7 +103,7 @@ module OpenAI
             # @param filename
             #   The filename of the file cited.
             # @param index
-            #   The index of the file in the list of files.
+            #   The index in the output text at which to insert the file citation.
             # @param type
             #   The type of the file citation. Always `file_citation`.
             def initialize: (

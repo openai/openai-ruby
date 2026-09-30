@@ -26,13 +26,14 @@ module OpenAI
           {
             id: String,
             capability_directories: ::Array[String],
+            desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop,
             files: ::Array[OpenAI::Models::Beta::hosted_environment_file],
             network: OpenAI::Beta::Environment::OpenAIHosted::Network,
             packages: OpenAI::Beta::Environment::OpenAIHosted::Packages,
             plugins: ::Array[OpenAI::Beta::HostedPlugin],
             skills: ::Array[OpenAI::Models::Beta::hosted_skill],
             ?type: :openai_hosted,
-            ?desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop
+            ?container_size: OpenAI::Models::Beta::Environment::OpenAIHosted::container_size?
           }
 
         class OpenAIHosted < OpenAI::Internal::Type::BaseModel
@@ -41,6 +42,9 @@ module OpenAI
 
           # Directories that contain capabilities exposed to the agent.
           attr_accessor capability_directories: ::Array[String]
+
+          # The effective desktop configuration.
+          attr_accessor desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop
 
           # Files available in the environment, excluding their contents.
           attr_accessor files: ::Array[OpenAI::Models::Beta::hosted_environment_file]
@@ -60,18 +64,16 @@ module OpenAI
           # The type of the object. Always `openai_hosted`.
           attr_accessor type: :openai_hosted
 
-          # The effective desktop configuration.
-          attr_reader desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop?
-
-          # The effective desktop configuration.
-          def desktop=: (
-            OpenAI::Beta::Environment::OpenAIHosted::Desktop
-          ) -> OpenAI::Beta::Environment::OpenAIHosted::Desktop
+          # The effective CPU and memory tier, or null when unknown or outside the public
+          # tiers.
+          attr_accessor container_size: OpenAI::Models::Beta::Environment::OpenAIHosted::container_size?
 
           # @param id
           #   The public ID of the environment.
           # @param capability_directories
           #   Directories that contain capabilities exposed to the agent.
+          # @param desktop
+          #   The effective desktop configuration.
           # @param files
           #   Files available in the environment, excluding their contents.
           # @param network
@@ -82,33 +84,49 @@ module OpenAI
           #   Plugins installed in the environment, excluding their archive contents.
           # @param skills
           #   Skills installed in the environment, excluding their archive contents.
-          # @param desktop
-          #   The effective desktop configuration.
+          # @param container_size
+          #   The effective CPU and memory tier, or null when unknown or outside the public
+          #   tiers.
           # @param type
           #   The type of the object. Always `openai_hosted`.
           def initialize: (
             id: String,
             capability_directories: ::Array[String],
+            desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop,
             files: ::Array[OpenAI::Models::Beta::hosted_environment_file],
             network: OpenAI::Beta::Environment::OpenAIHosted::Network,
             packages: OpenAI::Beta::Environment::OpenAIHosted::Packages,
             plugins: ::Array[OpenAI::Beta::HostedPlugin],
             skills: ::Array[OpenAI::Models::Beta::hosted_skill],
-            ?desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop,
+            ?container_size: OpenAI::Models::Beta::Environment::OpenAIHosted::container_size?,
             ?type: :openai_hosted
           ) -> void
 
           def to_hash: -> {
             id: String,
             capability_directories: ::Array[String],
+            desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop,
             files: ::Array[OpenAI::Models::Beta::hosted_environment_file],
             network: OpenAI::Beta::Environment::OpenAIHosted::Network,
             packages: OpenAI::Beta::Environment::OpenAIHosted::Packages,
             plugins: ::Array[OpenAI::Beta::HostedPlugin],
             skills: ::Array[OpenAI::Models::Beta::hosted_skill],
             ?type: :openai_hosted,
-            ?desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop
+            ?container_size: OpenAI::Models::Beta::Environment::OpenAIHosted::container_size?
           }
+
+          type desktop = { enabled: bool }
+
+          class Desktop < OpenAI::Internal::Type::BaseModel
+            # Whether the environment provisions a desktop and browser proxy.
+            attr_accessor enabled: bool
+
+            # @param enabled
+            #   Whether the environment provisions a desktop and browser proxy.
+            def initialize: (enabled: bool) -> void
+
+            def to_hash: -> { enabled: bool }
+          end
 
           type network =
             {
@@ -191,17 +209,16 @@ module OpenAI
             }
           end
 
-          type desktop = { enabled: bool }
+          type container_size = :small | :medium | :large
 
-          class Desktop < OpenAI::Internal::Type::BaseModel
-            # Whether the environment provisions a desktop and browser proxy.
-            attr_accessor enabled: bool
+          module ContainerSize
+            extend OpenAI::Internal::Type::Enum
 
-            # @param enabled
-            #   Whether the environment provisions a desktop and browser proxy.
-            def initialize: (enabled: bool) -> void
+            SMALL: :small
+            MEDIUM: :medium
+            LARGE: :large
 
-            def to_hash: -> { enabled: bool }
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Environment::OpenAIHosted::container_size]
           end
         end
 
