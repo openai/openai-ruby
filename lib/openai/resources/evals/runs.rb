@@ -172,7 +172,7 @@ module OpenAI
 
           @client.request(
             method: :post,
-            path: ["evals/%1$s/runs/%2$s", eval_id, run_id],
+            path: ["evals/%1$s/runs/%2$s/cancel", eval_id, run_id],
             model: OpenAI::Models::Evals::RunCancelResponse,
             security: {bearer_auth: true},
             options: options
