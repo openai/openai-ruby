@@ -20,6 +20,22 @@ module OpenAI
           def turn_id: -> String?
         end
 
+        # @api private
+        class ResultCollector
+          def initialize: (
+            ?session_id: String?,
+            ?handler_names: Array[String]
+          ) -> void
+          def enable: -> void
+          def observe: (
+            OpenAI::Models::Beta::agent_session_event
+            | Hash[Symbol, untyped] event
+          ) -> void
+          def stopped?: -> bool?
+          def observe_error: (StandardError error) -> void
+          def result: -> TurnResult
+        end
+
         class CreationStream < OpenAI::Internal::Stream[OpenAI::Models::Beta::agent_session_event]
           def get_final_result: -> TurnResult
           def with_result_collection: -> self

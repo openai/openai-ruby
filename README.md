@@ -55,7 +55,7 @@ end
 Collect final output from an Agents creation stream:
 
 ```ruby
-stream = client.beta.agents.sessions.create_streaming(
+stream = openai.beta.agents.sessions.create_streaming(
   agent: {model: "gpt-5.2", instructions: "Explain the supplied policy clearly."},
   environment: {type: :none},
   input: "Explain this policy: ..."
@@ -68,7 +68,7 @@ Use the same getter for follow-ups; to display progress first, call
 `stream.with_result_collection` before iterating:
 
 ```ruby
-client.beta.agents.sessions.stream(result.session_id, input: "Give an example.") do |stream|
+openai.beta.agents.sessions.stream(result.session_id, input: "Give an example.") do |stream|
   puts(stream.get_final_result.output_text)
 end
 ```

@@ -20,3 +20,10 @@ creation = client.beta.agents.sessions.create_streaming(agent: OpenAI::Models::B
 creation.status.to_i
 creation.with_result_collection.to_enum.next.event_id.to_s
 creation.get_final_result.output_text.upcase
+
+collector = OpenAI::Helpers::Beta::Agents::ResultCollector.new(session_id: "session_test", handler_names: ["lookup"])
+collector.enable
+collector.observe({type: "future.event"})
+collector.stopped?.to_s
+collector.observe_error(StandardError.new("observation failed"))
+collector.result.output_text.upcase

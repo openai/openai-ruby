@@ -56,6 +56,35 @@ module OpenAI
           end
         end
 
+        # @api private
+        class ResultCollector
+          sig { params(session_id: T.nilable(String), handler_names: T::Array[String]).void }
+          def initialize(session_id: nil, handler_names: [])
+          end
+
+          sig { void }
+          def enable
+          end
+
+          sig {
+            params(event: T.any(OpenAI::Models::Beta::AgentSessionEvent::Variants, OpenAI::Internal::AnyHash)).void
+          }
+          def observe(event)
+          end
+
+          sig { returns(T.nilable(T::Boolean)) }
+          def stopped?
+          end
+
+          sig { params(error: StandardError).void }
+          def observe_error(error)
+          end
+
+          sig { returns(TurnResult) }
+          def result
+          end
+        end
+
         class CreationStream < OpenAI::Internal::Stream
           Message = type_member(:in) { {fixed: OpenAI::Internal::Util::ServerSentEvent} }
           Elem = type_member(:out) { {fixed: OpenAI::Models::Beta::AgentSessionEvent::Variants} }
