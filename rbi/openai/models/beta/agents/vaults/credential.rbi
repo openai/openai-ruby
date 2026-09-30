@@ -88,7 +88,7 @@ module OpenAI
               created_at:,
 
               # Application-defined key-value pairs associated with this credential.
-              metadata:,
+              metadata: {},
 
               # The human-readable name of the credential.
               name:,

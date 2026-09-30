@@ -76,6 +76,9 @@ module OpenAI
           # The request exceeds the available rate limit.
           RATE_LIMIT_EXCEEDED = T.let(:rate_limit_exceeded, OpenAI::Beta::SessionTurnError::Code::TaggedSymbol)
 
+          # Flex processing is temporarily unavailable.
+          FLEX_UNAVAILABLE = T.let(:flex_unavailable, OpenAI::Beta::SessionTurnError::Code::TaggedSymbol)
+
           # The model service is temporarily overloaded.
           SERVER_OVERLOADED = T.let(:server_overloaded, OpenAI::Beta::SessionTurnError::Code::TaggedSymbol)
 

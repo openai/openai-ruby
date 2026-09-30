@@ -46,6 +46,12 @@ module OpenAI
           #   @return [Array<String>]
           required :capability_directories, OpenAI::Internal::Type::ArrayOf[String]
 
+          # @!attribute desktop
+          #   The effective desktop configuration.
+          #
+          #   @return [OpenAI::Models::Beta::Environment::OpenAIHosted::Desktop]
+          required :desktop, -> { OpenAI::Beta::Environment::OpenAIHosted::Desktop }
+
           # @!attribute files
           #   Files available in the environment, excluding their contents.
           #
@@ -82,13 +88,20 @@ module OpenAI
           #   @return [Symbol, :openai_hosted]
           required :type, const: :openai_hosted
 
-          # @!attribute desktop
-          #   The effective desktop configuration.
+          # @!attribute container_size
+          #   The effective CPU and memory tier, or null when unknown or outside the public
+          #   tiers.
           #
-          #   @return [OpenAI::Models::Beta::Environment::OpenAIHosted::Desktop, nil]
-          optional :desktop, -> { OpenAI::Beta::Environment::OpenAIHosted::Desktop }
+          #   @return [Symbol, OpenAI::Models::Beta::Environment::OpenAIHosted::ContainerSize, nil]
+          optional(
+            :container_size,
+            enum: -> {
+              OpenAI::Beta::Environment::OpenAIHosted::ContainerSize
+            },
+            nil?: true
+          )
 
-          # @!method initialize(id:, capability_directories:, files:, network:, packages:, plugins:, skills:, desktop: nil, type: :openai_hosted)
+          # @!method initialize(id:, capability_directories:, desktop:, files:, network:, packages:, plugins:, skills:, container_size: nil, type: :openai_hosted)
           #   An environment hosted by OpenAI.
           #
           #   @param id [String]
@@ -96,6 +109,9 @@ module OpenAI
           #
           #   @param capability_directories [Array<String>]
           #     Directories that contain capabilities exposed to the agent.
+          #
+          #   @param desktop [OpenAI::Models::Beta::Environment::OpenAIHosted::Desktop]
+          #     The effective desktop configuration.
           #
           #   @param files [Array<OpenAI::Models::Beta::HostedEnvironmentFileID, OpenAI::Models::Beta::HostedEnvironmentFile::Inline>]
           #     Files available in the environment, excluding their contents.
@@ -112,11 +128,27 @@ module OpenAI
           #   @param skills [Array<OpenAI::Models::Beta::HostedSkillReference, OpenAI::Models::Beta::HostedSkill::Inline>]
           #     Skills installed in the environment, excluding their archive contents.
           #
-          #   @param desktop [OpenAI::Models::Beta::Environment::OpenAIHosted::Desktop]
-          #     The effective desktop configuration.
+          #   @param container_size [Symbol, OpenAI::Models::Beta::Environment::OpenAIHosted::ContainerSize, nil]
+          #     The effective CPU and memory tier, or null when unknown or outside the public
+          #     tiers.
           #
           #   @param type [Symbol, :openai_hosted]
           #     The type of the object. Always `openai_hosted`.
+
+          # @see OpenAI::Models::Beta::Environment::OpenAIHosted#desktop
+          class Desktop < OpenAI::Internal::Type::BaseModel
+            # @!attribute enabled
+            #   Whether the environment provisions a desktop and browser proxy.
+            #
+            #   @return [Boolean]
+            required :enabled, OpenAI::Internal::Type::Boolean
+
+            # @!method initialize(enabled:)
+            #   The effective desktop configuration.
+            #
+            #   @param enabled [Boolean]
+            #     Whether the environment provisions a desktop and browser proxy.
+          end
 
           # @see OpenAI::Models::Beta::Environment::OpenAIHosted#network
           class Network < OpenAI::Internal::Type::BaseModel
@@ -194,19 +226,19 @@ module OpenAI
             #     System packages installed in the environment.
           end
 
-          # @see OpenAI::Models::Beta::Environment::OpenAIHosted#desktop
-          class Desktop < OpenAI::Internal::Type::BaseModel
-            # @!attribute enabled
-            #   Whether the environment provisions a desktop and browser proxy.
-            #
-            #   @return [Boolean]
-            required :enabled, OpenAI::Internal::Type::Boolean
+          # The effective CPU and memory tier, or null when unknown or outside the public
+          # tiers.
+          #
+          # @see OpenAI::Models::Beta::Environment::OpenAIHosted#container_size
+          module ContainerSize
+            extend OpenAI::Internal::Type::Enum
 
-            # @!method initialize(enabled:)
-            #   The effective desktop configuration.
-            #
-            #   @param enabled [Boolean]
-            #     Whether the environment provisions a desktop and browser proxy.
+            SMALL = :small
+            MEDIUM = :medium
+            LARGE = :large
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
         end
 

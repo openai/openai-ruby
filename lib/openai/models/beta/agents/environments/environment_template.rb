@@ -25,6 +25,12 @@ module OpenAI
             #   @return [Integer]
             required :created_at, Integer
 
+            # @!attribute desktop
+            #   Desktop configuration for each OpenAI-hosted environment.
+            #
+            #   @return [OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::Desktop]
+            required :desktop, -> { OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop }
+
             # @!attribute files
             #   Safe file metadata, excluding contents and session-scoped file IDs.
             #
@@ -83,13 +89,7 @@ module OpenAI
             #   @return [Integer]
             required :updated_at, Integer
 
-            # @!attribute desktop
-            #   Desktop configuration for each OpenAI-hosted environment.
-            #
-            #   @return [OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::Desktop, nil]
-            optional :desktop, -> { OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop }
-
-            # @!method initialize(id:, capability_directories:, created_at:, files:, name:, network:, packages:, plugins:, skills:, updated_at:, desktop: nil, object: :"agent.environment.template")
+            # @!method initialize(id:, capability_directories:, created_at:, desktop:, files:, name:, network:, packages:, plugins:, skills:, updated_at:, object: :"agent.environment.template")
             #   Reusable configuration that provisions a fresh OpenAI-hosted environment for
             #   each session.
             #
@@ -101,6 +101,9 @@ module OpenAI
             #
             #   @param created_at [Integer]
             #     The Unix timestamp, in seconds, when the template was created.
+            #
+            #   @param desktop [OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::Desktop]
+            #     Desktop configuration for each OpenAI-hosted environment.
             #
             #   @param files [Array<OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::File::FileID, OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::File::Inline>]
             #     Safe file metadata, excluding contents and session-scoped file IDs.
@@ -123,11 +126,23 @@ module OpenAI
             #   @param updated_at [Integer]
             #     The Unix timestamp, in seconds, when the template was last updated.
             #
-            #   @param desktop [OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::Desktop]
-            #     Desktop configuration for each OpenAI-hosted environment.
-            #
             #   @param object [Symbol, :"agent.environment.template"]
             #     The object type. Always `agent.environment.template`.
+
+            # @see OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate#desktop
+            class Desktop < OpenAI::Internal::Type::BaseModel
+              # @!attribute enabled
+              #   Whether the environment provisions a desktop and browser proxy.
+              #
+              #   @return [Boolean]
+              required :enabled, OpenAI::Internal::Type::Boolean
+
+              # @!method initialize(enabled:)
+              #   Desktop configuration for each OpenAI-hosted environment.
+              #
+              #   @param enabled [Boolean]
+              #     Whether the environment provisions a desktop and browser proxy.
+            end
 
             # Safe metadata for a file configured by an environment template.
             module File
@@ -366,21 +381,6 @@ module OpenAI
 
               # @!method self.variants
               #   @return [Array(OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::Skill::SkillReference, OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::Skill::Inline)]
-            end
-
-            # @see OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate#desktop
-            class Desktop < OpenAI::Internal::Type::BaseModel
-              # @!attribute enabled
-              #   Whether the environment provisions a desktop and browser proxy.
-              #
-              #   @return [Boolean]
-              required :enabled, OpenAI::Internal::Type::Boolean
-
-              # @!method initialize(enabled:)
-              #   Desktop configuration for each OpenAI-hosted environment.
-              #
-              #   @param enabled [Boolean]
-              #     Whether the environment provisions a desktop and browser proxy.
             end
           end
         end

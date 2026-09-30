@@ -129,7 +129,7 @@ module OpenAI
             sig { returns(String) }
             attr_accessor :filename
 
-            # The index of the file in the list of files.
+            # The index in the output text at which to insert the file citation.
             sig { returns(Integer) }
             attr_accessor :index
 
@@ -159,7 +159,7 @@ module OpenAI
               # The filename of the file cited.
               filename:,
 
-              # The index of the file in the list of files.
+              # The index in the output text at which to insert the file citation.
               index:,
 
               # The type of the file citation. Always `file_citation`.

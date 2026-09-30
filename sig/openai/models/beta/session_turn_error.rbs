@@ -31,6 +31,7 @@ module OpenAI
           | :usage_limit_exceeded
           | :credit_balance_exhausted
           | :rate_limit_exceeded
+          | :flex_unavailable
           | :server_overloaded
           | :cyber_policy
           | :misalignment_policy_violation
@@ -62,6 +63,9 @@ module OpenAI
 
           # The request exceeds the available rate limit.
           RATE_LIMIT_EXCEEDED: :rate_limit_exceeded
+
+          # Flex processing is temporarily unavailable.
+          FLEX_UNAVAILABLE: :flex_unavailable
 
           # The model service is temporarily overloaded.
           SERVER_OVERLOADED: :server_overloaded

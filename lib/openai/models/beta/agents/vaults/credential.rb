@@ -55,7 +55,11 @@ module OpenAI
             #   @return [String]
             required :vault_id, String
 
-            # @!method initialize(id:, auth:, created_at:, metadata:, name:, updated_at:, vault_id:, object: :"vault.credential")
+            def initialize(data = {})
+              super({metadata: {}, **data})
+            end
+
+            # @!method initialize(id:, auth:, created_at:, metadata: {}, name:, updated_at:, vault_id:, object: :"vault.credential")
             #   Metadata for a stored credential. Secret values are never returned.
             #
             #   @param id [String]
