@@ -495,8 +495,12 @@ module OpenAI
         raise
       rescue OpenAI::Errors::ResponsesSendError => error
         @error = error
-        stop_reader
         raise
+      ensure
+        if @connection.poisoned?
+          @error ||= OpenAI::Errors::ResponsesSendError.new(url: @connection.url)
+          stop_reader
+        end
       end
 
       # @api private

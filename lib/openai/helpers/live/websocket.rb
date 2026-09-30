@@ -99,10 +99,16 @@ module OpenAI
       end
 
       private def write_text(text)
+        complete = false
         super
+        complete = true
+        nil
       rescue StandardError
-        @poisoned = true
         raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
+      ensure
+        # Also retire a possibly buffered write when cancellation bypasses
+        # StandardError, before another sender or normal cleanup can flush it.
+        @poisoned = true unless complete
       end
 
       private def read_raw_message
