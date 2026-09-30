@@ -50,6 +50,45 @@ stream.each do |event|
 end
 ```
 
+### Agents final output (beta)
+
+Use `get_final_result` on an existing creation stream to collect the initial
+turn's final answer:
+
+```ruby
+stream = client.beta.agents.sessions.create_streaming(
+  agent: {model: "gpt-5.2", instructions: "Explain the supplied policy clearly."},
+  environment: {type: :none},
+  input: "Explain this policy: ..."
+)
+result = stream.get_final_result
+puts(result.output_text)
+```
+
+Follow-ups use the same result shape and continue dispatching registered tool
+handlers while collecting:
+
+```ruby
+client.beta.agents.sessions.stream(result.session_id, input: "Give an example.") do |stream|
+  puts(stream.get_final_result.output_text)
+end
+```
+
+You can iterate events before calling the getter to display progress. The getter
+consumes the remaining events through the selected root turn's completion and
+idle boundary, closes observation, and caches the result. `result.turn` retains
+turn metadata and usage; `result.messages` contains completed final assistant
+messages, excluding commentary and child-agent output. `output_text` joins their
+text without adding separators. These beta helpers live under
+`OpenAI::Helpers::Beta::Agents`.
+
+Failed/cancelled turns, unhandled required actions, ambiguous output, and interrupted
+observation raise `OpenAI::Helpers::Beta::Agents::ResultError`. Its `reason`,
+`session_id`, optional `turn`, completed partial `messages`, and `required_actions`
+retain the available context; transport errors retain their `cause`. An observation
+error does not mean the hosted turn failed. Closing a stream does not cancel hosted
+execution. Follow-up streaming still requires an idle session and one input writer.
+
 ### Local audio
 
 Record a clip and play generated speech with optional FFmpeg/FFplay helpers.

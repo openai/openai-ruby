@@ -1605,5 +1605,6 @@ require_relative "openai/helpers/realtime"
 require_relative "openai/helpers/responses_websocket"
 require_relative "openai/helpers/live/websocket"
 
+require_relative "openai/helpers/beta/agents/creation_stream"
 require_relative "openai/helpers/agents/session_stream"
 require_relative "openai/helpers/agents/message"

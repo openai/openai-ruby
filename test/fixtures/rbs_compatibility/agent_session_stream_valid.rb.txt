@@ -9,3 +9,14 @@ stream.until_done
 stream.close
 message = OpenAI::Beta::AgentSessionMessage.new(id: "message_test", content: [], phase: nil, role: :assistant, status: :completed, turn_id: "turn_test")
 message.output_text.upcase
+
+result = stream.get_final_result
+result.output_text.upcase
+result.turn.status.to_s
+result.messages.each { |message| message.output_text.upcase }
+result.session_id.upcase
+result.turn_id.upcase
+creation = client.beta.agents.sessions.create_streaming(agent: OpenAI::Models::Beta::Agents::SessionCreateParams::Agent.new(model: "test-model"), environment: OpenAI::Models::Beta::EnvironmentParam::None.new, input: "Hi")
+creation.status.to_i
+creation.to_enum.next.event_id.to_s
+creation.get_final_result.output_text.upcase

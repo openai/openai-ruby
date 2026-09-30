@@ -1,0 +1,29 @@
+module OpenAI
+  module Helpers
+    module Beta
+      module Agents
+        class TurnResult
+          attr_reader turn: OpenAI::Models::Beta::Agents::Sessions::Turn
+          attr_reader messages: Array[OpenAI::Models::Beta::AgentSessionMessage]
+          def session_id: -> String
+          def turn_id: -> String
+          def output_text: -> String
+        end
+
+        class ResultError < OpenAI::Errors::Error
+          attr_reader reason: Symbol
+          attr_reader session_id: String?
+          attr_reader turn: OpenAI::Models::Beta::Agents::Sessions::Turn?
+          attr_reader messages: Array[OpenAI::Models::Beta::AgentSessionMessage]
+          attr_reader required_actions: Array[OpenAI::Models::Beta::AgentSession::required_action]
+          def turn_id: -> String?
+        end
+
+        class CreationStream < OpenAI::Internal::Stream[OpenAI::Models::Beta::agent_session_event]
+          def get_final_result: -> TurnResult
+          def until_done: -> self
+        end
+      end
+    end
+  end
+end

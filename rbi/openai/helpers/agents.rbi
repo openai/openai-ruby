@@ -26,6 +26,10 @@ module OpenAI
         def each(&block)
         end
 
+        sig { returns(OpenAI::Helpers::Beta::Agents::TurnResult) }
+        def get_final_result
+        end
+
         sig { void }
         def close
         end

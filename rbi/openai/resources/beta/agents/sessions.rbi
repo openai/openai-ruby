@@ -97,7 +97,7 @@ module OpenAI
               stream: T.noreturn,
               request_options: OpenAI::RequestOptions::OrHash
             )
-              .returns(OpenAI::Internal::Stream[OpenAI::Beta::AgentSessionEvent::Variants])
+              .returns(OpenAI::Helpers::Beta::Agents::CreationStream)
           }
           def create_streaming(
             # An inline execution environment or a reference to an environment template.

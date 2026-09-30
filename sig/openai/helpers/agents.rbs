@@ -16,6 +16,7 @@ module OpenAI
           | -> Enumerator[OpenAI::Models::Beta::agent_session_event, self]
         def close: -> void
         def until_done: -> self
+        def get_final_result: -> OpenAI::Helpers::Beta::Agents::TurnResult
       end
     end
   end
