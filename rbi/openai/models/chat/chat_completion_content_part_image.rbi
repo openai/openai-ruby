@@ -140,6 +140,7 @@ module OpenAI
             AUTO = T.let(:auto, OpenAI::Chat::ChatCompletionContentPartImage::ImageURL::Detail::TaggedSymbol)
             LOW = T.let(:low, OpenAI::Chat::ChatCompletionContentPartImage::ImageURL::Detail::TaggedSymbol)
             HIGH = T.let(:high, OpenAI::Chat::ChatCompletionContentPartImage::ImageURL::Detail::TaggedSymbol)
+            ORIGINAL = T.let(:original, OpenAI::Chat::ChatCompletionContentPartImage::ImageURL::Detail::TaggedSymbol)
 
             sig {
               override.returns(T::Array[OpenAI::Chat::ChatCompletionContentPartImage::ImageURL::Detail::TaggedSymbol])
