@@ -64,8 +64,8 @@ result = stream.get_final_result
 puts(result.output_text)
 ```
 
-Use the same getter for follow-ups, and optionally iterate either stream first to
-display progress:
+Use the same getter for follow-ups; to display progress first, call
+`stream.with_result_collection` before iterating:
 
 ```ruby
 client.beta.agents.sessions.stream(result.session_id, input: "Give an example.") do |stream|

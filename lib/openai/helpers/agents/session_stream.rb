@@ -94,6 +94,7 @@ module OpenAI
         # answer. Failed, blocked, or incomplete observation raises ResultError.
         # @return [OpenAI::Helpers::Beta::Agents::TurnResult]
         def get_final_result
+          with_result_collection
           raise @result_error if @result_error
           begin
             each { |_event| break if @collector.stopped? } unless @collector.stopped?
@@ -107,6 +108,14 @@ module OpenAI
           raise
         ensure
           close
+        end
+
+        # @beta
+        # Enable result collection before iterating to display progress.
+        # @return [self]
+        def with_result_collection
+          @collector.enable
+          self
         end
 
         # Close the event connection without cancelling the backend turn.
@@ -124,9 +133,14 @@ module OpenAI
           Enumerator.new do |yielder|
             begin
               @raw_stream.each do |event|
-                next unless accept?(event)
+                known = event.is_a?(OpenAI::Internal::Type::BaseModel)
+                next if known && !accept?(event)
 
                 @collector.observe(event)
+                unless known
+                  yielder << event
+                  next
+                end
 
                 terminal = event.type == :"agent.session.failed" ||
                   (event.type == :"agent.session.idle" && @turn_ended)
@@ -164,7 +178,10 @@ module OpenAI
         end
 
         def prepare_call(event)
-          return unless event.type == :"agent.session.turn.item.added" && event.item.type == :function_call
+          unless event.type == :"agent.session.turn.item.added" &&
+              event.item.is_a?(OpenAI::Models::Beta::AgentFunctionCallItem)
+            return
+          end
 
           call = event.item
           key = [call.turn_id.dup, call.call_id.dup]

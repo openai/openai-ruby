@@ -49,8 +49,19 @@ module OpenAI
             @required_actions = []
           end
 
+          def enable
+            return if @enabled
+            if @started
+              raise ArgumentError, "Call with_result_collection before consuming events to collect a final result"
+            end
+
+            @enabled = true
+          end
+
           def observe(event)
-            return if @finished
+            @started = true
+            return unless @enabled
+            return if @finished || !event.is_a?(OpenAI::Internal::Type::BaseModel)
 
             case event.type
             when :"agent.session.created"
@@ -71,7 +82,7 @@ module OpenAI
             when :"agent.session.turn.item.done"
               item = event.item
               if @turn &&
-                  item.type == :message &&
+                  item.is_a?(OpenAI::Models::Beta::AgentSessionAssistantMessage) &&
                   item.turn_id == @turn.id &&
                   item.role == :assistant &&
                   item.status == :completed &&
@@ -81,7 +92,11 @@ module OpenAI
 
             when :"agent.session.requires_action"
               @required_actions = event.session.required_actions.filter_map do |action|
-                next if action.type == :function_call && @handler_names.include?(action.name)
+                if action.is_a?(OpenAI::Models::Beta::AgentSession::RequiredAction::FunctionCall) &&
+                    @handler_names.include?(action.name)
+                  next
+                end
+
                 copy(action)
               end
 
@@ -99,7 +114,7 @@ module OpenAI
           end
 
           def observe_error(error)
-            @cause ||= error unless @finished
+            @cause ||= error if @enabled && !@finished
           end
 
           def result

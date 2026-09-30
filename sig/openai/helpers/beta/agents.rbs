@@ -15,13 +15,14 @@ module OpenAI
           attr_reader session_id: String?
           attr_reader turn: OpenAI::Models::Beta::Agents::Sessions::Turn?
           attr_reader messages: Array[OpenAI::Models::Beta::AgentSessionMessage]
-          attr_reader required_actions: Array[OpenAI::Models::Beta::AgentSession::required_action]
+          attr_reader required_actions: Array[OpenAI::Models::Beta::AgentSession::required_action
+          | Hash[Symbol, untyped]]
           def turn_id: -> String?
         end
 
         class CreationStream < OpenAI::Internal::Stream[OpenAI::Models::Beta::agent_session_event]
           def get_final_result: -> TurnResult
-          def until_done: -> self
+          def with_result_collection: -> self
         end
       end
     end

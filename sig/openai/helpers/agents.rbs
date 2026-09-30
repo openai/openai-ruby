@@ -19,6 +19,9 @@ module OpenAI
 
         # @beta
         def get_final_result: -> OpenAI::Helpers::Beta::Agents::TurnResult
+
+        # @beta
+        def with_result_collection: -> self
       end
     end
   end

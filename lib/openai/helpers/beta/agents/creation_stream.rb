@@ -14,9 +14,12 @@ module OpenAI
           # Calling this again returns the same result without making requests.
           # @return [OpenAI::Helpers::Beta::Agents::TurnResult]
           def get_final_result
+            with_result_collection
             raise @result_error if @result_error
             begin
-              until_done
+              @iterator.next until @collector.stopped?
+            rescue StopIteration
+              # EOF alone does not establish a completed turn.
             rescue StandardError => error
               @collector.observe_error(error)
             end
@@ -29,18 +32,11 @@ module OpenAI
             close
           end
 
-          # Consume through this turn's boundary without requiring a successful result.
+          # Enable result collection before iterating to display progress.
           # @return [self]
-          def until_done
-            begin
-              @iterator.next until @collector.stopped?
-            rescue StopIteration
-              # The result getter distinguishes EOF from a complete result.
-            end
-
+          def with_result_collection
+            @collector.enable
             self
-          ensure
-            close
           end
 
           private

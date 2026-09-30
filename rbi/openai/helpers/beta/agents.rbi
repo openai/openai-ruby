@@ -43,7 +43,11 @@ module OpenAI
           def messages
           end
 
-          sig { returns(T::Array[OpenAI::Models::Beta::AgentSession::RequiredAction::Variants]) }
+          sig {
+            returns(
+              T::Array[T.any(OpenAI::Models::Beta::AgentSession::RequiredAction::Variants, OpenAI::Internal::AnyHash)]
+            )
+          }
           def required_actions
           end
 
@@ -61,7 +65,7 @@ module OpenAI
           end
 
           sig { returns(T.self_type) }
-          def until_done
+          def with_result_collection
           end
         end
       end

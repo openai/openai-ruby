@@ -131,8 +131,8 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
   def test_iteration_then_getter_and_drain_then_getter
     [false, true].product([:each, :until_done]).each do |creation, mode|
       configure(complete)
-      subject = stream(creation: creation)
-      if mode == :each
+      subject = stream(creation: creation).with_result_collection
+      if mode == :each || creation
         subject.each { |event| assert(event.type) }
       else
         subject.until_done
@@ -145,7 +145,7 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
   def test_external_iteration_then_getter_uses_remaining_events
     [false, true].each do |creation|
       configure(complete)
-      subject = stream(creation: creation)
+      subject = stream(creation: creation).with_result_collection
       external = creation ? subject.to_enum : subject.each
       assert_equal(:"agent.session.turn.created", external.next.type)
       assert_equal("Answer", subject.get_final_result.output_text)
@@ -194,7 +194,7 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
   def test_collector_isolates_snapshots_before_returning_events
     [false, true].each do |creation|
       configure(complete)
-      subject = stream(creation: creation)
+      subject = stream(creation: creation).with_result_collection
       subject.each do |event|
         if event.type == :"agent.session.turn.item.done"
           event.item.content.first.text.replace("Changed")
@@ -319,7 +319,7 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
 
   def test_raw_iteration_failure_is_retained_for_a_later_getter
     configure([turn("created"), {type: "error", error: {message: "fixture error"}}])
-    subject = stream(creation: true)
+    subject = stream(creation: true).with_result_collection
     original = assert_raises(OpenAI::Errors::APIStatusError) { subject.each { |_event| nil } }
     error = assert_raises(OpenAI::Helpers::Beta::Agents::ResultError) { subject.get_final_result }
     assert_same(original, error.cause)
@@ -328,7 +328,7 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
 
   def test_creation_raw_iteration_remains_open_past_the_collected_turn
     configure(complete + [turn("created", id: "later")])
-    subject = stream(creation: true)
+    subject = stream(creation: true).with_result_collection
     assert_equal(5, subject.to_a.size)
     assert_equal("Answer", subject.get_final_result.output_text)
   end
@@ -363,7 +363,7 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
     configure(complete + [turn("created", id: "later")])
     timeout = OpenAI::Errors::APITimeoutError.new(url: URI("https://sdk-test.example/v1"))
     @server.body.error = timeout
-    subject = stream(creation: true)
+    subject = stream(creation: true).with_result_collection
     assert_raises(OpenAI::Errors::APITimeoutError) { subject.each { |_event| nil } }
     assert_equal("Answer", subject.get_final_result.output_text)
   end
@@ -399,6 +399,7 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
 
   def test_collector_discards_nonfinal_messages_and_releases_completed_state
     collector = OpenAI::Helpers::Beta::Agents::ResultCollector.new
+    collector.enable
     events = [
       turn("created"),
       answer_event("pending" * 100_000, phase: nil, done: false),
@@ -428,6 +429,7 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
   def test_error_transfers_final_messages_and_releases_accumulator_state
     %w[failed cancelled transport].each do |outcome|
       collector = OpenAI::Helpers::Beta::Agents::ResultCollector.new
+      collector.enable
       events = [turn("created"), answer_event("final" * 100_000)]
       events << turn(outcome) unless outcome == "transport"
       events.each_with_index do |raw, index|
@@ -445,6 +447,109 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
       assert_equal("final" * 100_000, error.messages.first.output_text)
       assert_empty(collector.instance_variable_get(:@messages))
       assert_same(error, assert_raises(OpenAI::Helpers::Beta::Agents::ResultError) { collector.result })
+    end
+  end
+
+  def test_raw_iteration_and_aliases_retain_no_result_payloads
+    answers = Array.new(80) { |index| answer_event("payload" * 4096, id: "message_#{index}", index: index) }
+    [false, true].product([:each, :enum]).each do |creation, mode|
+      configure([turn("created"), *answers, turn("completed"), idle])
+      subject = stream(creation: creation)
+      count = 0
+      if mode == :each
+        subject.each { |_event| count += 1 }
+      else
+        subject.to_enum.each { |_event| count += 1 }
+      end
+
+      assert_equal(83, count)
+      collector = subject.instance_variable_get(:@collector)
+      assert_empty(collector.instance_variable_get(:@messages))
+      assert_empty(collector.instance_variable_get(:@required_actions))
+      assert_nil(collector.instance_variable_get(:@turn))
+      assert_raises(ArgumentError) { subject.get_final_result }
+    end
+  end
+
+  def test_plain_followup_until_done_does_not_collect_output
+    configure(complete)
+    subject = stream
+    subject.until_done
+    assert_empty(subject.instance_variable_get(:@collector).instance_variable_get(:@messages))
+    assert_raises(ArgumentError) { subject.get_final_result }
+  end
+
+  def test_enabling_collection_after_consumption_fails_before_reading_more
+    [false, true].each do |creation|
+      configure(complete)
+      subject = stream(creation: creation)
+      events = creation ? subject.to_enum : subject.each
+      events.next
+      reads = @server.body.reads
+      error = assert_raises(ArgumentError) { subject.with_result_collection }
+      assert_match(/before consuming events/, error.message)
+      assert_equal(reads, @server.body.reads)
+      assert_raises(ArgumentError) { subject.get_final_result }
+      assert_equal(reads, @server.body.reads)
+      assert(@server.body.closed)
+    end
+  end
+
+  def test_collection_opt_in_is_fluent_and_idempotent
+    [false, true].each do |creation|
+      configure(complete)
+      subject = stream(creation: creation)
+      assert_same(subject, subject.with_result_collection)
+      subject.each { |_event| nil }
+      assert_same(subject, subject.with_result_collection)
+      assert_equal("Answer", subject.get_final_result.output_text)
+    end
+  end
+
+  def test_unknown_top_level_and_item_variants_remain_visible_and_do_not_break_collection
+    unknown = {type: "agent.session.future", payload: {example: "future event"}}
+    items = %w[added done].map do |kind|
+      {
+        type: "agent.session.turn.item.#{kind}",
+        session_id: "session_test",
+        turn_id: "turn_root",
+        output_index: 0,
+        item: {type: "future_item", id: "future", turn_id: "turn_root"}
+      }
+    end
+
+    [false, true].product([false, true]).each do |creation, collecting|
+      configure([unknown, turn("created"), *items, answer_event, turn("completed"), idle])
+      subject = stream(creation: creation)
+      subject.with_result_collection if collecting
+      events = subject.to_a
+      assert_equal("agent.session.future", events.first.fetch(:type))
+      assert_equal("future_item", events[2].item.fetch(:type))
+      assert_equal("future_item", events[3].item.fetch(:type))
+      if collecting
+        assert_equal("Answer", subject.get_final_result.output_text)
+      else
+        assert_empty(subject.instance_variable_get(:@collector).instance_variable_get(:@messages))
+      end
+    end
+  end
+
+  def test_unknown_required_action_is_returned_as_an_unhandled_action
+    pending = {
+      type: "agent.session.requires_action",
+      session: {
+        id: "session_test",
+        status: "requires_action",
+        required_actions: [{type: "future_action", details: "example"}]
+      }
+    }
+    [false, true].each do |creation|
+      configure([turn("created"), pending])
+      error = assert_raises(OpenAI::Helpers::Beta::Agents::ResultError) { stream(creation: creation).get_final_result }
+      assert_equal(:requires_action, error.reason)
+      assert_equal("future_action", error.required_actions.first.fetch(:type))
+      assert_equal("example", error.required_actions.first.fetch(:details))
+      assert(@server.body.closed)
     end
   end
 
