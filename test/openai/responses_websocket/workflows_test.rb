@@ -400,6 +400,16 @@ class OpenAI::Test::ResponsesWebSocketWorkflowsTest < Minitest::Test
     end
   end
 
+  def test_finished_deflate_trailing_input_obeys_decoded_limit
+    [true, false].each do |context_takeover|
+      assert_finished_deflate_limit(context_takeover: context_takeover)
+    end
+  end
+
+  def test_reused_finished_inflater_obeys_decoded_limit
+    assert_finished_deflate_limit(context_takeover: true, prime_finished_inflater: true)
+  end
+
   def test_compressed_decoded_limit_aborts_before_peer_teardown_and_rejects_later_write
     text = "synthetic response content " * 50_000
     peer_closed = Async::Queue.new
@@ -749,6 +759,76 @@ class OpenAI::Test::ResponsesWebSocketWorkflowsTest < Minitest::Test
 
       assert(peer_closed.dequeue)
       assert_equal(2, requests.length)
+    end
+  end
+
+  private def assert_finished_deflate_limit(context_takeover:, prime_finished_inflater: false)
+    deflater = Zlib::Deflate.new(Zlib::DEFAULT_COMPRESSION, -Zlib::MAX_WBITS)
+    # Cross a native output chunk as well as exercising the uncounted tail.
+    finished = deflater.deflate("x" * 20_000, Zlib::FINISH)
+    deflater.close
+    payload = finished + ("synthetic unused input " * 50_000)
+    peer_closed = Async::Queue.new
+    compression = Protocol::WebSocket::Extension::Compression
+    extensions = Protocol::WebSocket::Extensions::Server.new(
+      [[compression, {server_no_context_takeover: !context_takeover}]]
+    )
+    unless context_takeover
+      def extensions.accept(headers)
+        super do |header|
+          header << "server_no_context_takeover"
+          yield header
+        end
+      end
+    end
+
+    handler = lambda do |socket|
+      read_event(socket)
+      assert_instance_of(compression::Deflate, socket.writer)
+      assert_equal(context_takeover, socket.writer.context_takeover)
+      if prime_finished_inflater
+        first = Protocol::WebSocket::BinaryFrame.new.pack(finished)
+        first.flags |= Protocol::WebSocket::Frame::RSV1
+        socket.write_frame(first)
+        socket.flush
+      end
+
+      split = payload.bytesize / 2
+      first = Protocol::WebSocket::BinaryFrame.new(false).pack(payload.byteslice(0, split))
+      first.flags |= Protocol::WebSocket::Frame::RSV1
+      socket.write_frame(first)
+      socket.write_frame(Protocol::WebSocket::ContinuationFrame.new(true).pack(payload.byteslice(split..)))
+      socket.flush
+      # A budget violation must abort, not send a close frame and await a reply.
+      begin
+        assert_nil(socket.read_frame)
+      rescue EOFError, Protocol::WebSocket::ClosedError
+        nil
+      ensure
+        peer_closed.enqueue(true)
+      end
+    end
+
+    with_server(handler, extensions: extensions) do |client|
+      client
+        .responses
+        .connect(
+          transport_options: {max_wire_message_bytes: payload.bytesize, max_message_bytes: 32_768}
+        ) do |connection|
+          connection.response.create(model: "example-model", input: "test")
+          assert_operator(connection.receive_raw.bytesize, :<=, 32_768) if prime_finished_inflater
+          # Binary messages and receive_raw avoid a later UTF-8/JSON rejection
+          # masking the decoded-budget bypass after the oversized allocation.
+          Async::Task.current.with_timeout(2, Minitest::Assertion) do
+            assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive_raw }
+            assert(peer_closed.dequeue)
+          end
+
+          assert_predicate(connection, :closed?)
+          assert_raises(OpenAI::Errors::ResponsesConnectionError) do
+            connection.response.create(model: "example-model", input: "must not replay")
+          end
+        end
     end
   end
 

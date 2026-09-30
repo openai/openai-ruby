@@ -117,7 +117,10 @@ module OpenAI
             decoded = +"".b
             begin
               inflater.inflate(buffer + ::Protocol::WebSocket::Extension::Compression::Inflate::TRAILER) do |chunk|
-                if inflater.total_out - start_out > @responses_decoded_limit
+                if inflater.total_out -
+                    start_out > @responses_decoded_limit ||
+                    decoded.bytesize +
+                    chunk.bytesize > @responses_decoded_limit
                   raise ::Protocol::WebSocket::ProtocolError, "Responses WebSocket message exceeds configured limit."
                 end
 
@@ -129,7 +132,14 @@ module OpenAI
                 raise ::Protocol::WebSocket::ProtocolError, "Responses WebSocket message exceeds configured limit."
               end
 
-              decoded << inflater.flush_next_out
+              # Finished streams can put unused input in this buffer without
+              # increasing total_out. Count every byte before collecting it.
+              tail = inflater.flush_next_out
+              if decoded.bytesize + tail.bytesize > @responses_decoded_limit
+                raise ::Protocol::WebSocket::ProtocolError, "Responses WebSocket message exceeds configured limit."
+              end
+
+              decoded << tail
             rescue ::Protocol::WebSocket::ProtocolError
               @responses_bounded_framer.abort
               inflater.close
