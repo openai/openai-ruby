@@ -100,6 +100,8 @@ module OpenAI
                 copy(action)
               end
 
+            when :"agent.session.in_progress"
+              @required_actions = [] if event.session.id == @session_id
             when :"agent.session.idle"
               @finished = true if @terminal && event.session.id == @session_id
             when :"agent.session.failed"

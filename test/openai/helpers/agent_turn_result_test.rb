@@ -243,6 +243,51 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
     end
   end
 
+  def test_getter_continues_after_a_manually_resolved_action_resumes
+    resumed = {type: "agent.session.in_progress", session: {id: "session_test", status: "in_progress"}}
+    [false, true].each do |creation|
+      configure([turn("created"), action, resumed, answer_event, turn("completed"), idle])
+      subject = stream(creation: creation).with_result_collection
+      events = subject.to_enum
+      events.next
+      assert_equal(:"agent.session.requires_action", events.next.type)
+      @sessions.events.create(
+        "session_test",
+        events: [
+          {
+            type: :"agent.session.input.tool_result",
+            turn_id: "turn_root",
+            call_id: "call_test",
+            success: true,
+            output: "ok"
+          }
+        ]
+      )
+      assert_equal(:"agent.session.in_progress", events.next.type)
+
+      result = subject.get_final_result
+      assert_equal("Answer", result.output_text)
+      assert_equal(:completed, result.turn.status)
+      assert_equal(6, @server.body.reads)
+      assert(@server.body.closed)
+    end
+  end
+
+  def test_another_session_resuming_does_not_clear_pending_actions
+    resumed = {type: "agent.session.in_progress", session: {id: "other_session", status: "in_progress"}}
+    [false, true].each do |creation|
+      configure([turn("created"), action, resumed, answer_event, turn("completed"), idle])
+      subject = stream(creation: creation).with_result_collection
+      events = subject.to_enum
+      3.times { events.next }
+
+      error = assert_raises(OpenAI::Helpers::Beta::Agents::ResultError) { subject.get_final_result }
+      assert_equal(:requires_action, error.reason)
+      assert_equal("call_test", error.required_actions.first.call_id)
+      assert_equal(3, @server.body.reads)
+    end
+  end
+
   def test_getter_keeps_existing_handlers_running_once
     call = {
       type: "agent.session.turn.item.added",
