@@ -26,7 +26,7 @@ module OpenAI
           messages = input.is_a?(String) ? [{role: :user, content: [{type: :input_text, text: input}]}] : input.to_a
           raise ArgumentError, "input must not be empty" if input == "" || messages.empty?
 
-          @output_parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(output_type) if output_type
+          @output_parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(output_type) unless output_type.nil?
           @sessions = sessions
           @session_id = session_id
           @handlers = tool_handlers.to_h.dup

@@ -447,6 +447,24 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
     assert_equal("object", request.dig("agent", "text", "format", "schema", "type"))
   end
 
+  def test_false_output_type_is_rejected_before_creation_or_followup_requests
+    [true, false].each do |creation|
+      configure(complete)
+      error = assert_raises(ArgumentError) { typed_stream(creation: creation, output_type: false) }
+      assert_equal("output_type must be an OpenAI::BaseModel subclass", error.message)
+      assert_empty(@server.requests)
+    end
+  end
+
+  def test_nil_output_type_keeps_results_untyped
+    [true, false].each do |creation|
+      configure(complete)
+      result = typed_stream(creation: creation, output_type: nil).get_final_result
+      assert_instance_of(OpenAI::Helpers::Beta::Agents::TurnResult, result)
+      assert_nil(result.output_parsed)
+    end
+  end
+
   def test_type_validation_precedes_network_and_rejects_conflicting_schema
     configure(complete)
     assert_raises(ArgumentError) { typed_stream(creation: true, output_type: String) }
