@@ -35,7 +35,6 @@ module OpenAI
             end
 
             @model = model
-
           end
 
           def prepare_request(params)
@@ -151,8 +150,8 @@ module OpenAI
             end
 
             if schema.key?("format") &&
-               !%w[date-time time date duration email hostname ipv4 ipv6 uuid].include?(schema["format"]) &&
-               schema["format"] != ""
+                !%w[date-time time date duration email hostname ipv4 ipv6 uuid].include?(schema["format"]) &&
+                schema["format"] != ""
               raise ArgumentError, "output_type contains an unsupported string format"
             end
 
