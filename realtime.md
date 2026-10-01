@@ -2,8 +2,8 @@
 
 The Ruby SDK provides a typed, block-scoped WebSocket client for server-side
 Realtime text sessions, committed-turn transcription, and one-turn voice
-workflows, plus sideband control of existing WebRTC or SIP calls. The
-implementation stays at one cohesive boundary: authenticated WebSocket
+workflows, plus Translation sessions and sideband control of existing WebRTC or
+SIP calls. The implementation stays at one cohesive boundary: authenticated WebSocket
 connection setup, protocol event validation, deterministic cleanup, and
 synchronous event flow.
 
@@ -589,12 +589,47 @@ settings. `transport_options` therefore cannot override those fields and are
 snapshotted before authentication so later caller mutation cannot alter the
 handshake.
 
+## Translation sessions
+
+Translation uses its own protocol through `client.realtime.connect_translation`.
+Opening the connection lets the server create the session. Send the final audio
+before calling `finish` on the same receive owner; consume all trailing events,
+including `session.closed`, inside its required block:
+
+```ruby
+require "openai"
+require "base64"
+
+client = OpenAI::Client.new
+client.realtime.connect_translation(model: "gpt-realtime-translate") do |connection|
+  connection.receive # session.created
+  connection.send_event(type: "session.update", session: {audio: {output: {language: "fr"}}})
+  connection.send_event(
+    type: "session.input_audio_buffer.append",
+    audio: Base64.strict_encode64(File.binread("speech.pcm"))
+  )
+  connection.finish(timeout: 30) do |event|
+    case event
+    when OpenAI::Realtime::RealtimeTranslationOutputTranscriptDeltaEvent
+      print(event.delta)
+    when OpenAI::Realtime::RealtimeErrorEvent
+      raise "Translation API error."
+    end
+  end
+end
+```
+
+This server-side example uses the client's configured credentials. Translation
+client secret issuance is a separate HTTP API and requires a gem version that
+includes `client.realtime.translations.client_secrets.create`. Provider clients
+are not supported for Translation WebSockets.
+
 ## Current scope
 
 The examples in this guide cover local function calling, image input, and MCP
 approval through the generic Realtime connection API, alongside generated
 WebRTC/SDP call creation and sideband control of existing WebRTC and SIP calls.
+The Translation example covers a single receive owner and bounded final flush.
 Continuous microphone capture, concurrent live captioning, full-duplex
-conversation, SIP call-ownership orchestration, and translation connections
-remain out of scope. Existing generated HTTP resources remain
-generated-code-owned.
+conversation, and SIP call-ownership orchestration remain out of scope.
+Existing generated HTTP resources remain generated-code-owned.
