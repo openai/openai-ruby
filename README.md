@@ -100,6 +100,31 @@ end
 Parsing follows the SDK’s existing `BaseModel` conventions. Each output-text item is parsed separately; `output_parsed` returns the first. Follow-up `output_type` only parses the answer; it does not change the session's schema.
 `OutputParseError#raw_result` preserves the completed answer if parsing fails.
 
+### Hosted files and artifacts
+
+Prepare selected local files before creating a hosted session, or use `upload` to stage one in an existing environment. Keep `upload_ids` for explicit cleanup through the Files API.
+
+```ruby
+prepared = openai.beta.agents.environments.files.prepare({
+  "/workspace/source.pdf" => Pathname("source.pdf")
+})
+stream = openai.beta.agents.sessions.create_streaming(
+  agent: {model: MODEL},
+  environment: {type: :openai_hosted, files: prepared.files},
+  input: "Read source.pdf and write /workspace/outputs/report.md"
+)
+result = stream.get_final_result
+artifacts = openai.beta.agents.sessions.artifacts.for_result(result)
+artifacts.download(path: "/workspace/outputs/report.md", to: Pathname("report.md"))
+
+# Or keep the downloaded bytes in memory:
+buffer = StringIO.new
+artifacts.download(path: "/workspace/outputs/report.md", to: buffer)
+puts(buffer.string)
+```
+
+`prepare_directory(directory, destination:, include:)` stages an explicitly selected snapshot. Local path and directory helpers assume stable, application-owned source paths; they are not a filesystem sandbox for arbitrary user-supplied paths or hostile local writers. Downloads select the exact result turn and stream to an application-owned local path or the writer you supply. An interrupted transfer may leave partial contents.
+
 ### Local audio
 
 Record a clip and play generated speech with optional FFmpeg/FFplay helpers.

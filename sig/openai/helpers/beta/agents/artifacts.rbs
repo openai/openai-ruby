@@ -1,0 +1,20 @@
+module OpenAI
+  module Helpers
+    module Beta
+      module Agents
+        class ResultArtifacts
+          def initialize: (
+            artifacts: OpenAI::Resources::Beta::Agents::Sessions::Artifacts,
+            client: OpenAI::Client,
+            result: TurnResult
+          ) -> void
+          def download: (
+            path: String,
+            to: untyped,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Beta::Agents::Sessions::SessionArtifact
+        end
+      end
+    end
+  end
+end

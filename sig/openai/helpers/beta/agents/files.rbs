@@ -1,0 +1,41 @@
+module OpenAI
+  module Helpers
+    module Beta
+      module Agents
+        class PreparedFiles
+          attr_reader files: Array[OpenAI::Models::Beta::HostedEnvironmentFileParam::FileID]
+          attr_reader upload_ids: Array[String]
+          def initialize: (Array[Hash[Symbol, untyped]] files) -> void
+        end
+        class FilePreparationError < OpenAI::Errors::Error
+          attr_reader prepared: PreparedFiles
+          def initialize: (prepared: PreparedFiles) -> void
+        end
+
+        # @api private
+        class FilePreparation
+          def initialize: (
+            client: OpenAI::Client,
+            environment_files: OpenAI::Resources::Beta::Agents::Environments::Files
+          ) -> void
+          def prepare: (
+            Hash[String, String | Pathname] files,
+            ?request_options: OpenAI::request_opts
+          ) -> PreparedFiles
+          def prepare_directory: (
+            String | Pathname directory,
+            destination: String,
+            include: Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> PreparedFiles
+          def upload: (
+            String environment_id,
+            file: String | Pathname,
+            path: String,
+            ?request_options: OpenAI::request_opts
+          ) -> PreparedFiles
+        end
+      end
+    end
+  end
+end
