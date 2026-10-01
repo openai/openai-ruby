@@ -68,7 +68,8 @@ module OpenAI
             raise TypeError, "Output does not contain structured text" unless first
 
             @result = ParsedTurnResult.new(raw_result: result, output_parsed: first)
-          rescue JSON::ParserError, TypeError, RangeError, SystemStackError
+          rescue StandardError, SystemStackError => error
+            raise if error.equal?(@error)
             @error = OutputParseError.new(raw_result: result)
             raise @error, cause: nil
           end

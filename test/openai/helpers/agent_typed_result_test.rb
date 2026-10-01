@@ -439,6 +439,42 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
     assert_nil(error.cause)
   end
 
+  def test_missing_null_or_nonarray_content_preserves_the_raw_result
+    [nil, "invalid", {}].each do |content|
+      event = answer_event
+      event[:item][:content] = content
+      configure([turn("created"), event, turn("completed"), idle])
+      error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { typed_stream.get_final_result }
+      assert_equal(1, error.raw_result.messages.size)
+      assert_equal([content], [error.raw_result.messages.first[:content]])
+    end
+
+    event = answer_event
+    event[:item].delete(:content)
+    configure([turn("created"), event, turn("completed"), idle])
+    error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { typed_stream.get_final_result }
+    assert_equal(1, error.raw_result.messages.size)
+    assert_nil(error.raw_result.messages.first[:content])
+  end
+
+  def test_invalid_content_parts_preserve_raw_results_without_swallowing_interrupts
+    [nil, 1, "invalid", []].each do |part|
+      event = answer_event
+      event[:item][:content] = [part]
+      configure([turn("created"), event, turn("completed"), idle])
+      subject = typed_stream
+      error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { subject.get_final_result }
+      assert_same(error, assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { subject.get_final_result })
+      assert_equal([part], error.raw_result.messages.first[:content])
+    end
+
+    configure([turn("created"), answer_event(report_json), turn("completed"), idle])
+    raw = stream.get_final_result
+    raw.stub(:messages, -> { raise Interrupt }) do
+      assert_raises(Interrupt) { raw.parse(output_type: Report) }
+    end
+  end
+
   def test_parse_failures_preserve_raw_result_without_unsafe_causes
     invalid = [
       "not json",
