@@ -133,6 +133,14 @@ module OpenAI
 
           # @api private
           sig {
+            params(type_fn: T.proc.returns(T.untyped), state: T.nilable(OpenAI::Internal::Type::Converter::CoerceState))
+              .returns(T.untyped)
+          }
+          def self.resolve_type(type_fn, state: nil)
+          end
+
+          # @api private
+          sig {
             params(target: T.untyped, value: T.untyped, state: OpenAI::Internal::Type::Converter::CoerceState).returns(
               T.untyped
             )

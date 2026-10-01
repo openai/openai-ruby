@@ -88,7 +88,7 @@ module OpenAI
         # @param value [Object]
         #
         # @return [OpenAI::Internal::Type::Converter, Class, nil]
-        private def resolve_variant(value)
+        private def resolve_variant(value, state: nil)
           case [@discriminator, value]
           in [_, OpenAI::Internal::Type::BaseModel]
             value.class
@@ -101,18 +101,18 @@ module OpenAI
 
             key = key.to_sym if key.is_a?(String)
             _, found = known_variants.find { |k,| !k.nil? && k == key }
-            return found.call if found
+            return OpenAI::Internal::Type::Converter.resolve_type(found, state: state) if found
 
             known_variants.each do |variant_key, variant_fn|
               next unless variant_key.nil?
 
-              target = variant_fn.call
+              target = OpenAI::Internal::Type::Converter.resolve_type(variant_fn, state: state)
               next unless target.is_a?(Class) && target <= OpenAI::Internal::Type::BaseModel
 
               field = target.known_fields[@discriminator]
               next unless field
 
-              type = field.fetch(:type_fn).call
+              type = OpenAI::Internal::Type::Converter.resolve_type(field.fetch(:type_fn), state: state)
               next unless OpenAI::Internal::Type::Enum === type
 
               return target if type === key
@@ -174,7 +174,7 @@ module OpenAI
         def coerce(value, state:)
           strictness = state.fetch(:strictness)
           previous_error = state.fetch(:error)
-          if (target = resolve_variant(value))
+          if (target = resolve_variant(value, state: state))
             return OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
           end
 
@@ -182,7 +182,7 @@ module OpenAI
 
           alternatives = []
           known_variants.each_with_index do |(_, variant_fn), index|
-            target = variant_fn.call
+            target = OpenAI::Internal::Type::Converter.resolve_type(variant_fn, state: state)
             exact = state[:exactness] = {yes: 0, no: 0, maybe: 0}
             state[:branched] += 1
 

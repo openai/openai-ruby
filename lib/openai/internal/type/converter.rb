@@ -148,6 +148,14 @@ module OpenAI
           end
 
           # @api private
+          # Resolve lazy schema types once within an opted-in parse.
+          def resolve_type(type_fn, state: nil)
+            return type_fn.call unless state && state[:memo]
+            cache = state[:memo][:resolved_types] ||= {}.compare_by_identity
+            cache.fetch(type_fn) { cache[type_fn] = type_fn.call }
+          end
+
+          # @api private
           #
           # Based on `target`, transform `value` into `target`, to the extent possible:
           #

@@ -212,6 +212,73 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
     end
   end
 
+  def test_lazy_recursive_type_factories_are_resolved_once_per_parse
+    [:array, :hash].each do |container|
+      [false, 1].each do |leaf|
+        resolutions = 0
+        lazy = nil
+        lazy = lambda do
+          resolutions += 1
+          collection = container == :array ? OpenAI::ArrayOf : OpenAI::Internal::Type::HashOf
+          OpenAI::UnionOf[collection[lazy], collection[lazy], Integer]
+        end
+
+        model = Class.new(OpenAI::BaseModel) { required(:value, lazy) }
+        value = leaf
+        16.times { value = container == :array ? [value] : {child: value} }
+        [false, true].each do |followup|
+          configure([turn("created"), answer_event(JSON.generate(value: value)), turn("completed"), idle])
+          resolutions = 0
+          calls = 0
+          trace = TracePoint.new(:call) { calls += 1 if _1.method_id == :coerce }
+          parse = lambda do
+            followup ? typed_stream(output_type: model).get_final_result : stream
+              .get_final_result
+              .parse(output_type: model)
+          end
+
+          trace.enable(target_thread: Thread.current) do
+            if leaf == false
+              error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError, &parse)
+              assert_equal(JSON.generate(value: value), error.raw_result.output_text)
+            else
+              assert_equal(value, parse.call.output_parsed.to_h[:value])
+            end
+          end
+
+          assert_equal(1, resolutions)
+          assert_operator(calls, :<, 500)
+        end
+      end
+    end
+  end
+
+  def test_lazy_resolution_cache_preserves_default_conversion_semantics
+    resolutions = 0
+    lazy = -> {
+      resolutions += 1
+      OpenAI::UnionOf[Integer, String]
+    }
+    model = Class.new(OpenAI::BaseModel) do
+      required(:first, lazy)
+      required(:second, lazy)
+    end
+
+    value = {first: 1, second: "two"}
+    native = OpenAI::Internal::Type::Converter.new_coerce_state
+    expected = OpenAI::Internal::Type::Converter.coerce(model, value, state: native)
+    assert_equal(2, resolutions)
+    resolutions = 0
+    memoized = OpenAI::Internal::Type::Converter.new_coerce_state(memoize: true)
+    actual = OpenAI::Internal::Type::Converter.coerce(model, value, state: memoized)
+    assert_equal(1, resolutions)
+    assert_equal(expected, actual)
+    assert_equal(native.except(:memo, :error), memoized.except(:memo, :error))
+    before = resolutions
+    model.fields
+    assert_equal(before + 2, resolutions)
+  end
+
   def test_supported_creation_parameter_containers_keep_output_type_local
     [
       OpenAI::Beta::Agents::SessionCreateParams.new(

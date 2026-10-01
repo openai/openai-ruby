@@ -70,6 +70,12 @@ module OpenAI
           ?state: OpenAI::Internal::Type::Converter::coerce_state
         ) -> top
 
+        # @api private
+        def self.resolve_type: (
+          ^-> untyped type_fn,
+          ?state: coerce_state?
+        ) -> untyped
+
         def self.coerce_cached: (
           OpenAI::Internal::Type::Converter target,
           Hash[untyped, untyped] | Array[untyped] value,

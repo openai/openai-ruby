@@ -65,8 +65,12 @@ module OpenAI
         end
 
         # @api private
-        sig { params(value: T.anything).returns(T.nilable(T.anything)) }
-        private def resolve_variant(value)
+        sig {
+          params(value: T.anything, state: T.nilable(OpenAI::Internal::Type::Converter::CoerceState)).returns(
+            T.nilable(T.anything)
+          )
+        }
+        private def resolve_variant(value, state: nil)
         end
 
         sig { params(other: T.anything).returns(T::Boolean) }
