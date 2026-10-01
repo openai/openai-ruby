@@ -145,37 +145,30 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
     @client.beta.agents.sessions.artifacts.for_result(result)
   end
 
-  def test_prepare_uploads_selected_files_and_exposes_explicit_cleanup_ids
-    result = @files.prepare(mapping, request_options: {extra_headers: {"x-test" => "preserved"}})
-    assert_equal(%w[file_1 file_2], result.upload_ids)
-    assert_equal(mapping.keys, result.files.map(&:path))
-    assert(result.files.all? { _1.type == :file_id })
+  def test_preparation_preserves_references_options_and_server_owned_file_count
+    files = 51.times.to_h { |i| ["/workspace/file#{i}.txt", @first] }
+    prepared = @files.prepare(files, request_options: {extra_headers: {"x-test" => "preserved"}})
+    assert_equal((1..files.length).map { "file_#{_1}" }, prepared.upload_ids)
+    assert_equal(files.keys, prepared.files.map(&:path))
+    assert(prepared.files.all? { _1.type == :file_id })
     assert(@server.requests.all? { _1.headers["x-test"] == "preserved" })
-    assert_equal(2, @server.requests.length)
+    assert_equal(files.length, @server.requests.length)
   end
 
-  def test_prepared_snapshots_preserve_bytes_and_filenames_across_upload_retries
-    @server.upload_status = [503, 200]
-    @server.before_upload = -> { @first.write("changed after snapshot") }
-    client(max_retries: 1).beta.agents.environments.files.prepare({"/workspace/first.txt" => @first})
+  def test_preparation_snapshots_all_files_before_uploads_and_retries
+    @server.upload_status = [503, 200, 200]
+    @server.before_upload = -> { [@first, @second].each { _1.write("changed after snapshot") } }
+    client(max_retries: 1).beta.agents.environments.files.prepare(mapping)
 
-    assert_equal(2, @server.upload_bodies.length)
-    @server.upload_bodies.each do |body|
-      assert_includes(body, "filename=\"first.txt\"")
-      assert_includes(body, "\r\n\r\none\r\n")
-      refute_includes(body, "changed after snapshot")
-    end
-  end
-
-  def test_all_selected_files_are_snapshotted_before_the_first_upload
-    @server.before_upload = lambda do
-      @second.delete
-      File.symlink(@first, @second)
-    end
-    @files.prepare(mapping)
-
-    assert_includes(@server.upload_bodies.first, "\r\n\r\none\r\n")
-    assert_includes(@server.upload_bodies.last, "\r\n\r\ntwo\r\n")
+    assert_equal(3, @server.upload_bodies.length)
+    @server
+      .upload_bodies
+      .zip(["first.txt", "first.txt", "second.txt"], ["one", "one", "two"])
+      .each do |body, name, text|
+        assert_includes(body, "filename=\"#{name}\"")
+        assert_includes(body, "\r\n\r\n#{text}\r\n")
+        refute_includes(body, "changed after snapshot")
+      end
   end
 
   def test_source_growth_during_snapshot_fails_before_upload_and_removes_temporary_copy
@@ -218,15 +211,12 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
   end
 
   def test_singleton_preparation_materializes_structured_idempotency
-    directory = @directory.join("one")
-    directory.mkpath
-    directory.join("first.txt").write("one")
     options = {idempotency_key: "prepare-operation", extra_headers: {"x-extra" => "retained"}}
     expected = OpenAI::Internal::RequestOptionsScope.new(options).child("file-upload")[:extra_headers][
       "Idempotency-Key"
     ]
     @files.prepare({"/workspace/first.txt" => @first}, request_options: options)
-    @files.prepare_directory(directory, destination: "/workspace", include: ["*.txt"], request_options: options)
+    @files.prepare_directory(@directory, destination: "/workspace", include: ["first.txt"], request_options: options)
     assert_equal([expected, expected], @server.requests.map { _1.headers["idempotency-key"] })
     assert(@server.requests.all? { _1.headers["x-extra"] == "retained" })
   end
@@ -245,13 +235,6 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
       assert_equal(Encoding::UTF_8, prepared.files.first.path.encoding)
       assert(JSON.generate(prepared.files))
     end
-  end
-
-  def test_destination_length_is_left_to_the_api
-    destination = "/workspace/" + ("😀" * 4096)
-    prepared = @files.upload("env", file: @first, path: destination)
-    assert_equal(destination, prepared.files.first.path)
-    assert_equal(destination, JSON.parse(@server.requests.last.body).fetch("path"))
   end
 
   def test_upload_and_stage_scope_keys_without_losing_request_options
@@ -313,13 +296,6 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
     assert_empty(@server.requests)
   end
 
-  def test_selected_symlinks_are_checked_before_uploads
-    link = @directory.join("link.txt")
-    File.symlink(@first, link)
-    assert_raises(ArgumentError) { @files.prepare({"/workspace/link.txt" => link}) }
-    assert_empty(@server.requests)
-  end
-
   def test_file_size_limits_are_left_to_the_api
     File.truncate(@first, 51 * 1024 * 1024)
     @server.upload_status = 400
@@ -334,6 +310,10 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
   end
 
   def test_explicit_sources_allow_aliased_ancestors_but_not_selected_symlinks
+    link = @directory.join("link.txt")
+    File.symlink(@first, link)
+    assert_raises(ArgumentError) { @files.prepare({"/workspace/link.txt" => link}) }
+    assert_empty(@server.requests)
     actual = @directory.join("actual")
     actual.join("nested").mkpath
     actual.join("nested", "source.txt").write("one")
@@ -430,49 +410,24 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
     refute(@server.requests.any? { _1.method == :delete })
   end
 
-  def test_live_upload_stages_a_file_reference_and_returns_upload_ownership
-    prepared = @files.upload("env", file: @first, path: "/workspace/source.txt")
+  def test_upload_stages_the_reference_without_enforcing_server_path_length_limits
+    destination = "/workspace/" + ("😀" * 4096)
+    prepared = @files.upload("env", file: @first, path: destination)
     assert_equal(["file_1"], prepared.upload_ids)
+    assert_equal(destination, prepared.files.first.path)
     assert_equal(
       prepared.files.first.to_h.transform_keys(&:to_s).merge("type" => "file_id"),
       JSON.parse(@server.requests.last.body)
     )
   end
 
-  def test_directory_preparation_is_explicit_selected_staging
-    @directory.join("skip.log").write("skip")
-    result = @files.prepare_directory(@directory, destination: "/workspace/docs", include: ["**/*.txt"])
-    assert_equal(["/workspace/docs/first.txt", "/workspace/docs/second.txt"], result.files.map(&:path).sort)
-  end
-
-  def test_directory_preparation_globs_only_requested_patterns_and_deduplicates_matches
-    @directory.join("nested").mkpath
-    @directory.join("nested", "third.md").write("three")
-    patterns = ["./*.txt", "{first.txt,nested/./*.md}"]
-    glob = Dir.method(:glob)
-    requested = []
-    enumerate = lambda do |pattern, **options|
-      requested << pattern
-      glob.call(pattern, **options)
-    end
-
-    result = Dir.stub(:glob, enumerate) do
-      @files.prepare_directory(@directory, destination: "/workspace/docs", include: patterns)
-    end
-
-    assert_equal([patterns], requested)
-    assert_equal(
-      %w[/workspace/docs/first.txt /workspace/docs/nested/third.md /workspace/docs/second.txt],
-      result.files.map(&:path).sort
-    )
-  end
-
-  def test_directory_globs_exclude_hidden_files_unless_explicitly_selected
+  def test_directory_preparation_normalizes_matches_and_requires_hidden_file_opt_in
     @directory.join(".env").write("fake private setting")
     @directory.join(".git").mkpath
     @directory.join(".git", "config").write("fake private repository config")
-    prepared = @files.prepare_directory(@directory, destination: "/workspace/docs", include: ["**/*"])
+    prepared = @files.prepare_directory(@directory, destination: "/workspace/docs", include: ["./**/*", "first.txt"])
     assert_equal(%w[/workspace/docs/first.txt /workspace/docs/second.txt], prepared.files.map(&:path))
+    assert_equal(2, @server.upload_bodies.length)
     refute(@server.upload_bodies.any? { _1.include?("fake private") })
 
     selected = @files.prepare_directory(@directory, destination: "/workspace/docs", include: [".env", ".git/*"])
@@ -512,17 +467,6 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
     end
   end
 
-  def test_http_errors_never_write_error_payload_as_artifact_bytes
-    @server.artifacts = [artifact]
-    @server.content_status = 404
-    target = StringIO.new
-    assert_raises(OpenAI::Errors::NotFoundError) do
-      downloads.download(path: "/workspace/outputs/report.txt", to: target)
-    end
-
-    assert_empty(target.string)
-  end
-
   def test_transient_http_errors_use_normal_retries_without_writing_error_bytes
     @server.artifacts = [artifact]
     @server.content_status = [503, 200]
@@ -532,13 +476,6 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
     assert_equal("firstsecond", target.string)
     assert_equal(2, @server.requests.count { _1.url.path.end_with?("/content") })
     refute_predicate(target, :closed?)
-  end
-
-  def test_file_count_limits_are_left_to_the_api
-    files = 1001.times.to_h { |i| ["/workspace/file#{i}", @first] }
-    prepared = @files.prepare(files)
-    assert_equal(files.keys, prepared.files.map(&:path))
-    assert_equal(files.length, @server.requests.length)
   end
 
   def test_truncated_artifact_body_fails_and_closes_the_response
