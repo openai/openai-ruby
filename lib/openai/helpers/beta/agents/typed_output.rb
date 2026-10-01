@@ -46,13 +46,6 @@ module OpenAI
 
             @schema = JSON.parse(JSON.generate(@model.to_json_schema, max_nesting: false), max_nesting: false)
             normalize_references
-            @schema = @schema.merge(resolve(@schema.fetch("$ref"))).except("$ref") if @schema.key?("$ref")
-            if @schema["type"] != "object" || %w[oneOf anyOf allOf enum not].any? { @schema.key?(_1) }
-              raise ArgumentError, "output_type must have an object-root schema without root composition"
-            end
-
-            check_schema(@schema)
-
             params[:agent] = agent.merge(text: text.merge(format: {type: :json_schema, schema: @schema}))
           end
 
@@ -75,101 +68,78 @@ module OpenAI
           private
 
           def resolve(ref)
-            unless ref.is_a?(String) && ref.start_with?("#/")
-              raise ArgumentError, "output_type contains an unsupported schema reference"
-            end
+            return unless ref.is_a?(String) && ref.start_with?("#/")
 
             URI::RFC2396_PARSER
               .unescape(ref.delete_prefix("#/"))
               .split("/", -1)
-              .reduce(@schema) { |node, token| node.fetch(token.gsub("~1", "/").gsub("~0", "~")) }
-          rescue KeyError, NoMethodError
-            raise ArgumentError, "output_type contains an unresolved schema reference"
+              .reduce(@schema) { |node, token| node[token.gsub("~1", "/").gsub("~0", "~")] if node.is_a?(Hash) }
           end
 
           def normalize_references
-            definitions = @schema.fetch("$defs", {})
+            return unless @schema.is_a?(Hash) && @schema["$defs"].is_a?(Hash)
+            return if @schema.key?("$ref") && !(@schema.keys - %w[$defs $ref]).empty?
+            definitions = @schema.fetch("$defs")
+            return if definitions.empty? || !definitions.values.all? { _1.is_a?(Hash) }
+
             names = {}.compare_by_identity
             definitions.each_value.with_index { |definition, index| names[definition] = "model_#{index}" }
-            pending = [@schema]
-            until pending.empty?
-              node = pending.pop
-              next unless node.is_a?(Hash)
-              pending.concat(node.fetch("properties", {}).values)
-              pending.concat(node.fetch("$defs", {}).values)
-              pending.concat(node.fetch("anyOf", []))
-              pending.concat(node.fetch("prefixItems", []))
-              pending << node["items"] if node.key?("items")
-              pending << node["additionalProperties"] if node["additionalProperties"].is_a?(Hash)
-              next unless node.key?("$ref")
-              name = names.fetch(resolve(node["$ref"]))
-              node["$ref"] = "#/$defs/#{name}"
-              if node.key?("description") || node.key?("title")
+            nodes = schema_nodes
+            references = nodes.select { _1.key?("$ref") }
+            return if references.empty?
+            targets = references.map { resolve(_1["$ref"]) }
+            # Native Ruby pointers encode definition names; Agents looks up raw suffixes.
+            # Unfamiliar references keep their schema and definition names intact.
+            return unless targets.all? { names.key?(_1) }
+            root = resolve(@schema["$ref"])
+            expand_root = root.is_a?(Hash) && !root.key?("$defs") && (@schema.keys - %w[$defs $ref]).empty?
+
+            references.zip(targets).each do |node, target|
+              node["$ref"] = "#/$defs/#{names.fetch(target)}"
+              if (node.key?("description") || node.key?("title")) && !node.key?("anyOf")
                 node["anyOf"] = [{"$ref" => node.delete("$ref")}]
               end
             end
 
-            unless definitions.empty?
-              @schema["$defs"] = definitions.to_h { |_name, definition| [names.fetch(definition), definition] }
-            end
+            @schema["$defs"] = definitions.to_h { |_name, definition| [names.fetch(definition), definition] }
+            @schema = @schema.except("$ref").merge(root) if expand_root
           end
 
-          def check_schema(schema, seen = {}.compare_by_identity)
-            return if seen[schema]
-            seen[schema] = true
-            unsupported = %w[
-              unevaluatedProperties
-              propertyNames
-              minProperties
-              maxProperties
-              unevaluatedItems
-              contains
-              minContains
-              maxContains
-              uniqueItems
-              allOf
-              oneOf
-              not
-              dependentRequired
-              dependentSchemas
-              if
-              then
-              else
-              x-guidance
-            ]
-            unless schema.is_a?(Hash) && (schema.keys & unsupported).empty?
-              raise ArgumentError, "output_type contains unsupported schema constraints"
-            end
-
-            if schema.key?("type")
-              types = Array(schema["type"])
-              if types.empty? || !(types - %w[object array string integer number boolean null]).empty?
-                raise ArgumentError, "output_type contains an invalid JSON type"
-              end
-            end
-
-            if schema.key?("format") &&
-                !%w[date-time time date duration email hostname ipv4 ipv6 uuid].include?(schema["format"]) &&
-                schema["format"] != ""
-              raise ArgumentError, "output_type contains an unsupported string format"
-            end
-
-            if schema.key?("enum") && (!schema["enum"].is_a?(Array) || schema["enum"].empty?)
-              raise ArgumentError, "output_type enums must contain at least one value"
-            end
-
-            if schema.key?("$ref")
-              unless (schema.keys - %w[$ref $defs]).empty?
-                raise ArgumentError, "output_type contains unsupported reference siblings"
+          def schema_nodes
+            nodes = []
+            pending = [@schema]
+            until pending.empty?
+              node = pending.pop
+              next unless node.is_a?(Hash)
+              nodes << node
+              # Visit schema positions only: defaults, examples and enum values are data.
+              %w[properties patternProperties $defs definitions dependentSchemas dependencies].each do |key|
+                pending.concat(node[key].values.grep(Hash)) if node[key].is_a?(Hash)
               end
 
-              check_schema(resolve(schema["$ref"]), seen)
+              %w[anyOf allOf oneOf prefixItems].each do |key|
+                pending.concat(node[key]) if node[key].is_a?(Array)
+              end
+
+              %w[
+                items
+                additionalProperties
+                additionalItems
+                contains
+                not
+                if
+                then
+                else
+                propertyNames
+                unevaluatedProperties
+                unevaluatedItems
+              ]
+                .each do |key|
+                  pending.concat(node[key].is_a?(Array) ? node[key] : [node[key]]) if node.key?(key)
+                end
             end
 
-            schema.fetch("properties", {}).each_value { check_schema(_1, seen) }
-            schema.fetch("$defs", {}).each_value { check_schema(_1, seen) }
-            check_schema(schema["items"], seen) if schema.key?("items")
-            schema.fetch("anyOf", []).each { check_schema(_1, seen) }
+            nodes
           end
 
         end

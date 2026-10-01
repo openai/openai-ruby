@@ -413,10 +413,11 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
     required :link, String, format: "uri"
   end
 
-  def test_unsupported_string_formats_fail_before_creation_network
+  def test_string_formats_are_sent_for_api_validation
     configure(complete)
-    assert_raises(ArgumentError) { typed_stream(creation: true, output_type: URIReport) }
-    assert_empty(@server.requests)
+    typed_stream(creation: true, output_type: URIReport).close
+    schema = JSON.parse(@server.requests.first.body).dig("agent", "text", "format", "schema")
+    assert_equal("uri", schema.dig("properties", "link", "format"))
   end
 
   def test_followup_and_raw_parsing_do_not_require_an_installable_agents_schema
@@ -427,10 +428,89 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
     assert_equal(result.output_parsed, result.raw_result.parse(output_type: URIReport).output_parsed)
   end
 
-  def test_empty_enums_fail_before_network
+  def test_empty_enums_are_sent_for_api_validation
     configure(complete)
-    assert_raises(ArgumentError) { typed_stream(creation: true, output_type: EmptyEnum) }
-    assert_empty(@server.requests)
+    typed_stream(creation: true, output_type: EmptyEnum).close
+    schema = JSON.parse(@server.requests.first.body).dig("agent", "text", "format", "schema")
+    assert_equal([], schema.dig("properties", "value", "enum"))
+  end
+
+  def test_agents_preserves_schema_policies_accepted_by_native_responses_conversion
+    schemas = [
+      {type: "object", additionalProperties: true, propertyNames: {pattern: "^[a-z]+$"}},
+      {type: "object", properties: {values: {type: "array", contains: {type: "string"}, uniqueItems: true}}},
+      {type: "object", allOf: [{required: ["name"]}], if: {required: ["tag"]}, then: {required: ["value"]}},
+      {type: "string", format: "custom-format", enum: []},
+      {type: "custom-type", "x-guidance": {setting: true}}
+    ]
+    schemas.each do |schema|
+      model = Class.new(OpenAI::BaseModel)
+      model.define_singleton_method(:to_json_schema) { schema }
+      responses = {text: {format: {type: :json_schema, schema: model}}}
+      OpenAI::Helpers::StructuredOutput::ResponseParser.get_models(responses)
+      configure(complete)
+      typed_stream(creation: true, output_type: model).close
+      sent = JSON.parse(@server.requests.first.body).dig("agent", "text", "format", "schema")
+      assert_equal(JSON.parse(JSON.generate(responses.dig(:text, :format, :schema))), sent)
+      assert_equal(schema, model.to_json_schema)
+    end
+  end
+
+  def test_unknown_and_constrained_root_references_preserve_the_original_schema
+    definition = {type: "object", properties: {value: {type: "string"}}, required: ["value"]}
+    schemas = [
+      {"$defs": {value: definition}, "$ref": "https://example.com/schema.json"},
+      {"$defs": {value: definition}, "$ref": "#/$defs/missing"},
+      {"$defs": {value: definition}, "$ref": "#/$defs/value", maxProperties: 1, additionalProperties: false},
+      {"$defs": {value: definition}, "$ref": "#/$defs/value", anyOf: [{required: ["value"]}], title: "Result"}
+    ]
+    schemas.each do |schema|
+      model = Class.new(OpenAI::BaseModel)
+      model.define_singleton_method(:to_json_schema) { schema }
+      parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(model)
+      params = {agent: {model: "test-model"}}
+      parser.prepare_request(params)
+      assert_equal(JSON.parse(JSON.generate(schema)), params.dig(:agent, :text, :format, :schema))
+    end
+  end
+
+  def test_reference_adaptation_keeps_constraints_and_literal_reference_data
+    constraint = [{minProperties: 1}]
+    literal = {"$ref": "#/$defs/record"}
+    schema = {
+      type: "object",
+      "$defs": {record: {type: "object", properties: {name: {type: "string"}}}},
+      properties: {
+        value: {"$ref": "#/$defs/record", title: "Value", anyOf: constraint, default: literal},
+        other: {allOf: [{"$ref": "#/$defs/record"}]}
+      }
+    }
+    model = Class.new(OpenAI::BaseModel)
+    model.define_singleton_method(:to_json_schema) { schema }
+    params = {agent: {model: "test-model"}}
+    OpenAI::Helpers::Beta::Agents::OutputParser.new(model).prepare_request(params)
+    sent = params.dig(:agent, :text, :format, :schema)
+    assert_equal(JSON.parse(JSON.generate(constraint)), sent.dig("properties", "value", "anyOf"))
+    assert_equal(JSON.parse(JSON.generate(literal)), sent.dig("properties", "value", "default"))
+    assert_equal("#/$defs/model_0", sent.dig("properties", "value", "$ref"))
+    assert_equal("#/$defs/model_0", sent.dig("properties", "other", "allOf", 0, "$ref"))
+    assert_equal("#/$defs/record", schema.dig(:properties, :value, :$ref))
+  end
+
+  def test_schema_rejections_keep_the_native_api_error
+    configure(complete)
+    response = @server.response(
+      400,
+      JSON.generate(error: {message: "Unsupported schema format", type: "invalid_request_error"})
+    )
+    @server.stub(:execute, response) do
+      error = assert_raises(OpenAI::Errors::BadRequestError) do
+        typed_stream(creation: true, output_type: URIReport)
+      end
+
+      assert_equal(400, error.status)
+      assert_includes(error.body.to_s, "Unsupported schema format")
+    end
   end
 
   def test_integral_json_numbers_hydrate_as_integers
