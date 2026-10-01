@@ -40,10 +40,6 @@ module OpenAI
 
         # @api private
         class FilePreparation
-          MAX_FILES = 50
-          MAX_BYTES = 50 * 1024 * 1024
-          private_constant :MAX_FILES, :MAX_BYTES
-
           def initialize(client:, environment_files:)
             @client = client
             @environment_files = environment_files
@@ -61,7 +57,6 @@ module OpenAI
               [destination_path(destination), path, stat]
             end
 
-            raise ArgumentError, "Initial environments support at most 50 files" if entries.length > MAX_FILES
             if entries.length > 1 && explicit_idempotency_key?(request_options)
               raise ArgumentError, "Use separate uploads when supplying an Idempotency-Key for multiple files"
             end
@@ -70,11 +65,6 @@ module OpenAI
             if paths.uniq.length != paths.length ||
                 paths.combination(2).any? { |a, b| a.start_with?("#{b}/") || b.start_with?("#{a}/") }
               raise ArgumentError, "Destination file paths must not collide"
-            end
-
-            sizes = entries.map { _1.last.size }
-            if sizes.any? { _1 > MAX_BYTES } || sizes.sum > MAX_BYTES
-              raise ArgumentError, "Initial environment files must total at most 50 MiB"
             end
 
             upload_options = entries.one? ? request_options_scope(request_options).child("file-upload") : request_options
@@ -122,11 +112,8 @@ module OpenAI
             end
 
             base = destination_path(destination, directory: true)
-            selected = Dir.glob("**/*", base: root, flags: File::FNM_DOTMATCH).select do |relative|
-              patterns.any? {
-                File.fnmatch?(_1, relative, File::FNM_PATHNAME | File::FNM_DOTMATCH | File::FNM_EXTGLOB)
-              } &&
-                (!root.join(relative).directory? || root.join(relative).symlink?)
+            selected = Dir.glob(patterns, base: root, flags: File::FNM_DOTMATCH).uniq.reject do |relative|
+              root.join(relative).directory? && !root.join(relative).symlink?
             end
 
             prepare_sources(
@@ -210,7 +197,6 @@ module OpenAI
             relative = parts.drop(2)
             root = relative.first
             unless path.is_a?(String) &&
-                path.length <= 4096 &&
                 !path.include?("\0") &&
                 !path.include?("\\") &&
                 parts.first == "" &&

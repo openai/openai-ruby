@@ -31,14 +31,14 @@ module OpenAI
 
             raise ArgumentError, "No artifact matches the result turn and path" unless match
 
-            transfer(match.id, to, request_options)
+            transfer(match, to, request_options)
 
             match
           end
 
           private
 
-          def transfer(artifact_id, destination, options)
+          def transfer(artifact, destination, options)
             writer = nil
             opened = lambda do
               writer = if destination.is_a?(String) || destination.is_a?(Pathname)
@@ -50,12 +50,18 @@ module OpenAI
 
             request = {
               method: :get,
-              path: ["agents/sessions/%1$s/artifacts/%2$s/content", @session_id, artifact_id],
+              path: ["agents/sessions/%1$s/artifacts/%2$s/content", @session_id, artifact.id],
               headers: {"accept" => "application/octet-stream"},
               security: {bearer_auth: true},
               options: options
             }
-            @client.request_streaming_body(request, opened) { |chunk| writer.write(chunk) }
+            received = 0
+            @client.request_streaming_body(request, opened) do |chunk|
+              writer.write(chunk)
+              received += chunk.bytesize
+            end
+
+            raise IOError, "Artifact content size does not match its metadata" unless received == artifact.size_bytes
           ensure
             writer.close if writer && !writer.equal?(destination)
           end

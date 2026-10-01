@@ -247,12 +247,11 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
     end
   end
 
-  def test_destination_limit_counts_unicode_characters_before_upload
-    accepted = "/workspace/" + ("😀" * (4096 - "/workspace/".length))
-    assert_equal(4096, @files.prepare({accepted => @first}).files.first.path.length)
-    count = @server.requests.length
-    assert_raises(ArgumentError) { @files.prepare({accepted + "😀" => @first}) }
-    assert_equal(count, @server.requests.length)
+  def test_destination_length_is_left_to_the_api
+    destination = "/workspace/" + ("😀" * 4096)
+    prepared = @files.upload("env", file: @first, path: destination)
+    assert_equal(destination, prepared.files.first.path)
+    assert_equal(destination, JSON.parse(@server.requests.last.body).fetch("path"))
   end
 
   def test_upload_and_stage_scope_keys_without_losing_request_options
@@ -288,6 +287,7 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
     assert_equal("existing", target.read)
     @server.content_status = 200
     @server.body.chunks = []
+    @server.artifacts.first[:size_bytes] = 0
     downloads.download(path: "/workspace/outputs/report.txt", to: target)
     assert_equal("", target.read)
     assert_predicate(@server.body, :closed)
@@ -310,14 +310,24 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
     assert_empty(@server.requests)
   end
 
-  def test_symlinks_and_aggregate_sizes_are_checked_before_uploads
+  def test_selected_symlinks_are_checked_before_uploads
     link = @directory.join("link.txt")
     File.symlink(@first, link)
     assert_raises(ArgumentError) { @files.prepare({"/workspace/link.txt" => link}) }
-    File.truncate(@first, 30 * 1024 * 1024)
-    File.truncate(@second, 30 * 1024 * 1024)
-    assert_raises(ArgumentError) { @files.prepare(mapping) }
     assert_empty(@server.requests)
+  end
+
+  def test_file_size_limits_are_left_to_the_api
+    File.truncate(@first, 51 * 1024 * 1024)
+    @server.upload_status = 400
+    error = assert_raises(OpenAI::Helpers::Beta::Agents::FilePreparationError) do
+      @files.prepare(mapping)
+    end
+
+    assert_instance_of(OpenAI::Errors::BadRequestError, error.cause)
+    assert_empty(error.prepared.upload_ids)
+    assert_equal(1, @server.requests.length)
+    assert_operator(@server.upload_bodies.first.bytesize, :>, @first.size)
   end
 
   def test_explicit_sources_allow_aliased_ancestors_but_not_selected_symlinks
@@ -432,6 +442,28 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
     assert_equal(["/workspace/docs/first.txt", "/workspace/docs/second.txt"], result.files.map(&:path).sort)
   end
 
+  def test_directory_preparation_globs_only_requested_patterns_and_deduplicates_matches
+    @directory.join("nested").mkpath
+    @directory.join("nested", "third.md").write("three")
+    patterns = ["*.txt", "{first.txt,nested/*.md}"]
+    glob = Dir.method(:glob)
+    requested = []
+    enumerate = lambda do |pattern, **options|
+      requested << pattern
+      glob.call(pattern, **options)
+    end
+
+    result = Dir.stub(:glob, enumerate) do
+      @files.prepare_directory(@directory, destination: "/workspace/docs", include: patterns)
+    end
+
+    assert_equal([patterns], requested)
+    assert_equal(
+      %w[/workspace/docs/first.txt /workspace/docs/nested/third.md /workspace/docs/second.txt],
+      result.files.map(&:path).sort
+    )
+  end
+
   def test_artifact_lookup_is_lazy_paginated_and_turn_scoped
     @server.artifacts = [
       artifact("old", turn: "older"),
@@ -485,10 +517,36 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
     refute_predicate(target, :closed?)
   end
 
-  def test_file_count_limit_is_checked_before_uploads
+  def test_file_count_limits_are_left_to_the_api
     files = 51.times.to_h { |i| ["/workspace/file#{i}", @first] }
-    assert_raises(ArgumentError) { @files.prepare(files) }
-    assert_empty(@server.requests)
+    prepared = @files.prepare(files)
+    assert_equal(files.keys, prepared.files.map(&:path))
+    assert_equal(51, @server.requests.length)
+  end
+
+  def test_truncated_artifact_body_fails_and_closes_the_response
+    @server.artifacts = [artifact]
+    @server.body.chunks = ["first"]
+    target = @directory.join("report.txt")
+    error = assert_raises(IOError) do
+      downloads.download(path: "/workspace/outputs/report.txt", to: target)
+    end
+
+    assert_match(/size does not match/, error.message)
+    assert_equal("first", target.read)
+    assert_predicate(@server.body, :closed)
+  end
+
+  def test_artifact_size_counts_bytes_not_characters_or_writer_return_values
+    content = "😀"
+    @server.artifacts = [artifact.merge(size_bytes: content.bytesize)]
+    @server.body.chunks = [content]
+    writer = Object.new
+    received = +""
+    writer.define_singleton_method(:write) { |chunk| received << chunk }
+    downloads.download(path: "/workspace/outputs/report.txt", to: writer)
+    assert_equal(content, received)
+    assert_predicate(@server.body, :closed)
   end
 
   def test_raw_body_option_is_rejected_before_binary_request

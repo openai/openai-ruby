@@ -109,7 +109,7 @@ prepared = openai.beta.agents.environments.files.prepare({
   "/workspace/source.pdf" => Pathname("source.pdf")
 })
 stream = openai.beta.agents.sessions.create_streaming(
-  agent: {model: MODEL},
+  agent: {model: "gpt-6-astra"},
   environment: {type: :openai_hosted, files: prepared.files},
   input: "Read source.pdf and write /workspace/outputs/report.md"
 )
