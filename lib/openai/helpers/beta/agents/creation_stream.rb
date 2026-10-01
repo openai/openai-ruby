@@ -24,7 +24,8 @@ module OpenAI
               @collector.observe_error(error)
             end
 
-            @collector.result
+            result = @collector.result
+            @output_parser ? @output_parser.parse(result) : result
           rescue ResultError => error
             @result_error = error
             raise
@@ -36,6 +37,12 @@ module OpenAI
           # @return [self]
           def with_result_collection
             @collector.enable
+            self
+          end
+
+          # @api private
+          def configure_output_parser(parser)
+            @output_parser = parser
             self
           end
 

@@ -8,6 +8,10 @@ module OpenAI
           def session_id: -> String
           def turn_id: -> String
           def output_text: -> String
+          def output_parsed: -> untyped
+          def parse: (
+            output_type: singleton(OpenAI::Helpers::StructuredOutput::BaseModel)
+          ) -> ParsedTurnResult
         end
 
         class ResultError < OpenAI::Errors::Error
@@ -36,9 +40,30 @@ module OpenAI
           def result: -> TurnResult
         end
 
+        class ParsedTurnResult < TurnResult
+          attr_reader raw_result: TurnResult
+          attr_reader output_parsed: untyped
+        end
+
+        class OutputParseError < OpenAI::Errors::Error
+          attr_reader raw_result: TurnResult
+        end
+
+        # @api private
+        class OutputParser
+          def initialize: (
+            singleton(OpenAI::Helpers::StructuredOutput::BaseModel) model
+          ) -> void
+          def prepare_request: (Hash[Symbol, untyped] params) -> void
+          def parse: (TurnResult result) -> ParsedTurnResult
+        end
+
         class CreationStream < OpenAI::Internal::Stream[OpenAI::Models::Beta::agent_session_event]
           def get_final_result: -> TurnResult
           def with_result_collection: -> self
+
+          # @api private
+          def configure_output_parser: (OutputParser? parser) -> self
         end
       end
     end

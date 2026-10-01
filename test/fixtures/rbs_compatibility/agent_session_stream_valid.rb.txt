@@ -27,3 +27,11 @@ collector.observe({type: "future.event"})
 collector.stopped?.to_s
 collector.observe_error(StandardError.new("observation failed"))
 collector.result.output_text.upcase
+
+# @type var report_type: singleton(OpenAI::Helpers::StructuredOutput::BaseModel)
+report_type = _ = Class.new(OpenAI::BaseModel)
+report_type.required(:summary, String)
+typed = client.beta.agents.sessions.create_streaming(agent: OpenAI::Models::Beta::Agents::SessionCreateParams::Agent.new(model: "test-model"), environment: OpenAI::Models::Beta::EnvironmentParam::None.new, input: "Hi", output_type: report_type)
+typed.get_final_result.output_parsed.summary
+client.beta.agents.sessions.stream("session_test", input: "Continue", output_type: report_type).get_final_result.output_parsed.summary
+result.parse(output_type: report_type).raw_result.output_text.upcase

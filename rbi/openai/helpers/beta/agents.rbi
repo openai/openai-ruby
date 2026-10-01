@@ -24,6 +24,16 @@ module OpenAI
           sig { returns(String) }
           def output_text
           end
+
+          sig { returns(T.untyped) }
+          def output_parsed
+          end
+
+          sig {
+            params(output_type: T.class_of(OpenAI::Helpers::StructuredOutput::BaseModel)).returns(ParsedTurnResult)
+          }
+          def parse(output_type:)
+          end
         end
 
         class ResultError < OpenAI::Errors::Error
@@ -85,6 +95,34 @@ module OpenAI
           end
         end
 
+        class ParsedTurnResult < TurnResult
+          sig { returns(TurnResult) }
+          attr_reader :raw_result
+
+          sig { returns(T.untyped) }
+          attr_reader :output_parsed
+        end
+
+        class OutputParseError < OpenAI::Errors::Error
+          sig { returns(TurnResult) }
+          attr_reader :raw_result
+        end
+
+        # @api private
+        class OutputParser
+          sig { params(model: T.class_of(OpenAI::Helpers::StructuredOutput::BaseModel)).void }
+          def initialize(model)
+          end
+
+          sig { params(params: OpenAI::Internal::AnyHash).void }
+          def prepare_request(params)
+          end
+
+          sig { params(result: TurnResult).returns(ParsedTurnResult) }
+          def parse(result)
+          end
+        end
+
         class CreationStream < OpenAI::Internal::Stream
           Message = type_member(:in) { {fixed: OpenAI::Internal::Util::ServerSentEvent} }
           Elem = type_member(:out) { {fixed: OpenAI::Models::Beta::AgentSessionEvent::Variants} }
@@ -95,6 +133,11 @@ module OpenAI
 
           sig { returns(T.self_type) }
           def with_result_collection
+          end
+
+          # @api private
+          sig { params(parser: T.nilable(OutputParser)).returns(T.self_type) }
+          def configure_output_parser(parser)
           end
         end
       end

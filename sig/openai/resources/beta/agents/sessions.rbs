@@ -29,6 +29,7 @@ module OpenAI
             environment: OpenAI::Models::Beta::environment_param,
             ?agent: OpenAI::Beta::Agents::SessionCreateParams::Agent,
             ?agent_id: String,
+            ?output_type: singleton(OpenAI::Helpers::StructuredOutput::BaseModel)?,
             ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
             ?metadata: ::Hash[Symbol, String]?,
             ?vault_ids: ::Array[String]?,
