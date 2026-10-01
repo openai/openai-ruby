@@ -1,0 +1,11 @@
+client = OpenAI::Client.new(api_key: "fake-key")
+files = client.beta.agents.environments.files
+prepared = files.prepare({"/workspace/source.txt" => Pathname.new("source.txt")})
+prepared.files.each { |file| file.file_id.upcase; file.path.upcase }
+prepared.upload_ids.each(&:upcase)
+environment = OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted.new(files: prepared.files)
+creation = client.beta.agents.sessions.create_streaming(agent: OpenAI::Models::Beta::Agents::SessionCreateParams::Agent.new(model: "test-model"), environment: environment, input: "Analyze")
+result = creation.get_final_result
+client.beta.agents.sessions.artifacts.for_result(result).download(path: "/workspace/outputs/report.txt", to: Pathname.new("report.txt")).id.upcase
+files.prepare_directory(Pathname.new("docs"), destination: "/workspace/docs", include: ["**/*.txt"]).upload_ids.each(&:upcase)
+files.upload("environment", file: Pathname.new("extra.txt"), path: "/workspace/extra.txt").files.each { |file| file.file_id.upcase }

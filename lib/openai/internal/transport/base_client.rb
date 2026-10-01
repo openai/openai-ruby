@@ -824,6 +824,24 @@ module OpenAI
         end
 
         # @api private
+        # Consume binary response chunks without buffering a complete body.
+        def request_streaming_body(req, on_response = nil)
+          if req[:options].to_h[:include_raw_body]
+            raise ArgumentError, "include_raw_body is not supported for streaming downloads"
+          end
+
+          _url, response, log_context = perform_request(req)
+          finish_request(log_context, response) do
+            on_response&.call
+            response.body.each { |chunk| yield chunk }
+            nil
+          end
+
+        ensure
+          OpenAI::Internal::Util.close_fused!(response.body) if response
+        end
+
+        # @api private
         #
         # @param req [Hash{Symbol=>Object}]
         # @return [Array(URI::Generic, OpenAI::HTTPClient::Response, OpenAI::Internal::Logging::Context)]

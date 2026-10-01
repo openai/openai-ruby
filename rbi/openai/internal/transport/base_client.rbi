@@ -410,6 +410,18 @@ module OpenAI
         end
 
         # @api private
+        sig {
+          params(
+            req: T.untyped,
+            on_response: T.nilable(T.proc.returns(T.untyped)),
+            blk: T.proc.params(chunk: String).returns(T.untyped)
+          )
+            .void
+        }
+        def request_streaming_body(req, on_response = nil, &blk)
+        end
+
+        # @api private
         sig do
           params(
             req: OpenAI::Internal::Transport::BaseClient::RequestComponents,

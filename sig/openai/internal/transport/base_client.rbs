@@ -162,6 +162,14 @@ module OpenAI
           OpenAI::Internal::Transport::BaseClient::request_components req
         ) -> top
 
+        # @api private
+        def request_streaming_body: (
+          request_components req,
+          ?(^-> untyped)? on_response
+        ) {
+          (String chunk) -> untyped
+        } -> void
+
         private def perform_request: (
           OpenAI::Internal::Transport::BaseClient::request_components req
         ) ?{
