@@ -70,9 +70,9 @@ module OpenAI
           ?state: OpenAI::Internal::Type::Converter::coerce_state
         ) -> top
 
-        def self.coerce_model: (
-          Class target,
-          Hash[untyped, untyped] value,
+        def self.coerce_cached: (
+          OpenAI::Internal::Type::Converter target,
+          Hash[untyped, untyped] | Array[untyped] value,
           state: OpenAI::Internal::Type::Converter::coerce_state
         ) -> untyped
 

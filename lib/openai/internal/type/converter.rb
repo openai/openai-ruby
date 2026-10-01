@@ -192,8 +192,10 @@ module OpenAI
           #
           # @return [Object]
           def coerce(target, value, state: OpenAI::Internal::Type::Converter.new_coerce_state)
-            if state[:memo] && target.is_a?(Class) && target < OpenAI::Internal::Type::BaseModel && value.is_a?(Hash)
-              return coerce_model(target, value, state: state)
+            if state[:memo] &&
+                target.is_a?(OpenAI::Internal::Type::Converter) &&
+                (value.is_a?(Hash) || value.is_a?(Array))
+              return coerce_cached(target, value, state: state)
             end
 
             exactness = state.fetch(:exactness)
@@ -294,11 +296,11 @@ module OpenAI
           end
 
           # @api private
-          # Reuse model branch coercions within one parse. Stable model classes keep
-          # recursive type procs from defeating the cache with fresh UnionOf objects.
-          def coerce_model(target, value, state:)
-            models = state.fetch(:memo)
-            values = models[target] ||= {}.compare_by_identity
+          # Reuse converter/value pairs within one parse, including recursive collections.
+          # Identity keys avoid recursively hashing model and converter definitions.
+          def coerce_cached(target, value, state:)
+            converters = state.fetch(:memo)
+            values = converters[target] ||= {}.compare_by_identity
             outcomes = values[value] ||= {}
             key = state.values_at(:translate_names, :request_only, :strictness, :error)
             exactness = state.fetch(:exactness)

@@ -175,6 +175,64 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
     assert_instance_of(Finding, parsed.findings.first)
   end
 
+  def test_recursive_collection_unions_reuse_conversion_work
+    union = nil
+    left = OpenAI::ArrayOf[-> { union }]
+    right = OpenAI::ArrayOf[-> { union }]
+    union = OpenAI::UnionOf[left, right, Integer]
+    model = Class.new(OpenAI::BaseModel) { required(:value, union) }
+    [false, 1].each do |leaf|
+      value = leaf
+      16.times { value = [value] }
+      configure([turn("created"), answer_event(JSON.generate(value: value)), turn("completed"), idle])
+      raw = stream.get_final_result
+      parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(model)
+      calls = 0
+      trace = TracePoint.new(:call) { calls += 1 if _1.method_id == :coerce }
+      trace.enable do
+        if leaf == false
+          assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { parser.parse(raw) }
+        else
+          assert_instance_of(model, parser.parse(raw).output_parsed)
+        end
+      end
+
+      assert_operator(calls, :<, 1000)
+    end
+  end
+
+  def test_supported_creation_parameter_containers_keep_output_type_local
+    [
+      OpenAI::Beta::Agents::SessionCreateParams.new(
+        agent: {model: "test-model"},
+        environment: {type: :none},
+        input: "Report"
+      ),
+      {
+        "agent" => {"model" => "test-model"},
+        "environment" => {"type" => "none"},
+        "input" => "Report",
+        "output_type" => Report
+      }
+    ].each do |params|
+      configure([turn("created"), answer_event(report_json), turn("completed"), idle])
+      result = @sessions.create_streaming(params).get_final_result
+      assert_equal(report_json, result.output_text)
+      assert_instance_of(Report, result.output_parsed) if params.is_a?(Hash)
+      body = JSON.parse(@server.requests.first.body)
+      refute(body.key?("output_type"))
+    end
+  end
+
+  def test_numeric_range_failure_preserves_raw_result
+    configure(
+      [turn("created"), answer_event(report_json.sub("\"score\":2", "\"score\":1e400")), turn("completed"), idle]
+    )
+    error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { typed_stream.get_final_result }
+    assert_includes(error.raw_result.output_text, "1e400")
+    assert_nil(error.cause)
+  end
+
   def test_recursive_output_is_not_limited_to_100_json_levels
     tree = {label: "leaf", children: []}
     80.times { tree = {label: "parent", children: [tree]} }

@@ -137,7 +137,7 @@ module OpenAI
               T.untyped
             )
           }
-          def self.coerce_model(target, value, state:)
+          def self.coerce_cached(target, value, state:)
           end
 
           # @api private

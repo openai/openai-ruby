@@ -67,7 +67,7 @@ module OpenAI
             end
 
             @result = ParsedTurnResult.new(raw_result: result, output_parsed: parsed)
-          rescue JSON::ParserError, TypeError, SystemStackError
+          rescue JSON::ParserError, TypeError, RangeError, SystemStackError
             @error = OutputParseError.new(raw_result: result)
             raise @error, cause: nil
           end

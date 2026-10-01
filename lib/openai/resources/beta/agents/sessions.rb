@@ -119,7 +119,7 @@ module OpenAI
           #
           # @see OpenAI::Models::Beta::Agents::SessionCreateParams
           def create_streaming(params)
-            params = params.dup
+            params = params.to_h.transform_keys { _1.is_a?(String) ? _1.to_sym : _1 }
             output_type = params.delete(:output_type)
             parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(output_type) if output_type
             parsed, options = OpenAI::Beta::Agents::SessionCreateParams.dump_request(params)
