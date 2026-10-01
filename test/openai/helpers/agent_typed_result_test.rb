@@ -497,6 +497,28 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
     assert_equal("#/$defs/record", schema.dig(:properties, :value, :$ref))
   end
 
+  def test_unvisited_or_scoped_references_leave_definition_names_unchanged
+    base = {
+      type: "object",
+      "$defs": {record: {type: "string"}},
+      properties: {value: {"$ref": "#/$defs/record"}}
+    }
+    schemas = [
+      base.merge(
+        properties: base[:properties].merge(encoded: {type: "string", contentSchema: {"$ref": "#/$defs/record"}})
+      ),
+      base.merge("$id": "https://example.com/schema.json"),
+      base.merge(properties: base[:properties].merge(other: {"$dynamicRef": "#/$defs/record"}))
+    ]
+    schemas.each do |schema|
+      model = Class.new(OpenAI::BaseModel)
+      model.define_singleton_method(:to_json_schema) { schema }
+      params = {agent: {model: "test-model"}}
+      OpenAI::Helpers::Beta::Agents::OutputParser.new(model).prepare_request(params)
+      assert_equal(JSON.parse(JSON.generate(schema)), params.dig(:agent, :text, :format, :schema))
+    end
+  end
+
   def test_schema_rejections_keep_the_native_api_error
     configure(complete)
     response = @server.response(

@@ -85,6 +85,7 @@ module OpenAI
             names = {}.compare_by_identity
             definitions.each_value.with_index { |definition, index| names[definition] = "model_#{index}" }
             nodes = schema_nodes
+            return unless references_covered?(nodes)
             references = nodes.select { _1.key?("$ref") }
             return if references.empty?
             targets = references.map { resolve(_1["$ref"]) }
@@ -103,6 +104,33 @@ module OpenAI
 
             @schema["$defs"] = definitions.to_h { |_name, definition| [names.fetch(definition), definition] }
             @schema = @schema.except("$ref").merge(root) if expand_root
+          end
+
+          def references_covered?(nodes)
+            known = nodes.each_with_object({}.compare_by_identity) { |node, seen| seen[node] = true }
+            pending = [@schema]
+            until pending.empty?
+              value = pending.pop
+              case value
+              when Hash
+                if known[value]
+                  unless (value.keys & %w[$id id $anchor $dynamicAnchor $dynamicRef $recursiveAnchor $recursiveRef])
+                      .empty?
+                    return false
+                  end
+
+                  pending.concat(value.except("default", "const", "enum", "examples").values)
+                else
+                  return false if %w[$ref $dynamicRef $recursiveRef].any? { value[_1].is_a?(String) }
+                  pending.concat(value.values)
+                end
+
+              when Array
+                pending.concat(value)
+              end
+            end
+
+            true
           end
 
           def schema_nodes
