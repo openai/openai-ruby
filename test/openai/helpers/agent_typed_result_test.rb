@@ -154,6 +154,17 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
     end
   end
 
+  def test_ruby_named_text_format_conflicts_are_not_overwritten
+    parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(Report)
+    [
+      {format_: {type: :text}},
+      {"format_" => {"type" => "text"}},
+      OpenAI::Models::Beta::AgentTextParam.new(format_: {type: :text})
+    ].each do |text|
+      assert_raises(ArgumentError) { parser.prepare_request(agent: {text: text}) }
+    end
+  end
+
   def test_schema_normalization_does_not_interpret_business_property_names_or_defaults
     model = Class.new(OpenAI::BaseModel) do
       required(:reference, String, api_name: :$ref, default: {"$ref" => "business value"})

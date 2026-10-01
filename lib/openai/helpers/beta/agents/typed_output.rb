@@ -40,7 +40,7 @@ module OpenAI
           def prepare_request(params)
             agent = params.fetch(:agent, nil).to_h.transform_keys { _1.is_a?(String) ? _1.to_sym : _1 }
             text = agent.fetch(:text, nil).to_h.transform_keys { _1.is_a?(String) ? _1.to_sym : _1 }
-            if text.key?(:format)
+            if text.key?(:format) || text.key?(:format_)
               raise ArgumentError, "output_type cannot be combined with agent.text.format"
             end
 
