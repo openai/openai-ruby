@@ -36,6 +36,7 @@ module OpenAI
             | Hash[Symbol, untyped]],
             ?tool_handlers: Hash[String, OpenAI::Helpers::Agents::tool_handler],
             ?idempotency_key: String?,
+            ?output_type: singleton(OpenAI::Helpers::StructuredOutput::BaseModel)?,
             ?request_options: OpenAI::RequestOptions
             | Hash[Symbol, untyped]
             | nil

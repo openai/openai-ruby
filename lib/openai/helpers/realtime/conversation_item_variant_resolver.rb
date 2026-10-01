@@ -7,7 +7,7 @@ module OpenAI
     # exceptions local to Realtime instead of weakening SDK-wide union behavior.
     module ConversationItem
       class << self
-        private def resolve_variant(value)
+        private def resolve_variant(value, state: nil)
           return super unless value.is_a?(Hash)
 
           type = value.fetch(:type) { value.fetch("type", OpenAI::Internal::OMIT) }

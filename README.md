@@ -76,6 +76,30 @@ end
 The beta result includes `turn` metadata and final `messages`; unsuccessful or
 incomplete collection raises `OpenAI::Helpers::Beta::Agents::ResultError`.
 
+### Typed Agents output (beta)
+
+Use an `OpenAI::BaseModel` with `output_type` to configure and parse a structured answer:
+
+```ruby
+class Report < OpenAI::BaseModel
+  required :summary, String
+  required :findings, OpenAI::ArrayOf[String]
+end
+
+result = openai.beta.agents.sessions.create_streaming(
+  agent: {model: "gpt-5.2"}, environment: {type: :none},
+  input: "Summarize these notes: ...", output_type: Report
+).get_final_result
+puts(result.output_parsed.summary)
+
+openai.beta.agents.sessions.stream(result.session_id, input: "Update the report.", output_type: Report) do |stream|
+  puts(stream.get_final_result.output_parsed.summary)
+end
+```
+
+Parsing follows the SDK’s existing `BaseModel` conventions. Each output-text item is parsed separately; `output_parsed` returns the first. Follow-up `output_type` only parses the answer; it does not change the session's schema.
+`OutputParseError#raw_result` preserves the completed answer if parsing fails.
+
 ### Local audio
 
 Record a clip and play generated speech with optional FFmpeg/FFplay helpers.

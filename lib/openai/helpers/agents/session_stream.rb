@@ -14,10 +14,19 @@ module OpenAI
         include Enumerable
 
         # @api private
-        def initialize(sessions:, session_id:, input:, tool_handlers: {}, idempotency_key: nil, request_options: {})
+        def initialize(
+          sessions:,
+          session_id:,
+          input:,
+          tool_handlers: {},
+          idempotency_key: nil,
+          output_type: nil,
+          request_options: {}
+        )
           messages = input.is_a?(String) ? [{role: :user, content: [{type: :input_text, text: input}]}] : input.to_a
           raise ArgumentError, "input must not be empty" if input == "" || messages.empty?
 
+          @output_parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(output_type) unless output_type.nil?
           @sessions = sessions
           @session_id = session_id
           @handlers = tool_handlers.to_h.dup
@@ -102,7 +111,8 @@ module OpenAI
             @collector.observe_error(error)
           end
 
-          @collector.result
+          result = @collector.result
+          @output_parser ? @output_parser.parse(result) : result
         rescue OpenAI::Helpers::Beta::Agents::ResultError => error
           @result_error = error
           raise

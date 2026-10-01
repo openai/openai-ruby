@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "model_adapter"
+
 module OpenAI
   module Helpers
     module Beta
@@ -14,9 +16,7 @@ module OpenAI
           # @param description [String]
           # @yieldparam arguments [OpenAI::BaseModel]
           def initialize(name:, arguments:, description: "", &handler)
-            unless arguments.is_a?(Class) && arguments < OpenAI::BaseModel
-              raise ArgumentError, "arguments must be an OpenAI::BaseModel subclass"
-            end
+            ModelAdapter.validate!(arguments, parameter: "arguments")
 
             raise ArgumentError, "a callback is required" unless handler
             raise ArgumentError, "name must be a nonempty string" unless name.is_a?(String) && !name.empty?
@@ -50,9 +50,8 @@ module OpenAI
           def call(arguments)
             values = JSON.parse(arguments.is_a?(String) ? arguments : JSON.generate(arguments), symbolize_names: true)
             raise ArgumentError, "Tool arguments must be a JSON object" unless values.is_a?(Hash)
-            state = OpenAI::Internal::Type::Converter.new_coerce_state
-            parsed = OpenAI::Internal::Type::Converter.coerce(@arguments, values, state: state)
-            unless parsed.is_a?(@arguments) && state[:exactness][:no].zero?
+            parsed = ModelAdapter.coerce(@arguments, values)
+            unless parsed
               raise ArgumentError, "Tool arguments cannot be parsed into the argument model"
             end
 

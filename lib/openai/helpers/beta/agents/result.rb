@@ -20,6 +20,14 @@ module OpenAI
 
           # Joins text without adding separators or making requests.
           def output_text = messages.map(&:output_text).join
+
+          # A raw result has no parser attached.
+          def output_parsed = nil
+
+          # Parse this completed answer without changing the hosted session.
+          def parse(output_type:)
+            OutputParser.new(output_type).parse(self)
+          end
         end
 
         # Collection failed, or the observed turn did not complete successfully.
@@ -158,3 +166,5 @@ module OpenAI
     end
   end
 end
+
+require_relative "typed_output"

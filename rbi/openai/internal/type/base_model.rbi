@@ -51,7 +51,7 @@ module OpenAI
 
           # @api private
           sig do
-            returns(
+            params(state: T.nilable(OpenAI::Internal::Type::Converter::CoerceState)).returns(
               T::Hash[
                 Symbol,
                 T.all(
@@ -61,7 +61,7 @@ module OpenAI
               ]
             )
           end
-          def fields
+          def fields(state: nil)
           end
 
           # @api private

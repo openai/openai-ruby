@@ -55,6 +55,42 @@ class OpenAI::Test::UnionStateTest < Minitest::Test
     variant Float
   end
 
+  def test_memoized_discriminators_share_lazy_resolution_with_model_fields
+    [true, false].each do |named|
+      variants = 0
+      enums = 0
+      model = Class.new(OpenAI::Internal::Type::BaseModel) do
+        required(
+          :type,
+          enum: -> {
+            enums += 1
+            OpenAI::EnumOf[:tagged]
+          }
+        )
+      end
+
+      lazy = -> {
+        variants += 1
+        model
+      }
+      union = Module.new do
+        extend(OpenAI::Internal::Type::Union)
+        discriminator(:type)
+        named ? variant(:tagged, lazy) : variant(lazy)
+      end
+
+      state = OpenAI::Internal::Type::Converter.new_coerce_state(memoize: true)
+      parsed = OpenAI::Internal::Type::Converter.coerce(
+        OpenAI::Internal::Type::ArrayOf[union],
+        [{type: "tagged"}, {type: "tagged"}],
+        state: state
+      )
+      assert(parsed.all? { _1.is_a?(model) })
+      assert_equal(1, variants)
+      assert_equal(1, enums)
+    end
+  end
+
   def test_coerce_with_error_isolates_each_attempt
     previous_error = RuntimeError.new("previous")
     state = OpenAI::Internal::Type::Converter.new_coerce_state
