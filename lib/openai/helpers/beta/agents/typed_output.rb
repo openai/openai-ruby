@@ -56,8 +56,9 @@ module OpenAI
             first = nil
             result.messages.each do |message|
               message.content.each do |part|
-                next unless (part[:type] || part["type"]).to_s == "output_text"
-                value = JSON.parse(part[:text] || part["text"], symbolize_names: true, max_nesting: false)
+                next unless (part[:type] || (part["type"] if part.is_a?(Hash))).to_s == "output_text"
+                text = part[:text] || (part["text"] if part.is_a?(Hash))
+                value = JSON.parse(text, symbolize_names: true, max_nesting: false)
                 parsed = ModelAdapter.coerce(@model, value, memoize: true)
                 raise TypeError, "Output cannot be parsed into output_type" unless parsed
                 first ||= parsed
@@ -121,12 +122,15 @@ module OpenAI
               case value
               when Hash
                 if known[value]
-                  unless (value.keys & %w[$id id $anchor $dynamicAnchor $dynamicRef $recursiveAnchor $recursiveRef])
+                  unless (value.keys &
+                      %w[$id id $anchor $dynamicAnchor $dynamicRef $recursiveAnchor $recursiveRef discriminator])
                       .empty?
                     return false
                   end
 
-                  pending.concat(value.except("default", "const", "enum", "examples").values)
+                  pending.concat(
+                    value.except("$ref", "title", "description", "default", "const", "enum", "examples").values
+                  )
                 else
                   return false if %w[$ref $dynamicRef $recursiveRef].any? { value[_1].is_a?(String) }
                   pending.concat(value.values)
@@ -134,6 +138,8 @@ module OpenAI
 
               when Array
                 pending.concat(value)
+              when String
+                return false if value.start_with?("#/")
               end
             end
 

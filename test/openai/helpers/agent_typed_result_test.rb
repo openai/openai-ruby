@@ -429,6 +429,16 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
     assert_empty(error.raw_result.messages)
   end
 
+  def test_missing_text_preserves_the_raw_result_in_the_typed_error
+    event = answer_event
+    event[:item][:content].first.delete(:text)
+    configure([turn("created"), event, turn("completed"), idle])
+    error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { typed_stream.get_final_result }
+    assert_equal(1, error.raw_result.messages.size)
+    assert_nil(error.raw_result.messages.first.content.first[:text])
+    assert_nil(error.cause)
+  end
+
   def test_parse_failures_preserve_raw_result_without_unsafe_causes
     invalid = [
       "not json",
@@ -550,6 +560,16 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
         properties: base[:properties].merge(encoded: {type: "string", contentSchema: {"$ref": "#/$defs/record"}})
       ),
       base.merge("$id": "https://example.com/schema.json"),
+      base.merge(discriminator: {propertyName: "kind", mapping: {item: "#/$defs/record"}}),
+      base.merge(
+        properties: base[:properties].merge(
+          tagged: {
+            type: "object",
+            discriminator: {propertyName: "kind", mapping: {item: "#/$defs/record"}}
+          }
+        )
+      ),
+      base.merge("x-reference-map": {item: "#/$defs/record"}),
       base.merge(properties: base[:properties].merge(other: {"$dynamicRef": "#/$defs/record"}))
     ]
     schemas.each do |schema|
