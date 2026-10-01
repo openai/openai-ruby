@@ -2,11 +2,13 @@
 
 require_relative "tools"
 require_relative "../beta/agents/result"
+require_relative "../beta/agents/attachment"
 
 module OpenAI
   module Helpers
     module Agents
-      # Stream one turn on an idle session. The caller must be its only input writer
+      # Submit input on an idle session, or omit input to attach to its active root turn.
+      # When submitting input, the caller must be its only input writer
       # until iteration ends, because input submission does not return a turn ID.
       # Use a block or ensure #close when abandoning external iteration.
       # Closing the connection does not cancel the backend turn.
@@ -17,14 +19,20 @@ module OpenAI
         def initialize(
           sessions:,
           session_id:,
-          input:,
+          input: nil,
           tool_handlers: {},
           idempotency_key: nil,
           output_type: nil,
           request_options: {}
         )
-          messages = input.is_a?(String) ? [{role: :user, content: [{type: :input_text, text: input}]}] : input.to_a
-          raise ArgumentError, "input must not be empty" if input == "" || messages.empty?
+          unless input.nil?
+            unless input.is_a?(String) || input.respond_to?(:to_a)
+              raise ArgumentError, "input must be text or a collection of messages"
+            end
+
+            messages = input.is_a?(String) ? [{role: :user, content: [{type: :input_text, text: input}]}] : input.to_a
+            raise ArgumentError, "input must not be empty" if input == "" || messages.empty?
+          end
 
           @output_parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(output_type) unless output_type.nil?
           @sessions = sessions
@@ -48,22 +56,31 @@ module OpenAI
           @recent_events = {}
           @handled_calls = {}
           @closed = false
-          session = @sessions.retrieve(@session_id, request_options: @options)
-          unless session.status == :idle
-            raise(
-              ArgumentError,
-              "sessions.stream requires an idle session; use sessions.events.stream_streaming to follow an active session"
+          unless input.nil?
+            session = @sessions.retrieve(@session_id, request_options: @options)
+            raise ArgumentError, "sessions.stream with input requires an idle session" unless session.status == :idle
+          else
+            @attachment = OpenAI::Helpers::Beta::Agents::Attachment.new(
+              sessions: @sessions,
+              session_id: @session_id,
+              request_options: @options
             )
           end
 
           @raw_stream = @sessions.events.stream_streaming(@session_id, request_options: @options)
           begin
-            @sessions.events.create(
-              @session_id,
-              events: [{type: :"agent.session.input.message", input: messages}],
-              idempotency_key: input_key,
-              request_options: @options
-            )
+            if @attachment
+              @attachment.opened
+              close if @attachment.settled?
+            else
+              @sessions.events.create(
+                @session_id,
+                events: [{type: :"agent.session.input.message", input: messages}],
+                idempotency_key: input_key,
+                request_options: @options
+              )
+            end
+
             @iterator = iterator
             submitted = true
           ensure
@@ -111,6 +128,16 @@ module OpenAI
             @collector.observe_error(error)
           end
 
+          if @attachment && !@reconciled && (@attachment.settled? || @collector.stopped? || @read_failure)
+            begin
+              @attachment.reconcile(@collector)
+            rescue StandardError => error
+              @collector.observe_recovery_error(error)
+            ensure
+              @reconciled = true
+            end
+          end
+
           result = @collector.result
           @output_parser ? @output_parser.parse(result) : result
         rescue OpenAI::Helpers::Beta::Agents::ResultError => error
@@ -125,6 +152,18 @@ module OpenAI
         # @return [self]
         def with_result_collection
           @collector.enable
+          @collector.select_turn(@attachment.turn) if @attachment
+          begin
+            if @attachment && !@attachment_collected
+              collect_attachment_actions
+            end
+
+          rescue StandardError => error
+            @collector.observe_error(error)
+            close
+            @collector.result
+          end
+
           self
         end
 
@@ -142,18 +181,33 @@ module OpenAI
         def iterator
           Enumerator.new do |yielder|
             begin
-              @raw_stream.each do |event|
+              source = @attachment ? read_events : @raw_stream
+              source.each do |event|
                 known = event.is_a?(OpenAI::Internal::Type::BaseModel)
                 next if known && !accept?(event)
 
-                @collector.observe(event)
+                @attachment.observe(event) if @attachment && known
+                @collector.select_turn(@attachment.turn) if @attachment
+                if @attachment_collected && @attachment.turn && @attachment_collected != @attachment.turn.id
+                  collect_attachment_actions
+                end
+
+                current_root = !@attachment ||
+                  !known ||
+                  event.type != :"agent.session.requires_action" ||
+                  @attachment.current_root?
+                @collector.observe(event, current_root: current_root)
                 unless known
                   yielder << event
                   next
                 end
 
-                terminal = event.type == :"agent.session.failed" ||
-                  (event.type == :"agent.session.idle" && @turn_ended)
+                terminal = if @attachment
+                  @attachment.settled?
+                else
+                  event.type == :"agent.session.failed" || (event.type == :"agent.session.idle" && @turn_ended)
+                end
+
                 invocation = prepare_call(event) unless terminal
                 close if terminal
                 yielder << event
@@ -164,10 +218,38 @@ module OpenAI
 
               raise RuntimeError, "Session event stream ended before the turn reached idle or failed" unless @closed
             rescue StandardError => error
-              @collector.observe_error(error)
-              raise
+              unless @attachment && @read_failure && @attachment.recover_observation
+                @collector.observe_error(error)
+                raise
+              end
+
             ensure
               close
+            end
+          end
+        end
+
+        def collect_attachment_actions
+          @attachment_collected = @attachment.turn&.id || :no_turn
+          @attachment.manual_actions.each { @collector.observe_pending_action(_1) }
+          close if @attachment.settled?
+        end
+
+        def read_events
+          Enumerator.new do |yielder|
+            events = @raw_stream.to_enum
+            loop do
+              event = begin
+                events.next
+              rescue StopIteration
+                @read_failure = true
+                break
+              rescue StandardError
+                @read_failure = true
+                raise
+              end
+
+              yielder << event
             end
           end
         end
@@ -194,12 +276,19 @@ module OpenAI
           end
 
           call = event.item
+          return if @attachment && call.turn_id != @attachment.turn&.id
           key = [call.turn_id.dup, call.call_id.dup]
           return if @handled_calls.key?(key)
 
           @handled_calls[key] = true
           handler = @handlers[call.name]
-          return unless handler
+          unless handler
+            if @attachment
+              @collector.observe_pending_action(call)
+            end
+
+            return
+          end
 
           Tools.prepare(call, handler)
         end

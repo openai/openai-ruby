@@ -100,6 +100,18 @@ end
 Parsing follows the SDK’s existing `BaseModel` conventions. Each output-text item is parsed separately; `output_parsed` returns the first. Follow-up `output_type` only parses the answer; it does not change the session's schema.
 `OutputParseError#raw_result` preserves the completed answer if parsing fails.
 
+### Reattach local tool handlers
+
+Omit `input` to resume handlers for a saved session’s active root turn. The final result includes output produced before reconnecting.
+
+```ruby
+openai.beta.agents.sessions.stream(session_id, tool_handlers: handlers) do |stream|
+  puts(stream.get_final_result.output_text)
+end
+```
+
+Reattachment provides at-least-once delivery with application-owned recovery. After process death, your application restarts the worker, recovers the saved session ID, and reattaches handlers. An unacknowledged tool call may be delivered again; applications are responsible for idempotency when handlers perform mutations. When you iterate the stream, the function-call event exposes `item.turn_id` and `item.call_id` before the handler runs, so a handler closure can use that stable identity with your application's idempotency mechanism.
+
 ### Local audio
 
 Record a clip and play generated speech with optional FFmpeg/FFplay helpers.

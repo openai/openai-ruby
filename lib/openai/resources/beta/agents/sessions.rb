@@ -265,21 +265,28 @@ module OpenAI
             )
           end
 
-          # Submit input to an idle session and stream one turn through idle or failure.
+          # Submit input to an idle session, or omit input to reattach handlers to its active root turn.
           # The caller must be the session's only input writer during iteration.
           # Handlers run sequentially; failures submit a generic error without exception text.
           # Input and each tool result use distinct retry-safe idempotency keys.
           # A block closes the connection on every exit path without cancelling the turn.
           #
           # @param session_id [String]
-          # @param input [String, Array<OpenAI::Models::Beta::AgentSessionInputMessageParam>]
+          # @param input [String, Array<OpenAI::Models::Beta::AgentSessionInputMessageParam>, nil]
           # @param tool_handlers [Hash{String=>Proc}]
           # @param idempotency_key [String, nil] Applies only to the input submission.
           # @param output_type [Class<OpenAI::BaseModel>, nil] Beta: parse output without changing session configuration.
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           # @yieldparam stream [OpenAI::Helpers::Agents::SessionStream]
           # @return [OpenAI::Helpers::Agents::SessionStream]
-          def stream(session_id, input:, tool_handlers: {}, idempotency_key: nil, output_type: nil, request_options: {})
+          def stream(
+            session_id,
+            input: nil,
+            tool_handlers: {},
+            idempotency_key: nil,
+            output_type: nil,
+            request_options: {}
+          )
             stream = OpenAI::Helpers::Agents::SessionStream.new(
               sessions: self,
               session_id: session_id,

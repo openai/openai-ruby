@@ -54,7 +54,7 @@ module OpenAI
           sig do
             params(
               session_id: String,
-              input: T.any(String, T::Array[OpenAI::Models::Beta::AgentSessionInputMessageParam::OrHash]),
+              input: T.nilable(T.any(String, T::Array[OpenAI::Models::Beta::AgentSessionInputMessageParam::OrHash])),
               tool_handlers: T::Hash[String, OpenAI::Helpers::Agents::ToolHandler],
               idempotency_key: T.nilable(String),
               output_type: T.nilable(T.class_of(OpenAI::Helpers::StructuredOutput::BaseModel)),
@@ -65,7 +65,7 @@ module OpenAI
           end
           def stream(
             session_id,
-            input:,
+            input: nil,
             tool_handlers: {},
             idempotency_key: nil,
             output_type: nil,

@@ -33,9 +33,20 @@ module OpenAI
           def enable: -> void
           def observe: (
             OpenAI::Models::Beta::agent_session_event
-            | Hash[Symbol, untyped] event
+            | Hash[Symbol, untyped] event,
+            ?current_root: bool?
+          ) -> void
+          def select_turn: (
+            OpenAI::Models::Beta::Agents::Sessions::Turn? turn
+          ) -> void
+          def observe_pending_action: (untyped action) -> void
+          def recover: (
+            turn: OpenAI::Models::Beta::Agents::Sessions::Turn?,
+            items: Enumerable[untyped],
+            failed: bool
           ) -> void
           def stopped?: -> bool?
+          def observe_recovery_error: (StandardError error) -> void
           def observe_error: (StandardError error) -> void
           def result: -> TurnResult
         end

@@ -77,13 +77,43 @@ module OpenAI
           end
 
           sig {
-            params(event: T.any(OpenAI::Models::Beta::AgentSessionEvent::Variants, OpenAI::Internal::AnyHash)).void
+            params(
+              event: T.any(OpenAI::Models::Beta::AgentSessionEvent::Variants, OpenAI::Internal::AnyHash),
+              current_root: T.nilable(T::Boolean)
+            )
+              .void
           }
-          def observe(event)
+          def observe(event, current_root: true)
+          end
+
+          # @api private
+          sig { params(turn: T.nilable(OpenAI::Models::Beta::Agents::Sessions::Turn)).void }
+          def select_turn(turn)
+          end
+
+          # @api private
+          sig { params(action: T.untyped).void }
+          def observe_pending_action(action)
+          end
+
+          # @api private
+          sig {
+            params(
+              turn: T.nilable(OpenAI::Models::Beta::Agents::Sessions::Turn),
+              items: T::Enumerable[T.untyped],
+              failed: T::Boolean
+            )
+              .void
+          }
+          def recover(turn:, items:, failed:)
           end
 
           sig { returns(T.nilable(T::Boolean)) }
           def stopped?
+          end
+
+          sig { params(error: StandardError).void }
+          def observe_recovery_error(error)
           end
 
           sig { params(error: StandardError).void }

@@ -1,0 +1,26 @@
+module OpenAI
+  module Helpers
+    module Beta
+      module Agents
+        # @api private
+        class Attachment
+          attr_reader turn: OpenAI::Models::Beta::Agents::Sessions::Turn?
+          def manual_actions: -> Array[untyped]
+          def current_root?: -> bool?
+          def initialize: (
+            sessions: OpenAI::Resources::Beta::Agents::Sessions,
+            session_id: String,
+            request_options: untyped
+          ) -> void
+          def opened: -> void
+          def observe: (untyped event) -> void
+          def settled?: -> bool
+          def recover_observation: -> bool
+          def reconcile: (
+            OpenAI::Helpers::Beta::Agents::ResultCollector collector
+          ) -> void
+        end
+      end
+    end
+  end
+end

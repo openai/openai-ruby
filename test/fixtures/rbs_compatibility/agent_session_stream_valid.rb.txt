@@ -35,3 +35,8 @@ typed = client.beta.agents.sessions.create_streaming(agent: OpenAI::Models::Beta
 typed.get_final_result.output_parsed.summary
 client.beta.agents.sessions.stream("session_test", input: "Continue", output_type: report_type).get_final_result.output_parsed.summary
 result.parse(output_type: report_type).raw_result.output_text.upcase
+
+# Attach without submitting another prompt.
+client.beta.agents.sessions.stream("session_test", tool_handlers: {}) do |attached|
+  attached.get_final_result.output_text
+end

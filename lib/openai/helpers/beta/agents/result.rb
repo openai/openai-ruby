@@ -66,7 +66,7 @@ module OpenAI
             @enabled = true
           end
 
-          def observe(event)
+          def observe(event, current_root: true)
             @started = true
             return unless @enabled
             return if @finished || !event.is_a?(OpenAI::Internal::Type::BaseModel)
@@ -75,7 +75,10 @@ module OpenAI
             when :"agent.session.created"
               @session_id ||= event.session.id.dup
             when :"agent.session.turn.created"
-              if @turn.nil? && event.turn.subagent_id.nil? && (@session_id.nil? || event.session_id == @session_id)
+              if !@scope_actions &&
+                  @turn.nil? &&
+                  event.turn.subagent_id.nil? &&
+                  (@session_id.nil? || event.session_id == @session_id)
                 @turn = copy(event.turn)
                 @session_id = @turn.session_id
               end
@@ -100,6 +103,13 @@ module OpenAI
 
             when :"agent.session.requires_action"
               @required_actions = event.session.required_actions.filter_map do |action|
+                if @scope_actions
+
+                  action_turn = action[:turn_id]
+                  action_turn ||= action["turn_id"] if action.is_a?(Hash)
+                  next if action_turn ? action_turn != @turn&.id : !current_root
+                end
+
                 if action.is_a?(OpenAI::Models::Beta::AgentSession::RequiredAction::FunctionCall) &&
                     @handler_names.include?(action.name)
                   next
@@ -117,6 +127,55 @@ module OpenAI
               @failure = :failed
               @finished = true
             end
+          end
+
+          def select_turn(turn)
+            return unless @enabled
+            @scope_actions = true
+            return if turn.nil? || @turn || @finished
+            @turn = copy(turn)
+            @terminal = [:completed, :failed, :cancelled].include?(@turn.status)
+          end
+
+          def observe_pending_action(action)
+            return unless @enabled && !@finished
+            @required_actions << copy(action, OpenAI::Models::Beta::AgentSession::RequiredAction)
+          end
+
+          def recover(turn:, items:, failed:)
+            return unless @enabled
+            return if @result || @result_error
+            if turn
+              messages = {}
+              items.each_with_index do |item, index|
+                unless item.is_a?(OpenAI::Models::Beta::AgentSessionMessage) &&
+                    item.turn_id == turn.id &&
+                    item.role == :assistant &&
+                    item.status == :completed &&
+                    item.phase != :commentary
+                  next
+                end
+
+                messages[item.id] = [index, item]
+              end
+
+              @turn = turn
+              @terminal = [:completed, :failed, :cancelled].include?(@turn.status)
+              @messages = messages
+            end
+
+            @required_actions = [] if @terminal
+            @failure = nil if @terminal
+            @failure = :failed if failed
+            @failure = :no_turn if turn.nil? && @required_actions.empty? && !failed
+            @finished = @terminal || failed || turn.nil?
+          rescue StandardError => error
+            observe_recovery_error(error)
+          end
+
+          def observe_recovery_error(error)
+            return if @failure || !@required_actions.empty? || (@terminal && @turn.status != :completed)
+            @cause ||= error
           end
 
           def stopped?
