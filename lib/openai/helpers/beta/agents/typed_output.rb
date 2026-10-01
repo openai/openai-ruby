@@ -58,16 +58,12 @@ module OpenAI
             return @result if @result && @result.raw_result.equal?(result)
             raise @error if @error && @error.raw_result.equal?(result)
 
-            value = JSON.parse(result.output_text)
-            validate(@schema, value)
-            parsed = OpenAI::Internal::Type::Converter.coerce(
-              @model,
-              JSON.parse(result.output_text, symbolize_names: true)
-            )
+            value = JSON.parse(result.output_text, symbolize_names: true, max_nesting: false)
+            parsed = OpenAI::Internal::Type::Converter.coerce(@model, validate(@schema, value))
             @result = ParsedTurnResult.new(raw_result: result, output_parsed: parsed)
-          rescue JSON::ParserError, TypeError => cause
+          rescue JSON::ParserError, TypeError, SystemStackError
             @error = OutputParseError.new(raw_result: result)
-            raise @error, cause: cause
+            raise @error, cause: nil
           end
 
           private
@@ -107,6 +103,17 @@ module OpenAI
               raise ArgumentError, "output_type contains unsupported schema constraints"
             end
 
+            if schema.key?("type")
+              types = Array(schema["type"])
+              if types.empty? || !(types - %w[object array string integer number boolean null]).empty?
+                raise ArgumentError, "output_type contains an invalid JSON type"
+              end
+            end
+
+            if schema.key?("enum") && (!schema["enum"].is_a?(Array) || schema["enum"].empty?)
+              raise ArgumentError, "output_type enums must contain at least one value"
+            end
+
             if schema.key?("$ref")
               unless (schema.keys - %w[$ref $defs]).empty?
                 raise ArgumentError, "output_type contains unsupported reference siblings"
@@ -121,12 +128,26 @@ module OpenAI
             schema.fetch("anyOf", []).each { check_schema(_1, seen) }
           end
 
-          def validate(schema, value)
-            validate(resolve(schema["$ref"]), value) if schema.key?("$ref")
+          def validate(schema, value, cache = {}.compare_by_identity)
+            outcomes = cache[schema] ||= {}.compare_by_identity
+            if outcomes.key?(value)
+              valid, parsed = outcomes[value]
+              raise TypeError, "Output does not match the schema" unless valid
+              return parsed
+            end
+
+            outcomes[value] = [false, nil]
+            parsed = validate_value(schema, value, cache)
+            outcomes[value] = [true, parsed]
+            parsed
+          end
+
+          def validate_value(schema, value, cache)
+            value = validate(resolve(schema["$ref"]), value, cache) if schema.key?("$ref")
             if schema.key?("anyOf")
               matches = schema["anyOf"].any? do |branch|
                 begin
-                  validate(branch, value)
+                  value = validate(branch, value, cache)
                   true
                 rescue TypeError
                   false
@@ -151,9 +172,13 @@ module OpenAI
                 when "string"
                   value.is_a?(String)
                 when "integer"
+                  if value.is_a?(Float) && value.finite? && value == Integer(value)
+                    value = Integer(value)
+                  end
+
                   value.is_a?(Integer)
                 when "number"
-                  value.is_a?(Numeric)
+                  value.is_a?(Numeric) && value.finite?
                 when "boolean"
                   value == true || value == false
                 when "null"
@@ -168,15 +193,21 @@ module OpenAI
 
             if value.is_a?(Hash)
               properties = schema.fetch("properties", {})
-              if !(schema.fetch("required", []) - value.keys).empty? ||
-                  (schema["additionalProperties"] == false && !(value.keys - properties.keys).empty?)
+              names = value.keys.map(&:to_s)
+              if !(schema.fetch("required", []) - names).empty? ||
+                  (schema["additionalProperties"] == false && !(names - properties.keys).empty?)
                 raise TypeError, "Output contains missing or unexpected fields"
               end
 
-              properties.each { |name, field| validate(field, value[name]) if value.key?(name) }
+              properties.each do |name, field|
+                key = name.to_sym
+                value[key] = validate(field, value[key], cache) if value.key?(key)
+              end
             elsif value.is_a?(Array) && schema.key?("items")
-              value.each { validate(schema["items"], _1) }
+              value.map! { validate(schema["items"], _1, cache) }
             end
+
+            value
           end
         end
       end

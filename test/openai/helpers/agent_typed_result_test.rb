@@ -61,6 +61,49 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
     assert_empty(@server.requests)
   end
 
+  class BranchA < OpenAI::BaseModel
+    required :child, -> { OpenAI::UnionOf[BranchA, BranchB] }, nil?: true
+    required :kind, const: :a
+  end
+
+  class BranchB < OpenAI::BaseModel
+    required :child, -> { OpenAI::UnionOf[BranchA, BranchB] }, nil?: true
+    required :kind, const: :b
+  end
+
+  class BranchReport < OpenAI::BaseModel
+    required :branch, OpenAI::UnionOf[BranchA, BranchB]
+  end
+
+  class CountingParser < OpenAI::Helpers::Beta::Agents::OutputParser
+    attr_reader :validations
+
+    def validate(...)
+      @validations = (@validations || 0) + 1
+      super
+    end
+  end
+
+  def test_recursive_union_validation_does_not_repeat_failed_subtrees
+    value = nil
+    12.times { value = {child: value, kind: "invalid"} }
+    configure([turn("created"), answer_event(JSON.generate(branch: value)), turn("completed"), idle])
+    raw = stream.get_final_result
+    parser = CountingParser.new(BranchReport)
+    assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { parser.parse(raw) }
+    assert_operator(parser.validations, :<, 500)
+  end
+
+  def test_recursive_output_is_not_limited_to_100_json_levels
+    tree = {label: "leaf", children: []}
+    80.times { tree = {label: "parent", children: [tree]} }
+    configure([turn("created"), answer_event(JSON.generate(tree, max_nesting: false)), turn("completed"), idle])
+    result = typed_stream(output_type: Tree).get_final_result
+    parsed = result.output_parsed
+    80.times { parsed = parsed.children.first }
+    assert_equal("leaf", parsed.label)
+  end
+
   def report_json = JSON.generate(summary: "Ready", findings: [{label: "A", score: 2}], question: nil)
 
   def typed_stream(creation: false, output_type: Report)
@@ -103,7 +146,7 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
     end
   end
 
-  def test_parse_failures_preserve_raw_result_and_cause
+  def test_parse_failures_preserve_raw_result_without_unsafe_causes
     invalid = [
       "not json",
       "[]",
@@ -117,8 +160,39 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
       error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { subject.get_final_result }
       assert_equal(:completed, error.raw_result.turn.status)
       assert_equal(text, error.raw_result.output_text)
-      assert(error.cause)
+      assert_nil(error.cause)
       assert_same(error, assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { subject.get_final_result })
+    end
+  end
+
+  class EmptyEnum < OpenAI::BaseModel
+    required :value, OpenAI::EnumOf[]
+  end
+
+  def test_empty_enums_fail_before_network
+    configure(complete)
+    assert_raises(ArgumentError) { typed_stream(creation: true, output_type: EmptyEnum) }
+    assert_empty(@server.requests)
+  end
+
+  def test_integral_json_numbers_hydrate_as_integers
+    %w[1.0 1e0].each do |number|
+      text = report_json.sub("\"score\":2", "\"score\":#{number}")
+      configure([turn("created"), answer_event(text), turn("completed"), idle])
+      score = typed_stream.get_final_result.output_parsed.findings.first.score
+      assert_instance_of(Integer, score)
+      assert_equal(1, score)
+    end
+  end
+
+  def test_parse_error_tracebacks_do_not_include_output
+    canary = "PRIVATE_SYNTHETIC_REPORT_CANARY"
+    configure([turn("created"), answer_event("#{canary} invalid JSON"), turn("completed"), idle])
+    subject = typed_stream
+    2.times do
+      error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { subject.get_final_result }
+      refute_includes(error.full_message, canary)
+      assert_includes(error.raw_result.output_text, canary)
     end
   end
 

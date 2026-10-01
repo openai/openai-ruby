@@ -6,5 +6,6 @@ module OpenAI
       end
     end
   end
+
   class BaseModel = OpenAI::Helpers::StructuredOutput::BaseModel
 end
