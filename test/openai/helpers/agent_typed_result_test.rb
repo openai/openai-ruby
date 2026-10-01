@@ -130,6 +130,30 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
     end
   end
 
+  def test_schema_copy_does_not_add_a_json_nesting_limit
+    model = Class.new(OpenAI::BaseModel) { required(:leaf, String) }
+    60.times do
+      inner = model
+      model = Class.new(OpenAI::BaseModel) { required(:child, inner) }
+    end
+
+    parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(model)
+    params = {agent: {model: "test-model"}}
+    parser.prepare_request(params)
+    assert_equal("object", params.dig(:agent, :text, :format, :schema, "type"))
+  end
+
+  def test_string_keyed_agent_configuration_preserves_options_and_detects_conflicts
+    parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(Report)
+    params = {agent: {"model" => "test-model", "text" => {"verbosity" => "low"}}}
+    parser.prepare_request(params)
+    assert_equal("test-model", params.dig(:agent, :model))
+    assert_equal("low", params.dig(:agent, :text, :verbosity))
+    assert_raises(ArgumentError) do
+      parser.prepare_request(agent: {"text" => {"format" => {"type" => "text"}}})
+    end
+  end
+
   def test_schema_normalization_does_not_interpret_business_property_names_or_defaults
     model = Class.new(OpenAI::BaseModel) do
       required(:reference, String, api_name: :$ref, default: {"$ref" => "business value"})

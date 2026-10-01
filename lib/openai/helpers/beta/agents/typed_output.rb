@@ -35,7 +35,7 @@ module OpenAI
             end
 
             @model = model
-            @schema = JSON.parse(JSON.generate(model.to_json_schema))
+            @schema = JSON.parse(JSON.generate(model.to_json_schema, max_nesting: false), max_nesting: false)
             normalize_references
             @schema = @schema.merge(resolve(@schema.fetch("$ref"))).except("$ref") if @schema.key?("$ref")
             if @schema["type"] != "object" || %w[oneOf anyOf allOf enum not].any? { @schema.key?(_1) }
@@ -46,8 +46,8 @@ module OpenAI
           end
 
           def prepare_request(params)
-            agent = params.fetch(:agent, nil).to_h.dup
-            text = agent.fetch(:text, nil).to_h.dup
+            agent = params.fetch(:agent, nil).to_h.transform_keys { _1.is_a?(String) ? _1.to_sym : _1 }
+            text = agent.fetch(:text, nil).to_h.transform_keys { _1.is_a?(String) ? _1.to_sym : _1 }
             if text.key?(:format)
               raise ArgumentError, "output_type cannot be combined with agent.text.format"
             end
