@@ -467,6 +467,20 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
     )
   end
 
+  def test_directory_globs_exclude_hidden_files_unless_explicitly_selected
+    @directory.join(".env").write("fake private setting")
+    @directory.join(".git").mkpath
+    @directory.join(".git", "config").write("fake private repository config")
+    prepared = @files.prepare_directory(@directory, destination: "/workspace/docs", include: ["**/*"])
+    assert_equal(%w[/workspace/docs/first.txt /workspace/docs/second.txt], prepared.files.map(&:path))
+    refute(@server.upload_bodies.any? { _1.include?("fake private") })
+
+    selected = @files.prepare_directory(@directory, destination: "/workspace/docs", include: [".env", ".git/*"])
+    assert_equal(%w[/workspace/docs/.env /workspace/docs/.git/config], selected.files.map(&:path))
+    assert_includes(@server.upload_bodies[-2], "fake private setting")
+    assert_includes(@server.upload_bodies[-1], "fake private repository config")
+  end
+
   def test_artifact_lookup_is_lazy_paginated_and_turn_scoped
     @server.artifacts = [
       artifact("old", turn: "older"),

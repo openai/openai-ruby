@@ -112,7 +112,7 @@ module OpenAI
 
             base = destination_path(destination, directory: true)
             selected = Dir
-              .glob(patterns, base: root, flags: File::FNM_DOTMATCH)
+              .glob(patterns, base: root)
               .map { Pathname(_1).cleanpath.to_s }
               .uniq
               .reject { root.join(_1).directory? && !root.join(_1).symlink? }
