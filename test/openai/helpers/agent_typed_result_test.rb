@@ -186,6 +186,30 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
     assert_instance_of(Finding, parsed.findings.first)
   end
 
+  def test_shared_model_hydration_preserves_tool_and_output_error_policies
+    calls = []
+    tool = OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "summarize", arguments: Report) { calls << _1 }
+    invalid = JSON.generate(summary: [], findings: [])
+    error = assert_raises(ArgumentError) { tool.call(invalid) }
+    assert_equal("Tool arguments cannot be parsed into the argument model", error.message)
+    assert_empty(calls)
+
+    configure([turn("created"), answer_event(invalid), turn("completed"), idle])
+    error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { typed_stream.get_final_result }
+    assert_equal(invalid, error.raw_result.output_text)
+
+    tool_error = assert_raises(ArgumentError) do
+      OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "bad", arguments: Hash) { nil }
+    end
+
+    assert_equal("arguments must be an OpenAI::BaseModel subclass", tool_error.message)
+    output_error = assert_raises(ArgumentError) do
+      OpenAI::Helpers::Beta::Agents::OutputParser.new(Hash)
+    end
+
+    assert_equal("output_type must be an OpenAI::BaseModel subclass", output_error.message)
+  end
+
   def test_recursive_collection_unions_reuse_conversion_work
     union = nil
     left = OpenAI::ArrayOf[-> { union }]

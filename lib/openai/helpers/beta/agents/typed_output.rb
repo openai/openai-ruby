@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "model_adapter"
+
 module OpenAI
   module Helpers
     module Beta
@@ -30,9 +32,7 @@ module OpenAI
         # @api private
         class OutputParser
           def initialize(model)
-            unless model.is_a?(Class) && model < OpenAI::Helpers::StructuredOutput::BaseModel
-              raise ArgumentError, "output_type must be an OpenAI::BaseModel subclass"
-            end
+            ModelAdapter.validate!(model, parameter: "output_type")
 
             @model = model
           end
@@ -61,9 +61,8 @@ module OpenAI
             raise @error if @error && @error.raw_result.equal?(result)
 
             value = JSON.parse(result.output_text, symbolize_names: true, max_nesting: false)
-            state = OpenAI::Internal::Type::Converter.new_coerce_state(memoize: true)
-            parsed = OpenAI::Internal::Type::Converter.coerce(@model, value, state: state)
-            unless parsed.is_a?(@model) && state[:exactness][:no].zero?
+            parsed = ModelAdapter.coerce(@model, value, memoize: true)
+            unless parsed
               raise TypeError, "Output cannot be parsed into output_type"
             end
 
