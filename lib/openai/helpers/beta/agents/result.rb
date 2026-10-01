@@ -146,6 +146,8 @@ module OpenAI
             return unless @enabled
             return if @result || @result_error
             if turn
+              @turn = turn
+              @terminal = [:completed, :failed, :cancelled].include?(@turn.status)
               messages = {}
               items.each_with_index do |item, index|
                 unless item.is_a?(OpenAI::Models::Beta::AgentSessionMessage) &&
@@ -159,8 +161,6 @@ module OpenAI
                 messages[item.id] = [index, item]
               end
 
-              @turn = turn
-              @terminal = [:completed, :failed, :cancelled].include?(@turn.status)
               @messages = messages
             end
 

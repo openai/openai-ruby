@@ -374,6 +374,47 @@ class OpenAI::Test::AgentAttachmentTest < OpenAI::Test::AgentTurnResultTest
     assert_equal("call_test", error.required_actions.first.call_id)
   end
 
+  def test_disconnect_recovers_a_root_that_started_and_finished_after_initial_snapshots
+    [nil, "historical"].each do |baseline|
+      configure_attachment(events: [])
+      @server.turns.clear
+      @server.turns[baseline] = turn("completed", id: baseline)[:turn] if baseline
+      subject = @sessions.stream("session_test")
+      @server.turns["turn_root"] = turn("completed")[:turn]
+      @server.body.error = IOError.new("disconnected before receiving new root events")
+      result = subject.get_final_result
+      assert_equal("turn_root", result.turn_id)
+      assert_equal("Answer", result.output_text)
+      assert_empty(@server.submissions)
+    end
+  end
+
+  def test_disconnect_does_not_recover_the_historical_baseline_as_new_work
+    configure_attachment(events: [])
+    @server.turns["turn_root"] = turn("completed")[:turn]
+    subject = @sessions.stream("session_test")
+    @server.body.error = IOError.new("disconnected without new work")
+    error = assert_raises(OpenAI::Helpers::Beta::Agents::ResultError) { subject.get_final_result }
+    assert_equal(:observation_error, error.reason)
+    assert_nil(error.turn_id)
+    assert_same(@server.body.error, error.cause)
+  end
+
+  def test_terminal_recovery_preserves_failed_or_cancelled_outcomes_when_history_also_fails
+    ["failed", "cancelled"].each do |status|
+      configure_attachment(events: [])
+      subject = @sessions.stream("session_test")
+      @server.turns["turn_root"] = turn(status)[:turn].merge(completed_at: 9)
+      @server.body.error = IOError.new("stream disconnected")
+      @server.item_error = IOError.new("history read failed")
+      error = assert_raises(OpenAI::Helpers::Beta::Agents::ResultError) { subject.get_final_result }
+      assert_equal(status.to_sym, error.reason)
+      assert_equal(status.to_sym, error.turn.status)
+      assert_equal(9, error.turn.completed_at)
+      assert_equal("turn_root", error.turn_id)
+    end
+  end
+
   def test_active_read_failure_preserves_durable_output_and_original_cause
     configure_attachment(events: [])
     @server.body.error = IOError.new("original disconnection")

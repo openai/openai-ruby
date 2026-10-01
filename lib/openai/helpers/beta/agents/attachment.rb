@@ -128,6 +128,11 @@ module OpenAI
           end
 
           def recover_observation
+            if @turn.nil?
+              candidate = latest_root
+              @turn = candidate if candidate && candidate.id != @baseline_id
+            end
+
             return false unless @turn
             @read_reconciled = true
             @turn = @sessions.turns.retrieve(@turn.id, session_id: @session_id, request_options: @options)
