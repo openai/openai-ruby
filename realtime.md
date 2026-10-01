@@ -604,6 +604,7 @@ client = OpenAI::Client.new
 client.realtime.connect_translation(model: "gpt-realtime-translate") do |connection|
   connection.receive # session.created
   connection.send_event(type: "session.update", session: {audio: {output: {language: "fr"}}})
+  # speech.pcm must be raw 24 kHz PCM16 mono little-endian audio, with no WAV header.
   connection.send_event(
     type: "session.input_audio_buffer.append",
     audio: Base64.strict_encode64(File.binread("speech.pcm"))
