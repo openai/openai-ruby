@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.98.0](https://github.com/openai/openai-ruby/compare/v0.97.0...v0.98.0) (2026-10-01)
+
+
+### Features
+
+* **agents:** [1/n] parse typed output into Ruby models ([#796](https://github.com/openai/openai-ruby/issues/796)) ([49b8b70](https://github.com/openai/openai-ruby/commit/49b8b70763db318134f0eedd82bd91a7bd269943))
+* **agents:** prepare hosted files and download result artifacts ([#798](https://github.com/openai/openai-ruby/issues/798)) ([9853389](https://github.com/openai/openai-ruby/commit/9853389e6c5a428c836d8ac2e4af991519e9630d))
+* **api:** Add session traces and translation secrets ([#789](https://github.com/openai/openai-ruby/issues/789)) ([79e3e0c](https://github.com/openai/openai-ruby/commit/79e3e0c550e3630253bd79423a04fb108cbaa642))
+* bind typed application actions to beta agent tools ([#795](https://github.com/openai/openai-ruby/issues/795)) ([c8cab4a](https://github.com/openai/openai-ruby/commit/c8cab4aa699f8563946991f6b949f4ae73b212d7))
+* collect final output from beta Agents streams ([#793](https://github.com/openai/openai-ruby/issues/793)) ([35aaa3a](https://github.com/openai/openai-ruby/commit/35aaa3a881a13583bc28e25240bc86e2312ae647))
+
+
+### Bug Fixes
+
+* **api:** allow original image detail in Chat Completions ([#794](https://github.com/openai/openai-ruby/issues/794)) ([8bb025d](https://github.com/openai/openai-ruby/commit/8bb025dac3f0336309a6e12764d7520959fda0fd))
+* **api:** correct the eval run cancellation endpoint ([#791](https://github.com/openai/openai-ruby/issues/791)) ([6a99f63](https://github.com/openai/openai-ruby/commit/6a99f632f0c3a9009b90b671380a8840a4c68cd1))
+* enforce decoded WebSocket budget on inflater tails ([#792](https://github.com/openai/openai-ruby/issues/792)) ([2acfaf8](https://github.com/openai/openai-ruby/commit/2acfaf87c702b4ddc61ff7506f857c98ef8aa27d))
+* retire canceled Responses and Live websocket writes ([#787](https://github.com/openai/openai-ruby/issues/787)) ([de62191](https://github.com/openai/openai-ruby/commit/de621915ed28f5dcc8434a61e83a976a103f2fa6))
+
+
+### Chores
+
+* **api:** retain WebRTC Live session transport types ([#790](https://github.com/openai/openai-ruby/issues/790)) ([1f15936](https://github.com/openai/openai-ruby/commit/1f159369caa98861eb45ba6c614635b9cf39a16f))
+
 ## [0.97.0](https://github.com/openai/openai-ruby/compare/v0.96.0...v0.97.0) (2026-09-29)
 
 
