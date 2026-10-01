@@ -50,6 +50,32 @@ stream.each do |event|
 end
 ```
 
+### Agents final output (beta)
+
+Collect final output from an Agents creation stream:
+
+```ruby
+stream = openai.beta.agents.sessions.create_streaming(
+  agent: {model: "gpt-5.2", instructions: "Explain the supplied policy clearly."},
+  environment: {type: :none},
+  input: "Explain this policy: ..."
+)
+result = stream.get_final_result
+puts(result.output_text)
+```
+
+Use the same getter for follow-ups; to display progress first, call
+`stream.with_result_collection` before iterating:
+
+```ruby
+openai.beta.agents.sessions.stream(result.session_id, input: "Give an example.") do |stream|
+  puts(stream.get_final_result.output_text)
+end
+```
+
+The beta result includes `turn` metadata and final `messages`; unsuccessful or
+incomplete collection raises `OpenAI::Helpers::Beta::Agents::ResultError`.
+
 ### Local audio
 
 Record a clip and play generated speech with optional FFmpeg/FFplay helpers.

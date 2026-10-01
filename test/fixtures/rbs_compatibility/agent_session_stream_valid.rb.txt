@@ -5,7 +5,25 @@ client.beta.agents.sessions.stream("session_test", input: "Hello", tool_handlers
   end
 end
 stream = client.beta.agents.sessions.stream("session_test", input: [{role: :user, content: [{type: :input_text, text: "Hello"}]}])
-stream.until_done
+stream.with_result_collection.until_done
 stream.close
 message = OpenAI::Beta::AgentSessionMessage.new(id: "message_test", content: [], phase: nil, role: :assistant, status: :completed, turn_id: "turn_test")
 message.output_text.upcase
+
+result = stream.get_final_result
+result.output_text.upcase
+result.turn.status.to_s
+result.messages.each { |message| message.output_text.upcase }
+result.session_id.upcase
+result.turn_id.upcase
+creation = client.beta.agents.sessions.create_streaming(agent: OpenAI::Models::Beta::Agents::SessionCreateParams::Agent.new(model: "test-model"), environment: OpenAI::Models::Beta::EnvironmentParam::None.new, input: "Hi")
+creation.status.to_i
+creation.with_result_collection.to_enum.next.event_id.to_s
+creation.get_final_result.output_text.upcase
+
+collector = OpenAI::Helpers::Beta::Agents::ResultCollector.new(session_id: "session_test", handler_names: ["lookup"])
+collector.enable
+collector.observe({type: "future.event"})
+collector.stopped?.to_s
+collector.observe_error(StandardError.new("observation failed"))
+collector.result.output_text.upcase

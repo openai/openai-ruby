@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "tools"
+require_relative "../beta/agents/result"
 
 module OpenAI
   module Helpers
@@ -20,6 +21,10 @@ module OpenAI
           @sessions = sessions
           @session_id = session_id
           @handlers = tool_handlers.to_h.dup
+          @collector = OpenAI::Helpers::Beta::Agents::ResultCollector.new(
+            session_id: session_id,
+            handler_names: @handlers.keys
+          )
           @options = request_options.to_h.dup
           headers = {"OpenAI-Beta" => "agents=v1"}.merge(@options[:extra_headers].to_h)
           options_key = @options.delete(:idempotency_key)
@@ -84,6 +89,35 @@ module OpenAI
           self
         end
 
+        # @beta
+        # Consume the remaining events and handlers, then return this turn's final
+        # answer. Failed, blocked, or incomplete observation raises ResultError.
+        # @return [OpenAI::Helpers::Beta::Agents::TurnResult]
+        def get_final_result
+          with_result_collection
+          raise @result_error if @result_error
+          begin
+            each { |_event| break if @collector.stopped? } unless @collector.stopped?
+          rescue StandardError => error
+            @collector.observe_error(error)
+          end
+
+          @collector.result
+        rescue OpenAI::Helpers::Beta::Agents::ResultError => error
+          @result_error = error
+          raise
+        ensure
+          close
+        end
+
+        # @beta
+        # Enable result collection before iterating to display progress.
+        # @return [self]
+        def with_result_collection
+          @collector.enable
+          self
+        end
+
         # Close the event connection without cancelling the backend turn.
         # @return [void]
         def close
@@ -99,7 +133,14 @@ module OpenAI
           Enumerator.new do |yielder|
             begin
               @raw_stream.each do |event|
-                next unless accept?(event)
+                known = event.is_a?(OpenAI::Internal::Type::BaseModel)
+                next if known && !accept?(event)
+
+                @collector.observe(event)
+                unless known
+                  yielder << event
+                  next
+                end
 
                 terminal = event.type == :"agent.session.failed" ||
                   (event.type == :"agent.session.idle" && @turn_ended)
@@ -112,6 +153,9 @@ module OpenAI
               end
 
               raise RuntimeError, "Session event stream ended before the turn reached idle or failed" unless @closed
+            rescue StandardError => error
+              @collector.observe_error(error)
+              raise
             ensure
               close
             end
@@ -134,7 +178,10 @@ module OpenAI
         end
 
         def prepare_call(event)
-          return unless event.type == :"agent.session.turn.item.added" && event.item.type == :function_call
+          unless event.type == :"agent.session.turn.item.added" &&
+              event.item.is_a?(OpenAI::Models::Beta::AgentFunctionCallItem)
+            return
+          end
 
           call = event.item
           key = [call.turn_id.dup, call.call_id.dup]

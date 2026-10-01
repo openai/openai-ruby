@@ -113,7 +113,7 @@ module OpenAI
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Internal::Stream<OpenAI::Models::Beta::AgentSessionErrorEvent, OpenAI::Models::Beta::AgentSessionEnvironmentReadyEvent, OpenAI::Models::Beta::AgentSessionEnvironmentResetEvent, OpenAI::Models::Beta::AgentOutputCommandExecutionOutputDeltaEvent, OpenAI::Models::Beta::AgentSessionCreatedEvent, OpenAI::Models::Beta::AgentSessionTurnCreatedEvent, OpenAI::Models::Beta::AgentSessionTurnInProgressEvent, OpenAI::Models::Beta::AgentSessionTurnCompletedEvent, OpenAI::Models::Beta::AgentSessionTurnFailedEvent, OpenAI::Models::Beta::AgentSessionTurnCancelledEvent, OpenAI::Models::Beta::AgentSessionTurnItemAddedEvent, OpenAI::Models::Beta::AgentSessionIdleEvent, OpenAI::Models::Beta::AgentSessionInProgressEvent, OpenAI::Models::Beta::AgentSessionRequiresActionEvent, OpenAI::Models::Beta::AgentSessionFailedEvent, OpenAI::Models::Beta::AgentSessionEnvironmentPendingEvent, OpenAI::Models::Beta::AgentSessionEnvironmentConnectedEvent, OpenAI::Models::Beta::AgentSessionEnvironmentDisconnectedEvent, OpenAI::Models::Beta::AgentSessionEnvironmentFailedEvent, OpenAI::Models::Beta::AgentSessionSubagentCreatedEvent, OpenAI::Models::Beta::AgentSessionSubagentActiveEvent, OpenAI::Models::Beta::AgentSessionSubagentClosedEvent, OpenAI::Models::Beta::AgentSessionTurnItemDoneEvent, OpenAI::Models::Beta::AgentSessionTurnContentPartAddedEvent, OpenAI::Models::Beta::AgentSessionTurnContentPartDoneEvent, OpenAI::Models::Beta::AgentSessionTurnOutputTextDeltaEvent, OpenAI::Models::Beta::AgentSessionTurnOutputTextDoneEvent, OpenAI::Models::Beta::AgentSessionTurnReasoningSummaryPartAddedEvent, OpenAI::Models::Beta::AgentSessionTurnReasoningSummaryPartDoneEvent, OpenAI::Models::Beta::AgentSessionTurnReasoningSummaryTextDeltaEvent, OpenAI::Models::Beta::AgentSessionTurnReasoningSummaryTextDoneEvent>]
+          # @return [OpenAI::Helpers::Beta::Agents::CreationStream]
           #
           # @see OpenAI::Models::Beta::Agents::SessionCreateParams
           def create_streaming(params)
@@ -129,7 +129,7 @@ module OpenAI
               path: "agents/sessions",
               headers: {"accept" => "text/event-stream", "accept-encoding" => "identity"},
               body: parsed,
-              stream: OpenAI::Internal::Stream,
+              stream: OpenAI::Helpers::Beta::Agents::CreationStream,
               model: OpenAI::Beta::AgentSessionEvent,
               security: {bearer_auth: true},
               options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}

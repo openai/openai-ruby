@@ -26,6 +26,16 @@ module OpenAI
         def each(&block)
         end
 
+        # @beta
+        sig { returns(OpenAI::Helpers::Beta::Agents::TurnResult) }
+        def get_final_result
+        end
+
+        # @beta
+        sig { returns(T.self_type) }
+        def with_result_collection
+        end
+
         sig { void }
         def close
         end
