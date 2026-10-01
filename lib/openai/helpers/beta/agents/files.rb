@@ -61,9 +61,8 @@ module OpenAI
               raise ArgumentError, "Use separate uploads when supplying an Idempotency-Key for multiple files"
             end
 
-            paths = entries.map(&:first)
-            if paths.uniq.length != paths.length ||
-                paths.combination(2).any? { |a, b| a.start_with?("#{b}/") || b.start_with?("#{a}/") }
+            paths = entries.map(&:first).sort_by { _1.split("/") }
+            if paths.each_cons(2).any? { |a, b| a == b || b.start_with?("#{a}/") }
               raise ArgumentError, "Destination file paths must not collide"
             end
 
@@ -112,9 +111,11 @@ module OpenAI
             end
 
             base = destination_path(destination, directory: true)
-            selected = Dir.glob(patterns, base: root, flags: File::FNM_DOTMATCH).uniq.reject do |relative|
-              root.join(relative).directory? && !root.join(relative).symlink?
-            end
+            selected = Dir
+              .glob(patterns, base: root, flags: File::FNM_DOTMATCH)
+              .map { Pathname(_1).cleanpath.to_s }
+              .uniq
+              .reject { root.join(_1).directory? && !root.join(_1).symlink? }
 
             prepare_sources(
               selected.to_h { |relative| ["#{base}/#{relative}", root.join(relative)] },

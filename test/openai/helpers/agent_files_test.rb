@@ -306,7 +306,10 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
       assert_raises(ArgumentError) { @files.prepare({path => @first}) }
     end
 
-    assert_raises(ArgumentError) { @files.prepare({"/workspace/a" => @first, "/workspace/a/b" => @second}) }
+    assert_raises(ArgumentError) do
+      @files.prepare({"/workspace/a" => @first, "/workspace/a-b" => @first, "/workspace/a/b" => @second})
+    end
+
     assert_empty(@server.requests)
   end
 
@@ -445,7 +448,7 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
   def test_directory_preparation_globs_only_requested_patterns_and_deduplicates_matches
     @directory.join("nested").mkpath
     @directory.join("nested", "third.md").write("three")
-    patterns = ["*.txt", "{first.txt,nested/*.md}"]
+    patterns = ["./*.txt", "{first.txt,nested/./*.md}"]
     glob = Dir.method(:glob)
     requested = []
     enumerate = lambda do |pattern, **options|
@@ -518,10 +521,10 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
   end
 
   def test_file_count_limits_are_left_to_the_api
-    files = 51.times.to_h { |i| ["/workspace/file#{i}", @first] }
+    files = 1001.times.to_h { |i| ["/workspace/file#{i}", @first] }
     prepared = @files.prepare(files)
     assert_equal(files.keys, prepared.files.map(&:path))
-    assert_equal(51, @server.requests.length)
+    assert_equal(files.length, @server.requests.length)
   end
 
   def test_truncated_artifact_body_fails_and_closes_the_response
