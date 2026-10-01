@@ -36,6 +36,7 @@ module OpenAI
 
             @model = model
             @schema = JSON.parse(JSON.generate(model.to_json_schema))
+            normalize_references
             @schema = @schema.merge(resolve(@schema.fetch("$ref"))).except("$ref") if @schema.key?("$ref")
             if @schema["type"] != "object" || %w[oneOf anyOf allOf enum not].any? { @schema.key?(_1) }
               raise ArgumentError, "output_type must have an object-root schema without root composition"
@@ -59,7 +60,12 @@ module OpenAI
             raise @error if @error && @error.raw_result.equal?(result)
 
             value = JSON.parse(result.output_text, symbolize_names: true, max_nesting: false)
-            parsed = OpenAI::Internal::Type::Converter.coerce(@model, validate(@schema, value))
+            state = OpenAI::Internal::Type::Converter.new_coerce_state(memoize: true)
+            parsed = OpenAI::Internal::Type::Converter.coerce(@model, value, state: state)
+            unless parsed.is_a?(@model) && state[:exactness][:no].zero?
+              raise TypeError, "Output cannot be parsed into output_type"
+            end
+
             @result = ParsedTurnResult.new(raw_result: result, output_parsed: parsed)
           rescue JSON::ParserError, TypeError, SystemStackError
             @error = OutputParseError.new(raw_result: result)
@@ -81,25 +87,57 @@ module OpenAI
             raise ArgumentError, "output_type contains an unresolved schema reference"
           end
 
+          def normalize_references
+            definitions = @schema.fetch("$defs", {})
+            names = {}.compare_by_identity
+            definitions.each_value.with_index { |definition, index| names[definition] = "model_#{index}" }
+            pending = [@schema]
+            until pending.empty?
+              node = pending.pop
+              next unless node.is_a?(Hash)
+              pending.concat(node.fetch("properties", {}).values)
+              pending.concat(node.fetch("$defs", {}).values)
+              pending.concat(node.fetch("anyOf", []))
+              pending.concat(node.fetch("prefixItems", []))
+              pending << node["items"] if node.key?("items")
+              pending << node["additionalProperties"] if node["additionalProperties"].is_a?(Hash)
+              next unless node.key?("$ref")
+              name = names.fetch(resolve(node["$ref"]))
+              node["$ref"] = "#/$defs/#{name}"
+              if node.key?("description") || node.key?("title")
+                node["anyOf"] = [{"$ref" => node.delete("$ref")}]
+              end
+            end
+
+            unless definitions.empty?
+              @schema["$defs"] = definitions.to_h { |_name, definition| [names.fetch(definition), definition] }
+            end
+          end
+
           def check_schema(schema, seen = {}.compare_by_identity)
             return if seen[schema]
             seen[schema] = true
-            supported = %w[
-              type
-              properties
-              required
-              additionalProperties
-              items
-              enum
-              const
-              anyOf
-              default
-              $ref
-              $defs
-              description
-              title
+            unsupported = %w[
+              unevaluatedProperties
+              propertyNames
+              minProperties
+              maxProperties
+              unevaluatedItems
+              contains
+              minContains
+              maxContains
+              uniqueItems
+              allOf
+              oneOf
+              not
+              dependentRequired
+              dependentSchemas
+              if
+              then
+              else
+              x-guidance
             ]
-            unless schema.is_a?(Hash) && (schema.keys - supported).empty?
+            unless schema.is_a?(Hash) && (schema.keys & unsupported).empty?
               raise ArgumentError, "output_type contains unsupported schema constraints"
             end
 
@@ -128,87 +166,6 @@ module OpenAI
             schema.fetch("anyOf", []).each { check_schema(_1, seen) }
           end
 
-          def validate(schema, value, cache = {}.compare_by_identity)
-            outcomes = cache[schema] ||= {}.compare_by_identity
-            if outcomes.key?(value)
-              valid, parsed = outcomes[value]
-              raise TypeError, "Output does not match the schema" unless valid
-              return parsed
-            end
-
-            outcomes[value] = [false, nil]
-            parsed = validate_value(schema, value, cache)
-            outcomes[value] = [true, parsed]
-            parsed
-          end
-
-          def validate_value(schema, value, cache)
-            value = validate(resolve(schema["$ref"]), value, cache) if schema.key?("$ref")
-            if schema.key?("anyOf")
-              matches = schema["anyOf"].any? do |branch|
-                begin
-                  value = validate(branch, value, cache)
-                  true
-                rescue TypeError
-                  false
-                end
-              end
-
-              raise TypeError, "Output does not match any schema alternative" unless matches
-            end
-
-            if (schema.key?("enum") && !schema["enum"].include?(value)) ||
-                (schema.key?("const") && schema["const"] != value)
-              raise TypeError, "Output does not match the schema enum or constant"
-            end
-
-            if schema.key?("type")
-              matches = Array(schema["type"]).any? do |type|
-                case type
-                when "object"
-                  value.is_a?(Hash)
-                when "array"
-                  value.is_a?(Array)
-                when "string"
-                  value.is_a?(String)
-                when "integer"
-                  if value.is_a?(Float) && value.finite? && value == Integer(value)
-                    value = Integer(value)
-                  end
-
-                  value.is_a?(Integer)
-                when "number"
-                  value.is_a?(Numeric) && value.finite?
-                when "boolean"
-                  value == true || value == false
-                when "null"
-                  value.nil?
-                else
-                  false
-                end
-              end
-
-              raise TypeError, "Output has an incorrect JSON type" unless matches
-            end
-
-            if value.is_a?(Hash)
-              properties = schema.fetch("properties", {})
-              names = value.keys.map(&:to_s)
-              if !(schema.fetch("required", []) - names).empty? ||
-                  (schema["additionalProperties"] == false && !(names - properties.keys).empty?)
-                raise TypeError, "Output contains missing or unexpected fields"
-              end
-
-              properties.each do |name, field|
-                key = name.to_sym
-                value[key] = validate(field, value[key], cache) if value.key?(key)
-              end
-            elsif value.is_a?(Array) && schema.key?("items")
-              value.map! { validate(schema["items"], _1, cache) }
-            end
-
-            value
-          end
         end
       end
     end

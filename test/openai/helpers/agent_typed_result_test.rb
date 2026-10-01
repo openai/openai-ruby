@@ -37,28 +37,14 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
     assert_equal(:yes, result.output_parsed.choice)
     assert_equal(3, result.output_parsed.detail)
     assert_equal("B", result.output_parsed.second.label)
-    assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) do
-      changed = OpenAI::Helpers::Beta::Agents::TurnResult.new(
-        turn: result.turn,
-        messages: [
-          OpenAI::Models::Beta::AgentSessionMessage.new(
-            id: "invalid",
-            role: :assistant,
-            status: :completed,
-            phase: :final_answer,
-            turn_id: result.turn_id,
-            content: [{type: :output_text, text: text.sub("\"yes\"", "\"maybe\""), annotations: []}]
-          )
-        ]
-      )
-      changed.parse(output_type: Alternatives)
-    end
   end
 
-  def test_unsupported_constraints_fail_before_sending_a_request
+  def test_supported_constraints_are_preserved_for_hosted_validation
     configure(complete)
-    assert_raises(ArgumentError) { typed_stream(creation: true, output_type: Constrained) }
-    assert_empty(@server.requests)
+    parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(Constrained)
+    params = {agent: {model: "test-model"}}
+    parser.prepare_request(params)
+    assert_equal(2, params.dig(:agent, :text, :format, :schema, "properties", "name", "minLength"))
   end
 
   class BranchA < OpenAI::BaseModel
@@ -75,23 +61,94 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
     required :branch, OpenAI::UnionOf[BranchA, BranchB]
   end
 
-  class CountingParser < OpenAI::Helpers::Beta::Agents::OutputParser
-    attr_reader :validations
-
-    def validate(...)
-      @validations = (@validations || 0) + 1
-      super
+  def test_recursive_union_hydration_does_not_repeat_subtrees
+    ["invalid", "b"].each do |kind|
+      value = nil
+      16.times { value = {child: value, kind: kind} }
+      configure([turn("created"), answer_event(JSON.generate(branch: value)), turn("completed"), idle])
+      raw = stream.get_final_result
+      parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(BranchReport)
+      calls = 0
+      trace = TracePoint.new(:call) { calls += 1 if _1.method_id == :coerce }
+      parsed = trace.enable { parser.parse(raw).output_parsed }
+      assert_operator(calls, :<, 1000)
+      assert_instance_of(BranchB, parsed.branch) if kind == "b"
     end
   end
 
-  def test_recursive_union_validation_does_not_repeat_failed_subtrees
-    value = nil
-    12.times { value = {child: value, kind: "invalid"} }
-    configure([turn("created"), answer_event(JSON.generate(branch: value)), turn("completed"), idle])
-    raw = stream.get_final_result
-    parser = CountingParser.new(BranchReport)
-    assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { parser.parse(raw) }
-    assert_operator(parser.validations, :<, 500)
+  def test_memoized_conversion_preserves_native_union_selection_and_state
+    values = [
+      {branch: {child: nil, kind: "b"}},
+      {branch: {child: {child: nil, kind: "b"}, kind: "invalid"}},
+      {branch: []}
+    ]
+    values.each do |value|
+      native = OpenAI::Internal::Type::Converter.new_coerce_state
+      memoized = OpenAI::Internal::Type::Converter.new_coerce_state(memoize: true)
+      expected = OpenAI::Internal::Type::Converter.coerce(BranchReport, value, state: native)
+      actual = OpenAI::Internal::Type::Converter.coerce(BranchReport, value, state: memoized)
+      assert_equal(expected, actual)
+      assert_equal(native.except(:memo, :error), memoized.except(:memo, :error))
+      assert_equal([native[:error]&.class], [memoized[:error]&.class])
+    end
+  end
+
+  class AnnotatedRecursive < OpenAI::BaseModel
+    required :child, -> { AnnotatedRecursive }, doc: "Next node"
+  end
+
+  def test_reference_names_are_normalized_for_agents_strict_schema
+    inner = Class.new(OpenAI::BaseModel) { required(:label, String) }
+    outer = Class.new(OpenAI::BaseModel) do
+      required(:first, inner)
+      required(:second, inner)
+    end
+
+    report = Class.new(OpenAI::BaseModel) { required(:outer, outer) }
+    [report, Tree, AnnotatedRecursive].each do |model|
+      parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(model)
+      params = {agent: {model: "test-model"}}
+      parser.prepare_request(params)
+      schema = params.dig(:agent, :text, :format, :schema)
+      definitions = schema.fetch("$defs")
+      assert(definitions.keys.all? { _1.match?(/\Amodel_\d+\z/) })
+      nodes = [schema]
+      until nodes.empty?
+        node = nodes.pop
+        case node
+        when Hash
+          if node.key?("$ref")
+            assert(definitions.key?(node.fetch("$ref").delete_prefix("#/$defs/")))
+            assert_equal(["$ref"], node.keys)
+          end
+
+          nodes.concat(node.values)
+        when Array
+          nodes.concat(node)
+        end
+      end
+    end
+  end
+
+  def test_schema_normalization_does_not_interpret_business_property_names_or_defaults
+    model = Class.new(OpenAI::BaseModel) do
+      required(:reference, String, api_name: :$ref, default: {"$ref" => "business value"})
+    end
+
+    parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(model)
+    params = {agent: {model: "test-model"}}
+    parser.prepare_request(params)
+    field = params.dig(:agent, :text, :format, :schema, "properties", "$ref")
+    assert_equal("string", field.fetch("type"))
+    assert_equal({"$ref" => "business value"}, field.fetch("default"))
+  end
+
+  def test_typed_tools_and_results_share_native_model_conventions
+    tool = OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "summarize", arguments: Report) { _1 }
+    configure([turn("created"), answer_event(report_json), turn("completed"), idle])
+    parsed = typed_stream.get_final_result.output_parsed
+    assert_equal(tool.call(report_json), parsed)
+    assert_instance_of(Finding, parsed.findings.first)
   end
 
   def test_recursive_output_is_not_limited_to_100_json_levels
@@ -151,8 +208,7 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
       "not json",
       "[]",
       "{\"summary\":\"Ready\"}",
-      report_json.sub("\"score\":2", "\"score\":\"2\""),
-      report_json.sub("\"summary\":\"Ready\"", "\"summary\":\"Ready\",\"extra\":true")
+      report_json.sub("\"score\":2", "\"score\":[]")
     ]
     [false, true].product(invalid).each do |creation, text|
       configure([turn("created"), answer_event(text), turn("completed"), idle])

@@ -135,14 +135,15 @@ module OpenAI
           # @param request_only [Boolean] Exclude fields omitted by the request serializer.
           #
           # @return [Hash{Symbol=>Object}]
-          def new_coerce_state(translate_names: true, request_only: false)
+          def new_coerce_state(translate_names: true, request_only: false, memoize: false)
             {
               translate_names: translate_names,
               request_only: request_only,
               strictness: true,
               exactness: {yes: 0, no: 0, maybe: 0},
               error: nil,
-              branched: 0
+              branched: 0,
+              memo: memoize ? {}.compare_by_identity : nil
             }
           end
 
@@ -191,6 +192,10 @@ module OpenAI
           #
           # @return [Object]
           def coerce(target, value, state: OpenAI::Internal::Type::Converter.new_coerce_state)
+            if state[:memo] && target.is_a?(Class) && target < OpenAI::Internal::Type::BaseModel && value.is_a?(Hash)
+              return coerce_model(target, value, state: state)
+            end
+
             exactness = state.fetch(:exactness)
 
             case target
@@ -289,6 +294,31 @@ module OpenAI
           end
 
           # @api private
+          # Reuse model branch coercions within one parse. Stable model classes keep
+          # recursive type procs from defeating the cache with fresh UnionOf objects.
+          def coerce_model(target, value, state:)
+            models = state.fetch(:memo)
+            values = models[target] ||= {}.compare_by_identity
+            outcomes = values[value] ||= {}
+            key = state.values_at(:translate_names, :request_only, :strictness, :error)
+            exactness = state.fetch(:exactness)
+            if (cached = outcomes[key])
+              parsed, delta, error, branched = cached
+              delta.each { exactness[_1] += _2 }
+              state[:error] = error
+              state[:branched] += branched
+              return parsed
+            end
+
+            before = exactness.dup
+            branched = state.fetch(:branched)
+            parsed = target.coerce(value, state: state)
+            delta = exactness.to_h { |name, count| [name, count - before.fetch(name)] }
+            outcomes[key] = [parsed, delta, state[:error], state[:branched] - branched]
+            parsed
+          end
+
+          # @api private
           #
           # Coerces a value while isolating its error from sibling coercions.
           #
@@ -356,7 +386,8 @@ module OpenAI
               strictness: T::Boolean,
               exactness: {yes: Integer, no: Integer, maybe: Integer},
               error: T.nilable(StandardError),
-              branched: Integer
+              branched: Integer,
+              memo: T.nilable(T::Hash[T.untyped, T.untyped])
             }
           end
         end

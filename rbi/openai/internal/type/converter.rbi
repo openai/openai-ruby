@@ -22,7 +22,8 @@ module OpenAI
               maybe: Integer
             },
             error: T.nilable(StandardError),
-            branched: Integer
+            branched: Integer,
+            memo: T.nilable(T::Hash[T.untyped, T.untyped])
           }
         end
 
@@ -123,11 +124,20 @@ module OpenAI
 
           # @api private
           sig do
-            params(translate_names: T::Boolean, request_only: T::Boolean).returns(
+            params(translate_names: T::Boolean, request_only: T::Boolean, memoize: T::Boolean).returns(
               OpenAI::Internal::Type::Converter::CoerceState
             )
           end
-          def self.new_coerce_state(translate_names: true, request_only: false)
+          def self.new_coerce_state(translate_names: true, request_only: false, memoize: false)
+          end
+
+          # @api private
+          sig {
+            params(target: T.untyped, value: T.untyped, state: OpenAI::Internal::Type::Converter::CoerceState).returns(
+              T.untyped
+            )
+          }
+          def self.coerce_model(target, value, state:)
           end
 
           # @api private
