@@ -307,6 +307,24 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
     required :value, OpenAI::EnumOf[]
   end
 
+  class URIReport < OpenAI::BaseModel
+    required :link, String, format: "uri"
+  end
+
+  def test_unsupported_string_formats_fail_before_creation_network
+    configure(complete)
+    assert_raises(ArgumentError) { typed_stream(creation: true, output_type: URIReport) }
+    assert_empty(@server.requests)
+  end
+
+  def test_followup_and_raw_parsing_do_not_require_an_installable_agents_schema
+    text = JSON.generate(link: "https://example.com")
+    configure([turn("created"), answer_event(text), turn("completed"), idle])
+    result = typed_stream(output_type: URIReport).get_final_result
+    assert_equal("https://example.com", result.output_parsed.link)
+    assert_equal(result.output_parsed, result.raw_result.parse(output_type: URIReport).output_parsed)
+  end
+
   def test_empty_enums_fail_before_network
     configure(complete)
     assert_raises(ArgumentError) { typed_stream(creation: true, output_type: EmptyEnum) }

@@ -35,14 +35,7 @@ module OpenAI
             end
 
             @model = model
-            @schema = JSON.parse(JSON.generate(model.to_json_schema, max_nesting: false), max_nesting: false)
-            normalize_references
-            @schema = @schema.merge(resolve(@schema.fetch("$ref"))).except("$ref") if @schema.key?("$ref")
-            if @schema["type"] != "object" || %w[oneOf anyOf allOf enum not].any? { @schema.key?(_1) }
-              raise ArgumentError, "output_type must have an object-root schema without root composition"
-            end
 
-            check_schema(@schema)
           end
 
           def prepare_request(params)
@@ -51,6 +44,15 @@ module OpenAI
             if text.key?(:format)
               raise ArgumentError, "output_type cannot be combined with agent.text.format"
             end
+
+            @schema = JSON.parse(JSON.generate(@model.to_json_schema, max_nesting: false), max_nesting: false)
+            normalize_references
+            @schema = @schema.merge(resolve(@schema.fetch("$ref"))).except("$ref") if @schema.key?("$ref")
+            if @schema["type"] != "object" || %w[oneOf anyOf allOf enum not].any? { @schema.key?(_1) }
+              raise ArgumentError, "output_type must have an object-root schema without root composition"
+            end
+
+            check_schema(@schema)
 
             params[:agent] = agent.merge(text: text.merge(format: {type: :json_schema, schema: @schema}))
           end
@@ -146,6 +148,12 @@ module OpenAI
               if types.empty? || !(types - %w[object array string integer number boolean null]).empty?
                 raise ArgumentError, "output_type contains an invalid JSON type"
               end
+            end
+
+            if schema.key?("format") &&
+               !%w[date-time time date duration email hostname ipv4 ipv6 uuid].include?(schema["format"]) &&
+               schema["format"] != ""
+              raise ArgumentError, "output_type contains an unsupported string format"
             end
 
             if schema.key?("enum") && (!schema["enum"].is_a?(Array) || schema["enum"].empty?)
