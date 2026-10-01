@@ -97,7 +97,7 @@ openai.beta.agents.sessions.stream(result.session_id, input: "Update the report.
 end
 ```
 
-Parsing follows the SDK’s existing `BaseModel` conventions. Follow-up `output_type` only parses the answer; it does not change the session's schema.
+Parsing follows the SDK’s existing `BaseModel` conventions. Each output-text item is parsed separately; `output_parsed` returns the first. Follow-up `output_type` only parses the answer; it does not change the session's schema.
 `OutputParseError#raw_result` preserves the completed answer if parsing fails.
 
 ### Local audio

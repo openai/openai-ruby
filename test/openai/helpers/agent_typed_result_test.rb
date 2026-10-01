@@ -387,6 +387,48 @@ class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
     end
   end
 
+  def test_each_final_output_text_item_is_parsed_without_concatenating_json
+    texts = [report_json, report_json.sub("Ready", "Updated")]
+    [true, false].each do |single_message|
+      events = if single_message
+        item = answer_event
+        item[:item][:content] = texts.map { {type: "output_text", text: _1} }
+        [item]
+      else
+        [answer_event(texts[1], id: "second", index: 1), answer_event(texts[0], id: "first", index: 0)]
+      end
+
+      configure([turn("created"), *events, turn("completed"), idle])
+      result = typed_stream(creation: true).get_final_result
+      assert_equal("Ready", result.output_parsed.summary)
+      assert_equal(texts.join, result.output_text)
+      assert_same(result.raw_result.messages, result.messages)
+      assert_equal(single_message ? 1 : 2, result.messages.size)
+    end
+  end
+
+  def test_invalid_later_text_and_missing_text_preserve_the_raw_result
+    ["invalid JSON", report_json.sub("\"score\":2", "\"score\":[]")].each do |invalid|
+      configure(
+        [
+          turn("created"),
+          answer_event(report_json, id: "first", index: 0),
+          answer_event(invalid, id: "second", index: 1),
+          turn("completed"),
+          idle
+        ]
+      )
+      error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { typed_stream.get_final_result }
+      assert_equal(report_json + invalid, error.raw_result.output_text)
+      assert_equal(2, error.raw_result.messages.size)
+    end
+
+    configure([turn("created"), turn("completed"), idle])
+    error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { typed_stream.get_final_result }
+    assert_equal("", error.raw_result.output_text)
+    assert_empty(error.raw_result.messages)
+  end
+
   def test_parse_failures_preserve_raw_result_without_unsafe_causes
     invalid = [
       "not json",

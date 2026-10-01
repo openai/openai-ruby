@@ -53,13 +53,20 @@ module OpenAI
             return @result if @result && @result.raw_result.equal?(result)
             raise @error if @error && @error.raw_result.equal?(result)
 
-            value = JSON.parse(result.output_text, symbolize_names: true, max_nesting: false)
-            parsed = ModelAdapter.coerce(@model, value, memoize: true)
-            unless parsed
-              raise TypeError, "Output cannot be parsed into output_type"
+            first = nil
+            result.messages.each do |message|
+              message.content.each do |part|
+                next unless (part[:type] || part["type"]).to_s == "output_text"
+                value = JSON.parse(part[:text] || part["text"], symbolize_names: true, max_nesting: false)
+                parsed = ModelAdapter.coerce(@model, value, memoize: true)
+                raise TypeError, "Output cannot be parsed into output_type" unless parsed
+                first ||= parsed
+              end
             end
 
-            @result = ParsedTurnResult.new(raw_result: result, output_parsed: parsed)
+            raise TypeError, "Output does not contain structured text" unless first
+
+            @result = ParsedTurnResult.new(raw_result: result, output_parsed: first)
           rescue JSON::ParserError, TypeError, RangeError, SystemStackError
             @error = OutputParseError.new(raw_result: result)
             raise @error, cause: nil
