@@ -15,6 +15,10 @@ module OpenAI
       # @return [OpenAI::Resources::Audio::Speech]
       attr_reader :speech
 
+      # Turn audio into text or text into audio.
+      # @return [OpenAI::Resources::Audio::Voices]
+      attr_reader :voices
+
       # @api private
       #
       # @param client [OpenAI::Client]
@@ -23,6 +27,7 @@ module OpenAI
         @transcriptions = OpenAI::Resources::Audio::Transcriptions.new(client: client)
         @translations = OpenAI::Resources::Audio::Translations.new(client: client)
         @speech = OpenAI::Resources::Audio::Speech.new(client: client)
+        @voices = OpenAI::Resources::Audio::Voices.new(client: client)
       end
     end
   end

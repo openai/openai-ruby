@@ -24,8 +24,8 @@ module OpenAI
       sig { returns(OpenAI::Internal::FileInput) }
       attr_accessor :image
 
-      # The model to use for image generation. Only `dall-e-2` is supported at this
-      # time.
+      # The legacy model used by the retired image variations endpoint. This endpoint no
+      # longer accepts requests.
       sig { returns(T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol))) }
       attr_accessor :model
 
@@ -82,8 +82,8 @@ module OpenAI
         # content type.
         image:,
 
-        # The model to use for image generation. Only `dall-e-2` is supported at this
-        # time.
+        # The legacy model used by the retired image variations endpoint. This endpoint no
+        # longer accepts requests.
         model: nil,
 
         # The number of images to generate. Must be between 1 and 10.
@@ -123,8 +123,8 @@ module OpenAI
       def to_hash
       end
 
-      # The model to use for image generation. Only `dall-e-2` is supported at this
-      # time.
+      # The legacy model used by the retired image variations endpoint. This endpoint no
+      # longer accepts requests.
       module Model
         extend OpenAI::Internal::Type::Union
 

@@ -1,0 +1,114 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type agent_session_action_required_webhook_event =
+        {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent::Data,
+          ?object: :event,
+          ?type: :"agent.session.action_required"
+        }
+
+      class AgentSessionActionRequiredWebhookEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the event.
+        attr_accessor id: String
+
+        # The Unix timestamp, in seconds, when the event was created.
+        attr_accessor created_at: Integer
+
+        attr_accessor data: OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent::Data
+
+        # The object type. Always `event`.
+        attr_accessor object: :event
+
+        # The event type. Always `agent.session.action_required`.
+        attr_accessor type: :"agent.session.action_required"
+
+        # @param id
+        #   The unique ID of the event.
+        # @param created_at
+        #   The Unix timestamp, in seconds, when the event was created.
+        # @param object
+        #   The object type. Always `event`.
+        # @param type
+        #   The event type. Always `agent.session.action_required`.
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent::Data,
+          ?object: :event,
+          ?type: :"agent.session.action_required"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent::Data,
+          ?object: :event,
+          ?type: :"agent.session.action_required"
+        }
+
+        type data =
+          {
+            id: String,
+            required_action: OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent::Data::RequiredAction
+          }
+
+        class Data < OpenAI::Internal::Type::BaseModel
+          # The ID of the session.
+          attr_accessor id: String
+
+          # The action type. Retrieve the session for action details.
+          attr_accessor required_action: OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent::Data::RequiredAction
+
+          # @param id
+          #   The ID of the session.
+          # @param required_action
+          #   The action type. Retrieve the session for action details.
+          def initialize: (
+            id: String,
+            required_action: OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent::Data::RequiredAction
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            required_action: OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent::Data::RequiredAction
+          }
+
+          type required_action =
+            {
+              type: OpenAI::Models::Webhooks::AgentSessionActionRequiredWebhookEvent::Data::RequiredAction::type_
+            }
+
+          class RequiredAction < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: OpenAI::Models::Webhooks::AgentSessionActionRequiredWebhookEvent::Data::RequiredAction::type_
+
+            def initialize: (
+              type: OpenAI::Models::Webhooks::AgentSessionActionRequiredWebhookEvent::Data::RequiredAction::type_
+            ) -> void
+
+            def to_hash: -> {
+              type: OpenAI::Models::Webhooks::AgentSessionActionRequiredWebhookEvent::Data::RequiredAction::type_
+            }
+
+            type type_ =
+              :computer_use_approval_request
+              | :function_call
+              | :environment_connection
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              COMPUTER_USE_APPROVAL_REQUEST: :computer_use_approval_request
+              FUNCTION_CALL: :function_call
+              ENVIRONMENT_CONNECTION: :environment_connection
+
+              def self?.values: -> ::Array[OpenAI::Models::Webhooks::AgentSessionActionRequiredWebhookEvent::Data::RequiredAction::type_]
+            end
+          end
+        end
+      end
+    end
+  end
+end

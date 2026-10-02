@@ -178,6 +178,56 @@ class OpenAI::Test::WebhookVerificationTest < OpenAI::Test::ResourceTest
     end
   end
 
+  def test_unwrap_signed_agent_session_events_and_nested_payloads
+    event_types = {
+      "agent.session.action_required" => OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent,
+      "agent.session.created" => OpenAI::Webhooks::AgentSessionCreatedWebhookEvent,
+      "agent.session.in_progress" => OpenAI::Webhooks::AgentSessionInProgressWebhookEvent,
+      "agent.session.idle" => OpenAI::Webhooks::AgentSessionIdleWebhookEvent,
+      "agent.session.failed" => OpenAI::Webhooks::AgentSessionFailedWebhookEvent
+    }
+
+    event_types.each do |event_type, event_class|
+      data = {id: "sess_synthetic"}
+      if event_type == "agent.session.action_required"
+        data[:required_action] = {type: "function_call"}
+      else
+        data.merge!(environment_type: "synthetic", environment_id: "env_synthetic")
+        data[:connect] = {remote_url: "https://example.test/synthetic"} if event_type == "agent.session.created"
+      end
+
+      @test_payload = JSON.generate(
+        id: "evt_synthetic",
+        object: "event",
+        created_at: Integer(@fixed_timestamp, 10),
+        type: event_type,
+        data: data
+      )
+      event = @webhook_service.unwrap(
+        @test_payload,
+        signed_headers("synthetic-agent-webhook-secret"),
+        "synthetic-agent-webhook-secret"
+      )
+
+      assert_instance_of(event_class, event)
+      assert_instance_of(event_class::Data, event.data)
+      assert_equal("sess_synthetic", event.data.id)
+      if event_type == "agent.session.action_required"
+        assert_instance_of(event_class::Data::RequiredAction, event.data.required_action)
+        assert_equal(:function_call, event.data.required_action.type)
+      else
+        assert_equal("synthetic", event.data.environment_type)
+        assert_equal("env_synthetic", event.data.environment_id)
+        if event_type == "agent.session.created"
+          assert_instance_of(event_class::Data::Connect, event.data.connect)
+          assert_equal("https://example.test/synthetic", event.data.connect.remote_url)
+        end
+      end
+
+      assert_equal(JSON.parse(@test_payload), JSON.parse(event.to_json))
+    end
+  end
+
   def test_unwrap_safety_events
     event_types = {
       "safety.warning_issued" => OpenAI::Webhooks::SafetyWarningIssuedWebhookEvent,

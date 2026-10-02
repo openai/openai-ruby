@@ -1,0 +1,70 @@
+module OpenAI
+  module Models
+    module Audio
+      type voice =
+        {
+          id: String,
+          created_at: Integer,
+          name: String,
+          ?object: :"audio.voice",
+          type: OpenAI::Models::Audio::Voice::type_
+        }
+
+      class Voice < OpenAI::Internal::Type::BaseModel
+        # The voice identifier, which can be referenced in API endpoints.
+        attr_accessor id: String
+
+        # The Unix timestamp (in seconds) for when the voice was created.
+        attr_accessor created_at: Integer
+
+        # The name of the voice.
+        attr_accessor name: String
+
+        # The object type, which is always `audio.voice`.
+        attr_accessor object: :"audio.voice"
+
+        # How the voice was created. Voices created from text prompts are supported only
+        # in Live.
+        attr_accessor type: OpenAI::Models::Audio::Voice::type_
+
+        # @param id
+        #   The voice identifier, which can be referenced in API endpoints.
+        # @param created_at
+        #   The Unix timestamp (in seconds) for when the voice was created.
+        # @param name
+        #   The name of the voice.
+        # @param type
+        #   How the voice was created. Voices created from text prompts are supported only
+        #   in Live.
+        # @param object
+        #   The object type, which is always `audio.voice`.
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          name: String,
+          type: OpenAI::Models::Audio::Voice::type_,
+          ?object: :"audio.voice"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          name: String,
+          ?object: :"audio.voice",
+          type: OpenAI::Models::Audio::Voice::type_
+        }
+
+        type type_ = :audio_sample | :prompt
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          AUDIO_SAMPLE: :audio_sample
+          PROMPT: :prompt
+
+          def self?.values: -> ::Array[OpenAI::Models::Audio::Voice::type_]
+        end
+      end
+    end
+  end
+end
