@@ -89,6 +89,7 @@ module OpenAI
                   ?api_key_id: String?,
                   ?batch: bool?,
                   ?input_audio_tokens: Integer,
+                  ?:input_cache_write_12h_tokens => Integer,
                   ?input_cache_write_tokens: Integer,
                   ?input_cached_audio_tokens: Integer,
                   ?input_cached_image_tokens: Integer,
@@ -136,10 +137,20 @@ module OpenAI
                 # The aggregated number of uncached audio input tokens used.
                 def input_audio_tokens=: (Integer) -> Integer
 
-                # The aggregated number of input tokens written to the cache.
+                # The aggregated number of input tokens written to the cache with a 12-hour
+                # retention period.
+                attr_reader input_cache_write_12h_tokens: Integer?
+
+                # The aggregated number of input tokens written to the cache with a 12-hour
+                # retention period.
+                def input_cache_write_12h_tokens=: (Integer) -> Integer
+
+                # The aggregated number of input tokens written to the cache with a 30-minute
+                # retention period.
                 attr_reader input_cache_write_tokens: Integer?
 
-                # The aggregated number of input tokens written to the cache.
+                # The aggregated number of input tokens written to the cache with a 30-minute
+                # retention period.
                 def input_cache_write_tokens=: (Integer) -> Integer
 
                 # The aggregated number of cached audio input tokens used.
@@ -242,8 +253,12 @@ module OpenAI
                 #   batch or not.
                 # @param input_audio_tokens
                 #   The aggregated number of uncached audio input tokens used.
+                # @param input_cache_write_12h_tokens
+                #   The aggregated number of input tokens written to the cache with a 12-hour
+                #   retention period.
                 # @param input_cache_write_tokens
-                #   The aggregated number of input tokens written to the cache.
+                #   The aggregated number of input tokens written to the cache with a 30-minute
+                #   retention period.
                 # @param input_cached_audio_tokens
                 #   The aggregated number of cached audio input tokens used.
                 # @param input_cached_image_tokens
@@ -286,6 +301,7 @@ module OpenAI
                   ?api_key_id: String?,
                   ?batch: bool?,
                   ?input_audio_tokens: Integer,
+                  ?input_cache_write_12h_tokens: Integer,
                   ?input_cache_write_tokens: Integer,
                   ?input_cached_audio_tokens: Integer,
                   ?input_cached_image_tokens: Integer,
@@ -312,6 +328,7 @@ module OpenAI
                   ?api_key_id: String?,
                   ?batch: bool?,
                   ?input_audio_tokens: Integer,
+                  ?:input_cache_write_12h_tokens => Integer,
                   ?input_cache_write_tokens: Integer,
                   ?input_cached_audio_tokens: Integer,
                   ?input_cached_image_tokens: Integer,

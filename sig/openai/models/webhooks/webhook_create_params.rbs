@@ -60,6 +60,11 @@ module OpenAI
           | :"realtime.call.incoming"
           | :"video.completed"
           | :"video.failed"
+          | :"agent.session.created"
+          | :"agent.session.action_required"
+          | :"agent.session.in_progress"
+          | :"agent.session.idle"
+          | :"agent.session.failed"
           | :"safety.alert.created"
 
         module EventType
@@ -82,6 +87,11 @@ module OpenAI
           REALTIME_CALL_INCOMING: :"realtime.call.incoming"
           VIDEO_COMPLETED: :"video.completed"
           VIDEO_FAILED: :"video.failed"
+          AGENT_SESSION_CREATED: :"agent.session.created"
+          AGENT_SESSION_ACTION_REQUIRED: :"agent.session.action_required"
+          AGENT_SESSION_IN_PROGRESS: :"agent.session.in_progress"
+          AGENT_SESSION_IDLE: :"agent.session.idle"
+          AGENT_SESSION_FAILED: :"agent.session.failed"
           SAFETY_ALERT_CREATED: :"safety.alert.created"
 
           def self?.values: -> ::Array[OpenAI::Models::Webhooks::WebhookCreateParams::event_type]

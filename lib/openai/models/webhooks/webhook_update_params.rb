@@ -69,6 +69,11 @@ module OpenAI
           REALTIME_CALL_INCOMING = :"realtime.call.incoming"
           VIDEO_COMPLETED = :"video.completed"
           VIDEO_FAILED = :"video.failed"
+          AGENT_SESSION_CREATED = :"agent.session.created"
+          AGENT_SESSION_ACTION_REQUIRED = :"agent.session.action_required"
+          AGENT_SESSION_IN_PROGRESS = :"agent.session.in_progress"
+          AGENT_SESSION_IDLE = :"agent.session.idle"
+          AGENT_SESSION_FAILED = :"agent.session.failed"
           SAFETY_ALERT_CREATED = :"safety.alert.created"
 
           # @!method self.values

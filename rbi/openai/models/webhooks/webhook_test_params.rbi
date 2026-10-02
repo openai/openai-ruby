@@ -106,6 +106,26 @@ module OpenAI
           )
           VIDEO_COMPLETED = T.let(:"video.completed", OpenAI::Webhooks::WebhookTestParams::EventType::TaggedSymbol)
           VIDEO_FAILED = T.let(:"video.failed", OpenAI::Webhooks::WebhookTestParams::EventType::TaggedSymbol)
+          AGENT_SESSION_CREATED = T.let(
+            :"agent.session.created",
+            OpenAI::Webhooks::WebhookTestParams::EventType::TaggedSymbol
+          )
+          AGENT_SESSION_ACTION_REQUIRED = T.let(
+            :"agent.session.action_required",
+            OpenAI::Webhooks::WebhookTestParams::EventType::TaggedSymbol
+          )
+          AGENT_SESSION_IN_PROGRESS = T.let(
+            :"agent.session.in_progress",
+            OpenAI::Webhooks::WebhookTestParams::EventType::TaggedSymbol
+          )
+          AGENT_SESSION_IDLE = T.let(
+            :"agent.session.idle",
+            OpenAI::Webhooks::WebhookTestParams::EventType::TaggedSymbol
+          )
+          AGENT_SESSION_FAILED = T.let(
+            :"agent.session.failed",
+            OpenAI::Webhooks::WebhookTestParams::EventType::TaggedSymbol
+          )
           SAFETY_ALERT_CREATED = T.let(
             :"safety.alert.created",
             OpenAI::Webhooks::WebhookTestParams::EventType::TaggedSymbol

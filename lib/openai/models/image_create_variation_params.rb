@@ -19,8 +19,8 @@ module OpenAI
       required :image, OpenAI::Internal::Type::FileInput
 
       # @!attribute model
-      #   The model to use for image generation. Only `dall-e-2` is supported at this
-      #   time.
+      #   The legacy model used by the retired image variations endpoint. This endpoint no
+      #   longer accepts requests.
       #
       #   @return [String, Symbol, OpenAI::Models::ImageModel, nil]
       optional :model, union: -> { OpenAI::ImageCreateVariationParams::Model }, nil?: true
@@ -64,8 +64,8 @@ module OpenAI
       #     content type.
       #
       #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil]
-      #     The model to use for image generation. Only `dall-e-2` is supported at this
-      #     time.
+      #     The legacy model used by the retired image variations endpoint. This endpoint no
+      #     longer accepts requests.
       #
       #   @param n [Integer, nil]
       #     The number of images to generate. Must be between 1 and 10.
@@ -86,14 +86,14 @@ module OpenAI
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
-      # The model to use for image generation. Only `dall-e-2` is supported at this
-      # time.
+      # The legacy model used by the retired image variations endpoint. This endpoint no
+      # longer accepts requests.
       module Model
         extend OpenAI::Internal::Type::Union
 
         variant String
 
-        # The model to use for image generation. Only `dall-e-2` is supported at this time.
+        # The legacy model used by the retired image variations endpoint. This endpoint no longer accepts requests.
         variant enum: -> { OpenAI::ImageModel }
 
         # @!method self.variants

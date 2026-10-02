@@ -209,8 +209,16 @@ module OpenAI
                 #   @return [Integer, nil]
                 optional :input_audio_tokens, Integer
 
+                # @!attribute input_cache_write_12h_tokens
+                #   The aggregated number of input tokens written to the cache with a 12-hour
+                #   retention period.
+                #
+                #   @return [Integer, nil]
+                optional :input_cache_write_12h_tokens, Integer
+
                 # @!attribute input_cache_write_tokens
-                #   The aggregated number of input tokens written to the cache.
+                #   The aggregated number of input tokens written to the cache with a 30-minute
+                #   retention period.
                 #
                 #   @return [Integer, nil]
                 optional :input_cache_write_tokens, Integer
@@ -306,7 +314,7 @@ module OpenAI
                 #   @return [String, nil]
                 optional :user_id, String, nil?: true
 
-                # @!method initialize(input_tokens:, num_model_requests:, output_tokens:, api_key_id: nil, batch: nil, input_audio_tokens: nil, input_cache_write_tokens: nil, input_cached_audio_tokens: nil, input_cached_image_tokens: nil, input_cached_text_tokens: nil, input_cached_tokens: nil, input_image_tokens: nil, input_text_tokens: nil, input_uncached_tokens: nil, model: nil, output_audio_tokens: nil, output_image_tokens: nil, output_text_tokens: nil, project_id: nil, service_tier: nil, user_id: nil, object: :"organization.usage.completions.result")
+                # @!method initialize(input_tokens:, num_model_requests:, output_tokens:, api_key_id: nil, batch: nil, input_audio_tokens: nil, input_cache_write_12h_tokens: nil, input_cache_write_tokens: nil, input_cached_audio_tokens: nil, input_cached_image_tokens: nil, input_cached_text_tokens: nil, input_cached_tokens: nil, input_image_tokens: nil, input_text_tokens: nil, input_uncached_tokens: nil, model: nil, output_audio_tokens: nil, output_image_tokens: nil, output_text_tokens: nil, project_id: nil, service_tier: nil, user_id: nil, object: :"organization.usage.completions.result")
                 #   The aggregated completions usage details of the specific time bucket.
                 #
                 #   @param input_tokens [Integer]
@@ -333,8 +341,13 @@ module OpenAI
                 #   @param input_audio_tokens [Integer]
                 #     The aggregated number of uncached audio input tokens used.
                 #
+                #   @param input_cache_write_12h_tokens [Integer]
+                #     The aggregated number of input tokens written to the cache with a 12-hour
+                #     retention period.
+                #
                 #   @param input_cache_write_tokens [Integer]
-                #     The aggregated number of input tokens written to the cache.
+                #     The aggregated number of input tokens written to the cache with a 30-minute
+                #     retention period.
                 #
                 #   @param input_cached_audio_tokens [Integer]
                 #     The aggregated number of cached audio input tokens used.
