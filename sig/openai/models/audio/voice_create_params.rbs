@@ -1,0 +1,203 @@
+module OpenAI
+  module Models
+    module Audio
+      type voice_create_params =
+        {
+          body: OpenAI::Models::Audio::VoiceCreateParams::body,
+          ?request_options: OpenAI::request_opts
+        }
+
+      class VoiceCreateParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        # Creates a voice from a consent recording and an audio sample. Requires
+        # multipart/form-data.
+        attr_accessor body: OpenAI::Models::Audio::VoiceCreateParams::body
+
+        # @param body
+        #   Creates a voice from a consent recording and an audio sample. Requires
+        #   multipart/form-data.
+        def initialize: (
+          body: OpenAI::Models::Audio::VoiceCreateParams::body,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          body: OpenAI::Models::Audio::VoiceCreateParams::body,
+          ?request_options: OpenAI::RequestOptions
+        }
+
+        type body =
+          OpenAI::Audio::VoiceCreateParams::Body::AudioSample
+          | OpenAI::Audio::VoiceCreateParams::Body::Prompt
+
+        module Body
+          extend OpenAI::Internal::Type::Union
+
+          type audio_sample =
+            {
+              audio_sample: OpenAI::Internal::file_input,
+              consent: String,
+              name: String,
+              ?type: OpenAI::Models::Audio::VoiceCreateParams::Body::AudioSample::type_
+            }
+
+          class AudioSample < OpenAI::Internal::Type::BaseModel
+            # The sample audio recording file. Maximum size is 10 MiB.
+            #
+            # Supported MIME types: `audio/mpeg`, `audio/wav`, `audio/x-wav`, `audio/ogg`,
+            # `audio/aac`, `audio/flac`, `audio/webm`, `audio/mp4`.
+            #
+            # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+            # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+            # content type.
+            attr_accessor audio_sample: OpenAI::Internal::file_input
+
+            # The consent recording ID (for example, `cons_1234`).
+            attr_accessor consent: String
+
+            # The name of the new voice.
+            attr_accessor name: String
+
+            # The voice creation method. Defaults to `audio_sample` when omitted.
+            attr_reader type: OpenAI::Models::Audio::VoiceCreateParams::Body::AudioSample::type_?
+
+            # The voice creation method. Defaults to `audio_sample` when omitted.
+            def type=: (
+              OpenAI::Models::Audio::VoiceCreateParams::Body::AudioSample::type_
+            ) -> OpenAI::Models::Audio::VoiceCreateParams::Body::AudioSample::type_
+
+            # @param audio_sample
+            #   The sample audio recording file. Maximum size is 10 MiB.
+            #
+            #   Supported MIME types: `audio/mpeg`, `audio/wav`, `audio/x-wav`, `audio/ogg`,
+            #   `audio/aac`, `audio/flac`, `audio/webm`, `audio/mp4`.
+            #
+            #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+            #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+            #   content type.
+            # @param consent
+            #   The consent recording ID (for example, `cons_1234`).
+            # @param name
+            #   The name of the new voice.
+            # @param type
+            #   The voice creation method. Defaults to `audio_sample` when omitted.
+            def initialize: (
+              audio_sample: OpenAI::Internal::file_input,
+              consent: String,
+              name: String,
+              ?type: OpenAI::Models::Audio::VoiceCreateParams::Body::AudioSample::type_
+            ) -> void
+
+            def to_hash: -> {
+              audio_sample: OpenAI::Internal::file_input,
+              consent: String,
+              name: String,
+              ?type: OpenAI::Models::Audio::VoiceCreateParams::Body::AudioSample::type_
+            }
+
+            type type_ = :audio_sample
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              AUDIO_SAMPLE: :audio_sample
+
+              def self?.values: -> ::Array[OpenAI::Models::Audio::VoiceCreateParams::Body::AudioSample::type_]
+            end
+          end
+
+          type prompt =
+            {
+              name: String,
+              prompt: String,
+              type: OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::type_,
+              ?model: OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::model,
+              ?script_hint: String
+            }
+
+          class Prompt < OpenAI::Internal::Type::BaseModel
+            # The name of the new voice.
+            attr_accessor name: String
+
+            # A description of the desired voice. Must not contain only whitespace.
+            attr_accessor prompt: String
+
+            # Set to `prompt` to create a voice from a text description.
+            attr_accessor type: OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::type_
+
+            # The voice creation model to use. Defaults to `auto`.
+            attr_reader model: OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::model?
+
+            # The voice creation model to use. Defaults to `auto`.
+            def model=: (
+              OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::model
+            ) -> OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::model
+
+            # Optional text for the voice to speak during creation. If omitted, a script is
+            # generated from the prompt. Must not be blank after trimming whitespace; scripts
+            # that are too short are rejected.
+            attr_reader script_hint: String?
+
+            # Optional text for the voice to speak during creation. If omitted, a script is
+            # generated from the prompt. Must not be blank after trimming whitespace; scripts
+            # that are too short are rejected.
+            def script_hint=: (String) -> String
+
+            # @param name
+            #   The name of the new voice.
+            # @param prompt
+            #   A description of the desired voice. Must not contain only whitespace.
+            # @param type
+            #   Set to `prompt` to create a voice from a text description.
+            # @param model
+            #   The voice creation model to use. Defaults to `auto`.
+            # @param script_hint
+            #   Optional text for the voice to speak during creation. If omitted, a script is
+            #   generated from the prompt. Must not be blank after trimming whitespace; scripts
+            #   that are too short are rejected.
+            def initialize: (
+              name: String,
+              prompt: String,
+              type: OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::type_,
+              ?model: OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::model,
+              ?script_hint: String
+            ) -> void
+
+            def to_hash: -> {
+              name: String,
+              prompt: String,
+              type: OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::type_,
+              ?model: OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::model,
+              ?script_hint: String
+            }
+
+            type type_ = :prompt
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              PROMPT: :prompt
+
+              def self?.values: -> ::Array[OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::type_]
+            end
+
+            type model = String | :auto | :"2026-10-01"
+
+            module Model
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::model]
+
+              AUTO: :auto
+              MODEL_2026_10_01: :"2026-10-01"
+            end
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Audio::VoiceCreateParams::body]
+        end
+      end
+    end
+  end
+end

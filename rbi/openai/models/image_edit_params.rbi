@@ -24,17 +24,14 @@ module OpenAI
       # be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16
       # images.
       #
-      # For `dall-e-2`, you can only provide one image, and it should be a square `png`
-      # file less than 4MB.
-      #
       # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
       # metadata. Use `OpenAI::FilePart` when you need to override the filename or
       # content type.
       sig { returns(OpenAI::ImageEditParams::Image::Variants) }
       attr_accessor :image
 
-      # A text description of the desired image(s). The maximum length is 1000
-      # characters for `dall-e-2`, and 32000 characters for the GPT image models.
+      # A text description of the desired image(s). The maximum length is 32000
+      # characters for the GPT image models.
       sig { returns(String) }
       attr_accessor :prompt
 
@@ -70,12 +67,11 @@ module OpenAI
       sig { params(mask: OpenAI::Internal::FileInput).void }
       attr_writer :mask
 
-      # The model to use for image generation. One of `dall-e-2` or a GPT image model
-      # (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
-      # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
-      # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-      # `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`). Defaults to
-      # `gpt-image-1.5`.
+      # The GPT image model to use for image editing (`gpt-image-1`, `gpt-image-1-mini`,
+      # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
+      # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
+      # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
+      # `chatgpt-image-latest`).
       sig { returns(T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol))) }
       attr_accessor :model
 
@@ -111,25 +107,22 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol)) }
       attr_accessor :quality
 
-      # The format in which the generated images are returned. Must be one of `url` or
-      # `b64_json`. URLs are only valid for 60 minutes after the image has been
-      # generated. This parameter is only supported for `dall-e-2` (default is `url` for
-      # `dall-e-2`), as GPT image models always return base64-encoded images.
+      # Legacy response format parameter for retired image models. Unsupported for GPT
+      # image models, which always return base64-encoded images.
       sig { returns(T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol)) }
       attr_accessor :response_format
 
-      # The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`,
-      # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-      # `gpt-image-2.5-flare`, and `gpt-image-2.5-flare-2026-09-08`, arbitrary
-      # resolutions are supported as `WIDTHxHEIGHT` strings, for example `1536x864`.
-      # Width and height must both be divisible by 16 and the requested aspect ratio
-      # must be between 1:3 and 3:1. Resolutions above `2560x1440` are experimental, and
-      # the maximum supported resolution is `3840x2160`. The requested size must also
-      # satisfy the model's current pixel and edge limits. The standard sizes
-      # `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models;
-      # `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use
-      # one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of
-      # `1024x1024`, `1792x1024`, or `1024x1792`.
+      # The size of the generated images. Defaults to `auto`. For `gpt-image-2`,
+      # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+      # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`, and
+      # `gpt-image-2.5-flare-2026-09-08`, arbitrary resolutions are supported as
+      # `WIDTHxHEIGHT` strings, for example `1536x864`. Width and height must both be
+      # divisible by 16 and the requested aspect ratio must be between 1:3 and 3:1.
+      # Resolutions above `2560x1440` are experimental, and the maximum supported
+      # resolution is `3840x2160`. The requested size must also satisfy the model's
+      # current pixel and edge limits. The standard sizes `1024x1024`, `1536x1024`, and
+      # `1024x1536` are supported by the GPT image models; `auto` is supported for
+      # models that allow automatic sizing.
       sig { returns(T.nilable(T.any(String, OpenAI::ImageEditParams::Size::OrSymbol))) }
       attr_accessor :size
 
@@ -188,16 +181,13 @@ module OpenAI
         # be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16
         # images.
         #
-        # For `dall-e-2`, you can only provide one image, and it should be a square `png`
-        # file less than 4MB.
-        #
         # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
         # metadata. Use `OpenAI::FilePart` when you need to override the filename or
         # content type.
         image:,
 
-        # A text description of the desired image(s). The maximum length is 1000
-        # characters for `dall-e-2`, and 32000 characters for the GPT image models.
+        # A text description of the desired image(s). The maximum length is 32000
+        # characters for the GPT image models.
         prompt:,
 
         # Allows to set transparency for the background of the generated image(s). Must be
@@ -226,12 +216,11 @@ module OpenAI
         # content type.
         mask: nil,
 
-        # The model to use for image generation. One of `dall-e-2` or a GPT image model
-        # (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
-        # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
-        # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-        # `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`). Defaults to
-        # `gpt-image-1.5`.
+        # The GPT image model to use for image editing (`gpt-image-1`, `gpt-image-1-mini`,
+        # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
+        # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
+        # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
+        # `chatgpt-image-latest`).
         model: nil,
 
         # The number of images to generate. Must be between 1 and 10.
@@ -261,24 +250,21 @@ module OpenAI
         # `xhigh` and `max`. Defaults to `auto`.
         quality: nil,
 
-        # The format in which the generated images are returned. Must be one of `url` or
-        # `b64_json`. URLs are only valid for 60 minutes after the image has been
-        # generated. This parameter is only supported for `dall-e-2` (default is `url` for
-        # `dall-e-2`), as GPT image models always return base64-encoded images.
+        # Legacy response format parameter for retired image models. Unsupported for GPT
+        # image models, which always return base64-encoded images.
         response_format: nil,
 
-        # The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`,
-        # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-        # `gpt-image-2.5-flare`, and `gpt-image-2.5-flare-2026-09-08`, arbitrary
-        # resolutions are supported as `WIDTHxHEIGHT` strings, for example `1536x864`.
-        # Width and height must both be divisible by 16 and the requested aspect ratio
-        # must be between 1:3 and 3:1. Resolutions above `2560x1440` are experimental, and
-        # the maximum supported resolution is `3840x2160`. The requested size must also
-        # satisfy the model's current pixel and edge limits. The standard sizes
-        # `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models;
-        # `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use
-        # one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of
-        # `1024x1024`, `1792x1024`, or `1024x1792`.
+        # The size of the generated images. Defaults to `auto`. For `gpt-image-2`,
+        # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+        # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`, and
+        # `gpt-image-2.5-flare-2026-09-08`, arbitrary resolutions are supported as
+        # `WIDTHxHEIGHT` strings, for example `1536x864`. Width and height must both be
+        # divisible by 16 and the requested aspect ratio must be between 1:3 and 3:1.
+        # Resolutions above `2560x1440` are experimental, and the maximum supported
+        # resolution is `3840x2160`. The requested size must also satisfy the model's
+        # current pixel and edge limits. The standard sizes `1024x1024`, `1536x1024`, and
+        # `1024x1536` are supported by the GPT image models; `auto` is supported for
+        # models that allow automatic sizing.
         size: nil,
 
         # A unique identifier representing your end-user, which can help OpenAI to monitor
@@ -322,9 +308,6 @@ module OpenAI
       # `gpt-image-2.5-flare-2026-09-08`, and `chatgpt-image-latest`), each image should
       # be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16
       # images.
-      #
-      # For `dall-e-2`, you can only provide one image, and it should be a square `png`
-      # file less than 4MB.
       module Image
         extend OpenAI::Internal::Type::Union
 
@@ -382,12 +365,11 @@ module OpenAI
         end
       end
 
-      # The model to use for image generation. One of `dall-e-2` or a GPT image model
-      # (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
-      # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
-      # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-      # `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`). Defaults to
-      # `gpt-image-1.5`.
+      # The GPT image model to use for image editing (`gpt-image-1`, `gpt-image-1-mini`,
+      # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
+      # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
+      # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
+      # `chatgpt-image-latest`).
       module Model
         extend OpenAI::Internal::Type::Union
 
@@ -427,23 +409,21 @@ module OpenAI
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::ImageEditParams::Quality) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        STANDARD = T.let(:standard, OpenAI::ImageEditParams::Quality::TaggedSymbol)
         LOW = T.let(:low, OpenAI::ImageEditParams::Quality::TaggedSymbol)
         MEDIUM = T.let(:medium, OpenAI::ImageEditParams::Quality::TaggedSymbol)
         HIGH = T.let(:high, OpenAI::ImageEditParams::Quality::TaggedSymbol)
         XHIGH = T.let(:xhigh, OpenAI::ImageEditParams::Quality::TaggedSymbol)
         MAX = T.let(:max, OpenAI::ImageEditParams::Quality::TaggedSymbol)
         AUTO = T.let(:auto, OpenAI::ImageEditParams::Quality::TaggedSymbol)
+        STANDARD = T.let(:standard, OpenAI::ImageEditParams::Quality::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::ImageEditParams::Quality::TaggedSymbol]) }
         def self.values
         end
       end
 
-      # The format in which the generated images are returned. Must be one of `url` or
-      # `b64_json`. URLs are only valid for 60 minutes after the image has been
-      # generated. This parameter is only supported for `dall-e-2` (default is `url` for
-      # `dall-e-2`), as GPT image models always return base64-encoded images.
+      # Legacy response format parameter for retired image models. Unsupported for GPT
+      # image models, which always return base64-encoded images.
       module ResponseFormat
         extend OpenAI::Internal::Type::Enum
 
@@ -458,18 +438,17 @@ module OpenAI
         end
       end
 
-      # The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`,
-      # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-      # `gpt-image-2.5-flare`, and `gpt-image-2.5-flare-2026-09-08`, arbitrary
-      # resolutions are supported as `WIDTHxHEIGHT` strings, for example `1536x864`.
-      # Width and height must both be divisible by 16 and the requested aspect ratio
-      # must be between 1:3 and 3:1. Resolutions above `2560x1440` are experimental, and
-      # the maximum supported resolution is `3840x2160`. The requested size must also
-      # satisfy the model's current pixel and edge limits. The standard sizes
-      # `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models;
-      # `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use
-      # one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of
-      # `1024x1024`, `1792x1024`, or `1024x1792`.
+      # The size of the generated images. Defaults to `auto`. For `gpt-image-2`,
+      # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+      # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`, and
+      # `gpt-image-2.5-flare-2026-09-08`, arbitrary resolutions are supported as
+      # `WIDTHxHEIGHT` strings, for example `1536x864`. Width and height must both be
+      # divisible by 16 and the requested aspect ratio must be between 1:3 and 3:1.
+      # Resolutions above `2560x1440` are experimental, and the maximum supported
+      # resolution is `3840x2160`. The requested size must also satisfy the model's
+      # current pixel and edge limits. The standard sizes `1024x1024`, `1536x1024`, and
+      # `1024x1536` are supported by the GPT image models; `auto` is supported for
+      # models that allow automatic sizing.
       module Size
         extend OpenAI::Internal::Type::Union
 
@@ -485,12 +464,12 @@ module OpenAI
 
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        SIZE_256X256 = T.let(:"256x256", OpenAI::ImageEditParams::Size::TaggedSymbol)
-        SIZE_512X512 = T.let(:"512x512", OpenAI::ImageEditParams::Size::TaggedSymbol)
         SIZE_1024X1024 = T.let(:"1024x1024", OpenAI::ImageEditParams::Size::TaggedSymbol)
         SIZE_1536X1024 = T.let(:"1536x1024", OpenAI::ImageEditParams::Size::TaggedSymbol)
         SIZE_1024X1536 = T.let(:"1024x1536", OpenAI::ImageEditParams::Size::TaggedSymbol)
         AUTO = T.let(:auto, OpenAI::ImageEditParams::Size::TaggedSymbol)
+        SIZE_256X256 = T.let(:"256x256", OpenAI::ImageEditParams::Size::TaggedSymbol)
+        SIZE_512X512 = T.let(:"512x512", OpenAI::ImageEditParams::Size::TaggedSymbol)
 
       end
 

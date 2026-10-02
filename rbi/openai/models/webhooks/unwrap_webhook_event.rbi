@@ -5,12 +5,18 @@ module OpenAI
 
     module Webhooks
 
-      # Sent when a batch API request has been cancelled.
+      # Sent when an agent session requires an action. Retrieve the session for action
+      # details.
       module UnwrapWebhookEvent
         extend OpenAI::Internal::Type::Union
 
         Variants = T.type_alias do
           T.any(
+            OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent,
+            OpenAI::Webhooks::AgentSessionCreatedWebhookEvent,
+            OpenAI::Webhooks::AgentSessionFailedWebhookEvent,
+            OpenAI::Webhooks::AgentSessionIdleWebhookEvent,
+            OpenAI::Webhooks::AgentSessionInProgressWebhookEvent,
             OpenAI::Webhooks::BatchCancelledWebhookEvent,
             OpenAI::Webhooks::BatchCompletedWebhookEvent,
             OpenAI::Webhooks::BatchExpiredWebhookEvent,

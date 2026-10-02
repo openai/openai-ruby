@@ -50,7 +50,12 @@ module OpenAI
         String payload,
         ?Hash[String | Symbol, String] headers,
         ?String? webhook_secret
-      ) -> (OpenAI::Webhooks::BatchCancelledWebhookEvent
+      ) -> (OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent
+      | OpenAI::Webhooks::AgentSessionCreatedWebhookEvent
+      | OpenAI::Webhooks::AgentSessionFailedWebhookEvent
+      | OpenAI::Webhooks::AgentSessionIdleWebhookEvent
+      | OpenAI::Webhooks::AgentSessionInProgressWebhookEvent
+      | OpenAI::Webhooks::BatchCancelledWebhookEvent
       | OpenAI::Webhooks::BatchCompletedWebhookEvent
       | OpenAI::Webhooks::BatchExpiredWebhookEvent
       | OpenAI::Webhooks::BatchFailedWebhookEvent

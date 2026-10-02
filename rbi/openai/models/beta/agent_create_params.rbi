@@ -206,9 +206,6 @@ module OpenAI
           # Uses the fast service tier.
           FAST = T.let(:fast, OpenAI::Beta::AgentCreateParams::ServiceTier::TaggedSymbol)
 
-          # Uses the ultrafast service tier.
-          ULTRAFAST = T.let(:ultrafast, OpenAI::Beta::AgentCreateParams::ServiceTier::TaggedSymbol)
-
           sig { override.returns(T::Array[OpenAI::Beta::AgentCreateParams::ServiceTier::TaggedSymbol]) }
           def self.values
           end

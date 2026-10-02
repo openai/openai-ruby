@@ -16,8 +16,7 @@ module OpenAI
       end
 
       # A text description of the desired image(s). The maximum length is 32000
-      # characters for the GPT image models, 1000 characters for `dall-e-2` and 4000
-      # characters for `dall-e-3`.
+      # characters.
       sig { returns(String) }
       attr_accessor :prompt
 
@@ -33,12 +32,11 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::ImageGenerateParams::Background::OrSymbol)) }
       attr_accessor :background
 
-      # The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT
-      # image model (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
-      # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+      # The GPT image model to use for image generation. Specify a model explicitly.
+      # Supported models include `gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`,
+      # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
       # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-      # `gpt-image-2.5-flare-2026-09-08`). Defaults to `dall-e-2` unless a parameter
-      # specific to the GPT image models is used.
+      # `gpt-image-2.5-flare-2026-09-08`, and `chatgpt-image-latest`.
       sig { returns(T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol))) }
       attr_accessor :model
 
@@ -48,8 +46,7 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::ImageGenerateParams::Moderation::OrSymbol)) }
       attr_accessor :moderation
 
-      # The number of images to generate. Must be between 1 and 10. For `dall-e-3`, only
-      # `n=1` is supported.
+      # The number of images to generate. Must be between 1 and 10.
       sig { returns(T.nilable(Integer)) }
       attr_accessor :n
 
@@ -80,14 +77,10 @@ module OpenAI
       # - `high`, `medium` and `low` are supported for the GPT image models.
       # - `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including their
       #   `2026-09-08` snapshots, also support `xhigh` and `max`.
-      # - `hd` and `standard` are supported for `dall-e-3`.
-      # - `standard` is the only option for `dall-e-2`.
       sig { returns(T.nilable(OpenAI::ImageGenerateParams::Quality::OrSymbol)) }
       attr_accessor :quality
 
-      # The format in which generated images with `dall-e-2` and `dall-e-3` are
-      # returned. Must be one of `url` or `b64_json`. URLs are only valid for 60 minutes
-      # after the image has been generated. This parameter isn't supported for the GPT
+      # Legacy response format parameter for retired image models. Unsupported for GPT
       # image models, which always return base64-encoded images.
       sig { returns(T.nilable(OpenAI::ImageGenerateParams::ResponseFormat::OrSymbol)) }
       attr_accessor :response_format
@@ -101,16 +94,12 @@ module OpenAI
       # the maximum supported resolution is `3840x2160`. The requested size must also
       # satisfy the model's current pixel and edge limits. The standard sizes
       # `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models;
-      # `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use
-      # one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of
-      # `1024x1024`, `1792x1024`, or `1024x1792`.
+      # `auto` is supported for models that allow automatic sizing.
       sig { returns(T.nilable(T.any(String, OpenAI::ImageGenerateParams::Size::OrSymbol))) }
       attr_accessor :size
 
-      # The style of the generated images. This parameter is only supported for
-      # `dall-e-3`. Must be one of `vivid` or `natural`. Vivid causes the model to lean
-      # towards generating hyper-real and dramatic images. Natural causes the model to
-      # produce more natural, less hyper-real looking images.
+      # Legacy style parameter for retired image models. Unsupported for GPT image
+      # models; describe the desired style in the prompt instead.
       sig { returns(T.nilable(OpenAI::ImageGenerateParams::Style::OrSymbol)) }
       attr_accessor :style
 
@@ -159,8 +148,7 @@ module OpenAI
       def self.new(
 
         # A text description of the desired image(s). The maximum length is 32000
-        # characters for the GPT image models, 1000 characters for `dall-e-2` and 4000
-        # characters for `dall-e-3`.
+        # characters.
         prompt:,
 
         # Allows to set transparency for the background of the generated image(s). Must be
@@ -174,12 +162,11 @@ module OpenAI
         # set the output format to `png` or `webp`.
         background: nil,
 
-        # The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT
-        # image model (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
-        # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+        # The GPT image model to use for image generation. Specify a model explicitly.
+        # Supported models include `gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`,
+        # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
         # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-        # `gpt-image-2.5-flare-2026-09-08`). Defaults to `dall-e-2` unless a parameter
-        # specific to the GPT image models is used.
+        # `gpt-image-2.5-flare-2026-09-08`, and `chatgpt-image-latest`.
         model: nil,
 
         # Control the content-moderation level for images generated by the GPT image
@@ -187,8 +174,7 @@ module OpenAI
         # value).
         moderation: nil,
 
-        # The number of images to generate. Must be between 1 and 10. For `dall-e-3`, only
-        # `n=1` is supported.
+        # The number of images to generate. Must be between 1 and 10.
         n: nil,
 
         # The compression level (0-100%) for the generated images. This parameter is only
@@ -215,13 +201,9 @@ module OpenAI
         # - `high`, `medium` and `low` are supported for the GPT image models.
         # - `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including their
         #   `2026-09-08` snapshots, also support `xhigh` and `max`.
-        # - `hd` and `standard` are supported for `dall-e-3`.
-        # - `standard` is the only option for `dall-e-2`.
         quality: nil,
 
-        # The format in which generated images with `dall-e-2` and `dall-e-3` are
-        # returned. Must be one of `url` or `b64_json`. URLs are only valid for 60 minutes
-        # after the image has been generated. This parameter isn't supported for the GPT
+        # Legacy response format parameter for retired image models. Unsupported for GPT
         # image models, which always return base64-encoded images.
         response_format: nil,
 
@@ -234,15 +216,11 @@ module OpenAI
         # the maximum supported resolution is `3840x2160`. The requested size must also
         # satisfy the model's current pixel and edge limits. The standard sizes
         # `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models;
-        # `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use
-        # one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of
-        # `1024x1024`, `1792x1024`, or `1024x1792`.
+        # `auto` is supported for models that allow automatic sizing.
         size: nil,
 
-        # The style of the generated images. This parameter is only supported for
-        # `dall-e-3`. Must be one of `vivid` or `natural`. Vivid causes the model to lean
-        # towards generating hyper-real and dramatic images. Natural causes the model to
-        # produce more natural, less hyper-real looking images.
+        # Legacy style parameter for retired image models. Unsupported for GPT image
+        # models; describe the desired style in the prompt instead.
         style: nil,
 
         # A unique identifier representing your end-user, which can help OpenAI to monitor
@@ -301,12 +279,11 @@ module OpenAI
         end
       end
 
-      # The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT
-      # image model (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
-      # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+      # The GPT image model to use for image generation. Specify a model explicitly.
+      # Supported models include `gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`,
+      # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
       # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-      # `gpt-image-2.5-flare-2026-09-08`). Defaults to `dall-e-2` unless a parameter
-      # specific to the GPT image models is used.
+      # `gpt-image-2.5-flare-2026-09-08`, and `chatgpt-image-latest`.
       module Model
         extend OpenAI::Internal::Type::Union
 
@@ -359,31 +336,27 @@ module OpenAI
       # - `high`, `medium` and `low` are supported for the GPT image models.
       # - `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including their
       #   `2026-09-08` snapshots, also support `xhigh` and `max`.
-      # - `hd` and `standard` are supported for `dall-e-3`.
-      # - `standard` is the only option for `dall-e-2`.
       module Quality
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::ImageGenerateParams::Quality) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        STANDARD = T.let(:standard, OpenAI::ImageGenerateParams::Quality::TaggedSymbol)
-        HD = T.let(:hd, OpenAI::ImageGenerateParams::Quality::TaggedSymbol)
         LOW = T.let(:low, OpenAI::ImageGenerateParams::Quality::TaggedSymbol)
         MEDIUM = T.let(:medium, OpenAI::ImageGenerateParams::Quality::TaggedSymbol)
         HIGH = T.let(:high, OpenAI::ImageGenerateParams::Quality::TaggedSymbol)
         XHIGH = T.let(:xhigh, OpenAI::ImageGenerateParams::Quality::TaggedSymbol)
         MAX = T.let(:max, OpenAI::ImageGenerateParams::Quality::TaggedSymbol)
         AUTO = T.let(:auto, OpenAI::ImageGenerateParams::Quality::TaggedSymbol)
+        STANDARD = T.let(:standard, OpenAI::ImageGenerateParams::Quality::TaggedSymbol)
+        HD = T.let(:hd, OpenAI::ImageGenerateParams::Quality::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::ImageGenerateParams::Quality::TaggedSymbol]) }
         def self.values
         end
       end
 
-      # The format in which generated images with `dall-e-2` and `dall-e-3` are
-      # returned. Must be one of `url` or `b64_json`. URLs are only valid for 60 minutes
-      # after the image has been generated. This parameter isn't supported for the GPT
+      # Legacy response format parameter for retired image models. Unsupported for GPT
       # image models, which always return base64-encoded images.
       module ResponseFormat
         extend OpenAI::Internal::Type::Enum
@@ -408,9 +381,7 @@ module OpenAI
       # the maximum supported resolution is `3840x2160`. The requested size must also
       # satisfy the model's current pixel and edge limits. The standard sizes
       # `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models;
-      # `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use
-      # one of `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of
-      # `1024x1024`, `1792x1024`, or `1024x1792`.
+      # `auto` is supported for models that allow automatic sizing.
       module Size
         extend OpenAI::Internal::Type::Union
 
@@ -437,10 +408,8 @@ module OpenAI
 
       end
 
-      # The style of the generated images. This parameter is only supported for
-      # `dall-e-3`. Must be one of `vivid` or `natural`. Vivid causes the model to lean
-      # towards generating hyper-real and dramatic images. Natural causes the model to
-      # produce more natural, less hyper-real looking images.
+      # Legacy style parameter for retired image models. Unsupported for GPT image
+      # models; describe the desired style in the prompt instead.
       module Style
         extend OpenAI::Internal::Type::Enum
 
