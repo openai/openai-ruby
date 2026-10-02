@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.99.0](https://github.com/openai/openai-ruby/compare/v0.98.0...v0.99.0) (2026-10-02)
+
+
+### Features
+
+* **api:** add custom voices and agent session webhook events ([#800](https://github.com/openai/openai-ruby/issues/800)) ([baaec48](https://github.com/openai/openai-ruby/commit/baaec487ca85117d6ee149cabdfe0cb8837d883c))
+
 ## [0.98.0](https://github.com/openai/openai-ruby/compare/v0.97.0...v0.98.0) (2026-10-01)
 
 
