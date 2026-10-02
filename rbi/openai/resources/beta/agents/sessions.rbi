@@ -21,6 +21,9 @@ module OpenAI
           sig { returns(OpenAI::Resources::Beta::Agents::Sessions::Events) }
           attr_reader :events
 
+          sig { returns(OpenAI::Resources::Beta::Agents::Sessions::Traces) }
+          attr_reader :traces
+
           sig { returns(OpenAI::Resources::Beta::Agents::Sessions::Turns) }
           attr_reader :turns
 
@@ -88,13 +91,14 @@ module OpenAI
               ),
               agent: OpenAI::Beta::Agents::SessionCreateParams::Agent::OrHash,
               agent_id: String,
+              output_type: T.nilable(T.class_of(OpenAI::Helpers::StructuredOutput::BaseModel)),
               input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
               metadata: T.nilable(T::Hash[Symbol, String]),
               vault_ids: T.nilable(T::Array[String]),
               stream: T.noreturn,
               request_options: OpenAI::RequestOptions::OrHash
             )
-              .returns(OpenAI::Internal::Stream[OpenAI::Beta::AgentSessionEvent::Variants])
+              .returns(OpenAI::Helpers::Beta::Agents::CreationStream)
           }
           def create_streaming(
             # An inline execution environment or a reference to an environment template.
@@ -105,6 +109,7 @@ module OpenAI
             # The ID of a saved reusable agent. Omit `agent` to use its configuration
             # unchanged.
             agent_id: nil,
+            output_type: nil,
             # Initial input to submit when the session is created. A string is shorthand for a
             # single user message. Required when `environment.type` is `none`, or when
             # `stream` is `true` for an environment that is not `self_hosted`; optional for

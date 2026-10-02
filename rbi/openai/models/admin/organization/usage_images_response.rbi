@@ -202,7 +202,16 @@ module OpenAI
                 sig { params(input_audio_tokens: Integer).void }
                 attr_writer :input_audio_tokens
 
-                # The aggregated number of input tokens written to the cache.
+                # The aggregated number of input tokens written to the cache with a 12-hour
+                # retention period.
+                sig { returns(T.nilable(Integer)) }
+                attr_reader :input_cache_write_12h_tokens
+
+                sig { params(input_cache_write_12h_tokens: Integer).void }
+                attr_writer :input_cache_write_12h_tokens
+
+                # The aggregated number of input tokens written to the cache with a 30-minute
+                # retention period.
                 sig { returns(T.nilable(Integer)) }
                 attr_reader :input_cache_write_tokens
 
@@ -318,6 +327,8 @@ module OpenAI
 
                     input_audio_tokens: Integer,
 
+                    input_cache_write_12h_tokens: Integer,
+
                     input_cache_write_tokens: Integer,
 
                     input_cached_audio_tokens: Integer,
@@ -378,7 +389,12 @@ module OpenAI
                   # The aggregated number of uncached audio input tokens used.
                   input_audio_tokens: nil,
 
-                  # The aggregated number of input tokens written to the cache.
+                  # The aggregated number of input tokens written to the cache with a 12-hour
+                  # retention period.
+                  input_cache_write_12h_tokens: nil,
+
+                  # The aggregated number of input tokens written to the cache with a 30-minute
+                  # retention period.
                   input_cache_write_tokens: nil,
 
                   # The aggregated number of cached audio input tokens used.
@@ -444,6 +460,7 @@ module OpenAI
                       api_key_id: T.nilable(String),
                       batch: T.nilable(T::Boolean),
                       input_audio_tokens: Integer,
+                      input_cache_write_12h_tokens: Integer,
                       input_cache_write_tokens: Integer,
                       input_cached_audio_tokens: Integer,
                       input_cached_image_tokens: Integer,

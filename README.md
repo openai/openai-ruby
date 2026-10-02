@@ -15,7 +15,7 @@ To use this gem, install via Bundler by adding the following to your application
 <!-- x-release-please-start-version -->
 
 ```ruby
-gem "openai", "~> 0.95.0"
+gem "openai", "~> 0.98.0"
 ```
 
 <!-- x-release-please-end -->
@@ -49,6 +49,81 @@ stream.each do |event|
   puts(event.type)
 end
 ```
+
+### Agents final output (beta)
+
+Collect final output from an Agents creation stream:
+
+```ruby
+stream = openai.beta.agents.sessions.create_streaming(
+  agent: {model: "gpt-5.2", instructions: "Explain the supplied policy clearly."},
+  environment: {type: :none},
+  input: "Explain this policy: ..."
+)
+result = stream.get_final_result
+puts(result.output_text)
+```
+
+Use the same getter for follow-ups; to display progress first, call
+`stream.with_result_collection` before iterating:
+
+```ruby
+openai.beta.agents.sessions.stream(result.session_id, input: "Give an example.") do |stream|
+  puts(stream.get_final_result.output_text)
+end
+```
+
+The beta result includes `turn` metadata and final `messages`; unsuccessful or
+incomplete collection raises `OpenAI::Helpers::Beta::Agents::ResultError`.
+
+### Typed Agents output (beta)
+
+Use an `OpenAI::BaseModel` with `output_type` to configure and parse a structured answer:
+
+```ruby
+class Report < OpenAI::BaseModel
+  required :summary, String
+  required :findings, OpenAI::ArrayOf[String]
+end
+
+result = openai.beta.agents.sessions.create_streaming(
+  agent: {model: "gpt-5.2"}, environment: {type: :none},
+  input: "Summarize these notes: ...", output_type: Report
+).get_final_result
+puts(result.output_parsed.summary)
+
+openai.beta.agents.sessions.stream(result.session_id, input: "Update the report.", output_type: Report) do |stream|
+  puts(stream.get_final_result.output_parsed.summary)
+end
+```
+
+Parsing follows the SDK’s existing `BaseModel` conventions. Each output-text item is parsed separately; `output_parsed` returns the first. Follow-up `output_type` only parses the answer; it does not change the session's schema.
+`OutputParseError#raw_result` preserves the completed answer if parsing fails.
+
+### Hosted files and artifacts
+
+Prepare selected local files before creating a hosted session, or use `upload` to stage one in an existing environment. Keep `upload_ids` for explicit cleanup through the Files API.
+
+```ruby
+prepared = openai.beta.agents.environments.files.prepare({
+  "/workspace/source.pdf" => Pathname("source.pdf")
+})
+stream = openai.beta.agents.sessions.create_streaming(
+  agent: {model: "gpt-6-astra"},
+  environment: {type: :openai_hosted, files: prepared.files},
+  input: "Read source.pdf and write /workspace/outputs/report.md"
+)
+result = stream.get_final_result
+artifacts = openai.beta.agents.sessions.artifacts.for_result(result)
+artifacts.download(path: "/workspace/outputs/report.md", to: Pathname("report.md"))
+
+# Or keep the downloaded bytes in memory:
+buffer = StringIO.new
+artifacts.download(path: "/workspace/outputs/report.md", to: buffer)
+puts(buffer.string)
+```
+
+`prepare_directory(directory, destination:, include:)` stages an explicitly selected snapshot. Local path and directory helpers assume stable, application-owned source paths; they are not a filesystem sandbox for arbitrary user-supplied paths or hostile local writers. Downloads select the exact result turn and stream to an application-owned local path or the writer you supply. An interrupted transfer may leave partial contents.
 
 ### Local audio
 

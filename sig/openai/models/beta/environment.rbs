@@ -31,7 +31,9 @@ module OpenAI
             packages: OpenAI::Beta::Environment::OpenAIHosted::Packages,
             plugins: ::Array[OpenAI::Beta::HostedPlugin],
             skills: ::Array[OpenAI::Models::Beta::hosted_skill],
-            ?type: :openai_hosted
+            ?type: :openai_hosted,
+            ?container_size: OpenAI::Models::Beta::Environment::OpenAIHosted::container_size?,
+            ?desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop
           }
 
         class OpenAIHosted < OpenAI::Internal::Type::BaseModel
@@ -59,6 +61,18 @@ module OpenAI
           # The type of the object. Always `openai_hosted`.
           attr_accessor type: :openai_hosted
 
+          # The effective CPU and memory tier, or null when unknown or outside the public
+          # tiers.
+          attr_accessor container_size: OpenAI::Models::Beta::Environment::OpenAIHosted::container_size?
+
+          # The effective desktop configuration.
+          attr_reader desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop?
+
+          # The effective desktop configuration.
+          def desktop=: (
+            OpenAI::Beta::Environment::OpenAIHosted::Desktop
+          ) -> OpenAI::Beta::Environment::OpenAIHosted::Desktop
+
           # @param id
           #   The public ID of the environment.
           # @param capability_directories
@@ -73,6 +87,11 @@ module OpenAI
           #   Plugins installed in the environment, excluding their archive contents.
           # @param skills
           #   Skills installed in the environment, excluding their archive contents.
+          # @param container_size
+          #   The effective CPU and memory tier, or null when unknown or outside the public
+          #   tiers.
+          # @param desktop
+          #   The effective desktop configuration.
           # @param type
           #   The type of the object. Always `openai_hosted`.
           def initialize: (
@@ -83,6 +102,8 @@ module OpenAI
             packages: OpenAI::Beta::Environment::OpenAIHosted::Packages,
             plugins: ::Array[OpenAI::Beta::HostedPlugin],
             skills: ::Array[OpenAI::Models::Beta::hosted_skill],
+            ?container_size: OpenAI::Models::Beta::Environment::OpenAIHosted::container_size?,
+            ?desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop,
             ?type: :openai_hosted
           ) -> void
 
@@ -94,7 +115,9 @@ module OpenAI
             packages: OpenAI::Beta::Environment::OpenAIHosted::Packages,
             plugins: ::Array[OpenAI::Beta::HostedPlugin],
             skills: ::Array[OpenAI::Models::Beta::hosted_skill],
-            ?type: :openai_hosted
+            ?type: :openai_hosted,
+            ?container_size: OpenAI::Models::Beta::Environment::OpenAIHosted::container_size?,
+            ?desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop
           }
 
           type network =
@@ -135,7 +158,7 @@ module OpenAI
               # Disables network access.
               DISABLED: :disabled
 
-              # Allows access only to configured domains.
+              # Applies the configured domain restrictions.
               RESTRICTED: :restricted
 
               def self?.values: -> ::Array[OpenAI::Models::Beta::Environment::OpenAIHosted::Network::access]
@@ -176,6 +199,31 @@ module OpenAI
               python: ::Array[String],
               system_: ::Array[String]
             }
+          end
+
+          type container_size = :small | :medium | :large
+
+          module ContainerSize
+            extend OpenAI::Internal::Type::Enum
+
+            SMALL: :small
+            MEDIUM: :medium
+            LARGE: :large
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Environment::OpenAIHosted::container_size]
+          end
+
+          type desktop = { enabled: bool }
+
+          class Desktop < OpenAI::Internal::Type::BaseModel
+            # Whether the environment provisions a desktop and browser proxy.
+            attr_accessor enabled: bool
+
+            # @param enabled
+            #   Whether the environment provisions a desktop and browser proxy.
+            def initialize: (enabled: bool) -> void
+
+            def to_hash: -> { enabled: bool }
           end
         end
 

@@ -11,6 +11,8 @@ module OpenAI
 
           attr_reader events: OpenAI::Resources::Beta::Agents::Sessions::Events
 
+          attr_reader traces: OpenAI::Resources::Beta::Agents::Sessions::Traces
+
           attr_reader turns: OpenAI::Resources::Beta::Agents::Sessions::Turns
 
           def create: (
@@ -27,11 +29,12 @@ module OpenAI
             environment: OpenAI::Models::Beta::environment_param,
             ?agent: OpenAI::Beta::Agents::SessionCreateParams::Agent,
             ?agent_id: String,
+            ?output_type: singleton(OpenAI::Helpers::StructuredOutput::BaseModel)?,
             ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
             ?metadata: ::Hash[Symbol, String]?,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::Internal::Stream[OpenAI::Models::Beta::agent_session_event]
+          ) -> OpenAI::Helpers::Beta::Agents::CreationStream
 
           def retrieve: (
             String session_id,

@@ -18,7 +18,7 @@ module OpenAI
             # @!attribute events
             #   The input events to submit to the session.
             #
-            #   @return [Array<OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMessage, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputCancel, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputToolResult>]
+            #   @return [Array<OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMessage, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputCancel, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputToolResult>]
             required :events, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AgentSessionInputParam] }
 
             # @!attribute idempotency_key
@@ -29,7 +29,7 @@ module OpenAI
             # @!method initialize(session_id:, events:, idempotency_key: nil, request_options: {})
             #   @param session_id [String]
             #
-            #   @param events [Array<OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMessage, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputCancel, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputToolResult>]
+            #   @param events [Array<OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMessage, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputCancel, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputToolResult>]
             #     The input events to submit to the session.
             #
             #   @param idempotency_key [String]

@@ -192,7 +192,7 @@ module OpenAI
         # @api private
         def abort
           framer = @connection.framer
-          framer.extend(AbortableFramer)
+          framer.extend(AbortableFramer) unless framer.respond_to?(:abort)
           framer.abort
           @aborted = true
         rescue StandardError => e
@@ -208,6 +208,7 @@ module OpenAI
 
       def open(url:, headers:, timeout:, **endpoint_options)
         load_dependencies(url)
+        connect_options = negotiation_options(endpoint_options)
 
         # Proxy credentials belong only on the CONNECT request assembled from
         # proxy configuration. Never forward a caller-supplied value to the
@@ -274,7 +275,8 @@ module OpenAI
               endpoint,
               request_target: request_target,
               headers: headers,
-              timeout: timeout
+              timeout: timeout,
+              connect_options: connect_options
             )
             socket = build_socket(connection, url: url)
             begin
@@ -303,10 +305,12 @@ module OpenAI
         raise error, cause: error.cause
       end
 
-      private def negotiate(client, endpoint, request_target:, headers:, timeout:)
+      private def negotiation_options(_endpoint_options) = {}
+
+      private def negotiate(client, endpoint, request_target:, headers:, timeout:, connect_options:)
         safe_headers = trace_safe_headers(headers)
         operation = lambda do
-          client.connect(authority(endpoint.url), request_target, headers: safe_headers)
+          client.connect(authority(endpoint.url), request_target, headers: safe_headers, **connect_options)
         end
 
         return operation.call if timeout.nil?
@@ -376,9 +380,10 @@ module OpenAI
         host = url.hostname
         host = "[#{host}]" if host.include?(":")
         default_port = %w[https wss].include?(url.scheme) ? 443 : 80
-        return host if !include_default_port && url.port == default_port
+        port = url.port || default_port
+        return host if !include_default_port && port == default_port
 
-        "#{host}:#{url.port}"
+        "#{host}:#{port}"
       end
 
       private def proxy_uri(url)

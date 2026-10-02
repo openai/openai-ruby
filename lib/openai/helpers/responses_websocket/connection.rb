@@ -177,10 +177,16 @@ module OpenAI
       end
 
       private def write_text(text)
+        complete = false
         super
+        complete = true
+        nil
       rescue StandardError
-        @poisoned = true
         raise OpenAI::Errors::ResponsesSendError.new(url: @url), cause: nil
+      ensure
+        # Cancellation can bypass StandardError. Poison before another lane
+        # can send, so normal cleanup cannot flush an uncertain write.
+        @poisoned = true unless complete
       end
 
       private def with_read_lease

@@ -245,6 +245,477 @@ class OpenAI::Test::ResponsesWebSocketWorkflowsTest < Minitest::Test
     GC.start
   end
 
+  def test_bounded_receive_counts_utf8_fragments_allows_ping_and_resets_between_messages
+    data = JSON.generate(delta_event("hello 🌍", lane: "main"))
+    handler = lambda do |socket|
+      read_event(socket)
+      midpoint = data.b.index("🌍".b) + 1
+      2.times do
+        socket.write_frame(Protocol::WebSocket::TextFrame.new(false).pack(data.byteslice(0, midpoint)))
+        # Control frames must work even when they exceed the remaining message bytes.
+        socket.write_frame(Protocol::WebSocket::PingFrame.new.pack("p" * 125))
+        socket.write_frame(Protocol::WebSocket::ContinuationFrame.new(true).pack(data.byteslice(midpoint..)))
+        socket.flush
+      end
+
+      2.times do
+        pong = socket.read_frame
+        assert_instance_of(Protocol::WebSocket::PongFrame, pong)
+        assert_equal("p" * 125, pong.unpack)
+      end
+    end
+
+    with_server(handler) do |client|
+      client
+        .responses
+        .connect(
+          transport_options: {max_message_bytes: data.bytesize, max_message_frames: 2}
+        ) do |connection|
+          connection.response.create(model: "example-model", input: "test", stream_id: "main")
+          2.times do
+            event = connection.receive
+            assert_kind_of(OpenAI::Responses::ResponseTextDeltaEvent, event)
+            assert_equal("hello 🌍", event.delta)
+          end
+          # Native pongs flush on the next read. The server then closes after both.
+          assert_nil(connection.receive)
+        end
+    end
+  end
+
+  def test_compressed_wire_and_decoded_limits_reset_without_losing_small_inflate_tail
+    text = "Hola 🌍 " * 25
+    data = JSON.generate(delta_event(text, lane: "main"))
+    handler = lambda do |socket|
+      read_event(socket)
+      assert_instance_of(Protocol::WebSocket::Extension::Compression::Deflate, socket.writer)
+      2.times do
+        compressed = socket.writer.pack_text_frame(data).unpack
+        split = compressed.bytesize / 2
+        first = Protocol::WebSocket::TextFrame.new(false).pack(compressed.byteslice(0, split))
+        first.flags |= Protocol::WebSocket::Frame::RSV1
+        socket.write_frame(first)
+        socket.write_frame(Protocol::WebSocket::PingFrame.new.pack("p" * 125))
+        socket.write_frame(Protocol::WebSocket::ContinuationFrame.new(true).pack(compressed.byteslice(split..)))
+        socket.flush
+      end
+
+      2.times do
+        pong = socket.read_frame
+        assert_instance_of(Protocol::WebSocket::PongFrame, pong)
+        assert_equal("p" * 125, pong.unpack)
+      end
+    end
+
+    with_server(handler) do |client|
+      client
+        .responses
+        .connect(
+          transport_options: {
+            max_wire_message_bytes: data.bytesize,
+            max_message_bytes: data.bytesize,
+            max_message_frames: 2
+          }
+        ) do |connection|
+          connection.response.create(model: "example-model", input: "test")
+          2.times do
+            event = connection.receive
+            assert_kind_of(OpenAI::Responses::ResponseTextDeltaEvent, event)
+            assert_equal(text, event.delta)
+          end
+
+          assert_nil(connection.receive)
+        end
+    end
+  end
+
+  def test_compressed_wire_limit_does_not_imply_a_decoded_limit
+    text = "kept 🌍 " * 10_000
+    handler = lambda do |socket|
+      read_event(socket)
+      assert_instance_of(Protocol::WebSocket::Extension::Compression::Deflate, socket.writer)
+      write_delta(socket, text, lane: "main")
+    end
+
+    with_server(handler) do |client|
+      client.responses.connect(transport_options: {max_wire_message_bytes: 4_096}) do |connection|
+        connection.response.create(model: "example-model", input: "test")
+        assert_equal(text, connection.receive.delta)
+      end
+    end
+  end
+
+  def test_compressed_limits_reset_after_server_declares_no_context_takeover
+    text = "Separate windows 🌍 " * 10
+    data = JSON.generate(delta_event(text, lane: "main"))
+    compression = Protocol::WebSocket::Extension::Compression
+    extensions = Protocol::WebSocket::Extensions::Server.new([[compression, {server_no_context_takeover: true}]])
+    # The gem's server options set its deflater but aren't included in the response
+    # header unless the client asked first. Advertise the chosen server behavior.
+    def extensions.accept(headers)
+      super do |header|
+        header << "server_no_context_takeover"
+        yield header
+      end
+    end
+
+    handler = lambda do |socket|
+      read_event(socket)
+      assert_instance_of(Protocol::WebSocket::Extension::Compression::Deflate, socket.writer)
+      refute(socket.writer.context_takeover)
+      2.times { write_delta(socket, text, lane: "main") }
+    end
+
+    with_server(handler, extensions: extensions) do |client|
+      client
+        .responses
+        .connect(
+          transport_options: {max_wire_message_bytes: data.bytesize, max_message_bytes: data.bytesize}
+        ) do |connection|
+          connection.response.create(model: "example-model", input: "test")
+          2.times { assert_equal(text, connection.receive.delta) }
+        end
+    end
+  end
+
+  def test_small_compressed_tail_is_rejected_one_decoded_byte_over_budget
+    data = JSON.generate(delta_event("short 🌍", lane: "main"))
+    handler = lambda do |socket|
+      read_event(socket)
+      assert_instance_of(Protocol::WebSocket::Extension::Compression::Deflate, socket.writer)
+      socket.write(Protocol::WebSocket::TextMessage.new(data))
+      socket.flush
+    end
+
+    with_server(handler) do |client|
+      client
+        .responses
+        .connect(
+          transport_options: {max_wire_message_bytes: 1_024, max_message_bytes: data.bytesize - 1}
+        ) do |connection|
+          connection.response.create(model: "example-model", input: "test")
+          assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive }
+          assert_predicate(connection, :closed?)
+        end
+    end
+  end
+
+  def test_finished_deflate_trailing_input_obeys_decoded_limit
+    [true, false].each do |context_takeover|
+      assert_finished_deflate_limit(context_takeover: context_takeover)
+    end
+  end
+
+  def test_reused_finished_inflater_obeys_decoded_limit
+    assert_finished_deflate_limit(context_takeover: true, prime_finished_inflater: true)
+  end
+
+  def test_compressed_decoded_limit_aborts_before_peer_teardown_and_rejects_later_write
+    text = "synthetic response content " * 50_000
+    peer_closed = Async::Queue.new
+    handler = lambda do |socket|
+      read_event(socket)
+      assert_instance_of(Protocol::WebSocket::Extension::Compression::Deflate, socket.writer)
+      write_delta(socket, text, lane: "main")
+      begin
+        assert_nil(socket.read)
+      rescue EOFError, Protocol::WebSocket::ClosedError
+        nil
+      ensure
+        peer_closed.enqueue(true)
+      end
+    end
+
+    with_server(handler) do |client|
+      client
+        .responses
+        .connect(
+          transport_options: {max_wire_message_bytes: 64_000, max_message_bytes: 512}
+        ) do |connection|
+          connection.response.create(model: "example-model", input: "test")
+          Async::Task.current.with_timeout(2, Minitest::Assertion) do
+            error = assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive }
+            refute_includes(error.full_message, "synthetic response content")
+            assert(peer_closed.dequeue)
+          end
+
+          assert_predicate(connection, :closed?)
+          assert_raises(OpenAI::Errors::ResponsesConnectionError) do
+            connection.response.create(model: "example-model", input: "must not replay")
+          end
+        end
+    end
+  end
+
+  def test_plain_messages_obey_decoded_limit_even_when_compression_was_negotiated
+    data = JSON.generate(delta_event("uncompressed 🌍", lane: "main"))
+    handler = lambda do |socket|
+      read_event(socket)
+      assert_instance_of(Protocol::WebSocket::Extension::Compression::Deflate, socket.writer)
+      # RSV1 is deliberately clear: servers need not compress every message.
+      split = data.bytesize / 2
+      socket.write_frame(Protocol::WebSocket::TextFrame.new(false).pack(data.byteslice(0, split)))
+      socket.write_frame(Protocol::WebSocket::ContinuationFrame.new(true).pack(data.byteslice(split..)))
+      socket.flush
+    end
+
+    with_server(handler) do |client|
+      client
+        .responses
+        .connect(
+          transport_options: {max_wire_message_bytes: data.bytesize + 500, max_message_bytes: data.bytesize - 1}
+        ) do |connection|
+          connection.response.create(model: "example-model", input: "test")
+          assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive }
+          assert_predicate(connection, :closed?)
+        end
+    end
+  end
+
+  def test_both_byte_limits_apply_when_server_declines_compression
+    data = JSON.generate(delta_event("plain 🌍", lane: "main"))
+    handler = lambda do |socket|
+      read_event(socket)
+      refute_kind_of(Protocol::WebSocket::Extension::Compression::Deflate, socket.writer)
+      write_delta(socket, "plain 🌍", lane: "main")
+      write_delta(socket, "plain 🌍!", lane: "main")
+    end
+
+    with_server(handler, extensions: nil) do |client|
+      client
+        .responses
+        .connect(
+          transport_options: {max_wire_message_bytes: data.bytesize + 500, max_message_bytes: data.bytesize}
+        ) do |connection|
+          connection.response.create(model: "example-model", input: "test")
+          assert_equal("plain 🌍", connection.receive.delta)
+          assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive }
+          assert_predicate(connection, :closed?)
+        end
+    end
+  end
+
+  def test_plain_header_obeys_smaller_decoded_cap_before_first_or_continued_body
+    [false, true].each do |compression|
+      [false, true].each do |continued|
+        peer_closed = Async::Queue.new
+        handler = lambda do |socket|
+          read_event(socket)
+          assert_equal(compression, socket.writer.is_a?(Protocol::WebSocket::Extension::Compression::Deflate))
+          if continued
+            socket.write_frame(Protocol::WebSocket::TextFrame.new(false).pack("{"))
+            socket.write_frame(Protocol::WebSocket::PingFrame.new.pack("p" * 125))
+          end
+          # This uncompressed header fits the wire cap but not the decoded cap.
+          # Leave the peer open without a body; waiting for it isn't bounded receive.
+          header = continued ? 0x80 : 0x81
+          socket.framer.instance_variable_get(:@stream).write([header, 0x7F, 1_048_576].pack("CCQ>"))
+          socket.flush
+          begin
+            assert_nil(socket.read)
+          rescue EOFError, Protocol::WebSocket::ClosedError
+            nil
+          ensure
+            peer_closed.enqueue(true)
+          end
+        end
+
+        extensions = compression ? Protocol::WebSocket::Extensions::Server.default : nil
+        with_server(handler, extensions: extensions) do |client|
+          client
+            .responses
+            .connect(
+              transport_options: {max_wire_message_bytes: 2_097_152, max_message_bytes: 1_024}
+            ) do |connection|
+              connection.response.create(model: "example-model", input: "test")
+              Async::Task.current.with_timeout(2, Minitest::Assertion) do
+                assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive }
+                assert(peer_closed.dequeue)
+              end
+
+              assert_predicate(connection, :closed?)
+            end
+        end
+      end
+    end
+  end
+
+  def test_wire_budget_can_fit_a_valid_compressed_message_larger_than_its_decoded_budget
+    text = "full wire block 🌍 " * 20
+    data = JSON.generate(delta_event(text, lane: "main"))
+    compression = Protocol::WebSocket::Extension::Compression
+    extensions = Protocol::WebSocket::Extensions::Server.new([[compression, {level: Zlib::NO_COMPRESSION}]])
+    handler = lambda do |socket|
+      read_event(socket)
+      frame = socket.writer.pack_text_frame(data)
+      # A valid stored DEFLATE block can exceed decoded size, above the control
+      # frame allowance too. A blanket min(wire, decoded) would reject it.
+      assert_operator(frame.length, :>, data.bytesize)
+      socket.write_frame(frame)
+      socket.flush
+    end
+
+    with_server(handler, extensions: extensions) do |client|
+      client
+        .responses
+        .connect(
+          transport_options: {max_wire_message_bytes: 1_024, max_message_bytes: data.bytesize}
+        ) do |connection|
+          connection.response.create(model: "example-model", input: "test")
+          assert_equal(text, connection.receive.delta)
+        end
+    end
+  end
+
+  def test_new_wire_limit_rejects_oversized_header_without_reading_an_unavailable_payload
+    peer_closed = Async::Queue.new
+    handler = lambda do |socket|
+      read_event(socket)
+      # FIN + RSV1 + text, unmasked 64-bit length, no advertised body.
+      # Send literal wire bytes: versions 0.20 and 0.21 serialize frame metadata differently.
+      socket.framer.instance_variable_get(:@stream).write([0xC1, 0x7F, 1_048_576].pack("CCQ>"))
+      socket.flush
+      begin
+        assert_nil(socket.read)
+      rescue EOFError, Protocol::WebSocket::ClosedError
+        nil
+      ensure
+        peer_closed.enqueue(true)
+      end
+    end
+
+    with_server(handler) do |client|
+      client
+        .responses
+        .connect(
+          transport_options: {max_wire_message_bytes: 1_024, max_message_bytes: 4_000}
+        ) do |connection|
+          connection.response.create(model: "example-model", input: "test")
+          Async::Task.current.with_timeout(2, Minitest::Assertion) do
+            assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive }
+            assert(peer_closed.dequeue)
+          end
+
+          assert_predicate(connection, :closed?)
+        end
+    end
+  end
+
+  def test_bounded_receive_rejects_truncated_oversized_frame_before_waiting_for_payload
+    peer_closed = Async::Queue.new
+    handler = lambda do |socket|
+      read_event(socket)
+      # Write a real extended-length header with no body, leaving the peer open.
+      # An unbounded reader waits for data that will never arrive.
+      socket.framer.instance_variable_get(:@stream).write([0x81, 0x7F, 1_048_576].pack("CCQ>"))
+      socket.flush
+      begin
+        assert_nil(socket.read)
+      rescue EOFError, Protocol::WebSocket::ClosedError
+        nil
+      ensure
+        peer_closed.enqueue(true)
+      end
+    end
+
+    with_server(handler) do |client|
+      client.responses.connect(transport_options: {max_message_bytes: 1_024}) do |connection|
+        connection.response.create(model: "example-model", input: "test")
+        # An assertion cannot be sanitized as a transport error if this times out.
+        Async::Task.current.with_timeout(2, Minitest::Assertion) do
+          assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive }
+          assert(peer_closed.dequeue)
+        end
+
+        assert_predicate(connection, :closed?)
+        assert_raises(OpenAI::Errors::ResponsesConnectionError) do
+          connection.response.create(model: "example-model", input: "must not replay")
+        end
+      end
+    end
+  end
+
+  def test_bounded_receive_rejects_message_one_byte_past_budget
+    data = JSON.generate(delta_event("synthetic private text 🌍", lane: "main"))
+    handler = lambda do |socket|
+      read_event(socket)
+      midpoint = data.b.index("🌍".b) + 1
+      socket.write_frame(Protocol::WebSocket::TextFrame.new(false).pack(data.byteslice(0, midpoint)))
+      socket.write_frame(Protocol::WebSocket::ContinuationFrame.new(true).pack(data.byteslice(midpoint..)))
+      socket.flush
+    end
+
+    with_server(handler) do |client|
+      client.responses.connect(transport_options: {max_message_bytes: data.bytesize - 1}) do |connection|
+        connection.response.create(model: "example-model", input: "test")
+        error = assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive }
+        refute_includes(error.full_message, "synthetic private text")
+        assert_predicate(connection, :closed?)
+      end
+    end
+  end
+
+  def test_bounded_receive_rejects_empty_continuations_before_unbounded_frame_buffering
+    peer_closed = Async::Queue.new
+    handler = lambda do |socket|
+      read_event(socket)
+      socket.write_frame(Protocol::WebSocket::TextFrame.new(false).pack("{"))
+      3.times { socket.write_frame(Protocol::WebSocket::ContinuationFrame.new(false).pack("")) }
+      socket.flush
+      begin
+        assert_nil(socket.read)
+      rescue EOFError, Protocol::WebSocket::ClosedError
+        nil
+      ensure
+        peer_closed.enqueue(true)
+      end
+    end
+
+    with_server(handler) do |client|
+      client.responses.connect(transport_options: {max_message_bytes: 1_024, max_message_frames: 3}) do |connection|
+        connection.response.create(model: "example-model", input: "test")
+        Async::Task.current.with_timeout(2, Minitest::Assertion) do
+          assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive }
+          assert(peer_closed.dequeue)
+        end
+
+        assert_predicate(connection, :closed?)
+      end
+    end
+  end
+
+  def test_frame_only_limit_rejects_large_fourth_frame_before_reading_its_body
+    peer_closed = Async::Queue.new
+    handler = lambda do |socket|
+      read_event(socket)
+      socket.write_frame(Protocol::WebSocket::TextFrame.new(false).pack("{"))
+      2.times { socket.write_frame(Protocol::WebSocket::ContinuationFrame.new(false).pack("")) }
+      frame = Protocol::WebSocket::ContinuationFrame.new(false).pack("")
+      def frame.length = 1_048_576
+      socket.write_frame(frame)
+      socket.flush
+      begin
+        assert_nil(socket.read)
+      rescue EOFError, Protocol::WebSocket::ClosedError
+        nil
+      ensure
+        peer_closed.enqueue(true)
+      end
+    end
+
+    with_server(handler) do |client|
+      client.responses.connect(transport_options: {max_message_frames: 3}) do |connection|
+        connection.response.create(model: "example-model", input: "test")
+        Async::Task.current.with_timeout(2, Minitest::Assertion) do
+          assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive }
+          assert(peer_closed.dequeue)
+        end
+
+        assert_predicate(connection, :closed?)
+      end
+    end
+  end
+
   def test_operation_deadline_interrupts_an_idle_read_and_does_not_replay
     requests = []
     peer_closed = Async::Queue.new
@@ -291,7 +762,77 @@ class OpenAI::Test::ResponsesWebSocketWorkflowsTest < Minitest::Test
     end
   end
 
-  private def with_server(handler)
+  private def assert_finished_deflate_limit(context_takeover:, prime_finished_inflater: false)
+    deflater = Zlib::Deflate.new(Zlib::DEFAULT_COMPRESSION, -Zlib::MAX_WBITS)
+    # Cross a native output chunk as well as exercising the uncounted tail.
+    finished = deflater.deflate("x" * 20_000, Zlib::FINISH)
+    deflater.close
+    payload = finished + ("synthetic unused input " * 50_000)
+    peer_closed = Async::Queue.new
+    compression = Protocol::WebSocket::Extension::Compression
+    extensions = Protocol::WebSocket::Extensions::Server.new(
+      [[compression, {server_no_context_takeover: !context_takeover}]]
+    )
+    unless context_takeover
+      def extensions.accept(headers)
+        super do |header|
+          header << "server_no_context_takeover"
+          yield header
+        end
+      end
+    end
+
+    handler = lambda do |socket|
+      read_event(socket)
+      assert_instance_of(compression::Deflate, socket.writer)
+      assert_equal(context_takeover, socket.writer.context_takeover)
+      if prime_finished_inflater
+        first = Protocol::WebSocket::BinaryFrame.new.pack(finished)
+        first.flags |= Protocol::WebSocket::Frame::RSV1
+        socket.write_frame(first)
+        socket.flush
+      end
+
+      split = payload.bytesize / 2
+      first = Protocol::WebSocket::BinaryFrame.new(false).pack(payload.byteslice(0, split))
+      first.flags |= Protocol::WebSocket::Frame::RSV1
+      socket.write_frame(first)
+      socket.write_frame(Protocol::WebSocket::ContinuationFrame.new(true).pack(payload.byteslice(split..)))
+      socket.flush
+      # A budget violation must abort, not send a close frame and await a reply.
+      begin
+        assert_nil(socket.read_frame)
+      rescue EOFError, Protocol::WebSocket::ClosedError
+        nil
+      ensure
+        peer_closed.enqueue(true)
+      end
+    end
+
+    with_server(handler, extensions: extensions) do |client|
+      client
+        .responses
+        .connect(
+          transport_options: {max_wire_message_bytes: payload.bytesize, max_message_bytes: 32_768}
+        ) do |connection|
+          connection.response.create(model: "example-model", input: "test")
+          assert_operator(connection.receive_raw.bytesize, :<=, 32_768) if prime_finished_inflater
+          # Binary messages and receive_raw avoid a later UTF-8/JSON rejection
+          # masking the decoded-budget bypass after the oversized allocation.
+          Async::Task.current.with_timeout(2, Minitest::Assertion) do
+            assert_raises(OpenAI::Errors::ResponsesConnectionError) { connection.receive_raw }
+            assert(peer_closed.dequeue)
+          end
+
+          assert_predicate(connection, :closed?)
+          assert_raises(OpenAI::Errors::ResponsesConnectionError) do
+            connection.response.create(model: "example-model", input: "must not replay")
+          end
+        end
+    end
+  end
+
+  private def with_server(handler, **server_options)
     Sync do |task|
       task.with_timeout(10) do
         endpoint = Async::HTTP::Endpoint.parse("http://127.0.0.1:0")
@@ -299,7 +840,7 @@ class OpenAI::Test::ResponsesWebSocketWorkflowsTest < Minitest::Test
         port = bound.sockets.first.local_address.ip_port
         fallback = -> (_request) { Protocol::HTTP::Response[404, {}, []] }
         errors = []
-        websocket = Async::WebSocket::Server.new(fallback) do |socket|
+        websocket = Async::WebSocket::Server.new(fallback, **server_options) do |socket|
           handler.call(socket)
         rescue StandardError, Minitest::Assertion => e
           errors << e

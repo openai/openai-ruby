@@ -6,6 +6,8 @@ module OpenAI
         | OpenAI::Beta::AgentReasoningItem
         | OpenAI::Beta::AgentFunctionCallItem
         | OpenAI::Beta::AgentMcpCallItem
+        | OpenAI::Beta::AgentOutputItem::ComputerUseCall
+        | OpenAI::Beta::AgentOutputItem::ComputerUseApprovalRequest
         | OpenAI::Beta::AgentWebSearchCallItem
         | OpenAI::Beta::AgentCommandExecutionItem
         | OpenAI::Beta::AgentCreateSubagentCallItem
@@ -17,6 +19,258 @@ module OpenAI
 
       module AgentOutputItem
         extend OpenAI::Internal::Type::Union
+
+        type computer_use_call =
+          {
+            id: String,
+            output: OpenAI::Beta::AgentOutputItem::ComputerUseCall::Output?,
+            status: OpenAI::Models::Beta::agent_function_call_status,
+            title: String?,
+            turn_id: String,
+            ?type: :computer_use_call
+          }
+
+        class ComputerUseCall < OpenAI::Internal::Type::BaseModel
+          # The ID of the activity item.
+          attr_accessor id: String
+
+          # The last screenshot emitted by the model. Null when screenshot inclusion is
+          # disabled or the call emitted no screenshot.
+          attr_accessor output: OpenAI::Beta::AgentOutputItem::ComputerUseCall::Output?
+
+          # The execution status of the activity.
+          attr_accessor status: OpenAI::Models::Beta::agent_function_call_status
+
+          # A model-generated description of the activity, when available.
+          attr_accessor title: String?
+
+          # The ID of the turn that contains this item.
+          attr_accessor turn_id: String
+
+          # The item type. Always `computer_use_call`.
+          attr_accessor type: :computer_use_call
+
+          # @param id
+          #   The ID of the activity item.
+          # @param output
+          #   The last screenshot emitted by the model. Null when screenshot inclusion is
+          #   disabled or the call emitted no screenshot.
+          # @param status
+          #   The execution status of the activity.
+          # @param title
+          #   A model-generated description of the activity, when available.
+          # @param turn_id
+          #   The ID of the turn that contains this item.
+          # @param type
+          #   The item type. Always `computer_use_call`.
+          def initialize: (
+            id: String,
+            output: OpenAI::Beta::AgentOutputItem::ComputerUseCall::Output?,
+            status: OpenAI::Models::Beta::agent_function_call_status,
+            title: String?,
+            turn_id: String,
+            ?type: :computer_use_call
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            output: OpenAI::Beta::AgentOutputItem::ComputerUseCall::Output?,
+            status: OpenAI::Models::Beta::agent_function_call_status,
+            title: String?,
+            turn_id: String,
+            ?type: :computer_use_call
+          }
+
+          type output = { image_url: String, ?type: :computer_screenshot }
+
+          class Output < OpenAI::Internal::Type::BaseModel
+            # The complete JPEG image as a base64 data URL.
+            attr_accessor image_url: String
+
+            # The content type. Always `computer_screenshot`.
+            attr_accessor type: :computer_screenshot
+
+            # @param image_url
+            #   The complete JPEG image as a base64 data URL.
+            # @param type
+            #   The content type. Always `computer_screenshot`.
+            def initialize: (
+              image_url: String,
+              ?type: :computer_screenshot
+            ) -> void
+
+            def to_hash: -> { image_url: String, ?type: :computer_screenshot }
+          end
+        end
+
+        type computer_use_approval_request =
+          {
+            id: String,
+            request: OpenAI::Beta::AgentOutputItem::ComputerUseApprovalRequest::Request,
+            request_id: String,
+            turn_id: String,
+            ?type: :computer_use_approval_request
+          }
+
+        class ComputerUseApprovalRequest < OpenAI::Internal::Type::BaseModel
+          # The stable history item ID.
+          attr_accessor id: String
+
+          # A registered form awaiting the application's response.
+          attr_accessor request: OpenAI::Beta::AgentOutputItem::ComputerUseApprovalRequest::Request
+
+          attr_accessor request_id: String
+
+          attr_accessor turn_id: String
+
+          # The item type. Always computer_use_approval_request.
+          attr_accessor type: :computer_use_approval_request
+
+          # @param id
+          #   The stable history item ID.
+          # @param request
+          #   A registered form awaiting the application's response.
+          # @param type
+          #   The item type. Always computer_use_approval_request.
+          def initialize: (
+            id: String,
+            request: OpenAI::Beta::AgentOutputItem::ComputerUseApprovalRequest::Request,
+            request_id: String,
+            turn_id: String,
+            ?type: :computer_use_approval_request
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            request: OpenAI::Beta::AgentOutputItem::ComputerUseApprovalRequest::Request,
+            request_id: String,
+            turn_id: String,
+            ?type: :computer_use_approval_request
+          }
+
+          type request =
+            {
+              credential_origin: String?,
+              fields: ::Array[OpenAI::Beta::AgentOutputItem::ComputerUseApprovalRequest::Request::Field],
+              options: ::Array[OpenAI::Beta::AgentOutputItem::ComputerUseApprovalRequest::Request::Option],
+              reason: String?,
+              ?type: :browser_authentication
+            }
+
+          class Request < OpenAI::Internal::Type::BaseModel
+            # The registered form or frame origin where values will be entered.
+            attr_accessor credential_origin: String?
+
+            # Controls to render. All submitted values are sensitive.
+            attr_accessor fields: ::Array[OpenAI::Beta::AgentOutputItem::ComputerUseApprovalRequest::Request::Field]
+
+            # Sign-in methods. Empty for a plain form.
+            attr_accessor options: ::Array[OpenAI::Beta::AgentOutputItem::ComputerUseApprovalRequest::Request::Option]
+
+            # Why the agent needs the user to sign in.
+            attr_accessor reason: String?
+
+            # The type of the object. Always `browser_authentication`.
+            attr_accessor type: :browser_authentication
+
+            # @param credential_origin
+            #   The registered form or frame origin where values will be entered.
+            # @param fields
+            #   Controls to render. All submitted values are sensitive.
+            # @param options
+            #   Sign-in methods. Empty for a plain form.
+            # @param reason
+            #   Why the agent needs the user to sign in.
+            # @param type
+            #   The type of the object. Always `browser_authentication`.
+            def initialize: (
+              credential_origin: String?,
+              fields: ::Array[OpenAI::Beta::AgentOutputItem::ComputerUseApprovalRequest::Request::Field],
+              options: ::Array[OpenAI::Beta::AgentOutputItem::ComputerUseApprovalRequest::Request::Option],
+              reason: String?,
+              ?type: :browser_authentication
+            ) -> void
+
+            def to_hash: -> {
+              credential_origin: String?,
+              fields: ::Array[OpenAI::Beta::AgentOutputItem::ComputerUseApprovalRequest::Request::Field],
+              options: ::Array[OpenAI::Beta::AgentOutputItem::ComputerUseApprovalRequest::Request::Option],
+              reason: String?,
+              ?type: :browser_authentication
+            }
+
+            type field =
+              { id: String, label: String, required: bool, type: String }
+
+            class Field < OpenAI::Internal::Type::BaseModel
+              # The field ID to submit as field_id in a fields entry.
+              attr_accessor id: String
+
+              # The label to display beside the control.
+              attr_accessor label: String
+
+              # Whether this control requires a nonempty value.
+              attr_accessor required: bool
+
+              # The rendering type, such as email, password, or text.
+              attr_accessor type: String
+
+              # @param id
+              #   The field ID to submit as field_id in a fields entry.
+              # @param label
+              #   The label to display beside the control.
+              # @param required
+              #   Whether this control requires a nonempty value.
+              # @param type
+              #   The rendering type, such as email, password, or text.
+              def initialize: (
+                id: String,
+                label: String,
+                required: bool,
+                type: String
+              ) -> void
+
+              def to_hash: -> {
+                id: String,
+                label: String,
+                required: bool,
+                type: String
+              }
+            end
+
+            type option =
+              { id: String, field_ids: ::Array[String], label: String }
+
+            class Option < OpenAI::Internal::Type::BaseModel
+              # The option ID to submit as selected_option.
+              attr_accessor id: String
+
+              # IDs from the registered fields that this method accepts.
+              attr_accessor field_ids: ::Array[String]
+
+              # The method label to display.
+              attr_accessor label: String
+
+              # @param id
+              #   The option ID to submit as selected_option.
+              # @param field_ids
+              #   IDs from the registered fields that this method accepts.
+              # @param label
+              #   The method label to display.
+              def initialize: (
+                id: String,
+                field_ids: ::Array[String],
+                label: String
+              ) -> void
+
+              def to_hash: -> {
+                id: String,
+                field_ids: ::Array[String],
+                label: String
+              }
+            end
+          end
+        end
 
         def self?.variants: -> ::Array[OpenAI::Models::Beta::agent_output_item]
       end

@@ -106,7 +106,8 @@ module OpenAI
                 OpenAI::Beta::PersistedAgentTool::ToolSearch::OrHash,
                 OpenAI::Beta::PersistedAgentTool::ProgrammaticToolCalling::OrHash,
                 OpenAI::Beta::PersistedAgentTool::Mcp::OrHash,
-                OpenAI::Beta::PersistedAgentTool::WebSearch::OrHash
+                OpenAI::Beta::PersistedAgentTool::WebSearch::OrHash,
+                OpenAI::Beta::PersistedAgentTool::ComputerUse::OrHash
               )
             ],
 

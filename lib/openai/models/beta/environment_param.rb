@@ -46,6 +46,19 @@ module OpenAI
           #   @return [Array<String>, nil]
           optional :capability_directories, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
+          # @!attribute container_size
+          #   The hosted container size. Omission selects the medium tier.
+          #
+          #   @return [Symbol, OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::ContainerSize, nil]
+          optional :container_size, enum: -> { OpenAI::Beta::EnvironmentParam::OpenAIHosted::ContainerSize }
+
+          # @!attribute desktop
+          #   Desktop provisioning. Omission or null inherits the template setting, or
+          #   defaults to disabled.
+          #
+          #   @return [OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::Desktop, nil]
+          optional :desktop, -> { OpenAI::Beta::EnvironmentParam::OpenAIHosted::Desktop }, nil?: true
+
           # @!attribute env
           #   Environment variables made available to the agent.
           #
@@ -115,13 +128,20 @@ module OpenAI
             nil?: true
           )
 
-          # @!method initialize(capability_directories: nil, env: nil, environment_template_id: nil, files: nil, network: nil, packages: nil, plugins: nil, setup_commands: nil, skills: nil, type: :openai_hosted)
+          # @!method initialize(capability_directories: nil, container_size: nil, desktop: nil, env: nil, environment_template_id: nil, files: nil, network: nil, packages: nil, plugins: nil, setup_commands: nil, skills: nil, type: :openai_hosted)
           #   An existing OpenAI-hosted environment or new inline/template-based hosted
           #   configuration.
           #
           #   @param capability_directories [Array<String>, nil]
           #     Directories that contain capabilities exposed to the agent. Defaults to an empty
           #     list.
+          #
+          #   @param container_size [Symbol, OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::ContainerSize]
+          #     The hosted container size. Omission selects the medium tier.
+          #
+          #   @param desktop [OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::Desktop, nil]
+          #     Desktop provisioning. Omission or null inherits the template setting, or
+          #     defaults to disabled.
           #
           #   @param env [Hash{Symbol=>String}, nil]
           #     Environment variables made available to the agent.
@@ -153,6 +173,36 @@ module OpenAI
           #   @param type [Symbol, :openai_hosted]
           #     The type of the object. Always `openai_hosted`.
 
+          # The hosted container size. Omission selects the medium tier.
+          #
+          # @see OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted#container_size
+          module ContainerSize
+            extend OpenAI::Internal::Type::Enum
+
+            SMALL = :small
+            MEDIUM = :medium
+            LARGE = :large
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+
+          # @see OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted#desktop
+          class Desktop < OpenAI::Internal::Type::BaseModel
+            # @!attribute enabled
+            #   Whether to provision the desktop and its browser proxy.
+            #
+            #   @return [Boolean]
+            required :enabled, OpenAI::Internal::Type::Boolean
+
+            # @!method initialize(enabled:)
+            #   Desktop provisioning. Omission or null inherits the template setting, or
+            #   defaults to disabled.
+            #
+            #   @param enabled [Boolean]
+            #     Whether to provision the desktop and its browser proxy.
+          end
+
           # @see OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted#network
           class Network < OpenAI::Internal::Type::BaseModel
             # @!attribute access
@@ -167,7 +217,15 @@ module OpenAI
             #   @return [Array<String>, nil]
             optional :allowed_domains, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
-            # @!method initialize(access:, allowed_domains: nil)
+            # @!attribute blocked_domains
+            #   Domains blocked for both executor and browser when access is restricted. A
+            #   nonempty list requires `access: restricted` and cannot be combined with nonempty
+            #   `allowed_domains`. Wildcard domains are not supported.
+            #
+            #   @return [Array<String>, nil]
+            optional :blocked_domains, OpenAI::Internal::Type::ArrayOf[String], nil?: true
+
+            # @!method initialize(access:, allowed_domains: nil, blocked_domains: nil)
             #   Network access policy for the environment. Defaults to disabled for GA requests
             #   and enabled for beta requests.
             #
@@ -176,6 +234,11 @@ module OpenAI
             #
             #   @param allowed_domains [Array<String>, nil]
             #     Domains the environment may access when network access is restricted.
+            #
+            #   @param blocked_domains [Array<String>, nil]
+            #     Domains blocked for both executor and browser when access is restricted. A
+            #     nonempty list requires `access: restricted` and cannot be combined with nonempty
+            #     `allowed_domains`. Wildcard domains are not supported.
 
             # The environment's network access mode.
             #
@@ -189,7 +252,7 @@ module OpenAI
               # Disables network access.
               DISABLED = :disabled
 
-              # Allows access only to configured domains.
+              # Applies the configured domain restrictions.
               RESTRICTED = :restricted
 
               # @!method self.values

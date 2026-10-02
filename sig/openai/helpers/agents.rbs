@@ -16,6 +16,12 @@ module OpenAI
           | -> Enumerator[OpenAI::Models::Beta::agent_session_event, self]
         def close: -> void
         def until_done: -> self
+
+        # @beta
+        def get_final_result: -> OpenAI::Helpers::Beta::Agents::TurnResult
+
+        # @beta
+        def with_result_collection: -> self
       end
     end
   end
@@ -30,6 +36,7 @@ module OpenAI
             | Hash[Symbol, untyped]],
             ?tool_handlers: Hash[String, OpenAI::Helpers::Agents::tool_handler],
             ?idempotency_key: String?,
+            ?output_type: singleton(OpenAI::Helpers::StructuredOutput::BaseModel)?,
             ?request_options: OpenAI::RequestOptions
             | Hash[Symbol, untyped]
             | nil

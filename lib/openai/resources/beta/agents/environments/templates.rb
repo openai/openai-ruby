@@ -10,11 +10,15 @@ module OpenAI
             # commands or environment values. See
             # [reusing a hosted setup](https://developers.openai.com/api/docs/guides/agents-api/tools#reuse-a-hosted-plugin-setup).
             #
-            # @overload create(capability_directories: nil, env: nil, files: nil, name: nil, network: nil, packages: nil, plugins: nil, setup_commands: nil, skills: nil, request_options: {})
+            # @overload create(capability_directories: nil, desktop: nil, env: nil, files: nil, name: nil, network: nil, packages: nil, plugins: nil, setup_commands: nil, skills: nil, request_options: {})
             #
             # @param capability_directories [Array<String>, nil]
             #   Directories that contain capabilities exposed to the agent. Defaults to an empty
             #   list.
+            #
+            # @param desktop [OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Desktop, nil]
+            #   Desktop provisioning. Omission or null inherits the template setting, or
+            #   defaults to disabled.
             #
             # @param env [Hash{Symbol=>String}, nil]
             #   Environment variables made available to the agent.
@@ -87,13 +91,16 @@ module OpenAI
             # values. See
             # [reusing a hosted setup](https://developers.openai.com/api/docs/guides/agents-api/tools#reuse-a-hosted-plugin-setup).
             #
-            # @overload update(environment_template_id, capability_directories: nil, env: nil, files: nil, name: nil, network: nil, packages: nil, plugins: nil, setup_commands: nil, skills: nil, request_options: {})
+            # @overload update(environment_template_id, capability_directories: nil, desktop: nil, env: nil, files: nil, name: nil, network: nil, packages: nil, plugins: nil, setup_commands: nil, skills: nil, request_options: {})
             #
             # @param environment_template_id [String]
             #   The ID of the reusable environment template.
             #
             # @param capability_directories [Array<String>, nil]
             #   Directories that expose capabilities to the agent.
+            #
+            # @param desktop [OpenAI::Models::Beta::Agents::Environments::TemplateUpdateParams::Desktop, nil]
+            #   Replacement desktop configuration, or null to disable the desktop.
             #
             # @param env [Hash{Symbol=>String}, nil]
             #   Replacement confidential environment values.

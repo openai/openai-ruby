@@ -1,0 +1,12 @@
+module OpenAI
+  module Helpers
+    module StructuredOutput
+      class BaseModel < OpenAI::Internal::Type::BaseModel
+        def self.optional: -> bot
+        def self.to_json_schema: -> Hash[Symbol, untyped]
+      end
+    end
+  end
+
+  class BaseModel = OpenAI::Helpers::StructuredOutput::BaseModel
+end

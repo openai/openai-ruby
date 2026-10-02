@@ -13,7 +13,9 @@ module OpenAI
         def self.known_fields: -> ::Hash[Symbol, (OpenAI::Internal::Type::BaseModel::known_field
         & { type_fn: (^-> OpenAI::Internal::Type::Converter::input) })]
 
-        def self.fields: -> ::Hash[Symbol, (OpenAI::Internal::Type::BaseModel::known_field
+        def self.fields: (
+          ?state: OpenAI::Internal::Type::Converter::coerce_state?
+        ) -> ::Hash[Symbol, (OpenAI::Internal::Type::BaseModel::known_field
         & { type: OpenAI::Internal::Type::Converter::input })]
 
         private def self.add_field: (

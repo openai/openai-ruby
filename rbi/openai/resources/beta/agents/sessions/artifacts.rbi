@@ -10,6 +10,14 @@ module OpenAI
         class Sessions
 
           class Artifacts
+            # Beta result-scoped downloads.
+            sig {
+              params(result: OpenAI::Helpers::Beta::Agents::TurnResult).returns(
+                OpenAI::Helpers::Beta::Agents::ResultArtifacts
+              )
+            }
+            def for_result(result)
+            end
 
             # Retrieves immutable metadata for one durable session artifact. See
             # [session artifacts](https://developers.openai.com/api/docs/guides/agents-api/environments/files#openai-hosted-artifacts).

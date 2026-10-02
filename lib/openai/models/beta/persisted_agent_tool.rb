@@ -24,6 +24,9 @@ module OpenAI
         # Web search.
         variant :web_search, -> { OpenAI::Beta::PersistedAgentTool::WebSearch }
 
+        # Browser use in an OpenAI-hosted session.
+        variant :computer_use, -> { OpenAI::Beta::PersistedAgentTool::ComputerUse }
+
         class Function < OpenAI::Internal::Type::BaseModel
           # @!attribute defer_loading
           #   Whether the function is deferred and discovered through tool search.
@@ -321,8 +324,31 @@ module OpenAI
           end
         end
 
+        class ComputerUse < OpenAI::Internal::Type::BaseModel
+          # @!attribute include_screenshots
+          #   Whether computer tool outputs include screenshots.
+          #
+          #   @return [Boolean]
+          required :include_screenshots, OpenAI::Internal::Type::Boolean
+
+          # @!attribute type
+          #   The type of the object. Always `computer_use`.
+          #
+          #   @return [Symbol, :computer_use]
+          required :type, const: :computer_use
+
+          # @!method initialize(include_screenshots:, type: :computer_use)
+          #   Browser use in an OpenAI-hosted session.
+          #
+          #   @param include_screenshots [Boolean]
+          #     Whether computer tool outputs include screenshots.
+          #
+          #   @param type [Symbol, :computer_use]
+          #     The type of the object. Always `computer_use`.
+        end
+
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Beta::PersistedAgentTool::Function, OpenAI::Models::Beta::PersistedAgentTool::ToolSearch, OpenAI::Models::Beta::PersistedAgentTool::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentTool::Mcp, OpenAI::Models::Beta::PersistedAgentTool::WebSearch)]
+        #   @return [Array(OpenAI::Models::Beta::PersistedAgentTool::Function, OpenAI::Models::Beta::PersistedAgentTool::ToolSearch, OpenAI::Models::Beta::PersistedAgentTool::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentTool::Mcp, OpenAI::Models::Beta::PersistedAgentTool::WebSearch, OpenAI::Models::Beta::PersistedAgentTool::ComputerUse)]
       end
     end
   end

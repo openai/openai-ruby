@@ -94,7 +94,7 @@ module OpenAI
             return value
           end
 
-          target = item_type
+          target = OpenAI::Internal::Type::Converter.resolve_type(@item_type_fn, state: state)
           exactness[:yes] += 1
           previous_error = state.fetch(:error)
           last_error = nil

@@ -1,0 +1,65 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        class SessionTrace = Sessions::SessionTrace
+
+        module Sessions
+          type session_trace =
+            {
+              id: String,
+              created_at: Integer,
+              ?object: :"agent.session.trace",
+              otlp: ::Hash[Symbol, top],
+              session_id: String
+            }
+
+          class SessionTrace < OpenAI::Internal::Type::BaseModel
+            # The root turn ID. Use this ID as the pagination anchor.
+            attr_accessor id: String
+
+            # The Unix timestamp in seconds when the root turn was created.
+            attr_accessor created_at: Integer
+
+            # The object type, which is always `agent.session.trace`.
+            attr_accessor object: :"agent.session.trace"
+
+            # An OTLP JSON ExportTraceServiceRequest containing resourceSpans. Only currently
+            # published data is returned; later trace updates are not awaited.
+            attr_accessor otlp: ::Hash[Symbol, top]
+
+            # The session that owns this trace.
+            attr_accessor session_id: String
+
+            # @param id
+            #   The root turn ID. Use this ID as the pagination anchor.
+            # @param created_at
+            #   The Unix timestamp in seconds when the root turn was created.
+            # @param otlp
+            #   An OTLP JSON ExportTraceServiceRequest containing resourceSpans. Only currently
+            #   published data is returned; later trace updates are not awaited.
+            # @param session_id
+            #   The session that owns this trace.
+            # @param object
+            #   The object type, which is always `agent.session.trace`.
+            def initialize: (
+              id: String,
+              created_at: Integer,
+              otlp: ::Hash[Symbol, top],
+              session_id: String,
+              ?object: :"agent.session.trace"
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              created_at: Integer,
+              ?object: :"agent.session.trace",
+              otlp: ::Hash[Symbol, top],
+              session_id: String
+            }
+          end
+        end
+      end
+    end
+  end
+end

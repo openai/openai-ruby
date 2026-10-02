@@ -10,6 +10,37 @@ module OpenAI
         class Environments
 
           class Files
+            # Beta file helpers.
+            sig {
+              params(files: T::Hash[String, T.any(String, Pathname)], request_options: OpenAI::RequestOptions::OrHash)
+                .returns(OpenAI::Helpers::Beta::Agents::PreparedFiles)
+            }
+            def prepare(files, request_options: {})
+            end
+
+            sig {
+              params(
+                directory: T.any(String, Pathname),
+                destination: String,
+                include: T::Array[String],
+                request_options: OpenAI::RequestOptions::OrHash
+              )
+                .returns(OpenAI::Helpers::Beta::Agents::PreparedFiles)
+            }
+            def prepare_directory(directory, destination:, include:, request_options: {})
+            end
+
+            sig {
+              params(
+                environment_id: String,
+                file: T.any(String, Pathname),
+                path: String,
+                request_options: OpenAI::RequestOptions::OrHash
+              )
+                .returns(OpenAI::Helpers::Beta::Agents::PreparedFiles)
+            }
+            def upload(environment_id, file:, path:, request_options: {})
+            end
 
             # Copies inline bytes or a Files API file into a connected execution environment.
             # See

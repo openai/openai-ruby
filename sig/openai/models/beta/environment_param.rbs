@@ -26,6 +26,8 @@ module OpenAI
           {
             ?type: :openai_hosted,
             ?capability_directories: ::Array[String]?,
+            ?container_size: OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::container_size,
+            ?desktop: OpenAI::Beta::EnvironmentParam::OpenAIHosted::Desktop?,
             ?env: ::Hash[Symbol, String]?,
             ?environment_template_id: String,
             ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
@@ -43,6 +45,18 @@ module OpenAI
           # Directories that contain capabilities exposed to the agent. Defaults to an empty
           # list.
           attr_accessor capability_directories: ::Array[String]?
+
+          # The hosted container size. Omission selects the medium tier.
+          attr_reader container_size: OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::container_size?
+
+          # The hosted container size. Omission selects the medium tier.
+          def container_size=: (
+            OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::container_size
+          ) -> OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::container_size
+
+          # Desktop provisioning. Omission or null inherits the template setting, or
+          # defaults to disabled.
+          attr_accessor desktop: OpenAI::Beta::EnvironmentParam::OpenAIHosted::Desktop?
 
           # Environment variables made available to the agent.
           attr_accessor env: ::Hash[Symbol, String]?
@@ -78,6 +92,11 @@ module OpenAI
           # @param capability_directories
           #   Directories that contain capabilities exposed to the agent. Defaults to an empty
           #   list.
+          # @param container_size
+          #   The hosted container size. Omission selects the medium tier.
+          # @param desktop
+          #   Desktop provisioning. Omission or null inherits the template setting, or
+          #   defaults to disabled.
           # @param env
           #   Environment variables made available to the agent.
           # @param environment_template_id
@@ -101,6 +120,8 @@ module OpenAI
           #   The type of the object. Always `openai_hosted`.
           def initialize: (
             ?capability_directories: ::Array[String]?,
+            ?container_size: OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::container_size,
+            ?desktop: OpenAI::Beta::EnvironmentParam::OpenAIHosted::Desktop?,
             ?env: ::Hash[Symbol, String]?,
             ?environment_template_id: String,
             ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
@@ -115,6 +136,8 @@ module OpenAI
           def to_hash: -> {
             ?type: :openai_hosted,
             ?capability_directories: ::Array[String]?,
+            ?container_size: OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::container_size,
+            ?desktop: OpenAI::Beta::EnvironmentParam::OpenAIHosted::Desktop?,
             ?env: ::Hash[Symbol, String]?,
             ?environment_template_id: String,
             ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
@@ -125,10 +148,36 @@ module OpenAI
             ?skills: ::Array[OpenAI::Models::Beta::hosted_skill_param]?
           }
 
+          type container_size = :small | :medium | :large
+
+          module ContainerSize
+            extend OpenAI::Internal::Type::Enum
+
+            SMALL: :small
+            MEDIUM: :medium
+            LARGE: :large
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::container_size]
+          end
+
+          type desktop = { enabled: bool }
+
+          class Desktop < OpenAI::Internal::Type::BaseModel
+            # Whether to provision the desktop and its browser proxy.
+            attr_accessor enabled: bool
+
+            # @param enabled
+            #   Whether to provision the desktop and its browser proxy.
+            def initialize: (enabled: bool) -> void
+
+            def to_hash: -> { enabled: bool }
+          end
+
           type network =
             {
               access: OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::Network::access,
-              ?allowed_domains: ::Array[String]?
+              ?allowed_domains: ::Array[String]?,
+              ?blocked_domains: ::Array[String]?
             }
 
           class Network < OpenAI::Internal::Type::BaseModel
@@ -138,18 +187,29 @@ module OpenAI
             # Domains the environment may access when network access is restricted.
             attr_accessor allowed_domains: ::Array[String]?
 
+            # Domains blocked for both executor and browser when access is restricted. A
+            # nonempty list requires `access: restricted` and cannot be combined with nonempty
+            # `allowed_domains`. Wildcard domains are not supported.
+            attr_accessor blocked_domains: ::Array[String]?
+
             # @param access
             #   The environment's network access mode.
             # @param allowed_domains
             #   Domains the environment may access when network access is restricted.
+            # @param blocked_domains
+            #   Domains blocked for both executor and browser when access is restricted. A
+            #   nonempty list requires `access: restricted` and cannot be combined with nonempty
+            #   `allowed_domains`. Wildcard domains are not supported.
             def initialize: (
               access: OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::Network::access,
-              ?allowed_domains: ::Array[String]?
+              ?allowed_domains: ::Array[String]?,
+              ?blocked_domains: ::Array[String]?
             ) -> void
 
             def to_hash: -> {
               access: OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::Network::access,
-              ?allowed_domains: ::Array[String]?
+              ?allowed_domains: ::Array[String]?,
+              ?blocked_domains: ::Array[String]?
             }
 
             type access = :enabled | :disabled | :restricted
@@ -163,7 +223,7 @@ module OpenAI
               # Disables network access.
               DISABLED: :disabled
 
-              # Allows access only to configured domains.
+              # Applies the configured domain restrictions.
               RESTRICTED: :restricted
 
               def self?.values: -> ::Array[OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::Network::access]

@@ -21,6 +21,18 @@ module OpenAI
             #   @return [Array<String>, nil]
             optional :capability_directories, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
+            # @!attribute desktop
+            #   Replacement desktop configuration, or null to disable the desktop.
+            #
+            #   @return [OpenAI::Models::Beta::Agents::Environments::TemplateUpdateParams::Desktop, nil]
+            optional(
+              :desktop,
+              -> {
+                OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Desktop
+              },
+              nil?: true
+            )
+
             # @!attribute env
             #   Replacement confidential environment values.
             #
@@ -101,11 +113,14 @@ module OpenAI
               nil?: true
             )
 
-            # @!method initialize(environment_template_id:, capability_directories: nil, env: nil, files: nil, name: nil, network: nil, packages: nil, plugins: nil, setup_commands: nil, skills: nil, request_options: {})
+            # @!method initialize(environment_template_id:, capability_directories: nil, desktop: nil, env: nil, files: nil, name: nil, network: nil, packages: nil, plugins: nil, setup_commands: nil, skills: nil, request_options: {})
             #   @param environment_template_id [String]
             #
             #   @param capability_directories [Array<String>, nil]
             #     Directories that expose capabilities to the agent.
+            #
+            #   @param desktop [OpenAI::Models::Beta::Agents::Environments::TemplateUpdateParams::Desktop, nil]
+            #     Replacement desktop configuration, or null to disable the desktop.
             #
             #   @param env [Hash{Symbol=>String}, nil]
             #     Replacement confidential environment values.
@@ -135,6 +150,20 @@ module OpenAI
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
+            class Desktop < OpenAI::Internal::Type::BaseModel
+              # @!attribute enabled
+              #   Whether to provision the desktop and its browser proxy.
+              #
+              #   @return [Boolean]
+              required :enabled, OpenAI::Internal::Type::Boolean
+
+              # @!method initialize(enabled:)
+              #   Replacement desktop configuration, or null to disable the desktop.
+              #
+              #   @param enabled [Boolean]
+              #     Whether to provision the desktop and its browser proxy.
+            end
+
             class Network < OpenAI::Internal::Type::BaseModel
               # @!attribute access
               #   The environment's network access mode.
@@ -148,7 +177,15 @@ module OpenAI
               #   @return [Array<String>, nil]
               optional :allowed_domains, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
-              # @!method initialize(access:, allowed_domains: nil)
+              # @!attribute blocked_domains
+              #   Domains blocked for both executor and browser when access is restricted. A
+              #   nonempty list requires `access: restricted` and cannot be combined with nonempty
+              #   `allowed_domains`. Wildcard domains are not supported.
+              #
+              #   @return [Array<String>, nil]
+              optional :blocked_domains, OpenAI::Internal::Type::ArrayOf[String], nil?: true
+
+              # @!method initialize(access:, allowed_domains: nil, blocked_domains: nil)
               #   Network access available after setup completes. Omit to preserve the current
               #   policy, or pass `null` to reset to disabled for GA requests or enabled for beta
               #   requests.
@@ -158,6 +195,11 @@ module OpenAI
               #
               #   @param allowed_domains [Array<String>, nil]
               #     Domains the environment may access when network access is restricted.
+              #
+              #   @param blocked_domains [Array<String>, nil]
+              #     Domains blocked for both executor and browser when access is restricted. A
+              #     nonempty list requires `access: restricted` and cannot be combined with nonempty
+              #     `allowed_domains`. Wildcard domains are not supported.
 
               # The environment's network access mode.
               #
@@ -171,7 +213,7 @@ module OpenAI
                 # Disables network access.
                 DISABLED = :disabled
 
-                # Allows access only to configured domains.
+                # Applies the configured domain restrictions.
                 RESTRICTED = :restricted
 
                 # @!method self.values

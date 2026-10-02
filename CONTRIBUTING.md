@@ -266,6 +266,35 @@ proxy is configured. Live smoke tests are not required pull-request checks.
 
 All Ruby sources are formatted; file-level opt-outs are rejected. Two existing handwritten pattern-matching expressions use equivalent forms that avoid rubyfmt 0.14.1 bugs. Their source comments explain why, and regression tests check that both complete files format into valid Ruby and remain unchanged on a second pass.
 
+RuboCop suppressions must name individual cops and cover an actual offense.
+Remove obsolete disable/enable pairs when code or policy changes; suppressions
+for disabled layout, style, or metrics rules are rejected too. Put a necessary
+disable before the beginning of the affected expression (including a multiline
+method chain), close it immediately afterward, and explain the exception.
+Temporary `rubocop:todo` directives also need an owner and an issue or future
+removal date. The directive guard rejects broad and unowned suppressions.
+
+For lint-policy changes, run the full policy before and after cleanup:
+
+```bash
+$ bundle exec rubocop --format json --out tmp/rubocop-report.json
+```
+
+Record per-cop counts and affected paths from that report, audit those paths
+against Castiron's output and ownership rules, and include the result in the PR.
+Generated-code fixes must start in Castiron when regeneration could recreate
+them. Otherwise document why no generator companion is needed. Keep each rule
+rollout separate, preserve necessary semantic exceptions, and never add broad
+exclusions to make the gate pass. Run the full lint task after cleanup; limiting
+a run with `--only` can change which suppression directives are necessary.
+
+The remaining disabled correctness cops are deliberate: `Lint/ArgumentMismatch`,
+`Lint/SuperArgumentMismatch`, and `Lint/UnusedPrivateMethod` require a separate
+project-index/rubydex rollout; `Lint/ConstantResolution` requires a broad naming
+and constant-lookup audit. `Lint/HeredocMethodCallPosition` is layout owned by
+rubyfmt. `Lint/NumberConversion` remains enabled with only the generated webhook
+timestamp compatibility exception from `lib/openai/.rubocop.generated.yml`.
+
 There are two separate type checkers supported by this library: [sorbet](https://github.com/sorbet/sorbet) and [steep](https://github.com/soutaro/steep) are used for verifying `*.rbi` and `*.rbs` files respectively.
 
 To lint and typecheck:

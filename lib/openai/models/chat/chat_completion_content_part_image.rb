@@ -73,6 +73,7 @@ module OpenAI
             AUTO = :auto
             LOW = :low
             HIGH = :high
+            ORIGINAL = :original
 
             # @!method self.values
             #   @return [Array<Symbol>]

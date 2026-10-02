@@ -29,6 +29,8 @@ module OpenAI
         #   object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the
         #   voices are available in the
         #   [Text to speech guide](https://developers.openai.com/api/docs/guides/text-to-speech#voice-options).
+        #   Custom voices must be created from audio samples. Voices created from text
+        #   prompts are supported only in Live.
         #
         #   @return [String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice::ID, OpenAI::Models::Audio::SpeechCreateParams::Voice]
         required :voice, union: -> { OpenAI::Audio::SpeechCreateParams::Voice }
@@ -77,6 +79,8 @@ module OpenAI
         #     object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the
         #     voices are available in the
         #     [Text to speech guide](https://developers.openai.com/api/docs/guides/text-to-speech#voice-options).
+        #     Custom voices must be created from audio samples. Voices created from text
+        #     prompts are supported only in Live.
         #
         #   @param instructions [String]
         #     Control the voice of your generated audio with additional instructions. Does not
@@ -117,6 +121,8 @@ module OpenAI
         # object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the
         # voices are available in the
         # [Text to speech guide](https://developers.openai.com/api/docs/guides/text-to-speech#voice-options).
+        # Custom voices must be created from audio samples. Voices created from text
+        # prompts are supported only in Live.
         module Voice
           extend OpenAI::Internal::Type::Union
 

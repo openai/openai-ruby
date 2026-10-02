@@ -23,8 +23,8 @@ module OpenAI
       # content type.
       attr_accessor image: OpenAI::Internal::file_input
 
-      # The model to use for image generation. Only `dall-e-2` is supported at this
-      # time.
+      # The legacy model used by the retired image variations endpoint. This endpoint no
+      # longer accepts requests.
       attr_accessor model: OpenAI::Models::ImageCreateVariationParams::model?
 
       # The number of images to generate. Must be between 1 and 10.
@@ -57,8 +57,8 @@ module OpenAI
       #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
       #   content type.
       # @param model
-      #   The model to use for image generation. Only `dall-e-2` is supported at this
-      #   time.
+      #   The legacy model used by the retired image variations endpoint. This endpoint no
+      #   longer accepts requests.
       # @param n
       #   The number of images to generate. Must be between 1 and 10.
       # @param response_format

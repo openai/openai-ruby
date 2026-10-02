@@ -70,6 +70,13 @@ module OpenAI
             sig { returns(Integer) }
             attr_accessor :updated_at
 
+            # Desktop configuration for each OpenAI-hosted environment.
+            sig { returns(T.nilable(OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop)) }
+            attr_reader :desktop
+
+            sig { params(desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop::OrHash).void }
+            attr_writer :desktop
+
             # Reusable configuration that provisions a fresh OpenAI-hosted environment for
             # each session.
             sig do
@@ -104,6 +111,8 @@ module OpenAI
                 ],
 
                 updated_at: Integer,
+
+                desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop::OrHash,
 
                 object: Symbol
               )
@@ -141,6 +150,9 @@ module OpenAI
               # The Unix timestamp, in seconds, when the template was last updated.
               updated_at:,
 
+              # Desktop configuration for each OpenAI-hosted environment.
+              desktop: nil,
+
               # The object type. Always `agent.environment.template`.
 
               object: :"agent.environment.template"
@@ -160,7 +172,8 @@ module OpenAI
                   packages: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Packages,
                   plugins: T::Array[OpenAI::Beta::HostedPlugin],
                   skills: T::Array[OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Skill::Variants],
-                  updated_at: Integer
+                  updated_at: Integer,
+                  desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop
                 }
               )
             end
@@ -367,7 +380,7 @@ module OpenAI
                   OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Network::Access::TaggedSymbol
                 )
 
-                # Allows access only to configured domains.
+                # Applies the configured domain restrictions.
                 RESTRICTED = T.let(
                   :restricted,
                   OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Network::Access::TaggedSymbol
@@ -566,6 +579,44 @@ module OpenAI
                 override.returns(T::Array[OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Skill::Variants])
               }
               def self.variants
+              end
+
+            end
+
+            class Desktop < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # Whether the environment provisions a desktop and browser proxy.
+              sig { returns(T::Boolean) }
+              attr_accessor :enabled
+
+              # Desktop configuration for each OpenAI-hosted environment.
+              sig do
+                params(
+
+                  enabled: T::Boolean
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # Whether the environment provisions a desktop and browser proxy.
+
+                enabled:
+              )
+              end
+
+              sig do
+                override.returns(
+                  {enabled: T::Boolean}
+                )
+              end
+              def to_hash
               end
 
             end

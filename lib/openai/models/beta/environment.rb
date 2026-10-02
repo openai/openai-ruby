@@ -82,7 +82,26 @@ module OpenAI
           #   @return [Symbol, :openai_hosted]
           required :type, const: :openai_hosted
 
-          # @!method initialize(id:, capability_directories:, files:, network:, packages:, plugins:, skills:, type: :openai_hosted)
+          # @!attribute container_size
+          #   The effective CPU and memory tier, or null when unknown or outside the public
+          #   tiers.
+          #
+          #   @return [Symbol, OpenAI::Models::Beta::Environment::OpenAIHosted::ContainerSize, nil]
+          optional(
+            :container_size,
+            enum: -> {
+              OpenAI::Beta::Environment::OpenAIHosted::ContainerSize
+            },
+            nil?: true
+          )
+
+          # @!attribute desktop
+          #   The effective desktop configuration.
+          #
+          #   @return [OpenAI::Models::Beta::Environment::OpenAIHosted::Desktop, nil]
+          optional :desktop, -> { OpenAI::Beta::Environment::OpenAIHosted::Desktop }
+
+          # @!method initialize(id:, capability_directories:, files:, network:, packages:, plugins:, skills:, container_size: nil, desktop: nil, type: :openai_hosted)
           #   An environment hosted by OpenAI.
           #
           #   @param id [String]
@@ -105,6 +124,13 @@ module OpenAI
           #
           #   @param skills [Array<OpenAI::Models::Beta::HostedSkillReference, OpenAI::Models::Beta::HostedSkill::Inline>]
           #     Skills installed in the environment, excluding their archive contents.
+          #
+          #   @param container_size [Symbol, OpenAI::Models::Beta::Environment::OpenAIHosted::ContainerSize, nil]
+          #     The effective CPU and memory tier, or null when unknown or outside the public
+          #     tiers.
+          #
+          #   @param desktop [OpenAI::Models::Beta::Environment::OpenAIHosted::Desktop]
+          #     The effective desktop configuration.
           #
           #   @param type [Symbol, :openai_hosted]
           #     The type of the object. Always `openai_hosted`.
@@ -144,7 +170,7 @@ module OpenAI
               # Disables network access.
               DISABLED = :disabled
 
-              # Allows access only to configured domains.
+              # Applies the configured domain restrictions.
               RESTRICTED = :restricted
 
               # @!method self.values
@@ -183,6 +209,36 @@ module OpenAI
             #
             #   @param system_ [Array<String>]
             #     System packages installed in the environment.
+          end
+
+          # The effective CPU and memory tier, or null when unknown or outside the public
+          # tiers.
+          #
+          # @see OpenAI::Models::Beta::Environment::OpenAIHosted#container_size
+          module ContainerSize
+            extend OpenAI::Internal::Type::Enum
+
+            SMALL = :small
+            MEDIUM = :medium
+            LARGE = :large
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+
+          # @see OpenAI::Models::Beta::Environment::OpenAIHosted#desktop
+          class Desktop < OpenAI::Internal::Type::BaseModel
+            # @!attribute enabled
+            #   Whether the environment provisions a desktop and browser proxy.
+            #
+            #   @return [Boolean]
+            required :enabled, OpenAI::Internal::Type::Boolean
+
+            # @!method initialize(enabled:)
+            #   The effective desktop configuration.
+            #
+            #   @param enabled [Boolean]
+            #     Whether the environment provisions a desktop and browser proxy.
           end
         end
 

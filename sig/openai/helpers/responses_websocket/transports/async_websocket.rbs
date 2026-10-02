@@ -3,6 +3,27 @@ module OpenAI
     module Responses
       module Transports
         class AsyncWebSocket
+          # @api private
+          module PeekableFramer
+            # @api private
+            def next_frame_compressed?: -> bool
+          end
+
+          # @api private
+          class BoundedFramer
+            # @api private
+            def compression_negotiated=: (bool value) -> bool
+          end
+
+          # @api private
+          module BoundedInflate
+            # @api private
+            def bound_decoded_messages: (
+              Integer max_bytes,
+              BoundedFramer framer
+            ) -> void
+          end
+
           def initialize: -> void
           def open: (
             url: URI::Generic,

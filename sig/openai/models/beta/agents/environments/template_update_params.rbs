@@ -7,6 +7,7 @@ module OpenAI
             {
               environment_template_id: String,
               ?capability_directories: ::Array[String]?,
+              ?desktop: OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Desktop?,
               ?env: ::Hash[Symbol, String]?,
               ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
               ?name: String?,
@@ -26,6 +27,9 @@ module OpenAI
 
             # Directories that expose capabilities to the agent.
             attr_accessor capability_directories: ::Array[String]?
+
+            # Replacement desktop configuration, or null to disable the desktop.
+            attr_accessor desktop: OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Desktop?
 
             # Replacement confidential environment values.
             attr_accessor env: ::Hash[Symbol, String]?
@@ -55,6 +59,8 @@ module OpenAI
 
             # @param capability_directories
             #   Directories that expose capabilities to the agent.
+            # @param desktop
+            #   Replacement desktop configuration, or null to disable the desktop.
             # @param env
             #   Replacement confidential environment values.
             # @param files
@@ -76,6 +82,7 @@ module OpenAI
             def initialize: (
               environment_template_id: String,
               ?capability_directories: ::Array[String]?,
+              ?desktop: OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Desktop?,
               ?env: ::Hash[Symbol, String]?,
               ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
               ?name: String?,
@@ -90,6 +97,7 @@ module OpenAI
             def to_hash: -> {
               environment_template_id: String,
               ?capability_directories: ::Array[String]?,
+              ?desktop: OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Desktop?,
               ?env: ::Hash[Symbol, String]?,
               ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
               ?name: String?,
@@ -101,10 +109,24 @@ module OpenAI
               ?request_options: OpenAI::RequestOptions
             }
 
+            type desktop = { enabled: bool }
+
+            class Desktop < OpenAI::Internal::Type::BaseModel
+              # Whether to provision the desktop and its browser proxy.
+              attr_accessor enabled: bool
+
+              # @param enabled
+              #   Whether to provision the desktop and its browser proxy.
+              def initialize: (enabled: bool) -> void
+
+              def to_hash: -> { enabled: bool }
+            end
+
             type network =
               {
                 access: OpenAI::Models::Beta::Agents::Environments::TemplateUpdateParams::Network::access,
-                ?allowed_domains: ::Array[String]?
+                ?allowed_domains: ::Array[String]?,
+                ?blocked_domains: ::Array[String]?
               }
 
             class Network < OpenAI::Internal::Type::BaseModel
@@ -114,18 +136,29 @@ module OpenAI
               # Domains the environment may access when network access is restricted.
               attr_accessor allowed_domains: ::Array[String]?
 
+              # Domains blocked for both executor and browser when access is restricted. A
+              # nonempty list requires `access: restricted` and cannot be combined with nonempty
+              # `allowed_domains`. Wildcard domains are not supported.
+              attr_accessor blocked_domains: ::Array[String]?
+
               # @param access
               #   The environment's network access mode.
               # @param allowed_domains
               #   Domains the environment may access when network access is restricted.
+              # @param blocked_domains
+              #   Domains blocked for both executor and browser when access is restricted. A
+              #   nonempty list requires `access: restricted` and cannot be combined with nonempty
+              #   `allowed_domains`. Wildcard domains are not supported.
               def initialize: (
                 access: OpenAI::Models::Beta::Agents::Environments::TemplateUpdateParams::Network::access,
-                ?allowed_domains: ::Array[String]?
+                ?allowed_domains: ::Array[String]?,
+                ?blocked_domains: ::Array[String]?
               ) -> void
 
               def to_hash: -> {
                 access: OpenAI::Models::Beta::Agents::Environments::TemplateUpdateParams::Network::access,
-                ?allowed_domains: ::Array[String]?
+                ?allowed_domains: ::Array[String]?,
+                ?blocked_domains: ::Array[String]?
               }
 
               type access = :enabled | :disabled | :restricted
@@ -139,7 +172,7 @@ module OpenAI
                 # Disables network access.
                 DISABLED: :disabled
 
-                # Allows access only to configured domains.
+                # Applies the configured domain restrictions.
                 RESTRICTED: :restricted
 
                 def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::Environments::TemplateUpdateParams::Network::access]

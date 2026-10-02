@@ -140,6 +140,11 @@ module OpenAI
         )
           .returns(
             T.any(
+              OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent,
+              OpenAI::Webhooks::AgentSessionCreatedWebhookEvent,
+              OpenAI::Webhooks::AgentSessionFailedWebhookEvent,
+              OpenAI::Webhooks::AgentSessionIdleWebhookEvent,
+              OpenAI::Webhooks::AgentSessionInProgressWebhookEvent,
               OpenAI::Webhooks::BatchCancelledWebhookEvent,
               OpenAI::Webhooks::BatchCompletedWebhookEvent,
               OpenAI::Webhooks::BatchExpiredWebhookEvent,

@@ -28,9 +28,12 @@ module OpenAI
           # @api private
           #
           # @return [Hash{Symbol=>Hash{Symbol=>Object}}]
-          def fields
+          def fields(state: nil)
             known_fields.transform_values do |field|
-              {**field.except(:type_fn), type: field.fetch(:type_fn).call}
+              {
+                **field.except(:type_fn),
+                type: OpenAI::Internal::Type::Converter.resolve_type(field.fetch(:type_fn), state: state)
+              }
             end
           end
 
@@ -97,8 +100,6 @@ module OpenAI
               end
             end
 
-            # rubocop:disable Style/CaseEquality
-            # rubocop:disable Metrics/BlockLength
             define_method(name_sym) do
               target = type_fn.call
 
@@ -142,8 +143,6 @@ module OpenAI
                 end
               end
             end
-            # rubocop:enable Metrics/BlockLength
-            # rubocop:enable Style/CaseEquality
           end
 
           # @api private
@@ -301,8 +300,7 @@ module OpenAI
             data = instance.to_h
             viability = instance.instance_variable_get(:@coerced)
 
-            # rubocop:disable Metrics/BlockLength
-            fields.each do |name, field|
+            fields(state: state).each do |name, field|
               mode, required, target = field.fetch_values(:mode, :required, :type)
               api_name, nilable, const = field.fetch_values(:api_name, :nilable, :const)
               src_name = state.fetch(:translate_names) ? api_name : name
@@ -341,7 +339,6 @@ module OpenAI
               viability.store(name, state.fetch(:error) || true)
               data.store(name, converted)
             end
-            # rubocop:enable Metrics/BlockLength
 
             keys.each { data.store(_1, val.fetch(_1)) }
             instance

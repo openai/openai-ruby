@@ -53,7 +53,39 @@ class OpenAI::Test::ResponsesWebSocketContractTest < Minitest::Test
     end
   end
 
-  private def with_server(scenario)
+  def test_default_and_configured_receive_limits_negotiate_only_supported_extensions
+    scenario = {
+      "turns" => [
+        {
+          "request" => {"type" => "response.create", "model" => "example-model", "input" => "test"},
+          "frames" => [{"type" => "future.synthetic", "value" => "bounded"}]
+        }
+      ]
+    }
+    [
+      [{}, true],
+      [{max_message_bytes: nil, max_message_frames: nil}, true],
+      [{max_wire_message_bytes: nil, max_message_bytes: 1_024}, false],
+      [{max_message_frames: 2}, true],
+      [{max_message_bytes: 1_024, max_message_frames: 2}, false],
+      [{max_wire_message_bytes: 1_024}, true],
+      [{max_wire_message_bytes: 1_024, max_message_bytes: 1_024, max_message_frames: 2}, true]
+    ].each do |options, compressed|
+      with_server(scenario, expected_compression: compressed) do |client|
+        client
+          .responses
+          .connect(
+            transport_options: options,
+            request_options: {extra_headers: {"X-Contract-Test" => "synthetic"}}
+          ) do |connection|
+            connection.response.create(model: "example-model", input: "test")
+            assert_instance_of(OpenAI::Responses::UnknownServerEvent, connection.receive)
+          end
+      end
+    end
+  end
+
+  private def with_server(scenario, expected_compression: nil)
     Sync do |task|
       task.with_timeout(10) do
         endpoint = Async::HTTP::Endpoint.parse("http://127.0.0.1:0")
@@ -67,6 +99,11 @@ class OpenAI::Test::ResponsesWebSocketContractTest < Minitest::Test
           assert_equal("/v1/responses", request.path)
           assert_equal("Bearer fake-contract-key", request.headers["authorization"])
           assert_equal(["synthetic"], request.headers["x-contract-test"])
+          unless expected_compression.nil?
+            offer = Array(request.headers["sec-websocket-extensions"]).join(",")
+            assert_equal(expected_compression, offer.include?("permessage-deflate"), offer)
+          end
+
           Async::WebSocket::Adapters::HTTP.open(request) do |socket|
             scenario.fetch("turns").each do |turn|
               assert_equal(turn.fetch("request"), JSON.parse(socket.read.to_str))

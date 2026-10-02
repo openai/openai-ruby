@@ -90,6 +90,51 @@ class OpenAI::Test::AudioResponseTypesTest < Minitest::Test
     end
   end
 
+  def test_typed_voice_params_send_prompt_and_both_audio_sample_forms
+    bodies = [
+      {type: :prompt, name: "Synthetic voice", prompt: "A calm narrator"},
+      {
+        type: :audio_sample,
+        name: "Synthetic voice",
+        consent: "cons_synthetic",
+        audio_sample: StringIO.new("Synthetic audio")
+      },
+      {name: "Synthetic voice", consent: "cons_synthetic", audio_sample: StringIO.new("Synthetic audio")}
+    ]
+
+    bodies.each do |body|
+      stub_request(:post, "http://example.test/v1/audio/voices").to_return_json(
+        body: {
+          id: "voice_synthetic",
+          created_at: 1_750_861_210,
+          object: "audio.voice",
+          name: "Synthetic voice",
+          type: body.fetch(:type, :audio_sample)
+        }
+      )
+      params = OpenAI::Audio::VoiceCreateParams.new(body: body)
+
+      voice = client.audio.voices.create(params)
+      assert_instance_of(OpenAI::Audio::Voice, voice)
+      assert_equal("voice_synthetic", voice.id)
+      assert_requested(:post, "http://example.test/v1/audio/voices", times: 1) do |sent|
+        assert_match(%r{\Amultipart/form-data; boundary=}, sent.headers.fetch("Content-Type"))
+        assert_includes(sent.body, "Synthetic voice")
+        if body[:type] == :prompt
+          assert_includes(sent.body, "A calm narrator")
+          refute_includes(sent.body, "name=\"audio_sample\"")
+        else
+          assert_includes(sent.body, "cons_synthetic")
+          assert_includes(sent.body, "Synthetic audio")
+        end
+
+        true
+      end
+
+      WebMock.reset!
+    end
+  end
+
   private
 
   def client

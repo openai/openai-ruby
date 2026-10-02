@@ -38,16 +38,18 @@ module OpenAI
           # `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
           # `cedar`. You may also provide a custom voice object with an `id`, for example
           # `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
-          # model has responded with audio at least once. We recommend `marin` and `cedar`
-          # for best quality.
+          # model has responded with audio at least once. Custom voices must be created from
+          # audio samples. Voices created from text prompts are supported only in Live. We
+          # recommend `marin` and `cedar` for best quality.
           attr_reader voice: OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice?
 
           # The voice the model uses to respond. Supported built-in voices are `alloy`,
           # `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
           # `cedar`. You may also provide a custom voice object with an `id`, for example
           # `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
-          # model has responded with audio at least once. We recommend `marin` and `cedar`
-          # for best quality.
+          # model has responded with audio at least once. Custom voices must be created from
+          # audio samples. Voices created from text prompts are supported only in Live. We
+          # recommend `marin` and `cedar` for best quality.
           def voice=: (
             OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice
           ) -> OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice
@@ -59,8 +61,9 @@ module OpenAI
           #   `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
           #   `cedar`. You may also provide a custom voice object with an `id`, for example
           #   `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
-          #   model has responded with audio at least once. We recommend `marin` and `cedar`
-          #   for best quality.
+          #   model has responded with audio at least once. Custom voices must be created from
+          #   audio samples. Voices created from text prompts are supported only in Live. We
+          #   recommend `marin` and `cedar` for best quality.
           def initialize: (
             ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
             ?voice: OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::voice

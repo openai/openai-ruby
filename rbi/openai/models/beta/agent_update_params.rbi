@@ -78,7 +78,8 @@ module OpenAI
                   OpenAI::Beta::PersistedAgentToolParam::ToolSearch,
                   OpenAI::Beta::PersistedAgentToolParam::ProgrammaticToolCalling,
                   OpenAI::Beta::PersistedAgentToolParam::Mcp,
-                  OpenAI::Beta::PersistedAgentToolParam::WebSearch
+                  OpenAI::Beta::PersistedAgentToolParam::WebSearch,
+                  OpenAI::Beta::PersistedAgentToolParam::ComputerUse
                 )
               ]
             )
@@ -114,7 +115,8 @@ module OpenAI
                   OpenAI::Beta::PersistedAgentToolParam::ToolSearch::OrHash,
                   OpenAI::Beta::PersistedAgentToolParam::ProgrammaticToolCalling::OrHash,
                   OpenAI::Beta::PersistedAgentToolParam::Mcp::OrHash,
-                  OpenAI::Beta::PersistedAgentToolParam::WebSearch::OrHash
+                  OpenAI::Beta::PersistedAgentToolParam::WebSearch::OrHash,
+                  OpenAI::Beta::PersistedAgentToolParam::ComputerUse::OrHash
                 )
               ]
             ),
@@ -181,7 +183,8 @@ module OpenAI
                     OpenAI::Beta::PersistedAgentToolParam::ToolSearch,
                     OpenAI::Beta::PersistedAgentToolParam::ProgrammaticToolCalling,
                     OpenAI::Beta::PersistedAgentToolParam::Mcp,
-                    OpenAI::Beta::PersistedAgentToolParam::WebSearch
+                    OpenAI::Beta::PersistedAgentToolParam::WebSearch,
+                    OpenAI::Beta::PersistedAgentToolParam::ComputerUse
                   )
                 ]
               ),
@@ -213,9 +216,6 @@ module OpenAI
 
           # Uses the fast service tier.
           FAST = T.let(:fast, OpenAI::Beta::AgentUpdateParams::ServiceTier::TaggedSymbol)
-
-          # Uses the ultrafast service tier.
-          ULTRAFAST = T.let(:ultrafast, OpenAI::Beta::AgentUpdateParams::ServiceTier::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Beta::AgentUpdateParams::ServiceTier::TaggedSymbol]) }
           def self.values

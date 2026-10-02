@@ -102,6 +102,18 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
+          # The effective CPU and memory tier, or null when unknown or outside the public
+          # tiers.
+          sig { returns(T.nilable(OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol)) }
+          attr_accessor :container_size
+
+          # The effective desktop configuration.
+          sig { returns(T.nilable(OpenAI::Beta::Environment::OpenAIHosted::Desktop)) }
+          attr_reader :desktop
+
+          sig { params(desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop::OrHash).void }
+          attr_writer :desktop
+
           # An environment hosted by OpenAI.
           sig do
             params(
@@ -126,6 +138,10 @@ module OpenAI
               skills: T::Array[
                 T.any(OpenAI::Beta::HostedSkillReference::OrHash, OpenAI::Beta::HostedSkill::Inline::OrHash)
               ],
+
+              container_size: T.nilable(OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::OrSymbol),
+
+              desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop::OrHash,
 
               type: Symbol
             )
@@ -154,6 +170,13 @@ module OpenAI
             # Skills installed in the environment, excluding their archive contents.
             skills:,
 
+            # The effective CPU and memory tier, or null when unknown or outside the public
+            # tiers.
+            container_size: nil,
+
+            # The effective desktop configuration.
+            desktop: nil,
+
             # The type of the object. Always `openai_hosted`.
 
             type: :openai_hosted
@@ -170,7 +193,9 @@ module OpenAI
                 packages: OpenAI::Beta::Environment::OpenAIHosted::Packages,
                 plugins: T::Array[OpenAI::Beta::HostedPlugin],
                 skills: T::Array[OpenAI::Beta::HostedSkill::Variants],
-                type: Symbol
+                type: Symbol,
+                container_size: T.nilable(OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol),
+                desktop: OpenAI::Beta::Environment::OpenAIHosted::Desktop
               }
             )
           end
@@ -238,7 +263,7 @@ module OpenAI
               # Disables network access.
               DISABLED = T.let(:disabled, OpenAI::Beta::Environment::OpenAIHosted::Network::Access::TaggedSymbol)
 
-              # Allows access only to configured domains.
+              # Applies the configured domain restrictions.
               RESTRICTED = T.let(:restricted, OpenAI::Beta::Environment::OpenAIHosted::Network::Access::TaggedSymbol)
 
               sig {
@@ -298,6 +323,61 @@ module OpenAI
             sig do
               override.returns(
                 {npm: T::Array[String], python: T::Array[String], system_: T::Array[String]}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          # The effective CPU and memory tier, or null when unknown or outside the public
+          # tiers.
+          module ContainerSize
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::Environment::OpenAIHosted::ContainerSize) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            SMALL = T.let(:small, OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol)
+            MEDIUM = T.let(:medium, OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol)
+            LARGE = T.let(:large, OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol]) }
+            def self.values
+            end
+          end
+
+          class Desktop < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Environment::OpenAIHosted::Desktop,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Whether the environment provisions a desktop and browser proxy.
+            sig { returns(T::Boolean) }
+            attr_accessor :enabled
+
+            # The effective desktop configuration.
+            sig do
+              params(
+
+                enabled: T::Boolean
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Whether the environment provisions a desktop and browser proxy.
+
+              enabled:
+            )
+            end
+
+            sig do
+              override.returns(
+                {enabled: T::Boolean}
               )
             end
             def to_hash

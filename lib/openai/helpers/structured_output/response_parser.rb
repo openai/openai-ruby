@@ -96,7 +96,6 @@ module OpenAI
 
           case parsed
           in {tools: Array => tools}
-            # rubocop:disable Metrics/BlockLength
             mapped = tools.map do |tool|
               case tool
               in OpenAI::StructuredOutput::JsonSchemaConverter
@@ -132,7 +131,7 @@ module OpenAI
                 tool
               end
             end
-            # rubocop:enable Metrics/BlockLength
+
             tools.replace(mapped)
           else
           end

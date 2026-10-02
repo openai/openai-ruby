@@ -26,6 +26,16 @@ module OpenAI
         def each(&block)
         end
 
+        # @beta
+        sig { returns(OpenAI::Helpers::Beta::Agents::TurnResult) }
+        def get_final_result
+        end
+
+        # @beta
+        sig { returns(T.self_type) }
+        def with_result_collection
+        end
+
         sig { void }
         def close
         end
@@ -47,12 +57,21 @@ module OpenAI
               input: T.any(String, T::Array[OpenAI::Models::Beta::AgentSessionInputMessageParam::OrHash]),
               tool_handlers: T::Hash[String, OpenAI::Helpers::Agents::ToolHandler],
               idempotency_key: T.nilable(String),
+              output_type: T.nilable(T.class_of(OpenAI::Helpers::StructuredOutput::BaseModel)),
               request_options: T.nilable(OpenAI::RequestOptions::OrHash),
               block: T.nilable(T.proc.params(stream: OpenAI::Helpers::Agents::SessionStream).void)
             )
               .returns(OpenAI::Helpers::Agents::SessionStream)
           end
-          def stream(session_id, input:, tool_handlers: {}, idempotency_key: nil, request_options: {}, &block)
+          def stream(
+            session_id,
+            input:,
+            tool_handlers: {},
+            idempotency_key: nil,
+            output_type: nil,
+            request_options: {},
+            &block
+          )
           end
         end
       end

@@ -28,6 +28,15 @@ module OpenAI
             sig { returns(T.nilable(T::Array[String])) }
             attr_accessor :capability_directories
 
+            # Replacement desktop configuration, or null to disable the desktop.
+            sig { returns(T.nilable(OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Desktop)) }
+            attr_reader :desktop
+
+            sig {
+              params(desktop: T.nilable(OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Desktop::OrHash)).void
+            }
+            attr_writer :desktop
+
             # Replacement confidential environment values.
             sig { returns(T.nilable(T::Hash[Symbol, String])) }
             attr_accessor :env
@@ -99,6 +108,8 @@ module OpenAI
 
                 capability_directories: T.nilable(T::Array[String]),
 
+                desktop: T.nilable(OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Desktop::OrHash),
+
                 env: T.nilable(T::Hash[Symbol, String]),
 
                 files: T.nilable(
@@ -140,6 +151,9 @@ module OpenAI
               # Directories that expose capabilities to the agent.
               capability_directories: nil,
 
+              # Replacement desktop configuration, or null to disable the desktop.
+              desktop: nil,
+
               # Replacement confidential environment values.
               env: nil,
 
@@ -175,6 +189,7 @@ module OpenAI
                 {
                   environment_template_id: String,
                   capability_directories: T.nilable(T::Array[String]),
+                  desktop: T.nilable(OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Desktop),
                   env: T.nilable(T::Hash[Symbol, String]),
                   files: T.nilable(
                     T::Array[
@@ -201,6 +216,44 @@ module OpenAI
             def to_hash
             end
 
+            class Desktop < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Desktop,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # Whether to provision the desktop and its browser proxy.
+              sig { returns(T::Boolean) }
+              attr_accessor :enabled
+
+              # Replacement desktop configuration, or null to disable the desktop.
+              sig do
+                params(
+
+                  enabled: T::Boolean
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # Whether to provision the desktop and its browser proxy.
+
+                enabled:
+              )
+              end
+
+              sig do
+                override.returns(
+                  {enabled: T::Boolean}
+                )
+              end
+              def to_hash
+              end
+
+            end
+
             class Network < OpenAI::Internal::Type::BaseModel
               OrHash = T.type_alias do
                 T.any(
@@ -217,6 +270,12 @@ module OpenAI
               sig { returns(T.nilable(T::Array[String])) }
               attr_accessor :allowed_domains
 
+              # Domains blocked for both executor and browser when access is restricted. A
+              # nonempty list requires `access: restricted` and cannot be combined with nonempty
+              # `allowed_domains`. Wildcard domains are not supported.
+              sig { returns(T.nilable(T::Array[String])) }
+              attr_accessor :blocked_domains
+
               # Network access available after setup completes. Omit to preserve the current
               # policy, or pass `null` to reset to disabled for GA requests or enabled for beta
               # requests.
@@ -225,7 +284,9 @@ module OpenAI
 
                   access: OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Network::Access::OrSymbol,
 
-                  allowed_domains: T.nilable(T::Array[String])
+                  allowed_domains: T.nilable(T::Array[String]),
+
+                  blocked_domains: T.nilable(T::Array[String])
                 )
                   .returns(T.attached_class)
               end
@@ -235,8 +296,13 @@ module OpenAI
                 access:,
 
                 # Domains the environment may access when network access is restricted.
+                allowed_domains: nil,
 
-                allowed_domains: nil
+                # Domains blocked for both executor and browser when access is restricted. A
+                # nonempty list requires `access: restricted` and cannot be combined with nonempty
+                # `allowed_domains`. Wildcard domains are not supported.
+
+                blocked_domains: nil
               )
               end
 
@@ -244,7 +310,8 @@ module OpenAI
                 override.returns(
                   {
                     access: OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Network::Access::OrSymbol,
-                    allowed_domains: T.nilable(T::Array[String])
+                    allowed_domains: T.nilable(T::Array[String]),
+                    blocked_domains: T.nilable(T::Array[String])
                   }
                 )
               end
@@ -272,7 +339,7 @@ module OpenAI
                   OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Network::Access::TaggedSymbol
                 )
 
-                # Allows access only to configured domains.
+                # Applies the configured domain restrictions.
                 RESTRICTED = T.let(
                   :restricted,
                   OpenAI::Beta::Agents::Environments::TemplateUpdateParams::Network::Access::TaggedSymbol

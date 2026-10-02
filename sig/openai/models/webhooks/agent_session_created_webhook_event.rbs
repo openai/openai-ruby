@@ -1,0 +1,115 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type agent_session_created_webhook_event =
+        {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::AgentSessionCreatedWebhookEvent::Data,
+          ?object: :event,
+          ?type: :"agent.session.created"
+        }
+
+      class AgentSessionCreatedWebhookEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the event.
+        attr_accessor id: String
+
+        # The Unix timestamp, in seconds, when the event was created.
+        attr_accessor created_at: Integer
+
+        attr_accessor data: OpenAI::Webhooks::AgentSessionCreatedWebhookEvent::Data
+
+        # The object type. Always `event`.
+        attr_accessor object: :event
+
+        # The event type. Always `agent.session.created`.
+        attr_accessor type: :"agent.session.created"
+
+        # @param id
+        #   The unique ID of the event.
+        # @param created_at
+        #   The Unix timestamp, in seconds, when the event was created.
+        # @param object
+        #   The object type. Always `event`.
+        # @param type
+        #   The event type. Always `agent.session.created`.
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::AgentSessionCreatedWebhookEvent::Data,
+          ?object: :event,
+          ?type: :"agent.session.created"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::AgentSessionCreatedWebhookEvent::Data,
+          ?object: :event,
+          ?type: :"agent.session.created"
+        }
+
+        type data =
+          {
+            id: String,
+            environment_type: String,
+            ?connect: OpenAI::Webhooks::AgentSessionCreatedWebhookEvent::Data::Connect,
+            ?environment_id: String
+          }
+
+        class Data < OpenAI::Internal::Type::BaseModel
+          # The ID of the session.
+          attr_accessor id: String
+
+          # The environment type: `none`, `openai_hosted`, or `self_hosted`.
+          attr_accessor environment_type: String
+
+          attr_reader connect: OpenAI::Webhooks::AgentSessionCreatedWebhookEvent::Data::Connect?
+
+          def connect=: (
+            OpenAI::Webhooks::AgentSessionCreatedWebhookEvent::Data::Connect
+          ) -> OpenAI::Webhooks::AgentSessionCreatedWebhookEvent::Data::Connect
+
+          # The ID of the environment, when one exists.
+          attr_reader environment_id: String?
+
+          # The ID of the environment, when one exists.
+          def environment_id=: (String) -> String
+
+          # @param id
+          #   The ID of the session.
+          # @param environment_type
+          #   The environment type: `none`, `openai_hosted`, or `self_hosted`.
+          # @param environment_id
+          #   The ID of the environment, when one exists.
+          def initialize: (
+            id: String,
+            environment_type: String,
+            ?connect: OpenAI::Webhooks::AgentSessionCreatedWebhookEvent::Data::Connect,
+            ?environment_id: String
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            environment_type: String,
+            ?connect: OpenAI::Webhooks::AgentSessionCreatedWebhookEvent::Data::Connect,
+            ?environment_id: String
+          }
+
+          type connect = { remote_url: String }
+
+          class Connect < OpenAI::Internal::Type::BaseModel
+            # The URL used to connect the self-hosted environment.
+            attr_accessor remote_url: String
+
+            # @param remote_url
+            #   The URL used to connect the self-hosted environment.
+            def initialize: (remote_url: String) -> void
+
+            def to_hash: -> { remote_url: String }
+          end
+        end
+      end
+    end
+  end
+end

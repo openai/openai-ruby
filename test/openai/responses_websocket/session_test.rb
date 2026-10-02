@@ -1378,6 +1378,56 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
     end
   end
 
+  def test_preview_keeps_partial_output_after_eof_but_never_reports_a_terminal
+    handler = lambda do |socket, _request|
+      assert_equal("response.create", read(socket)["type"])
+      write(
+        socket,
+        type: "response.created",
+        sequence_number: 0,
+        response: {
+          id: "resp_partial",
+          output: [
+            {type: "message", id: "msg", content: [{type: "output_text", text: "in", annotations: []}]}
+          ]
+        }
+      )
+      write(
+        socket,
+        type: "response.output_text.delta",
+        sequence_number: 1,
+        item_id: "msg",
+        output_index: 0,
+        content_index: 0,
+        delta: "complete"
+      )
+    end
+
+    with_server(handler, wait_for_close: false) do |client|
+      OpenAI::Responses::Session.open(client: client, limits: limits) do |session|
+        lane = session.default
+        preview = OpenAI::Responses::IncrementalResponse.new
+        lane.send_event(type: "response.create")
+        preview.add(lane.receive)
+        previous = preview.output
+        preview.add(lane.receive)
+
+        assert_raises(OpenAI::Responses::SessionError) { lane.receive }
+        assert_equal(:provisional, preview.phase)
+        assert_nil(preview.terminal_event)
+        assert_equal("incomplete", preview.output.first.content.first.text)
+        assert_equal("in", previous.first.content.first.text)
+        assert_raises(OpenAI::Responses::SessionError) { lane.get_final_response }
+
+        preview.reset
+        assert_nil(preview.phase)
+        assert_nil(preview.terminal_event)
+        assert_nil(preview.output)
+        assert_equal("in", previous.first.content.first.text)
+      end
+    end
+  end
+
   def test_uncertain_write_fails_the_session_without_replay
     requests = []
     handler = lambda do |socket, _request|

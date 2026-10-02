@@ -135,15 +135,24 @@ module OpenAI
           # @param request_only [Boolean] Exclude fields omitted by the request serializer.
           #
           # @return [Hash{Symbol=>Object}]
-          def new_coerce_state(translate_names: true, request_only: false)
+          def new_coerce_state(translate_names: true, request_only: false, memoize: false)
             {
               translate_names: translate_names,
               request_only: request_only,
               strictness: true,
               exactness: {yes: 0, no: 0, maybe: 0},
               error: nil,
-              branched: 0
+              branched: 0,
+              memo: memoize ? {}.compare_by_identity : nil
             }
+          end
+
+          # @api private
+          # Resolve lazy schema types once within an opted-in parse.
+          def resolve_type(type_fn, state: nil)
+            return type_fn.call unless state && state[:memo]
+            cache = state[:memo][:resolved_types] ||= {}.compare_by_identity
+            cache.fetch(type_fn) { cache[type_fn] = type_fn.call }
           end
 
           # @api private
@@ -191,7 +200,12 @@ module OpenAI
           #
           # @return [Object]
           def coerce(target, value, state: OpenAI::Internal::Type::Converter.new_coerce_state)
-            # rubocop:disable Metrics/BlockNesting
+            if state[:memo] &&
+                target.is_a?(OpenAI::Internal::Type::Converter) &&
+                (value.is_a?(Hash) || value.is_a?(Array))
+              return coerce_cached(target, value, state: state)
+            end
+
             exactness = state.fetch(:exactness)
 
             case target
@@ -249,6 +263,12 @@ module OpenAI
                   state[:error] = TypeError.new("#{value.class} can't be coerced into #{String}")
                 end
 
+              in -> { _1 <= Symbol }
+                if value.is_a?(String)
+                  exactness[:yes] += 1
+                  return value.to_sym
+                end
+
               in -> { _1 <= Date || _1 <= Time }
                 Kernel.then do
                   return target.parse(value).tap { exactness[:yes] += 1 }
@@ -281,7 +301,31 @@ module OpenAI
 
             exactness[:no] += 1
             value
-            # rubocop:enable Metrics/BlockNesting
+          end
+
+          # @api private
+          # Reuse converter/value pairs within one parse, including recursive collections.
+          # Identity keys avoid recursively hashing model and converter definitions.
+          def coerce_cached(target, value, state:)
+            converters = state.fetch(:memo)
+            values = converters[target] ||= {}.compare_by_identity
+            outcomes = values[value] ||= {}
+            key = state.values_at(:translate_names, :request_only, :strictness, :error)
+            exactness = state.fetch(:exactness)
+            if (cached = outcomes[key])
+              parsed, delta, error, branched = cached
+              delta.each { exactness[_1] += _2 }
+              state[:error] = error
+              state[:branched] += branched
+              return parsed
+            end
+
+            before = exactness.dup
+            branched = state.fetch(:branched)
+            parsed = target.coerce(value, state: state)
+            delta = exactness.to_h { |name, count| [name, count - before.fetch(name)] }
+            outcomes[key] = [parsed, delta, state[:error], state[:branched] - branched]
+            parsed
           end
 
           # @api private
@@ -352,7 +396,8 @@ module OpenAI
               strictness: T::Boolean,
               exactness: {yes: Integer, no: Integer, maybe: Integer},
               error: T.nilable(StandardError),
-              branched: Integer
+              branched: Integer,
+              memo: T.nilable(T::Hash[T.untyped, T.untyped])
             }
           end
         end

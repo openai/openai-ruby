@@ -93,6 +93,7 @@ module OpenAI
 
             required_actions: T::Array[
               T.any(
+                OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::OrHash,
                 OpenAI::Beta::AgentSession::RequiredAction::FunctionCall::OrHash,
                 OpenAI::Beta::AgentSession::RequiredAction::EnvironmentConnection::OrHash
               )
@@ -250,7 +251,8 @@ module OpenAI
                   OpenAI::Beta::AgentTool::Function::OrHash,
                   OpenAI::Beta::AgentTool::ProgrammaticToolCalling::OrHash,
                   OpenAI::Beta::AgentTool::Mcp::OrHash,
-                  OpenAI::Beta::AgentTool::WebSearch::OrHash
+                  OpenAI::Beta::AgentTool::WebSearch::OrHash,
+                  OpenAI::Beta::AgentTool::ComputerUse::OrHash
                 )
               ]
             )
@@ -333,10 +335,380 @@ module OpenAI
 
           Variants = T.type_alias {
             T.any(
+              OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest,
               OpenAI::Beta::AgentSession::RequiredAction::FunctionCall,
               OpenAI::Beta::AgentSession::RequiredAction::EnvironmentConnection
             )
           }
+
+          class ComputerUseApprovalRequest < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The information needed to render the request.
+            sig { returns(OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::Variants) }
+            attr_accessor :request
+
+            # The registered request ID to echo when responding.
+            sig { returns(String) }
+            attr_accessor :request_id
+
+            # The turn that requested approval.
+            sig { returns(String) }
+            attr_accessor :turn_id
+
+            # The type of the object. Always `computer_use_approval_request`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # Respond to a computer-use request.
+            sig do
+              params(
+
+                request: T.any(
+                  OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::OrHash,
+                  OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserOriginAccess::OrHash
+                ),
+
+                request_id: String,
+
+                turn_id: String,
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The information needed to render the request.
+              request:,
+
+              # The registered request ID to echo when responding.
+              request_id:,
+
+              # The turn that requested approval.
+              turn_id:,
+
+              # The type of the object. Always `computer_use_approval_request`.
+
+              type: :computer_use_approval_request
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  request: OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::Variants,
+                  request_id: String,
+                  turn_id: String,
+                  type: Symbol
+                }
+              )
+            end
+            def to_hash
+            end
+
+            # The information needed to render the request.
+            module Request
+              extend OpenAI::Internal::Type::Union
+
+              Variants = T.type_alias {
+                T.any(
+                  OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication,
+                  OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserOriginAccess
+                )
+              }
+
+              class BrowserAuthentication < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # The registered form or frame origin where values will be entered.
+                sig { returns(T.nilable(String)) }
+                attr_accessor :credential_origin
+
+                # Controls to render. All submitted values are sensitive.
+                sig {
+                  returns(
+                    T::Array[
+                      OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Field
+                    ]
+                  )
+                }
+                attr_accessor :fields
+
+                # Sign-in methods. Empty for a plain form.
+                sig {
+                  returns(
+                    T::Array[
+                      OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Option
+                    ]
+                  )
+                }
+                attr_accessor :options
+
+                # Why the agent needs the user to sign in.
+                sig { returns(T.nilable(String)) }
+                attr_accessor :reason
+
+                # The type of the object. Always `browser_authentication`.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                # A registered form awaiting the application's response.
+                sig do
+                  params(
+
+                    credential_origin: T.nilable(String),
+
+                    fields: T::Array[
+                      OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Field::OrHash
+                    ],
+
+                    options: T::Array[
+                      OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Option::OrHash
+                    ],
+
+                    reason: T.nilable(String),
+
+                    type: Symbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # The registered form or frame origin where values will be entered.
+                  credential_origin:,
+
+                  # Controls to render. All submitted values are sensitive.
+                  fields:,
+
+                  # Sign-in methods. Empty for a plain form.
+                  options:,
+
+                  # Why the agent needs the user to sign in.
+                  reason:,
+
+                  # The type of the object. Always `browser_authentication`.
+
+                  type: :browser_authentication
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {
+                      credential_origin: T.nilable(String),
+                      fields: T::Array[
+                        OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Field
+                      ],
+                      options: T::Array[
+                        OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Option
+                      ],
+                      reason: T.nilable(String),
+                      type: Symbol
+                    }
+                  )
+                end
+                def to_hash
+                end
+
+                class Field < OpenAI::Internal::Type::BaseModel
+                  OrHash = T.type_alias do
+                    T.any(
+                      OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Field,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
+
+                  # The field ID to submit as field_id in a fields entry.
+                  sig { returns(String) }
+                  attr_accessor :id
+
+                  # The label to display beside the control.
+                  sig { returns(String) }
+                  attr_accessor :label
+
+                  # Whether this control requires a nonempty value.
+                  sig { returns(T::Boolean) }
+                  attr_accessor :required
+
+                  # The rendering type, such as email, password, or text.
+                  sig { returns(String) }
+                  attr_accessor :type
+
+                  # A control in a registered browser-login form.
+                  sig do
+                    params(
+
+                      id: String,
+
+                      label: String,
+
+                      required: T::Boolean,
+
+                      type: String
+                    )
+                      .returns(T.attached_class)
+                  end
+                  def self.new(
+
+                    # The field ID to submit as field_id in a fields entry.
+                    id:,
+
+                    # The label to display beside the control.
+                    label:,
+
+                    # Whether this control requires a nonempty value.
+                    required:,
+
+                    # The rendering type, such as email, password, or text.
+
+                    type:
+                  )
+                  end
+
+                  sig do
+                    override.returns(
+                      {id: String, label: String, required: T::Boolean, type: String}
+                    )
+                  end
+                  def to_hash
+                  end
+
+                end
+
+                class Option < OpenAI::Internal::Type::BaseModel
+                  OrHash = T.type_alias do
+                    T.any(
+                      OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Option,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
+
+                  # The option ID to submit as selected_option.
+                  sig { returns(String) }
+                  attr_accessor :id
+
+                  # IDs from the registered fields that this method accepts.
+                  sig { returns(T::Array[String]) }
+                  attr_accessor :field_ids
+
+                  # The method label to display.
+                  sig { returns(String) }
+                  attr_accessor :label
+
+                  # A sign-in method and the fields that belong to it.
+                  sig do
+                    params(
+
+                      id: String,
+
+                      field_ids: T::Array[String],
+
+                      label: String
+                    )
+                      .returns(T.attached_class)
+                  end
+                  def self.new(
+
+                    # The option ID to submit as selected_option.
+                    id:,
+
+                    # IDs from the registered fields that this method accepts.
+                    field_ids:,
+
+                    # The method label to display.
+
+                    label:
+                  )
+                  end
+
+                  sig do
+                    override.returns(
+                      {id: String, field_ids: T::Array[String], label: String}
+                    )
+                  end
+                  def to_hash
+                  end
+
+                end
+              end
+
+              class BrowserOriginAccess < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserOriginAccess,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # The origin the browser needs permission to access.
+                sig { returns(String) }
+                attr_accessor :origin
+
+                # The browser's explanation for this request, or null when unavailable.
+                sig { returns(T.nilable(String)) }
+                attr_accessor :reason
+
+                # The type of the object. Always `browser_origin_access`.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                # A browser origin awaiting the application's approval decision.
+                sig do
+                  params(
+
+                    origin: String,
+
+                    reason: T.nilable(String),
+
+                    type: Symbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # The origin the browser needs permission to access.
+                  origin:,
+
+                  # The browser's explanation for this request, or null when unavailable.
+                  reason:,
+
+                  # The type of the object. Always `browser_origin_access`.
+
+                  type: :browser_origin_access
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {origin: String, reason: T.nilable(String), type: Symbol}
+                  )
+                end
+                def to_hash
+                end
+
+              end
+
+              sig {
+                override.returns(
+                  T::Array[OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::Variants]
+                )
+              }
+              def self.variants
+              end
+
+            end
+          end
 
           class FunctionCall < OpenAI::Internal::Type::BaseModel
             OrHash = T.type_alias do

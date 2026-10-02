@@ -78,9 +78,7 @@ module OpenAI
           case max_len
           in nil
             # `loop` rescues StopIteration, but this method handles it below.
-            # rubocop:disable Style/InfiniteLoop
             @buf << @stream.next.b while true
-            # rubocop:enable Style/InfiniteLoop
           in Integer
             @buf << @stream.next.b while @buf.bytesize < max_len
             read_buffer(max_len)

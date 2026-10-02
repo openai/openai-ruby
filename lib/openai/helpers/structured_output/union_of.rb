@@ -21,7 +21,6 @@ module OpenAI
         #
         # @return [Hash{Symbol=>Object}]
         def to_json_schema_inner(state:)
-          # rubocop:disable Metrics/BlockLength
           OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.cache_def!(state, type: self) do
             path = state.fetch(:path)
             mergeable_keys = {[:anyOf] => 0, [:type] => 0}
@@ -52,7 +51,6 @@ module OpenAI
               }
             end
           end
-          # rubocop:enable Metrics/BlockLength
         end
 
         private_class_method :new

@@ -6,11 +6,12 @@ module OpenAI
       class Agents
         class Sessions
           class Events
-            # Submits message, cancellation, or tool-result events to a managed agent session.
-            # Cancellation can recover a still-open turn whose backend execution has ended by
-            # marking it cancelled and abandoning unpublished outputs. Saved results,
-            # published files, and existing terminal outcomes are preserved. HTTP 202 confirms
-            # acceptance, not durable completion. See
+            # Submits message, cancellation, tool-result, or computer-use approval-response
+            # events to a managed agent session. Cancellation can recover a still-open turn
+            # whose backend execution has ended by marking it cancelled and abandoning
+            # unpublished outputs. Saved results, published files, and existing terminal
+            # outcomes are preserved. HTTP 202 confirms acceptance, not durable completion.
+            # See
             # [session events](https://developers.openai.com/api/docs/guides/agents-api/sessions/events).
             #
             # @overload create(session_id, events:, idempotency_key: nil, request_options: {})
@@ -18,7 +19,7 @@ module OpenAI
             # @param session_id [String]
             #   Path param: The ID of the session.
             #
-            # @param events [Array<OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMessage, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputCancel, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputToolResult>]
+            # @param events [Array<OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMessage, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputCancel, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputToolResult>]
             #   Body param: The input events to submit to the session.
             #
             # @param idempotency_key [String]

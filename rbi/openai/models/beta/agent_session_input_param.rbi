@@ -11,10 +11,112 @@ module OpenAI
 
         Variants = T.type_alias do
           T.any(
+            OpenAI::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult,
             OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMessage,
             OpenAI::Beta::AgentSessionInputParam::AgentSessionInputCancel,
             OpenAI::Beta::AgentSessionInputParam::AgentSessionInputToolResult
           )
+        end
+
+        class AgentSessionInputComputerUseApprovalRequestResult < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The registered request ID from the required action.
+          sig { returns(String) }
+          attr_accessor :request_id
+
+          # The response for this request type.
+          sig {
+            returns(
+              T.any(
+                OpenAI::Beta::AgentBrowserAuthenticationSubmitParam,
+                OpenAI::Beta::AgentBrowserAuthenticationCancelParam,
+                OpenAI::Beta::AgentBrowserOriginAccessParam
+              )
+            )
+          }
+          attr_accessor :response
+
+          # The type of the object. Always
+          # `agent.session.input.computer_use_approval_request_result`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # Responds to a pending Computer Use approval request.
+          sig do
+            params(
+
+              request_id: String,
+
+              response: T.any(
+                OpenAI::Beta::AgentBrowserAuthenticationSubmitParam::OrHash,
+                OpenAI::Beta::AgentBrowserAuthenticationCancelParam::OrHash,
+                OpenAI::Beta::AgentBrowserOriginAccessParam::OrHash
+              ),
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # The registered request ID from the required action.
+            request_id:,
+
+            # The response for this request type.
+            response:,
+
+            # The type of the object. Always
+            # `agent.session.input.computer_use_approval_request_result`.
+
+            type: :"agent.session.input.computer_use_approval_request_result"
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                request_id: String,
+                response: T.any(
+                  OpenAI::Beta::AgentBrowserAuthenticationSubmitParam,
+                  OpenAI::Beta::AgentBrowserAuthenticationCancelParam,
+                  OpenAI::Beta::AgentBrowserOriginAccessParam
+                ),
+                type: Symbol
+              }
+            )
+          end
+          def to_hash
+          end
+
+          # The response for this request type.
+          module Response
+            extend OpenAI::Internal::Type::Union
+
+            Variants = T.type_alias {
+              T.any(
+                OpenAI::Beta::AgentBrowserAuthenticationSubmitParam,
+                OpenAI::Beta::AgentBrowserAuthenticationCancelParam,
+                OpenAI::Beta::AgentBrowserOriginAccessParam
+              )
+            }
+
+            sig {
+              override.returns(
+                T::Array[
+                  OpenAI::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult::Response::Variants
+                ]
+              )
+            }
+            def self.variants
+            end
+
+          end
         end
 
         class AgentSessionInputMessage < OpenAI::Internal::Type::BaseModel

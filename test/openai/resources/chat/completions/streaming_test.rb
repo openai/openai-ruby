@@ -392,11 +392,11 @@ class OpenAI::Test::Resources::Chat::Completions::StreamingTest < Minitest::Test
     stub_streaming_response(sse_response)
 
     error = assert_raises(OpenAI::LengthFinishReasonError) do
+      # rubocop:disable Lint/EmptyBlock -- consume the stream until the expected finish error
       @client
         .chat
         .completions
         .stream(**basic_params, response_format: PersonModel)
-        # rubocop:disable Lint/EmptyBlock
         .each { |_e| }
       # rubocop:enable Lint/EmptyBlock
     end
