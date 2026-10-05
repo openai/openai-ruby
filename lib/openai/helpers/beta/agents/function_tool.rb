@@ -15,8 +15,9 @@ module OpenAI
           # @param name [String]
           # @param arguments [Class<OpenAI::BaseModel>]
           # @param description [String]
+          # @param defer_loading [Boolean, nil] Load this tool through hosted tool search; nil leaves the setting omitted.
           # @yieldparam arguments [OpenAI::BaseModel]
-          def initialize(name:, arguments:, description: "", &handler)
+          def initialize(name:, arguments:, description: "", defer_loading: nil, &handler)
             ModelAdapter.validate!(arguments, parameter: "arguments")
 
             raise ArgumentError, "a callback is required" unless handler
@@ -30,7 +31,8 @@ module OpenAI
                 type: :function,
                 name: @name,
                 parameters: arguments.to_json_schema,
-                description: description
+                description: description,
+                **(defer_loading.nil? ? {} : {defer_loading: defer_loading})
               )
               .freeze
           end

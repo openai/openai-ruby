@@ -98,27 +98,60 @@ class OpenAI::Test::ResponsesStringTypeHintsTest < Minitest::Test
     assert_instance_of(TypeHintTool, response.output.first.parsed)
   end
 
+  def test_deferred_tools_preserve_native_options_and_parsing_in_create_and_stream
+    [{}, {defer_loading: false}, {defer_loading: true}].product([false, true], [:hash, :model]).each do |
+        options,
+        streaming,
+        form
+      |
+      tool = tool_config(:function).merge(options)
+      tool = OpenAI::Responses::FunctionTool.new(**tool) if form == :model
+      wire, response = create_response(
+        tools: [{type: :tool_search}, tool],
+        output: [tool_output("lookup")],
+        stream: streaming
+      )
+      definition = wire.fetch("tools").last
+      assert_equal(options.key?(:defer_loading), definition.key?("defer_loading"))
+      assert_equal(options[:defer_loading], definition["defer_loading"]) unless options.empty?
+      assert_equal(wire_schema(TypeHintTool), definition["parameters"])
+      assert_equal(false, definition["strict"])
+      assert_instance_of(TypeHintTool, response.output.first.parsed)
+      assert_equal(7, response.output.first.parsed.argument)
+      assert_same(TypeHintTool, tool[:parameters])
+    end
+  end
+
   private
 
   def wire_schema(model)
     JSON.parse(JSON.generate(model.to_json_schema))
   end
 
-  def create_response(text: nil, tools: nil, output:)
+  def create_response(text: nil, tools: nil, output:, stream: false)
     wire = nil
     stub_request(:post, "http://localhost/responses").to_return do |request|
       wire = JSON.parse(request.body)
-      {
-        status: 200,
-        headers: {"Content-Type" => "application/json"},
-        body: JSON.generate(id: "resp_synthetic", object: "response", status: "completed", output: output)
-      }
+      response = {id: "resp_synthetic", object: "response", status: "completed", output: output}
+      if stream
+        events = [
+          {type: "response.created", sequence_number: 0, response: response.merge(status: "in_progress", output: [])},
+          {type: "response.completed", sequence_number: 1, response: response}
+        ]
+        {
+          status: 200,
+          headers: {"Content-Type" => "text/event-stream"},
+          body: events.map { |event| "data: #{JSON.generate(event)}\n\n" }.join
+        }
+      else
+        {status: 200, headers: {"Content-Type" => "application/json"}, body: JSON.generate(response)}
+      end
     end
 
     params = {model: "gpt-4o-mini", input: "synthetic"}
     params.store(:text, text) if text
     params.store(:tools, tools) if tools
-    response = @client.responses.create(**params)
+    response = stream ? @client.responses.stream(**params).get_final_response : @client.responses.create(**params)
 
     [wire, response]
   end

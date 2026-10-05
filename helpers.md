@@ -27,6 +27,49 @@ not JSON Schema validation. Validate constraints and approval in `wallet` before
 side effects. Combine bindings with `transfer.handlers.merge(other.handlers)`;
 existing hash-based handlers continue to work.
 
+### Deferred tool loading
+
+Use `defer_loading: true` with hosted tool search to load a typed tool on demand:
+
+```ruby
+class LookupItem < OpenAI::BaseModel
+  required :item_id, String
+end
+
+lookup = OpenAI::Helpers::Beta::Agents::FunctionTool.new(
+  name: "lookup_item", arguments: LookupItem, defer_loading: true
+) { |args| catalog.lookup(args.item_id) }
+
+session = client.beta.agents.sessions.create(
+  agent: {model: MODEL, tools: [{type: :tool_search}, lookup.definition]},
+  environment: {type: :openai_hosted}
+)
+client.beta.agents.sessions.stream(
+  session.id, input: "Look up item A123", tool_handlers: lookup.handlers
+) { |stream| stream.until_done }
+```
+
+Responses already accepts the option with a typed `parameters` model. The same
+definition works with `responses.create` and `responses.stream`:
+
+```ruby
+tool = OpenAI::Responses::FunctionTool.new(
+  name: "lookup_item", parameters: LookupItem, strict: true, defer_loading: true
+)
+response = client.responses.create(
+  model: MODEL, input: "Look up item A123", tools: [{type: :tool_search}, tool]
+)
+response.output.each do |item|
+  next unless item.type == :function_call
+  arguments = item.parsed # LookupItem
+  # Execute the function and submit its output in your application.
+end
+```
+
+Omit the option to keep existing defaults, or pass `false` to load the tool
+immediately. The API validates tool-search configuration; local argument parsing
+and application callbacks are unchanged.
+
 ### Observe local tool errors
 
 ```ruby
