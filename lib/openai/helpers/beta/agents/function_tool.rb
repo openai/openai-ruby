@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "model_adapter"
+require_relative "../../agents/tools"
 
 module OpenAI
   module Helpers
@@ -40,14 +41,30 @@ module OpenAI
 
           # Pass these local bindings to sessions.stream(tool_handlers: ...).
           # @return [Hash{String=>Proc}]
-          def handlers = {name => method(:call).to_proc}
+          def handlers
+            {
+              name => lambda { |arguments|
+                parsed = begin
+                  parse_arguments(arguments)
+                rescue StandardError
+                  raise OpenAI::Helpers::Agents::Tools::ArgumentParsingError, "Tool argument parsing failed"
+                end
+
+                @handler.call(parsed)
+              }
+            }
+          end
 
           # Parse using the SDK's BaseModel conventions, then invoke the callback.
           # This is not JSON Schema validation; validate application constraints
           # and authorization in the callback before performing side effects.
           # @param arguments [Hash{String=>Object}, String]
           # @return [Object]
-          def call(arguments)
+          def call(arguments) = @handler.call(parse_arguments(arguments))
+
+          private
+
+          def parse_arguments(arguments)
             values = JSON.parse(arguments.is_a?(String) ? arguments : JSON.generate(arguments), symbolize_names: true)
             raise ArgumentError, "Tool arguments must be a JSON object" unless values.is_a?(Hash)
             parsed = ModelAdapter.coerce(@arguments, values)
@@ -55,9 +72,8 @@ module OpenAI
               raise ArgumentError, "Tool arguments cannot be parsed into the argument model"
             end
 
-            @handler.call(parsed)
+            parsed
           end
-
         end
       end
     end
