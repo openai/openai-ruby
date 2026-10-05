@@ -200,6 +200,7 @@ module OpenAI
         body = built[:body]
         # Capture only the final model; provider hooks run after body encoding.
         model = body.reverse_each.find { |key, _| key == :model || key == "model" }&.last if body.is_a?(Hash)
+        model = model.to_s if model.is_a?(Symbol)
         return built.merge(provider_request_model: model)
       end
 

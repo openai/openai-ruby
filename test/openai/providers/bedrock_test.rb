@@ -12,9 +12,9 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
       {api_key: "bedrock-token"},
       {access_key_id: "access-key", secret_access_key: "secret-key"}
     ].each do |authentication|
-      ["openai.gpt-oss-120b", "openai.gpt-6.1-sol"].each do |model|
+      ["openai.gpt-oss-120b", "openai.gpt-6.1-sol", :"openai.gpt-6.1-sol"].each do |model|
         [
-          [{}, nil, model == "openai.gpt-6.1-sol" ? "/openai/v1" : "/v1", "bedrock-mantle.us-east-1.api.aws"],
+          [{}, nil, model.to_s == "openai.gpt-6.1-sol" ? "/openai/v1" : "/v1", "bedrock-mantle.us-east-1.api.aws"],
           [{base_url: "https://proxy.example/v1"}, nil, "/v1", "proxy.example"],
           [{base_url: "https://proxy.example/openai/v1"}, nil, "/openai/v1", "proxy.example"],
           [{}, "https://proxy.example/v1", "/v1", "proxy.example"],
@@ -37,7 +37,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
           )
           [responses_url, chat_url].each do |url|
             assert_requested(:post, url, times: 1) do |request|
-              assert_equal(model, JSON.parse(request.body).fetch("model"))
+              assert_equal(model.to_s, JSON.parse(request.body).fetch("model"))
               assert_bedrock_request_authentication(
                 request,
                 authentication,
