@@ -8,7 +8,7 @@ module OpenAI
       # @api private
       module Tools
         # @api private
-        class ArgumentParsingError < StandardError
+        module TypedHandler
         end
 
         # Capture routing and detached arguments before caller code sees the event,
@@ -31,7 +31,8 @@ module OpenAI
               raise ArgumentError, "Function arguments must be a JSON object" unless arguments.is_a?(Hash)
 
               stage = :execution
-              output = handler.call(arguments)
+              report_stage = -> (value) { stage = value } if on_tool_error && handler.is_a?(TypedHandler)
+              output = handler.call(arguments, &report_stage)
               stage = :output
               output = JSON.generate(output) if output.is_a?(Hash)
               unless output.nil? || output.is_a?(String) || output.is_a?(Array)
@@ -45,11 +46,6 @@ module OpenAI
 
               base.merge(success: true, output: output)
             rescue StandardError => error
-              if error.is_a?(ArgumentParsingError)
-                stage = :arguments
-                error = error.cause
-              end
-
               if on_tool_error
                 failure = OpenAI::Helpers::Beta::Agents::ToolError.new(
                   error: error,

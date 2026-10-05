@@ -42,17 +42,7 @@ module OpenAI
           # Pass these local bindings to sessions.stream(tool_handlers: ...).
           # @return [Hash{String=>Proc}]
           def handlers
-            {
-              name => lambda { |arguments|
-                parsed = begin
-                  parse_arguments(arguments)
-                rescue StandardError
-                  raise OpenAI::Helpers::Agents::Tools::ArgumentParsingError, "Tool argument parsing failed"
-                end
-
-                @handler.call(parsed)
-              }
-            }
+            {name => method(:call).to_proc.extend(OpenAI::Helpers::Agents::Tools::TypedHandler)}
           end
 
           # Parse using the SDK's BaseModel conventions, then invoke the callback.
@@ -60,11 +50,9 @@ module OpenAI
           # and authorization in the callback before performing side effects.
           # @param arguments [Hash{String=>Object}, String]
           # @return [Object]
-          def call(arguments) = @handler.call(parse_arguments(arguments))
-
-          private
-
-          def parse_arguments(arguments)
+          def call(arguments)
+            # The dispatcher supplies this internal stage reporter only when observing errors.
+            yield :arguments if block_given?
             values = JSON.parse(arguments.is_a?(String) ? arguments : JSON.generate(arguments), symbolize_names: true)
             raise ArgumentError, "Tool arguments must be a JSON object" unless values.is_a?(Hash)
             parsed = ModelAdapter.coerce(@arguments, values)
@@ -72,7 +60,8 @@ module OpenAI
               raise ArgumentError, "Tool arguments cannot be parsed into the argument model"
             end
 
-            parsed
+            yield :execution if block_given?
+            @handler.call(parsed)
           end
         end
       end
