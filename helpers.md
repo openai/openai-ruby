@@ -27,6 +27,24 @@ not JSON Schema validation. Validate constraints and approval in `wallet` before
 side effects. Combine bindings with `transfer.handlers.merge(other.handlers)`;
 existing hash-based handlers continue to work.
 
+### Observe local tool errors
+
+```ruby
+client.beta.agents.sessions.stream(
+  session_id, input: "Look up item A123", tool_handlers: handlers,
+  on_tool_error: ->(failure) {
+    logger.error("Tool #{failure.tool_name} failed during #{failure.stage}; call=#{failure.call_id}")
+  }
+) { |stream| stream.until_done }
+```
+
+Use `on_tool_error` alongside `tool_handlers` to log or monitor local tool failures;
+API and transport errors still propagate normally. The beta `ToolError` includes the original `error`, session/turn/call IDs, and
+stage (`:arguments`, `:execution`, or `:output`). It stays local; the model still
+receives a generic failure. Choose what to log: the original error may contain
+sensitive data. Ordinary callback exceptions are ignored so failure submission
+can continue. The SDK does not automatically log tool failures.
+
 ## Responses API
 
 ```ruby

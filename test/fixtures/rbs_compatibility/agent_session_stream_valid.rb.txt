@@ -1,5 +1,5 @@
 client = OpenAI::Client.new(api_key: "fake-key")
-client.beta.agents.sessions.stream("session_test", input: "Hello", tool_handlers: {"lookup" => ->(arguments) { arguments.fetch("query").to_s }}) do |stream|
+client.beta.agents.sessions.stream("session_test", input: "Hello", on_tool_error: ->(failure) { failure.error.message; failure.stage.to_s; failure.session_id.upcase; failure.turn_id.upcase; failure.call_id.upcase; failure.tool_name.upcase }, tool_handlers: {"lookup" => ->(arguments) { arguments.fetch("query").to_s }}) do |stream|
   stream.each do |event|
     event.event_id.to_s
   end

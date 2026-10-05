@@ -29,9 +29,13 @@ module OpenAI
           end
 
           sig {
-            params(arguments: T.any(String, OpenAI::Internal::AnyHash)).returns(OpenAI::Helpers::Agents::ToolOutput)
+            params(
+              arguments: T.any(String, OpenAI::Internal::AnyHash),
+              report_stage: T.nilable(T.proc.params(stage: Symbol).void)
+            )
+              .returns(OpenAI::Helpers::Agents::ToolOutput)
           }
-          def call(arguments)
+          def call(arguments, &report_stage)
           end
         end
       end
