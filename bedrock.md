@@ -19,9 +19,9 @@ puts(response.output_text)
 
 The provider uses `https://bedrock-mantle.<region>.api.aws/v1` by default. AWS documents this route for [GPT OSS](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-oss-120b.html), including Responses and Chat Completions, and for model discovery.
 
-When no base URL override is configured, Responses and Chat Completions creation requests whose final body specifies exactly `model: "openai.gpt-6.1-sol"` use `/openai/v1/responses` and `/openai/v1/chat/completions`, respectively, as required by the [GPT-6.1 Sol model card](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html). This selection happens before bearer authentication or SigV4 signing. It does not change the client's base URL or infer routes for other model names.
+When no base URL override is configured, Responses and Chat Completions creation requests whose final structured request body specifies exactly `model: "openai.gpt-6.1-sol"` use `/openai/v1/responses` and `/openai/v1/chat/completions`, respectively, as required by the [GPT-6.1 Sol model card](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html). This selection happens before bearer authentication or SigV4 signing. It does not change the client's base URL or infer routes for other model names.
 
-Calls without a model, such as retrieving or deleting a response, use the configured base URL. For Sol response follow-ups, use a client explicitly configured with the Sol API root:
+Calls without a structured model field, including pre-encoded/streaming request bodies and retrieving or deleting a response, use the configured base URL. For Sol response follow-ups, use a client explicitly configured with the Sol API root:
 
 ```ruby
 sol_client = OpenAI::Client.new(

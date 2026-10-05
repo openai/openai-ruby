@@ -111,12 +111,7 @@ module OpenAI
             return false
           end
 
-          return false unless request[:body].is_a?(String)
-
-          body = JSON.parse(request[:body], max_nesting: false)
-          body.is_a?(Hash) && body["model"] == "openai.gpt-6.1-sol"
-        rescue JSON::ParserError
-          false
+          request[:provider_request_model] == "openai.gpt-6.1-sol"
         end
       end
 

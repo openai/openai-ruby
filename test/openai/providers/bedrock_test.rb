@@ -110,6 +110,30 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     end
   end
 
+  def test_large_sol_input_is_not_parsed_again_to_select_the_route
+    url = "https://bedrock-mantle.us-east-1.api.aws/openai/v1/responses"
+    stub_request(:post, url)
+      .to_return(status: 503, body: "", headers: {"retry-after" => "0"})
+      .then
+      .to_return_json(status: 200, body: {id: "resp_large", output: []})
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.bedrock(region: "us-east-1", api_key: "bedrock-token")
+    )
+    input = "large-sol-routing-probe:" + ("x" * (16 * 1024 * 1024))
+    parse = JSON.method(:parse)
+    checked_parse = lambda do |value, **options|
+      flunk("Routing must not parse the encoded request payload") if value.include?("large-sol-routing-probe:")
+      parse.call(value, **options)
+    end
+
+    JSON.stub(:parse, checked_parse) do
+      response = client.responses.create(model: "openai.gpt-6.1-sol", input: input)
+      assert_equal("resp_large", response.id)
+    end
+
+    assert_requested(:post, url, times: 2)
+  end
+
   def test_explicit_and_environment_mantle_paths_are_preserved
     base_url = "https://bedrock-mantle.us-east-1.api.aws/v1"
     ENV["AWS_BEDROCK_BASE_URL"] = base_url

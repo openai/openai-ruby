@@ -195,6 +195,14 @@ module OpenAI
 
     # @api private
     private def build_request(request, options)
+      if @provider_runtime
+        built = super
+        body = built[:body]
+        # Capture only the final model; provider hooks run after body encoding.
+        model = body.reverse_each.find { |key, _| key == :model || key == "model" }&.last if body.is_a?(Hash)
+        return built.merge(provider_request_model: model)
+      end
+
       unless @workload_identity_auth && x509_transport?(@requester)
         return super
       end
