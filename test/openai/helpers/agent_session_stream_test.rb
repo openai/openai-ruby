@@ -36,6 +36,10 @@ class OpenAI::Test::AgentSessionStreamTest < Minitest::Test
 
     def execute(request)
       @requests << request
+      if request.method == :post && request.url.path.end_with?("/agents/sessions")
+        return response(200, JSON.generate(id: "session_test", status: @status))
+      end
+
       if request.method == :get
         if request.url.path.end_with?("/events")
           return response(200, @body, "text/event-stream")
@@ -421,6 +425,33 @@ class OpenAI::Test::AgentSessionStreamTest < Minitest::Test
       assert_equal(original, message.to_json)
       message.content = []
       assert_equal("", message.output_text)
+    end
+  end
+
+  def test_deferred_typed_tools_preserve_creation_options_and_handler_execution
+    model = Class.new(OpenAI::BaseModel) { required(:query, String) }
+    [{}, {defer_loading: false}, {defer_loading: true}].each do |options|
+      received = []
+      tool = OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "search", arguments: model, **options) do |args|
+        received << args
+        "Found #{args.query}"
+      end
+
+      configure([turn("created"), call("{\"query\":\"item\"}"), turn("completed"), idle])
+      session = @sessions.create(
+        agent: {model: "test-model", tools: [{type: :tool_search}, tool.definition]},
+        environment: {type: :openai_hosted}
+      )
+      definition = JSON.parse(@server.requests.last.body).fetch("agent").fetch("tools").last
+      assert_equal(options.key?(:defer_loading), definition.key?("defer_loading"))
+      assert_equal(options[:defer_loading], definition["defer_loading"]) unless options.empty?
+      assert_equal(JSON.parse(JSON.generate(model.to_json_schema)), definition["parameters"])
+      @sessions.stream(session.id, input: "Find item", tool_handlers: tool.handlers).until_done
+      assert_equal(1, received.size)
+      assert_instance_of(model, received.first)
+      result = JSON.parse(@server.requests.last.body).fetch("events").first
+      assert_equal(true, result["success"])
+      assert_equal("Found item", result["output"])
     end
   end
 

@@ -8,7 +8,8 @@ module OpenAI
           def initialize: (
             name: String,
             arguments: Class,
-            ?description: String
+            ?description: String,
+            ?defer_loading: bool?
           ) {
             (untyped) -> OpenAI::Helpers::Agents::tool_output
           } -> void

@@ -13,11 +13,12 @@ module OpenAI
               name: String,
               arguments: T.class_of(OpenAI::BaseModel),
               description: String,
+              defer_loading: T.nilable(T::Boolean),
               handler: T.proc.params(arguments: T.untyped).returns(OpenAI::Helpers::Agents::ToolOutput)
             )
               .void
           end
-          def initialize(name:, arguments:, description: "", &handler)
+          def initialize(name:, arguments:, description: "", defer_loading: nil, &handler)
           end
 
           sig { returns(OpenAI::Internal::AnyHash) }
