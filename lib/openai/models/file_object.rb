@@ -11,7 +11,8 @@ module OpenAI
       required :id, String
 
       # @!attribute bytes
-      #   The size of the file, in bytes.
+      #   The size of the file, in bytes. In a completed file upload response, this can be
+      #   null when the file size is not yet available.
       #
       #   @return [Integer]
       required :bytes, Integer
@@ -52,7 +53,8 @@ module OpenAI
       required :status, enum: -> { OpenAI::FileObject::Status }
 
       # @!attribute expires_at
-      #   The Unix timestamp (in seconds) for when the file will expire.
+      #   The Unix timestamp (in seconds) for when the file will expire. In a completed
+      #   file upload response, this can be null when no expiry is set.
       #
       #   @return [Integer, nil]
       optional :expires_at, Integer
@@ -61,7 +63,8 @@ module OpenAI
       #   @deprecated
       #
       #   Deprecated. For details on why a fine-tuning training file failed validation,
-      #   see the `error` field on `fine_tuning.job`.
+      #   see the `error` field on `fine_tuning.job`. Completed file upload responses can
+      #   return null when these details are unset.
       #
       #   @return [String, nil]
       optional :status_details, String
@@ -73,7 +76,8 @@ module OpenAI
       #     The file identifier, which can be referenced in the API endpoints.
       #
       #   @param bytes [Integer]
-      #     The size of the file, in bytes.
+      #     The size of the file, in bytes. In a completed file upload response, this can be
+      #     null when the file size is not yet available.
       #
       #   @param created_at [Integer]
       #     The Unix timestamp (in seconds) for when the file was created.
@@ -91,11 +95,13 @@ module OpenAI
       #     `processed`, or `error`.
       #
       #   @param expires_at [Integer]
-      #     The Unix timestamp (in seconds) for when the file will expire.
+      #     The Unix timestamp (in seconds) for when the file will expire. In a completed
+      #     file upload response, this can be null when no expiry is set.
       #
       #   @param status_details [String]
       #     Deprecated. For details on why a fine-tuning training file failed validation,
-      #     see the `error` field on `fine_tuning.job`.
+      #     see the `error` field on `fine_tuning.job`. Completed file upload responses can
+      #     return null when these details are unset.
       #
       #   @param object [Symbol, :file]
       #     The object type, which is always `file`.

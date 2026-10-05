@@ -284,6 +284,10 @@ module OpenAI
         type tool =
           OpenAI::Live::FunctionTool
           | OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::WebSearch
+          | OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::FileSearch
+          | OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::CodeInterpreter
+          | OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Shell
+          | OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ImageGeneration
 
         module Tool
           extend OpenAI::Internal::Type::Union
@@ -299,6 +303,51 @@ module OpenAI
             def initialize: (?type: :web_search) -> void
 
             def to_hash: -> { ?type: :web_search }
+          end
+
+          type file_search = { ?type: :file_search }
+
+          class FileSearch < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :file_search
+
+            def initialize: (?type: :file_search) -> void
+
+            def to_hash: -> { ?type: :file_search }
+          end
+
+          type code_interpreter = { ?type: :code_interpreter }
+
+          class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :code_interpreter
+
+            def initialize: (?type: :code_interpreter) -> void
+
+            def to_hash: -> { ?type: :code_interpreter }
+          end
+
+          type shell = { environment: ::Hash[Symbol, top], ?type: :shell }
+
+          class Shell < OpenAI::Internal::Type::BaseModel
+            attr_accessor environment: ::Hash[Symbol, top]
+
+            attr_accessor type: :shell
+
+            def initialize: (
+              environment: ::Hash[Symbol, top],
+              ?type: :shell
+            ) -> void
+
+            def to_hash: -> { environment: ::Hash[Symbol, top], ?type: :shell }
+          end
+
+          type image_generation = { ?type: :image_generation }
+
+          class ImageGeneration < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :image_generation
+
+            def initialize: (?type: :image_generation) -> void
+
+            def to_hash: -> { ?type: :image_generation }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Live::ResponsesDelegationUpdateConfig::tool]

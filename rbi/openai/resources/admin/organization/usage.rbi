@@ -179,8 +179,10 @@ module OpenAI
             # End time (Unix seconds) of the query time range, exclusive.
             end_time: nil,
             # Group the usage data by the specified fields. Support fields include
-            # `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier` or any
-            # combination of them.
+            # `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier`,
+            # `api_source` or any combination of them. When grouped by `api_source`, results
+            # use `agents_api` for attributed Agents API activity and `unlabeled` for all
+            # other activity. Without source grouping, `api_source` is null.
             group_by: nil,
             # Specifies the number of buckets to return.
             #
@@ -227,8 +229,13 @@ module OpenAI
             bucket_width: nil,
             # End time (Unix seconds) of the query time range, exclusive.
             end_time: nil,
-            # Group the costs by the specified fields. Support fields include `project_id`,
-            # `line_item`, `api_key_id` and any combination of them.
+            # Group the costs by the specified fields. Supported fields include `project_id`,
+            # `user_id`, `line_item`, `api_key_id`, and `api_source`. Support for combining
+            # `user_id` with `project_id` grouping or the `project_ids` filter depends on the
+            # organization and requested time range. Unsupported combinations return HTTP 400.
+            # When grouped by `api_source`, results use `agents_api` for attributed Agents API
+            # activity and `unlabeled` for all other activity. Without source grouping,
+            # `api_source` is null.
             group_by: nil,
             # A limit on the number of buckets to be returned. Limit can range between 1 and
             # 180, and the default is 7.
@@ -522,8 +529,10 @@ module OpenAI
             # End time (Unix seconds) of the query time range, exclusive.
             end_time: nil,
             # Group the usage data by the specified fields. Support fields include
-            # `project_id`, `user_id`, `api_key_id`, `model`, `context_level` or any
-            # combination of them.
+            # `project_id`, `user_id`, `api_key_id`, `model`, `context_level`, `api_source` or
+            # any combination of them. When grouped by `api_source`, results use `agents_api`
+            # for attributed Agents API activity and `unlabeled` for all other activity.
+            # Without source grouping, `api_source` is null.
             group_by: nil,
             # Specifies the number of buckets to return.
             #

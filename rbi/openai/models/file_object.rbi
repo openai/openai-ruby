@@ -16,7 +16,8 @@ module OpenAI
       sig { returns(String) }
       attr_accessor :id
 
-      # The size of the file, in bytes.
+      # The size of the file, in bytes. In a completed file upload response, this can be
+      # null when the file size is not yet available.
       sig { returns(Integer) }
       attr_accessor :bytes
 
@@ -43,7 +44,8 @@ module OpenAI
       sig { returns(OpenAI::FileObject::Status::TaggedSymbol) }
       attr_accessor :status
 
-      # The Unix timestamp (in seconds) for when the file will expire.
+      # The Unix timestamp (in seconds) for when the file will expire. In a completed
+      # file upload response, this can be null when no expiry is set.
       sig { returns(T.nilable(Integer)) }
       attr_reader :expires_at
 
@@ -51,7 +53,8 @@ module OpenAI
       attr_writer :expires_at
 
       # Deprecated. For details on why a fine-tuning training file failed validation,
-      # see the `error` field on `fine_tuning.job`.
+      # see the `error` field on `fine_tuning.job`. Completed file upload responses can
+      # return null when these details are unset.
       sig { returns(T.nilable(String)) }
       attr_reader :status_details
 
@@ -87,7 +90,8 @@ module OpenAI
         # The file identifier, which can be referenced in the API endpoints.
         id:,
 
-        # The size of the file, in bytes.
+        # The size of the file, in bytes. In a completed file upload response, this can be
+        # null when the file size is not yet available.
         bytes:,
 
         # The Unix timestamp (in seconds) for when the file was created.
@@ -105,11 +109,13 @@ module OpenAI
         # `processed`, or `error`.
         status:,
 
-        # The Unix timestamp (in seconds) for when the file will expire.
+        # The Unix timestamp (in seconds) for when the file will expire. In a completed
+        # file upload response, this can be null when no expiry is set.
         expires_at: nil,
 
         # Deprecated. For details on why a fine-tuning training file failed validation,
-        # see the `error` field on `fine_tuning.job`.
+        # see the `error` field on `fine_tuning.job`. Completed file upload responses can
+        # return null when these details are unset.
         status_details: nil,
 
         # The object type, which is always `file`.

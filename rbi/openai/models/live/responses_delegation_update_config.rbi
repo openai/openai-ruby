@@ -88,7 +88,14 @@ module OpenAI
           returns(
             T.nilable(
               T::Array[
-                T.any(OpenAI::Live::FunctionTool, OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::WebSearch)
+                T.any(
+                  OpenAI::Live::FunctionTool,
+                  OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::WebSearch,
+                  OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::FileSearch,
+                  OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::CodeInterpreter,
+                  OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Shell,
+                  OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ImageGeneration
+                )
               ]
             )
           )
@@ -100,7 +107,11 @@ module OpenAI
             tools: T::Array[
               T.any(
                 OpenAI::Live::FunctionTool::OrHash,
-                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::WebSearch::OrHash
+                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::WebSearch::OrHash,
+                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::FileSearch::OrHash,
+                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::CodeInterpreter::OrHash,
+                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Shell::OrHash,
+                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ImageGeneration::OrHash
               )
             ]
           )
@@ -136,7 +147,11 @@ module OpenAI
             tools: T::Array[
               T.any(
                 OpenAI::Live::FunctionTool::OrHash,
-                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::WebSearch::OrHash
+                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::WebSearch::OrHash,
+                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::FileSearch::OrHash,
+                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::CodeInterpreter::OrHash,
+                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Shell::OrHash,
+                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ImageGeneration::OrHash
               )
             ]
           )
@@ -196,7 +211,14 @@ module OpenAI
                 OpenAI::Live::ResponsesDelegationUpdateConfig::ToolChoice::LiveMCPToolChoiceParam
               ),
               tools: T::Array[
-                T.any(OpenAI::Live::FunctionTool, OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::WebSearch)
+                T.any(
+                  OpenAI::Live::FunctionTool,
+                  OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::WebSearch,
+                  OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::FileSearch,
+                  OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::CodeInterpreter,
+                  OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Shell,
+                  OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ImageGeneration
+                )
               ]
             }
           )
@@ -530,7 +552,14 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           Variants = T.type_alias {
-            T.any(OpenAI::Live::FunctionTool, OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::WebSearch)
+            T.any(
+              OpenAI::Live::FunctionTool,
+              OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::WebSearch,
+              OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::FileSearch,
+              OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::CodeInterpreter,
+              OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Shell,
+              OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ImageGeneration
+            )
           }
 
           class WebSearch < OpenAI::Internal::Type::BaseModel
@@ -558,6 +587,151 @@ module OpenAI
               # The tool type. Always `web_search`.
 
               type: :web_search
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class FileSearch < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::FileSearch,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              type: :file_search
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::CodeInterpreter,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              type: :code_interpreter
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Shell < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Shell,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(T::Hash[Symbol, T.anything]) }
+            attr_accessor :environment
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # A Responses shell tool with a container_auto or container_reference environment.
+            # Local execution and domain secrets are not supported.
+            sig do
+              params(
+
+                environment: T::Hash[Symbol, T.anything],
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              environment:,
+
+              type: :shell
+            )
+            end
+
+            sig do
+              override.returns(
+                {environment: T::Hash[Symbol, T.anything], type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class ImageGeneration < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ImageGeneration,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              type: :image_generation
             )
             end
 

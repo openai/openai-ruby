@@ -35,8 +35,13 @@ module OpenAI
           optional :end_time, Integer
 
           # @!attribute group_by
-          #   Group the costs by the specified fields. Support fields include `project_id`,
-          #   `line_item`, `api_key_id` and any combination of them.
+          #   Group the costs by the specified fields. Supported fields include `project_id`,
+          #   `user_id`, `line_item`, `api_key_id`, and `api_source`. Support for combining
+          #   `user_id` with `project_id` grouping or the `project_ids` filter depends on the
+          #   organization and requested time range. Unsupported combinations return HTTP 400.
+          #   When grouped by `api_source`, results use `agents_api` for attributed Agents API
+          #   activity and `unlabeled` for all other activity. Without source grouping,
+          #   `api_source` is null.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::UsageCostsParams::GroupBy>, nil]
           optional(
@@ -86,8 +91,13 @@ module OpenAI
           #     End time (Unix seconds) of the query time range, exclusive.
           #
           #   @param group_by [Array<Symbol, OpenAI::Models::Admin::Organization::UsageCostsParams::GroupBy>]
-          #     Group the costs by the specified fields. Support fields include `project_id`,
-          #     `line_item`, `api_key_id` and any combination of them.
+          #     Group the costs by the specified fields. Supported fields include `project_id`,
+          #     `user_id`, `line_item`, `api_key_id`, and `api_source`. Support for combining
+          #     `user_id` with `project_id` grouping or the `project_ids` filter depends on the
+          #     organization and requested time range. Unsupported combinations return HTTP 400.
+          #     When grouped by `api_source`, results use `agents_api` for attributed Agents API
+          #     activity and `unlabeled` for all other activity. Without source grouping,
+          #     `api_source` is null.
           #
           #   @param limit [Integer]
           #     A limit on the number of buckets to be returned. Limit can range between 1 and
@@ -121,8 +131,10 @@ module OpenAI
             extend OpenAI::Internal::Type::Enum
 
             PROJECT_ID = :project_id
+            USER_ID = :user_id
             LINE_ITEM = :line_item
             API_KEY_ID = :api_key_id
+            API_SOURCE = :api_source
 
             # @!method self.values
             #   @return [Array<Symbol>]

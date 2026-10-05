@@ -11,6 +11,9 @@ module OpenAI
 
           class Turns
 
+            sig { returns(OpenAI::Resources::Beta::Agents::Sessions::Turns::Items) }
+            attr_reader :items
+
             # Retrieves a turn's current status, timestamps, usage, and error. Returns 404 if
             # the turn does not belong to the session. See
             # [session turns](https://developers.openai.com/api/docs/guides/agents-api/sessions/manage#inspect-session-turns).

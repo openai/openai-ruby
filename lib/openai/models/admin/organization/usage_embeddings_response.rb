@@ -198,6 +198,21 @@ module OpenAI
                 #   @return [String, nil]
                 optional :api_key_id, String, nil?: true
 
+                # @!attribute api_source
+                #   When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                #   activity and `unlabeled` includes all records without published source
+                #   attribution, including historical and unknown origins. Unlabeled does not imply
+                #   direct API usage. Without source grouping, this field is null.
+                #
+                #   @return [Symbol, OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationUsageCompletionsResult::APISource, nil]
+                optional(
+                  :api_source,
+                  enum: -> {
+                    OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationUsageCompletionsResult::APISource
+                  },
+                  nil?: true
+                )
+
                 # @!attribute batch
                 #   When `group_by=batch`, this field tells whether the grouped usage result is
                 #   batch or not.
@@ -316,7 +331,7 @@ module OpenAI
                 #   @return [String, nil]
                 optional :user_id, String, nil?: true
 
-                # @!method initialize(input_tokens:, num_model_requests:, output_tokens:, api_key_id: nil, batch: nil, input_audio_tokens: nil, input_cache_write_12h_tokens: nil, input_cache_write_tokens: nil, input_cached_audio_tokens: nil, input_cached_image_tokens: nil, input_cached_text_tokens: nil, input_cached_tokens: nil, input_image_tokens: nil, input_text_tokens: nil, input_uncached_tokens: nil, model: nil, output_audio_tokens: nil, output_image_tokens: nil, output_text_tokens: nil, project_id: nil, service_tier: nil, user_id: nil, object: :"organization.usage.completions.result")
+                # @!method initialize(input_tokens:, num_model_requests:, output_tokens:, api_key_id: nil, api_source: nil, batch: nil, input_audio_tokens: nil, input_cache_write_12h_tokens: nil, input_cache_write_tokens: nil, input_cached_audio_tokens: nil, input_cached_image_tokens: nil, input_cached_text_tokens: nil, input_cached_tokens: nil, input_image_tokens: nil, input_text_tokens: nil, input_uncached_tokens: nil, model: nil, output_audio_tokens: nil, output_image_tokens: nil, output_text_tokens: nil, project_id: nil, service_tier: nil, user_id: nil, object: :"organization.usage.completions.result")
                 #   The aggregated completions usage details of the specific time bucket.
                 #
                 #   @param input_tokens [Integer]
@@ -335,6 +350,12 @@ module OpenAI
                 #   @param api_key_id [String, nil]
                 #     When `group_by=api_key_id`, this field provides the API key ID of the grouped
                 #     usage result.
+                #
+                #   @param api_source [Symbol, OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationUsageCompletionsResult::APISource, nil]
+                #     When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                #     activity and `unlabeled` includes all records without published source
+                #     attribution, including historical and unknown origins. Unlabeled does not imply
+                #     direct API usage. Without source grouping, this field is null.
                 #
                 #   @param batch [Boolean, nil]
                 #     When `group_by=batch`, this field tells whether the grouped usage result is
@@ -401,6 +422,22 @@ module OpenAI
                 #     result.
                 #
                 #   @param object [Symbol, :"organization.usage.completions.result"]
+
+                # When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                # activity and `unlabeled` includes all records without published source
+                # attribution, including historical and unknown origins. Unlabeled does not imply
+                # direct API usage. Without source grouping, this field is null.
+                #
+                # @see OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationUsageCompletionsResult#api_source
+                module APISource
+                  extend OpenAI::Internal::Type::Enum
+
+                  AGENTS_API = :agents_api
+                  UNLABELED = :unlabeled
+
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
+                end
               end
 
               class OrganizationUsageEmbeddingsResult < OpenAI::Internal::Type::BaseModel
@@ -950,6 +987,21 @@ module OpenAI
                 #   @return [String, nil]
                 optional :api_key_id, String, nil?: true
 
+                # @!attribute api_source
+                #   When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                #   activity and `unlabeled` includes all records without published source
+                #   attribution, including historical and unknown origins. Unlabeled does not imply
+                #   direct API usage. Without source grouping, this field is null.
+                #
+                #   @return [Symbol, OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationUsageWebSearchesResult::APISource, nil]
+                optional(
+                  :api_source,
+                  enum: -> {
+                    OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationUsageWebSearchesResult::APISource
+                  },
+                  nil?: true
+                )
+
                 # @!attribute context_level
                 #   When `group_by=context_level`, this field provides the search context size of
                 #   the grouped usage result.
@@ -978,7 +1030,7 @@ module OpenAI
                 #   @return [String, nil]
                 optional :user_id, String, nil?: true
 
-                # @!method initialize(num_model_requests:, num_requests:, api_key_id: nil, context_level: nil, model: nil, project_id: nil, user_id: nil, object: :"organization.usage.web_searches.result")
+                # @!method initialize(num_model_requests:, num_requests:, api_key_id: nil, api_source: nil, context_level: nil, model: nil, project_id: nil, user_id: nil, object: :"organization.usage.web_searches.result")
                 #   The aggregated web search calls usage details of the specific time bucket.
                 #
                 #   @param num_model_requests [Integer]
@@ -990,6 +1042,12 @@ module OpenAI
                 #   @param api_key_id [String, nil]
                 #     When `group_by=api_key_id`, this field provides the API key ID of the grouped
                 #     usage result.
+                #
+                #   @param api_source [Symbol, OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationUsageWebSearchesResult::APISource, nil]
+                #     When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                #     activity and `unlabeled` includes all records without published source
+                #     attribution, including historical and unknown origins. Unlabeled does not imply
+                #     direct API usage. Without source grouping, this field is null.
                 #
                 #   @param context_level [String, nil]
                 #     When `group_by=context_level`, this field provides the search context size of
@@ -1008,6 +1066,22 @@ module OpenAI
                 #     result.
                 #
                 #   @param object [Symbol, :"organization.usage.web_searches.result"]
+
+                # When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                # activity and `unlabeled` includes all records without published source
+                # attribution, including historical and unknown origins. Unlabeled does not imply
+                # direct API usage. Without source grouping, this field is null.
+                #
+                # @see OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationUsageWebSearchesResult#api_source
+                module APISource
+                  extend OpenAI::Internal::Type::Enum
+
+                  AGENTS_API = :agents_api
+                  UNLABELED = :unlabeled
+
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
+                end
               end
 
               class OrganizationCostsResult < OpenAI::Internal::Type::BaseModel
@@ -1033,6 +1107,21 @@ module OpenAI
                 #
                 #   @return [String, nil]
                 optional :api_key_id, String, nil?: true
+
+                # @!attribute api_source
+                #   When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                #   activity and `unlabeled` includes all records without published source
+                #   attribution, including historical and unknown origins. Unlabeled does not imply
+                #   direct API usage. Without source grouping, this field is null.
+                #
+                #   @return [Symbol, OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::APISource, nil]
+                optional(
+                  :api_source,
+                  enum: -> {
+                    OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::APISource
+                  },
+                  nil?: true
+                )
 
                 # @!attribute line_item
                 #   When `group_by=line_item`, this field provides the line item of the grouped
@@ -1068,7 +1157,14 @@ module OpenAI
                   nil?: true
                 )
 
-                # @!method initialize(amount: nil, api_key_id: nil, line_item: nil, project_id: nil, quantity: nil, quantity_unit: nil, object: :"organization.costs.result")
+                # @!attribute user_id
+                #   When `group_by=user_id`, this field provides the user ID of the grouped costs
+                #   result.
+                #
+                #   @return [String, nil]
+                optional :user_id, String, nil?: true
+
+                # @!method initialize(amount: nil, api_key_id: nil, api_source: nil, line_item: nil, project_id: nil, quantity: nil, quantity_unit: nil, user_id: nil, object: :"organization.costs.result")
                 #   The aggregated costs details of the specific time bucket.
                 #
                 #   @param amount [OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::Amount]
@@ -1077,6 +1173,12 @@ module OpenAI
                 #   @param api_key_id [String, nil]
                 #     When `group_by=api_key_id`, this field provides the API Key ID of the grouped
                 #     costs result.
+                #
+                #   @param api_source [Symbol, OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult::APISource, nil]
+                #     When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                #     activity and `unlabeled` includes all records without published source
+                #     attribution, including historical and unknown origins. Unlabeled does not imply
+                #     direct API usage. Without source grouping, this field is null.
                 #
                 #   @param line_item [String, nil]
                 #     When `group_by=line_item`, this field provides the line item of the grouped
@@ -1093,6 +1195,10 @@ module OpenAI
                 #   @param quantity_unit [String, Symbol, OpenAI::Models::Admin::Organization::CostQuantityUnit, nil]
                 #     The unit of the `quantity` value. If no single supported unit applies to the
                 #     result, this field is `null`.
+                #
+                #   @param user_id [String, nil]
+                #     When `group_by=user_id`, this field provides the user ID of the grouped costs
+                #     result.
                 #
                 #   @param object [Symbol, :"organization.costs.result"]
 
@@ -1118,6 +1224,22 @@ module OpenAI
                   #
                   #   @param value [Float]
                   #     The numeric value of the cost.
+                end
+
+                # When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                # activity and `unlabeled` includes all records without published source
+                # attribution, including historical and unknown origins. Unlabeled does not imply
+                # direct API usage. Without source grouping, this field is null.
+                #
+                # @see OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data::Result::OrganizationCostsResult#api_source
+                module APISource
+                  extend OpenAI::Internal::Type::Enum
+
+                  AGENTS_API = :agents_api
+                  UNLABELED = :unlabeled
+
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
                 end
               end
 

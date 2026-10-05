@@ -60,7 +60,7 @@ module OpenAI
         #   Tools available to the Responses backend while it handles tasks delegated by the
         #   Live model.
         #
-        #   @return [Array<OpenAI::Models::Live::FunctionTool, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::WebSearch>, nil]
+        #   @return [Array<OpenAI::Models::Live::FunctionTool, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::WebSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::FileSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::CodeInterpreter, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ImageGeneration>, nil]
         optional(
           :tools,
           -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Live::ResponsesDelegationConfig::Tool] }
@@ -98,7 +98,7 @@ module OpenAI
         #     Controls which tool the Responses backend uses when handling a task delegated by
         #     the Live model.
         #
-        #   @param tools [Array<OpenAI::Models::Live::FunctionTool, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::WebSearch>]
+        #   @param tools [Array<OpenAI::Models::Live::FunctionTool, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::WebSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::FileSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::CodeInterpreter, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ImageGeneration>]
         #     Tools available to the Responses backend while it handles tasks delegated by the
         #     Live model.
 
@@ -309,6 +309,15 @@ module OpenAI
           # A web search tool available to the Live session’s Responses backend.
           variant :web_search, -> { OpenAI::Live::ResponsesDelegationConfig::Tool::WebSearch }
 
+          variant :file_search, -> { OpenAI::Live::ResponsesDelegationConfig::Tool::FileSearch }
+
+          variant :code_interpreter, -> { OpenAI::Live::ResponsesDelegationConfig::Tool::CodeInterpreter }
+
+          # A Responses shell tool with a container_auto or container_reference environment. Local execution and domain secrets are not supported.
+          variant :shell, -> { OpenAI::Live::ResponsesDelegationConfig::Tool::Shell }
+
+          variant :image_generation, -> { OpenAI::Live::ResponsesDelegationConfig::Tool::ImageGeneration }
+
           class WebSearch < OpenAI::Internal::Type::BaseModel
             # @!attribute type
             #   The tool type. Always `web_search`.
@@ -323,8 +332,57 @@ module OpenAI
             #     The tool type. Always `web_search`.
           end
 
+          class FileSearch < OpenAI::Internal::Type::BaseModel
+            # @!attribute type
+            #
+            #   @return [Symbol, :file_search]
+            required :type, const: :file_search
+
+            # @!method initialize(type: :file_search)
+            #   @param type [Symbol, :file_search]
+          end
+
+          class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+            # @!attribute type
+            #
+            #   @return [Symbol, :code_interpreter]
+            required :type, const: :code_interpreter
+
+            # @!method initialize(type: :code_interpreter)
+            #   @param type [Symbol, :code_interpreter]
+          end
+
+          class Shell < OpenAI::Internal::Type::BaseModel
+            # @!attribute environment
+            #
+            #   @return [Hash{Symbol=>Object}]
+            required :environment, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
+
+            # @!attribute type
+            #
+            #   @return [Symbol, :shell]
+            required :type, const: :shell
+
+            # @!method initialize(environment:, type: :shell)
+            #   A Responses shell tool with a container_auto or container_reference environment.
+            #   Local execution and domain secrets are not supported.
+            #
+            #   @param environment [Hash{Symbol=>Object}]
+            #   @param type [Symbol, :shell]
+          end
+
+          class ImageGeneration < OpenAI::Internal::Type::BaseModel
+            # @!attribute type
+            #
+            #   @return [Symbol, :image_generation]
+            required :type, const: :image_generation
+
+            # @!method initialize(type: :image_generation)
+            #   @param type [Symbol, :image_generation]
+          end
+
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Live::FunctionTool, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::WebSearch)]
+          #   @return [Array(OpenAI::Models::Live::FunctionTool, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::WebSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::FileSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::CodeInterpreter, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ImageGeneration)]
         end
       end
     end

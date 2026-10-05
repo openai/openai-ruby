@@ -39,8 +39,8 @@ module OpenAI
             # An optional human-readable display name for the template.
             attr_accessor name: String?
 
-            # Network access policy for the environment. Defaults to disabled for GA requests
-            # and enabled for beta requests.
+            # Network access policy for the environment. If omitted, the API version
+            # determines whether network access is enabled or disabled.
             attr_accessor network: OpenAI::Beta::Agents::Environments::TemplateCreateParams::Network?
 
             # Packages to install in the environment. Defaults to empty package lists.
@@ -69,8 +69,8 @@ module OpenAI
             # @param name
             #   An optional human-readable display name for the template.
             # @param network
-            #   Network access policy for the environment. Defaults to disabled for GA requests
-            #   and enabled for beta requests.
+            #   Network access policy for the environment. If omitted, the API version
+            #   determines whether network access is enabled or disabled.
             # @param packages
             #   Packages to install in the environment. Defaults to empty package lists.
             # @param plugins
