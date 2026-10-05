@@ -657,6 +657,7 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
       assert_equal("/v1/agents/sessions/session_test/events", request.url.path)
       assert_equal(4.0, request.timeout)
       assert_equal("yes", request.headers["x-test"])
+      assert_equal("agents=v1", request.headers["openai-beta"])
       assert_equal("{\"value\":\"found\"}", JSON.parse(request.body).fetch("events").first.fetch("output"))
     end
 
@@ -691,6 +692,7 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
       tool_handlers: {"lookup" => -> (_) { raise "private callback details" }}
     )
     assert_equal("Answer", subject.get_final_result.output_text)
+    assert_equal("agents=v1", @server.requests.last.headers["openai-beta"])
     result = JSON.parse(@server.requests.last.body).fetch("events").first
     assert_equal(false, result.fetch("success"))
     refute_includes(JSON.generate(result), "private callback details")

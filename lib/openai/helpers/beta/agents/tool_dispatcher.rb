@@ -16,7 +16,8 @@ module OpenAI
             @handled_calls = {}
             @options = request_options.to_h.dup
             @options.delete(:idempotency_key)
-            @options[:extra_headers] = @options[:extra_headers].to_h.reject do |key, _|
+            headers = {"OpenAI-Beta" => "agents=v1"}.merge(@options[:extra_headers].to_h)
+            @options[:extra_headers] = headers.reject do |key, _|
               key.to_s.casecmp?("idempotency-key")
             end
           end

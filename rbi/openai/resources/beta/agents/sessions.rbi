@@ -91,7 +91,7 @@ module OpenAI
               ),
               agent: OpenAI::Beta::Agents::SessionCreateParams::Agent::OrHash,
               agent_id: String,
-              tool_handlers: T::Hash[String, T.proc.params(arguments: T::Hash[String, T.untyped]).returns(T.untyped)],
+              tool_handlers: T::Hash[String, OpenAI::Helpers::Agents::ToolHandler],
               output_type: T.nilable(T.class_of(OpenAI::Helpers::StructuredOutput::BaseModel)),
               input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
               metadata: T.nilable(T::Hash[Symbol, String]),

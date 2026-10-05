@@ -144,7 +144,7 @@ module OpenAI
           sig do
             params(
               sessions: OpenAI::Resources::Beta::Agents::Sessions,
-              tool_handlers: T::Hash[String, T.proc.params(arguments: T::Hash[String, T.untyped]).returns(T.untyped)],
+              tool_handlers: T::Hash[String, OpenAI::Helpers::Agents::ToolHandler],
               request_options: T.untyped
             )
               .returns(T.self_type)
