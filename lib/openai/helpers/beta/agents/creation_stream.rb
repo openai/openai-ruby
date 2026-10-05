@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "result"
+require_relative "tool_dispatcher"
 
 module OpenAI
   module Helpers
@@ -46,6 +47,22 @@ module OpenAI
             self
           end
 
+          # @api private
+          def configure_tool_handlers(sessions:, tool_handlers:, request_options:)
+            @dispatcher = ToolDispatcher.new(
+              sessions: sessions,
+              tool_handlers: tool_handlers,
+              request_options: request_options
+            )
+            @collector = ResultCollector.new(handler_names: @dispatcher.handler_names)
+            self
+          end
+
+          def close
+            @closed = true
+            super
+          end
+
           private
 
           def iterator
@@ -53,8 +70,17 @@ module OpenAI
             source = super
             @iterator = OpenAI::Internal::Util.chain_fused(source) do |yielder|
               source.each do |event|
+                invocation = nil
+                if @dispatcher && event.is_a?(OpenAI::Internal::Type::BaseModel)
+                  @dispatcher.observe(event)
+                  invocation = @dispatcher.prepare_call(event)
+                end
+
                 @collector.observe(event)
                 yielder << event
+                break if @closed
+
+                @dispatcher.dispatch(invocation.call) if invocation
               end
 
             rescue StandardError => error

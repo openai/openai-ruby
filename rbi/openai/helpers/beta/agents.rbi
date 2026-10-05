@@ -139,6 +139,18 @@ module OpenAI
           sig { params(parser: T.nilable(OutputParser)).returns(T.self_type) }
           def configure_output_parser(parser)
           end
+
+          # @api private
+          sig do
+            params(
+              sessions: OpenAI::Resources::Beta::Agents::Sessions,
+              tool_handlers: T::Hash[String, T.proc.params(arguments: T::Hash[String, T.untyped]).returns(T.untyped)],
+              request_options: T.untyped
+            )
+              .returns(T.self_type)
+          end
+          def configure_tool_handlers(sessions:, tool_handlers:, request_options:)
+          end
         end
       end
     end

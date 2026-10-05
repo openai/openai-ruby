@@ -64,6 +64,11 @@ module OpenAI
 
           # @api private
           def configure_output_parser: (OutputParser? parser) -> self
+          def configure_tool_handlers: (
+            sessions: OpenAI::Resources::Beta::Agents::Sessions,
+            tool_handlers: Hash[String, ^(Hash[String, untyped]) -> untyped],
+            request_options: untyped
+          ) -> self
         end
       end
     end

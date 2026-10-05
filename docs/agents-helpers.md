@@ -1,5 +1,26 @@
 # Agents session helpers
 
+Pass handlers to `create_streaming` to run local function calls from the initial
+prompt, including with `environment: {type: :none}`:
+
+```ruby
+stream = client.beta.agents.sessions.create_streaming(
+  agent: {model: MODEL, tools: [lookup.definition]},
+  environment: {type: :none},
+  input: "Look up item A123.",
+  tool_handlers: lookup.handlers
+)
+begin
+  puts stream.get_final_result.output_text
+ensure
+  stream.close
+end
+```
+
+Here `lookup` is a beta `FunctionTool`; plain callable handlers work too.
+Handlers run as the stream is consumed. To display events before obtaining the
+result, call `with_result_collection` before `each`.
+
 Use `client.beta.agents.sessions.stream` to submit input to an idle session and
 iterate through one turn. The helper opens the event connection before submitting
 input. During iteration, this caller must be the session's only input writer.

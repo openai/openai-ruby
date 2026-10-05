@@ -85,7 +85,7 @@ module OpenAI
           # the session or streams its events when stream is true. See
           # [running sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions).
           #
-          # @overload create_streaming(environment:, agent: nil, agent_id: nil, input: nil, output_type: nil, metadata: nil, vault_ids: nil, request_options: {})
+          # @overload create_streaming(environment:, agent: nil, agent_id: nil, input: nil, output_type: nil, tool_handlers: {}, metadata: nil, vault_ids: nil, request_options: {})
           #
           # @param environment [OpenAI::Models::Beta::EnvironmentParam::None, OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted, OpenAI::Models::Beta::EnvironmentParam::SelfHosted]
           #   An inline execution environment or a reference to an environment template.
@@ -112,6 +112,7 @@ module OpenAI
           #   The IDs of vaults made available to the session.
           #
           # @param output_type [Class<OpenAI::BaseModel>, nil] Beta: configure and parse a structured answer.
+          # @param tool_handlers [Hash{String=>Proc}] Local handlers for initial-turn function calls (not sent to the API).
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -121,6 +122,7 @@ module OpenAI
           def create_streaming(params)
             params = params.to_h.transform_keys { _1.is_a?(String) ? _1.to_sym : _1 }
             output_type = params.delete(:output_type)
+            tool_handlers = params.delete(:tool_handlers)
             parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(output_type) unless output_type.nil?
             parsed, options = OpenAI::Beta::Agents::SessionCreateParams.dump_request(params)
             unless parsed.fetch(:stream, true)
@@ -140,6 +142,10 @@ module OpenAI
               security: {bearer_auth: true},
               options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
             )
+            if tool_handlers
+              stream.configure_tool_handlers(sessions: self, tool_handlers: tool_handlers, request_options: options)
+            end
+
             stream.configure_output_parser(parser)
           end
 
