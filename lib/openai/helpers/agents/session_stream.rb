@@ -19,6 +19,7 @@ module OpenAI
           session_id:,
           input:,
           tool_handlers: {},
+          on_tool_error: nil,
           idempotency_key: nil,
           output_type: nil,
           request_options: {}
@@ -30,6 +31,7 @@ module OpenAI
           @sessions = sessions
           @session_id = session_id
           @handlers = tool_handlers.to_h.dup
+          @on_tool_error = on_tool_error
           @collector = OpenAI::Helpers::Beta::Agents::ResultCollector.new(
             session_id: session_id,
             handler_names: @handlers.keys
@@ -201,7 +203,7 @@ module OpenAI
           handler = @handlers[call.name]
           return unless handler
 
-          Tools.prepare(call, handler)
+          Tools.prepare(call, handler, session_id: @session_id, on_tool_error: @on_tool_error)
         end
 
         def dispatch(result)

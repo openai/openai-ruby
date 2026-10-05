@@ -16,7 +16,9 @@ module OpenAI
           def handlers: -> Hash[String, OpenAI::Helpers::Agents::tool_handler]
           def call: (
             String | Hash[String | Symbol, untyped]
-          ) -> OpenAI::Helpers::Agents::tool_output
+          ) ?{
+            (:arguments | :execution) -> void
+          } -> OpenAI::Helpers::Agents::tool_output
         end
       end
     end
