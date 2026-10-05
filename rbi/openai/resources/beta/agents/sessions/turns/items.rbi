@@ -25,7 +25,7 @@ module OpenAI
                   order: OpenAI::Beta::Agents::Sessions::Turns::ItemListParams::Order::OrSymbol,
                   request_options: OpenAI::RequestOptions::OrHash
                 )
-                  .returns(OpenAI::Internal::CursorPage[OpenAI::Beta::AgentSessionItem::Variants])
+                  .returns(OpenAI::Internal::ConversationCursorPage[OpenAI::Beta::AgentSessionItem::Variants])
               }
               def list(
                 # Path param: The ID of the turn.

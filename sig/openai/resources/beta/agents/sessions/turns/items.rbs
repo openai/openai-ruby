@@ -12,7 +12,7 @@ module OpenAI
                 ?limit: Integer,
                 ?order: OpenAI::Models::Beta::Agents::Sessions::Turns::ItemListParams::order,
                 ?request_options: OpenAI::request_opts
-              ) -> OpenAI::Internal::CursorPage[OpenAI::Models::Beta::agent_session_item]
+              ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Models::Beta::agent_session_item]
 
               def initialize: (client: OpenAI::Client) -> void
             end

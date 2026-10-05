@@ -7,7 +7,7 @@ class OpenAI::Test::Resources::Beta::Agents::Sessions::Turns::ItemsTest < OpenAI
     response = @openai.beta.agents.sessions.turns.items.list("turn_id", session_id: "session_id")
 
     assert_pattern do
-      response => OpenAI::Internal::CursorPage
+      response => OpenAI::Internal::ConversationCursorPage
     end
 
     row = response.to_enum.first
