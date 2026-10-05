@@ -90,7 +90,20 @@ module OpenAI
           OpenAI::Internal::Provider::Runtime.new(
             name: name,
             base_url: base_url,
-            prepare_request: auth.method(:prepare_request),
+            prepare_request: lambda do |request|
+              url = request.fetch(:url)
+              # Mantle discovery uses /v1/models even though inference uses /openai/v1.
+              if @base_url.nil? &&
+                  @endpoint == :mantle &&
+                  request[:method] == :get &&
+                  url.path == "/openai/v1/models"
+                url = url.dup
+                url.path = "/v1/models"
+                request = request.merge(url: url)
+              end
+
+              auth.prepare_request(request)
+            end,
             authentication_headers: AUTH_HEADERS
           )
         end

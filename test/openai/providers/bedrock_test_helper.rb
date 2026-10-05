@@ -68,7 +68,7 @@ module OpenAI::Test::BedrockTestHelper
     Aws.instance_variable_set(:@shared_config, nil)
   end
 
-  private def bedrock_request(url = "https://bedrock-mantle.us-east-1.api.aws/openai/v1/models")
+  private def bedrock_request(url = "https://bedrock-mantle.us-east-1.api.aws/v1/models")
     {method: :get, url: URI(url), headers: {}, body: nil}
   end
 end
