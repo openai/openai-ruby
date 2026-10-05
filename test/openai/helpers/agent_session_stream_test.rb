@@ -447,6 +447,198 @@ class OpenAI::Test::AgentSessionStreamTest < Minitest::Test
     assert_equal("Tool handler failed.", @server.submissions.last["error"])
   end
 
+  def test_typed_tools_keep_public_call_overrides_with_and_without_an_observer
+    model = Class.new(OpenAI::BaseModel) { required(:query, String) }
+    [:subclass, :singleton].product([false, true]).each do |override_kind, observe|
+      audited = []
+      stage_reporting = []
+      override = proc do |arguments, &report_stage|
+        audited << arguments.fetch("query")
+        stage_reporting << !report_stage.nil?
+        super(arguments, &report_stage).upcase
+      end
+
+      tool_class = Class.new(OpenAI::Helpers::Beta::Agents::FunctionTool)
+      tool_class.define_method(:call, &override) if override_kind == :subclass
+      tool = tool_class.new(name: "search", arguments: model) { |args| args.query }
+      tool.define_singleton_method(:call, &override) if override_kind == :singleton
+      observer = observe ? -> (_) { flunk("successful tool reported an error") } : nil
+      configure([turn("created"), call("{\"query\":\"hello\"}"), turn("completed"), idle])
+      @sessions
+        .stream(
+          "session_test",
+          input: "Hi",
+          tool_handlers: tool.handlers,
+          on_tool_error: observer
+        )
+        .until_done
+      assert_equal(["hello"], audited)
+      assert_equal([observe], stage_reporting)
+      assert_equal("HELLO", @server.submissions.last["output"])
+      assert_equal(true, @server.submissions.last["success"])
+    end
+  end
+
+  def test_raw_handlers_do_not_receive_the_internal_stage_reporter
+    configure([turn("created"), call("{}"), turn("completed"), idle])
+    @sessions
+      .stream(
+        "session_test",
+        input: "Hi",
+        tool_handlers: {
+          "search" => -> (_arguments, &block) {
+            assert_nil(block)
+            "ok"
+          }
+        },
+        on_tool_error: -> (_) { flunk("successful tool reported an error") }
+      )
+      .until_done
+    assert_equal(true, @server.submissions.last["success"])
+  end
+
+  def test_tool_error_observer_reports_stages_and_keeps_wire_errors_sanitized
+    execution_error = RuntimeError.new("fake-private-error")
+    output_error = JSON::GeneratorError.new("fake-private-output")
+    unserializable = Object.new
+    unserializable.define_singleton_method(:to_json) { |*_args| raise output_error }
+    [
+      ["{", -> (_) { flunk("invalid JSON reached handler") }, :arguments, JSON::ParserError],
+      ["[]", -> (_) { flunk("non-object reached handler") }, :arguments, ArgumentError],
+      ["{}", -> (_) { raise execution_error }, :execution, execution_error],
+      ["{}", -> (_) { {value: unserializable} }, :output, output_error]
+    ].each do |arguments, handler, stage, expected_error|
+      configure([turn("created"), call(arguments), turn("completed"), idle])
+      failures = []
+      @sessions
+        .stream(
+          "session_test",
+          input: "Hi",
+          tool_handlers: {"search" => handler},
+          on_tool_error: -> (failure) { failures << failure }
+        )
+        .until_done
+      assert_equal(1, failures.size)
+      failure = failures.first
+      assert_instance_of(OpenAI::Helpers::Beta::Agents::ToolError, failure)
+      assert_equal(stage, failure.stage)
+      if expected_error.is_a?(Class)
+        assert_instance_of(expected_error, failure.error)
+      else
+        assert_same(expected_error, failure.error)
+      end
+
+      assert_equal(
+        ["search", "session_test", "turn_root", "call_test"],
+        [failure.tool_name, failure.session_id, failure.turn_id, failure.call_id]
+      )
+      assert(failure.frozen?)
+      assert_equal(
+        {
+          "type" => "agent.session.input.tool_result",
+          "turn_id" => "turn_root",
+          "call_id" => "call_test",
+          "success" => false,
+          "error" => "Tool handler failed."
+        },
+        @server.submissions.last
+      )
+    end
+  end
+
+  def test_typed_argument_failures_preserve_the_original_exception
+    model = Class.new(OpenAI::BaseModel) { required(:query, String) }
+    tool_class = Class.new(OpenAI::Helpers::Beta::Agents::FunctionTool) do
+      attr_reader(:last_error)
+
+      def call(arguments)
+        super
+      rescue StandardError => error
+        @last_error = error
+        raise
+      end
+    end
+
+    tool = tool_class.new(name: "search", arguments: model) { raise "fake execution failure" }
+    [[:arguments, "{}"], [:execution, "{\"query\":\"hello\"}"]].each do |stage, arguments|
+      configure([turn("created"), call(arguments), turn("completed"), idle])
+      failures = []
+      @sessions
+        .stream(
+          "session_test",
+          input: "Hi",
+          tool_handlers: tool.handlers,
+          on_tool_error: -> (failure) { failures << failure }
+        )
+        .until_done
+      assert_equal(1, failures.size)
+      assert_equal(stage, failures.first.stage)
+      assert_same(tool.last_error, failures.first.error)
+      if stage == :arguments
+        assert_instance_of(ArgumentError, failures.first.error)
+        assert_equal("Tool arguments cannot be parsed into the argument model", failures.first.error.message)
+      end
+
+      assert_equal("Tool handler failed.", @server.submissions.last["error"])
+    end
+
+    assert_raises(ArgumentError) { tool.call({}) }
+  end
+
+  def test_observer_exception_does_not_block_failure_submission_or_repeat_on_retry
+    configure([turn("created"), call("{}"), call("{}"), turn("completed"), idle])
+    @server.lost_responses = ["agent.session.input.tool_result"]
+    failures = []
+    @sessions
+      .stream(
+        "session_test",
+        input: "Hi",
+        tool_handlers: {"search" => -> (_) { raise "fake failure" }},
+        on_tool_error: -> (failure) {
+          failures << failure
+          raise "fake observer failure"
+        }
+      )
+      .until_done
+    assert_equal(1, failures.size)
+    assert_equal(2, @server.submissions.count { |event| event["success"] == false })
+    assert_equal("Tool handler failed.", @server.submissions.last["error"])
+  end
+
+  def test_success_and_submission_failures_do_not_notify_the_observer
+    [nil, "submission rejected"].each do |submission_error|
+      configure([turn("created"), call("{}"), turn("completed"), idle])
+      @server.tool_errors = [submission_error]
+      stream = @sessions.stream(
+        "session_test",
+        input: "Hi",
+        tool_handlers: {"search" => -> (_) { "ok" }},
+        on_tool_error: -> (_) { flunk("reported a tool error") }
+      )
+      if submission_error
+        assert_raises(OpenAI::Errors::BadRequestError) { stream.until_done }
+      else
+        stream.until_done
+        assert_equal(true, @server.submissions.last["success"])
+      end
+    end
+  end
+
+  def test_interrupt_from_handler_or_observer_propagates_and_closes_stream
+    [false, true].each do |interrupt_observer|
+      configure([turn("created"), call("{}"), turn("completed"), idle])
+      stream = @sessions.stream(
+        "session_test",
+        input: "Hi",
+        tool_handlers: {"search" => -> (_) { interrupt_observer ? raise("fake failure") : raise(Interrupt) }},
+        on_tool_error: -> (_) { raise Interrupt }
+      )
+      assert_raises(Interrupt) { stream.until_done }
+      assert(@server.body.closed)
+      assert_equal(1, @server.submissions.size)
+    end
+  end
+
   private
 
   def turn(kind, id = "turn_root", subagent_id = nil)

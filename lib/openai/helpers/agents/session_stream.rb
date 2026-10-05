@@ -19,6 +19,7 @@ module OpenAI
           session_id:,
           input:,
           tool_handlers: {},
+          on_tool_error: nil,
           idempotency_key: nil,
           output_type: nil,
           request_options: {}
@@ -50,6 +51,7 @@ module OpenAI
             sessions: sessions,
             session_id: session_id,
             tool_handlers: @handlers,
+            on_tool_error: on_tool_error,
             request_options: @options
           )
           @closed = false

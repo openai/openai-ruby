@@ -280,17 +280,31 @@ module OpenAI
           # @param session_id [String]
           # @param input [String, Array<OpenAI::Models::Beta::AgentSessionInputMessageParam>]
           # @param tool_handlers [Hash{String=>Proc}]
+          # @param on_tool_error [Proc, nil]
+          #   Beta: use with tool_handlers to log or monitor argument parsing, handler
+          #   execution, and output conversion failures locally. Receives ToolError;
+          #   API/transport errors still propagate normally. Ordinary observer errors
+          #   are ignored, and the submitted tool failure stays generic.
           # @param idempotency_key [String, nil] Applies only to the input submission.
           # @param output_type [Class<OpenAI::BaseModel>, nil] Beta: parse output without changing session configuration.
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           # @yieldparam stream [OpenAI::Helpers::Agents::SessionStream]
           # @return [OpenAI::Helpers::Agents::SessionStream]
-          def stream(session_id, input:, tool_handlers: {}, idempotency_key: nil, output_type: nil, request_options: {})
+          def stream(
+            session_id,
+            input:,
+            tool_handlers: {},
+            on_tool_error: nil,
+            idempotency_key: nil,
+            output_type: nil,
+            request_options: {}
+          )
             stream = OpenAI::Helpers::Agents::SessionStream.new(
               sessions: self,
               session_id: session_id,
               input: input,
               tool_handlers: tool_handlers,
+              on_tool_error: on_tool_error,
               idempotency_key: idempotency_key,
               output_type: output_type,
               request_options: request_options

@@ -9,10 +9,11 @@ module OpenAI
         # @api private
         # Shared callback preparation, deduplication, and tool-result submission.
         class ToolDispatcher
-          def initialize(sessions:, tool_handlers:, request_options:, session_id: nil)
+          def initialize(sessions:, tool_handlers:, request_options:, session_id: nil, on_tool_error: nil)
             @sessions = sessions
             @session_id = session_id
             @handlers = tool_handlers.to_h.dup
+            @on_tool_error = on_tool_error
             @handled_calls = {}
             @options = request_options.to_h.dup
             @options.delete(:idempotency_key)
@@ -43,7 +44,12 @@ module OpenAI
             return unless handler
             raise RuntimeError, "Creation stream did not identify a session" unless @session_id
 
-            OpenAI::Helpers::Agents::Tools.prepare(call, handler)
+            OpenAI::Helpers::Agents::Tools.prepare(
+              call,
+              handler,
+              session_id: @session_id,
+              on_tool_error: @on_tool_error
+            )
           end
 
           def dispatch(result)
