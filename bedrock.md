@@ -17,7 +17,23 @@ response = client.responses.create(
 puts(response.output_text)
 ```
 
-The provider uses `https://bedrock-mantle.<region>.api.aws/openai/v1` by default and exposes the normal SDK resources. Default Mantle clients route `models.list` to `/v1/models` and `models.retrieve` to `/v1/models/{model}`, as documented by [AWS model operations](https://docs.aws.amazon.com/bedrock/latest/userguide/logging-cloudtrail-mantle.html). Explicit `base_url` and `AWS_BEDROCK_BASE_URL` overrides retain their configured paths. AWS controls which endpoints and features are supported; unsupported calls surface as normal API errors.
+The provider uses `https://bedrock-mantle.<region>.api.aws/v1` by default. AWS documents this route for [GPT OSS](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-oss-120b.html), including Responses and Chat Completions, and for model discovery.
+
+When no base URL override is configured, Responses and Chat Completions creation requests whose final body specifies exactly `model: "openai.gpt-6.1-sol"` use `/openai/v1/responses` and `/openai/v1/chat/completions`, respectively, as required by the [GPT-6.1 Sol model card](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html). This selection happens before bearer authentication or SigV4 signing. It does not change the client's base URL or infer routes for other model names.
+
+Calls without a model, such as retrieving or deleting a response, use the configured base URL. For Sol response follow-ups, use a client explicitly configured with the Sol API root:
+
+```ruby
+sol_client = OpenAI::Client.new(
+  provider: OpenAI::Providers.bedrock(
+    region: "us-east-1",
+    base_url: "https://bedrock-mantle.us-east-1.api.aws/openai/v1"
+  )
+)
+response = sol_client.responses.retrieve("resp_example")
+```
+
+Explicit `base_url` and `AWS_BEDROCK_BASE_URL` overrides are used as configured for every model. AWS controls which endpoints and features are supported; unsupported calls surface as normal API errors.
 
 ## Bedrock Runtime
 
@@ -63,7 +79,7 @@ The existing Mantle endpoint remains the default. Pass `endpoint: :mantle` when 
 
 | Endpoint | Default URL | SigV4 signing service |
 | --- | --- | --- |
-| `:mantle` (default) | `https://bedrock-mantle.<region>.api.aws/openai/v1` | `bedrock-mantle` |
+| `:mantle` (default) | `https://bedrock-mantle.<region>.api.aws/v1` | `bedrock-mantle` |
 | `:runtime` | `https://bedrock-runtime.<region>.amazonaws.com/openai/v1` | `bedrock` |
 
 Runtime URLs automatically use the correct DNS suffix for AWS China, European Sovereign Cloud, and isolated partitions. Canonical Runtime, FIPS, and dual-stack `base_url` values automatically select Runtime when `endpoint` is omitted. Canonical AWS endpoint URLs must use HTTPS, match the selected endpoint family, and agree with the configured AWS region.

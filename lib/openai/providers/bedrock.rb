@@ -92,13 +92,10 @@ module OpenAI
             base_url: base_url,
             prepare_request: lambda do |request|
               url = request.fetch(:url)
-              # Mantle discovery uses /v1/models even though inference uses /openai/v1.
-              if @base_url.nil? &&
-                  @endpoint == :mantle &&
-                  request[:method] == :get &&
-                  url.path.match?(%r{\A/openai/v1/models(?:/[^/]+)?\z})
+              # AWS documents a separate inference path for this exact Mantle model.
+              if @base_url.nil? && @endpoint == :mantle && sol_inference_request?(request)
                 url = url.dup
-                url.path = url.path.delete_prefix("/openai")
+                url.path = "/openai#{url.path}"
                 request = request.merge(url: url)
               end
 
@@ -106,6 +103,20 @@ module OpenAI
             end,
             authentication_headers: AUTH_HEADERS
           )
+        end
+
+        private def sol_inference_request?(request)
+          unless request[:method] == :post &&
+              %w[/v1/responses /v1/chat/completions].include?(request.fetch(:url).path)
+            return false
+          end
+
+          return false unless request[:body].is_a?(String)
+
+          body = JSON.parse(request[:body], max_nesting: false)
+          body.is_a?(Hash) && body["model"] == "openai.gpt-6.1-sol"
+        rescue JSON::ParserError
+          false
         end
       end
 
@@ -297,7 +308,7 @@ module OpenAI
             suffix, = runtime_dns_suffixes(region)
             "https://bedrock-runtime.#{region}.#{suffix}/openai/v1"
           else
-            "https://bedrock-mantle.#{region}.api.aws/openai/v1"
+            "https://bedrock-mantle.#{region}.api.aws/v1"
           end
         end
 
