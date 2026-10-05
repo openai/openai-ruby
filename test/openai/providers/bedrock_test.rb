@@ -40,6 +40,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
 
   def test_mantle_model_discovery_preserves_its_documented_route
     # https://docs.aws.amazon.com/bedrock/latest/userguide/models-get-info.html
+    # https://docs.aws.amazon.com/bedrock/latest/userguide/logging-cloudtrail-mantle.html
     [
       {api_key: "bedrock-token"},
       {access_key_id: "access-key", secret_access_key: "secret-key"}
@@ -48,37 +49,63 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
         [{base_url: override}, {}].each do |options|
           ENV["AWS_BEDROCK_BASE_URL"] = override
           root = override || "https://bedrock-mantle.us-east-1.api.aws/v1"
-          url = "#{root}/models"
-          stub_request(:get, url).to_return_json(status: 200, body: {data: [{id: "openai.test-model"}]})
-          client = OpenAI::Client.new(
-            provider: OpenAI::Providers.bedrock(region: "us-east-1", **authentication, **options)
-          )
+          [nil, "openai.test-model"].each do |model|
+            url = "#{root}/models#{model ? "/#{model}" : ""}"
+            stub_request(:get, url).to_return_json(
+              status: 200,
+              body: model ? {id: model} : {data: [{id: "openai.test-model"}]}
+            )
+            client = OpenAI::Client.new(
+              provider: OpenAI::Providers.bedrock(region: "us-east-1", **authentication, **options)
+            )
 
-          assert_equal("openai.test-model", client.models.list.data.fetch(0).id)
-          assert_requested(:get, url) do |request|
-            if authentication.key?(:api_key)
-              assert_equal("Bearer bedrock-token", request.headers["Authorization"])
-            else
-              signed_headers = request.headers.fetch("Authorization")[/SignedHeaders=([^,]+)/, 1].split(";")
-              signature = Aws::Sigv4::Signer
-                .new(
-                  service: "bedrock-mantle",
-                  region: "us-east-1",
-                  access_key_id: "access-key",
-                  secret_access_key: "secret-key"
-                )
-                .sign_request(
-                  http_method: "GET",
-                  url: url,
-                  headers: request.headers.select { |name, _| signed_headers.include?(name.downcase) },
-                  body: ""
-                )
-              assert_equal(signature.headers.fetch("authorization"), request.headers["Authorization"])
+            result = model ? client.models.retrieve(model) : client.models.list.data.fetch(0)
+            assert_equal("openai.test-model", result.id)
+            assert_requested(:get, url) do |request|
+              if authentication.key?(:api_key)
+                assert_equal("Bearer bedrock-token", request.headers["Authorization"])
+              else
+                signed_headers = request.headers.fetch("Authorization")[/SignedHeaders=([^,]+)/, 1].split(";")
+                signature = Aws::Sigv4::Signer
+                  .new(
+                    service: "bedrock-mantle",
+                    region: "us-east-1",
+                    access_key_id: "access-key",
+                    secret_access_key: "secret-key"
+                  )
+                  .sign_request(
+                    http_method: "GET",
+                    url: url,
+                    headers: request.headers.select { |name, _| signed_headers.include?(name.downcase) },
+                    body: ""
+                  )
+                assert_equal(signature.headers.fetch("authorization"), request.headers["Authorization"])
+              end
             end
-          end
 
-          WebMock.reset!
+            WebMock.reset!
+          end
         end
+      end
+    end
+  end
+
+  def test_mantle_discovery_rewrite_does_not_match_other_routes_or_methods
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.bedrock(region: "us-east-1", api_key: "bedrock-token")
+    )
+    [
+      [:post, "models"],
+      [:delete, "models/openai.test-model"],
+      [:get, "models-extra"],
+      [:get, "models/openai.test-model/extra"]
+    ].each do |method, path|
+      url = "https://bedrock-mantle.us-east-1.api.aws/openai/v1/#{path}"
+      stub_request(method, url).to_return_json(status: 200, body: {})
+      client.request(method: method, path: path)
+
+      assert_requested(method, url, times: 1) do |request|
+        assert_equal("Bearer bedrock-token", request.headers["Authorization"])
       end
     end
   end

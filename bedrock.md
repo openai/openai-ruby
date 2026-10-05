@@ -17,7 +17,7 @@ response = client.responses.create(
 puts(response.output_text)
 ```
 
-The provider uses `https://bedrock-mantle.<region>.api.aws/openai/v1` by default and exposes the normal SDK resources. Default Mantle clients route `models.list` to `/v1/models`, as documented by [AWS model discovery](https://docs.aws.amazon.com/bedrock/latest/userguide/models-get-info.html). Explicit `base_url` and `AWS_BEDROCK_BASE_URL` overrides retain their configured paths. AWS controls which endpoints and features are supported; unsupported calls surface as normal API errors.
+The provider uses `https://bedrock-mantle.<region>.api.aws/openai/v1` by default and exposes the normal SDK resources. Default Mantle clients route `models.list` to `/v1/models` and `models.retrieve` to `/v1/models/{model}`, as documented by [AWS model operations](https://docs.aws.amazon.com/bedrock/latest/userguide/logging-cloudtrail-mantle.html). Explicit `base_url` and `AWS_BEDROCK_BASE_URL` overrides retain their configured paths. AWS controls which endpoints and features are supported; unsupported calls surface as normal API errors.
 
 ## Bedrock Runtime
 

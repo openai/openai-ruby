@@ -96,9 +96,9 @@ module OpenAI
               if @base_url.nil? &&
                   @endpoint == :mantle &&
                   request[:method] == :get &&
-                  url.path == "/openai/v1/models"
+                  url.path.match?(%r{\A/openai/v1/models(?:/[^/]+)?\z})
                 url = url.dup
-                url.path = "/v1/models"
+                url.path = url.path.delete_prefix("/openai")
                 request = request.merge(url: url)
               end
 
