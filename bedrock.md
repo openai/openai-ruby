@@ -17,7 +17,7 @@ response = client.responses.create(
 puts(response.output_text)
 ```
 
-The provider uses `https://bedrock-mantle.<region>.api.aws/v1` by default and exposes the normal SDK resources. AWS controls which endpoints and features are supported; unsupported calls surface as normal API errors.
+The provider uses `https://bedrock-mantle.<region>.api.aws/openai/v1` by default and exposes the normal SDK resources. AWS controls which endpoints and features are supported; unsupported calls surface as normal API errors.
 
 ## Bedrock Runtime
 
@@ -63,7 +63,7 @@ The existing Mantle endpoint remains the default. Pass `endpoint: :mantle` when 
 
 | Endpoint | Default URL | SigV4 signing service |
 | --- | --- | --- |
-| `:mantle` (default) | `https://bedrock-mantle.<region>.api.aws/v1` | `bedrock-mantle` |
+| `:mantle` (default) | `https://bedrock-mantle.<region>.api.aws/openai/v1` | `bedrock-mantle` |
 | `:runtime` | `https://bedrock-runtime.<region>.amazonaws.com/openai/v1` | `bedrock` |
 
 Runtime URLs automatically use the correct DNS suffix for AWS China, European Sovereign Cloud, and isolated partitions. Canonical Runtime, FIPS, and dual-stack `base_url` values automatically select Runtime when `endpoint` is omitted. Canonical AWS endpoint URLs must use HTTPS, match the selected endpoint family, and agree with the configured AWS region.

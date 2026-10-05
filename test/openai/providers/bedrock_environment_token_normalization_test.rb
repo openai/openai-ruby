@@ -6,7 +6,7 @@ class OpenAI::Test::BedrockEnvironmentTokenNormalizationTest < Minitest::Test
   extend Minitest::Serial
   include OpenAI::Test::BedrockTestHelper
 
-  MODEL_URL = "https://bedrock-mantle.us-east-1.api.aws/v1/models"
+  MODEL_URL = "https://bedrock-mantle.us-east-1.api.aws/openai/v1/models"
 
   def test_environment_bearer_token_is_normalized_like_explicit_api_key
     padded_token = "\nfake-bedrock-token\n"

@@ -284,7 +284,7 @@ module OpenAI
             suffix, = runtime_dns_suffixes(region)
             "https://bedrock-runtime.#{region}.#{suffix}/openai/v1"
           else
-            "https://bedrock-mantle.#{region}.api.aws/v1"
+            "https://bedrock-mantle.#{region}.api.aws/openai/v1"
           end
         end
 
