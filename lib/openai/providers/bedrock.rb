@@ -90,9 +90,28 @@ module OpenAI
           OpenAI::Internal::Provider::Runtime.new(
             name: name,
             base_url: base_url,
-            prepare_request: auth.method(:prepare_request),
+            prepare_request: lambda do |request|
+              url = request.fetch(:url)
+              # AWS documents a separate inference path for this exact Mantle model.
+              if @base_url.nil? && @endpoint == :mantle && sol_inference_request?(request)
+                url = url.dup
+                url.path = "/openai#{url.path}"
+                request = request.merge(url: url)
+              end
+
+              auth.prepare_request(request)
+            end,
             authentication_headers: AUTH_HEADERS
           )
+        end
+
+        private def sol_inference_request?(request)
+          unless request[:method] == :post &&
+              %w[/v1/responses /v1/chat/completions].include?(request.fetch(:url).path)
+            return false
+          end
+
+          request[:provider_request_model] == "openai.gpt-6.1-sol"
         end
       end
 
