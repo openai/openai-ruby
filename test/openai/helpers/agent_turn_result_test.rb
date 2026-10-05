@@ -598,4 +598,116 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
     end
   end
 
+  def creation_tool_events
+    [
+      {type: "agent.session.created", session: {id: "session_test", status: "in_progress"}},
+      turn("created"),
+      {
+        type: "agent.session.turn.item.added",
+        session_id: "session_test",
+        turn_id: "turn_root",
+        item: {
+          type: "function_call",
+          id: "item_tool",
+          name: "lookup",
+          arguments: "{\"query\":\"A123\"}",
+          call_id: "call_test",
+          turn_id: "turn_root",
+          status: "in_progress"
+        }
+      }
+    ]
+  end
+
+  def test_creation_dispatches_initial_tools_with_shared_retry_and_result_collection
+    events = creation_tool_events
+    configure(events + [events.last, action, answer_event, turn("completed"), idle])
+    @server.tool_errors = ["Unknown pending tool call: call_test"]
+    calls = []
+    arguments = Class.new(OpenAI::BaseModel) { required(:query, String) }
+    tool = OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "lookup", arguments: arguments) do |args|
+      calls << args.query
+      {value: "found"}
+    end
+
+    options = {extra_headers: {"IDEMPOTENCY-KEY" => "creation-key", "x-test" => "yes"}, timeout: 4}
+    subject = @sessions
+      .create_streaming(
+        agent: {model: "test-model", tools: [tool.definition]},
+        environment: {type: :none},
+        input: "Find A123",
+        tool_handlers: tool.handlers,
+        request_options: options
+      )
+      .with_result_collection
+    subject.each do |event|
+      event.session.id.replace("changed") if event.type == :"agent.session.created"
+      event.item.arguments.replace("invalid") if event.type == :"agent.session.turn.item.added"
+    end
+
+    assert_equal(["A123"], calls)
+    assert_equal("Answer", subject.get_final_result.output_text)
+    assert_equal([:post, :post, :post], @server.requests.map(&:method))
+    creation, *submissions = @server.requests
+    refute(JSON.parse(creation.body).key?("tool_handlers"))
+    assert_equal("creation-key", creation.headers["idempotency-key"])
+    assert_equal(1, submissions.map { |r| r.headers["idempotency-key"] }.uniq.size)
+    refute_equal("creation-key", submissions.first.headers["idempotency-key"])
+    submissions.each do |request|
+      assert_equal("/v1/agents/sessions/session_test/events", request.url.path)
+      assert_equal(4.0, request.timeout)
+      assert_equal("yes", request.headers["x-test"])
+      assert_equal("agents=v1", request.headers["openai-beta"])
+      assert_equal("{\"value\":\"found\"}", JSON.parse(request.body).fetch("events").first.fetch("output"))
+    end
+
+    assert_equal("creation-key", options[:extra_headers]["IDEMPOTENCY-KEY"])
+    assert(@server.body.closed)
+  end
+
+  def test_creation_close_at_tool_event_does_not_run_the_handler
+    configure(creation_tool_events + [action])
+    calls = []
+    subject = @sessions.create_streaming(
+      agent: {model: "test-model"},
+      environment: {type: :none},
+      input: "Find A123",
+      tool_handlers: {"lookup" => -> (args) { calls << args }}
+    )
+    subject.each do |event|
+      subject.close if event.type == :"agent.session.turn.item.added"
+    end
+
+    assert_empty(calls)
+    assert_equal(1, @server.requests.size)
+    assert(@server.body.closed)
+  end
+
+  def test_creation_handler_failures_are_sanitized_and_unknown_tools_remain_blocked
+    configure(creation_tool_events + [answer_event, turn("completed"), idle])
+    subject = @sessions.create_streaming(
+      agent: {model: "test-model"},
+      environment: {type: :none},
+      input: "Find A123",
+      tool_handlers: {"lookup" => -> (_) { raise "private callback details" }}
+    )
+    assert_equal("Answer", subject.get_final_result.output_text)
+    assert_equal("agents=v1", @server.requests.last.headers["openai-beta"])
+    result = JSON.parse(@server.requests.last.body).fetch("events").first
+    assert_equal(false, result.fetch("success"))
+    refute_includes(JSON.generate(result), "private callback details")
+
+    configure(creation_tool_events + [action])
+    subject = @sessions.create_streaming(
+      agent: {model: "test-model"},
+      environment: {type: :none},
+      input: "Find A123",
+      tool_handlers: {}
+    )
+    error = assert_raises(OpenAI::Helpers::Beta::Agents::ResultError) { subject.get_final_result }
+    assert_equal(:requires_action, error.reason)
+    assert_equal(1, @server.requests.size)
+    assert(@server.body.closed)
+  end
+
 end

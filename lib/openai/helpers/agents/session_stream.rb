@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "tools"
+require_relative "../beta/agents/tool_dispatcher"
 require_relative "../beta/agents/result"
 
 module OpenAI
@@ -31,7 +31,6 @@ module OpenAI
           @sessions = sessions
           @session_id = session_id
           @handlers = tool_handlers.to_h.dup
-          @on_tool_error = on_tool_error
           @collector = OpenAI::Helpers::Beta::Agents::ResultCollector.new(
             session_id: session_id,
             handler_names: @handlers.keys
@@ -48,7 +47,13 @@ module OpenAI
 
           @options[:extra_headers] = headers
           @recent_events = {}
-          @handled_calls = {}
+          @dispatcher = OpenAI::Helpers::Beta::Agents::ToolDispatcher.new(
+            sessions: sessions,
+            session_id: session_id,
+            tool_handlers: @handlers,
+            on_tool_error: on_tool_error,
+            request_options: @options
+          )
           @closed = false
           session = @sessions.retrieve(@session_id, request_options: @options)
           unless session.status == :idle
@@ -156,12 +161,12 @@ module OpenAI
 
                 terminal = event.type == :"agent.session.failed" ||
                   (event.type == :"agent.session.idle" && @turn_ended)
-                invocation = prepare_call(event) unless terminal
+                invocation = @dispatcher.prepare_call(event) unless terminal
                 close if terminal
                 yielder << event
                 break if terminal || @closed
 
-                dispatch(invocation.call) if invocation
+                @dispatcher.dispatch(invocation.call) if invocation
               end
 
               raise RuntimeError, "Session event stream ended before the turn reached idle or failed" unless @closed
@@ -189,38 +194,6 @@ module OpenAI
           true
         end
 
-        def prepare_call(event)
-          unless event.type == :"agent.session.turn.item.added" &&
-              event.item.is_a?(OpenAI::Models::Beta::AgentFunctionCallItem)
-            return
-          end
-
-          call = event.item
-          key = [call.turn_id.dup, call.call_id.dup]
-          return if @handled_calls.key?(key)
-
-          @handled_calls[key] = true
-          handler = @handlers[call.name]
-          return unless handler
-
-          Tools.prepare(call, handler, session_id: @session_id, on_tool_error: @on_tool_error)
-        end
-
-        def dispatch(result)
-          idempotency_key = SecureRandom.uuid
-          delays = [0.1, 0.3, 0.6]
-          begin
-            @sessions
-              .events
-              .create(@session_id, events: [result], idempotency_key: idempotency_key, request_options: @options)
-          rescue OpenAI::Errors::BadRequestError => error
-            delay = delays.shift
-            raise unless delay && Tools.pending_call_race?(error, result[:call_id])
-
-            sleep(delay)
-            retry
-          end
-        end
       end
     end
   end

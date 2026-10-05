@@ -91,6 +91,7 @@ module OpenAI
               ),
               agent: OpenAI::Beta::Agents::SessionCreateParams::Agent::OrHash,
               agent_id: String,
+              tool_handlers: T::Hash[String, OpenAI::Helpers::Agents::ToolHandler],
               output_type: T.nilable(T.class_of(OpenAI::Helpers::StructuredOutput::BaseModel)),
               input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
               metadata: T.nilable(T::Hash[Symbol, String]),
@@ -109,6 +110,7 @@ module OpenAI
             # The ID of a saved reusable agent. Omit `agent` to use its configuration
             # unchanged.
             agent_id: nil,
+            tool_handlers: {},
             output_type: nil,
             # Initial input to submit when the session is created. A string is shorthand for a
             # single user message. Required when `environment.type` is `none`, or when
