@@ -7,27 +7,18 @@ module OpenAI
         | :ballad
         | :beacon
         | :bossa
-        | :brise
         | :cedar
         | :cinder
         | :coral
         | :delta
         | :echo
-        | :flitz
         | :gleam
-        | :harema
-        | :juni
         | :marin
         | :meridian
-        | :nira
-        | :noeul
-        | :nuri
         | :quartz
         | :ripple
         | :sage
         | :shimmer
-        | :shitan
-        | :sillage
         | :stone
         | :tempo
         | :verse
@@ -42,27 +33,18 @@ module OpenAI
         BALLAD: :ballad
         BEACON: :beacon
         BOSSA: :bossa
-        BRISE: :brise
         CEDAR: :cedar
         CINDER: :cinder
         CORAL: :coral
         DELTA: :delta
         ECHO: :echo
-        FLITZ: :flitz
         GLEAM: :gleam
-        HAREMA: :harema
-        JUNI: :juni
         MARIN: :marin
         MERIDIAN: :meridian
-        NIRA: :nira
-        NOEUL: :noeul
-        NURI: :nuri
         QUARTZ: :quartz
         RIPPLE: :ripple
         SAGE: :sage
         SHIMMER: :shimmer
-        SHITAN: :shitan
-        SILLAGE: :sillage
         STONE: :stone
         TEMPO: :tempo
         VERSE: :verse

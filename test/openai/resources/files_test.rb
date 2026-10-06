@@ -13,7 +13,7 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
           id: String,
-          bytes: Integer | nil,
+          bytes: Integer,
           created_at: Integer,
           filename: String,
           object: Symbol,
@@ -35,7 +35,7 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
           id: String,
-          bytes: Integer | nil,
+          bytes: Integer,
           created_at: Integer,
           filename: String,
           object: Symbol,
@@ -64,7 +64,7 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       row => {
           id: String,
-          bytes: Integer | nil,
+          bytes: Integer,
           created_at: Integer,
           filename: String,
           object: Symbol,

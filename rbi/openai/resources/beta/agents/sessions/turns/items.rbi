@@ -32,7 +32,8 @@ module OpenAI
                 turn_id,
                 # Path param: The ID of the session that owns the turn.
                 session_id:,
-                # Query param: Return resources after this resource ID in the selected order.
+                # Query param: Return items after this cursor in the selected order. Pass the
+                # previous response's last_id, which can differ from the last item's ID.
                 after: nil,
                 # Query param: The maximum number of resources to return, between 1 and 100.
                 # Defaults to 20.

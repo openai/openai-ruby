@@ -22,10 +22,12 @@ module OpenAI
 
               attr_accessor turn_id: String
 
-              # Return resources after this resource ID in the selected order.
+              # Return items after this cursor in the selected order. Pass the previous
+              # response's last_id, which can differ from the last item's ID.
               attr_reader after: String?
 
-              # Return resources after this resource ID in the selected order.
+              # Return items after this cursor in the selected order. Pass the previous
+              # response's last_id, which can differ from the last item's ID.
               def after=: (String) -> String
 
               # The maximum number of resources to return, between 1 and 100. Defaults to 20.
@@ -43,7 +45,8 @@ module OpenAI
               ) -> OpenAI::Models::Beta::Agents::Sessions::Turns::ItemListParams::order
 
               # @param after
-              #   Return resources after this resource ID in the selected order.
+              #   Return items after this cursor in the selected order. Pass the previous
+              #   response's last_id, which can differ from the last item's ID.
               # @param limit
               #   The maximum number of resources to return, between 1 and 100. Defaults to 20.
               # @param order

@@ -22,7 +22,8 @@ module OpenAI
               required :turn_id, String
 
               # @!attribute after
-              #   Return resources after this resource ID in the selected order.
+              #   Return items after this cursor in the selected order. Pass the previous
+              #   response's last_id, which can differ from the last item's ID.
               #
               #   @return [String, nil]
               optional :after, String
@@ -45,7 +46,8 @@ module OpenAI
               #   @param turn_id [String]
               #
               #   @param after [String]
-              #     Return resources after this resource ID in the selected order.
+              #     Return items after this cursor in the selected order. Pass the previous
+              #     response's last_id, which can differ from the last item's ID.
               #
               #   @param limit [Integer]
               #     The maximum number of resources to return, between 1 and 100. Defaults to 20.
