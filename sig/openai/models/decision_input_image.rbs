@@ -1,0 +1,51 @@
+module OpenAI
+  module Models
+    type decision_input_image =
+      {
+        image_url: String,
+        ?type: :input_image,
+        ?detail: OpenAI::Models::DecisionInputImage::detail?
+      }
+
+    class DecisionInputImage < OpenAI::Internal::Type::BaseModel
+      # A base64-encoded image in a data URL.
+      attr_accessor image_url: String
+
+      attr_accessor type: :input_image
+
+      # The image detail level, using the selected model's image profile. Defaults to
+      # auto.
+      attr_accessor detail: OpenAI::Models::DecisionInputImage::detail?
+
+      # @param image_url
+      #   A base64-encoded image in a data URL.
+      # @param detail
+      #   The image detail level, using the selected model's image profile. Defaults to
+      #   auto.
+      def initialize: (
+        image_url: String,
+        ?detail: OpenAI::Models::DecisionInputImage::detail?,
+        ?type: :input_image
+      ) -> void
+
+      def to_hash: -> {
+        image_url: String,
+        ?type: :input_image,
+        ?detail: OpenAI::Models::DecisionInputImage::detail?
+      }
+
+      type detail = :low | :high | :auto | :original
+
+      module Detail
+        extend OpenAI::Internal::Type::Enum
+
+        LOW: :low
+        HIGH: :high
+        AUTO: :auto
+        ORIGINAL: :original
+
+        def self?.values: -> ::Array[OpenAI::Models::DecisionInputImage::detail]
+      end
+    end
+  end
+end

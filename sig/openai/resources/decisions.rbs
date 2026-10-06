@@ -1,0 +1,15 @@
+module OpenAI
+  module Resources
+    class Decisions
+      def create: (
+        input: OpenAI::Models::DecisionCreateParams::input,
+        model: String,
+        questions: ::Array[OpenAI::Models::DecisionCreateParams::question],
+        ?safety_identifier: String?,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Decision
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

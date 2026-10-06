@@ -20,6 +20,8 @@ module OpenAI
 
     attr_reader webhook_secret: String?
 
+    attr_reader decisions: OpenAI::Resources::Decisions
+
     attr_reader completions: OpenAI::Resources::Completions
 
     attr_reader chat: OpenAI::Resources::Chat

@@ -1,0 +1,57 @@
+module OpenAI
+  module Models
+    type decision_input_message =
+      {
+        content: OpenAI::Models::DecisionInputMessage::content,
+        ?role: :user,
+        ?type: OpenAI::Models::DecisionInputMessage::type_
+      }
+
+    class DecisionInputMessage < OpenAI::Internal::Type::BaseModel
+      # Text evidence or an ordered list of text and inline image parts.
+      attr_accessor content: OpenAI::Models::DecisionInputMessage::content
+
+      attr_accessor role: :user
+
+      attr_reader type: OpenAI::Models::DecisionInputMessage::type_?
+
+      def type=: (
+        OpenAI::Models::DecisionInputMessage::type_
+      ) -> OpenAI::Models::DecisionInputMessage::type_
+
+      # @param content
+      #   Text evidence or an ordered list of text and inline image parts.
+      def initialize: (
+        content: OpenAI::Models::DecisionInputMessage::content,
+        ?type: OpenAI::Models::DecisionInputMessage::type_,
+        ?role: :user
+      ) -> void
+
+      def to_hash: -> {
+        content: OpenAI::Models::DecisionInputMessage::content,
+        ?role: :user,
+        ?type: OpenAI::Models::DecisionInputMessage::type_
+      }
+
+      type content = String | ::Array[OpenAI::Models::decision_input_part]
+
+      module Content
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::DecisionInputMessage::content]
+
+        DecisionInputPartArray: OpenAI::Internal::Type::Converter
+      end
+
+      type type_ = :message
+
+      module Type
+        extend OpenAI::Internal::Type::Enum
+
+        MESSAGE: :message
+
+        def self?.values: -> ::Array[OpenAI::Models::DecisionInputMessage::type_]
+      end
+    end
+  end
+end

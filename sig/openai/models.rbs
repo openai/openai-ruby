@@ -65,6 +65,18 @@ module OpenAI
 
   module CustomToolInputFormat = OpenAI::Models::CustomToolInputFormat
 
+  class Decision = OpenAI::Models::Decision
+
+  class DecisionCreateParams = OpenAI::Models::DecisionCreateParams
+
+  class DecisionInputImage = OpenAI::Models::DecisionInputImage
+
+  class DecisionInputMessage = OpenAI::Models::DecisionInputMessage
+
+  module DecisionInputPart = OpenAI::Models::DecisionInputPart
+
+  class DecisionInputText = OpenAI::Models::DecisionInputText
+
   class DeletedSkill = OpenAI::Models::DeletedSkill
 
   class Embedding = OpenAI::Models::Embedding
