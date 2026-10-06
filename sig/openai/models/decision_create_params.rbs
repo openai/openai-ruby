@@ -1,0 +1,227 @@
+module OpenAI
+  module Models
+    type decision_create_params =
+      {
+        input: OpenAI::Models::DecisionCreateParams::input,
+        model: String,
+        questions: ::Array[OpenAI::Models::DecisionCreateParams::question],
+        ?safety_identifier: String?,
+        ?request_options: OpenAI::request_opts
+      }
+
+    class DecisionCreateParams < OpenAI::Internal::Type::BaseModel
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
+
+      # Shared evidence, as a string or an array of user messages containing text and
+      # inline images. Non-user roles, function calls, function-call outputs, files,
+      # audio, and item references are not supported. At most 128 image parts are
+      # allowed across all messages in one request.
+      attr_accessor input: OpenAI::Models::DecisionCreateParams::input
+
+      attr_accessor model: String
+
+      attr_accessor questions: ::Array[OpenAI::Models::DecisionCreateParams::question]
+
+      # Opaque caller-provided end-user identifier, scoped by the verified org. Match
+      # Responses' limit; this is never the authenticated user identity.
+      attr_accessor safety_identifier: String?
+
+      # @param input
+      #   Shared evidence, as a string or an array of user messages containing text and
+      #   inline images. Non-user roles, function calls, function-call outputs, files,
+      #   audio, and item references are not supported. At most 128 image parts are
+      #   allowed across all messages in one request.
+      # @param safety_identifier
+      #   Opaque caller-provided end-user identifier, scoped by the verified org. Match
+      #   Responses' limit; this is never the authenticated user identity.
+      def initialize: (
+        input: OpenAI::Models::DecisionCreateParams::input,
+        model: String,
+        questions: ::Array[OpenAI::Models::DecisionCreateParams::question],
+        ?safety_identifier: String?,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        input: OpenAI::Models::DecisionCreateParams::input,
+        model: String,
+        questions: ::Array[OpenAI::Models::DecisionCreateParams::question],
+        ?safety_identifier: String?,
+        ?request_options: OpenAI::RequestOptions
+      }
+
+      type input = String | ::Array[OpenAI::DecisionInputMessage]
+
+      module Input
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::input]
+
+        DecisionInputMessageArray: OpenAI::Internal::Type::Converter
+      end
+
+      type question =
+        OpenAI::DecisionCreateParams::Question::Predicate
+        | OpenAI::DecisionCreateParams::Question::Choice
+        | OpenAI::DecisionCreateParams::Question::Score
+
+      module Question
+        extend OpenAI::Internal::Type::Union
+
+        type predicate =
+          { instructions: String, ?type: :predicate, ?name: String }
+
+        class Predicate < OpenAI::Internal::Type::BaseModel
+          attr_accessor instructions: String
+
+          # The type of the object. Always `predicate`.
+          attr_accessor type: :predicate
+
+          attr_reader name: String?
+
+          def name=: (String) -> String
+
+          # @param type
+          #   The type of the object. Always `predicate`.
+          def initialize: (
+            instructions: String,
+            ?name: String,
+            ?type: :predicate
+          ) -> void
+
+          def to_hash: -> {
+            instructions: String,
+            ?type: :predicate,
+            ?name: String
+          }
+        end
+
+        type choice =
+          {
+            choices: ::Array[OpenAI::DecisionCreateParams::Question::Choice::Choice],
+            instructions: String,
+            ?type: :choice,
+            ?name: String
+          }
+
+        class Choice < OpenAI::Internal::Type::BaseModel
+          attr_accessor choices: ::Array[OpenAI::DecisionCreateParams::Question::Choice::Choice]
+
+          attr_accessor instructions: String
+
+          # The type of the object. Always `choice`.
+          attr_accessor type: :choice
+
+          attr_reader name: String?
+
+          def name=: (String) -> String
+
+          # @param type
+          #   The type of the object. Always `choice`.
+          def initialize: (
+            choices: ::Array[OpenAI::DecisionCreateParams::Question::Choice::Choice],
+            instructions: String,
+            ?name: String,
+            ?type: :choice
+          ) -> void
+
+          def to_hash: -> {
+            choices: ::Array[OpenAI::DecisionCreateParams::Question::Choice::Choice],
+            instructions: String,
+            ?type: :choice,
+            ?name: String
+          }
+
+          type choice =
+            {
+              value: OpenAI::Models::DecisionCreateParams::Question::Choice::Choice::value,
+              ?description: String
+            }
+
+          class Choice < OpenAI::Internal::Type::BaseModel
+            # Choice values are typed: a string and a boolean with the same text are distinct.
+            attr_accessor value: OpenAI::Models::DecisionCreateParams::Question::Choice::Choice::value
+
+            attr_reader description: String?
+
+            def description=: (String) -> String
+
+            # @param value
+            #   Choice values are typed: a string and a boolean with the same text are distinct.
+            def initialize: (
+              value: OpenAI::Models::DecisionCreateParams::Question::Choice::Choice::value,
+              ?description: String
+            ) -> void
+
+            def to_hash: -> {
+              value: OpenAI::Models::DecisionCreateParams::Question::Choice::Choice::value,
+              ?description: String
+            }
+
+            type value = String | bool
+
+            module Value
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::Question::Choice::Choice::value]
+            end
+          end
+        end
+
+        type score =
+          {
+            instructions: String,
+            levels: ::Array[OpenAI::DecisionCreateParams::Question::Score::Level],
+            ?type: :score,
+            ?name: String
+          }
+
+        class Score < OpenAI::Internal::Type::BaseModel
+          attr_accessor instructions: String
+
+          attr_accessor levels: ::Array[OpenAI::DecisionCreateParams::Question::Score::Level]
+
+          # The type of the object. Always `score`.
+          attr_accessor type: :score
+
+          attr_reader name: String?
+
+          def name=: (String) -> String
+
+          # @param type
+          #   The type of the object. Always `score`.
+          def initialize: (
+            instructions: String,
+            levels: ::Array[OpenAI::DecisionCreateParams::Question::Score::Level],
+            ?name: String,
+            ?type: :score
+          ) -> void
+
+          def to_hash: -> {
+            instructions: String,
+            levels: ::Array[OpenAI::DecisionCreateParams::Question::Score::Level],
+            ?type: :score,
+            ?name: String
+          }
+
+          type level = { label: String, ?description: String }
+
+          class Level < OpenAI::Internal::Type::BaseModel
+            attr_accessor label: String
+
+            attr_reader description: String?
+
+            def description=: (String) -> String
+
+            def initialize: (label: String, ?description: String) -> void
+
+            def to_hash: -> { label: String, ?description: String }
+          end
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::question]
+      end
+    end
+  end
+end

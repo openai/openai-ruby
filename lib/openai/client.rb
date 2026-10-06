@@ -32,6 +32,9 @@ module OpenAI
     # @return [String, nil]
     attr_reader :webhook_secret
 
+    # @return [OpenAI::Resources::Decisions]
+    attr_reader :decisions
+
     # Given a prompt, the model will return one or more predicted completions, and can
     # also return the probabilities of alternative tokens at each position.
     # @return [OpenAI::Resources::Completions]
@@ -249,6 +252,7 @@ module OpenAI
         on_retry: on_retry
       )
 
+      @decisions = OpenAI::Resources::Decisions.new(client: self)
       @completions = OpenAI::Resources::Completions.new(client: self)
       @chat = OpenAI::Resources::Chat.new(client: self)
       @embeddings = OpenAI::Resources::Embeddings.new(client: self)

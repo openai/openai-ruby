@@ -25,6 +25,9 @@ module OpenAI
     sig { returns(T.nilable(String)) }
     attr_reader :webhook_secret
 
+    sig { returns(OpenAI::Resources::Decisions) }
+    attr_reader :decisions
+
     # Given a prompt, the model will return one or more predicted completions, and can
     # also return the probabilities of alternative tokens at each position.
     sig { returns(OpenAI::Resources::Completions) }
