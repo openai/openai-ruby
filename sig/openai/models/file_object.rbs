@@ -3,7 +3,7 @@ module OpenAI
     type file_object =
       {
         id: String,
-        bytes: Integer,
+        bytes: Integer?,
         created_at: Integer,
         filename: String,
         ?object: :file,
@@ -19,7 +19,7 @@ module OpenAI
 
       # The size of the file, in bytes. In a completed file upload response, this can be
       # null when the file size is not yet available.
-      attr_accessor bytes: Integer
+      attr_accessor bytes: Integer?
 
       # The Unix timestamp (in seconds) for when the file was created.
       attr_accessor created_at: Integer
@@ -84,7 +84,7 @@ module OpenAI
       #   The object type, which is always `file`.
       def initialize: (
         id: String,
-        bytes: Integer,
+        bytes: Integer?,
         created_at: Integer,
         filename: String,
         purpose: OpenAI::Models::FileObject::purpose,
@@ -96,7 +96,7 @@ module OpenAI
 
       def to_hash: -> {
         id: String,
-        bytes: Integer,
+        bytes: Integer?,
         created_at: Integer,
         filename: String,
         ?object: :file,

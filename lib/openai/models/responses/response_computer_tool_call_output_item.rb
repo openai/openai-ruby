@@ -5,7 +5,7 @@ module OpenAI
     module Responses
       class ResponseComputerToolCallOutputItem < OpenAI::Internal::Type::BaseModel
         # @!attribute id
-        #   The unique ID of the computer call tool output.
+        #   The ID of the computer tool call output.
         #
         #   @return [String]
         required :id, String
@@ -57,7 +57,7 @@ module OpenAI
 
         # @!method initialize(id:, call_id:, output:, status:, acknowledged_safety_checks: nil, created_by: nil, type: :computer_call_output)
         #   @param id [String]
-        #     The unique ID of the computer call tool output.
+        #     The ID of the computer tool call output.
         #
         #   @param call_id [String]
         #     The ID of the computer tool call that produced the output.

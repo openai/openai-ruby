@@ -14,8 +14,8 @@ module OpenAI
       #   The size of the file, in bytes. In a completed file upload response, this can be
       #   null when the file size is not yet available.
       #
-      #   @return [Integer]
-      required :bytes, Integer
+      #   @return [Integer, nil]
+      required :bytes, Integer, nil?: true
 
       # @!attribute created_at
       #   The Unix timestamp (in seconds) for when the file was created.
@@ -75,7 +75,7 @@ module OpenAI
       #   @param id [String]
       #     The file identifier, which can be referenced in the API endpoints.
       #
-      #   @param bytes [Integer]
+      #   @param bytes [Integer, nil]
       #     The size of the file, in bytes. In a completed file upload response, this can be
       #     null when the file size is not yet available.
       #

@@ -18,7 +18,7 @@ module OpenAI
 
       # The size of the file, in bytes. In a completed file upload response, this can be
       # null when the file size is not yet available.
-      sig { returns(Integer) }
+      sig { returns(T.nilable(Integer)) }
       attr_accessor :bytes
 
       # The Unix timestamp (in seconds) for when the file was created.
@@ -67,7 +67,7 @@ module OpenAI
 
           id: String,
 
-          bytes: Integer,
+          bytes: T.nilable(Integer),
 
           created_at: Integer,
 
@@ -128,7 +128,7 @@ module OpenAI
         override.returns(
           {
             id: String,
-            bytes: Integer,
+            bytes: T.nilable(Integer),
             created_at: Integer,
             filename: String,
             object: Symbol,
