@@ -222,8 +222,7 @@ module OpenAI
 
         type tool_choice =
           OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::live_tool_choice_enum
-          | OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveFunctionToolChoiceParam
-          | OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam
+          | ::Hash[Symbol, top]
 
         module ToolChoice
           extend OpenAI::Internal::Type::Union
@@ -240,39 +239,9 @@ module OpenAI
             def self?.values: -> ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::live_tool_choice_enum]
           end
 
-          type live_function_tool_choice_param =
-            { name: String, ?type: :function }
-
-          class LiveFunctionToolChoiceParam < OpenAI::Internal::Type::BaseModel
-            attr_accessor name: String
-
-            attr_accessor type: :function
-
-            def initialize: (name: String, ?type: :function) -> void
-
-            def to_hash: -> { name: String, ?type: :function }
-          end
-
-          type live_mcp_tool_choice_param =
-            { name: String, server_label: String, ?type: :mcp }
-
-          class LiveMCPToolChoiceParam < OpenAI::Internal::Type::BaseModel
-            attr_accessor name: String
-
-            attr_accessor server_label: String
-
-            attr_accessor type: :mcp
-
-            def initialize: (
-              name: String,
-              server_label: String,
-              ?type: :mcp
-            ) -> void
-
-            def to_hash: -> { name: String, server_label: String, ?type: :mcp }
-          end
-
           def self?.variants: -> ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::tool_choice]
+
+          UnionMember1Map: OpenAI::Internal::Type::Converter
         end
 
         type tool =
@@ -282,6 +251,13 @@ module OpenAI
           | OpenAI::Live::ResponsesDelegationConfig::Tool::CodeInterpreter
           | OpenAI::Live::ResponsesDelegationConfig::Tool::Shell
           | OpenAI::Live::ResponsesDelegationConfig::Tool::ImageGeneration
+          | OpenAI::Live::ResponsesDelegationConfig::Tool::Mcp
+          | OpenAI::Live::ResponsesDelegationConfig::Tool::Custom
+          | OpenAI::Live::ResponsesDelegationConfig::Tool::Namespace
+          | OpenAI::Live::ResponsesDelegationConfig::Tool::ToolSearch
+          | OpenAI::Live::ResponsesDelegationConfig::Tool::ProgrammaticToolCalling
+          | OpenAI::Live::ResponsesDelegationConfig::Tool::Computer
+          | OpenAI::Live::ResponsesDelegationConfig::Tool::ApplyPatch
 
         module Tool
           extend OpenAI::Internal::Type::Union
@@ -319,19 +295,360 @@ module OpenAI
             def to_hash: -> { ?type: :code_interpreter }
           end
 
-          type shell = { environment: ::Hash[Symbol, top], ?type: :shell }
+          type shell =
+            {
+              ?type: :shell,
+              ?environment: OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::environment?
+            }
 
           class Shell < OpenAI::Internal::Type::BaseModel
-            attr_accessor environment: ::Hash[Symbol, top]
-
             attr_accessor type: :shell
 
+            attr_accessor environment: OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::environment?
+
             def initialize: (
-              environment: ::Hash[Symbol, top],
+              ?environment: OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::environment?,
               ?type: :shell
             ) -> void
 
-            def to_hash: -> { environment: ::Hash[Symbol, top], ?type: :shell }
+            def to_hash: -> {
+              ?type: :shell,
+              ?environment: OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::environment?
+            }
+
+            type environment =
+              OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto
+              | OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerReference
+              | OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::Local
+
+            module Environment
+              extend OpenAI::Internal::Type::Union
+
+              type container_auto =
+                {
+                  ?type: :container_auto,
+                  ?file_ids: ::Array[String]?,
+                  ?memory_limit: OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::memory_limit?,
+                  ?network_policy: OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::network_policy?,
+                  ?skills: ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::skill]?
+                }
+
+              class ContainerAuto < OpenAI::Internal::Type::BaseModel
+                # Automatically creates a container for this request
+                attr_accessor type: :container_auto
+
+                # An optional list of uploaded files to make available to your code.
+                attr_accessor file_ids: ::Array[String]?
+
+                # The memory limit for the container.
+                attr_accessor memory_limit: OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::memory_limit?
+
+                # Network access policy for the container.
+                attr_accessor network_policy: OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::network_policy?
+
+                # An optional list of skills referenced by id or inline data.
+                attr_accessor skills: ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::skill]?
+
+                # @param file_ids
+                #   An optional list of uploaded files to make available to your code.
+                # @param memory_limit
+                #   The memory limit for the container.
+                # @param network_policy
+                #   Network access policy for the container.
+                # @param skills
+                #   An optional list of skills referenced by id or inline data.
+                # @param type
+                #   Automatically creates a container for this request
+                def initialize: (
+                  ?file_ids: ::Array[String]?,
+                  ?memory_limit: OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::memory_limit?,
+                  ?network_policy: OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::network_policy?,
+                  ?skills: ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::skill]?,
+                  ?type: :container_auto
+                ) -> void
+
+                def to_hash: -> {
+                  ?type: :container_auto,
+                  ?file_ids: ::Array[String]?,
+                  ?memory_limit: OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::memory_limit?,
+                  ?network_policy: OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::network_policy?,
+                  ?skills: ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::skill]?
+                }
+
+                type memory_limit = :"1g" | :"4g" | :"16g" | :"64g"
+
+                module MemoryLimit
+                  extend OpenAI::Internal::Type::Enum
+
+                  MEMORY_LIMIT_1G: :"1g"
+                  MEMORY_LIMIT_4G: :"4g"
+                  MEMORY_LIMIT_16G: :"16g"
+                  MEMORY_LIMIT_64G: :"64g"
+
+                  def self?.values: -> ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::memory_limit]
+                end
+
+                type network_policy =
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::NetworkPolicy::Disabled
+                  | OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::NetworkPolicy::Allowlist
+
+                module NetworkPolicy
+                  extend OpenAI::Internal::Type::Union
+
+                  type disabled = { ?type: :disabled }
+
+                  class Disabled < OpenAI::Internal::Type::BaseModel
+                    # Disable outbound network access. Always `disabled`.
+                    attr_accessor type: :disabled
+
+                    # @param type
+                    #   Disable outbound network access. Always `disabled`.
+                    def initialize: (?type: :disabled) -> void
+
+                    def to_hash: -> { ?type: :disabled }
+                  end
+
+                  type allowlist =
+                    { allowed_domains: ::Array[String], ?type: :allowlist }
+
+                  class Allowlist < OpenAI::Internal::Type::BaseModel
+                    # A list of allowed domains when type is `allowlist`.
+                    attr_accessor allowed_domains: ::Array[String]
+
+                    # Allow outbound network access only to specified domains. Always `allowlist`.
+                    attr_accessor type: :allowlist
+
+                    # @param allowed_domains
+                    #   A list of allowed domains when type is `allowlist`.
+                    # @param type
+                    #   Allow outbound network access only to specified domains. Always `allowlist`.
+                    def initialize: (
+                      allowed_domains: ::Array[String],
+                      ?type: :allowlist
+                    ) -> void
+
+                    def to_hash: -> {
+                      allowed_domains: ::Array[String],
+                      ?type: :allowlist
+                    }
+                  end
+
+                  def self?.variants: -> ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::network_policy]
+                end
+
+                type skill =
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::SkillReference
+                  | OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::Inline
+
+                module Skill
+                  extend OpenAI::Internal::Type::Union
+
+                  type skill_reference =
+                    {
+                      skill_id: String,
+                      ?type: :skill_reference,
+                      ?version: String?
+                    }
+
+                  class SkillReference < OpenAI::Internal::Type::BaseModel
+                    # The ID of the referenced skill.
+                    attr_accessor skill_id: String
+
+                    # References a skill created with the /v1/skills endpoint.
+                    attr_accessor type: :skill_reference
+
+                    # Optional skill version. Use a positive integer or 'latest'. Omit for default.
+                    attr_accessor version: String?
+
+                    # @param skill_id
+                    #   The ID of the referenced skill.
+                    # @param version
+                    #   Optional skill version. Use a positive integer or 'latest'. Omit for default.
+                    # @param type
+                    #   References a skill created with the /v1/skills endpoint.
+                    def initialize: (
+                      skill_id: String,
+                      ?version: String?,
+                      ?type: :skill_reference
+                    ) -> void
+
+                    def to_hash: -> {
+                      skill_id: String,
+                      ?type: :skill_reference,
+                      ?version: String?
+                    }
+                  end
+
+                  type inline =
+                    {
+                      description: String,
+                      name: String,
+                      source: OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::Inline::Source,
+                      ?type: :inline
+                    }
+
+                  class Inline < OpenAI::Internal::Type::BaseModel
+                    # The description of the skill.
+                    attr_accessor description: String
+
+                    # The name of the skill.
+                    attr_accessor name: String
+
+                    # Inline skill payload
+                    attr_accessor source: OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::Inline::Source
+
+                    # Defines an inline skill for this request.
+                    attr_accessor type: :inline
+
+                    # @param description
+                    #   The description of the skill.
+                    # @param name
+                    #   The name of the skill.
+                    # @param source
+                    #   Inline skill payload
+                    # @param type
+                    #   Defines an inline skill for this request.
+                    def initialize: (
+                      description: String,
+                      name: String,
+                      source: OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::Inline::Source,
+                      ?type: :inline
+                    ) -> void
+
+                    def to_hash: -> {
+                      description: String,
+                      name: String,
+                      source: OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::Inline::Source,
+                      ?type: :inline
+                    }
+
+                    type source =
+                      {
+                        data: String,
+                        ?media_type: :"application/zip",
+                        ?type: :base64
+                      }
+
+                    class Source < OpenAI::Internal::Type::BaseModel
+                      # Base64-encoded skill zip bundle.
+                      attr_accessor data: String
+
+                      # The media type of the inline skill payload. Must be `application/zip`.
+                      attr_accessor media_type: :"application/zip"
+
+                      # The type of the inline skill source. Must be `base64`.
+                      attr_accessor type: :base64
+
+                      # @param data
+                      #   Base64-encoded skill zip bundle.
+                      # @param media_type
+                      #   The media type of the inline skill payload. Must be `application/zip`.
+                      # @param type
+                      #   The type of the inline skill source. Must be `base64`.
+                      def initialize: (
+                        data: String,
+                        ?media_type: :"application/zip",
+                        ?type: :base64
+                      ) -> void
+
+                      def to_hash: -> {
+                        data: String,
+                        ?media_type: :"application/zip",
+                        ?type: :base64
+                      }
+                    end
+                  end
+
+                  def self?.variants: -> ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::skill]
+                end
+              end
+
+              type container_reference =
+                { container_id: String, ?type: :container_reference }
+
+              class ContainerReference < OpenAI::Internal::Type::BaseModel
+                # The ID of the referenced container.
+                attr_accessor container_id: String
+
+                # References a container created with the /v1/containers endpoint
+                attr_accessor type: :container_reference
+
+                # @param container_id
+                #   The ID of the referenced container.
+                # @param type
+                #   References a container created with the /v1/containers endpoint
+                def initialize: (
+                  container_id: String,
+                  ?type: :container_reference
+                ) -> void
+
+                def to_hash: -> {
+                  container_id: String,
+                  ?type: :container_reference
+                }
+              end
+
+              type local =
+                {
+                  ?type: :local,
+                  ?skills: ::Array[OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::Local::Skill]?
+                }
+
+              class Local < OpenAI::Internal::Type::BaseModel
+                # Use a local computer environment.
+                attr_accessor type: :local
+
+                # An optional list of skills.
+                attr_accessor skills: ::Array[OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::Local::Skill]?
+
+                # @param skills
+                #   An optional list of skills.
+                # @param type
+                #   Use a local computer environment.
+                def initialize: (
+                  ?skills: ::Array[OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::Local::Skill]?,
+                  ?type: :local
+                ) -> void
+
+                def to_hash: -> {
+                  ?type: :local,
+                  ?skills: ::Array[OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::Local::Skill]?
+                }
+
+                type skill = { description: String, name: String, path: String }
+
+                class Skill < OpenAI::Internal::Type::BaseModel
+                  # The description of the skill.
+                  attr_accessor description: String
+
+                  # The name of the skill.
+                  attr_accessor name: String
+
+                  # The path to the directory containing the skill.
+                  attr_accessor path: String
+
+                  # @param description
+                  #   The description of the skill.
+                  # @param name
+                  #   The name of the skill.
+                  # @param path
+                  #   The path to the directory containing the skill.
+                  def initialize: (
+                    description: String,
+                    name: String,
+                    path: String
+                  ) -> void
+
+                  def to_hash: -> {
+                    description: String,
+                    name: String,
+                    path: String
+                  }
+                end
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::environment]
+            end
           end
 
           type image_generation = { ?type: :image_generation }
@@ -342,6 +659,76 @@ module OpenAI
             def initialize: (?type: :image_generation) -> void
 
             def to_hash: -> { ?type: :image_generation }
+          end
+
+          type mcp = { ?type: :mcp }
+
+          class Mcp < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :mcp
+
+            def initialize: (?type: :mcp) -> void
+
+            def to_hash: -> { ?type: :mcp }
+          end
+
+          type custom = { ?type: :custom }
+
+          class Custom < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :custom
+
+            def initialize: (?type: :custom) -> void
+
+            def to_hash: -> { ?type: :custom }
+          end
+
+          type namespace = { ?type: :namespace }
+
+          class Namespace < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :namespace
+
+            def initialize: (?type: :namespace) -> void
+
+            def to_hash: -> { ?type: :namespace }
+          end
+
+          type tool_search = { ?type: :tool_search }
+
+          class ToolSearch < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :tool_search
+
+            def initialize: (?type: :tool_search) -> void
+
+            def to_hash: -> { ?type: :tool_search }
+          end
+
+          type programmatic_tool_calling = { ?type: :programmatic_tool_calling }
+
+          class ProgrammaticToolCalling < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :programmatic_tool_calling
+
+            def initialize: (?type: :programmatic_tool_calling) -> void
+
+            def to_hash: -> { ?type: :programmatic_tool_calling }
+          end
+
+          type computer = { ?type: :computer }
+
+          class Computer < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :computer
+
+            def initialize: (?type: :computer) -> void
+
+            def to_hash: -> { ?type: :computer }
+          end
+
+          type apply_patch = { ?type: :apply_patch }
+
+          class ApplyPatch < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :apply_patch
+
+            def initialize: (?type: :apply_patch) -> void
+
+            def to_hash: -> { ?type: :apply_patch }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::tool]

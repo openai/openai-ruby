@@ -137,6 +137,11 @@ module OpenAI
           }
           attr_writer :error_type
 
+          # An opaque target for explicitly continuing this review, or null when
+          # unavailable.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :review_target
+
           # An optional public continuation instruction.
           sig { returns(T.nilable(OpenAI::Responses::ResponseError::Misalignment::Steer)) }
           attr_reader :steer
@@ -151,6 +156,8 @@ module OpenAI
 
               error_type: T.any(String, OpenAI::Responses::ResponseError::Misalignment::ErrorType::OrSymbol),
 
+              review_target: T.nilable(String),
+
               steer: OpenAI::Responses::ResponseError::Misalignment::Steer::OrHash
             )
               .returns(T.attached_class)
@@ -163,6 +170,10 @@ module OpenAI
             # An optional classification; clients must accept additional values.
             error_type: nil,
 
+            # An opaque target for explicitly continuing this review, or null when
+            # unavailable.
+            review_target: nil,
+
             # An optional public continuation instruction.
 
             steer: nil
@@ -174,6 +185,7 @@ module OpenAI
               {
                 detailed_explanation: String,
                 error_type: OpenAI::Responses::ResponseError::Misalignment::ErrorType::Variants,
+                review_target: T.nilable(String),
                 steer: OpenAI::Responses::ResponseError::Misalignment::Steer
               }
             )

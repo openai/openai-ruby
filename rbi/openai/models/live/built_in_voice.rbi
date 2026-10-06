@@ -14,7 +14,6 @@ module OpenAI
 
         ALLOY = T.let(:alloy, OpenAI::Live::BuiltInVoice::TaggedSymbol)
         ASH = T.let(:ash, OpenAI::Live::BuiltInVoice::TaggedSymbol)
-        AUBE = T.let(:aube, OpenAI::Live::BuiltInVoice::TaggedSymbol)
         BALLAD = T.let(:ballad, OpenAI::Live::BuiltInVoice::TaggedSymbol)
         BEACON = T.let(:beacon, OpenAI::Live::BuiltInVoice::TaggedSymbol)
         BOSSA = T.let(:bossa, OpenAI::Live::BuiltInVoice::TaggedSymbol)

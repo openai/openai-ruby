@@ -9,7 +9,6 @@ module OpenAI
 
         ALLOY = :alloy
         ASH = :ash
-        AUBE = :aube
         BALLAD = :ballad
         BEACON = :beacon
         BOSSA = :bossa

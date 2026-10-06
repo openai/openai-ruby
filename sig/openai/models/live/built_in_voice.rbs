@@ -4,7 +4,6 @@ module OpenAI
       type built_in_voice =
         :alloy
         | :ash
-        | :aube
         | :ballad
         | :beacon
         | :bossa
@@ -40,7 +39,6 @@ module OpenAI
 
         ALLOY: :alloy
         ASH: :ash
-        AUBE: :aube
         BALLAD: :ballad
         BEACON: :beacon
         BOSSA: :bossa
