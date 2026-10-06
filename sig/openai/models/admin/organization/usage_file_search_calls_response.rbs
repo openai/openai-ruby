@@ -87,6 +87,7 @@ module OpenAI
                   ?object: :"organization.usage.completions.result",
                   output_tokens: Integer,
                   ?api_key_id: String?,
+                  ?api_source: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationUsageCompletionsResult::api_source?,
                   ?batch: bool?,
                   ?input_audio_tokens: Integer,
                   ?:input_cache_write_12h_tokens => Integer,
@@ -126,6 +127,12 @@ module OpenAI
                 # When `group_by=api_key_id`, this field provides the API key ID of the grouped
                 # usage result.
                 attr_accessor api_key_id: String?
+
+                # When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                # activity and `unlabeled` includes all records without published source
+                # attribution, including historical and unknown origins. Unlabeled does not imply
+                # direct API usage. Without source grouping, this field is null.
+                attr_accessor api_source: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationUsageCompletionsResult::api_source?
 
                 # When `group_by=batch`, this field tells whether the grouped usage result is
                 # batch or not.
@@ -248,6 +255,11 @@ module OpenAI
                 # @param api_key_id
                 #   When `group_by=api_key_id`, this field provides the API key ID of the grouped
                 #   usage result.
+                # @param api_source
+                #   When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                #   activity and `unlabeled` includes all records without published source
+                #   attribution, including historical and unknown origins. Unlabeled does not imply
+                #   direct API usage. Without source grouping, this field is null.
                 # @param batch
                 #   When `group_by=batch`, this field tells whether the grouped usage result is
                 #   batch or not.
@@ -299,6 +311,7 @@ module OpenAI
                   num_model_requests: Integer,
                   output_tokens: Integer,
                   ?api_key_id: String?,
+                  ?api_source: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationUsageCompletionsResult::api_source?,
                   ?batch: bool?,
                   ?input_audio_tokens: Integer,
                   ?input_cache_write_12h_tokens: Integer,
@@ -326,6 +339,7 @@ module OpenAI
                   ?object: :"organization.usage.completions.result",
                   output_tokens: Integer,
                   ?api_key_id: String?,
+                  ?api_source: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationUsageCompletionsResult::api_source?,
                   ?batch: bool?,
                   ?input_audio_tokens: Integer,
                   ?:input_cache_write_12h_tokens => Integer,
@@ -345,6 +359,17 @@ module OpenAI
                   ?service_tier: String?,
                   ?user_id: String?
                 }
+
+                type api_source = :agents_api | :unlabeled
+
+                module APISource
+                  extend OpenAI::Internal::Type::Enum
+
+                  AGENTS_API: :agents_api
+                  UNLABELED: :unlabeled
+
+                  def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationUsageCompletionsResult::api_source]
+                end
               end
 
               type organization_usage_embeddings_result =
@@ -873,6 +898,7 @@ module OpenAI
                   num_requests: Integer,
                   ?object: :"organization.usage.web_searches.result",
                   ?api_key_id: String?,
+                  ?api_source: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationUsageWebSearchesResult::api_source?,
                   ?context_level: String?,
                   ?model: String?,
                   ?project_id: String?,
@@ -891,6 +917,12 @@ module OpenAI
                 # When `group_by=api_key_id`, this field provides the API key ID of the grouped
                 # usage result.
                 attr_accessor api_key_id: String?
+
+                # When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                # activity and `unlabeled` includes all records without published source
+                # attribution, including historical and unknown origins. Unlabeled does not imply
+                # direct API usage. Without source grouping, this field is null.
+                attr_accessor api_source: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationUsageWebSearchesResult::api_source?
 
                 # When `group_by=context_level`, this field provides the search context size of
                 # the grouped usage result.
@@ -915,6 +947,11 @@ module OpenAI
                 # @param api_key_id
                 #   When `group_by=api_key_id`, this field provides the API key ID of the grouped
                 #   usage result.
+                # @param api_source
+                #   When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                #   activity and `unlabeled` includes all records without published source
+                #   attribution, including historical and unknown origins. Unlabeled does not imply
+                #   direct API usage. Without source grouping, this field is null.
                 # @param context_level
                 #   When `group_by=context_level`, this field provides the search context size of
                 #   the grouped usage result.
@@ -931,6 +968,7 @@ module OpenAI
                   num_model_requests: Integer,
                   num_requests: Integer,
                   ?api_key_id: String?,
+                  ?api_source: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationUsageWebSearchesResult::api_source?,
                   ?context_level: String?,
                   ?model: String?,
                   ?project_id: String?,
@@ -943,11 +981,23 @@ module OpenAI
                   num_requests: Integer,
                   ?object: :"organization.usage.web_searches.result",
                   ?api_key_id: String?,
+                  ?api_source: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationUsageWebSearchesResult::api_source?,
                   ?context_level: String?,
                   ?model: String?,
                   ?project_id: String?,
                   ?user_id: String?
                 }
+
+                type api_source = :agents_api | :unlabeled
+
+                module APISource
+                  extend OpenAI::Internal::Type::Enum
+
+                  AGENTS_API: :agents_api
+                  UNLABELED: :unlabeled
+
+                  def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationUsageWebSearchesResult::api_source]
+                end
               end
 
               type organization_costs_result =
@@ -955,10 +1005,12 @@ module OpenAI
                   ?object: :"organization.costs.result",
                   ?amount: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationCostsResult::Amount,
                   ?api_key_id: String?,
+                  ?api_source: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationCostsResult::api_source?,
                   ?line_item: String?,
                   ?project_id: String?,
                   ?quantity: Float?,
-                  ?quantity_unit: OpenAI::Models::Admin::Organization::cost_quantity_unit?
+                  ?quantity_unit: OpenAI::Models::Admin::Organization::cost_quantity_unit?,
+                  ?user_id: String?
                 }
 
               class OrganizationCostsResult < OpenAI::Internal::Type::BaseModel
@@ -976,6 +1028,12 @@ module OpenAI
                 # costs result.
                 attr_accessor api_key_id: String?
 
+                # When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                # activity and `unlabeled` includes all records without published source
+                # attribution, including historical and unknown origins. Unlabeled does not imply
+                # direct API usage. Without source grouping, this field is null.
+                attr_accessor api_source: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationCostsResult::api_source?
+
                 # When `group_by=line_item`, this field provides the line item of the grouped
                 # costs result.
                 attr_accessor line_item: String?
@@ -992,11 +1050,20 @@ module OpenAI
                 # result, this field is `null`.
                 attr_accessor quantity_unit: OpenAI::Models::Admin::Organization::cost_quantity_unit?
 
+                # When `group_by=user_id`, this field provides the user ID of the grouped costs
+                # result.
+                attr_accessor user_id: String?
+
                 # @param amount
                 #   The monetary value in its associated currency.
                 # @param api_key_id
                 #   When `group_by=api_key_id`, this field provides the API Key ID of the grouped
                 #   costs result.
+                # @param api_source
+                #   When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                #   activity and `unlabeled` includes all records without published source
+                #   attribution, including historical and unknown origins. Unlabeled does not imply
+                #   direct API usage. Without source grouping, this field is null.
                 # @param line_item
                 #   When `group_by=line_item`, this field provides the line item of the grouped
                 #   costs result.
@@ -1009,13 +1076,18 @@ module OpenAI
                 # @param quantity_unit
                 #   The unit of the `quantity` value. If no single supported unit applies to the
                 #   result, this field is `null`.
+                # @param user_id
+                #   When `group_by=user_id`, this field provides the user ID of the grouped costs
+                #   result.
                 def initialize: (
                   ?amount: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationCostsResult::Amount,
                   ?api_key_id: String?,
+                  ?api_source: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationCostsResult::api_source?,
                   ?line_item: String?,
                   ?project_id: String?,
                   ?quantity: Float?,
                   ?quantity_unit: OpenAI::Models::Admin::Organization::cost_quantity_unit?,
+                  ?user_id: String?,
                   ?object: :"organization.costs.result"
                 ) -> void
 
@@ -1023,10 +1095,12 @@ module OpenAI
                   ?object: :"organization.costs.result",
                   ?amount: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationCostsResult::Amount,
                   ?api_key_id: String?,
+                  ?api_source: OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationCostsResult::api_source?,
                   ?line_item: String?,
                   ?project_id: String?,
                   ?quantity: Float?,
-                  ?quantity_unit: OpenAI::Models::Admin::Organization::cost_quantity_unit?
+                  ?quantity_unit: OpenAI::Models::Admin::Organization::cost_quantity_unit?,
+                  ?user_id: String?
                 }
 
                 type amount = { ?currency: String, ?value: Float }
@@ -1051,6 +1125,17 @@ module OpenAI
                   def initialize: (?currency: String, ?value: Float) -> void
 
                   def to_hash: -> { ?currency: String, ?value: Float }
+                end
+
+                type api_source = :agents_api | :unlabeled
+
+                module APISource
+                  extend OpenAI::Internal::Type::Enum
+
+                  AGENTS_API: :agents_api
+                  UNLABELED: :unlabeled
+
+                  def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data::Result::OrganizationCostsResult::api_source]
                 end
               end
 

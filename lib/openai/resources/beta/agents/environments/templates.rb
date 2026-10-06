@@ -30,8 +30,8 @@ module OpenAI
             #   An optional human-readable display name for the template.
             #
             # @param network [OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Network, nil]
-            #   Network access policy for the environment. Defaults to disabled for GA requests
-            #   and enabled for beta requests.
+            #   Network access policy for the environment. If omitted, the API version
+            #   determines whether network access is enabled or disabled.
             #
             # @param packages [OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Packages, nil]
             #   Packages to install in the environment. Defaults to empty package lists.
@@ -113,8 +113,7 @@ module OpenAI
             #
             # @param network [OpenAI::Models::Beta::Agents::Environments::TemplateUpdateParams::Network, nil]
             #   Network access available after setup completes. Omit to preserve the current
-            #   policy, or pass `null` to reset to disabled for GA requests or enabled for beta
-            #   requests.
+            #   policy, or pass `null` to reset to the default policy.
             #
             # @param packages [OpenAI::Models::Beta::Agents::Environments::TemplateUpdateParams::Packages, nil]
             #   Packages installed before the runtime network policy applies.

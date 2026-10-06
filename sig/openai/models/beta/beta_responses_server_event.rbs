@@ -3376,6 +3376,7 @@ module OpenAI
               {
                 ?detailed_explanation: String,
                 ?error_type: OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::error_type,
+                ?review_target: String?,
                 ?steer: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer
               }
 
@@ -3394,6 +3395,10 @@ module OpenAI
                 OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::error_type
               ) -> OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::error_type
 
+              # An opaque target for explicitly continuing this review, or null when
+              # unavailable.
+              attr_accessor review_target: String?
+
               # An optional public continuation instruction.
               attr_reader steer: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer?
 
@@ -3406,17 +3411,22 @@ module OpenAI
               #   The public explanation for this block.
               # @param error_type
               #   An optional classification; clients must accept additional values.
+              # @param review_target
+              #   An opaque target for explicitly continuing this review, or null when
+              #   unavailable.
               # @param steer
               #   An optional public continuation instruction.
               def initialize: (
                 ?detailed_explanation: String,
                 ?error_type: OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::error_type,
+                ?review_target: String?,
                 ?steer: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer
               ) -> void
 
               def to_hash: -> {
                 ?detailed_explanation: String,
                 ?error_type: OpenAI::Models::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::error_type,
+                ?review_target: String?,
                 ?steer: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer
               }
 

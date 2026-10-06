@@ -49,8 +49,10 @@ module OpenAI
 
           # @!attribute group_by
           #   Group the usage data by the specified fields. Support fields include
-          #   `project_id`, `user_id`, `api_key_id`, `model`, `context_level` or any
-          #   combination of them.
+          #   `project_id`, `user_id`, `api_key_id`, `model`, `context_level`, `api_source` or
+          #   any combination of them. When grouped by `api_source`, results use `agents_api`
+          #   for attributed Agents API activity and `unlabeled` for all other activity.
+          #   Without source grouping, `api_source` is null.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::UsageWebSearchCallsParams::GroupBy>, nil]
           optional(
@@ -114,8 +116,10 @@ module OpenAI
           #
           #   @param group_by [Array<Symbol, OpenAI::Models::Admin::Organization::UsageWebSearchCallsParams::GroupBy>]
           #     Group the usage data by the specified fields. Support fields include
-          #     `project_id`, `user_id`, `api_key_id`, `model`, `context_level` or any
-          #     combination of them.
+          #     `project_id`, `user_id`, `api_key_id`, `model`, `context_level`, `api_source` or
+          #     any combination of them. When grouped by `api_source`, results use `agents_api`
+          #     for attributed Agents API activity and `unlabeled` for all other activity.
+          #     Without source grouping, `api_source` is null.
           #
           #   @param limit [Integer]
           #     Specifies the number of buckets to return.
@@ -171,6 +175,7 @@ module OpenAI
             API_KEY_ID = :api_key_id
             MODEL = :model
             CONTEXT_LEVEL = :context_level
+            API_SOURCE = :api_source
 
             # @!method self.values
             #   @return [Array<Symbol>]

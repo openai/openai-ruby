@@ -14,7 +14,7 @@ module OpenAI
           )
         end
 
-        # The unique ID of the computer call tool output.
+        # The ID of the computer tool call output.
         sig { returns(String) }
         attr_accessor :id
 
@@ -85,7 +85,7 @@ module OpenAI
         end
         def self.new(
 
-          # The unique ID of the computer call tool output.
+          # The ID of the computer tool call output.
           id:,
 
           # The ID of the computer tool call that produced the output.

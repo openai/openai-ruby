@@ -5009,6 +5009,11 @@ module OpenAI
               }
               attr_writer :error_type
 
+              # An opaque target for explicitly continuing this review, or null when
+              # unavailable.
+              sig { returns(T.nilable(String)) }
+              attr_accessor :review_target
+
               # An optional public continuation instruction.
               sig {
                 returns(
@@ -5035,6 +5040,8 @@ module OpenAI
                     OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::OrSymbol
                   ),
 
+                  review_target: T.nilable(String),
+
                   steer: OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer::OrHash
                 )
                   .returns(T.attached_class)
@@ -5046,6 +5053,10 @@ module OpenAI
 
                 # An optional classification; clients must accept additional values.
                 error_type: nil,
+
+                # An opaque target for explicitly continuing this review, or null when
+                # unavailable.
+                review_target: nil,
 
                 # An optional public continuation instruction.
 
@@ -5060,6 +5071,7 @@ module OpenAI
                     error_type: T.nilable(
                       OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::ErrorType::Variants
                     ),
+                    review_target: T.nilable(String),
                     steer: T.nilable(
                       OpenAI::Beta::BetaResponsesServerEvent::BetaResponseWsError::Error::Misalignment::Steer
                     )

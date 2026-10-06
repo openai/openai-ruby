@@ -13,7 +13,7 @@ module OpenAI
         }
 
       class ResponseComputerToolCallOutputItem < OpenAI::Internal::Type::BaseModel
-        # The unique ID of the computer call tool output.
+        # The ID of the computer tool call output.
         attr_accessor id: String
 
         # The ID of the computer tool call that produced the output.
@@ -46,7 +46,7 @@ module OpenAI
         def created_by=: (String) -> String
 
         # @param id
-        #   The unique ID of the computer call tool output.
+        #   The ID of the computer tool call output.
         # @param call_id
         #   The ID of the computer tool call that produced the output.
         # @param output

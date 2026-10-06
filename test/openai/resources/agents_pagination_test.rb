@@ -56,6 +56,59 @@ class OpenAI::Test::AgentsPaginationTest < Minitest::Test
     end
   end
 
+  def test_root_turn_items_follow_response_cursor_after_a_legacy_message
+    requests = []
+    transport = Minitest::Mock.new(OpenAI::HTTPClient.new)
+    message = {
+      type: "message",
+      role: "user",
+      phase: nil,
+      status: "completed",
+      turn_id: "turn_test",
+      content: [{type: "input_text", text: "hello"}]
+    }
+    # Legacy user messages can have no item ID even though the list has a cursor.
+    [
+      {object: "list", data: [message.merge(id: nil)], has_more: true, last_id: "cursor_1"},
+      {object: "list", data: [message.merge(id: "message_final")], has_more: false, last_id: "cursor_2"}
+    ].each do |body|
+      response = OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "application/json"},
+        body: JSON.generate(body)
+      )
+      transport.expect(:execute, response) do |request|
+        requests << request
+        true
+      end
+    end
+
+    client = OpenAI::Client.new(
+      api_key: "fake-api-key",
+      base_url: "https://sdk-test.example/v1",
+      http_client: transport
+    )
+    first_page = client.beta.agents.sessions.turns.items.list(
+      "turn_test",
+      session_id: "session_test",
+      limit: 1,
+      order: :asc,
+      after: "before_first"
+    )
+
+    assert_equal([nil, "message_final"], first_page.to_enum.map(&:id))
+    transport.verify
+    assert_equal(2, requests.length)
+    requests.each_with_index do |request, index|
+      assert_equal("/v1/agents/sessions/session_test/turns/turn_test/items", request.url.path)
+      assert_equal(
+        {"after" => index.zero? ? "before_first" : "cursor_1", "limit" => "1", "order" => "asc"},
+        URI.decode_www_form(request.url.query).to_h
+      )
+      assert_equal("agents=v1", request.headers.fetch("openai-beta"))
+    end
+  end
+
   private def assert_two_pages(path, filters, cursor_key: nil)
     requests = []
     transport = Minitest::Mock.new(OpenAI::HTTPClient.new)

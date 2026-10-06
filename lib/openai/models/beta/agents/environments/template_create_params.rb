@@ -53,8 +53,8 @@ module OpenAI
             optional :name, String, nil?: true
 
             # @!attribute network
-            #   Network access policy for the environment. Defaults to disabled for GA requests
-            #   and enabled for beta requests.
+            #   Network access policy for the environment. If omitted, the API version
+            #   determines whether network access is enabled or disabled.
             #
             #   @return [OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Network, nil]
             optional(
@@ -129,8 +129,8 @@ module OpenAI
             #     An optional human-readable display name for the template.
             #
             #   @param network [OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Network, nil]
-            #     Network access policy for the environment. Defaults to disabled for GA requests
-            #     and enabled for beta requests.
+            #     Network access policy for the environment. If omitted, the API version
+            #     determines whether network access is enabled or disabled.
             #
             #   @param packages [OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Packages, nil]
             #     Packages to install in the environment. Defaults to empty package lists.
@@ -184,8 +184,8 @@ module OpenAI
               optional :blocked_domains, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
               # @!method initialize(access:, allowed_domains: nil, blocked_domains: nil)
-              #   Network access policy for the environment. Defaults to disabled for GA requests
-              #   and enabled for beta requests.
+              #   Network access policy for the environment. If omitted, the API version
+              #   determines whether network access is enabled or disabled.
               #
               #   @param access [Symbol, OpenAI::Models::Beta::Agents::Environments::TemplateCreateParams::Network::Access]
               #     The environment's network access mode.

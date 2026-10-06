@@ -4,6 +4,8 @@ module OpenAI
       class Agents
         class Sessions
           class Turns
+            attr_reader items: OpenAI::Resources::Beta::Agents::Sessions::Turns::Items
+
             def retrieve: (
               String turn_id,
               session_id: String,

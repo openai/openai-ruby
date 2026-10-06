@@ -78,18 +78,29 @@ module OpenAI
           #   @return [String, Symbol, OpenAI::Models::Responses::ResponseError::Misalignment::ErrorType, nil]
           optional :error_type, union: -> { OpenAI::Responses::ResponseError::Misalignment::ErrorType }
 
+          # @!attribute review_target
+          #   An opaque target for explicitly continuing this review, or null when
+          #   unavailable.
+          #
+          #   @return [String, nil]
+          optional :review_target, String, nil?: true
+
           # @!attribute steer
           #   An optional public continuation instruction.
           #
           #   @return [OpenAI::Models::Responses::ResponseError::Misalignment::Steer, nil]
           optional :steer, -> { OpenAI::Responses::ResponseError::Misalignment::Steer }
 
-          # @!method initialize(detailed_explanation: nil, error_type: nil, steer: nil)
+          # @!method initialize(detailed_explanation: nil, error_type: nil, review_target: nil, steer: nil)
           #   @param detailed_explanation [String]
           #     The public explanation for this block.
           #
           #   @param error_type [String, Symbol, OpenAI::Models::Responses::ResponseError::Misalignment::ErrorType]
           #     An optional classification; clients must accept additional values.
+          #
+          #   @param review_target [String, nil]
+          #     An opaque target for explicitly continuing this review, or null when
+          #     unavailable.
           #
           #   @param steer [OpenAI::Models::Responses::ResponseError::Misalignment::Steer]
           #     An optional public continuation instruction.

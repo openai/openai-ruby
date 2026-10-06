@@ -40,6 +40,15 @@ module OpenAI
           # The organization has reached a usage, plan, or billing limit.
           USAGE_LIMIT_EXCEEDED = :usage_limit_exceeded
 
+          # The project has reached its enforced spend limit.
+          PROJECT_SPEND_LIMIT_EXCEEDED = :project_spend_limit_exceeded
+
+          # The organization has reached its enforced spend limit.
+          ORGANIZATION_SPEND_LIMIT_EXCEEDED = :organization_spend_limit_exceeded
+
+          # The organization has reached its OpenAI-assigned usage limit.
+          ORGANIZATION_USAGE_LIMIT_EXCEEDED = :organization_usage_limit_exceeded
+
           # The organization has no API credits remaining.
           CREDIT_BALANCE_EXHAUSTED = :credit_balance_exhausted
 

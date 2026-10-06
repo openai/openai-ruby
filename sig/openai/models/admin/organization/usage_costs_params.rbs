@@ -45,12 +45,22 @@ module OpenAI
           # End time (Unix seconds) of the query time range, exclusive.
           def end_time=: (Integer) -> Integer
 
-          # Group the costs by the specified fields. Support fields include `project_id`,
-          # `line_item`, `api_key_id` and any combination of them.
+          # Group the costs by the specified fields. Supported fields include `project_id`,
+          # `user_id`, `line_item`, `api_key_id`, and `api_source`. Support for combining
+          # `user_id` with `project_id` grouping or the `project_ids` filter depends on the
+          # organization and requested time range. Unsupported combinations return HTTP 400.
+          # When grouped by `api_source`, results use `agents_api` for attributed Agents API
+          # activity and `unlabeled` for all other activity. Without source grouping,
+          # `api_source` is null.
           attr_reader group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by]?
 
-          # Group the costs by the specified fields. Support fields include `project_id`,
-          # `line_item`, `api_key_id` and any combination of them.
+          # Group the costs by the specified fields. Supported fields include `project_id`,
+          # `user_id`, `line_item`, `api_key_id`, and `api_source`. Support for combining
+          # `user_id` with `project_id` grouping or the `project_ids` filter depends on the
+          # organization and requested time range. Unsupported combinations return HTTP 400.
+          # When grouped by `api_source`, results use `agents_api` for attributed Agents API
+          # activity and `unlabeled` for all other activity. Without source grouping,
+          # `api_source` is null.
           def group_by=: (
             ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by]
           ) -> ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by]
@@ -95,8 +105,13 @@ module OpenAI
           # @param end_time
           #   End time (Unix seconds) of the query time range, exclusive.
           # @param group_by
-          #   Group the costs by the specified fields. Support fields include `project_id`,
-          #   `line_item`, `api_key_id` and any combination of them.
+          #   Group the costs by the specified fields. Supported fields include `project_id`,
+          #   `user_id`, `line_item`, `api_key_id`, and `api_source`. Support for combining
+          #   `user_id` with `project_id` grouping or the `project_ids` filter depends on the
+          #   organization and requested time range. Unsupported combinations return HTTP 400.
+          #   When grouped by `api_source`, results use `agents_api` for attributed Agents API
+          #   activity and `unlabeled` for all other activity. Without source grouping,
+          #   `api_source` is null.
           # @param limit
           #   A limit on the number of buckets to be returned. Limit can range between 1 and
           #   180, and the default is 7.
@@ -144,14 +159,17 @@ module OpenAI
             def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width]
           end
 
-          type group_by = :project_id | :line_item | :api_key_id
+          type group_by =
+            :project_id | :user_id | :line_item | :api_key_id | :api_source
 
           module GroupBy
             extend OpenAI::Internal::Type::Enum
 
             PROJECT_ID: :project_id
+            USER_ID: :user_id
             LINE_ITEM: :line_item
             API_KEY_ID: :api_key_id
+            API_SOURCE: :api_source
 
             def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by]
           end

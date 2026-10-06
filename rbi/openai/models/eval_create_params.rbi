@@ -1021,7 +1021,7 @@ module OpenAI
             # The name of the grader.
             name:,
 
-            # The range of the score. Defaults to `[0, 1]`.
+            # The service requires two numbers for the score range. Defaults to `[0, 1]`.
             range: nil,
 
             # The sampling parameters for the model.

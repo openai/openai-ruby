@@ -33,6 +33,9 @@ module OpenAI
             module Turns
             end
           end
+
+          module Turns
+          end
         end
 
         module Vaults
@@ -54,6 +57,9 @@ module OpenAI
             module Subagents
               module Turns
               end
+            end
+
+            module Turns
             end
           end
 
@@ -180,6 +186,9 @@ module OpenAI
         module Subagents
           module Turns
           end
+        end
+
+        module Turns
         end
       end
 
