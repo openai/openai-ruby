@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.101.0](https://github.com/openai/openai-ruby/compare/v0.100.0...v0.101.0) (2026-10-06)
+
+
+### Features
+
+* **api:** add standalone Decisions support ([#811](https://github.com/openai/openai-ruby/issues/811)) ([ab10fa3](https://github.com/openai/openai-ruby/commit/ab10fa3742cde6fe968d13099917c2c6282bd76d))
+
 ## [0.100.0](https://github.com/openai/openai-ruby/compare/v0.99.0...v0.100.0) (2026-10-06)
 
 
