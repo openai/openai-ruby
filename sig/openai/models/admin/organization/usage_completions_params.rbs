@@ -56,13 +56,17 @@ module OpenAI
           def end_time=: (Integer) -> Integer
 
           # Group the usage data by the specified fields. Support fields include
-          # `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier` or any
-          # combination of them.
+          # `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier`,
+          # `api_source` or any combination of them. When grouped by `api_source`, results
+          # use `agents_api` for attributed Agents API activity and `unlabeled` for all
+          # other activity. Without source grouping, `api_source` is null.
           attr_reader group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCompletionsParams::group_by]?
 
           # Group the usage data by the specified fields. Support fields include
-          # `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier` or any
-          # combination of them.
+          # `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier`,
+          # `api_source` or any combination of them. When grouped by `api_source`, results
+          # use `agents_api` for attributed Agents API activity and `unlabeled` for all
+          # other activity. Without source grouping, `api_source` is null.
           def group_by=: (
             ::Array[OpenAI::Models::Admin::Organization::UsageCompletionsParams::group_by]
           ) -> ::Array[OpenAI::Models::Admin::Organization::UsageCompletionsParams::group_by]
@@ -121,8 +125,10 @@ module OpenAI
           #   End time (Unix seconds) of the query time range, exclusive.
           # @param group_by
           #   Group the usage data by the specified fields. Support fields include
-          #   `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier` or any
-          #   combination of them.
+          #   `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier`,
+          #   `api_source` or any combination of them. When grouped by `api_source`, results
+          #   use `agents_api` for attributed Agents API activity and `unlabeled` for all
+          #   other activity. Without source grouping, `api_source` is null.
           # @param limit
           #   Specifies the number of buckets to return.
           #
@@ -187,6 +193,7 @@ module OpenAI
             | :model
             | :batch
             | :service_tier
+            | :api_source
 
           module GroupBy
             extend OpenAI::Internal::Type::Enum
@@ -197,6 +204,7 @@ module OpenAI
             MODEL: :model
             BATCH: :batch
             SERVICE_TIER: :service_tier
+            API_SOURCE: :api_source
 
             def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::UsageCompletionsParams::group_by]
           end

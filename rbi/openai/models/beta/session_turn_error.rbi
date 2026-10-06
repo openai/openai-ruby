@@ -67,6 +67,24 @@ module OpenAI
           # The organization has reached a usage, plan, or billing limit.
           USAGE_LIMIT_EXCEEDED = T.let(:usage_limit_exceeded, OpenAI::Beta::SessionTurnError::Code::TaggedSymbol)
 
+          # The project has reached its enforced spend limit.
+          PROJECT_SPEND_LIMIT_EXCEEDED = T.let(
+            :project_spend_limit_exceeded,
+            OpenAI::Beta::SessionTurnError::Code::TaggedSymbol
+          )
+
+          # The organization has reached its enforced spend limit.
+          ORGANIZATION_SPEND_LIMIT_EXCEEDED = T.let(
+            :organization_spend_limit_exceeded,
+            OpenAI::Beta::SessionTurnError::Code::TaggedSymbol
+          )
+
+          # The organization has reached its OpenAI-assigned usage limit.
+          ORGANIZATION_USAGE_LIMIT_EXCEEDED = T.let(
+            :organization_usage_limit_exceeded,
+            OpenAI::Beta::SessionTurnError::Code::TaggedSymbol
+          )
+
           # The organization has no API credits remaining.
           CREDIT_BALANCE_EXHAUSTED = T.let(
             :credit_balance_exhausted,

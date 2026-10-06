@@ -45,8 +45,13 @@ module OpenAI
           sig { params(end_time: Integer).void }
           attr_writer :end_time
 
-          # Group the costs by the specified fields. Support fields include `project_id`,
-          # `line_item`, `api_key_id` and any combination of them.
+          # Group the costs by the specified fields. Supported fields include `project_id`,
+          # `user_id`, `line_item`, `api_key_id`, and `api_source`. Support for combining
+          # `user_id` with `project_id` grouping or the `project_ids` filter depends on the
+          # organization and requested time range. Unsupported combinations return HTTP 400.
+          # When grouped by `api_source`, results use `agents_api` for attributed Agents API
+          # activity and `unlabeled` for all other activity. Without source grouping,
+          # `api_source` is null.
           sig { returns(T.nilable(T::Array[OpenAI::Admin::Organization::UsageCostsParams::GroupBy::OrSymbol])) }
           attr_reader :group_by
 
@@ -124,8 +129,13 @@ module OpenAI
             # End time (Unix seconds) of the query time range, exclusive.
             end_time: nil,
 
-            # Group the costs by the specified fields. Support fields include `project_id`,
-            # `line_item`, `api_key_id` and any combination of them.
+            # Group the costs by the specified fields. Supported fields include `project_id`,
+            # `user_id`, `line_item`, `api_key_id`, and `api_source`. Support for combining
+            # `user_id` with `project_id` grouping or the `project_ids` filter depends on the
+            # organization and requested time range. Unsupported combinations return HTTP 400.
+            # When grouped by `api_source`, results use `agents_api` for attributed Agents API
+            # activity and `unlabeled` for all other activity. Without source grouping,
+            # `api_source` is null.
             group_by: nil,
 
             # A limit on the number of buckets to be returned. Limit can range between 1 and
@@ -190,8 +200,10 @@ module OpenAI
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             PROJECT_ID = T.let(:project_id, OpenAI::Admin::Organization::UsageCostsParams::GroupBy::TaggedSymbol)
+            USER_ID = T.let(:user_id, OpenAI::Admin::Organization::UsageCostsParams::GroupBy::TaggedSymbol)
             LINE_ITEM = T.let(:line_item, OpenAI::Admin::Organization::UsageCostsParams::GroupBy::TaggedSymbol)
             API_KEY_ID = T.let(:api_key_id, OpenAI::Admin::Organization::UsageCostsParams::GroupBy::TaggedSymbol)
+            API_SOURCE = T.let(:api_source, OpenAI::Admin::Organization::UsageCostsParams::GroupBy::TaggedSymbol)
 
             sig { override.returns(T::Array[OpenAI::Admin::Organization::UsageCostsParams::GroupBy::TaggedSymbol]) }
             def self.values

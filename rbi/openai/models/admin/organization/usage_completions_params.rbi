@@ -54,8 +54,10 @@ module OpenAI
           attr_writer :end_time
 
           # Group the usage data by the specified fields. Support fields include
-          # `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier` or any
-          # combination of them.
+          # `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier`,
+          # `api_source` or any combination of them. When grouped by `api_source`, results
+          # use `agents_api` for attributed Agents API activity and `unlabeled` for all
+          # other activity. Without source grouping, `api_source` is null.
           sig { returns(T.nilable(T::Array[OpenAI::Admin::Organization::UsageCompletionsParams::GroupBy::OrSymbol])) }
           attr_reader :group_by
 
@@ -153,8 +155,10 @@ module OpenAI
             end_time: nil,
 
             # Group the usage data by the specified fields. Support fields include
-            # `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier` or any
-            # combination of them.
+            # `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier`,
+            # `api_source` or any combination of them. When grouped by `api_source`, results
+            # use `agents_api` for attributed Agents API activity and `unlabeled` for all
+            # other activity. Without source grouping, `api_source` is null.
             group_by: nil,
 
             # Specifies the number of buckets to return.
@@ -247,6 +251,7 @@ module OpenAI
               :service_tier,
               OpenAI::Admin::Organization::UsageCompletionsParams::GroupBy::TaggedSymbol
             )
+            API_SOURCE = T.let(:api_source, OpenAI::Admin::Organization::UsageCompletionsParams::GroupBy::TaggedSymbol)
 
             sig {
               override.returns(T::Array[OpenAI::Admin::Organization::UsageCompletionsParams::GroupBy::TaggedSymbol])

@@ -114,8 +114,8 @@ module OpenAI
           }
           attr_accessor :files
 
-          # Network access policy for the environment. Defaults to disabled for GA requests
-          # and enabled for beta requests.
+          # Network access policy for the environment. If omitted, the API version
+          # determines whether network access is enabled or disabled.
           sig { returns(T.nilable(OpenAI::Beta::EnvironmentParam::OpenAIHosted::Network)) }
           attr_reader :network
 
@@ -216,8 +216,8 @@ module OpenAI
             # Files available before the agent starts. Defaults to an empty list.
             files: nil,
 
-            # Network access policy for the environment. Defaults to disabled for GA requests
-            # and enabled for beta requests.
+            # Network access policy for the environment. If omitted, the API version
+            # determines whether network access is enabled or disabled.
             network: nil,
 
             # Packages to install in the environment. Defaults to empty package lists.
@@ -350,8 +350,8 @@ module OpenAI
             sig { returns(T.nilable(T::Array[String])) }
             attr_accessor :blocked_domains
 
-            # Network access policy for the environment. Defaults to disabled for GA requests
-            # and enabled for beta requests.
+            # Network access policy for the environment. If omitted, the API version
+            # determines whether network access is enabled or disabled.
             sig do
               params(
 

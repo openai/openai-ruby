@@ -62,8 +62,10 @@ module OpenAI
           attr_writer :end_time
 
           # Group the usage data by the specified fields. Support fields include
-          # `project_id`, `user_id`, `api_key_id`, `model`, `context_level` or any
-          # combination of them.
+          # `project_id`, `user_id`, `api_key_id`, `model`, `context_level`, `api_source` or
+          # any combination of them. When grouped by `api_source`, results use `agents_api`
+          # for attributed Agents API activity and `unlabeled` for all other activity.
+          # Without source grouping, `api_source` is null.
           sig {
             returns(T.nilable(T::Array[OpenAI::Admin::Organization::UsageWebSearchCallsParams::GroupBy::OrSymbol]))
           }
@@ -162,8 +164,10 @@ module OpenAI
             end_time: nil,
 
             # Group the usage data by the specified fields. Support fields include
-            # `project_id`, `user_id`, `api_key_id`, `model`, `context_level` or any
-            # combination of them.
+            # `project_id`, `user_id`, `api_key_id`, `model`, `context_level`, `api_source` or
+            # any combination of them. When grouped by `api_source`, results use `agents_api`
+            # for attributed Agents API activity and `unlabeled` for all other activity.
+            # Without source grouping, `api_source` is null.
             group_by: nil,
 
             # Specifies the number of buckets to return.
@@ -284,6 +288,10 @@ module OpenAI
             MODEL = T.let(:model, OpenAI::Admin::Organization::UsageWebSearchCallsParams::GroupBy::TaggedSymbol)
             CONTEXT_LEVEL = T.let(
               :context_level,
+              OpenAI::Admin::Organization::UsageWebSearchCallsParams::GroupBy::TaggedSymbol
+            )
+            API_SOURCE = T.let(
+              :api_source,
               OpenAI::Admin::Organization::UsageWebSearchCallsParams::GroupBy::TaggedSymbol
             )
 

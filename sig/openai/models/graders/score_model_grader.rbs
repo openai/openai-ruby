@@ -27,10 +27,10 @@ module OpenAI
         # The object type, which is always `score_model`.
         attr_accessor type: :score_model
 
-        # The range of the score. Defaults to `[0, 1]`.
+        # The service requires two numbers for the score range. Defaults to `[0, 1]`.
         attr_reader range: ::Array[Float]?
 
-        # The range of the score. Defaults to `[0, 1]`.
+        # The service requires two numbers for the score range. Defaults to `[0, 1]`.
         def range=: (::Array[Float]) -> ::Array[Float]
 
         # The sampling parameters for the model.
@@ -49,7 +49,7 @@ module OpenAI
         # @param name
         #   The name of the grader.
         # @param range
-        #   The range of the score. Defaults to `[0, 1]`.
+        #   The service requires two numbers for the score range. Defaults to `[0, 1]`.
         # @param sampling_params
         #   The sampling parameters for the model.
         # @param type

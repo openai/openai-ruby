@@ -21,8 +21,13 @@ module OpenAI
         optional :limit, Integer
 
         # @!attribute metadata
-        #   Optional metadata filter. To filter, use the syntax `metadata[k]=v`.
-        #   Alternatively, set `metadata=null` to indicate no metadata.
+        #   Optional metadata filter. To filter, use the syntax `metadata[k]=v`. Omitting
+        #   the parameter or passing an empty object applies no metadata filter. An empty
+        #   value, such as `metadata[k]=`, filters for that key with an empty string value.
+        #   To select jobs with null metadata, send the literal query string
+        #   `metadata=null`. Nullable caller types do not specify how a client serializes
+        #   null for a deep-object parameter. Use a raw query parameter if the client omits
+        #   null. Do not combine the two query forms.
         #
         #   @return [Hash{Symbol=>String}, nil]
         optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
@@ -35,8 +40,13 @@ module OpenAI
         #     Number of fine-tuning jobs to retrieve.
         #
         #   @param metadata [Hash{Symbol=>String}, nil]
-        #     Optional metadata filter. To filter, use the syntax `metadata[k]=v`.
-        #     Alternatively, set `metadata=null` to indicate no metadata.
+        #     Optional metadata filter. To filter, use the syntax `metadata[k]=v`. Omitting
+        #     the parameter or passing an empty object applies no metadata filter. An empty
+        #     value, such as `metadata[k]=`, filters for that key with an empty string value.
+        #     To select jobs with null metadata, send the literal query string
+        #     `metadata=null`. Nullable caller types do not specify how a client serializes
+        #     null for a deep-object parameter. Use a raw query parameter if the client omits
+        #     null. Do not combine the two query forms.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end

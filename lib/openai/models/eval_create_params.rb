@@ -552,7 +552,7 @@ module OpenAI
           #     The name of the grader.
           #
           #   @param range [Array<Float>]
-          #     The range of the score. Defaults to `[0, 1]`.
+          #     The service requires two numbers for the score range. Defaults to `[0, 1]`.
           #
           #   @param sampling_params [OpenAI::Models::Graders::ScoreModelGrader::SamplingParams]
           #     The sampling parameters for the model.

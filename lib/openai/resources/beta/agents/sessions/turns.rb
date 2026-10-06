@@ -6,6 +6,9 @@ module OpenAI
       class Agents
         class Sessions
           class Turns
+            # @return [OpenAI::Resources::Beta::Agents::Sessions::Turns::Items]
+            attr_reader :items
+
             # Retrieves a turn's current status, timestamps, usage, and error. Returns 404 if
             # the turn does not belong to the session. See
             # [session turns](https://developers.openai.com/api/docs/guides/agents-api/sessions/manage#inspect-session-turns).
@@ -80,6 +83,7 @@ module OpenAI
             # @param client [OpenAI::Client]
             def initialize(client:)
               @client = client
+              @items = OpenAI::Resources::Beta::Agents::Sessions::Turns::Items.new(client: client)
             end
           end
         end
