@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.100.0](https://github.com/openai/openai-ruby/compare/v0.99.0...v0.100.0) (2026-10-06)
+
+
+### Features
+
+* **agents:** handle local tools during streaming creation ([#805](https://github.com/openai/openai-ruby/issues/805)) ([a961bd6](https://github.com/openai/openai-ruby/commit/a961bd6aea012b8c1d47c84ac6b950142fd45470))
+* **agents:** support tool search (defer_loading=true) in typed function tools ([#809](https://github.com/openai/openai-ruby/issues/809)) ([389fd0b](https://github.com/openai/openai-ruby/commit/389fd0b67186c625fd19a324412ae3166db5a1c6))
+* **api:** add agent turn items and usage source grouping ([#810](https://github.com/openai/openai-ruby/issues/810)) ([606902b](https://github.com/openai/openai-ruby/commit/606902b255cd095fe3530fbe620edfe4b7210ab3))
+
+
+### Bug Fixes
+
+* select the Mantle inference path for GPT-6.1 Sol ([#808](https://github.com/openai/openai-ruby/issues/808)) ([133bea0](https://github.com/openai/openai-ruby/commit/133bea01973fd3e6d195392891e732b2c07cdfd3))
+
+
+### Chores
+
+* **deps-dev:** bump sorbet-runtime from 0.6.13506 to 0.6.13508 in the development-dependencies group ([#804](https://github.com/openai/openai-ruby/issues/804)) ([5bd0b99](https://github.com/openai/openai-ruby/commit/5bd0b99725e29d2646dcfdb5d41b9efba0955f99))
+
 ## [0.99.0](https://github.com/openai/openai-ruby/compare/v0.98.0...v0.99.0) (2026-10-02)
 
 
