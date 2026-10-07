@@ -273,12 +273,18 @@ module OpenAI
         #   @return [Integer]
         required :total_tokens, Integer
 
-        # @!method initialize(input_tokens:, input_tokens_details:, output_tokens:, output_tokens_details:, total_tokens:)
+        # @!attribute compute_units
+        #
+        #   @return [Integer, nil]
+        optional :compute_units, Integer, nil?: true
+
+        # @!method initialize(input_tokens:, input_tokens_details:, output_tokens:, output_tokens_details:, total_tokens:, compute_units: nil)
         #   @param input_tokens [Integer]
         #   @param input_tokens_details [OpenAI::Models::Decision::Usage::InputTokensDetails]
         #   @param output_tokens [Integer]
         #   @param output_tokens_details [OpenAI::Models::Decision::Usage::OutputTokensDetails]
         #   @param total_tokens [Integer]
+        #   @param compute_units [Integer, nil]
 
         # @see OpenAI::Models::Decision::Usage#input_tokens_details
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel

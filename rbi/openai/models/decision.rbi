@@ -461,6 +461,9 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :total_tokens
 
+        sig { returns(T.nilable(Integer)) }
+        attr_accessor :compute_units
+
         sig do
           params(
 
@@ -472,7 +475,9 @@ module OpenAI
 
             output_tokens_details: OpenAI::Decision::Usage::OutputTokensDetails::OrHash,
 
-            total_tokens: Integer
+            total_tokens: Integer,
+
+            compute_units: T.nilable(Integer)
           )
             .returns(T.attached_class)
         end
@@ -486,7 +491,9 @@ module OpenAI
 
           output_tokens_details:,
 
-          total_tokens:
+          total_tokens:,
+
+          compute_units: nil
         )
         end
 
@@ -497,7 +504,8 @@ module OpenAI
               input_tokens_details: OpenAI::Decision::Usage::InputTokensDetails,
               output_tokens: Integer,
               output_tokens_details: OpenAI::Decision::Usage::OutputTokensDetails,
-              total_tokens: Integer
+              total_tokens: Integer,
+              compute_units: T.nilable(Integer)
             }
           )
         end

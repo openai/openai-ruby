@@ -61,7 +61,8 @@ module OpenAI
         optional :text, -> { OpenAI::Beta::AgentTextParam }, nil?: true
 
         # @!attribute tools
-        #   Tools available to the agent. Defaults to an empty list.
+        #   Tools available to the agent. Defaults to an empty list. The tool list must fit
+        #   within 3 MiB (3,145,728 bytes) of compact UTF-8 JSON.
         #
         #   @return [Array<OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ComputerUse>, nil]
         optional(
@@ -100,7 +101,8 @@ module OpenAI
         #     verbosity.
         #
         #   @param tools [Array<OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ComputerUse>, nil]
-        #     Tools available to the agent. Defaults to an empty list.
+        #     Tools available to the agent. Defaults to an empty list. The tool list must fit
+        #     within 3 MiB (3,145,728 bytes) of compact UTF-8 JSON.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
