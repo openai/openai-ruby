@@ -62,7 +62,8 @@ module OpenAI
         sig { params(text: T.nilable(OpenAI::Beta::AgentTextParam::OrHash)).void }
         attr_writer :text
 
-        # Tools available to the agent. Defaults to an empty list.
+        # Tools available to the agent. Defaults to an empty list. The tool list must fit
+        # within 3 MiB (3,145,728 bytes) of compact UTF-8 JSON.
         sig {
           returns(
             T.nilable(
@@ -147,7 +148,8 @@ module OpenAI
           # verbosity.
           text: nil,
 
-          # Tools available to the agent. Defaults to an empty list.
+          # Tools available to the agent. Defaults to an empty list. The tool list must fit
+          # within 3 MiB (3,145,728 bytes) of compact UTF-8 JSON.
           tools: nil,
 
           request_options: {}
