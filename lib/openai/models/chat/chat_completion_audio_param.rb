@@ -16,7 +16,7 @@ module OpenAI
         #   `ash`, `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, `shimmer`,
         #   `marin`, and `cedar`. You may also provide a custom voice object with an `id`,
         #   for example `{ "id": "voice_1234" }`. Custom voices must be created from audio
-        #   samples. Voices created from text prompts are supported only in Live.
+        #   samples.
         #
         #   @return [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::ID, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice]
         required :voice, union: -> { OpenAI::Chat::ChatCompletionAudioParam::Voice }
@@ -35,7 +35,7 @@ module OpenAI
         #     `ash`, `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, `shimmer`,
         #     `marin`, and `cedar`. You may also provide a custom voice object with an `id`,
         #     for example `{ "id": "voice_1234" }`. Custom voices must be created from audio
-        #     samples. Voices created from text prompts are supported only in Live.
+        #     samples.
 
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
         # or `pcm16`.
@@ -59,7 +59,7 @@ module OpenAI
         # `ash`, `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, `shimmer`,
         # `marin`, and `cedar`. You may also provide a custom voice object with an `id`,
         # for example `{ "id": "voice_1234" }`. Custom voices must be created from audio
-        # samples. Voices created from text prompts are supported only in Live.
+        # samples.
         #
         # @see OpenAI::Models::Chat::ChatCompletionAudioParam#voice
         module Voice

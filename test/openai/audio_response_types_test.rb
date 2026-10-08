@@ -90,9 +90,8 @@ class OpenAI::Test::AudioResponseTypesTest < Minitest::Test
     end
   end
 
-  def test_typed_voice_params_send_prompt_and_both_audio_sample_forms
+  def test_typed_voice_params_send_both_audio_sample_forms
     bodies = [
-      {type: :prompt, name: "Synthetic voice", prompt: "A calm narrator"},
       {
         type: :audio_sample,
         name: "Synthetic voice",
@@ -116,17 +115,16 @@ class OpenAI::Test::AudioResponseTypesTest < Minitest::Test
 
       voice = client.audio.voices.create(params)
       assert_instance_of(OpenAI::Audio::Voice, voice)
+      assert_equal(:audio_sample, voice.type)
+      assert_equal([:audio_sample], OpenAI::Audio::Voice::Type.values)
       assert_equal("voice_synthetic", voice.id)
       assert_requested(:post, "http://example.test/v1/audio/voices", times: 1) do |sent|
         assert_match(%r{\Amultipart/form-data; boundary=}, sent.headers.fetch("Content-Type"))
         assert_includes(sent.body, "Synthetic voice")
-        if body[:type] == :prompt
-          assert_includes(sent.body, "A calm narrator")
-          refute_includes(sent.body, "name=\"audio_sample\"")
-        else
-          assert_includes(sent.body, "cons_synthetic")
-          assert_includes(sent.body, "Synthetic audio")
-        end
+        assert_includes(sent.body, "cons_synthetic")
+        assert_includes(sent.body, "Synthetic audio")
+        assert_includes(sent.body, "name=\"audio_sample\"")
+        refute_includes(sent.body, "name=\"prompt\"")
 
         true
       end

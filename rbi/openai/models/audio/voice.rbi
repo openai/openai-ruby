@@ -30,13 +30,11 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :object
 
-        # How the voice was created. Voices created from text prompts are supported only
-        # in Live.
+        # How the voice was created.
         sig { returns(OpenAI::Audio::Voice::Type::TaggedSymbol) }
         attr_accessor :type
 
-        # A custom voice that can be used for audio output. Voices created from text
-        # prompts are supported only in Live.
+        # A custom voice that can be used for audio output.
         sig do
           params(
 
@@ -63,8 +61,7 @@ module OpenAI
           # The name of the voice.
           name:,
 
-          # How the voice was created. Voices created from text prompts are supported only
-          # in Live.
+          # How the voice was created.
           type:,
 
           # The object type, which is always `audio.voice`.
@@ -87,8 +84,7 @@ module OpenAI
         def to_hash
         end
 
-        # How the voice was created. Voices created from text prompts are supported only
-        # in Live.
+        # How the voice was created.
         module Type
           extend OpenAI::Internal::Type::Enum
 
@@ -96,7 +92,6 @@ module OpenAI
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           AUDIO_SAMPLE = T.let(:audio_sample, OpenAI::Audio::Voice::Type::TaggedSymbol)
-          PROMPT = T.let(:prompt, OpenAI::Audio::Voice::Type::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Audio::Voice::Type::TaggedSymbol]) }
           def self.values
