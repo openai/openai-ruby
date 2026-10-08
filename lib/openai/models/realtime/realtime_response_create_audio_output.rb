@@ -28,8 +28,7 @@ module OpenAI
           #   `cedar`. You may also provide a custom voice object with an `id`, for example
           #   `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
           #   model has responded with audio at least once. Custom voices must be created from
-          #   audio samples. Voices created from text prompts are supported only in Live. We
-          #   recommend `marin` and `cedar` for best quality.
+          #   audio samples. We recommend `marin` and `cedar` for best quality.
           #
           #   @return [String, Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice::ID, OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice, nil]
           optional :voice, union: -> { OpenAI::Realtime::RealtimeResponseCreateAudioOutput::Output::Voice }
@@ -44,16 +43,14 @@ module OpenAI
           #     `cedar`. You may also provide a custom voice object with an `id`, for example
           #     `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
           #     model has responded with audio at least once. Custom voices must be created from
-          #     audio samples. Voices created from text prompts are supported only in Live. We
-          #     recommend `marin` and `cedar` for best quality.
+          #     audio samples. We recommend `marin` and `cedar` for best quality.
 
           # The voice the model uses to respond. Supported built-in voices are `alloy`,
           # `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`, and
           # `cedar`. You may also provide a custom voice object with an `id`, for example
           # `{ "id": "voice_1234" }`. Voice cannot be changed during the session once the
           # model has responded with audio at least once. Custom voices must be created from
-          # audio samples. Voices created from text prompts are supported only in Live. We
-          # recommend `marin` and `cedar` for best quality.
+          # audio samples. We recommend `marin` and `cedar` for best quality.
           #
           # @see OpenAI::Models::Realtime::RealtimeResponseCreateAudioOutput::Output#voice
           module Voice

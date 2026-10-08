@@ -23,8 +23,7 @@ module OpenAI
         # The object type, which is always `audio.voice`.
         attr_accessor object: :"audio.voice"
 
-        # How the voice was created. Voices created from text prompts are supported only
-        # in Live.
+        # How the voice was created.
         attr_accessor type: OpenAI::Models::Audio::Voice::type_
 
         # @param id
@@ -34,8 +33,7 @@ module OpenAI
         # @param name
         #   The name of the voice.
         # @param type
-        #   How the voice was created. Voices created from text prompts are supported only
-        #   in Live.
+        #   How the voice was created.
         # @param object
         #   The object type, which is always `audio.voice`.
         def initialize: (
@@ -54,13 +52,12 @@ module OpenAI
           type: OpenAI::Models::Audio::Voice::type_
         }
 
-        type type_ = :audio_sample | :prompt
+        type type_ = :audio_sample
 
         module Type
           extend OpenAI::Internal::Type::Enum
 
           AUDIO_SAMPLE: :audio_sample
-          PROMPT: :prompt
 
           def self?.values: -> ::Array[OpenAI::Models::Audio::Voice::type_]
         end

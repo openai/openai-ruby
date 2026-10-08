@@ -28,9 +28,7 @@ module OpenAI
           ?request_options: OpenAI::RequestOptions
         }
 
-        type body =
-          OpenAI::Audio::VoiceCreateParams::Body::AudioSample
-          | OpenAI::Audio::VoiceCreateParams::Body::Prompt
+        type body = OpenAI::Audio::VoiceCreateParams::Body::AudioSample
 
         module Body
           extend OpenAI::Internal::Type::Union
@@ -105,93 +103,6 @@ module OpenAI
               AUDIO_SAMPLE: :audio_sample
 
               def self?.values: -> ::Array[OpenAI::Models::Audio::VoiceCreateParams::Body::AudioSample::type_]
-            end
-          end
-
-          type prompt =
-            {
-              name: String,
-              prompt: String,
-              type: OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::type_,
-              ?model: OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::model,
-              ?script_hint: String
-            }
-
-          class Prompt < OpenAI::Internal::Type::BaseModel
-            # The name of the new voice.
-            attr_accessor name: String
-
-            # A description of the desired voice. Must not contain only whitespace.
-            attr_accessor prompt: String
-
-            # Set to `prompt` to create a voice from a text description.
-            attr_accessor type: OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::type_
-
-            # The voice creation model to use. Defaults to `auto`.
-            attr_reader model: OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::model?
-
-            # The voice creation model to use. Defaults to `auto`.
-            def model=: (
-              OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::model
-            ) -> OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::model
-
-            # Optional text for the voice to speak during creation. If omitted, a script is
-            # generated from the prompt. Must not be blank after trimming whitespace; scripts
-            # that are too short are rejected.
-            attr_reader script_hint: String?
-
-            # Optional text for the voice to speak during creation. If omitted, a script is
-            # generated from the prompt. Must not be blank after trimming whitespace; scripts
-            # that are too short are rejected.
-            def script_hint=: (String) -> String
-
-            # @param name
-            #   The name of the new voice.
-            # @param prompt
-            #   A description of the desired voice. Must not contain only whitespace.
-            # @param type
-            #   Set to `prompt` to create a voice from a text description.
-            # @param model
-            #   The voice creation model to use. Defaults to `auto`.
-            # @param script_hint
-            #   Optional text for the voice to speak during creation. If omitted, a script is
-            #   generated from the prompt. Must not be blank after trimming whitespace; scripts
-            #   that are too short are rejected.
-            def initialize: (
-              name: String,
-              prompt: String,
-              type: OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::type_,
-              ?model: OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::model,
-              ?script_hint: String
-            ) -> void
-
-            def to_hash: -> {
-              name: String,
-              prompt: String,
-              type: OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::type_,
-              ?model: OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::model,
-              ?script_hint: String
-            }
-
-            type type_ = :prompt
-
-            module Type
-              extend OpenAI::Internal::Type::Enum
-
-              PROMPT: :prompt
-
-              def self?.values: -> ::Array[OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::type_]
-            end
-
-            type model = String | :auto | :"2026-10-01"
-
-            module Model
-              extend OpenAI::Internal::Type::Union
-
-              def self?.variants: -> ::Array[OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::model]
-
-              AUTO: :auto
-              MODEL_2026_10_01: :"2026-10-01"
             end
           end
 
