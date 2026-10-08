@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.101.1](https://github.com/openai/openai-ruby/compare/v0.101.0...v0.101.1) (2026-10-08)
+
+
+### Bug Fixes
+
+* **api:** correct custom voice creation parameters ([#814](https://github.com/openai/openai-ruby/issues/814)) ([8e6daec](https://github.com/openai/openai-ruby/commit/8e6daecffadccb2f2cd5f442daa63cf4e2b73340))
+
 ## [0.101.0](https://github.com/openai/openai-ruby/compare/v0.100.0...v0.101.0) (2026-10-06)
 
 
