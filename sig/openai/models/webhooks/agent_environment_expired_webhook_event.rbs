@@ -1,0 +1,70 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type agent_environment_expired_webhook_event =
+        {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::AgentEnvironmentExpiredWebhookEvent::Data,
+          ?object: :event,
+          ?type: :"agent.environment.expired"
+        }
+
+      class AgentEnvironmentExpiredWebhookEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the event.
+        attr_accessor id: String
+
+        # The Unix timestamp, in seconds, when the event was created.
+        attr_accessor created_at: Integer
+
+        # Identifies the environment whose lifecycle changed.
+        attr_accessor data: OpenAI::Webhooks::AgentEnvironmentExpiredWebhookEvent::Data
+
+        # The object type. Always `event`.
+        attr_accessor object: :event
+
+        # The event type. Always `agent.environment.expired`.
+        attr_accessor type: :"agent.environment.expired"
+
+        # @param id
+        #   The unique ID of the event.
+        # @param created_at
+        #   The Unix timestamp, in seconds, when the event was created.
+        # @param data
+        #   Identifies the environment whose lifecycle changed.
+        # @param object
+        #   The object type. Always `event`.
+        # @param type
+        #   The event type. Always `agent.environment.expired`.
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::AgentEnvironmentExpiredWebhookEvent::Data,
+          ?object: :event,
+          ?type: :"agent.environment.expired"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::AgentEnvironmentExpiredWebhookEvent::Data,
+          ?object: :event,
+          ?type: :"agent.environment.expired"
+        }
+
+        type data = { id: String }
+
+        class Data < OpenAI::Internal::Type::BaseModel
+          # The ID of the environment.
+          attr_accessor id: String
+
+          # @param id
+          #   The ID of the environment.
+          def initialize: (id: String) -> void
+
+          def to_hash: -> { id: String }
+        end
+      end
+    end
+  end
+end

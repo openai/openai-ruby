@@ -230,6 +230,33 @@ class OpenAI::Test::WebhookVerificationTest < OpenAI::Test::ResourceTest
     end
   end
 
+  def test_unwrap_signed_agent_environment_lifecycle_events
+    event_types = {
+      "agent.environment.suspended" => OpenAI::Webhooks::AgentEnvironmentSuspendedWebhookEvent,
+      "agent.environment.expired" => OpenAI::Webhooks::AgentEnvironmentExpiredWebhookEvent
+    }
+
+    event_types.each do |event_type, event_class|
+      @test_payload = JSON.generate(
+        id: "evt_synthetic",
+        object: "event",
+        created_at: Integer(@fixed_timestamp, 10),
+        type: event_type,
+        data: {id: "ccarenv_synthetic"}
+      )
+      event = @client.webhooks.unwrap(
+        @test_payload,
+        signed_headers("synthetic-agent-webhook-secret"),
+        "synthetic-agent-webhook-secret"
+      )
+
+      assert_instance_of(event_class, event)
+      assert_instance_of(event_class::Data, event.data)
+      assert_equal("ccarenv_synthetic", event.data.id)
+      assert_equal(JSON.parse(@test_payload), JSON.parse(event.to_json))
+    end
+  end
+
   def test_unwrap_safety_events
     event_types = {
       "safety.warning_issued" => OpenAI::Webhooks::SafetyWarningIssuedWebhookEvent,
