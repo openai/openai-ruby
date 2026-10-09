@@ -50,10 +50,11 @@ module OpenAI
         @client.request(
           method: :post,
           path: "vector_stores",
+          headers: {"openai-beta" => "assistants=v2"},
           body: parsed,
           model: OpenAI::VectorStore,
           security: {bearer_auth: true},
-          options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+          options: options
         )
       end
 
@@ -73,9 +74,10 @@ module OpenAI
         @client.request(
           method: :get,
           path: ["vector_stores/%1$s", vector_store_id],
+          headers: {"openai-beta" => "assistants=v2"},
           model: OpenAI::VectorStore,
           security: {bearer_auth: true},
-          options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **params[:request_options].to_h}
+          options: params[:request_options]
         )
       end
 
@@ -110,10 +112,11 @@ module OpenAI
         @client.request(
           method: :post,
           path: ["vector_stores/%1$s", vector_store_id],
+          headers: {"openai-beta" => "assistants=v2"},
           body: parsed,
           model: OpenAI::VectorStore,
           security: {bearer_auth: true},
-          options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+          options: options
         )
       end
 
@@ -153,10 +156,11 @@ module OpenAI
           method: :get,
           path: "vector_stores",
           query: query,
+          headers: {"openai-beta" => "assistants=v2"},
           page: OpenAI::Internal::CursorPage,
           model: OpenAI::VectorStore,
           security: {bearer_auth: true},
-          options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+          options: options
         )
       end
 
@@ -176,9 +180,10 @@ module OpenAI
         @client.request(
           method: :delete,
           path: ["vector_stores/%1$s", vector_store_id],
+          headers: {"openai-beta" => "assistants=v2"},
           model: OpenAI::VectorStoreDeleted,
           security: {bearer_auth: true},
-          options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **params[:request_options].to_h}
+          options: params[:request_options]
         )
       end
 
@@ -216,11 +221,12 @@ module OpenAI
         @client.request(
           method: :post,
           path: ["vector_stores/%1$s/search", vector_store_id],
+          headers: {"openai-beta" => "assistants=v2"},
           body: parsed,
           page: OpenAI::Internal::Page,
           model: OpenAI::Models::VectorStoreSearchResponse,
           security: {bearer_auth: true},
-          options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+          options: options
         )
       end
 

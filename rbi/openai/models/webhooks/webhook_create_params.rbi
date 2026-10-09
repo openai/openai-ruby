@@ -121,6 +121,14 @@ module OpenAI
           )
           VIDEO_COMPLETED = T.let(:"video.completed", OpenAI::Webhooks::WebhookCreateParams::EventType::TaggedSymbol)
           VIDEO_FAILED = T.let(:"video.failed", OpenAI::Webhooks::WebhookCreateParams::EventType::TaggedSymbol)
+          AGENT_ENVIRONMENT_READY = T.let(
+            :"agent.environment.ready",
+            OpenAI::Webhooks::WebhookCreateParams::EventType::TaggedSymbol
+          )
+          AGENT_ENVIRONMENT_FAILED = T.let(
+            :"agent.environment.failed",
+            OpenAI::Webhooks::WebhookCreateParams::EventType::TaggedSymbol
+          )
           AGENT_SESSION_CREATED = T.let(
             :"agent.session.created",
             OpenAI::Webhooks::WebhookCreateParams::EventType::TaggedSymbol

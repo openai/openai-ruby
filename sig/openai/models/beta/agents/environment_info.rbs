@@ -70,12 +70,16 @@ module OpenAI
           }
 
           type status =
-            :pending | :connected | :disconnected | :expired | :failed
+            :pending | :ready | :connected | :disconnected | :expired | :failed
 
           module Status
             extend OpenAI::Internal::Type::Enum
 
             PENDING: :pending
+
+            # Provisioning succeeded and the environment is available for attachment or use.
+            READY: :ready
+
             CONNECTED: :connected
             DISCONNECTED: :disconnected
             EXPIRED: :expired

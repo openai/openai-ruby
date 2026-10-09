@@ -65,6 +65,13 @@ module OpenAI
           #   @return [Hash{Symbol=>String}, nil]
           optional :env, OpenAI::Internal::Type::HashOf[String], nil?: true
 
+          # @!attribute environment_id
+          #   An existing prewarmed environment. Cannot be combined with a template or inline
+          #   configuration.
+          #
+          #   @return [String, nil]
+          optional :environment_id, String
+
           # @!attribute environment_template_id
           #   A reusable hosted template applied before inline session configuration. Omitted
           #   fields inherit the template; network overrides cannot broaden its policy.
@@ -128,7 +135,7 @@ module OpenAI
             nil?: true
           )
 
-          # @!method initialize(capability_directories: nil, container_size: nil, desktop: nil, env: nil, environment_template_id: nil, files: nil, network: nil, packages: nil, plugins: nil, setup_commands: nil, skills: nil, type: :openai_hosted)
+          # @!method initialize(capability_directories: nil, container_size: nil, desktop: nil, env: nil, environment_id: nil, environment_template_id: nil, files: nil, network: nil, packages: nil, plugins: nil, setup_commands: nil, skills: nil, type: :openai_hosted)
           #   An existing OpenAI-hosted environment or new inline/template-based hosted
           #   configuration.
           #
@@ -145,6 +152,10 @@ module OpenAI
           #
           #   @param env [Hash{Symbol=>String}, nil]
           #     Environment variables made available to the agent.
+          #
+          #   @param environment_id [String]
+          #     An existing prewarmed environment. Cannot be combined with a template or inline
+          #     configuration.
           #
           #   @param environment_template_id [String]
           #     A reusable hosted template applied before inline session configuration. Omitted

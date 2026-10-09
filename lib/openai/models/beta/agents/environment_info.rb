@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Agents
-        # @see OpenAI::Resources::Beta::Agents::Environments#retrieve
+        # @see OpenAI::Resources::Beta::Agents::Environments#create
         class EnvironmentInfo < OpenAI::Internal::Type::BaseModel
           # @!attribute id
           #   The ID of the environment.
@@ -79,6 +79,9 @@ module OpenAI
             extend OpenAI::Internal::Type::Enum
 
             PENDING = :pending
+            # Provisioning succeeded and the environment is available for attachment or use.
+            READY = :ready
+
             CONNECTED = :connected
             DISCONNECTED = :disconnected
             EXPIRED = :expired

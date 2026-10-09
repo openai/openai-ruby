@@ -3,12 +3,18 @@
 module OpenAI
   module Models
     module Webhooks
-      # Sent when an agent session requires an action. Retrieve the session for action
-      # details.
+      # Sent when setup fails for a prewarmed OpenAI-hosted environment before it is
+      # attached to a session.
       module UnwrapWebhookEvent
         extend OpenAI::Internal::Type::Union
 
         discriminator :type
+
+        # Sent when setup fails for a prewarmed OpenAI-hosted environment before it is attached to a session.
+        variant :"agent.environment.failed", -> { OpenAI::Webhooks::AgentEnvironmentFailedWebhookEvent }
+
+        # Sent when a prewarmed OpenAI-hosted environment finishes setup before being attached to a session.
+        variant :"agent.environment.ready", -> { OpenAI::Webhooks::AgentEnvironmentReadyWebhookEvent }
 
         # Sent when an agent session requires an action. Retrieve the session for action details.
         variant :"agent.session.action_required", -> { OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent }
@@ -97,7 +103,7 @@ module OpenAI
         variant :"safety.warning_issued", -> { OpenAI::Webhooks::SafetyWarningIssuedWebhookEvent }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Webhooks::AgentSessionActionRequiredWebhookEvent, OpenAI::Models::Webhooks::AgentSessionCreatedWebhookEvent, OpenAI::Models::Webhooks::AgentSessionFailedWebhookEvent, OpenAI::Models::Webhooks::AgentSessionIdleWebhookEvent, OpenAI::Models::Webhooks::AgentSessionInProgressWebhookEvent, OpenAI::Models::Webhooks::BatchCancelledWebhookEvent, OpenAI::Models::Webhooks::BatchCompletedWebhookEvent, OpenAI::Models::Webhooks::BatchExpiredWebhookEvent, OpenAI::Models::Webhooks::BatchFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent, OpenAI::Models::Webhooks::EvalRunFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobFailedWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent, OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent, OpenAI::Models::Webhooks::LiveTransportIncomingWebhookEvent, OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent, OpenAI::Models::Webhooks::ResponseCancelledWebhookEvent, OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent, OpenAI::Models::Webhooks::ResponseFailedWebhookEvent, OpenAI::Models::Webhooks::ResponseIncompleteWebhookEvent, OpenAI::Models::Webhooks::SafetyAlertCreatedWebhookEvent, OpenAI::Models::Webhooks::SafetyDeactivationIssuedWebhookEvent, OpenAI::Models::Webhooks::SafetyOrgAlertCreatedWebhookEvent, OpenAI::Models::Webhooks::SafetyWarningIssuedWebhookEvent)]
+        #   @return [Array(OpenAI::Models::Webhooks::AgentEnvironmentFailedWebhookEvent, OpenAI::Models::Webhooks::AgentEnvironmentReadyWebhookEvent, OpenAI::Models::Webhooks::AgentSessionActionRequiredWebhookEvent, OpenAI::Models::Webhooks::AgentSessionCreatedWebhookEvent, OpenAI::Models::Webhooks::AgentSessionFailedWebhookEvent, OpenAI::Models::Webhooks::AgentSessionIdleWebhookEvent, OpenAI::Models::Webhooks::AgentSessionInProgressWebhookEvent, OpenAI::Models::Webhooks::BatchCancelledWebhookEvent, OpenAI::Models::Webhooks::BatchCompletedWebhookEvent, OpenAI::Models::Webhooks::BatchExpiredWebhookEvent, OpenAI::Models::Webhooks::BatchFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent, OpenAI::Models::Webhooks::EvalRunFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobFailedWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent, OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent, OpenAI::Models::Webhooks::LiveTransportIncomingWebhookEvent, OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent, OpenAI::Models::Webhooks::ResponseCancelledWebhookEvent, OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent, OpenAI::Models::Webhooks::ResponseFailedWebhookEvent, OpenAI::Models::Webhooks::ResponseIncompleteWebhookEvent, OpenAI::Models::Webhooks::SafetyAlertCreatedWebhookEvent, OpenAI::Models::Webhooks::SafetyDeactivationIssuedWebhookEvent, OpenAI::Models::Webhooks::SafetyOrgAlertCreatedWebhookEvent, OpenAI::Models::Webhooks::SafetyWarningIssuedWebhookEvent)]
       end
     end
   end

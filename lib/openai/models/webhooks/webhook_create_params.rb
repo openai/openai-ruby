@@ -62,6 +62,8 @@ module OpenAI
           REALTIME_CALL_INCOMING = :"realtime.call.incoming"
           VIDEO_COMPLETED = :"video.completed"
           VIDEO_FAILED = :"video.failed"
+          AGENT_ENVIRONMENT_READY = :"agent.environment.ready"
+          AGENT_ENVIRONMENT_FAILED = :"agent.environment.failed"
           AGENT_SESSION_CREATED = :"agent.session.created"
           AGENT_SESSION_ACTION_REQUIRED = :"agent.session.action_required"
           AGENT_SESSION_IN_PROGRESS = :"agent.session.in_progress"

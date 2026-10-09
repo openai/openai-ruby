@@ -50,16 +50,11 @@ module OpenAI
           @client.request(
             method: :post,
             path: ["vector_stores/%1$s/file_batches", vector_store_id],
+            headers: {"openai-beta" => "assistants=v2"},
             body: parsed,
             model: OpenAI::VectorStores::VectorStoreFileBatch,
             security: {bearer_auth: true},
-            options: {
-              **options,
-              extra_headers: OpenAI::Internal::Util.normalized_headers(
-                {"OpenAI-Beta" => "assistants=v2"},
-                options[:extra_headers].to_h
-              )
-            }
+            options: options
           )
         end
 
@@ -144,9 +139,10 @@ module OpenAI
           @client.request(
             method: :get,
             path: ["vector_stores/%1$s/file_batches/%2$s", vector_store_id, batch_id],
+            headers: {"openai-beta" => "assistants=v2"},
             model: OpenAI::VectorStores::VectorStoreFileBatch,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: options
           )
         end
 
@@ -175,9 +171,10 @@ module OpenAI
           @client.request(
             method: :post,
             path: ["vector_stores/%1$s/file_batches/%2$s/cancel", vector_store_id, batch_id],
+            headers: {"openai-beta" => "assistants=v2"},
             model: OpenAI::VectorStores::VectorStoreFileBatch,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: options
           )
         end
 
@@ -231,10 +228,11 @@ module OpenAI
             method: :get,
             path: ["vector_stores/%1$s/file_batches/%2$s/files", vector_store_id, batch_id],
             query: query,
+            headers: {"openai-beta" => "assistants=v2"},
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::VectorStores::VectorStoreFile,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: options
           )
         end
 

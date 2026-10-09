@@ -36,10 +36,11 @@ module OpenAI
                 method: :get,
                 path: ["agents/sessions/%1$s/items", session_id],
                 query: query,
+                headers: {"openai-beta" => "agents=v1"},
                 page: OpenAI::Internal::CursorPage,
                 model: OpenAI::Beta::AgentSessionItem,
                 security: {bearer_auth: true},
-                options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+                options: options
               )
             end
 

@@ -29,6 +29,7 @@ module OpenAI
             ?container_size: OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::container_size,
             ?desktop: OpenAI::Beta::EnvironmentParam::OpenAIHosted::Desktop?,
             ?env: ::Hash[Symbol, String]?,
+            ?environment_id: String,
             ?environment_template_id: String,
             ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
             ?network: OpenAI::Beta::EnvironmentParam::OpenAIHosted::Network?,
@@ -60,6 +61,14 @@ module OpenAI
 
           # Environment variables made available to the agent.
           attr_accessor env: ::Hash[Symbol, String]?
+
+          # An existing prewarmed environment. Cannot be combined with a template or inline
+          # configuration.
+          attr_reader environment_id: String?
+
+          # An existing prewarmed environment. Cannot be combined with a template or inline
+          # configuration.
+          def environment_id=: (String) -> String
 
           # A reusable hosted template applied before inline session configuration. Omitted
           # fields inherit the template; network overrides cannot broaden its policy.
@@ -99,6 +108,9 @@ module OpenAI
           #   defaults to disabled.
           # @param env
           #   Environment variables made available to the agent.
+          # @param environment_id
+          #   An existing prewarmed environment. Cannot be combined with a template or inline
+          #   configuration.
           # @param environment_template_id
           #   A reusable hosted template applied before inline session configuration. Omitted
           #   fields inherit the template; network overrides cannot broaden its policy.
@@ -123,6 +135,7 @@ module OpenAI
             ?container_size: OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::container_size,
             ?desktop: OpenAI::Beta::EnvironmentParam::OpenAIHosted::Desktop?,
             ?env: ::Hash[Symbol, String]?,
+            ?environment_id: String,
             ?environment_template_id: String,
             ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
             ?network: OpenAI::Beta::EnvironmentParam::OpenAIHosted::Network?,
@@ -139,6 +152,7 @@ module OpenAI
             ?container_size: OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted::container_size,
             ?desktop: OpenAI::Beta::EnvironmentParam::OpenAIHosted::Desktop?,
             ?env: ::Hash[Symbol, String]?,
+            ?environment_id: String,
             ?environment_template_id: String,
             ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
             ?network: OpenAI::Beta::EnvironmentParam::OpenAIHosted::Network?,

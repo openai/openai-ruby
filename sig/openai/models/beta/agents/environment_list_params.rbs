@@ -1,0 +1,97 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type environment_list_params =
+          {
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::Agents::EnvironmentListParams::order,
+            ?type: OpenAI::Models::Beta::Agents::EnvironmentListParams::type_,
+            ?request_options: OpenAI::request_opts
+          }
+
+        class EnvironmentListParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          # Return environments after this environment ID in the selected order.
+          attr_reader after: String?
+
+          # Return environments after this environment ID in the selected order.
+          def after=: (String) -> String
+
+          # The maximum number of environments to return, between 1 and 100. Defaults to 20.
+          attr_reader limit: Integer?
+
+          # The maximum number of environments to return, between 1 and 100. Defaults to 20.
+          def limit=: (Integer) -> Integer
+
+          # The order in which environments are returned. Defaults to `desc`.
+          attr_reader order: OpenAI::Models::Beta::Agents::EnvironmentListParams::order?
+
+          # The order in which environments are returned. Defaults to `desc`.
+          def order=: (
+            OpenAI::Models::Beta::Agents::EnvironmentListParams::order
+          ) -> OpenAI::Models::Beta::Agents::EnvironmentListParams::order
+
+          # The hosting type to list. Defaults to `openai_hosted`.
+          attr_reader type: OpenAI::Models::Beta::Agents::EnvironmentListParams::type_?
+
+          # The hosting type to list. Defaults to `openai_hosted`.
+          def type=: (
+            OpenAI::Models::Beta::Agents::EnvironmentListParams::type_
+          ) -> OpenAI::Models::Beta::Agents::EnvironmentListParams::type_
+
+          # @param after
+          #   Return environments after this environment ID in the selected order.
+          # @param limit
+          #   The maximum number of environments to return, between 1 and 100. Defaults to 20.
+          # @param order
+          #   The order in which environments are returned. Defaults to `desc`.
+          # @param type
+          #   The hosting type to list. Defaults to `openai_hosted`.
+          def initialize: (
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::Agents::EnvironmentListParams::order,
+            ?type: OpenAI::Models::Beta::Agents::EnvironmentListParams::type_,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::Agents::EnvironmentListParams::order,
+            ?type: OpenAI::Models::Beta::Agents::EnvironmentListParams::type_,
+            ?request_options: OpenAI::RequestOptions
+          }
+
+          type order = :asc | :desc
+
+          module Order
+            extend OpenAI::Internal::Type::Enum
+
+            # Returns resources in ascending order.
+            ASC: :asc
+
+            # Returns resources in descending order.
+            DESC: :desc
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::EnvironmentListParams::order]
+          end
+
+          type type_ = :openai_hosted
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            OPENAI_HOSTED: :openai_hosted
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::EnvironmentListParams::type_]
+          end
+        end
+      end
+    end
+  end
+end
