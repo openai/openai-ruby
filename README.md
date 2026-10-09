@@ -15,7 +15,7 @@ To use this gem, install via Bundler by adding the following to your application
 <!-- x-release-please-start-version -->
 
 ```ruby
-gem "openai", "~> 0.102.0"
+gem "openai", "~> 0.103.0"
 ```
 
 <!-- x-release-please-end -->
