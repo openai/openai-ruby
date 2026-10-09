@@ -129,6 +129,14 @@ module OpenAI
             :"agent.environment.failed",
             OpenAI::Webhooks::WebhookCreateParams::EventType::TaggedSymbol
           )
+          AGENT_ENVIRONMENT_SUSPENDED = T.let(
+            :"agent.environment.suspended",
+            OpenAI::Webhooks::WebhookCreateParams::EventType::TaggedSymbol
+          )
+          AGENT_ENVIRONMENT_EXPIRED = T.let(
+            :"agent.environment.expired",
+            OpenAI::Webhooks::WebhookCreateParams::EventType::TaggedSymbol
+          )
           AGENT_SESSION_CREATED = T.let(
             :"agent.session.created",
             OpenAI::Webhooks::WebhookCreateParams::EventType::TaggedSymbol

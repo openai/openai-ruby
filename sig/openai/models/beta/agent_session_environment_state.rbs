@@ -67,7 +67,14 @@ module OpenAI
           def to_hash: -> { code: String, message: String, type: String }
         end
 
-        type status = :pending | :ready | :connected | :disconnected | :failed
+        type status =
+          :pending
+          | :ready
+          | :connected
+          | :disconnected
+          | :suspended
+          | :expired
+          | :failed
 
         module Status
           extend OpenAI::Internal::Type::Enum
@@ -83,6 +90,12 @@ module OpenAI
 
           # The environment is disconnected.
           DISCONNECTED: :disconnected
+
+          # The environment is stopped and can be resumed from its private checkpoint.
+          SUSPENDED: :suspended
+
+          # The environment and its private checkpoint have expired.
+          EXPIRED: :expired
 
           # The environment failed to connect.
           FAILED: :failed

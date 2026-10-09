@@ -84,6 +84,9 @@ module OpenAI
 
             CONNECTED = :connected
             DISCONNECTED = :disconnected
+            # The sandbox is stopped and can be resumed from its private checkpoint.
+            SUSPENDED = :suspended
+
             EXPIRED = :expired
             FAILED = :failed
 

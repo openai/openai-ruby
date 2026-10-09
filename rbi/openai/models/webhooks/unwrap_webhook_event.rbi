@@ -5,13 +5,14 @@ module OpenAI
 
     module Webhooks
 
-      # Sent when setup fails for a prewarmed OpenAI-hosted environment before it is
-      # attached to a session.
+      # Sent when an agent environment expires and can no longer resume from a snapshot.
       module UnwrapWebhookEvent
         extend OpenAI::Internal::Type::Union
 
         Variants = T.type_alias do
           T.any(
+            OpenAI::Webhooks::AgentEnvironmentExpiredWebhookEvent,
+            OpenAI::Webhooks::AgentEnvironmentSuspendedWebhookEvent,
             OpenAI::Webhooks::AgentEnvironmentFailedWebhookEvent,
             OpenAI::Webhooks::AgentEnvironmentReadyWebhookEvent,
             OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent,

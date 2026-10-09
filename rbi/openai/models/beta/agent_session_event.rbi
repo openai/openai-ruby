@@ -13,6 +13,8 @@ module OpenAI
           T.any(
             OpenAI::Beta::AgentSessionErrorEvent,
             OpenAI::Beta::AgentSessionEnvironmentReadyEvent,
+            OpenAI::Beta::AgentSessionEnvironmentSuspendedEvent,
+            OpenAI::Beta::AgentSessionEnvironmentExpiredEvent,
             OpenAI::Beta::AgentSessionEnvironmentResetEvent,
             OpenAI::Beta::AgentOutputCommandExecutionOutputDeltaEvent,
             OpenAI::Beta::AgentSessionCreatedEvent,
