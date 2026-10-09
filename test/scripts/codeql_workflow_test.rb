@@ -16,7 +16,10 @@ class CodeQLWorkflowTest < Minitest::Test
     languages = job.fetch("strategy").fetch("matrix").fetch("language")
     check_names = languages.map { job.fetch("name").sub("${{ matrix.language }}", _1) }
 
-    assert_equal(["CodeQL (actions)", "CodeQL (ruby)"], check_names)
+    assert_equal(
+      ["CodeQL (actions)", "CodeQL (javascript-typescript)", "CodeQL (python)", "CodeQL (ruby)"],
+      check_names
+    )
   end
 
   def test_codeql_actions_use_the_same_pinned_release
@@ -39,12 +42,15 @@ class CodeQLWorkflowTest < Minitest::Test
     end
   end
 
-  def test_codeql_has_stable_required_checks_for_actions_and_ruby
+  def test_codeql_covers_all_maintained_languages_on_pull_requests_and_merge_groups
     workflow = YAML.safe_load_file(WORKFLOW)
     analyze = workflow.fetch("jobs").fetch("analyze")
 
     assert_equal("CodeQL (${{ matrix.language }})", analyze.fetch("name"))
-    assert_equal(%w[actions ruby], analyze.fetch("strategy").fetch("matrix").fetch("language"))
+    assert_equal(
+      %w[actions javascript-typescript python ruby],
+      analyze.fetch("strategy").fetch("matrix").fetch("language")
+    )
     assert_includes(workflow.fetch(true), "pull_request")
     assert_includes(workflow.fetch(true), "merge_group")
   end
