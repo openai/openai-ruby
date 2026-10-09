@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.103.0](https://github.com/openai/openai-ruby/compare/v0.102.0...v0.103.0) (2026-10-09)
+
+
+### Features
+
+* **api:** add agent environment suspension and expiration ([#821](https://github.com/openai/openai-ruby/issues/821)) ([7405e40](https://github.com/openai/openai-ruby/commit/7405e4011978083f3c8599dc4e3a40a5ca6ecc5d))
+
 ## [0.102.0](https://github.com/openai/openai-ruby/compare/v0.101.1...v0.102.0) (2026-10-09)
 
 
