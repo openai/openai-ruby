@@ -178,8 +178,10 @@ class OpenAI::Test::WebhookVerificationTest < OpenAI::Test::ResourceTest
     end
   end
 
-  def test_unwrap_signed_agent_session_events_and_nested_payloads
+  def test_unwrap_signed_agent_events_and_nested_payloads
     event_types = {
+      "agent.environment.ready" => OpenAI::Webhooks::AgentEnvironmentReadyWebhookEvent,
+      "agent.environment.failed" => OpenAI::Webhooks::AgentEnvironmentFailedWebhookEvent,
       "agent.session.action_required" => OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent,
       "agent.session.created" => OpenAI::Webhooks::AgentSessionCreatedWebhookEvent,
       "agent.session.in_progress" => OpenAI::Webhooks::AgentSessionInProgressWebhookEvent,
@@ -191,7 +193,7 @@ class OpenAI::Test::WebhookVerificationTest < OpenAI::Test::ResourceTest
       data = {id: "sess_synthetic"}
       if event_type == "agent.session.action_required"
         data[:required_action] = {type: "function_call"}
-      else
+      elsif event_type.start_with?("agent.session.")
         data.merge!(environment_type: "synthetic", environment_id: "env_synthetic")
         data[:connect] = {remote_url: "https://example.test/synthetic"} if event_type == "agent.session.created"
       end
@@ -215,7 +217,7 @@ class OpenAI::Test::WebhookVerificationTest < OpenAI::Test::ResourceTest
       if event_type == "agent.session.action_required"
         assert_instance_of(event_class::Data::RequiredAction, event.data.required_action)
         assert_equal(:function_call, event.data.required_action.type)
-      else
+      elsif event_type.start_with?("agent.session.")
         assert_equal("synthetic", event.data.environment_type)
         assert_equal("env_synthetic", event.data.environment_id)
         if event_type == "agent.session.created"

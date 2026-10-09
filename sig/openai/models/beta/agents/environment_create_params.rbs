@@ -1,0 +1,268 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type environment_create_params =
+          {
+            environment: OpenAI::Beta::Agents::EnvironmentCreateParams::Environment,
+            ?vault_ids: ::Array[String]?,
+            ?idempotency_key: String,
+            ?request_options: OpenAI::request_opts
+          }
+
+        class EnvironmentCreateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          # The required hosting type and its configuration.
+          attr_accessor environment: OpenAI::Beta::Agents::EnvironmentCreateParams::Environment
+
+          # The IDs of up to 10 vaults made available to an OpenAI-hosted environment.
+          attr_accessor vault_ids: ::Array[String]?
+
+          attr_reader idempotency_key: String?
+
+          def idempotency_key=: (String) -> String
+
+          # @param environment
+          #   The required hosting type and its configuration.
+          # @param vault_ids
+          #   The IDs of up to 10 vaults made available to an OpenAI-hosted environment.
+          def initialize: (
+            environment: OpenAI::Beta::Agents::EnvironmentCreateParams::Environment,
+            ?vault_ids: ::Array[String]?,
+            ?idempotency_key: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            environment: OpenAI::Beta::Agents::EnvironmentCreateParams::Environment,
+            ?vault_ids: ::Array[String]?,
+            ?idempotency_key: String,
+            ?request_options: OpenAI::RequestOptions
+          }
+
+          type environment =
+            {
+              ?type: :openai_hosted,
+              ?capability_directories: ::Array[String]?,
+              ?desktop: OpenAI::Beta::Agents::EnvironmentCreateParams::Environment::Desktop?,
+              ?env: ::Hash[Symbol, String]?,
+              ?environment_template_id: String,
+              ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
+              ?network: OpenAI::Beta::Agents::EnvironmentCreateParams::Environment::Network?,
+              ?packages: OpenAI::Beta::Agents::EnvironmentCreateParams::Environment::Packages?,
+              ?plugins: ::Array[OpenAI::Beta::HostedPluginParam]?,
+              ?setup_commands: ::Array[OpenAI::Beta::SetupCommandParam]?,
+              ?skills: ::Array[OpenAI::Models::Beta::hosted_skill_param]?
+            }
+
+          class Environment < OpenAI::Internal::Type::BaseModel
+            # The type of the object. Always `openai_hosted`.
+            attr_accessor type: :openai_hosted
+
+            # Directories that contain capabilities exposed to the agent. Defaults to an empty
+            # list.
+            attr_accessor capability_directories: ::Array[String]?
+
+            # Desktop provisioning. Omission or null inherits the template setting, or
+            # defaults to disabled.
+            attr_accessor desktop: OpenAI::Beta::Agents::EnvironmentCreateParams::Environment::Desktop?
+
+            # Environment variables made available to the agent.
+            attr_accessor env: ::Hash[Symbol, String]?
+
+            # A reusable hosted template applied before inline configuration. Omitted fields
+            # inherit the template; network overrides cannot broaden its policy.
+            attr_reader environment_template_id: String?
+
+            # A reusable hosted template applied before inline configuration. Omitted fields
+            # inherit the template; network overrides cannot broaden its policy.
+            def environment_template_id=: (String) -> String
+
+            # Files available before the agent starts. Defaults to an empty list.
+            attr_accessor files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?
+
+            # Network access policy for the environment. If omitted, the API version
+            # determines whether network access is enabled or disabled.
+            attr_accessor network: OpenAI::Beta::Agents::EnvironmentCreateParams::Environment::Network?
+
+            # Packages to install in the environment. Defaults to empty package lists.
+            attr_accessor packages: OpenAI::Beta::Agents::EnvironmentCreateParams::Environment::Packages?
+
+            # Plugins provided as inline ZIP archives. Defaults to an empty list.
+            attr_accessor plugins: ::Array[OpenAI::Beta::HostedPluginParam]?
+
+            # Ordered, confidential setup commands. Command bodies are never returned.
+            attr_accessor setup_commands: ::Array[OpenAI::Beta::SetupCommandParam]?
+
+            # Skills referenced by ID or provided as inline ZIP archives. Defaults to an empty
+            # list.
+            attr_accessor skills: ::Array[OpenAI::Models::Beta::hosted_skill_param]?
+
+            # @param capability_directories
+            #   Directories that contain capabilities exposed to the agent. Defaults to an empty
+            #   list.
+            # @param desktop
+            #   Desktop provisioning. Omission or null inherits the template setting, or
+            #   defaults to disabled.
+            # @param env
+            #   Environment variables made available to the agent.
+            # @param environment_template_id
+            #   A reusable hosted template applied before inline configuration. Omitted fields
+            #   inherit the template; network overrides cannot broaden its policy.
+            # @param files
+            #   Files available before the agent starts. Defaults to an empty list.
+            # @param network
+            #   Network access policy for the environment. If omitted, the API version
+            #   determines whether network access is enabled or disabled.
+            # @param packages
+            #   Packages to install in the environment. Defaults to empty package lists.
+            # @param plugins
+            #   Plugins provided as inline ZIP archives. Defaults to an empty list.
+            # @param setup_commands
+            #   Ordered, confidential setup commands. Command bodies are never returned.
+            # @param skills
+            #   Skills referenced by ID or provided as inline ZIP archives. Defaults to an empty
+            #   list.
+            # @param type
+            #   The type of the object. Always `openai_hosted`.
+            def initialize: (
+              ?capability_directories: ::Array[String]?,
+              ?desktop: OpenAI::Beta::Agents::EnvironmentCreateParams::Environment::Desktop?,
+              ?env: ::Hash[Symbol, String]?,
+              ?environment_template_id: String,
+              ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
+              ?network: OpenAI::Beta::Agents::EnvironmentCreateParams::Environment::Network?,
+              ?packages: OpenAI::Beta::Agents::EnvironmentCreateParams::Environment::Packages?,
+              ?plugins: ::Array[OpenAI::Beta::HostedPluginParam]?,
+              ?setup_commands: ::Array[OpenAI::Beta::SetupCommandParam]?,
+              ?skills: ::Array[OpenAI::Models::Beta::hosted_skill_param]?,
+              ?type: :openai_hosted
+            ) -> void
+
+            def to_hash: -> {
+              ?type: :openai_hosted,
+              ?capability_directories: ::Array[String]?,
+              ?desktop: OpenAI::Beta::Agents::EnvironmentCreateParams::Environment::Desktop?,
+              ?env: ::Hash[Symbol, String]?,
+              ?environment_template_id: String,
+              ?files: ::Array[OpenAI::Models::Beta::hosted_environment_file_param]?,
+              ?network: OpenAI::Beta::Agents::EnvironmentCreateParams::Environment::Network?,
+              ?packages: OpenAI::Beta::Agents::EnvironmentCreateParams::Environment::Packages?,
+              ?plugins: ::Array[OpenAI::Beta::HostedPluginParam]?,
+              ?setup_commands: ::Array[OpenAI::Beta::SetupCommandParam]?,
+              ?skills: ::Array[OpenAI::Models::Beta::hosted_skill_param]?
+            }
+
+            type desktop = { enabled: bool }
+
+            class Desktop < OpenAI::Internal::Type::BaseModel
+              # Whether to provision the desktop and its browser proxy.
+              attr_accessor enabled: bool
+
+              # @param enabled
+              #   Whether to provision the desktop and its browser proxy.
+              def initialize: (enabled: bool) -> void
+
+              def to_hash: -> { enabled: bool }
+            end
+
+            type network =
+              {
+                access: OpenAI::Models::Beta::Agents::EnvironmentCreateParams::Environment::Network::access,
+                ?allowed_domains: ::Array[String]?,
+                ?blocked_domains: ::Array[String]?
+              }
+
+            class Network < OpenAI::Internal::Type::BaseModel
+              # The environment's network access mode.
+              attr_accessor access: OpenAI::Models::Beta::Agents::EnvironmentCreateParams::Environment::Network::access
+
+              # Domains the environment may access when network access is restricted.
+              attr_accessor allowed_domains: ::Array[String]?
+
+              # Domains blocked for both executor and browser when access is restricted. A
+              # nonempty list requires `access: restricted` and cannot be combined with nonempty
+              # `allowed_domains`. Wildcard domains are not supported.
+              attr_accessor blocked_domains: ::Array[String]?
+
+              # @param access
+              #   The environment's network access mode.
+              # @param allowed_domains
+              #   Domains the environment may access when network access is restricted.
+              # @param blocked_domains
+              #   Domains blocked for both executor and browser when access is restricted. A
+              #   nonempty list requires `access: restricted` and cannot be combined with nonempty
+              #   `allowed_domains`. Wildcard domains are not supported.
+              def initialize: (
+                access: OpenAI::Models::Beta::Agents::EnvironmentCreateParams::Environment::Network::access,
+                ?allowed_domains: ::Array[String]?,
+                ?blocked_domains: ::Array[String]?
+              ) -> void
+
+              def to_hash: -> {
+                access: OpenAI::Models::Beta::Agents::EnvironmentCreateParams::Environment::Network::access,
+                ?allowed_domains: ::Array[String]?,
+                ?blocked_domains: ::Array[String]?
+              }
+
+              type access = :enabled | :disabled | :restricted
+
+              module Access
+                extend OpenAI::Internal::Type::Enum
+
+                # Allows unrestricted network access.
+                ENABLED: :enabled
+
+                # Disables network access.
+                DISABLED: :disabled
+
+                # Applies the configured domain restrictions.
+                RESTRICTED: :restricted
+
+                def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::EnvironmentCreateParams::Environment::Network::access]
+              end
+            end
+
+            type packages =
+              {
+                ?npm: ::Array[String]?,
+                ?python: ::Array[String]?,
+                ?system_: ::Array[String]?
+              }
+
+            class Packages < OpenAI::Internal::Type::BaseModel
+              # npm packages to install globally. Defaults to an empty list.
+              attr_accessor npm: ::Array[String]?
+
+              # Python packages to install. Defaults to an empty list.
+              attr_accessor python: ::Array[String]?
+
+              # System packages to install. Defaults to an empty list.
+              attr_accessor system_: ::Array[String]?
+
+              # @param npm
+              #   npm packages to install globally. Defaults to an empty list.
+              # @param python
+              #   Python packages to install. Defaults to an empty list.
+              # @param system_
+              #   System packages to install. Defaults to an empty list.
+              def initialize: (
+                ?npm: ::Array[String]?,
+                ?python: ::Array[String]?,
+                ?system_: ::Array[String]?
+              ) -> void
+
+              def to_hash: -> {
+                ?npm: ::Array[String]?,
+                ?python: ::Array[String]?,
+                ?system_: ::Array[String]?
+              }
+            end
+          end
+        end
+      end
+    end
+  end
+end

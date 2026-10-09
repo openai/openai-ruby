@@ -91,6 +91,14 @@ module OpenAI
           sig { returns(T.nilable(T::Hash[Symbol, String])) }
           attr_accessor :env
 
+          # An existing prewarmed environment. Cannot be combined with a template or inline
+          # configuration.
+          sig { returns(T.nilable(String)) }
+          attr_reader :environment_id
+
+          sig { params(environment_id: String).void }
+          attr_writer :environment_id
+
           # A reusable hosted template applied before inline session configuration. Omitted
           # fields inherit the template; network overrides cannot broaden its policy.
           sig { returns(T.nilable(String)) }
@@ -161,6 +169,8 @@ module OpenAI
 
               env: T.nilable(T::Hash[Symbol, String]),
 
+              environment_id: String,
+
               environment_template_id: String,
 
               files: T.nilable(
@@ -209,6 +219,10 @@ module OpenAI
             # Environment variables made available to the agent.
             env: nil,
 
+            # An existing prewarmed environment. Cannot be combined with a template or inline
+            # configuration.
+            environment_id: nil,
+
             # A reusable hosted template applied before inline session configuration. Omitted
             # fields inherit the template; network overrides cannot broaden its policy.
             environment_template_id: nil,
@@ -247,6 +261,7 @@ module OpenAI
                 container_size: OpenAI::Beta::EnvironmentParam::OpenAIHosted::ContainerSize::OrSymbol,
                 desktop: T.nilable(OpenAI::Beta::EnvironmentParam::OpenAIHosted::Desktop),
                 env: T.nilable(T::Hash[Symbol, String]),
+                environment_id: String,
                 environment_template_id: String,
                 files: T.nilable(
                   T::Array[

@@ -35,9 +35,10 @@ module OpenAI
               @client.request(
                 method: :get,
                 path: ["agents/sessions/%1$s/turns/%2$s", session_id, turn_id],
+                headers: {"openai-beta" => "agents=v1"},
                 model: OpenAI::Beta::Agents::Sessions::Turn,
                 security: {bearer_auth: true},
-                options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+                options: options
               )
             end
 
@@ -71,10 +72,11 @@ module OpenAI
                 method: :get,
                 path: ["agents/sessions/%1$s/turns", session_id],
                 query: query,
+                headers: {"openai-beta" => "agents=v1"},
                 page: OpenAI::Internal::CursorPage,
                 model: OpenAI::Beta::Agents::Sessions::Turn,
                 security: {bearer_auth: true},
-                options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+                options: options
               )
             end
 

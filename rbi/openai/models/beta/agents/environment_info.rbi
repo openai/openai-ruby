@@ -121,6 +121,9 @@ module OpenAI
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             PENDING = T.let(:pending, OpenAI::Beta::Agents::EnvironmentInfo::Status::TaggedSymbol)
+            # Provisioning succeeded and the environment is available for attachment or use.
+            READY = T.let(:ready, OpenAI::Beta::Agents::EnvironmentInfo::Status::TaggedSymbol)
+
             CONNECTED = T.let(:connected, OpenAI::Beta::Agents::EnvironmentInfo::Status::TaggedSymbol)
             DISCONNECTED = T.let(:disconnected, OpenAI::Beta::Agents::EnvironmentInfo::Status::TaggedSymbol)
             EXPIRED = T.let(:expired, OpenAI::Beta::Agents::EnvironmentInfo::Status::TaggedSymbol)

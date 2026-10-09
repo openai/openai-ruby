@@ -51,10 +51,11 @@ module OpenAI
             @client.request(
               method: :post,
               path: ["threads/%1$s/messages", thread_id],
+              headers: {"openai-beta" => "assistants=v2"},
               body: parsed,
               model: OpenAI::Beta::Threads::Message,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+              options: options
             )
           end
 
@@ -86,9 +87,10 @@ module OpenAI
             @client.request(
               method: :get,
               path: ["threads/%1$s/messages/%2$s", thread_id, message_id],
+              headers: {"openai-beta" => "assistants=v2"},
               model: OpenAI::Beta::Threads::Message,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+              options: options
             )
           end
 
@@ -126,10 +128,11 @@ module OpenAI
             @client.request(
               method: :post,
               path: ["threads/%1$s/messages/%2$s", thread_id, message_id],
+              headers: {"openai-beta" => "assistants=v2"},
               body: parsed,
               model: OpenAI::Beta::Threads::Message,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+              options: options
             )
           end
 
@@ -179,10 +182,11 @@ module OpenAI
               method: :get,
               path: ["threads/%1$s/messages", thread_id],
               query: query,
+              headers: {"openai-beta" => "assistants=v2"},
               page: OpenAI::Internal::CursorPage,
               model: OpenAI::Beta::Threads::Message,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+              options: options
             )
           end
 
@@ -212,9 +216,10 @@ module OpenAI
             @client.request(
               method: :delete,
               path: ["threads/%1$s/messages/%2$s", thread_id, message_id],
+              headers: {"openai-beta" => "assistants=v2"},
               model: OpenAI::Beta::Threads::MessageDeleted,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+              options: options
             )
           end
 

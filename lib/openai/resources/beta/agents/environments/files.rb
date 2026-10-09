@@ -59,10 +59,11 @@ module OpenAI
               @client.request(
                 method: :post,
                 path: ["agents/environments/%1$s/files", environment_id],
+                headers: {"openai-beta" => "agents=v1"},
                 body: parsed[:hosted_environment_file_param],
                 model: OpenAI::Beta::Agents::Environments::EnvironmentFile,
                 security: {bearer_auth: true},
-                options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+                options: options
               )
             end
 
@@ -99,10 +100,11 @@ module OpenAI
                 method: :get,
                 path: ["agents/environments/%1$s/files", environment_id],
                 query: query,
+                headers: {"openai-beta" => "agents=v1"},
                 page: OpenAI::Internal::TokenPage,
                 model: OpenAI::Beta::Agents::Environments::EnvironmentFile,
                 security: {bearer_auth: true},
-                options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+                options: options
               )
             end
 
