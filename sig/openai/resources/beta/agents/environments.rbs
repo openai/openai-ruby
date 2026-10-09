@@ -7,10 +7,25 @@ module OpenAI
 
           attr_reader templates: OpenAI::Resources::Beta::Agents::Environments::Templates
 
+          def create: (
+            environment: OpenAI::Beta::Agents::EnvironmentCreateParams::Environment,
+            ?vault_ids: ::Array[String]?,
+            ?idempotency_key: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Beta::Agents::EnvironmentInfo
+
           def retrieve: (
             String environment_id,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Beta::Agents::EnvironmentInfo
+
+          def list: (
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::Agents::EnvironmentListParams::order,
+            ?type: OpenAI::Models::Beta::Agents::EnvironmentListParams::type_,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::CursorPage[OpenAI::Beta::Agents::EnvironmentInfo]
 
           def initialize: (client: OpenAI::Client) -> void
         end

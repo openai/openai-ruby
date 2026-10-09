@@ -37,11 +37,13 @@ module OpenAI
               @client.request(
                 method: :post,
                 path: ["agents/sessions/%1$s/events", session_id],
-                headers: parsed.slice(*header_params.keys).transform_keys(header_params),
+                headers: {"openai-beta" => "agents=v1"}.merge(
+                  parsed.slice(*header_params.keys).transform_keys(header_params)
+                ),
                 body: parsed.except(*header_params.keys),
                 model: NilClass,
                 security: {bearer_auth: true},
-                options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+                options: options
               )
             end
 
@@ -62,11 +64,15 @@ module OpenAI
               @client.request(
                 method: :get,
                 path: ["agents/sessions/%1$s/events", session_id],
-                headers: {"accept" => "text/event-stream", "accept-encoding" => "identity"},
+                headers: {
+                  "openai-beta" => "agents=v1",
+                  "accept" => "text/event-stream",
+                  "accept-encoding" => "identity"
+                },
                 stream: OpenAI::Internal::Stream,
                 model: OpenAI::Beta::AgentSessionEvent,
                 security: {bearer_auth: true},
-                options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **params[:request_options].to_h}
+                options: params[:request_options]
               )
             end
 

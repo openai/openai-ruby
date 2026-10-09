@@ -36,10 +36,11 @@ module OpenAI
               @client.request(
                 method: :post,
                 path: ["vaults/%1$s/credentials", vault_id],
+                headers: {"openai-beta" => "agents=v1"},
                 body: parsed,
                 model: OpenAI::Beta::Agents::Vaults::Credential,
                 security: {bearer_auth: true},
-                options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+                options: options
               )
             end
 
@@ -68,9 +69,10 @@ module OpenAI
               @client.request(
                 method: :get,
                 path: ["vaults/%1$s/credentials/%2$s", vault_id, credential_id],
+                headers: {"openai-beta" => "agents=v1"},
                 model: OpenAI::Beta::Agents::Vaults::Credential,
                 security: {bearer_auth: true},
-                options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+                options: options
               )
             end
 
@@ -108,10 +110,11 @@ module OpenAI
               @client.request(
                 method: :post,
                 path: ["vaults/%1$s/credentials/%2$s", vault_id, credential_id],
+                headers: {"openai-beta" => "agents=v1"},
                 body: parsed,
                 model: OpenAI::Beta::Agents::Vaults::Credential,
                 security: {bearer_auth: true},
-                options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+                options: options
               )
             end
 
@@ -151,10 +154,11 @@ module OpenAI
                 method: :get,
                 path: ["vaults/%1$s/credentials", vault_id],
                 query: query,
+                headers: {"openai-beta" => "agents=v1"},
                 page: OpenAI::Internal::CursorPage,
                 model: OpenAI::Beta::Agents::Vaults::Credential,
                 security: {bearer_auth: true},
-                options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+                options: options
               )
             end
 
@@ -183,9 +187,10 @@ module OpenAI
               @client.request(
                 method: :delete,
                 path: ["vaults/%1$s/credentials/%2$s", vault_id, credential_id],
+                headers: {"openai-beta" => "agents=v1"},
                 model: OpenAI::Beta::Agents::Vaults::CredentialDeleted,
                 security: {bearer_auth: true},
-                options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+                options: options
               )
             end
 

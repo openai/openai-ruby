@@ -31,10 +31,11 @@ module OpenAI
             @client.request(
               method: :post,
               path: "vaults",
+              headers: {"openai-beta" => "agents=v1"},
               body: parsed,
               model: OpenAI::Beta::Agents::Vault,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+              options: options
             )
           end
 
@@ -55,9 +56,10 @@ module OpenAI
             @client.request(
               method: :get,
               path: ["vaults/%1$s", vault_id],
+              headers: {"openai-beta" => "agents=v1"},
               model: OpenAI::Beta::Agents::Vault,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **params[:request_options].to_h}
+              options: params[:request_options]
             )
           end
 
@@ -93,10 +95,11 @@ module OpenAI
               method: :get,
               path: "vaults",
               query: query,
+              headers: {"openai-beta" => "agents=v1"},
               page: OpenAI::Internal::CursorPage,
               model: OpenAI::Beta::Agents::Vault,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+              options: options
             )
           end
 
@@ -117,9 +120,10 @@ module OpenAI
             @client.request(
               method: :delete,
               path: ["vaults/%1$s", vault_id],
+              headers: {"openai-beta" => "agents=v1"},
               model: OpenAI::Beta::Agents::VaultDeleted,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **params[:request_options].to_h}
+              options: params[:request_options]
             )
           end
 

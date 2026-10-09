@@ -41,10 +41,11 @@ module OpenAI
           @client.request(
             method: :post,
             path: ["vector_stores/%1$s/files", vector_store_id],
+            headers: {"openai-beta" => "assistants=v2"},
             body: parsed,
             model: OpenAI::VectorStores::VectorStoreFile,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: options
           )
         end
 
@@ -72,9 +73,10 @@ module OpenAI
           @client.request(
             method: :get,
             path: ["vector_stores/%1$s/files/%2$s", vector_store_id, file_id],
+            headers: {"openai-beta" => "assistants=v2"},
             model: OpenAI::VectorStores::VectorStoreFile,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: options
           )
         end
 
@@ -109,10 +111,11 @@ module OpenAI
           @client.request(
             method: :post,
             path: ["vector_stores/%1$s/files/%2$s", vector_store_id, file_id],
+            headers: {"openai-beta" => "assistants=v2"},
             body: parsed,
             model: OpenAI::VectorStores::VectorStoreFile,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: options
           )
         end
 
@@ -158,10 +161,11 @@ module OpenAI
             method: :get,
             path: ["vector_stores/%1$s/files", vector_store_id],
             query: query,
+            headers: {"openai-beta" => "assistants=v2"},
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::VectorStores::VectorStoreFile,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: options
           )
         end
 
@@ -192,9 +196,10 @@ module OpenAI
           @client.request(
             method: :delete,
             path: ["vector_stores/%1$s/files/%2$s", vector_store_id, file_id],
+            headers: {"openai-beta" => "assistants=v2"},
             model: OpenAI::VectorStores::VectorStoreFileDeleted,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: options
           )
         end
 
@@ -222,10 +227,11 @@ module OpenAI
           @client.request(
             method: :get,
             path: ["vector_stores/%1$s/files/%2$s/content", vector_store_id, file_id],
+            headers: {"openai-beta" => "assistants=v2"},
             page: OpenAI::Internal::Page,
             model: OpenAI::Models::VectorStores::FileContentResponse,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: options
           )
         end
 

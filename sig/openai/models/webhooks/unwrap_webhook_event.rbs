@@ -2,7 +2,9 @@ module OpenAI
   module Models
     module Webhooks
       type unwrap_webhook_event =
-        OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent
+        OpenAI::Webhooks::AgentEnvironmentFailedWebhookEvent
+        | OpenAI::Webhooks::AgentEnvironmentReadyWebhookEvent
+        | OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent
         | OpenAI::Webhooks::AgentSessionCreatedWebhookEvent
         | OpenAI::Webhooks::AgentSessionFailedWebhookEvent
         | OpenAI::Webhooks::AgentSessionIdleWebhookEvent

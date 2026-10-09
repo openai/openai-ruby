@@ -21,9 +21,10 @@ module OpenAI
             @client.request(
               method: :get,
               path: ["chatkit/threads/%1$s", thread_id],
+              headers: {"openai-beta" => "chatkit_beta=v1"},
               model: OpenAI::Beta::ChatKit::ChatKitThread,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "chatkit_beta=v1"}, **params[:request_options].to_h}
+              options: params[:request_options]
             )
           end
 
@@ -61,10 +62,11 @@ module OpenAI
               method: :get,
               path: "chatkit/threads",
               query: query,
+              headers: {"openai-beta" => "chatkit_beta=v1"},
               page: OpenAI::Internal::ConversationCursorPage,
               model: OpenAI::Beta::ChatKit::ChatKitThread,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "chatkit_beta=v1"}, **options}
+              options: options
             )
           end
 
@@ -84,9 +86,10 @@ module OpenAI
             @client.request(
               method: :delete,
               path: ["chatkit/threads/%1$s", thread_id],
+              headers: {"openai-beta" => "chatkit_beta=v1"},
               model: OpenAI::Models::Beta::ChatKit::ThreadDeleteResponse,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "chatkit_beta=v1"}, **params[:request_options].to_h}
+              options: params[:request_options]
             )
           end
 
@@ -123,10 +126,11 @@ module OpenAI
               method: :get,
               path: ["chatkit/threads/%1$s/items", thread_id],
               query: query,
+              headers: {"openai-beta" => "chatkit_beta=v1"},
               page: OpenAI::Internal::ConversationCursorPage,
               model: OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "chatkit_beta=v1"}, **options}
+              options: options
             )
           end
 

@@ -56,10 +56,11 @@ module OpenAI
               @client.request(
                 method: :post,
                 path: "agents/environments/templates",
+                headers: {"openai-beta" => "agents=v1"},
                 body: parsed,
                 model: OpenAI::Beta::Agents::Environments::EnvironmentTemplate,
                 security: {bearer_auth: true},
-                options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+                options: options
               )
             end
 
@@ -81,9 +82,10 @@ module OpenAI
               @client.request(
                 method: :get,
                 path: ["agents/environments/templates/%1$s", environment_template_id],
+                headers: {"openai-beta" => "agents=v1"},
                 model: OpenAI::Beta::Agents::Environments::EnvironmentTemplate,
                 security: {bearer_auth: true},
-                options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **params[:request_options].to_h}
+                options: params[:request_options]
               )
             end
 
@@ -137,10 +139,11 @@ module OpenAI
               @client.request(
                 method: :post,
                 path: ["agents/environments/templates/%1$s", environment_template_id],
+                headers: {"openai-beta" => "agents=v1"},
                 body: parsed,
                 model: OpenAI::Beta::Agents::Environments::EnvironmentTemplate,
                 security: {bearer_auth: true},
-                options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+                options: options
               )
             end
 
@@ -170,10 +173,11 @@ module OpenAI
                 method: :get,
                 path: "agents/environments/templates",
                 query: query,
+                headers: {"openai-beta" => "agents=v1"},
                 page: OpenAI::Internal::CursorPage,
                 model: OpenAI::Beta::Agents::Environments::EnvironmentTemplate,
                 security: {bearer_auth: true},
-                options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+                options: options
               )
             end
 
@@ -195,9 +199,10 @@ module OpenAI
               @client.request(
                 method: :delete,
                 path: ["agents/environments/templates/%1$s", environment_template_id],
+                headers: {"openai-beta" => "agents=v1"},
                 model: OpenAI::Beta::Agents::Environments::EnvironmentTemplateDeleted,
                 security: {bearer_auth: true},
-                options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **params[:request_options].to_h}
+                options: params[:request_options]
               )
             end
 

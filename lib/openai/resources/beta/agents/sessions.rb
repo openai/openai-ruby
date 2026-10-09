@@ -71,10 +71,11 @@ module OpenAI
             @client.request(
               method: :post,
               path: "agents/sessions",
+              headers: {"openai-beta" => "agents=v1"},
               body: parsed,
               model: OpenAI::Beta::AgentSession,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+              options: options
             )
           end
 
@@ -127,12 +128,16 @@ module OpenAI
             @client.request(
               method: :post,
               path: "agents/sessions",
-              headers: {"accept" => "text/event-stream", "accept-encoding" => "identity"},
+              headers: {
+                "openai-beta" => "agents=v1",
+                "accept" => "text/event-stream",
+                "accept-encoding" => "identity"
+              },
               body: parsed,
               stream: OpenAI::Internal::Stream,
               model: OpenAI::Beta::AgentSessionEvent,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+              options: options
             )
           end
 
@@ -153,9 +158,10 @@ module OpenAI
             @client.request(
               method: :get,
               path: ["agents/sessions/%1$s", session_id],
+              headers: {"openai-beta" => "agents=v1"},
               model: OpenAI::Beta::AgentSession,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **params[:request_options].to_h}
+              options: params[:request_options]
             )
           end
 
@@ -186,10 +192,11 @@ module OpenAI
             @client.request(
               method: :post,
               path: ["agents/sessions/%1$s", session_id],
+              headers: {"openai-beta" => "agents=v1"},
               body: parsed,
               model: OpenAI::Beta::AgentSession,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+              options: options
             )
           end
 
@@ -225,10 +232,11 @@ module OpenAI
               method: :get,
               path: "agents/sessions",
               query: query,
+              headers: {"openai-beta" => "agents=v1"},
               page: OpenAI::Internal::CursorPage,
               model: OpenAI::Beta::AgentSession,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+              options: options
             )
           end
 
@@ -252,9 +260,10 @@ module OpenAI
             @client.request(
               method: :delete,
               path: ["agents/sessions/%1$s", session_id],
+              headers: {"openai-beta" => "agents=v1"},
               model: OpenAI::Beta::AgentSessionDeleted,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **params[:request_options].to_h}
+              options: params[:request_options]
             )
           end
 

@@ -99,10 +99,11 @@ module OpenAI
           @client.request(
             method: :post,
             path: "assistants",
+            headers: {"openai-beta" => "assistants=v2"},
             body: parsed,
             model: OpenAI::Beta::Assistant,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: options
           )
         end
 
@@ -124,9 +125,10 @@ module OpenAI
           @client.request(
             method: :get,
             path: ["assistants/%1$s", assistant_id],
+            headers: {"openai-beta" => "assistants=v2"},
             model: OpenAI::Beta::Assistant,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **params[:request_options].to_h}
+            options: params[:request_options]
           )
         end
 
@@ -227,10 +229,11 @@ module OpenAI
           @client.request(
             method: :post,
             path: ["assistants/%1$s", assistant_id],
+            headers: {"openai-beta" => "assistants=v2"},
             body: parsed,
             model: OpenAI::Beta::Assistant,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: options
           )
         end
 
@@ -272,10 +275,11 @@ module OpenAI
             method: :get,
             path: "assistants",
             query: query,
+            headers: {"openai-beta" => "assistants=v2"},
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::Beta::Assistant,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: options
           )
         end
 
@@ -297,9 +301,10 @@ module OpenAI
           @client.request(
             method: :delete,
             path: ["assistants/%1$s", assistant_id],
+            headers: {"openai-beta" => "assistants=v2"},
             model: OpenAI::Beta::AssistantDeleted,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **params[:request_options].to_h}
+            options: params[:request_options]
           )
         end
 

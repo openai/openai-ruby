@@ -59,10 +59,11 @@ module OpenAI
           @client.request(
             method: :post,
             path: "agents",
+            headers: {"openai-beta" => "agents=v1"},
             body: parsed,
             model: OpenAI::Beta::Agent,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+            options: options
           )
         end
 
@@ -83,9 +84,10 @@ module OpenAI
           @client.request(
             method: :get,
             path: ["agents/%1$s", agent_id],
+            headers: {"openai-beta" => "agents=v1"},
             model: OpenAI::Beta::Agent,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **params[:request_options].to_h}
+            options: params[:request_options]
           )
         end
 
@@ -138,10 +140,11 @@ module OpenAI
           @client.request(
             method: :post,
             path: ["agents/%1$s", agent_id],
+            headers: {"openai-beta" => "agents=v1"},
             body: parsed,
             model: OpenAI::Beta::Agent,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+            options: options
           )
         end
 
@@ -171,10 +174,11 @@ module OpenAI
             method: :get,
             path: "agents",
             query: query,
+            headers: {"openai-beta" => "agents=v1"},
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::Beta::Agent,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **options}
+            options: options
           )
         end
 
@@ -195,9 +199,10 @@ module OpenAI
           @client.request(
             method: :delete,
             path: ["agents/%1$s", agent_id],
+            headers: {"openai-beta" => "agents=v1"},
             model: OpenAI::Beta::AgentDeleted,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "agents=v1"}, **params[:request_options].to_h}
+            options: params[:request_options]
           )
         end
 

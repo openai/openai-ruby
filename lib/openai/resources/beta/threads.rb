@@ -50,10 +50,11 @@ module OpenAI
           @client.request(
             method: :post,
             path: "threads",
+            headers: {"openai-beta" => "assistants=v2"},
             body: parsed,
             model: OpenAI::Beta::Thread,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: options
           )
         end
 
@@ -75,9 +76,10 @@ module OpenAI
           @client.request(
             method: :get,
             path: ["threads/%1$s", thread_id],
+            headers: {"openai-beta" => "assistants=v2"},
             model: OpenAI::Beta::Thread,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **params[:request_options].to_h}
+            options: params[:request_options]
           )
         end
 
@@ -114,10 +116,11 @@ module OpenAI
           @client.request(
             method: :post,
             path: ["threads/%1$s", thread_id],
+            headers: {"openai-beta" => "assistants=v2"},
             body: parsed,
             model: OpenAI::Beta::Thread,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: options
           )
         end
 
@@ -139,9 +142,10 @@ module OpenAI
           @client.request(
             method: :delete,
             path: ["threads/%1$s", thread_id],
+            headers: {"openai-beta" => "assistants=v2"},
             model: OpenAI::Beta::ThreadDeleted,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **params[:request_options].to_h}
+            options: params[:request_options]
           )
         end
 
@@ -272,10 +276,11 @@ module OpenAI
           @client.request(
             method: :post,
             path: "threads/runs",
+            headers: {"openai-beta" => "assistants=v2"},
             body: parsed,
             model: OpenAI::Beta::Threads::Run,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: options
           )
         end
 
@@ -408,12 +413,16 @@ module OpenAI
           @client.request(
             method: :post,
             path: "threads/runs",
-            headers: {"accept" => "text/event-stream", "accept-encoding" => "identity"},
+            headers: {
+              "openai-beta" => "assistants=v2",
+              "accept" => "text/event-stream",
+              "accept-encoding" => "identity"
+            },
             body: parsed,
             stream: OpenAI::Internal::Stream,
             model: OpenAI::Beta::AssistantStreamEvent,
             security: {bearer_auth: true},
-            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
+            options: options
           )
         end
 
