@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.102.0](https://github.com/openai/openai-ruby/compare/v0.101.1...v0.102.0) (2026-10-09)
+
+
+### Features
+
+* **api:** add prewarmed hosted environments ([#818](https://github.com/openai/openai-ruby/issues/818)) ([a9e8015](https://github.com/openai/openai-ruby/commit/a9e80153b030395eca41bf4c6cce0b1e7fcea4dd))
+
 ## [0.101.1](https://github.com/openai/openai-ruby/compare/v0.101.0...v0.101.1) (2026-10-08)
 
 
