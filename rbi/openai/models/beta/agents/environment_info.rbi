@@ -126,6 +126,9 @@ module OpenAI
 
             CONNECTED = T.let(:connected, OpenAI::Beta::Agents::EnvironmentInfo::Status::TaggedSymbol)
             DISCONNECTED = T.let(:disconnected, OpenAI::Beta::Agents::EnvironmentInfo::Status::TaggedSymbol)
+            # The sandbox is stopped and can be resumed from its private checkpoint.
+            SUSPENDED = T.let(:suspended, OpenAI::Beta::Agents::EnvironmentInfo::Status::TaggedSymbol)
+
             EXPIRED = T.let(:expired, OpenAI::Beta::Agents::EnvironmentInfo::Status::TaggedSymbol)
             FAILED = T.let(:failed, OpenAI::Beta::Agents::EnvironmentInfo::Status::TaggedSymbol)
 

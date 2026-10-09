@@ -94,6 +94,12 @@ module OpenAI
           # The environment is disconnected.
           DISCONNECTED = :disconnected
 
+          # The environment is stopped and can be resumed from its private checkpoint.
+          SUSPENDED = :suspended
+
+          # The environment and its private checkpoint have expired.
+          EXPIRED = :expired
+
           # The environment failed to connect.
           FAILED = :failed
 

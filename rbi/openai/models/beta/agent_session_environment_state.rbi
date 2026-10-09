@@ -152,6 +152,12 @@ module OpenAI
           # The environment is disconnected.
           DISCONNECTED = T.let(:disconnected, OpenAI::Beta::AgentSessionEnvironmentState::Status::TaggedSymbol)
 
+          # The environment is stopped and can be resumed from its private checkpoint.
+          SUSPENDED = T.let(:suspended, OpenAI::Beta::AgentSessionEnvironmentState::Status::TaggedSymbol)
+
+          # The environment and its private checkpoint have expired.
+          EXPIRED = T.let(:expired, OpenAI::Beta::AgentSessionEnvironmentState::Status::TaggedSymbol)
+
           # The environment failed to connect.
           FAILED = T.let(:failed, OpenAI::Beta::AgentSessionEnvironmentState::Status::TaggedSymbol)
 
