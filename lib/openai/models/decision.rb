@@ -36,7 +36,7 @@ module OpenAI
 
         variant :score, -> { OpenAI::Decision::Answer::Score }
 
-        # The host may decline one question without disclosing its refusal score.
+        # The model declined to answer this question. Other questions in the same request can still receive answers.
         variant :refusal, -> { OpenAI::Decision::Answer::Refusal }
 
         class Predicate < OpenAI::Internal::Type::BaseModel
@@ -234,7 +234,8 @@ module OpenAI
           required :type, const: :refusal
 
           # @!method initialize(name:, type: :refusal)
-          #   The host may decline one question without disclosing its refusal score.
+          #   The model declined to answer this question. Other questions in the same request
+          #   can still receive answers.
           #
           #   @param name [String, nil]
           #
