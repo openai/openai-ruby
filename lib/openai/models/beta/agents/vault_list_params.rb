@@ -22,6 +22,15 @@ module OpenAI
           #   @return [Integer, nil]
           optional :limit, Integer, nil?: true
 
+          # @!attribute metadata
+          #   Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+          #   match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+          #   characters. Filtering is eventually consistent; metadata changes may take time
+          #   to appear.
+          #
+          #   @return [Hash{Symbol=>String}, nil]
+          optional :metadata, OpenAI::Internal::Type::HashOf[String]
+
           # @!attribute order
           #   Sort order by the `created_at` timestamp. Use `asc` for ascending order or
           #   `desc` for descending order. Defaults to `desc`.
@@ -36,13 +45,19 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Beta::Agents::VaultStatus, Array<Symbol, OpenAI::Models::Beta::Agents::VaultStatus>, nil]
           optional :status, union: -> { OpenAI::Beta::Agents::VaultStatusFilter }
 
-          # @!method initialize(after: nil, limit: nil, order: nil, status: nil, request_options: {})
+          # @!method initialize(after: nil, limit: nil, metadata: nil, order: nil, status: nil, request_options: {})
           #   @param after [String]
           #     Return resources after this resource ID in the selected order.
           #
           #   @param limit [Integer, nil]
           #     The maximum number of resources to return. Defaults to 20. Values are clamped
           #     between 1 and 100.
+          #
+          #   @param metadata [Hash{Symbol=>String}]
+          #     Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+          #     match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+          #     characters. Filtering is eventually consistent; metadata changes may take time
+          #     to appear.
           #
           #   @param order [Symbol, OpenAI::Models::Beta::Agents::VaultListParams::Order]
           #     Sort order by the `created_at` timestamp. Use `asc` for ascending order or
