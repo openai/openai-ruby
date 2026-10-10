@@ -6,6 +6,7 @@ module OpenAI
           {
             ?after: String,
             ?limit: Integer?,
+            ?metadata: ::Hash[Symbol, String],
             ?order: OpenAI::Models::Beta::Agents::VaultListParams::order,
             ?status: OpenAI::Models::Beta::Agents::vault_status_filter,
             ?request_options: OpenAI::request_opts
@@ -24,6 +25,18 @@ module OpenAI
           # The maximum number of resources to return. Defaults to 20. Values are clamped
           # between 1 and 100.
           attr_accessor limit: Integer?
+
+          # Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+          # match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+          # characters. Filtering is eventually consistent; metadata changes may take time
+          # to appear.
+          attr_reader metadata: ::Hash[Symbol, String]?
+
+          # Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+          # match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+          # characters. Filtering is eventually consistent; metadata changes may take time
+          # to appear.
+          def metadata=: (::Hash[Symbol, String]) -> ::Hash[Symbol, String]
 
           # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
           # `desc` for descending order. Defaults to `desc`.
@@ -50,6 +63,11 @@ module OpenAI
           # @param limit
           #   The maximum number of resources to return. Defaults to 20. Values are clamped
           #   between 1 and 100.
+          # @param metadata
+          #   Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+          #   match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+          #   characters. Filtering is eventually consistent; metadata changes may take time
+          #   to appear.
           # @param order
           #   Sort order by the `created_at` timestamp. Use `asc` for ascending order or
           #   `desc` for descending order. Defaults to `desc`.
@@ -59,6 +77,7 @@ module OpenAI
           def initialize: (
             ?after: String,
             ?limit: Integer?,
+            ?metadata: ::Hash[Symbol, String],
             ?order: OpenAI::Models::Beta::Agents::VaultListParams::order,
             ?status: OpenAI::Models::Beta::Agents::vault_status_filter,
             ?request_options: OpenAI::request_opts
@@ -67,6 +86,7 @@ module OpenAI
           def to_hash: -> {
             ?after: String,
             ?limit: Integer?,
+            ?metadata: ::Hash[Symbol, String],
             ?order: OpenAI::Models::Beta::Agents::VaultListParams::order,
             ?status: OpenAI::Models::Beta::Agents::vault_status_filter,
             ?request_options: OpenAI::RequestOptions

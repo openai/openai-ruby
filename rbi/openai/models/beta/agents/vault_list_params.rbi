@@ -31,6 +31,16 @@ module OpenAI
           sig { returns(T.nilable(Integer)) }
           attr_accessor :limit
 
+          # Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+          # match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+          # characters. Filtering is eventually consistent; metadata changes may take time
+          # to appear.
+          sig { returns(T.nilable(T::Hash[Symbol, String])) }
+          attr_reader :metadata
+
+          sig { params(metadata: T::Hash[Symbol, String]).void }
+          attr_writer :metadata
+
           # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
           # `desc` for descending order. Defaults to `desc`.
           sig { returns(T.nilable(OpenAI::Beta::Agents::VaultListParams::Order::OrSymbol)) }
@@ -71,6 +81,8 @@ module OpenAI
 
               limit: T.nilable(Integer),
 
+              metadata: T::Hash[Symbol, String],
+
               order: OpenAI::Beta::Agents::VaultListParams::Order::OrSymbol,
 
               status: T.any(
@@ -91,6 +103,12 @@ module OpenAI
             # between 1 and 100.
             limit: nil,
 
+            # Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+            # match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+            # characters. Filtering is eventually consistent; metadata changes may take time
+            # to appear.
+            metadata: nil,
+
             # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
             # `desc` for descending order. Defaults to `desc`.
             order: nil,
@@ -108,6 +126,7 @@ module OpenAI
               {
                 after: String,
                 limit: T.nilable(Integer),
+                metadata: T::Hash[Symbol, String],
                 order: OpenAI::Beta::Agents::VaultListParams::Order::OrSymbol,
                 status: T.any(
                   OpenAI::Beta::Agents::VaultStatus::OrSymbol,

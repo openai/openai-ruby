@@ -99,6 +99,7 @@ module OpenAI
                 vault_id: String,
                 after: String,
                 limit: T.nilable(Integer),
+                metadata: T::Hash[Symbol, String],
                 order: OpenAI::Beta::Agents::Vaults::CredentialListParams::Order::OrSymbol,
                 status: T.any(
                   OpenAI::Beta::Agents::VaultStatus::OrSymbol,
@@ -116,6 +117,11 @@ module OpenAI
               # The maximum number of resources to return. Defaults to 20. Values are clamped
               # between 1 and 100.
               limit: nil,
+              # Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+              # match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+              # characters. Filtering is eventually consistent; metadata changes may take time
+              # to appear.
+              metadata: nil,
               # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
               # `desc` for descending order. Defaults to `desc`.
               order: nil,
