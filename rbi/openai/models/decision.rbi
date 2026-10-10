@@ -396,7 +396,8 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
-          # The host may decline one question without disclosing its refusal score.
+          # The model declined to answer this question. Other questions in the same request
+          # can still receive answers.
           sig do
             params(
 

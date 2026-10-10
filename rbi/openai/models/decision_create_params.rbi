@@ -15,10 +15,10 @@ module OpenAI
         )
       end
 
-      # Shared evidence, as a string or an array of user messages containing text and
-      # inline images. Non-user roles, function calls, function-call outputs, files,
-      # audio, and item references are not supported. At most 128 image parts are
-      # allowed across all messages in one request.
+      # The text or images to evaluate for every question. Provide a text string or user
+      # messages containing text and inline images. Images must be inline data URLs; at
+      # most 128 images are allowed across all messages in one request. External URLs,
+      # files, audio, tools, and item references are not supported.
       sig { returns(OpenAI::DecisionCreateParams::Input::Variants) }
       attr_accessor :input
 
@@ -66,10 +66,10 @@ module OpenAI
       end
       def self.new(
 
-        # Shared evidence, as a string or an array of user messages containing text and
-        # inline images. Non-user roles, function calls, function-call outputs, files,
-        # audio, and item references are not supported. At most 128 image parts are
-        # allowed across all messages in one request.
+        # The text or images to evaluate for every question. Provide a text string or user
+        # messages containing text and inline images. Images must be inline data URLs; at
+        # most 128 images are allowed across all messages in one request. External URLs,
+        # files, audio, tools, and item references are not supported.
         input:,
 
         model:,
@@ -104,10 +104,10 @@ module OpenAI
       def to_hash
       end
 
-      # Shared evidence, as a string or an array of user messages containing text and
-      # inline images. Non-user roles, function calls, function-call outputs, files,
-      # audio, and item references are not supported. At most 128 image parts are
-      # allowed across all messages in one request.
+      # The text or images to evaluate for every question. Provide a text string or user
+      # messages containing text and inline images. Images must be inline data URLs; at
+      # most 128 images are allowed across all messages in one request. External URLs,
+      # files, audio, tools, and item references are not supported.
       module Input
         extend OpenAI::Internal::Type::Union
 
@@ -157,6 +157,7 @@ module OpenAI
           sig { params(name: String).void }
           attr_writer :name
 
+          # Estimate how likely it is that a statement about the input is true.
           sig do
             params(
 
@@ -214,6 +215,7 @@ module OpenAI
           sig { params(name: String).void }
           attr_writer :name
 
+          # Choose from the supplied options based on the input.
           sig do
             params(
 
@@ -338,6 +340,7 @@ module OpenAI
           sig { params(name: String).void }
           attr_writer :name
 
+          # Rate the input against the supplied ordered levels.
           sig do
             params(
 

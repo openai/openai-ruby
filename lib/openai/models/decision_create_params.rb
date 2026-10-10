@@ -8,10 +8,10 @@ module OpenAI
       include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute input
-      #   Shared evidence, as a string or an array of user messages containing text and
-      #   inline images. Non-user roles, function calls, function-call outputs, files,
-      #   audio, and item references are not supported. At most 128 image parts are
-      #   allowed across all messages in one request.
+      #   The text or images to evaluate for every question. Provide a text string or user
+      #   messages containing text and inline images. Images must be inline data URLs; at
+      #   most 128 images are allowed across all messages in one request. External URLs,
+      #   files, audio, tools, and item references are not supported.
       #
       #   @return [String, Array<OpenAI::Models::DecisionInputMessage>]
       required :input, union: -> { OpenAI::DecisionCreateParams::Input }
@@ -35,10 +35,10 @@ module OpenAI
 
       # @!method initialize(input:, model:, questions:, safety_identifier: nil, request_options: {})
       #   @param input [String, Array<OpenAI::Models::DecisionInputMessage>]
-      #     Shared evidence, as a string or an array of user messages containing text and
-      #     inline images. Non-user roles, function calls, function-call outputs, files,
-      #     audio, and item references are not supported. At most 128 image parts are
-      #     allowed across all messages in one request.
+      #     The text or images to evaluate for every question. Provide a text string or user
+      #     messages containing text and inline images. Images must be inline data URLs; at
+      #     most 128 images are allowed across all messages in one request. External URLs,
+      #     files, audio, tools, and item references are not supported.
       #
       #   @param model [String]
       #
@@ -50,10 +50,10 @@ module OpenAI
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
-      # Shared evidence, as a string or an array of user messages containing text and
-      # inline images. Non-user roles, function calls, function-call outputs, files,
-      # audio, and item references are not supported. At most 128 image parts are
-      # allowed across all messages in one request.
+      # The text or images to evaluate for every question. Provide a text string or user
+      # messages containing text and inline images. Images must be inline data URLs; at
+      # most 128 images are allowed across all messages in one request. External URLs,
+      # files, audio, tools, and item references are not supported.
       module Input
         extend OpenAI::Internal::Type::Union
 
@@ -74,10 +74,13 @@ module OpenAI
 
         discriminator :type
 
+        # Estimate how likely it is that a statement about the input is true.
         variant :predicate, -> { OpenAI::DecisionCreateParams::Question::Predicate }
 
+        # Choose from the supplied options based on the input.
         variant :choice, -> { OpenAI::DecisionCreateParams::Question::Choice }
 
+        # Rate the input against the supplied ordered levels.
         variant :score, -> { OpenAI::DecisionCreateParams::Question::Score }
 
         class Predicate < OpenAI::Internal::Type::BaseModel
@@ -98,6 +101,8 @@ module OpenAI
           optional :name, String
 
           # @!method initialize(instructions:, name: nil, type: :predicate)
+          #   Estimate how likely it is that a statement about the input is true.
+          #
           #   @param instructions [String]
           #
           #   @param name [String]
@@ -132,6 +137,8 @@ module OpenAI
           optional :name, String
 
           # @!method initialize(choices:, instructions:, name: nil, type: :choice)
+          #   Choose from the supplied options based on the input.
+          #
           #   @param choices [Array<OpenAI::Models::DecisionCreateParams::Question::Choice::Choice>]
           #
           #   @param instructions [String]
@@ -200,6 +207,8 @@ module OpenAI
           optional :name, String
 
           # @!method initialize(instructions:, levels:, name: nil, type: :score)
+          #   Rate the input against the supplied ordered levels.
+          #
           #   @param instructions [String]
           #
           #   @param levels [Array<OpenAI::Models::DecisionCreateParams::Question::Score::Level>]
