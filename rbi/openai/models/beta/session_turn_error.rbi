@@ -85,6 +85,9 @@ module OpenAI
             OpenAI::Beta::SessionTurnError::Code::TaggedSymbol
           )
 
+          # Billing is not active for the account.
+          BILLING_NOT_ACTIVE = T.let(:billing_not_active, OpenAI::Beta::SessionTurnError::Code::TaggedSymbol)
+
           # The organization has no API credits remaining.
           CREDIT_BALANCE_EXHAUSTED = T.let(
             :credit_balance_exhausted,
