@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.104.0](https://github.com/openai/openai-ruby/compare/v0.103.0...v0.104.0) (2026-10-10)
+
+
+### Features
+
+* **api:** add billing_not_active session error code ([#829](https://github.com/openai/openai-ruby/issues/829)) ([519de99](https://github.com/openai/openai-ruby/commit/519de999e68e9ac45a6fccf59cd316e3ea98da36))
+* **api:** add vault updates and metadata filters ([#824](https://github.com/openai/openai-ruby/issues/824)) ([9967b42](https://github.com/openai/openai-ruby/commit/9967b42dcf457aae54e642d4ebb16ea171480d73))
+
+
+### Chores
+
+* **api:** clarify Decisions question and answer descriptions ([#828](https://github.com/openai/openai-ruby/issues/828)) ([bc4a105](https://github.com/openai/openai-ruby/commit/bc4a1050da3d94bc2570ded2ae76dee78470f934))
+* **api:** document 128-character safety identifiers ([#827](https://github.com/openai/openai-ruby/issues/827)) ([951d306](https://github.com/openai/openai-ruby/commit/951d306a7d4365041e530bdb9ab9846673068265))
+* **api:** document Files API rate-limit responses ([#826](https://github.com/openai/openai-ruby/issues/826)) ([9208b6f](https://github.com/openai/openai-ruby/commit/9208b6ff9e5bbe216377ce4622865ae5e94e1d22))
+
 ## [0.103.0](https://github.com/openai/openai-ruby/compare/v0.102.0...v0.103.0) (2026-10-09)
 
 
