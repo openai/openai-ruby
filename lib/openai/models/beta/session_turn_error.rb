@@ -49,6 +49,9 @@ module OpenAI
           # The organization has reached its OpenAI-assigned usage limit.
           ORGANIZATION_USAGE_LIMIT_EXCEEDED = :organization_usage_limit_exceeded
 
+          # Billing is not active for the account.
+          BILLING_NOT_ACTIVE = :billing_not_active
+
           # The organization has no API credits remaining.
           CREDIT_BALANCE_EXHAUSTED = :credit_balance_exhausted
 
