@@ -30,7 +30,7 @@ module OpenAI
           discriminator :type
 
           # @api private
-          def self.resolve_variant(value)
+          def self.resolve_variant(value, state: nil)
             if value.is_a?(Hash) && !value.key?(:type) && !value.key?("type")
               OpenAI::Audio::VoiceCreateParams::Body::AudioSample
             else
