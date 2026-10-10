@@ -16,9 +16,17 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Beta::Agents::Vault
 
+          def update: (
+            String vault_id,
+            ?metadata: ::Hash[Symbol, String],
+            ?name: String?,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Beta::Agents::Vault
+
           def list: (
             ?after: String,
             ?limit: Integer?,
+            ?metadata: ::Hash[Symbol, String],
             ?order: OpenAI::Models::Beta::Agents::VaultListParams::order,
             ?status: OpenAI::Models::Beta::Agents::vault_status_filter,
             ?request_options: OpenAI::request_opts

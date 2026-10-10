@@ -47,12 +47,38 @@ module OpenAI
           )
           end
 
+          # Updates the name or metadata of an active vault. Omitted fields remain
+          # unchanged. See
+          # [vaults](https://developers.openai.com/api/docs/guides/agents-api/tools/vaults).
+          sig {
+            params(
+              vault_id: String,
+              metadata: T::Hash[Symbol, String],
+              name: T.nilable(String),
+              request_options: OpenAI::RequestOptions::OrHash
+            )
+              .returns(OpenAI::Beta::Agents::Vault)
+          }
+          def update(
+            # The ID of the vault.
+            vault_id,
+            # Replaces all metadata. Omit to leave unchanged, or pass {} to clear it. Up to 16
+            # string key-value pairs, with keys up to 64 and values up to 512 characters.
+            metadata: nil,
+            # A replacement name. Omit to leave unchanged, or pass null to clear it. The name
+            # is trimmed before storage. It must contain 1 to 256 UTF-8 bytes after trimming.
+            name: nil,
+            request_options: {}
+          )
+          end
+
           # Lists vaults using ID-based pagination. See
           # [vaults](https://developers.openai.com/api/docs/guides/agents-api/tools/vaults).
           sig {
             params(
               after: String,
               limit: T.nilable(Integer),
+              metadata: T::Hash[Symbol, String],
               order: OpenAI::Beta::Agents::VaultListParams::Order::OrSymbol,
               status: T.any(
                 OpenAI::Beta::Agents::VaultStatus::OrSymbol,
@@ -68,6 +94,11 @@ module OpenAI
             # The maximum number of resources to return. Defaults to 20. Values are clamped
             # between 1 and 100.
             limit: nil,
+            # Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+            # match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+            # characters. Filtering is eventually consistent; metadata changes may take time
+            # to appear.
+            metadata: nil,
             # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
             # `desc` for descending order. Defaults to `desc`.
             order: nil,

@@ -533,6 +533,7 @@ require_relative "openai/models/beta/agents/vaults/mcp_oauth_token_endpoint_auth
 require_relative "openai/models/beta/agents/vaults/mcp_oauth_token_endpoint_auth_rotate_param"
 require_relative "openai/models/beta/agents/vault_status"
 require_relative "openai/models/beta/agents/vault_status_filter"
+require_relative "openai/models/beta/agents/vault_update_params"
 require_relative "openai/models/beta/agent_send_subagent_input_call_item"
 require_relative "openai/models/beta/agent_session"
 require_relative "openai/models/beta/agent_session_assistant_message"

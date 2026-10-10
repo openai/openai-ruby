@@ -39,6 +39,24 @@ class OpenAI::Test::Resources::Beta::Agents::VaultsTest < OpenAI::Test::Resource
     end
   end
 
+  def test_update
+    response = @openai.beta.agents.vaults.update("vault_id")
+
+    assert_pattern do
+      response => OpenAI::Beta::Agents::Vault
+    end
+
+    assert_pattern do
+      response => {
+          id: String,
+          created_at: Integer,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]),
+          name: String | nil,
+          object: Symbol
+        }
+    end
+  end
+
   def test_list
     response = @openai.beta.agents.vaults.list
 

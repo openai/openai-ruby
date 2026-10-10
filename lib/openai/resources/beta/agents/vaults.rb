@@ -63,10 +63,45 @@ module OpenAI
             )
           end
 
+          # Updates the name or metadata of an active vault. Omitted fields remain
+          # unchanged. See
+          # [vaults](https://developers.openai.com/api/docs/guides/agents-api/tools/vaults).
+          #
+          # @overload update(vault_id, metadata: nil, name: nil, request_options: {})
+          #
+          # @param vault_id [String]
+          #   The ID of the vault.
+          #
+          # @param metadata [Hash{Symbol=>String}]
+          #   Replaces all metadata. Omit to leave unchanged, or pass {} to clear it. Up to 16
+          #   string key-value pairs, with keys up to 64 and values up to 512 characters.
+          #
+          # @param name [String, nil]
+          #   A replacement name. Omit to leave unchanged, or pass null to clear it. The name
+          #   is trimmed before storage. It must contain 1 to 256 UTF-8 bytes after trimming.
+          #
+          # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+          #
+          # @return [OpenAI::Models::Beta::Agents::Vault]
+          #
+          # @see OpenAI::Models::Beta::Agents::VaultUpdateParams
+          def update(vault_id, params = {})
+            parsed, options = OpenAI::Beta::Agents::VaultUpdateParams.dump_request(params)
+            @client.request(
+              method: :post,
+              path: ["vaults/%1$s", vault_id],
+              headers: {"openai-beta" => "agents=v1"},
+              body: parsed,
+              model: OpenAI::Beta::Agents::Vault,
+              security: {bearer_auth: true},
+              options: options
+            )
+          end
+
           # Lists vaults using ID-based pagination. See
           # [vaults](https://developers.openai.com/api/docs/guides/agents-api/tools/vaults).
           #
-          # @overload list(after: nil, limit: nil, order: nil, status: nil, request_options: {})
+          # @overload list(after: nil, limit: nil, metadata: nil, order: nil, status: nil, request_options: {})
           #
           # @param after [String]
           #   Return resources after this resource ID in the selected order.
@@ -74,6 +109,12 @@ module OpenAI
           # @param limit [Integer, nil]
           #   The maximum number of resources to return. Defaults to 20. Values are clamped
           #   between 1 and 100.
+          #
+          # @param metadata [Hash{Symbol=>String}]
+          #   Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+          #   match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+          #   characters. Filtering is eventually consistent; metadata changes may take time
+          #   to appear.
           #
           # @param order [Symbol, OpenAI::Models::Beta::Agents::VaultListParams::Order]
           #   Sort order by the `created_at` timestamp. Use `asc` for ascending order or
