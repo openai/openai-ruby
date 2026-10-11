@@ -35,6 +35,16 @@ module OpenAI
           sig { returns(T.nilable(T::Hash[Symbol, String])) }
           attr_accessor :metadata
 
+          # Omit to retain the limit; null or a null limit removes it without resetting
+          # spend.
+          sig { returns(T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::SpendControl)) }
+          attr_reader :spend_control
+
+          sig {
+            params(spend_control: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::SpendControl::OrHash)).void
+          }
+          attr_writer :spend_control
+
           sig do
             params(
 
@@ -43,6 +53,8 @@ module OpenAI
               agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent::OrHash,
 
               metadata: T.nilable(T::Hash[Symbol, String]),
+
+              spend_control: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::SpendControl::OrHash),
 
               request_options: OpenAI::RequestOptions::OrHash
             )
@@ -60,6 +72,10 @@ module OpenAI
             # characters.
             metadata: nil,
 
+            # Omit to retain the limit; null or a null limit removes it without resetting
+            # spend.
+            spend_control: nil,
+
             request_options: {}
           )
           end
@@ -70,6 +86,7 @@ module OpenAI
                 session_id: String,
                 agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
                 metadata: T.nilable(T::Hash[Symbol, String]),
+                spend_control: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::SpendControl),
                 request_options: OpenAI::RequestOptions
               }
             )
@@ -240,6 +257,45 @@ module OpenAI
               def self.values
               end
             end
+          end
+
+          class SpendControl < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Agents::SessionUpdateParams::SpendControl,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Positive USD cents, or null to remove the limit.
+            sig { returns(T.nilable(Integer)) }
+            attr_accessor :limit
+
+            # Omit to retain the limit; null or a null limit removes it without resetting
+            # spend.
+            sig do
+              params(
+
+                limit: T.nilable(Integer)
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Positive USD cents, or null to remove the limit.
+
+              limit:
+            )
+            end
+
+            sig do
+              override.returns(
+                {limit: T.nilable(Integer)}
+              )
+            end
+            def to_hash
+            end
+
           end
 
         end

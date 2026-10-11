@@ -69,6 +69,14 @@ module OpenAI
         sig { returns(T::Array[String]) }
         attr_accessor :vault_ids
 
+        # Configured spending limit and best-effort consumption, in USD cents. Unlimited
+        # sessions omit this object.
+        sig { returns(T.nilable(OpenAI::Beta::AgentSession::SpendControl)) }
+        attr_reader :spend_control
+
+        sig { params(spend_control: OpenAI::Beta::AgentSession::SpendControl::OrHash).void }
+        attr_writer :spend_control
+
         # A Managed Agents session.
         sig do
           params(
@@ -104,6 +112,8 @@ module OpenAI
             usage: T.nilable(OpenAI::Beta::TokenUsage::OrHash),
 
             vault_ids: T::Array[String],
+
+            spend_control: OpenAI::Beta::AgentSession::SpendControl::OrHash,
 
             object: Symbol
           )
@@ -145,6 +155,10 @@ module OpenAI
           # The IDs of vaults made available to the session.
           vault_ids:,
 
+          # Configured spending limit and best-effort consumption, in USD cents. Unlimited
+          # sessions omit this object.
+          spend_control: nil,
+
           # The object type. Always `agent.session`.
 
           object: :"agent.session"
@@ -165,7 +179,8 @@ module OpenAI
               required_actions: T::Array[OpenAI::Beta::AgentSession::RequiredAction::Variants],
               status: OpenAI::Beta::AgentSession::Status::TaggedSymbol,
               usage: T.nilable(OpenAI::Beta::TokenUsage),
-              vault_ids: T::Array[String]
+              vault_ids: T::Array[String],
+              spend_control: OpenAI::Beta::AgentSession::SpendControl
             }
           )
         end
@@ -859,6 +874,54 @@ module OpenAI
           sig { override.returns(T::Array[OpenAI::Beta::AgentSession::Status::TaggedSymbol]) }
           def self.values
           end
+        end
+
+        class SpendControl < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::AgentSession::SpendControl,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Best-effort recorded spend floored to whole USD cents, or null when unavailable.
+          sig { returns(T.nilable(Integer)) }
+          attr_accessor :consumed
+
+          # The configured positive limit in USD cents.
+          sig { returns(Integer) }
+          attr_accessor :limit
+
+          # Configured spending limit and best-effort consumption, in USD cents. Unlimited
+          # sessions omit this object.
+          sig do
+            params(
+
+              consumed: T.nilable(Integer),
+
+              limit: Integer
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Best-effort recorded spend floored to whole USD cents, or null when unavailable.
+            consumed:,
+
+            # The configured positive limit in USD cents.
+
+            limit:
+          )
+          end
+
+          sig do
+            override.returns(
+              {consumed: T.nilable(Integer), limit: Integer}
+            )
+          end
+          def to_hash
+          end
+
         end
 
       end

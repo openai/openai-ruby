@@ -44,6 +44,7 @@ module OpenAI
               agent_id: String,
               input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
               metadata: T.nilable(T::Hash[Symbol, String]),
+              spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash),
               vault_ids: T.nilable(T::Array[String]),
               stream: T.noreturn,
               request_options: OpenAI::RequestOptions::OrHash
@@ -67,6 +68,9 @@ module OpenAI
             # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
             # characters. Omission or null defaults to an empty map.
             metadata: nil,
+            # Optional spending limit in USD cents. Omission or null creates an unlimited
+            # session.
+            spend_control: nil,
             # The IDs of vaults made available to the session.
             vault_ids: nil,
             # There is no need to provide `stream:`. Instead, use `#create_streaming` or
@@ -93,6 +97,7 @@ module OpenAI
               agent_id: String,
               input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
               metadata: T.nilable(T::Hash[Symbol, String]),
+              spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash),
               vault_ids: T.nilable(T::Array[String]),
               stream: T.noreturn,
               request_options: OpenAI::RequestOptions::OrHash
@@ -116,6 +121,9 @@ module OpenAI
             # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
             # characters. Omission or null defaults to an empty map.
             metadata: nil,
+            # Optional spending limit in USD cents. Omission or null creates an unlimited
+            # session.
+            spend_control: nil,
             # The IDs of vaults made available to the session.
             vault_ids: nil,
             # There is no need to provide `stream:`. Instead, use `#create_streaming` or
@@ -147,6 +155,7 @@ module OpenAI
               session_id: String,
               agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent::OrHash,
               metadata: T.nilable(T::Hash[Symbol, String]),
+              spend_control: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::SpendControl::OrHash),
               request_options: OpenAI::RequestOptions::OrHash
             )
               .returns(OpenAI::Beta::AgentSession)
@@ -160,6 +169,9 @@ module OpenAI
             # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
             # characters.
             metadata: nil,
+            # Omit to retain the limit; null or a null limit removes it without resetting
+            # spend.
+            spend_control: nil,
             request_options: {}
           )
           end
