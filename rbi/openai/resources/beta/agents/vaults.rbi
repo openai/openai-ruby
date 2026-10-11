@@ -77,7 +77,7 @@ module OpenAI
           sig {
             params(
               after: String,
-              limit: T.nilable(Integer),
+              limit: Integer,
               metadata: T::Hash[Symbol, String],
               order: OpenAI::Beta::Agents::VaultListParams::Order::OrSymbol,
               status: T.any(
@@ -91,16 +91,14 @@ module OpenAI
           def list(
             # Return resources after this resource ID in the selected order.
             after: nil,
-            # The maximum number of resources to return. Defaults to 20. Values are clamped
-            # between 1 and 100.
+            # The maximum number of resources to return, between 1 and 100. Defaults to 20.
             limit: nil,
             # Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
             # match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
             # characters. Filtering is eventually consistent; metadata changes may take time
             # to appear.
             metadata: nil,
-            # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-            # `desc` for descending order. Defaults to `desc`.
+            # The order in which resources are returned. Defaults to `desc`.
             order: nil,
             # Filter by one status or a list, such as `status=active` or
             # `status[]=active&status[]=archived`. Both statuses are included by default.

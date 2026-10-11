@@ -175,7 +175,7 @@ module OpenAI
             params(
               after: String,
               agent_id: String,
-              limit: T.nilable(Integer),
+              limit: Integer,
               order: OpenAI::Beta::Agents::SessionListParams::Order::OrSymbol,
               request_options: OpenAI::RequestOptions::OrHash
             )
@@ -187,10 +187,9 @@ module OpenAI
             # Only return sessions whose root agent has this ID. Omit to return sessions for
             # all agents.
             agent_id: nil,
-            # The maximum number of resources to return.
+            # The maximum number of resources to return, between 1 and 100. Defaults to 20.
             limit: nil,
-            # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-            # `desc` for descending order. Defaults to `desc`.
+            # The order in which resources are returned. Defaults to `desc`.
             order: nil,
             request_options: {}
           )

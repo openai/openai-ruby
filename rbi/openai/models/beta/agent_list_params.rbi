@@ -24,9 +24,12 @@ module OpenAI
         sig { params(after: String).void }
         attr_writer :after
 
-        # The maximum number of resources to return.
+        # The maximum number of resources to return, between 1 and 100. Defaults to 20.
         sig { returns(T.nilable(Integer)) }
-        attr_accessor :limit
+        attr_reader :limit
+
+        sig { params(limit: Integer).void }
+        attr_writer :limit
 
         # The order in which resources are returned. Defaults to `desc`.
         sig { returns(T.nilable(OpenAI::Beta::AgentListParams::Order::OrSymbol)) }
@@ -40,7 +43,7 @@ module OpenAI
 
             after: String,
 
-            limit: T.nilable(Integer),
+            limit: Integer,
 
             order: OpenAI::Beta::AgentListParams::Order::OrSymbol,
 
@@ -53,7 +56,7 @@ module OpenAI
           # Return resources after this resource ID in the selected order.
           after: nil,
 
-          # The maximum number of resources to return.
+          # The maximum number of resources to return, between 1 and 100. Defaults to 20.
           limit: nil,
 
           # The order in which resources are returned. Defaults to `desc`.
@@ -67,7 +70,7 @@ module OpenAI
           override.returns(
             {
               after: String,
-              limit: T.nilable(Integer),
+              limit: Integer,
               order: OpenAI::Beta::AgentListParams::Order::OrSymbol,
               request_options: OpenAI::RequestOptions
             }

@@ -40,9 +40,9 @@ module OpenAI
             sig {
               params(
                 session_id: String,
-                after: T.nilable(String),
+                after: String,
                 environment_id: T.nilable(String),
-                limit: T.nilable(Integer),
+                limit: Integer,
                 order: OpenAI::Beta::Agents::Sessions::ArtifactListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions::OrHash
               )
@@ -51,13 +51,13 @@ module OpenAI
             def list(
               # The ID of the session.
               session_id,
-              # Return artifacts after this immutable artifact ID.
+              # Return resources after this resource ID in the selected order.
               after: nil,
               # Restrict the listing to artifacts produced by this environment.
               environment_id: nil,
-              # The maximum number of artifacts to return, between 1 and 100.
+              # The maximum number of resources to return, between 1 and 100. Defaults to 20.
               limit: nil,
-              # Sort by creation time and ID. Defaults to descending.
+              # The order in which resources are returned. Defaults to `desc`.
               order: nil,
               request_options: {}
             )
