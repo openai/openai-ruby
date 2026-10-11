@@ -8,7 +8,7 @@ module OpenAI
       }
 
     class DecisionInputMessage < OpenAI::Internal::Type::BaseModel
-      # Text evidence or an ordered list of text and inline image parts.
+      # Text evidence or an ordered list of text and image parts.
       attr_accessor content: OpenAI::Models::DecisionInputMessage::content
 
       attr_accessor role: :user
@@ -20,7 +20,7 @@ module OpenAI
       ) -> OpenAI::Models::DecisionInputMessage::type_
 
       # @param content
-      #   Text evidence or an ordered list of text and inline image parts.
+      #   Text evidence or an ordered list of text and image parts.
       def initialize: (
         content: OpenAI::Models::DecisionInputMessage::content,
         ?type: OpenAI::Models::DecisionInputMessage::type_,

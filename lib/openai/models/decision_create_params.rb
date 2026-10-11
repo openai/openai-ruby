@@ -9,9 +9,9 @@ module OpenAI
 
       # @!attribute input
       #   The text or images to evaluate for every question. Provide a text string or user
-      #   messages containing text and inline images. Images must be inline data URLs; at
-      #   most 128 images are allowed across all messages in one request. External URLs,
-      #   files, audio, tools, and item references are not supported.
+      #   messages containing text and images. Images can be base64 data URLs or publicly
+      #   accessible HTTP(S) URLs; at most 128 images are allowed across all messages in
+      #   one request. Files, audio, tools, and item references are not supported.
       #
       #   @return [String, Array<OpenAI::Models::DecisionInputMessage>]
       required :input, union: -> { OpenAI::DecisionCreateParams::Input }
@@ -36,9 +36,9 @@ module OpenAI
       # @!method initialize(input:, model:, questions:, safety_identifier: nil, request_options: {})
       #   @param input [String, Array<OpenAI::Models::DecisionInputMessage>]
       #     The text or images to evaluate for every question. Provide a text string or user
-      #     messages containing text and inline images. Images must be inline data URLs; at
-      #     most 128 images are allowed across all messages in one request. External URLs,
-      #     files, audio, tools, and item references are not supported.
+      #     messages containing text and images. Images can be base64 data URLs or publicly
+      #     accessible HTTP(S) URLs; at most 128 images are allowed across all messages in
+      #     one request. Files, audio, tools, and item references are not supported.
       #
       #   @param model [String]
       #
@@ -51,9 +51,9 @@ module OpenAI
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # The text or images to evaluate for every question. Provide a text string or user
-      # messages containing text and inline images. Images must be inline data URLs; at
-      # most 128 images are allowed across all messages in one request. External URLs,
-      # files, audio, tools, and item references are not supported.
+      # messages containing text and images. Images can be base64 data URLs or publicly
+      # accessible HTTP(S) URLs; at most 128 images are allowed across all messages in
+      # one request. Files, audio, tools, and item references are not supported.
       module Input
         extend OpenAI::Internal::Type::Union
 

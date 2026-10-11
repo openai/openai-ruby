@@ -12,7 +12,7 @@ module OpenAI
         )
       end
 
-      # A base64-encoded image in a data URL.
+      # A base64-encoded image in a data URL or a publicly accessible HTTP(S) image URL.
       sig { returns(String) }
       attr_accessor :image_url
 
@@ -24,7 +24,8 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::DecisionInputImage::Detail::OrSymbol)) }
       attr_accessor :detail
 
-      # An inline image. External URLs and file IDs are not supported.
+      # An image provided as a base64 data URL or a publicly accessible HTTP(S) URL.
+      # File IDs are not supported.
       sig do
         params(
 
@@ -38,7 +39,7 @@ module OpenAI
       end
       def self.new(
 
-        # A base64-encoded image in a data URL.
+        # A base64-encoded image in a data URL or a publicly accessible HTTP(S) image URL.
         image_url:,
 
         # The image detail level, using the selected model's image profile. Defaults to

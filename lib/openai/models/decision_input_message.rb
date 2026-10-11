@@ -4,7 +4,7 @@ module OpenAI
   module Models
     class DecisionInputMessage < OpenAI::Internal::Type::BaseModel
       # @!attribute content
-      #   Text evidence or an ordered list of text and inline image parts.
+      #   Text evidence or an ordered list of text and image parts.
       #
       #   @return [String, Array<OpenAI::Models::DecisionInputText, OpenAI::Models::DecisionInputImage>]
       required :content, union: -> { OpenAI::DecisionInputMessage::Content }
@@ -20,16 +20,16 @@ module OpenAI
       optional :type, enum: -> { OpenAI::DecisionInputMessage::Type }
 
       # @!method initialize(content:, type: nil, role: :user)
-      #   A user message containing text or inline images.
+      #   A user message containing text or images.
       #
       #   @param content [String, Array<OpenAI::Models::DecisionInputText, OpenAI::Models::DecisionInputImage>]
-      #     Text evidence or an ordered list of text and inline image parts.
+      #     Text evidence or an ordered list of text and image parts.
       #
       #   @param type [Symbol, OpenAI::Models::DecisionInputMessage::Type]
       #
       #   @param role [Symbol, :user]
 
-      # Text evidence or an ordered list of text and inline image parts.
+      # Text evidence or an ordered list of text and image parts.
       #
       # @see OpenAI::Models::DecisionInputMessage#content
       module Content
