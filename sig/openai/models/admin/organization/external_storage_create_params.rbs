@@ -33,6 +33,7 @@ module OpenAI
             OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Aws
             | OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Azure
             | OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp
+            | OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Oci
 
           module Provider
             extend OpenAI::Internal::Type::Union
@@ -131,6 +132,38 @@ module OpenAI
                 workload_identity_pool_id: String,
                 workload_identity_project_number: String,
                 workload_identity_provider_id: String
+              }
+            end
+
+            type oci =
+              {
+                bucket: String,
+                region: String,
+                tenancy_ocid: String,
+                ?type: :oci
+              }
+
+            class Oci < OpenAI::Internal::Type::BaseModel
+              attr_accessor bucket: String
+
+              attr_accessor region: String
+
+              attr_accessor tenancy_ocid: String
+
+              attr_accessor type: :oci
+
+              def initialize: (
+                bucket: String,
+                region: String,
+                tenancy_ocid: String,
+                ?type: :oci
+              ) -> void
+
+              def to_hash: -> {
+                bucket: String,
+                region: String,
+                tenancy_ocid: String,
+                ?type: :oci
               }
             end
 

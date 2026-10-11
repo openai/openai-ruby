@@ -52,9 +52,42 @@ module OpenAI
             OpenAI::Admin::Organization::AwsExternalStorageProvider
             | OpenAI::Admin::Organization::AzureExternalStorageProvider
             | OpenAI::Admin::Organization::GcpExternalStorageProvider
+            | OpenAI::Admin::Organization::ExternalStorageConfiguration::Provider::Oci
 
           module Provider
             extend OpenAI::Internal::Type::Union
+
+            type oci =
+              {
+                bucket: String,
+                region: String,
+                tenancy_ocid: String,
+                ?type: :oci
+              }
+
+            class Oci < OpenAI::Internal::Type::BaseModel
+              attr_accessor bucket: String
+
+              attr_accessor region: String
+
+              attr_accessor tenancy_ocid: String
+
+              attr_accessor type: :oci
+
+              def initialize: (
+                bucket: String,
+                region: String,
+                tenancy_ocid: String,
+                ?type: :oci
+              ) -> void
+
+              def to_hash: -> {
+                bucket: String,
+                region: String,
+                tenancy_ocid: String,
+                ?type: :oci
+              }
+            end
 
             def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::provider]
           end
