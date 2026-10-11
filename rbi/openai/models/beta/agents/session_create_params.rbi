@@ -59,6 +59,16 @@ module OpenAI
           sig { returns(T.nilable(T::Hash[Symbol, String])) }
           attr_accessor :metadata
 
+          # Optional spending limit in USD cents. Omission or null creates an unlimited
+          # session.
+          sig { returns(T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl)) }
+          attr_reader :spend_control
+
+          sig {
+            params(spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash)).void
+          }
+          attr_writer :spend_control
+
           # The IDs of vaults made available to the session.
           sig { returns(T.nilable(T::Array[String])) }
           attr_accessor :vault_ids
@@ -79,6 +89,8 @@ module OpenAI
               input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
 
               metadata: T.nilable(T::Hash[Symbol, String]),
+
+              spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash),
 
               vault_ids: T.nilable(T::Array[String]),
 
@@ -109,6 +121,10 @@ module OpenAI
             # characters. Omission or null defaults to an empty map.
             metadata: nil,
 
+            # Optional spending limit in USD cents. Omission or null creates an unlimited
+            # session.
+            spend_control: nil,
+
             # The IDs of vaults made available to the session.
             vault_ids: nil,
 
@@ -128,6 +144,7 @@ module OpenAI
                 agent_id: String,
                 input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
                 metadata: T.nilable(T::Hash[Symbol, String]),
+                spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl),
                 vault_ids: T.nilable(T::Array[String]),
                 request_options: OpenAI::RequestOptions
               }
@@ -337,6 +354,45 @@ module OpenAI
               OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::AgentSessionInputMessageParam],
               OpenAI::Internal::Type::Converter
             )
+
+          end
+
+          class SpendControl < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Agents::SessionCreateParams::SpendControl,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Positive USD cents, or null to remove the limit.
+            sig { returns(T.nilable(Integer)) }
+            attr_accessor :limit
+
+            # Optional spending limit in USD cents. Omission or null creates an unlimited
+            # session.
+            sig do
+              params(
+
+                limit: T.nilable(Integer)
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Positive USD cents, or null to remove the limit.
+
+              limit:
+            )
+            end
+
+            sig do
+              override.returns(
+                {limit: T.nilable(Integer)}
+              )
+            end
+            def to_hash
+            end
 
           end
 

@@ -14,7 +14,8 @@ module OpenAI
           required_actions: ::Array[OpenAI::Models::Beta::AgentSession::required_action],
           status: OpenAI::Models::Beta::AgentSession::status,
           usage: OpenAI::Beta::TokenUsage?,
-          vault_ids: ::Array[String]
+          vault_ids: ::Array[String],
+          ?spend_control: OpenAI::Beta::AgentSession::SpendControl
         }
 
       class AgentSession < OpenAI::Internal::Type::BaseModel
@@ -55,6 +56,16 @@ module OpenAI
         # The IDs of vaults made available to the session.
         attr_accessor vault_ids: ::Array[String]
 
+        # Configured spending limit and best-effort consumption, in USD cents. Unlimited
+        # sessions omit this object.
+        attr_reader spend_control: OpenAI::Beta::AgentSession::SpendControl?
+
+        # Configured spending limit and best-effort consumption, in USD cents. Unlimited
+        # sessions omit this object.
+        def spend_control=: (
+          OpenAI::Beta::AgentSession::SpendControl
+        ) -> OpenAI::Beta::AgentSession::SpendControl
+
         # @param id
         #   The ID of the session.
         # @param agent
@@ -78,6 +89,9 @@ module OpenAI
         #   change.
         # @param vault_ids
         #   The IDs of vaults made available to the session.
+        # @param spend_control
+        #   Configured spending limit and best-effort consumption, in USD cents. Unlimited
+        #   sessions omit this object.
         # @param object
         #   The object type. Always `agent.session`.
         def initialize: (
@@ -92,6 +106,7 @@ module OpenAI
           status: OpenAI::Models::Beta::AgentSession::status,
           usage: OpenAI::Beta::TokenUsage?,
           vault_ids: ::Array[String],
+          ?spend_control: OpenAI::Beta::AgentSession::SpendControl,
           ?object: :"agent.session"
         ) -> void
 
@@ -107,7 +122,8 @@ module OpenAI
           required_actions: ::Array[OpenAI::Models::Beta::AgentSession::required_action],
           status: OpenAI::Models::Beta::AgentSession::status,
           usage: OpenAI::Beta::TokenUsage?,
-          vault_ids: ::Array[String]
+          vault_ids: ::Array[String],
+          ?spend_control: OpenAI::Beta::AgentSession::SpendControl
         }
 
         type agent =
@@ -531,6 +547,24 @@ module OpenAI
           FAILED: :failed
 
           def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSession::status]
+        end
+
+        type spend_control = { consumed: Integer?, limit: Integer }
+
+        class SpendControl < OpenAI::Internal::Type::BaseModel
+          # Best-effort recorded spend floored to whole USD cents, or null when unavailable.
+          attr_accessor consumed: Integer?
+
+          # The configured positive limit in USD cents.
+          attr_accessor limit: Integer
+
+          # @param consumed
+          #   Best-effort recorded spend floored to whole USD cents, or null when unavailable.
+          # @param limit
+          #   The configured positive limit in USD cents.
+          def initialize: (consumed: Integer?, limit: Integer) -> void
+
+          def to_hash: -> { consumed: Integer?, limit: Integer }
         end
       end
     end
