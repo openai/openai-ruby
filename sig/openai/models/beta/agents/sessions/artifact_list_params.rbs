@@ -6,9 +6,9 @@ module OpenAI
           type artifact_list_params =
             {
               session_id: String,
-              ?after: String?,
+              ?after: String,
               ?environment_id: String?,
-              ?limit: Integer?,
+              ?limit: Integer,
               ?order: OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order,
               ?request_options: OpenAI::request_opts
             }
@@ -19,45 +19,51 @@ module OpenAI
 
             attr_accessor session_id: String
 
-            # Return artifacts after this immutable artifact ID.
-            attr_accessor after: String?
+            # Return resources after this resource ID in the selected order.
+            attr_reader after: String?
+
+            # Return resources after this resource ID in the selected order.
+            def after=: (String) -> String
 
             # Restrict the listing to artifacts produced by this environment.
             attr_accessor environment_id: String?
 
-            # The maximum number of artifacts to return, between 1 and 100.
-            attr_accessor limit: Integer?
+            # The maximum number of resources to return, between 1 and 100. Defaults to 20.
+            attr_reader limit: Integer?
 
-            # Sort by creation time and ID. Defaults to descending.
+            # The maximum number of resources to return, between 1 and 100. Defaults to 20.
+            def limit=: (Integer) -> Integer
+
+            # The order in which resources are returned. Defaults to `desc`.
             attr_reader order: OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order?
 
-            # Sort by creation time and ID. Defaults to descending.
+            # The order in which resources are returned. Defaults to `desc`.
             def order=: (
               OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order
             ) -> OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order
 
             # @param after
-            #   Return artifacts after this immutable artifact ID.
+            #   Return resources after this resource ID in the selected order.
             # @param environment_id
             #   Restrict the listing to artifacts produced by this environment.
             # @param limit
-            #   The maximum number of artifacts to return, between 1 and 100.
+            #   The maximum number of resources to return, between 1 and 100. Defaults to 20.
             # @param order
-            #   Sort by creation time and ID. Defaults to descending.
+            #   The order in which resources are returned. Defaults to `desc`.
             def initialize: (
               session_id: String,
-              ?after: String?,
+              ?after: String,
               ?environment_id: String?,
-              ?limit: Integer?,
+              ?limit: Integer,
               ?order: OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order,
               ?request_options: OpenAI::request_opts
             ) -> void
 
             def to_hash: -> {
               session_id: String,
-              ?after: String?,
+              ?after: String,
               ?environment_id: String?,
-              ?limit: Integer?,
+              ?limit: Integer,
               ?order: OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order,
               ?request_options: OpenAI::RequestOptions
             }

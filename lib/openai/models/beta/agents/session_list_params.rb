@@ -23,14 +23,13 @@ module OpenAI
           optional :agent_id, String
 
           # @!attribute limit
-          #   The maximum number of resources to return.
+          #   The maximum number of resources to return, between 1 and 100. Defaults to 20.
           #
           #   @return [Integer, nil]
-          optional :limit, Integer, nil?: true
+          optional :limit, Integer
 
           # @!attribute order
-          #   Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-          #   `desc` for descending order. Defaults to `desc`.
+          #   The order in which resources are returned. Defaults to `desc`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::Agents::SessionListParams::Order, nil]
           optional :order, enum: -> { OpenAI::Beta::Agents::SessionListParams::Order }
@@ -43,17 +42,15 @@ module OpenAI
           #     Only return sessions whose root agent has this ID. Omit to return sessions for
           #     all agents.
           #
-          #   @param limit [Integer, nil]
-          #     The maximum number of resources to return.
+          #   @param limit [Integer]
+          #     The maximum number of resources to return, between 1 and 100. Defaults to 20.
           #
           #   @param order [Symbol, OpenAI::Models::Beta::Agents::SessionListParams::Order]
-          #     Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-          #     `desc` for descending order. Defaults to `desc`.
+          #     The order in which resources are returned. Defaults to `desc`.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
-          # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-          # `desc` for descending order. Defaults to `desc`.
+          # The order in which resources are returned. Defaults to `desc`.
           module Order
             extend OpenAI::Internal::Type::Enum
 

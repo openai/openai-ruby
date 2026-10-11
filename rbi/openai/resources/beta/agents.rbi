@@ -144,7 +144,7 @@ module OpenAI
         sig {
           params(
             after: String,
-            limit: T.nilable(Integer),
+            limit: Integer,
             order: OpenAI::Beta::AgentListParams::Order::OrSymbol,
             request_options: OpenAI::RequestOptions::OrHash
           )
@@ -153,7 +153,7 @@ module OpenAI
         def list(
           # Return resources after this resource ID in the selected order.
           after: nil,
-          # The maximum number of resources to return.
+          # The maximum number of resources to return, between 1 and 100. Defaults to 20.
           limit: nil,
           # The order in which resources are returned. Defaults to `desc`.
           order: nil,

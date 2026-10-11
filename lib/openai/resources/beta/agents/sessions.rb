@@ -226,12 +226,11 @@ module OpenAI
           #   Only return sessions whose root agent has this ID. Omit to return sessions for
           #   all agents.
           #
-          # @param limit [Integer, nil]
-          #   The maximum number of resources to return.
+          # @param limit [Integer]
+          #   The maximum number of resources to return, between 1 and 100. Defaults to 20.
           #
           # @param order [Symbol, OpenAI::Models::Beta::Agents::SessionListParams::Order]
-          #   Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-          #   `desc` for descending order. Defaults to `desc`.
+          #   The order in which resources are returned. Defaults to `desc`.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

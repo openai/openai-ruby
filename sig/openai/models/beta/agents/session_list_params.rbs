@@ -6,7 +6,7 @@ module OpenAI
           {
             ?after: String,
             ?agent_id: String,
-            ?limit: Integer?,
+            ?limit: Integer,
             ?order: OpenAI::Models::Beta::Agents::SessionListParams::order,
             ?request_options: OpenAI::request_opts
           }
@@ -29,15 +29,16 @@ module OpenAI
           # all agents.
           def agent_id=: (String) -> String
 
-          # The maximum number of resources to return.
-          attr_accessor limit: Integer?
+          # The maximum number of resources to return, between 1 and 100. Defaults to 20.
+          attr_reader limit: Integer?
 
-          # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-          # `desc` for descending order. Defaults to `desc`.
+          # The maximum number of resources to return, between 1 and 100. Defaults to 20.
+          def limit=: (Integer) -> Integer
+
+          # The order in which resources are returned. Defaults to `desc`.
           attr_reader order: OpenAI::Models::Beta::Agents::SessionListParams::order?
 
-          # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-          # `desc` for descending order. Defaults to `desc`.
+          # The order in which resources are returned. Defaults to `desc`.
           def order=: (
             OpenAI::Models::Beta::Agents::SessionListParams::order
           ) -> OpenAI::Models::Beta::Agents::SessionListParams::order
@@ -48,14 +49,13 @@ module OpenAI
           #   Only return sessions whose root agent has this ID. Omit to return sessions for
           #   all agents.
           # @param limit
-          #   The maximum number of resources to return.
+          #   The maximum number of resources to return, between 1 and 100. Defaults to 20.
           # @param order
-          #   Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-          #   `desc` for descending order. Defaults to `desc`.
+          #   The order in which resources are returned. Defaults to `desc`.
           def initialize: (
             ?after: String,
             ?agent_id: String,
-            ?limit: Integer?,
+            ?limit: Integer,
             ?order: OpenAI::Models::Beta::Agents::SessionListParams::order,
             ?request_options: OpenAI::request_opts
           ) -> void
@@ -63,7 +63,7 @@ module OpenAI
           def to_hash: -> {
             ?after: String,
             ?agent_id: String,
-            ?limit: Integer?,
+            ?limit: Integer,
             ?order: OpenAI::Models::Beta::Agents::SessionListParams::order,
             ?request_options: OpenAI::RequestOptions
           }

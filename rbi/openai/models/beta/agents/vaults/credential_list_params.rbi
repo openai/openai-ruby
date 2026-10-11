@@ -31,10 +31,12 @@ module OpenAI
             sig { params(after: String).void }
             attr_writer :after
 
-            # The maximum number of resources to return. Defaults to 20. Values are clamped
-            # between 1 and 100.
+            # The maximum number of resources to return, between 1 and 100. Defaults to 20.
             sig { returns(T.nilable(Integer)) }
-            attr_accessor :limit
+            attr_reader :limit
+
+            sig { params(limit: Integer).void }
+            attr_writer :limit
 
             # Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
             # match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
@@ -46,8 +48,7 @@ module OpenAI
             sig { params(metadata: T::Hash[Symbol, String]).void }
             attr_writer :metadata
 
-            # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-            # `desc` for descending order. Defaults to `desc`.
+            # The order in which resources are returned. Defaults to `desc`.
             sig { returns(T.nilable(OpenAI::Beta::Agents::Vaults::CredentialListParams::Order::OrSymbol)) }
             attr_reader :order
 
@@ -86,7 +87,7 @@ module OpenAI
 
                 after: String,
 
-                limit: T.nilable(Integer),
+                limit: Integer,
 
                 metadata: T::Hash[Symbol, String],
 
@@ -108,8 +109,7 @@ module OpenAI
               # Return resources after this resource ID in the selected order.
               after: nil,
 
-              # The maximum number of resources to return. Defaults to 20. Values are clamped
-              # between 1 and 100.
+              # The maximum number of resources to return, between 1 and 100. Defaults to 20.
               limit: nil,
 
               # Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
@@ -118,8 +118,7 @@ module OpenAI
               # to appear.
               metadata: nil,
 
-              # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-              # `desc` for descending order. Defaults to `desc`.
+              # The order in which resources are returned. Defaults to `desc`.
               order: nil,
 
               # Filter by one status or a list, such as `status=active` or
@@ -135,7 +134,7 @@ module OpenAI
                 {
                   vault_id: String,
                   after: String,
-                  limit: T.nilable(Integer),
+                  limit: Integer,
                   metadata: T::Hash[Symbol, String],
                   order: OpenAI::Beta::Agents::Vaults::CredentialListParams::Order::OrSymbol,
                   status: T.any(
@@ -149,8 +148,7 @@ module OpenAI
             def to_hash
             end
 
-            # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-            # `desc` for descending order. Defaults to `desc`.
+            # The order in which resources are returned. Defaults to `desc`.
             module Order
               extend OpenAI::Internal::Type::Enum
 
