@@ -9,6 +9,7 @@ module OpenAI
             ?agent_id: String,
             ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
             ?metadata: ::Hash[Symbol, String]?,
+            ?spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::request_opts
           }
@@ -48,6 +49,10 @@ module OpenAI
           # characters. Omission or null defaults to an empty map.
           attr_accessor metadata: ::Hash[Symbol, String]?
 
+          # Optional spending limit in USD cents. Omission or null creates an unlimited
+          # session.
+          attr_accessor spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?
+
           # The IDs of vaults made available to the session.
           attr_accessor vault_ids: ::Array[String]?
 
@@ -67,6 +72,9 @@ module OpenAI
           # @param metadata
           #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
           #   characters. Omission or null defaults to an empty map.
+          # @param spend_control
+          #   Optional spending limit in USD cents. Omission or null creates an unlimited
+          #   session.
           # @param vault_ids
           #   The IDs of vaults made available to the session.
           def initialize: (
@@ -75,6 +83,7 @@ module OpenAI
             ?agent_id: String,
             ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
             ?metadata: ::Hash[Symbol, String]?,
+            ?spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::request_opts
           ) -> void
@@ -85,6 +94,7 @@ module OpenAI
             ?agent_id: String,
             ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
             ?metadata: ::Hash[Symbol, String]?,
+            ?spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::RequestOptions
           }
@@ -196,6 +206,19 @@ module OpenAI
             def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::SessionCreateParams::input]
 
             AgentSessionInputMessageParamArray: OpenAI::Internal::Type::Converter
+          end
+
+          type spend_control = { limit: Integer? }
+
+          class SpendControl < OpenAI::Internal::Type::BaseModel
+            # Positive USD cents, or null to remove the limit.
+            attr_accessor limit: Integer?
+
+            # @param limit
+            #   Positive USD cents, or null to remove the limit.
+            def initialize: (limit: Integer?) -> void
+
+            def to_hash: -> { limit: Integer? }
           end
         end
       end

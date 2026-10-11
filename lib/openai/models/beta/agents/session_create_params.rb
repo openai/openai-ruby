@@ -47,13 +47,26 @@ module OpenAI
           #   @return [Hash{Symbol=>String}, nil]
           optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
+          # @!attribute spend_control
+          #   Optional spending limit in USD cents. Omission or null creates an unlimited
+          #   session.
+          #
+          #   @return [OpenAI::Models::Beta::Agents::SessionCreateParams::SpendControl, nil]
+          optional(
+            :spend_control,
+            -> {
+              OpenAI::Beta::Agents::SessionCreateParams::SpendControl
+            },
+            nil?: true
+          )
+
           # @!attribute vault_ids
           #   The IDs of vaults made available to the session.
           #
           #   @return [Array<String>, nil]
           optional :vault_ids, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
-          # @!method initialize(environment:, agent: nil, agent_id: nil, input: nil, metadata: nil, vault_ids: nil, request_options: {})
+          # @!method initialize(environment:, agent: nil, agent_id: nil, input: nil, metadata: nil, spend_control: nil, vault_ids: nil, request_options: {})
           #   @param environment [OpenAI::Models::Beta::EnvironmentParam::None, OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted, OpenAI::Models::Beta::EnvironmentParam::SelfHosted]
           #     An inline execution environment or a reference to an environment template.
           #
@@ -74,6 +87,10 @@ module OpenAI
           #   @param metadata [Hash{Symbol=>String}, nil]
           #     Up to 16 string key-value pairs, with keys up to 64 and values up to 512
           #     characters. Omission or null defaults to an empty map.
+          #
+          #   @param spend_control [OpenAI::Models::Beta::Agents::SessionCreateParams::SpendControl, nil]
+          #     Optional spending limit in USD cents. Omission or null creates an unlimited
+          #     session.
           #
           #   @param vault_ids [Array<String>, nil]
           #     The IDs of vaults made available to the session.
@@ -206,6 +223,21 @@ module OpenAI
             AgentSessionInputMessageParamArray = OpenAI::Internal::Type::ArrayOf[
               -> { OpenAI::Beta::AgentSessionInputMessageParam }
             ]
+          end
+
+          class SpendControl < OpenAI::Internal::Type::BaseModel
+            # @!attribute limit
+            #   Positive USD cents, or null to remove the limit.
+            #
+            #   @return [Integer, nil]
+            required :limit, Integer, nil?: true
+
+            # @!method initialize(limit:)
+            #   Optional spending limit in USD cents. Omission or null creates an unlimited
+            #   session.
+            #
+            #   @param limit [Integer, nil]
+            #     Positive USD cents, or null to remove the limit.
           end
         end
       end

@@ -30,7 +30,7 @@ module OpenAI
           # the session or streams its events when stream is true. See
           # [running sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions).
           #
-          # @overload create(environment:, agent: nil, agent_id: nil, input: nil, metadata: nil, vault_ids: nil, request_options: {})
+          # @overload create(environment:, agent: nil, agent_id: nil, input: nil, metadata: nil, spend_control: nil, vault_ids: nil, request_options: {})
           #
           # @param environment [OpenAI::Models::Beta::EnvironmentParam::None, OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted, OpenAI::Models::Beta::EnvironmentParam::SelfHosted]
           #   An inline execution environment or a reference to an environment template.
@@ -52,6 +52,10 @@ module OpenAI
           # @param metadata [Hash{Symbol=>String}, nil]
           #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
           #   characters. Omission or null defaults to an empty map.
+          #
+          # @param spend_control [OpenAI::Models::Beta::Agents::SessionCreateParams::SpendControl, nil]
+          #   Optional spending limit in USD cents. Omission or null creates an unlimited
+          #   session.
           #
           # @param vault_ids [Array<String>, nil]
           #   The IDs of vaults made available to the session.
@@ -86,7 +90,7 @@ module OpenAI
           # the session or streams its events when stream is true. See
           # [running sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions).
           #
-          # @overload create_streaming(environment:, agent: nil, agent_id: nil, input: nil, output_type: nil, tool_handlers: {}, metadata: nil, vault_ids: nil, request_options: {})
+          # @overload create_streaming(environment:, agent: nil, agent_id: nil, input: nil, output_type: nil, tool_handlers: {}, metadata: nil, spend_control: nil, vault_ids: nil, request_options: {})
           #
           # @param environment [OpenAI::Models::Beta::EnvironmentParam::None, OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted, OpenAI::Models::Beta::EnvironmentParam::SelfHosted]
           #   An inline execution environment or a reference to an environment template.
@@ -108,6 +112,10 @@ module OpenAI
           # @param metadata [Hash{Symbol=>String}, nil]
           #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
           #   characters. Omission or null defaults to an empty map.
+          #
+          # @param spend_control [OpenAI::Models::Beta::Agents::SessionCreateParams::SpendControl, nil]
+          #   Optional spending limit in USD cents. Omission or null creates an unlimited
+          #   session.
           #
           # @param vault_ids [Array<String>, nil]
           #   The IDs of vaults made available to the session.
@@ -182,7 +190,7 @@ module OpenAI
           # settings apply to subsequent turns. Omitted fields are unchanged. See
           # [managing sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions/manage).
           #
-          # @overload update(session_id, agent: nil, metadata: nil, request_options: {})
+          # @overload update(session_id, agent: nil, metadata: nil, spend_control: nil, request_options: {})
           #
           # @param session_id [String]
           #   The ID of the session.
@@ -194,6 +202,10 @@ module OpenAI
           #   Replaces all metadata. Omit to leave unchanged, or pass null or {} to clear it.
           #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
           #   characters.
+          #
+          # @param spend_control [OpenAI::Models::Beta::Agents::SessionUpdateParams::SpendControl, nil]
+          #   Omit to retain the limit; null or a null limit removes it without resetting
+          #   spend.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

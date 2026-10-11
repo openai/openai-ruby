@@ -23,7 +23,8 @@ class OpenAI::Test::Resources::Beta::Agents::SessionsTest < OpenAI::Test::Resour
           required_actions: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AgentSession::RequiredAction]),
           status: OpenAI::Beta::AgentSession::Status,
           usage: OpenAI::Beta::TokenUsage | nil,
-          vault_ids: ^(OpenAI::Internal::Type::ArrayOf[String])
+          vault_ids: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          spend_control: OpenAI::Beta::AgentSession::SpendControl | nil
         }
     end
   end
@@ -48,7 +49,8 @@ class OpenAI::Test::Resources::Beta::Agents::SessionsTest < OpenAI::Test::Resour
           required_actions: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AgentSession::RequiredAction]),
           status: OpenAI::Beta::AgentSession::Status,
           usage: OpenAI::Beta::TokenUsage | nil,
-          vault_ids: ^(OpenAI::Internal::Type::ArrayOf[String])
+          vault_ids: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          spend_control: OpenAI::Beta::AgentSession::SpendControl | nil
         }
     end
   end
@@ -73,7 +75,8 @@ class OpenAI::Test::Resources::Beta::Agents::SessionsTest < OpenAI::Test::Resour
           required_actions: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AgentSession::RequiredAction]),
           status: OpenAI::Beta::AgentSession::Status,
           usage: OpenAI::Beta::TokenUsage | nil,
-          vault_ids: ^(OpenAI::Internal::Type::ArrayOf[String])
+          vault_ids: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          spend_control: OpenAI::Beta::AgentSession::SpendControl | nil
         }
     end
   end
@@ -105,7 +108,8 @@ class OpenAI::Test::Resources::Beta::Agents::SessionsTest < OpenAI::Test::Resour
           required_actions: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AgentSession::RequiredAction]),
           status: OpenAI::Beta::AgentSession::Status,
           usage: OpenAI::Beta::TokenUsage | nil,
-          vault_ids: ^(OpenAI::Internal::Type::ArrayOf[String])
+          vault_ids: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          spend_control: OpenAI::Beta::AgentSession::SpendControl | nil
         }
     end
   end

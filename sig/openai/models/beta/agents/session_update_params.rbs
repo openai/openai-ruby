@@ -7,6 +7,7 @@ module OpenAI
             session_id: String,
             ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
             ?metadata: ::Hash[Symbol, String]?,
+            ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
             ?request_options: OpenAI::request_opts
           }
 
@@ -29,16 +30,24 @@ module OpenAI
           # characters.
           attr_accessor metadata: ::Hash[Symbol, String]?
 
+          # Omit to retain the limit; null or a null limit removes it without resetting
+          # spend.
+          attr_accessor spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?
+
           # @param agent
           #   Model settings for subsequent turns. Omitted fields stay unchanged.
           # @param metadata
           #   Replaces all metadata. Omit to leave unchanged, or pass null or {} to clear it.
           #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
           #   characters.
+          # @param spend_control
+          #   Omit to retain the limit; null or a null limit removes it without resetting
+          #   spend.
           def initialize: (
             session_id: String,
             ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
             ?metadata: ::Hash[Symbol, String]?,
+            ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
             ?request_options: OpenAI::request_opts
           ) -> void
 
@@ -46,6 +55,7 @@ module OpenAI
             session_id: String,
             ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
             ?metadata: ::Hash[Symbol, String]?,
+            ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
             ?request_options: OpenAI::RequestOptions
           }
 
@@ -151,6 +161,19 @@ module OpenAI
 
               def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier]
             end
+          end
+
+          type spend_control = { limit: Integer? }
+
+          class SpendControl < OpenAI::Internal::Type::BaseModel
+            # Positive USD cents, or null to remove the limit.
+            attr_accessor limit: Integer?
+
+            # @param limit
+            #   Positive USD cents, or null to remove the limit.
+            def initialize: (limit: Integer?) -> void
+
+            def to_hash: -> { limit: Integer? }
           end
         end
       end
