@@ -23,6 +23,7 @@ module OpenAI
         QUARTZ = :quartz
         RIPPLE = :ripple
         SAGE = :sage
+        SHIDA = :shida
         SHIMMER = :shimmer
         STONE = :stone
         TEMPO = :tempo
