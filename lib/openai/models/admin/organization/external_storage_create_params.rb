@@ -16,12 +16,12 @@ module OpenAI
 
           # @!attribute provider
           #
-          #   @return [OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Aws, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Azure, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp]
+          #   @return [OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Aws, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Azure, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Oci]
           required :provider, union: -> { OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider }
 
           # @!method initialize(project_id:, provider:, request_options: {})
           #   @param project_id [String]
-          #   @param provider [OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Aws, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Azure, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp]
+          #   @param provider [OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Aws, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Azure, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Oci]
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
           module Provider
@@ -34,6 +34,8 @@ module OpenAI
             variant :azure, -> { OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Azure }
 
             variant :gcp, -> { OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp }
+
+            variant :oci, -> { OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Oci }
 
             class Aws < OpenAI::Internal::Type::BaseModel
               # @!attribute bucket
@@ -131,8 +133,36 @@ module OpenAI
               #   @param type [Symbol, :gcp]
             end
 
+            class Oci < OpenAI::Internal::Type::BaseModel
+              # @!attribute bucket
+              #
+              #   @return [String]
+              required :bucket, String
+
+              # @!attribute region
+              #
+              #   @return [String]
+              required :region, String
+
+              # @!attribute tenancy_ocid
+              #
+              #   @return [String]
+              required :tenancy_ocid, String
+
+              # @!attribute type
+              #
+              #   @return [Symbol, :oci]
+              required :type, const: :oci
+
+              # @!method initialize(bucket:, region:, tenancy_ocid:, type: :oci)
+              #   @param bucket [String]
+              #   @param region [String]
+              #   @param tenancy_ocid [String]
+              #   @param type [Symbol, :oci]
+            end
+
             # @!method self.variants
-            #   @return [Array(OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Aws, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Azure, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp)]
+            #   @return [Array(OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Aws, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Azure, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp, OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::Provider::Oci)]
           end
         end
       end

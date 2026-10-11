@@ -1549,7 +1549,7 @@ module OpenAI
               # @!attribute provider
               #   The external storage provider configuration.
               #
-              #   @return [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider, nil]
+              #   @return [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider, OpenAI::Models::Admin::Organization::OciExternalStorageProvider, nil]
               optional(
                 :provider,
                 union: -> {
@@ -1563,7 +1563,7 @@ module OpenAI
               #   @param geography [String]
               #     The OpenAI geography derived from the storage region.
               #
-              #   @param provider [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider]
+              #   @param provider [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider, OpenAI::Models::Admin::Organization::OciExternalStorageProvider]
               #     The external storage provider configuration.
 
               # The external storage provider configuration.
@@ -1580,8 +1580,10 @@ module OpenAI
 
                 variant :gcp, -> { OpenAI::Admin::Organization::GcpExternalStorageProvider }
 
+                variant :oci, -> { OpenAI::Admin::Organization::OciExternalStorageProvider }
+
                 # @!method self.variants
-                #   @return [Array(OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider)]
+                #   @return [Array(OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider, OpenAI::Models::Admin::Organization::OciExternalStorageProvider)]
               end
             end
           end

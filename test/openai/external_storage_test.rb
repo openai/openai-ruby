@@ -113,6 +113,69 @@ class OpenAI::Test::ExternalStorageTest < Minitest::Test
     assert_equal(JSON.parse(payload.to_json), JSON.parse(response.to_json))
   end
 
+  def test_create_oci_provider_preserves_request_fields_and_decodes_configuration
+    provider = Organization::ExternalStorageCreateParams::Provider::Oci.new(
+      bucket: "test-oci-bucket",
+      region: "us-ashburn-1",
+      tenancy_ocid: "ocid1.tenancy.synthetic"
+    )
+    request_provider = {
+      type: "oci",
+      bucket: "test-oci-bucket",
+      region: "us-ashburn-1",
+      tenancy_ocid: "ocid1.tenancy.synthetic"
+    }
+    payload = configuration({**request_provider, future_provider_field: true})
+    stub_request(:post, COLLECTION_URL)
+      .with(body: {project_id: "proj_test", provider: request_provider}, headers: ADMIN_HEADERS)
+      .to_return_json(body: payload)
+
+    response = @openai.admin.organization.external_storage.create(project_id: "proj_test", provider: provider)
+
+    assert_requested(:post, COLLECTION_URL, times: 1)
+    assert_instance_of(Organization::OciExternalStorageProvider, response.provider)
+    assert_equal(:oci, response.provider.type)
+    assert_equal("test-oci-bucket", response.provider.bucket)
+    assert_equal("us-ashburn-1", response.provider.region)
+    assert_equal("ocid1.tenancy.synthetic", response.provider.tenancy_ocid)
+    assert_equal(JSON.parse(payload.to_json), JSON.parse(response.to_json))
+  end
+
+  def test_audit_log_decodes_oci_provider
+    url = "http://localhost/organization/audit_logs"
+    event = {
+      id: "audit_test",
+      effective_at: 123,
+      type: "external_storage.registered",
+      "external_storage.registered": {
+        id: "extstorage_test",
+        data: {
+          provider: {
+            type: "oci",
+            bucket: "test-oci-bucket",
+            region: "us-ashburn-1",
+            tenancy_ocid: "ocid1.tenancy.synthetic",
+            future_provider_field: true
+          }
+        }
+      }
+    }
+    stub_request(:get, url).with(headers: ADMIN_HEADERS).to_return_json(
+      body: {object: "list", data: [event], first_id: "audit_test", last_id: "audit_test", has_more: false}
+    )
+
+    response = @openai.admin.organization.audit_logs.list.to_enum.first
+    provider = response.external_storage_registered.data.provider
+
+    assert_requested(:get, url, times: 1)
+    assert_instance_of(Organization::OciExternalStorageProvider, provider)
+    assert_equal(:oci, provider.type)
+    assert_equal("test-oci-bucket", provider.bucket)
+    assert_equal("us-ashburn-1", provider.region)
+    assert_equal("ocid1.tenancy.synthetic", provider.tenancy_ocid)
+    assert_equal(JSON.parse(event.to_json), JSON.parse(response.to_json))
+  end
+
   def test_id_operations_escape_paths_and_preserve_future_provider
     url = "#{COLLECTION_URL}/ext%2Fstorage%3Ftest"
     payload = configuration({type: "future", future_provider_field: true}, "ext/storage?test")
