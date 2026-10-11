@@ -16,10 +16,10 @@ module OpenAI
             required :session_id, String
 
             # @!attribute after
-            #   Return artifacts after this immutable artifact ID.
+            #   Return resources after this resource ID in the selected order.
             #
             #   @return [String, nil]
-            optional :after, String, nil?: true
+            optional :after, String
 
             # @!attribute environment_id
             #   Restrict the listing to artifacts produced by this environment.
@@ -28,13 +28,13 @@ module OpenAI
             optional :environment_id, String, nil?: true
 
             # @!attribute limit
-            #   The maximum number of artifacts to return, between 1 and 100.
+            #   The maximum number of resources to return, between 1 and 100. Defaults to 20.
             #
             #   @return [Integer, nil]
-            optional :limit, Integer, nil?: true
+            optional :limit, Integer
 
             # @!attribute order
-            #   Sort by creation time and ID. Defaults to descending.
+            #   The order in which resources are returned. Defaults to `desc`.
             #
             #   @return [Symbol, OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::Order, nil]
             optional :order, enum: -> { OpenAI::Beta::Agents::Sessions::ArtifactListParams::Order }
@@ -42,21 +42,21 @@ module OpenAI
             # @!method initialize(session_id:, after: nil, environment_id: nil, limit: nil, order: nil, request_options: {})
             #   @param session_id [String]
             #
-            #   @param after [String, nil]
-            #     Return artifacts after this immutable artifact ID.
+            #   @param after [String]
+            #     Return resources after this resource ID in the selected order.
             #
             #   @param environment_id [String, nil]
             #     Restrict the listing to artifacts produced by this environment.
             #
-            #   @param limit [Integer, nil]
-            #     The maximum number of artifacts to return, between 1 and 100.
+            #   @param limit [Integer]
+            #     The maximum number of resources to return, between 1 and 100. Defaults to 20.
             #
             #   @param order [Symbol, OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::Order]
-            #     Sort by creation time and ID. Defaults to descending.
+            #     The order in which resources are returned. Defaults to `desc`.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
-            # Sort by creation time and ID. Defaults to descending.
+            # The order in which resources are returned. Defaults to `desc`.
             module Order
               extend OpenAI::Internal::Type::Enum
 

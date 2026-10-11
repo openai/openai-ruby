@@ -42,7 +42,7 @@ module OpenAI
 
         def list: (
           ?after: String,
-          ?limit: Integer?,
+          ?limit: Integer,
           ?order: OpenAI::Models::Beta::AgentListParams::order,
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Internal::CursorPage[OpenAI::Beta::Agent]

@@ -25,7 +25,7 @@ module OpenAI
 
           def list: (
             ?after: String,
-            ?limit: Integer?,
+            ?limit: Integer,
             ?metadata: ::Hash[Symbol, String],
             ?order: OpenAI::Models::Beta::Agents::VaultListParams::order,
             ?status: OpenAI::Models::Beta::Agents::vault_status_filter,

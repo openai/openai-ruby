@@ -22,11 +22,10 @@ module OpenAI
             optional :after, String
 
             # @!attribute limit
-            #   The maximum number of resources to return. Defaults to 20. Values are clamped
-            #   between 1 and 100.
+            #   The maximum number of resources to return, between 1 and 100. Defaults to 20.
             #
             #   @return [Integer, nil]
-            optional :limit, Integer, nil?: true
+            optional :limit, Integer
 
             # @!attribute metadata
             #   Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
@@ -38,8 +37,7 @@ module OpenAI
             optional :metadata, OpenAI::Internal::Type::HashOf[String]
 
             # @!attribute order
-            #   Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-            #   `desc` for descending order. Defaults to `desc`.
+            #   The order in which resources are returned. Defaults to `desc`.
             #
             #   @return [Symbol, OpenAI::Models::Beta::Agents::Vaults::CredentialListParams::Order, nil]
             optional :order, enum: -> { OpenAI::Beta::Agents::Vaults::CredentialListParams::Order }
@@ -57,9 +55,8 @@ module OpenAI
             #   @param after [String]
             #     Return resources after this resource ID in the selected order.
             #
-            #   @param limit [Integer, nil]
-            #     The maximum number of resources to return. Defaults to 20. Values are clamped
-            #     between 1 and 100.
+            #   @param limit [Integer]
+            #     The maximum number of resources to return, between 1 and 100. Defaults to 20.
             #
             #   @param metadata [Hash{Symbol=>String}]
             #     Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
@@ -68,8 +65,7 @@ module OpenAI
             #     to appear.
             #
             #   @param order [Symbol, OpenAI::Models::Beta::Agents::Vaults::CredentialListParams::Order]
-            #     Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-            #     `desc` for descending order. Defaults to `desc`.
+            #     The order in which resources are returned. Defaults to `desc`.
             #
             #   @param status [Symbol, OpenAI::Models::Beta::Agents::VaultStatus, Array<Symbol, OpenAI::Models::Beta::Agents::VaultStatus>]
             #     Filter by one status or a list, such as `status=active` or
@@ -77,8 +73,7 @@ module OpenAI
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
-            # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-            # `desc` for descending order. Defaults to `desc`.
+            # The order in which resources are returned. Defaults to `desc`.
             module Order
               extend OpenAI::Internal::Type::Enum
 

@@ -50,7 +50,7 @@ module OpenAI
           def list: (
             ?after: String,
             ?agent_id: String,
-            ?limit: Integer?,
+            ?limit: Integer,
             ?order: OpenAI::Models::Beta::Agents::SessionListParams::order,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Internal::CursorPage[OpenAI::Beta::AgentSession]

@@ -12,9 +12,9 @@ module OpenAI
 
             def list: (
               String session_id,
-              ?after: String?,
+              ?after: String,
               ?environment_id: String?,
-              ?limit: Integer?,
+              ?limit: Integer,
               ?order: OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::order,
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Internal::CursorPage[OpenAI::Beta::Agents::Sessions::SessionArtifact]

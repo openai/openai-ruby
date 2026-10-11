@@ -34,12 +34,14 @@ module OpenAI
           sig { params(agent_id: String).void }
           attr_writer :agent_id
 
-          # The maximum number of resources to return.
+          # The maximum number of resources to return, between 1 and 100. Defaults to 20.
           sig { returns(T.nilable(Integer)) }
-          attr_accessor :limit
+          attr_reader :limit
 
-          # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-          # `desc` for descending order. Defaults to `desc`.
+          sig { params(limit: Integer).void }
+          attr_writer :limit
+
+          # The order in which resources are returned. Defaults to `desc`.
           sig { returns(T.nilable(OpenAI::Beta::Agents::SessionListParams::Order::OrSymbol)) }
           attr_reader :order
 
@@ -53,7 +55,7 @@ module OpenAI
 
               agent_id: String,
 
-              limit: T.nilable(Integer),
+              limit: Integer,
 
               order: OpenAI::Beta::Agents::SessionListParams::Order::OrSymbol,
 
@@ -70,11 +72,10 @@ module OpenAI
             # all agents.
             agent_id: nil,
 
-            # The maximum number of resources to return.
+            # The maximum number of resources to return, between 1 and 100. Defaults to 20.
             limit: nil,
 
-            # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-            # `desc` for descending order. Defaults to `desc`.
+            # The order in which resources are returned. Defaults to `desc`.
             order: nil,
 
             request_options: {}
@@ -86,7 +87,7 @@ module OpenAI
               {
                 after: String,
                 agent_id: String,
-                limit: T.nilable(Integer),
+                limit: Integer,
                 order: OpenAI::Beta::Agents::SessionListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions
               }
@@ -95,8 +96,7 @@ module OpenAI
           def to_hash
           end
 
-          # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-          # `desc` for descending order. Defaults to `desc`.
+          # The order in which resources are returned. Defaults to `desc`.
           module Order
             extend OpenAI::Internal::Type::Enum
 

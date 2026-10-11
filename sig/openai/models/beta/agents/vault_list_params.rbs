@@ -5,7 +5,7 @@ module OpenAI
         type vault_list_params =
           {
             ?after: String,
-            ?limit: Integer?,
+            ?limit: Integer,
             ?metadata: ::Hash[Symbol, String],
             ?order: OpenAI::Models::Beta::Agents::VaultListParams::order,
             ?status: OpenAI::Models::Beta::Agents::vault_status_filter,
@@ -22,9 +22,11 @@ module OpenAI
           # Return resources after this resource ID in the selected order.
           def after=: (String) -> String
 
-          # The maximum number of resources to return. Defaults to 20. Values are clamped
-          # between 1 and 100.
-          attr_accessor limit: Integer?
+          # The maximum number of resources to return, between 1 and 100. Defaults to 20.
+          attr_reader limit: Integer?
+
+          # The maximum number of resources to return, between 1 and 100. Defaults to 20.
+          def limit=: (Integer) -> Integer
 
           # Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
           # match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
@@ -38,12 +40,10 @@ module OpenAI
           # to appear.
           def metadata=: (::Hash[Symbol, String]) -> ::Hash[Symbol, String]
 
-          # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-          # `desc` for descending order. Defaults to `desc`.
+          # The order in which resources are returned. Defaults to `desc`.
           attr_reader order: OpenAI::Models::Beta::Agents::VaultListParams::order?
 
-          # Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-          # `desc` for descending order. Defaults to `desc`.
+          # The order in which resources are returned. Defaults to `desc`.
           def order=: (
             OpenAI::Models::Beta::Agents::VaultListParams::order
           ) -> OpenAI::Models::Beta::Agents::VaultListParams::order
@@ -61,22 +61,20 @@ module OpenAI
           # @param after
           #   Return resources after this resource ID in the selected order.
           # @param limit
-          #   The maximum number of resources to return. Defaults to 20. Values are clamped
-          #   between 1 and 100.
+          #   The maximum number of resources to return, between 1 and 100. Defaults to 20.
           # @param metadata
           #   Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
           #   match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
           #   characters. Filtering is eventually consistent; metadata changes may take time
           #   to appear.
           # @param order
-          #   Sort order by the `created_at` timestamp. Use `asc` for ascending order or
-          #   `desc` for descending order. Defaults to `desc`.
+          #   The order in which resources are returned. Defaults to `desc`.
           # @param status
           #   Filter by one status or a list, such as `status=active` or
           #   `status[]=active&status[]=archived`. Both statuses are included by default.
           def initialize: (
             ?after: String,
-            ?limit: Integer?,
+            ?limit: Integer,
             ?metadata: ::Hash[Symbol, String],
             ?order: OpenAI::Models::Beta::Agents::VaultListParams::order,
             ?status: OpenAI::Models::Beta::Agents::vault_status_filter,
@@ -85,7 +83,7 @@ module OpenAI
 
           def to_hash: -> {
             ?after: String,
-            ?limit: Integer?,
+            ?limit: Integer,
             ?metadata: ::Hash[Symbol, String],
             ?order: OpenAI::Models::Beta::Agents::VaultListParams::order,
             ?status: OpenAI::Models::Beta::Agents::vault_status_filter,

@@ -15,10 +15,10 @@ module OpenAI
         optional :after, String
 
         # @!attribute limit
-        #   The maximum number of resources to return.
+        #   The maximum number of resources to return, between 1 and 100. Defaults to 20.
         #
         #   @return [Integer, nil]
-        optional :limit, Integer, nil?: true
+        optional :limit, Integer
 
         # @!attribute order
         #   The order in which resources are returned. Defaults to `desc`.
@@ -30,8 +30,8 @@ module OpenAI
         #   @param after [String]
         #     Return resources after this resource ID in the selected order.
         #
-        #   @param limit [Integer, nil]
-        #     The maximum number of resources to return.
+        #   @param limit [Integer]
+        #     The maximum number of resources to return, between 1 and 100. Defaults to 20.
         #
         #   @param order [Symbol, OpenAI::Models::Beta::AgentListParams::Order]
         #     The order in which resources are returned. Defaults to `desc`.

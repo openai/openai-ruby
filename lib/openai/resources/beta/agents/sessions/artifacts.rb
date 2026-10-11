@@ -46,17 +46,17 @@ module OpenAI
             # @param session_id [String]
             #   The ID of the session.
             #
-            # @param after [String, nil]
-            #   Return artifacts after this immutable artifact ID.
+            # @param after [String]
+            #   Return resources after this resource ID in the selected order.
             #
             # @param environment_id [String, nil]
             #   Restrict the listing to artifacts produced by this environment.
             #
-            # @param limit [Integer, nil]
-            #   The maximum number of artifacts to return, between 1 and 100.
+            # @param limit [Integer]
+            #   The maximum number of resources to return, between 1 and 100. Defaults to 20.
             #
             # @param order [Symbol, OpenAI::Models::Beta::Agents::Sessions::ArtifactListParams::Order]
-            #   Sort by creation time and ID. Defaults to descending.
+            #   The order in which resources are returned. Defaults to `desc`.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
