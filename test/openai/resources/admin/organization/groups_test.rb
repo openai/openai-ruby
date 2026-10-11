@@ -63,7 +63,8 @@ class OpenAI::Test::Resources::Admin::Organization::GroupsTest < OpenAI::Test::R
       response => OpenAI::Internal::NextCursorPage
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do

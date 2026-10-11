@@ -3130,7 +3130,8 @@ module OpenAI
                   provider: T.any(
                     OpenAI::Admin::Organization::AwsExternalStorageProvider::OrHash,
                     OpenAI::Admin::Organization::AzureExternalStorageProvider::OrHash,
-                    OpenAI::Admin::Organization::GcpExternalStorageProvider::OrHash
+                    OpenAI::Admin::Organization::GcpExternalStorageProvider::OrHash,
+                    OpenAI::Admin::Organization::OciExternalStorageProvider::OrHash
                   )
                 )
                   .void
@@ -3146,7 +3147,8 @@ module OpenAI
                   provider: T.any(
                     OpenAI::Admin::Organization::AwsExternalStorageProvider::OrHash,
                     OpenAI::Admin::Organization::AzureExternalStorageProvider::OrHash,
-                    OpenAI::Admin::Organization::GcpExternalStorageProvider::OrHash
+                    OpenAI::Admin::Organization::GcpExternalStorageProvider::OrHash,
+                    OpenAI::Admin::Organization::OciExternalStorageProvider::OrHash
                   )
                 )
                   .returns(T.attached_class)
@@ -3181,7 +3183,8 @@ module OpenAI
                   T.any(
                     OpenAI::Admin::Organization::AwsExternalStorageProvider,
                     OpenAI::Admin::Organization::AzureExternalStorageProvider,
-                    OpenAI::Admin::Organization::GcpExternalStorageProvider
+                    OpenAI::Admin::Organization::GcpExternalStorageProvider,
+                    OpenAI::Admin::Organization::OciExternalStorageProvider
                   )
                 }
 

@@ -52,6 +52,7 @@ module OpenAI
             OpenAI::Admin::Organization::AwsExternalStorageProvider
             | OpenAI::Admin::Organization::AzureExternalStorageProvider
             | OpenAI::Admin::Organization::GcpExternalStorageProvider
+            | OpenAI::Admin::Organization::OciExternalStorageProvider
 
           module Provider
             extend OpenAI::Internal::Type::Union

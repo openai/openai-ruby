@@ -36730,6 +36730,46 @@ webhooks:
           description: Return any 2xx status code to acknowledge receipt. A 410 Gone response also stops retries; other non-2xx responses are retried.
 components:
   schemas:
+    OciExternalStorageProviderParams:
+      properties:
+        type:
+          type: string
+          enum:
+          - oci
+          default: oci
+          x-stainless-const: true
+        tenancy_ocid:
+          type: string
+        region:
+          type: string
+        bucket:
+          type: string
+      type: object
+      required:
+      - type
+      - tenancy_ocid
+      - region
+      - bucket
+    OciExternalStorageProviderResponse:
+      properties:
+        type:
+          type: string
+          enum:
+          - oci
+          default: oci
+          x-stainless-const: true
+        tenancy_ocid:
+          type: string
+        region:
+          type: string
+        bucket:
+          type: string
+      type: object
+      required:
+      - type
+      - tenancy_ocid
+      - region
+      - bucket
     SessionSpendControlParam:
       type: object
       properties:
@@ -77833,6 +77873,7 @@ components:
       - $ref: '#/components/schemas/AwsExternalStorageProviderResponse'
       - $ref: '#/components/schemas/AzureExternalStorageProviderResponse'
       - $ref: '#/components/schemas/GcpExternalStorageProviderResponse'
+      - $ref: '#/components/schemas/OciExternalStorageProviderResponse'
     PublicProjectResidency:
       type: string
       enum:
@@ -78478,6 +78519,7 @@ components:
           - $ref: '#/components/schemas/AwsExternalStorageProviderResponse'
           - $ref: '#/components/schemas/AzureExternalStorageProviderResponse'
           - $ref: '#/components/schemas/GcpExternalStorageProviderResponse'
+          - $ref: '#/components/schemas/OciExternalStorageProviderResponse'
         geography:
           type: string
         status:
@@ -78601,6 +78643,7 @@ components:
           - $ref: '#/components/schemas/AwsExternalStorageProviderParams'
           - $ref: '#/components/schemas/AzureExternalStorageProviderParams'
           - $ref: '#/components/schemas/GcpExternalStorageProviderParams'
+          - $ref: '#/components/schemas/OciExternalStorageProviderParams'
       type: object
       required:
       - project_id

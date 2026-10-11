@@ -27,7 +27,8 @@ module OpenAI
               T.any(
                 OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Aws,
                 OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Azure,
-                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp
+                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp,
+                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Oci
               )
             )
           }
@@ -41,7 +42,8 @@ module OpenAI
               provider: T.any(
                 OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Aws::OrHash,
                 OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Azure::OrHash,
-                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp::OrHash
+                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp::OrHash,
+                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Oci::OrHash
               ),
 
               request_options: OpenAI::RequestOptions::OrHash
@@ -65,7 +67,8 @@ module OpenAI
                 provider: T.any(
                   OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Aws,
                   OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Azure,
-                  OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp
+                  OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp,
+                  OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Oci
                 ),
                 request_options: OpenAI::RequestOptions
               }
@@ -81,7 +84,8 @@ module OpenAI
               T.any(
                 OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Aws,
                 OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Azure,
-                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp
+                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Gcp,
+                OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Oci
               )
             }
 
@@ -270,6 +274,61 @@ module OpenAI
                     workload_identity_project_number: String,
                     workload_identity_provider_id: String
                   }
+                )
+              end
+              def to_hash
+              end
+
+            end
+
+            class Oci < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Admin::Organization::ExternalStorageCreateParams::Provider::Oci,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              sig { returns(String) }
+              attr_accessor :bucket
+
+              sig { returns(String) }
+              attr_accessor :region
+
+              sig { returns(String) }
+              attr_accessor :tenancy_ocid
+
+              sig { returns(Symbol) }
+              attr_accessor :type
+
+              sig do
+                params(
+
+                  bucket: String,
+
+                  region: String,
+
+                  tenancy_ocid: String,
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                bucket:,
+
+                region:,
+
+                tenancy_ocid:,
+
+                type: :oci
+              )
+              end
+
+              sig do
+                override.returns(
+                  {bucket: String, region: String, tenancy_ocid: String, type: Symbol}
                 )
               end
               def to_hash
