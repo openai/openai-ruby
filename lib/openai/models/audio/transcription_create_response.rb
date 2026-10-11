@@ -21,8 +21,10 @@ module OpenAI
         # Represents a verbose json transcription response returned by model, based on the provided input.
         variant -> { OpenAI::Audio::TranscriptionVerbose }
 
+        variant StringIO
+
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionDiarized, OpenAI::Models::Audio::TranscriptionVerbose)]
+        #   @return [Array(OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionDiarized, OpenAI::Models::Audio::TranscriptionVerbose, StringIO)]
       end
     end
   end

@@ -11,7 +11,8 @@ module OpenAI
         Variants = T.type_alias do
           T.any(
             OpenAI::Audio::Translation,
-            OpenAI::Audio::TranslationVerbose
+            OpenAI::Audio::TranslationVerbose,
+            StringIO
           )
         end
 

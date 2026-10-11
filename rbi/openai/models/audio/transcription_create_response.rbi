@@ -14,7 +14,8 @@ module OpenAI
           T.any(
             OpenAI::Audio::Transcription,
             OpenAI::Audio::TranscriptionDiarized,
-            OpenAI::Audio::TranscriptionVerbose
+            OpenAI::Audio::TranscriptionVerbose,
+            StringIO
           )
         end
 

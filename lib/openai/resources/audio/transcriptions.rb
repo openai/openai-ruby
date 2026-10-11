@@ -109,7 +109,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionDiarized, OpenAI::Models::Audio::TranscriptionVerbose]
+        # @return [OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionDiarized, OpenAI::Models::Audio::TranscriptionVerbose, StringIO]
         #
         # @see OpenAI::Models::Audio::TranscriptionCreateParams
         def create(params)

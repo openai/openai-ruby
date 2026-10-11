@@ -64,7 +64,8 @@ class OpenAI::Test::Resources::Beta::Agents::VaultsTest < OpenAI::Test::Resource
       response => OpenAI::Internal::CursorPage
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do

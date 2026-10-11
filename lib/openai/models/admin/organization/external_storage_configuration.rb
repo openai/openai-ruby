@@ -33,7 +33,7 @@ module OpenAI
 
           # @!attribute provider
           #
-          #   @return [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider, OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::Provider::Oci]
+          #   @return [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider, OpenAI::Models::Admin::Organization::OciExternalStorageProvider]
           required :provider, union: -> { OpenAI::Admin::Organization::ExternalStorageConfiguration::Provider }
 
           # @!attribute status
@@ -46,7 +46,7 @@ module OpenAI
           #   @param created_at [Integer]
           #   @param geography [String]
           #   @param project_id [String]
-          #   @param provider [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider, OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::Provider::Oci]
+          #   @param provider [OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider, OpenAI::Models::Admin::Organization::OciExternalStorageProvider]
           #   @param status [Symbol, OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::Status]
           #   @param object [Symbol, :"organization.external_storage"]
 
@@ -62,38 +62,10 @@ module OpenAI
 
             variant :gcp, -> { OpenAI::Admin::Organization::GcpExternalStorageProvider }
 
-            variant :oci, -> { OpenAI::Admin::Organization::ExternalStorageConfiguration::Provider::Oci }
-
-            class Oci < OpenAI::Internal::Type::BaseModel
-              # @!attribute bucket
-              #
-              #   @return [String]
-              required :bucket, String
-
-              # @!attribute region
-              #
-              #   @return [String]
-              required :region, String
-
-              # @!attribute tenancy_ocid
-              #
-              #   @return [String]
-              required :tenancy_ocid, String
-
-              # @!attribute type
-              #
-              #   @return [Symbol, :oci]
-              required :type, const: :oci
-
-              # @!method initialize(bucket:, region:, tenancy_ocid:, type: :oci)
-              #   @param bucket [String]
-              #   @param region [String]
-              #   @param tenancy_ocid [String]
-              #   @param type [Symbol, :oci]
-            end
+            variant :oci, -> { OpenAI::Admin::Organization::OciExternalStorageProvider }
 
             # @!method self.variants
-            #   @return [Array(OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider, OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::Provider::Oci)]
+            #   @return [Array(OpenAI::Models::Admin::Organization::AwsExternalStorageProvider, OpenAI::Models::Admin::Organization::AzureExternalStorageProvider, OpenAI::Models::Admin::Organization::GcpExternalStorageProvider, OpenAI::Models::Admin::Organization::OciExternalStorageProvider)]
           end
 
           # @see OpenAI::Models::Admin::Organization::ExternalStorageConfiguration#status

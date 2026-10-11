@@ -52,7 +52,7 @@ module OpenAI
                 OpenAI::Admin::Organization::AwsExternalStorageProvider::OrHash,
                 OpenAI::Admin::Organization::AzureExternalStorageProvider::OrHash,
                 OpenAI::Admin::Organization::GcpExternalStorageProvider::OrHash,
-                OpenAI::Admin::Organization::ExternalStorageConfiguration::Provider::Oci::OrHash
+                OpenAI::Admin::Organization::OciExternalStorageProvider::OrHash
               ),
 
               status: OpenAI::Admin::Organization::ExternalStorageConfiguration::Status::OrSymbol,
@@ -103,64 +103,9 @@ module OpenAI
                 OpenAI::Admin::Organization::AwsExternalStorageProvider,
                 OpenAI::Admin::Organization::AzureExternalStorageProvider,
                 OpenAI::Admin::Organization::GcpExternalStorageProvider,
-                OpenAI::Admin::Organization::ExternalStorageConfiguration::Provider::Oci
+                OpenAI::Admin::Organization::OciExternalStorageProvider
               )
             }
-
-            class Oci < OpenAI::Internal::Type::BaseModel
-              OrHash = T.type_alias do
-                T.any(
-                  OpenAI::Admin::Organization::ExternalStorageConfiguration::Provider::Oci,
-                  OpenAI::Internal::AnyHash
-                )
-              end
-
-              sig { returns(String) }
-              attr_accessor :bucket
-
-              sig { returns(String) }
-              attr_accessor :region
-
-              sig { returns(String) }
-              attr_accessor :tenancy_ocid
-
-              sig { returns(Symbol) }
-              attr_accessor :type
-
-              sig do
-                params(
-
-                  bucket: String,
-
-                  region: String,
-
-                  tenancy_ocid: String,
-
-                  type: Symbol
-                )
-                  .returns(T.attached_class)
-              end
-              def self.new(
-
-                bucket:,
-
-                region:,
-
-                tenancy_ocid:,
-
-                type: :oci
-              )
-              end
-
-              sig do
-                override.returns(
-                  {bucket: String, region: String, tenancy_ocid: String, type: Symbol}
-                )
-              end
-              def to_hash
-              end
-
-            end
 
             sig {
               override.returns(T::Array[OpenAI::Admin::Organization::ExternalStorageConfiguration::Provider::Variants])

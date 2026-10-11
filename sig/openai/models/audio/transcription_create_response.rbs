@@ -5,6 +5,7 @@ module OpenAI
         OpenAI::Audio::Transcription
         | OpenAI::Audio::TranscriptionDiarized
         | OpenAI::Audio::TranscriptionVerbose
+        | StringIO
 
       module TranscriptionCreateResponse
         extend OpenAI::Internal::Type::Union
