@@ -106,6 +106,7 @@ module OpenAI
           }
 
         class Choice < OpenAI::Internal::Type::BaseModel
+          # Provide between 2 and 255 choices. Each choice must be unique.
           attr_accessor choices: ::Array[OpenAI::DecisionCreateParams::Question::Choice::Choice]
 
           attr_accessor instructions: String
@@ -117,6 +118,8 @@ module OpenAI
 
           def name=: (String) -> String
 
+          # @param choices
+          #   Provide between 2 and 255 choices. Each choice must be unique.
           # @param type
           #   The type of the object. Always `choice`.
           def initialize: (
