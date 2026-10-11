@@ -113,6 +113,7 @@ module OpenAI
 
         class Choice < OpenAI::Internal::Type::BaseModel
           # @!attribute choices
+          #   Provide between 2 and 255 choices. Each choice must be unique.
           #
           #   @return [Array<OpenAI::Models::DecisionCreateParams::Question::Choice::Choice>]
           required(
@@ -140,6 +141,7 @@ module OpenAI
           #   Choose from the supplied options based on the input.
           #
           #   @param choices [Array<OpenAI::Models::DecisionCreateParams::Question::Choice::Choice>]
+          #     Provide between 2 and 255 choices. Each choice must be unique.
           #
           #   @param instructions [String]
           #

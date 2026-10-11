@@ -199,6 +199,7 @@ module OpenAI
             )
           end
 
+          # Provide between 2 and 255 choices. Each choice must be unique.
           sig { returns(T::Array[OpenAI::DecisionCreateParams::Question::Choice::Choice]) }
           attr_accessor :choices
 
@@ -231,6 +232,7 @@ module OpenAI
           end
           def self.new(
 
+            # Provide between 2 and 255 choices. Each choice must be unique.
             choices:,
 
             instructions:,
