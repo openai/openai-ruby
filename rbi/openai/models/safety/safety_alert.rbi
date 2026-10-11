@@ -47,6 +47,11 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :response_id
 
+        # A generated explanation, temporarily available for eligible zero data retention
+        # alerts. Omitted when unavailable.
+        sig { returns(T.nilable(String)) }
+        attr_accessor :detailed_explanation
+
         sig do
           params(
 
@@ -65,6 +70,8 @@ module OpenAI
             request_paused: T::Boolean,
 
             response_id: String,
+
+            detailed_explanation: T.nilable(String),
 
             object: Symbol
           )
@@ -92,6 +99,10 @@ module OpenAI
 
           response_id:,
 
+          # A generated explanation, temporarily available for eligible zero data retention
+          # alerts. Omitted when unavailable.
+          detailed_explanation: nil,
+
           object: :"safety.alert"
         )
         end
@@ -107,7 +118,8 @@ module OpenAI
               reason: T.nilable(String),
               request_id: String,
               request_paused: T::Boolean,
-              response_id: String
+              response_id: String,
+              detailed_explanation: T.nilable(String)
             }
           )
         end

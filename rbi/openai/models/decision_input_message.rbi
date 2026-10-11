@@ -12,7 +12,7 @@ module OpenAI
         )
       end
 
-      # Text evidence or an ordered list of text and inline image parts.
+      # Text evidence or an ordered list of text and image parts.
       sig { returns(OpenAI::DecisionInputMessage::Content::Variants) }
       attr_accessor :content
 
@@ -25,7 +25,7 @@ module OpenAI
       sig { params(type: OpenAI::DecisionInputMessage::Type::OrSymbol).void }
       attr_writer :type
 
-      # A user message containing text or inline images.
+      # A user message containing text or images.
       sig do
         params(
 
@@ -39,7 +39,7 @@ module OpenAI
       end
       def self.new(
 
-        # Text evidence or an ordered list of text and inline image parts.
+        # Text evidence or an ordered list of text and image parts.
         content:,
 
         type: nil,
@@ -60,7 +60,7 @@ module OpenAI
       def to_hash
       end
 
-      # Text evidence or an ordered list of text and inline image parts.
+      # Text evidence or an ordered list of text and image parts.
       module Content
         extend OpenAI::Internal::Type::Union
 

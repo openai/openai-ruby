@@ -8,7 +8,7 @@ module OpenAI
       }
 
     class DecisionInputImage < OpenAI::Internal::Type::BaseModel
-      # A base64-encoded image in a data URL.
+      # A base64-encoded image in a data URL or a publicly accessible HTTP(S) image URL.
       attr_accessor image_url: String
 
       attr_accessor type: :input_image
@@ -18,7 +18,7 @@ module OpenAI
       attr_accessor detail: OpenAI::Models::DecisionInputImage::detail?
 
       # @param image_url
-      #   A base64-encoded image in a data URL.
+      #   A base64-encoded image in a data URL or a publicly accessible HTTP(S) image URL.
       # @param detail
       #   The image detail level, using the selected model's image profile. Defaults to
       #   auto.
