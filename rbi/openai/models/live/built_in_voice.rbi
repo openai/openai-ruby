@@ -28,6 +28,7 @@ module OpenAI
         QUARTZ = T.let(:quartz, OpenAI::Live::BuiltInVoice::TaggedSymbol)
         RIPPLE = T.let(:ripple, OpenAI::Live::BuiltInVoice::TaggedSymbol)
         SAGE = T.let(:sage, OpenAI::Live::BuiltInVoice::TaggedSymbol)
+        SHIDA = T.let(:shida, OpenAI::Live::BuiltInVoice::TaggedSymbol)
         SHIMMER = T.let(:shimmer, OpenAI::Live::BuiltInVoice::TaggedSymbol)
         STONE = T.let(:stone, OpenAI::Live::BuiltInVoice::TaggedSymbol)
         TEMPO = T.let(:tempo, OpenAI::Live::BuiltInVoice::TaggedSymbol)
