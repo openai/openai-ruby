@@ -10,19 +10,19 @@ module OpenAI
           include OpenAI::Internal::Type::RequestParameters
 
           # @!attribute after
-          #   Return environments after this environment ID in the selected order.
+          #   Return resources after this resource ID in the selected order.
           #
           #   @return [String, nil]
           optional :after, String
 
           # @!attribute limit
-          #   The maximum number of environments to return, between 1 and 100. Defaults to 20.
+          #   The maximum number of resources to return, between 1 and 100. Defaults to 20.
           #
           #   @return [Integer, nil]
           optional :limit, Integer
 
           # @!attribute order
-          #   The order in which environments are returned. Defaults to `desc`.
+          #   The order in which resources are returned. Defaults to `desc`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::Agents::EnvironmentListParams::Order, nil]
           optional :order, enum: -> { OpenAI::Beta::Agents::EnvironmentListParams::Order }
@@ -35,20 +35,20 @@ module OpenAI
 
           # @!method initialize(after: nil, limit: nil, order: nil, type: nil, request_options: {})
           #   @param after [String]
-          #     Return environments after this environment ID in the selected order.
+          #     Return resources after this resource ID in the selected order.
           #
           #   @param limit [Integer]
-          #     The maximum number of environments to return, between 1 and 100. Defaults to 20.
+          #     The maximum number of resources to return, between 1 and 100. Defaults to 20.
           #
           #   @param order [Symbol, OpenAI::Models::Beta::Agents::EnvironmentListParams::Order]
-          #     The order in which environments are returned. Defaults to `desc`.
+          #     The order in which resources are returned. Defaults to `desc`.
           #
           #   @param type [Symbol, OpenAI::Models::Beta::Agents::EnvironmentListParams::Type]
           #     The hosting type to list. Defaults to `openai_hosted`.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
-          # The order in which environments are returned. Defaults to `desc`.
+          # The order in which resources are returned. Defaults to `desc`.
           module Order
             extend OpenAI::Internal::Type::Enum
 
