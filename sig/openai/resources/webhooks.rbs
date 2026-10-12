@@ -51,9 +51,9 @@ module OpenAI
         ?Hash[String | Symbol, String] headers,
         ?String? webhook_secret
       ) -> (OpenAI::Webhooks::AgentEnvironmentExpiredWebhookEvent
-      | OpenAI::Webhooks::AgentEnvironmentSuspendedWebhookEvent
       | OpenAI::Webhooks::AgentEnvironmentFailedWebhookEvent
       | OpenAI::Webhooks::AgentEnvironmentReadyWebhookEvent
+      | OpenAI::Webhooks::AgentEnvironmentSuspendedWebhookEvent
       | OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent
       | OpenAI::Webhooks::AgentSessionCreatedWebhookEvent
       | OpenAI::Webhooks::AgentSessionFailedWebhookEvent

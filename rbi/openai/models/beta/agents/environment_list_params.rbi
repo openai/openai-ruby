@@ -19,21 +19,21 @@ module OpenAI
             )
           end
 
-          # Return environments after this environment ID in the selected order.
+          # Return resources after this resource ID in the selected order.
           sig { returns(T.nilable(String)) }
           attr_reader :after
 
           sig { params(after: String).void }
           attr_writer :after
 
-          # The maximum number of environments to return, between 1 and 100. Defaults to 20.
+          # The maximum number of resources to return, between 1 and 100. Defaults to 20.
           sig { returns(T.nilable(Integer)) }
           attr_reader :limit
 
           sig { params(limit: Integer).void }
           attr_writer :limit
 
-          # The order in which environments are returned. Defaults to `desc`.
+          # The order in which resources are returned. Defaults to `desc`.
           sig { returns(T.nilable(OpenAI::Beta::Agents::EnvironmentListParams::Order::OrSymbol)) }
           attr_reader :order
 
@@ -64,13 +64,13 @@ module OpenAI
           end
           def self.new(
 
-            # Return environments after this environment ID in the selected order.
+            # Return resources after this resource ID in the selected order.
             after: nil,
 
-            # The maximum number of environments to return, between 1 and 100. Defaults to 20.
+            # The maximum number of resources to return, between 1 and 100. Defaults to 20.
             limit: nil,
 
-            # The order in which environments are returned. Defaults to `desc`.
+            # The order in which resources are returned. Defaults to `desc`.
             order: nil,
 
             # The hosting type to list. Defaults to `openai_hosted`.
@@ -94,7 +94,7 @@ module OpenAI
           def to_hash
           end
 
-          # The order in which environments are returned. Defaults to `desc`.
+          # The order in which resources are returned. Defaults to `desc`.
           module Order
             extend OpenAI::Internal::Type::Enum
 
