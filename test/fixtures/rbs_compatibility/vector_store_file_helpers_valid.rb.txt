@@ -1,0 +1,6 @@
+client = OpenAI::Client.new(api_key: "fake-key")
+files = client.vector_stores.files
+files.create_and_poll("vs_synthetic", file_id: "file_synthetic", attributes: {source: "fixture"}, timeout: nil).id.upcase
+files.poll("file_synthetic", vector_store_id: "vs_synthetic", poll_interval: 0.5, timeout: 10.0).id.upcase
+files.upload("vs_synthetic", file: StringIO.new("synthetic"), request_options: {max_retries: 0}).id.upcase
+files.upload_and_poll("vs_synthetic", file: StringIO.new("synthetic"), poll_interval: 1, timeout: nil).id.upcase
