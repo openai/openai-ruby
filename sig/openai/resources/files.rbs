@@ -31,13 +31,6 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> (StringIO & OpenAI::ResponseCarrier)
 
-      def wait_for_processing: (
-        String file_id,
-        ?poll_interval: (Integer | Float)?,
-        ?timeout: (Integer | Float)?,
-        ?request_options: OpenAI::request_opts
-      ) -> OpenAI::FileObject
-
       def initialize: (client: OpenAI::Client) -> void
     end
   end

@@ -1,0 +1,12 @@
+module OpenAI
+  module Resources
+    class Files
+      def wait_for_processing: (
+        String file_id,
+        ?poll_interval: (Integer | Float)?,
+        ?timeout: (Integer | Float)?,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::FileObject
+    end
+  end
+end
