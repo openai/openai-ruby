@@ -92,6 +92,23 @@ class OpenAI::Test::Resources::Admin::Organization::UsageTest < OpenAI::Test::Re
     end
   end
 
+  def test_decisions_required_params
+    response = @openai.admin.organization.usage.decisions(start_time: 0)
+
+    assert_pattern do
+      response => OpenAI::Models::Admin::Organization::UsageDecisionsResponse
+    end
+
+    assert_pattern do
+      response => {
+          data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageDecisionsResponse::Data]),
+          has_more: OpenAI::Internal::Type::Boolean,
+          next_page: String | nil,
+          object: Symbol
+        }
+    end
+  end
+
   def test_embeddings_required_params
     response = @openai.admin.organization.usage.embeddings(start_time: 0)
 
