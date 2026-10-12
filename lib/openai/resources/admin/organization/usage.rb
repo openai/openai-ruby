@@ -298,6 +298,72 @@ module OpenAI
             )
           end
 
+          # Get Decisions API usage details for the organization.
+          #
+          # @overload decisions(start_time:, api_key_ids: nil, batch: nil, bucket_width: nil, end_time: nil, group_by: nil, limit: nil, models: nil, page: nil, project_ids: nil, user_ids: nil, request_options: {})
+          #
+          # @param start_time [Integer]
+          #   Start time (Unix seconds) of the query time range, inclusive.
+          #
+          # @param api_key_ids [Array<String>, nil]
+          #   Return only usage for these API keys.
+          #
+          # @param batch [Boolean, nil]
+          #   If `true`, return batch jobs only. If `false`, return non-batch jobs only. By
+          #   default, return both.
+          #
+          # @param bucket_width [Symbol, OpenAI::Models::Admin::Organization::UsageDecisionsParams::BucketWidth, nil]
+          #   Width of each time bucket in response. Currently `1m`, `1h` and `1d` are
+          #   supported, default to `1d`.
+          #
+          # @param end_time [Integer, nil]
+          #   End time (Unix seconds) of the query time range, exclusive.
+          #
+          # @param group_by [Array<Symbol, OpenAI::Models::Admin::Organization::UsageDecisionsParams::GroupBy>, nil]
+          #   Group the usage data by the specified fields. Support fields include
+          #   `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier`,
+          #   `api_source` or any combination of them. When grouped by `api_source`, results
+          #   use `agents_api` for attributed Agents API activity and `unlabeled` for all
+          #   other activity. Without source grouping, `api_source` is null.
+          #
+          # @param limit [Integer, nil]
+          #   Specifies the number of buckets to return.
+          #
+          #   - `bucket_width=1d`: default: 7, max: 31
+          #   - `bucket_width=1h`: default: 24, max: 168
+          #   - `bucket_width=1m`: default: 60, max: 1440
+          #
+          # @param models [Array<String>, nil]
+          #   Return only usage for these models.
+          #
+          # @param page [String, nil]
+          #   A cursor for use in pagination. Corresponding to the `next_page` field from the
+          #   previous response.
+          #
+          # @param project_ids [Array<String>, nil]
+          #   Return only usage for these projects.
+          #
+          # @param user_ids [Array<String>, nil]
+          #   Return only usage for these users.
+          #
+          # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+          #
+          # @return [OpenAI::Models::Admin::Organization::UsageDecisionsResponse]
+          #
+          # @see OpenAI::Models::Admin::Organization::UsageDecisionsParams
+          def decisions(params)
+            parsed, options = OpenAI::Admin::Organization::UsageDecisionsParams.dump_request(params)
+            query = OpenAI::Internal::Util.encode_query_params(parsed)
+            @client.request(
+              method: :get,
+              path: "organization/usage/decisions",
+              query: query,
+              model: OpenAI::Models::Admin::Organization::UsageDecisionsResponse,
+              security: {admin_api_key_auth: true},
+              options: options
+            )
+          end
+
           # Get embeddings usage details for the organization.
           #
           # @overload embeddings(start_time:, api_key_ids: nil, bucket_width: nil, end_time: nil, group_by: nil, limit: nil, models: nil, page: nil, project_ids: nil, user_ids: nil, request_options: {})
