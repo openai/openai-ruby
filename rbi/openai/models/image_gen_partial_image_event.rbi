@@ -187,6 +187,7 @@ module OpenAI
         sig { returns(T::Array[OpenAI::ImageGenPartialImageEvent::Size::TaggedSymbol]) }
         def self.values
         end
+
       end
 
     end

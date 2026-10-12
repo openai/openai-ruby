@@ -301,10 +301,7 @@ module OpenAI
         optional(
           :text,
           union: -> {
-            OpenAI::UnionOf[
-              OpenAI::Responses::ResponseTextConfig,
-              OpenAI::StructuredOutput::JsonSchemaConverter
-            ]
+            OpenAI::UnionOf[OpenAI::Responses::ResponseTextConfig, OpenAI::StructuredOutput::JsonSchemaConverter]
           }
         )
 
