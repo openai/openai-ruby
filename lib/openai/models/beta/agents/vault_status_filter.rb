@@ -17,9 +17,7 @@ module OpenAI
           #   @return [Array(Symbol, OpenAI::Models::Beta::Agents::VaultStatus, Array<Symbol, OpenAI::Models::Beta::Agents::VaultStatus>)]
 
           # @type [OpenAI::Internal::Type::Converter]
-          VaultStatusArray = OpenAI::Internal::Type::ArrayOf[
-            enum: -> { OpenAI::Models::Beta::Agents::VaultStatus }
-          ]
+          VaultStatusArray = OpenAI::Internal::Type::ArrayOf[enum: -> { OpenAI::Models::Beta::Agents::VaultStatus }]
         end
       end
     end

@@ -48802,6 +48802,7 @@ components:
             - 1536x1024
             - auto
           description: The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+          x-openai-ruby-open-enum-compatibility: true
         quality:
           type: string
           description: |
@@ -48893,6 +48894,7 @@ components:
             - 1536x1024
             - auto
           description: The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+          x-openai-ruby-open-enum-compatibility: true
         quality:
           type: string
           description: |
@@ -48984,6 +48986,7 @@ components:
             - 1536x1024
             - auto
           description: The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+          x-openai-ruby-open-enum-compatibility: true
         quality:
           type: string
           description: |
@@ -49075,6 +49078,7 @@ components:
             - 1536x1024
             - auto
           description: The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+          x-openai-ruby-open-enum-compatibility: true
         quality:
           type: string
           description: |
@@ -49335,6 +49339,7 @@ components:
             - 1024x1536
             - 1536x1024
           description: The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+          x-openai-ruby-open-enum-compatibility: true
         quality:
           type: string
           description: The quality of the image generated. One of `low`, `medium`, `high`, `xhigh`, or `max`.
@@ -63775,6 +63780,7 @@ components:
                 underscores and dashes, with a maximum length of 64.
             schema:
               $ref: '#/components/schemas/ResponseFormatJsonSchemaSchema'
+              x-openai-ruby-json-schema-input: true
             strict:
               anyOf:
               - type: boolean
@@ -64832,6 +64838,7 @@ components:
           - type: 'null'
         text:
           $ref: '#/components/schemas/ResponseTextParam'
+          x-openai-ruby-json-schema-input: true
         tools:
           $ref: '#/components/schemas/ToolsArray'
         tool_choice:
@@ -68804,6 +68811,7 @@ components:
             underscores and dashes, with a maximum length of 64.
         schema:
           $ref: '#/components/schemas/ResponseFormatJsonSchemaSchema'
+          x-openai-ruby-json-schema-input: true
         strict:
           anyOf:
           - type: boolean
@@ -71642,6 +71650,11 @@ components:
           - $ref: '#/components/schemas/WebSearchActionSearch'
           - $ref: '#/components/schemas/WebSearchActionOpenPage'
           - $ref: '#/components/schemas/WebSearchActionFind'
+            x-stainless-naming:
+              python:
+                type_name: ActionFind
+              ruby:
+                type_name: Find
       required:
       - id
       - type
@@ -74520,6 +74533,7 @@ components:
             description: A JSON schema object describing the parameters of the function.
             x-oaiTypeLabel: map
           - type: 'null'
+          x-openai-ruby-json-schema-input: true
         output_schema:
           anyOf:
           - additionalProperties: {}

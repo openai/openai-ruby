@@ -192,6 +192,7 @@ module OpenAI
         sig { returns(T::Array[OpenAI::ImageEditCompletedEvent::Size::TaggedSymbol]) }
         def self.values
         end
+
       end
 
       class Usage < OpenAI::Internal::Type::BaseModel

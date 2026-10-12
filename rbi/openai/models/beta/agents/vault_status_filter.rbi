@@ -23,9 +23,7 @@ module OpenAI
           end
 
           VaultStatusArray = T.let(
-            OpenAI::Internal::Type::ArrayOf[
-              enum: -> { OpenAI::Models::Beta::Agents::VaultStatus }
-            ],
+            OpenAI::Internal::Type::ArrayOf[enum: -> { OpenAI::Models::Beta::Agents::VaultStatus }],
             OpenAI::Internal::Type::Converter
           )
 

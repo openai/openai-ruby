@@ -20,7 +20,7 @@ module OpenAI
 
         # An object describing the specific action taken in this web search call. Includes
         # details on how the model used the web (search, open_page, find_in_page).
-        sig do
+        sig {
           returns(
             T.any(
               OpenAI::Responses::ResponseFunctionWebSearch::Action::Search,
@@ -28,8 +28,7 @@ module OpenAI
               OpenAI::Responses::ResponseFunctionWebSearch::Action::Find
             )
           )
-        end
-
+        }
         attr_accessor :action
 
         # The status of the web search tool call.
@@ -100,13 +99,13 @@ module OpenAI
         module Action
           extend OpenAI::Internal::Type::Union
 
-          Variants = T.type_alias do
+          Variants = T.type_alias {
             T.any(
               OpenAI::Responses::ResponseFunctionWebSearch::Action::Search,
               OpenAI::Responses::ResponseFunctionWebSearch::Action::OpenPage,
               OpenAI::Responses::ResponseFunctionWebSearch::Action::Find
             )
-          end
+          }
 
           class Search < OpenAI::Internal::Type::BaseModel
             OrHash = T.type_alias do
@@ -138,15 +137,10 @@ module OpenAI
             sig { returns(T.nilable(T::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source])) }
             attr_reader :sources
 
-            sig do
-              params(
-                sources: T::Array[
-                  OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source::OrHash
-                ]
-              )
+            sig {
+              params(sources: T::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source::OrHash])
                 .void
-            end
-
+            }
             attr_writer :sources
 
             # Action type "search" - Performs a web search query.
@@ -259,9 +253,13 @@ module OpenAI
 
             # Action type "open_page" - Opens a specific URL from search results.
             sig do
-              params(url: T.nilable(String), type: Symbol).returns(
-                T.attached_class
+              params(
+
+                url: T.nilable(String),
+
+                type: Symbol
               )
+                .returns(T.attached_class)
             end
             def self.new(
 
@@ -306,9 +304,15 @@ module OpenAI
 
             # Action type "find_in_page": Searches for a pattern within a loaded page.
             sig do
-              params(pattern: String, url: String, type: Symbol).returns(
-                T.attached_class
+              params(
+
+                pattern: String,
+
+                url: String,
+
+                type: Symbol
               )
+                .returns(T.attached_class)
             end
             def self.new(
 

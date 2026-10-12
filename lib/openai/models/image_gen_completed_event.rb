@@ -139,7 +139,6 @@ module OpenAI
 
         variant const: -> { OpenAI::Models::ImageGenCompletedEvent::Size::AUTO }
 
-        # Keep known dimensions as symbols when reading existing API responses.
         variant String
 
         # @!method self.variants
@@ -158,7 +157,7 @@ module OpenAI
 
         # @!endgroup
 
-        # Preserve the enum helper available before custom dimensions were supported.
+        # Preserve the enum helper available before arbitrary strings were supported.
         #
         # @return [Array<Symbol>]
         def self.values = [SIZE_1024X1024, SIZE_1024X1536, SIZE_1536X1024, AUTO]
