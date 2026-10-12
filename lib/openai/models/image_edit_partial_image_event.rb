@@ -129,8 +129,6 @@ module OpenAI
       module Size
         extend OpenAI::Internal::Type::Union
 
-        variant String
-
         variant const: -> { OpenAI::Models::ImageEditPartialImageEvent::Size::SIZE_1024X1024 }
 
         variant const: -> { OpenAI::Models::ImageEditPartialImageEvent::Size::SIZE_1024X1536 }
@@ -138,6 +136,8 @@ module OpenAI
         variant const: -> { OpenAI::Models::ImageEditPartialImageEvent::Size::SIZE_1536X1024 }
 
         variant const: -> { OpenAI::Models::ImageEditPartialImageEvent::Size::AUTO }
+
+        variant String
 
         # @!method self.variants
         #   @return [Array(String, Symbol)]
@@ -154,6 +154,11 @@ module OpenAI
         AUTO = :auto
 
         # @!endgroup
+
+        # Preserve the enum helper available before arbitrary strings were supported.
+        #
+        # @return [Array<Symbol>]
+        def self.values = [SIZE_1024X1024, SIZE_1024X1536, SIZE_1536X1024, AUTO]
       end
     end
   end

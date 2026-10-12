@@ -127,6 +127,11 @@ module OpenAI
         SIZE_1024X1536: :"1024x1536"
         SIZE_1536X1024: :"1536x1024"
         AUTO: :auto
+
+        def self?.values: -> ::Array[(:"1024x1024"
+        | :"1024x1536"
+        | :"1536x1024"
+        | :auto)]
       end
 
       type usage =

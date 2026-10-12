@@ -25,7 +25,7 @@ module OpenAI
             T.any(
               OpenAI::Responses::ResponseFunctionWebSearch::Action::Search,
               OpenAI::Responses::ResponseFunctionWebSearch::Action::OpenPage,
-              OpenAI::Responses::ResponseFunctionWebSearch::Action::FindInPage
+              OpenAI::Responses::ResponseFunctionWebSearch::Action::Find
             )
           )
         }
@@ -50,7 +50,7 @@ module OpenAI
             action: T.any(
               OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::OrHash,
               OpenAI::Responses::ResponseFunctionWebSearch::Action::OpenPage::OrHash,
-              OpenAI::Responses::ResponseFunctionWebSearch::Action::FindInPage::OrHash
+              OpenAI::Responses::ResponseFunctionWebSearch::Action::Find::OrHash
             ),
 
             status: OpenAI::Responses::ResponseFunctionWebSearch::Status::OrSymbol,
@@ -84,7 +84,7 @@ module OpenAI
               action: T.any(
                 OpenAI::Responses::ResponseFunctionWebSearch::Action::Search,
                 OpenAI::Responses::ResponseFunctionWebSearch::Action::OpenPage,
-                OpenAI::Responses::ResponseFunctionWebSearch::Action::FindInPage
+                OpenAI::Responses::ResponseFunctionWebSearch::Action::Find
               ),
               status: OpenAI::Responses::ResponseFunctionWebSearch::Status::OrSymbol,
               type: Symbol
@@ -103,7 +103,7 @@ module OpenAI
             T.any(
               OpenAI::Responses::ResponseFunctionWebSearch::Action::Search,
               OpenAI::Responses::ResponseFunctionWebSearch::Action::OpenPage,
-              OpenAI::Responses::ResponseFunctionWebSearch::Action::FindInPage
+              OpenAI::Responses::ResponseFunctionWebSearch::Action::Find
             )
           }
 
@@ -282,10 +282,10 @@ module OpenAI
 
           end
 
-          class FindInPage < OpenAI::Internal::Type::BaseModel
+          class Find < OpenAI::Internal::Type::BaseModel
             OrHash = T.type_alias do
               T.any(
-                OpenAI::Responses::ResponseFunctionWebSearch::Action::FindInPage,
+                OpenAI::Responses::ResponseFunctionWebSearch::Action::Find,
                 OpenAI::Internal::AnyHash
               )
             end

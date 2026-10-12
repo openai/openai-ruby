@@ -195,6 +195,10 @@ module OpenAI
         SIZE_1024X1536 = T.let(:"1024x1536", OpenAI::ImagesResponse::Size::TaggedSymbol)
         SIZE_1536X1024 = T.let(:"1536x1024", OpenAI::ImagesResponse::Size::TaggedSymbol)
 
+        sig { returns(T::Array[OpenAI::ImagesResponse::Size::TaggedSymbol]) }
+        def self.values
+        end
+
       end
 
       class Usage < OpenAI::Internal::Type::BaseModel

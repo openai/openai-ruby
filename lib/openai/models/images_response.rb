@@ -125,13 +125,13 @@ module OpenAI
       module Size
         extend OpenAI::Internal::Type::Union
 
-        variant String
-
         variant const: -> { OpenAI::Models::ImagesResponse::Size::SIZE_1024X1024 }
 
         variant const: -> { OpenAI::Models::ImagesResponse::Size::SIZE_1024X1536 }
 
         variant const: -> { OpenAI::Models::ImagesResponse::Size::SIZE_1536X1024 }
+
+        variant String
 
         # @!method self.variants
         #   @return [Array(String, Symbol)]
@@ -147,6 +147,11 @@ module OpenAI
         SIZE_1536X1024 = :"1536x1024"
 
         # @!endgroup
+
+        # Preserve the enum helper available before arbitrary strings were supported.
+        #
+        # @return [Array<Symbol>]
+        def self.values = [SIZE_1024X1024, SIZE_1024X1536, SIZE_1536X1024]
       end
 
       # @see OpenAI::Models::ImagesResponse#usage

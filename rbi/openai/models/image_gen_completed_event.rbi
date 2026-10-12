@@ -189,6 +189,10 @@ module OpenAI
         SIZE_1536X1024 = T.let(:"1536x1024", OpenAI::ImageGenCompletedEvent::Size::TaggedSymbol)
         AUTO = T.let(:auto, OpenAI::ImageGenCompletedEvent::Size::TaggedSymbol)
 
+        sig { returns(T::Array[OpenAI::ImageGenCompletedEvent::Size::TaggedSymbol]) }
+        def self.values
+        end
+
       end
 
       class Usage < OpenAI::Internal::Type::BaseModel
