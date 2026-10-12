@@ -4,7 +4,7 @@ module OpenAI
   module Models
     class DecisionInputImage < OpenAI::Internal::Type::BaseModel
       # @!attribute image_url
-      #   A base64-encoded image in a data URL.
+      #   A base64-encoded image in a data URL or a publicly accessible HTTP(S) image URL.
       #
       #   @return [String]
       required :image_url, String
@@ -22,10 +22,11 @@ module OpenAI
       optional :detail, enum: -> { OpenAI::DecisionInputImage::Detail }, nil?: true
 
       # @!method initialize(image_url:, detail: nil, type: :input_image)
-      #   An inline image. External URLs and file IDs are not supported.
+      #   An image provided as a base64 data URL or a publicly accessible HTTP(S) URL.
+      #   File IDs are not supported.
       #
       #   @param image_url [String]
-      #     A base64-encoded image in a data URL.
+      #     A base64-encoded image in a data URL or a publicly accessible HTTP(S) image URL.
       #
       #   @param detail [Symbol, OpenAI::Models::DecisionInputImage::Detail, nil]
       #     The image detail level, using the selected model's image profile. Defaults to

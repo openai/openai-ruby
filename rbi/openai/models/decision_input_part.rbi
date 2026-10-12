@@ -3,7 +3,8 @@
 module OpenAI
   module Models
 
-    # An inline image. External URLs and file IDs are not supported.
+    # An image provided as a base64 data URL or a publicly accessible HTTP(S) URL.
+    # File IDs are not supported.
     module DecisionInputPart
       extend OpenAI::Internal::Type::Union
 

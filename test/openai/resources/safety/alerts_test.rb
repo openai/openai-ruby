@@ -20,7 +20,8 @@ class OpenAI::Test::Resources::Safety::AlertsTest < OpenAI::Test::ResourceTest
           reason: String | nil,
           request_id: String,
           request_paused: OpenAI::Internal::Type::Boolean,
-          response_id: String
+          response_id: String,
+          detailed_explanation: String | nil
         }
     end
   end

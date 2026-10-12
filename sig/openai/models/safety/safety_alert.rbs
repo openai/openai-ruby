@@ -13,7 +13,8 @@ module OpenAI
           reason: String?,
           request_id: String,
           request_paused: bool,
-          response_id: String
+          response_id: String,
+          ?detailed_explanation: String?
         }
 
       class SafetyAlert < OpenAI::Internal::Type::BaseModel
@@ -39,12 +40,19 @@ module OpenAI
 
         attr_accessor response_id: String
 
+        # A generated explanation, temporarily available for eligible zero data retention
+        # alerts. Omitted when unavailable.
+        attr_accessor detailed_explanation: String?
+
         # @param reason
         #   A customer-safe description derived from error_type, or null for zero data
         #   retention requests.
         # @param request_paused
         #   Whether block registration succeeded for this request. This does not confirm
         #   that response execution stopped.
+        # @param detailed_explanation
+        #   A generated explanation, temporarily available for eligible zero data retention
+        #   alerts. Omitted when unavailable.
         def initialize: (
           id: String,
           created_at: Integer,
@@ -54,6 +62,7 @@ module OpenAI
           request_id: String,
           request_paused: bool,
           response_id: String,
+          ?detailed_explanation: String?,
           ?object: :"safety.alert"
         ) -> void
 
@@ -66,7 +75,8 @@ module OpenAI
           reason: String?,
           request_id: String,
           request_paused: bool,
-          response_id: String
+          response_id: String,
+          ?detailed_explanation: String?
         }
 
         type error_type =

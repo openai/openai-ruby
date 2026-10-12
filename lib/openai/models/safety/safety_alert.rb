@@ -54,7 +54,14 @@ module OpenAI
         #   @return [String]
         required :response_id, String
 
-        # @!method initialize(id:, created_at:, error_type:, model:, reason:, request_id:, request_paused:, response_id:, object: :"safety.alert")
+        # @!attribute detailed_explanation
+        #   A generated explanation, temporarily available for eligible zero data retention
+        #   alerts. Omitted when unavailable.
+        #
+        #   @return [String, nil]
+        optional :detailed_explanation, String, nil?: true
+
+        # @!method initialize(id:, created_at:, error_type:, model:, reason:, request_id:, request_paused:, response_id:, detailed_explanation: nil, object: :"safety.alert")
         #   @param id [String]
         #
         #   @param created_at [Integer]
@@ -74,6 +81,10 @@ module OpenAI
         #     that response execution stopped.
         #
         #   @param response_id [String]
+        #
+        #   @param detailed_explanation [String, nil]
+        #     A generated explanation, temporarily available for eligible zero data retention
+        #     alerts. Omitted when unavailable.
         #
         #   @param object [Symbol, :"safety.alert"]
 
