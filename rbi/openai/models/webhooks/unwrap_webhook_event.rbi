@@ -12,9 +12,9 @@ module OpenAI
         Variants = T.type_alias do
           T.any(
             OpenAI::Webhooks::AgentEnvironmentExpiredWebhookEvent,
-            OpenAI::Webhooks::AgentEnvironmentSuspendedWebhookEvent,
             OpenAI::Webhooks::AgentEnvironmentFailedWebhookEvent,
             OpenAI::Webhooks::AgentEnvironmentReadyWebhookEvent,
+            OpenAI::Webhooks::AgentEnvironmentSuspendedWebhookEvent,
             OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent,
             OpenAI::Webhooks::AgentSessionCreatedWebhookEvent,
             OpenAI::Webhooks::AgentSessionFailedWebhookEvent,

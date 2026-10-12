@@ -71,11 +71,11 @@ module OpenAI
               .returns(OpenAI::Internal::CursorPage[OpenAI::Beta::Agents::EnvironmentInfo])
           }
           def list(
-            # Return environments after this environment ID in the selected order.
+            # Return resources after this resource ID in the selected order.
             after: nil,
-            # The maximum number of environments to return, between 1 and 100. Defaults to 20.
+            # The maximum number of resources to return, between 1 and 100. Defaults to 20.
             limit: nil,
-            # The order in which environments are returned. Defaults to `desc`.
+            # The order in which resources are returned. Defaults to `desc`.
             order: nil,
             # The hosting type to list. Defaults to `openai_hosted`.
             type: nil,

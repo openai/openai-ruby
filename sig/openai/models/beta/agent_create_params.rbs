@@ -47,7 +47,8 @@ module OpenAI
         # verbosity.
         attr_accessor text: OpenAI::Beta::AgentTextParam?
 
-        # Tools available to the agent. Defaults to an empty list.
+        # Tools available to the agent. Defaults to an empty list. The tool list must fit
+        # within 3 MiB (3,145,728 bytes) of compact UTF-8 JSON.
         attr_accessor tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool_param]?
 
         # @param model
@@ -71,7 +72,8 @@ module OpenAI
         #   Configuration for generated text. Defaults to the `text` format and medium
         #   verbosity.
         # @param tools
-        #   Tools available to the agent. Defaults to an empty list.
+        #   Tools available to the agent. Defaults to an empty list. The tool list must fit
+        #   within 3 MiB (3,145,728 bytes) of compact UTF-8 JSON.
         def initialize: (
           model: String,
           ?instructions: String?,
