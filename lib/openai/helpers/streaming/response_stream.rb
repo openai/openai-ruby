@@ -49,22 +49,7 @@ module OpenAI
           response
         end
 
-        def get_output_text
-          response = get_final_response
-          text_parts = []
-
-          response.output.each do |output|
-            next unless output.is_a?(OpenAI::Models::Responses::ResponseOutputMessage)
-
-            output.content.each do |content|
-              next unless content.is_a?(OpenAI::Models::Responses::ResponseOutputText)
-
-              text_parts << content.text
-            end
-          end
-
-          text_parts.join
-        end
+        def get_output_text = get_final_response.output_text
 
         private
 
