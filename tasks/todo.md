@@ -32,7 +32,14 @@
   Validation: 133 runtime tests / 1,171 assertions; exported RBI merge 2 / 6; RBS consumer fixtures 1 / 3; Sorbet, rubyfmt and RuboCop passed.
   Verified reporter: 27 mixed files / 1,806 patch lines remain, removing exactly 49 lines without changing policy or metadata.
 - [ ] PR 7c: compiler-supported Agents creation-stream contract; naive RBI reopening conflicts with generated signatures.
-- [ ] PRs 8a/8b: Chat/Responses resource helpers.
+- [x] PR 8a.1 implementation: move additive Chat `completions.stream` unchanged into its existing handwritten helper.
+  Its existing RBI and root require remain unchanged; compiler-dependent create/structured-output wrappers stay separate.
+  The new synthetic public-entrypoint regression passes before and after extraction and preserves method ownership,
+  parameters, visibility, consumer subclass super/parser dispatch, request options, request shape and streamed output.
+  Focused streaming/structured-output/example tests: 41 tests / 243 assertions; Sorbet, rubyfmt and RuboCop passed.
+  Exported RBI merge and RBS consumer fixtures: 3 tests / 9 assertions passed.
+  Verified reporter: 27 mixed files / 1,779 patch lines remain, removing exactly 27 lines without changing policy or metadata.
+- [ ] PRs 8a.2/8b: remaining Chat/Responses resource helpers.
 - [ ] PRs 9a/9b: webhook redaction/verification.
 - [ ] Checkpoint: transport, streaming, and webhook compatibility.
 - [ ] PRs 10a/10b/10c: client options/providers/workload identity.
