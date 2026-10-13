@@ -43,8 +43,9 @@ lines. This replaces the earlier inventory taken from an older checkout.
 | 6a | Generate the existing schema-converter RBI input contract for annotated model parameters (including Responses text) | Preserve reader, constructor, response-model and RBS types; test enabled/disabled annotations, inheritance, streaming and Stainless parity | 5 |
 | 6b | Preserve remaining Chat/Responses schema and tool union inputs through native compiler support or typed extension points | Both APIs' schema/tool examples, parsing/streaming and type tests pass without generated patches | 6a |
 | 7a | Extract Agents file conveniences (independent; brought forward alongside 6a) | Same upload/download methods and RBI/RBS; synthetic transport tests pass | 5 |
-| 7b | Extract Agents session streaming conveniences | Same signatures, streaming/result/error semantics, and block cleanup | 7a |
-| 8a | Extract Chat structured-output resource wrappers and stream helper | Create/stream public-entrypoint, tool parsing, and type tests pass | 7b |
+| 7b | Extract additive Agents `sessions.stream` method into the existing handwritten helper | Same method owner/parameters, subclass super, streaming/result/error semantics and block cleanup; existing handwritten RBI/RBS unchanged | 7a |
+| 7c | Preserve Agents `create_streaming` runtime and type contract through compiler support | Preserve local-only keywords and CreationStream return type; no duplicate RBI definitions; compiler lands before regeneration | 7b |
+| 8a | Extract Chat structured-output resource wrappers and stream helper | Create/stream public-entrypoint, tool parsing, and type tests pass | 7c |
 | 8b | Extract Responses structured-output resource wrappers and stream helper | Creation/resumption, structured tools, unknown events, and type tests pass | 8a |
 | 9a | Preserve webhook endpoint diagnostic redaction in handwritten extension or native generation | Existing secret-redaction tests pass; field access and serialization unchanged | 8b |
 | 9b | Reconcile webhook verifier with native output without changing accepted inputs/errors | Existing signature/error tests pass; no Base64 dependency regression | 9a |
