@@ -90,8 +90,6 @@ module OpenAI
         #   consider using the `output_text` property where supported in SDKs.
         attr_accessor output: ::Array[OpenAI::Models::Responses::response_output_item]
 
-        def output_text: -> String
-
         # Whether to allow the model to run tool calls in parallel.
         attr_accessor parallel_tool_calls: bool
 

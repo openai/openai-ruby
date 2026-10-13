@@ -358,27 +358,6 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # Convenience property that aggregates all `output_text` items from the `output` list.
-        #
-        # If no `output_text` content blocks exist, then an empty string is returned.
-        #
-        # @return [String]
-        def output_text
-          texts = []
-
-          output.each do |item|
-            next unless item.is_a?(OpenAI::Models::Responses::ResponseOutputMessage)
-
-            item.content.each do |content|
-              next unless content.is_a?(OpenAI::Models::Responses::ResponseOutputText)
-
-              texts << content.text
-            end
-          end
-
-          texts.join
-        end
-
         # @!method initialize(id:, access_programs:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, completed_at: nil, conversation: nil, max_output_tokens: nil, max_tool_calls: nil, moderation: nil, previous_response_id: nil, prompt: nil, prompt_cache_diagnostics: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
         #   @param id [String]
         #     Unique identifier for this Response.

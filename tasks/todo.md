@@ -9,8 +9,10 @@
   After updating the checksum, all 15 publication tests passed. PR: https://github.com/openai/openai-ruby/pull/848.
 - [x] PR 2: moved container regression tests; 2 tests / 15 assertions pass before and after.
   Generated container test restored byte-for-byte; 44 files / 2,025 patch lines remain.
-- [ ] PR 3: Responses output-text extension.
-- [ ] Checkpoint: reporter + focused tests + types/package where applicable.
+- [x] PR 3: Responses output-text extension with RBI/RBS; 41 files / 1,998 lines.
+  Runtime: 9 tests / 14 assertions; streaming RBS: 2 tests / 31 assertions.
+  Sorbet passed with the repository-required SRB_SKIP_GEM_RBIS=1; RBS resolves () -> String; rubyfmt passed.
+- [x] Checkpoint: reporter + focused runtime/signature/format checks for the first slices.
 - [ ] PR 4: Chat parsed-result fields.
 - [ ] PR 5: Responses parsed-result fields.
 - [ ] PRs 6a/6b: schema-converter input contracts.
