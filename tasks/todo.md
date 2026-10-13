@@ -5,8 +5,10 @@
 - [x] Record dependency-ordered plan in `tasks/plan.md`.
 - [x] PR 1 implementation: reporting alignment (45 files / 2,084 lines).
   Updated the workflow reporter checksum to the restored bytes; checksum enforcement remains enabled.
-  Full reporter suite: 58 passed / 1 skipped after focused checksum recheck (initial run identified stale checksum).
-- [ ] PR 2: move container regression tests.
+  Initial reporter suite: 59 tests, one stale-checksum failure and one unrelated skip.
+  After updating the checksum, all 15 publication tests passed. PR: https://github.com/openai/openai-ruby/pull/848.
+- [x] PR 2: moved container regression tests; 2 tests / 15 assertions pass before and after.
+  Generated container test restored byte-for-byte; 44 files / 2,025 patch lines remain.
 - [ ] PR 3: Responses output-text extension.
 - [ ] Checkpoint: reporter + focused tests + types/package where applicable.
 - [ ] PR 4: Chat parsed-result fields.
