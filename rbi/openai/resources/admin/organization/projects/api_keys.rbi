@@ -26,6 +26,35 @@ module OpenAI
             )
             end
 
+            # Updates the expiration of an existing API key in the project, including a
+            # service-account-owned key. Requires permission to write project API keys.
+            #
+            # Provide `expires_in_seconds` to set the expiration relative to this request. The
+            # value must satisfy the organization's and project's expiry policies. Expired
+            # keys cannot be updated. Retrying resets the expiration relative to the new
+            # request. The response contains only the redacted key, not its secret.
+            sig {
+              params(
+                api_key_id: String,
+                project_id: String,
+                expires_in_seconds: Integer,
+                request_options: OpenAI::RequestOptions::OrHash
+              )
+                .returns(OpenAI::Admin::Organization::Projects::ProjectAPIKey)
+            }
+            def update(
+              # Path param: The ID of the API key.
+              api_key_id,
+              # Path param: The ID of the project.
+              project_id:,
+              # Body param: Number of seconds from this request until the API key expires. Must
+              # comply with the organization and project expiry policies. Expired keys cannot be
+              # updated. Retrying resets the expiry relative to the new request.
+              expires_in_seconds:,
+              request_options: {}
+            )
+            end
+
             # Returns a list of API keys in the project.
             sig {
               params(

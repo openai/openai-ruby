@@ -36,6 +36,48 @@ module OpenAI
               )
             end
 
+            # Updates the expiration of an existing API key in the project, including a
+            # service-account-owned key. Requires permission to write project API keys.
+            #
+            # Provide `expires_in_seconds` to set the expiration relative to this request. The
+            # value must satisfy the organization's and project's expiry policies. Expired
+            # keys cannot be updated. Retrying resets the expiration relative to the new
+            # request. The response contains only the redacted key, not its secret.
+            #
+            # @overload update(api_key_id, project_id:, expires_in_seconds:, request_options: {})
+            #
+            # @param api_key_id [String]
+            #   Path param: The ID of the API key.
+            #
+            # @param project_id [String]
+            #   Path param: The ID of the project.
+            #
+            # @param expires_in_seconds [Integer]
+            #   Body param: Number of seconds from this request until the API key expires. Must
+            #   comply with the organization and project expiry policies. Expired keys cannot be
+            #   updated. Retrying resets the expiry relative to the new request.
+            #
+            # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+            #
+            # @return [OpenAI::Models::Admin::Organization::Projects::ProjectAPIKey]
+            #
+            # @see OpenAI::Models::Admin::Organization::Projects::APIKeyUpdateParams
+            def update(api_key_id, params)
+              parsed, options = OpenAI::Admin::Organization::Projects::APIKeyUpdateParams.dump_request(params)
+              project_id = parsed.delete(:project_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
+
+              @client.request(
+                method: :post,
+                path: ["organization/projects/%1$s/api_keys/%2$s", project_id, api_key_id],
+                body: parsed,
+                model: OpenAI::Admin::Organization::Projects::ProjectAPIKey,
+                security: {admin_api_key_auth: true},
+                options: options
+              )
+            end
+
             # Returns a list of API keys in the project.
             #
             # @overload list(project_id, after: nil, limit: nil, owner_project_access: nil, request_options: {})
