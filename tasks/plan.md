@@ -18,6 +18,8 @@ lines. This replaces the earlier inventory taken from an older checkout.
 - Use the existing handwritten helper/class-reopening convention for additive SDK
   conveniences. Preserve method owners, visibility, constants, initialization,
   serialization, loading order, return types, exceptions, and typechecker behavior.
+  Every signature extraction must pass the exported RBI/Tapioca merge test as well
+  as Sorbet and RBS; partial RBI model declarations must repeat their superclass.
 - Fix general generation defects in Castiron's OpenAI profile. Keep immutable
   Stainless fixtures unchanged and verify parity alongside the production profile.
 - Do not replace a customization with a semantically different generated version

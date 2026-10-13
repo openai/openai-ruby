@@ -30,4 +30,33 @@ class OpenAI::Test::ParsedModelExtensionsTest < Minitest::Test
     assert_equal({"arguments" => "{\"answer\":42}", "name" => "synthetic"}, JSON.parse(function.to_json))
     assert_equal(parsed, Class.new(model).new(parsed: parsed).parsed)
   end
+
+  def test_response_tool_parsed_field_is_available_to_generated_and_consumer_subclasses
+    parsed = {answer: 42}
+    classes = [
+      OpenAI::Models::Responses::ResponseFunctionToolCall,
+      OpenAI::Models::Responses::ResponseFunctionToolCallItem,
+      Class.new(OpenAI::Models::Responses::ResponseFunctionToolCall)
+    ]
+
+    classes.each do |model|
+      call = model.new(arguments: "{}", name: "synthetic", call_id: "call_synthetic", parsed: parsed)
+
+      assert_equal(parsed, call.parsed)
+      assert_equal(parsed, call.deconstruct_keys([:parsed]).fetch(:parsed))
+      refute(JSON.parse(call.to_json).key?("parsed"))
+    end
+  end
+
+  def test_response_output_parsed_field_remains_optional_and_response_only
+    model = OpenAI::Models::Responses::ResponseOutputText
+    parsed = {answer: "synthetic"}
+    output = model.new(text: "synthetic", annotations: [], parsed: parsed)
+
+    assert_equal(parsed, output.parsed)
+    assert_nil(model.new.parsed)
+    refute(JSON.parse(output.to_json).key?("parsed"))
+    assert_equal(parsed, Class.new(model).new(parsed: parsed).parsed)
+  end
+
 end
