@@ -25,6 +25,32 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::APIKeysTest < Open
     end
   end
 
+  def test_update_required_params
+    response = @openai.admin.organization.projects.api_keys.update(
+      "api_key_id",
+      project_id: "project_id",
+      expires_in_seconds: 1
+    )
+
+    assert_pattern do
+      response => OpenAI::Admin::Organization::Projects::ProjectAPIKey
+    end
+
+    assert_pattern do
+      response => {
+          id: String,
+          created_at: Integer,
+          last_used_at: Integer | nil,
+          name: String,
+          object: Symbol,
+          owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
+          owner_project_access: OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess,
+          redacted_value: String,
+          expires_at: Integer | nil
+        }
+    end
+  end
+
   def test_list
     response = @openai.admin.organization.projects.api_keys.list("project_id")
 
