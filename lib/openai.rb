@@ -305,6 +305,7 @@ require_relative "openai/models/admin/organization/projects/api_key_delete_param
 require_relative "openai/models/admin/organization/projects/api_key_delete_response"
 require_relative "openai/models/admin/organization/projects/api_key_list_params"
 require_relative "openai/models/admin/organization/projects/api_key_retrieve_params"
+require_relative "openai/models/admin/organization/projects/api_key_update_params"
 require_relative "openai/models/admin/organization/projects/certificate_activate_params"
 require_relative "openai/models/admin/organization/projects/certificate_activate_response"
 require_relative "openai/models/admin/organization/projects/certificate_deactivate_params"

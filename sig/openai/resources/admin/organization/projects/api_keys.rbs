@@ -10,6 +10,13 @@ module OpenAI
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Admin::Organization::Projects::ProjectAPIKey
 
+            def update: (
+              String api_key_id,
+              project_id: String,
+              expires_in_seconds: Integer,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::Projects::ProjectAPIKey
+
             def list: (
               String project_id,
               ?after: String,
