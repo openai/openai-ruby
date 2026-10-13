@@ -4,7 +4,7 @@
 module OpenAI
   module Models
     module Responses
-      class Response
+      class Response < OpenAI::Internal::Type::BaseModel
         # Concatenates text from all output messages.
         sig { returns(String) }
         def output_text
