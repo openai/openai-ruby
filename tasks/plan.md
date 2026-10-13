@@ -47,8 +47,9 @@ lines. This replaces the earlier inventory taken from an older checkout.
 | 7c | Preserve Agents `create_streaming` runtime and type contract through compiler support | Preserve local-only keywords and CreationStream return type; no duplicate RBI definitions; compiler lands before regeneration | 7b |
 | 8a.1 | Extract additive Chat `completions.stream` into its existing handwritten helper (independent; brought forward) | Same method owner/parameters, subclass and parser dispatch, request options, streaming and exported types | 7b |
 | 8a.2 | Extract remaining Chat structured-output resource wrappers | Create/stream public-entrypoint, tool parsing, and type tests pass | 6b, 8a.1 |
-| 8b | Extract Responses structured-output resource wrappers and stream helper | Creation/resumption, structured tools, unknown events, and type tests pass | 8a.2 |
-| 9a | Preserve webhook endpoint diagnostic redaction in handwritten extension or native generation | Existing secret-redaction tests pass; field access and serialization unchanged | 8b |
+| 8b.1 | Extract additive Responses stream/resume helper and its existing RBI/RBS (independent; brought forward) | Same public/private dispatch, creation/resumption, structured tools, unknown events and exported types | 8a.1 |
+| 8b.2 | Extract remaining Responses structured-output resource wrappers | Creation/retrieval, structured tools and type tests pass | 6b, 8b.1 |
+| 9a | Preserve webhook endpoint diagnostic redaction in handwritten extension or native generation | Existing secret-redaction tests pass; field access and serialization unchanged | 8b.2 |
 | 9b | Reconcile webhook verifier with native output without changing accepted inputs/errors | Existing signature/error tests pass; no Base64 dependency regression | 9a |
 | 10a | Preserve client copying/default-header behavior through compiler-supported extension boundary | Copy/subclass/header/type compatibility tests pass | 9b |
 | 10b | Preserve provider routing/authentication through the same boundary | Azure/Bedrock configuration and synthetic transport tests pass | 10a |

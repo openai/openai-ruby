@@ -26,6 +26,61 @@ class OpenAI::Test::ResponseStreamIsolationTest < Minitest::Test
     super
   end
 
+  def test_resource_stream_preserves_public_and_private_subclass_dispatch
+    resource = OpenAI::Resources::Responses
+    assert_equal(resource, resource.instance_method(:stream).owner)
+    assert_equal([[:req, :params]], resource.instance_method(:stream).parameters)
+    assert_includes(resource.public_instance_methods(false), :stream)
+    assert_equal(resource, resource.instance_method(:retrieve_streaming_internal).owner)
+    assert_includes(resource.private_instance_methods(false), :retrieve_streaming_internal)
+
+    subclass = Class.new(resource) do
+      attr_reader(:stream_called, :retrieve_called)
+
+      def stream(params)
+        @stream_called = true
+        super
+      end
+
+      private def retrieve_streaming_internal(response_id, params:, unwrap:)
+        @retrieve_called = true
+        super
+      end
+    end
+
+    stream = nil
+    [false, true].each do |resume|
+      if resume
+        body = stream_events.map { |event| "data: #{JSON.generate(event)}\n\n" }.join
+        request = stub_request(:get, "http://localhost/responses/resp_synthetic?stream=true")
+          .with(headers: {"x-extraction-test" => "preserved"})
+          .to_return(status: 200, headers: {"content-type" => "text/event-stream"}, body: body)
+      else
+        request = stub_stream(stream_events)
+          .with(
+            headers: {"x-extraction-test" => "preserved"},
+            body: {model: "test", input: "synthetic", stream: true}
+          )
+      end
+
+      params = resume ? {response_id: "resp_synthetic"} : {model: "test", input: "synthetic"}
+      params[:request_options] = {extra_headers: {"x-extraction-test" => "preserved"}}
+      responses = subclass.new(client: @client)
+      stream = responses.stream(params)
+
+      assert_instance_of(OpenAI::Streaming::ResponseStream, stream)
+      assert_equal("Hello", stream.get_output_text)
+      assert_equal(:completed, stream.get_final_response.status)
+      assert(responses.stream_called)
+      assert_equal(resume, !!responses.retrieve_called)
+      assert_requested(request, times: 1)
+      stream.close
+    end
+
+  ensure
+    stream&.close
+  end
+
   def test_retained_wire_events_do_not_change_as_snapshots_accumulate
     stub_stream(stream_events)
 

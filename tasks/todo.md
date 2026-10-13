@@ -39,7 +39,13 @@
   Focused streaming/structured-output/example tests: 41 tests / 243 assertions; Sorbet, rubyfmt and RuboCop passed.
   Exported RBI merge and RBS consumer fixtures: 3 tests / 9 assertions passed.
   Verified reporter: 27 mixed files / 1,779 patch lines remain, removing exactly 27 lines without changing policy or metadata.
-- [ ] PRs 8a.2/8b: remaining Chat/Responses resource helpers.
+- [x] PR 8b.1 implementation: relocate Responses `stream`, its private resume helper, and existing RBI/RBS into handwritten streaming helpers.
+  Exact method/declaration bodies, docs, visibility and root loading are preserved; generated create/retrieve parsing wrappers remain separate.
+  New public-entrypoint coverage exercises method ownership/signature and consumer subclass super for both creation and resumption,
+  including the private resume override, request options and completed output. The same 66 tests / 398 assertions pass before and after extraction.
+  Exported RBI merge/RBS consumer fixtures: 3 tests / 9 assertions; all 1,623 RBS files validate; Sorbet, rubyfmt and RuboCop pass.
+  Verified reporter: 27 mixed files / 1,382 patch lines remain, removing exactly 397 lines with no policy or metadata changes.
+- [ ] PRs 8a.2/8b.2: remaining Chat/Responses resource helpers.
 - [ ] PRs 9a/9b: webhook redaction/verification.
 - [ ] Checkpoint: transport, streaming, and webhook compatibility.
 - [ ] PRs 10a/10b/10c: client options/providers/workload identity.
