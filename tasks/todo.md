@@ -13,7 +13,9 @@
   Runtime: 9 tests / 14 assertions; streaming RBS: 2 tests / 31 assertions.
   Sorbet passed with the repository-required SRB_SKIP_GEM_RBIS=1; RBS resolves () -> String; rubyfmt passed.
 - [x] Checkpoint: reporter + focused runtime/signature/format checks for the first slices.
-- [ ] PR 4: Chat parsed-result fields.
+- [x] PR 4: Chat parsed fields extracted before generated subclasses load.
+  29 parser/stream/Sorbet tests / 274 assertions; 2 new inheritance/serialization tests / 15 assertions; Sorbet and formatting pass.
+  37 mixed files / 1,975 lines remain.
 - [ ] PR 5: Responses parsed-result fields.
 - [ ] PRs 6a/6b: schema-converter input contracts.
 - [ ] Checkpoint: structured output and streaming compatibility.
