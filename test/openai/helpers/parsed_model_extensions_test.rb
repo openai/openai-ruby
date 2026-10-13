@@ -24,10 +24,10 @@ class OpenAI::Test::ParsedModelExtensionsTest < Minitest::Test
   def test_chat_tool_arguments_remain_parsed_and_response_only
     model = OpenAI::Models::Chat::ChatCompletionMessageFunctionToolCall::Function
     parsed = {answer: 42}
-    function = model.new(arguments: '{"answer":42}', name: "synthetic", parsed: parsed)
+    function = model.new(arguments: "{\"answer\":42}", name: "synthetic", parsed: parsed)
 
     assert_equal(parsed, function.parsed)
-    assert_equal({"arguments" => '{"answer":42}', "name" => "synthetic"}, JSON.parse(function.to_json))
+    assert_equal({"arguments" => "{\"answer\":42}", "name" => "synthetic"}, JSON.parse(function.to_json))
     assert_equal(parsed, Class.new(model).new(parsed: parsed).parsed)
   end
 end
