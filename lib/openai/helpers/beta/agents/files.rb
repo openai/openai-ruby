@@ -234,3 +234,44 @@ module OpenAI
     end
   end
 end
+
+module OpenAI
+  module Resources
+    class Beta
+      class Agents
+        class Environments
+          class Files
+            # Upload selected local files for a new hosted environment (beta).
+            # @return [OpenAI::Helpers::Beta::Agents::PreparedFiles]
+            def prepare(files, request_options: {})
+              OpenAI::Helpers::Beta::Agents::FilePreparation
+                .new(client: @client, environment_files: self)
+                .prepare(files, request_options: request_options)
+            end
+
+            # Upload an explicitly selected directory snapshot (beta).
+            # @return [OpenAI::Helpers::Beta::Agents::PreparedFiles]
+            def prepare_directory(directory, destination:, include:, request_options: {})
+              OpenAI::Helpers::Beta::Agents::FilePreparation
+                .new(client: @client, environment_files: self)
+                .prepare_directory(
+                  directory,
+                  destination: destination,
+                  include: include,
+                  request_options: request_options
+                )
+            end
+
+            # Upload and stage a local file in an existing environment (beta).
+            # @return [OpenAI::Helpers::Beta::Agents::PreparedFiles]
+            def upload(environment_id, file:, path:, request_options: {})
+              OpenAI::Helpers::Beta::Agents::FilePreparation
+                .new(client: @client, environment_files: self)
+                .upload(environment_id, file: file, path: path, request_options: request_options)
+            end
+          end
+        end
+      end
+    end
+  end
+end

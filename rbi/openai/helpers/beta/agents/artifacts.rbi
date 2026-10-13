@@ -27,3 +27,28 @@ module OpenAI
     end
   end
 end
+
+module OpenAI
+  module Resources
+
+    class Beta
+
+      class Agents
+
+        class Sessions
+
+          class Artifacts
+            # Beta result-scoped downloads.
+            sig {
+              params(result: OpenAI::Helpers::Beta::Agents::TurnResult).returns(
+                OpenAI::Helpers::Beta::Agents::ResultArtifacts
+              )
+            }
+            def for_result(result)
+            end
+          end
+        end
+      end
+    end
+  end
+end

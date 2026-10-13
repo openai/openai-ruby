@@ -145,6 +145,36 @@ class OpenAI::Test::AgentFilesTest < Minitest::Test
     @client.beta.agents.sessions.artifacts.for_result(result)
   end
 
+  def test_resource_extensions_preserve_public_owners_parameters_and_inheritance
+    signatures = {
+      prepare: [[:req, :files], [:key, :request_options]],
+      prepare_directory: [[:req, :directory], [:keyreq, :destination], [:keyreq, :include], [:key, :request_options]],
+      upload: [[:req, :environment_id], [:keyreq, :file], [:keyreq, :path], [:key, :request_options]]
+    }
+    signatures.each do |name, parameters|
+      method = @files.public_method(name)
+      assert_equal(@files.class, method.owner)
+      assert_equal(parameters, method.parameters)
+    end
+
+    subclass = Class.new(@files.class)
+    prepared = subclass.new(client: @client).prepare(mapping)
+    assert_instance_of(OpenAI::Helpers::Beta::Agents::PreparedFiles, prepared)
+    assert_equal(mapping.keys, prepared.files.map(&:path))
+
+    artifacts = @client.beta.agents.sessions.artifacts
+    method = artifacts.public_method(:for_result)
+    assert_equal(artifacts.class, method.owner)
+    assert_equal([[:req, :result]], method.parameters)
+    turn = OpenAI::Models::Beta::Agents::Sessions::Turn.new(id: "turn", session_id: "session", status: :completed)
+    result = OpenAI::Helpers::Beta::Agents::TurnResult.new(turn: turn, messages: [])
+    subclass = Class.new(artifacts.class)
+    assert_instance_of(
+      OpenAI::Helpers::Beta::Agents::ResultArtifacts,
+      subclass.new(client: @client).for_result(result)
+    )
+  end
+
   def test_preparation_preserves_references_options_and_server_owned_file_count
     files = 51.times.to_h { |i| ["/workspace/file#{i}.txt", @first] }
     prepared = @files.prepare(files, request_options: {extra_headers: {"x-test" => "preserved"}})
