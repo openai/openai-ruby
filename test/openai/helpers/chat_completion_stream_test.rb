@@ -3,6 +3,81 @@
 require_relative "../test_helper"
 
 class OpenAI::Test::ChatCompletionStreamTest < Minitest::Test
+  class StreamingServer < OpenAI::HTTPClient
+    attr_reader :request
+
+    def execute(request)
+      @request = request
+      chunk = {
+        id: "chatcmpl-extraction-test",
+        object: "chat.completion.chunk",
+        created: 1,
+        model: "gpt-4o-mini",
+        choices: [{index: 0, delta: {role: "assistant", content: "Hello"}, finish_reason: "stop"}]
+      }
+      OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "text/event-stream"},
+        body: "data: #{JSON.generate(chunk)}\n\ndata: [DONE]\n\n"
+      )
+    end
+  end
+
+  def test_resource_stream_preserves_signature_subclass_dispatch_and_request
+    resource = OpenAI::Resources::Chat::Completions
+    assert_equal(resource, resource.instance_method(:stream).owner)
+    assert_equal([[:req, :params]], resource.instance_method(:stream).parameters)
+    assert_includes(resource.public_instance_methods(false), :stream)
+
+    subclass = Class.new(resource) do
+      attr_reader(:stream_called, :models_called, :tools_called)
+
+      def stream(params)
+        @stream_called = true
+        super
+      end
+
+      def get_structured_output_models(parsed)
+        @models_called = true
+        super
+      end
+
+      def build_tools_with_models(tools, tool_models)
+        @tools_called = true
+        super
+      end
+    end
+
+    server = StreamingServer.new
+    client = OpenAI::Client.new(
+      api_key: "fake-key",
+      base_url: "https://sdk-test.example/v1",
+      http_client: server
+    )
+    completions = subclass.new(client: client)
+    stream = completions.stream(
+      model: "gpt-4o-mini",
+      messages: [{role: :user, content: "Hi"}],
+      request_options: {extra_headers: {"x-extraction-test" => "preserved"}}
+    )
+
+    assert_instance_of(OpenAI::Helpers::Streaming::ChatCompletionStream, stream)
+    assert_equal("Hello", stream.get_output_text)
+    assert(completions.stream_called)
+    assert(completions.models_called)
+    assert(completions.tools_called)
+    assert_equal(:post, server.request.method)
+    assert_equal("/v1/chat/completions", server.request.url.path)
+    assert_equal("text/event-stream", server.request.headers["accept"])
+    assert_equal("preserved", server.request.headers["x-extraction-test"])
+    assert_equal(
+      {"model" => "gpt-4o-mini", "messages" => [{"role" => "user", "content" => "Hi"}], "stream" => true},
+      JSON.parse(server.request.body)
+    )
+  ensure
+    stream&.close
+  end
+
   def test_stream_indices_do_not_create_sparse_snapshots
     [127, 128, 1_000_000_000].each do |index|
       state = OpenAI::Helpers::Streaming::ChatCompletionStreamState.new
