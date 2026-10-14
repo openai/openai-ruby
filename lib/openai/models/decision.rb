@@ -5,24 +5,36 @@ module OpenAI
     # @see OpenAI::Resources::Decisions#create
     class Decision < OpenAI::Internal::Type::BaseModel
       # @!attribute answers
+      #   Answers in question order. Any question can return a refusal instead of an
+      #   answer; other questions can still receive answers. A refusal has
+      #   `type: "refusal"` and the question's `name`, or `null` if it was unnamed.
       #
       #   @return [Array<OpenAI::Models::Decision::Answer::Predicate, OpenAI::Models::Decision::Answer::Choice, OpenAI::Models::Decision::Answer::Score, OpenAI::Models::Decision::Answer::Refusal>]
       required :answers, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Decision::Answer] }
 
       # @!attribute model
+      #   The model used.
       #
       #   @return [String]
       required :model, String
 
       # @!attribute usage
+      #   Token usage for the request.
       #
       #   @return [OpenAI::Models::Decision::Usage]
       required :usage, -> { OpenAI::Decision::Usage }
 
       # @!method initialize(answers:, model:, usage:)
       #   @param answers [Array<OpenAI::Models::Decision::Answer::Predicate, OpenAI::Models::Decision::Answer::Choice, OpenAI::Models::Decision::Answer::Score, OpenAI::Models::Decision::Answer::Refusal>]
+      #     Answers in question order. Any question can return a refusal instead of an
+      #     answer; other questions can still receive answers. A refusal has
+      #     `type: "refusal"` and the question's `name`, or `null` if it was unnamed.
+      #
       #   @param model [String]
+      #     The model used.
+      #
       #   @param usage [OpenAI::Models::Decision::Usage]
+      #     Token usage for the request.
 
       # A completed question always includes its name, including null when unnamed.
       module Answer
@@ -275,6 +287,8 @@ module OpenAI
         required :total_tokens, Integer
 
         # @!method initialize(input_tokens:, input_tokens_details:, output_tokens:, output_tokens_details:, total_tokens:)
+        #   Token usage for the request.
+        #
         #   @param input_tokens [Integer]
         #   @param input_tokens_details [OpenAI::Models::Decision::Usage::InputTokensDetails]
         #   @param output_tokens [Integer]

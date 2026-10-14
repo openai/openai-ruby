@@ -17,11 +17,14 @@ module OpenAI
       required :input, union: -> { OpenAI::DecisionCreateParams::Input }
 
       # @!attribute model
+      #   The model to use. Only `gpt-6-luna` is supported.
       #
       #   @return [String]
       required :model, String
 
       # @!attribute questions
+      #   Ask 1–200 questions about the input. Each question can be a predicate, choice,
+      #   or score. Answers come back in the same order.
       #
       #   @return [Array<OpenAI::Models::DecisionCreateParams::Question::Predicate, OpenAI::Models::DecisionCreateParams::Question::Choice, OpenAI::Models::DecisionCreateParams::Question::Score>]
       required :questions, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::DecisionCreateParams::Question] }
@@ -41,8 +44,11 @@ module OpenAI
       #     one request. Files, audio, tools, and item references are not supported.
       #
       #   @param model [String]
+      #     The model to use. Only `gpt-6-luna` is supported.
       #
       #   @param questions [Array<OpenAI::Models::DecisionCreateParams::Question::Predicate, OpenAI::Models::DecisionCreateParams::Question::Choice, OpenAI::Models::DecisionCreateParams::Question::Score>]
+      #     Ask 1–200 questions about the input. Each question can be a predicate, choice,
+      #     or score. Answers come back in the same order.
       #
       #   @param safety_identifier [String, nil]
       #     Opaque caller-provided end-user identifier, scoped by the verified org. Match
