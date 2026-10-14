@@ -8,26 +8,38 @@ require "yaml"
 class NextReleaseWorkflowTest < Minitest::Test
   ROOT = File.expand_path("../..", __dir__)
 
-  def test_next_runs_ci_but_cannot_create_or_retry_a_release
+  def test_next_cannot_create_or_retry_a_release
     %w[push workflow_dispatch].each do |event|
       %w[false true].each do |retry_publish|
         %w[false true].each do |releases_created|
           actual = evaluate("next", event: event, retry_publish: retry_publish, releases_created: releases_created)
 
-          assert_equal({"ci" => true, "release" => false, "publish" => false}, actual)
+          assert_equal({"release" => false, "publish" => false}, actual)
         end
       end
     end
   end
 
-  def test_main_can_create_publish_and_retry_releases
-    assert_equal({"ci" => true, "release" => true, "publish" => false}, evaluate("main"))
+  def test_next_push_runs_ci
+    workflow = YAML.safe_load_file(File.join(ROOT, ".github/workflows/ci.yml"))
+    # Keep the trigger contract explicit: CI runs on pushes, not manual dispatch.
     assert_equal(
-      {"ci" => true, "release" => true, "publish" => true},
+      ["**", "!gh-readonly-queue/**", "!integrated/**"],
+      workflow.fetch(true).fetch("push").fetch("branches")
+    )
+    refute(workflow.fetch(true).key?("workflow_dispatch"))
+    condition = workflow.fetch("jobs").fetch("checks").fetch("if")
+    assert(evaluate("next", conditions: {ci: condition}).fetch("ci"))
+  end
+
+  def test_main_can_create_publish_and_retry_releases
+    assert_equal({"release" => true, "publish" => false}, evaluate("main"))
+    assert_equal(
+      {"release" => true, "publish" => true},
       evaluate("main", releases_created: "true")
     )
     assert_equal(
-      {"ci" => true, "release" => false, "publish" => true},
+      {"release" => false, "publish" => true},
       evaluate("main", event: "workflow_dispatch", retry_publish: "true")
     )
   end
@@ -68,16 +80,16 @@ class NextReleaseWorkflowTest < Minitest::Test
     retry_publish: "false",
     releases_created: "false",
     repository: "openai/openai-ruby",
-    cancelled: false
+    cancelled: false,
+    conditions: nil
   )
     jobs = release_workflow.fetch("jobs")
-    ci = YAML.safe_load_file(File.join(ROOT, ".github/workflows/ci.yml")).fetch("jobs").fetch("checks")
     payload = {
-      conditions: {
-        ci: ci.fetch("if"),
-        release: jobs.fetch("release").fetch("if"),
-        publish: jobs.fetch("publish").fetch("if")
-      },
+      conditions: conditions ||
+        {
+          release: jobs.fetch("release").fetch("if"),
+          publish: jobs.fetch("publish").fetch("if")
+        },
       github: {
         ref: "refs/heads/#{branch}",
         repository: repository,
