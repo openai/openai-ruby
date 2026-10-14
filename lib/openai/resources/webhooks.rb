@@ -200,12 +200,12 @@ module OpenAI
       # Validates that the given payload was sent by OpenAI and parses the payload.
       #
       # @param payload [String] The raw webhook payload as a string
-      # @param headers [Hash] The webhook headers
-      # @param webhook_secret [String, nil] The webhook secret (optional, will use client webhook secret or ENV["OPENAI_WEBHOOK_SECRET"] if not provided)
       #
-      # @return [OpenAI::Models::Webhooks::AgentEnvironmentExpiredWebhookEvent, OpenAI::Models::Webhooks::AgentEnvironmentSuspendedWebhookEvent, OpenAI::Models::Webhooks::AgentEnvironmentFailedWebhookEvent, OpenAI::Models::Webhooks::AgentEnvironmentReadyWebhookEvent, OpenAI::Models::Webhooks::AgentSessionActionRequiredWebhookEvent, OpenAI::Models::Webhooks::AgentSessionCreatedWebhookEvent, OpenAI::Models::Webhooks::AgentSessionFailedWebhookEvent, OpenAI::Models::Webhooks::AgentSessionIdleWebhookEvent, OpenAI::Models::Webhooks::AgentSessionInProgressWebhookEvent, OpenAI::Models::Webhooks::BatchCancelledWebhookEvent, OpenAI::Models::Webhooks::BatchCompletedWebhookEvent, OpenAI::Models::Webhooks::BatchExpiredWebhookEvent, OpenAI::Models::Webhooks::BatchFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent, OpenAI::Models::Webhooks::EvalRunFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobFailedWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent, OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent, OpenAI::Models::Webhooks::LiveTransportIncomingWebhookEvent, OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent, OpenAI::Models::Webhooks::ResponseCancelledWebhookEvent, OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent, OpenAI::Models::Webhooks::ResponseFailedWebhookEvent, OpenAI::Models::Webhooks::ResponseIncompleteWebhookEvent, OpenAI::Models::Webhooks::SafetyAlertCreatedWebhookEvent, OpenAI::Models::Webhooks::SafetyDeactivationIssuedWebhookEvent, OpenAI::Models::Webhooks::SafetyOrgAlertCreatedWebhookEvent, OpenAI::Models::Webhooks::SafetyWarningIssuedWebhookEvent]
+      # @param headers [Hash{String, Symbol=>String}] The raw HTTP headers that came with the payload
       #
-      # @raise [ArgumentError] if signature verification fails
+      # @param webhook_secret [String, nil] The webhook signing key
+      #
+      # @return [OpenAI::Models::Webhooks::AgentEnvironmentExpiredWebhookEvent, OpenAI::Models::Webhooks::AgentEnvironmentFailedWebhookEvent, OpenAI::Models::Webhooks::AgentEnvironmentReadyWebhookEvent, OpenAI::Models::Webhooks::AgentEnvironmentSuspendedWebhookEvent, OpenAI::Models::Webhooks::AgentSessionActionRequiredWebhookEvent, OpenAI::Models::Webhooks::AgentSessionCreatedWebhookEvent, OpenAI::Models::Webhooks::AgentSessionFailedWebhookEvent, OpenAI::Models::Webhooks::AgentSessionIdleWebhookEvent, OpenAI::Models::Webhooks::AgentSessionInProgressWebhookEvent, OpenAI::Models::Webhooks::BatchCancelledWebhookEvent, OpenAI::Models::Webhooks::BatchCompletedWebhookEvent, OpenAI::Models::Webhooks::BatchExpiredWebhookEvent, OpenAI::Models::Webhooks::BatchFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent, OpenAI::Models::Webhooks::EvalRunFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobFailedWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent, OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent, OpenAI::Models::Webhooks::LiveTransportIncomingWebhookEvent, OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent, OpenAI::Models::Webhooks::ResponseCancelledWebhookEvent, OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent, OpenAI::Models::Webhooks::ResponseFailedWebhookEvent, OpenAI::Models::Webhooks::ResponseIncompleteWebhookEvent, OpenAI::Models::Webhooks::SafetyAlertCreatedWebhookEvent, OpenAI::Models::Webhooks::SafetyDeactivationIssuedWebhookEvent, OpenAI::Models::Webhooks::SafetyOrgAlertCreatedWebhookEvent, OpenAI::Models::Webhooks::SafetyWarningIssuedWebhookEvent]
       def unwrap(
         payload,
         headers = {},
@@ -219,12 +219,13 @@ module OpenAI
 
       # Validates whether or not the webhook payload was sent by OpenAI.
       #
-      # @param payload [String] The webhook payload as a string
-      # @param headers [Hash] The webhook headers
-      # @param webhook_secret [String, nil] The webhook secret (optional, will use client webhook secret or ENV["OPENAI_WEBHOOK_SECRET"] if not provided)
-      # @param tolerance [Integer] Maximum age of the webhook in seconds (default: 300 = 5 minutes)
+      # @param payload [String] The raw webhook payload as a string
       #
-      # @raise [ArgumentError] if the signature is invalid
+      # @param headers [Hash{String, Symbol=>String}] The raw HTTP headers that came with the payload
+      #
+      # @param webhook_secret [String, nil] The webhook signing key
+      #
+      # @param tolerance [Integer] Maximum age of the webhook in seconds
       def verify_signature(
         payload,
         headers,
@@ -253,20 +254,10 @@ module OpenAI
         end
 
         signature_header, timestamp_header, webhook_id = normalized_headers.values_at(*header_names)
+        raise ArgumentError, "Missing required webhook-signature header" if signature_header.nil?
+        raise ArgumentError, "Missing required webhook-timestamp header" if timestamp_header.nil?
+        raise ArgumentError, "Missing required webhook-id header" if webhook_id.nil?
 
-        if signature_header.nil?
-          raise ArgumentError, "Missing required webhook-signature header"
-        end
-
-        if timestamp_header.nil?
-          raise ArgumentError, "Missing required webhook-timestamp header"
-        end
-
-        if webhook_id.nil?
-          raise ArgumentError, "Missing required webhook-id header"
-        end
-
-        # Validate timestamp to prevent replay attacks
         begin
           timestamp_seconds = timestamp_header.to_i
         rescue ArgumentError
@@ -282,14 +273,10 @@ module OpenAI
           raise OpenAI::Errors::InvalidWebhookSignatureError, "Webhook timestamp is too new"
         end
 
-        # Extract signatures from v1,<base64> format
-        # The signature header can have multiple values, separated by spaces.
-        # Each value is in the format v1,<base64>. We should accept if any match.
         signatures = signature_header.split.map do |part|
           part.start_with?("v1,") ? part[3..] : part
         end
 
-        # Decode the secret if it starts with whsec_
         decoded_secret = if webhook_secret.start_with?("whsec_")
           webhook_secret[6..].unpack1("m0")
         else
@@ -298,13 +285,10 @@ module OpenAI
 
         raise ArgumentError, "The webhook secret must not be empty" if decoded_secret.empty?
 
-        # Create the signed payload: {webhook_id}.{timestamp}.{payload}
         signed_payload = "#{webhook_id}.#{timestamp_header}.#{payload}"
 
-        # Compute HMAC-SHA256 signature
         expected_signature = [OpenSSL::HMAC.digest("sha256", decoded_secret, signed_payload)].pack("m0")
 
-        # Accept if any signature matches using timing-safe comparison
         return if signatures.any? { |signature| OpenSSL.secure_compare(expected_signature, signature) }
 
         raise(
