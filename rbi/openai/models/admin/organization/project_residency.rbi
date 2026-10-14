@@ -23,11 +23,23 @@ module OpenAI
             OpenAI::Admin::Organization::ProjectResidency::TaggedSymbol
           )
           JP_STORAGE = T.let(:JP_STORAGE, OpenAI::Admin::Organization::ProjectResidency::TaggedSymbol)
+          JP_STORAGE_PROCESSING = T.let(
+            :JP_STORAGE_PROCESSING,
+            OpenAI::Admin::Organization::ProjectResidency::TaggedSymbol
+          )
           KR_STORAGE = T.let(:KR_STORAGE, OpenAI::Admin::Organization::ProjectResidency::TaggedSymbol)
           CA_STORAGE = T.let(:CA_STORAGE, OpenAI::Admin::Organization::ProjectResidency::TaggedSymbol)
           SG_STORAGE = T.let(:SG_STORAGE, OpenAI::Admin::Organization::ProjectResidency::TaggedSymbol)
           IN_STORAGE = T.let(:IN_STORAGE, OpenAI::Admin::Organization::ProjectResidency::TaggedSymbol)
+          IN_STORAGE_PROCESSING = T.let(
+            :IN_STORAGE_PROCESSING,
+            OpenAI::Admin::Organization::ProjectResidency::TaggedSymbol
+          )
           AU_STORAGE = T.let(:AU_STORAGE, OpenAI::Admin::Organization::ProjectResidency::TaggedSymbol)
+          AU_STORAGE_PROCESSING = T.let(
+            :AU_STORAGE_PROCESSING,
+            OpenAI::Admin::Organization::ProjectResidency::TaggedSymbol
+          )
           GB_STORAGE = T.let(:GB_STORAGE, OpenAI::Admin::Organization::ProjectResidency::TaggedSymbol)
           AE_STORAGE = T.let(:AE_STORAGE, OpenAI::Admin::Organization::ProjectResidency::TaggedSymbol)
           AE_STORAGE_PROCESSING = T.let(
