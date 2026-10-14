@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../helpers/streaming/chat_completion_resource"
+
 require_relative "../../helpers/structured_output/chat_completion_parser"
 
 module OpenAI
