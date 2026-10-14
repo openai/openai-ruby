@@ -2,9 +2,12 @@
 
 module OpenAI
   module Resources
+
     class Beta
+
       # Build Assistants that can call models and use tools.
       class Threads
+
         # Build Assistants that can call models and use tools.
         sig { returns(OpenAI::Resources::Beta::Threads::Runs) }
         attr_reader :runs
@@ -14,21 +17,19 @@ module OpenAI
         attr_reader :messages
 
         # Create a thread.
-        sig do
+        sig {
           params(
-            messages:
-              T::Array[OpenAI::Beta::ThreadCreateParams::Message::OrHash],
+            messages: T::Array[OpenAI::Beta::ThreadCreateParams::Message::OrHash],
             metadata: T.nilable(T::Hash[Symbol, String]),
-            tool_resources:
-              T.nilable(
-                OpenAI::Beta::ThreadCreateParams::ToolResources::OrHash
-              ),
+            tool_resources: T.nilable(OpenAI::Beta::ThreadCreateParams::ToolResources::OrHash),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::Thread)
-        end
+          )
+            .returns(OpenAI::Beta::Thread)
+        }
         def create(
-          # A list of [messages](https://platform.openai.com/docs/api-reference/messages) to
-          # start the thread with.
+          # A list of
+          # [messages](https://developers.openai.com/api/docs/assistants/migration) to start
+          # the thread with.
           messages: nil,
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           # for storing additional information about the object in a structured format, and
@@ -47,12 +48,9 @@ module OpenAI
         end
 
         # Retrieves a thread.
-        sig do
-          params(
-            thread_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::Thread)
-        end
+        sig {
+          params(thread_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::Beta::Thread)
+        }
         def retrieve(
           # The ID of the thread to retrieve.
           thread_id,
@@ -61,17 +59,15 @@ module OpenAI
         end
 
         # Modifies a thread.
-        sig do
+        sig {
           params(
             thread_id: String,
             metadata: T.nilable(T::Hash[Symbol, String]),
-            tool_resources:
-              T.nilable(
-                OpenAI::Beta::ThreadUpdateParams::ToolResources::OrHash
-              ),
+            tool_resources: T.nilable(OpenAI::Beta::ThreadUpdateParams::ToolResources::OrHash),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::Thread)
-        end
+          )
+            .returns(OpenAI::Beta::Thread)
+        }
         def update(
           # The ID of the thread to modify. Only the `metadata` can be modified.
           thread_id,
@@ -92,12 +88,11 @@ module OpenAI
         end
 
         # Delete a thread.
-        sig do
-          params(
-            thread_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::ThreadDeleted)
-        end
+        sig {
+          params(thread_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::Beta::ThreadDeleted
+          )
+        }
         def delete(
           # The ID of the thread to delete.
           thread_id,
@@ -108,7 +103,7 @@ module OpenAI
         # See {OpenAI::Resources::Beta::Threads#stream_raw} for streaming counterpart.
         #
         # Create a thread and run it in one request.
-        sig do
+        sig {
           params(
             assistant_id: String,
             instructions: T.nilable(String),
@@ -117,51 +112,40 @@ module OpenAI
             metadata: T.nilable(T::Hash[Symbol, String]),
             model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
             parallel_tool_calls: T::Boolean,
-            response_format:
-              T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::ResponseFormatText::OrHash,
-                  OpenAI::ResponseFormatJSONObject::OrHash,
-                  OpenAI::ResponseFormatJSONSchema::OrHash
-                )
-              ),
+            response_format: T.nilable(
+              T.any(
+                Symbol,
+                OpenAI::ResponseFormatText::OrHash,
+                OpenAI::ResponseFormatJSONObject::OrHash,
+                OpenAI::ResponseFormatJSONSchema::OrHash
+              )
+            ),
             temperature: T.nilable(Float),
             thread: OpenAI::Beta::ThreadCreateAndRunParams::Thread::OrHash,
-            tool_choice:
-              T.nilable(
+            tool_choice: T.nilable(
+              T.any(OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol, OpenAI::Beta::AssistantToolChoice::OrHash)
+            ),
+            tool_resources: T.nilable(OpenAI::Beta::ThreadCreateAndRunParams::ToolResources::OrHash),
+            tools: T.nilable(
+              T::Array[
                 T.any(
-                  OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                  OpenAI::Beta::AssistantToolChoice::OrHash
+                  OpenAI::Beta::CodeInterpreterTool::OrHash,
+                  OpenAI::Beta::FileSearchTool::OrHash,
+                  OpenAI::Beta::FunctionTool::OrHash
                 )
-              ),
-            tool_resources:
-              T.nilable(
-                OpenAI::Beta::ThreadCreateAndRunParams::ToolResources::OrHash
-              ),
-            tools:
-              T.nilable(
-                T::Array[
-                  T.any(
-                    OpenAI::Beta::CodeInterpreterTool::OrHash,
-                    OpenAI::Beta::FileSearchTool::OrHash,
-                    OpenAI::Beta::FunctionTool::OrHash
-                  )
-                ]
-              ),
+              ]
+            ),
             top_p: T.nilable(Float),
-            truncation_strategy:
-              T.nilable(
-                OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::OrHash
-              ),
+            truncation_strategy: T.nilable(OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::OrHash),
             stream: T.noreturn,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::Threads::Run)
-        end
+          )
+            .returns(OpenAI::Beta::Threads::Run)
+        }
         def create_and_run(
           # The ID of the
-          # [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
-          # execute this run.
+          # [assistant](https://developers.openai.com/api/docs/assistants/migration) to use
+          # to execute this run.
           assistant_id:,
           # Override the default system message of the assistant. This is useful for
           # modifying the behavior on a per-run basis.
@@ -185,24 +169,25 @@ module OpenAI
           # Keys are strings with a maximum length of 64 characters. Values are strings with
           # a maximum length of 512 characters.
           metadata: nil,
-          # The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to
-          # be used to execute this run. If a value is provided here, it will override the
-          # model associated with the assistant. If not, the model associated with the
-          # assistant will be used.
+          # The ID of the
+          # [Model](https://developers.openai.com/api/reference/resources/models) to be used
+          # to execute this run. If a value is provided here, it will override the model
+          # associated with the assistant. If not, the model associated with the assistant
+          # will be used.
           model: nil,
           # Whether to enable
-          # [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
+          # [parallel function calling](https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling)
           # during tool use.
           parallel_tool_calls: nil,
           # Specifies the format that the model must output. Compatible with
-          # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
-          # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
-          # and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+          # [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+          # [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+          # all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
           #
           # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
           # Outputs which ensures the model will match your supplied JSON schema. Learn more
           # in the
-          # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
           #
           # Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
           # message the model generates is valid JSON.
@@ -258,7 +243,7 @@ module OpenAI
         # counterpart.
         #
         # Create a thread and run it in one request.
-        sig do
+        sig {
           params(
             assistant_id: String,
             instructions: T.nilable(String),
@@ -267,55 +252,40 @@ module OpenAI
             metadata: T.nilable(T::Hash[Symbol, String]),
             model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
             parallel_tool_calls: T::Boolean,
-            response_format:
-              T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::ResponseFormatText::OrHash,
-                  OpenAI::ResponseFormatJSONObject::OrHash,
-                  OpenAI::ResponseFormatJSONSchema::OrHash
-                )
-              ),
+            response_format: T.nilable(
+              T.any(
+                Symbol,
+                OpenAI::ResponseFormatText::OrHash,
+                OpenAI::ResponseFormatJSONObject::OrHash,
+                OpenAI::ResponseFormatJSONSchema::OrHash
+              )
+            ),
             temperature: T.nilable(Float),
             thread: OpenAI::Beta::ThreadCreateAndRunParams::Thread::OrHash,
-            tool_choice:
-              T.nilable(
+            tool_choice: T.nilable(
+              T.any(OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol, OpenAI::Beta::AssistantToolChoice::OrHash)
+            ),
+            tool_resources: T.nilable(OpenAI::Beta::ThreadCreateAndRunParams::ToolResources::OrHash),
+            tools: T.nilable(
+              T::Array[
                 T.any(
-                  OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                  OpenAI::Beta::AssistantToolChoice::OrHash
+                  OpenAI::Beta::CodeInterpreterTool::OrHash,
+                  OpenAI::Beta::FileSearchTool::OrHash,
+                  OpenAI::Beta::FunctionTool::OrHash
                 )
-              ),
-            tool_resources:
-              T.nilable(
-                OpenAI::Beta::ThreadCreateAndRunParams::ToolResources::OrHash
-              ),
-            tools:
-              T.nilable(
-                T::Array[
-                  T.any(
-                    OpenAI::Beta::CodeInterpreterTool::OrHash,
-                    OpenAI::Beta::FileSearchTool::OrHash,
-                    OpenAI::Beta::FunctionTool::OrHash
-                  )
-                ]
-              ),
+              ]
+            ),
             top_p: T.nilable(Float),
-            truncation_strategy:
-              T.nilable(
-                OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::OrHash
-              ),
+            truncation_strategy: T.nilable(OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::OrHash),
             stream: T.noreturn,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::Stream[
-              OpenAI::Beta::AssistantStreamEvent::Variants
-            ]
           )
-        end
+            .returns(OpenAI::Internal::Stream[OpenAI::Beta::AssistantStreamEvent::Variants])
+        }
         def stream_raw(
           # The ID of the
-          # [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
-          # execute this run.
+          # [assistant](https://developers.openai.com/api/docs/assistants/migration) to use
+          # to execute this run.
           assistant_id:,
           # Override the default system message of the assistant. This is useful for
           # modifying the behavior on a per-run basis.
@@ -339,24 +309,25 @@ module OpenAI
           # Keys are strings with a maximum length of 64 characters. Values are strings with
           # a maximum length of 512 characters.
           metadata: nil,
-          # The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to
-          # be used to execute this run. If a value is provided here, it will override the
-          # model associated with the assistant. If not, the model associated with the
-          # assistant will be used.
+          # The ID of the
+          # [Model](https://developers.openai.com/api/reference/resources/models) to be used
+          # to execute this run. If a value is provided here, it will override the model
+          # associated with the assistant. If not, the model associated with the assistant
+          # will be used.
           model: nil,
           # Whether to enable
-          # [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
+          # [parallel function calling](https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling)
           # during tool use.
           parallel_tool_calls: nil,
           # Specifies the format that the model must output. Compatible with
-          # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
-          # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
-          # and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+          # [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+          # [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+          # all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
           #
           # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
           # Outputs which ensures the model will match your supplied JSON schema. Learn more
           # in the
-          # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
           #
           # Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
           # message the model generates is valid JSON.
@@ -413,6 +384,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

@@ -2,19 +2,24 @@
 
 module OpenAI
   module Resources
+
     class Evals
+
       class Runs
+
         # Manage and run evals in the OpenAI platform.
         class OutputItems
+
           # Get an evaluation run output item by ID.
-          sig do
+          sig {
             params(
               output_item_id: String,
               eval_id: String,
               run_id: String,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse)
-          end
+            )
+              .returns(OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse)
+          }
           def retrieve(
             # The ID of the output item to retrieve.
             output_item_id,
@@ -27,22 +32,18 @@ module OpenAI
           end
 
           # Get a list of output items for an evaluation run.
-          sig do
+          sig {
             params(
               run_id: String,
               eval_id: String,
               after: String,
               limit: Integer,
               order: OpenAI::Evals::Runs::OutputItemListParams::Order::OrSymbol,
-              status:
-                OpenAI::Evals::Runs::OutputItemListParams::Status::OrSymbol,
+              status: OpenAI::Evals::Runs::OutputItemListParams::Status::OrSymbol,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::CursorPage[
-                OpenAI::Models::Evals::Runs::OutputItemListResponse
-              ]
             )
-          end
+              .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Evals::Runs::OutputItemListResponse])
+          }
           def list(
             # Path param: The ID of the run to retrieve output items for.
             run_id,
@@ -68,7 +69,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

@@ -1,0 +1,89 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type agent_session_failed_webhook_event =
+        {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::AgentSessionFailedWebhookEvent::Data,
+          ?object: :event,
+          ?type: :"agent.session.failed"
+        }
+
+      class AgentSessionFailedWebhookEvent < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the event.
+        attr_accessor id: String
+
+        # The Unix timestamp, in seconds, when the event was created.
+        attr_accessor created_at: Integer
+
+        attr_accessor data: OpenAI::Webhooks::AgentSessionFailedWebhookEvent::Data
+
+        # The object type. Always `event`.
+        attr_accessor object: :event
+
+        # The event type. Always `agent.session.failed`.
+        attr_accessor type: :"agent.session.failed"
+
+        # @param id
+        #   The unique ID of the event.
+        # @param created_at
+        #   The Unix timestamp, in seconds, when the event was created.
+        # @param object
+        #   The object type. Always `event`.
+        # @param type
+        #   The event type. Always `agent.session.failed`.
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::AgentSessionFailedWebhookEvent::Data,
+          ?object: :event,
+          ?type: :"agent.session.failed"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::AgentSessionFailedWebhookEvent::Data,
+          ?object: :event,
+          ?type: :"agent.session.failed"
+        }
+
+        type data =
+          { id: String, environment_type: String, ?environment_id: String }
+
+        class Data < OpenAI::Internal::Type::BaseModel
+          # The ID of the session.
+          attr_accessor id: String
+
+          # The environment type: `none`, `openai_hosted`, or `self_hosted`.
+          attr_accessor environment_type: String
+
+          # The ID of the environment, when one exists.
+          attr_reader environment_id: String?
+
+          # The ID of the environment, when one exists.
+          def environment_id=: (String) -> String
+
+          # @param id
+          #   The ID of the session.
+          # @param environment_type
+          #   The environment type: `none`, `openai_hosted`, or `self_hosted`.
+          # @param environment_id
+          #   The ID of the environment, when one exists.
+          def initialize: (
+            id: String,
+            environment_type: String,
+            ?environment_id: String
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            environment_type: String,
+            ?environment_id: String
+          }
+        end
+      end
+    end
+  end
+end

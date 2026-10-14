@@ -2,24 +2,27 @@
 
 module OpenAI
   module Resources
+
     class Beta
+
       class Threads
+
         class Runs
+
           # Build Assistants that can call models and use tools.
           class Steps
+
             # Retrieves a run step.
-            sig do
+            sig {
               params(
                 step_id: String,
                 thread_id: String,
                 run_id: String,
-                include:
-                  T::Array[
-                    OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol
-                  ],
+                include: T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol],
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(OpenAI::Beta::Threads::Runs::RunStep)
-            end
+              )
+                .returns(OpenAI::Beta::Threads::Runs::RunStep)
+            }
             def retrieve(
               # Path param: The ID of the run step to retrieve.
               step_id,
@@ -33,7 +36,7 @@ module OpenAI
               # search result content.
               #
               # See the
-              # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+              # [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
               # for more information.
               include: nil,
               request_options: {}
@@ -41,26 +44,19 @@ module OpenAI
             end
 
             # Returns a list of run steps belonging to a run.
-            sig do
+            sig {
               params(
                 run_id: String,
                 thread_id: String,
                 after: String,
                 before: String,
-                include:
-                  T::Array[
-                    OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol
-                  ],
+                include: T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol],
                 limit: Integer,
-                order:
-                  OpenAI::Beta::Threads::Runs::StepListParams::Order::OrSymbol,
+                order: OpenAI::Beta::Threads::Runs::StepListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Internal::CursorPage[
-                  OpenAI::Beta::Threads::Runs::RunStep
-                ]
               )
-            end
+                .returns(OpenAI::Internal::CursorPage[OpenAI::Beta::Threads::Runs::RunStep])
+            }
             def list(
               # Path param: The ID of the run the run steps belong to.
               run_id,
@@ -82,7 +78,7 @@ module OpenAI
               # search result content.
               #
               # See the
-              # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+              # [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
               # for more information.
               include: nil,
               # Query param: A limit on the number of objects to be returned. Limit can range
@@ -100,8 +96,12 @@ module OpenAI
             def self.new(client:)
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

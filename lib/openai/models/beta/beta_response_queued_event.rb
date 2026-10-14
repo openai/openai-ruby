@@ -31,13 +31,17 @@ module OpenAI
         # @!method initialize(response:, sequence_number:, agent: nil, type: :"response.queued")
         #   Emitted when a response is queued and waiting to be processed.
         #
-        #   @param response [OpenAI::Models::Beta::BetaResponse] The full response object that is queued.
+        #   @param response [OpenAI::Models::Beta::BetaResponse]
+        #     The full response object that is queued.
         #
-        #   @param sequence_number [Integer] The sequence number for this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number for this event.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseQueuedEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseQueuedEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.queued"] The type of the event. Always 'response.queued'.
+        #   @param type [Symbol, :"response.queued"]
+        #     The type of the event. Always 'response.queued'.
 
         # @see OpenAI::Models::Beta::BetaResponseQueuedEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -50,7 +54,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

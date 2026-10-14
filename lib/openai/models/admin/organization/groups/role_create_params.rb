@@ -24,7 +24,8 @@ module OpenAI
             # @!method initialize(group_id:, role_id:, request_options: {})
             #   @param group_id [String]
             #
-            #   @param role_id [String] Identifier of the role to assign.
+            #   @param role_id [String]
+            #     Identifier of the role to assign.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
           end

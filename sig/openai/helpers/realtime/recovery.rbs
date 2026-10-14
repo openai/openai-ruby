@@ -1,0 +1,19 @@
+module OpenAI
+  module Errors
+    class RealtimeQueueFullError < OpenAI::Errors::Error
+      def initialize: -> void
+    end
+
+    class RealtimeReconnectError < OpenAI::Errors::Error
+      attr_reader unsent_messages: Array[String]
+      attr_reader uncertain_message: String?
+
+      # @api private
+      def initialize: (
+        message: String,
+        ?unsent_messages: Array[String],
+        ?uncertain_message: String?
+      ) -> void
+    end
+  end
+end

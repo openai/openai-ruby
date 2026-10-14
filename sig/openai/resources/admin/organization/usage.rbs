@@ -64,10 +64,26 @@ module OpenAI
             ?end_time: Integer,
             ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by],
             ?limit: Integer,
+            ?line_items: ::Array[String],
             ?page: String,
             ?project_ids: ::Array[String],
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Admin::Organization::UsageCostsResponse
+
+          def decisions: (
+            start_time: Integer,
+            ?api_key_ids: ::Array[String]?,
+            ?batch: bool?,
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageDecisionsParams::bucket_width?,
+            ?end_time: Integer?,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageDecisionsParams::group_by]?,
+            ?limit: Integer?,
+            ?models: ::Array[String]?,
+            ?page: String?,
+            ?project_ids: ::Array[String]?,
+            ?user_ids: ::Array[String]?,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::UsageDecisionsResponse
 
           def embeddings: (
             start_time: Integer,

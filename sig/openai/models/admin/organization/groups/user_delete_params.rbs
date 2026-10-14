@@ -4,8 +4,11 @@ module OpenAI
       module Organization
         module Groups
           type user_delete_params =
-            { group_id: String, user_id: String }
-            & OpenAI::Internal::Type::request_parameters
+            {
+              group_id: String,
+              user_id: String,
+              ?request_options: OpenAI::request_opts
+            }
 
           class UserDeleteParams < OpenAI::Internal::Type::BaseModel
             extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -24,7 +27,7 @@ module OpenAI
             def to_hash: -> {
               group_id: String,
               user_id: String,
-              request_options: OpenAI::RequestOptions
+              ?request_options: OpenAI::RequestOptions
             }
           end
         end

@@ -26,11 +26,14 @@ module OpenAI
           # @!method initialize(automatic_thread_titling:, file_upload:, history:)
           #   ChatKit configuration for the session.
           #
-          #   @param automatic_thread_titling [OpenAI::Models::Beta::ChatKit::ChatSessionAutomaticThreadTitling] Automatic thread titling preferences.
+          #   @param automatic_thread_titling [OpenAI::Models::Beta::ChatKit::ChatSessionAutomaticThreadTitling]
+          #     Automatic thread titling preferences.
           #
-          #   @param file_upload [OpenAI::Models::Beta::ChatKit::ChatSessionFileUpload] Upload settings for the session.
+          #   @param file_upload [OpenAI::Models::Beta::ChatKit::ChatSessionFileUpload]
+          #     Upload settings for the session.
           #
-          #   @param history [OpenAI::Models::Beta::ChatKit::ChatSessionHistory] History retention configuration.
+          #   @param history [OpenAI::Models::Beta::ChatKit::ChatSessionHistory]
+          #     History retention configuration.
         end
       end
     end

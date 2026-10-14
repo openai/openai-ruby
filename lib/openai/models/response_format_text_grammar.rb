@@ -17,11 +17,13 @@ module OpenAI
 
       # @!method initialize(grammar:, type: :grammar)
       #   A custom grammar for the model to follow when generating text. Learn more in the
-      #   [custom grammars guide](https://platform.openai.com/docs/guides/custom-grammars).
+      #   [custom grammars guide](https://developers.openai.com/api/docs/guides/function-calling#context-free-grammars).
       #
-      #   @param grammar [String] The custom grammar for the model to follow.
+      #   @param grammar [String]
+      #     The custom grammar for the model to follow.
       #
-      #   @param type [Symbol, :grammar] The type of response format being defined. Always `grammar`.
+      #   @param type [Symbol, :grammar]
+      #     The type of response format being defined. Always `grammar`.
     end
   end
 end

@@ -21,7 +21,8 @@ module OpenAI
       # @!method initialize(video_id:, prompt:, request_options: {})
       #   @param video_id [String]
       #
-      #   @param prompt [String] Updated text prompt that directs the remix generation.
+      #   @param prompt [String]
+      #     Updated text prompt that directs the remix generation.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end

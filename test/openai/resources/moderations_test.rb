@@ -12,10 +12,10 @@ class OpenAI::Test::Resources::ModerationsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        model: String,
-        results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Moderation])
-      }
+          id: String,
+          model: String,
+          results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Moderation])
+        }
     end
   end
 end

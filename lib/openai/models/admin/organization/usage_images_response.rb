@@ -9,8 +9,10 @@ module OpenAI
           # @!attribute data
           #
           #   @return [Array<OpenAI::Models::Admin::Organization::UsageImagesResponse::Data>]
-          required :data,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageImagesResponse::Data] }
+          required(
+            :data,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageImagesResponse::Data] }
+          )
 
           # @!attribute has_more
           #
@@ -47,8 +49,14 @@ module OpenAI
             # @!attribute results
             #
             #   @return [Array<OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageCompletionsResult, OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageEmbeddingsResult, OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageModerationsResult, OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageImagesResult, OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageAudioSpeechesResult, OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult, OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageVectorStoresResult, OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult, OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageFileSearchesResult, OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageWebSearchesResult, OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult>]
-            required :results,
-                     -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result] }
+            required(
+              :results,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[
+                  union: OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result
+                ]
+              }
+            )
 
             # @!attribute start_time
             #
@@ -68,48 +76,90 @@ module OpenAI
               discriminator :object
 
               # The aggregated completions usage details of the specific time bucket.
-              variant :"organization.usage.completions.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageCompletionsResult }
+              variant(
+                :"organization.usage.completions.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageCompletionsResult
+                }
+              )
 
               # The aggregated embeddings usage details of the specific time bucket.
-              variant :"organization.usage.embeddings.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageEmbeddingsResult }
+              variant(
+                :"organization.usage.embeddings.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageEmbeddingsResult
+                }
+              )
 
               # The aggregated moderations usage details of the specific time bucket.
-              variant :"organization.usage.moderations.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageModerationsResult }
+              variant(
+                :"organization.usage.moderations.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageModerationsResult
+                }
+              )
 
               # The aggregated images usage details of the specific time bucket.
-              variant :"organization.usage.images.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageImagesResult }
+              variant(
+                :"organization.usage.images.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageImagesResult
+                }
+              )
 
               # The aggregated audio speeches usage details of the specific time bucket.
-              variant :"organization.usage.audio_speeches.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageAudioSpeechesResult }
+              variant(
+                :"organization.usage.audio_speeches.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageAudioSpeechesResult
+                }
+              )
 
               # The aggregated audio transcriptions usage details of the specific time bucket.
-              variant :"organization.usage.audio_transcriptions.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult }
+              variant(
+                :"organization.usage.audio_transcriptions.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult
+                }
+              )
 
               # The aggregated vector stores usage details of the specific time bucket.
-              variant :"organization.usage.vector_stores.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageVectorStoresResult }
+              variant(
+                :"organization.usage.vector_stores.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageVectorStoresResult
+                }
+              )
 
               # The aggregated code interpreter sessions usage details of the specific time bucket.
-              variant :"organization.usage.code_interpreter_sessions.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult }
+              variant(
+                :"organization.usage.code_interpreter_sessions.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult
+                }
+              )
 
               # The aggregated file search calls usage details of the specific time bucket.
-              variant :"organization.usage.file_searches.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageFileSearchesResult }
+              variant(
+                :"organization.usage.file_searches.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageFileSearchesResult
+                }
+              )
 
               # The aggregated web search calls usage details of the specific time bucket.
-              variant :"organization.usage.web_searches.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageWebSearchesResult }
+              variant(
+                :"organization.usage.web_searches.result",
+                -> {
+                  OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageWebSearchesResult
+                }
+              )
 
               # The aggregated costs details of the specific time bucket.
-              variant :"organization.costs.result",
-                      -> { OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult }
+              variant(
+                :"organization.costs.result",
+                -> { OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult }
+              )
 
               class OrganizationUsageCompletionsResult < OpenAI::Internal::Type::BaseModel
                 # @!attribute input_tokens
@@ -146,6 +196,21 @@ module OpenAI
                 #   @return [String, nil]
                 optional :api_key_id, String, nil?: true
 
+                # @!attribute api_source
+                #   When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                #   activity and `unlabeled` includes all records without published source
+                #   attribution, including historical and unknown origins. Unlabeled does not imply
+                #   direct API usage. Without source grouping, this field is null.
+                #
+                #   @return [Symbol, OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageCompletionsResult::APISource, nil]
+                optional(
+                  :api_source,
+                  enum: -> {
+                    OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageCompletionsResult::APISource
+                  },
+                  nil?: true
+                )
+
                 # @!attribute batch
                 #   When `group_by=batch`, this field tells whether the grouped usage result is
                 #   batch or not.
@@ -159,8 +224,16 @@ module OpenAI
                 #   @return [Integer, nil]
                 optional :input_audio_tokens, Integer
 
+                # @!attribute input_cache_write_12h_tokens
+                #   The aggregated number of input tokens written to the cache with a 12-hour
+                #   retention period.
+                #
+                #   @return [Integer, nil]
+                optional :input_cache_write_12h_tokens, Integer
+
                 # @!attribute input_cache_write_tokens
-                #   The aggregated number of input tokens written to the cache.
+                #   The aggregated number of input tokens written to the cache with a 30-minute
+                #   retention period.
                 #
                 #   @return [Integer, nil]
                 optional :input_cache_write_tokens, Integer
@@ -256,56 +329,113 @@ module OpenAI
                 #   @return [String, nil]
                 optional :user_id, String, nil?: true
 
-                # @!method initialize(input_tokens:, num_model_requests:, output_tokens:, api_key_id: nil, batch: nil, input_audio_tokens: nil, input_cache_write_tokens: nil, input_cached_audio_tokens: nil, input_cached_image_tokens: nil, input_cached_text_tokens: nil, input_cached_tokens: nil, input_image_tokens: nil, input_text_tokens: nil, input_uncached_tokens: nil, model: nil, output_audio_tokens: nil, output_image_tokens: nil, output_text_tokens: nil, project_id: nil, service_tier: nil, user_id: nil, object: :"organization.usage.completions.result")
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageCompletionsResult}
-                #   for more details.
-                #
+                # @!method initialize(input_tokens:, num_model_requests:, output_tokens:, api_key_id: nil, api_source: nil, batch: nil, input_audio_tokens: nil, input_cache_write_12h_tokens: nil, input_cache_write_tokens: nil, input_cached_audio_tokens: nil, input_cached_image_tokens: nil, input_cached_text_tokens: nil, input_cached_tokens: nil, input_image_tokens: nil, input_text_tokens: nil, input_uncached_tokens: nil, model: nil, output_audio_tokens: nil, output_image_tokens: nil, output_text_tokens: nil, project_id: nil, service_tier: nil, user_id: nil, object: :"organization.usage.completions.result")
                 #   The aggregated completions usage details of the specific time bucket.
                 #
-                #   @param input_tokens [Integer] The aggregated number of input tokens used, including cached and cache-write tok
+                #   @param input_tokens [Integer]
+                #     The aggregated number of input tokens used, including cached and cache-write
+                #     tokens. This includes text, audio, and image tokens. For customers subscribed to
+                #     Scale Tier, this includes Scale Tier tokens.
                 #
-                #   @param num_model_requests [Integer] The count of requests made to the model.
+                #   @param num_model_requests [Integer]
+                #     The count of requests made to the model.
                 #
-                #   @param output_tokens [Integer] The aggregated number of output tokens used across text, audio, and image output
+                #   @param output_tokens [Integer]
+                #     The aggregated number of output tokens used across text, audio, and image
+                #     outputs. For customers subscribed to Scale Tier, this includes Scale Tier
+                #     tokens.
                 #
-                #   @param api_key_id [String, nil] When `group_by=api_key_id`, this field provides the API key ID of the grouped us
+                #   @param api_key_id [String, nil]
+                #     When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #     usage result.
                 #
-                #   @param batch [Boolean, nil] When `group_by=batch`, this field tells whether the grouped usage result is batc
+                #   @param api_source [Symbol, OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageCompletionsResult::APISource, nil]
+                #     When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                #     activity and `unlabeled` includes all records without published source
+                #     attribution, including historical and unknown origins. Unlabeled does not imply
+                #     direct API usage. Without source grouping, this field is null.
                 #
-                #   @param input_audio_tokens [Integer] The aggregated number of uncached audio input tokens used.
+                #   @param batch [Boolean, nil]
+                #     When `group_by=batch`, this field tells whether the grouped usage result is
+                #     batch or not.
                 #
-                #   @param input_cache_write_tokens [Integer] The aggregated number of input tokens written to the cache.
+                #   @param input_audio_tokens [Integer]
+                #     The aggregated number of uncached audio input tokens used.
                 #
-                #   @param input_cached_audio_tokens [Integer] The aggregated number of cached audio input tokens used.
+                #   @param input_cache_write_12h_tokens [Integer]
+                #     The aggregated number of input tokens written to the cache with a 12-hour
+                #     retention period.
                 #
-                #   @param input_cached_image_tokens [Integer] The aggregated number of cached image input tokens used.
+                #   @param input_cache_write_tokens [Integer]
+                #     The aggregated number of input tokens written to the cache with a 30-minute
+                #     retention period.
                 #
-                #   @param input_cached_text_tokens [Integer] The aggregated number of cached text input tokens used.
+                #   @param input_cached_audio_tokens [Integer]
+                #     The aggregated number of cached audio input tokens used.
                 #
-                #   @param input_cached_tokens [Integer] The aggregated number of cached input tokens used across text, audio, and image
+                #   @param input_cached_image_tokens [Integer]
+                #     The aggregated number of cached image input tokens used.
                 #
-                #   @param input_image_tokens [Integer] The aggregated number of uncached image input tokens used.
+                #   @param input_cached_text_tokens [Integer]
+                #     The aggregated number of cached text input tokens used.
                 #
-                #   @param input_text_tokens [Integer] The aggregated number of uncached text input tokens used, excluding cache-write
+                #   @param input_cached_tokens [Integer]
+                #     The aggregated number of cached input tokens used across text, audio, and image
+                #     inputs. For customers subscribed to Scale Tier, this includes Scale Tier tokens.
                 #
-                #   @param input_uncached_tokens [Integer] The aggregated number of uncached input tokens used across text, audio, and imag
+                #   @param input_image_tokens [Integer]
+                #     The aggregated number of uncached image input tokens used.
                 #
-                #   @param model [String, nil] When `group_by=model`, this field provides the model name of the grouped usage r
+                #   @param input_text_tokens [Integer]
+                #     The aggregated number of uncached text input tokens used, excluding cache-write
+                #     tokens.
                 #
-                #   @param output_audio_tokens [Integer] The aggregated number of audio output tokens used.
+                #   @param input_uncached_tokens [Integer]
+                #     The aggregated number of uncached input tokens used across text, audio, and
+                #     image inputs, excluding cache-write tokens.
                 #
-                #   @param output_image_tokens [Integer] The aggregated number of image output tokens used.
+                #   @param model [String, nil]
+                #     When `group_by=model`, this field provides the model name of the grouped usage
+                #     result.
                 #
-                #   @param output_text_tokens [Integer] The aggregated number of text output tokens used.
+                #   @param output_audio_tokens [Integer]
+                #     The aggregated number of audio output tokens used.
                 #
-                #   @param project_id [String, nil] When `group_by=project_id`, this field provides the project ID of the grouped us
+                #   @param output_image_tokens [Integer]
+                #     The aggregated number of image output tokens used.
                 #
-                #   @param service_tier [String, nil] When `group_by=service_tier`, this field provides the service tier of the groupe
+                #   @param output_text_tokens [Integer]
+                #     The aggregated number of text output tokens used.
                 #
-                #   @param user_id [String, nil] When `group_by=user_id`, this field provides the user ID of the grouped usage re
+                #   @param project_id [String, nil]
+                #     When `group_by=project_id`, this field provides the project ID of the grouped
+                #     usage result.
+                #
+                #   @param service_tier [String, nil]
+                #     When `group_by=service_tier`, this field provides the service tier of the
+                #     grouped usage result.
+                #
+                #   @param user_id [String, nil]
+                #     When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #     result.
                 #
                 #   @param object [Symbol, :"organization.usage.completions.result"]
+
+                # When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                # activity and `unlabeled` includes all records without published source
+                # attribution, including historical and unknown origins. Unlabeled does not imply
+                # direct API usage. Without source grouping, this field is null.
+                #
+                # @see OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageCompletionsResult#api_source
+                module APISource
+                  extend OpenAI::Internal::Type::Enum
+
+                  AGENTS_API = :agents_api
+                  UNLABELED = :unlabeled
+
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
+                end
               end
 
               class OrganizationUsageEmbeddingsResult < OpenAI::Internal::Type::BaseModel
@@ -355,23 +485,29 @@ module OpenAI
                 optional :user_id, String, nil?: true
 
                 # @!method initialize(input_tokens:, num_model_requests:, api_key_id: nil, model: nil, project_id: nil, user_id: nil, object: :"organization.usage.embeddings.result")
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageEmbeddingsResult}
-                #   for more details.
-                #
                 #   The aggregated embeddings usage details of the specific time bucket.
                 #
-                #   @param input_tokens [Integer] The aggregated number of input tokens used.
+                #   @param input_tokens [Integer]
+                #     The aggregated number of input tokens used.
                 #
-                #   @param num_model_requests [Integer] The count of requests made to the model.
+                #   @param num_model_requests [Integer]
+                #     The count of requests made to the model.
                 #
-                #   @param api_key_id [String, nil] When `group_by=api_key_id`, this field provides the API key ID of the grouped us
+                #   @param api_key_id [String, nil]
+                #     When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #     usage result.
                 #
-                #   @param model [String, nil] When `group_by=model`, this field provides the model name of the grouped usage r
+                #   @param model [String, nil]
+                #     When `group_by=model`, this field provides the model name of the grouped usage
+                #     result.
                 #
-                #   @param project_id [String, nil] When `group_by=project_id`, this field provides the project ID of the grouped us
+                #   @param project_id [String, nil]
+                #     When `group_by=project_id`, this field provides the project ID of the grouped
+                #     usage result.
                 #
-                #   @param user_id [String, nil] When `group_by=user_id`, this field provides the user ID of the grouped usage re
+                #   @param user_id [String, nil]
+                #     When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #     result.
                 #
                 #   @param object [Symbol, :"organization.usage.embeddings.result"]
               end
@@ -423,23 +559,29 @@ module OpenAI
                 optional :user_id, String, nil?: true
 
                 # @!method initialize(input_tokens:, num_model_requests:, api_key_id: nil, model: nil, project_id: nil, user_id: nil, object: :"organization.usage.moderations.result")
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageModerationsResult}
-                #   for more details.
-                #
                 #   The aggregated moderations usage details of the specific time bucket.
                 #
-                #   @param input_tokens [Integer] The aggregated number of input tokens used.
+                #   @param input_tokens [Integer]
+                #     The aggregated number of input tokens used.
                 #
-                #   @param num_model_requests [Integer] The count of requests made to the model.
+                #   @param num_model_requests [Integer]
+                #     The count of requests made to the model.
                 #
-                #   @param api_key_id [String, nil] When `group_by=api_key_id`, this field provides the API key ID of the grouped us
+                #   @param api_key_id [String, nil]
+                #     When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #     usage result.
                 #
-                #   @param model [String, nil] When `group_by=model`, this field provides the model name of the grouped usage r
+                #   @param model [String, nil]
+                #     When `group_by=model`, this field provides the model name of the grouped usage
+                #     result.
                 #
-                #   @param project_id [String, nil] When `group_by=project_id`, this field provides the project ID of the grouped us
+                #   @param project_id [String, nil]
+                #     When `group_by=project_id`, this field provides the project ID of the grouped
+                #     usage result.
                 #
-                #   @param user_id [String, nil] When `group_by=user_id`, this field provides the user ID of the grouped usage re
+                #   @param user_id [String, nil]
+                #     When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #     result.
                 #
                 #   @param object [Symbol, :"organization.usage.moderations.result"]
               end
@@ -505,27 +647,37 @@ module OpenAI
                 optional :user_id, String, nil?: true
 
                 # @!method initialize(images:, num_model_requests:, api_key_id: nil, model: nil, project_id: nil, size: nil, source: nil, user_id: nil, object: :"organization.usage.images.result")
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageImagesResult}
-                #   for more details.
-                #
                 #   The aggregated images usage details of the specific time bucket.
                 #
-                #   @param images [Integer] The number of images processed.
+                #   @param images [Integer]
+                #     The number of images processed.
                 #
-                #   @param num_model_requests [Integer] The count of requests made to the model.
+                #   @param num_model_requests [Integer]
+                #     The count of requests made to the model.
                 #
-                #   @param api_key_id [String, nil] When `group_by=api_key_id`, this field provides the API key ID of the grouped us
+                #   @param api_key_id [String, nil]
+                #     When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #     usage result.
                 #
-                #   @param model [String, nil] When `group_by=model`, this field provides the model name of the grouped usage r
+                #   @param model [String, nil]
+                #     When `group_by=model`, this field provides the model name of the grouped usage
+                #     result.
                 #
-                #   @param project_id [String, nil] When `group_by=project_id`, this field provides the project ID of the grouped us
+                #   @param project_id [String, nil]
+                #     When `group_by=project_id`, this field provides the project ID of the grouped
+                #     usage result.
                 #
-                #   @param size [String, nil] When `group_by=size`, this field provides the image size of the grouped usage re
+                #   @param size [String, nil]
+                #     When `group_by=size`, this field provides the image size of the grouped usage
+                #     result.
                 #
-                #   @param source [String, nil] When `group_by=source`, this field provides the source of the grouped usage resu
+                #   @param source [String, nil]
+                #     When `group_by=source`, this field provides the source of the grouped usage
+                #     result, possible values are `image.generation`, `image.edit`, `image.variation`.
                 #
-                #   @param user_id [String, nil] When `group_by=user_id`, this field provides the user ID of the grouped usage re
+                #   @param user_id [String, nil]
+                #     When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #     result.
                 #
                 #   @param object [Symbol, :"organization.usage.images.result"]
               end
@@ -577,23 +729,29 @@ module OpenAI
                 optional :user_id, String, nil?: true
 
                 # @!method initialize(characters:, num_model_requests:, api_key_id: nil, model: nil, project_id: nil, user_id: nil, object: :"organization.usage.audio_speeches.result")
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageAudioSpeechesResult}
-                #   for more details.
-                #
                 #   The aggregated audio speeches usage details of the specific time bucket.
                 #
-                #   @param characters [Integer] The number of characters processed.
+                #   @param characters [Integer]
+                #     The number of characters processed.
                 #
-                #   @param num_model_requests [Integer] The count of requests made to the model.
+                #   @param num_model_requests [Integer]
+                #     The count of requests made to the model.
                 #
-                #   @param api_key_id [String, nil] When `group_by=api_key_id`, this field provides the API key ID of the grouped us
+                #   @param api_key_id [String, nil]
+                #     When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #     usage result.
                 #
-                #   @param model [String, nil] When `group_by=model`, this field provides the model name of the grouped usage r
+                #   @param model [String, nil]
+                #     When `group_by=model`, this field provides the model name of the grouped usage
+                #     result.
                 #
-                #   @param project_id [String, nil] When `group_by=project_id`, this field provides the project ID of the grouped us
+                #   @param project_id [String, nil]
+                #     When `group_by=project_id`, this field provides the project ID of the grouped
+                #     usage result.
                 #
-                #   @param user_id [String, nil] When `group_by=user_id`, this field provides the user ID of the grouped usage re
+                #   @param user_id [String, nil]
+                #     When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #     result.
                 #
                 #   @param object [Symbol, :"organization.usage.audio_speeches.result"]
               end
@@ -645,23 +803,29 @@ module OpenAI
                 optional :user_id, String, nil?: true
 
                 # @!method initialize(num_model_requests:, seconds:, api_key_id: nil, model: nil, project_id: nil, user_id: nil, object: :"organization.usage.audio_transcriptions.result")
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageAudioTranscriptionsResult}
-                #   for more details.
-                #
                 #   The aggregated audio transcriptions usage details of the specific time bucket.
                 #
-                #   @param num_model_requests [Integer] The count of requests made to the model.
+                #   @param num_model_requests [Integer]
+                #     The count of requests made to the model.
                 #
-                #   @param seconds [Integer] The number of seconds processed.
+                #   @param seconds [Integer]
+                #     The number of seconds processed.
                 #
-                #   @param api_key_id [String, nil] When `group_by=api_key_id`, this field provides the API key ID of the grouped us
+                #   @param api_key_id [String, nil]
+                #     When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #     usage result.
                 #
-                #   @param model [String, nil] When `group_by=model`, this field provides the model name of the grouped usage r
+                #   @param model [String, nil]
+                #     When `group_by=model`, this field provides the model name of the grouped usage
+                #     result.
                 #
-                #   @param project_id [String, nil] When `group_by=project_id`, this field provides the project ID of the grouped us
+                #   @param project_id [String, nil]
+                #     When `group_by=project_id`, this field provides the project ID of the grouped
+                #     usage result.
                 #
-                #   @param user_id [String, nil] When `group_by=user_id`, this field provides the user ID of the grouped usage re
+                #   @param user_id [String, nil]
+                #     When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #     result.
                 #
                 #   @param object [Symbol, :"organization.usage.audio_transcriptions.result"]
               end
@@ -686,15 +850,14 @@ module OpenAI
                 optional :project_id, String, nil?: true
 
                 # @!method initialize(usage_bytes:, project_id: nil, object: :"organization.usage.vector_stores.result")
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageVectorStoresResult}
-                #   for more details.
-                #
                 #   The aggregated vector stores usage details of the specific time bucket.
                 #
-                #   @param usage_bytes [Integer] The vector stores usage in bytes.
+                #   @param usage_bytes [Integer]
+                #     The vector stores usage in bytes.
                 #
-                #   @param project_id [String, nil] When `group_by=project_id`, this field provides the project ID of the grouped us
+                #   @param project_id [String, nil]
+                #     When `group_by=project_id`, this field provides the project ID of the grouped
+                #     usage result.
                 #
                 #   @param object [Symbol, :"organization.usage.vector_stores.result"]
               end
@@ -719,16 +882,15 @@ module OpenAI
                 optional :project_id, String, nil?: true
 
                 # @!method initialize(num_sessions:, project_id: nil, object: :"organization.usage.code_interpreter_sessions.result")
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageCodeInterpreterSessionsResult}
-                #   for more details.
-                #
                 #   The aggregated code interpreter sessions usage details of the specific time
                 #   bucket.
                 #
-                #   @param num_sessions [Integer] The number of code interpreter sessions.
+                #   @param num_sessions [Integer]
+                #     The number of code interpreter sessions.
                 #
-                #   @param project_id [String, nil] When `group_by=project_id`, this field provides the project ID of the grouped us
+                #   @param project_id [String, nil]
+                #     When `group_by=project_id`, this field provides the project ID of the grouped
+                #     usage result.
                 #
                 #   @param object [Symbol, :"organization.usage.code_interpreter_sessions.result"]
               end
@@ -774,21 +936,26 @@ module OpenAI
                 optional :vector_store_id, String, nil?: true
 
                 # @!method initialize(num_requests:, api_key_id: nil, project_id: nil, user_id: nil, vector_store_id: nil, object: :"organization.usage.file_searches.result")
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageFileSearchesResult}
-                #   for more details.
-                #
                 #   The aggregated file search calls usage details of the specific time bucket.
                 #
-                #   @param num_requests [Integer] The count of file search calls.
+                #   @param num_requests [Integer]
+                #     The count of file search calls.
                 #
-                #   @param api_key_id [String, nil] When `group_by=api_key_id`, this field provides the API key ID of the grouped us
+                #   @param api_key_id [String, nil]
+                #     When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #     usage result.
                 #
-                #   @param project_id [String, nil] When `group_by=project_id`, this field provides the project ID of the grouped us
+                #   @param project_id [String, nil]
+                #     When `group_by=project_id`, this field provides the project ID of the grouped
+                #     usage result.
                 #
-                #   @param user_id [String, nil] When `group_by=user_id`, this field provides the user ID of the grouped usage re
+                #   @param user_id [String, nil]
+                #     When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #     result.
                 #
-                #   @param vector_store_id [String, nil] When `group_by=vector_store_id`, this field provides the vector store ID of the
+                #   @param vector_store_id [String, nil]
+                #     When `group_by=vector_store_id`, this field provides the vector store ID of the
+                #     grouped usage result.
                 #
                 #   @param object [Symbol, :"organization.usage.file_searches.result"]
               end
@@ -818,6 +985,21 @@ module OpenAI
                 #   @return [String, nil]
                 optional :api_key_id, String, nil?: true
 
+                # @!attribute api_source
+                #   When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                #   activity and `unlabeled` includes all records without published source
+                #   attribution, including historical and unknown origins. Unlabeled does not imply
+                #   direct API usage. Without source grouping, this field is null.
+                #
+                #   @return [Symbol, OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageWebSearchesResult::APISource, nil]
+                optional(
+                  :api_source,
+                  enum: -> {
+                    OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageWebSearchesResult::APISource
+                  },
+                  nil?: true
+                )
+
                 # @!attribute context_level
                 #   When `group_by=context_level`, this field provides the search context size of
                 #   the grouped usage result.
@@ -846,28 +1028,58 @@ module OpenAI
                 #   @return [String, nil]
                 optional :user_id, String, nil?: true
 
-                # @!method initialize(num_model_requests:, num_requests:, api_key_id: nil, context_level: nil, model: nil, project_id: nil, user_id: nil, object: :"organization.usage.web_searches.result")
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageWebSearchesResult}
-                #   for more details.
-                #
+                # @!method initialize(num_model_requests:, num_requests:, api_key_id: nil, api_source: nil, context_level: nil, model: nil, project_id: nil, user_id: nil, object: :"organization.usage.web_searches.result")
                 #   The aggregated web search calls usage details of the specific time bucket.
                 #
-                #   @param num_model_requests [Integer] The count of model requests.
+                #   @param num_model_requests [Integer]
+                #     The count of model requests.
                 #
-                #   @param num_requests [Integer] The count of web search calls.
+                #   @param num_requests [Integer]
+                #     The count of web search calls.
                 #
-                #   @param api_key_id [String, nil] When `group_by=api_key_id`, this field provides the API key ID of the grouped us
+                #   @param api_key_id [String, nil]
+                #     When `group_by=api_key_id`, this field provides the API key ID of the grouped
+                #     usage result.
                 #
-                #   @param context_level [String, nil] When `group_by=context_level`, this field provides the search context size of th
+                #   @param api_source [Symbol, OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageWebSearchesResult::APISource, nil]
+                #     When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                #     activity and `unlabeled` includes all records without published source
+                #     attribution, including historical and unknown origins. Unlabeled does not imply
+                #     direct API usage. Without source grouping, this field is null.
                 #
-                #   @param model [String, nil] When `group_by=model`, this field provides the model name of the grouped usage r
+                #   @param context_level [String, nil]
+                #     When `group_by=context_level`, this field provides the search context size of
+                #     the grouped usage result.
                 #
-                #   @param project_id [String, nil] When `group_by=project_id`, this field provides the project ID of the grouped us
+                #   @param model [String, nil]
+                #     When `group_by=model`, this field provides the model name of the grouped usage
+                #     result.
                 #
-                #   @param user_id [String, nil] When `group_by=user_id`, this field provides the user ID of the grouped usage re
+                #   @param project_id [String, nil]
+                #     When `group_by=project_id`, this field provides the project ID of the grouped
+                #     usage result.
+                #
+                #   @param user_id [String, nil]
+                #     When `group_by=user_id`, this field provides the user ID of the grouped usage
+                #     result.
                 #
                 #   @param object [Symbol, :"organization.usage.web_searches.result"]
+
+                # When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                # activity and `unlabeled` includes all records without published source
+                # attribution, including historical and unknown origins. Unlabeled does not imply
+                # direct API usage. Without source grouping, this field is null.
+                #
+                # @see OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationUsageWebSearchesResult#api_source
+                module APISource
+                  extend OpenAI::Internal::Type::Enum
+
+                  AGENTS_API = :agents_api
+                  UNLABELED = :unlabeled
+
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
+                end
               end
 
               class OrganizationCostsResult < OpenAI::Internal::Type::BaseModel
@@ -880,8 +1092,12 @@ module OpenAI
                 #   The monetary value in its associated currency.
                 #
                 #   @return [OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult::Amount, nil]
-                optional :amount,
-                         -> { OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult::Amount }
+                optional(
+                  :amount,
+                  -> {
+                    OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult::Amount
+                  }
+                )
 
                 # @!attribute api_key_id
                 #   When `group_by=api_key_id`, this field provides the API Key ID of the grouped
@@ -889,6 +1105,21 @@ module OpenAI
                 #
                 #   @return [String, nil]
                 optional :api_key_id, String, nil?: true
+
+                # @!attribute api_source
+                #   When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                #   activity and `unlabeled` includes all records without published source
+                #   attribution, including historical and unknown origins. Unlabeled does not imply
+                #   direct API usage. Without source grouping, this field is null.
+                #
+                #   @return [Symbol, OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult::APISource, nil]
+                optional(
+                  :api_source,
+                  enum: -> {
+                    OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult::APISource
+                  },
+                  nil?: true
+                )
 
                 # @!attribute line_item
                 #   When `group_by=line_item`, this field provides the line item of the grouped
@@ -911,22 +1142,61 @@ module OpenAI
                 #   @return [Float, nil]
                 optional :quantity, Float, nil?: true
 
-                # @!method initialize(amount: nil, api_key_id: nil, line_item: nil, project_id: nil, quantity: nil, object: :"organization.costs.result")
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult}
-                #   for more details.
+                # @!attribute quantity_unit
+                #   The unit of the `quantity` value. If no single supported unit applies to the
+                #   result, this field is `null`.
                 #
+                #   @return [String, Symbol, OpenAI::Models::Admin::Organization::CostQuantityUnit, nil]
+                optional(
+                  :quantity_unit,
+                  union: -> {
+                    OpenAI::Admin::Organization::CostQuantityUnit
+                  },
+                  nil?: true
+                )
+
+                # @!attribute user_id
+                #   When `group_by=user_id`, this field provides the user ID of the grouped costs
+                #   result.
+                #
+                #   @return [String, nil]
+                optional :user_id, String, nil?: true
+
+                # @!method initialize(amount: nil, api_key_id: nil, api_source: nil, line_item: nil, project_id: nil, quantity: nil, quantity_unit: nil, user_id: nil, object: :"organization.costs.result")
                 #   The aggregated costs details of the specific time bucket.
                 #
-                #   @param amount [OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult::Amount] The monetary value in its associated currency.
+                #   @param amount [OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult::Amount]
+                #     The monetary value in its associated currency.
                 #
-                #   @param api_key_id [String, nil] When `group_by=api_key_id`, this field provides the API Key ID of the grouped co
+                #   @param api_key_id [String, nil]
+                #     When `group_by=api_key_id`, this field provides the API Key ID of the grouped
+                #     costs result.
                 #
-                #   @param line_item [String, nil] When `group_by=line_item`, this field provides the line item of the grouped cost
+                #   @param api_source [Symbol, OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult::APISource, nil]
+                #     When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                #     activity and `unlabeled` includes all records without published source
+                #     attribution, including historical and unknown origins. Unlabeled does not imply
+                #     direct API usage. Without source grouping, this field is null.
                 #
-                #   @param project_id [String, nil] When `group_by=project_id`, this field provides the project ID of the grouped co
+                #   @param line_item [String, nil]
+                #     When `group_by=line_item`, this field provides the line item of the grouped
+                #     costs result.
                 #
-                #   @param quantity [Float, nil] When `group_by=line_item`, this field provides the quantity of the grouped costs
+                #   @param project_id [String, nil]
+                #     When `group_by=project_id`, this field provides the project ID of the grouped
+                #     costs result.
+                #
+                #   @param quantity [Float, nil]
+                #     When `group_by=line_item`, this field provides the quantity of the grouped costs
+                #     result.
+                #
+                #   @param quantity_unit [String, Symbol, OpenAI::Models::Admin::Organization::CostQuantityUnit, nil]
+                #     The unit of the `quantity` value. If no single supported unit applies to the
+                #     result, this field is `null`.
+                #
+                #   @param user_id [String, nil]
+                #     When `group_by=user_id`, this field provides the user ID of the grouped costs
+                #     result.
                 #
                 #   @param object [Symbol, :"organization.costs.result"]
 
@@ -947,9 +1217,27 @@ module OpenAI
                   # @!method initialize(currency: nil, value: nil)
                   #   The monetary value in its associated currency.
                   #
-                  #   @param currency [String] Lowercase ISO-4217 currency e.g. "usd"
+                  #   @param currency [String]
+                  #     Lowercase ISO-4217 currency e.g. "usd"
                   #
-                  #   @param value [Float] The numeric value of the cost.
+                  #   @param value [Float]
+                  #     The numeric value of the cost.
+                end
+
+                # When grouped by `api_source`, `agents_api` identifies attributed Agents API
+                # activity and `unlabeled` includes all records without published source
+                # attribution, including historical and unknown origins. Unlabeled does not imply
+                # direct API usage. Without source grouping, this field is null.
+                #
+                # @see OpenAI::Models::Admin::Organization::UsageImagesResponse::Data::Result::OrganizationCostsResult#api_source
+                module APISource
+                  extend OpenAI::Internal::Type::Enum
+
+                  AGENTS_API = :agents_api
+                  UNLABELED = :unlabeled
+
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
                 end
               end
 

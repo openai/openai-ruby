@@ -1,10 +1,19 @@
 module OpenAI
   class FilePart
+    # @api private
+    def self.validate_content_type: (String? content_type) -> String?
+
     attr_reader content: Pathname | StringIO | IO | String
 
     attr_reader content_type: String?
 
     attr_reader filename: String?
+
+    def with_content: (
+      Pathname | StringIO | IO | String content
+    ) -> OpenAI::FilePart
+
+    private def default_content_type: -> String
 
     private def read: -> String
 
@@ -17,5 +26,8 @@ module OpenAI
       ?filename: (Pathname | String)?,
       ?content_type: String?
     ) -> void
+
+    # @api private
+    private def strip_directories: (Pathname | String filename) -> String
   end
 end

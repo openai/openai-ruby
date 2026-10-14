@@ -1,13 +1,16 @@
 module OpenAI
   module Models
-    type other_file_chunking_strategy_object = { type: :other }
+    type other_file_chunking_strategy_object = { ?type: :other }
 
     class OtherFileChunkingStrategyObject < OpenAI::Internal::Type::BaseModel
+      # Always `other`.
       attr_accessor type: :other
 
+      # @param type
+      #   Always `other`.
       def initialize: (?type: :other) -> void
 
-      def to_hash: -> { type: :other }
+      def to_hash: -> { ?type: :other }
     end
   end
 end

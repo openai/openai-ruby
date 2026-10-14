@@ -19,7 +19,8 @@ module OpenAI
       #
       #   @param static [OpenAI::Models::StaticFileChunkingStrategy]
       #
-      #   @param type [Symbol, :static] Always `static`.
+      #   @param type [Symbol, :static]
+      #     Always `static`.
     end
   end
 end

@@ -30,19 +30,21 @@ module OpenAI
         required :type, const: :multi
 
         # @!method initialize(calculate_output:, graders:, name:, type: :multi)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Graders::MultiGrader} for more details.
-        #
         #   A MultiGrader object combines the output of multiple graders to produce a single
         #   score.
         #
-        #   @param calculate_output [String] A formula to calculate the output based on grader results.
+        #   @param calculate_output [String]
+        #     A formula to calculate the output based on grader results.
         #
-        #   @param graders [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::LabelModelGrader] A StringCheckGrader object that performs a string comparison between input and r
+        #   @param graders [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::LabelModelGrader]
+        #     A StringCheckGrader object that performs a string comparison between input and
+        #     reference using a specified operation.
         #
-        #   @param name [String] The name of the grader.
+        #   @param name [String]
+        #     The name of the grader.
         #
-        #   @param type [Symbol, :multi] The object type, which is always `multi`.
+        #   @param type [Symbol, :multi]
+        #     The object type, which is always `multi`.
 
         # A StringCheckGrader object that performs a string comparison between input and
         # reference using a specified operation.

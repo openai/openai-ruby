@@ -35,20 +35,22 @@ module OpenAI
         optional :object, enum: -> { OpenAI::Webhooks::ResponseIncompleteWebhookEvent::Object }
 
         # @!method initialize(id:, created_at:, data:, object: nil, type: :"response.incomplete")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Webhooks::ResponseIncompleteWebhookEvent} for more details.
-        #
         #   Sent when a background response has been interrupted.
         #
-        #   @param id [String] The unique ID of the event.
+        #   @param id [String]
+        #     The unique ID of the event.
         #
-        #   @param created_at [Integer] The Unix timestamp (in seconds) of when the model response was interrupted.
+        #   @param created_at [Integer]
+        #     The Unix timestamp (in seconds) of when the model response was interrupted.
         #
-        #   @param data [OpenAI::Models::Webhooks::ResponseIncompleteWebhookEvent::Data] Event data payload.
+        #   @param data [OpenAI::Models::Webhooks::ResponseIncompleteWebhookEvent::Data]
+        #     Event data payload.
         #
-        #   @param object [Symbol, OpenAI::Models::Webhooks::ResponseIncompleteWebhookEvent::Object] The object of the event. Always `event`.
+        #   @param object [Symbol, OpenAI::Models::Webhooks::ResponseIncompleteWebhookEvent::Object]
+        #     The object of the event. Always `event`.
         #
-        #   @param type [Symbol, :"response.incomplete"] The type of the event. Always `response.incomplete`.
+        #   @param type [Symbol, :"response.incomplete"]
+        #     The type of the event. Always `response.incomplete`.
 
         # @see OpenAI::Models::Webhooks::ResponseIncompleteWebhookEvent#data
         class Data < OpenAI::Internal::Type::BaseModel
@@ -59,13 +61,10 @@ module OpenAI
           required :id, String
 
           # @!method initialize(id:)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Webhooks::ResponseIncompleteWebhookEvent::Data} for more
-          #   details.
-          #
           #   Event data payload.
           #
-          #   @param id [String] The unique ID of the model response.
+          #   @param id [String]
+          #     The unique ID of the model response.
         end
 
         # The object of the event. Always `event`.

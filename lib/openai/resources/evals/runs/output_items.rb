@@ -10,11 +10,14 @@ module OpenAI
           #
           # @overload retrieve(output_item_id, eval_id:, run_id:, request_options: {})
           #
-          # @param output_item_id [String] The ID of the output item to retrieve.
+          # @param output_item_id [String]
+          #   The ID of the output item to retrieve.
           #
-          # @param eval_id [String] The ID of the evaluation to retrieve runs for.
+          # @param eval_id [String]
+          #   The ID of the evaluation to retrieve runs for.
           #
-          # @param run_id [String] The ID of the run to retrieve.
+          # @param run_id [String]
+          #   The ID of the run to retrieve.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -23,14 +26,14 @@ module OpenAI
           # @see OpenAI::Models::Evals::Runs::OutputItemRetrieveParams
           def retrieve(output_item_id, params)
             parsed, options = OpenAI::Evals::Runs::OutputItemRetrieveParams.dump_request(params)
-            eval_id =
-              parsed.delete(:eval_id) do
-                raise ArgumentError.new("missing required path argument #{_1}")
-              end
-            run_id =
-              parsed.delete(:run_id) do
-                raise ArgumentError.new("missing required path argument #{_1}")
-              end
+            eval_id = parsed.delete(:eval_id) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
+
+            run_id = parsed.delete(:run_id) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
+
             @client.request(
               method: :get,
               path: ["evals/%1$s/runs/%2$s/output_items/%3$s", eval_id, run_id, output_item_id],
@@ -40,24 +43,30 @@ module OpenAI
             )
           end
 
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::Evals::Runs::OutputItemListParams} for more details.
-          #
           # Get a list of output items for an evaluation run.
           #
           # @overload list(run_id, eval_id:, after: nil, limit: nil, order: nil, status: nil, request_options: {})
           #
-          # @param run_id [String] Path param: The ID of the run to retrieve output items for.
+          # @param run_id [String]
+          #   Path param: The ID of the run to retrieve output items for.
           #
-          # @param eval_id [String] Path param: The ID of the evaluation to retrieve runs for.
+          # @param eval_id [String]
+          #   Path param: The ID of the evaluation to retrieve runs for.
           #
-          # @param after [String] Query param: Identifier for the last output item from the previous pagination re
+          # @param after [String]
+          #   Query param: Identifier for the last output item from the previous pagination
+          #   request.
           #
-          # @param limit [Integer] Query param: Number of output items to retrieve.
+          # @param limit [Integer]
+          #   Query param: Number of output items to retrieve.
           #
-          # @param order [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Order] Query param: Sort order for output items by timestamp. Use `asc` for ascending o
+          # @param order [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Order]
+          #   Query param: Sort order for output items by timestamp. Use `asc` for ascending
+          #   order or `desc` for descending order. Defaults to `asc`.
           #
-          # @param status [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Status] Query param: Filter output items by status. Use `failed` to filter by failed out
+          # @param status [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Status]
+          #   Query param: Filter output items by status. Use `failed` to filter by failed
+          #   output items or `pass` to filter by passed output items.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -66,11 +75,11 @@ module OpenAI
           # @see OpenAI::Models::Evals::Runs::OutputItemListParams
           def list(run_id, params)
             parsed, options = OpenAI::Evals::Runs::OutputItemListParams.dump_request(params)
+            eval_id = parsed.delete(:eval_id) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
+
             query = OpenAI::Internal::Util.encode_query_params(parsed)
-            eval_id =
-              parsed.delete(:eval_id) do
-                raise ArgumentError.new("missing required path argument #{_1}")
-              end
             @client.request(
               method: :get,
               path: ["evals/%1$s/runs/%2$s/output_items", eval_id, run_id],

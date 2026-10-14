@@ -1,0 +1,36 @@
+module OpenAI
+  module Models
+    module Live
+      type session_reject_params =
+        {
+          session_id: String,
+          status_code: Integer,
+          ?request_options: OpenAI::request_opts
+        }
+
+      class SessionRejectParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor session_id: String
+
+        # SIP rejection status sent to the caller. This field is required.
+        attr_accessor status_code: Integer
+
+        # @param status_code
+        #   SIP rejection status sent to the caller. This field is required.
+        def initialize: (
+          session_id: String,
+          status_code: Integer,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          session_id: String,
+          status_code: Integer,
+          ?request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end

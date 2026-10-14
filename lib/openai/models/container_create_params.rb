@@ -44,17 +44,23 @@ module OpenAI
       optional :skills, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::ContainerCreateParams::Skill] }
 
       # @!method initialize(name:, expires_after: nil, file_ids: nil, memory_limit: nil, network_policy: nil, skills: nil, request_options: {})
-      #   @param name [String] Name of the container to create.
+      #   @param name [String]
+      #     Name of the container to create.
       #
-      #   @param expires_after [OpenAI::Models::ContainerCreateParams::ExpiresAfter] Container expiration time in seconds relative to the 'anchor' time.
+      #   @param expires_after [OpenAI::Models::ContainerCreateParams::ExpiresAfter]
+      #     Container expiration time in seconds relative to the 'anchor' time.
       #
-      #   @param file_ids [Array<String>] IDs of files to copy to the container.
+      #   @param file_ids [Array<String>]
+      #     IDs of files to copy to the container.
       #
-      #   @param memory_limit [Symbol, OpenAI::Models::ContainerCreateParams::MemoryLimit] Optional memory limit for the container. Defaults to "1g".
+      #   @param memory_limit [Symbol, OpenAI::Models::ContainerCreateParams::MemoryLimit]
+      #     Optional memory limit for the container. Defaults to "1g".
       #
-      #   @param network_policy [OpenAI::Models::Responses::ContainerNetworkPolicyDisabled, OpenAI::Models::Responses::ContainerNetworkPolicyAllowlist] Network access policy for the container.
+      #   @param network_policy [OpenAI::Models::Responses::ContainerNetworkPolicyDisabled, OpenAI::Models::Responses::ContainerNetworkPolicyAllowlist]
+      #     Network access policy for the container.
       #
-      #   @param skills [Array<OpenAI::Models::Responses::SkillReference, OpenAI::Models::Responses::InlineSkill>] An optional list of skills referenced by id or inline data.
+      #   @param skills [Array<OpenAI::Models::Responses::SkillReference, OpenAI::Models::Responses::InlineSkill>]
+      #     An optional list of skills referenced by id or inline data.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -72,12 +78,11 @@ module OpenAI
         required :minutes, Integer
 
         # @!method initialize(anchor:, minutes:)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::ContainerCreateParams::ExpiresAfter} for more details.
-        #
         #   Container expiration time in seconds relative to the 'anchor' time.
         #
-        #   @param anchor [Symbol, OpenAI::Models::ContainerCreateParams::ExpiresAfter::Anchor] Time anchor for the expiration time. Currently only 'last_active_at' is supporte
+        #   @param anchor [Symbol, OpenAI::Models::ContainerCreateParams::ExpiresAfter::Anchor]
+        #     Time anchor for the expiration time. Currently only 'last_active_at' is
+        #     supported.
         #
         #   @param minutes [Integer]
 

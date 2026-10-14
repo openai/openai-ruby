@@ -7,8 +7,7 @@ module OpenAI
   # When making a request, you can pass an actual {RequestOptions} instance, or
   # simply pass a Hash with symbol keys matching the attributes on this class.
   class RequestOptions < OpenAI::Internal::Type::BaseModel
-    OrHash =
-      T.type_alias { T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash) }
+    OrHash = T.type_alias { T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash) }
 
     # @api private
     sig { params(opts: OpenAI::RequestOptions::OrHash).void }
@@ -27,6 +26,7 @@ module OpenAI
         T.nilable(T::Hash[String, T.nilable(T.any(T::Array[String], String))])
       )
     end
+
     attr_accessor :extra_query
 
     # Extra headers to send with the request. These are `.merged`’d into any
@@ -46,6 +46,10 @@ module OpenAI
     # Request timeout in seconds.
     sig { returns(T.nilable(Float)) }
     attr_accessor :timeout
+
+    # Retain the exact successful response body on `last_response.body`.
+    sig { returns(T.nilable(T::Boolean)) }
+    attr_accessor :include_raw_body
 
     # Returns a new instance of RequestOptions.
     sig { params(values: OpenAI::Internal::AnyHash).returns(T.attached_class) }

@@ -36,6 +36,19 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
     required :type, const: :m3, doc: "Model M3"
   end
 
+  class HashFormMetadata < OpenAI::BaseModel
+    required :value, enum: -> { String }, pattern: "^[a-z]+$", doc: "Lowercase value"
+  end
+
+  class NestedParticipant < OpenAI::BaseModel
+    required :name, String
+  end
+
+  class NestedEvent < OpenAI::BaseModel
+    required :participant, NestedParticipant
+    required :participants, OpenAI::ArrayOf[NestedParticipant]
+  end
+
   U1 = OpenAI::Helpers::StructuredOutput::UnionOf[Integer, A1]
   U2 = OpenAI::Helpers::StructuredOutput::UnionOf[M2, M3]
   U3 = OpenAI::Helpers::StructuredOutput::UnionOf[A1, A1]
@@ -65,9 +78,52 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
   def test_base_model
     assert_raises(RuntimeError) do
       Class.new(OpenAI::Helpers::StructuredOutput::BaseModel) do
-        optional :name, String
+        optional(:name, String)
       end
     end
+  end
+
+  def test_hash_form_declaration_metadata_reaches_schema
+    assert_equal(
+      {type: "string", pattern: "^[a-z]+$", description: "Lowercase value"},
+      HashFormMetadata.to_json_schema.dig(:properties, :value)
+    )
+  end
+
+  def test_direct_structured_output_models_preserve_nested_raw_values
+    participant = {name: "Ada"}
+    participants = [{name: "Grace"}]
+    event = NestedEvent.new(participant: participant, participants: participants)
+
+    assert_same(participant, event.participant)
+    assert_same(participants, event.participants)
+
+    replacement = {name: "Katherine"}
+    event.participant = replacement
+
+    assert_same(replacement, event.participant)
+    assert_same(replacement, event.to_h.fetch(:participant))
+
+    replacement_participants = [{name: "Dorothy"}]
+    event.participants = replacement_participants
+
+    assert_same(replacement_participants, event.participants)
+    assert_same(replacement_participants, event.to_h.fetch(:participants))
+  end
+
+  def test_response_coercion_materializes_nested_structured_output_models
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+    event = OpenAI::Internal::Type::Converter.coerce(
+      NestedEvent,
+      {participant: {name: "Ada"}, participants: [{name: "Grace"}]},
+      state: state
+    )
+
+    assert_instance_of(NestedParticipant, event.participant)
+    assert_instance_of(NestedParticipant, event.participants.fetch(0))
+    assert_equal("Ada", event.participant.name)
+    assert_equal("Grace", event.participants.fetch(0).name)
+    assert_nil(state.fetch(:error))
   end
 
   def test_to_schema
@@ -107,13 +163,13 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
         anyOf: [
           {
             type: "object",
-            properties: {type: {const: "m2"}},
+            properties: {type: {const: "m2", description: "Model M2"}},
             required: %w[type],
             additionalProperties: false
           },
           {
             type: "object",
-            properties: {type: {const: "m3"}},
+            properties: {type: {const: "m3", description: "Model M3"}},
             required: %w[type],
             additionalProperties: false
           }
@@ -181,54 +237,49 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
   def test_definition_reusing
     cases = {
       M6 => {
-        :$defs =>
-          {
-            "" =>
-                {
-                  type: "object",
-                  properties: {a: {type: "string"}, b: {:$ref => "#/$defs/"}},
-                  required: %w[a b],
-                  additionalProperties: false
-                }
-          },
+        :$defs => {
+          "" => {
+            type: "object",
+            properties: {a: {type: "string"}, b: {:$ref => "#/$defs/"}},
+            required: %w[a b],
+            additionalProperties: false
+          }
+        },
         :$ref => "#/$defs/"
       },
-      M7 =>
-        {
-          :$defs =>
-            {
-              ".a" =>
+      M7 => {
+        :$defs => {
+          ".a" => {
+            type: "object",
+            properties: {
+              a: {
+                anyOf: [
                   {
-                    type: "object",
-                    properties: {
-                      a: {
-                        anyOf: [
-                          {
-                            type: "array",
-                            items: {anyOf: [{type: "string", enum: ["one"]}, {type: "null"}]}
-                          },
-                          {type: "null"}
-                        ]
-                      },
-                      b: {
-                        anyOf: [
-                          {
-                            type: "array",
-                            items: {anyOf: [{type: "string", enum: ["one"]}, {type: "null"}]}
-                          },
-                          {type: "null"}
-                        ]
-                      }
-                    },
-                    required: %w[a b],
-                    additionalProperties: false
-                  }
+                    type: "array",
+                    items: {anyOf: [{type: "string", enum: ["one"]}, {type: "null"}]}
+                  },
+                  {type: "null"}
+                ]
+              },
+              b: {
+                anyOf: [
+                  {
+                    type: "array",
+                    items: {anyOf: [{type: "string", enum: ["one"]}, {type: "null"}]}
+                  },
+                  {type: "null"}
+                ]
+              }
             },
-          :type => "object",
-          :properties => {a: {:$ref => "#/$defs/.a"}, b: {:$ref => "#/$defs/.a"}},
-          :required => %w[a b],
-          :additionalProperties => false
+            required: %w[a b],
+            additionalProperties: false
+          }
         },
+        :type => "object",
+        :properties => {a: {:$ref => "#/$defs/.a"}, b: {:$ref => "#/$defs/.a"}},
+        :required => %w[a b],
+        :additionalProperties => false
+      },
       M8 => {
         type: "object",
         properties: {
@@ -297,23 +348,21 @@ class OpenAI::Test::StructuredOutputTest < Minitest::Test
         additionalProperties: false
       },
       M10 => {
-        :$defs =>
-          {
-            "" =>
-                {
-                  type: "object",
-                  properties: {
-                    b: {
-                      type: "object",
-                      properties: {a: {:$ref => "#/$defs/"}, b: {:$ref => "#/$defs/"}},
-                      required: %w[a b],
-                      additionalProperties: false
-                    }
-                  },
-                  required: ["b"],
-                  additionalProperties: false
-                }
-          },
+        :$defs => {
+          "" => {
+            type: "object",
+            properties: {
+              b: {
+                type: "object",
+                properties: {a: {:$ref => "#/$defs/"}, b: {:$ref => "#/$defs/"}},
+                required: %w[a b],
+                additionalProperties: false
+              }
+            },
+            required: ["b"],
+            additionalProperties: false
+          }
+        },
         :$ref => "#/$defs/"
       },
       U3 => {

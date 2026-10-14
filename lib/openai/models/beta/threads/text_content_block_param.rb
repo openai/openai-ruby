@@ -20,9 +20,11 @@ module OpenAI
           # @!method initialize(text:, type: :text)
           #   The text content that is part of a message.
           #
-          #   @param text [String] Text content to be sent to the model
+          #   @param text [String]
+          #     Text content to be sent to the model
           #
-          #   @param type [Symbol, :text] Always `text`.
+          #   @param type [Symbol, :text]
+          #     Always `text`.
         end
       end
     end

@@ -14,19 +14,22 @@ module OpenAI
         #   The tool invocation context(s).
         #
         #   @return [Array<Symbol, OpenAI::Models::Beta::BetaApplyPatchTool::AllowedCaller>, nil]
-        optional :allowed_callers,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaApplyPatchTool::AllowedCaller]
-                 },
-                 nil?: true
+        optional(
+          :allowed_callers,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaApplyPatchTool::AllowedCaller]
+          },
+          nil?: true
+        )
 
         # @!method initialize(allowed_callers: nil, type: :apply_patch)
         #   Allows the assistant to create, delete, or update files using unified diffs.
         #
-        #   @param allowed_callers [Array<Symbol, OpenAI::Models::Beta::BetaApplyPatchTool::AllowedCaller>, nil] The tool invocation context(s).
+        #   @param allowed_callers [Array<Symbol, OpenAI::Models::Beta::BetaApplyPatchTool::AllowedCaller>, nil]
+        #     The tool invocation context(s).
         #
-        #   @param type [Symbol, :apply_patch] The type of the tool. Always `apply_patch`.
-
+        #   @param type [Symbol, :apply_patch]
+        #     The type of the tool. Always `apply_patch`.
         module AllowedCaller
           extend OpenAI::Internal::Type::Enum
 

@@ -37,15 +37,20 @@ module OpenAI
         # @!method initialize(id:, approval_request_id:, approve:, reason: nil, type: :mcp_approval_response)
         #   A Realtime item responding to an MCP approval request.
         #
-        #   @param id [String] The unique ID of the approval response.
+        #   @param id [String]
+        #     The unique ID of the approval response.
         #
-        #   @param approval_request_id [String] The ID of the approval request being answered.
+        #   @param approval_request_id [String]
+        #     The ID of the approval request being answered.
         #
-        #   @param approve [Boolean] Whether the request was approved.
+        #   @param approve [Boolean]
+        #     Whether the request was approved.
         #
-        #   @param reason [String, nil] Optional reason for the decision.
+        #   @param reason [String, nil]
+        #     Optional reason for the decision.
         #
-        #   @param type [Symbol, :mcp_approval_response] The type of the item. Always `mcp_approval_response`.
+        #   @param type [Symbol, :mcp_approval_response]
+        #     The type of the item. Always `mcp_approval_response`.
       end
     end
   end

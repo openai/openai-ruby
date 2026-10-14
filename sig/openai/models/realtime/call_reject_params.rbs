@@ -2,8 +2,11 @@ module OpenAI
   module Models
     module Realtime
       type call_reject_params =
-        { call_id: String, status_code: Integer }
-        & OpenAI::Internal::Type::request_parameters
+        {
+          call_id: String,
+          ?status_code: Integer,
+          ?request_options: OpenAI::request_opts
+        }
 
       class CallRejectParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -11,10 +14,17 @@ module OpenAI
 
         attr_accessor call_id: String
 
+        # SIP response code to send back to the caller. Defaults to `603` (Decline) when
+        # omitted.
         attr_reader status_code: Integer?
 
+        # SIP response code to send back to the caller. Defaults to `603` (Decline) when
+        # omitted.
         def status_code=: (Integer) -> Integer
 
+        # @param status_code
+        #   SIP response code to send back to the caller. Defaults to `603` (Decline) when
+        #   omitted.
         def initialize: (
           call_id: String,
           ?status_code: Integer,
@@ -23,8 +33,8 @@ module OpenAI
 
         def to_hash: -> {
           call_id: String,
-          status_code: Integer,
-          request_options: OpenAI::RequestOptions
+          ?status_code: Integer,
+          ?request_options: OpenAI::RequestOptions
         }
       end
     end

@@ -9,15 +9,22 @@ module OpenAI
             class APIKeys
               # Creates an API key for a service account in the project.
               #
-              # @overload create(service_account_id, project_id:, name: nil, scopes: nil, request_options: {})
+              # @overload create(service_account_id, project_id:, expires_in_seconds: nil, name: nil, scopes: nil, request_options: {})
               #
-              # @param service_account_id [String] Path param: The ID of the service account.
+              # @param service_account_id [String]
+              #   Path param: The ID of the service account.
               #
-              # @param project_id [String] Path param: The ID of the project.
+              # @param project_id [String]
+              #   Path param: The ID of the project.
               #
-              # @param name [String] Body param: API key name.
+              # @param expires_in_seconds [Integer, nil]
+              #   Body param: Number of seconds until the API key expires.
               #
-              # @param scopes [Array<String>] Body param: API key scopes.
+              # @param name [String]
+              #   Body param: API key name.
+              #
+              # @param scopes [Array<String>]
+              #   Body param: API key scopes.
               #
               # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
               #
@@ -25,12 +32,12 @@ module OpenAI
               #
               # @see OpenAI::Models::Admin::Organization::Projects::ServiceAccounts::APIKeyCreateParams
               def create(service_account_id, params)
-                parsed, options =
-                  OpenAI::Admin::Organization::Projects::ServiceAccounts::APIKeyCreateParams.dump_request(params)
-                project_id =
-                  parsed.delete(:project_id) do
-                    raise ArgumentError.new("missing required path argument #{_1}")
-                  end
+                parsed, options = OpenAI::Admin::Organization::Projects::ServiceAccounts::APIKeyCreateParams
+                  .dump_request(params)
+                project_id = parsed.delete(:project_id) do
+                  raise ArgumentError.new("missing required path argument #{_1}")
+                end
+
                 @client.request(
                   method: :post,
                   path: [

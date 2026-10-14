@@ -1,0 +1,47 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_browser_origin_access_param =
+        {
+          decision: OpenAI::Models::Beta::AgentBrowserOriginAccessParam::decision,
+          ?type: :browser_origin_access
+        }
+
+      class AgentBrowserOriginAccessParam < OpenAI::Internal::Type::BaseModel
+        # Whether to allow, deny, or cancel the requested origin access.
+        attr_accessor decision: OpenAI::Models::Beta::AgentBrowserOriginAccessParam::decision
+
+        attr_accessor type: :browser_origin_access
+
+        # @param decision
+        #   Whether to allow, deny, or cancel the requested origin access.
+        def initialize: (
+          decision: OpenAI::Models::Beta::AgentBrowserOriginAccessParam::decision,
+          ?type: :browser_origin_access
+        ) -> void
+
+        def to_hash: -> {
+          decision: OpenAI::Models::Beta::AgentBrowserOriginAccessParam::decision,
+          ?type: :browser_origin_access
+        }
+
+        type decision = :approve | :deny | :cancel
+
+        module Decision
+          extend OpenAI::Internal::Type::Enum
+
+          # Allow the browser to access this origin.
+          APPROVE: :approve
+
+          # Deny access to this origin.
+          DENY: :deny
+
+          # Dismiss this request without approving access.
+          CANCEL: :cancel
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AgentBrowserOriginAccessParam::decision]
+        end
+      end
+    end
+  end
+end

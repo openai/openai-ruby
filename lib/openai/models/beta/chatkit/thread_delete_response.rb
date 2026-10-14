@@ -27,11 +27,14 @@ module OpenAI
           # @!method initialize(id:, deleted:, object: :"chatkit.thread.deleted")
           #   Confirmation payload returned after deleting a thread.
           #
-          #   @param id [String] Identifier of the deleted thread.
+          #   @param id [String]
+          #     Identifier of the deleted thread.
           #
-          #   @param deleted [Boolean] Indicates that the thread has been deleted.
+          #   @param deleted [Boolean]
+          #     Indicates that the thread has been deleted.
           #
-          #   @param object [Symbol, :"chatkit.thread.deleted"] Type discriminator that is always `chatkit.thread.deleted`.
+          #   @param object [Symbol, :"chatkit.thread.deleted"]
+          #     Type discriminator that is always `chatkit.thread.deleted`.
         end
       end
     end

@@ -1,0 +1,38 @@
+module OpenAI
+  module Resources
+    class VectorStores
+      class FileBatches
+        def create_and_poll: (
+          String vector_store_id,
+          ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::attribute]?,
+          ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+          ?file_ids: ::Array[String],
+          ?files: ::Array[OpenAI::VectorStores::FileBatchCreateParams::File],
+          ?poll_interval: (Integer | Float)?,
+          ?timeout: (Integer | Float)?,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::VectorStores::VectorStoreFileBatch
+
+        def poll: (
+          String batch_id,
+          vector_store_id: String,
+          ?poll_interval: (Integer | Float)?,
+          ?timeout: (Integer | Float)?,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::VectorStores::VectorStoreFileBatch
+
+        def upload_and_poll: (
+          String vector_store_id,
+          files: Enumerable[OpenAI::Internal::file_input],
+          ?file_ids: ::Array[String],
+          ?max_concurrency: Integer,
+          ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::attribute]?,
+          ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+          ?poll_interval: (Integer | Float)?,
+          ?timeout: (Integer | Float)?,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::VectorStores::VectorStoreFileBatch
+      end
+    end
+  end
+end

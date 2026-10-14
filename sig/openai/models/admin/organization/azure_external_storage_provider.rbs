@@ -1,0 +1,54 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type azure_external_storage_provider =
+          {
+            account_name: String,
+            container: String,
+            region: String,
+            resource_group: String,
+            subscription_id: String,
+            tenant_id: String,
+            ?type: :azure
+          }
+
+        class AzureExternalStorageProvider < OpenAI::Internal::Type::BaseModel
+          attr_accessor account_name: String
+
+          attr_accessor container: String
+
+          attr_accessor region: String
+
+          attr_accessor resource_group: String
+
+          attr_accessor subscription_id: String
+
+          attr_accessor tenant_id: String
+
+          attr_accessor type: :azure
+
+          def initialize: (
+            account_name: String,
+            container: String,
+            region: String,
+            resource_group: String,
+            subscription_id: String,
+            tenant_id: String,
+            ?type: :azure
+          ) -> void
+
+          def to_hash: -> {
+            account_name: String,
+            container: String,
+            region: String,
+            resource_group: String,
+            subscription_id: String,
+            tenant_id: String,
+            ?type: :azure
+          }
+        end
+      end
+    end
+  end
+end

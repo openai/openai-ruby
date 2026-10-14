@@ -25,11 +25,14 @@ module OpenAI
       # @!method initialize(id:, deleted:, object: :"video.deleted")
       #   Confirmation payload returned after deleting a video.
       #
-      #   @param id [String] Identifier of the deleted video.
+      #   @param id [String]
+      #     Identifier of the deleted video.
       #
-      #   @param deleted [Boolean] Indicates that the video resource was deleted.
+      #   @param deleted [Boolean]
+      #     Indicates that the video resource was deleted.
       #
-      #   @param object [Symbol, :"video.deleted"] The object type that signals the deletion response.
+      #   @param object [Symbol, :"video.deleted"]
+      #     The object type that signals the deletion response.
     end
   end
 end

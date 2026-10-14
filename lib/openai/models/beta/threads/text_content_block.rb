@@ -21,7 +21,8 @@ module OpenAI
           #
           #   @param text [OpenAI::Models::Beta::Threads::Text]
           #
-          #   @param type [Symbol, :text] Always `text`.
+          #   @param type [Symbol, :text]
+          #     Always `text`.
         end
       end
     end

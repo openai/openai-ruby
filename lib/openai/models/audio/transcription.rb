@@ -32,20 +32,23 @@ module OpenAI
         optional :usage, union: -> { OpenAI::Audio::Transcription::Usage }
 
         # @!method initialize(text:, languages: nil, logprobs: nil, usage: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Audio::Transcription} for more details.
-        #
         #   Represents a transcription response returned by model, based on the provided
         #   input.
         #
-        #   @param text [String] The transcribed text.
+        #   @param text [String]
+        #     The transcribed text.
         #
-        #   @param languages [Array<OpenAI::Models::Audio::TranscriptionLanguage>] The languages detected in the audio. Returned by `gpt-transcribe`. An empty arra
+        #   @param languages [Array<OpenAI::Models::Audio::TranscriptionLanguage>]
+        #     The languages detected in the audio. Returned by `gpt-transcribe`. An empty
+        #     array indicates that no language could be reliably detected.
         #
-        #   @param logprobs [Array<OpenAI::Models::Audio::Transcription::Logprob>] The log probabilities of the tokens in the transcription. Only returned with the
+        #   @param logprobs [Array<OpenAI::Models::Audio::Transcription::Logprob>]
+        #     The log probabilities of the tokens in the transcription. Only returned with the
+        #     models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added
+        #     to the `include` array.
         #
-        #   @param usage [OpenAI::Models::Audio::Transcription::Usage::Tokens, OpenAI::Models::Audio::Transcription::Usage::Duration] Token usage statistics for the request.
-
+        #   @param usage [OpenAI::Models::Audio::Transcription::Usage::Tokens, OpenAI::Models::Audio::Transcription::Usage::Duration]
+        #     Token usage statistics for the request.
         class Logprob < OpenAI::Internal::Type::BaseModel
           # @!attribute token
           #   The token in the transcription.
@@ -66,11 +69,14 @@ module OpenAI
           optional :logprob, Float
 
           # @!method initialize(token: nil, bytes: nil, logprob: nil)
-          #   @param token [String] The token in the transcription.
+          #   @param token [String]
+          #     The token in the transcription.
           #
-          #   @param bytes [Array<Float>] The bytes of the token.
+          #   @param bytes [Array<Float>]
+          #     The bytes of the token.
           #
-          #   @param logprob [Float] The log probability of the token.
+          #   @param logprob [Float]
+          #     The log probability of the token.
         end
 
         # Token usage statistics for the request.
@@ -121,15 +127,20 @@ module OpenAI
             # @!method initialize(input_tokens:, output_tokens:, total_tokens:, input_token_details: nil, type: :tokens)
             #   Usage statistics for models billed by token usage.
             #
-            #   @param input_tokens [Integer] Number of input tokens billed for this request.
+            #   @param input_tokens [Integer]
+            #     Number of input tokens billed for this request.
             #
-            #   @param output_tokens [Integer] Number of output tokens generated.
+            #   @param output_tokens [Integer]
+            #     Number of output tokens generated.
             #
-            #   @param total_tokens [Integer] Total number of tokens used (input + output).
+            #   @param total_tokens [Integer]
+            #     Total number of tokens used (input + output).
             #
-            #   @param input_token_details [OpenAI::Models::Audio::Transcription::Usage::Tokens::InputTokenDetails] Details about the input tokens billed for this request.
+            #   @param input_token_details [OpenAI::Models::Audio::Transcription::Usage::Tokens::InputTokenDetails]
+            #     Details about the input tokens billed for this request.
             #
-            #   @param type [Symbol, :tokens] The type of the usage object. Always `tokens` for this variant.
+            #   @param type [Symbol, :tokens]
+            #     The type of the usage object. Always `tokens` for this variant.
 
             # @see OpenAI::Models::Audio::Transcription::Usage::Tokens#input_token_details
             class InputTokenDetails < OpenAI::Internal::Type::BaseModel
@@ -148,9 +159,11 @@ module OpenAI
               # @!method initialize(audio_tokens: nil, text_tokens: nil)
               #   Details about the input tokens billed for this request.
               #
-              #   @param audio_tokens [Integer] Number of audio tokens billed for this request.
+              #   @param audio_tokens [Integer]
+              #     Number of audio tokens billed for this request.
               #
-              #   @param text_tokens [Integer] Number of text tokens billed for this request.
+              #   @param text_tokens [Integer]
+              #     Number of text tokens billed for this request.
             end
           end
 
@@ -170,9 +183,11 @@ module OpenAI
             # @!method initialize(seconds:, type: :duration)
             #   Usage statistics for models billed by audio input duration.
             #
-            #   @param seconds [Float] Duration of the input audio in seconds.
+            #   @param seconds [Float]
+            #     Duration of the input audio in seconds.
             #
-            #   @param type [Symbol, :duration] The type of the usage object. Always `duration` for this variant.
+            #   @param type [Symbol, :duration]
+            #     The type of the usage object. Always `duration` for this variant.
           end
 
           # @!method self.variants

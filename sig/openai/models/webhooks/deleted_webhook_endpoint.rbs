@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type deleted_webhook_endpoint =
+        { id: String, deleted: bool, ?object: :"webhook_endpoint.deleted" }
+
+      class DeletedWebhookEndpoint < OpenAI::Internal::Type::BaseModel
+        # The ID of the deleted webhook endpoint.
+        attr_accessor id: String
+
+        # Whether the endpoint was deleted.
+        attr_accessor deleted: bool
+
+        # The object type, which is always webhook_endpoint.deleted.
+        attr_accessor object: :"webhook_endpoint.deleted"
+
+        # @param id
+        #   The ID of the deleted webhook endpoint.
+        # @param deleted
+        #   Whether the endpoint was deleted.
+        # @param object
+        #   The object type, which is always webhook_endpoint.deleted.
+        def initialize: (
+          id: String,
+          deleted: bool,
+          ?object: :"webhook_endpoint.deleted"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          deleted: bool,
+          ?object: :"webhook_endpoint.deleted"
+        }
+      end
+    end
+  end
+end

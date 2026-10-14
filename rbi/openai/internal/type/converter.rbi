@@ -7,27 +7,27 @@ module OpenAI
       module Converter
         extend OpenAI::Internal::Util::SorbetRuntimeSupport
 
-        Input =
-          T.type_alias do
-            T.any(OpenAI::Internal::Type::Converter, T::Class[T.anything])
-          end
+        Input = T.type_alias do
+          T.any(OpenAI::Internal::Type::Converter, T::Class[T.anything])
+        end
 
-        CoerceState =
-          T.type_alias do
-            {
-              translate_names: T::Boolean,
-              strictness: T::Boolean,
-              exactness: {
-                yes: Integer,
-                no: Integer,
-                maybe: Integer
-              },
-              error: T::Class[StandardError],
-              branched: Integer
-            }
-          end
+        CoerceState = T.type_alias do
+          {
+            translate_names: T::Boolean,
+            request_only: T::Boolean,
+            strictness: T::Boolean,
+            exactness: {
+              yes: Integer,
+              no: Integer,
+              maybe: Integer
+            },
+            error: T.nilable(StandardError),
+            branched: Integer,
+            memo: T.nilable(T::Hash[T.untyped, T.untyped])
+          }
+        end
 
-        DumpState = T.type_alias { { can_retry: T::Boolean } }
+        DumpState = T.type_alias { {can_retry: T::Boolean} }
 
         # @api private
         sig do
@@ -62,26 +62,23 @@ module OpenAI
           # @api private
           sig do
             params(
-              spec:
-                T.any(
-                  {
-                    const:
-                      T.nilable(
-                        T.any(NilClass, T::Boolean, Integer, Float, Symbol)
-                      ),
-                    enum:
-                      T.nilable(
-                        T.proc.returns(OpenAI::Internal::Type::Converter::Input)
-                      ),
-                    union:
-                      T.nilable(
-                        T.proc.returns(OpenAI::Internal::Type::Converter::Input)
-                      )
-                  },
-                  T.proc.returns(OpenAI::Internal::Type::Converter::Input),
-                  OpenAI::Internal::Type::Converter::Input
-                )
-            ).returns(T.proc.returns(T.anything))
+              spec: T.any(
+                {
+                  const: T.nilable(
+                    T.any(NilClass, T::Boolean, Integer, Float, Symbol)
+                  ),
+                  enum: T.nilable(
+                    T.proc.returns(OpenAI::Internal::Type::Converter::Input)
+                  ),
+                  union: T.nilable(
+                    T.proc.returns(OpenAI::Internal::Type::Converter::Input)
+                  )
+                },
+                T.proc.returns(OpenAI::Internal::Type::Converter::Input),
+                OpenAI::Internal::Type::Converter::Input
+              )
+            )
+              .returns(T.proc.returns(T.anything))
           end
           def self.type_info(spec)
           end
@@ -89,56 +86,66 @@ module OpenAI
           # @api private
           sig do
             params(
-              type_info:
-                T.any(
-                  {
-                    const:
-                      T.nilable(
-                        T.any(NilClass, T::Boolean, Integer, Float, Symbol)
-                      ),
-                    enum:
-                      T.nilable(
-                        T.proc.returns(OpenAI::Internal::Type::Converter::Input)
-                      ),
-                    union:
-                      T.nilable(
-                        T.proc.returns(OpenAI::Internal::Type::Converter::Input)
-                      )
-                  },
-                  T.proc.returns(OpenAI::Internal::Type::Converter::Input),
-                  OpenAI::Internal::Type::Converter::Input
-                ),
-              spec:
-                T.any(
-                  {
-                    const:
-                      T.nilable(
-                        T.any(NilClass, T::Boolean, Integer, Float, Symbol)
-                      ),
-                    enum:
-                      T.nilable(
-                        T.proc.returns(OpenAI::Internal::Type::Converter::Input)
-                      ),
-                    union:
-                      T.nilable(
-                        T.proc.returns(OpenAI::Internal::Type::Converter::Input)
-                      )
-                  },
-                  T.proc.returns(OpenAI::Internal::Type::Converter::Input),
-                  OpenAI::Internal::Type::Converter::Input
-                )
-            ).returns(OpenAI::Internal::AnyHash)
+              type_info: T.any(
+                {
+                  const: T.nilable(
+                    T.any(NilClass, T::Boolean, Integer, Float, Symbol)
+                  ),
+                  enum: T.nilable(
+                    T.proc.returns(OpenAI::Internal::Type::Converter::Input)
+                  ),
+                  union: T.nilable(
+                    T.proc.returns(OpenAI::Internal::Type::Converter::Input)
+                  )
+                },
+                T.proc.returns(OpenAI::Internal::Type::Converter::Input),
+                OpenAI::Internal::Type::Converter::Input
+              ),
+              spec: T.any(
+                {
+                  const: T.nilable(
+                    T.any(NilClass, T::Boolean, Integer, Float, Symbol)
+                  ),
+                  enum: T.nilable(
+                    T.proc.returns(OpenAI::Internal::Type::Converter::Input)
+                  ),
+                  union: T.nilable(
+                    T.proc.returns(OpenAI::Internal::Type::Converter::Input)
+                  )
+                },
+                T.proc.returns(OpenAI::Internal::Type::Converter::Input),
+                OpenAI::Internal::Type::Converter::Input
+              )
+            )
+              .returns(OpenAI::Internal::AnyHash)
           end
           def self.meta_info(type_info, spec)
           end
 
           # @api private
           sig do
-            params(translate_names: T::Boolean).returns(
+            params(translate_names: T::Boolean, request_only: T::Boolean, memoize: T::Boolean).returns(
               OpenAI::Internal::Type::Converter::CoerceState
             )
           end
-          def self.new_coerce_state(translate_names: true)
+          def self.new_coerce_state(translate_names: true, request_only: false, memoize: false)
+          end
+
+          # @api private
+          sig {
+            params(type_fn: T.proc.returns(T.untyped), state: T.nilable(OpenAI::Internal::Type::Converter::CoerceState))
+              .returns(T.untyped)
+          }
+          def self.resolve_type(type_fn, state: nil)
+          end
+
+          # @api private
+          sig {
+            params(target: T.untyped, value: T.untyped, state: OpenAI::Internal::Type::Converter::CoerceState).returns(
+              T.untyped
+            )
+          }
+          def self.coerce_cached(target, value, state:)
           end
 
           # @api private
@@ -157,7 +164,8 @@ module OpenAI
               target: OpenAI::Internal::Type::Converter::Input,
               value: T.anything,
               state: OpenAI::Internal::Type::Converter::CoerceState
-            ).returns(T.anything)
+            )
+              .returns(T.anything)
           end
           def self.coerce(
             target,
@@ -187,10 +195,23 @@ module OpenAI
             params(
               target: OpenAI::Internal::Type::Converter::Input,
               value: T.anything,
-              state: OpenAI::Internal::Type::Converter::DumpState
-            ).returns(T.anything)
+              state: OpenAI::Internal::Type::Converter::CoerceState
+            )
+              .returns([T.anything, T.nilable(StandardError)])
           end
-          def self.dump(target, value, state: { can_retry: true })
+          def self.coerce_with_error(target, value, state:)
+          end
+
+          # @api private
+          sig do
+            params(
+              target: OpenAI::Internal::Type::Converter::Input,
+              value: T.anything,
+              state: OpenAI::Internal::Type::Converter::DumpState
+            )
+              .returns(T.anything)
+          end
+          def self.dump(target, value, state: {can_retry: true})
           end
 
           # @api private

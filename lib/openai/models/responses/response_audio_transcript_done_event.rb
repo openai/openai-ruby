@@ -17,14 +17,13 @@ module OpenAI
         required :type, const: :"response.audio.transcript.done"
 
         # @!method initialize(sequence_number:, type: :"response.audio.transcript.done")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseAudioTranscriptDoneEvent} for more details.
-        #
         #   Emitted when the full audio transcript is completed.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param type [Symbol, :"response.audio.transcript.done"] The type of the event. Always `response.audio.transcript.done`.
+        #   @param type [Symbol, :"response.audio.transcript.done"]
+        #     The type of the event. Always `response.audio.transcript.done`.
       end
     end
   end

@@ -2,24 +2,22 @@
 
 module OpenAI
   module Models
+
     ChatCompletionSystemMessageParam = Chat::ChatCompletionSystemMessageParam
 
     module Chat
-      class ChatCompletionSystemMessageParam < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Chat::ChatCompletionSystemMessageParam,
-              OpenAI::Internal::AnyHash
-            )
-          end
 
-        # The contents of the system message.
-        sig do
-          returns(
-            OpenAI::Chat::ChatCompletionSystemMessageParam::Content::Variants
+      class ChatCompletionSystemMessageParam < OpenAI::Internal::Type::BaseModel
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Chat::ChatCompletionSystemMessageParam,
+            OpenAI::Internal::AnyHash
           )
         end
+
+        # The contents of the system message.
+        sig { returns(OpenAI::Chat::ChatCompletionSystemMessageParam::Content::Variants) }
         attr_accessor :content
 
         # The role of the messages author, in this case `system`.
@@ -39,31 +37,33 @@ module OpenAI
         # for this purpose instead.
         sig do
           params(
-            content:
-              OpenAI::Chat::ChatCompletionSystemMessageParam::Content::Variants,
+
+            content: OpenAI::Chat::ChatCompletionSystemMessageParam::Content::Variants,
+
             name: String,
+
             role: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The contents of the system message.
           content:,
+
           # An optional name for the participant. Provides the model information to
           # differentiate between participants of the same role.
           name: nil,
+
           # The role of the messages author, in this case `system`.
+
           role: :system
         )
         end
 
         sig do
           override.returns(
-            {
-              content:
-                OpenAI::Chat::ChatCompletionSystemMessageParam::Content::Variants,
-              role: Symbol,
-              name: String
-            }
+            {content: OpenAI::Chat::ChatCompletionSystemMessageParam::Content::Variants, role: Symbol, name: String}
           )
         end
         def to_hash
@@ -73,33 +73,22 @@ module OpenAI
         module Content
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                String,
-                T::Array[OpenAI::Chat::ChatCompletionContentPartText]
-              )
-            end
+          Variants = T.type_alias { T.any(String, T::Array[OpenAI::Chat::ChatCompletionContentPartText]) }
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Chat::ChatCompletionSystemMessageParam::Content::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Chat::ChatCompletionSystemMessageParam::Content::Variants]) }
           def self.variants
           end
 
-          ChatCompletionContentPartTextArray =
-            T.let(
-              OpenAI::Internal::Type::ArrayOf[
-                OpenAI::Chat::ChatCompletionContentPartText
-              ],
-              OpenAI::Internal::Type::Converter
-            )
+          ChatCompletionContentPartTextArray = T.let(
+            OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionContentPartText],
+            OpenAI::Internal::Type::Converter
+          )
+
         end
+
       end
+
     end
+
   end
 end

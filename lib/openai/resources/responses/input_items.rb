@@ -3,27 +3,35 @@
 module OpenAI
   module Resources
     class Responses
+      # Create and manage model responses.
       class InputItems
-        # Some parameter documentations has been truncated, see
-        # {OpenAI::Models::Responses::InputItemListParams} for more details.
-        #
         # Returns a list of input items for a given response.
         #
         # @overload list(response_id, after: nil, include: nil, limit: nil, order: nil, request_options: {})
         #
-        # @param response_id [String] The ID of the response to retrieve input items for.
+        # @param response_id [String]
+        #   The ID of the response to retrieve input items for.
         #
-        # @param after [String] An item ID to list items after, used in pagination.
+        # @param after [String]
+        #   An item ID to list items after, used in pagination.
         #
-        # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] Additional fields to include in the response. See the `include`
+        # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]
+        #   Additional fields to include in the response. See the `include` parameter for
+        #   Response creation above for more information.
         #
-        # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between
+        # @param limit [Integer]
+        #   A limit on the number of objects to be returned. Limit can range between 1 and
+        #   100, and the default is 20.
         #
-        # @param order [Symbol, OpenAI::Models::Responses::InputItemListParams::Order] The order to return the input items in. Default is `desc`.
+        # @param order [Symbol, OpenAI::Models::Responses::InputItemListParams::Order]
+        #   The order to return the input items in. Default is `desc`.
+        #
+        #   - `asc`: Return the input items in ascending order.
+        #   - `desc`: Return the input items in descending order.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem, OpenAI::Models::Responses::ResponseToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItem, OpenAI::Models::Responses::ResponseItem::AdditionalTools, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseItem::Program, OpenAI::Models::Responses::ResponseItem::ProgramOutput, OpenAI::Models::Responses::ResponseCompactionItem, OpenAI::Models::Responses::ResponseItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseItem::LocalShellCall, OpenAI::Models::Responses::ResponseItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseFunctionShellToolCall, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput, OpenAI::Models::Responses::ResponseApplyPatchToolCall, OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput, OpenAI::Models::Responses::ResponseItem::McpListTools, OpenAI::Models::Responses::ResponseItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallItem, OpenAI::Models::Responses::ResponseCustomToolCallOutputItem>]
+        # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem, OpenAI::Models::Responses::ResponseToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItem, OpenAI::Models::Responses::ResponseItem::AdditionalTools, OpenAI::Models::Responses::ResponseConfigurationUpdateItem, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseItem::Program, OpenAI::Models::Responses::ResponseItem::ProgramOutput, OpenAI::Models::Responses::ResponseCompactionItem, OpenAI::Models::Responses::ResponseItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseItem::LocalShellCall, OpenAI::Models::Responses::ResponseItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseFunctionShellToolCall, OpenAI::Models::Responses::ResponseFunctionShellToolCallOutput, OpenAI::Models::Responses::ResponseApplyPatchToolCall, OpenAI::Models::Responses::ResponseApplyPatchToolCallOutput, OpenAI::Models::Responses::ResponseItem::McpListTools, OpenAI::Models::Responses::ResponseItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallItem, OpenAI::Models::Responses::ResponseCustomToolCallOutputItem>]
         #
         # @see OpenAI::Models::Responses::InputItemListParams
         def list(response_id, params = {})

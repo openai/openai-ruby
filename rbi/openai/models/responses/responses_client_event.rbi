@@ -2,622 +2,60 @@
 
 module OpenAI
   module Models
+
     module Responses
-      class ResponsesClientEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
+
+      # Client events accepted by the Responses WebSocket server.
+      module ResponsesClientEvent
+        extend OpenAI::Internal::Type::Union
+
+        Variants = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponsesClientEvent::ResponseCreate,
+            OpenAI::Responses::ResponseSteerEvent
+          )
+        end
+
+        class ResponseCreate < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
             T.any(
-              OpenAI::Responses::ResponsesClientEvent,
+              OpenAI::Responses::ResponsesClientEvent::ResponseCreate,
               OpenAI::Internal::AnyHash
             )
           end
 
-        # The type of the client event. Always `response.create`.
-        sig { returns(Symbol) }
-        attr_accessor :type
+          # The type of the client event. Always `response.create`.
+          sig { returns(Symbol) }
+          attr_accessor :type
 
-        # Whether to run the model response in the background.
-        # [Learn more](https://platform.openai.com/docs/guides/background).
-        sig { returns(T.nilable(T::Boolean)) }
-        attr_accessor :background
+          # Domain-specific access programs to use for this request.
+          sig { returns(T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms)) }
+          attr_reader :access_programs
 
-        # Context management configuration for this request.
-        sig do
-          returns(
-            T.nilable(
-              T::Array[
-                OpenAI::Responses::ResponsesClientEvent::ContextManagement
-              ]
-            )
-          )
-        end
-        attr_accessor :context_management
+          sig {
+            params(access_programs: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::OrHash)
+              .void
+          }
+          attr_writer :access_programs
 
-        # The conversation that this response belongs to. Items from this conversation are
-        # prepended to `input_items` for this response request. Input items and output
-        # items from this response are automatically added to this conversation after this
-        # response completes.
-        sig do
-          returns(
-            T.nilable(
-              T.any(String, OpenAI::Responses::ResponseConversationParam)
-            )
-          )
-        end
-        attr_accessor :conversation
-
-        # Specify additional output data to include in the model response. Currently
-        # supported values are:
-        #
-        # - `web_search_call.action.sources`: Include the sources of the web search tool
-        #   call.
-        # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
-        #   in code interpreter tool call items.
-        # - `computer_call_output.output.image_url`: Include image urls from the computer
-        #   call output.
-        # - `file_search_call.results`: Include the search results of the file search tool
-        #   call.
-        # - `message.input_image.image_url`: Include image urls from the input message.
-        # - `message.output_text.logprobs`: Include logprobs with assistant messages.
-        # - `reasoning.encrypted_content`: Includes an encrypted version of reasoning
-        #   tokens in reasoning item outputs. This enables reasoning items to be used in
-        #   multi-turn conversations when using the Responses API statelessly (like when
-        #   the `store` parameter is set to `false`, or when an organization is enrolled
-        #   in the zero data retention program).
-        sig do
-          returns(
-            T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol])
-          )
-        end
-        attr_accessor :include
-
-        # Text, image, or file inputs to the model, used to generate a response.
-        #
-        # Learn more:
-        #
-        # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        # - [Image inputs](https://platform.openai.com/docs/guides/images)
-        # - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
-        # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
-        # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
-        sig do
-          returns(
-            T.nilable(OpenAI::Responses::ResponsesClientEvent::Input::Variants)
-          )
-        end
-        attr_reader :input
-
-        sig do
-          params(
-            input: OpenAI::Responses::ResponsesClientEvent::Input::Variants
-          ).void
-        end
-        attr_writer :input
-
-        # A system (or developer) message inserted into the model's context.
-        #
-        # When using along with `previous_response_id`, the instructions from a previous
-        # response will not be carried over to the next response. This makes it simple to
-        # swap out system (or developer) messages in new responses.
-        sig { returns(T.nilable(String)) }
-        attr_accessor :instructions
-
-        # An upper bound for the number of tokens that can be generated for a response,
-        # including visible output tokens and
-        # [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
-        sig { returns(T.nilable(Integer)) }
-        attr_accessor :max_output_tokens
-
-        # The maximum number of total calls to built-in tools that can be processed in a
-        # response. This maximum number applies across all built-in tool calls, not per
-        # individual tool. Any further attempts to call a tool by the model will be
-        # ignored.
-        sig { returns(T.nilable(Integer)) }
-        attr_accessor :max_tool_calls
-
-        # Set of 16 key-value pairs that can be attached to an object. This can be useful
-        # for storing additional information about the object in a structured format, and
-        # querying for objects via API or the dashboard.
-        #
-        # Keys are strings with a maximum length of 64 characters. Values are strings with
-        # a maximum length of 512 characters.
-        sig { returns(T.nilable(T::Hash[Symbol, String])) }
-        attr_accessor :metadata
-
-        # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
-        # wide range of models with different capabilities, performance characteristics,
-        # and price points. Refer to the
-        # [model guide](https://platform.openai.com/docs/models) to browse and compare
-        # available models.
-        sig do
-          returns(
-            T.nilable(
-              T.any(
-                String,
-                OpenAI::ChatModel::OrSymbol,
-                OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
-              )
-            )
-          )
-        end
-        attr_reader :model
-
-        sig do
-          params(
-            model:
-              T.any(
-                String,
-                OpenAI::ChatModel::OrSymbol,
-                OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
-              )
-          ).void
-        end
-        attr_writer :model
-
-        # Configuration for running moderation on the input and output of this response.
-        sig do
-          returns(
-            T.nilable(OpenAI::Responses::ResponsesClientEvent::Moderation)
-          )
-        end
-        attr_reader :moderation
-
-        sig do
-          params(
-            moderation:
-              T.nilable(
-                OpenAI::Responses::ResponsesClientEvent::Moderation::OrHash
-              )
-          ).void
-        end
-        attr_writer :moderation
-
-        # Whether to allow the model to run tool calls in parallel.
-        sig { returns(T.nilable(T::Boolean)) }
-        attr_accessor :parallel_tool_calls
-
-        # The unique ID of the previous response to the model. Use this to create
-        # multi-turn conversations. Learn more about
-        # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
-        # Cannot be used in conjunction with `conversation`.
-        sig { returns(T.nilable(String)) }
-        attr_accessor :previous_response_id
-
-        # Reference to a prompt template and its variables.
-        # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
-        sig { returns(T.nilable(OpenAI::Responses::ResponsePrompt)) }
-        attr_reader :prompt
-
-        sig do
-          params(
-            prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash)
-          ).void
-        end
-        attr_writer :prompt
-
-        # Used by OpenAI to cache responses for similar requests to optimize your cache
-        # hit rates. Replaces the `user` field.
-        # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
-        sig { returns(T.nilable(String)) }
-        attr_accessor :prompt_cache_key
-
-        # Options for prompt caching. Supported for `gpt-5.6` and later models. By
-        # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
-        # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
-        # request can write up to four breakpoints. For cache matching, OpenAI considers
-        # up to the latest 80 breakpoints in the conversation, without a content-block
-        # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-        # `ttl` defaults to `30m`, which is currently the only supported value. See the
-        # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
-        # for current details.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions
-            )
-          )
-        end
-        attr_reader :prompt_cache_options
-
-        sig do
-          params(
-            prompt_cache_options:
-              OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::OrHash
-          ).void
-        end
-        attr_writer :prompt_cache_options
-
-        # Deprecated. Use `prompt_cache_options.ttl` instead.
-        #
-        # The retention policy for the prompt cache. Set to `24h` to enable extended
-        # prompt caching, which keeps cached prefixes active for longer, up to a maximum
-        # of 24 hours.
-        # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
-        # This field expresses a maximum retention policy, while
-        # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
-        # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
-        # models, only `24h` is supported.
-        #
-        # For older models that support both `in_memory` and `24h`, the default depends on
-        # your organization's data retention policy:
-        #
-        # - Organizations without ZDR enabled default to `24h`.
-        # - Organizations with ZDR enabled default to `in_memory` when
-        #   `prompt_cache_retention` is not specified.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Responses::ResponsesClientEvent::PromptCacheRetention::OrSymbol
-            )
-          )
-        end
-        attr_accessor :prompt_cache_retention
-
-        # **gpt-5 and o-series models only**
-        #
-        # Configuration options for
-        # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
-        sig { returns(T.nilable(OpenAI::Reasoning)) }
-        attr_reader :reasoning
-
-        sig { params(reasoning: T.nilable(OpenAI::Reasoning::OrHash)).void }
-        attr_writer :reasoning
-
-        # A stable identifier used to help detect users of your application that may be
-        # violating OpenAI's usage policies. The IDs should be a string that uniquely
-        # identifies each user, with a maximum length of 64 characters. We recommend
-        # hashing their username or email address, in order to avoid sending us any
-        # identifying information.
-        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
-        sig { returns(T.nilable(String)) }
-        attr_accessor :safety_identifier
-
-        # Specifies the processing type used for serving the request.
-        #
-        # - If set to 'auto', then the request will be processed with the service tier
-        #   configured in the Project settings. Unless otherwise configured, the Project
-        #   will use 'default'.
-        # - If set to 'default', then the request will be processed with the standard
-        #   pricing and performance for the selected model.
-        # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)',
-        #   then the request will be processed with the Flex Processing service tier.
-        # - To opt-in to [Fast mode](/api/docs/guides/fast-mode) at the request level,
-        #   include the `service_tier=fast` or `service_tier=priority` parameter for
-        #   Responses or Chat Completions. The response will show `service_tier=priority`
-        #   regardless of if you specify `service_tier=fast` or `priority` in your
-        #   request.
-        # - When not set, the default behavior is 'auto'.
-        #
-        # When the `service_tier` parameter is set, the response body will include the
-        # `service_tier` value based on the processing mode actually used to serve the
-        # request. This response value may be different from the value set in the
-        # parameter.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Responses::ResponsesClientEvent::ServiceTier::OrSymbol
-            )
-          )
-        end
-        attr_accessor :service_tier
-
-        # Whether to store the generated model response for later retrieval via API.
-        sig { returns(T.nilable(T::Boolean)) }
-        attr_accessor :store
-
-        # If set to true, the model response data will be streamed to the client as it is
-        # generated using
-        # [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).
-        # See the
-        # [Streaming section below](https://platform.openai.com/docs/api-reference/responses-streaming)
-        # for more information.
-        sig { returns(T.nilable(T::Boolean)) }
-        attr_accessor :stream
-
-        # Options for streaming responses. Only set this when you set `stream: true`.
-        sig do
-          returns(
-            T.nilable(OpenAI::Responses::ResponsesClientEvent::StreamOptions)
-          )
-        end
-        attr_reader :stream_options
-
-        sig do
-          params(
-            stream_options:
-              T.nilable(
-                OpenAI::Responses::ResponsesClientEvent::StreamOptions::OrHash
-              )
-          ).void
-        end
-        attr_writer :stream_options
-
-        # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
-        # make the output more random, while lower values like 0.2 will make it more
-        # focused and deterministic. We generally recommend altering this or `top_p` but
-        # not both.
-        sig { returns(T.nilable(Float)) }
-        attr_accessor :temperature
-
-        # Configuration options for a text response from the model. Can be plain text or
-        # structured JSON data. Learn more:
-        #
-        # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
-        sig { returns(T.nilable(OpenAI::Responses::ResponseTextConfig)) }
-        attr_reader :text
-
-        sig { params(text: OpenAI::Responses::ResponseTextConfig::OrHash).void }
-        attr_writer :text
-
-        # How the model should select which tool (or tools) to use when generating a
-        # response. See the `tools` parameter to see how to specify which tools the model
-        # can call.
-        sig do
-          returns(
-            T.nilable(
-              T.any(
-                OpenAI::Responses::ToolChoiceOptions::OrSymbol,
-                OpenAI::Responses::ToolChoiceAllowed,
-                OpenAI::Responses::ToolChoiceTypes,
-                OpenAI::Responses::ToolChoiceFunction,
-                OpenAI::Responses::ToolChoiceMcp,
-                OpenAI::Responses::ToolChoiceCustom,
-                OpenAI::Responses::ResponsesClientEvent::ToolChoice::SpecificProgrammaticToolCallingParam,
-                OpenAI::Responses::ToolChoiceApplyPatch,
-                OpenAI::Responses::ToolChoiceShell
-              )
-            )
-          )
-        end
-        attr_reader :tool_choice
-
-        sig do
-          params(
-            tool_choice:
-              T.any(
-                OpenAI::Responses::ToolChoiceOptions::OrSymbol,
-                OpenAI::Responses::ToolChoiceAllowed::OrHash,
-                OpenAI::Responses::ToolChoiceTypes::OrHash,
-                OpenAI::Responses::ToolChoiceFunction::OrHash,
-                OpenAI::Responses::ToolChoiceMcp::OrHash,
-                OpenAI::Responses::ToolChoiceCustom::OrHash,
-                OpenAI::Responses::ResponsesClientEvent::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
-                OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
-                OpenAI::Responses::ToolChoiceShell::OrHash
-              )
-          ).void
-        end
-        attr_writer :tool_choice
-
-        # An array of tools the model may call while generating a response. You can
-        # specify which tool to use by setting the `tool_choice` parameter.
-        #
-        # We support the following categories of tools:
-        #
-        # - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
-        #   capabilities, like
-        #   [web search](https://platform.openai.com/docs/guides/tools-web-search) or
-        #   [file search](https://platform.openai.com/docs/guides/tools-file-search).
-        #   Learn more about
-        #   [built-in tools](https://platform.openai.com/docs/guides/tools).
-        # - **MCP Tools**: Integrations with third-party systems via custom MCP servers or
-        #   predefined connectors such as Google Drive and SharePoint. Learn more about
-        #   [MCP Tools](https://platform.openai.com/docs/guides/tools-connectors-mcp).
-        # - **Function calls (custom tools)**: Functions that are defined by you, enabling
-        #   the model to call your own code with strongly typed arguments and outputs.
-        #   Learn more about
-        #   [function calling](https://platform.openai.com/docs/guides/function-calling).
-        #   You can also use custom tools to call your own code.
-        sig do
-          returns(
-            T.nilable(
-              T::Array[
-                T.any(
-                  OpenAI::Responses::FunctionTool,
-                  OpenAI::Responses::FileSearchTool,
-                  OpenAI::Responses::ComputerTool,
-                  OpenAI::Responses::ComputerUsePreviewTool,
-                  OpenAI::Responses::Tool::Mcp,
-                  OpenAI::Responses::Tool::CodeInterpreter,
-                  OpenAI::Responses::Tool::ProgrammaticToolCalling,
-                  OpenAI::Responses::Tool::ImageGeneration,
-                  OpenAI::Responses::Tool::LocalShell,
-                  OpenAI::Responses::FunctionShellTool,
-                  OpenAI::Responses::CustomTool,
-                  OpenAI::Responses::NamespaceTool,
-                  OpenAI::Responses::ToolSearchTool,
-                  OpenAI::Responses::ApplyPatchTool,
-                  OpenAI::Responses::WebSearchTool,
-                  OpenAI::Responses::WebSearchPreviewTool
-                )
-              ]
-            )
-          )
-        end
-        attr_reader :tools
-
-        sig do
-          params(
-            tools:
-              T::Array[
-                T.any(
-                  OpenAI::Responses::FunctionTool::OrHash,
-                  OpenAI::Responses::FileSearchTool::OrHash,
-                  OpenAI::Responses::ComputerTool::OrHash,
-                  OpenAI::Responses::ComputerUsePreviewTool::OrHash,
-                  OpenAI::Responses::Tool::Mcp::OrHash,
-                  OpenAI::Responses::Tool::CodeInterpreter::OrHash,
-                  OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
-                  OpenAI::Responses::Tool::ImageGeneration::OrHash,
-                  OpenAI::Responses::Tool::LocalShell::OrHash,
-                  OpenAI::Responses::FunctionShellTool::OrHash,
-                  OpenAI::Responses::CustomTool::OrHash,
-                  OpenAI::Responses::NamespaceTool::OrHash,
-                  OpenAI::Responses::ToolSearchTool::OrHash,
-                  OpenAI::Responses::ApplyPatchTool::OrHash,
-                  OpenAI::Responses::WebSearchTool::OrHash,
-                  OpenAI::Responses::WebSearchPreviewTool::OrHash
-                )
-              ]
-          ).void
-        end
-        attr_writer :tools
-
-        # An integer between 0 and 20 specifying the maximum number of most likely tokens
-        # to return at each token position, each with an associated log probability. In
-        # some cases, the number of returned tokens may be fewer than requested.
-        sig { returns(T.nilable(Integer)) }
-        attr_accessor :top_logprobs
-
-        # An alternative to sampling with temperature, called nucleus sampling, where the
-        # model considers the results of the tokens with top_p probability mass. So 0.1
-        # means only the tokens comprising the top 10% probability mass are considered.
-        #
-        # We generally recommend altering this or `temperature` but not both.
-        sig { returns(T.nilable(Float)) }
-        attr_accessor :top_p
-
-        # The truncation strategy to use for the model response.
-        #
-        # - `auto`: If the input to this Response exceeds the model's context window size,
-        #   the model will truncate the response to fit the context window by dropping
-        #   items from the beginning of the conversation.
-        # - `disabled` (default): If the input size will exceed the context window size
-        #   for a model, the request will fail with a 400 error.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Responses::ResponsesClientEvent::Truncation::OrSymbol
-            )
-          )
-        end
-        attr_accessor :truncation
-
-        # This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
-        # `prompt_cache_key` instead to maintain caching optimizations. A stable
-        # identifier for your end-users. Used to boost cache hit rates by better bucketing
-        # similar requests and to help OpenAI detect and prevent abuse.
-        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
-        sig { returns(T.nilable(String)) }
-        attr_reader :user
-
-        sig { params(user: String).void }
-        attr_writer :user
-
-        sig do
-          params(
-            background: T.nilable(T::Boolean),
-            context_management:
-              T.nilable(
-                T::Array[
-                  OpenAI::Responses::ResponsesClientEvent::ContextManagement::OrHash
-                ]
-              ),
-            conversation:
-              T.nilable(
-                T.any(
-                  String,
-                  OpenAI::Responses::ResponseConversationParam::OrHash
-                )
-              ),
-            include:
-              T.nilable(
-                T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
-              ),
-            input: OpenAI::Responses::ResponsesClientEvent::Input::Variants,
-            instructions: T.nilable(String),
-            max_output_tokens: T.nilable(Integer),
-            max_tool_calls: T.nilable(Integer),
-            metadata: T.nilable(T::Hash[Symbol, String]),
-            model:
-              T.any(
-                String,
-                OpenAI::ChatModel::OrSymbol,
-                OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
-              ),
-            moderation:
-              T.nilable(
-                OpenAI::Responses::ResponsesClientEvent::Moderation::OrHash
-              ),
-            parallel_tool_calls: T.nilable(T::Boolean),
-            previous_response_id: T.nilable(String),
-            prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
-            prompt_cache_key: T.nilable(String),
-            prompt_cache_options:
-              OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::OrHash,
-            prompt_cache_retention:
-              T.nilable(
-                OpenAI::Responses::ResponsesClientEvent::PromptCacheRetention::OrSymbol
-              ),
-            reasoning: T.nilable(OpenAI::Reasoning::OrHash),
-            safety_identifier: T.nilable(String),
-            service_tier:
-              T.nilable(
-                OpenAI::Responses::ResponsesClientEvent::ServiceTier::OrSymbol
-              ),
-            store: T.nilable(T::Boolean),
-            stream: T.nilable(T::Boolean),
-            stream_options:
-              T.nilable(
-                OpenAI::Responses::ResponsesClientEvent::StreamOptions::OrHash
-              ),
-            temperature: T.nilable(Float),
-            text: OpenAI::Responses::ResponseTextConfig::OrHash,
-            tool_choice:
-              T.any(
-                OpenAI::Responses::ToolChoiceOptions::OrSymbol,
-                OpenAI::Responses::ToolChoiceAllowed::OrHash,
-                OpenAI::Responses::ToolChoiceTypes::OrHash,
-                OpenAI::Responses::ToolChoiceFunction::OrHash,
-                OpenAI::Responses::ToolChoiceMcp::OrHash,
-                OpenAI::Responses::ToolChoiceCustom::OrHash,
-                OpenAI::Responses::ResponsesClientEvent::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
-                OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
-                OpenAI::Responses::ToolChoiceShell::OrHash
-              ),
-            tools:
-              T::Array[
-                T.any(
-                  OpenAI::Responses::FunctionTool::OrHash,
-                  OpenAI::Responses::FileSearchTool::OrHash,
-                  OpenAI::Responses::ComputerTool::OrHash,
-                  OpenAI::Responses::ComputerUsePreviewTool::OrHash,
-                  OpenAI::Responses::Tool::Mcp::OrHash,
-                  OpenAI::Responses::Tool::CodeInterpreter::OrHash,
-                  OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
-                  OpenAI::Responses::Tool::ImageGeneration::OrHash,
-                  OpenAI::Responses::Tool::LocalShell::OrHash,
-                  OpenAI::Responses::FunctionShellTool::OrHash,
-                  OpenAI::Responses::CustomTool::OrHash,
-                  OpenAI::Responses::NamespaceTool::OrHash,
-                  OpenAI::Responses::ToolSearchTool::OrHash,
-                  OpenAI::Responses::ApplyPatchTool::OrHash,
-                  OpenAI::Responses::WebSearchTool::OrHash,
-                  OpenAI::Responses::WebSearchPreviewTool::OrHash
-                )
-              ],
-            top_logprobs: T.nilable(Integer),
-            top_p: T.nilable(Float),
-            truncation:
-              T.nilable(
-                OpenAI::Responses::ResponsesClientEvent::Truncation::OrSymbol
-              ),
-            user: String,
-            type: Symbol
-          ).returns(T.attached_class)
-        end
-        def self.new(
           # Whether to run the model response in the background.
-          # [Learn more](https://platform.openai.com/docs/guides/background).
-          background: nil,
+          # [Learn more](https://developers.openai.com/api/docs/guides/background).
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_accessor :background
+
           # Context management configuration for this request.
-          context_management: nil,
+          sig {
+            returns(T.nilable(T::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]))
+          }
+          attr_accessor :context_management
+
           # The conversation that this response belongs to. Items from this conversation are
           # prepended to `input_items` for this response request. Input items and output
           # items from this response are automatically added to this conversation after this
           # response completes.
-          conversation: nil,
+          sig { returns(T.nilable(T.any(String, OpenAI::Responses::ResponseConversationParam))) }
+          attr_accessor :conversation
+
           # Specify additional output data to include in the model response. Currently
           # supported values are:
           #
@@ -636,61 +74,111 @@ module OpenAI
           #   multi-turn conversations when using the Responses API statelessly (like when
           #   the `store` parameter is set to `false`, or when an organization is enrolled
           #   in the zero data retention program).
-          include: nil,
+          sig { returns(T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol])) }
+          attr_accessor :include
+
           # Text, image, or file inputs to the model, used to generate a response.
           #
           # Learn more:
           #
-          # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-          # - [Image inputs](https://platform.openai.com/docs/guides/images)
-          # - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
-          # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
-          # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
-          input: nil,
+          # - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+          # - [Image inputs](https://developers.openai.com/api/docs/guides/images-vision)
+          # - [File inputs](https://developers.openai.com/api/docs/guides/file-inputs)
+          # - [Conversation state](https://developers.openai.com/api/docs/guides/conversation-state)
+          # - [Function calling](https://developers.openai.com/api/docs/guides/function-calling)
+          sig { returns(T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Input::Variants)) }
+          attr_reader :input
+
+          sig { params(input: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Input::Variants).void }
+          attr_writer :input
+
           # A system (or developer) message inserted into the model's context.
           #
           # When using along with `previous_response_id`, the instructions from a previous
           # response will not be carried over to the next response. This makes it simple to
           # swap out system (or developer) messages in new responses.
-          instructions: nil,
+          sig { returns(T.nilable(String)) }
+          attr_accessor :instructions
+
           # An upper bound for the number of tokens that can be generated for a response,
           # including visible output tokens and
-          # [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
-          max_output_tokens: nil,
+          # [reasoning tokens](https://developers.openai.com/api/docs/guides/reasoning).
+          sig { returns(T.nilable(Integer)) }
+          attr_accessor :max_output_tokens
+
           # The maximum number of total calls to built-in tools that can be processed in a
           # response. This maximum number applies across all built-in tool calls, not per
           # individual tool. Any further attempts to call a tool by the model will be
           # ignored.
-          max_tool_calls: nil,
+          sig { returns(T.nilable(Integer)) }
+          attr_accessor :max_tool_calls
+
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           # for storing additional information about the object in a structured format, and
           # querying for objects via API or the dashboard.
           #
           # Keys are strings with a maximum length of 64 characters. Values are strings with
           # a maximum length of 512 characters.
-          metadata: nil,
-          # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
-          # wide range of models with different capabilities, performance characteristics,
-          # and price points. Refer to the
-          # [model guide](https://platform.openai.com/docs/models) to browse and compare
-          # available models.
-          model: nil,
+          sig { returns(T.nilable(T::Hash[Symbol, String])) }
+          attr_accessor :metadata
+
+          # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
+          # range of models with different capabilities, performance characteristics, and
+          # price points. Refer to the
+          # [model guide](https://developers.openai.com/api/docs/models) to browse and
+          # compare available models.
+          sig {
+            returns(
+              T.nilable(
+                T.any(String, OpenAI::ChatModel::OrSymbol, OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol)
+              )
+            )
+          }
+          attr_reader :model
+
+          sig {
+            params(
+              model: T.any(String, OpenAI::ChatModel::OrSymbol, OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol)
+            )
+              .void
+          }
+          attr_writer :model
+
           # Configuration for running moderation on the input and output of this response.
-          moderation: nil,
+          sig { returns(T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation)) }
+          attr_reader :moderation
+
+          sig {
+            params(moderation: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::OrHash))
+              .void
+          }
+          attr_writer :moderation
+
           # Whether to allow the model to run tool calls in parallel.
-          parallel_tool_calls: nil,
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_accessor :parallel_tool_calls
+
           # The unique ID of the previous response to the model. Use this to create
           # multi-turn conversations. Learn more about
-          # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
+          # [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
           # Cannot be used in conjunction with `conversation`.
-          previous_response_id: nil,
+          sig { returns(T.nilable(String)) }
+          attr_accessor :previous_response_id
+
           # Reference to a prompt template and its variables.
-          # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
-          prompt: nil,
+          # [Learn more](https://developers.openai.com/api/docs/guides/text?api-mode=responses#version-prompts-in-code).
+          sig { returns(T.nilable(OpenAI::Responses::ResponsePrompt)) }
+          attr_reader :prompt
+
+          sig { params(prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash)).void }
+          attr_writer :prompt
+
           # Used by OpenAI to cache responses for similar requests to optimize your cache
           # hit rates. Replaces the `user` field.
-          # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
-          prompt_cache_key: nil,
+          # [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching).
+          sig { returns(T.nilable(String)) }
+          attr_accessor :prompt_cache_key
+
           # Options for prompt caching. Supported for `gpt-5.6` and later models. By
           # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
           # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
@@ -698,15 +186,25 @@ module OpenAI
           # up to the latest 80 breakpoints in the conversation, without a content-block
           # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
           # `ttl` defaults to `30m`, which is currently the only supported value. See the
-          # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+          # [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
           # for current details.
-          prompt_cache_options: nil,
+          sig { returns(T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions)) }
+          attr_reader :prompt_cache_options
+
+          sig {
+            params(
+              prompt_cache_options: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::OrHash
+            )
+              .void
+          }
+          attr_writer :prompt_cache_options
+
           # Deprecated. Use `prompt_cache_options.ttl` instead.
           #
           # The retention policy for the prompt cache. Set to `24h` to enable extended
           # prompt caching, which keeps cached prefixes active for longer, up to a maximum
           # of 24 hours.
-          # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+          # [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention).
           # This field expresses a maximum retention policy, while
           # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
           # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
@@ -718,19 +216,28 @@ module OpenAI
           # - Organizations without ZDR enabled default to `24h`.
           # - Organizations with ZDR enabled default to `in_memory` when
           #   `prompt_cache_retention` is not specified.
-          prompt_cache_retention: nil,
-          # **gpt-5 and o-series models only**
-          #
+          sig {
+            returns(T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheRetention::OrSymbol))
+          }
+          attr_accessor :prompt_cache_retention
+
           # Configuration options for
-          # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
-          reasoning: nil,
+          # [reasoning models](https://developers.openai.com/api/docs/guides/reasoning).
+          sig { returns(T.nilable(OpenAI::Reasoning)) }
+          attr_reader :reasoning
+
+          sig { params(reasoning: T.nilable(OpenAI::Reasoning::OrHash)).void }
+          attr_writer :reasoning
+
           # A stable identifier used to help detect users of your application that may be
           # violating OpenAI's usage policies. The IDs should be a string that uniquely
-          # identifies each user, with a maximum length of 64 characters. We recommend
+          # identifies each user, with a maximum length of 128 characters. We recommend
           # hashing their username or email address, in order to avoid sending us any
           # identifying information.
-          # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
-          safety_identifier: nil,
+          # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
+          sig { returns(T.nilable(String)) }
+          attr_accessor :safety_identifier
+
           # Specifies the processing type used for serving the request.
           #
           # - If set to 'auto', then the request will be processed with the service tier
@@ -738,152 +245,91 @@ module OpenAI
           #   will use 'default'.
           # - If set to 'default', then the request will be processed with the standard
           #   pricing and performance for the selected model.
-          # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)',
-          #   then the request will be processed with the Flex Processing service tier.
-          # - To opt-in to [Fast mode](/api/docs/guides/fast-mode) at the request level,
-          #   include the `service_tier=fast` or `service_tier=priority` parameter for
-          #   Responses or Chat Completions. The response will show `service_tier=priority`
-          #   regardless of if you specify `service_tier=fast` or `priority` in your
-          #   request.
+          # - If set to
+          #   '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+          #   the request will be processed with the Flex Processing service tier.
+          # - To opt-in to
+          #   [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+          #   request level, include the `service_tier=fast` or `service_tier=priority`
+          #   parameter for Responses or Chat Completions. The response will show
+          #   `service_tier=priority` regardless of if you specify `service_tier=fast` or
+          #   `priority` in your request.
+          # - If set to 'ultrafast', then the request will be processed with the
+          #   access-controlled Ultrafast Processing service tier. This tier is currently
+          #   available for `gpt-5.6-sol`; a response served through it will show
+          #   `service_tier=ultrafast`.
           # - When not set, the default behavior is 'auto'.
           #
           # When the `service_tier` parameter is set, the response body will include the
           # `service_tier` value based on the processing mode actually used to serve the
           # request. This response value may be different from the value set in the
           # parameter.
-          service_tier: nil,
+          sig { returns(T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ServiceTier::OrSymbol)) }
+          attr_accessor :service_tier
+
           # Whether to store the generated model response for later retrieval via API.
-          store: nil,
+          # Defaults to true when omitted. If set to true, response data will be stored for
+          # at least 30 days, subject to the
+          # [data retention exceptions](https://developers.openai.com/api/docs/guides/your-data#v1responses).
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_accessor :store
+
           # If set to true, the model response data will be streamed to the client as it is
           # generated using
           # [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).
           # See the
-          # [Streaming section below](https://platform.openai.com/docs/api-reference/responses-streaming)
+          # [Streaming section below](https://developers.openai.com/api/reference/resources/responses/streaming-events)
           # for more information.
-          stream: nil,
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_accessor :stream
+
+          # The WebSocket lane for this response. Requests with the same `stream_id` are
+          # processed FIFO, and events for the response echo the same `stream_id`.
+          #
+          # `stream_id` controls routing; `previous_response_id` controls conversation
+          # lineage, so a new lane can fork from a response created on another lane.
+          sig { returns(T.nilable(String)) }
+          attr_reader :stream_id
+
+          sig { params(stream_id: String).void }
+          attr_writer :stream_id
+
           # Options for streaming responses. Only set this when you set `stream: true`.
-          stream_options: nil,
+          sig { returns(T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::StreamOptions)) }
+          attr_reader :stream_options
+
+          sig {
+            params(
+              stream_options: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::StreamOptions::OrHash)
+            )
+              .void
+          }
+          attr_writer :stream_options
+
           # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
           # make the output more random, while lower values like 0.2 will make it more
           # focused and deterministic. We generally recommend altering this or `top_p` but
           # not both.
-          temperature: nil,
+          sig { returns(T.nilable(Float)) }
+          attr_accessor :temperature
+
           # Configuration options for a text response from the model. Can be plain text or
           # structured JSON data. Learn more:
           #
-          # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-          # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
-          text: nil,
+          # - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+          # - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
+          sig { returns(T.nilable(OpenAI::Responses::ResponseTextConfig)) }
+          attr_reader :text
+
+          sig { params(text: OpenAI::Responses::ResponseTextConfig::OrHash).void }
+          attr_writer :text
+
           # How the model should select which tool (or tools) to use when generating a
           # response. See the `tools` parameter to see how to specify which tools the model
           # can call.
-          tool_choice: nil,
-          # An array of tools the model may call while generating a response. You can
-          # specify which tool to use by setting the `tool_choice` parameter.
-          #
-          # We support the following categories of tools:
-          #
-          # - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
-          #   capabilities, like
-          #   [web search](https://platform.openai.com/docs/guides/tools-web-search) or
-          #   [file search](https://platform.openai.com/docs/guides/tools-file-search).
-          #   Learn more about
-          #   [built-in tools](https://platform.openai.com/docs/guides/tools).
-          # - **MCP Tools**: Integrations with third-party systems via custom MCP servers or
-          #   predefined connectors such as Google Drive and SharePoint. Learn more about
-          #   [MCP Tools](https://platform.openai.com/docs/guides/tools-connectors-mcp).
-          # - **Function calls (custom tools)**: Functions that are defined by you, enabling
-          #   the model to call your own code with strongly typed arguments and outputs.
-          #   Learn more about
-          #   [function calling](https://platform.openai.com/docs/guides/function-calling).
-          #   You can also use custom tools to call your own code.
-          tools: nil,
-          # An integer between 0 and 20 specifying the maximum number of most likely tokens
-          # to return at each token position, each with an associated log probability. In
-          # some cases, the number of returned tokens may be fewer than requested.
-          top_logprobs: nil,
-          # An alternative to sampling with temperature, called nucleus sampling, where the
-          # model considers the results of the tokens with top_p probability mass. So 0.1
-          # means only the tokens comprising the top 10% probability mass are considered.
-          #
-          # We generally recommend altering this or `temperature` but not both.
-          top_p: nil,
-          # The truncation strategy to use for the model response.
-          #
-          # - `auto`: If the input to this Response exceeds the model's context window size,
-          #   the model will truncate the response to fit the context window by dropping
-          #   items from the beginning of the conversation.
-          # - `disabled` (default): If the input size will exceed the context window size
-          #   for a model, the request will fail with a 400 error.
-          truncation: nil,
-          # This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
-          # `prompt_cache_key` instead to maintain caching optimizations. A stable
-          # identifier for your end-users. Used to boost cache hit rates by better bucketing
-          # similar requests and to help OpenAI detect and prevent abuse.
-          # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
-          user: nil,
-          # The type of the client event. Always `response.create`.
-          type: :"response.create"
-        )
-        end
-
-        sig do
-          override.returns(
-            {
-              type: Symbol,
-              background: T.nilable(T::Boolean),
-              context_management:
-                T.nilable(
-                  T::Array[
-                    OpenAI::Responses::ResponsesClientEvent::ContextManagement
-                  ]
-                ),
-              conversation:
-                T.nilable(
-                  T.any(String, OpenAI::Responses::ResponseConversationParam)
-                ),
-              include:
-                T.nilable(
-                  T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
-                ),
-              input: OpenAI::Responses::ResponsesClientEvent::Input::Variants,
-              instructions: T.nilable(String),
-              max_output_tokens: T.nilable(Integer),
-              max_tool_calls: T.nilable(Integer),
-              metadata: T.nilable(T::Hash[Symbol, String]),
-              model:
-                T.any(
-                  String,
-                  OpenAI::ChatModel::OrSymbol,
-                  OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
-                ),
-              moderation:
-                T.nilable(OpenAI::Responses::ResponsesClientEvent::Moderation),
-              parallel_tool_calls: T.nilable(T::Boolean),
-              previous_response_id: T.nilable(String),
-              prompt: T.nilable(OpenAI::Responses::ResponsePrompt),
-              prompt_cache_key: T.nilable(String),
-              prompt_cache_options:
-                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions,
-              prompt_cache_retention:
-                T.nilable(
-                  OpenAI::Responses::ResponsesClientEvent::PromptCacheRetention::OrSymbol
-                ),
-              reasoning: T.nilable(OpenAI::Reasoning),
-              safety_identifier: T.nilable(String),
-              service_tier:
-                T.nilable(
-                  OpenAI::Responses::ResponsesClientEvent::ServiceTier::OrSymbol
-                ),
-              store: T.nilable(T::Boolean),
-              stream: T.nilable(T::Boolean),
-              stream_options:
-                T.nilable(
-                  OpenAI::Responses::ResponsesClientEvent::StreamOptions
-                ),
-              temperature: T.nilable(Float),
-              text: OpenAI::Responses::ResponseTextConfig,
-              tool_choice:
+          sig {
+            returns(
+              T.nilable(
                 T.any(
                   OpenAI::Responses::ToolChoiceOptions::OrSymbol,
                   OpenAI::Responses::ToolChoiceAllowed,
@@ -891,11 +337,56 @@ module OpenAI
                   OpenAI::Responses::ToolChoiceFunction,
                   OpenAI::Responses::ToolChoiceMcp,
                   OpenAI::Responses::ToolChoiceCustom,
-                  OpenAI::Responses::ResponsesClientEvent::ToolChoice::SpecificProgrammaticToolCallingParam,
+                  OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ToolChoice::SpecificProgrammaticToolCallingParam,
                   OpenAI::Responses::ToolChoiceApplyPatch,
                   OpenAI::Responses::ToolChoiceShell
-                ),
-              tools:
+                )
+              )
+            )
+          }
+          attr_reader :tool_choice
+
+          sig {
+            params(
+              tool_choice: T.any(
+                OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+                OpenAI::Responses::ToolChoiceAllowed::OrHash,
+                OpenAI::Responses::ToolChoiceTypes::OrHash,
+                OpenAI::Responses::ToolChoiceFunction::OrHash,
+                OpenAI::Responses::ToolChoiceMcp::OrHash,
+                OpenAI::Responses::ToolChoiceCustom::OrHash,
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
+                OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
+                OpenAI::Responses::ToolChoiceShell::OrHash
+              )
+            )
+              .void
+          }
+          attr_writer :tool_choice
+
+          # An array of tools the model may call while generating a response. You can
+          # specify which tool to use by setting the `tool_choice` parameter.
+          #
+          # We support the following categories of tools:
+          #
+          # - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
+          #   capabilities, like
+          #   [web search](https://developers.openai.com/api/docs/guides/tools-web-search)
+          #   or
+          #   [file search](https://developers.openai.com/api/docs/guides/tools-file-search).
+          #   Learn more about
+          #   [built-in tools](https://developers.openai.com/api/docs/guides/tools).
+          # - **MCP Tools**: Integrations with third-party systems via custom MCP servers or
+          #   predefined connectors such as Google Drive and SharePoint. Learn more about
+          #   [MCP Tools](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
+          # - **Function calls (custom tools)**: Functions that are defined by you, enabling
+          #   the model to call your own code with strongly typed arguments and outputs.
+          #   Learn more about
+          #   [function calling](https://developers.openai.com/api/docs/guides/function-calling).
+          #   You can also use custom tools to call your own code.
+          sig {
+            returns(
+              T.nilable(
                 T::Array[
                   T.any(
                     OpenAI::Responses::FunctionTool,
@@ -915,755 +406,1364 @@ module OpenAI
                     OpenAI::Responses::WebSearchTool,
                     OpenAI::Responses::WebSearchPreviewTool
                   )
-                ],
-              top_logprobs: T.nilable(Integer),
-              top_p: T.nilable(Float),
-              truncation:
-                T.nilable(
-                  OpenAI::Responses::ResponsesClientEvent::Truncation::OrSymbol
-                ),
-              user: String
-            }
-          )
-        end
-        def to_hash
-        end
-
-        class ContextManagement < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponsesClientEvent::ContextManagement,
-                OpenAI::Internal::AnyHash
+                ]
               )
-            end
-
-          # The context management entry type. Currently only 'compaction' is supported.
-          sig { returns(String) }
-          attr_accessor :type
-
-          # Token threshold at which compaction should be triggered for this entry.
-          sig { returns(T.nilable(Integer)) }
-          attr_accessor :compact_threshold
-
-          sig do
-            params(type: String, compact_threshold: T.nilable(Integer)).returns(
-              T.attached_class
             )
-          end
-          def self.new(
-            # The context management entry type. Currently only 'compaction' is supported.
-            type:,
-            # Token threshold at which compaction should be triggered for this entry.
-            compact_threshold: nil
-          )
-          end
+          }
+          attr_reader :tools
 
-          sig do
-            override.returns(
-              { type: String, compact_threshold: T.nilable(Integer) }
-            )
-          end
-          def to_hash
-          end
-        end
-
-        # The conversation that this response belongs to. Items from this conversation are
-        # prepended to `input_items` for this response request. Input items and output
-        # items from this response are automatically added to this conversation after this
-        # response completes.
-        module Conversation
-          extend OpenAI::Internal::Type::Union
-
-          Variants =
-            T.type_alias do
-              T.any(String, OpenAI::Responses::ResponseConversationParam)
-            end
-
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::ResponsesClientEvent::Conversation::Variants
+          sig {
+            params(
+              tools: T::Array[
+                T.any(
+                  OpenAI::Responses::FunctionTool::OrHash,
+                  OpenAI::Responses::FileSearchTool::OrHash,
+                  OpenAI::Responses::ComputerTool::OrHash,
+                  OpenAI::Responses::ComputerUsePreviewTool::OrHash,
+                  OpenAI::Responses::Tool::Mcp::OrHash,
+                  OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                  OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
+                  OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                  OpenAI::Responses::Tool::LocalShell::OrHash,
+                  OpenAI::Responses::FunctionShellTool::OrHash,
+                  OpenAI::Responses::CustomTool::OrHash,
+                  OpenAI::Responses::NamespaceTool::OrHash,
+                  OpenAI::Responses::ToolSearchTool::OrHash,
+                  OpenAI::Responses::ApplyPatchTool::OrHash,
+                  OpenAI::Responses::WebSearchTool::OrHash,
+                  OpenAI::Responses::WebSearchPreviewTool::OrHash
+                )
               ]
             )
-          end
-          def self.variants
-          end
-        end
+              .void
+          }
+          attr_writer :tools
 
-        # Text, image, or file inputs to the model, used to generate a response.
-        #
-        # Learn more:
-        #
-        # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        # - [Image inputs](https://platform.openai.com/docs/guides/images)
-        # - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
-        # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
-        # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
-        module Input
-          extend OpenAI::Internal::Type::Union
+          # An integer between 0 and 20 specifying the maximum number of most likely tokens
+          # to return at each token position, each with an associated log probability. In
+          # some cases, the number of returned tokens may be fewer than requested.
+          sig { returns(T.nilable(Integer)) }
+          attr_accessor :top_logprobs
 
-          Variants =
-            T.type_alias do
-              T.any(
-                String,
-                T::Array[OpenAI::Responses::ResponseInputItem::Variants]
-              )
-            end
+          # An alternative to sampling with temperature, called nucleus sampling, where the
+          # model considers the results of the tokens with top_p probability mass. So 0.1
+          # means only the tokens comprising the top 10% probability mass are considered.
+          #
+          # We generally recommend altering this or `temperature` but not both.
+          sig { returns(T.nilable(Float)) }
+          attr_accessor :top_p
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::Responses::ResponsesClientEvent::Input::Variants]
-            )
-          end
-          def self.variants
-          end
-        end
+          # The truncation strategy to use for the model response.
+          #
+          # - `auto`: If the input to this Response exceeds the model's context window size,
+          #   the model will truncate the response to fit the context window by dropping
+          #   items from the beginning of the conversation.
+          # - `disabled` (default): If the input size will exceed the context window size
+          #   for a model, the request will fail with a 400 error.
+          sig { returns(T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Truncation::OrSymbol)) }
+          attr_accessor :truncation
 
-        class Moderation < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponsesClientEvent::Moderation,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          # This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
+          # `prompt_cache_key` instead to maintain caching optimizations. A stable
+          # identifier for your end-users. Used to boost cache hit rates by better bucketing
+          # similar requests and to help OpenAI detect and prevent abuse.
+          # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
+          sig { returns(T.nilable(String)) }
+          attr_reader :user
 
-          # The moderation model to use for moderated completions, e.g.
-          # 'omni-moderation-latest'.
-          sig { returns(String) }
-          attr_accessor :model
+          sig { params(user: String).void }
+          attr_writer :user
 
-          # The policy to apply to moderated response input and output.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::ResponsesClientEvent::Moderation::Policy
-              )
-            )
-          end
-          attr_reader :policy
-
+          # Client event for creating a response over a persistent WebSocket connection.
+          # This payload uses the same top-level fields as `POST /v1/responses`, plus
+          # WebSocket-only envelope metadata.
+          #
+          # Notes:
+          #
+          # - `stream` is implicit over WebSocket and should not be sent.
+          # - `background` is not supported over WebSocket.
+          # - `stream_id` is WebSocket-only and is not part of `POST /v1/responses`.
           sig do
             params(
-              policy:
-                T.nilable(
-                  OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::OrHash
-                )
-            ).void
-          end
-          attr_writer :policy
 
-          # Configuration for running moderation on the input and output of this response.
-          sig do
-            params(
-              model: String,
-              policy:
-                T.nilable(
-                  OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::OrHash
+              access_programs: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::OrHash,
+
+              background: T.nilable(T::Boolean),
+
+              context_management: T.nilable(
+                T::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement::OrHash]
+              ),
+
+              conversation: T.nilable(T.any(String, OpenAI::Responses::ResponseConversationParam::OrHash)),
+
+              include: T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]),
+
+              input: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Input::Variants,
+
+              instructions: T.nilable(String),
+
+              max_output_tokens: T.nilable(Integer),
+
+              max_tool_calls: T.nilable(Integer),
+
+              metadata: T.nilable(T::Hash[Symbol, String]),
+
+              model: T.any(String, OpenAI::ChatModel::OrSymbol, OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol),
+
+              moderation: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::OrHash),
+
+              parallel_tool_calls: T.nilable(T::Boolean),
+
+              previous_response_id: T.nilable(String),
+
+              prompt: T.nilable(OpenAI::Responses::ResponsePrompt::OrHash),
+
+              prompt_cache_key: T.nilable(String),
+
+              prompt_cache_options: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::OrHash,
+
+              prompt_cache_retention: T.nilable(
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheRetention::OrSymbol
+              ),
+
+              reasoning: T.nilable(OpenAI::Reasoning::OrHash),
+
+              safety_identifier: T.nilable(String),
+
+              service_tier: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ServiceTier::OrSymbol),
+
+              store: T.nilable(T::Boolean),
+
+              stream: T.nilable(T::Boolean),
+
+              stream_id: String,
+
+              stream_options: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::StreamOptions::OrHash),
+
+              temperature: T.nilable(Float),
+
+              text: OpenAI::Responses::ResponseTextConfig::OrHash,
+
+              tool_choice: T.any(
+                OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+                OpenAI::Responses::ToolChoiceAllowed::OrHash,
+                OpenAI::Responses::ToolChoiceTypes::OrHash,
+                OpenAI::Responses::ToolChoiceFunction::OrHash,
+                OpenAI::Responses::ToolChoiceMcp::OrHash,
+                OpenAI::Responses::ToolChoiceCustom::OrHash,
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
+                OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
+                OpenAI::Responses::ToolChoiceShell::OrHash
+              ),
+
+              tools: T::Array[
+                T.any(
+                  OpenAI::Responses::FunctionTool::OrHash,
+                  OpenAI::Responses::FileSearchTool::OrHash,
+                  OpenAI::Responses::ComputerTool::OrHash,
+                  OpenAI::Responses::ComputerUsePreviewTool::OrHash,
+                  OpenAI::Responses::Tool::Mcp::OrHash,
+                  OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                  OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
+                  OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                  OpenAI::Responses::Tool::LocalShell::OrHash,
+                  OpenAI::Responses::FunctionShellTool::OrHash,
+                  OpenAI::Responses::CustomTool::OrHash,
+                  OpenAI::Responses::NamespaceTool::OrHash,
+                  OpenAI::Responses::ToolSearchTool::OrHash,
+                  OpenAI::Responses::ApplyPatchTool::OrHash,
+                  OpenAI::Responses::WebSearchTool::OrHash,
+                  OpenAI::Responses::WebSearchPreviewTool::OrHash
                 )
-            ).returns(T.attached_class)
+              ],
+
+              top_logprobs: T.nilable(Integer),
+
+              top_p: T.nilable(Float),
+
+              truncation: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Truncation::OrSymbol),
+
+              user: String,
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
           end
           def self.new(
-            # The moderation model to use for moderated completions, e.g.
-            # 'omni-moderation-latest'.
-            model:,
-            # The policy to apply to moderated response input and output.
-            policy: nil
+
+            # Domain-specific access programs to use for this request.
+            access_programs: nil,
+
+            # Whether to run the model response in the background.
+            # [Learn more](https://developers.openai.com/api/docs/guides/background).
+            background: nil,
+
+            # Context management configuration for this request.
+            context_management: nil,
+
+            # The conversation that this response belongs to. Items from this conversation are
+            # prepended to `input_items` for this response request. Input items and output
+            # items from this response are automatically added to this conversation after this
+            # response completes.
+            conversation: nil,
+
+            # Specify additional output data to include in the model response. Currently
+            # supported values are:
+            #
+            # - `web_search_call.action.sources`: Include the sources of the web search tool
+            #   call.
+            # - `code_interpreter_call.outputs`: Includes the outputs of python code execution
+            #   in code interpreter tool call items.
+            # - `computer_call_output.output.image_url`: Include image urls from the computer
+            #   call output.
+            # - `file_search_call.results`: Include the search results of the file search tool
+            #   call.
+            # - `message.input_image.image_url`: Include image urls from the input message.
+            # - `message.output_text.logprobs`: Include logprobs with assistant messages.
+            # - `reasoning.encrypted_content`: Includes an encrypted version of reasoning
+            #   tokens in reasoning item outputs. This enables reasoning items to be used in
+            #   multi-turn conversations when using the Responses API statelessly (like when
+            #   the `store` parameter is set to `false`, or when an organization is enrolled
+            #   in the zero data retention program).
+            include: nil,
+
+            # Text, image, or file inputs to the model, used to generate a response.
+            #
+            # Learn more:
+            #
+            # - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+            # - [Image inputs](https://developers.openai.com/api/docs/guides/images-vision)
+            # - [File inputs](https://developers.openai.com/api/docs/guides/file-inputs)
+            # - [Conversation state](https://developers.openai.com/api/docs/guides/conversation-state)
+            # - [Function calling](https://developers.openai.com/api/docs/guides/function-calling)
+            input: nil,
+
+            # A system (or developer) message inserted into the model's context.
+            #
+            # When using along with `previous_response_id`, the instructions from a previous
+            # response will not be carried over to the next response. This makes it simple to
+            # swap out system (or developer) messages in new responses.
+            instructions: nil,
+
+            # An upper bound for the number of tokens that can be generated for a response,
+            # including visible output tokens and
+            # [reasoning tokens](https://developers.openai.com/api/docs/guides/reasoning).
+            max_output_tokens: nil,
+
+            # The maximum number of total calls to built-in tools that can be processed in a
+            # response. This maximum number applies across all built-in tool calls, not per
+            # individual tool. Any further attempts to call a tool by the model will be
+            # ignored.
+            max_tool_calls: nil,
+
+            # Set of 16 key-value pairs that can be attached to an object. This can be useful
+            # for storing additional information about the object in a structured format, and
+            # querying for objects via API or the dashboard.
+            #
+            # Keys are strings with a maximum length of 64 characters. Values are strings with
+            # a maximum length of 512 characters.
+            metadata: nil,
+
+            # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
+            # range of models with different capabilities, performance characteristics, and
+            # price points. Refer to the
+            # [model guide](https://developers.openai.com/api/docs/models) to browse and
+            # compare available models.
+            model: nil,
+
+            # Configuration for running moderation on the input and output of this response.
+            moderation: nil,
+
+            # Whether to allow the model to run tool calls in parallel.
+            parallel_tool_calls: nil,
+
+            # The unique ID of the previous response to the model. Use this to create
+            # multi-turn conversations. Learn more about
+            # [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
+            # Cannot be used in conjunction with `conversation`.
+            previous_response_id: nil,
+
+            # Reference to a prompt template and its variables.
+            # [Learn more](https://developers.openai.com/api/docs/guides/text?api-mode=responses#version-prompts-in-code).
+            prompt: nil,
+
+            # Used by OpenAI to cache responses for similar requests to optimize your cache
+            # hit rates. Replaces the `user` field.
+            # [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching).
+            prompt_cache_key: nil,
+
+            # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+            # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+            # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+            # request can write up to four breakpoints. For cache matching, OpenAI considers
+            # up to the latest 80 breakpoints in the conversation, without a content-block
+            # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+            # `ttl` defaults to `30m`, which is currently the only supported value. See the
+            # [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
+            # for current details.
+            prompt_cache_options: nil,
+
+            # Deprecated. Use `prompt_cache_options.ttl` instead.
+            #
+            # The retention policy for the prompt cache. Set to `24h` to enable extended
+            # prompt caching, which keeps cached prefixes active for longer, up to a maximum
+            # of 24 hours.
+            # [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention).
+            # This field expresses a maximum retention policy, while
+            # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+            # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+            # models, only `24h` is supported.
+            #
+            # For older models that support both `in_memory` and `24h`, the default depends on
+            # your organization's data retention policy:
+            #
+            # - Organizations without ZDR enabled default to `24h`.
+            # - Organizations with ZDR enabled default to `in_memory` when
+            #   `prompt_cache_retention` is not specified.
+            prompt_cache_retention: nil,
+
+            # Configuration options for
+            # [reasoning models](https://developers.openai.com/api/docs/guides/reasoning).
+            reasoning: nil,
+
+            # A stable identifier used to help detect users of your application that may be
+            # violating OpenAI's usage policies. The IDs should be a string that uniquely
+            # identifies each user, with a maximum length of 128 characters. We recommend
+            # hashing their username or email address, in order to avoid sending us any
+            # identifying information.
+            # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
+            safety_identifier: nil,
+
+            # Specifies the processing type used for serving the request.
+            #
+            # - If set to 'auto', then the request will be processed with the service tier
+            #   configured in the Project settings. Unless otherwise configured, the Project
+            #   will use 'default'.
+            # - If set to 'default', then the request will be processed with the standard
+            #   pricing and performance for the selected model.
+            # - If set to
+            #   '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+            #   the request will be processed with the Flex Processing service tier.
+            # - To opt-in to
+            #   [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+            #   request level, include the `service_tier=fast` or `service_tier=priority`
+            #   parameter for Responses or Chat Completions. The response will show
+            #   `service_tier=priority` regardless of if you specify `service_tier=fast` or
+            #   `priority` in your request.
+            # - If set to 'ultrafast', then the request will be processed with the
+            #   access-controlled Ultrafast Processing service tier. This tier is currently
+            #   available for `gpt-5.6-sol`; a response served through it will show
+            #   `service_tier=ultrafast`.
+            # - When not set, the default behavior is 'auto'.
+            #
+            # When the `service_tier` parameter is set, the response body will include the
+            # `service_tier` value based on the processing mode actually used to serve the
+            # request. This response value may be different from the value set in the
+            # parameter.
+            service_tier: nil,
+
+            # Whether to store the generated model response for later retrieval via API.
+            # Defaults to true when omitted. If set to true, response data will be stored for
+            # at least 30 days, subject to the
+            # [data retention exceptions](https://developers.openai.com/api/docs/guides/your-data#v1responses).
+            store: nil,
+
+            # If set to true, the model response data will be streamed to the client as it is
+            # generated using
+            # [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).
+            # See the
+            # [Streaming section below](https://developers.openai.com/api/reference/resources/responses/streaming-events)
+            # for more information.
+            stream: nil,
+
+            # The WebSocket lane for this response. Requests with the same `stream_id` are
+            # processed FIFO, and events for the response echo the same `stream_id`.
+            #
+            # `stream_id` controls routing; `previous_response_id` controls conversation
+            # lineage, so a new lane can fork from a response created on another lane.
+            stream_id: nil,
+
+            # Options for streaming responses. Only set this when you set `stream: true`.
+            stream_options: nil,
+
+            # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+            # make the output more random, while lower values like 0.2 will make it more
+            # focused and deterministic. We generally recommend altering this or `top_p` but
+            # not both.
+            temperature: nil,
+
+            # Configuration options for a text response from the model. Can be plain text or
+            # structured JSON data. Learn more:
+            #
+            # - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+            # - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
+            text: nil,
+
+            # How the model should select which tool (or tools) to use when generating a
+            # response. See the `tools` parameter to see how to specify which tools the model
+            # can call.
+            tool_choice: nil,
+
+            # An array of tools the model may call while generating a response. You can
+            # specify which tool to use by setting the `tool_choice` parameter.
+            #
+            # We support the following categories of tools:
+            #
+            # - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
+            #   capabilities, like
+            #   [web search](https://developers.openai.com/api/docs/guides/tools-web-search)
+            #   or
+            #   [file search](https://developers.openai.com/api/docs/guides/tools-file-search).
+            #   Learn more about
+            #   [built-in tools](https://developers.openai.com/api/docs/guides/tools).
+            # - **MCP Tools**: Integrations with third-party systems via custom MCP servers or
+            #   predefined connectors such as Google Drive and SharePoint. Learn more about
+            #   [MCP Tools](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
+            # - **Function calls (custom tools)**: Functions that are defined by you, enabling
+            #   the model to call your own code with strongly typed arguments and outputs.
+            #   Learn more about
+            #   [function calling](https://developers.openai.com/api/docs/guides/function-calling).
+            #   You can also use custom tools to call your own code.
+            tools: nil,
+
+            # An integer between 0 and 20 specifying the maximum number of most likely tokens
+            # to return at each token position, each with an associated log probability. In
+            # some cases, the number of returned tokens may be fewer than requested.
+            top_logprobs: nil,
+
+            # An alternative to sampling with temperature, called nucleus sampling, where the
+            # model considers the results of the tokens with top_p probability mass. So 0.1
+            # means only the tokens comprising the top 10% probability mass are considered.
+            #
+            # We generally recommend altering this or `temperature` but not both.
+            top_p: nil,
+
+            # The truncation strategy to use for the model response.
+            #
+            # - `auto`: If the input to this Response exceeds the model's context window size,
+            #   the model will truncate the response to fit the context window by dropping
+            #   items from the beginning of the conversation.
+            # - `disabled` (default): If the input size will exceed the context window size
+            #   for a model, the request will fail with a 400 error.
+            truncation: nil,
+
+            # This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
+            # `prompt_cache_key` instead to maintain caching optimizations. A stable
+            # identifier for your end-users. Used to boost cache hit rates by better bucketing
+            # similar requests and to help OpenAI detect and prevent abuse.
+            # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
+            user: nil,
+
+            # The type of the client event. Always `response.create`.
+
+            type: :"response.create"
           )
           end
 
           sig do
             override.returns(
               {
-                model: String,
-                policy:
-                  T.nilable(
-                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy
+                type: Symbol,
+                access_programs: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms),
+                background: T.nilable(T::Boolean),
+                context_management: T.nilable(
+                  T::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]
+                ),
+                conversation: T.nilable(T.any(String, OpenAI::Responses::ResponseConversationParam)),
+                include: T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]),
+                input: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Input::Variants),
+                instructions: T.nilable(String),
+                max_output_tokens: T.nilable(Integer),
+                max_tool_calls: T.nilable(Integer),
+                metadata: T.nilable(T::Hash[Symbol, String]),
+                model: T.nilable(
+                  T.any(String, OpenAI::ChatModel::OrSymbol, OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol)
+                ),
+                moderation: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation),
+                parallel_tool_calls: T.nilable(T::Boolean),
+                previous_response_id: T.nilable(String),
+                prompt: T.nilable(OpenAI::Responses::ResponsePrompt),
+                prompt_cache_key: T.nilable(String),
+                prompt_cache_options: T.nilable(
+                  OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions
+                ),
+                prompt_cache_retention: T.nilable(
+                  OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheRetention::OrSymbol
+                ),
+                reasoning: T.nilable(OpenAI::Reasoning),
+                safety_identifier: T.nilable(String),
+                service_tier: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ServiceTier::OrSymbol),
+                store: T.nilable(T::Boolean),
+                stream: T.nilable(T::Boolean),
+                stream_id: T.nilable(String),
+                stream_options: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::StreamOptions),
+                temperature: T.nilable(Float),
+                text: T.nilable(OpenAI::Responses::ResponseTextConfig),
+                tool_choice: T.nilable(
+                  T.any(
+                    OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+                    OpenAI::Responses::ToolChoiceAllowed,
+                    OpenAI::Responses::ToolChoiceTypes,
+                    OpenAI::Responses::ToolChoiceFunction,
+                    OpenAI::Responses::ToolChoiceMcp,
+                    OpenAI::Responses::ToolChoiceCustom,
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ToolChoice::SpecificProgrammaticToolCallingParam,
+                    OpenAI::Responses::ToolChoiceApplyPatch,
+                    OpenAI::Responses::ToolChoiceShell
                   )
+                ),
+                tools: T.nilable(
+                  T::Array[
+                    T.any(
+                      OpenAI::Responses::FunctionTool,
+                      OpenAI::Responses::FileSearchTool,
+                      OpenAI::Responses::ComputerTool,
+                      OpenAI::Responses::ComputerUsePreviewTool,
+                      OpenAI::Responses::Tool::Mcp,
+                      OpenAI::Responses::Tool::CodeInterpreter,
+                      OpenAI::Responses::Tool::ProgrammaticToolCalling,
+                      OpenAI::Responses::Tool::ImageGeneration,
+                      OpenAI::Responses::Tool::LocalShell,
+                      OpenAI::Responses::FunctionShellTool,
+                      OpenAI::Responses::CustomTool,
+                      OpenAI::Responses::NamespaceTool,
+                      OpenAI::Responses::ToolSearchTool,
+                      OpenAI::Responses::ApplyPatchTool,
+                      OpenAI::Responses::WebSearchTool,
+                      OpenAI::Responses::WebSearchPreviewTool
+                    )
+                  ]
+                ),
+                top_logprobs: T.nilable(Integer),
+                top_p: T.nilable(Float),
+                truncation: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Truncation::OrSymbol),
+                user: T.nilable(String)
               }
             )
           end
           def to_hash
           end
 
-          class Policy < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponsesClientEvent::Moderation::Policy,
-                  OpenAI::Internal::AnyHash
-                )
-              end
-
-            # The moderation policy for the response input.
-            sig do
-              returns(
-                T.nilable(
-                  OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input
-                )
+          class AccessPrograms < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms,
+                OpenAI::Internal::AnyHash
               )
             end
-            attr_reader :input
 
-            sig do
-              params(
-                input:
-                  T.nilable(
-                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::OrHash
-                  )
-              ).void
-            end
-            attr_writer :input
-
-            # The moderation policy for the response output.
-            sig do
+            # The Cyber access program to use for this request. Supported values are
+            # `standard`, `daybreak_blue`, and `daybreak_red`. If omitted, the API resolves
+            # the program from the model's Cyber tier and your organization and project
+            # access, subject to model-specific eligibility restrictions. By default, models
+            # without a Cyber tier use Standard. Blue-tier models use Daybreak Blue when
+            # authorized; otherwise they fall back to Standard unless the model requires
+            # Daybreak access. Red-tier models use Daybreak Red and require authorization.
+            # Requests that require unavailable Daybreak access return 403. An implicit
+            # Standard fallback is represented by null in the response's access_programs
+            # field, rather than an explicit Standard selection.
+            sig {
               returns(
-                T.nilable(
-                  OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output
-                )
+                T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::Cyber::OrSymbol)
               )
-            end
-            attr_reader :output
+            }
+            attr_reader :cyber
 
+            sig {
+              params(cyber: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::Cyber::OrSymbol)
+                .void
+            }
+            attr_writer :cyber
+
+            # Domain-specific access programs to use for this request.
             sig do
               params(
-                output:
-                  T.nilable(
-                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::OrHash
-                  )
-              ).void
-            end
-            attr_writer :output
 
-            # The policy to apply to moderated response input and output.
-            sig do
-              params(
-                input:
-                  T.nilable(
-                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::OrHash
-                  ),
-                output:
-                  T.nilable(
-                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::OrHash
-                  )
-              ).returns(T.attached_class)
+                cyber: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::Cyber::OrSymbol
+              )
+                .returns(T.attached_class)
             end
             def self.new(
-              # The moderation policy for the response input.
-              input: nil,
-              # The moderation policy for the response output.
-              output: nil
+
+              # The Cyber access program to use for this request. Supported values are
+              # `standard`, `daybreak_blue`, and `daybreak_red`. If omitted, the API resolves
+              # the program from the model's Cyber tier and your organization and project
+              # access, subject to model-specific eligibility restrictions. By default, models
+              # without a Cyber tier use Standard. Blue-tier models use Daybreak Blue when
+              # authorized; otherwise they fall back to Standard unless the model requires
+              # Daybreak access. Red-tier models use Daybreak Red and require authorization.
+              # Requests that require unavailable Daybreak access return 403. An implicit
+              # Standard fallback is represented by null in the response's access_programs
+              # field, rather than an explicit Standard selection.
+
+              cyber: nil
             )
             end
 
             sig do
               override.returns(
                 {
-                  input:
-                    T.nilable(
-                      OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input
-                    ),
-                  output:
-                    T.nilable(
-                      OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output
-                    )
+                  cyber: T.nilable(
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::Cyber::OrSymbol
+                  )
                 }
               )
             end
             def to_hash
             end
 
-            class Input < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+            # The Cyber access program to use for this request. Supported values are
+            # `standard`, `daybreak_blue`, and `daybreak_red`. If omitted, the API resolves
+            # the program from the model's Cyber tier and your organization and project
+            # access, subject to model-specific eligibility restrictions. By default, models
+            # without a Cyber tier use Standard. Blue-tier models use Daybreak Blue when
+            # authorized; otherwise they fall back to Standard unless the model requires
+            # Daybreak access. Red-tier models use Daybreak Red and require authorization.
+            # Requests that require unavailable Daybreak access return 403. An implicit
+            # Standard fallback is represented by null in the response's access_programs
+            # field, rather than an explicit Standard selection.
+            module Cyber
+              extend OpenAI::Internal::Type::Enum
 
-              sig do
-                returns(
-                  OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::Mode::OrSymbol
-                )
-              end
-              attr_accessor :mode
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::Cyber)
+              }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              # The moderation policy for the response input.
-              sig do
-                params(
-                  mode:
-                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::Mode::OrSymbol
-                ).returns(T.attached_class)
-              end
-              def self.new(mode:)
-              end
+              STANDARD = T.let(
+                :standard,
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::Cyber::TaggedSymbol
+              )
+              DAYBREAK_BLUE = T.let(
+                :daybreak_blue,
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::Cyber::TaggedSymbol
+              )
+              DAYBREAK_RED = T.let(
+                :daybreak_red,
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::Cyber::TaggedSymbol
+              )
 
-              sig do
+              sig {
                 override.returns(
-                  {
-                    mode:
-                      OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::Mode::OrSymbol
-                  }
+                  T::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::Cyber::TaggedSymbol]
                 )
-              end
-              def to_hash
-              end
-
-              module Mode
-                extend OpenAI::Internal::Type::Enum
-
-                TaggedSymbol =
-                  T.type_alias do
-                    T.all(
-                      Symbol,
-                      OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::Mode
-                    )
-                  end
-                OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-                SCORE =
-                  T.let(
-                    :score,
-                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::Mode::TaggedSymbol
-                  )
-                BLOCK =
-                  T.let(
-                    :block,
-                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::Mode::TaggedSymbol
-                  )
-
-                sig do
-                  override.returns(
-                    T::Array[
-                      OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Input::Mode::TaggedSymbol
-                    ]
-                  )
-                end
-                def self.values
-                end
-              end
-            end
-
-            class Output < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
-
-              sig do
-                returns(
-                  OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::Mode::OrSymbol
-                )
-              end
-              attr_accessor :mode
-
-              # The moderation policy for the response output.
-              sig do
-                params(
-                  mode:
-                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::Mode::OrSymbol
-                ).returns(T.attached_class)
-              end
-              def self.new(mode:)
-              end
-
-              sig do
-                override.returns(
-                  {
-                    mode:
-                      OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::Mode::OrSymbol
-                  }
-                )
-              end
-              def to_hash
-              end
-
-              module Mode
-                extend OpenAI::Internal::Type::Enum
-
-                TaggedSymbol =
-                  T.type_alias do
-                    T.all(
-                      Symbol,
-                      OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::Mode
-                    )
-                  end
-                OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-                SCORE =
-                  T.let(
-                    :score,
-                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::Mode::TaggedSymbol
-                  )
-                BLOCK =
-                  T.let(
-                    :block,
-                    OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::Mode::TaggedSymbol
-                  )
-
-                sig do
-                  override.returns(
-                    T::Array[
-                      OpenAI::Responses::ResponsesClientEvent::Moderation::Policy::Output::Mode::TaggedSymbol
-                    ]
-                  )
-                end
-                def self.values
-                end
+              }
+              def self.values
               end
             end
           end
-        end
 
-        class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
+          class ContextManagement < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
               T.any(
-                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions,
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement,
                 OpenAI::Internal::AnyHash
               )
             end
 
-          # Controls whether OpenAI automatically creates an implicit cache breakpoint.
-          # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
-          # and writes up to the latest three explicit breakpoints in the request. With
-          # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
-          # latest four explicit breakpoints. If there are no explicit breakpoints, the
-          # request does not use prompt caching.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Mode::OrSymbol
+            # The context management entry type. Currently only 'compaction' is supported.
+            sig { returns(String) }
+            attr_accessor :type
+
+            # Token threshold at which compaction should be triggered for this entry.
+            sig { returns(T.nilable(Integer)) }
+            attr_accessor :compact_threshold
+
+            sig do
+              params(
+
+                type: String,
+
+                compact_threshold: T.nilable(Integer)
               )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The context management entry type. Currently only 'compaction' is supported.
+              type:,
+
+              # Token threshold at which compaction should be triggered for this entry.
+
+              compact_threshold: nil
             )
-          end
-          attr_reader :mode
+            end
 
-          sig do
-            params(
-              mode:
-                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Mode::OrSymbol
-            ).void
-          end
-          attr_writer :mode
-
-          # The minimum lifetime applied to every implicit and explicit cache breakpoint
-          # written by the request. Defaults to `30m`, which is currently the only supported
-          # value. The backend may retain cache entries for longer.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Ttl::OrSymbol
+            sig do
+              override.returns(
+                {type: String, compact_threshold: T.nilable(Integer)}
               )
+            end
+            def to_hash
+            end
+
+          end
+
+          # The conversation that this response belongs to. Items from this conversation are
+          # prepended to `input_items` for this response request. Input items and output
+          # items from this response are automatically added to this conversation after this
+          # response completes.
+          module Conversation
+            extend OpenAI::Internal::Type::Union
+
+            Variants = T.type_alias { T.any(String, OpenAI::Responses::ResponseConversationParam) }
+
+            sig {
+              override.returns(
+                T::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Conversation::Variants]
+              )
+            }
+            def self.variants
+            end
+
+          end
+
+          # Text, image, or file inputs to the model, used to generate a response.
+          #
+          # Learn more:
+          #
+          # - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+          # - [Image inputs](https://developers.openai.com/api/docs/guides/images-vision)
+          # - [File inputs](https://developers.openai.com/api/docs/guides/file-inputs)
+          # - [Conversation state](https://developers.openai.com/api/docs/guides/conversation-state)
+          # - [Function calling](https://developers.openai.com/api/docs/guides/function-calling)
+          module Input
+            extend OpenAI::Internal::Type::Union
+
+            Variants = T.type_alias { T.any(String, T::Array[OpenAI::Responses::ResponseInputItem::Variants]) }
+
+            sig {
+              override.returns(T::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Input::Variants])
+            }
+            def self.variants
+            end
+
+          end
+
+          class Moderation < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The moderation model to use for moderated completions, e.g.
+            # 'omni-moderation-latest'.
+            sig { returns(String) }
+            attr_accessor :model
+
+            # The policy to apply to moderated response input and output.
+            sig { returns(T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy)) }
+            attr_reader :policy
+
+            sig {
+              params(
+                policy: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::OrHash)
+              )
+                .void
+            }
+            attr_writer :policy
+
+            # Configuration for running moderation on the input and output of this response.
+            sig do
+              params(
+
+                model: String,
+
+                policy: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::OrHash)
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The moderation model to use for moderated completions, e.g.
+              # 'omni-moderation-latest'.
+              model:,
+
+              # The policy to apply to moderated response input and output.
+
+              policy: nil
             )
-          end
-          attr_reader :ttl
+            end
 
-          sig do
-            params(
-              ttl:
-                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Ttl::OrSymbol
-            ).void
-          end
-          attr_writer :ttl
+            sig do
+              override.returns(
+                {
+                  model: String,
+                  policy: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy)
+                }
+              )
+            end
+            def to_hash
+            end
 
-          # Options for prompt caching. Supported for `gpt-5.6` and later models. By
-          # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
-          # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
-          # request can write up to four breakpoints. For cache matching, OpenAI considers
-          # up to the latest 80 breakpoints in the conversation, without a content-block
-          # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-          # `ttl` defaults to `30m`, which is currently the only supported value. See the
-          # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
-          # for current details.
-          sig do
-            params(
-              mode:
-                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Mode::OrSymbol,
-              ttl:
-                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Ttl::OrSymbol
-            ).returns(T.attached_class)
+            class Policy < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # The moderation policy for the response input.
+              sig {
+                returns(T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input))
+              }
+              attr_reader :input
+
+              sig {
+                params(
+                  input: T.nilable(
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::OrHash
+                  )
+                )
+                  .void
+              }
+              attr_writer :input
+
+              # The moderation policy for the response output.
+              sig {
+                returns(T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output))
+              }
+              attr_reader :output
+
+              sig {
+                params(
+                  output: T.nilable(
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::OrHash
+                  )
+                )
+                  .void
+              }
+              attr_writer :output
+
+              # The policy to apply to moderated response input and output.
+              sig do
+                params(
+
+                  input: T.nilable(
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::OrHash
+                  ),
+
+                  output: T.nilable(
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::OrHash
+                  )
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # The moderation policy for the response input.
+                input: nil,
+
+                # The moderation policy for the response output.
+
+                output: nil
+              )
+              end
+
+              sig do
+                override.returns(
+                  {
+                    input: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input),
+                    output: T.nilable(
+                      OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output
+                    )
+                  }
+                )
+              end
+              def to_hash
+              end
+
+              class Input < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                sig {
+                  returns(
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode::OrSymbol
+                  )
+                }
+                attr_accessor :mode
+
+                # The moderation policy for the response input.
+                sig do
+                  params(
+
+                    mode: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode::OrSymbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  mode:
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {
+                      mode: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode::OrSymbol
+                    }
+                  )
+                end
+                def to_hash
+                end
+
+                module Mode
+                  extend OpenAI::Internal::Type::Enum
+
+                  TaggedSymbol = T.type_alias {
+                    T.all(
+                      Symbol,
+                      OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode
+                    )
+                  }
+                  OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                  SCORE = T.let(
+                    :score,
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode::TaggedSymbol
+                  )
+                  BLOCK = T.let(
+                    :block,
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode::TaggedSymbol
+                  )
+
+                  sig {
+                    override.returns(
+                      T::Array[
+                        OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Input::Mode::TaggedSymbol
+                      ]
+                    )
+                  }
+                  def self.values
+                  end
+                end
+              end
+
+              class Output < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                sig {
+                  returns(
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode::OrSymbol
+                  )
+                }
+                attr_accessor :mode
+
+                # The moderation policy for the response output.
+                sig do
+                  params(
+
+                    mode: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode::OrSymbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  mode:
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {
+                      mode: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode::OrSymbol
+                    }
+                  )
+                end
+                def to_hash
+                end
+
+                module Mode
+                  extend OpenAI::Internal::Type::Enum
+
+                  TaggedSymbol = T.type_alias {
+                    T.all(
+                      Symbol,
+                      OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode
+                    )
+                  }
+                  OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                  SCORE = T.let(
+                    :score,
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode::TaggedSymbol
+                  )
+                  BLOCK = T.let(
+                    :block,
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode::TaggedSymbol
+                  )
+
+                  sig {
+                    override.returns(
+                      T::Array[
+                        OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Moderation::Policy::Output::Mode::TaggedSymbol
+                      ]
+                    )
+                  }
+                  def self.values
+                  end
+                end
+              end
+            end
           end
-          def self.new(
+
+          class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The ID of a response to compare when diagnosing prompt cache reuse. Supplying
+            # this field requests prompt cache diagnostics when the feature is enabled.
+            sig { returns(T.nilable(String)) }
+            attr_accessor :comparison_response_id
+
             # Controls whether OpenAI automatically creates an implicit cache breakpoint.
             # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
             # and writes up to the latest three explicit breakpoints in the request. With
             # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
             # latest four explicit breakpoints. If there are no explicit breakpoints, the
             # request does not use prompt caching.
-            mode: nil,
+            sig {
+              returns(
+                T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol)
+              )
+            }
+            attr_reader :mode
+
+            sig {
+              params(mode: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol)
+                .void
+            }
+            attr_writer :mode
+
+            # Prepares the prompt cache without generating output. Defaults to `false`. When
+            # set to `true`, overrides the `generate` field to `false`.
+            sig { returns(T.nilable(T::Boolean)) }
+            attr_reader :prewarm
+
+            sig { params(prewarm: T::Boolean).void }
+            attr_writer :prewarm
+
             # The minimum lifetime applied to every implicit and explicit cache breakpoint
             # written by the request. Defaults to `30m`, which is currently the only supported
             # value. The backend may retain cache entries for longer.
-            ttl: nil
-          )
-          end
+            sig {
+              returns(
+                T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol)
+              )
+            }
+            attr_reader :ttl
 
-          sig do
-            override.returns(
-              {
-                mode:
-                  OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Mode::OrSymbol,
-                ttl:
-                  OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Ttl::OrSymbol
+            sig {
+              params(ttl: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol)
+                .void
+            }
+            attr_writer :ttl
+
+            # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+            # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+            # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+            # request can write up to four breakpoints. For cache matching, OpenAI considers
+            # up to the latest 80 breakpoints in the conversation, without a content-block
+            # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+            # `ttl` defaults to `30m`, which is currently the only supported value. See the
+            # [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
+            # for current details.
+            sig do
+              params(
+
+                comparison_response_id: T.nilable(String),
+
+                mode: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol,
+
+                prewarm: T::Boolean,
+
+                ttl: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The ID of a response to compare when diagnosing prompt cache reuse. Supplying
+              # this field requests prompt cache diagnostics when the feature is enabled.
+              comparison_response_id: nil,
+
+              # Controls whether OpenAI automatically creates an implicit cache breakpoint.
+              # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+              # and writes up to the latest three explicit breakpoints in the request. With
+              # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+              # latest four explicit breakpoints. If there are no explicit breakpoints, the
+              # request does not use prompt caching.
+              mode: nil,
+
+              # Prepares the prompt cache without generating output. Defaults to `false`. When
+              # set to `true`, overrides the `generate` field to `false`.
+              prewarm: nil,
+
+              # The minimum lifetime applied to every implicit and explicit cache breakpoint
+              # written by the request. Defaults to `30m`, which is currently the only supported
+              # value. The backend may retain cache entries for longer.
+
+              ttl: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  comparison_response_id: T.nilable(String),
+                  mode: T.nilable(
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::OrSymbol
+                  ),
+                  prewarm: T.nilable(T::Boolean),
+                  ttl: T.nilable(
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol
+                  )
+                }
+              )
+            end
+            def to_hash
+            end
+
+            # Controls whether OpenAI automatically creates an implicit cache breakpoint.
+            # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+            # and writes up to the latest three explicit breakpoints in the request. With
+            # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+            # latest four explicit breakpoints. If there are no explicit breakpoints, the
+            # request does not use prompt caching.
+            module Mode
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode)
               }
-            )
-          end
-          def to_hash
-          end
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          # Controls whether OpenAI automatically creates an implicit cache breakpoint.
-          # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
-          # and writes up to the latest three explicit breakpoints in the request. With
-          # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
-          # latest four explicit breakpoints. If there are no explicit breakpoints, the
-          # request does not use prompt caching.
-          module Mode
-            extend OpenAI::Internal::Type::Enum
-
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Mode
-                )
-              end
-            OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-            IMPLICIT =
-              T.let(
+              IMPLICIT = T.let(
                 :implicit,
-                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Mode::TaggedSymbol
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::TaggedSymbol
               )
-            EXPLICIT =
-              T.let(
+              EXPLICIT = T.let(
                 :explicit,
-                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Mode::TaggedSymbol
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::TaggedSymbol
               )
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Mode::TaggedSymbol
-                ]
-              )
+              sig {
+                override.returns(
+                  T::Array[
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Mode::TaggedSymbol
+                  ]
+                )
+              }
+              def self.values
+              end
             end
-            def self.values
+
+            # The minimum lifetime applied to every implicit and explicit cache breakpoint
+            # written by the request. Defaults to `30m`, which is currently the only supported
+            # value. The backend may retain cache entries for longer.
+            module Ttl
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl)
+              }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              TTL_30M = T.let(
+                :"30m",
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::TaggedSymbol
+              )
+
+              sig {
+                override.returns(
+                  T::Array[
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::TaggedSymbol
+                  ]
+                )
+              }
+              def self.values
+              end
             end
           end
 
-          # The minimum lifetime applied to every implicit and explicit cache breakpoint
-          # written by the request. Defaults to `30m`, which is currently the only supported
-          # value. The backend may retain cache entries for longer.
-          module Ttl
+          # Deprecated. Use `prompt_cache_options.ttl` instead.
+          #
+          # The retention policy for the prompt cache. Set to `24h` to enable extended
+          # prompt caching, which keeps cached prefixes active for longer, up to a maximum
+          # of 24 hours.
+          # [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention).
+          # This field expresses a maximum retention policy, while
+          # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+          # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+          # models, only `24h` is supported.
+          #
+          # For older models that support both `in_memory` and `24h`, the default depends on
+          # your organization's data retention policy:
+          #
+          # - Organizations without ZDR enabled default to `24h`.
+          # - Organizations with ZDR enabled default to `in_memory` when
+          #   `prompt_cache_retention` is not specified.
+          module PromptCacheRetention
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Ttl
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheRetention)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            TTL_30M =
-              T.let(
-                :"30m",
-                OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Ttl::TaggedSymbol
-              )
+            IN_MEMORY = T.let(
+              :in_memory,
+              OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheRetention::TaggedSymbol
+            )
+            PROMPT_CACHE_RETENTION_24H = T.let(
+              :"24h",
+              OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheRetention::TaggedSymbol
+            )
 
-            sig do
+            sig {
               override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponsesClientEvent::PromptCacheOptions::Ttl::TaggedSymbol
-                ]
+                T::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheRetention::TaggedSymbol]
               )
-            end
+            }
             def self.values
             end
           end
-        end
 
-        # Deprecated. Use `prompt_cache_options.ttl` instead.
-        #
-        # The retention policy for the prompt cache. Set to `24h` to enable extended
-        # prompt caching, which keeps cached prefixes active for longer, up to a maximum
-        # of 24 hours.
-        # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
-        # This field expresses a maximum retention policy, while
-        # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
-        # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
-        # models, only `24h` is supported.
-        #
-        # For older models that support both `in_memory` and `24h`, the default depends on
-        # your organization's data retention policy:
-        #
-        # - Organizations without ZDR enabled default to `24h`.
-        # - Organizations with ZDR enabled default to `in_memory` when
-        #   `prompt_cache_retention` is not specified.
-        module PromptCacheRetention
-          extend OpenAI::Internal::Type::Enum
+          # Specifies the processing type used for serving the request.
+          #
+          # - If set to 'auto', then the request will be processed with the service tier
+          #   configured in the Project settings. Unless otherwise configured, the Project
+          #   will use 'default'.
+          # - If set to 'default', then the request will be processed with the standard
+          #   pricing and performance for the selected model.
+          # - If set to
+          #   '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+          #   the request will be processed with the Flex Processing service tier.
+          # - To opt-in to
+          #   [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+          #   request level, include the `service_tier=fast` or `service_tier=priority`
+          #   parameter for Responses or Chat Completions. The response will show
+          #   `service_tier=priority` regardless of if you specify `service_tier=fast` or
+          #   `priority` in your request.
+          # - If set to 'ultrafast', then the request will be processed with the
+          #   access-controlled Ultrafast Processing service tier. This tier is currently
+          #   available for `gpt-5.6-sol`; a response served through it will show
+          #   `service_tier=ultrafast`.
+          # - When not set, the default behavior is 'auto'.
+          #
+          # When the `service_tier` parameter is set, the response body will include the
+          # `service_tier` value based on the processing mode actually used to serve the
+          # request. This response value may be different from the value set in the
+          # parameter.
+          module ServiceTier
+            extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Responses::ResponsesClientEvent::PromptCacheRetention
-              )
-            end
-          OrSymbol = T.type_alias { T.any(Symbol, String) }
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ServiceTier)
+            }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          IN_MEMORY =
-            T.let(
-              :in_memory,
-              OpenAI::Responses::ResponsesClientEvent::PromptCacheRetention::TaggedSymbol
-            )
-          PROMPT_CACHE_RETENTION_24H =
-            T.let(
-              :"24h",
-              OpenAI::Responses::ResponsesClientEvent::PromptCacheRetention::TaggedSymbol
-            )
-
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::ResponsesClientEvent::PromptCacheRetention::TaggedSymbol
-              ]
-            )
-          end
-          def self.values
-          end
-        end
-
-        # Specifies the processing type used for serving the request.
-        #
-        # - If set to 'auto', then the request will be processed with the service tier
-        #   configured in the Project settings. Unless otherwise configured, the Project
-        #   will use 'default'.
-        # - If set to 'default', then the request will be processed with the standard
-        #   pricing and performance for the selected model.
-        # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)',
-        #   then the request will be processed with the Flex Processing service tier.
-        # - To opt-in to [Fast mode](/api/docs/guides/fast-mode) at the request level,
-        #   include the `service_tier=fast` or `service_tier=priority` parameter for
-        #   Responses or Chat Completions. The response will show `service_tier=priority`
-        #   regardless of if you specify `service_tier=fast` or `priority` in your
-        #   request.
-        # - When not set, the default behavior is 'auto'.
-        #
-        # When the `service_tier` parameter is set, the response body will include the
-        # `service_tier` value based on the processing mode actually used to serve the
-        # request. This response value may be different from the value set in the
-        # parameter.
-        module ServiceTier
-          extend OpenAI::Internal::Type::Enum
-
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Responses::ResponsesClientEvent::ServiceTier
-              )
-            end
-          OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-          AUTO =
-            T.let(
-              :auto,
-              OpenAI::Responses::ResponsesClientEvent::ServiceTier::TaggedSymbol
-            )
-          DEFAULT =
-            T.let(
+            AUTO = T.let(:auto, OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol)
+            DEFAULT = T.let(
               :default,
-              OpenAI::Responses::ResponsesClientEvent::ServiceTier::TaggedSymbol
+              OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol
             )
-          FLEX =
-            T.let(
-              :flex,
-              OpenAI::Responses::ResponsesClientEvent::ServiceTier::TaggedSymbol
-            )
-          SCALE =
-            T.let(
-              :scale,
-              OpenAI::Responses::ResponsesClientEvent::ServiceTier::TaggedSymbol
-            )
-          PRIORITY =
-            T.let(
+            FLEX = T.let(:flex, OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol)
+            SCALE = T.let(:scale, OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol)
+            PRIORITY = T.let(
               :priority,
-              OpenAI::Responses::ResponsesClientEvent::ServiceTier::TaggedSymbol
+              OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol
             )
-          FAST =
-            T.let(
-              :fast,
-              OpenAI::Responses::ResponsesClientEvent::ServiceTier::TaggedSymbol
+            FAST = T.let(:fast, OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol)
+            ULTRAFAST = T.let(
+              :ultrafast,
+              OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol
             )
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::ResponsesClientEvent::ServiceTier::TaggedSymbol
-              ]
-            )
+            sig {
+              override.returns(
+                T::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ServiceTier::TaggedSymbol]
+              )
+            }
+            def self.values
+            end
           end
-          def self.values
-          end
-        end
 
-        class StreamOptions < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
+          class StreamOptions < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
               T.any(
-                OpenAI::Responses::ResponsesClientEvent::StreamOptions,
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::StreamOptions,
                 OpenAI::Internal::AnyHash
               )
             end
 
-          # When true, stream obfuscation will be enabled. Stream obfuscation adds random
-          # characters to an `obfuscation` field on streaming delta events to normalize
-          # payload sizes as a mitigation to certain side-channel attacks. These obfuscation
-          # fields are included by default, but add a small amount of overhead to the data
-          # stream. You can set `include_obfuscation` to false to optimize for bandwidth if
-          # you trust the network links between your application and the OpenAI API.
-          sig { returns(T.nilable(T::Boolean)) }
-          attr_reader :include_obfuscation
-
-          sig { params(include_obfuscation: T::Boolean).void }
-          attr_writer :include_obfuscation
-
-          # Options for streaming responses. Only set this when you set `stream: true`.
-          sig do
-            params(include_obfuscation: T::Boolean).returns(T.attached_class)
-          end
-          def self.new(
             # When true, stream obfuscation will be enabled. Stream obfuscation adds random
             # characters to an `obfuscation` field on streaming delta events to normalize
             # payload sizes as a mitigation to certain side-channel attacks. These obfuscation
             # fields are included by default, but add a small amount of overhead to the data
             # stream. You can set `include_obfuscation` to false to optimize for bandwidth if
             # you trust the network links between your application and the OpenAI API.
-            include_obfuscation: nil
-          )
+            sig { returns(T.nilable(T::Boolean)) }
+            attr_reader :include_obfuscation
+
+            sig { params(include_obfuscation: T::Boolean).void }
+            attr_writer :include_obfuscation
+
+            # Options for streaming responses. Only set this when you set `stream: true`.
+            sig do
+              params(
+
+                include_obfuscation: T::Boolean
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # When true, stream obfuscation will be enabled. Stream obfuscation adds random
+              # characters to an `obfuscation` field on streaming delta events to normalize
+              # payload sizes as a mitigation to certain side-channel attacks. These obfuscation
+              # fields are included by default, but add a small amount of overhead to the data
+              # stream. You can set `include_obfuscation` to false to optimize for bandwidth if
+              # you trust the network links between your application and the OpenAI API.
+
+              include_obfuscation: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {include_obfuscation: T.nilable(T::Boolean)}
+              )
+            end
+            def to_hash
+            end
+
           end
 
-          sig { override.returns({ include_obfuscation: T::Boolean }) }
-          def to_hash
-          end
-        end
+          # How the model should select which tool (or tools) to use when generating a
+          # response. See the `tools` parameter to see how to specify which tools the model
+          # can call.
+          module ToolChoice
+            extend OpenAI::Internal::Type::Union
 
-        # How the model should select which tool (or tools) to use when generating a
-        # response. See the `tools` parameter to see how to specify which tools the model
-        # can call.
-        module ToolChoice
-          extend OpenAI::Internal::Type::Union
-
-          Variants =
-            T.type_alias do
+            Variants = T.type_alias {
               T.any(
                 OpenAI::Responses::ToolChoiceOptions::TaggedSymbol,
                 OpenAI::Responses::ToolChoiceAllowed,
@@ -1671,86 +1771,95 @@ module OpenAI
                 OpenAI::Responses::ToolChoiceFunction,
                 OpenAI::Responses::ToolChoiceMcp,
                 OpenAI::Responses::ToolChoiceCustom,
-                OpenAI::Responses::ResponsesClientEvent::ToolChoice::SpecificProgrammaticToolCallingParam,
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ToolChoice::SpecificProgrammaticToolCallingParam,
                 OpenAI::Responses::ToolChoiceApplyPatch,
                 OpenAI::Responses::ToolChoiceShell
               )
-            end
+            }
 
-          class SpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
+            class SpecificProgrammaticToolCallingParam < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
                 T.any(
-                  OpenAI::Responses::ResponsesClientEvent::ToolChoice::SpecificProgrammaticToolCallingParam,
+                  OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ToolChoice::SpecificProgrammaticToolCallingParam,
                   OpenAI::Internal::AnyHash
                 )
               end
 
-            # The tool to call. Always `programmatic_tool_calling`.
-            sig { returns(Symbol) }
-            attr_accessor :type
-
-            sig { params(type: Symbol).returns(T.attached_class) }
-            def self.new(
               # The tool to call. Always `programmatic_tool_calling`.
-              type: :programmatic_tool_calling
-            )
+              sig { returns(Symbol) }
+              attr_accessor :type
+
+              sig do
+                params(
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # The tool to call. Always `programmatic_tool_calling`.
+
+                type: :programmatic_tool_calling
+              )
+              end
+
+              sig do
+                override.returns(
+                  {type: Symbol}
+                )
+              end
+              def to_hash
+              end
+
             end
 
-            sig { override.returns({ type: Symbol }) }
-            def to_hash
+            sig {
+              override.returns(T::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ToolChoice::Variants])
+            }
+            def self.variants
             end
+
           end
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::ResponsesClientEvent::ToolChoice::Variants
-              ]
-            )
-          end
-          def self.variants
-          end
-        end
+          # The truncation strategy to use for the model response.
+          #
+          # - `auto`: If the input to this Response exceeds the model's context window size,
+          #   the model will truncate the response to fit the context window by dropping
+          #   items from the beginning of the conversation.
+          # - `disabled` (default): If the input size will exceed the context window size
+          #   for a model, the request will fail with a 400 error.
+          module Truncation
+            extend OpenAI::Internal::Type::Enum
 
-        # The truncation strategy to use for the model response.
-        #
-        # - `auto`: If the input to this Response exceeds the model's context window size,
-        #   the model will truncate the response to fit the context window by dropping
-        #   items from the beginning of the conversation.
-        # - `disabled` (default): If the input size will exceed the context window size
-        #   for a model, the request will fail with a 400 error.
-        module Truncation
-          extend OpenAI::Internal::Type::Enum
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Truncation)
+            }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Responses::ResponsesClientEvent::Truncation)
-            end
-          OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-          AUTO =
-            T.let(
-              :auto,
-              OpenAI::Responses::ResponsesClientEvent::Truncation::TaggedSymbol
-            )
-          DISABLED =
-            T.let(
+            AUTO = T.let(:auto, OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Truncation::TaggedSymbol)
+            DISABLED = T.let(
               :disabled,
-              OpenAI::Responses::ResponsesClientEvent::Truncation::TaggedSymbol
+              OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Truncation::TaggedSymbol
             )
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::ResponsesClientEvent::Truncation::TaggedSymbol
-              ]
-            )
-          end
-          def self.values
+            sig {
+              override.returns(
+                T::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Truncation::TaggedSymbol]
+              )
+            }
+            def self.values
+            end
           end
         end
+
+        sig { override.returns(T::Array[OpenAI::Responses::ResponsesClientEvent::Variants]) }
+        def self.variants
+        end
+
       end
+
     end
+
   end
 end

@@ -13,7 +13,8 @@ module OpenAI
         # @!method initialize(type: :apply_patch)
         #   Forces the model to call the apply_patch tool when executing a tool call.
         #
-        #   @param type [Symbol, :apply_patch] The tool to call. Always `apply_patch`.
+        #   @param type [Symbol, :apply_patch]
+        #     The tool to call. Always `apply_patch`.
       end
     end
 

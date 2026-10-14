@@ -32,22 +32,25 @@ module OpenAI
         optional :elapsed_ms, Integer, nil?: true
 
         # @!method initialize(delta:, event_id:, elapsed_ms: nil, type: :"session.output_transcript.delta")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::RealtimeTranslationOutputTranscriptDeltaEvent} for
-        #   more details.
-        #
         #   Returned when translated transcript text is available.
         #
         #   Transcript deltas are append-only text fragments. Clients should not insert
         #   unconditional spaces between deltas.
         #
-        #   @param delta [String] Append-only transcript text for the translated output audio.
+        #   @param delta [String]
+        #     Append-only transcript text for the translated output audio.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param elapsed_ms [Integer, nil] Timing metadata for stream alignment, derived from the translation frame
+        #   @param elapsed_ms [Integer, nil]
+        #     Timing metadata for stream alignment, derived from the translation frame when
+        #     available. It advances in 200 ms increments, but multiple transcript deltas may
+        #     share the same `elapsed_ms`. Treat it as alignment metadata, not a unique
+        #     transcript-delta identifier.
         #
-        #   @param type [Symbol, :"session.output_transcript.delta"] The event type, must be `session.output_transcript.delta`.
+        #   @param type [Symbol, :"session.output_transcript.delta"]
+        #     The event type, must be `session.output_transcript.delta`.
       end
     end
   end

@@ -2,16 +2,19 @@
 
 module OpenAI
   module Resources
+
     class Beta
+
       class ChatKit
+
         class Threads
+
           # Retrieve a ChatKit thread by its identifier.
-          sig do
-            params(
-              thread_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Beta::ChatKit::ChatKitThread)
-          end
+          sig {
+            params(thread_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Beta::ChatKit::ChatKitThread
+            )
+          }
           def retrieve(
             # Identifier of the ChatKit thread to retrieve.
             thread_id,
@@ -20,7 +23,7 @@ module OpenAI
           end
 
           # List ChatKit threads with optional pagination and user filters.
-          sig do
+          sig {
             params(
               after: String,
               before: String,
@@ -28,12 +31,9 @@ module OpenAI
               order: OpenAI::Beta::ChatKit::ThreadListParams::Order::OrSymbol,
               user: String,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::ConversationCursorPage[
-                OpenAI::Beta::ChatKit::ChatKitThread
-              ]
             )
-          end
+              .returns(OpenAI::Internal::ConversationCursorPage[OpenAI::Beta::ChatKit::ChatKitThread])
+          }
           def list(
             # List items created after this thread item ID. Defaults to null for the first
             # page.
@@ -53,12 +53,11 @@ module OpenAI
           end
 
           # Delete a ChatKit thread along with its items and stored attachments.
-          sig do
-            params(
-              thread_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Models::Beta::ChatKit::ThreadDeleteResponse)
-          end
+          sig {
+            params(thread_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Models::Beta::ChatKit::ThreadDeleteResponse
+            )
+          }
           def delete(
             # Identifier of the ChatKit thread to delete.
             thread_id,
@@ -67,21 +66,19 @@ module OpenAI
           end
 
           # List items that belong to a ChatKit thread.
-          sig do
+          sig {
             params(
               thread_id: String,
               after: String,
               before: String,
               limit: Integer,
-              order:
-                OpenAI::Beta::ChatKit::ThreadListItemsParams::Order::OrSymbol,
+              order: OpenAI::Beta::ChatKit::ThreadListItemsParams::Order::OrSymbol,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::ConversationCursorPage[
-                OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::Variants
-              ]
             )
-          end
+              .returns(
+                OpenAI::Internal::ConversationCursorPage[OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::Variants]
+              )
+          }
           def list_items(
             # Identifier of the ChatKit thread whose items are requested.
             thread_id,
@@ -104,7 +101,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

@@ -2,14 +2,88 @@
 
 module OpenAI
   class FilePart
+    # HTTP media types contain ASCII tokens and possibly empty parameter slots.
+    # Quoted values may contain horizontal whitespace and non-ASCII header bytes, but
+    # never CR, LF, NUL, other forbidden control bytes, or an unescaped quote.
+    #
+    # @api private
+    # @type [Regexp]
+    MEDIA_TYPE = %r{
+      \A
+      [!#$%&'*+\-.^_`|~0-9A-Za-z]+
+      /
+      [!#$%&'*+\-.^_`|~0-9A-Za-z]+
+      (?:
+        [\x20\t]*;[\x20\t]*
+        (?:
+          [!#$%&'*+\-.^_`|~0-9A-Za-z]+
+          [\x20\t]*=[\x20\t]*
+          (?:
+            [!#$%&'*+\-.^_`|~0-9A-Za-z]+
+            |
+            "(?:[\x20\t\x21\x23-\x5B\x5D-\x7E\x80-\xFF]|\\[\x20\t\x21-\x7E\x80-\xFF])*"
+          )
+        )?
+      )*
+      [\x20\t]*
+      \z
+    }nx
+    private_constant :MEDIA_TYPE
+
+    # Directory separators recognized on any host, so an upload name is stripped
+    # the same way everywhere.
+    #
+    # @api private
+    # @type [Regexp]
+    SEPARATORS = %r{[/\\]}
+    private_constant :SEPARATORS
+
+    # Validate an effective media type before it is written to multipart headers.
+    #
+    # @api private
+    # @param content_type [String, nil]
+    # @return [String, nil]
+    # @raise [ArgumentError] if the content type is not a valid MIME media type
+    def self.validate_content_type(content_type)
+      return if content_type.nil?
+      return content_type if content_type.is_a?(String) && MEDIA_TYPE.match?(content_type.b)
+
+      raise ArgumentError, "`content_type` must be a valid MIME media type"
+    end
+
     # @return [Pathname, StringIO, IO, String]
     attr_reader :content
 
     # @return [String, nil]
-    attr_reader :content_type
+    # @raise [ArgumentError] if the content type is not a valid MIME media type
+    def content_type
+      OpenAI::FilePart.validate_content_type(@content_type)
+    end
 
     # @return [String, nil]
     attr_reader :filename
+
+    # Return a copy with different content while preserving multipart behavior.
+    #
+    # @api private
+    #
+    # @param content [Pathname, StringIO, IO, String]
+    # @return [OpenAI::FilePart]
+    def with_content(content)
+      dup.tap do |copy|
+        copy.content = content
+        copy.content_type = content_type || default_content_type
+      end
+    end
+
+    protected(attr_writer(:content, :content_type))
+
+    # @api private
+    #
+    # @return [String]
+    private def default_content_type
+      content.is_a?(String) ? "text/plain" : "application/octet-stream"
+    end
 
     # @api private
     #
@@ -19,7 +93,7 @@ module OpenAI
       in Pathname
         content.read(binmode: true)
       in StringIO
-        content.string
+        content.string.byteslice(content.pos..) || ""
       in IO
         content.read
       in String
@@ -40,19 +114,45 @@ module OpenAI
     # @param content [Pathname, StringIO, IO, String]
     # @param filename [Pathname, String, nil]
     # @param content_type [String, nil]
+    # @raise [ArgumentError] if the content type is not a valid MIME media type
     def initialize(content, filename: nil, content_type: nil)
+      OpenAI::FilePart.validate_content_type(content_type)
       @content_type = content_type
-      @filename =
-        case [filename, (@content = content)]
-        in [String | Pathname, _]
-          ::File.basename(filename)
-        in [nil, Pathname]
-          content.basename.to_path
-        in [nil, IO]
-          content.to_path
-        else
-          filename
-        end
+      @filename = case [filename, (@content = content)]
+      in [String | Pathname, _]
+        strip_directories(filename)
+      in [nil, Pathname]
+        content.basename.to_path
+      in [nil, IO]
+        content.to_path&.then { ::File.basename(_1) }
+      else
+        filename
+      end
+    end
+
+    # Strip directory components from a caller-supplied upload name.
+    #
+    # `::File.basename` applies the host platform's path rules, so on Windows it
+    # also truncates at a drive separator: the remote name `"report: final.md"`
+    # becomes `"report"`. This name is sent to the API rather than resolved
+    # locally, so drop separators directly and keep every other character, no
+    # matter which platform the SDK runs on.
+    #
+    # @api private
+    #
+    # @param filename [Pathname, String]
+    #
+    # @return [String]
+    private def strip_directories(filename)
+      name = filename.to_s
+      binary_name = name.b
+      raise ArgumentError, "path name contains null byte" if binary_name.include?("\0")
+
+      searchable_name = name.scrub { |bytes| "?" * bytes.bytesize }
+      basename = searchable_name.split(SEPARATORS).last
+      return name.byteslice(0, name.empty? ? 0 : 1) if basename.nil?
+
+      name.byteslice(searchable_name.byterindex(basename), basename.bytesize)
     end
   end
 end

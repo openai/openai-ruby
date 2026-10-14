@@ -2,20 +2,24 @@
 
 module OpenAI
   module Models
+
     module Admin
+
       module Organization
+
         module Projects
+
           class RateLimitUpdateRateLimitParams < OpenAI::Internal::Type::BaseModel
+
             extend OpenAI::Internal::Type::RequestParameters::Converter
             include OpenAI::Internal::Type::RequestParameters
 
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Admin::Organization::Projects::RateLimitUpdateRateLimitParams,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Admin::Organization::Projects::RateLimitUpdateRateLimitParams,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             sig { returns(String) }
             attr_accessor :project_id
@@ -67,32 +71,51 @@ module OpenAI
 
             sig do
               params(
+
                 project_id: String,
+
                 rate_limit_id: String,
+
                 batch_1_day_max_input_tokens: Integer,
+
                 max_audio_megabytes_per_1_minute: Integer,
+
                 max_images_per_1_minute: Integer,
+
                 max_requests_per_1_day: Integer,
+
                 max_requests_per_1_minute: Integer,
+
                 max_tokens_per_1_minute: Integer,
+
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               project_id:,
+
               rate_limit_id:,
+
               # The maximum batch input tokens per day. Only relevant for certain models.
               batch_1_day_max_input_tokens: nil,
+
               # The maximum audio megabytes per minute. Only relevant for certain models.
               max_audio_megabytes_per_1_minute: nil,
+
               # The maximum images per minute. Only relevant for certain models.
               max_images_per_1_minute: nil,
+
               # The maximum requests per day. Only relevant for certain models.
               max_requests_per_1_day: nil,
+
               # The maximum requests per minute.
               max_requests_per_1_minute: nil,
+
               # The maximum tokens per minute.
               max_tokens_per_1_minute: nil,
+
               request_options: {}
             )
             end
@@ -114,9 +137,14 @@ module OpenAI
             end
             def to_hash
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

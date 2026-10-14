@@ -17,7 +17,8 @@ module OpenAI
       # @!method initialize(file_id: nil, image_url: nil)
       #   @param file_id [String]
       #
-      #   @param image_url [String] A fully qualified URL or base64-encoded data URL.
+      #   @param image_url [String]
+      #     A fully qualified URL or base64-encoded data URL.
     end
   end
 end

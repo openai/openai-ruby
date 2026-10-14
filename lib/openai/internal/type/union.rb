@@ -73,13 +73,12 @@ module OpenAI
         #   @option spec [Boolean] :"nil?"
         private def variant(key, spec = nil)
           meta = OpenAI::Internal::Type::Converter.meta_info(nil, spec)
-          variant_info =
-            case key
-            in Symbol
-              [key, OpenAI::Internal::Type::Converter.type_info(spec), meta]
-            in Proc | OpenAI::Internal::Type::Converter | Class | Hash
-              [nil, OpenAI::Internal::Type::Converter.type_info(key), meta]
-            end
+          variant_info = case key
+          in Symbol
+            [key, OpenAI::Internal::Type::Converter.type_info(spec), meta]
+          in Proc | OpenAI::Internal::Type::Converter | Class | Hash
+            [nil, OpenAI::Internal::Type::Converter.type_info(key), meta]
+          end
 
           known_variants << variant_info
         end
@@ -89,7 +88,7 @@ module OpenAI
         # @param value [Object]
         #
         # @return [OpenAI::Internal::Type::Converter, Class, nil]
-        private def resolve_variant(value)
+        private def resolve_variant(value, state: nil)
           case [@discriminator, value]
           in [_, OpenAI::Internal::Type::BaseModel]
             value.class
@@ -101,15 +100,29 @@ module OpenAI
             return nil if key == OpenAI::Internal::OMIT
 
             key = key.to_sym if key.is_a?(String)
-            _, found = known_variants.find { |k,| k == key }
-            found&.call
+            _, found = known_variants.find { |k,| !k.nil? && k == key }
+            return OpenAI::Internal::Type::Converter.resolve_type(found, state: state) if found
+
+            known_variants.each do |variant_key, variant_fn|
+              next unless variant_key.nil?
+
+              target = OpenAI::Internal::Type::Converter.resolve_type(variant_fn, state: state)
+              next unless target.is_a?(Class) && target <= OpenAI::Internal::Type::BaseModel
+
+              field = target.known_fields[@discriminator]
+              next unless field
+
+              type = OpenAI::Internal::Type::Converter.resolve_type(field.fetch(:type_fn), state: state)
+              next unless OpenAI::Internal::Type::Enum === type
+
+              return target if type === key
+            end
+
+            OpenAI::Internal::Type::Unknown
           else
             nil
           end
         end
-
-        # rubocop:disable Style/HashEachMethods
-        # rubocop:disable Style/CaseEquality
 
         # @api public
         #
@@ -159,27 +172,32 @@ module OpenAI
         #
         # @return [Object]
         def coerce(value, state:)
-          if (target = resolve_variant(value))
+          strictness = state.fetch(:strictness)
+          previous_error = state.fetch(:error)
+          if (target = resolve_variant(value, state: state))
             return OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
           end
 
-          strictness = state.fetch(:strictness)
           exactness = state.fetch(:exactness)
 
           alternatives = []
-          known_variants.each do |_, variant_fn|
-            target = variant_fn.call
+          known_variants.each_with_index do |(_, variant_fn), index|
+            target = OpenAI::Internal::Type::Converter.resolve_type(variant_fn, state: state)
             exact = state[:exactness] = {yes: 0, no: 0, maybe: 0}
             state[:branched] += 1
 
-            coerced = OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
+            coerced, error = OpenAI::Internal::Type::Converter.coerce_with_error(target, value, state: state)
             yes, no, maybe = exact.values
             if (no + maybe).zero? || (!strictness && yes.positive?)
               exact.each { exactness[_1] += _2 }
               state[:exactness] = exactness
+              state[:error] = error || previous_error
               return coerced
             elsif maybe.positive?
-              alternatives << [[-yes, -maybe, no], exact, coerced]
+              # `Array#sort_by!` is not stable, so equally-ranked variants would
+              # otherwise be ordered arbitrarily. Break ties on declaration order
+              # to keep the chosen variant the same across platforms and runs.
+              alternatives << [[-yes, -maybe, no, index], exact, coerced, error]
             end
           end
 
@@ -188,8 +206,9 @@ module OpenAI
             exactness[:no] += 1
             state[:error] = ArgumentError.new("no matching variant for #{value.inspect}")
             value
-          in [[_, exact, coerced], *]
+          in [[_, exact, coerced, error], *]
             exact.each { exactness[_1] += _2 }
+            state[:error] = error || previous_error
             coerced
           end
             .tap { state[:exactness] = exactness }
@@ -234,9 +253,6 @@ module OpenAI
           end
         end
 
-        # rubocop:enable Style/CaseEquality
-        # rubocop:enable Style/HashEachMethods
-
         # @api private
         #
         # @param depth [Integer]
@@ -250,7 +266,7 @@ module OpenAI
           members = variants.map { OpenAI::Internal::Type::Converter.inspect(_1, depth: depth.succ) }
           prefix = is_a?(Module) ? name : self.class.name
 
-          "#{prefix}[#{members.join(' | ')}]"
+          "#{prefix}[#{members.join(" | ")}]"
         end
       end
     end

@@ -1,0 +1,83 @@
+# Zero-generated-patches execution log
+
+- [x] Verify current upstream baseline: 48 mixed files / 2,091 patch lines.
+- [x] Read SDK and compiler contributor/ownership/compatibility rules.
+- [x] Record dependency-ordered plan in `tasks/plan.md`.
+- [x] PR 1 implementation: reporting alignment (45 files / 2,084 lines).
+  Updated the workflow reporter checksum to the restored bytes; checksum enforcement remains enabled.
+  Initial reporter suite: 59 tests, one stale-checksum failure and one unrelated skip.
+  After updating the checksum, all 15 publication tests passed. PR: https://github.com/openai/openai-ruby/pull/848.
+- [x] PR 2: moved container regression tests; 2 tests / 15 assertions pass before and after.
+  Generated container test restored byte-for-byte; 44 files / 2,025 patch lines remain.
+- [x] PR 3: Responses output-text extension with RBI/RBS; 41 files / 1,998 lines.
+  Runtime: 9 tests / 14 assertions; streaming RBS: 2 tests / 31 assertions.
+  Sorbet passed with the repository-required SRB_SKIP_GEM_RBIS=1; RBS resolves () -> String; rubyfmt passed.
+- [x] Checkpoint: reporter + focused runtime/signature/format checks for the first slices.
+- [x] PR 4: Chat parsed fields extracted before generated subclasses load.
+  29 parser/stream/Sorbet tests / 274 assertions; 2 new inheritance/serialization tests / 15 assertions; Sorbet and formatting pass.
+  37 mixed files / 1,975 lines remain.
+- [x] PR 5: Responses parsed fields extracted before generated subclasses load.
+  26 focused parser/stream/type/inheritance tests / 239 assertions; Sorbet and formatting pass.
+  33 mixed files / 1,952 lines remain.
+- [ ] PRs 6a/6b: schema-converter input contracts.
+- [ ] Checkpoint: structured output and streaming compatibility.
+- [x] PR 7a implementation: Agents file/artifact helpers and RBI/RBS extracted into existing handwritten helper files.
+  Brought forward independently of compiler input typing; generated loading positions and public method owners/parameters remain intact.
+  Original tests pass before and after (26 / 155 assertions); with subclass/owner checks, 27 / 166 pass.
+  Combined runtime/exported RBI merge: 29 tests / 172 assertions passed. Sorbet passed; all 1,623 RBS files validate; formatting passes.
+  Verified reporter: 27 mixed files / 1,855 patch lines remain (six files restored, net 97 patch lines removed).
+- [x] PR 7b implementation: move the additive `Sessions#stream` method unchanged into its existing handwritten helper.
+  Public method ownership/parameters, consumer subclass super dispatch and block cleanup are covered by a focused regression.
+  Existing RBI/RBS declarations and root loading already reside in handwritten extension points; no signature or require changes.
+  Validation: 133 runtime tests / 1,171 assertions; exported RBI merge 2 / 6; RBS consumer fixtures 1 / 3; Sorbet, rubyfmt and RuboCop passed.
+  Verified reporter: 27 mixed files / 1,806 patch lines remain, removing exactly 49 lines without changing policy or metadata.
+- [ ] PR 7c: compiler-supported Agents creation-stream contract; naive RBI reopening conflicts with generated signatures.
+- [x] PR 8a.1 implementation: move additive Chat `completions.stream` unchanged into its existing handwritten helper.
+  Its existing RBI and root require remain unchanged; compiler-dependent create/structured-output wrappers stay separate.
+  The new synthetic public-entrypoint regression passes before and after extraction and preserves method ownership,
+  parameters, visibility, consumer subclass super/parser dispatch, request options, request shape and streamed output.
+  Focused streaming/structured-output/example tests: 41 tests / 243 assertions; Sorbet, rubyfmt and RuboCop passed.
+  Exported RBI merge and RBS consumer fixtures: 3 tests / 9 assertions passed.
+  Verified reporter: 27 mixed files / 1,779 patch lines remain, removing exactly 27 lines without changing policy or metadata.
+- [x] PR 8b.1 implementation: relocate Responses `stream`, its private resume helper, and existing RBI/RBS into handwritten streaming helpers.
+  Exact method/declaration bodies, docs, visibility and root loading are preserved; generated create/retrieve parsing wrappers remain separate.
+  New public-entrypoint coverage exercises method ownership/signature and consumer subclass super for both creation and resumption,
+  including the private resume override, request options and completed output. The same 66 tests / 398 assertions pass before and after extraction.
+  Exported RBI merge/RBS consumer fixtures: 3 tests / 9 assertions; all 1,623 RBS files validate; Sorbet, rubyfmt and RuboCop pass.
+  Verified reporter: 27 mixed files / 1,382 patch lines remain, removing exactly 397 lines with no policy or metadata changes.
+- [ ] PRs 8a.2/8b.2: remaining Chat/Responses resource helpers.
+- [ ] PRs 9a/9b: webhook redaction/verification.
+- [ ] Checkpoint: transport, streaming, and webhook compatibility.
+- [ ] PRs 10a/10b/10c: client options/providers/workload identity.
+- [ ] PRs 11a/11b/11c: remaining compiler defects and generated test body.
+- [ ] PR 12: generated bootstrap and retained Threads placeholder.
+- [ ] PR 13: final regeneration and complete zero-patch/compatibility audit.
+- [ ] PR 14: budget-only zero ratchet.
+
+No compiler-derived SDK promotion is allowed before its compiler changes land.
+No consumer-breaking change is authorized. Ask the owner if these goals conflict.
+
+## Review checkpoint
+
+| Slice | PR | State |
+| --- | --- | --- |
+| Reporting alignment | https://github.com/openai/openai-ruby/pull/848 | CI green; main requires human review |
+| Container regression tests | https://github.com/openai/openai-ruby/pull/849 | CI green; stacked on 848 |
+| Response output text | https://github.com/openai/openai-ruby/pull/850 | Tapioca superclass fix applied; CI rerunning |
+| Chat parsed fields | https://github.com/openai/openai-ruby/pull/851 | Same superclass fix; CI rerunning |
+| Responses parsed fields | https://github.com/openai/openai-ruby/pull/852 | Same superclass fix; CI rerunning |
+
+Combined local runtime check: 66 tests / 542 assertions passed. Full exported RBI
+merge: 2 tests / 6 assertions passed after matching handwritten RBI superclass
+declarations to their generated counterparts. Sorbet passed. No generated output,
+metadata, ownership rule, or budget was changed to hide the remaining patch.
+
+The next slice is compiler-backed input signature support: reverting generated
+signatures today would reject schema-converter inputs accepted by the shipped SDK.
+Keep that compatibility until normal compiler generation can express it. This is
+not permission to narrow the gem's input contract.
+
+Nothing has been merged. PR 848 reports REVIEW_REQUIRED; do not approve on behalf
+of a human or bypass that requirement. The compiler-backed phase also needs a
+working Castiron Bazel checkout; the isolated sparse checkout currently lacks
+root-workspace Cargo member manifests. No compiler changes have been published.

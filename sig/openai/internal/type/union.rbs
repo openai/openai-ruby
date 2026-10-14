@@ -24,7 +24,8 @@ module OpenAI
         ) -> void
 
         private def self.resolve_variant: (
-          top value
+          top value,
+          ?state: OpenAI::Internal::Type::Converter::coerce_state?
         ) -> OpenAI::Internal::Type::Converter::input?
 
         def ===: (top other) -> bool

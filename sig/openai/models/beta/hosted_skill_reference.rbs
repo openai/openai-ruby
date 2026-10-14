@@ -1,0 +1,57 @@
+module OpenAI
+  module Models
+    module Beta
+      type hosted_skill_reference =
+        {
+          description: String,
+          name: String,
+          skill_id: String,
+          ?type: :skill_reference,
+          version: String
+        }
+
+      class HostedSkillReference < OpenAI::Internal::Type::BaseModel
+        # The installed skill description.
+        attr_accessor description: String
+
+        # The installed skill name.
+        attr_accessor name: String
+
+        # The referenced skill ID.
+        attr_accessor skill_id: String
+
+        # The type of the object. Always `skill_reference`.
+        attr_accessor type: :skill_reference
+
+        # The concrete skill version installed for this session.
+        attr_accessor version: String
+
+        # @param description
+        #   The installed skill description.
+        # @param name
+        #   The installed skill name.
+        # @param skill_id
+        #   The referenced skill ID.
+        # @param version
+        #   The concrete skill version installed for this session.
+        # @param type
+        #   The type of the object. Always `skill_reference`.
+        def initialize: (
+          description: String,
+          name: String,
+          skill_id: String,
+          version: String,
+          ?type: :skill_reference
+        ) -> void
+
+        def to_hash: -> {
+          description: String,
+          name: String,
+          skill_id: String,
+          ?type: :skill_reference,
+          version: String
+        }
+      end
+    end
+  end
+end

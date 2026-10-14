@@ -1,0 +1,29 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        module Environments
+          type file_create_params =
+            { environment_id: String, ?request_options: OpenAI::request_opts }
+
+          class FileCreateParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            attr_accessor environment_id: String
+
+            def initialize: (
+              environment_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              environment_id: String,
+              ?request_options: OpenAI::RequestOptions
+            }
+          end
+        end
+      end
+    end
+  end
+end

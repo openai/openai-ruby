@@ -2,18 +2,20 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class ConversationItemCreateEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::ConversationItemCreateEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::ConversationItemCreateEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # A single item within a Realtime conversation.
-        sig do
+        sig {
           returns(
             T.any(
               OpenAI::Realtime::RealtimeConversationItemSystemMessage,
@@ -27,7 +29,7 @@ module OpenAI
               OpenAI::Realtime::RealtimeMcpApprovalRequest
             )
           )
-        end
+        }
         attr_accessor :item
 
         # The event type, must be `conversation.item.create`.
@@ -61,32 +63,40 @@ module OpenAI
         # "history" of the conversation and to add new items mid-stream, but has the
         # current limitation that it cannot populate assistant audio messages.
         #
-        # If successful, the server will respond with a `conversation.item.created` event,
-        # otherwise an `error` event will be sent.
+        # If successful, the server will emit a `conversation.item.added` event and, when
+        # the item is finalized, a `conversation.item.done` event. Otherwise, an `error`
+        # event will be sent.
         sig do
           params(
-            item:
-              T.any(
-                OpenAI::Realtime::RealtimeConversationItemSystemMessage::OrHash,
-                OpenAI::Realtime::RealtimeConversationItemUserMessage::OrHash,
-                OpenAI::Realtime::RealtimeConversationItemAssistantMessage::OrHash,
-                OpenAI::Realtime::RealtimeConversationItemFunctionCall::OrHash,
-                OpenAI::Realtime::RealtimeConversationItemFunctionCallOutput::OrHash,
-                OpenAI::Realtime::RealtimeMcpApprovalResponse::OrHash,
-                OpenAI::Realtime::RealtimeMcpListTools::OrHash,
-                OpenAI::Realtime::RealtimeMcpToolCall::OrHash,
-                OpenAI::Realtime::RealtimeMcpApprovalRequest::OrHash
-              ),
+
+            item: T.any(
+              OpenAI::Realtime::RealtimeConversationItemSystemMessage::OrHash,
+              OpenAI::Realtime::RealtimeConversationItemUserMessage::OrHash,
+              OpenAI::Realtime::RealtimeConversationItemAssistantMessage::OrHash,
+              OpenAI::Realtime::RealtimeConversationItemFunctionCall::OrHash,
+              OpenAI::Realtime::RealtimeConversationItemFunctionCallOutput::OrHash,
+              OpenAI::Realtime::RealtimeMcpApprovalResponse::OrHash,
+              OpenAI::Realtime::RealtimeMcpListTools::OrHash,
+              OpenAI::Realtime::RealtimeMcpToolCall::OrHash,
+              OpenAI::Realtime::RealtimeMcpApprovalRequest::OrHash
+            ),
+
             event_id: String,
+
             previous_item_id: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # A single item within a Realtime conversation.
           item:,
+
           # Optional client-generated ID used to identify this event.
           event_id: nil,
+
           # The ID of the preceding item after which the new item will be inserted. If not
           # set, the new item will be appended to the end of the conversation.
           #
@@ -97,7 +107,9 @@ module OpenAI
           # the ID cannot be found, an error will be returned and the item will not be
           # added.
           previous_item_id: nil,
+
           # The event type, must be `conversation.item.create`.
+
           type: :"conversation.item.create"
         )
         end
@@ -105,27 +117,29 @@ module OpenAI
         sig do
           override.returns(
             {
-              item:
-                T.any(
-                  OpenAI::Realtime::RealtimeConversationItemSystemMessage,
-                  OpenAI::Realtime::RealtimeConversationItemUserMessage,
-                  OpenAI::Realtime::RealtimeConversationItemAssistantMessage,
-                  OpenAI::Realtime::RealtimeConversationItemFunctionCall,
-                  OpenAI::Realtime::RealtimeConversationItemFunctionCallOutput,
-                  OpenAI::Realtime::RealtimeMcpApprovalResponse,
-                  OpenAI::Realtime::RealtimeMcpListTools,
-                  OpenAI::Realtime::RealtimeMcpToolCall,
-                  OpenAI::Realtime::RealtimeMcpApprovalRequest
-                ),
+              item: T.any(
+                OpenAI::Realtime::RealtimeConversationItemSystemMessage,
+                OpenAI::Realtime::RealtimeConversationItemUserMessage,
+                OpenAI::Realtime::RealtimeConversationItemAssistantMessage,
+                OpenAI::Realtime::RealtimeConversationItemFunctionCall,
+                OpenAI::Realtime::RealtimeConversationItemFunctionCallOutput,
+                OpenAI::Realtime::RealtimeMcpApprovalResponse,
+                OpenAI::Realtime::RealtimeMcpListTools,
+                OpenAI::Realtime::RealtimeMcpToolCall,
+                OpenAI::Realtime::RealtimeMcpApprovalRequest
+              ),
               type: Symbol,
-              event_id: String,
-              previous_item_id: String
+              event_id: T.nilable(String),
+              previous_item_id: T.nilable(String)
             }
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

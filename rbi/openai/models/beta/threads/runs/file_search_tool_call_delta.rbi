@@ -2,17 +2,21 @@
 
 module OpenAI
   module Models
+
     module Beta
+
       module Threads
+
         module Runs
+
           class FileSearchToolCallDelta < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::Threads::Runs::FileSearchToolCallDelta,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::Runs::FileSearchToolCallDelta,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # For now, this is always going to be an empty object.
             sig { returns(T.anything) }
@@ -36,40 +40,50 @@ module OpenAI
 
             sig do
               params(
+
                 file_search: T.anything,
+
                 index: Integer,
+
                 id: String,
+
                 type: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # For now, this is always going to be an empty object.
               file_search:,
+
               # The index of the tool call in the tool calls array.
               index:,
+
               # The ID of the tool call object.
               id: nil,
+
               # The type of tool call. This is always going to be `file_search` for this type of
               # tool call.
+
               type: :file_search
             )
             end
 
             sig do
               override.returns(
-                {
-                  file_search: T.anything,
-                  index: Integer,
-                  type: Symbol,
-                  id: String
-                }
+                {file_search: T.anything, index: Integer, type: Symbol, id: String}
               )
             end
             def to_hash
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

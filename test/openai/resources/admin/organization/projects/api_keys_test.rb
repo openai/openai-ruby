@@ -12,15 +12,42 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::APIKeysTest < Open
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        last_used_at: Integer | nil,
-        name: String,
-        object: Symbol,
-        owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
-        owner_project_access: OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess,
-        redacted_value: String
-      }
+          id: String,
+          created_at: Integer,
+          last_used_at: Integer | nil,
+          name: String,
+          object: Symbol,
+          owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
+          owner_project_access: OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess,
+          redacted_value: String,
+          expires_at: Integer | nil
+        }
+    end
+  end
+
+  def test_update_required_params
+    response = @openai.admin.organization.projects.api_keys.update(
+      "api_key_id",
+      project_id: "project_id",
+      expires_in_seconds: 1
+    )
+
+    assert_pattern do
+      response => OpenAI::Admin::Organization::Projects::ProjectAPIKey
+    end
+
+    assert_pattern do
+      response => {
+          id: String,
+          created_at: Integer,
+          last_used_at: Integer | nil,
+          name: String,
+          object: Symbol,
+          owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
+          owner_project_access: OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess,
+          redacted_value: String,
+          expires_at: Integer | nil
+        }
     end
   end
 
@@ -31,7 +58,8 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::APIKeysTest < Open
       response => OpenAI::Internal::ConversationCursorPage
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -40,15 +68,16 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::APIKeysTest < Open
 
     assert_pattern do
       row => {
-        id: String,
-        created_at: Integer,
-        last_used_at: Integer | nil,
-        name: String,
-        object: Symbol,
-        owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
-        owner_project_access: OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess,
-        redacted_value: String
-      }
+          id: String,
+          created_at: Integer,
+          last_used_at: Integer | nil,
+          name: String,
+          object: Symbol,
+          owner: OpenAI::Admin::Organization::Projects::ProjectAPIKey::Owner,
+          owner_project_access: OpenAI::Admin::Organization::Projects::ProjectAPIKey::OwnerProjectAccess,
+          redacted_value: String,
+          expires_at: Integer | nil
+        }
     end
   end
 
@@ -61,10 +90,10 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::APIKeysTest < Open
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 end

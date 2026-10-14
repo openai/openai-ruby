@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class ResponseFunctionCallArgumentsDoneEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::ResponseFunctionCallArgumentsDoneEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::ResponseFunctionCallArgumentsDoneEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The final arguments as a JSON string.
         sig { returns(String) }
@@ -48,32 +50,50 @@ module OpenAI
         # Also emitted when a Response is interrupted, incomplete, or cancelled.
         sig do
           params(
+
             arguments: String,
+
             call_id: String,
+
             event_id: String,
+
             item_id: String,
+
             name: String,
+
             output_index: Integer,
+
             response_id: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The final arguments as a JSON string.
           arguments:,
+
           # The ID of the function call.
           call_id:,
+
           # The unique ID of the server event.
           event_id:,
+
           # The ID of the function call item.
           item_id:,
+
           # The name of the function that was called.
           name:,
+
           # The index of the output item in the response.
           output_index:,
+
           # The ID of the response.
           response_id:,
+
           # The event type, must be `response.function_call_arguments.done`.
+
           type: :"response.function_call_arguments.done"
         )
         end
@@ -94,7 +114,10 @@ module OpenAI
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

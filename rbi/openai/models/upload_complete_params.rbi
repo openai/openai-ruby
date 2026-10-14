@@ -2,14 +2,18 @@
 
 module OpenAI
   module Models
+
     class UploadCompleteParams < OpenAI::Internal::Type::BaseModel
+
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      OrHash =
-        T.type_alias do
-          T.any(OpenAI::UploadCompleteParams, OpenAI::Internal::AnyHash)
-        end
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::UploadCompleteParams,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       sig { returns(String) }
       attr_accessor :upload_id
@@ -28,35 +32,41 @@ module OpenAI
 
       sig do
         params(
+
           upload_id: String,
+
           part_ids: T::Array[String],
+
           md5: String,
+
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
+
         upload_id:,
+
         # The ordered list of Part IDs.
         part_ids:,
+
         # The optional md5 checksum for the file contents to verify if the bytes uploaded
         # matches what you expect.
         md5: nil,
+
         request_options: {}
       )
       end
 
       sig do
         override.returns(
-          {
-            upload_id: String,
-            part_ids: T::Array[String],
-            md5: String,
-            request_options: OpenAI::RequestOptions
-          }
+          {upload_id: String, part_ids: T::Array[String], md5: String, request_options: OpenAI::RequestOptions}
         )
       end
       def to_hash
       end
+
     end
+
   end
 end

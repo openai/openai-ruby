@@ -2,20 +2,24 @@
 
 module OpenAI
   module Models
+
     module Admin
+
       module Organization
+
         module Groups
+
           class UserListParams < OpenAI::Internal::Type::BaseModel
+
             extend OpenAI::Internal::Type::RequestParameters::Converter
             include OpenAI::Internal::Type::RequestParameters
 
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Admin::Organization::Groups::UserListParams,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Admin::Organization::Groups::UserListParams,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             sig { returns(String) }
             attr_accessor :group_id
@@ -37,43 +41,42 @@ module OpenAI
             attr_writer :limit
 
             # Specifies the sort order of users in the list.
-            sig do
-              returns(
-                T.nilable(
-                  OpenAI::Admin::Organization::Groups::UserListParams::Order::OrSymbol
-                )
-              )
-            end
+            sig { returns(T.nilable(OpenAI::Admin::Organization::Groups::UserListParams::Order::OrSymbol)) }
             attr_reader :order
 
-            sig do
-              params(
-                order:
-                  OpenAI::Admin::Organization::Groups::UserListParams::Order::OrSymbol
-              ).void
-            end
+            sig { params(order: OpenAI::Admin::Organization::Groups::UserListParams::Order::OrSymbol).void }
             attr_writer :order
 
             sig do
               params(
+
                 group_id: String,
+
                 after: String,
+
                 limit: Integer,
-                order:
-                  OpenAI::Admin::Organization::Groups::UserListParams::Order::OrSymbol,
+
+                order: OpenAI::Admin::Organization::Groups::UserListParams::Order::OrSymbol,
+
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               group_id:,
+
               # A cursor for use in pagination. Provide the ID of the last user from the
               # previous list response to retrieve the next page.
               after: nil,
+
               # A limit on the number of users to be returned. Limit can range between 0 and
               # 1000, and the default is 100.
               limit: nil,
+
               # Specifies the sort order of users in the list.
               order: nil,
+
               request_options: {}
             )
             end
@@ -84,8 +87,7 @@ module OpenAI
                   group_id: String,
                   after: String,
                   limit: Integer,
-                  order:
-                    OpenAI::Admin::Organization::Groups::UserListParams::Order::OrSymbol,
+                  order: OpenAI::Admin::Organization::Groups::UserListParams::Order::OrSymbol,
                   request_options: OpenAI::RequestOptions
                 }
               )
@@ -97,39 +99,26 @@ module OpenAI
             module Order
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Admin::Organization::Groups::UserListParams::Order
-                  )
-                end
+              TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Admin::Organization::Groups::UserListParams::Order) }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              ASC =
-                T.let(
-                  :asc,
-                  OpenAI::Admin::Organization::Groups::UserListParams::Order::TaggedSymbol
-                )
-              DESC =
-                T.let(
-                  :desc,
-                  OpenAI::Admin::Organization::Groups::UserListParams::Order::TaggedSymbol
-                )
+              ASC = T.let(:asc, OpenAI::Admin::Organization::Groups::UserListParams::Order::TaggedSymbol)
+              DESC = T.let(:desc, OpenAI::Admin::Organization::Groups::UserListParams::Order::TaggedSymbol)
 
-              sig do
-                override.returns(
-                  T::Array[
-                    OpenAI::Admin::Organization::Groups::UserListParams::Order::TaggedSymbol
-                  ]
-                )
-              end
+              sig {
+                override.returns(T::Array[OpenAI::Admin::Organization::Groups::UserListParams::Order::TaggedSymbol])
+              }
               def self.values
               end
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

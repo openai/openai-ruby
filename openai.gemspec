@@ -21,11 +21,39 @@ Gem::Specification.new do |s|
     "sig/**/*.rbs",
     "manifest.yaml",
     "SECURITY.md",
+    "docs/architecture/security-model.md",
     "CHANGELOG.md",
     ".ignore"
+  ] +
+    [
+      "examples/audio/record_and_play.rb",
+      "examples/responses/websocket_workflows.rb",
+      "examples/mtls_custom_http_client.rb",
+      "examples/x509_workload_identity.rb",
+      "examples/realtime/README.md",
+      "examples/realtime/browser/README.md",
+      "examples/realtime/browser/server.rb",
+      "examples/realtime/browser/index.html",
+      "examples/realtime/browser/page.js",
+      "examples/realtime/browser/peer.js",
+      "examples/realtime/function_calling.rb",
+      "examples/realtime/image_input.rb",
+      "examples/realtime/mcp_approval.rb",
+      "examples/realtime/sideband.rb",
+      "examples/realtime/websocket_transcription.rb",
+      "examples/realtime/websocket_text.rb",
+      "examples/realtime/websocket_voice_turn.rb"
+    ]
+  s.extra_rdoc_files = [
+    "README.md",
+    "VERSIONING.md",
+    "azure.md",
+    "bedrock.md",
+    "realtime.md",
+    "local-audio.md",
+    "responses-websocket.md",
+    "examples/realtime/README.md"
   ]
-  s.extra_rdoc_files = ["README.md", "VERSIONING.md"]
-  s.add_dependency "base64"
-  s.add_dependency "cgi"
-  s.add_dependency "connection_pool"
+  s.add_dependency("connection_pool", ">= 2.2.3")
+  s.add_dependency("logger")
 end

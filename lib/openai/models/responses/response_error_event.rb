@@ -35,20 +35,22 @@ module OpenAI
         required :type, const: :error
 
         # @!method initialize(code:, message:, param:, sequence_number:, type: :error)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseErrorEvent} for more details.
-        #
         #   Emitted when an error occurs.
         #
-        #   @param code [String, nil] The error code.
+        #   @param code [String, nil]
+        #     The error code.
         #
-        #   @param message [String] The error message.
+        #   @param message [String]
+        #     The error message.
         #
-        #   @param param [String, nil] The error parameter.
+        #   @param param [String, nil]
+        #     The error parameter.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param type [Symbol, :error] The type of the event. Always `error`.
+        #   @param type [Symbol, :error]
+        #     The type of the event. Always `error`.
       end
     end
   end

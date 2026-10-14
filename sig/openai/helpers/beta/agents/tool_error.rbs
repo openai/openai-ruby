@@ -1,0 +1,17 @@
+module OpenAI
+  module Helpers
+    module Beta
+      module Agents
+        # Beta, local-only tool failure diagnostic.
+        class ToolError
+          attr_reader error: StandardError
+          attr_reader tool_name: String
+          attr_reader session_id: String
+          attr_reader turn_id: String
+          attr_reader call_id: String
+          attr_reader stage: :arguments | :execution | :output
+        end
+      end
+    end
+  end
+end

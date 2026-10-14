@@ -2,12 +2,17 @@
 
 module OpenAI
   module Models
+
     module Audio
+
       class TranslationVerbose < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Audio::TranslationVerbose, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Audio::TranslationVerbose,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The duration of the input audio.
         sig { returns(Float) }
@@ -22,51 +27,53 @@ module OpenAI
         attr_accessor :text
 
         # Segments of the translated text and their corresponding details.
-        sig do
-          returns(T.nilable(T::Array[OpenAI::Audio::TranscriptionSegment]))
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Audio::TranscriptionSegment])) }
         attr_reader :segments
 
-        sig do
-          params(
-            segments: T::Array[OpenAI::Audio::TranscriptionSegment::OrHash]
-          ).void
-        end
+        sig { params(segments: T::Array[OpenAI::Audio::TranscriptionSegment::OrHash]).void }
         attr_writer :segments
 
         sig do
           params(
+
             duration: Float,
+
             language: String,
+
             text: String,
+
             segments: T::Array[OpenAI::Audio::TranscriptionSegment::OrHash]
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The duration of the input audio.
           duration:,
+
           # The language of the output translation (always `english`).
           language:,
+
           # The translated text.
           text:,
+
           # Segments of the translated text and their corresponding details.
+
           segments: nil
         )
         end
 
         sig do
           override.returns(
-            {
-              duration: Float,
-              language: String,
-              text: String,
-              segments: T::Array[OpenAI::Audio::TranscriptionSegment]
-            }
+            {duration: Float, language: String, text: String, segments: T::Array[OpenAI::Audio::TranscriptionSegment]}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

@@ -1,0 +1,5 @@
+# frozen_string_literal: true
+
+eval_gemfile(File.expand_path("../Gemfile", __dir__))
+
+gem "aws-sdk-core", "~> 3"

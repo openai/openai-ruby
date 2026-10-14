@@ -28,11 +28,14 @@ module OpenAI
             # @!method initialize(mode:, model_ids:, object: :"project.model_permissions")
             #   Represents the model allowlist or denylist policy for a project.
             #
-            #   @param mode [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectModelPermissions::Mode] Whether the project uses an allowlist or a denylist.
+            #   @param mode [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectModelPermissions::Mode]
+            #     Whether the project uses an allowlist or a denylist.
             #
-            #   @param model_ids [Array<String>] The model IDs included in the model permissions policy.
+            #   @param model_ids [Array<String>]
+            #     The model IDs included in the model permissions policy.
             #
-            #   @param object [Symbol, :"project.model_permissions"] The object type, which is always `project.model_permissions`.
+            #   @param object [Symbol, :"project.model_permissions"]
+            #     The object type, which is always `project.model_permissions`.
 
             # Whether the project uses an allowlist or a denylist.
             #

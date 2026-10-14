@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live conversation · OpenAI Ruby</title>
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/page.mjs"></script>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">OpenAI Ruby example</p>
+    <h1>A conversation you can interrupt.</h1>
+    <p>Speak, listen, and jump in while the assistant replies. Try asking for a short story, then change its setting mid-reply.</p>
+    <p>Your microphone audio goes to OpenAI when you start. Voice time and delegated model usage are billed. This demo stops after five minutes.</p>
+    <div class="actions">
+      <button id="start">Start conversation</button>
+      <button id="stop" disabled>Stop</button>
+    </div>
+    <p id="status" role="status" aria-live="polite">Ready when you are.</p>
+    <audio controls autoplay aria-label="Assistant voice playback"></audio>
+    <p id="playback-hint" role="status"></p>
+    <p class="note">Use headphones for clearer audio. Choose Stop and wait for “Session finalized” before closing the page.</p>
+  </main>
+</body>
+</html>

@@ -35,15 +35,20 @@ module OpenAI
         required :object, const: :list
 
         # @!method initialize(data:, first_id:, has_more:, last_id:, object: :list)
-        #   @param data [Array<OpenAI::Models::Skills::SkillVersion>] A list of items
+        #   @param data [Array<OpenAI::Models::Skills::SkillVersion>]
+        #     A list of items
         #
-        #   @param first_id [String, nil] The ID of the first item in the list.
+        #   @param first_id [String, nil]
+        #     The ID of the first item in the list.
         #
-        #   @param has_more [Boolean] Whether there are more items available.
+        #   @param has_more [Boolean]
+        #     Whether there are more items available.
         #
-        #   @param last_id [String, nil] The ID of the last item in the list.
+        #   @param last_id [String, nil]
+        #     The ID of the last item in the list.
         #
-        #   @param object [Symbol, :list] The type of object returned, must be `list`.
+        #   @param object [Symbol, :list]
+        #     The type of object returned, must be `list`.
       end
     end
 

@@ -2,30 +2,24 @@
 
 module OpenAI
   module Models
-    module FineTuning
-      module Alpha
-        class GraderRunResponse < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Models::FineTuning::Alpha::GraderRunResponse,
-                OpenAI::Internal::AnyHash
-              )
-            end
 
-          sig do
-            returns(
-              OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata
+    module FineTuning
+
+      module Alpha
+
+        class GraderRunResponse < OpenAI::Internal::Type::BaseModel
+
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Models::FineTuning::Alpha::GraderRunResponse,
+              OpenAI::Internal::AnyHash
             )
           end
+
+          sig { returns(OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata) }
           attr_reader :metadata
 
-          sig do
-            params(
-              metadata:
-                OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::OrHash
-            ).void
-          end
+          sig { params(metadata: OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::OrHash).void }
           attr_writer :metadata
 
           sig { returns(T::Hash[Symbol, T.anything]) }
@@ -39,17 +33,25 @@ module OpenAI
 
           sig do
             params(
-              metadata:
-                OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::OrHash,
+
+              metadata: OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::OrHash,
+
               model_grader_token_usage_per_model: T::Hash[Symbol, T.anything],
+
               reward: Float,
+
               sub_rewards: T::Hash[Symbol, T.anything]
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             metadata:,
+
             model_grader_token_usage_per_model:,
+
             reward:,
+
             sub_rewards:
           )
           end
@@ -57,8 +59,7 @@ module OpenAI
           sig do
             override.returns(
               {
-                metadata:
-                  OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata,
+                metadata: OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata,
                 model_grader_token_usage_per_model: T::Hash[Symbol, T.anything],
                 reward: Float,
                 sub_rewards: T::Hash[Symbol, T.anything]
@@ -69,27 +70,17 @@ module OpenAI
           end
 
           class Metadata < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata,
-                  OpenAI::Internal::AnyHash
-                )
-              end
-
-            sig do
-              returns(
-                OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::Errors
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata,
+                OpenAI::Internal::AnyHash
               )
             end
+
+            sig { returns(OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::Errors) }
             attr_reader :errors
 
-            sig do
-              params(
-                errors:
-                  OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::Errors::OrHash
-              ).void
-            end
+            sig { params(errors: OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::Errors::OrHash).void }
             attr_writer :errors
 
             sig { returns(Float) }
@@ -112,23 +103,37 @@ module OpenAI
 
             sig do
               params(
-                errors:
-                  OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::Errors::OrHash,
+
+                errors: OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::Errors::OrHash,
+
                 execution_time: Float,
+
                 name: String,
+
                 sampled_model_name: T.nilable(String),
+
                 scores: T::Hash[Symbol, T.anything],
+
                 token_usage: T.nilable(Integer),
+
                 type: String
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               errors:,
+
               execution_time:,
+
               name:,
+
               sampled_model_name:,
+
               scores:,
+
               token_usage:,
+
               type:
             )
             end
@@ -136,8 +141,7 @@ module OpenAI
             sig do
               override.returns(
                 {
-                  errors:
-                    OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::Errors,
+                  errors: OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::Errors,
                   execution_time: Float,
                   name: String,
                   sampled_model_name: T.nilable(String),
@@ -151,13 +155,12 @@ module OpenAI
             end
 
             class Errors < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::Errors,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::Errors,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               sig { returns(T::Boolean) }
               attr_accessor :formula_parse_error
@@ -203,36 +206,65 @@ module OpenAI
 
               sig do
                 params(
+
                   formula_parse_error: T::Boolean,
+
                   invalid_variable_error: T::Boolean,
+
                   model_grader_parse_error: T::Boolean,
+
                   model_grader_refusal_error: T::Boolean,
+
                   model_grader_server_error: T::Boolean,
+
                   model_grader_server_error_details: T.nilable(String),
+
                   other_error: T::Boolean,
+
                   python_grader_runtime_error: T::Boolean,
+
                   python_grader_runtime_error_details: T.nilable(String),
+
                   python_grader_server_error: T::Boolean,
+
                   python_grader_server_error_type: T.nilable(String),
+
                   sample_parse_error: T::Boolean,
+
                   truncated_observation_error: T::Boolean,
+
                   unresponsive_reward_error: T::Boolean
-                ).returns(T.attached_class)
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 formula_parse_error:,
+
                 invalid_variable_error:,
+
                 model_grader_parse_error:,
+
                 model_grader_refusal_error:,
+
                 model_grader_server_error:,
+
                 model_grader_server_error_details:,
+
                 other_error:,
+
                 python_grader_runtime_error:,
+
                 python_grader_runtime_error_details:,
+
                 python_grader_server_error:,
+
                 python_grader_server_error_type:,
+
                 sample_parse_error:,
+
                 truncated_observation_error:,
+
                 unresponsive_reward_error:
               )
               end
@@ -259,10 +291,15 @@ module OpenAI
               end
               def to_hash
               end
+
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

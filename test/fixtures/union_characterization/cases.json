@@ -1,0 +1,320 @@
+[
+  {
+    "id": "responses_string_message_without_type",
+    "union": "responses_input_item",
+    "context": "request",
+    "discriminator": {
+      "property": "type",
+      "state": "missing"
+    },
+    "uniquely_resolvable": false,
+    "input_form": "wire",
+    "input": {
+      "role": "user",
+      "content": "hello"
+    },
+    "serialization": "responses_request"
+  },
+  {
+    "id": "responses_typed_message_without_type",
+    "union": "responses_input_item",
+    "context": "request",
+    "discriminator": {
+      "property": "type",
+      "state": "missing"
+    },
+    "uniquely_resolvable": false,
+    "input_form": "wire",
+    "input": {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "hello"
+        }
+      ]
+    },
+    "serialization": "responses_request"
+  },
+  {
+    "id": "responses_typed_message_without_type_symbols",
+    "union": "responses_input_item",
+    "context": "request",
+    "discriminator": {
+      "property": "type",
+      "state": "missing"
+    },
+    "uniquely_resolvable": false,
+    "input_form": "ruby_symbols",
+    "input": {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "hello"
+        }
+      ]
+    },
+    "serialization": "responses_request"
+  },
+  {
+    "id": "responses_typed_message_with_duplicate_tag",
+    "union": "responses_input_item",
+    "context": "request",
+    "discriminator": {
+      "property": "type",
+      "state": "known_duplicate",
+      "matching_variants": 3
+    },
+    "uniquely_resolvable": false,
+    "input_form": "wire",
+    "input": {
+      "type": "message",
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "hello"
+        }
+      ]
+    },
+    "serialization": "responses_request"
+  },
+  {
+    "id": "responses_typed_message_with_duplicate_tag_symbols",
+    "union": "responses_input_item",
+    "context": "request",
+    "discriminator": {
+      "property": "type",
+      "state": "known_duplicate",
+      "matching_variants": 3
+    },
+    "uniquely_resolvable": false,
+    "input_form": "ruby_symbols",
+    "input": {
+      "type": "message",
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "hello"
+        }
+      ]
+    },
+    "serialization": "responses_request"
+  },
+  {
+    "id": "responses_typed_message_with_unknown_field",
+    "union": "responses_input_item",
+    "context": "request",
+    "discriminator": {
+      "property": "type",
+      "state": "missing"
+    },
+    "uniquely_resolvable": false,
+    "input_form": "wire",
+    "input": {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "hello"
+        }
+      ],
+      "future_field": {
+        "preserved": true
+      }
+    },
+    "serialization": "responses_request"
+  },
+  {
+    "id": "beta_typed_message_without_type",
+    "union": "beta_response_input_item",
+    "context": "request",
+    "discriminator": {
+      "property": "type",
+      "state": "missing"
+    },
+    "uniquely_resolvable": false,
+    "input_form": "wire",
+    "input": {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "hello"
+        }
+      ]
+    },
+    "serialization": "beta_responses_request"
+  },
+  {
+    "id": "beta_typed_message_with_duplicate_tag_symbols",
+    "union": "beta_response_input_item",
+    "context": "request",
+    "discriminator": {
+      "property": "type",
+      "state": "known_duplicate",
+      "matching_variants": 3
+    },
+    "uniquely_resolvable": false,
+    "input_form": "ruby_symbols",
+    "input": {
+      "type": "message",
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "hello"
+        }
+      ]
+    },
+    "serialization": "beta_responses_request"
+  },
+  {
+    "id": "responses_unknown_stream_event",
+    "union": "responses_stream_event",
+    "context": "response_stream",
+    "discriminator": {
+      "property": "type",
+      "state": "explicitly_unknown",
+      "matching_variants": 0
+    },
+    "uniquely_resolvable": false,
+    "input_form": "wire",
+    "input": {
+      "type": "future.unmodeled.event",
+      "sequence_number": 9
+    },
+    "serialization": "union"
+  },
+  {
+    "id": "responses_unknown_stream_event_symbols",
+    "union": "responses_stream_event",
+    "context": "response_stream",
+    "discriminator": {
+      "property": "type",
+      "state": "explicitly_unknown",
+      "matching_variants": 0
+    },
+    "uniquely_resolvable": false,
+    "input_form": "ruby_symbols",
+    "input": {
+      "type": "future.unmodeled.event",
+      "sequence_number": 9
+    },
+    "serialization": "union"
+  },
+  {
+    "id": "beta_unknown_stream_event",
+    "union": "beta_response_stream_event",
+    "context": "response_stream",
+    "discriminator": {
+      "property": "type",
+      "state": "explicitly_unknown",
+      "matching_variants": 0
+    },
+    "uniquely_resolvable": false,
+    "input_form": "wire",
+    "input": {
+      "type": "future.unmodeled.event",
+      "sequence_number": 9
+    },
+    "serialization": "union"
+  },
+  {
+    "id": "beta_unknown_stream_event_symbols",
+    "union": "beta_response_stream_event",
+    "context": "response_stream",
+    "discriminator": {
+      "property": "type",
+      "state": "explicitly_unknown",
+      "matching_variants": 0
+    },
+    "uniquely_resolvable": false,
+    "input_form": "ruby_symbols",
+    "input": {
+      "type": "future.unmodeled.event",
+      "sequence_number": 9
+    },
+    "serialization": "union"
+  },
+  {
+    "id": "realtime_unknown_server_event",
+    "union": "realtime_server_event",
+    "context": "response_stream",
+    "discriminator": {
+      "property": "type",
+      "state": "explicitly_unknown",
+      "matching_variants": 0
+    },
+    "uniquely_resolvable": false,
+    "input_form": "wire",
+    "input": {
+      "type": "future.unmodeled.event",
+      "sequence_number": 9
+    },
+    "serialization": "union",
+    "public_boundary": "realtime_connection"
+  },
+  {
+    "id": "realtime_unknown_server_event_symbols",
+    "union": "realtime_server_event",
+    "context": "response_stream",
+    "discriminator": {
+      "property": "type",
+      "state": "explicitly_unknown",
+      "matching_variants": 0
+    },
+    "uniquely_resolvable": false,
+    "input_form": "ruby_symbols",
+    "input": {
+      "type": "future.unmodeled.event",
+      "sequence_number": 9
+    },
+    "serialization": "union",
+    "public_boundary": "realtime_connection"
+  },
+  {
+    "id": "realtime_known_unique_server_event",
+    "union": "realtime_server_event",
+    "context": "response_stream",
+    "discriminator": {
+      "property": "type",
+      "state": "known_unique",
+      "matching_variants": 1
+    },
+    "uniquely_resolvable": true,
+    "input_form": "wire",
+    "input": {
+      "type": "conversation.created",
+      "event_id": "evt_1",
+      "conversation": {
+        "id": "conv_1",
+        "object": "realtime.conversation"
+      }
+    },
+    "serialization": "union"
+  },
+  {
+    "id": "realtime_known_unique_server_event_symbols",
+    "union": "realtime_server_event",
+    "context": "response_stream",
+    "discriminator": {
+      "property": "type",
+      "state": "known_unique",
+      "matching_variants": 1
+    },
+    "uniquely_resolvable": true,
+    "input_form": "ruby_symbols",
+    "input": {
+      "type": "conversation.created",
+      "event_id": "evt_1",
+      "conversation": {
+        "id": "conv_1",
+        "object": "realtime.conversation"
+      }
+    },
+    "serialization": "union"
+  }
+]

@@ -1,0 +1,319 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type usage_decisions_response =
+          {
+            data: ::Array[OpenAI::Models::Admin::Organization::UsageDecisionsResponse::Data],
+            has_more: bool,
+            next_page: String?,
+            ?object: :page
+          }
+
+        class UsageDecisionsResponse < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: ::Array[OpenAI::Models::Admin::Organization::UsageDecisionsResponse::Data]
+
+          attr_accessor has_more: bool
+
+          attr_accessor next_page: String?
+
+          attr_accessor object: :page
+
+          def initialize: (
+            data: ::Array[OpenAI::Models::Admin::Organization::UsageDecisionsResponse::Data],
+            has_more: bool,
+            next_page: String?,
+            ?object: :page
+          ) -> void
+
+          def to_hash: -> {
+            data: ::Array[OpenAI::Models::Admin::Organization::UsageDecisionsResponse::Data],
+            has_more: bool,
+            next_page: String?,
+            ?object: :page
+          }
+
+          type data =
+            {
+              end_time: Integer,
+              ?object: :bucket,
+              results: ::Array[OpenAI::Models::Admin::Organization::UsageDecisionsResponse::Data::Result],
+              start_time: Integer
+            }
+
+          class Data < OpenAI::Internal::Type::BaseModel
+            attr_accessor end_time: Integer
+
+            attr_accessor object: :bucket
+
+            attr_accessor results: ::Array[OpenAI::Models::Admin::Organization::UsageDecisionsResponse::Data::Result]
+
+            attr_accessor start_time: Integer
+
+            def initialize: (
+              end_time: Integer,
+              results: ::Array[OpenAI::Models::Admin::Organization::UsageDecisionsResponse::Data::Result],
+              start_time: Integer,
+              ?object: :bucket
+            ) -> void
+
+            def to_hash: -> {
+              end_time: Integer,
+              ?object: :bucket,
+              results: ::Array[OpenAI::Models::Admin::Organization::UsageDecisionsResponse::Data::Result],
+              start_time: Integer
+            }
+
+            type result =
+              {
+                input_tokens: Integer,
+                num_model_requests: Integer,
+                ?object: :"organization.usage.decisions.result",
+                output_tokens: Integer,
+                ?api_key_id: String?,
+                ?api_source: OpenAI::Models::Admin::Organization::UsageDecisionsResponse::Data::Result::api_source?,
+                ?batch: bool?,
+                ?input_audio_tokens: Integer?,
+                ?:input_cache_write_12h_tokens => Integer?,
+                ?input_cache_write_tokens: Integer?,
+                ?input_cached_audio_tokens: Integer?,
+                ?input_cached_image_tokens: Integer?,
+                ?input_cached_text_tokens: Integer?,
+                ?input_cached_tokens: Integer?,
+                ?input_image_tokens: Integer?,
+                ?input_text_tokens: Integer?,
+                ?input_uncached_tokens: Integer?,
+                ?model: String?,
+                ?output_audio_tokens: Integer?,
+                ?output_image_tokens: Integer?,
+                ?output_text_tokens: Integer?,
+                ?project_id: String?,
+                ?service_tier: String?,
+                ?user_id: String?
+              }
+
+            class Result < OpenAI::Internal::Type::BaseModel
+              # The aggregated number of input tokens used, including cached and cache-write
+              # tokens. This includes text, audio, and image tokens. For customers subscribed to
+              # Scale Tier, this includes Scale Tier tokens.
+              attr_accessor input_tokens: Integer
+
+              # The count of requests made to the model.
+              attr_accessor num_model_requests: Integer
+
+              attr_accessor object: :"organization.usage.decisions.result"
+
+              # The aggregated number of output tokens used across text, audio, and image
+              # outputs. For customers subscribed to Scale Tier, this includes Scale Tier
+              # tokens.
+              attr_accessor output_tokens: Integer
+
+              # When `group_by=api_key_id`, this field provides the API key ID of the grouped
+              # usage result.
+              attr_accessor api_key_id: String?
+
+              # When grouped by `api_source`, `agents_api` identifies attributed Agents API
+              # activity and `unlabeled` includes all records without published source
+              # attribution, including historical and unknown origins. Unlabeled does not imply
+              # direct API usage. Without source grouping, this field is null.
+              attr_accessor api_source: OpenAI::Models::Admin::Organization::UsageDecisionsResponse::Data::Result::api_source?
+
+              # When `group_by=batch`, this field tells whether the grouped usage result is
+              # batch or not.
+              attr_accessor batch: bool?
+
+              # The aggregated number of uncached audio input tokens used.
+              attr_accessor input_audio_tokens: Integer?
+
+              # The aggregated number of input tokens written to the cache with a 12-hour
+              # retention period.
+              attr_accessor input_cache_write_12h_tokens: Integer?
+
+              # The aggregated number of input tokens written to the cache with a 30-minute
+              # retention period.
+              attr_accessor input_cache_write_tokens: Integer?
+
+              # The aggregated number of cached audio input tokens used.
+              attr_accessor input_cached_audio_tokens: Integer?
+
+              # The aggregated number of cached image input tokens used.
+              attr_accessor input_cached_image_tokens: Integer?
+
+              # The aggregated number of cached text input tokens used.
+              attr_accessor input_cached_text_tokens: Integer?
+
+              # The aggregated number of cached input tokens used across text, audio, and image
+              # inputs. For customers subscribed to Scale Tier, this includes Scale Tier tokens.
+              attr_accessor input_cached_tokens: Integer?
+
+              # The aggregated number of uncached image input tokens used.
+              attr_accessor input_image_tokens: Integer?
+
+              # The aggregated number of uncached text input tokens used, excluding cache-write
+              # tokens.
+              attr_accessor input_text_tokens: Integer?
+
+              # The aggregated number of uncached input tokens used across text, audio, and
+              # image inputs, excluding cache-write tokens.
+              attr_accessor input_uncached_tokens: Integer?
+
+              # When `group_by=model`, this field provides the model name of the grouped usage
+              # result.
+              attr_accessor model: String?
+
+              # The aggregated number of audio output tokens used.
+              attr_accessor output_audio_tokens: Integer?
+
+              # The aggregated number of image output tokens used.
+              attr_accessor output_image_tokens: Integer?
+
+              # The aggregated number of text output tokens used.
+              attr_accessor output_text_tokens: Integer?
+
+              # When `group_by=project_id`, this field provides the project ID of the grouped
+              # usage result.
+              attr_accessor project_id: String?
+
+              # When `group_by=service_tier`, this field provides the service tier of the
+              # grouped usage result.
+              attr_accessor service_tier: String?
+
+              # When `group_by=user_id`, this field provides the user ID of the grouped usage
+              # result.
+              attr_accessor user_id: String?
+
+              # @param input_tokens
+              #   The aggregated number of input tokens used, including cached and cache-write
+              #   tokens. This includes text, audio, and image tokens. For customers subscribed to
+              #   Scale Tier, this includes Scale Tier tokens.
+              # @param num_model_requests
+              #   The count of requests made to the model.
+              # @param output_tokens
+              #   The aggregated number of output tokens used across text, audio, and image
+              #   outputs. For customers subscribed to Scale Tier, this includes Scale Tier
+              #   tokens.
+              # @param api_key_id
+              #   When `group_by=api_key_id`, this field provides the API key ID of the grouped
+              #   usage result.
+              # @param api_source
+              #   When grouped by `api_source`, `agents_api` identifies attributed Agents API
+              #   activity and `unlabeled` includes all records without published source
+              #   attribution, including historical and unknown origins. Unlabeled does not imply
+              #   direct API usage. Without source grouping, this field is null.
+              # @param batch
+              #   When `group_by=batch`, this field tells whether the grouped usage result is
+              #   batch or not.
+              # @param input_audio_tokens
+              #   The aggregated number of uncached audio input tokens used.
+              # @param input_cache_write_12h_tokens
+              #   The aggregated number of input tokens written to the cache with a 12-hour
+              #   retention period.
+              # @param input_cache_write_tokens
+              #   The aggregated number of input tokens written to the cache with a 30-minute
+              #   retention period.
+              # @param input_cached_audio_tokens
+              #   The aggregated number of cached audio input tokens used.
+              # @param input_cached_image_tokens
+              #   The aggregated number of cached image input tokens used.
+              # @param input_cached_text_tokens
+              #   The aggregated number of cached text input tokens used.
+              # @param input_cached_tokens
+              #   The aggregated number of cached input tokens used across text, audio, and image
+              #   inputs. For customers subscribed to Scale Tier, this includes Scale Tier tokens.
+              # @param input_image_tokens
+              #   The aggregated number of uncached image input tokens used.
+              # @param input_text_tokens
+              #   The aggregated number of uncached text input tokens used, excluding cache-write
+              #   tokens.
+              # @param input_uncached_tokens
+              #   The aggregated number of uncached input tokens used across text, audio, and
+              #   image inputs, excluding cache-write tokens.
+              # @param model
+              #   When `group_by=model`, this field provides the model name of the grouped usage
+              #   result.
+              # @param output_audio_tokens
+              #   The aggregated number of audio output tokens used.
+              # @param output_image_tokens
+              #   The aggregated number of image output tokens used.
+              # @param output_text_tokens
+              #   The aggregated number of text output tokens used.
+              # @param project_id
+              #   When `group_by=project_id`, this field provides the project ID of the grouped
+              #   usage result.
+              # @param service_tier
+              #   When `group_by=service_tier`, this field provides the service tier of the
+              #   grouped usage result.
+              # @param user_id
+              #   When `group_by=user_id`, this field provides the user ID of the grouped usage
+              #   result.
+              def initialize: (
+                input_tokens: Integer,
+                num_model_requests: Integer,
+                output_tokens: Integer,
+                ?api_key_id: String?,
+                ?api_source: OpenAI::Models::Admin::Organization::UsageDecisionsResponse::Data::Result::api_source?,
+                ?batch: bool?,
+                ?input_audio_tokens: Integer?,
+                ?input_cache_write_12h_tokens: Integer?,
+                ?input_cache_write_tokens: Integer?,
+                ?input_cached_audio_tokens: Integer?,
+                ?input_cached_image_tokens: Integer?,
+                ?input_cached_text_tokens: Integer?,
+                ?input_cached_tokens: Integer?,
+                ?input_image_tokens: Integer?,
+                ?input_text_tokens: Integer?,
+                ?input_uncached_tokens: Integer?,
+                ?model: String?,
+                ?output_audio_tokens: Integer?,
+                ?output_image_tokens: Integer?,
+                ?output_text_tokens: Integer?,
+                ?project_id: String?,
+                ?service_tier: String?,
+                ?user_id: String?,
+                ?object: :"organization.usage.decisions.result"
+              ) -> void
+
+              def to_hash: -> {
+                input_tokens: Integer,
+                num_model_requests: Integer,
+                ?object: :"organization.usage.decisions.result",
+                output_tokens: Integer,
+                ?api_key_id: String?,
+                ?api_source: OpenAI::Models::Admin::Organization::UsageDecisionsResponse::Data::Result::api_source?,
+                ?batch: bool?,
+                ?input_audio_tokens: Integer?,
+                ?:input_cache_write_12h_tokens => Integer?,
+                ?input_cache_write_tokens: Integer?,
+                ?input_cached_audio_tokens: Integer?,
+                ?input_cached_image_tokens: Integer?,
+                ?input_cached_text_tokens: Integer?,
+                ?input_cached_tokens: Integer?,
+                ?input_image_tokens: Integer?,
+                ?input_text_tokens: Integer?,
+                ?input_uncached_tokens: Integer?,
+                ?model: String?,
+                ?output_audio_tokens: Integer?,
+                ?output_image_tokens: Integer?,
+                ?output_text_tokens: Integer?,
+                ?project_id: String?,
+                ?service_tier: String?,
+                ?user_id: String?
+              }
+
+              type api_source = :agents_api | :unlabeled
+
+              module APISource
+                extend OpenAI::Internal::Type::Enum
+
+                AGENTS_API: :agents_api
+                UNLABELED: :unlabeled
+
+                def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::UsageDecisionsResponse::Data::Result::api_source]
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end

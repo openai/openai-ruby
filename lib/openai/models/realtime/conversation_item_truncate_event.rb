@@ -38,9 +38,6 @@ module OpenAI
         optional :event_id, String
 
         # @!method initialize(audio_end_ms:, content_index:, item_id:, event_id: nil, type: :"conversation.item.truncate")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::ConversationItemTruncateEvent} for more details.
-        #
         #   Send this event to truncate a previous assistant message’s audio. The server
         #   will produce audio faster than realtime, so this event is useful when the user
         #   interrupts to truncate audio that has already been sent to the client but not
@@ -53,15 +50,23 @@ module OpenAI
         #   If successful, the server will respond with a `conversation.item.truncated`
         #   event.
         #
-        #   @param audio_end_ms [Integer] Inclusive duration up to which audio is truncated, in milliseconds. If
+        #   @param audio_end_ms [Integer]
+        #     Inclusive duration up to which audio is truncated, in milliseconds. If the
+        #     audio_end_ms is greater than the actual audio duration, the server will respond
+        #     with an error.
         #
-        #   @param content_index [Integer] The index of the content part to truncate. Set this to `0`.
+        #   @param content_index [Integer]
+        #     The index of the content part to truncate. Set this to `0`.
         #
-        #   @param item_id [String] The ID of the assistant message item to truncate. Only assistant message
+        #   @param item_id [String]
+        #     The ID of the assistant message item to truncate. Only assistant message items
+        #     can be truncated.
         #
-        #   @param event_id [String] Optional client-generated ID used to identify this event.
+        #   @param event_id [String]
+        #     Optional client-generated ID used to identify this event.
         #
-        #   @param type [Symbol, :"conversation.item.truncate"] The event type, must be `conversation.item.truncate`.
+        #   @param type [Symbol, :"conversation.item.truncate"]
+        #     The event type, must be `conversation.item.truncate`.
       end
     end
   end

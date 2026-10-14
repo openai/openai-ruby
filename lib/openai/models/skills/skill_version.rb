@@ -48,19 +48,26 @@ module OpenAI
         required :version, String
 
         # @!method initialize(id:, created_at:, description:, name:, skill_id:, version:, object: :"skill.version")
-        #   @param id [String] Unique identifier for the skill version.
+        #   @param id [String]
+        #     Unique identifier for the skill version.
         #
-        #   @param created_at [Integer] Unix timestamp (seconds) for when the version was created.
+        #   @param created_at [Integer]
+        #     Unix timestamp (seconds) for when the version was created.
         #
-        #   @param description [String] Description of the skill version.
+        #   @param description [String]
+        #     Description of the skill version.
         #
-        #   @param name [String] Name of the skill version.
+        #   @param name [String]
+        #     Name of the skill version.
         #
-        #   @param skill_id [String] Identifier of the skill for this version.
+        #   @param skill_id [String]
+        #     Identifier of the skill for this version.
         #
-        #   @param version [String] Version number for this skill.
+        #   @param version [String]
+        #     Version number for this skill.
         #
-        #   @param object [Symbol, :"skill.version"] The object type, which is `skill.version`.
+        #   @param object [Symbol, :"skill.version"]
+        #     The object type, which is `skill.version`.
       end
     end
 

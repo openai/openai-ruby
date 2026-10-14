@@ -87,28 +87,13 @@ module OpenAI
         | ::Array[(String | Integer)?])?] headers
       ) -> ::Hash[String, String]
 
-      class ReadIOAdapter
-        def close?: -> bool?
-
-        def close: -> void
-
-        private def read_enum: (Integer? max_len) -> String
-
-        def read: (?Integer? max_len, ?String? out_string) -> String?
-
-        def initialize: (
-          String | Pathname | StringIO | Enumerable[String] src
-        ) {
-          (String arg0) -> void
-        } -> void
-      end
-
       def self?.writable_enum: {
         (Enumerator::Yielder y) -> void
       } -> Enumerable[String]
 
       JSON_CONTENT: Regexp
       JSONL_CONTENT: Regexp
+      MULTIPART_CONTENT: Regexp
 
       def encode_query_params: (
         ::Hash[Symbol, top] query
@@ -127,7 +112,19 @@ module OpenAI
         ?content_type: String?
       ) -> void
 
+      def self?.escape_multipart_header_param: (
+        Pathname | String | Symbol value
+      ) -> String
+
       def self?.write_multipart_chunk: (
+        Enumerator::Yielder y,
+        boundary: String,
+        key: Symbol | String,
+        val: top,
+        closing: ::Array[^-> void]
+      ) -> void
+
+      def self?.write_multipart_value: (
         Enumerator::Yielder y,
         boundary: String,
         key: Symbol | String,
@@ -150,7 +147,9 @@ module OpenAI
         ::Hash[String, String] headers,
         stream: Enumerable[String],
         ?suppress_error: bool
-      ) -> top
+      ) ?{
+        (String body) -> void
+      } -> top
 
       def self?.fused_enum: (
         Enumerable[top] enum,

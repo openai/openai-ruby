@@ -42,17 +42,19 @@ module OpenAI
           optional :workflow_name, String
 
           # @!method initialize(group_id: nil, metadata: nil, workflow_name: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Realtime::RealtimeTracingConfig::TracingConfiguration} for more
-          #   details.
-          #
           #   Granular configuration for tracing.
           #
-          #   @param group_id [String] The group id to attach to this trace to enable filtering and
+          #   @param group_id [String]
+          #     The group id to attach to this trace to enable filtering and grouping in the
+          #     Traces Dashboard.
           #
-          #   @param metadata [Object] The arbitrary metadata to attach to this trace to enable
+          #   @param metadata [Object]
+          #     The arbitrary metadata to attach to this trace to enable filtering in the Traces
+          #     Dashboard.
           #
-          #   @param workflow_name [String] The name of the workflow to attach to this trace. This is used to
+          #   @param workflow_name [String]
+          #     The name of the workflow to attach to this trace. This is used to name the trace
+          #     in the Traces Dashboard.
         end
 
         # @!method self.variants

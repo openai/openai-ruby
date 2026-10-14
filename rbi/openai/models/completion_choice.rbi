@@ -2,11 +2,15 @@
 
 module OpenAI
   module Models
+
     class CompletionChoice < OpenAI::Internal::Type::BaseModel
-      OrHash =
-        T.type_alias do
-          T.any(OpenAI::CompletionChoice, OpenAI::Internal::AnyHash)
-        end
+
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::CompletionChoice,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       # The reason the model stopped generating tokens. This will be `stop` if the model
       # hit a natural stop point or a provided stop sequence, `length` if the maximum
@@ -21,11 +25,7 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::CompletionChoice::Logprobs)) }
       attr_reader :logprobs
 
-      sig do
-        params(
-          logprobs: T.nilable(OpenAI::CompletionChoice::Logprobs::OrHash)
-        ).void
-      end
+      sig { params(logprobs: T.nilable(OpenAI::CompletionChoice::Logprobs::OrHash)).void }
       attr_writer :logprobs
 
       sig { returns(String) }
@@ -33,20 +33,29 @@ module OpenAI
 
       sig do
         params(
+
           finish_reason: OpenAI::CompletionChoice::FinishReason::OrSymbol,
+
           index: Integer,
+
           logprobs: T.nilable(OpenAI::CompletionChoice::Logprobs::OrHash),
+
           text: String
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
+
         # The reason the model stopped generating tokens. This will be `stop` if the model
         # hit a natural stop point or a provided stop sequence, `length` if the maximum
         # number of tokens specified in the request was reached, or `content_filter` if
         # content was omitted due to a flag from our content filters.
         finish_reason:,
+
         index:,
+
         logprobs:,
+
         text:
       )
       end
@@ -71,34 +80,25 @@ module OpenAI
       module FinishReason
         extend OpenAI::Internal::Type::Enum
 
-        TaggedSymbol =
-          T.type_alias { T.all(Symbol, OpenAI::CompletionChoice::FinishReason) }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::CompletionChoice::FinishReason) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        STOP =
-          T.let(:stop, OpenAI::CompletionChoice::FinishReason::TaggedSymbol)
-        LENGTH =
-          T.let(:length, OpenAI::CompletionChoice::FinishReason::TaggedSymbol)
-        CONTENT_FILTER =
-          T.let(
-            :content_filter,
-            OpenAI::CompletionChoice::FinishReason::TaggedSymbol
-          )
+        STOP = T.let(:stop, OpenAI::CompletionChoice::FinishReason::TaggedSymbol)
+        LENGTH = T.let(:length, OpenAI::CompletionChoice::FinishReason::TaggedSymbol)
+        CONTENT_FILTER = T.let(:content_filter, OpenAI::CompletionChoice::FinishReason::TaggedSymbol)
 
-        sig do
-          override.returns(
-            T::Array[OpenAI::CompletionChoice::FinishReason::TaggedSymbol]
-          )
-        end
+        sig { override.returns(T::Array[OpenAI::CompletionChoice::FinishReason::TaggedSymbol]) }
         def self.values
         end
       end
 
       class Logprobs < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::CompletionChoice::Logprobs, OpenAI::Internal::AnyHash)
-          end
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::CompletionChoice::Logprobs,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         sig { returns(T.nilable(T::Array[Integer])) }
         attr_reader :text_offset
@@ -126,16 +126,25 @@ module OpenAI
 
         sig do
           params(
+
             text_offset: T::Array[Integer],
+
             token_logprobs: T::Array[Float],
+
             tokens: T::Array[String],
+
             top_logprobs: T::Array[T::Hash[Symbol, Float]]
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           text_offset: nil,
+
           token_logprobs: nil,
+
           tokens: nil,
+
           top_logprobs: nil
         )
         end
@@ -152,7 +161,10 @@ module OpenAI
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

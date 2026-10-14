@@ -1,15 +1,18 @@
 # frozen_string_literal: true
 
-require "etc"
+require "bundler"
 require "pathname"
-require "securerandom"
-require "shellwords"
+require "tempfile"
 
 require "minitest/test_task"
 require "rake/clean"
 require "rubocop/rake_task"
 
-tapioca = "sorbet/tapioca"
+require_relative "scripts/rubyfmt_policy"
+require_relative "scripts/rbs_format"
+require_relative "scripts/parallel_lint_checks"
+require_relative "scripts/test_sharding"
+
 examples = "examples"
 ignore_file = ".ignore"
 pkg = "pkg"
@@ -18,7 +21,7 @@ FILES_ENV = "FORMAT_FILE"
 
 CLEAN.push(*%w[.idea/ .ruby-lsp/ .yardoc/ doc/], *FileList["*.gem"], pkg, ignore_file)
 
-CLOBBER.push(*%w[sorbet/rbi/annotations/ sorbet/rbi/gems/], tapioca)
+CLOBBER.push(*%w[sorbet/rbi/annotations/ sorbet/rbi/gems/])
 
 multitask(:default) do
   sh(*%w[rake --tasks])
@@ -26,115 +29,130 @@ end
 
 desc("Preview docs; use `PORT=<PORT>` to change the port")
 multitask(:"docs:preview") do
-  sh(*%w[yard server --reload --quiet --bind [::] --port], ENV.fetch("PORT", "8808"))
+  Bundler.with_original_env { sh(*%w[./scripts/docs preview]) }
 end
 
-desc("Run test suites; use `TEST=path/to/test.rb` to run a specific test file")
-multitask(:test) do
-  rb =
-    FileList[ENV.fetch("TEST", "./test/**/*_test.rb")]
-    .map { "require_relative(#{_1.dump});" }
-    .join
+bedrock_tests = FileList["test/openai/providers/bedrock*_test.rb"]
+
+run_tests = lambda do |files|
+  abort("No test files selected") if files.empty?
+
+  rb = files.map { "require_relative(#{_1.dump});" }.join
 
   ruby(*%w[-w -e], rb, verbose: false) { fail unless _1 }
 end
 
-# Cap parallelism at the CPU count. `--max-procs=0` spawns one process per
-# 300-file batch with no upper bound; on large SDKs (thousands of files) that
-# oversubscribes CPUs and stacks up rubocop processes, exhausting memory and
-# slowing CI to the point of timing out.
-xargs = %W[xargs --no-run-if-empty --null --max-procs=#{Etc.nprocessors} --max-args=300 --]
-ruby_opt = {"RUBYOPT" => [ENV["RUBYOPT"], "--encoding=UTF-8"].compact.join(" ")}
-
-filtered = ->(ext, dirs) do
-  if ENV.key?(FILES_ENV)
-    %w[sed -E -n -e] << "/\\.#{ext}$/p" << "--" << ENV.fetch(FILES_ENV)
-  else
-    (%w[find] + dirs + %w[-type f -and -name]) << "*.#{ext}" << "-print0"
+desc("Run non-Bedrock test suites; use `TEST=path/to/test.rb` to run a specific test file")
+multitask(test: [:"test:examples:inventory"]) do
+  files = FileList[ENV.fetch("TEST", "test/**/*_test.rb")]
+  requested_bedrock_tests = files.to_a & bedrock_tests.to_a
+  if ENV.key?("TEST") && !requested_bedrock_tests.empty?
+    abort("Run Bedrock tests with `BUNDLE_GEMFILE=gemfiles/bedrock.gemfile bundle exec rake test:bedrock`")
   end
+
+  run_tests.call(TestSharding.select(files.exclude(*bedrock_tests).to_a, ENV["TEST_SHARD"]))
+end
+
+desc("Run Bedrock tests with the AWS test bundle")
+multitask("test:bedrock") do
+  run_tests.call(bedrock_tests)
 end
 
 desc("Lint `*.rb(i)`")
-RuboCop::RakeTask.new(:"lint:rubocop") do |task|
-  task.patterns = FileList[
-    "./{lib,test,rbi,examples}/**/*.rb",
-    "./{lib,test,rbi,examples}/**/*.rbi",
-  ]
+rubocop_task = Gem.win_platform? ? :"lint:rubocop" : :"lint:rubocop:inspect"
+RuboCop::RakeTask.new(rubocop_task) do |task|
+  task.patterns = ["."]
   task.formatters = %w[github] if ENV.key?("CI")
 
-  # some lines cannot be shortened
-  task.options = %w[--parallel --except Lint/RedundantCopDisableDirective,Layout/LineLength]
+  task.options = %w[--parallel --force-exclusion]
 end
 
-norm_lines = %w[tr -- \n \0].shelljoin
-
-desc("Format `*.rb`")
-multitask(:"format:rb") do
-  # while `syntax_tree` is much faster than `rubocop`, `rubocop` is the only formatter with full syntax support
-  files = filtered["rb", %w[./lib ./test ./examples]]
-  fmt = xargs + %w[rubocop --fail-level F --autocorrect --format simple --]
-  sh("#{files.shelljoin} | #{norm_lines} | #{fmt.shelljoin}")
+desc("Validate RuboCop suppression directives")
+multitask(:"lint:rubocop_directives") do
+  ruby(*%w[scripts/validate-rubocop-directives])
 end
 
-desc("Format `*.rbi`")
-multitask(:"format:rbi") do
-  files = filtered["rbi", %w[./rbi]]
-  fmt = xargs + %w[stree write --]
-  sh(ruby_opt, "#{files.shelljoin} | #{norm_lines} | #{fmt.shelljoin}")
-end
-
-desc("Format `*.rbs`")
-multitask(:"format:rbs") do
-  files = filtered["rbs", %w[./sig]]
-  inplace = /darwin|bsd/ =~ RUBY_PLATFORM ? ["-i", ""] : %w[-i]
-  uuid = SecureRandom.uuid
-
-  # `syntax_tree` has trouble with `rbs`'s class & module aliases
-
-  sed_bin = /darwin/ =~ RUBY_PLATFORM ? "/usr/bin/sed" : "sed"
-  sed = xargs + [sed_bin, "-E", *inplace, "-e"]
-  # annotate unprocessable aliases with a unique comment
-  pre = sed + ["s/(class|module) ([^ ]+) = (.+$)/# \\1 #{uuid}\\n\\2: \\3/", "--"]
-  fmt = xargs + %w[stree write --plugin=rbs --]
-  # remove the unique comment and unprocessable aliases to type aliases
-  subst = <<~SED
-    s/# (class|module) #{uuid}/\\1/
-    t l1
-    b
-
-    : l1
-    N
-    s/\\n *([^:]+): (.+)$/ \\1 = \\2/
-  SED
-  # for each line:
-  #   1. try transform the unique comment into `class | module`, if successful, branch to label `l1`.
-  #   2. at label `l1`, join previously annotated line with `class | module` information.
-  pst = sed + [subst, "--"]
-
-  success = false
-
-  # transform class aliases to type aliases, which syntax tree has no trouble with
-  sh("#{files.shelljoin} | #{norm_lines} | #{pre.shelljoin}")
-  # run syntax tree to format `*.rbs` files
-  sh(ruby_opt, "#{files.shelljoin} | #{norm_lines} | #{fmt.shelljoin}") do
-    success = _1
+if Gem.win_platform?
+  # Keep the original gate where POSIX process-group cleanup is unavailable.
+  Rake::Task[:"lint:rubocop"].enhance([:"lint:rubocop_directives", :"lint:rubyfmt", :"lint:rbs_format"])
+else
+  desc("Check suppression directives, formatting, and RuboCop offenses")
+  task(:"lint:rubocop") do
+    abort("Ruby lint checks failed") unless ParallelLintChecks.run(root: __dir__)
   end
-  # transform type aliases back to class aliases
-  sh("#{files.shelljoin} | #{norm_lines} | #{pst.shelljoin}")
 
-  # always run post-processing to remove comment marker
-  fail unless success
+  %w[auto_correct autocorrect autocorrect_all].each do |name|
+    task("lint:rubocop:#{name}" => "lint:rubocop:inspect:#{name}")
+  end
+end
+
+ruby_paths = lambda do
+  inputs = if ENV.key?(FILES_ENV)
+    File.readlines(ENV.fetch(FILES_ENV), chomp: true)
+  else
+    ["."]
+  end
+
+  RubyfmtPolicy.paths(inputs)
+end
+
+run_rubyfmt = lambda do |mode|
+  paths = ruby_paths.call
+  violations = RubyfmtPolicy.violations(paths)
+  abort(violations.join("\n")) unless violations.empty?
+  unless paths.empty?
+    Tempfile.create("rubyfmt-paths") do |file|
+      file.binmode
+      paths.each do |path|
+        file.write(path)
+        file.write("\0")
+      end
+
+      file.flush
+      abort("rubyfmt failed") unless system("xargs", "-0", "./scripts/rubyfmt", mode, "--", in: file.path)
+    end
+  end
+end
+
+desc("Check Ruby source formatting")
+multitask(:"lint:rubyfmt") do
+  run_rubyfmt.call("--check")
+end
+
+desc("Format Ruby source and RBI signatures with rubyfmt")
+multitask(:"format:rb") do
+  run_rubyfmt.call("--in-place")
+end
+
+desc("Format RBI signatures with rubyfmt")
+task("format:rbi": :"format:rb")
+
+rbs_paths = lambda do
+  if ENV.key?(FILES_ENV)
+    File.readlines(ENV.fetch(FILES_ENV), chomp: true).select { _1.end_with?(".rbs") }
+  else
+    Dir.glob("sig/**/*.rbs")
+  end
+end
+
+desc("Check RBS signature formatting")
+multitask(:"lint:rbs_format") do
+  changed = RBSFormat.run(rbs_paths.call, check: true)
+  abort("RBS formatting differs; run ./scripts/format:\n#{changed.join("\n")}") unless changed.empty?
+end
+
+desc("Format RBS signatures with Syntax Tree")
+multitask(:"format:rbs") do
+  RBSFormat.run(rbs_paths.call, check: false)
 end
 
 desc("Format everything")
-multitask(format: [:"format:rb", :"format:rbi", :"format:rbs"])
+# RuboCop temporarily changes cwd; RBS discovery must not run alongside it.
+task(format: [:"format:rb", :"format:rbs"])
 
-desc("Typecheck `*.rbs`")
-multitask(:"typecheck:steep") do
-  steep = %w[steep check]
-  steep += ["--jobs", ENV.fetch("STEEP_JOBS")] if ENV.key?("STEEP_JOBS")
-  steep += %w[--format=github] if ENV.key?("CI")
-  sh(*steep)
+desc("Validate `*.rbs`")
+multitask(:"validate:rbs") do
+  ruby(*%w[scripts/validate-rbs])
 end
 
 directory(examples)
@@ -142,33 +160,69 @@ directory(pkg)
 
 desc("Typecheck `*.rbi`")
 multitask("typecheck:sorbet": examples) do
-  sh(*%w[srb typecheck --dir], examples)
+  # The shipped RBI directory is already listed in sorbet/config.
+  sh({"SRB_SKIP_GEM_RBIS" => "1"}, *%w[srb typecheck --dir], examples)
 end
 
-directory(tapioca) do
-  sh(*%w[tapioca init])
+desc("Typecheck and validate everything")
+multitask(typecheck: [:"typecheck:sorbet", :"validate:rbs"])
+
+desc("Validate the Ruby example E2E inventory without making live requests")
+task("test:examples:inventory") do
+  ruby(*%w[scripts/examples-e2e.rb --inventory-only])
 end
 
-desc("Typecheck everything")
-multitask(typecheck: [:"typecheck:steep", :"typecheck:sorbet"])
+desc("Run covered Ruby examples end-to-end against the live API")
+task("test:examples:e2e") do
+  ruby(*%w[scripts/examples-e2e.rb])
+end
+
+desc("Smoke-test live API authentication, responses, streaming, and optionally X.509")
+task("test:live:smoke") do
+  x509 = ENV.fetch("OPENAI_LIVE_SMOKE_X509", "0")
+  unless %w[0 1].include?(x509)
+    abort("OPENAI_LIVE_SMOKE_X509 must be 0 or 1")
+  end
+
+  ruby(*%w[scripts/live-smoke.rb])
+  ruby(*%w[examples/x509_workload_identity.rb]) if x509 == "1"
+end
 
 desc("Lint and typecheck")
-multitask(lint: [:"lint:rubocop", :typecheck])
+# RuboCop temporarily changes cwd; sibling commands must not launch alongside it.
+task(:lint) do
+  failures = []
+  checks = if Gem.win_platform?
+    [:"lint:rubocop", :"lint:rubocop_directives", :typecheck]
+  else
+    [:"lint:rubocop", :typecheck]
+  end
+
+  checks.each do |name|
+    Rake::Task[name].invoke
+  rescue SystemExit, StandardError => error
+    failures << error
+  end
+
+  raise failures.first unless failures.empty?
+end
 
 desc("Build yard docs")
 multitask(:"build:docs") do
-  sh(*%w[yard])
+  Bundler.with_original_env { sh(*%w[./scripts/docs build]) }
 end
 
 desc("Build ruby gem")
-multitask(:"build:gem" => pkg) do
+multitask("build:gem": pkg) do
   # optimizing for grepping through the gem bundle: many tools honour `.ignore` files, including VSCode
   #
   # both `rbi` and `sig` directories are navigable by their respective tool chains and therefore can be ignored by tools such as `rg`
-  Pathname(ignore_file).write(<<~GLOB)
-    rbi/*
-    sig/*
-  GLOB
+  Pathname(ignore_file).write(
+    <<~GLOB
+      rbi/*
+      sig/*
+    GLOB
+  )
 
   # RubyGems' release-gem action waits for pkg/*.gem after running rake release,
   # so build with RubyGems' normal versioned filename and move the artifact there.

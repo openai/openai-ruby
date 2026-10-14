@@ -8,8 +8,10 @@ module OpenAI
           # @!attribute annotations
           #
           #   @return [Array<OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation>, nil]
-          optional :annotations,
-                   -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::AnnotationDelta] }
+          optional(
+            :annotations,
+            -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::AnnotationDelta] }
+          )
 
           # @!attribute value
           #   The data that makes up the text.
@@ -20,7 +22,8 @@ module OpenAI
           # @!method initialize(annotations: nil, value: nil)
           #   @param annotations [Array<OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation>]
           #
-          #   @param value [String] The data that makes up the text.
+          #   @param value [String]
+          #     The data that makes up the text.
         end
       end
     end

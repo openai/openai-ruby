@@ -1,20 +1,44 @@
 module OpenAI
   module Models
-    type image = { :b64_json => String, revised_prompt: String, url: String }
+    type image = { ?:b64_json => String, ?revised_prompt: String, ?url: String }
 
     class Image < OpenAI::Internal::Type::BaseModel
+      # The base64-encoded JSON of the generated image. Returned by default for GPT
+      # image models, or when `response_format` is set to `b64_json` for models that
+      # support that parameter.
       attr_reader b64_json: String?
 
+      # The base64-encoded JSON of the generated image. Returned by default for GPT
+      # image models, or when `response_format` is set to `b64_json` for models that
+      # support that parameter.
       def b64_json=: (String) -> String
 
+      # The revised prompt used to generate the image, for models that support prompt
+      # revision. Not returned by GPT image models.
       attr_reader revised_prompt: String?
 
+      # The revised prompt used to generate the image, for models that support prompt
+      # revision. Not returned by GPT image models.
       def revised_prompt=: (String) -> String
 
+      # The URL of the generated image when `response_format` is set to `url` for models
+      # that support that parameter. Unsupported for GPT image models.
       attr_reader url: String?
 
+      # The URL of the generated image when `response_format` is set to `url` for models
+      # that support that parameter. Unsupported for GPT image models.
       def url=: (String) -> String
 
+      # @param b64_json
+      #   The base64-encoded JSON of the generated image. Returned by default for GPT
+      #   image models, or when `response_format` is set to `b64_json` for models that
+      #   support that parameter.
+      # @param revised_prompt
+      #   The revised prompt used to generate the image, for models that support prompt
+      #   revision. Not returned by GPT image models.
+      # @param url
+      #   The URL of the generated image when `response_format` is set to `url` for models
+      #   that support that parameter. Unsupported for GPT image models.
       def initialize: (
         ?b64_json: String,
         ?revised_prompt: String,
@@ -22,9 +46,9 @@ module OpenAI
       ) -> void
 
       def to_hash: -> {
-        :b64_json => String,
-        revised_prompt: String,
-        url: String
+        ?:b64_json => String,
+        ?revised_prompt: String,
+        ?url: String
       }
     end
   end

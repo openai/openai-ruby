@@ -53,28 +53,32 @@ module OpenAI
         required :type, const: :"response.function_call_arguments.done"
 
         # @!method initialize(arguments:, call_id:, event_id:, item_id:, name:, output_index:, response_id:, type: :"response.function_call_arguments.done")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::ResponseFunctionCallArgumentsDoneEvent} for more
-        #   details.
-        #
         #   Returned when the model-generated function call arguments are done streaming.
         #   Also emitted when a Response is interrupted, incomplete, or cancelled.
         #
-        #   @param arguments [String] The final arguments as a JSON string.
+        #   @param arguments [String]
+        #     The final arguments as a JSON string.
         #
-        #   @param call_id [String] The ID of the function call.
+        #   @param call_id [String]
+        #     The ID of the function call.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param item_id [String] The ID of the function call item.
+        #   @param item_id [String]
+        #     The ID of the function call item.
         #
-        #   @param name [String] The name of the function that was called.
+        #   @param name [String]
+        #     The name of the function that was called.
         #
-        #   @param output_index [Integer] The index of the output item in the response.
+        #   @param output_index [Integer]
+        #     The index of the output item in the response.
         #
-        #   @param response_id [String] The ID of the response.
+        #   @param response_id [String]
+        #     The ID of the response.
         #
-        #   @param type [Symbol, :"response.function_call_arguments.done"] The event type, must be `response.function_call_arguments.done`.
+        #   @param type [Symbol, :"response.function_call_arguments.done"]
+        #     The event type, must be `response.function_call_arguments.done`.
       end
     end
   end

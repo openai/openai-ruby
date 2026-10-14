@@ -23,17 +23,17 @@ module OpenAI
         optional :name, String, nil?: true
 
         # @!method initialize(server_label:, name: nil, type: :mcp)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaToolChoiceMcp} for more details.
-        #
         #   Use this option to force the model to call a specific tool on a remote MCP
         #   server.
         #
-        #   @param server_label [String] The label of the MCP server to use.
+        #   @param server_label [String]
+        #     The label of the MCP server to use.
         #
-        #   @param name [String, nil] The name of the tool to call on the server.
+        #   @param name [String, nil]
+        #     The name of the tool to call on the server.
         #
-        #   @param type [Symbol, :mcp] For MCP tools, the type is always `mcp`.
+        #   @param type [Symbol, :mcp]
+        #     For MCP tools, the type is always `mcp`.
       end
     end
 

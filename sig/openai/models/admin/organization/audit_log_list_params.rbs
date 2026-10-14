@@ -4,67 +4,152 @@ module OpenAI
       module Organization
         type audit_log_list_params =
           {
-            actor_emails: ::Array[String],
-            actor_ids: ::Array[String],
-            after: String,
-            before: String,
-            effective_at: OpenAI::Admin::Organization::AuditLogListParams::EffectiveAt,
-            event_types: ::Array[OpenAI::Models::Admin::Organization::AuditLogListParams::event_type],
-            limit: Integer,
-            project_ids: ::Array[String],
-            resource_ids: ::Array[String],
-            tenant_only: bool
+            ?actor_emails: ::Array[String],
+            ?actor_ids: ::Array[String],
+            ?after: String,
+            ?before: String,
+            ?effective_at: OpenAI::Admin::Organization::AuditLogListParams::EffectiveAt,
+            ?event_types: ::Array[OpenAI::Models::Admin::Organization::AuditLogListParams::event_type],
+            ?limit: Integer,
+            ?project_ids: ::Array[String],
+            ?resource_ids: ::Array[String],
+            ?tenant_only: bool,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class AuditLogListParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # Return only events performed by users with these emails.
           attr_reader actor_emails: ::Array[String]?
 
+          # Return only events performed by users with these emails.
           def actor_emails=: (::Array[String]) -> ::Array[String]
 
+          # Return only events performed by these actors. Can be a user ID, a service
+          # account ID, or an api key tracking ID.
           attr_reader actor_ids: ::Array[String]?
 
+          # Return only events performed by these actors. Can be a user ID, a service
+          # account ID, or an api key tracking ID.
           def actor_ids=: (::Array[String]) -> ::Array[String]
 
+          # A cursor for use in pagination. `after` is an object ID that defines your place
+          # in the list. For instance, if you make a list request and receive 100 objects,
+          # ending with obj_foo, your subsequent call can include after=obj_foo in order to
+          # fetch the next page of the list.
           attr_reader after: String?
 
+          # A cursor for use in pagination. `after` is an object ID that defines your place
+          # in the list. For instance, if you make a list request and receive 100 objects,
+          # ending with obj_foo, your subsequent call can include after=obj_foo in order to
+          # fetch the next page of the list.
           def after=: (String) -> String
 
+          # A cursor for use in pagination. `before` is an object ID that defines your place
+          # in the list. For instance, if you make a list request and receive 100 objects,
+          # starting with obj_foo, your subsequent call can include before=obj_foo in order
+          # to fetch the previous page of the list.
           attr_reader before: String?
 
+          # A cursor for use in pagination. `before` is an object ID that defines your place
+          # in the list. For instance, if you make a list request and receive 100 objects,
+          # starting with obj_foo, your subsequent call can include before=obj_foo in order
+          # to fetch the previous page of the list.
           def before=: (String) -> String
 
+          # Return only events whose `effective_at` (Unix seconds) is in this range.
           attr_reader effective_at: OpenAI::Admin::Organization::AuditLogListParams::EffectiveAt?
 
+          # Return only events whose `effective_at` (Unix seconds) is in this range.
           def effective_at=: (
             OpenAI::Admin::Organization::AuditLogListParams::EffectiveAt
           ) -> OpenAI::Admin::Organization::AuditLogListParams::EffectiveAt
 
+          # Return only events with a `type` in one of these values. For example,
+          # `project.created`. For all options, see the documentation for the
+          # [audit log object](https://developers.openai.com/api/reference/resources/admin/subresources/organization/subresources/audit_logs).
           attr_reader event_types: ::Array[OpenAI::Models::Admin::Organization::AuditLogListParams::event_type]?
 
+          # Return only events with a `type` in one of these values. For example,
+          # `project.created`. For all options, see the documentation for the
+          # [audit log object](https://developers.openai.com/api/reference/resources/admin/subresources/organization/subresources/audit_logs).
           def event_types=: (
             ::Array[OpenAI::Models::Admin::Organization::AuditLogListParams::event_type]
           ) -> ::Array[OpenAI::Models::Admin::Organization::AuditLogListParams::event_type]
 
+          # A limit on the number of objects to be returned. Limit can range between 1 and
+          # 100, and the default is 20.
           attr_reader limit: Integer?
 
+          # A limit on the number of objects to be returned. Limit can range between 1 and
+          # 100, and the default is 20.
           def limit=: (Integer) -> Integer
 
+          # Return only events for these projects.
           attr_reader project_ids: ::Array[String]?
 
+          # Return only events for these projects.
           def project_ids=: (::Array[String]) -> ::Array[String]
 
+          # Return only events performed on these targets. For example, a project ID
+          # updated. For ChatGPT connector role events, use the workspace connector resource
+          # ID shown in `details.id`, such as `<workspace_id>__<connector_id>`.
           attr_reader resource_ids: ::Array[String]?
 
+          # Return only events performed on these targets. For example, a project ID
+          # updated. For ChatGPT connector role events, use the workspace connector resource
+          # ID shown in `details.id`, such as `<workspace_id>__<connector_id>`.
           def resource_ids=: (::Array[String]) -> ::Array[String]
 
+          # Return only tenant-scoped events associated with this organization. Required for
+          # tenant-scoped events such as `role.bound_to_resource` and
+          # `role.unbound_from_resource`. When `true`, all supplied event types must be
+          # tenant-scoped.
           attr_reader tenant_only: bool?
 
+          # Return only tenant-scoped events associated with this organization. Required for
+          # tenant-scoped events such as `role.bound_to_resource` and
+          # `role.unbound_from_resource`. When `true`, all supplied event types must be
+          # tenant-scoped.
           def tenant_only=: (bool) -> bool
 
+          # @param actor_emails
+          #   Return only events performed by users with these emails.
+          # @param actor_ids
+          #   Return only events performed by these actors. Can be a user ID, a service
+          #   account ID, or an api key tracking ID.
+          # @param after
+          #   A cursor for use in pagination. `after` is an object ID that defines your place
+          #   in the list. For instance, if you make a list request and receive 100 objects,
+          #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+          #   fetch the next page of the list.
+          # @param before
+          #   A cursor for use in pagination. `before` is an object ID that defines your place
+          #   in the list. For instance, if you make a list request and receive 100 objects,
+          #   starting with obj_foo, your subsequent call can include before=obj_foo in order
+          #   to fetch the previous page of the list.
+          # @param effective_at
+          #   Return only events whose `effective_at` (Unix seconds) is in this range.
+          # @param event_types
+          #   Return only events with a `type` in one of these values. For example,
+          #   `project.created`. For all options, see the documentation for the
+          #   [audit log object](https://developers.openai.com/api/reference/resources/admin/subresources/organization/subresources/audit_logs).
+          # @param limit
+          #   A limit on the number of objects to be returned. Limit can range between 1 and
+          #   100, and the default is 20.
+          # @param project_ids
+          #   Return only events for these projects.
+          # @param resource_ids
+          #   Return only events performed on these targets. For example, a project ID
+          #   updated. For ChatGPT connector role events, use the workspace connector resource
+          #   ID shown in `details.id`, such as `<workspace_id>__<connector_id>`.
+          # @param tenant_only
+          #   Return only tenant-scoped events associated with this organization. Required for
+          #   tenant-scoped events such as `role.bound_to_resource` and
+          #   `role.unbound_from_resource`. When `true`, all supplied event types must be
+          #   tenant-scoped.
           def initialize: (
             ?actor_emails: ::Array[String],
             ?actor_ids: ::Array[String],
@@ -80,39 +165,64 @@ module OpenAI
           ) -> void
 
           def to_hash: -> {
-            actor_emails: ::Array[String],
-            actor_ids: ::Array[String],
-            after: String,
-            before: String,
-            effective_at: OpenAI::Admin::Organization::AuditLogListParams::EffectiveAt,
-            event_types: ::Array[OpenAI::Models::Admin::Organization::AuditLogListParams::event_type],
-            limit: Integer,
-            project_ids: ::Array[String],
-            resource_ids: ::Array[String],
-            tenant_only: bool,
-            request_options: OpenAI::RequestOptions
+            ?actor_emails: ::Array[String],
+            ?actor_ids: ::Array[String],
+            ?after: String,
+            ?before: String,
+            ?effective_at: OpenAI::Admin::Organization::AuditLogListParams::EffectiveAt,
+            ?event_types: ::Array[OpenAI::Models::Admin::Organization::AuditLogListParams::event_type],
+            ?limit: Integer,
+            ?project_ids: ::Array[String],
+            ?resource_ids: ::Array[String],
+            ?tenant_only: bool,
+            ?request_options: OpenAI::RequestOptions
           }
 
           type effective_at =
-            { gt: Integer, gte: Integer, lt: Integer, lte: Integer }
+            { ?gt: Integer, ?gte: Integer, ?lt: Integer, ?lte: Integer }
 
           class EffectiveAt < OpenAI::Internal::Type::BaseModel
+            # Return only events whose `effective_at` (Unix seconds) is greater than this
+            # value.
             attr_reader gt: Integer?
 
+            # Return only events whose `effective_at` (Unix seconds) is greater than this
+            # value.
             def gt=: (Integer) -> Integer
 
+            # Return only events whose `effective_at` (Unix seconds) is greater than or equal
+            # to this value.
             attr_reader gte: Integer?
 
+            # Return only events whose `effective_at` (Unix seconds) is greater than or equal
+            # to this value.
             def gte=: (Integer) -> Integer
 
+            # Return only events whose `effective_at` (Unix seconds) is less than this value.
             attr_reader lt: Integer?
 
+            # Return only events whose `effective_at` (Unix seconds) is less than this value.
             def lt=: (Integer) -> Integer
 
+            # Return only events whose `effective_at` (Unix seconds) is less than or equal to
+            # this value.
             attr_reader lte: Integer?
 
+            # Return only events whose `effective_at` (Unix seconds) is less than or equal to
+            # this value.
             def lte=: (Integer) -> Integer
 
+            # @param gt
+            #   Return only events whose `effective_at` (Unix seconds) is greater than this
+            #   value.
+            # @param gte
+            #   Return only events whose `effective_at` (Unix seconds) is greater than or equal
+            #   to this value.
+            # @param lt
+            #   Return only events whose `effective_at` (Unix seconds) is less than this value.
+            # @param lte
+            #   Return only events whose `effective_at` (Unix seconds) is less than or equal to
+            #   this value.
             def initialize: (
               ?gt: Integer,
               ?gte: Integer,
@@ -121,10 +231,10 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              gt: Integer,
-              gte: Integer,
-              lt: Integer,
-              lte: Integer
+              ?gt: Integer,
+              ?gte: Integer,
+              ?lt: Integer,
+              ?lte: Integer
             }
           end
 
@@ -141,6 +251,8 @@ module OpenAI
             | :"checkpoint.permission.deleted"
             | :"external_key.registered"
             | :"external_key.removed"
+            | :"external_storage.registered"
+            | :"external_storage.removed"
             | :"group.created"
             | :"group.updated"
             | :"group.deleted"
@@ -199,10 +311,13 @@ module OpenAI
             | :"tenant.workload_identity.mapping.archived"
             | :"tenant.workload_identity.binding.created"
             | :"tenant.workload_identity.principal.provisioned"
+            | :"tenant.workload_identity.access_token.issued"
             | :"tenant.admin_api_key.created"
             | :"tenant.admin_api_key.updated"
             | :"tenant.admin_api_key.deleted"
             | :"tenant.project_api_key.created"
+            | :"tenant.trusted_access.business_verification.started"
+            | :"tenant.trusted_access.application.submitted"
             | :"tenant.chatgpt_access_token.revoked"
             | :"tenant.migration.completed"
             | :"tenant.sso.migrated"
@@ -255,6 +370,7 @@ module OpenAI
             | :"tenant.resource_role_assignment.deleted"
             | :"tenant.resource_access.updated"
             | :"tenant.resource_access.deleted"
+            | :"tenant.ads_account.onboarding.redemption"
             | :"tenant.session_policy.created"
             | :"tenant.session_policy.updated"
             | :"tenant.session_policy.deleted"
@@ -288,6 +404,8 @@ module OpenAI
             CHECKPOINT_PERMISSION_DELETED: :"checkpoint.permission.deleted"
             EXTERNAL_KEY_REGISTERED: :"external_key.registered"
             EXTERNAL_KEY_REMOVED: :"external_key.removed"
+            EXTERNAL_STORAGE_REGISTERED: :"external_storage.registered"
+            EXTERNAL_STORAGE_REMOVED: :"external_storage.removed"
             GROUP_CREATED: :"group.created"
             GROUP_UPDATED: :"group.updated"
             GROUP_DELETED: :"group.deleted"
@@ -346,10 +464,13 @@ module OpenAI
             TENANT_WORKLOAD_IDENTITY_MAPPING_ARCHIVED: :"tenant.workload_identity.mapping.archived"
             TENANT_WORKLOAD_IDENTITY_BINDING_CREATED: :"tenant.workload_identity.binding.created"
             TENANT_WORKLOAD_IDENTITY_PRINCIPAL_PROVISIONED: :"tenant.workload_identity.principal.provisioned"
+            TENANT_WORKLOAD_IDENTITY_ACCESS_TOKEN_ISSUED: :"tenant.workload_identity.access_token.issued"
             TENANT_ADMIN_API_KEY_CREATED: :"tenant.admin_api_key.created"
             TENANT_ADMIN_API_KEY_UPDATED: :"tenant.admin_api_key.updated"
             TENANT_ADMIN_API_KEY_DELETED: :"tenant.admin_api_key.deleted"
             TENANT_PROJECT_API_KEY_CREATED: :"tenant.project_api_key.created"
+            TENANT_TRUSTED_ACCESS_BUSINESS_VERIFICATION_STARTED: :"tenant.trusted_access.business_verification.started"
+            TENANT_TRUSTED_ACCESS_APPLICATION_SUBMITTED: :"tenant.trusted_access.application.submitted"
             TENANT_CHATGPT_ACCESS_TOKEN_REVOKED: :"tenant.chatgpt_access_token.revoked"
             TENANT_MIGRATION_COMPLETED: :"tenant.migration.completed"
             TENANT_SSO_MIGRATED: :"tenant.sso.migrated"
@@ -402,6 +523,7 @@ module OpenAI
             TENANT_RESOURCE_ROLE_ASSIGNMENT_DELETED: :"tenant.resource_role_assignment.deleted"
             TENANT_RESOURCE_ACCESS_UPDATED: :"tenant.resource_access.updated"
             TENANT_RESOURCE_ACCESS_DELETED: :"tenant.resource_access.deleted"
+            TENANT_ADS_ACCOUNT_ONBOARDING_REDEMPTION: :"tenant.ads_account.onboarding.redemption"
             TENANT_SESSION_POLICY_CREATED: :"tenant.session_policy.created"
             TENANT_SESSION_POLICY_UPDATED: :"tenant.session_policy.updated"
             TENANT_SESSION_POLICY_DELETED: :"tenant.session_policy.deleted"

@@ -35,20 +35,22 @@ module OpenAI
         optional :param, String, nil?: true
 
         # @!method initialize(message:, type:, code: nil, event_id: nil, param: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::RealtimeError} for more details.
-        #
         #   Details of the error.
         #
-        #   @param message [String] A human-readable error message.
+        #   @param message [String]
+        #     A human-readable error message.
         #
-        #   @param type [String] The type of error (e.g., "invalid_request_error", "server_error").
+        #   @param type [String]
+        #     The type of error (e.g., "invalid_request_error", "server_error").
         #
-        #   @param code [String, nil] Error code, if any.
+        #   @param code [String, nil]
+        #     Error code, if any.
         #
-        #   @param event_id [String, nil] The event_id of the client event that caused the error, if applicable.
+        #   @param event_id [String, nil]
+        #     The event_id of the client event that caused the error, if applicable.
         #
-        #   @param param [String, nil] Parameter related to the error, if any.
+        #   @param param [String, nil]
+        #     Parameter related to the error, if any.
       end
     end
   end

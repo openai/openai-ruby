@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type oci_external_storage_provider =
+          { bucket: String, region: String, tenancy_ocid: String, ?type: :oci }
+
+        class OciExternalStorageProvider < OpenAI::Internal::Type::BaseModel
+          attr_accessor bucket: String
+
+          attr_accessor region: String
+
+          attr_accessor tenancy_ocid: String
+
+          attr_accessor type: :oci
+
+          def initialize: (
+            bucket: String,
+            region: String,
+            tenancy_ocid: String,
+            ?type: :oci
+          ) -> void
+
+          def to_hash: -> {
+            bucket: String,
+            region: String,
+            tenancy_ocid: String,
+            ?type: :oci
+          }
+        end
+      end
+    end
+  end
+end

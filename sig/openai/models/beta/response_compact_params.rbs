@@ -4,35 +4,76 @@ module OpenAI
       type response_compact_params =
         {
           model: OpenAI::Models::Beta::ResponseCompactParams::model?,
-          input: OpenAI::Models::Beta::ResponseCompactParams::input?,
-          instructions: String?,
-          previous_response_id: String?,
-          prompt_cache_key: String?,
-          prompt_cache_options: OpenAI::Beta::ResponseCompactParams::PromptCacheOptions?,
-          prompt_cache_retention: OpenAI::Models::Beta::ResponseCompactParams::prompt_cache_retention?,
-          service_tier: OpenAI::Models::Beta::ResponseCompactParams::service_tier?,
-          betas: ::Array[OpenAI::Models::Beta::ResponseCompactParams::beta]
+          ?input: OpenAI::Models::Beta::ResponseCompactParams::input?,
+          ?instructions: String?,
+          ?previous_response_id: String?,
+          ?prompt_cache_key: String?,
+          ?prompt_cache_options: OpenAI::Beta::ResponseCompactParams::PromptCacheOptions?,
+          ?prompt_cache_retention: OpenAI::Models::Beta::ResponseCompactParams::prompt_cache_retention?,
+          ?service_tier: OpenAI::Models::Beta::ResponseCompactParams::service_tier?,
+          ?betas: ::Array[OpenAI::Models::Beta::ResponseCompactParams::beta],
+          ?request_options: OpenAI::request_opts
         }
-        & OpenAI::Internal::Type::request_parameters
 
       class ResponseCompactParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
+        # range of models with different capabilities, performance characteristics, and
+        # price points. Refer to the
+        # [model guide](https://developers.openai.com/api/docs/models) to browse and
+        # compare available models.
         attr_accessor model: OpenAI::Models::Beta::ResponseCompactParams::model?
 
+        # Text, image, or file inputs to the model, used to generate a response
         attr_accessor input: OpenAI::Models::Beta::ResponseCompactParams::input?
 
+        # A system (or developer) message inserted into the model's context. When used
+        # along with `previous_response_id`, the instructions from a previous response
+        # will not be carried over to the next response. This makes it simple to swap out
+        # system (or developer) messages in new responses.
         attr_accessor instructions: String?
 
+        # The unique ID of the previous response to the model. Use this to create
+        # multi-turn conversations. Learn more about
+        # [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
+        # Cannot be used in conjunction with `conversation`.
         attr_accessor previous_response_id: String?
 
+        # A key to use when reading from or writing to the prompt cache.
         attr_accessor prompt_cache_key: String?
 
+        # Options for prompt caching. Supported for `gpt-5.6` and later models. By
+        # default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+        # explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+        # request can write up to four breakpoints. For cache matching, OpenAI considers
+        # up to the latest 80 breakpoints in the conversation, without a content-block
+        # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+        # `ttl` defaults to `30m`, which is currently the only supported value. See the
+        # [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
+        # for current details.
         attr_accessor prompt_cache_options: OpenAI::Beta::ResponseCompactParams::PromptCacheOptions?
 
+        # How long to retain a prompt cache entry created by this request.
         attr_accessor prompt_cache_retention: OpenAI::Models::Beta::ResponseCompactParams::prompt_cache_retention?
 
+        # Specifies the processing type used for serving the request. - If set to 'auto',
+        # then the request will be processed with the service tier configured in the
+        # Project settings. Unless otherwise configured, the Project will use 'default'. -
+        # If set to 'default', then the request will be processed with the standard
+        # pricing and performance for the selected model. - If set to
+        # '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        # the request will be processed with the Flex Processing service tier. - To opt-in
+        # to [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        # request level, include the `service_tier=fast` or `service_tier=priority`
+        # parameter for Responses or Chat Completions. For models with a dedicated Fast
+        # tier, either value resolves to `service_tier=fast`; for other models, either
+        # value resolves to `service_tier=priority`. - When not set, the default behavior
+        # is 'auto'. When the `service_tier` parameter is set, the response body will
+        # include the `service_tier` value based on the processing mode actually used to
+        # serve the request. This response value may be different from the value set in
+        # the parameter.
         attr_accessor service_tier: OpenAI::Models::Beta::ResponseCompactParams::service_tier?
 
         attr_reader betas: ::Array[OpenAI::Models::Beta::ResponseCompactParams::beta]?
@@ -41,6 +82,55 @@ module OpenAI
           ::Array[OpenAI::Models::Beta::ResponseCompactParams::beta]
         ) -> ::Array[OpenAI::Models::Beta::ResponseCompactParams::beta]
 
+        # @param model
+        #   Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
+        #   range of models with different capabilities, performance characteristics, and
+        #   price points. Refer to the
+        #   [model guide](https://developers.openai.com/api/docs/models) to browse and
+        #   compare available models.
+        # @param input
+        #   Text, image, or file inputs to the model, used to generate a response
+        # @param instructions
+        #   A system (or developer) message inserted into the model's context. When used
+        #   along with `previous_response_id`, the instructions from a previous response
+        #   will not be carried over to the next response. This makes it simple to swap out
+        #   system (or developer) messages in new responses.
+        # @param previous_response_id
+        #   The unique ID of the previous response to the model. Use this to create
+        #   multi-turn conversations. Learn more about
+        #   [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
+        #   Cannot be used in conjunction with `conversation`.
+        # @param prompt_cache_key
+        #   A key to use when reading from or writing to the prompt cache.
+        # @param prompt_cache_options
+        #   Options for prompt caching. Supported for `gpt-5.6` and later models. By
+        #   default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+        #   explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+        #   request can write up to four breakpoints. For cache matching, OpenAI considers
+        #   up to the latest 80 breakpoints in the conversation, without a content-block
+        #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+        #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+        #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
+        #   for current details.
+        # @param prompt_cache_retention
+        #   How long to retain a prompt cache entry created by this request.
+        # @param service_tier
+        #   Specifies the processing type used for serving the request. - If set to 'auto',
+        #   then the request will be processed with the service tier configured in the
+        #   Project settings. Unless otherwise configured, the Project will use 'default'. -
+        #   If set to 'default', then the request will be processed with the standard
+        #   pricing and performance for the selected model. - If set to
+        #   '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        #   the request will be processed with the Flex Processing service tier. - To opt-in
+        #   to [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        #   request level, include the `service_tier=fast` or `service_tier=priority`
+        #   parameter for Responses or Chat Completions. For models with a dedicated Fast
+        #   tier, either value resolves to `service_tier=fast`; for other models, either
+        #   value resolves to `service_tier=priority`. - When not set, the default behavior
+        #   is 'auto'. When the `service_tier` parameter is set, the response body will
+        #   include the `service_tier` value based on the processing mode actually used to
+        #   serve the request. This response value may be different from the value set in
+        #   the parameter.
         def initialize: (
           model: OpenAI::Models::Beta::ResponseCompactParams::model?,
           ?input: OpenAI::Models::Beta::ResponseCompactParams::input?,
@@ -56,22 +146,27 @@ module OpenAI
 
         def to_hash: -> {
           model: OpenAI::Models::Beta::ResponseCompactParams::model?,
-          input: OpenAI::Models::Beta::ResponseCompactParams::input?,
-          instructions: String?,
-          previous_response_id: String?,
-          prompt_cache_key: String?,
-          prompt_cache_options: OpenAI::Beta::ResponseCompactParams::PromptCacheOptions?,
-          prompt_cache_retention: OpenAI::Models::Beta::ResponseCompactParams::prompt_cache_retention?,
-          service_tier: OpenAI::Models::Beta::ResponseCompactParams::service_tier?,
-          betas: ::Array[OpenAI::Models::Beta::ResponseCompactParams::beta],
-          request_options: OpenAI::RequestOptions
+          ?input: OpenAI::Models::Beta::ResponseCompactParams::input?,
+          ?instructions: String?,
+          ?previous_response_id: String?,
+          ?prompt_cache_key: String?,
+          ?prompt_cache_options: OpenAI::Beta::ResponseCompactParams::PromptCacheOptions?,
+          ?prompt_cache_retention: OpenAI::Models::Beta::ResponseCompactParams::prompt_cache_retention?,
+          ?service_tier: OpenAI::Models::Beta::ResponseCompactParams::service_tier?,
+          ?betas: ::Array[OpenAI::Models::Beta::ResponseCompactParams::beta],
+          ?request_options: OpenAI::RequestOptions
         }
 
         type model =
-          :"gpt-5.6-sol"
+          :"gpt-6-astra"
+          | :"gpt-6.1-sol"
+          | :"gpt-6-sol"
+          | :"gpt-6-luna"
+          | :"gpt-5.6-sol"
           | :"gpt-5.6-terra"
           | :"gpt-5.6-luna"
           | :"gpt-5.5"
+          | :"gpt-5.5-2026-04-23"
           | :"gpt-5.4"
           | :"gpt-5.4-mini"
           | :"gpt-5.4-nano"
@@ -117,6 +212,8 @@ module OpenAI
           | :"gpt-4o-2024-11-20"
           | :"gpt-4o-2024-08-06"
           | :"gpt-4o-2024-05-13"
+          | :"gpt-audio-mini"
+          | :"gpt-audio-mini-2025-12-15"
           | :"gpt-4o-audio-preview"
           | :"gpt-4o-audio-preview-2024-10-01"
           | :"gpt-4o-audio-preview-2024-12-17"
@@ -160,10 +257,16 @@ module OpenAI
           | :"o4-mini-deep-research-2025-06-26"
           | :"computer-use-preview"
           | :"computer-use-preview-2025-03-11"
+          | :"gpt-5.5-pro"
+          | :"gpt-5.5-pro-2026-04-23"
           | :"gpt-5-codex"
           | :"gpt-5-pro"
           | :"gpt-5-pro-2025-10-06"
           | :"gpt-5.1-codex-max"
+          | :"gpt-daybreak-blue-latest"
+          | :"gpt-daybreak-red-latest"
+          | :"gpt-5.6-cyber"
+          | :"gpt-rosalind-research"
           | String
 
         module Model
@@ -171,10 +274,15 @@ module OpenAI
 
           def self?.variants: -> ::Array[OpenAI::Models::Beta::ResponseCompactParams::model]
 
+          GPT_6_ASTRA: :"gpt-6-astra"
+          GPT_6_1_SOL: :"gpt-6.1-sol"
+          GPT_6_SOL: :"gpt-6-sol"
+          GPT_6_LUNA: :"gpt-6-luna"
           GPT_5_6_SOL: :"gpt-5.6-sol"
           GPT_5_6_TERRA: :"gpt-5.6-terra"
           GPT_5_6_LUNA: :"gpt-5.6-luna"
           GPT_5_5: :"gpt-5.5"
+          GPT_5_5_2026_04_23: :"gpt-5.5-2026-04-23"
           GPT_5_4: :"gpt-5.4"
           GPT_5_4_MINI: :"gpt-5.4-mini"
           GPT_5_4_NANO: :"gpt-5.4-nano"
@@ -220,6 +328,8 @@ module OpenAI
           GPT_4O_2024_11_20: :"gpt-4o-2024-11-20"
           GPT_4O_2024_08_06: :"gpt-4o-2024-08-06"
           GPT_4O_2024_05_13: :"gpt-4o-2024-05-13"
+          GPT_AUDIO_MINI: :"gpt-audio-mini"
+          GPT_AUDIO_MINI_2025_12_15: :"gpt-audio-mini-2025-12-15"
           GPT_4O_AUDIO_PREVIEW: :"gpt-4o-audio-preview"
           GPT_4O_AUDIO_PREVIEW_2024_10_01: :"gpt-4o-audio-preview-2024-10-01"
           GPT_4O_AUDIO_PREVIEW_2024_12_17: :"gpt-4o-audio-preview-2024-12-17"
@@ -263,10 +373,16 @@ module OpenAI
           O4_MINI_DEEP_RESEARCH_2025_06_26: :"o4-mini-deep-research-2025-06-26"
           COMPUTER_USE_PREVIEW: :"computer-use-preview"
           COMPUTER_USE_PREVIEW_2025_03_11: :"computer-use-preview-2025-03-11"
+          GPT_5_5_PRO: :"gpt-5.5-pro"
+          GPT_5_5_PRO_2026_04_23: :"gpt-5.5-pro-2026-04-23"
           GPT_5_CODEX: :"gpt-5-codex"
           GPT_5_PRO: :"gpt-5-pro"
           GPT_5_PRO_2025_10_06: :"gpt-5-pro-2025-10-06"
           GPT_5_1_CODEX_MAX: :"gpt-5.1-codex-max"
+          GPT_DAYBREAK_BLUE_LATEST: :"gpt-daybreak-blue-latest"
+          GPT_DAYBREAK_RED_LATEST: :"gpt-daybreak-red-latest"
+          GPT_5_6_CYBER: :"gpt-5.6-cyber"
+          GPT_ROSALIND_RESEARCH: :"gpt-rosalind-research"
         end
 
         type input =
@@ -282,31 +398,60 @@ module OpenAI
 
         type prompt_cache_options =
           {
-            mode: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::mode,
-            ttl: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::ttl
+            ?mode: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::mode,
+            ?ttl: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::ttl
           }
 
         class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+          # Controls whether OpenAI automatically creates an implicit cache breakpoint.
+          # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+          # and writes up to the latest three explicit breakpoints in the request. With
+          # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+          # latest four explicit breakpoints. If there are no explicit breakpoints, the
+          # request does not use prompt caching.
           attr_reader mode: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::mode?
 
+          # Controls whether OpenAI automatically creates an implicit cache breakpoint.
+          # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+          # and writes up to the latest three explicit breakpoints in the request. With
+          # `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+          # latest four explicit breakpoints. If there are no explicit breakpoints, the
+          # request does not use prompt caching.
           def mode=: (
             OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::mode
           ) -> OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::mode
 
+          # The minimum lifetime applied to every implicit and explicit cache breakpoint
+          # written by the request. Defaults to `30m`, which is currently the only supported
+          # value. The backend may retain cache entries for longer.
           attr_reader ttl: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::ttl?
 
+          # The minimum lifetime applied to every implicit and explicit cache breakpoint
+          # written by the request. Defaults to `30m`, which is currently the only supported
+          # value. The backend may retain cache entries for longer.
           def ttl=: (
             OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::ttl
           ) -> OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::ttl
 
+          # @param mode
+          #   Controls whether OpenAI automatically creates an implicit cache breakpoint.
+          #   Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
+          #   and writes up to the latest three explicit breakpoints in the request. With
+          #   `explicit`, OpenAI does not create an implicit breakpoint and writes up to the
+          #   latest four explicit breakpoints. If there are no explicit breakpoints, the
+          #   request does not use prompt caching.
+          # @param ttl
+          #   The minimum lifetime applied to every implicit and explicit cache breakpoint
+          #   written by the request. Defaults to `30m`, which is currently the only supported
+          #   value. The backend may retain cache entries for longer.
           def initialize: (
             ?mode: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::mode,
             ?ttl: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::ttl
           ) -> void
 
           def to_hash: -> {
-            mode: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::mode,
-            ttl: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::ttl
+            ?mode: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::mode,
+            ?ttl: OpenAI::Models::Beta::ResponseCompactParams::PromptCacheOptions::ttl
           }
 
           type mode = :implicit | :explicit

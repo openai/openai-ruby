@@ -2,10 +2,14 @@
 
 module OpenAI
   module Resources
+
     class Responses
+
+      # Create and manage model responses.
       class InputItems
+
         # Returns a list of input items for a given response.
-        sig do
+        sig {
           params(
             response_id: String,
             after: String,
@@ -13,12 +17,9 @@ module OpenAI
             limit: Integer,
             order: OpenAI::Responses::InputItemListParams::Order::OrSymbol,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::CursorPage[
-              OpenAI::Responses::ResponseItem::Variants
-            ]
           )
-        end
+            .returns(OpenAI::Internal::CursorPage[OpenAI::Responses::ResponseItem::Variants])
+        }
         def list(
           # The ID of the response to retrieve input items for.
           response_id,
@@ -44,6 +45,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

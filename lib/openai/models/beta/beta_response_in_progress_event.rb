@@ -29,18 +29,19 @@ module OpenAI
         optional :agent, -> { OpenAI::Beta::BetaResponseInProgressEvent::Agent }, nil?: true
 
         # @!method initialize(response:, sequence_number:, agent: nil, type: :"response.in_progress")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseInProgressEvent} for more details.
-        #
         #   Emitted when the response is in progress.
         #
-        #   @param response [OpenAI::Models::Beta::BetaResponse] The response that is in progress.
+        #   @param response [OpenAI::Models::Beta::BetaResponse]
+        #     The response that is in progress.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseInProgressEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseInProgressEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.in_progress"] The type of the event. Always `response.in_progress`.
+        #   @param type [Symbol, :"response.in_progress"]
+        #     The type of the event. Always `response.in_progress`.
 
         # @see OpenAI::Models::Beta::BetaResponseInProgressEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -53,7 +54,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

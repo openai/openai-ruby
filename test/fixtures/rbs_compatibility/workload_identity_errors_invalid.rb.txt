@@ -1,0 +1,10 @@
+begin
+  raise "synthetic"
+rescue OpenAI::Errors::SubjectTokenProviderError => error
+  error.provider.upcase
+  error.cause&.message
+rescue OpenAI::Errors::OAuthError => error
+  error.error_code&.to_s
+  error.status = nil
+  error.status + 1
+end

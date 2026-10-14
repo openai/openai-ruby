@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+version=0.14.1
+expected="rubyfmt $version"
+
+if [[ -n "${RUBYFMT:-}" ]]; then
+  binary="$RUBYFMT"
+elif command -v rubyfmt >/dev/null 2>&1 && [[ "$(rubyfmt --version)" == "$expected" ]]; then
+  binary="$(command -v rubyfmt)"
+else
+  system="$(uname -s)"
+  machine="$(uname -m)"
+  case "$system-$machine" in
+    Darwin-arm64)
+      platform=Darwin-arm64
+      sha256=dcd4a504d78bcb9e18e0b07976790159bfb2d035162aaf3b6c2d2883da1dca38
+      ;;
+    Linux-aarch64|Linux-arm64)
+      platform=Linux-aarch64
+      sha256=fc429195d1315bb96b25beb6898bf2bec749e3f8d3c9b8dbb3be37c25752c3bd
+      ;;
+    Linux-x86_64)
+      platform=Linux-x86_64
+      sha256=9590cc3b8b2ed37a250a5f7c22a542ce014f13954f613c93a72230de8a74fbbd
+      ;;
+    *)
+      echo "Install rubyfmt $version and set RUBYFMT to its executable on $system-$machine." >&2
+      exit 1
+      ;;
+  esac
+
+  cache="${XDG_CACHE_HOME:-${HOME:?}/.cache}/openai-ruby/rubyfmt/$version/$platform"
+  binary="$cache/rubyfmt"
+  if [[ ! -x "$binary" ]]; then
+    mkdir -p "$cache"
+    temporary="$(mktemp -d "$cache/.download.XXXXXX")"
+    trap 'rm -rf -- "$temporary"' EXIT
+    curl --fail --location --silent --show-error --retry 3 --proto '=https' --proto-redir '=https' \
+      "https://github.com/fables-tales/rubyfmt/releases/download/v$version/rubyfmt-v$version-$platform.tar.gz" \
+      --output "$temporary/archive.tar.gz"
+    if command -v sha256sum >/dev/null 2>&1; then
+      actual="$(sha256sum "$temporary/archive.tar.gz")"
+    else
+      actual="$(shasum -a 256 "$temporary/archive.tar.gz")"
+    fi
+    if [[ "${actual%% *}" != "$sha256" ]]; then
+      echo "rubyfmt archive checksum mismatch" >&2
+      exit 1
+    fi
+    tar -xOzf "$temporary/archive.tar.gz" "tmp/releases/v$version-$system/rubyfmt" > "$temporary/rubyfmt"
+    chmod +x "$temporary/rubyfmt"
+    mv -f "$temporary/rubyfmt" "$binary"
+    rm -rf -- "$temporary"
+    trap - EXIT
+  fi
+fi
+
+if [[ "$("$binary" --version)" != "$expected" ]]; then
+  echo "Expected $expected; set RUBYFMT to the pinned executable." >&2
+  exit 1
+fi
+exec "$binary" --fail-fast --header-opt-out "$@"

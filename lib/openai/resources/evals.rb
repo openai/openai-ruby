@@ -8,25 +8,35 @@ module OpenAI
       # @return [OpenAI::Resources::Evals::Runs]
       attr_reader :runs
 
-      # Some parameter documentations has been truncated, see
-      # {OpenAI::Models::EvalCreateParams} for more details.
-      #
       # Create the structure of an evaluation that can be used to test a model's
       # performance. An evaluation is a set of testing criteria and the config for a
       # data source, which dictates the schema of the data used in the evaluation. After
       # creating an evaluation, you can run it on different models and model parameters.
       # We support several types of graders and datasources. For more information, see
-      # the [Evals guide](https://platform.openai.com/docs/guides/evals).
+      # the [Evals guide](https://developers.openai.com/api/docs/guides/evals).
       #
       # @overload create(data_source_config:, testing_criteria:, metadata: nil, name: nil, request_options: {})
       #
-      # @param data_source_config [OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::Logs, OpenAI::Models::EvalCreateParams::DataSourceConfig::StoredCompletions] The configuration for the data source used for the evaluation runs. Dictates the
+      # @param data_source_config [OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::Logs, OpenAI::Models::EvalCreateParams::DataSourceConfig::StoredCompletions]
+      #   The configuration for the data source used for the evaluation runs. Dictates the
+      #   schema of the data used in the evaluation.
       #
-      # @param testing_criteria [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::Models::EvalCreateParams::TestingCriterion::Python, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel>] A list of graders for all eval runs in this group. Graders can reference variabl
+      # @param testing_criteria [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::Models::EvalCreateParams::TestingCriterion::Python, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel>]
+      #   A list of graders for all eval runs in this group. Graders can reference
+      #   variables in the data source using double curly braces notation, like
+      #   `{{item.variable_name}}`. To reference the model's output, use the `sample`
+      #   namespace (ie, `{{sample.output_text}}`).
       #
-      # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+      # @param metadata [Hash{Symbol=>String}, nil]
+      #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #   for storing additional information about the object in a structured format, and
+      #   querying for objects via API or the dashboard.
       #
-      # @param name [String] The name of the evaluation.
+      #   Keys are strings with a maximum length of 64 characters. Values are strings with
+      #   a maximum length of 512 characters.
+      #
+      # @param name [String]
+      #   The name of the evaluation.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -49,7 +59,8 @@ module OpenAI
       #
       # @overload retrieve(eval_id, request_options: {})
       #
-      # @param eval_id [String] The ID of the evaluation to retrieve.
+      # @param eval_id [String]
+      #   The ID of the evaluation to retrieve.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -66,18 +77,23 @@ module OpenAI
         )
       end
 
-      # Some parameter documentations has been truncated, see
-      # {OpenAI::Models::EvalUpdateParams} for more details.
-      #
       # Update certain properties of an evaluation.
       #
       # @overload update(eval_id, metadata: nil, name: nil, request_options: {})
       #
-      # @param eval_id [String] The ID of the evaluation to update.
+      # @param eval_id [String]
+      #   The ID of the evaluation to update.
       #
-      # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+      # @param metadata [Hash{Symbol=>String}, nil]
+      #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #   for storing additional information about the object in a structured format, and
+      #   querying for objects via API or the dashboard.
       #
-      # @param name [String] Rename the evaluation.
+      #   Keys are strings with a maximum length of 64 characters. Values are strings with
+      #   a maximum length of 512 characters.
+      #
+      # @param name [String]
+      #   Rename the evaluation.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -96,20 +112,23 @@ module OpenAI
         )
       end
 
-      # Some parameter documentations has been truncated, see
-      # {OpenAI::Models::EvalListParams} for more details.
-      #
       # List evaluations for a project.
       #
       # @overload list(after: nil, limit: nil, order: nil, order_by: nil, request_options: {})
       #
-      # @param after [String] Identifier for the last eval from the previous pagination request.
+      # @param after [String]
+      #   Identifier for the last eval from the previous pagination request.
       #
-      # @param limit [Integer] Number of evals to retrieve.
+      # @param limit [Integer]
+      #   Number of evals to retrieve.
       #
-      # @param order [Symbol, OpenAI::Models::EvalListParams::Order] Sort order for evals by timestamp. Use `asc` for ascending order or `desc` for d
+      # @param order [Symbol, OpenAI::Models::EvalListParams::Order]
+      #   Sort order for evals by timestamp. Use `asc` for ascending order or `desc` for
+      #   descending order.
       #
-      # @param order_by [Symbol, OpenAI::Models::EvalListParams::OrderBy] Evals can be ordered by creation time or last updated time. Use
+      # @param order_by [Symbol, OpenAI::Models::EvalListParams::OrderBy]
+      #   Evals can be ordered by creation time or last updated time. Use `created_at` for
+      #   creation time or `updated_at` for last updated time.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -134,7 +153,8 @@ module OpenAI
       #
       # @overload delete(eval_id, request_options: {})
       #
-      # @param eval_id [String] The ID of the evaluation to delete.
+      # @param eval_id [String]
+      #   The ID of the evaluation to delete.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #

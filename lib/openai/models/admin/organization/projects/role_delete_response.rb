@@ -28,11 +28,14 @@ module OpenAI
             # @!method initialize(id:, deleted:, object: :"role.deleted")
             #   Confirmation payload returned after deleting a role.
             #
-            #   @param id [String] Identifier of the deleted role.
+            #   @param id [String]
+            #     Identifier of the deleted role.
             #
-            #   @param deleted [Boolean] Whether the role was deleted.
+            #   @param deleted [Boolean]
+            #     Whether the role was deleted.
             #
-            #   @param object [Symbol, :"role.deleted"] Always `role.deleted`.
+            #   @param object [Symbol, :"role.deleted"]
+            #     Always `role.deleted`.
           end
         end
       end

@@ -4,12 +4,21 @@ module OpenAI
       { id: String?, created_at: Integer, name: String? }
 
     class VideoGetCharacterResponse < OpenAI::Internal::Type::BaseModel
+      # Identifier for the character creation cameo.
       attr_accessor id: String?
 
+      # Unix timestamp (in seconds) when the character was created.
       attr_accessor created_at: Integer
 
+      # Display name for the character.
       attr_accessor name: String?
 
+      # @param id
+      #   Identifier for the character creation cameo.
+      # @param created_at
+      #   Unix timestamp (in seconds) when the character was created.
+      # @param name
+      #   Display name for the character.
       def initialize: (id: String?, created_at: Integer, name: String?) -> void
 
       def to_hash: -> { id: String?, created_at: Integer, name: String? }

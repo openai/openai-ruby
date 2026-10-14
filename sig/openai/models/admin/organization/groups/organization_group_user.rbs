@@ -7,12 +7,21 @@ module OpenAI
             { id: String, email: String?, name: String }
 
           class OrganizationGroupUser < OpenAI::Internal::Type::BaseModel
+            # The identifier, which can be referenced in API endpoints
             attr_accessor id: String
 
+            # The email address of the user.
             attr_accessor email: String?
 
+            # The name of the user.
             attr_accessor name: String
 
+            # @param id
+            #   The identifier, which can be referenced in API endpoints
+            # @param email
+            #   The email address of the user.
+            # @param name
+            #   The name of the user.
             def initialize: (id: String, email: String?, name: String) -> void
 
             def to_hash: -> { id: String, email: String?, name: String }

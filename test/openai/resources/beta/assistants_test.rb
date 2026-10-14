@@ -4,7 +4,7 @@ require_relative "../../test_helper"
 
 class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
   def test_create_required_params
-    response = @openai.beta.assistants.create(model: :"gpt-4o")
+    response = @openai.beta.assistants.create(model: :"gpt-4.1")
 
     assert_pattern do
       response => OpenAI::Beta::Assistant
@@ -12,20 +12,20 @@ class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        description: String | nil,
-        instructions: String | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        model: String,
-        name: String | nil,
-        object: Symbol,
-        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
-        response_format: OpenAI::Beta::AssistantResponseFormatOption | nil,
-        temperature: Float | nil,
-        tool_resources: OpenAI::Beta::Assistant::ToolResources | nil,
-        top_p: Float | nil
-      }
+          id: String,
+          created_at: Integer,
+          description: String | nil,
+          instructions: String | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          model: String,
+          name: String | nil,
+          object: Symbol,
+          tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
+          response_format: OpenAI::Beta::AssistantResponseFormatOption | nil,
+          temperature: Float | nil,
+          tool_resources: OpenAI::Beta::Assistant::ToolResources | nil,
+          top_p: Float | nil
+        }
     end
   end
 
@@ -38,20 +38,20 @@ class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        description: String | nil,
-        instructions: String | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        model: String,
-        name: String | nil,
-        object: Symbol,
-        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
-        response_format: OpenAI::Beta::AssistantResponseFormatOption | nil,
-        temperature: Float | nil,
-        tool_resources: OpenAI::Beta::Assistant::ToolResources | nil,
-        top_p: Float | nil
-      }
+          id: String,
+          created_at: Integer,
+          description: String | nil,
+          instructions: String | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          model: String,
+          name: String | nil,
+          object: Symbol,
+          tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
+          response_format: OpenAI::Beta::AssistantResponseFormatOption | nil,
+          temperature: Float | nil,
+          tool_resources: OpenAI::Beta::Assistant::ToolResources | nil,
+          top_p: Float | nil
+        }
     end
   end
 
@@ -64,20 +64,20 @@ class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        description: String | nil,
-        instructions: String | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        model: String,
-        name: String | nil,
-        object: Symbol,
-        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
-        response_format: OpenAI::Beta::AssistantResponseFormatOption | nil,
-        temperature: Float | nil,
-        tool_resources: OpenAI::Beta::Assistant::ToolResources | nil,
-        top_p: Float | nil
-      }
+          id: String,
+          created_at: Integer,
+          description: String | nil,
+          instructions: String | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          model: String,
+          name: String | nil,
+          object: Symbol,
+          tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
+          response_format: OpenAI::Beta::AssistantResponseFormatOption | nil,
+          temperature: Float | nil,
+          tool_resources: OpenAI::Beta::Assistant::ToolResources | nil,
+          top_p: Float | nil
+        }
     end
   end
 
@@ -88,7 +88,8 @@ class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
       response => OpenAI::Internal::CursorPage
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -97,20 +98,20 @@ class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       row => {
-        id: String,
-        created_at: Integer,
-        description: String | nil,
-        instructions: String | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        model: String,
-        name: String | nil,
-        object: Symbol,
-        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
-        response_format: OpenAI::Beta::AssistantResponseFormatOption | nil,
-        temperature: Float | nil,
-        tool_resources: OpenAI::Beta::Assistant::ToolResources | nil,
-        top_p: Float | nil
-      }
+          id: String,
+          created_at: Integer,
+          description: String | nil,
+          instructions: String | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          model: String,
+          name: String | nil,
+          object: Symbol,
+          tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
+          response_format: OpenAI::Beta::AssistantResponseFormatOption | nil,
+          temperature: Float | nil,
+          tool_resources: OpenAI::Beta::Assistant::ToolResources | nil,
+          top_p: Float | nil
+        }
     end
   end
 
@@ -123,10 +124,10 @@ class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 end

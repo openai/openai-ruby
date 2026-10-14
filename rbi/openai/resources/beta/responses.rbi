@@ -2,133 +2,107 @@
 
 module OpenAI
   module Resources
+
     class Beta
+
+      # Create and manage model responses.
       class Responses
+
+        # Create and manage model responses.
         sig { returns(OpenAI::Resources::Beta::Responses::InputItems) }
         attr_reader :input_items
 
+        # Create and manage model responses.
         sig { returns(OpenAI::Resources::Beta::Responses::InputTokens) }
         attr_reader :input_tokens
 
         # See {OpenAI::Resources::Beta::Responses#stream_raw} for streaming counterpart.
         #
         # Creates a model response. Provide
-        # [text](https://platform.openai.com/docs/guides/text) or
-        # [image](https://platform.openai.com/docs/guides/images) inputs to generate
-        # [text](https://platform.openai.com/docs/guides/text) or
-        # [JSON](https://platform.openai.com/docs/guides/structured-outputs) outputs. Have
-        # the model call your own
-        # [custom code](https://platform.openai.com/docs/guides/function-calling) or use
-        # built-in [tools](https://platform.openai.com/docs/guides/tools) like
-        # [web search](https://platform.openai.com/docs/guides/tools-web-search) or
-        # [file search](https://platform.openai.com/docs/guides/tools-file-search) to use
-        # your own data as input for the model's response.
-        sig do
+        # [text](https://developers.openai.com/api/docs/guides/text) or
+        # [image](https://developers.openai.com/api/docs/guides/images-vision) inputs to
+        # generate [text](https://developers.openai.com/api/docs/guides/text) or
+        # [JSON](https://developers.openai.com/api/docs/guides/structured-outputs)
+        # outputs. Have the model call your own
+        # [custom code](https://developers.openai.com/api/docs/guides/function-calling) or
+        # use built-in [tools](https://developers.openai.com/api/docs/guides/tools) like
+        # [web search](https://developers.openai.com/api/docs/guides/tools-web-search) or
+        # [file search](https://developers.openai.com/api/docs/guides/tools-file-search)
+        # to use your own data as input for the model's response.
+        sig {
           params(
+            access_programs: OpenAI::Beta::ResponseCreateParams::AccessPrograms::OrHash,
             background: T.nilable(T::Boolean),
-            context_management:
-              T.nilable(
-                T::Array[
-                  OpenAI::Beta::ResponseCreateParams::ContextManagement::OrHash
-                ]
-              ),
-            conversation:
-              T.nilable(
-                T.any(
-                  String,
-                  OpenAI::Beta::BetaResponseConversationParam::OrHash
-                )
-              ),
-            include:
-              T.nilable(
-                T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]
-              ),
+            context_management: T.nilable(T::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement::OrHash]),
+            conversation: T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam::OrHash)),
+            include: T.nilable(T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]),
             input: OpenAI::Beta::ResponseCreateParams::Input::Variants,
             instructions: T.nilable(String),
             max_output_tokens: T.nilable(Integer),
             max_tool_calls: T.nilable(Integer),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model:
-              T.any(
-                OpenAI::Beta::ResponseCreateParams::Model::OrSymbol,
-                String
-              ),
-            moderation:
-              T.nilable(OpenAI::Beta::ResponseCreateParams::Moderation::OrHash),
-            multi_agent:
-              T.nilable(OpenAI::Beta::ResponseCreateParams::MultiAgent::OrHash),
+            model: T.any(OpenAI::Beta::ResponseCreateParams::Model::OrSymbol, String),
+            moderation: T.nilable(OpenAI::Beta::ResponseCreateParams::Moderation::OrHash),
+            multi_agent: T.nilable(OpenAI::Beta::ResponseCreateParams::MultiAgent::OrHash),
             parallel_tool_calls: T.nilable(T::Boolean),
             previous_response_id: T.nilable(String),
             prompt: T.nilable(OpenAI::Beta::BetaResponsePrompt::OrHash),
             prompt_cache_key: T.nilable(String),
-            prompt_cache_options:
-              OpenAI::Beta::ResponseCreateParams::PromptCacheOptions::OrHash,
-            prompt_cache_retention:
-              T.nilable(
-                OpenAI::Beta::ResponseCreateParams::PromptCacheRetention::OrSymbol
-              ),
-            reasoning:
-              T.nilable(OpenAI::Beta::ResponseCreateParams::Reasoning::OrHash),
+            prompt_cache_options: OpenAI::Beta::ResponseCreateParams::PromptCacheOptions::OrHash,
+            prompt_cache_retention: T.nilable(OpenAI::Beta::ResponseCreateParams::PromptCacheRetention::OrSymbol),
+            reasoning: T.nilable(OpenAI::Beta::ResponseCreateParams::Reasoning::OrHash),
             safety_identifier: T.nilable(String),
-            service_tier:
-              T.nilable(
-                OpenAI::Beta::ResponseCreateParams::ServiceTier::OrSymbol
-              ),
+            service_tier: T.nilable(OpenAI::Beta::ResponseCreateParams::ServiceTier::OrSymbol),
             store: T.nilable(T::Boolean),
-            stream_options:
-              T.nilable(
-                OpenAI::Beta::ResponseCreateParams::StreamOptions::OrHash
-              ),
+            stream_options: T.nilable(OpenAI::Beta::ResponseCreateParams::StreamOptions::OrHash),
             temperature: T.nilable(Float),
             text: OpenAI::Beta::BetaResponseTextConfig::OrHash,
-            tool_choice:
+            tool_choice: T.any(
+              OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
+              OpenAI::Beta::BetaToolChoiceAllowed::OrHash,
+              OpenAI::Beta::BetaToolChoiceTypes::OrHash,
+              OpenAI::Beta::BetaToolChoiceFunction::OrHash,
+              OpenAI::Beta::BetaToolChoiceMcp::OrHash,
+              OpenAI::Beta::BetaToolChoiceCustom::OrHash,
+              OpenAI::Beta::ResponseCreateParams::ToolChoice::BetaSpecificProgrammaticToolCallingParam::OrHash,
+              OpenAI::Beta::BetaToolChoiceApplyPatch::OrHash,
+              OpenAI::Beta::BetaToolChoiceShell::OrHash
+            ),
+            tools: T::Array[
               T.any(
-                OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
-                OpenAI::Beta::BetaToolChoiceAllowed::OrHash,
-                OpenAI::Beta::BetaToolChoiceTypes::OrHash,
-                OpenAI::Beta::BetaToolChoiceFunction::OrHash,
-                OpenAI::Beta::BetaToolChoiceMcp::OrHash,
-                OpenAI::Beta::BetaToolChoiceCustom::OrHash,
-                OpenAI::Beta::ResponseCreateParams::ToolChoice::BetaSpecificProgrammaticToolCallingParam::OrHash,
-                OpenAI::Beta::BetaToolChoiceApplyPatch::OrHash,
-                OpenAI::Beta::BetaToolChoiceShell::OrHash
-              ),
-            tools:
-              T::Array[
-                T.any(
-                  OpenAI::Beta::BetaFunctionTool::OrHash,
-                  OpenAI::Beta::BetaFileSearchTool::OrHash,
-                  OpenAI::Beta::BetaComputerTool::OrHash,
-                  OpenAI::Beta::BetaComputerUsePreviewTool::OrHash,
-                  OpenAI::Beta::BetaTool::Mcp::OrHash,
-                  OpenAI::Beta::BetaTool::CodeInterpreter::OrHash,
-                  OpenAI::Beta::BetaTool::ProgrammaticToolCalling::OrHash,
-                  OpenAI::Beta::BetaTool::ImageGeneration::OrHash,
-                  OpenAI::Beta::BetaTool::LocalShell::OrHash,
-                  OpenAI::Beta::BetaFunctionShellTool::OrHash,
-                  OpenAI::Beta::BetaCustomTool::OrHash,
-                  OpenAI::Beta::BetaNamespaceTool::OrHash,
-                  OpenAI::Beta::BetaToolSearchTool::OrHash,
-                  OpenAI::Beta::BetaApplyPatchTool::OrHash,
-                  OpenAI::Beta::BetaWebSearchTool::OrHash,
-                  OpenAI::Beta::BetaWebSearchPreviewTool::OrHash
-                )
-              ],
+                OpenAI::Beta::BetaFunctionTool::OrHash,
+                OpenAI::Beta::BetaFileSearchTool::OrHash,
+                OpenAI::Beta::BetaComputerTool::OrHash,
+                OpenAI::Beta::BetaComputerUsePreviewTool::OrHash,
+                OpenAI::Beta::BetaTool::Mcp::OrHash,
+                OpenAI::Beta::BetaTool::CodeInterpreter::OrHash,
+                OpenAI::Beta::BetaTool::ProgrammaticToolCalling::OrHash,
+                OpenAI::Beta::BetaTool::ImageGeneration::OrHash,
+                OpenAI::Beta::BetaTool::LocalShell::OrHash,
+                OpenAI::Beta::BetaFunctionShellTool::OrHash,
+                OpenAI::Beta::BetaCustomTool::OrHash,
+                OpenAI::Beta::BetaNamespaceTool::OrHash,
+                OpenAI::Beta::BetaToolSearchTool::OrHash,
+                OpenAI::Beta::BetaApplyPatchTool::OrHash,
+                OpenAI::Beta::BetaWebSearchTool::OrHash,
+                OpenAI::Beta::BetaWebSearchPreviewTool::OrHash
+              )
+            ],
             top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
-            truncation:
-              T.nilable(
-                OpenAI::Beta::ResponseCreateParams::Truncation::OrSymbol
-              ),
+            truncation: T.nilable(OpenAI::Beta::ResponseCreateParams::Truncation::OrSymbol),
             user: String,
             betas: T::Array[OpenAI::Beta::ResponseCreateParams::Beta::OrSymbol],
             stream: T.noreturn,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::BetaResponse)
-        end
+          )
+            .returns(OpenAI::Beta::BetaResponse)
+        }
         def create(
+          # Body param: Domain-specific access programs to use for this request.
+          access_programs: nil,
           # Body param: Whether to run the model response in the background.
-          # [Learn more](https://platform.openai.com/docs/guides/background).
+          # [Learn more](https://developers.openai.com/api/docs/guides/background).
           background: nil,
           # Body param: Context management configuration for this request.
           context_management: nil,
@@ -161,11 +135,11 @@ module OpenAI
           #
           # Learn more:
           #
-          # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-          # - [Image inputs](https://platform.openai.com/docs/guides/images)
-          # - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
-          # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
-          # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
+          # - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+          # - [Image inputs](https://developers.openai.com/api/docs/guides/images-vision)
+          # - [File inputs](https://developers.openai.com/api/docs/guides/file-inputs)
+          # - [Conversation state](https://developers.openai.com/api/docs/guides/conversation-state)
+          # - [Function calling](https://developers.openai.com/api/docs/guides/function-calling)
           input: nil,
           # Body param: A system (or developer) message inserted into the model's context.
           #
@@ -175,7 +149,7 @@ module OpenAI
           instructions: nil,
           # Body param: An upper bound for the number of tokens that can be generated for a
           # response, including visible output tokens and
-          # [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
+          # [reasoning tokens](https://developers.openai.com/api/docs/guides/reasoning).
           max_output_tokens: nil,
           # Body param: The maximum number of total calls to built-in tools that can be
           # processed in a response. This maximum number applies across all built-in tool
@@ -189,11 +163,11 @@ module OpenAI
           # Keys are strings with a maximum length of 64 characters. Values are strings with
           # a maximum length of 512 characters.
           metadata: nil,
-          # Body param: Model ID used to generate the response, like `gpt-4o` or `o3`.
-          # OpenAI offers a wide range of models with different capabilities, performance
+          # Body param: Model ID used to generate the response, like `gpt-6-astra`. OpenAI
+          # offers a wide range of models with different capabilities, performance
           # characteristics, and price points. Refer to the
-          # [model guide](https://platform.openai.com/docs/models) to browse and compare
-          # available models.
+          # [model guide](https://developers.openai.com/api/docs/models) to browse and
+          # compare available models.
           model: nil,
           # Body param: Configuration for running moderation on the input and output of this
           # response.
@@ -204,15 +178,15 @@ module OpenAI
           parallel_tool_calls: nil,
           # Body param: The unique ID of the previous response to the model. Use this to
           # create multi-turn conversations. Learn more about
-          # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
+          # [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
           # Cannot be used in conjunction with `conversation`.
           previous_response_id: nil,
           # Body param: Reference to a prompt template and its variables.
-          # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
+          # [Learn more](https://developers.openai.com/api/docs/guides/text?api-mode=responses#version-prompts-in-code).
           prompt: nil,
           # Body param: Used by OpenAI to cache responses for similar requests to optimize
           # your cache hit rates. Replaces the `user` field.
-          # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
+          # [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching).
           prompt_cache_key: nil,
           # Body param: Options for prompt caching. Supported for `gpt-5.6` and later
           # models. By default, OpenAI automatically chooses one implicit cache breakpoint.
@@ -222,7 +196,7 @@ module OpenAI
           # conversation, without a content-block lookback limit. Set `mode` to `explicit`
           # to disable the implicit breakpoint. The `ttl` defaults to `30m`, which is
           # currently the only supported value. See the
-          # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+          # [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
           # for current details.
           prompt_cache_options: nil,
           # Body param: Deprecated. Use `prompt_cache_options.ttl` instead.
@@ -230,7 +204,7 @@ module OpenAI
           # The retention policy for the prompt cache. Set to `24h` to enable extended
           # prompt caching, which keeps cached prefixes active for longer, up to a maximum
           # of 24 hours.
-          # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+          # [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention).
           # This field expresses a maximum retention policy, while
           # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
           # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
@@ -243,17 +217,15 @@ module OpenAI
           # - Organizations with ZDR enabled default to `in_memory` when
           #   `prompt_cache_retention` is not specified.
           prompt_cache_retention: nil,
-          # Body param: **gpt-5 and o-series models only**
-          #
-          # Configuration options for
-          # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+          # Body param: Configuration options for
+          # [reasoning models](https://developers.openai.com/api/docs/guides/reasoning).
           reasoning: nil,
           # Body param: A stable identifier used to help detect users of your application
           # that may be violating OpenAI's usage policies. The IDs should be a string that
-          # uniquely identifies each user, with a maximum length of 64 characters. We
+          # uniquely identifies each user, with a maximum length of 128 characters. We
           # recommend hashing their username or email address, in order to avoid sending us
           # any identifying information.
-          # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
+          # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
           safety_identifier: nil,
           # Body param: Specifies the processing type used for serving the request.
           #
@@ -262,13 +234,19 @@ module OpenAI
           #   will use 'default'.
           # - If set to 'default', then the request will be processed with the standard
           #   pricing and performance for the selected model.
-          # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)',
-          #   then the request will be processed with the Flex Processing service tier.
-          # - To opt-in to [Fast mode](/api/docs/guides/fast-mode) at the request level,
-          #   include the `service_tier=fast` or `service_tier=priority` parameter for
-          #   Responses or Chat Completions. The response will show `service_tier=priority`
-          #   regardless of if you specify `service_tier=fast` or `priority` in your
-          #   request.
+          # - If set to
+          #   '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+          #   the request will be processed with the Flex Processing service tier.
+          # - To opt-in to
+          #   [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+          #   request level, include the `service_tier=fast` or `service_tier=priority`
+          #   parameter for Responses or Chat Completions. The response will show
+          #   `service_tier=priority` regardless of if you specify `service_tier=fast` or
+          #   `priority` in your request.
+          # - If set to 'ultrafast', then the request will be processed with the
+          #   access-controlled Ultrafast Processing service tier. This tier is currently
+          #   available for `gpt-5.6-sol`; a response served through it will show
+          #   `service_tier=ultrafast`.
           # - When not set, the default behavior is 'auto'.
           #
           # When the `service_tier` parameter is set, the response body will include the
@@ -277,7 +255,9 @@ module OpenAI
           # parameter.
           service_tier: nil,
           # Body param: Whether to store the generated model response for later retrieval
-          # via API.
+          # via API. Defaults to true when omitted. If set to true, response data will be
+          # stored for at least 30 days, subject to the
+          # [data retention exceptions](https://developers.openai.com/api/docs/guides/your-data#v1responses).
           store: nil,
           # Body param: Options for streaming responses. Only set this when you set
           # `stream: true`.
@@ -290,8 +270,8 @@ module OpenAI
           # Body param: Configuration options for a text response from the model. Can be
           # plain text or structured JSON data. Learn more:
           #
-          # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-          # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+          # - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+          # - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
           text: nil,
           # Body param: How the model should select which tool (or tools) to use when
           # generating a response. See the `tools` parameter to see how to specify which
@@ -304,17 +284,18 @@ module OpenAI
           #
           # - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
           #   capabilities, like
-          #   [web search](https://platform.openai.com/docs/guides/tools-web-search) or
-          #   [file search](https://platform.openai.com/docs/guides/tools-file-search).
+          #   [web search](https://developers.openai.com/api/docs/guides/tools-web-search)
+          #   or
+          #   [file search](https://developers.openai.com/api/docs/guides/tools-file-search).
           #   Learn more about
-          #   [built-in tools](https://platform.openai.com/docs/guides/tools).
+          #   [built-in tools](https://developers.openai.com/api/docs/guides/tools).
           # - **MCP Tools**: Integrations with third-party systems via custom MCP servers or
           #   predefined connectors such as Google Drive and SharePoint. Learn more about
-          #   [MCP Tools](https://platform.openai.com/docs/guides/tools-connectors-mcp).
+          #   [MCP Tools](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
           # - **Function calls (custom tools)**: Functions that are defined by you, enabling
           #   the model to call your own code with strongly typed arguments and outputs.
           #   Learn more about
-          #   [function calling](https://platform.openai.com/docs/guides/function-calling).
+          #   [function calling](https://developers.openai.com/api/docs/guides/function-calling).
           #   You can also use custom tools to call your own code.
           tools: nil,
           # Body param: An integer between 0 and 20 specifying the maximum number of most
@@ -342,7 +323,7 @@ module OpenAI
           # optimizations. A stable identifier for your end-users. Used to boost cache hit
           # rates by better bucketing similar requests and to help OpenAI detect and prevent
           # abuse.
-          # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
+          # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
           user: nil,
           # Header param: Optional beta features to enable for this request.
           betas: nil,
@@ -356,126 +337,94 @@ module OpenAI
         # See {OpenAI::Resources::Beta::Responses#create} for non-streaming counterpart.
         #
         # Creates a model response. Provide
-        # [text](https://platform.openai.com/docs/guides/text) or
-        # [image](https://platform.openai.com/docs/guides/images) inputs to generate
-        # [text](https://platform.openai.com/docs/guides/text) or
-        # [JSON](https://platform.openai.com/docs/guides/structured-outputs) outputs. Have
-        # the model call your own
-        # [custom code](https://platform.openai.com/docs/guides/function-calling) or use
-        # built-in [tools](https://platform.openai.com/docs/guides/tools) like
-        # [web search](https://platform.openai.com/docs/guides/tools-web-search) or
-        # [file search](https://platform.openai.com/docs/guides/tools-file-search) to use
-        # your own data as input for the model's response.
-        sig do
+        # [text](https://developers.openai.com/api/docs/guides/text) or
+        # [image](https://developers.openai.com/api/docs/guides/images-vision) inputs to
+        # generate [text](https://developers.openai.com/api/docs/guides/text) or
+        # [JSON](https://developers.openai.com/api/docs/guides/structured-outputs)
+        # outputs. Have the model call your own
+        # [custom code](https://developers.openai.com/api/docs/guides/function-calling) or
+        # use built-in [tools](https://developers.openai.com/api/docs/guides/tools) like
+        # [web search](https://developers.openai.com/api/docs/guides/tools-web-search) or
+        # [file search](https://developers.openai.com/api/docs/guides/tools-file-search)
+        # to use your own data as input for the model's response.
+        sig {
           params(
+            access_programs: OpenAI::Beta::ResponseCreateParams::AccessPrograms::OrHash,
             background: T.nilable(T::Boolean),
-            context_management:
-              T.nilable(
-                T::Array[
-                  OpenAI::Beta::ResponseCreateParams::ContextManagement::OrHash
-                ]
-              ),
-            conversation:
-              T.nilable(
-                T.any(
-                  String,
-                  OpenAI::Beta::BetaResponseConversationParam::OrHash
-                )
-              ),
-            include:
-              T.nilable(
-                T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]
-              ),
+            context_management: T.nilable(T::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement::OrHash]),
+            conversation: T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam::OrHash)),
+            include: T.nilable(T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]),
             input: OpenAI::Beta::ResponseCreateParams::Input::Variants,
             instructions: T.nilable(String),
             max_output_tokens: T.nilable(Integer),
             max_tool_calls: T.nilable(Integer),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model:
-              T.any(
-                OpenAI::Beta::ResponseCreateParams::Model::OrSymbol,
-                String
-              ),
-            moderation:
-              T.nilable(OpenAI::Beta::ResponseCreateParams::Moderation::OrHash),
-            multi_agent:
-              T.nilable(OpenAI::Beta::ResponseCreateParams::MultiAgent::OrHash),
+            model: T.any(OpenAI::Beta::ResponseCreateParams::Model::OrSymbol, String),
+            moderation: T.nilable(OpenAI::Beta::ResponseCreateParams::Moderation::OrHash),
+            multi_agent: T.nilable(OpenAI::Beta::ResponseCreateParams::MultiAgent::OrHash),
             parallel_tool_calls: T.nilable(T::Boolean),
             previous_response_id: T.nilable(String),
             prompt: T.nilable(OpenAI::Beta::BetaResponsePrompt::OrHash),
             prompt_cache_key: T.nilable(String),
-            prompt_cache_options:
-              OpenAI::Beta::ResponseCreateParams::PromptCacheOptions::OrHash,
-            prompt_cache_retention:
-              T.nilable(
-                OpenAI::Beta::ResponseCreateParams::PromptCacheRetention::OrSymbol
-              ),
-            reasoning:
-              T.nilable(OpenAI::Beta::ResponseCreateParams::Reasoning::OrHash),
+            prompt_cache_options: OpenAI::Beta::ResponseCreateParams::PromptCacheOptions::OrHash,
+            prompt_cache_retention: T.nilable(OpenAI::Beta::ResponseCreateParams::PromptCacheRetention::OrSymbol),
+            reasoning: T.nilable(OpenAI::Beta::ResponseCreateParams::Reasoning::OrHash),
             safety_identifier: T.nilable(String),
-            service_tier:
-              T.nilable(
-                OpenAI::Beta::ResponseCreateParams::ServiceTier::OrSymbol
-              ),
+            service_tier: T.nilable(OpenAI::Beta::ResponseCreateParams::ServiceTier::OrSymbol),
             store: T.nilable(T::Boolean),
-            stream_options:
-              T.nilable(
-                OpenAI::Beta::ResponseCreateParams::StreamOptions::OrHash
-              ),
+            stream_options: T.nilable(OpenAI::Beta::ResponseCreateParams::StreamOptions::OrHash),
             temperature: T.nilable(Float),
             text: OpenAI::Beta::BetaResponseTextConfig::OrHash,
-            tool_choice:
+            tool_choice: T.any(
+              OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
+              OpenAI::Beta::BetaToolChoiceAllowed::OrHash,
+              OpenAI::Beta::BetaToolChoiceTypes::OrHash,
+              OpenAI::Beta::BetaToolChoiceFunction::OrHash,
+              OpenAI::Beta::BetaToolChoiceMcp::OrHash,
+              OpenAI::Beta::BetaToolChoiceCustom::OrHash,
+              OpenAI::Beta::ResponseCreateParams::ToolChoice::BetaSpecificProgrammaticToolCallingParam::OrHash,
+              OpenAI::Beta::BetaToolChoiceApplyPatch::OrHash,
+              OpenAI::Beta::BetaToolChoiceShell::OrHash
+            ),
+            tools: T::Array[
               T.any(
-                OpenAI::Beta::BetaToolChoiceOptions::OrSymbol,
-                OpenAI::Beta::BetaToolChoiceAllowed::OrHash,
-                OpenAI::Beta::BetaToolChoiceTypes::OrHash,
-                OpenAI::Beta::BetaToolChoiceFunction::OrHash,
-                OpenAI::Beta::BetaToolChoiceMcp::OrHash,
-                OpenAI::Beta::BetaToolChoiceCustom::OrHash,
-                OpenAI::Beta::ResponseCreateParams::ToolChoice::BetaSpecificProgrammaticToolCallingParam::OrHash,
-                OpenAI::Beta::BetaToolChoiceApplyPatch::OrHash,
-                OpenAI::Beta::BetaToolChoiceShell::OrHash
-              ),
-            tools:
-              T::Array[
-                T.any(
-                  OpenAI::Beta::BetaFunctionTool::OrHash,
-                  OpenAI::Beta::BetaFileSearchTool::OrHash,
-                  OpenAI::Beta::BetaComputerTool::OrHash,
-                  OpenAI::Beta::BetaComputerUsePreviewTool::OrHash,
-                  OpenAI::Beta::BetaTool::Mcp::OrHash,
-                  OpenAI::Beta::BetaTool::CodeInterpreter::OrHash,
-                  OpenAI::Beta::BetaTool::ProgrammaticToolCalling::OrHash,
-                  OpenAI::Beta::BetaTool::ImageGeneration::OrHash,
-                  OpenAI::Beta::BetaTool::LocalShell::OrHash,
-                  OpenAI::Beta::BetaFunctionShellTool::OrHash,
-                  OpenAI::Beta::BetaCustomTool::OrHash,
-                  OpenAI::Beta::BetaNamespaceTool::OrHash,
-                  OpenAI::Beta::BetaToolSearchTool::OrHash,
-                  OpenAI::Beta::BetaApplyPatchTool::OrHash,
-                  OpenAI::Beta::BetaWebSearchTool::OrHash,
-                  OpenAI::Beta::BetaWebSearchPreviewTool::OrHash
-                )
-              ],
+                OpenAI::Beta::BetaFunctionTool::OrHash,
+                OpenAI::Beta::BetaFileSearchTool::OrHash,
+                OpenAI::Beta::BetaComputerTool::OrHash,
+                OpenAI::Beta::BetaComputerUsePreviewTool::OrHash,
+                OpenAI::Beta::BetaTool::Mcp::OrHash,
+                OpenAI::Beta::BetaTool::CodeInterpreter::OrHash,
+                OpenAI::Beta::BetaTool::ProgrammaticToolCalling::OrHash,
+                OpenAI::Beta::BetaTool::ImageGeneration::OrHash,
+                OpenAI::Beta::BetaTool::LocalShell::OrHash,
+                OpenAI::Beta::BetaFunctionShellTool::OrHash,
+                OpenAI::Beta::BetaCustomTool::OrHash,
+                OpenAI::Beta::BetaNamespaceTool::OrHash,
+                OpenAI::Beta::BetaToolSearchTool::OrHash,
+                OpenAI::Beta::BetaApplyPatchTool::OrHash,
+                OpenAI::Beta::BetaWebSearchTool::OrHash,
+                OpenAI::Beta::BetaWebSearchPreviewTool::OrHash
+              )
+            ],
             top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
-            truncation:
-              T.nilable(
-                OpenAI::Beta::ResponseCreateParams::Truncation::OrSymbol
-              ),
+            truncation: T.nilable(OpenAI::Beta::ResponseCreateParams::Truncation::OrSymbol),
             user: String,
             betas: T::Array[OpenAI::Beta::ResponseCreateParams::Beta::OrSymbol],
             stream: T.noreturn,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::Stream[
-              OpenAI::Beta::BetaResponseStreamEvent::Variants
-            ]
           )
-        end
+            .returns(
+              OpenAI::Internal::Stream[
+                T.any(OpenAI::Beta::BetaResponseStreamEvent::Variants, OpenAI::Streaming::UnknownStreamEvent)
+              ]
+            )
+        }
         def stream_raw(
+          # Body param: Domain-specific access programs to use for this request.
+          access_programs: nil,
           # Body param: Whether to run the model response in the background.
-          # [Learn more](https://platform.openai.com/docs/guides/background).
+          # [Learn more](https://developers.openai.com/api/docs/guides/background).
           background: nil,
           # Body param: Context management configuration for this request.
           context_management: nil,
@@ -508,11 +457,11 @@ module OpenAI
           #
           # Learn more:
           #
-          # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-          # - [Image inputs](https://platform.openai.com/docs/guides/images)
-          # - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
-          # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
-          # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
+          # - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+          # - [Image inputs](https://developers.openai.com/api/docs/guides/images-vision)
+          # - [File inputs](https://developers.openai.com/api/docs/guides/file-inputs)
+          # - [Conversation state](https://developers.openai.com/api/docs/guides/conversation-state)
+          # - [Function calling](https://developers.openai.com/api/docs/guides/function-calling)
           input: nil,
           # Body param: A system (or developer) message inserted into the model's context.
           #
@@ -522,7 +471,7 @@ module OpenAI
           instructions: nil,
           # Body param: An upper bound for the number of tokens that can be generated for a
           # response, including visible output tokens and
-          # [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
+          # [reasoning tokens](https://developers.openai.com/api/docs/guides/reasoning).
           max_output_tokens: nil,
           # Body param: The maximum number of total calls to built-in tools that can be
           # processed in a response. This maximum number applies across all built-in tool
@@ -536,11 +485,11 @@ module OpenAI
           # Keys are strings with a maximum length of 64 characters. Values are strings with
           # a maximum length of 512 characters.
           metadata: nil,
-          # Body param: Model ID used to generate the response, like `gpt-4o` or `o3`.
-          # OpenAI offers a wide range of models with different capabilities, performance
+          # Body param: Model ID used to generate the response, like `gpt-6-astra`. OpenAI
+          # offers a wide range of models with different capabilities, performance
           # characteristics, and price points. Refer to the
-          # [model guide](https://platform.openai.com/docs/models) to browse and compare
-          # available models.
+          # [model guide](https://developers.openai.com/api/docs/models) to browse and
+          # compare available models.
           model: nil,
           # Body param: Configuration for running moderation on the input and output of this
           # response.
@@ -551,15 +500,15 @@ module OpenAI
           parallel_tool_calls: nil,
           # Body param: The unique ID of the previous response to the model. Use this to
           # create multi-turn conversations. Learn more about
-          # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
+          # [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
           # Cannot be used in conjunction with `conversation`.
           previous_response_id: nil,
           # Body param: Reference to a prompt template and its variables.
-          # [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
+          # [Learn more](https://developers.openai.com/api/docs/guides/text?api-mode=responses#version-prompts-in-code).
           prompt: nil,
           # Body param: Used by OpenAI to cache responses for similar requests to optimize
           # your cache hit rates. Replaces the `user` field.
-          # [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
+          # [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching).
           prompt_cache_key: nil,
           # Body param: Options for prompt caching. Supported for `gpt-5.6` and later
           # models. By default, OpenAI automatically chooses one implicit cache breakpoint.
@@ -569,7 +518,7 @@ module OpenAI
           # conversation, without a content-block lookback limit. Set `mode` to `explicit`
           # to disable the implicit breakpoint. The `ttl` defaults to `30m`, which is
           # currently the only supported value. See the
-          # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+          # [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
           # for current details.
           prompt_cache_options: nil,
           # Body param: Deprecated. Use `prompt_cache_options.ttl` instead.
@@ -577,7 +526,7 @@ module OpenAI
           # The retention policy for the prompt cache. Set to `24h` to enable extended
           # prompt caching, which keeps cached prefixes active for longer, up to a maximum
           # of 24 hours.
-          # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+          # [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention).
           # This field expresses a maximum retention policy, while
           # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
           # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
@@ -590,17 +539,15 @@ module OpenAI
           # - Organizations with ZDR enabled default to `in_memory` when
           #   `prompt_cache_retention` is not specified.
           prompt_cache_retention: nil,
-          # Body param: **gpt-5 and o-series models only**
-          #
-          # Configuration options for
-          # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+          # Body param: Configuration options for
+          # [reasoning models](https://developers.openai.com/api/docs/guides/reasoning).
           reasoning: nil,
           # Body param: A stable identifier used to help detect users of your application
           # that may be violating OpenAI's usage policies. The IDs should be a string that
-          # uniquely identifies each user, with a maximum length of 64 characters. We
+          # uniquely identifies each user, with a maximum length of 128 characters. We
           # recommend hashing their username or email address, in order to avoid sending us
           # any identifying information.
-          # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
+          # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
           safety_identifier: nil,
           # Body param: Specifies the processing type used for serving the request.
           #
@@ -609,13 +556,19 @@ module OpenAI
           #   will use 'default'.
           # - If set to 'default', then the request will be processed with the standard
           #   pricing and performance for the selected model.
-          # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)',
-          #   then the request will be processed with the Flex Processing service tier.
-          # - To opt-in to [Fast mode](/api/docs/guides/fast-mode) at the request level,
-          #   include the `service_tier=fast` or `service_tier=priority` parameter for
-          #   Responses or Chat Completions. The response will show `service_tier=priority`
-          #   regardless of if you specify `service_tier=fast` or `priority` in your
-          #   request.
+          # - If set to
+          #   '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+          #   the request will be processed with the Flex Processing service tier.
+          # - To opt-in to
+          #   [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+          #   request level, include the `service_tier=fast` or `service_tier=priority`
+          #   parameter for Responses or Chat Completions. The response will show
+          #   `service_tier=priority` regardless of if you specify `service_tier=fast` or
+          #   `priority` in your request.
+          # - If set to 'ultrafast', then the request will be processed with the
+          #   access-controlled Ultrafast Processing service tier. This tier is currently
+          #   available for `gpt-5.6-sol`; a response served through it will show
+          #   `service_tier=ultrafast`.
           # - When not set, the default behavior is 'auto'.
           #
           # When the `service_tier` parameter is set, the response body will include the
@@ -624,7 +577,9 @@ module OpenAI
           # parameter.
           service_tier: nil,
           # Body param: Whether to store the generated model response for later retrieval
-          # via API.
+          # via API. Defaults to true when omitted. If set to true, response data will be
+          # stored for at least 30 days, subject to the
+          # [data retention exceptions](https://developers.openai.com/api/docs/guides/your-data#v1responses).
           store: nil,
           # Body param: Options for streaming responses. Only set this when you set
           # `stream: true`.
@@ -637,8 +592,8 @@ module OpenAI
           # Body param: Configuration options for a text response from the model. Can be
           # plain text or structured JSON data. Learn more:
           #
-          # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-          # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+          # - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+          # - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
           text: nil,
           # Body param: How the model should select which tool (or tools) to use when
           # generating a response. See the `tools` parameter to see how to specify which
@@ -651,17 +606,18 @@ module OpenAI
           #
           # - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
           #   capabilities, like
-          #   [web search](https://platform.openai.com/docs/guides/tools-web-search) or
-          #   [file search](https://platform.openai.com/docs/guides/tools-file-search).
+          #   [web search](https://developers.openai.com/api/docs/guides/tools-web-search)
+          #   or
+          #   [file search](https://developers.openai.com/api/docs/guides/tools-file-search).
           #   Learn more about
-          #   [built-in tools](https://platform.openai.com/docs/guides/tools).
+          #   [built-in tools](https://developers.openai.com/api/docs/guides/tools).
           # - **MCP Tools**: Integrations with third-party systems via custom MCP servers or
           #   predefined connectors such as Google Drive and SharePoint. Learn more about
-          #   [MCP Tools](https://platform.openai.com/docs/guides/tools-connectors-mcp).
+          #   [MCP Tools](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
           # - **Function calls (custom tools)**: Functions that are defined by you, enabling
           #   the model to call your own code with strongly typed arguments and outputs.
           #   Learn more about
-          #   [function calling](https://platform.openai.com/docs/guides/function-calling).
+          #   [function calling](https://developers.openai.com/api/docs/guides/function-calling).
           #   You can also use custom tools to call your own code.
           tools: nil,
           # Body param: An integer between 0 and 20 specifying the maximum number of most
@@ -689,7 +645,7 @@ module OpenAI
           # optimizations. A stable identifier for your end-users. Used to boost cache hit
           # rates by better bucketing similar requests and to help OpenAI detect and prevent
           # abuse.
-          # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
+          # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
           user: nil,
           # Header param: Optional beta features to enable for this request.
           betas: nil,
@@ -704,18 +660,18 @@ module OpenAI
         # counterpart.
         #
         # Retrieves a model response with the given ID.
-        sig do
+        sig {
           params(
             response_id: String,
             include: T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol],
             include_obfuscation: T::Boolean,
             starting_after: Integer,
-            betas:
-              T::Array[OpenAI::Beta::ResponseRetrieveParams::Beta::OrSymbol],
+            betas: T::Array[OpenAI::Beta::ResponseRetrieveParams::Beta::OrSymbol],
             stream: T.noreturn,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::BetaResponse)
-        end
+          )
+            .returns(OpenAI::Beta::BetaResponse)
+        }
         def retrieve(
           # Path param: The ID of the response to retrieve.
           response_id,
@@ -744,22 +700,22 @@ module OpenAI
         # See {OpenAI::Resources::Beta::Responses#retrieve} for non-streaming counterpart.
         #
         # Retrieves a model response with the given ID.
-        sig do
+        sig {
           params(
             response_id: String,
             include: T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol],
             include_obfuscation: T::Boolean,
             starting_after: Integer,
-            betas:
-              T::Array[OpenAI::Beta::ResponseRetrieveParams::Beta::OrSymbol],
+            betas: T::Array[OpenAI::Beta::ResponseRetrieveParams::Beta::OrSymbol],
             stream: T.noreturn,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::Stream[
-              OpenAI::Beta::BetaResponseStreamEvent::Variants
-            ]
           )
-        end
+            .returns(
+              OpenAI::Internal::Stream[
+                T.any(OpenAI::Beta::BetaResponseStreamEvent::Variants, OpenAI::Streaming::UnknownStreamEvent)
+              ]
+            )
+        }
         def retrieve_streaming(
           # Path param: The ID of the response to retrieve.
           response_id,
@@ -786,13 +742,14 @@ module OpenAI
         end
 
         # Deletes a model response with the given ID.
-        sig do
+        sig {
           params(
             response_id: String,
             betas: T::Array[OpenAI::Beta::ResponseDeleteParams::Beta::OrSymbol],
             request_options: OpenAI::RequestOptions::OrHash
-          ).void
-        end
+          )
+            .void
+        }
         def delete(
           # The ID of the response to delete.
           response_id,
@@ -804,14 +761,15 @@ module OpenAI
 
         # Cancels a model response with the given ID. Only responses created with the
         # `background` parameter set to `true` can be cancelled.
-        # [Learn more](https://platform.openai.com/docs/guides/background).
-        sig do
+        # [Learn more](https://developers.openai.com/api/docs/guides/background).
+        sig {
           params(
             response_id: String,
             betas: T::Array[OpenAI::Beta::ResponseCancelParams::Beta::OrSymbol],
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::BetaResponse)
-        end
+          )
+            .returns(OpenAI::Beta::BetaResponse)
+        }
         def cancel(
           # The ID of the response to cancel.
           response_id,
@@ -824,46 +782,30 @@ module OpenAI
         # Compact a conversation. Returns a compacted response object.
         #
         # Learn when and how to compact long-running conversations in the
-        # [conversation state guide](https://platform.openai.com/docs/guides/conversation-state#managing-the-context-window).
+        # [conversation state guide](https://developers.openai.com/api/docs/guides/conversation-state#managing-the-context-window).
         # For ZDR-compatible compaction details, see
-        # [Compaction (advanced)](https://platform.openai.com/docs/guides/conversation-state#compaction-advanced).
-        sig do
+        # [Compaction (advanced)](https://developers.openai.com/api/docs/guides/conversation-state#compaction-advanced).
+        sig {
           params(
-            model:
-              T.nilable(
-                T.any(
-                  OpenAI::Beta::ResponseCompactParams::Model::OrSymbol,
-                  String
-                )
-              ),
-            input:
-              T.nilable(OpenAI::Beta::ResponseCompactParams::Input::Variants),
+            model: T.nilable(T.any(OpenAI::Beta::ResponseCompactParams::Model::OrSymbol, String)),
+            input: T.nilable(OpenAI::Beta::ResponseCompactParams::Input::Variants),
             instructions: T.nilable(String),
             previous_response_id: T.nilable(String),
             prompt_cache_key: T.nilable(String),
-            prompt_cache_options:
-              T.nilable(
-                OpenAI::Beta::ResponseCompactParams::PromptCacheOptions::OrHash
-              ),
-            prompt_cache_retention:
-              T.nilable(
-                OpenAI::Beta::ResponseCompactParams::PromptCacheRetention::OrSymbol
-              ),
-            service_tier:
-              T.nilable(
-                OpenAI::Beta::ResponseCompactParams::ServiceTier::OrSymbol
-              ),
-            betas:
-              T::Array[OpenAI::Beta::ResponseCompactParams::Beta::OrSymbol],
+            prompt_cache_options: T.nilable(OpenAI::Beta::ResponseCompactParams::PromptCacheOptions::OrHash),
+            prompt_cache_retention: T.nilable(OpenAI::Beta::ResponseCompactParams::PromptCacheRetention::OrSymbol),
+            service_tier: T.nilable(OpenAI::Beta::ResponseCompactParams::ServiceTier::OrSymbol),
+            betas: T::Array[OpenAI::Beta::ResponseCompactParams::Beta::OrSymbol],
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::BetaCompactedResponse)
-        end
+          )
+            .returns(OpenAI::Beta::BetaCompactedResponse)
+        }
         def compact(
-          # Body param: Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI
+          # Body param: Model ID used to generate the response, like `gpt-6-astra`. OpenAI
           # offers a wide range of models with different capabilities, performance
           # characteristics, and price points. Refer to the
-          # [model guide](https://platform.openai.com/docs/models) to browse and compare
-          # available models.
+          # [model guide](https://developers.openai.com/api/docs/models) to browse and
+          # compare available models.
           model:,
           # Body param: Text, image, or file inputs to the model, used to generate a
           # response
@@ -875,7 +817,7 @@ module OpenAI
           instructions: nil,
           # Body param: The unique ID of the previous response to the model. Use this to
           # create multi-turn conversations. Learn more about
-          # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
+          # [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
           # Cannot be used in conjunction with `conversation`.
           previous_response_id: nil,
           # Body param: A key to use when reading from or writing to the prompt cache.
@@ -888,7 +830,7 @@ module OpenAI
           # conversation, without a content-block lookback limit. Set `mode` to `explicit`
           # to disable the implicit breakpoint. The `ttl` defaults to `30m`, which is
           # currently the only supported value. See the
-          # [prompt caching guide](https://platform.openai.com/docs/guides/prompt-caching)
+          # [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
           # for current details.
           prompt_cache_options: nil,
           # Body param: How long to retain a prompt cache entry created by this request.
@@ -898,16 +840,17 @@ module OpenAI
           # in the Project settings. Unless otherwise configured, the Project will use
           # 'default'. - If set to 'default', then the request will be processed with the
           # standard pricing and performance for the selected model. - If set to
-          # '[flex](https://platform.openai.com/docs/guides/flex-processing)', then the
-          # request will be processed with the Flex Processing service tier. - To opt-in to
-          # [Fast mode](/api/docs/guides/fast-mode) at the request level, include the
-          # `service_tier=fast` or `service_tier=priority` parameter for Responses or Chat
-          # Completions. The response will show `service_tier=priority` regardless of if you
-          # specify `service_tier=fast` or `priority` in your request. - When not set, the
-          # default behavior is 'auto'. When the `service_tier` parameter is set, the
-          # response body will include the `service_tier` value based on the processing mode
-          # actually used to serve the request. This response value may be different from
-          # the value set in the parameter.
+          # '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+          # the request will be processed with the Flex Processing service tier. - To opt-in
+          # to [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+          # request level, include the `service_tier=fast` or `service_tier=priority`
+          # parameter for Responses or Chat Completions. For models with a dedicated Fast
+          # tier, either value resolves to `service_tier=fast`; for other models, either
+          # value resolves to `service_tier=priority`. - When not set, the default behavior
+          # is 'auto'. When the `service_tier` parameter is set, the response body will
+          # include the `service_tier` value based on the processing mode actually used to
+          # serve the request. This response value may be different from the value set in
+          # the parameter.
           service_tier: nil,
           # Header param: Optional beta features to enable for this request.
           betas: nil,
@@ -920,6 +863,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

@@ -2,69 +2,60 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class RealtimeTranslationClientSecretCreateRequest < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Realtime translation session configuration. Translation sessions stream source
         # audio in and translated audio plus transcript deltas out continuously.
-        sig do
-          returns(OpenAI::Realtime::RealtimeTranslationSessionCreateRequest)
-        end
+        sig { returns(OpenAI::Realtime::RealtimeTranslationSessionCreateRequest) }
         attr_reader :session
 
-        sig do
-          params(
-            session:
-              OpenAI::Realtime::RealtimeTranslationSessionCreateRequest::OrHash
-          ).void
-        end
+        sig { params(session: OpenAI::Realtime::RealtimeTranslationSessionCreateRequest::OrHash).void }
         attr_writer :session
 
         # Configuration for the client secret expiration. Expiration refers to the time
         # after which a client secret will no longer be valid for creating sessions. The
         # session itself may continue after that time once started. A secret can be used
         # to create multiple sessions until it expires.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter)) }
         attr_reader :expires_after
 
-        sig do
-          params(
-            expires_after:
-              OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::OrHash
-          ).void
-        end
+        sig {
+          params(expires_after: OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::OrHash)
+            .void
+        }
         attr_writer :expires_after
 
         # Create a translation session and client secret for the Realtime API.
         sig do
           params(
-            session:
-              OpenAI::Realtime::RealtimeTranslationSessionCreateRequest::OrHash,
-            expires_after:
-              OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::OrHash
-          ).returns(T.attached_class)
+
+            session: OpenAI::Realtime::RealtimeTranslationSessionCreateRequest::OrHash,
+
+            expires_after: OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::OrHash
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Realtime translation session configuration. Translation sessions stream source
           # audio in and translated audio plus transcript deltas out continuously.
           session:,
+
           # Configuration for the client secret expiration. Expiration refers to the time
           # after which a client secret will no longer be valid for creating sessions. The
           # session itself may continue after that time once started. A secret can be used
           # to create multiple sessions until it expires.
+
           expires_after: nil
         )
         end
@@ -72,10 +63,8 @@ module OpenAI
         sig do
           override.returns(
             {
-              session:
-                OpenAI::Realtime::RealtimeTranslationSessionCreateRequest,
-              expires_after:
-                OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter
+              session: OpenAI::Realtime::RealtimeTranslationSessionCreateRequest,
+              expires_after: OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter
             }
           )
         end
@@ -83,32 +72,29 @@ module OpenAI
         end
 
         class ExpiresAfter < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The anchor point for the client secret expiration, meaning that `seconds` will
           # be added to the `created_at` time of the client secret to produce an expiration
           # timestamp. Only `created_at` is currently supported.
-          sig do
+          sig {
             returns(
-              T.nilable(
-                OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::Anchor::OrSymbol
-              )
+              T.nilable(OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::Anchor::OrSymbol)
             )
-          end
+          }
           attr_reader :anchor
 
-          sig do
+          sig {
             params(
-              anchor:
-                OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::Anchor::OrSymbol
-            ).void
-          end
+              anchor: OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::Anchor::OrSymbol
+            )
+              .void
+          }
           attr_writer :anchor
 
           # The number of seconds from the anchor point to the expiration. Select a value
@@ -126,19 +112,24 @@ module OpenAI
           # to create multiple sessions until it expires.
           sig do
             params(
-              anchor:
-                OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::Anchor::OrSymbol,
+
+              anchor: OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::Anchor::OrSymbol,
+
               seconds: Integer
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The anchor point for the client secret expiration, meaning that `seconds` will
             # be added to the `created_at` time of the client secret to produce an expiration
             # timestamp. Only `created_at` is currently supported.
             anchor: nil,
+
             # The number of seconds from the anchor point to the expiration. Select a value
             # between `10` and `7200` (2 hours). This default to 600 seconds (10 minutes) if
             # not specified.
+
             seconds: nil
           )
           end
@@ -146,8 +137,7 @@ module OpenAI
           sig do
             override.returns(
               {
-                anchor:
-                  OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::Anchor::OrSymbol,
+                anchor: OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::Anchor::OrSymbol,
                 seconds: Integer
               }
             )
@@ -161,33 +151,31 @@ module OpenAI
           module Anchor
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::Anchor
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::Anchor)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            CREATED_AT =
-              T.let(
-                :created_at,
-                OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::Anchor::TaggedSymbol
-              )
+            CREATED_AT = T.let(
+              :created_at,
+              OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::Anchor::TaggedSymbol
+            )
 
-            sig do
+            sig {
               override.returns(
                 T::Array[
                   OpenAI::Realtime::RealtimeTranslationClientSecretCreateRequest::ExpiresAfter::Anchor::TaggedSymbol
                 ]
               )
-            end
+            }
             def self.values
             end
           end
         end
+
       end
+
     end
+
   end
 end

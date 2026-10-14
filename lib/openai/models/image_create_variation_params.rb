@@ -11,12 +11,16 @@ module OpenAI
       #   The image to use as the basis for the variation(s). Must be a valid PNG file,
       #   less than 4MB, and square.
       #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
+      #
       #   @return [Pathname, StringIO, IO, String, OpenAI::FilePart]
       required :image, OpenAI::Internal::Type::FileInput
 
       # @!attribute model
-      #   The model to use for image generation. Only `dall-e-2` is supported at this
-      #   time.
+      #   The legacy model used by the retired image variations endpoint. This endpoint no
+      #   longer accepts requests.
       #
       #   @return [String, Symbol, OpenAI::Models::ImageModel, nil]
       optional :model, union: -> { OpenAI::ImageCreateVariationParams::Model }, nil?: true
@@ -45,37 +49,51 @@ module OpenAI
       # @!attribute user
       #   A unique identifier representing your end-user, which can help OpenAI to monitor
       #   and detect abuse.
-      #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+      #   [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
       #
       #   @return [String, nil]
       optional :user, String
 
       # @!method initialize(image:, model: nil, n: nil, response_format: nil, size: nil, user: nil, request_options: {})
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::ImageCreateVariationParams} for more details.
+      #   @param image [Pathname, StringIO, IO, String, OpenAI::FilePart]
+      #     The image to use as the basis for the variation(s). Must be a valid PNG file,
+      #     less than 4MB, and square.
       #
-      #   @param image [Pathname, StringIO, IO, String, OpenAI::FilePart] The image to use as the basis for the variation(s). Must be a valid PNG file, le
+      #     `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #     metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #     content type.
       #
-      #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Only `dall-e-2` is supported at this time
+      #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil]
+      #     The legacy model used by the retired image variations endpoint. This endpoint no
+      #     longer accepts requests.
       #
-      #   @param n [Integer, nil] The number of images to generate. Must be between 1 and 10.
+      #   @param n [Integer, nil]
+      #     The number of images to generate. Must be between 1 and 10.
       #
-      #   @param response_format [Symbol, OpenAI::Models::ImageCreateVariationParams::ResponseFormat, nil] The format in which the generated images are returned. Must be one of `url` or `
+      #   @param response_format [Symbol, OpenAI::Models::ImageCreateVariationParams::ResponseFormat, nil]
+      #     The format in which the generated images are returned. Must be one of `url` or
+      #     `b64_json`. URLs are only valid for 60 minutes after the image has been
+      #     generated.
       #
-      #   @param size [Symbol, OpenAI::Models::ImageCreateVariationParams::Size, nil] The size of the generated images. Must be one of `256x256`, `512x512`, or `1024x
+      #   @param size [Symbol, OpenAI::Models::ImageCreateVariationParams::Size, nil]
+      #     The size of the generated images. Must be one of `256x256`, `512x512`, or
+      #     `1024x1024`.
       #
-      #   @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
+      #   @param user [String]
+      #     A unique identifier representing your end-user, which can help OpenAI to monitor
+      #     and detect abuse.
+      #     [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
-      # The model to use for image generation. Only `dall-e-2` is supported at this
-      # time.
+      # The legacy model used by the retired image variations endpoint. This endpoint no
+      # longer accepts requests.
       module Model
         extend OpenAI::Internal::Type::Union
 
         variant String
 
-        # The model to use for image generation. Only `dall-e-2` is supported at this time.
+        # The legacy model used by the retired image variations endpoint. This endpoint no longer accepts requests.
         variant enum: -> { OpenAI::ImageModel }
 
         # @!method self.variants

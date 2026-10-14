@@ -7,9 +7,9 @@ module OpenAI
             {
               project_id: String,
               group_id: String,
-              group_type: OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::group_type
+              ?group_type: OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::group_type,
+              ?request_options: OpenAI::request_opts
             }
-            & OpenAI::Internal::Type::request_parameters
 
           class GroupRetrieveParams < OpenAI::Internal::Type::BaseModel
             extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -19,12 +19,16 @@ module OpenAI
 
             attr_accessor group_id: String
 
+            # The type of group to retrieve.
             attr_reader group_type: OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::group_type?
 
+            # The type of group to retrieve.
             def group_type=: (
               OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::group_type
             ) -> OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::group_type
 
+            # @param group_type
+            #   The type of group to retrieve.
             def initialize: (
               project_id: String,
               group_id: String,
@@ -35,8 +39,8 @@ module OpenAI
             def to_hash: -> {
               project_id: String,
               group_id: String,
-              group_type: OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::group_type,
-              request_options: OpenAI::RequestOptions
+              ?group_type: OpenAI::Models::Admin::Organization::Projects::GroupRetrieveParams::group_type,
+              ?request_options: OpenAI::RequestOptions
             }
 
             type group_type = :group | :tenant_group

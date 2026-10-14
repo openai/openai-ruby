@@ -21,20 +21,29 @@ jobs:
       github.repository == 'openai/openai-ruby' &&
       github.event.inputs.retry_publish != 'true'
     runs-on: ubuntu-latest
-    permissions:
-      contents: write # Create/update the release branch, tags, and GitHub releases.
-      pull-requests: write # Create/update release PRs and their lifecycle labels.
+    environment: release
+    permissions: {}
     outputs:
       releases_created: ${{ steps.release.outputs.releases_created }}
 
     steps:
+      - name: Create release app token
+        id: app-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ vars.OPENAI_SDKS_APP_CLIENT_ID }}
+          private-key: ${{ secrets.OPENAI_SDKS_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-issues: write
+          permission-pull-requests: write
+
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         id: release
         with:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
           target-branch: main
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
 
   publish:
     name: publish
@@ -52,14 +61,14 @@ jobs:
       id-token: write # Exchange GitHub OIDC credentials with RubyGems.org.
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # Avoid persisting the default GITHUB_TOKEN; the RubyGems release action
           # configures the credentials it needs only when publishing.
           persist-credentials: false
 
       - name: Set up Ruby
-        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
+        uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1
         with:
           bundler-cache: false
           ruby-version: '4.0'
@@ -67,4 +76,4 @@ jobs:
       - run: bundle install
 
       - name: Publish to RubyGems.org
-        uses: rubygems/release-gem@6317d8d1f7e28c24d28f6eff169ea854948bd9f7 # v1.2.0
+        uses: rubygems/release-gem@7f9650160c1a4e7989fdc9855807bdbd421d8b6b # v1.4.1

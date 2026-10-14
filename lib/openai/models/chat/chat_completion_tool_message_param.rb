@@ -23,11 +23,14 @@ module OpenAI
         required :tool_call_id, String
 
         # @!method initialize(content:, tool_call_id:, role: :tool)
-        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>] The contents of the tool message.
+        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>]
+        #     The contents of the tool message.
         #
-        #   @param tool_call_id [String] Tool call that this message is responding to.
+        #   @param tool_call_id [String]
+        #     Tool call that this message is responding to.
         #
-        #   @param role [Symbol, :tool] The role of the messages author, in this case `tool`.
+        #   @param role [Symbol, :tool]
+        #     The role of the messages author, in this case `tool`.
 
         # The contents of the tool message.
         #
@@ -39,14 +42,17 @@ module OpenAI
           variant String
 
           # An array of content parts with a defined type. For tool messages, only type `text` is supported.
-          variant -> { OpenAI::Models::Chat::ChatCompletionToolMessageParam::Content::ChatCompletionContentPartTextArray }
+          variant(
+            -> { OpenAI::Models::Chat::ChatCompletionToolMessageParam::Content::ChatCompletionContentPartTextArray }
+          )
 
           # @!method self.variants
           #   @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>)]
 
           # @type [OpenAI::Internal::Type::Converter]
-          ChatCompletionContentPartTextArray =
-            OpenAI::Internal::Type::ArrayOf[-> { OpenAI::Chat::ChatCompletionContentPartText }]
+          ChatCompletionContentPartTextArray = OpenAI::Internal::Type::ArrayOf[
+            -> { OpenAI::Chat::ChatCompletionContentPartText }
+          ]
         end
       end
     end

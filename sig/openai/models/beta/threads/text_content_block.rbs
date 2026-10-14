@@ -3,19 +3,22 @@ module OpenAI
     module Beta
       module Threads
         type text_content_block =
-          { text: OpenAI::Beta::Threads::Text, type: :text }
+          { text: OpenAI::Beta::Threads::Text, ?type: :text }
 
         class TextContentBlock < OpenAI::Internal::Type::BaseModel
           attr_accessor text: OpenAI::Beta::Threads::Text
 
+          # Always `text`.
           attr_accessor type: :text
 
+          # @param type
+          #   Always `text`.
           def initialize: (
             text: OpenAI::Beta::Threads::Text,
             ?type: :text
           ) -> void
 
-          def to_hash: -> { text: OpenAI::Beta::Threads::Text, type: :text }
+          def to_hash: -> { text: OpenAI::Beta::Threads::Text, ?type: :text }
         end
       end
     end

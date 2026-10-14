@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-source "https://rubygems.org"
+source "https://rubygems.org", cooldown: 7
 
 gemspec
 
@@ -8,26 +8,22 @@ group :development do
   gem "rake"
   gem "rbs"
   gem "rubocop"
-  gem "sorbet"
+  # Later Sorbet requires T::Module, which older customer typecheckers cannot parse.
+  gem "sorbet", "< 0.6.12760"
   gem "steep"
   gem "syntax_tree"
   gem "syntax_tree-rbs", github: "ruby-syntax-tree/syntax_tree-rbs", branch: "main"
-  gem "tapioca"
 end
 
 group :development, :test do
   gem "async"
-  gem "aws-sdk-core", "~> 3"
-  gem "minitest", "~> 5.27"
-  gem "minitest-focus"
-  gem "minitest-hooks"
+  gem "async-websocket"
+  gem "cgi"
+  gem "minitest", "~> 6.0"
+  gem "minitest-hooks", ">= 1.5.4"
+  gem "minitest-mock", "~> 5.27"
   gem "minitest-proveit"
-  gem "minitest-rg"
+  gem "rbi", "~> 0.4.3"
+  gem "sorbet-runtime"
   gem "webmock"
-end
-
-group :development, :docs do
-  gem "redcarpet"
-  gem "webrick"
-  gem "yard"
 end

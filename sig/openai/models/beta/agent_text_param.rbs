@@ -1,0 +1,52 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_text_param =
+        {
+          ?format_: OpenAI::Models::Beta::text_format_param?,
+          ?verbosity: OpenAI::Models::Beta::AgentTextParam::verbosity?
+        }
+
+      class AgentTextParam < OpenAI::Internal::Type::BaseModel
+        # The output format. Omission uses ordinary text (`{"type": "text"}`).
+        attr_accessor format_: OpenAI::Models::Beta::text_format_param?
+
+        # The amount of text the model should produce. Defaults to `medium`, matching
+        # Responses.
+        attr_accessor verbosity: OpenAI::Models::Beta::AgentTextParam::verbosity?
+
+        # @param format_
+        #   The output format. Omission uses ordinary text (`{"type": "text"}`).
+        # @param verbosity
+        #   The amount of text the model should produce. Defaults to `medium`, matching
+        #   Responses.
+        def initialize: (
+          ?format_: OpenAI::Models::Beta::text_format_param?,
+          ?verbosity: OpenAI::Models::Beta::AgentTextParam::verbosity?
+        ) -> void
+
+        def to_hash: -> {
+          ?format_: OpenAI::Models::Beta::text_format_param?,
+          ?verbosity: OpenAI::Models::Beta::AgentTextParam::verbosity?
+        }
+
+        type verbosity = :low | :medium | :high
+
+        module Verbosity
+          extend OpenAI::Internal::Type::Enum
+
+          # Produces less text.
+          LOW: :low
+
+          # Uses the default amount of text.
+          MEDIUM: :medium
+
+          # Produces more text.
+          HIGH: :high
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AgentTextParam::verbosity]
+        end
+      end
+    end
+  end
+end

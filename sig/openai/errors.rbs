@@ -1,7 +1,21 @@
 module OpenAI
   module Errors
     class Error < StandardError
-      attr_accessor cause: StandardError?
+      attr_reader cause: StandardError?
+    end
+
+    class InvalidWebhookSignatureError < OpenAI::Errors::Error
+    end
+
+    class PollingError < OpenAI::Errors::Error
+    end
+
+    class PollingTimeoutError < OpenAI::Errors::PollingError
+      attr_reader resource: top
+      attr_reader timeout: Float
+      attr_reader operation: String
+
+      def initialize: (operation: String, timeout: Float, resource: top) -> void
     end
 
     class ConversionError < OpenAI::Errors::Error
@@ -31,6 +45,11 @@ module OpenAI
 
       attr_accessor type: String?
 
+      # The ID of the API request, returned via the `x-request-id` response
+      # header. This is nil when no HTTP response was received or the response
+      # did not include the header.
+      def request_id: -> String?
+
       def initialize: (
         url: URI::Generic,
         ?status: Integer?,
@@ -43,6 +62,9 @@ module OpenAI
     end
 
     class APIConnectionError < OpenAI::Errors::APIError
+      # @api private
+      def request_may_have_been_sent?: -> bool
+
       def initialize: (
         url: URI::Generic,
         ?status: nil,
@@ -50,7 +72,8 @@ module OpenAI
         ?body: nil,
         ?request: nil,
         ?response: nil,
-        ?message: String?
+        ?message: String?,
+        ?request_may_have_been_sent: bool
       ) -> void
     end
 
@@ -62,7 +85,8 @@ module OpenAI
         ?body: nil,
         ?request: nil,
         ?response: nil,
-        ?message: String?
+        ?message: String?,
+        ?request_may_have_been_sent: bool
       ) -> void
     end
 
@@ -118,6 +142,32 @@ module OpenAI
 
     class InternalServerError < OpenAI::Errors::APIStatusError
       HTTP_STATUS: Range[Integer]
+    end
+
+    class OAuthError < OpenAI::Errors::APIStatusError
+      def status: -> Integer
+
+      def status=: (Integer) -> Integer
+
+      attr_reader error_code: OpenAI::Models::oauth_error_code?
+
+      def initialize: (
+        status: Integer,
+        body: Object?,
+        headers: ::Hash[String, String]?
+      ) -> void
+    end
+
+    class SubjectTokenProviderError < OpenAI::Errors::Error
+      attr_reader provider: String
+
+      attr_accessor cause: StandardError?
+
+      def initialize: (
+        message: String,
+        provider: String,
+        ?cause: StandardError?
+      ) -> void
     end
   end
 end

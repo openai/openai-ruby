@@ -1,5 +1,93 @@
 # Streaming Helpers
 
+## Beta Agents: typed application tools
+
+Bind an argument model to a block or bound application method:
+
+```ruby
+class Transfer < OpenAI::BaseModel
+  required :destination, String
+  required :amount, String
+end
+
+transfer = OpenAI::Helpers::Beta::Agents::FunctionTool.new(
+  name: "transfer", arguments: Transfer, description: "Transfer an approved amount.",
+  &wallet.method(:transfer)
+)
+
+# At creation, include transfer.definition in agent: {model: MODEL, tools: [...]}.
+# For a configured idle session, reuse the local binding:
+client.beta.agents.sessions.stream(
+  session_id, input: "Transfer the approved amount", tool_handlers: transfer.handlers
+) { |stream| stream.until_done }
+```
+
+The callback receives a `Transfer` instance using the SDK's `BaseModel` parsing,
+not JSON Schema validation. Validate constraints and approval in `wallet` before
+side effects. Combine bindings with `transfer.handlers.merge(other.handlers)`;
+existing hash-based handlers continue to work.
+
+### Deferred tool loading
+
+Use `defer_loading: true` with hosted tool search to load a typed tool on demand:
+
+```ruby
+class LookupItem < OpenAI::BaseModel
+  required :item_id, String
+end
+
+lookup = OpenAI::Helpers::Beta::Agents::FunctionTool.new(
+  name: "lookup_item", arguments: LookupItem, defer_loading: true
+) { |args| catalog.lookup(args.item_id) }
+
+session = client.beta.agents.sessions.create(
+  agent: {model: MODEL, tools: [{type: :tool_search}, lookup.definition]},
+  environment: {type: :openai_hosted}
+)
+client.beta.agents.sessions.stream(
+  session.id, input: "Look up item A123", tool_handlers: lookup.handlers
+) { |stream| stream.until_done }
+```
+
+Responses already accepts the option with a typed `parameters` model. The same
+definition works with `responses.create` and `responses.stream`:
+
+```ruby
+tool = OpenAI::Responses::FunctionTool.new(
+  name: "lookup_item", parameters: LookupItem, strict: true, defer_loading: true
+)
+response = client.responses.create(
+  model: MODEL, input: "Look up item A123", tools: [{type: :tool_search}, tool]
+)
+response.output.each do |item|
+  next unless item.type == :function_call
+  arguments = item.parsed # LookupItem
+  # Execute the function and submit its output in your application.
+end
+```
+
+Omit the option to keep existing defaults, or pass `false` to load the tool
+immediately. The API validates tool-search configuration; local argument parsing
+and application callbacks are unchanged.
+
+### Observe local tool errors
+
+```ruby
+client.beta.agents.sessions.stream(
+  session_id, input: "Look up item A123", tool_handlers: handlers,
+  on_tool_error: ->(failure) {
+    logger.error("Tool #{failure.tool_name} failed during #{failure.stage}; call=#{failure.call_id}")
+  }
+) { |stream| stream.until_done }
+```
+
+Use `on_tool_error` alongside `tool_handlers` to log or monitor local tool failures;
+API and transport errors still propagate normally. The beta `ToolError` includes the original `error`, session/turn/call IDs, and
+stage (`:arguments`, `:execution`, or `:output`). It stays local; the model still
+receives a generic failure. Choose what to log: the original error may contain
+sensitive data. Ordinary callback exceptions are ignored so failure submission
+can continue. The SDK does not automatically log tool failures.
+
 ## Responses API
 
 ```ruby
@@ -22,11 +110,32 @@ puts
 
 The stream will be cancelled when the block exits but you can also close it prematurely by calling `stream.close`.
 
-See an example of streaming helpers in action in [`examples/responses/streaming.rb`](examples/responses/streaming.rb).
+See an example of streaming helpers in action in [`examples/responses/streaming_basic.rb`](examples/responses/streaming_basic.rb).
 
 ### Events
 
 The events listed here are just the event types that the SDK extends, for a full list of the events returned by the API, see [these docs](https://platform.openai.com/docs/api-reference/responses/streaming).
+
+When the API introduces a Responses event that your installed SDK does not yet
+recognize, both raw and helper streams yield an
+`OpenAI::Streaming::UnknownStreamEvent`. Its `type` preserves the original event
+name as a symbol, `data` and `to_h` expose the complete immutable JSON payload,
+and `sequence_number` exposes an integer sequence when one was supplied. Unknown
+events never modify the helper's accumulated response. Resumed helper streams
+apply `starting_after` to unknown events with sequence numbers and preserve
+unknown events without sequence numbers because they cannot be ordered against
+the requested cursor. Transport-only `keepalive` events remain filtered.
+
+```ruby
+stream.each do |event|
+  case event
+  when OpenAI::Streaming::UnknownStreamEvent
+    handle_new_event(event.type, event.data)
+  when OpenAI::Streaming::ResponseTextDeltaEvent
+    print(event.delta)
+  end
+end
+```
 
 ```ruby
 require "openai"
@@ -129,9 +238,9 @@ The Responses API supports structured outputs via the `text` parameter:
 
 ```ruby
 class Haiku < OpenAI::BaseModel
-  field :first_line, String
-  field :second_line, String
-  field :third_line, String
+  required :first_line, String
+  required :second_line, String
+  required :third_line, String
 end
 
 stream = client.responses.stream(
@@ -178,7 +287,7 @@ puts
 
 The stream will be cancelled when the block exits but you can also close it prematurely by calling `stream.close`.
 
-See an example of streaming helpers in action in [`examples/chat/streaming.rb`](examples/chat/streaming.rb).
+See an example of streaming helpers in action in [`examples/chat/streaming_basic.rb`](examples/chat/streaming_basic.rb).
 
 ### Events
 
@@ -225,14 +334,13 @@ when OpenAI::Streaming::ChatChunkEvent
 
 #### `ChatContentDeltaEvent`
 
-This event is yielded whenever a text content delta is returned by the API & includes the delta and the accumulated snapshot, e.g.
+This event is yielded whenever a text content delta is returned by the API & includes the delta and the accumulated snapshot. Use these string values while content is streaming; when using structured outputs, typed parsed content is available from the done event or final completion.
 
 ```ruby
 when OpenAI::Streaming::ChatContentDeltaEvent
   event.type  # :"content.delta"
   event.delta  # " world"
   event.snapshot  # "Hello world"
-  event.parsed  # Your partially parsed model instance (when using structured outputs)
 ```
 
 #### `ChatContentDoneEvent`
@@ -269,16 +377,16 @@ when OpenAI::Streaming::ChatRefusalDoneEvent
 
 #### `ChatFunctionToolCallArgumentsDeltaEvent`
 
-This event is yielded whenever function call arguments are being streamed & includes the delta and accumulated snapshot, e.g.
+This event is yielded whenever function call arguments are being streamed & includes the delta and accumulated snapshot. For strict tools, `parsed` is populated once the accumulated arguments are complete, valid JSON.
 
 ```ruby
 when OpenAI::Streaming::ChatFunctionToolCallArgumentsDeltaEvent
   event.type  # :"tool_calls.function.arguments.delta"
   event.name  # "get_weather"
   event.index  # 0 (tool call index in array)
-  event.arguments_delta  # '{"location": "San'
-  event.arguments  # '{"location": "San Francisco"'
-  event.parsed  # {location: "San Francisco"} (if strict: true)
+  event.arguments_delta  # ' Francisco"}'
+  event.arguments  # '{"location": "San Francisco"}'
+  event.parsed  # {location: "San Francisco"} (for a strict tool)
 ```
 
 #### `ChatFunctionToolCallArgumentsDoneEvent`
@@ -370,13 +478,13 @@ The Chat Completions API supports structured outputs via the `response_format` p
 
 ```ruby
 class Haiku < OpenAI::BaseModel
-  field :first_line, String
-  field :second_line, String
-  field :third_line, String
+  required :first_line, String
+  required :second_line, String
+  required :third_line, String
 end
 
 stream = client.chat.completions.stream(
-  model: "gpt-4",
+  model: "gpt-4o-mini",
   messages: [{role: "user", content: "Write a haiku about Ruby"}],
   response_format: Haiku
 )

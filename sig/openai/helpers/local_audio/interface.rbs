@@ -1,0 +1,62 @@
+module OpenAI
+  module LocalAudio
+    def self.record: (
+      duration: Numeric,
+      ?device: (String | Integer)?,
+      ?timeout: Numeric?
+    ) -> OpenAI::FilePart
+    def self.play: (
+      IO | StringIO | OpenAI::FilePart source,
+      ?format: :auto | :pcm,
+      ?timeout: Numeric?
+    ) -> nil
+
+    # @api private
+    def self.playback_source: (
+      IO | StringIO | OpenAI::FilePart source
+    ) -> (IO | StringIO)
+
+    # @api private
+    def self.capture_device: (
+      (String | Integer)? device,
+      ?platform: String
+    ) -> [String, String]
+
+    # @api private
+    def self.wav_header: (Integer bytes) -> String
+
+    # @api private
+    class MediaProcess
+      def self.environment: -> Hash[String, String]
+      def self.clock: -> Float
+      def self.duration: (Numeric value, name: String | Symbol) -> Float
+      def initialize: (
+        Array[String] argv,
+        input: IO | String,
+        output: IO | String,
+        timeout: Numeric?,
+        ?capture_errors: bool
+      ) -> void
+      def check_deadline: -> void
+      def errors?: -> bool
+      def read: (IO | StringIO io, ?stop_on_exit: bool) -> String?
+      def write: (IO io, String bytes) -> void
+      def wait: -> Process::Status
+      def close: -> void
+    end
+    class Error < OpenAI::Errors::Error
+    end
+    class DependencyError < OpenAI::LocalAudio::Error
+    end
+    class UnsupportedPlatformError < OpenAI::LocalAudio::Error
+    end
+    class DeviceError < OpenAI::LocalAudio::Error
+    end
+    class PlaybackError < OpenAI::LocalAudio::Error
+    end
+    class TimeoutError < OpenAI::LocalAudio::Error
+    end
+    class FormatError < OpenAI::LocalAudio::Error
+    end
+  end
+end

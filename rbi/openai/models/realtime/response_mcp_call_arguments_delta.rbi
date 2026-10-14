@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class ResponseMcpCallArgumentsDelta < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::ResponseMcpCallArgumentsDelta,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::ResponseMcpCallArgumentsDelta,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The JSON-encoded arguments delta.
         sig { returns(String) }
@@ -43,29 +45,45 @@ module OpenAI
         # Returned when MCP tool call arguments are updated during response generation.
         sig do
           params(
+
             delta: String,
+
             event_id: String,
+
             item_id: String,
+
             output_index: Integer,
+
             response_id: String,
+
             obfuscation: T.nilable(String),
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The JSON-encoded arguments delta.
           delta:,
+
           # The unique ID of the server event.
           event_id:,
+
           # The ID of the MCP tool call item.
           item_id:,
+
           # The index of the output item in the response.
           output_index:,
+
           # The ID of the response.
           response_id:,
+
           # If present, indicates the delta text was obfuscated.
           obfuscation: nil,
+
           # The event type, must be `response.mcp_call_arguments.delta`.
+
           type: :"response.mcp_call_arguments.delta"
         )
         end
@@ -85,7 +103,10 @@ module OpenAI
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

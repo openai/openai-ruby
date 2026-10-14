@@ -42,28 +42,44 @@ module OpenAI
           #   @return [String, nil]
           optional :name, String, nil?: true
 
+          # @!attribute residency
+          #   The residency configuration for the project.
+          #
+          #   @return [Symbol, OpenAI::Models::Admin::Organization::ProjectResidency, nil]
+          optional :residency, enum: -> { OpenAI::Admin::Organization::ProjectResidency }
+
           # @!attribute status
           #   `active` or `archived`
           #
           #   @return [String, nil]
           optional :status, String, nil?: true
 
-          # @!method initialize(id:, created_at:, archived_at: nil, external_key_id: nil, name: nil, status: nil, object: :"organization.project")
+          # @!method initialize(id:, created_at:, archived_at: nil, external_key_id: nil, name: nil, residency: nil, status: nil, object: :"organization.project")
           #   Represents an individual project.
           #
-          #   @param id [String] The identifier, which can be referenced in API endpoints
+          #   @param id [String]
+          #     The identifier, which can be referenced in API endpoints
           #
-          #   @param created_at [Integer] The Unix timestamp (in seconds) of when the project was created.
+          #   @param created_at [Integer]
+          #     The Unix timestamp (in seconds) of when the project was created.
           #
-          #   @param archived_at [Integer, nil] The Unix timestamp (in seconds) of when the project was archived or `null`.
+          #   @param archived_at [Integer, nil]
+          #     The Unix timestamp (in seconds) of when the project was archived or `null`.
           #
-          #   @param external_key_id [String, nil] The external key associated with the project.
+          #   @param external_key_id [String, nil]
+          #     The external key associated with the project.
           #
-          #   @param name [String, nil] The name of the project. This appears in reporting.
+          #   @param name [String, nil]
+          #     The name of the project. This appears in reporting.
           #
-          #   @param status [String, nil] `active` or `archived`
+          #   @param residency [Symbol, OpenAI::Models::Admin::Organization::ProjectResidency]
+          #     The residency configuration for the project.
           #
-          #   @param object [Symbol, :"organization.project"] The object type, which is always `organization.project`
+          #   @param status [String, nil]
+          #     `active` or `archived`
+          #
+          #   @param object [Symbol, :"organization.project"]
+          #     The object type, which is always `organization.project`
         end
       end
     end

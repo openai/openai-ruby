@@ -26,14 +26,14 @@ module OpenAI
       optional :md5, String
 
       # @!method initialize(upload_id:, part_ids:, md5: nil, request_options: {})
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::UploadCompleteParams} for more details.
-      #
       #   @param upload_id [String]
       #
-      #   @param part_ids [Array<String>] The ordered list of Part IDs.
+      #   @param part_ids [Array<String>]
+      #     The ordered list of Part IDs.
       #
-      #   @param md5 [String] The optional md5 checksum for the file contents to verify if the bytes uploaded
+      #   @param md5 [String]
+      #     The optional md5 checksum for the file contents to verify if the bytes uploaded
+      #     matches what you expect.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end

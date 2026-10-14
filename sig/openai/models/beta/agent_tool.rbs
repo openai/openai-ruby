@@ -1,0 +1,322 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_tool =
+        OpenAI::Beta::AgentTool::Function
+        | OpenAI::Beta::AgentTool::ProgrammaticToolCalling
+        | OpenAI::Beta::AgentTool::Mcp
+        | OpenAI::Beta::AgentTool::WebSearch
+        | OpenAI::Beta::AgentTool::ComputerUse
+
+      module AgentTool
+        extend OpenAI::Internal::Type::Union
+
+        type function =
+          {
+            defer_loading: bool,
+            description: String,
+            name: String,
+            parameters: ::Hash[Symbol, top],
+            ?type: :function
+          }
+
+        class Function < OpenAI::Internal::Type::BaseModel
+          # Whether the function is deferred and discovered through tool search.
+          attr_accessor defer_loading: bool
+
+          # A description of what the function does.
+          attr_accessor description: String
+
+          # The name of the function.
+          attr_accessor name: String
+
+          # A JSON Schema object describing the function's arguments.
+          attr_accessor parameters: ::Hash[Symbol, top]
+
+          # The type of the object. Always `function`.
+          attr_accessor type: :function
+
+          # @param defer_loading
+          #   Whether the function is deferred and discovered through tool search.
+          # @param description
+          #   A description of what the function does.
+          # @param name
+          #   The name of the function.
+          # @param parameters
+          #   A JSON Schema object describing the function's arguments.
+          # @param type
+          #   The type of the object. Always `function`.
+          def initialize: (
+            defer_loading: bool,
+            description: String,
+            name: String,
+            parameters: ::Hash[Symbol, top],
+            ?type: :function
+          ) -> void
+
+          def to_hash: -> {
+            defer_loading: bool,
+            description: String,
+            name: String,
+            parameters: ::Hash[Symbol, top],
+            ?type: :function
+          }
+        end
+
+        type programmatic_tool_calling =
+          { enabled: bool, ?type: :programmatic_tool_calling }
+
+        class ProgrammaticToolCalling < OpenAI::Internal::Type::BaseModel
+          # Whether tools can be called from model-generated code.
+          attr_accessor enabled: bool
+
+          # The type of the object. Always `programmatic_tool_calling`.
+          attr_accessor type: :programmatic_tool_calling
+
+          # @param enabled
+          #   Whether tools can be called from model-generated code.
+          # @param type
+          #   The type of the object. Always `programmatic_tool_calling`.
+          def initialize: (
+            enabled: bool,
+            ?type: :programmatic_tool_calling
+          ) -> void
+
+          def to_hash: -> { enabled: bool, ?type: :programmatic_tool_calling }
+        end
+
+        type mcp =
+          {
+            allowed_tools: ::Array[String]?,
+            connection_origin: OpenAI::Models::Beta::AgentTool::Mcp::connection_origin,
+            credential_id: String?,
+            request_metadata: ::Hash[Symbol, top],
+            required: bool,
+            server_label: String,
+            transport: OpenAI::Models::Beta::mcp_transport,
+            ?type: :mcp
+          }
+
+        class Mcp < OpenAI::Internal::Type::BaseModel
+          # The MCP tools the agent may call.
+          attr_accessor allowed_tools: ::Array[String]?
+
+          # Where outbound MCP HTTP connections originate.
+          attr_accessor connection_origin: OpenAI::Models::Beta::AgentTool::Mcp::connection_origin
+
+          # The attached vault credential selected for this MCP server, if any. Optional
+          # when exactly one attached credential matches the server URL.
+          attr_accessor credential_id: String?
+
+          # Metadata included with requests to this MCP server.
+          attr_accessor request_metadata: ::Hash[Symbol, top]
+
+          # Whether this MCP server must initialize before the first turn.
+          attr_accessor required: bool
+
+          # A label used to identify the MCP server in tool calls.
+          attr_accessor server_label: String
+
+          # The transport used to connect to the MCP server.
+          attr_accessor transport: OpenAI::Models::Beta::mcp_transport
+
+          # The type of the object. Always `mcp`.
+          attr_accessor type: :mcp
+
+          # @param allowed_tools
+          #   The MCP tools the agent may call.
+          # @param connection_origin
+          #   Where outbound MCP HTTP connections originate.
+          # @param credential_id
+          #   The attached vault credential selected for this MCP server, if any. Optional
+          #   when exactly one attached credential matches the server URL.
+          # @param request_metadata
+          #   Metadata included with requests to this MCP server.
+          # @param required
+          #   Whether this MCP server must initialize before the first turn.
+          # @param server_label
+          #   A label used to identify the MCP server in tool calls.
+          # @param transport
+          #   The transport used to connect to the MCP server.
+          # @param type
+          #   The type of the object. Always `mcp`.
+          def initialize: (
+            allowed_tools: ::Array[String]?,
+            connection_origin: OpenAI::Models::Beta::AgentTool::Mcp::connection_origin,
+            credential_id: String?,
+            request_metadata: ::Hash[Symbol, top],
+            required: bool,
+            server_label: String,
+            transport: OpenAI::Models::Beta::mcp_transport,
+            ?type: :mcp
+          ) -> void
+
+          def to_hash: -> {
+            allowed_tools: ::Array[String]?,
+            connection_origin: OpenAI::Models::Beta::AgentTool::Mcp::connection_origin,
+            credential_id: String?,
+            request_metadata: ::Hash[Symbol, top],
+            required: bool,
+            server_label: String,
+            transport: OpenAI::Models::Beta::mcp_transport,
+            ?type: :mcp
+          }
+
+          type connection_origin = :service | :environment
+
+          module ConnectionOrigin
+            extend OpenAI::Internal::Type::Enum
+
+            SERVICE: :service
+            ENVIRONMENT: :environment
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::AgentTool::Mcp::connection_origin]
+          end
+        end
+
+        type web_search =
+          {
+            allowed_domains: ::Array[String]?,
+            context_size: OpenAI::Models::Beta::AgentTool::WebSearch::context_size,
+            location: OpenAI::Beta::AgentTool::WebSearch::Location?,
+            mode: OpenAI::Models::Beta::AgentTool::WebSearch::mode,
+            ?type: :web_search
+          }
+
+        class WebSearch < OpenAI::Internal::Type::BaseModel
+          # Allowed search domains, or `null` when the search is unrestricted.
+          attr_accessor allowed_domains: ::Array[String]?
+
+          # The amount of search context made available to the model. Defaults to `medium`.
+          attr_accessor context_size: OpenAI::Models::Beta::AgentTool::WebSearch::context_size
+
+          # Approximate location used to localize search results, if provided.
+          attr_accessor location: OpenAI::Beta::AgentTool::WebSearch::Location?
+
+          # The source used for web search results.
+          attr_accessor mode: OpenAI::Models::Beta::AgentTool::WebSearch::mode
+
+          # The type of the object. Always `web_search`.
+          attr_accessor type: :web_search
+
+          # @param allowed_domains
+          #   Allowed search domains, or `null` when the search is unrestricted.
+          # @param context_size
+          #   The amount of search context made available to the model. Defaults to `medium`.
+          # @param location
+          #   Approximate location used to localize search results, if provided.
+          # @param mode
+          #   The source used for web search results.
+          # @param type
+          #   The type of the object. Always `web_search`.
+          def initialize: (
+            allowed_domains: ::Array[String]?,
+            context_size: OpenAI::Models::Beta::AgentTool::WebSearch::context_size,
+            location: OpenAI::Beta::AgentTool::WebSearch::Location?,
+            mode: OpenAI::Models::Beta::AgentTool::WebSearch::mode,
+            ?type: :web_search
+          ) -> void
+
+          def to_hash: -> {
+            allowed_domains: ::Array[String]?,
+            context_size: OpenAI::Models::Beta::AgentTool::WebSearch::context_size,
+            location: OpenAI::Beta::AgentTool::WebSearch::Location?,
+            mode: OpenAI::Models::Beta::AgentTool::WebSearch::mode,
+            ?type: :web_search
+          }
+
+          type context_size = :low | :medium | :high
+
+          module ContextSize
+            extend OpenAI::Internal::Type::Enum
+
+            LOW: :low
+            MEDIUM: :medium
+            HIGH: :high
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::AgentTool::WebSearch::context_size]
+          end
+
+          type location =
+            {
+              city: String?,
+              country: String?,
+              region: String?,
+              timezone: String?
+            }
+
+          class Location < OpenAI::Internal::Type::BaseModel
+            # The city name.
+            attr_accessor city: String?
+
+            # The two-letter ISO country code, such as `US`.
+            attr_accessor country: String?
+
+            # The region or state name.
+            attr_accessor region: String?
+
+            # The IANA timezone, such as `America/Los_Angeles`.
+            attr_accessor timezone: String?
+
+            # @param city
+            #   The city name.
+            # @param country
+            #   The two-letter ISO country code, such as `US`.
+            # @param region
+            #   The region or state name.
+            # @param timezone
+            #   The IANA timezone, such as `America/Los_Angeles`.
+            def initialize: (
+              city: String?,
+              country: String?,
+              region: String?,
+              timezone: String?
+            ) -> void
+
+            def to_hash: -> {
+              city: String?,
+              country: String?,
+              region: String?,
+              timezone: String?
+            }
+          end
+
+          type mode = :disabled | :cached | :live
+
+          module Mode
+            extend OpenAI::Internal::Type::Enum
+
+            DISABLED: :disabled
+            CACHED: :cached
+            LIVE: :live
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::AgentTool::WebSearch::mode]
+          end
+        end
+
+        type computer_use = { include_screenshots: bool, ?type: :computer_use }
+
+        class ComputerUse < OpenAI::Internal::Type::BaseModel
+          # Whether computer tool outputs include screenshots.
+          attr_accessor include_screenshots: bool
+
+          # The type of the object. Always `computer_use`.
+          attr_accessor type: :computer_use
+
+          # @param include_screenshots
+          #   Whether computer tool outputs include screenshots.
+          # @param type
+          #   The type of the object. Always `computer_use`.
+          def initialize: (
+            include_screenshots: bool,
+            ?type: :computer_use
+          ) -> void
+
+          def to_hash: -> { include_screenshots: bool, ?type: :computer_use }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::agent_tool]
+      end
+    end
+  end
+end

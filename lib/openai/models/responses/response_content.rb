@@ -10,7 +10,7 @@ module OpenAI
         # A text input to the model.
         variant -> { OpenAI::Responses::ResponseInputText }
 
-        # An image input to the model. Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
+        # An image input to the model. Learn about [image inputs](https://developers.openai.com/api/docs/guides/images-vision).
         variant -> { OpenAI::Responses::ResponseInputImage }
 
         # A file input to the model.
@@ -41,9 +41,11 @@ module OpenAI
           # @!method initialize(text:, type: :reasoning_text)
           #   Reasoning text from the model.
           #
-          #   @param text [String] The reasoning text from the model.
+          #   @param text [String]
+          #     The reasoning text from the model.
           #
-          #   @param type [Symbol, :reasoning_text] The type of the reasoning text. Always `reasoning_text`.
+          #   @param type [Symbol, :reasoning_text]
+          #     The type of the reasoning text. Always `reasoning_text`.
         end
 
         # @!method self.variants

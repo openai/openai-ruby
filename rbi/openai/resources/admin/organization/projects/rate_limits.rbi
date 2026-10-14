@@ -2,24 +2,28 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Projects
+
           class RateLimits
+
             # Returns the rate limits per model for a project.
-            sig do
+            sig {
               params(
                 project_id: String,
                 after: String,
                 before: String,
                 limit: Integer,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Internal::ConversationCursorPage[
-                  OpenAI::Admin::Organization::Projects::ProjectRateLimit
-                ]
               )
-            end
+                .returns(
+                  OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Projects::ProjectRateLimit]
+                )
+            }
             def list_rate_limits(
               # The ID of the project.
               project_id,
@@ -40,7 +44,7 @@ module OpenAI
             end
 
             # Updates a project rate limit.
-            sig do
+            sig {
               params(
                 rate_limit_id: String,
                 project_id: String,
@@ -51,8 +55,9 @@ module OpenAI
                 max_requests_per_1_minute: Integer,
                 max_tokens_per_1_minute: Integer,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(OpenAI::Admin::Organization::Projects::ProjectRateLimit)
-            end
+              )
+                .returns(OpenAI::Admin::Organization::Projects::ProjectRateLimit)
+            }
             def update_rate_limit(
               # Path param: The ID of the rate limit.
               rate_limit_id,
@@ -81,8 +86,12 @@ module OpenAI
             def self.new(client:)
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

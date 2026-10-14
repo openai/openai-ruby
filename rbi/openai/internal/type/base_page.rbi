@@ -9,6 +9,17 @@ module OpenAI
       module BasePage
         Elem = type_member(:out)
 
+        # The ID of the API request, returned via the `x-request-id` response
+        # header. This is only populated on top-level response objects returned
+        # by the client.
+        sig { returns(T.nilable(String)) }
+        def _request_id
+        end
+
+        sig { returns(OpenAI::ResponseMetadata) }
+        def last_response
+        end
+
         sig { overridable.returns(T::Boolean) }
         def next_page?
         end
@@ -30,11 +41,12 @@ module OpenAI
           params(
             client: OpenAI::Internal::Transport::BaseClient,
             req: OpenAI::Internal::Transport::BaseClient::RequestComponents,
-            headers: T::Hash[String, String],
+            response_metadata: OpenAI::ResponseMetadata,
             page_data: T.anything
-          ).void
+          )
+            .void
         end
-        def initialize(client:, req:, headers:, page_data:)
+        def initialize(client:, req:, response_metadata:, page_data:)
         end
       end
     end

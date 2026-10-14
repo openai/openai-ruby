@@ -25,26 +25,41 @@ module OpenAI
           #
           # @return [Hash{Symbol=>Object}]
           def to_json_schema_inner(state:)
+            field_values = fields.values
+            duplicate = field_values.map { _1.fetch(:api_name) }.tally.find { _2 > 1 }
+            raise ArgumentError.new("Duplicate API field name: #{duplicate.first}") if duplicate
+
             OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.cache_def!(state, type: self) do
               path = state.fetch(:path)
-              properties = fields.to_h do |name, field|
-                type, nilable, meta = field.fetch_values(:type, :nilable, :meta)
-                new_state = {**state, path: [*path, ".#{name}"]}
+              properties = field_values.to_h do |field|
+                api_name, type, nilable, const, meta = field.fetch_values(:api_name, :type, :nilable, :const, :meta)
+                new_state = {**state, path: [*path, ".#{api_name}"]}
 
-                schema =
-                  case type
-                  in OpenAI::Helpers::StructuredOutput::JsonSchemaConverter
-                    type.to_json_schema_inner(state: new_state)
-                  else
-                    OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.to_json_schema_inner(
-                      type,
-                      state: new_state
-                    )
-                  end
+                literal_const = case const
+                when Integer, TrueClass, FalseClass
+                  true
+                when Float
+                  const.finite?
+                else
+                  false
+                end
+
+                schema = if literal_const
+                  {const: const}
+                else
+                  OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.to_json_schema_inner(
+                    type,
+                    state: new_state
+                  )
+                end
+
                 schema = OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.to_nilable(schema) if nilable
-                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.assoc_meta!(schema, meta: meta)
+                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.assoc_meta!(
+                  schema,
+                  meta: meta.except(:api_name)
+                )
 
-                [name, schema]
+                [api_name, schema]
               end
 
               {
@@ -59,10 +74,8 @@ module OpenAI
 
         class << self
           def optional(...)
-            # rubocop:disable Layout/LineLength
             message = "`optional` is not supported for structured output APIs, use `#required` with `nil?: true` instead"
-            # rubocop:enable Layout/LineLength
-            raise RuntimeError.new(message)
+            raise message
           end
         end
       end

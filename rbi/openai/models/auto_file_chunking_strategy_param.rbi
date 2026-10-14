@@ -2,14 +2,15 @@
 
 module OpenAI
   module Models
+
     class AutoFileChunkingStrategyParam < OpenAI::Internal::Type::BaseModel
-      OrHash =
-        T.type_alias do
-          T.any(
-            OpenAI::AutoFileChunkingStrategyParam,
-            OpenAI::Internal::AnyHash
-          )
-        end
+
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::AutoFileChunkingStrategyParam,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       # Always `auto`.
       sig { returns(Symbol) }
@@ -17,16 +18,30 @@ module OpenAI
 
       # The default strategy. This strategy currently uses a `max_chunk_size_tokens` of
       # `800` and `chunk_overlap_tokens` of `400`.
-      sig { params(type: Symbol).returns(T.attached_class) }
+      sig do
+        params(
+
+          type: Symbol
+        )
+          .returns(T.attached_class)
+      end
       def self.new(
+
         # Always `auto`.
+
         type: :auto
       )
       end
 
-      sig { override.returns({ type: Symbol }) }
+      sig do
+        override.returns(
+          {type: Symbol}
+        )
+      end
       def to_hash
       end
+
     end
+
   end
 end

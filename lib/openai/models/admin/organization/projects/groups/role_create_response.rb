@@ -29,11 +29,14 @@ module OpenAI
               # @!method initialize(group:, role:, object: :"group.role")
               #   Role assignment linking a group to a role.
               #
-              #   @param group [OpenAI::Models::Admin::Organization::Projects::Groups::RoleCreateResponse::Group] Summary information about a group returned in role assignment responses.
+              #   @param group [OpenAI::Models::Admin::Organization::Projects::Groups::RoleCreateResponse::Group]
+              #     Summary information about a group returned in role assignment responses.
               #
-              #   @param role [OpenAI::Models::Admin::Organization::Role] Details about a role that can be assigned through the public Roles API.
+              #   @param role [OpenAI::Models::Admin::Organization::Role]
+              #     Details about a role that can be assigned through the public Roles API.
               #
-              #   @param object [Symbol, :"group.role"] Always `group.role`.
+              #   @param object [Symbol, :"group.role"]
+              #     Always `group.role`.
 
               # @see OpenAI::Models::Admin::Organization::Projects::Groups::RoleCreateResponse#group
               class Group < OpenAI::Internal::Type::BaseModel
@@ -70,15 +73,20 @@ module OpenAI
                 # @!method initialize(id:, created_at:, name:, scim_managed:, object: :group)
                 #   Summary information about a group returned in role assignment responses.
                 #
-                #   @param id [String] Identifier for the group.
+                #   @param id [String]
+                #     Identifier for the group.
                 #
-                #   @param created_at [Integer] Unix timestamp (in seconds) when the group was created.
+                #   @param created_at [Integer]
+                #     Unix timestamp (in seconds) when the group was created.
                 #
-                #   @param name [String] Display name of the group.
+                #   @param name [String]
+                #     Display name of the group.
                 #
-                #   @param scim_managed [Boolean] Whether the group is managed through SCIM.
+                #   @param scim_managed [Boolean]
+                #     Whether the group is managed through SCIM.
                 #
-                #   @param object [Symbol, :group] Always `group`.
+                #   @param object [Symbol, :group]
+                #     Always `group`.
               end
             end
           end

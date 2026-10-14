@@ -5,11 +5,11 @@ module OpenAI
         type project_update_params =
           {
             project_id: String,
-            external_key_id: String?,
-            geography: String?,
-            name: String?
+            ?external_key_id: String?,
+            ?geography: String?,
+            ?name: String?,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class ProjectUpdateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -17,12 +17,23 @@ module OpenAI
 
           attr_accessor project_id: String
 
+          # External key ID to associate with the project.
           attr_accessor external_key_id: String?
 
+          # Geography for the project. Deprecated: use `residency` when creating a project
+          # to configure data residency. This field is retained for backward compatibility.
           attr_accessor geography: String?
 
+          # The updated name of the project, this name appears in reports.
           attr_accessor name: String?
 
+          # @param external_key_id
+          #   External key ID to associate with the project.
+          # @param geography
+          #   Geography for the project. Deprecated: use `residency` when creating a project
+          #   to configure data residency. This field is retained for backward compatibility.
+          # @param name
+          #   The updated name of the project, this name appears in reports.
           def initialize: (
             project_id: String,
             ?external_key_id: String?,
@@ -33,10 +44,10 @@ module OpenAI
 
           def to_hash: -> {
             project_id: String,
-            external_key_id: String?,
-            geography: String?,
-            name: String?,
-            request_options: OpenAI::RequestOptions
+            ?external_key_id: String?,
+            ?geography: String?,
+            ?name: String?,
+            ?request_options: OpenAI::RequestOptions
           }
         end
       end

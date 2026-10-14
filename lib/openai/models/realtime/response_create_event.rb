@@ -50,11 +50,14 @@ module OpenAI
         #   `input` field, which is an array accepting raw Items and references to existing
         #   Items.
         #
-        #   @param event_id [String] Optional client-generated ID used to identify this event.
+        #   @param event_id [String]
+        #     Optional client-generated ID used to identify this event.
         #
-        #   @param response [OpenAI::Models::Realtime::RealtimeResponseCreateParams] Create a new Realtime response with these parameters
+        #   @param response [OpenAI::Models::Realtime::RealtimeResponseCreateParams]
+        #     Create a new Realtime response with these parameters
         #
-        #   @param type [Symbol, :"response.create"] The event type, must be `response.create`.
+        #   @param type [Symbol, :"response.create"]
+        #     The event type, must be `response.create`.
       end
     end
   end

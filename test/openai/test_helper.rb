@@ -11,10 +11,9 @@ require "singleton"
 
 require "async"
 require "minitest/autorun"
-require "minitest/focus"
 require "minitest/hooks/test"
+require "minitest/mock"
 require "minitest/proveit"
-require "minitest/rg"
 require "webmock"
 
 require_relative "../../lib/openai"
@@ -57,15 +56,14 @@ class OpenAI::Test::SingletonClient < OpenAI::Client
 end
 
 module Minitest::Serial
-  def test_order = :random
+  def run_order = :random
 
-  def run_one_method(...) = Minitest::Runnable.run_one_method(...)
+  def run(...) = Minitest::Runnable.run(...)
 end
 
 class Minitest::Test
   include Minitest::Hooks
 
-  make_my_diffs_pretty!
   parallelize_me!
   prove_it!
 end

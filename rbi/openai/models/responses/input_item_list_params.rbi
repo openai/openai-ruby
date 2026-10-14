@@ -2,18 +2,20 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class InputItemListParams < OpenAI::Internal::Type::BaseModel
+
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::InputItemListParams,
-              OpenAI::Internal::AnyHash
-            )
-          end
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::InputItemListParams,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         sig { returns(String) }
         attr_accessor :response_id
@@ -27,18 +29,10 @@ module OpenAI
 
         # Additional fields to include in the response. See the `include` parameter for
         # Response creation above for more information.
-        sig do
-          returns(
-            T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol])
-          )
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol])) }
         attr_reader :include
 
-        sig do
-          params(
-            include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
-          ).void
-        end
+        sig { params(include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]).void }
         attr_writer :include
 
         # A limit on the number of objects to be returned. Limit can range between 1 and
@@ -53,45 +47,50 @@ module OpenAI
         #
         # - `asc`: Return the input items in ascending order.
         # - `desc`: Return the input items in descending order.
-        sig do
-          returns(
-            T.nilable(OpenAI::Responses::InputItemListParams::Order::OrSymbol)
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Responses::InputItemListParams::Order::OrSymbol)) }
         attr_reader :order
 
-        sig do
-          params(
-            order: OpenAI::Responses::InputItemListParams::Order::OrSymbol
-          ).void
-        end
+        sig { params(order: OpenAI::Responses::InputItemListParams::Order::OrSymbol).void }
         attr_writer :order
 
         sig do
           params(
+
             response_id: String,
+
             after: String,
+
             include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
+
             limit: Integer,
+
             order: OpenAI::Responses::InputItemListParams::Order::OrSymbol,
+
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           response_id:,
+
           # An item ID to list items after, used in pagination.
           after: nil,
+
           # Additional fields to include in the response. See the `include` parameter for
           # Response creation above for more information.
           include: nil,
+
           # A limit on the number of objects to be returned. Limit can range between 1 and
           # 100, and the default is 20.
           limit: nil,
+
           # The order to return the input items in. Default is `desc`.
           #
           # - `asc`: Return the input items in ascending order.
           # - `desc`: Return the input items in descending order.
           order: nil,
+
           request_options: {}
         )
         end
@@ -101,8 +100,7 @@ module OpenAI
             {
               response_id: String,
               after: String,
-              include:
-                T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
+              include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
               limit: Integer,
               order: OpenAI::Responses::InputItemListParams::Order::OrSymbol,
               request_options: OpenAI::RequestOptions
@@ -119,34 +117,20 @@ module OpenAI
         module Order
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Responses::InputItemListParams::Order)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::InputItemListParams::Order) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          ASC =
-            T.let(
-              :asc,
-              OpenAI::Responses::InputItemListParams::Order::TaggedSymbol
-            )
-          DESC =
-            T.let(
-              :desc,
-              OpenAI::Responses::InputItemListParams::Order::TaggedSymbol
-            )
+          ASC = T.let(:asc, OpenAI::Responses::InputItemListParams::Order::TaggedSymbol)
+          DESC = T.let(:desc, OpenAI::Responses::InputItemListParams::Order::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::InputItemListParams::Order::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Responses::InputItemListParams::Order::TaggedSymbol]) }
           def self.values
           end
         end
+
       end
+
     end
+
   end
 end

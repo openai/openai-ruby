@@ -2,7 +2,9 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       # Realtime API can write session traces to the
       # [Traces Dashboard](https://platform.openai.com/logs?api=traces). Set to null to
       # disable tracing. Once tracing is enabled for a session, the configuration cannot
@@ -13,22 +15,20 @@ module OpenAI
       module RealtimeTracingConfig
         extend OpenAI::Internal::Type::Union
 
-        Variants =
-          T.type_alias do
-            T.any(
-              Symbol,
-              OpenAI::Realtime::RealtimeTracingConfig::TracingConfiguration
-            )
-          end
+        Variants = T.type_alias do
+          T.any(
+            Symbol,
+            OpenAI::Realtime::RealtimeTracingConfig::TracingConfiguration
+          )
+        end
 
         class TracingConfiguration < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Realtime::RealtimeTracingConfig::TracingConfiguration,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Realtime::RealtimeTracingConfig::TracingConfiguration,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The group id to attach to this trace to enable filtering and grouping in the
           # Traces Dashboard.
@@ -57,41 +57,49 @@ module OpenAI
           # Granular configuration for tracing.
           sig do
             params(
+
               group_id: String,
+
               metadata: T.anything,
+
               workflow_name: String
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The group id to attach to this trace to enable filtering and grouping in the
             # Traces Dashboard.
             group_id: nil,
+
             # The arbitrary metadata to attach to this trace to enable filtering in the Traces
             # Dashboard.
             metadata: nil,
+
             # The name of the workflow to attach to this trace. This is used to name the trace
             # in the Traces Dashboard.
+
             workflow_name: nil
           )
           end
 
           sig do
             override.returns(
-              { group_id: String, metadata: T.anything, workflow_name: String }
+              {group_id: String, metadata: T.anything, workflow_name: String}
             )
           end
           def to_hash
           end
+
         end
 
-        sig do
-          override.returns(
-            T::Array[OpenAI::Realtime::RealtimeTracingConfig::Variants]
-          )
-        end
+        sig { override.returns(T::Array[OpenAI::Realtime::RealtimeTracingConfig::Variants]) }
         def self.variants
         end
+
       end
+
     end
+
   end
 end

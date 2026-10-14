@@ -3,9 +3,9 @@ module OpenAI
     type video_download_content_params =
       {
         video_id: String,
-        variant: OpenAI::Models::VideoDownloadContentParams::variant
+        ?variant: OpenAI::Models::VideoDownloadContentParams::variant,
+        ?request_options: OpenAI::request_opts
       }
-      & OpenAI::Internal::Type::request_parameters
 
     class VideoDownloadContentParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -13,12 +13,16 @@ module OpenAI
 
       attr_accessor video_id: String
 
+      # Which downloadable asset to return. Defaults to the MP4 video.
       attr_reader variant: OpenAI::Models::VideoDownloadContentParams::variant?
 
+      # Which downloadable asset to return. Defaults to the MP4 video.
       def variant=: (
         OpenAI::Models::VideoDownloadContentParams::variant
       ) -> OpenAI::Models::VideoDownloadContentParams::variant
 
+      # @param variant
+      #   Which downloadable asset to return. Defaults to the MP4 video.
       def initialize: (
         video_id: String,
         ?variant: OpenAI::Models::VideoDownloadContentParams::variant,
@@ -27,8 +31,8 @@ module OpenAI
 
       def to_hash: -> {
         video_id: String,
-        variant: OpenAI::Models::VideoDownloadContentParams::variant,
-        request_options: OpenAI::RequestOptions
+        ?variant: OpenAI::Models::VideoDownloadContentParams::variant,
+        ?request_options: OpenAI::RequestOptions
       }
 
       type variant = :video | :thumbnail | :spritesheet

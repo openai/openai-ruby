@@ -4,12 +4,21 @@ module OpenAI
       type transcription_word = { end_: Float, start: Float, word: String }
 
       class TranscriptionWord < OpenAI::Internal::Type::BaseModel
+        # End time of the word in seconds.
         attr_accessor end_: Float
 
+        # Start time of the word in seconds.
         attr_accessor start: Float
 
+        # The text content of the word.
         attr_accessor word: String
 
+        # @param end_
+        #   End time of the word in seconds.
+        # @param start
+        #   Start time of the word in seconds.
+        # @param word
+        #   The text content of the word.
         def initialize: (end_: Float, start: Float, word: String) -> void
 
         def to_hash: -> { end_: Float, start: Float, word: String }

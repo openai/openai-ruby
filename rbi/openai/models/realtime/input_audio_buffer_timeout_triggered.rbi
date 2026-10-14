@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class InputAudioBufferTimeoutTriggered < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::InputAudioBufferTimeoutTriggered,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::InputAudioBufferTimeoutTriggered,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Millisecond offset of audio written to the input audio buffer at the time the
         # timeout was triggered.
@@ -52,43 +54,52 @@ module OpenAI
         # conversation or a prompt to continue speaking.
         sig do
           params(
+
             audio_end_ms: Integer,
+
             audio_start_ms: Integer,
+
             event_id: String,
+
             item_id: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Millisecond offset of audio written to the input audio buffer at the time the
           # timeout was triggered.
           audio_end_ms:,
+
           # Millisecond offset of audio written to the input audio buffer that was after the
           # playback time of the last model response.
           audio_start_ms:,
+
           # The unique ID of the server event.
           event_id:,
+
           # The ID of the item associated with this segment.
           item_id:,
+
           # The event type, must be `input_audio_buffer.timeout_triggered`.
+
           type: :"input_audio_buffer.timeout_triggered"
         )
         end
 
         sig do
           override.returns(
-            {
-              audio_end_ms: Integer,
-              audio_start_ms: Integer,
-              event_id: String,
-              item_id: String,
-              type: Symbol
-            }
+            {audio_end_ms: Integer, audio_start_ms: Integer, event_id: String, item_id: String, type: Symbol}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

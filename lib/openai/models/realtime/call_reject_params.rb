@@ -21,12 +21,11 @@ module OpenAI
         optional :status_code, Integer
 
         # @!method initialize(call_id:, status_code: nil, request_options: {})
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::CallRejectParams} for more details.
-        #
         #   @param call_id [String]
         #
-        #   @param status_code [Integer] SIP response code to send back to the caller. Defaults to `603` (Decline)
+        #   @param status_code [Integer]
+        #     SIP response code to send back to the caller. Defaults to `603` (Decline) when
+        #     omitted.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end

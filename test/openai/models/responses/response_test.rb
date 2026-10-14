@@ -95,6 +95,16 @@ class OpenAI::Models::Responses::ResponseTest < Minitest::Test
     assert_equal("Non-empty", response.output_text)
   end
 
+  def test_output_text_remains_owned_by_response_and_inherited
+    method = OpenAI::Responses::Response.instance_method(:output_text)
+    subclass = Class.new(OpenAI::Responses::Response)
+
+    assert_equal(OpenAI::Responses::Response, method.owner)
+    assert_includes(OpenAI::Responses::Response.public_instance_methods(false), :output_text)
+    assert_empty(method.parameters)
+    assert_equal("", subclass.new(output: []).output_text)
+  end
+
   private
 
   def build_response(output:)

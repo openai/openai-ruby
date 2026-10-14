@@ -1,0 +1,30 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type external_storage_validate_params =
+          {
+            external_storage_id: String,
+            ?request_options: OpenAI::request_opts
+          }
+
+        class ExternalStorageValidateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor external_storage_id: String
+
+          def initialize: (
+            external_storage_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            external_storage_id: String,
+            ?request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

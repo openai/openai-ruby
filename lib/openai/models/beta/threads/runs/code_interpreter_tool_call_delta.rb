@@ -29,23 +29,26 @@ module OpenAI
             #   The Code Interpreter tool call definition.
             #
             #   @return [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter, nil]
-            optional :code_interpreter,
-                     -> { OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter }
+            optional(
+              :code_interpreter,
+              -> { OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter }
+            )
 
             # @!method initialize(index:, id: nil, code_interpreter: nil, type: :code_interpreter)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta} for more
-            #   details.
-            #
             #   Details of the Code Interpreter tool call the run step was involved in.
             #
-            #   @param index [Integer] The index of the tool call in the tool calls array.
+            #   @param index [Integer]
+            #     The index of the tool call in the tool calls array.
             #
-            #   @param id [String] The ID of the tool call.
+            #   @param id [String]
+            #     The ID of the tool call.
             #
-            #   @param code_interpreter [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter] The Code Interpreter tool call definition.
+            #   @param code_interpreter [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter]
+            #     The Code Interpreter tool call definition.
             #
-            #   @param type [Symbol, :code_interpreter] The type of tool call. This is always going to be `code_interpreter` for this ty
+            #   @param type [Symbol, :code_interpreter]
+            #     The type of tool call. This is always going to be `code_interpreter` for this
+            #     type of tool call.
 
             # @see OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta#code_interpreter
             class CodeInterpreter < OpenAI::Internal::Type::BaseModel
@@ -61,19 +64,25 @@ module OpenAI
               #   represented by a different object type.
               #
               #   @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage>, nil]
-              optional :outputs,
-                       -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::Output] }
+              optional(
+                :outputs,
+                -> {
+                  OpenAI::Internal::Type::ArrayOf[
+                    union: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::Output
+                  ]
+                }
+              )
 
               # @!method initialize(input: nil, outputs: nil)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter}
-              #   for more details.
-              #
               #   The Code Interpreter tool call definition.
               #
-              #   @param input [String] The input to the Code Interpreter tool call.
+              #   @param input [String]
+              #     The input to the Code Interpreter tool call.
               #
-              #   @param outputs [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage>] The outputs from the Code Interpreter tool call. Code Interpreter can output one
+              #   @param outputs [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage>]
+              #     The outputs from the Code Interpreter tool call. Code Interpreter can output one
+              #     or more items, including text (`logs`) or images (`image`). Each of these are
+              #     represented by a different object type.
 
               # Text output from the Code Interpreter tool call as part of a run step.
               module Output

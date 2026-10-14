@@ -2,18 +2,19 @@
 
 module OpenAI
   module Models
-    BetaResponseComputerToolCallOutputScreenshot =
-      Beta::BetaResponseComputerToolCallOutputScreenshot
+
+    BetaResponseComputerToolCallOutputScreenshot = Beta::BetaResponseComputerToolCallOutputScreenshot
 
     module Beta
+
       class BetaResponseComputerToolCallOutputScreenshot < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Specifies the event type. For a computer screenshot, this property is always set
         # to `computer_screenshot`.
@@ -36,27 +37,42 @@ module OpenAI
 
         # A computer screenshot image used with the computer use tool.
         sig do
-          params(file_id: String, image_url: String, type: Symbol).returns(
-            T.attached_class
+          params(
+
+            file_id: String,
+
+            image_url: String,
+
+            type: Symbol
           )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The identifier of an uploaded file that contains the screenshot.
           file_id: nil,
+
           # The URL of the screenshot image.
           image_url: nil,
+
           # Specifies the event type. For a computer screenshot, this property is always set
           # to `computer_screenshot`.
+
           type: :computer_screenshot
         )
         end
 
         sig do
-          override.returns({ type: Symbol, file_id: String, image_url: String })
+          override.returns(
+            {type: Symbol, file_id: String, image_url: String}
+          )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

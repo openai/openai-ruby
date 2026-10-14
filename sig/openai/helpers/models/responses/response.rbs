@@ -1,0 +1,9 @@
+module OpenAI
+  module Models
+    module Responses
+      class Response
+        def output_text: -> String
+      end
+    end
+  end
+end

@@ -12,9 +12,9 @@ class OpenAI::Test::Resources::Beta::Responses::InputTokensTest < OpenAI::Test::
 
     assert_pattern do
       response => {
-        input_tokens: Integer,
-        object: Symbol
-      }
+          input_tokens: Integer,
+          object: Symbol
+        }
     end
   end
 end

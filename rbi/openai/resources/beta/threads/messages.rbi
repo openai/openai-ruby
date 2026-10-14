@@ -2,30 +2,30 @@
 
 module OpenAI
   module Resources
+
     class Beta
+
       class Threads
+
         # Build Assistants that can call models and use tools.
         class Messages
+
           # Create a message.
-          sig do
+          sig {
             params(
               thread_id: String,
-              content:
-                OpenAI::Beta::Threads::MessageCreateParams::Content::Variants,
+              content: OpenAI::Beta::Threads::MessageCreateParams::Content::Variants,
               role: OpenAI::Beta::Threads::MessageCreateParams::Role::OrSymbol,
-              attachments:
-                T.nilable(
-                  T::Array[
-                    OpenAI::Beta::Threads::MessageCreateParams::Attachment::OrHash
-                  ]
-                ),
+              attachments: T.nilable(T::Array[OpenAI::Beta::Threads::MessageCreateParams::Attachment::OrHash]),
               metadata: T.nilable(T::Hash[Symbol, String]),
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Beta::Threads::Message)
-          end
+            )
+              .returns(OpenAI::Beta::Threads::Message)
+          }
           def create(
-            # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
-            # to create a message for.
+            # The ID of the
+            # [thread](https://developers.openai.com/api/docs/assistants/migration) to create
+            # a message for.
             thread_id,
             # The text contents of the message.
             content:,
@@ -50,32 +50,32 @@ module OpenAI
           end
 
           # Retrieve a message.
-          sig do
-            params(
-              message_id: String,
-              thread_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Beta::Threads::Message)
-          end
+          sig {
+            params(message_id: String, thread_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Beta::Threads::Message
+            )
+          }
           def retrieve(
             # The ID of the message to retrieve.
             message_id,
-            # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
-            # to which this message belongs.
+            # The ID of the
+            # [thread](https://developers.openai.com/api/docs/assistants/migration) to which
+            # this message belongs.
             thread_id:,
             request_options: {}
           )
           end
 
           # Modifies a message.
-          sig do
+          sig {
             params(
               message_id: String,
               thread_id: String,
               metadata: T.nilable(T::Hash[Symbol, String]),
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Beta::Threads::Message)
-          end
+            )
+              .returns(OpenAI::Beta::Threads::Message)
+          }
           def update(
             # Path param: The ID of the message to modify.
             message_id,
@@ -93,7 +93,7 @@ module OpenAI
           end
 
           # Returns a list of messages for a given thread.
-          sig do
+          sig {
             params(
               thread_id: String,
               after: String,
@@ -102,13 +102,13 @@ module OpenAI
               order: OpenAI::Beta::Threads::MessageListParams::Order::OrSymbol,
               run_id: String,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::CursorPage[OpenAI::Beta::Threads::Message]
             )
-          end
+              .returns(OpenAI::Internal::CursorPage[OpenAI::Beta::Threads::Message])
+          }
           def list(
-            # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
-            # the messages belong to.
+            # The ID of the
+            # [thread](https://developers.openai.com/api/docs/assistants/migration) the
+            # messages belong to.
             thread_id,
             # A cursor for use in pagination. `after` is an object ID that defines your place
             # in the list. For instance, if you make a list request and receive 100 objects,
@@ -133,13 +133,11 @@ module OpenAI
           end
 
           # Deletes a message.
-          sig do
-            params(
-              message_id: String,
-              thread_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Beta::Threads::MessageDeleted)
-          end
+          sig {
+            params(message_id: String, thread_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Beta::Threads::MessageDeleted
+            )
+          }
           def delete(
             # The ID of the message to delete.
             message_id,
@@ -154,7 +152,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

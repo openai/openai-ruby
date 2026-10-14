@@ -12,11 +12,11 @@ class OpenAI::Test::Resources::Uploads::PartsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        object: Symbol,
-        upload_id: String
-      }
+          id: String,
+          created_at: Integer,
+          object: Symbol,
+          upload_id: String
+        }
     end
   end
 end

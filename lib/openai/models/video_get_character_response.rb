@@ -23,11 +23,14 @@ module OpenAI
       required :name, String, nil?: true
 
       # @!method initialize(id:, created_at:, name:)
-      #   @param id [String, nil] Identifier for the character creation cameo.
+      #   @param id [String, nil]
+      #     Identifier for the character creation cameo.
       #
-      #   @param created_at [Integer] Unix timestamp (in seconds) when the character was created.
+      #   @param created_at [Integer]
+      #     Unix timestamp (in seconds) when the character was created.
       #
-      #   @param name [String, nil] Display name for the character.
+      #   @param name [String, nil]
+      #     Display name for the character.
     end
   end
 end

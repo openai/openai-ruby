@@ -1,0 +1,60 @@
+module OpenAI
+  module Helpers
+    module Agents
+      type tool_output =
+        String
+        | Hash[String | Symbol, untyped]
+        | Array[OpenAI::Models::Beta::input_content_param
+        | Hash[Symbol, untyped]]
+        | nil
+      type tool_handler = ^(Hash[String, untyped]) -> tool_output
+      class SessionStream
+        include Enumerable[OpenAI::Models::Beta::agent_session_event]
+
+        def each:
+          { (OpenAI::Models::Beta::agent_session_event) -> void } -> self
+          | -> Enumerator[OpenAI::Models::Beta::agent_session_event, self]
+        def close: -> void
+        def until_done: -> self
+
+        # @beta
+        def get_final_result: -> OpenAI::Helpers::Beta::Agents::TurnResult
+
+        # @beta
+        def with_result_collection: -> self
+      end
+    end
+  end
+  module Resources
+    class Beta
+      class Agents
+        class Sessions
+          def stream: (
+            String session_id,
+            input: String
+            | Array[OpenAI::Beta::AgentSessionInputMessageParam
+            | Hash[Symbol, untyped]],
+            ?tool_handlers: Hash[String, OpenAI::Helpers::Agents::tool_handler],
+            ?on_tool_error: (^(
+              OpenAI::Helpers::Beta::Agents::ToolError
+            ) -> void)?,
+            ?idempotency_key: String?,
+            ?output_type: singleton(OpenAI::Helpers::StructuredOutput::BaseModel)?,
+            ?request_options: OpenAI::RequestOptions
+            | Hash[Symbol, untyped]
+            | nil
+          ) ?{
+            (OpenAI::Helpers::Agents::SessionStream) -> void
+          } -> OpenAI::Helpers::Agents::SessionStream
+        end
+      end
+    end
+  end
+  module Models
+    module Beta
+      class AgentSessionMessage
+        def output_text: -> String
+      end
+    end
+  end
+end

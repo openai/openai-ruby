@@ -1,0 +1,19 @@
+module OpenAI
+  module Models
+    module Responses
+      class ConnectionManager
+        # @api private
+        def initialize: (
+          client: OpenAI::Client,
+          websocket_base_url: String?,
+          transport: top,
+          request_options: OpenAI::request_opts?,
+          transport_options: ::Hash[Symbol, top]
+        ) -> void
+
+        # @api private
+        def open: { (OpenAI::Responses::Connection connection) -> top } -> top
+      end
+    end
+  end
+end

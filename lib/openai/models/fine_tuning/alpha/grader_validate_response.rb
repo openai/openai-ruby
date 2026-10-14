@@ -13,7 +13,8 @@ module OpenAI
           optional :grader, union: -> { OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::Grader }
 
           # @!method initialize(grader: nil)
-          #   @param grader [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader] The grader used for the fine-tuning job.
+          #   @param grader [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader]
+          #     The grader used for the fine-tuning job.
 
           # The grader used for the fine-tuning job.
           #

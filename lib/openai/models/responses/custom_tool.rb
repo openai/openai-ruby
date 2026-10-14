@@ -20,9 +20,18 @@ module OpenAI
         #   The tool invocation context(s).
         #
         #   @return [Array<Symbol, OpenAI::Models::Responses::CustomTool::AllowedCaller>, nil]
-        optional :allowed_callers,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::CustomTool::AllowedCaller] },
-                 nil?: true
+        optional(
+          :allowed_callers,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::CustomTool::AllowedCaller] },
+          nil?: true
+        )
+
+        # @!attribute async
+        #   Whether the tool response can be returned asynchronously versus immediately
+        #   returned on next response creation.
+        #
+        #   @return [Boolean, nil]
+        optional :async, OpenAI::Internal::Type::Boolean
 
         # @!attribute defer_loading
         #   Whether this tool should be deferred and discovered via tool search.
@@ -42,22 +51,31 @@ module OpenAI
         #   @return [OpenAI::Models::CustomToolInputFormat::Text, OpenAI::Models::CustomToolInputFormat::Grammar, nil]
         optional :format_, union: -> { OpenAI::CustomToolInputFormat }, api_name: :format
 
-        # @!method initialize(name:, allowed_callers: nil, defer_loading: nil, description: nil, format_: nil, type: :custom)
+        # @!method initialize(name:, allowed_callers: nil, async: nil, defer_loading: nil, description: nil, format_: nil, type: :custom)
         #   A custom tool that processes input using a specified format. Learn more about
-        #   [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
+        #   [custom tools](https://developers.openai.com/api/docs/guides/function-calling#custom-tools)
         #
-        #   @param name [String] The name of the custom tool, used to identify it in tool calls.
+        #   @param name [String]
+        #     The name of the custom tool, used to identify it in tool calls.
         #
-        #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::CustomTool::AllowedCaller>, nil] The tool invocation context(s).
+        #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::CustomTool::AllowedCaller>, nil]
+        #     The tool invocation context(s).
         #
-        #   @param defer_loading [Boolean] Whether this tool should be deferred and discovered via tool search.
+        #   @param async [Boolean]
+        #     Whether the tool response can be returned asynchronously versus immediately
+        #     returned on next response creation.
         #
-        #   @param description [String] Optional description of the custom tool, used to provide more context.
+        #   @param defer_loading [Boolean]
+        #     Whether this tool should be deferred and discovered via tool search.
         #
-        #   @param format_ [OpenAI::Models::CustomToolInputFormat::Text, OpenAI::Models::CustomToolInputFormat::Grammar] The input format for the custom tool. Default is unconstrained text.
+        #   @param description [String]
+        #     Optional description of the custom tool, used to provide more context.
         #
-        #   @param type [Symbol, :custom] The type of the custom tool. Always `custom`.
-
+        #   @param format_ [OpenAI::Models::CustomToolInputFormat::Text, OpenAI::Models::CustomToolInputFormat::Grammar]
+        #     The input format for the custom tool. Default is unconstrained text.
+        #
+        #   @param type [Symbol, :custom]
+        #     The type of the custom tool. Always `custom`.
         module AllowedCaller
           extend OpenAI::Internal::Type::Enum
 

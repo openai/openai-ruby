@@ -9,75 +9,67 @@ module OpenAI
 
         abstract!
 
-        RequestComponents =
-          T.type_alias do
-            {
-              method: Symbol,
-              path: T.any(String, T::Array[String]),
-              query:
-                T.nilable(
-                  T::Hash[String, T.nilable(T.any(T::Array[String], String))]
-                ),
-              headers:
-                T.nilable(
-                  T::Hash[
-                    String,
-                    T.nilable(
-                      T.any(
-                        String,
-                        Integer,
-                        T::Array[T.nilable(T.any(String, Integer))]
-                      )
-                    )
-                  ]
-                ),
-              body: T.nilable(T.anything),
-              unwrap:
+        RequestComponents = T.type_alias do
+          {
+            method: Symbol,
+            path: T.any(String, T::Array[String]),
+            query: T.nilable(
+              T::Hash[String, T.nilable(T.any(T::Array[String], String))]
+            ),
+            headers: T.nilable(
+              T::Hash[
+                String,
                 T.nilable(
                   T.any(
-                    Symbol,
+                    String,
                     Integer,
-                    T::Array[T.any(Symbol, Integer)],
-                    T.proc.params(arg0: T.anything).returns(T.anything)
+                    T::Array[T.nilable(T.any(String, Integer))]
                   )
-                ),
-              page:
-                T.nilable(
-                  T::Class[
-                    OpenAI::Internal::Type::BasePage[
-                      OpenAI::Internal::Type::BaseModel
-                    ]
-                  ]
-                ),
-              stream:
-                T.nilable(
-                  T::Class[
-                    OpenAI::Internal::Type::BaseStream[
-                      T.anything,
-                      OpenAI::Internal::Type::BaseModel
-                    ]
-                  ]
-                ),
-              model: T.nilable(OpenAI::Internal::Type::Converter::Input),
-              security:
-                T.nilable(
-                  { bearer_auth?: T::Boolean, admin_api_key_auth?: T::Boolean }
-                ),
-              options: T.nilable(OpenAI::RequestOptions::OrHash)
-            }
-          end
+                )
+              ]
+            ),
+            body: T.nilable(T.anything),
+            unwrap: T.nilable(
+              T.any(
+                Symbol,
+                Integer,
+                T::Array[T.any(Symbol, Integer)],
+                T.proc.params(arg0: T.anything).returns(T.anything)
+              )
+            ),
+            page: T.nilable(
+              T::Class[
+                OpenAI::Internal::Type::BasePage[
+                  OpenAI::Internal::Type::BaseModel
+                ]
+              ]
+            ),
+            stream: T.nilable(
+              T::Class[
+                OpenAI::Internal::Type::BaseStream[
+                  T.anything,
+                  OpenAI::Internal::Type::BaseModel
+                ]
+              ]
+            ),
+            model: T.nilable(OpenAI::Internal::Type::Converter::Input),
+            security: T.nilable(
+              {bearer_auth?: T::Boolean, admin_api_key_auth?: T::Boolean}
+            ),
+            options: T.nilable(OpenAI::RequestOptions::OrHash)
+          }
+        end
 
-        RequestInput =
-          T.type_alias do
-            {
-              method: Symbol,
-              url: URI::Generic,
-              headers: T::Hash[String, String],
-              body: T.anything,
-              max_retries: Integer,
-              timeout: Float
-            }
-          end
+        RequestInput = T.type_alias do
+          {
+            method: Symbol,
+            url: URI::Generic,
+            headers: T::Hash[String, String],
+            body: T.anything,
+            max_retries: Integer,
+            timeout: T.nilable(Float)
+          }
+        end
 
         # from whatwg fetch spec
         MAX_REDIRECTS = 20
@@ -89,7 +81,8 @@ module OpenAI
           sig do
             params(
               req: OpenAI::Internal::Transport::BaseClient::RequestComponents
-            ).void
+            )
+              .void
           end
           def validate!(req)
           end
@@ -104,12 +97,18 @@ module OpenAI
           end
 
           # @api private
+          sig { params(body: T.untyped).returns(T::Boolean) }
+          def request_body_replayable?(body)
+          end
+
+          # @api private
           sig do
             params(
               request: OpenAI::Internal::Transport::BaseClient::RequestInput,
               status: Integer,
               response_headers: T::Hash[String, String]
-            ).returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
+            )
+              .returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
           end
           def follow_redirect(request, status:, response_headers:)
           end
@@ -119,7 +118,8 @@ module OpenAI
             params(
               status: T.any(Integer, OpenAI::Errors::APIConnectionError),
               stream: T.nilable(T::Enumerable[String])
-            ).void
+            )
+              .void
           end
           def reap_connection!(status, stream:)
           end
@@ -128,7 +128,7 @@ module OpenAI
         sig { returns(URI::Generic) }
         attr_reader :base_url
 
-        sig { returns(Float) }
+        sig { returns(T.nilable(Float)) }
         attr_reader :timeout
 
         sig { returns(Integer) }
@@ -146,31 +146,47 @@ module OpenAI
         sig { returns(T.nilable(String)) }
         attr_reader :idempotency_header
 
+        sig { returns(T.untyped) }
+        attr_reader :logger
+
+        sig { returns(Symbol) }
+        attr_reader :log_level
+
+        sig do
+          returns(T.nilable(T.proc.params(event: OpenAI::RetryEvent).void))
+        end
+
+        attr_reader :on_retry
+
         # @api private
-        sig { returns(OpenAI::Internal::Transport::PooledNetRequester) }
+        sig { returns(T.untyped) }
         attr_reader :requester
 
         # @api private
         sig do
           params(
             base_url: String,
-            timeout: Float,
+            timeout: T.nilable(Float),
             max_retries: Integer,
             initial_retry_delay: Float,
             max_retry_delay: Float,
-            headers:
-              T::Hash[
-                String,
-                T.nilable(
-                  T.any(
-                    String,
-                    Integer,
-                    T::Array[T.nilable(T.any(String, Integer))]
-                  )
+            headers: T::Hash[
+              String,
+              T.nilable(
+                T.any(
+                  String,
+                  Integer,
+                  T::Array[T.nilable(T.any(String, Integer))]
                 )
-              ],
-            idempotency_header: T.nilable(String)
-          ).returns(T.attached_class)
+              )
+            ],
+            idempotency_header: T.nilable(String),
+            http_client: T.untyped,
+            logger: T.untyped,
+            log_level: T.nilable(T.any(Symbol, String)),
+            on_retry: T.nilable(T.proc.params(event: OpenAI::RetryEvent).void)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
           base_url:,
@@ -179,7 +195,11 @@ module OpenAI
           initial_retry_delay: 0.0,
           max_retry_delay: 0.0,
           headers: {},
-          idempotency_header: nil
+          idempotency_header: nil,
+          http_client: nil,
+          logger: nil,
+          log_level: nil,
+          on_retry: nil
         )
         end
 
@@ -199,6 +219,18 @@ module OpenAI
             .returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
         end
         private def prepare_request(request, redirect_count:, retry_count:)
+        end
+
+        # @api private
+        sig do
+          overridable
+            .params(
+              request: OpenAI::Internal::Transport::BaseClient::RequestInput,
+              original_request: OpenAI::Internal::Transport::BaseClient::RequestInput
+            )
+            .returns(OpenAI::Internal::Transport::BaseClient::RequestInput)
+        end
+        private def validate_prepared_request(request, original_request:)
         end
 
         # @api private
@@ -226,11 +258,45 @@ module OpenAI
         # @api private
         sig do
           params(
+            request: OpenAI::Internal::Transport::BaseClient::RequestInput
+          )
+            .returns(T::Boolean)
+        end
+        private def request_replayable?(request)
+        end
+
+        # @api private
+        sig do
+          params(
+            request: OpenAI::Internal::Transport::BaseClient::RequestInput,
+            error: OpenAI::Errors::APIConnectionError
+          )
+            .returns(T::Boolean)
+        end
+        private def request_retryable_after_connection_error?(request, error:)
+        end
+
+        # @api private
+        sig do
+          params(
             headers: T::Hash[String, String],
             retry_count: Integer
-          ).returns(Float)
+          )
+            .returns(Float)
         end
         private def retry_delay(headers, retry_count:)
+        end
+
+        # @api private
+        sig do
+          overridable
+            .params(
+              request: OpenAI::Internal::Transport::BaseClient::RequestInput,
+              delay: Float
+            )
+            .void
+        end
+        private def validate_retry_delay!(request, delay:)
         end
 
         # @api private
@@ -239,9 +305,10 @@ module OpenAI
             url: URI::Generic,
             status: Integer,
             headers: T::Hash[String, String],
-            response: Net::HTTPResponse,
+            response: OpenAI::HTTPClient::Response,
             stream: T::Enumerable[String]
-          ).returns(T.noreturn)
+          )
+            .returns(T.noreturn)
         end
         private def raise_status_error!(
           url:,
@@ -258,14 +325,17 @@ module OpenAI
             request: OpenAI::Internal::Transport::BaseClient::RequestInput,
             redirect_count: Integer,
             retry_count: Integer,
-            send_retry_header: T::Boolean
-          ).returns([Integer, Net::HTTPResponse, T::Enumerable[String]])
+            send_retry_header: T::Boolean,
+            context_provider: T.proc.returns(OpenAI::Internal::Logging::Context)
+          )
+            .returns(OpenAI::HTTPClient::Response)
         end
         def send_request(
           request,
           redirect_count:,
           retry_count:,
-          send_retry_header:
+          send_retry_header:,
+          &context_provider
         )
         end
 
@@ -277,57 +347,52 @@ module OpenAI
           params(
             method: Symbol,
             path: T.any(String, T::Array[String]),
-            query:
-              T.nilable(
-                T::Hash[String, T.nilable(T.any(T::Array[String], String))]
-              ),
-            headers:
-              T.nilable(
-                T::Hash[
-                  String,
-                  T.nilable(
-                    T.any(
-                      String,
-                      Integer,
-                      T::Array[T.nilable(T.any(String, Integer))]
-                    )
+            query: T.nilable(
+              T::Hash[String, T.nilable(T.any(T::Array[String], String))]
+            ),
+            headers: T.nilable(
+              T::Hash[
+                String,
+                T.nilable(
+                  T.any(
+                    String,
+                    Integer,
+                    T::Array[T.nilable(T.any(String, Integer))]
                   )
-                ]
-              ),
-            body: T.nilable(T.anything),
-            unwrap:
-              T.nilable(
-                T.any(
-                  Symbol,
-                  Integer,
-                  T::Array[T.any(Symbol, Integer)],
-                  T.proc.params(arg0: T.anything).returns(T.anything)
                 )
-              ),
-            page:
-              T.nilable(
-                T::Class[
-                  OpenAI::Internal::Type::BasePage[
-                    OpenAI::Internal::Type::BaseModel
-                  ]
+              ]
+            ),
+            body: T.nilable(T.anything),
+            unwrap: T.nilable(
+              T.any(
+                Symbol,
+                Integer,
+                T::Array[T.any(Symbol, Integer)],
+                T.proc.params(arg0: T.anything).returns(T.anything)
+              )
+            ),
+            page: T.nilable(
+              T::Class[
+                OpenAI::Internal::Type::BasePage[
+                  OpenAI::Internal::Type::BaseModel
                 ]
-              ),
-            stream:
-              T.nilable(
-                T::Class[
-                  OpenAI::Internal::Type::BaseStream[
-                    T.anything,
-                    OpenAI::Internal::Type::BaseModel
-                  ]
+              ]
+            ),
+            stream: T.nilable(
+              T::Class[
+                OpenAI::Internal::Type::BaseStream[
+                  T.anything,
+                  OpenAI::Internal::Type::BaseModel
                 ]
-              ),
+              ]
+            ),
             model: T.nilable(OpenAI::Internal::Type::Converter::Input),
-            security:
-              T.nilable(
-                { bearer_auth?: T::Boolean, admin_api_key_auth?: T::Boolean }
-              ),
+            security: T.nilable(
+              {bearer_auth?: T::Boolean, admin_api_key_auth?: T::Boolean}
+            ),
             options: T.nilable(OpenAI::RequestOptions::OrHash)
-          ).returns(T.anything)
+          )
+            .returns(T.anything)
         end
         def request(
           method,
@@ -339,9 +404,71 @@ module OpenAI
           page: nil,
           stream: nil,
           model: OpenAI::Internal::Type::Unknown,
-          security: { bearer_auth: true, admin_api_key_auth: true },
+          security: {bearer_auth: true, admin_api_key_auth: true},
           options: {}
         )
+        end
+
+        # @api private
+        sig {
+          params(
+            req: T.untyped,
+            on_response: T.nilable(T.proc.returns(T.untyped)),
+            blk: T.proc.params(chunk: String).returns(T.untyped)
+          )
+            .void
+        }
+        def request_streaming_body(req, on_response = nil, &blk)
+        end
+
+        # @api private
+        sig do
+          params(
+            req: OpenAI::Internal::Transport::BaseClient::RequestComponents,
+            response_observer: T.nilable(
+              T
+                .proc
+                .params(
+                  response: OpenAI::HTTPClient::Response,
+                  url: URI::Generic,
+                  response_url: URI::Generic
+                )
+                .void
+            )
+          )
+            .returns(
+              [
+                URI::Generic,
+                OpenAI::HTTPClient::Response,
+                OpenAI::Internal::Logging::Context
+              ]
+            )
+        end
+        private def perform_request(req, &response_observer)
+        end
+
+        # @api private
+        sig do
+          params(
+            log_context: OpenAI::Internal::Logging::Context,
+            response: OpenAI::HTTPClient::Response,
+            blk: T.proc.returns(T.anything)
+          )
+            .returns(T.anything)
+        end
+        private def finish_request(log_context, response, &blk)
+        end
+
+        # @api private
+        sig do
+          params(
+            req: OpenAI::Internal::Transport::BaseClient::RequestComponents,
+            url: URI::Generic,
+            response: OpenAI::HTTPClient::Response
+          )
+            .returns(T.anything)
+        end
+        private def parse_response(req, url:, response:)
         end
 
         # @api private

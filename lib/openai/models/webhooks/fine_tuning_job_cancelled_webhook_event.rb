@@ -35,20 +35,22 @@ module OpenAI
         optional :object, enum: -> { OpenAI::Webhooks::FineTuningJobCancelledWebhookEvent::Object }
 
         # @!method initialize(id:, created_at:, data:, object: nil, type: :"fine_tuning.job.cancelled")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent} for more details.
-        #
         #   Sent when a fine-tuning job has been cancelled.
         #
-        #   @param id [String] The unique ID of the event.
+        #   @param id [String]
+        #     The unique ID of the event.
         #
-        #   @param created_at [Integer] The Unix timestamp (in seconds) of when the fine-tuning job was cancelled.
+        #   @param created_at [Integer]
+        #     The Unix timestamp (in seconds) of when the fine-tuning job was cancelled.
         #
-        #   @param data [OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::Data] Event data payload.
+        #   @param data [OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::Data]
+        #     Event data payload.
         #
-        #   @param object [Symbol, OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::Object] The object of the event. Always `event`.
+        #   @param object [Symbol, OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::Object]
+        #     The object of the event. Always `event`.
         #
-        #   @param type [Symbol, :"fine_tuning.job.cancelled"] The type of the event. Always `fine_tuning.job.cancelled`.
+        #   @param type [Symbol, :"fine_tuning.job.cancelled"]
+        #     The type of the event. Always `fine_tuning.job.cancelled`.
 
         # @see OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent#data
         class Data < OpenAI::Internal::Type::BaseModel
@@ -59,13 +61,10 @@ module OpenAI
           required :id, String
 
           # @!method initialize(id:)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent::Data} for more
-          #   details.
-          #
           #   Event data payload.
           #
-          #   @param id [String] The unique ID of the fine-tuning job.
+          #   @param id [String]
+          #     The unique ID of the fine-tuning job.
         end
 
         # The object of the event. Always `event`.

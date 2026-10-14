@@ -1,0 +1,24 @@
+module OpenAI
+  module Models
+    module Live
+      type client_event =
+        OpenAI::Live::SessionStartEvent
+        | OpenAI::Live::SessionUpdateEvent
+        | OpenAI::Live::InputAudioAppendEvent
+        | OpenAI::Live::InputAudioMuteEvent
+        | OpenAI::Live::InputAudioUnmuteEvent
+        | OpenAI::Live::InstructionsAppendEvent
+        | OpenAI::Live::ThinkingAppendEvent
+        | OpenAI::Live::CommentaryAppendEvent
+        | OpenAI::Live::ResponseItemCreateEvent
+        | OpenAI::Live::ResponseCreateEvent
+        | OpenAI::Live::SessionCloseEvent
+
+      module ClientEvent
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Live::client_event]
+      end
+    end
+  end
+end

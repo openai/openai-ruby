@@ -12,13 +12,13 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::UsersTest < OpenAI
 
     assert_pattern do
       response => {
-        id: String,
-        added_at: Integer,
-        object: Symbol,
-        role: String,
-        email: String | nil,
-        name: String | nil
-      }
+          id: String,
+          added_at: Integer,
+          object: Symbol,
+          role: String,
+          email: String | nil,
+          name: String | nil
+        }
     end
   end
 
@@ -31,13 +31,13 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::UsersTest < OpenAI
 
     assert_pattern do
       response => {
-        id: String,
-        added_at: Integer,
-        object: Symbol,
-        role: String,
-        email: String | nil,
-        name: String | nil
-      }
+          id: String,
+          added_at: Integer,
+          object: Symbol,
+          role: String,
+          email: String | nil,
+          name: String | nil
+        }
     end
   end
 
@@ -50,13 +50,13 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::UsersTest < OpenAI
 
     assert_pattern do
       response => {
-        id: String,
-        added_at: Integer,
-        object: Symbol,
-        role: String,
-        email: String | nil,
-        name: String | nil
-      }
+          id: String,
+          added_at: Integer,
+          object: Symbol,
+          role: String,
+          email: String | nil,
+          name: String | nil
+        }
     end
   end
 
@@ -67,7 +67,8 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::UsersTest < OpenAI
       response => OpenAI::Internal::ConversationCursorPage
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -76,13 +77,13 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::UsersTest < OpenAI
 
     assert_pattern do
       row => {
-        id: String,
-        added_at: Integer,
-        object: Symbol,
-        role: String,
-        email: String | nil,
-        name: String | nil
-      }
+          id: String,
+          added_at: Integer,
+          object: Symbol,
+          role: String,
+          email: String | nil,
+          name: String | nil
+        }
     end
   end
 
@@ -95,10 +96,10 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::UsersTest < OpenAI
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 end

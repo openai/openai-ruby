@@ -37,7 +37,7 @@ module OpenAI
         String video_id,
         ?variant: OpenAI::Models::VideoDownloadContentParams::variant,
         ?request_options: OpenAI::request_opts
-      ) -> StringIO
+      ) -> (StringIO & OpenAI::ResponseCarrier)
 
       def edit: (
         prompt: String,

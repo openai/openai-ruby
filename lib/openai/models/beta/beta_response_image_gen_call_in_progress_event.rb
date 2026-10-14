@@ -37,15 +37,20 @@ module OpenAI
         # @!method initialize(item_id:, output_index:, sequence_number:, agent: nil, type: :"response.image_generation_call.in_progress")
         #   Emitted when an image generation tool call is in progress.
         #
-        #   @param item_id [String] The unique identifier of the image generation item being processed.
+        #   @param item_id [String]
+        #     The unique identifier of the image generation item being processed.
         #
-        #   @param output_index [Integer] The index of the output item in the response's output array.
+        #   @param output_index [Integer]
+        #     The index of the output item in the response's output array.
         #
-        #   @param sequence_number [Integer] The sequence number of the image generation item being processed.
+        #   @param sequence_number [Integer]
+        #     The sequence number of the image generation item being processed.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseImageGenCallInProgressEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseImageGenCallInProgressEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.image_generation_call.in_progress"] The type of the event. Always 'response.image_generation_call.in_progress'.
+        #   @param type [Symbol, :"response.image_generation_call.in_progress"]
+        #     The type of the event. Always 'response.image_generation_call.in_progress'.
 
         # @see OpenAI::Models::Beta::BetaResponseImageGenCallInProgressEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -58,7 +63,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

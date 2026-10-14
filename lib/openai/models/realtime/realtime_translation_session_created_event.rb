@@ -27,11 +27,14 @@ module OpenAI
         #   connection is established as the first server event. This event contains the
         #   default translation session configuration.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param session [OpenAI::Models::Realtime::RealtimeTranslationSession] The translation session configuration.
+        #   @param session [OpenAI::Models::Realtime::RealtimeTranslationSession]
+        #     The translation session configuration.
         #
-        #   @param type [Symbol, :"session.created"] The event type, must be `session.created`.
+        #   @param type [Symbol, :"session.created"]
+        #     The event type, must be `session.created`.
       end
     end
   end

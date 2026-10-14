@@ -47,27 +47,30 @@ module OpenAI
         # @api private
         sig do
           params(
-            key:
-              T.any(
-                Symbol,
-                OpenAI::Internal::AnyHash,
-                T.proc.returns(T.anything),
-                T.anything
-              ),
-            spec:
-              T.any(
-                OpenAI::Internal::AnyHash,
-                T.proc.returns(T.anything),
-                T.anything
-              )
-          ).void
+            key: T.any(
+              Symbol,
+              OpenAI::Internal::AnyHash,
+              T.proc.returns(T.anything),
+              T.anything
+            ),
+            spec: T.any(
+              OpenAI::Internal::AnyHash,
+              T.proc.returns(T.anything),
+              T.anything
+            )
+          )
+            .void
         end
         private def variant(key, spec = nil)
         end
 
         # @api private
-        sig { params(value: T.anything).returns(T.nilable(T.anything)) }
-        private def resolve_variant(value)
+        sig {
+          params(value: T.anything, state: T.nilable(OpenAI::Internal::Type::Converter::CoerceState)).returns(
+            T.nilable(T.anything)
+          )
+        }
+        private def resolve_variant(value, state: nil)
         end
 
         sig { params(other: T.anything).returns(T::Boolean) }

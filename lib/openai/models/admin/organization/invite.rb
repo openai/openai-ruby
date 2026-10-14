@@ -63,24 +63,32 @@ module OpenAI
           # @!method initialize(id:, created_at:, email:, projects:, role:, status:, accepted_at: nil, expires_at: nil, object: :"organization.invite")
           #   Represents an individual `invite` to the organization.
           #
-          #   @param id [String] The identifier, which can be referenced in API endpoints
+          #   @param id [String]
+          #     The identifier, which can be referenced in API endpoints
           #
-          #   @param created_at [Integer] The Unix timestamp (in seconds) of when the invite was sent.
+          #   @param created_at [Integer]
+          #     The Unix timestamp (in seconds) of when the invite was sent.
           #
-          #   @param email [String] The email address of the individual to whom the invite was sent
+          #   @param email [String]
+          #     The email address of the individual to whom the invite was sent
           #
-          #   @param projects [Array<OpenAI::Models::Admin::Organization::Invite::Project>] The projects that were granted membership upon acceptance of the invite.
+          #   @param projects [Array<OpenAI::Models::Admin::Organization::Invite::Project>]
+          #     The projects that were granted membership upon acceptance of the invite.
           #
-          #   @param role [Symbol, OpenAI::Models::Admin::Organization::Invite::Role] `owner` or `reader`
+          #   @param role [Symbol, OpenAI::Models::Admin::Organization::Invite::Role]
+          #     `owner` or `reader`
           #
-          #   @param status [Symbol, OpenAI::Models::Admin::Organization::Invite::Status] `accepted`,`expired`, or `pending`
+          #   @param status [Symbol, OpenAI::Models::Admin::Organization::Invite::Status]
+          #     `accepted`,`expired`, or `pending`
           #
-          #   @param accepted_at [Integer, nil] The Unix timestamp (in seconds) of when the invite was accepted.
+          #   @param accepted_at [Integer, nil]
+          #     The Unix timestamp (in seconds) of when the invite was accepted.
           #
-          #   @param expires_at [Integer, nil] The Unix timestamp (in seconds) of when the invite expires.
+          #   @param expires_at [Integer, nil]
+          #     The Unix timestamp (in seconds) of when the invite expires.
           #
-          #   @param object [Symbol, :"organization.invite"] The object type, which is always `organization.invite`
-
+          #   @param object [Symbol, :"organization.invite"]
+          #     The object type, which is always `organization.invite`
           class Project < OpenAI::Internal::Type::BaseModel
             # @!attribute id
             #   Project's public ID
@@ -95,9 +103,11 @@ module OpenAI
             required :role, enum: -> { OpenAI::Admin::Organization::Invite::Project::Role }
 
             # @!method initialize(id:, role:)
-            #   @param id [String] Project's public ID
+            #   @param id [String]
+            #     Project's public ID
             #
-            #   @param role [Symbol, OpenAI::Models::Admin::Organization::Invite::Project::Role] Project membership role
+            #   @param role [Symbol, OpenAI::Models::Admin::Organization::Invite::Project::Role]
+            #     Project membership role
 
             # Project membership role
             #

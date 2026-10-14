@@ -1,0 +1,135 @@
+# typed: strong
+
+module OpenAI
+  module Models
+
+    module Beta
+
+      class AgentSessionTurnReasoningSummaryPartDoneEvent < OpenAI::Internal::Type::BaseModel
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::AgentSessionTurnReasoningSummaryPartDoneEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
+
+        # The unique ID of the event.
+        sig { returns(String) }
+        attr_accessor :event_id
+
+        # The ID of the reasoning item.
+        sig { returns(String) }
+        attr_accessor :item_id
+
+        # The index of the item in the turn output.
+        sig { returns(Integer) }
+        attr_accessor :output_index
+
+        # The completed summary part.
+        sig { returns(OpenAI::Beta::SummaryText) }
+        attr_reader :part
+
+        sig { params(part: OpenAI::Beta::SummaryText::OrHash).void }
+        attr_writer :part
+
+        # The ID of the session associated with the event.
+        sig { returns(String) }
+        attr_accessor :session_id
+
+        # Present as `incomplete` when summary generation was interrupted.
+        sig { returns(T.nilable(Symbol)) }
+        attr_accessor :status
+
+        # The index of the summary part.
+        sig { returns(Integer) }
+        attr_accessor :summary_index
+
+        # The ID of the turn associated with the event, when applicable.
+        sig { returns(T.nilable(String)) }
+        attr_accessor :turn_id
+
+        # The type of the object. Always `agent.session.turn.reasoning_summary_part.done`.
+        sig { returns(Symbol) }
+        attr_accessor :type
+
+        # Emitted when a reasoning summary part is complete.
+        sig do
+          params(
+
+            event_id: String,
+
+            item_id: String,
+
+            output_index: Integer,
+
+            part: OpenAI::Beta::SummaryText::OrHash,
+
+            session_id: String,
+
+            summary_index: Integer,
+
+            turn_id: T.nilable(String),
+
+            status: T.nilable(Symbol),
+
+            type: Symbol
+          )
+            .returns(T.attached_class)
+        end
+        def self.new(
+
+          # The unique ID of the event.
+          event_id:,
+
+          # The ID of the reasoning item.
+          item_id:,
+
+          # The index of the item in the turn output.
+          output_index:,
+
+          # The completed summary part.
+          part:,
+
+          # The ID of the session associated with the event.
+          session_id:,
+
+          # The index of the summary part.
+          summary_index:,
+
+          # The ID of the turn associated with the event, when applicable.
+          turn_id:,
+
+          # Present as `incomplete` when summary generation was interrupted.
+          status: :incomplete,
+
+          # The type of the object. Always `agent.session.turn.reasoning_summary_part.done`.
+
+          type: :"agent.session.turn.reasoning_summary_part.done"
+        )
+        end
+
+        sig do
+          override.returns(
+            {
+              event_id: String,
+              item_id: String,
+              output_index: Integer,
+              part: OpenAI::Beta::SummaryText,
+              session_id: String,
+              status: T.nilable(Symbol),
+              summary_index: Integer,
+              turn_id: T.nilable(String),
+              type: Symbol
+            }
+          )
+        end
+        def to_hash
+        end
+
+      end
+
+    end
+
+  end
+end

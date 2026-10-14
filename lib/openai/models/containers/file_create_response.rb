@@ -48,19 +48,26 @@ module OpenAI
         required :source, String
 
         # @!method initialize(id:, bytes:, container_id:, created_at:, path:, source:, object: :"container.file")
-        #   @param id [String] Unique identifier for the file.
+        #   @param id [String]
+        #     Unique identifier for the file.
         #
-        #   @param bytes [Integer] Size of the file in bytes.
+        #   @param bytes [Integer]
+        #     Size of the file in bytes.
         #
-        #   @param container_id [String] The container this file belongs to.
+        #   @param container_id [String]
+        #     The container this file belongs to.
         #
-        #   @param created_at [Integer] Unix timestamp (in seconds) when the file was created.
+        #   @param created_at [Integer]
+        #     Unix timestamp (in seconds) when the file was created.
         #
-        #   @param path [String] Path of the file in the container.
+        #   @param path [String]
+        #     Path of the file in the container.
         #
-        #   @param source [String] Source of the file (e.g., `user`, `assistant`).
+        #   @param source [String]
+        #     Source of the file (e.g., `user`, `assistant`).
         #
-        #   @param object [Symbol, :"container.file"] The type of this object (`container.file`).
+        #   @param object [Symbol, :"container.file"]
+        #     The type of this object (`container.file`).
       end
     end
   end

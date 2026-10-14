@@ -1,0 +1,747 @@
+# frozen_string_literal: true
+
+require_relative "../test_helper"
+
+class OpenAI::Test::AgentSessionStreamTest < Minitest::Test
+  class Body
+    attr_reader :closed, :reads
+
+    def initialize(events)
+      @events = events
+      @reads = 0
+    end
+
+    def each
+      @events.each_with_index do |event, index|
+        @reads += 1
+        yield "data: #{JSON.generate({event_id: index.to_s}.merge(event))}\n\n"
+      end
+    end
+
+    def close = @closed = true
+  end
+
+  class Server < OpenAI::HTTPClient
+    attr_accessor :status, :input_error, :tool_errors, :lost_responses
+    attr_reader :body, :requests
+
+    def initialize(events)
+      super()
+      @body = Body.new(events)
+      @requests = []
+      @status = "idle"
+      @tool_errors = []
+      @lost_responses = []
+    end
+
+    def execute(request)
+      @requests << request
+      if request.method == :post && request.url.path.end_with?("/agents/sessions")
+        return response(200, JSON.generate(id: "session_test", status: @status))
+      end
+
+      if request.method == :get
+        if request.url.path.end_with?("/events")
+          return response(200, @body, "text/event-stream")
+        end
+
+        return response(200, JSON.generate(id: "session_test", status: @status))
+      end
+
+      input = JSON.parse(request.body).fetch("events").first
+      kind = input.fetch("type")
+      if @lost_responses.delete(kind)
+        raise OpenAI::Errors::APIConnectionError.new(url: request.url)
+      end
+
+      error = kind == "agent.session.input.message" ? @input_error : @tool_errors.shift
+      if error
+        return response(
+          400,
+          JSON.generate(error: {type: "invalid_request_error", code: "invalid_request_error", message: error})
+        )
+      end
+
+      response(204, "")
+    end
+
+    def response(status, body, content_type = "application/json")
+      OpenAI::HTTPClient::Response.new(status: status, headers: {"content-type" => content_type}, body: body)
+    end
+
+    def submissions
+      @requests.select { |r| r.method == :post }.map { |r| JSON.parse(r.body).fetch("events").first }
+    end
+  end
+
+  def setup
+    super
+    configure
+  end
+
+  def configure(events = [turn("created"), turn("completed"), idle])
+    @server = Server.new(events)
+    @client = OpenAI::Client.new(
+      api_key: "fake-key",
+      base_url: "https://sdk-test.example/v1",
+      http_client: @server,
+      max_retries: 1
+    )
+    @sessions = @client.beta.agents.sessions
+  end
+
+  def test_lifecycle_selects_coordinator_and_waits_for_idle
+    configure(
+      [
+        idle,
+        turn("created", "child", "subagent"),
+        turn("created"),
+        turn("completed", "child"),
+        idle,
+        turn("completed", "other"),
+        idle,
+        turn("completed"),
+        idle,
+        turn("created", "later")
+      ]
+    )
+    events = @sessions.stream("session_test", input: "Hello").to_a
+    assert_equal(9, events.size)
+    assert_instance_of(OpenAI::Models::Beta::AgentSessionTurnCreatedEvent, events[2])
+    assert_equal(9, @server.body.reads)
+    assert(@server.body.closed)
+    assert_equal([:get, :get, :post], @server.requests.map(&:method))
+    assert_equal("/v1/agents/sessions/session_test/events", @server.requests[1].url.path)
+    assert_equal(
+      [{"role" => "user", "content" => [{"type" => "input_text", "text" => "Hello"}]}],
+      @server.submissions.first["input"]
+    )
+  end
+
+  def test_resource_extension_preserves_public_signature_and_subclass_super
+    resource = OpenAI::Resources::Beta::Agents::Sessions
+    method = @sessions.public_method(:stream)
+    assert_equal(resource, method.owner)
+    assert_equal(
+      [
+        [:req, :session_id],
+        [:keyreq, :input],
+        [:key, :tool_handlers],
+        [:key, :on_tool_error],
+        [:key, :idempotency_key],
+        [:key, :output_type],
+        [:key, :request_options]
+      ],
+      method.parameters
+    )
+
+    subclass = Class.new(resource) do
+      attr_reader(:stream_called)
+
+      def stream(...)
+        @stream_called = true
+        super
+      end
+    end
+
+    sessions = subclass.new(client: @client)
+    assert_equal(resource, sessions.public_method(:stream).super_method.owner)
+    yielded = nil
+    result = sessions.stream("session_test", input: "Hello") { |stream| yielded = stream }
+    assert(sessions.stream_called)
+    assert_instance_of(OpenAI::Helpers::Agents::SessionStream, result)
+    assert_same(yielded, result)
+    assert(@server.body.closed)
+    assert_equal(1, @server.submissions.size)
+  end
+
+  def test_failed_and_cancelled_turns_remain_visible
+    %w[failed cancelled].each do |kind|
+      configure([turn("created"), turn(kind), idle])
+      assert_equal("agent.session.turn.#{kind}", @sessions.stream("session_test", input: "Hi").to_a[1].type.to_s)
+      assert(@server.body.closed)
+    end
+
+    configure([{type: "agent.session.failed", session: {id: "session_test", status: "failed"}}])
+    assert_equal(1, @sessions.stream("session_test", input: "Hi").to_a.size)
+    assert(@server.body.closed)
+  end
+
+  def test_cleanup_on_break_exception_explicit_close_and_block_exit
+    @sessions.stream("session_test", input: "Hi").each { |event| break if event }
+    assert(@server.body.closed)
+    configure
+    assert_raises(RuntimeError) {
+      @sessions.stream("session_test", input: "Hi").each { |event| raise "consumer" if event }
+    }
+    assert(@server.body.closed)
+    configure
+    @sessions.stream("session_test", input: "Hi").close
+    assert(@server.body.closed)
+    configure
+    @sessions.stream("session_test", input: "Hi") { |_stream| nil }
+    assert(@server.body.closed)
+    assert_equal(1, @server.submissions.size)
+  end
+
+  def test_until_done_consumes_remaining_events_after_external_iteration
+    configure([turn("created"), call("{}"), turn("completed"), idle])
+    handled = 0
+    stream = @sessions.stream(
+      "session_test",
+      input: "Hi",
+      tool_handlers: {
+        "search" => -> (_args) {
+          handled += 1
+          "ok"
+        }
+      }
+    )
+    events = stream.each
+    assert_instance_of(OpenAI::Models::Beta::AgentSessionTurnCreatedEvent, events.next)
+    stream.until_done
+    assert_equal(1, handled)
+    assert(@server.body.closed)
+    assert_raises(StopIteration) { events.next }
+  end
+
+  def test_rejects_active_empty_and_failed_input_and_unexpected_eof
+    @server.status = "in_progress"
+    assert_raises(ArgumentError) { @sessions.stream("session_test", input: "Hi") }
+    assert_equal(1, @server.requests.size)
+    ["", []].each { |input| assert_raises(ArgumentError) { @sessions.stream("session_test", input: input) } }
+    configure
+    @server.input_error = "rejected"
+    assert_raises(OpenAI::Errors::BadRequestError) { @sessions.stream("session_test", input: "Hi") }
+    assert(@server.body.closed)
+    configure([turn("created"), turn("completed")])
+    assert_raises(RuntimeError) { @sessions.stream("session_test", input: "Hi").until_done }
+    assert(@server.body.closed)
+  end
+
+  def test_handlers_are_sequential_deduplicate_calls_and_preserve_events
+    first = call({nested: {values: ["original"]}}).merge(event_id: "duplicate")
+    configure(
+      [
+        turn("created"),
+        first,
+        first,
+        call({nested: {values: ["original"]}}),
+        call("{}", "call_two"),
+        call("{}", "manual", "unknown"),
+        turn("completed"),
+        idle
+      ]
+    )
+    seen = []
+    events = []
+    @sessions
+      .stream(
+        "session_test",
+        input: "Hi",
+        tool_handlers: {
+          "search" => lambda { |args|
+            seen << events.last.item.call_id
+            args["nested"]&.fetch("values")&.push("changed")
+            {ok: true}
+          }
+        }
+      )
+      .each { |event| events << event }
+    assert_equal(%w[call_test call_two], seen)
+    assert_equal(["original"], events[1].item.arguments[:nested][:values])
+    assert_equal(7, events.size)
+    assert_equal(["{\"ok\":true}", "{\"ok\":true}"], @server.submissions.drop(1).map { |e| e["output"] })
+  end
+
+  def test_consumer_mutation_does_not_change_selected_handler_arguments_or_result_routing
+    configure([turn("created"), call({nested: {values: ["original"]}}), call("{}"), turn("completed"), idle])
+    seen = []
+    @sessions
+      .stream(
+        "session_test",
+        input: "Hi",
+        tool_handlers: {
+          "search" => -> (args) {
+            seen << args
+            "ok"
+          }
+        }
+      )
+      .each do |event|
+        event.turn_id.replace("mutated_coordinator") if event.type == :"agent.session.turn.created"
+        next unless event.type == :"agent.session.turn.item.added"
+
+        event.item.name.replace("unregistered")
+        event.item.call_id.replace("different_call")
+        event.item.turn_id.replace("different_turn")
+        event.item.arguments[:nested][:values] << "changed" if event.item.arguments.is_a?(Hash)
+        event.item.arguments = {changed: true}
+      end
+
+    assert_equal([{"nested" => {"values" => ["original"]}}], seen)
+    assert_equal("call_test", @server.submissions.last["call_id"])
+    assert_equal("turn_root", @server.submissions.last["turn_id"])
+    assert_equal(2, @server.submissions.size)
+  end
+
+  def test_full_call_dedup_outlives_bounded_event_cache_and_uses_turn_id
+    first = call("{}").merge(event_id: "old")
+    configure(
+      [turn("created"), first] +
+        Array.new(1025) { idle } +
+        [first, call("{}").merge(item: call("{}")[:item].merge(turn_id: "child")), turn("completed"), idle]
+    )
+    count = 0
+    stream = @sessions.stream(
+      "session_test",
+      input: "Hi",
+      tool_handlers: {
+        "search" => -> (_args) {
+          count += 1
+          nil
+        }
+      }
+    )
+    stream.until_done
+    assert_equal(2, count)
+    assert_operator(stream.instance_variable_get(:@recent_events).size, :<=, 1024)
+  end
+
+  def test_invalid_arguments_and_handler_errors_submit_generic_failures
+    ["{", "[]", "null", [], 1, nil, "{}"].each do |args|
+      configure([turn("created"), call(args), turn("completed"), idle])
+      @sessions
+        .stream("session_test", input: "Hi", tool_handlers: {"search" => -> (_input) { raise "fake-secret" }})
+        .until_done
+      result = @server.submissions.last
+      assert_equal(false, result["success"])
+      assert_equal("Tool handler failed.", result["error"])
+      refute_includes(JSON.generate(@server.submissions), "fake-secret")
+    end
+  end
+
+  def test_malformed_content_outputs_submit_generic_failures
+    [[1], [{type: :input_text}], [{type: :input_text, text: 1}], [{type: :input_image, image_url: nil}]].each do |
+        output
+      |
+      configure([turn("created"), call("{}"), turn("completed"), idle])
+      @sessions.stream("session_test", input: "Hi", tool_handlers: {"search" => -> (_args) { output }}).until_done
+      assert_equal(false, @server.submissions.last["success"])
+      assert_equal("Tool handler failed.", @server.submissions.last["error"])
+    end
+  end
+
+  def test_protocol_errors_preserve_raw_stream_exceptions_and_cleanup
+    events = [
+      turn("created"),
+      {
+        type: "error",
+        session_id: "session_test",
+        error: {type: "server_error", code: "server_error", message: "fake failure"}
+      },
+      turn("failed"),
+      idle
+    ]
+    configure(events)
+    helper_error = assert_raises(OpenAI::Errors::APIStatusError) do
+      @sessions.stream("session_test", input: "Hi").until_done
+    end
+
+    assert(@server.body.closed)
+    assert_equal(2, @server.body.reads)
+    configure(events)
+    assert_raises(helper_error.class) { @sessions.events.stream_streaming("session_test").to_a }
+    assert(@server.body.closed)
+  end
+
+  def test_string_null_and_content_outputs
+    [
+      "answer",
+      nil,
+      [{type: "input_text", text: "answer"}],
+      [OpenAI::Beta::InputContentParam::InputImage.new(image_url: "https://example.com/image.png")]
+    ].each do |output|
+      configure([turn("created"), call("{}"), turn("completed"), idle])
+      @sessions
+        .stream(
+          "session_test",
+          input: [{role: :user, content: [{type: :input_text, text: "Hi"}]}],
+          tool_handlers: {"search" => -> (_args) { output }}
+        )
+        .until_done
+      if output.nil?
+        assert_nil(@server.submissions.last["output"])
+      else
+        assert_equal(JSON.parse(JSON.generate(output)), @server.submissions.last["output"])
+      end
+
+      assert_equal(true, @server.submissions.last["success"])
+    end
+  end
+
+  def test_explicit_input_key_precedes_request_options_and_tool_keys_are_distinct
+    configure([turn("created"), call("{}"), call("{}", "other_call"), turn("completed"), idle])
+    @sessions
+      .stream(
+        "session_test",
+        input: "Hi",
+        idempotency_key: "method-key",
+        request_options: {idempotency_key: "options-key"},
+        tool_handlers: {"search" => -> (_args) { "ok" }}
+      )
+      .until_done
+    keys = @server.requests.select { |request| request.method == :post }.map { |request|
+      request.headers["idempotency-key"]
+    }
+    assert_equal("method-key", keys.first)
+    assert_equal(3, keys.uniq.size)
+    refute_includes(keys, "options-key")
+    configure
+    @sessions.stream("session_test", input: "Hi", request_options: {idempotency_key: "options-key"}).until_done
+    assert_equal("options-key", @server.requests.last.headers["idempotency-key"])
+  end
+
+  def test_retry_keys_options_and_narrow_pending_call_race
+    configure([turn("created"), call("{}"), turn("completed"), idle])
+    @server.lost_responses = %w[agent.session.input.message agent.session.input.tool_result]
+    @server.tool_errors = ["Unknown pending tool call: call_test"]
+    options = OpenAI::RequestOptions.new(
+      timeout: 4.0,
+      extra_headers: {"IDEMPOTENCY-KEY" => "input-key", "X-Test" => "yes"}
+    )
+    @sessions
+      .stream(
+        "session_test",
+        input: "Hi",
+        idempotency_key: "ignored",
+        request_options: options,
+        tool_handlers: {"search" => -> (_args) { "ok" }}
+      )
+      .until_done
+    posts = @server.requests.select { |r| r.method == :post }
+    assert_equal(["input-key"], posts.take(2).map { |r| r.headers["idempotency-key"] }.uniq)
+    keys = posts.drop(2).map { |r| r.headers["idempotency-key"] }.uniq
+    assert_equal(1, keys.size)
+    refute_equal("input-key", keys.first)
+    assert_equal(5, posts.size)
+    @server.requests.each do |request|
+      assert_equal(4.0, request.timeout)
+      assert_equal("yes", request.headers["x-test"])
+      assert_equal("agents=v1", request.headers["openai-beta"])
+    end
+
+    assert_equal("input-key", options.extra_headers["IDEMPOTENCY-KEY"])
+    configure([turn("created"), call("{}")])
+    @server.tool_errors = ["Unknown pending tool call: different_call"]
+    assert_raises(OpenAI::Errors::BadRequestError) do
+      @sessions.stream("session_test", input: "Hi", tool_handlers: {"search" => -> (_args) { "ok" }}).until_done
+    end
+
+    assert_equal(2, @server.submissions.size)
+    assert(@server.body.closed)
+  end
+
+  def test_output_text_is_pure_and_independent_of_phase
+    [nil, :commentary, :final_answer].each do |phase|
+      message = OpenAI::Models::Beta::AgentSessionMessage.new(
+        id: "message_test",
+        role: :assistant,
+        phase: phase,
+        status: :completed,
+        turn_id: "turn_root",
+        content: [
+          {type: :output_text, text: "Hello"},
+          {type: :input_text, text: "ignored"},
+          {type: :input_image, image_url: "https://example.com/image.png"},
+          {type: :output_text, text: " world"}
+        ]
+      )
+      original = message.to_json
+      assert_equal("Hello world", message.output_text)
+      assert_equal(original, message.to_json)
+      message.content = []
+      assert_equal("", message.output_text)
+    end
+  end
+
+  def test_deferred_typed_tools_preserve_creation_options_and_handler_execution
+    model = Class.new(OpenAI::BaseModel) { required(:query, String) }
+    [{}, {defer_loading: false}, {defer_loading: true}].each do |options|
+      received = []
+      tool = OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "search", arguments: model, **options) do |args|
+        received << args
+        "Found #{args.query}"
+      end
+
+      configure([turn("created"), call("{\"query\":\"item\"}"), turn("completed"), idle])
+      session = @sessions.create(
+        agent: {model: "test-model", tools: [{type: :tool_search}, tool.definition]},
+        environment: {type: :openai_hosted}
+      )
+      definition = JSON.parse(@server.requests.last.body).fetch("agent").fetch("tools").last
+      assert_equal(options.key?(:defer_loading), definition.key?("defer_loading"))
+      assert_equal(options[:defer_loading], definition["defer_loading"]) unless options.empty?
+      assert_equal(JSON.parse(JSON.generate(model.to_json_schema)), definition["parameters"])
+      @sessions.stream(session.id, input: "Find item", tool_handlers: tool.handlers).until_done
+      assert_equal(1, received.size)
+      assert_instance_of(model, received.first)
+      result = JSON.parse(@server.requests.last.body).fetch("events").first
+      assert_equal(true, result["success"])
+      assert_equal("Found item", result["output"])
+    end
+  end
+
+  def test_typed_tool_binding_uses_existing_dispatch_and_submission_retry
+    model = Class.new(OpenAI::BaseModel) { required(:query, String) }
+    calls = []
+    tool = OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "search", arguments: model) do |args|
+      raise ArgumentError, "query must be a string" unless args.query.is_a?(String)
+      calls << args.query
+      {receipt: "fake-receipt"}
+    end
+
+    configure([turn("created"), call("{\"query\":\"hello\"}"), call("{\"query\":\"hello\"}"), turn("completed"), idle])
+    @server.tool_errors = ["Unknown pending tool call: call_test"]
+    @sessions.stream("session_test", input: "Hi", tool_handlers: tool.handlers).until_done
+    assert_equal(["hello"], calls)
+    assert_equal("{\"receipt\":\"fake-receipt\"}", @server.submissions.last["output"])
+    assert_equal(true, @server.submissions.last["success"])
+
+    configure([turn("created"), call("{\"query\":[]}"), turn("completed"), idle])
+    @sessions.stream("session_test", input: "Hi", tool_handlers: tool.handlers).until_done
+    assert_equal(["hello"], calls)
+    assert_equal(false, @server.submissions.last["success"])
+    assert_equal("Tool handler failed.", @server.submissions.last["error"])
+  end
+
+  def test_typed_tools_keep_public_call_overrides_with_and_without_an_observer
+    model = Class.new(OpenAI::BaseModel) { required(:query, String) }
+    [:subclass, :singleton].product([false, true]).each do |override_kind, observe|
+      audited = []
+      stage_reporting = []
+      override = proc do |arguments, &report_stage|
+        audited << arguments.fetch("query")
+        stage_reporting << !report_stage.nil?
+        super(arguments, &report_stage).upcase
+      end
+
+      tool_class = Class.new(OpenAI::Helpers::Beta::Agents::FunctionTool)
+      tool_class.define_method(:call, &override) if override_kind == :subclass
+      tool = tool_class.new(name: "search", arguments: model) { |args| args.query }
+      tool.define_singleton_method(:call, &override) if override_kind == :singleton
+      observer = observe ? -> (_) { flunk("successful tool reported an error") } : nil
+      configure([turn("created"), call("{\"query\":\"hello\"}"), turn("completed"), idle])
+      @sessions
+        .stream(
+          "session_test",
+          input: "Hi",
+          tool_handlers: tool.handlers,
+          on_tool_error: observer
+        )
+        .until_done
+      assert_equal(["hello"], audited)
+      assert_equal([observe], stage_reporting)
+      assert_equal("HELLO", @server.submissions.last["output"])
+      assert_equal(true, @server.submissions.last["success"])
+    end
+  end
+
+  def test_raw_handlers_do_not_receive_the_internal_stage_reporter
+    configure([turn("created"), call("{}"), turn("completed"), idle])
+    @sessions
+      .stream(
+        "session_test",
+        input: "Hi",
+        tool_handlers: {
+          "search" => -> (_arguments, &block) {
+            assert_nil(block)
+            "ok"
+          }
+        },
+        on_tool_error: -> (_) { flunk("successful tool reported an error") }
+      )
+      .until_done
+    assert_equal(true, @server.submissions.last["success"])
+  end
+
+  def test_tool_error_observer_reports_stages_and_keeps_wire_errors_sanitized
+    execution_error = RuntimeError.new("fake-private-error")
+    output_error = JSON::GeneratorError.new("fake-private-output")
+    unserializable = Object.new
+    unserializable.define_singleton_method(:to_json) { |*_args| raise output_error }
+    [
+      ["{", -> (_) { flunk("invalid JSON reached handler") }, :arguments, JSON::ParserError],
+      ["[]", -> (_) { flunk("non-object reached handler") }, :arguments, ArgumentError],
+      ["{}", -> (_) { raise execution_error }, :execution, execution_error],
+      ["{}", -> (_) { {value: unserializable} }, :output, output_error]
+    ].each do |arguments, handler, stage, expected_error|
+      configure([turn("created"), call(arguments), turn("completed"), idle])
+      failures = []
+      @sessions
+        .stream(
+          "session_test",
+          input: "Hi",
+          tool_handlers: {"search" => handler},
+          on_tool_error: -> (failure) { failures << failure }
+        )
+        .until_done
+      assert_equal(1, failures.size)
+      failure = failures.first
+      assert_instance_of(OpenAI::Helpers::Beta::Agents::ToolError, failure)
+      assert_equal(stage, failure.stage)
+      if expected_error.is_a?(Class)
+        assert_instance_of(expected_error, failure.error)
+      else
+        assert_same(expected_error, failure.error)
+      end
+
+      assert_equal(
+        ["search", "session_test", "turn_root", "call_test"],
+        [failure.tool_name, failure.session_id, failure.turn_id, failure.call_id]
+      )
+      assert(failure.frozen?)
+      assert_equal(
+        {
+          "type" => "agent.session.input.tool_result",
+          "turn_id" => "turn_root",
+          "call_id" => "call_test",
+          "success" => false,
+          "error" => "Tool handler failed."
+        },
+        @server.submissions.last
+      )
+    end
+  end
+
+  def test_typed_argument_failures_preserve_the_original_exception
+    model = Class.new(OpenAI::BaseModel) { required(:query, String) }
+    tool_class = Class.new(OpenAI::Helpers::Beta::Agents::FunctionTool) do
+      attr_reader(:last_error)
+
+      def call(arguments)
+        super
+      rescue StandardError => error
+        @last_error = error
+        raise
+      end
+    end
+
+    tool = tool_class.new(name: "search", arguments: model) { raise "fake execution failure" }
+    [[:arguments, "{}"], [:execution, "{\"query\":\"hello\"}"]].each do |stage, arguments|
+      configure([turn("created"), call(arguments), turn("completed"), idle])
+      failures = []
+      @sessions
+        .stream(
+          "session_test",
+          input: "Hi",
+          tool_handlers: tool.handlers,
+          on_tool_error: -> (failure) { failures << failure }
+        )
+        .until_done
+      assert_equal(1, failures.size)
+      assert_equal(stage, failures.first.stage)
+      assert_same(tool.last_error, failures.first.error)
+      if stage == :arguments
+        assert_instance_of(ArgumentError, failures.first.error)
+        assert_equal("Tool arguments cannot be parsed into the argument model", failures.first.error.message)
+      end
+
+      assert_equal("Tool handler failed.", @server.submissions.last["error"])
+    end
+
+    assert_raises(ArgumentError) { tool.call({}) }
+  end
+
+  def test_observer_exception_does_not_block_failure_submission_or_repeat_on_retry
+    configure([turn("created"), call("{}"), call("{}"), turn("completed"), idle])
+    @server.lost_responses = ["agent.session.input.tool_result"]
+    failures = []
+    @sessions
+      .stream(
+        "session_test",
+        input: "Hi",
+        tool_handlers: {"search" => -> (_) { raise "fake failure" }},
+        on_tool_error: -> (failure) {
+          failures << failure
+          raise "fake observer failure"
+        }
+      )
+      .until_done
+    assert_equal(1, failures.size)
+    assert_equal(2, @server.submissions.count { |event| event["success"] == false })
+    assert_equal("Tool handler failed.", @server.submissions.last["error"])
+  end
+
+  def test_success_and_submission_failures_do_not_notify_the_observer
+    [nil, "submission rejected"].each do |submission_error|
+      configure([turn("created"), call("{}"), turn("completed"), idle])
+      @server.tool_errors = [submission_error]
+      stream = @sessions.stream(
+        "session_test",
+        input: "Hi",
+        tool_handlers: {"search" => -> (_) { "ok" }},
+        on_tool_error: -> (_) { flunk("reported a tool error") }
+      )
+      if submission_error
+        assert_raises(OpenAI::Errors::BadRequestError) { stream.until_done }
+      else
+        stream.until_done
+        assert_equal(true, @server.submissions.last["success"])
+      end
+    end
+  end
+
+  def test_interrupt_from_handler_or_observer_propagates_and_closes_stream
+    [false, true].each do |interrupt_observer|
+      configure([turn("created"), call("{}"), turn("completed"), idle])
+      stream = @sessions.stream(
+        "session_test",
+        input: "Hi",
+        tool_handlers: {"search" => -> (_) { interrupt_observer ? raise("fake failure") : raise(Interrupt) }},
+        on_tool_error: -> (_) { raise Interrupt }
+      )
+      assert_raises(Interrupt) { stream.until_done }
+      assert(@server.body.closed)
+      assert_equal(1, @server.submissions.size)
+    end
+  end
+
+  private
+
+  def turn(kind, id = "turn_root", subagent_id = nil)
+    {
+      type: "agent.session.turn.#{kind}",
+      session_id: "session_test",
+      turn_id: id,
+      turn: {
+        id: id,
+        object: "agent.session.turn",
+        agent_id: "agent_test",
+        session_id: "session_test",
+        created_at: 1,
+        status: kind == "created" ? "in_progress" : kind,
+        subagent_id: subagent_id
+      }
+    }
+  end
+
+  def idle = {type: "agent.session.idle", session: {id: "session_test", status: "idle"}}
+
+  def call(arguments, call_id = "call_test", name = "search")
+    {
+      type: "agent.session.turn.item.added",
+      session_id: "session_test",
+      turn_id: "turn_root",
+      item: {
+        id: "item_test",
+        type: "function_call",
+        name: name,
+        call_id: call_id,
+        arguments: arguments,
+        status: "in_progress",
+        turn_id: "turn_root"
+      }
+    }
+  end
+end

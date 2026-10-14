@@ -1,0 +1,25 @@
+module OpenAI
+  module Resources
+    class Beta
+      class Agents
+        class Sessions
+          class Events
+            def create: (
+              String session_id,
+              events: ::Array[OpenAI::Models::Beta::agent_session_input_param],
+              ?idempotency_key: String,
+              ?request_options: OpenAI::request_opts
+            ) -> nil
+
+            def stream_streaming: (
+              String session_id,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Internal::Stream[OpenAI::Models::Beta::agent_session_event]
+
+            def initialize: (client: OpenAI::Client) -> void
+          end
+        end
+      end
+    end
+  end
+end

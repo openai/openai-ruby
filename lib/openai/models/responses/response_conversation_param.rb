@@ -13,7 +13,8 @@ module OpenAI
         # @!method initialize(id:)
         #   The conversation that this response belongs to.
         #
-        #   @param id [String] The unique ID of the conversation.
+        #   @param id [String]
+        #     The unique ID of the conversation.
       end
     end
   end

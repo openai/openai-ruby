@@ -8,6 +8,7 @@ module OpenAI
 
         def initialize(raw_stream:, response_format: nil, input_tools: nil)
           @raw_stream = raw_stream
+          @last_response = raw_stream.last_response
           @state = ChatCompletionStreamState.new(
             response_format: response_format,
             input_tools: input_tools
@@ -33,7 +34,7 @@ module OpenAI
         end
 
         def until_done
-          each {} # rubocop:disable Lint/EmptyBlock
+          each { |_event| next }
           self
         end
 
@@ -77,7 +78,10 @@ module OpenAI
 
         def initialize(response_format: nil, input_tools: nil)
           @current_completion_snapshot = nil
-          @choice_event_states = []
+          @choice_snapshots_by_index = {}
+          @tool_call_snapshots_by_choice_index = {}
+          @choice_snapshots_sorted = true
+          @choice_event_states = {}
           @input_tools = Array(input_tools)
           @response_format = response_format
           @rich_response_format = response_format.is_a?(Class) ? response_format : nil
@@ -104,6 +108,7 @@ module OpenAI
 
           return [] unless chunk.is_a?(OpenAI::Chat::ChatCompletionChunk)
 
+          validate_chunk_indices!(chunk)
           @current_completion_snapshot = accumulate_chunk(chunk)
           build_events(chunk: chunk, completion_snapshot: @current_completion_snapshot)
         end
@@ -117,7 +122,27 @@ module OpenAI
 
         def accumulate_chunk(chunk)
           if @current_completion_snapshot.nil?
-            return convert_initial_chunk_into_snapshot(chunk)
+            completion_snapshot = convert_initial_chunk_into_snapshot(chunk)
+            @choice_snapshots_sorted = completion_snapshot.choices.each_cons(2).all? do |previous, current|
+              previous.index <= current.index
+            end
+
+            completion_snapshot.choices.each do |choice_snapshot|
+              next if @choice_snapshots_by_index.key?(choice_snapshot.index)
+
+              index_choice_snapshot!(choice_snapshot)
+            end
+
+            @current_completion_snapshot = completion_snapshot
+
+            chunk.choices.each do |choice|
+              handle_finish_reason(choice.finish_reason, completion_snapshot) if choice.finish_reason
+
+              tool_calls_by_index = @tool_call_snapshots_by_choice_index.fetch(choice.index)
+              parse_tool_calls!(choice.delta.tool_calls, tool_calls_by_index)
+            end
+
+            return completion_snapshot
           end
 
           completion_snapshot = @current_completion_snapshot
@@ -128,34 +153,42 @@ module OpenAI
 
           completion_snapshot.usage = chunk.usage if chunk.usage
           completion_snapshot.system_fingerprint = chunk.system_fingerprint if chunk.system_fingerprint
+          completion_snapshot.service_tier = chunk.service_tier if chunk.service_tier
+          if chunk.moderation
+            completion_snapshot.moderation = OpenAI::Internal::Type::Converter.coerce(
+              OpenAI::Chat::ChatCompletion::Moderation,
+              model_dump(chunk.moderation)
+            )
+          end
 
           completion_snapshot
         end
 
         def accumulate_choice!(choice, completion_snapshot)
-          choice_snapshot = completion_snapshot.choices[choice.index]
+          choice_snapshot = @choice_snapshots_by_index[choice.index]
 
           if choice_snapshot.nil?
             choice_snapshot = create_new_choice_snapshot(choice)
-            completion_snapshot.choices[choice.index] = choice_snapshot
+            insert_choice_snapshot!(completion_snapshot.choices, choice_snapshot)
           else
             update_existing_choice_snapshot(choice, choice_snapshot)
+            accumulate_logprobs!(choice.logprobs, choice_snapshot)
           end
+
+          tool_calls_by_index = index_choice_snapshot!(choice_snapshot)
 
           if choice.finish_reason
             choice_snapshot.finish_reason = choice.finish_reason
-            handle_finish_reason(choice.finish_reason)
+            handle_finish_reason(choice.finish_reason, completion_snapshot)
           end
 
-          parse_tool_calls!(choice.delta.tool_calls, choice_snapshot.message.tool_calls)
-
-          accumulate_logprobs!(choice.logprobs, choice_snapshot)
+          parse_tool_calls!(choice.delta.tool_calls, tool_calls_by_index)
         end
 
         def create_new_choice_snapshot(choice)
           OpenAI::Internal::Type::Converter.coerce(
             OpenAI::Models::Chat::ParsedChoice,
-            choice.to_h.except(:delta).merge(message: choice.delta.to_h)
+            choice.to_h.except(:delta).merge(message: model_dump(choice.delta))
           )
         end
 
@@ -179,23 +212,25 @@ module OpenAI
           )
 
           choice_events = chunk.choices.flat_map do |choice|
-            build_choice_events(choice, completion_snapshot)
+            build_choice_events(choice)
           end
 
           [chunk_event] + choice_events
         end
 
-        def build_choice_events(choice, completion_snapshot)
+        def build_choice_events(choice)
           choice_state = get_choice_state(choice)
-          choice_snapshot = completion_snapshot.choices[choice.index]
+          choice_snapshot = @choice_snapshots_by_index.fetch(choice.index)
+          tool_calls_by_index = @tool_call_snapshots_by_choice_index.fetch(choice.index)
 
           content_delta_events(choice, choice_snapshot) +
-            tool_call_delta_events(choice, choice_snapshot) +
+            tool_call_delta_events(choice, tool_calls_by_index) +
             logprobs_delta_events(choice, choice_snapshot) +
             choice_state.get_done_events(
               choice_chunk: choice,
               choice_snapshot: choice_snapshot,
-              response_format: @response_format
+              response_format: @response_format,
+              tool_calls_by_index: tool_calls_by_index
             )
         end
 
@@ -203,47 +238,51 @@ module OpenAI
           events = []
 
           if choice.delta.content && choice_snapshot.message.content
-            events << ChatContentDeltaEvent.new(
-              type: :"content.delta",
-              delta: choice.delta.content,
-              snapshot: choice_snapshot.message.content,
-              parsed: choice_snapshot.message.parsed
-            )
+            events <<
+              ChatContentDeltaEvent.new(
+                type: :"content.delta",
+                delta: choice.delta.content,
+                snapshot: choice_snapshot.message.content,
+                parsed: choice_snapshot.message.parsed
+              )
           end
 
           if choice.delta.refusal && choice_snapshot.message.refusal
-            events << ChatRefusalDeltaEvent.new(
-              type: :"refusal.delta",
-              delta: choice.delta.refusal,
-              snapshot: choice_snapshot.message.refusal
-            )
+            events <<
+              ChatRefusalDeltaEvent.new(
+                type: :"refusal.delta",
+                delta: choice.delta.refusal,
+                snapshot: choice_snapshot.message.refusal
+              )
           end
 
           events
         end
 
-        def tool_call_delta_events(choice, choice_snapshot)
+        def tool_call_delta_events(choice, tool_calls_by_index)
           events = []
           return events unless choice.delta.tool_calls
 
-          tool_calls = choice_snapshot.message.tool_calls
-          return events unless tool_calls
-
           choice.delta.tool_calls.each do |tool_call_delta|
-            tool_call = tool_calls[tool_call_delta.index]
-            next unless tool_call.type == :function && tool_call_delta.function
+            tool_call = tool_calls_by_index[tool_call_delta.index]
+            unless tool_call.is_a?(OpenAI::Chat::ChatCompletionMessageFunctionToolCall) &&
+                tool_call_delta.function
+              next
+            end
 
             parsed_args = if tool_call.function.respond_to?(:parsed)
               tool_call.function.parsed
             end
-            events << ChatFunctionToolCallArgumentsDeltaEvent.new(
-              type: :"tool_calls.function.arguments.delta",
-              name: tool_call.function.name,
-              index: tool_call_delta.index,
-              arguments: tool_call.function.arguments,
-              parsed: parsed_args,
-              arguments_delta: tool_call_delta.function.arguments || ""
-            )
+
+            events <<
+              ChatFunctionToolCallArgumentsDeltaEvent.new(
+                type: :"tool_calls.function.arguments.delta",
+                name: tool_call.function.name,
+                index: tool_call_delta.index,
+                arguments: tool_call.function.arguments,
+                parsed: parsed_args,
+                arguments_delta: tool_call_delta.function.arguments || ""
+              )
           end
 
           events
@@ -254,41 +293,43 @@ module OpenAI
           return events unless choice.logprobs && choice_snapshot.logprobs
 
           if choice.logprobs.content && choice_snapshot.logprobs.content
-            events << ChatLogprobsContentDeltaEvent.new(
-              type: :"logprobs.content.delta",
-              content: choice.logprobs.content,
-              snapshot: choice_snapshot.logprobs.content
-            )
+            events <<
+              ChatLogprobsContentDeltaEvent.new(
+                type: :"logprobs.content.delta",
+                content: choice.logprobs.content,
+                snapshot: choice_snapshot.logprobs.content
+              )
           end
 
           if choice.logprobs.refusal && choice_snapshot.logprobs.refusal
-            events << ChatLogprobsRefusalDeltaEvent.new(
-              type: :"logprobs.refusal.delta",
-              refusal: choice.logprobs.refusal,
-              snapshot: choice_snapshot.logprobs.refusal
-            )
+            events <<
+              ChatLogprobsRefusalDeltaEvent.new(
+                type: :"logprobs.refusal.delta",
+                refusal: choice.logprobs.refusal,
+                snapshot: choice_snapshot.logprobs.refusal
+              )
           end
 
           events
         end
 
-        def handle_finish_reason(finish_reason)
+        def handle_finish_reason(finish_reason, completion_snapshot)
           return unless parseable_input?
 
           case finish_reason
           when :length
-            raise LengthFinishReasonError.new(completion: @chat_completion)
+            raise LengthFinishReasonError.new(completion: completion_snapshot)
           when :content_filter
             raise ContentFilterFinishReasonError.new
           end
         end
 
-        def parse_tool_calls!(delta_tool_calls, snapshot_tool_calls)
-          return unless delta_tool_calls && snapshot_tool_calls
+        def parse_tool_calls!(delta_tool_calls, tool_calls_by_index)
+          return unless delta_tool_calls
 
           delta_tool_calls.each do |tool_call_chunk|
-            tool_call_snapshot = snapshot_tool_calls[tool_call_chunk.index]
-            next unless tool_call_snapshot&.type == :function
+            tool_call_snapshot = tool_calls_by_index[tool_call_chunk.index]
+            next unless tool_call_snapshot.is_a?(OpenAI::Chat::ChatCompletionMessageFunctionToolCall)
 
             input_tool = find_input_tool(tool_call_snapshot.function.name)
             next unless input_tool&.dig(:function, :strict)
@@ -310,8 +351,8 @@ module OpenAI
 
           if choice_snapshot.logprobs.nil?
             choice_snapshot.logprobs = OpenAI::Chat::ChatCompletionChunk::Choice::Logprobs.new(
-              content: choice_logprobs.content,
-              refusal: choice_logprobs.refusal
+              content: choice_logprobs.content&.dup,
+              refusal: choice_logprobs.refusal&.dup
             )
           else
             if choice_logprobs.content
@@ -395,6 +436,51 @@ module OpenAI
           @input_tools.find { |tool| tool.dig(:function, :name) == name }
         end
 
+        def index_choice_snapshot!(choice_snapshot)
+          @choice_snapshots_by_index[choice_snapshot.index] = choice_snapshot
+
+          tool_calls_by_index = {}
+          Array(choice_snapshot.message.tool_calls).each do |tool_call|
+            tool_calls_by_index[tool_call[:index]] ||= tool_call
+          end
+
+          @tool_call_snapshots_by_choice_index[choice_snapshot.index] = tool_calls_by_index
+        end
+
+        def insert_choice_snapshot!(choice_snapshots, choice_snapshot)
+          unless @choice_snapshots_sorted
+            choice_snapshots.sort_by!(&:index)
+            @choice_snapshots_sorted = true
+          end
+
+          if choice_snapshots.empty? || choice_snapshots.last.index < choice_snapshot.index
+            choice_snapshots << choice_snapshot
+            return
+          end
+
+          insertion_index = choice_snapshots.bsearch_index do |existing_choice|
+            existing_choice.index > choice_snapshot.index
+          end
+
+          choice_snapshots.insert(insertion_index || choice_snapshots.length, choice_snapshot)
+        end
+
+        def validate_chunk_indices!(chunk)
+          chunk.choices.each do |choice|
+            validate_stream_index!(choice.index, "choice")
+
+            Array(choice.delta.tool_calls).each do |tool_call|
+              validate_stream_index!(tool_call.index, "tool call")
+            end
+          end
+        end
+
+        def validate_stream_index!(index, kind)
+          return unless index.negative?
+
+          raise StreamError.new("Invalid streamed #{kind} index #{index}: expected a non-negative integer")
+        end
+
         def parse_function_tool_arguments(function)
           return nil unless function[:arguments]
 
@@ -410,6 +496,7 @@ module OpenAI
           else
             parsed
           end
+
         rescue JSON::ParserError
           nil
         end
@@ -425,6 +512,7 @@ module OpenAI
           else
             parsed
           end
+
         rescue JSON::ParserError
           nil
         end
@@ -435,7 +523,7 @@ module OpenAI
           choices = []
           chunk.choices.each do |choice|
             choice_hash = choice.to_h
-            delta_hash = choice.delta.to_h
+            delta_hash = model_dump(choice.delta)
 
             message_data = delta_hash.dup
             message_data[:role] ||= :assistant
@@ -458,7 +546,8 @@ module OpenAI
               model: data[:model],
               choices: choices,
               usage: data[:usage],
-              system_fingerprint: nil,
+              moderation: data[:moderation],
+              system_fingerprint: data[:system_fingerprint],
               service_tier: data[:service_tier]
             }
           )
@@ -467,7 +556,7 @@ module OpenAI
         def accumulate_delta(acc, delta)
           return acc if delta.nil?
 
-          delta.each do |key, delta_value| # rubocop:disable Metrics/BlockLength
+          delta.each do |key, delta_value|
             key = key.to_sym if key.is_a?(String)
 
             unless acc.key?(key)
@@ -487,9 +576,10 @@ module OpenAI
               next
             end
 
+            # rubocop:disable Lint/DuplicateBranch
             if acc_value.is_a?(String) && delta_value.is_a?(String)
               acc[key] = acc_value + delta_value
-            elsif acc_value.is_a?(Numeric) && delta_value.is_a?(Numeric) # rubocop:disable Lint/DuplicateBranch
+            elsif acc_value.is_a?(Numeric) && delta_value.is_a?(Numeric)
               acc[key] = acc_value + delta_value
             elsif acc_value.is_a?(Hash) && delta_value.is_a?(Hash)
               acc[key] = accumulate_delta(acc_value, delta_value)
@@ -499,31 +589,62 @@ module OpenAI
                 next
               end
 
+              acc_entries_by_index = {}
+              entries_ordered = true
+              last_entry_index = nil
+              acc_value.each do |entry|
+                next unless entry.is_a?(Hash)
+
+                entry_index = entry[:index] || entry["index"]
+                next unless entry_index
+
+                entries_ordered &&= last_entry_index.nil? || last_entry_index <= entry_index
+                last_entry_index = entry_index
+                acc_entries_by_index[entry_index] ||= entry
+              end
+
+              appended_entry = false
+
               delta_value.each do |delta_entry|
                 unless delta_entry.is_a?(Hash)
-                  raise TypeError,
-                        "Unexpected list delta entry is not a hash: #{delta_entry}"
+                  raise(
+                    TypeError,
+                    "Unexpected list delta entry is not a hash: #{delta_entry}"
+                  )
                 end
 
                 index = delta_entry[:index] || delta_entry["index"]
                 if index.nil?
-                  raise RuntimeError,
-                        "Expected list delta entry to have an `index` key; #{delta_entry}"
-                end
-                unless index.is_a?(Integer)
-                  raise TypeError,
-                        "Unexpected, list delta entry `index` value is not an integer; #{index}"
+                  raise "Expected list delta entry to have an `index` key; #{delta_entry}"
                 end
 
-                if acc_value[index].nil?
-                  acc_value[index] = delta_entry
-                elsif acc_value[index].is_a?(Hash)
-                  acc_value[index] = accumulate_delta(acc_value[index], delta_entry)
+                unless index.is_a?(Integer)
+                  raise(
+                    TypeError,
+                    "Unexpected, list delta entry `index` value is not an integer; #{index}"
+                  )
                 end
+
+                acc_entry = acc_entries_by_index[index]
+
+                if acc_entry.nil?
+                  acc_value << delta_entry
+                  acc_entries_by_index[index] = delta_entry
+                  entries_ordered &&= last_entry_index.nil? || last_entry_index < index
+                  last_entry_index = index
+                  appended_entry = true
+                else
+                  accumulate_delta(acc_entry, delta_entry)
+                end
+              end
+
+              if appended_entry && !entries_ordered
+                acc_value.sort_by! { |entry| entry[:index] || entry["index"] }
               end
             else
               acc[key] = acc_value
             end
+            # rubocop:enable Lint/DuplicateBranch
           end
 
           acc
@@ -538,19 +659,16 @@ module OpenAI
           @logprobs_content_done = false
           @logprobs_refusal_done = false
           @done_tool_calls = Set.new
+          @pending_tool_calls = Set.new
+          @deferred_tool_calls = Set.new
           @current_tool_call_index = nil
         end
 
-        def get_done_events(choice_chunk:, choice_snapshot:, response_format:)
+        def get_done_events(choice_chunk:, choice_snapshot:, response_format:, tool_calls_by_index:)
           events = []
 
           if choice_snapshot.finish_reason
             events.concat(content_done_events(choice_snapshot, response_format))
-
-            if @current_tool_call_index && !@done_tool_calls.include?(@current_tool_call_index)
-              event = tool_done_event(choice_snapshot, @current_tool_call_index)
-              events << event if event
-            end
           end
 
           Array(choice_chunk.delta.tool_calls).each do |tool_call|
@@ -558,12 +676,27 @@ module OpenAI
               events.concat(content_done_events(choice_snapshot, response_format))
 
               if @current_tool_call_index
-                event = tool_done_event(choice_snapshot, @current_tool_call_index)
-                events << event if event
+                if !@deferred_tool_calls.include?(@current_tool_call_index) &&
+                    incomplete_strict_tool_call?(tool_calls_by_index, @current_tool_call_index)
+                  @deferred_tool_calls.add(@current_tool_call_index)
+                end
+
+                unless @deferred_tool_calls.include?(@current_tool_call_index)
+                  event = tool_done_event(tool_calls_by_index, @current_tool_call_index)
+                  events << event if event
+                end
               end
             end
 
+            @pending_tool_calls.add(tool_call.index) unless @done_tool_calls.include?(tool_call.index)
             @current_tool_call_index = tool_call.index
+          end
+
+          if choice_snapshot.finish_reason
+            @pending_tool_calls.to_a.each do |tool_index|
+              event = tool_done_event(tool_calls_by_index, tool_index)
+              events << event if event
+            end
           end
 
           events
@@ -579,19 +712,21 @@ module OpenAI
             parsed = parse_content(choice_snapshot.message, response_format)
             choice_snapshot.message.parsed = parsed
 
-            events << ChatContentDoneEvent.new(
-              type: :"content.done",
-              content: choice_snapshot.message.content,
-              parsed: parsed
-            )
+            events <<
+              ChatContentDoneEvent.new(
+                type: :"content.done",
+                content: choice_snapshot.message.content,
+                parsed: parsed
+              )
           end
 
           if choice_snapshot.message.refusal && !@refusal_done
             @refusal_done = true
-            events << ChatRefusalDoneEvent.new(
-              type: :"refusal.done",
-              refusal: choice_snapshot.message.refusal
-            )
+            events <<
+              ChatRefusalDoneEvent.new(
+                type: :"refusal.done",
+                refusal: choice_snapshot.message.refusal
+              )
           end
 
           events + logprobs_done_events(choice_snapshot)
@@ -604,30 +739,34 @@ module OpenAI
 
           if logprobs.content&.any? && !@logprobs_content_done
             @logprobs_content_done = true
-            events << ChatLogprobsContentDoneEvent.new(
-              type: :"logprobs.content.done",
-              content: logprobs.content
-            )
+            events <<
+              ChatLogprobsContentDoneEvent.new(
+                type: :"logprobs.content.done",
+                content: logprobs.content
+              )
           end
 
           if logprobs.refusal&.any? && !@logprobs_refusal_done
             @logprobs_refusal_done = true
-            events << ChatLogprobsRefusalDoneEvent.new(
-              type: :"logprobs.refusal.done",
-              refusal: logprobs.refusal
-            )
+            events <<
+              ChatLogprobsRefusalDoneEvent.new(
+                type: :"logprobs.refusal.done",
+                refusal: logprobs.refusal
+              )
           end
 
           events
         end
 
-        def tool_done_event(choice_snapshot, tool_index)
+        def tool_done_event(tool_calls_by_index, tool_index)
           return nil if @done_tool_calls.include?(tool_index)
 
           @done_tool_calls.add(tool_index)
+          @pending_tool_calls.delete(tool_index)
+          @deferred_tool_calls.delete(tool_index)
 
-          tool_call = choice_snapshot.message.tool_calls&.[](tool_index)
-          return nil unless tool_call&.type == :function
+          tool_call = tool_calls_by_index[tool_index]
+          return nil unless tool_call.is_a?(OpenAI::Chat::ChatCompletionMessageFunctionToolCall)
 
           parsed_args = parse_function_tool_arguments(tool_call.function)
 
@@ -644,6 +783,22 @@ module OpenAI
           )
         end
 
+        def incomplete_strict_tool_call?(tool_calls_by_index, tool_index)
+          tool_call = tool_calls_by_index[tool_index]
+          return false unless tool_call&.type == :function
+
+          function = tool_call.function
+          tool = find_input_tool(function.name)
+          return false unless tool&.dig(:function, :strict)
+          return false unless function.respond_to?(:parsed) && function.parsed.nil?
+          return true unless function.arguments
+
+          JSON.parse(function.arguments)
+          false
+        rescue JSON::ParserError
+          true
+        end
+
         def parse_content(message, response_format)
           return nil unless response_format && message.content
 
@@ -653,6 +808,7 @@ module OpenAI
           else
             parsed
           end
+
         rescue JSON::ParserError
           nil
         end
@@ -670,6 +826,7 @@ module OpenAI
           else
             parsed
           end
+
         rescue JSON::ParserError
           nil
         end

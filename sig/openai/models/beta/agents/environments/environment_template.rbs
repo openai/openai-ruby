@@ -1,0 +1,365 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        class EnvironmentTemplate = Environments::EnvironmentTemplate
+
+        module Environments
+          type environment_template =
+            {
+              id: String,
+              capability_directories: ::Array[String],
+              created_at: Integer,
+              files: ::Array[OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::file],
+              name: String?,
+              network: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Network,
+              ?object: :"agent.environment.template",
+              packages: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Packages,
+              plugins: ::Array[OpenAI::Beta::HostedPlugin],
+              skills: ::Array[OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::skill],
+              updated_at: Integer,
+              ?desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop
+            }
+
+          class EnvironmentTemplate < OpenAI::Internal::Type::BaseModel
+            # The ID of the reusable environment template.
+            attr_accessor id: String
+
+            # Directories that expose capabilities to the agent.
+            attr_accessor capability_directories: ::Array[String]
+
+            # The Unix timestamp, in seconds, when the template was created.
+            attr_accessor created_at: Integer
+
+            # Safe file metadata, excluding contents and session-scoped file IDs.
+            attr_accessor files: ::Array[OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::file]
+
+            # An optional human-readable display name for the template.
+            attr_accessor name: String?
+
+            # Runtime network access for each OpenAI-hosted environment.
+            attr_accessor network: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Network
+
+            # The object type. Always `agent.environment.template`.
+            attr_accessor object: :"agent.environment.template"
+
+            # Packages installed in each fresh OpenAI-hosted environment.
+            attr_accessor packages: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Packages
+
+            # Safe plugin metadata, excluding inline archive contents.
+            attr_accessor plugins: ::Array[OpenAI::Beta::HostedPlugin]
+
+            # Safe skill metadata, preserving unresolved version selectors.
+            attr_accessor skills: ::Array[OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::skill]
+
+            # The Unix timestamp, in seconds, when the template was last updated.
+            attr_accessor updated_at: Integer
+
+            # Desktop configuration for each OpenAI-hosted environment.
+            attr_reader desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop?
+
+            # Desktop configuration for each OpenAI-hosted environment.
+            def desktop=: (
+              OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop
+            ) -> OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop
+
+            # @param id
+            #   The ID of the reusable environment template.
+            # @param capability_directories
+            #   Directories that expose capabilities to the agent.
+            # @param created_at
+            #   The Unix timestamp, in seconds, when the template was created.
+            # @param files
+            #   Safe file metadata, excluding contents and session-scoped file IDs.
+            # @param name
+            #   An optional human-readable display name for the template.
+            # @param network
+            #   Runtime network access for each OpenAI-hosted environment.
+            # @param packages
+            #   Packages installed in each fresh OpenAI-hosted environment.
+            # @param plugins
+            #   Safe plugin metadata, excluding inline archive contents.
+            # @param skills
+            #   Safe skill metadata, preserving unresolved version selectors.
+            # @param updated_at
+            #   The Unix timestamp, in seconds, when the template was last updated.
+            # @param desktop
+            #   Desktop configuration for each OpenAI-hosted environment.
+            # @param object
+            #   The object type. Always `agent.environment.template`.
+            def initialize: (
+              id: String,
+              capability_directories: ::Array[String],
+              created_at: Integer,
+              files: ::Array[OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::file],
+              name: String?,
+              network: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Network,
+              packages: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Packages,
+              plugins: ::Array[OpenAI::Beta::HostedPlugin],
+              skills: ::Array[OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::skill],
+              updated_at: Integer,
+              ?desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop,
+              ?object: :"agent.environment.template"
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              capability_directories: ::Array[String],
+              created_at: Integer,
+              files: ::Array[OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::file],
+              name: String?,
+              network: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Network,
+              ?object: :"agent.environment.template",
+              packages: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Packages,
+              plugins: ::Array[OpenAI::Beta::HostedPlugin],
+              skills: ::Array[OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::skill],
+              updated_at: Integer,
+              ?desktop: OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Desktop
+            }
+
+            type file =
+              OpenAI::Beta::Agents::Environments::EnvironmentTemplate::File::FileID
+              | OpenAI::Beta::Agents::Environments::EnvironmentTemplate::File::Inline
+
+            module File
+              extend OpenAI::Internal::Type::Union
+
+              type file_id = { file_id: String, path: String, ?type: :file_id }
+
+              class FileID < OpenAI::Internal::Type::BaseModel
+                # The ID of the uploaded file.
+                attr_accessor file_id: String
+
+                # The file's absolute path inside the environment.
+                attr_accessor path: String
+
+                # The type of the object. Always `file_id`.
+                attr_accessor type: :file_id
+
+                # @param file_id
+                #   The ID of the uploaded file.
+                # @param path
+                #   The file's absolute path inside the environment.
+                # @param type
+                #   The type of the object. Always `file_id`.
+                def initialize: (
+                  file_id: String,
+                  path: String,
+                  ?type: :file_id
+                ) -> void
+
+                def to_hash: -> {
+                  file_id: String,
+                  path: String,
+                  ?type: :file_id
+                }
+              end
+
+              type inline =
+                { path: String, size_bytes: Integer, ?type: :inline }
+
+              class Inline < OpenAI::Internal::Type::BaseModel
+                # The file's absolute path inside the environment.
+                attr_accessor path: String
+
+                # The decoded size of the inline file in bytes.
+                attr_accessor size_bytes: Integer
+
+                # The type of the object. Always `inline`.
+                attr_accessor type: :inline
+
+                # @param path
+                #   The file's absolute path inside the environment.
+                # @param size_bytes
+                #   The decoded size of the inline file in bytes.
+                # @param type
+                #   The type of the object. Always `inline`.
+                def initialize: (
+                  path: String,
+                  size_bytes: Integer,
+                  ?type: :inline
+                ) -> void
+
+                def to_hash: -> {
+                  path: String,
+                  size_bytes: Integer,
+                  ?type: :inline
+                }
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::file]
+            end
+
+            type network =
+              {
+                access: OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::Network::access,
+                allowed_domains: ::Array[String]
+              }
+
+            class Network < OpenAI::Internal::Type::BaseModel
+              # The environment's network access mode.
+              attr_accessor access: OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::Network::access
+
+              # Domains the environment may access when network access is restricted.
+              attr_accessor allowed_domains: ::Array[String]
+
+              # @param access
+              #   The environment's network access mode.
+              # @param allowed_domains
+              #   Domains the environment may access when network access is restricted.
+              def initialize: (
+                access: OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::Network::access,
+                allowed_domains: ::Array[String]
+              ) -> void
+
+              def to_hash: -> {
+                access: OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::Network::access,
+                allowed_domains: ::Array[String]
+              }
+
+              type access = :enabled | :disabled | :restricted
+
+              module Access
+                extend OpenAI::Internal::Type::Enum
+
+                # Allows unrestricted network access.
+                ENABLED: :enabled
+
+                # Disables network access.
+                DISABLED: :disabled
+
+                # Applies the configured domain restrictions.
+                RESTRICTED: :restricted
+
+                def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::Network::access]
+              end
+            end
+
+            type packages =
+              {
+                npm: ::Array[String],
+                python: ::Array[String],
+                system_: ::Array[String]
+              }
+
+            class Packages < OpenAI::Internal::Type::BaseModel
+              # npm packages installed globally in the environment.
+              attr_accessor npm: ::Array[String]
+
+              # Python packages installed in the environment.
+              attr_accessor python: ::Array[String]
+
+              # System packages installed in the environment.
+              attr_accessor system_: ::Array[String]
+
+              # @param npm
+              #   npm packages installed globally in the environment.
+              # @param python
+              #   Python packages installed in the environment.
+              # @param system_
+              #   System packages installed in the environment.
+              def initialize: (
+                npm: ::Array[String],
+                python: ::Array[String],
+                system_: ::Array[String]
+              ) -> void
+
+              def to_hash: -> {
+                npm: ::Array[String],
+                python: ::Array[String],
+                system_: ::Array[String]
+              }
+            end
+
+            type skill =
+              OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Skill::SkillReference
+              | OpenAI::Beta::Agents::Environments::EnvironmentTemplate::Skill::Inline
+
+            module Skill
+              extend OpenAI::Internal::Type::Union
+
+              type skill_reference =
+                { skill_id: String, ?type: :skill_reference, version: String? }
+
+              class SkillReference < OpenAI::Internal::Type::BaseModel
+                # The referenced skill ID.
+                attr_accessor skill_id: String
+
+                # The type of the object. Always `skill_reference`.
+                attr_accessor type: :skill_reference
+
+                # The requested version selector, including `latest`.
+                attr_accessor version: String?
+
+                # @param skill_id
+                #   The referenced skill ID.
+                # @param version
+                #   The requested version selector, including `latest`.
+                # @param type
+                #   The type of the object. Always `skill_reference`.
+                def initialize: (
+                  skill_id: String,
+                  version: String?,
+                  ?type: :skill_reference
+                ) -> void
+
+                def to_hash: -> {
+                  skill_id: String,
+                  ?type: :skill_reference,
+                  version: String?
+                }
+              end
+
+              type inline =
+                { description: String, name: String, ?type: :inline }
+
+              class Inline < OpenAI::Internal::Type::BaseModel
+                # The skill description declared in `SKILL.md`.
+                attr_accessor description: String
+
+                # The skill name declared in `SKILL.md`.
+                attr_accessor name: String
+
+                # The type of the object. Always `inline`.
+                attr_accessor type: :inline
+
+                # @param description
+                #   The skill description declared in `SKILL.md`.
+                # @param name
+                #   The skill name declared in `SKILL.md`.
+                # @param type
+                #   The type of the object. Always `inline`.
+                def initialize: (
+                  description: String,
+                  name: String,
+                  ?type: :inline
+                ) -> void
+
+                def to_hash: -> {
+                  description: String,
+                  name: String,
+                  ?type: :inline
+                }
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::Environments::EnvironmentTemplate::skill]
+            end
+
+            type desktop = { enabled: bool }
+
+            class Desktop < OpenAI::Internal::Type::BaseModel
+              # Whether the environment provisions a desktop and browser proxy.
+              attr_accessor enabled: bool
+
+              # @param enabled
+              #   Whether the environment provisions a desktop and browser proxy.
+              def initialize: (enabled: bool) -> void
+
+              def to_hash: -> { enabled: bool }
+            end
+          end
+        end
+      end
+    end
+  end
+end

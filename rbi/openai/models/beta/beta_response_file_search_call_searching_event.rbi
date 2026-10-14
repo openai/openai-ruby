@@ -2,18 +2,19 @@
 
 module OpenAI
   module Models
-    BetaResponseFileSearchCallSearchingEvent =
-      Beta::BetaResponseFileSearchCallSearchingEvent
+
+    BetaResponseFileSearchCallSearchingEvent = Beta::BetaResponseFileSearchCallSearchingEvent
 
     module Beta
+
       class BetaResponseFileSearchCallSearchingEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The ID of the output item that the file search call is initiated.
         sig { returns(String) }
@@ -32,48 +33,44 @@ module OpenAI
         attr_accessor :type
 
         # The agent that owns this multi-agent streaming event.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent::Agent
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent::Agent)) }
         attr_reader :agent
 
-        sig do
-          params(
-            agent:
-              T.nilable(
-                OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent::Agent::OrHash
-              )
-          ).void
-        end
+        sig { params(agent: T.nilable(OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent::Agent::OrHash)).void }
         attr_writer :agent
 
         # Emitted when a file search is currently searching.
         sig do
           params(
+
             item_id: String,
+
             output_index: Integer,
+
             sequence_number: Integer,
-            agent:
-              T.nilable(
-                OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent::Agent::OrHash
-              ),
+
+            agent: T.nilable(OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent::Agent::OrHash),
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The ID of the output item that the file search call is initiated.
           item_id:,
+
           # The index of the output item that the file search call is searching.
           output_index:,
+
           # The sequence number of this event.
           sequence_number:,
+
           # The agent that owns this multi-agent streaming event.
           agent: nil,
+
           # The type of the event. Always `response.file_search_call.searching`.
+
           type: :"response.file_search_call.searching"
         )
         end
@@ -85,10 +82,7 @@ module OpenAI
               output_index: Integer,
               sequence_number: Integer,
               type: Symbol,
-              agent:
-                T.nilable(
-                  OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent::Agent
-                )
+              agent: T.nilable(OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent::Agent)
             }
           )
         end
@@ -96,31 +90,46 @@ module OpenAI
         end
 
         class Agent < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent::Agent,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent::Agent,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The canonical name of the agent that produced this item.
           sig { returns(String) }
           attr_accessor :agent_name
 
           # The agent that owns this multi-agent streaming event.
-          sig { params(agent_name: String).returns(T.attached_class) }
+          sig do
+            params(
+
+              agent_name: String
+            )
+              .returns(T.attached_class)
+          end
           def self.new(
+
             # The canonical name of the agent that produced this item.
+
             agent_name:
           )
           end
 
-          sig { override.returns({ agent_name: String }) }
+          sig do
+            override.returns(
+              {agent_name: String}
+            )
+          end
           def to_hash
           end
+
         end
+
       end
+
     end
+
   end
 end

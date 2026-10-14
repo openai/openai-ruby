@@ -1,0 +1,9 @@
+module OpenAI
+  module Internal
+    class RequestOptionsScope
+      def initialize: (OpenAI::request_opts? request_options) -> void
+
+      def child: (String operation) -> ::Hash[Symbol, top]
+    end
+  end
+end

@@ -2,18 +2,23 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Roles
+
           # Creates a custom role for the organization.
-          sig do
+          sig {
             params(
               permissions: T::Array[String],
               role_name: String,
               description: T.nilable(String),
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::Role)
-          end
+            )
+              .returns(OpenAI::Admin::Organization::Role)
+          }
           def create(
             # Permissions to grant to the role.
             permissions:,
@@ -26,12 +31,11 @@ module OpenAI
           end
 
           # Retrieves an organization role.
-          sig do
-            params(
-              role_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::Role)
-          end
+          sig {
+            params(role_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Admin::Organization::Role
+            )
+          }
           def retrieve(
             # The ID of the role to retrieve.
             role_id,
@@ -40,15 +44,16 @@ module OpenAI
           end
 
           # Updates an existing organization role.
-          sig do
+          sig {
             params(
               role_id: String,
               description: T.nilable(String),
               permissions: T.nilable(T::Array[String]),
               role_name: T.nilable(String),
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::Role)
-          end
+            )
+              .returns(OpenAI::Admin::Organization::Role)
+          }
           def update(
             # The ID of the role to update.
             role_id,
@@ -63,19 +68,15 @@ module OpenAI
           end
 
           # Lists the roles configured for the organization.
-          sig do
+          sig {
             params(
               after: String,
               limit: Integer,
-              order:
-                OpenAI::Admin::Organization::RoleListParams::Order::OrSymbol,
+              order: OpenAI::Admin::Organization::RoleListParams::Order::OrSymbol,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::NextCursorPage[
-                OpenAI::Admin::Organization::Role
-              ]
             )
-          end
+              .returns(OpenAI::Internal::NextCursorPage[OpenAI::Admin::Organization::Role])
+          }
           def list(
             # Cursor for pagination. Provide the value from the previous response's `next`
             # field to continue listing roles.
@@ -89,12 +90,11 @@ module OpenAI
           end
 
           # Deletes a custom role from the organization.
-          sig do
-            params(
-              role_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Models::Admin::Organization::RoleDeleteResponse)
-          end
+          sig {
+            params(role_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Models::Admin::Organization::RoleDeleteResponse
+            )
+          }
           def delete(
             # The ID of the role to delete.
             role_id,
@@ -107,7 +107,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

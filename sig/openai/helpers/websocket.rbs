@@ -1,0 +1,18 @@
+module OpenAI
+  module Errors
+    class WebSocketConnectionError < OpenAI::Errors::Error
+      attr_reader url: URI::Generic
+      attr_reader http_status: Integer?
+      def cause: -> Exception?
+      def initialize: (
+        url: URI::Generic,
+        ?message: String?,
+        ?cause: Exception?,
+        ?http_status: Integer?
+      ) -> void
+    end
+
+    class WebSocketProtocolError < OpenAI::Errors::Error
+    end
+  end
+end

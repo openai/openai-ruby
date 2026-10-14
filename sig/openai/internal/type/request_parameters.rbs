@@ -1,7 +1,7 @@
 module OpenAI
   module Internal
     module Type
-      type request_parameters = { request_options: OpenAI::request_opts }
+      type request_parameters = { ?request_options: OpenAI::request_opts }
 
       module RequestParameters
         attr_reader request_options: OpenAI::request_opts

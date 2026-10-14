@@ -1,0 +1,16 @@
+stream = OpenAI::Client.new(api_key: "test-key").responses.stream(
+  model: "gpt-4o-mini",
+  input: "synthetic"
+)
+stream.each do |event|
+  case event
+  when OpenAI::Streaming::ResponseTextDeltaEvent
+    event.snapshot
+  when OpenAI::Streaming::ResponseTextDoneEvent
+    event.parsed
+  when OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent
+    event.snapshot
+  when OpenAI::Streaming::ResponseCompletedEvent
+    event.response
+  end
+end

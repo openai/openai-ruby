@@ -14,8 +14,9 @@ module OpenAI
         # "history" of the conversation and to add new items mid-stream, but has the
         # current limitation that it cannot populate assistant audio messages.
         #
-        # If successful, the server will respond with a `conversation.item.created`
-        # event, otherwise an `error` event will be sent.
+        # If successful, the server will emit a `conversation.item.added` event and,
+        # when the item is finalized, a `conversation.item.done` event. Otherwise, an
+        # `error` event will be sent.
         variant :"conversation.item.create", -> { OpenAI::Realtime::ConversationItemCreateEvent }
 
         # Send this event when you want to remove any item from the conversation
@@ -66,7 +67,7 @@ module OpenAI
         # stop generating audio and emit a `output_audio_buffer.cleared` event. This
         # event should be preceded by a `response.cancel` client event to stop the
         # generation of the current response.
-        # [Learn more](https://platform.openai.com/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
+        # [Learn more](https://developers.openai.com/api/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
         variant :"output_audio_buffer.clear", -> { OpenAI::Realtime::OutputAudioBufferClearEvent }
 
         # Send this event to commit the user input audio buffer, which will create a  new user message item in the conversation. This event will produce an error  if the input audio buffer is empty. When in Server VAD mode, the client does  not need to send this event, the server will commit the audio buffer  automatically.
@@ -117,6 +118,15 @@ module OpenAI
         # Only the fields that are present in the `session.update` are updated. To clear a field like
         # `instructions`, pass an empty string. To clear a field like `tools`, pass an empty array.
         # To clear a field like `turn_detection`, pass `null`.
+        #
+        # To turn off input audio noise reduction, send this Realtime event:
+        #
+        # ```json
+        # {"type":"session.update","session":{"type":"realtime","audio":{"input":{"noise_reduction":null}}}}
+        # ```
+        #
+        # For a transcription session, use `"type":"transcription"` inside `session`.
+        # Omitting `audio.input.noise_reduction` from an update leaves its current setting unchanged.
         variant :"session.update", -> { OpenAI::Realtime::SessionUpdateEvent }
 
         # @!method self.variants

@@ -6,18 +6,32 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.code_interpreter_call.interpreting"
+          ?type: :"response.code_interpreter_call.interpreting"
         }
 
       class ResponseCodeInterpreterCallInterpretingEvent < OpenAI::Internal::Type::BaseModel
+        # The unique identifier of the code interpreter tool call item.
         attr_accessor item_id: String
 
+        # The index of the output item in the response for which the code interpreter is
+        # interpreting code.
         attr_accessor output_index: Integer
 
+        # The sequence number of this event, used to order streaming events.
         attr_accessor sequence_number: Integer
 
+        # The type of the event. Always `response.code_interpreter_call.interpreting`.
         attr_accessor type: :"response.code_interpreter_call.interpreting"
 
+        # @param item_id
+        #   The unique identifier of the code interpreter tool call item.
+        # @param output_index
+        #   The index of the output item in the response for which the code interpreter is
+        #   interpreting code.
+        # @param sequence_number
+        #   The sequence number of this event, used to order streaming events.
+        # @param type
+        #   The type of the event. Always `response.code_interpreter_call.interpreting`.
         def initialize: (
           item_id: String,
           output_index: Integer,
@@ -29,7 +43,7 @@ module OpenAI
           item_id: String,
           output_index: Integer,
           sequence_number: Integer,
-          type: :"response.code_interpreter_call.interpreting"
+          ?type: :"response.code_interpreter_call.interpreting"
         }
       end
     end

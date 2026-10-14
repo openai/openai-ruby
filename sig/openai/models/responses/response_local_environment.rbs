@@ -1,14 +1,17 @@
 module OpenAI
   module Models
     module Responses
-      type response_local_environment = { type: :local }
+      type response_local_environment = { ?type: :local }
 
       class ResponseLocalEnvironment < OpenAI::Internal::Type::BaseModel
+        # The environment type. Always `local`.
         attr_accessor type: :local
 
+        # @param type
+        #   The environment type. Always `local`.
         def initialize: (?type: :local) -> void
 
-        def to_hash: -> { type: :local }
+        def to_hash: -> { ?type: :local }
       end
     end
   end

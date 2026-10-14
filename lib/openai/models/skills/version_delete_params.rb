@@ -22,7 +22,8 @@ module OpenAI
         # @!method initialize(skill_id:, version:, request_options: {})
         #   @param skill_id [String]
         #
-        #   @param version [String] The skill version number.
+        #   @param version [String]
+        #     The skill version number.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end

@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Skills
       type content_retrieve_params =
-        { skill_id: String } & OpenAI::Internal::Type::request_parameters
+        { skill_id: String, ?request_options: OpenAI::request_opts }
 
       class ContentRetrieveParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -17,7 +17,7 @@ module OpenAI
 
         def to_hash: -> {
           skill_id: String,
-          request_options: OpenAI::RequestOptions
+          ?request_options: OpenAI::RequestOptions
         }
       end
     end

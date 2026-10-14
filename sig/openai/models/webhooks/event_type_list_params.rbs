@@ -1,0 +1,16 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type event_type_list_params = { ?request_options: OpenAI::request_opts }
+
+      class EventTypeListParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        def initialize: (?request_options: OpenAI::request_opts) -> void
+
+        def to_hash: -> { ?request_options: OpenAI::RequestOptions }
+      end
+    end
+  end
+end

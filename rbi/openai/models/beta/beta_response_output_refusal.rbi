@@ -2,17 +2,19 @@
 
 module OpenAI
   module Models
+
     BetaResponseOutputRefusal = Beta::BetaResponseOutputRefusal
 
     module Beta
+
       class BetaResponseOutputRefusal < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Beta::BetaResponseOutputRefusal,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaResponseOutputRefusal,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The refusal explanation from the model.
         sig { returns(String) }
@@ -23,19 +25,37 @@ module OpenAI
         attr_accessor :type
 
         # A refusal from the model.
-        sig { params(refusal: String, type: Symbol).returns(T.attached_class) }
+        sig do
+          params(
+
+            refusal: String,
+
+            type: Symbol
+          )
+            .returns(T.attached_class)
+        end
         def self.new(
+
           # The refusal explanation from the model.
           refusal:,
+
           # The type of the refusal. Always `refusal`.
+
           type: :refusal
         )
         end
 
-        sig { override.returns({ refusal: String, type: Symbol }) }
+        sig do
+          override.returns(
+            {refusal: String, type: Symbol}
+          )
+        end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

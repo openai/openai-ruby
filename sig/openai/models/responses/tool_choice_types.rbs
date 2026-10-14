@@ -5,8 +5,33 @@ module OpenAI
         { type: OpenAI::Models::Responses::ToolChoiceTypes::type_ }
 
       class ToolChoiceTypes < OpenAI::Internal::Type::BaseModel
+        # The type of hosted tool the model should to use. Learn more about
+        # [built-in tools](https://developers.openai.com/api/docs/guides/tools).
+        #
+        # Allowed values are:
+        #
+        # - `file_search`
+        # - `web_search_preview`
+        # - `computer`
+        # - `computer_use_preview`
+        # - `computer_use`
+        # - `code_interpreter`
+        # - `image_generation`
         attr_accessor type: OpenAI::Models::Responses::ToolChoiceTypes::type_
 
+        # @param type
+        #   The type of hosted tool the model should to use. Learn more about
+        #   [built-in tools](https://developers.openai.com/api/docs/guides/tools).
+        #
+        #   Allowed values are:
+        #
+        #   - `file_search`
+        #   - `web_search_preview`
+        #   - `computer`
+        #   - `computer_use_preview`
+        #   - `computer_use`
+        #   - `code_interpreter`
+        #   - `image_generation`
         def initialize: (
           type: OpenAI::Models::Responses::ToolChoiceTypes::type_
         ) -> void

@@ -5,9 +5,9 @@ module OpenAI
         type certificate_retrieve_params =
           {
             certificate_id: String,
-            include: ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_]
+            ?include: ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_],
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class CertificateRetrieveParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -15,12 +15,19 @@ module OpenAI
 
           attr_accessor certificate_id: String
 
+          # A list of additional fields to include in the response. Currently the only
+          # supported value is `content` to fetch the PEM content of the certificate.
           attr_reader include: ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_]?
 
+          # A list of additional fields to include in the response. Currently the only
+          # supported value is `content` to fetch the PEM content of the certificate.
           def include=: (
             ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_]
           ) -> ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_]
 
+          # @param include
+          #   A list of additional fields to include in the response. Currently the only
+          #   supported value is `content` to fetch the PEM content of the certificate.
           def initialize: (
             certificate_id: String,
             ?include: ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_],
@@ -29,8 +36,8 @@ module OpenAI
 
           def to_hash: -> {
             certificate_id: String,
-            include: ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_],
-            request_options: OpenAI::RequestOptions
+            ?include: ::Array[OpenAI::Models::Admin::Organization::CertificateRetrieveParams::include_],
+            ?request_options: OpenAI::RequestOptions
           }
 
           type include_ = :content

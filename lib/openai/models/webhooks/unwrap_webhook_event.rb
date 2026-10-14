@@ -3,11 +3,38 @@
 module OpenAI
   module Models
     module Webhooks
-      # Sent when a batch API request has been cancelled.
+      # Sent when an agent environment expires and can no longer resume from a snapshot.
       module UnwrapWebhookEvent
         extend OpenAI::Internal::Type::Union
 
         discriminator :type
+
+        # Sent when an agent environment expires and can no longer resume from a snapshot.
+        variant :"agent.environment.expired", -> { OpenAI::Webhooks::AgentEnvironmentExpiredWebhookEvent }
+
+        # Sent when setup fails for a prewarmed OpenAI-hosted environment before it is attached to a session.
+        variant :"agent.environment.failed", -> { OpenAI::Webhooks::AgentEnvironmentFailedWebhookEvent }
+
+        # Sent when a prewarmed OpenAI-hosted environment finishes setup before being attached to a session.
+        variant :"agent.environment.ready", -> { OpenAI::Webhooks::AgentEnvironmentReadyWebhookEvent }
+
+        # Sent when an agent environment is suspended and can resume from a snapshot.
+        variant :"agent.environment.suspended", -> { OpenAI::Webhooks::AgentEnvironmentSuspendedWebhookEvent }
+
+        # Sent when an agent session requires an action. Retrieve the session for action details.
+        variant :"agent.session.action_required", -> { OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent }
+
+        # Sent when an agent session is created.
+        variant :"agent.session.created", -> { OpenAI::Webhooks::AgentSessionCreatedWebhookEvent }
+
+        # Sent when an agent session fails.
+        variant :"agent.session.failed", -> { OpenAI::Webhooks::AgentSessionFailedWebhookEvent }
+
+        # Sent when an agent session becomes idle.
+        variant :"agent.session.idle", -> { OpenAI::Webhooks::AgentSessionIdleWebhookEvent }
+
+        # Sent when an agent session enters the in-progress state.
+        variant :"agent.session.in_progress", -> { OpenAI::Webhooks::AgentSessionInProgressWebhookEvent }
 
         # Sent when a batch API request has been cancelled.
         variant :"batch.cancelled", -> { OpenAI::Webhooks::BatchCancelledWebhookEvent }
@@ -39,13 +66,20 @@ module OpenAI
         # Sent when a fine-tuning job has succeeded.
         variant :"fine_tuning.job.succeeded", -> { OpenAI::Webhooks::FineTuningJobSucceededWebhookEvent }
 
+        # Deprecated: use `live.transport.incoming`. Retained for existing subscriptions
+        # during migration; new subscriptions to this event are not allowed.
         # Sent when an incoming API SIP session is available for Live acceptance. The
         # same pending session can also emit `realtime.call.incoming`; the first
         # successful Realtime or Live accept endpoint selects the runtime surface.
         variant :"live.call.incoming", -> { OpenAI::Webhooks::LiveCallIncomingWebhookEvent }
 
+        # Sent when an incoming API SIP session is available for Live acceptance. The
+        # same pending session can also emit `realtime.call.incoming`; the first
+        # successful Realtime or Live accept endpoint selects the runtime surface.
+        variant :"live.transport.incoming", -> { OpenAI::Webhooks::LiveTransportIncomingWebhookEvent }
+
         # Sent when an incoming API SIP session is available for Realtime acceptance.
-        # The same pending session can also emit `live.call.incoming`; the first
+        # The same pending session can also emit `live.transport.incoming`; the first
         # successful Realtime or Live accept endpoint selects the runtime surface.
         variant :"realtime.call.incoming", -> { OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent }
 
@@ -61,8 +95,20 @@ module OpenAI
         # Sent when a background response has been interrupted.
         variant :"response.incomplete", -> { OpenAI::Webhooks::ResponseIncompleteWebhookEvent }
 
+        # Sent when an approved safety alert is available for an API project.
+        variant :"safety.alert.created", -> { OpenAI::Webhooks::SafetyAlertCreatedWebhookEvent }
+
+        # Sent when a deactivation is issued for a safety identifier in your organization.
+        variant :"safety.deactivation_issued", -> { OpenAI::Webhooks::SafetyDeactivationIssuedWebhookEvent }
+
+        # Sent when an approved safety alert is available for an enterprise workspace.
+        variant :"safety.org_alert.created", -> { OpenAI::Webhooks::SafetyOrgAlertCreatedWebhookEvent }
+
+        # Sent when a warning is issued for a safety identifier in your organization.
+        variant :"safety.warning_issued", -> { OpenAI::Webhooks::SafetyWarningIssuedWebhookEvent }
+
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Webhooks::BatchCancelledWebhookEvent, OpenAI::Models::Webhooks::BatchCompletedWebhookEvent, OpenAI::Models::Webhooks::BatchExpiredWebhookEvent, OpenAI::Models::Webhooks::BatchFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent, OpenAI::Models::Webhooks::EvalRunFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobFailedWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent, OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent, OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent, OpenAI::Models::Webhooks::ResponseCancelledWebhookEvent, OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent, OpenAI::Models::Webhooks::ResponseFailedWebhookEvent, OpenAI::Models::Webhooks::ResponseIncompleteWebhookEvent)]
+        #   @return [Array(OpenAI::Models::Webhooks::AgentEnvironmentExpiredWebhookEvent, OpenAI::Models::Webhooks::AgentEnvironmentFailedWebhookEvent, OpenAI::Models::Webhooks::AgentEnvironmentReadyWebhookEvent, OpenAI::Models::Webhooks::AgentEnvironmentSuspendedWebhookEvent, OpenAI::Models::Webhooks::AgentSessionActionRequiredWebhookEvent, OpenAI::Models::Webhooks::AgentSessionCreatedWebhookEvent, OpenAI::Models::Webhooks::AgentSessionFailedWebhookEvent, OpenAI::Models::Webhooks::AgentSessionIdleWebhookEvent, OpenAI::Models::Webhooks::AgentSessionInProgressWebhookEvent, OpenAI::Models::Webhooks::BatchCancelledWebhookEvent, OpenAI::Models::Webhooks::BatchCompletedWebhookEvent, OpenAI::Models::Webhooks::BatchExpiredWebhookEvent, OpenAI::Models::Webhooks::BatchFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunCanceledWebhookEvent, OpenAI::Models::Webhooks::EvalRunFailedWebhookEvent, OpenAI::Models::Webhooks::EvalRunSucceededWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobCancelledWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobFailedWebhookEvent, OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent, OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent, OpenAI::Models::Webhooks::LiveTransportIncomingWebhookEvent, OpenAI::Models::Webhooks::RealtimeCallIncomingWebhookEvent, OpenAI::Models::Webhooks::ResponseCancelledWebhookEvent, OpenAI::Models::Webhooks::ResponseCompletedWebhookEvent, OpenAI::Models::Webhooks::ResponseFailedWebhookEvent, OpenAI::Models::Webhooks::ResponseIncompleteWebhookEvent, OpenAI::Models::Webhooks::SafetyAlertCreatedWebhookEvent, OpenAI::Models::Webhooks::SafetyDeactivationIssuedWebhookEvent, OpenAI::Models::Webhooks::SafetyOrgAlertCreatedWebhookEvent, OpenAI::Models::Webhooks::SafetyWarningIssuedWebhookEvent)]
       end
     end
   end

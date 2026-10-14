@@ -12,13 +12,15 @@ module OpenAI
 
     attr_reader admin_api_key: String?
 
-    attr_reader workload_identity_auth: untyped?
+    attr_reader workload_identity_auth: OpenAI::Auth::WorkloadIdentityAuth?
 
     attr_reader organization: String?
 
     attr_reader project: String?
 
     attr_reader webhook_secret: String?
+
+    attr_reader decisions: OpenAI::Resources::Decisions
 
     attr_reader completions: OpenAI::Resources::Completions
 
@@ -44,6 +46,8 @@ module OpenAI
 
     attr_reader vector_stores: OpenAI::Resources::VectorStores
 
+    attr_reader safety: OpenAI::Resources::Safety
+
     attr_reader webhooks: OpenAI::Resources::Webhooks
 
     attr_reader beta: OpenAI::Resources::Beta
@@ -55,6 +59,8 @@ module OpenAI
     attr_reader admin: OpenAI::Resources::Admin
 
     attr_reader responses: OpenAI::Resources::Responses
+
+    attr_reader live: OpenAI::Resources::Live
 
     attr_reader realtime: OpenAI::Resources::Realtime
 
@@ -76,25 +82,26 @@ module OpenAI
 
     private def admin_api_key_auth: -> ::Hash[String, String]
 
-    private def prepare_request: (
-      OpenAI::Internal::Transport::BaseClient::request_input request,
-      redirect_count: Integer,
-      retry_count: Integer
-    ) -> OpenAI::Internal::Transport::BaseClient::request_input
-
     def initialize: (
       ?api_key: String?,
       ?admin_api_key: String?,
-      ?workload_identity: untyped?,
+      ?workload_identity: (OpenAI::Auth::WorkloadIdentity
+      | OpenAI::Auth::X509WorkloadIdentity)?,
       ?organization: String?,
       ?project: String?,
       ?webhook_secret: String?,
       ?provider: OpenAI::Provider?,
       ?base_url: String?,
+      ?data_residency: (Symbol | String)?,
+      ?default_headers: ::Hash[String, String?]?,
       ?max_retries: Integer,
-      ?timeout: Float,
+      ?timeout: Float?,
       ?initial_retry_delay: Float,
-      ?max_retry_delay: Float
+      ?max_retry_delay: Float,
+      ?http_client: OpenAI::_HTTPClient?,
+      ?logger: OpenAI::_Logger?,
+      ?log_level: (Symbol | String)?,
+      ?on_retry: (^(OpenAI::RetryEvent) -> void)?
     ) -> void
   end
 end

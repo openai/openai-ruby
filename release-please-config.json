@@ -62,6 +62,7 @@
   "release-type": "ruby",
   "version-file": "lib/openai/version.rb",
   "extra-files": [
-    "README.md"
+    "README.md",
+    "gemfiles/bedrock.gemfile.lock"
   ]
 }

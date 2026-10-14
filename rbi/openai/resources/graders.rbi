@@ -2,7 +2,9 @@
 
 module OpenAI
   module Resources
+
     class Graders
+
       sig { returns(OpenAI::Resources::Graders::GraderModels) }
       attr_reader :grader_models
 
@@ -11,5 +13,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

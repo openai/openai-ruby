@@ -25,11 +25,14 @@ module OpenAI
         # @!method initialize(outcome:, stderr:, stdout:)
         #   Captured stdout and stderr for a portion of a shell tool call output.
         #
-        #   @param outcome [OpenAI::Models::Responses::ResponseFunctionShellCallOutputContent::Outcome::Timeout, OpenAI::Models::Responses::ResponseFunctionShellCallOutputContent::Outcome::Exit] The exit or timeout outcome associated with this shell call.
+        #   @param outcome [OpenAI::Models::Responses::ResponseFunctionShellCallOutputContent::Outcome::Timeout, OpenAI::Models::Responses::ResponseFunctionShellCallOutputContent::Outcome::Exit]
+        #     The exit or timeout outcome associated with this shell call.
         #
-        #   @param stderr [String] Captured stderr output for the shell call.
+        #   @param stderr [String]
+        #     Captured stderr output for the shell call.
         #
-        #   @param stdout [String] Captured stdout output for the shell call.
+        #   @param stdout [String]
+        #     Captured stdout output for the shell call.
 
         # The exit or timeout outcome associated with this shell call.
         #
@@ -55,7 +58,8 @@ module OpenAI
             # @!method initialize(type: :timeout)
             #   Indicates that the shell call exceeded its configured time limit.
             #
-            #   @param type [Symbol, :timeout] The outcome type. Always `timeout`.
+            #   @param type [Symbol, :timeout]
+            #     The outcome type. Always `timeout`.
           end
 
           class Exit < OpenAI::Internal::Type::BaseModel
@@ -74,9 +78,11 @@ module OpenAI
             # @!method initialize(exit_code:, type: :exit)
             #   Indicates that the shell commands finished and returned an exit code.
             #
-            #   @param exit_code [Integer] The exit code returned by the shell process.
+            #   @param exit_code [Integer]
+            #     The exit code returned by the shell process.
             #
-            #   @param type [Symbol, :exit] The outcome type. Always `exit`.
+            #   @param type [Symbol, :exit]
+            #     The outcome type. Always `exit`.
           end
 
           # @!method self.variants

@@ -1,0 +1,42 @@
+module OpenAI
+  module Auth
+    module SubjectTokenProviders
+      class K8sServiceAccountTokenProvider
+        include OpenAI::Auth::SubjectTokenProvider
+
+        def initialize: (?token_path: String) -> void
+
+        def token_type: -> Symbol
+
+        def get_token: -> String
+      end
+
+      class AzureManagedIdentityTokenProvider
+        include OpenAI::Auth::SubjectTokenProvider
+
+        def initialize: (
+          ?resource: String,
+          ?object_id: String?,
+          ?client_id: String?,
+          ?msi_res_id: String?,
+          ?api_version: String,
+          ?timeout: Float
+        ) -> void
+
+        def token_type: -> Symbol
+
+        def get_token: -> String
+      end
+
+      class GCPIDTokenProvider
+        include OpenAI::Auth::SubjectTokenProvider
+
+        def initialize: (?audience: String, ?timeout: Float) -> void
+
+        def token_type: -> Symbol
+
+        def get_token: -> String
+      end
+    end
+  end
+end

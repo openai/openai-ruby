@@ -2,8 +2,12 @@ module OpenAI
   module Models
     module FineTuning
       type job_list_events_params =
-        { fine_tuning_job_id: String, after: String, limit: Integer }
-        & OpenAI::Internal::Type::request_parameters
+        {
+          fine_tuning_job_id: String,
+          ?after: String,
+          ?limit: Integer,
+          ?request_options: OpenAI::request_opts
+        }
 
       class JobListEventsParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -11,14 +15,22 @@ module OpenAI
 
         attr_accessor fine_tuning_job_id: String
 
+        # Identifier for the last event from the previous pagination request.
         attr_reader after: String?
 
+        # Identifier for the last event from the previous pagination request.
         def after=: (String) -> String
 
+        # Number of events to retrieve.
         attr_reader limit: Integer?
 
+        # Number of events to retrieve.
         def limit=: (Integer) -> Integer
 
+        # @param after
+        #   Identifier for the last event from the previous pagination request.
+        # @param limit
+        #   Number of events to retrieve.
         def initialize: (
           fine_tuning_job_id: String,
           ?after: String,
@@ -28,9 +40,9 @@ module OpenAI
 
         def to_hash: -> {
           fine_tuning_job_id: String,
-          after: String,
-          limit: Integer,
-          request_options: OpenAI::RequestOptions
+          ?after: String,
+          ?limit: Integer,
+          ?request_options: OpenAI::RequestOptions
         }
       end
     end

@@ -21,7 +21,10 @@ module OpenAI
           optional :external_key_id, String, nil?: true
 
           # @!attribute geography
-          #   Geography for the project.
+          #   @deprecated
+          #
+          #   Geography for the project. Deprecated: use `residency` when creating a project
+          #   to configure data residency. This field is retained for backward compatibility.
           #
           #   @return [String, nil]
           optional :geography, String, nil?: true
@@ -35,11 +38,15 @@ module OpenAI
           # @!method initialize(project_id:, external_key_id: nil, geography: nil, name: nil, request_options: {})
           #   @param project_id [String]
           #
-          #   @param external_key_id [String, nil] External key ID to associate with the project.
+          #   @param external_key_id [String, nil]
+          #     External key ID to associate with the project.
           #
-          #   @param geography [String, nil] Geography for the project.
+          #   @param geography [String, nil]
+          #     Geography for the project. Deprecated: use `residency` when creating a project
+          #     to configure data residency. This field is retained for backward compatibility.
           #
-          #   @param name [String, nil] The updated name of the project, this name appears in reports.
+          #   @param name [String, nil]
+          #     The updated name of the project, this name appears in reports.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end

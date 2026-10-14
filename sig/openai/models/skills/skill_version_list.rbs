@@ -9,20 +9,35 @@ module OpenAI
           first_id: String?,
           has_more: bool,
           last_id: String?,
-          object: :list
+          ?object: :list
         }
 
       class SkillVersionList < OpenAI::Internal::Type::BaseModel
+        # A list of items
         attr_accessor data: ::Array[OpenAI::Skills::SkillVersion]
 
+        # The ID of the first item in the list.
         attr_accessor first_id: String?
 
+        # Whether there are more items available.
         attr_accessor has_more: bool
 
+        # The ID of the last item in the list.
         attr_accessor last_id: String?
 
+        # The type of object returned, must be `list`.
         attr_accessor object: :list
 
+        # @param data
+        #   A list of items
+        # @param first_id
+        #   The ID of the first item in the list.
+        # @param has_more
+        #   Whether there are more items available.
+        # @param last_id
+        #   The ID of the last item in the list.
+        # @param object
+        #   The type of object returned, must be `list`.
         def initialize: (
           data: ::Array[OpenAI::Skills::SkillVersion],
           first_id: String?,
@@ -36,7 +51,7 @@ module OpenAI
           first_id: String?,
           has_more: bool,
           last_id: String?,
-          object: :list
+          ?object: :list
         }
       end
     end

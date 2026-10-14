@@ -29,13 +29,17 @@ module OpenAI
         required :type, const: :inline
 
         # @!method initialize(description:, name:, source:, type: :inline)
-        #   @param description [String] The description of the skill.
+        #   @param description [String]
+        #     The description of the skill.
         #
-        #   @param name [String] The name of the skill.
+        #   @param name [String]
+        #     The name of the skill.
         #
-        #   @param source [OpenAI::Models::Beta::BetaInlineSkillSource] Inline skill payload
+        #   @param source [OpenAI::Models::Beta::BetaInlineSkillSource]
+        #     Inline skill payload
         #
-        #   @param type [Symbol, :inline] Defines an inline skill for this request.
+        #   @param type [Symbol, :inline]
+        #     Defines an inline skill for this request.
       end
     end
 

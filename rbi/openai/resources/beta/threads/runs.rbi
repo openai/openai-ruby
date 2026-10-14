@@ -2,10 +2,14 @@
 
 module OpenAI
   module Resources
+
     class Beta
+
       class Threads
+
         # Build Assistants that can call models and use tools.
         class Runs
+
           # Build Assistants that can call models and use tools.
           sig { returns(OpenAI::Resources::Beta::Threads::Runs::Steps) }
           attr_reader :steps
@@ -14,19 +18,15 @@ module OpenAI
           # counterpart.
           #
           # Create a run.
-          sig do
+          sig {
             params(
               thread_id: String,
               assistant_id: String,
-              include:
-                T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol],
+              include: T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol],
               additional_instructions: T.nilable(String),
-              additional_messages:
-                T.nilable(
-                  T::Array[
-                    OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::OrHash
-                  ]
-                ),
+              additional_messages: T.nilable(
+                T::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::OrHash]
+              ),
               instructions: T.nilable(String),
               max_completion_tokens: T.nilable(Integer),
               max_prompt_tokens: T.nilable(Integer),
@@ -34,48 +34,43 @@ module OpenAI
               model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
               parallel_tool_calls: T::Boolean,
               reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
-              response_format:
-                T.nilable(
-                  T.any(
-                    Symbol,
-                    OpenAI::ResponseFormatText::OrHash,
-                    OpenAI::ResponseFormatJSONObject::OrHash,
-                    OpenAI::ResponseFormatJSONSchema::OrHash
-                  )
-                ),
+              response_format: T.nilable(
+                T.any(
+                  Symbol,
+                  OpenAI::ResponseFormatText::OrHash,
+                  OpenAI::ResponseFormatJSONObject::OrHash,
+                  OpenAI::ResponseFormatJSONSchema::OrHash
+                )
+              ),
               temperature: T.nilable(Float),
-              tool_choice:
-                T.nilable(
+              tool_choice: T.nilable(
+                T.any(
+                  OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
+                  OpenAI::Beta::AssistantToolChoice::OrHash
+                )
+              ),
+              tools: T.nilable(
+                T::Array[
                   T.any(
-                    OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                    OpenAI::Beta::AssistantToolChoice::OrHash
+                    OpenAI::Beta::CodeInterpreterTool::OrHash,
+                    OpenAI::Beta::FileSearchTool::OrHash,
+                    OpenAI::Beta::FunctionTool::OrHash
                   )
-                ),
-              tools:
-                T.nilable(
-                  T::Array[
-                    T.any(
-                      OpenAI::Beta::CodeInterpreterTool::OrHash,
-                      OpenAI::Beta::FileSearchTool::OrHash,
-                      OpenAI::Beta::FunctionTool::OrHash
-                    )
-                  ]
-                ),
+                ]
+              ),
               top_p: T.nilable(Float),
-              truncation_strategy:
-                T.nilable(
-                  OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::OrHash
-                ),
+              truncation_strategy: T.nilable(OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::OrHash),
               stream: T.noreturn,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Beta::Threads::Run)
-          end
+            )
+              .returns(OpenAI::Beta::Threads::Run)
+          }
           def create(
             # Path param: The ID of the thread to run.
             thread_id,
             # Body param: The ID of the
-            # [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
-            # execute this run.
+            # [assistant](https://developers.openai.com/api/docs/assistants/migration) to use
+            # to execute this run.
             assistant_id:,
             # Query param: A list of additional fields to include in the response. Currently
             # the only supported value is
@@ -83,7 +78,7 @@ module OpenAI
             # search result content.
             #
             # See the
-            # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+            # [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
             # for more information.
             include: nil,
             # Body param: Appends additional instructions at the end of the instructions for
@@ -93,8 +88,8 @@ module OpenAI
             # Body param: Adds additional messages to the thread before creating the run.
             additional_messages: nil,
             # Body param: Overrides the
-            # [instructions](https://platform.openai.com/docs/api-reference/assistants/createAssistant)
-            # of the assistant. This is useful for modifying the behavior on a per-run basis.
+            # [instructions](https://developers.openai.com/api/docs/assistants/migration) of
+            # the assistant. This is useful for modifying the behavior on a per-run basis.
             instructions: nil,
             # Body param: The maximum number of completion tokens that may be used over the
             # course of the run. The run will make a best effort to use only the number of
@@ -116,31 +111,32 @@ module OpenAI
             # a maximum length of 512 characters.
             metadata: nil,
             # Body param: The ID of the
-            # [Model](https://platform.openai.com/docs/api-reference/models) to be used to
-            # execute this run. If a value is provided here, it will override the model
+            # [Model](https://developers.openai.com/api/reference/resources/models) to be used
+            # to execute this run. If a value is provided here, it will override the model
             # associated with the assistant. If not, the model associated with the assistant
             # will be used.
             model: nil,
             # Body param: Whether to enable
-            # [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
+            # [parallel function calling](https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling)
             # during tool use.
             parallel_tool_calls: nil,
             # Body param: Constrains effort on reasoning for reasoning models. Currently
             # supported values are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and
             # `max`. Reducing reasoning effort can result in faster responses and fewer tokens
             # used on reasoning in a response. Not all reasoning models support every value.
-            # See the [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+            # See the
+            # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
             # model-specific support.
             reasoning_effort: nil,
             # Body param: Specifies the format that the model must output. Compatible with
-            # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
-            # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
-            # and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+            # [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+            # [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+            # all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
             #
             # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
             # Outputs which ensures the model will match your supplied JSON schema. Learn more
             # in the
-            # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+            # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
             #
             # Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
             # message the model generates is valid JSON.
@@ -190,19 +186,15 @@ module OpenAI
           # counterpart.
           #
           # Create a run.
-          sig do
+          sig {
             params(
               thread_id: String,
               assistant_id: String,
-              include:
-                T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol],
+              include: T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol],
               additional_instructions: T.nilable(String),
-              additional_messages:
-                T.nilable(
-                  T::Array[
-                    OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::OrHash
-                  ]
-                ),
+              additional_messages: T.nilable(
+                T::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::OrHash]
+              ),
               instructions: T.nilable(String),
               max_completion_tokens: T.nilable(Integer),
               max_prompt_tokens: T.nilable(Integer),
@@ -210,52 +202,43 @@ module OpenAI
               model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
               parallel_tool_calls: T::Boolean,
               reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
-              response_format:
-                T.nilable(
-                  T.any(
-                    Symbol,
-                    OpenAI::ResponseFormatText::OrHash,
-                    OpenAI::ResponseFormatJSONObject::OrHash,
-                    OpenAI::ResponseFormatJSONSchema::OrHash
-                  )
-                ),
+              response_format: T.nilable(
+                T.any(
+                  Symbol,
+                  OpenAI::ResponseFormatText::OrHash,
+                  OpenAI::ResponseFormatJSONObject::OrHash,
+                  OpenAI::ResponseFormatJSONSchema::OrHash
+                )
+              ),
               temperature: T.nilable(Float),
-              tool_choice:
-                T.nilable(
+              tool_choice: T.nilable(
+                T.any(
+                  OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
+                  OpenAI::Beta::AssistantToolChoice::OrHash
+                )
+              ),
+              tools: T.nilable(
+                T::Array[
                   T.any(
-                    OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                    OpenAI::Beta::AssistantToolChoice::OrHash
+                    OpenAI::Beta::CodeInterpreterTool::OrHash,
+                    OpenAI::Beta::FileSearchTool::OrHash,
+                    OpenAI::Beta::FunctionTool::OrHash
                   )
-                ),
-              tools:
-                T.nilable(
-                  T::Array[
-                    T.any(
-                      OpenAI::Beta::CodeInterpreterTool::OrHash,
-                      OpenAI::Beta::FileSearchTool::OrHash,
-                      OpenAI::Beta::FunctionTool::OrHash
-                    )
-                  ]
-                ),
+                ]
+              ),
               top_p: T.nilable(Float),
-              truncation_strategy:
-                T.nilable(
-                  OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::OrHash
-                ),
+              truncation_strategy: T.nilable(OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::OrHash),
               stream: T.noreturn,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::Stream[
-                OpenAI::Beta::AssistantStreamEvent::Variants
-              ]
             )
-          end
+              .returns(OpenAI::Internal::Stream[OpenAI::Beta::AssistantStreamEvent::Variants])
+          }
           def create_stream_raw(
             # Path param: The ID of the thread to run.
             thread_id,
             # Body param: The ID of the
-            # [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
-            # execute this run.
+            # [assistant](https://developers.openai.com/api/docs/assistants/migration) to use
+            # to execute this run.
             assistant_id:,
             # Query param: A list of additional fields to include in the response. Currently
             # the only supported value is
@@ -263,7 +246,7 @@ module OpenAI
             # search result content.
             #
             # See the
-            # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+            # [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
             # for more information.
             include: nil,
             # Body param: Appends additional instructions at the end of the instructions for
@@ -273,8 +256,8 @@ module OpenAI
             # Body param: Adds additional messages to the thread before creating the run.
             additional_messages: nil,
             # Body param: Overrides the
-            # [instructions](https://platform.openai.com/docs/api-reference/assistants/createAssistant)
-            # of the assistant. This is useful for modifying the behavior on a per-run basis.
+            # [instructions](https://developers.openai.com/api/docs/assistants/migration) of
+            # the assistant. This is useful for modifying the behavior on a per-run basis.
             instructions: nil,
             # Body param: The maximum number of completion tokens that may be used over the
             # course of the run. The run will make a best effort to use only the number of
@@ -296,31 +279,32 @@ module OpenAI
             # a maximum length of 512 characters.
             metadata: nil,
             # Body param: The ID of the
-            # [Model](https://platform.openai.com/docs/api-reference/models) to be used to
-            # execute this run. If a value is provided here, it will override the model
+            # [Model](https://developers.openai.com/api/reference/resources/models) to be used
+            # to execute this run. If a value is provided here, it will override the model
             # associated with the assistant. If not, the model associated with the assistant
             # will be used.
             model: nil,
             # Body param: Whether to enable
-            # [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
+            # [parallel function calling](https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling)
             # during tool use.
             parallel_tool_calls: nil,
             # Body param: Constrains effort on reasoning for reasoning models. Currently
             # supported values are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and
             # `max`. Reducing reasoning effort can result in faster responses and fewer tokens
             # used on reasoning in a response. Not all reasoning models support every value.
-            # See the [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+            # See the
+            # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
             # model-specific support.
             reasoning_effort: nil,
             # Body param: Specifies the format that the model must output. Compatible with
-            # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
-            # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
-            # and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+            # [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+            # [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+            # all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
             #
             # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
             # Outputs which ensures the model will match your supplied JSON schema. Learn more
             # in the
-            # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+            # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
             #
             # Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
             # message the model generates is valid JSON.
@@ -367,37 +351,38 @@ module OpenAI
           end
 
           # Retrieves a run.
-          sig do
-            params(
-              run_id: String,
-              thread_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Beta::Threads::Run)
-          end
+          sig {
+            params(run_id: String, thread_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Beta::Threads::Run
+            )
+          }
           def retrieve(
             # The ID of the run to retrieve.
             run_id,
-            # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
-            # that was run.
+            # The ID of the
+            # [thread](https://developers.openai.com/api/docs/assistants/migration) that was
+            # run.
             thread_id:,
             request_options: {}
           )
           end
 
           # Modifies a run.
-          sig do
+          sig {
             params(
               run_id: String,
               thread_id: String,
               metadata: T.nilable(T::Hash[Symbol, String]),
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Beta::Threads::Run)
-          end
+            )
+              .returns(OpenAI::Beta::Threads::Run)
+          }
           def update(
             # Path param: The ID of the run to modify.
             run_id,
             # Path param: The ID of the
-            # [thread](https://platform.openai.com/docs/api-reference/threads) that was run.
+            # [thread](https://developers.openai.com/api/docs/assistants/migration) that was
+            # run.
             thread_id:,
             # Body param: Set of 16 key-value pairs that can be attached to an object. This
             # can be useful for storing additional information about the object in a
@@ -411,7 +396,7 @@ module OpenAI
           end
 
           # Returns a list of runs belonging to a thread.
-          sig do
+          sig {
             params(
               thread_id: String,
               after: String,
@@ -419,8 +404,9 @@ module OpenAI
               limit: Integer,
               order: OpenAI::Beta::Threads::RunListParams::Order::OrSymbol,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Internal::CursorPage[OpenAI::Beta::Threads::Run])
-          end
+            )
+              .returns(OpenAI::Internal::CursorPage[OpenAI::Beta::Threads::Run])
+          }
           def list(
             # The ID of the thread the run belongs to.
             thread_id,
@@ -445,13 +431,11 @@ module OpenAI
           end
 
           # Cancels a run that is `in_progress`.
-          sig do
-            params(
-              run_id: String,
-              thread_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Beta::Threads::Run)
-          end
+          sig {
+            params(run_id: String, thread_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Beta::Threads::Run
+            )
+          }
           def cancel(
             # The ID of the run to cancel.
             run_id,
@@ -468,24 +452,22 @@ module OpenAI
           # `submit_tool_outputs`, this endpoint can be used to submit the outputs from the
           # tool calls once they're all completed. All outputs must be submitted in a single
           # request.
-          sig do
+          sig {
             params(
               run_id: String,
               thread_id: String,
-              tool_outputs:
-                T::Array[
-                  OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput::OrHash
-                ],
+              tool_outputs: T::Array[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput::OrHash],
               stream: T.noreturn,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Beta::Threads::Run)
-          end
+            )
+              .returns(OpenAI::Beta::Threads::Run)
+          }
           def submit_tool_outputs(
             # Path param: The ID of the run that requires the tool output submission.
             run_id,
             # Path param: The ID of the
-            # [thread](https://platform.openai.com/docs/api-reference/threads) to which this
-            # run belongs.
+            # [thread](https://developers.openai.com/api/docs/assistants/migration) to which
+            # this run belongs.
             thread_id:,
             # Body param: A list of tools for which the outputs are being submitted.
             tool_outputs:,
@@ -504,28 +486,22 @@ module OpenAI
           # `submit_tool_outputs`, this endpoint can be used to submit the outputs from the
           # tool calls once they're all completed. All outputs must be submitted in a single
           # request.
-          sig do
+          sig {
             params(
               run_id: String,
               thread_id: String,
-              tool_outputs:
-                T::Array[
-                  OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput::OrHash
-                ],
+              tool_outputs: T::Array[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput::OrHash],
               stream: T.noreturn,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::Stream[
-                OpenAI::Beta::AssistantStreamEvent::Variants
-              ]
             )
-          end
+              .returns(OpenAI::Internal::Stream[OpenAI::Beta::AssistantStreamEvent::Variants])
+          }
           def submit_tool_outputs_stream_raw(
             # Path param: The ID of the run that requires the tool output submission.
             run_id,
             # Path param: The ID of the
-            # [thread](https://platform.openai.com/docs/api-reference/threads) to which this
-            # run belongs.
+            # [thread](https://developers.openai.com/api/docs/assistants/migration) to which
+            # this run belongs.
             thread_id:,
             # Body param: A list of tools for which the outputs are being submitted.
             tool_outputs:,
@@ -542,7 +518,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

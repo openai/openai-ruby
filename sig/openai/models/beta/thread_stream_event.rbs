@@ -2,17 +2,30 @@ module OpenAI
   module Models
     module Beta
       type thread_stream_event =
-        { data: OpenAI::Beta::Thread, event: :"thread.created", enabled: bool }
+        {
+          data: OpenAI::Beta::Thread,
+          ?event: :"thread.created",
+          ?enabled: bool
+        }
 
       class ThreadStreamEvent < OpenAI::Internal::Type::BaseModel
+        # Represents a thread that contains
+        # [messages](https://developers.openai.com/api/docs/assistants/migration).
         attr_accessor data: OpenAI::Beta::Thread
 
         attr_accessor event: :"thread.created"
 
+        # Whether to enable input audio transcription.
         attr_reader enabled: bool?
 
+        # Whether to enable input audio transcription.
         def enabled=: (bool) -> bool
 
+        # @param data
+        #   Represents a thread that contains
+        #   [messages](https://developers.openai.com/api/docs/assistants/migration).
+        # @param enabled
+        #   Whether to enable input audio transcription.
         def initialize: (
           data: OpenAI::Beta::Thread,
           ?enabled: bool,
@@ -21,8 +34,8 @@ module OpenAI
 
         def to_hash: -> {
           data: OpenAI::Beta::Thread,
-          event: :"thread.created",
-          enabled: bool
+          ?event: :"thread.created",
+          ?enabled: bool
         }
       end
     end

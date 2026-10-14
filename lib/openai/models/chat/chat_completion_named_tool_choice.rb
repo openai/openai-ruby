@@ -21,7 +21,8 @@ module OpenAI
         #
         #   @param function [OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function]
         #
-        #   @param type [Symbol, :function] For function calling, the type is always `function`.
+        #   @param type [Symbol, :function]
+        #     For function calling, the type is always `function`.
 
         # @see OpenAI::Models::Chat::ChatCompletionNamedToolChoice#function
         class Function < OpenAI::Internal::Type::BaseModel
@@ -32,7 +33,8 @@ module OpenAI
           required :name, String
 
           # @!method initialize(name:)
-          #   @param name [String] The name of the function to call.
+          #   @param name [String]
+          #     The name of the function to call.
         end
       end
     end

@@ -44,21 +44,31 @@ module OpenAI
         required :tool_resources, -> { OpenAI::Beta::Thread::ToolResources }, nil?: true
 
         # @!method initialize(id:, created_at:, metadata:, tool_resources:, object: :thread)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::Thread} for more details.
-        #
         #   Represents a thread that contains
-        #   [messages](https://platform.openai.com/docs/api-reference/messages).
+        #   [messages](https://developers.openai.com/api/docs/assistants/migration).
         #
-        #   @param id [String] The identifier, which can be referenced in API endpoints.
+        #   @param id [String]
+        #     The identifier, which can be referenced in API endpoints.
         #
-        #   @param created_at [Integer] The Unix timestamp (in seconds) for when the thread was created.
+        #   @param created_at [Integer]
+        #     The Unix timestamp (in seconds) for when the thread was created.
         #
-        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #     Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #     for storing additional information about the object in a structured format, and
+        #     querying for objects via API or the dashboard.
         #
-        #   @param tool_resources [OpenAI::Models::Beta::Thread::ToolResources, nil] A set of resources that are made available to the assistant's tools in this thre
+        #     Keys are strings with a maximum length of 64 characters. Values are strings with
+        #     a maximum length of 512 characters.
         #
-        #   @param object [Symbol, :thread] The object type, which is always `thread`.
+        #   @param tool_resources [OpenAI::Models::Beta::Thread::ToolResources, nil]
+        #     A set of resources that are made available to the assistant's tools in this
+        #     thread. The resources are specific to the type of tool. For example, the
+        #     `code_interpreter` tool requires a list of file IDs, while the `file_search`
+        #     tool requires a list of vector store IDs.
+        #
+        #   @param object [Symbol, :thread]
+        #     The object type, which is always `thread`.
 
         # @see OpenAI::Models::Beta::Thread#tool_resources
         class ToolResources < OpenAI::Internal::Type::BaseModel
@@ -84,25 +94,25 @@ module OpenAI
           # @see OpenAI::Models::Beta::Thread::ToolResources#code_interpreter
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             # @!attribute file_ids
-            #   A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
-            #   available to the `code_interpreter` tool. There can be a maximum of 20 files
-            #   associated with the tool.
+            #   A list of [file](https://developers.openai.com/api/reference/resources/files)
+            #   IDs made available to the `code_interpreter` tool. There can be a maximum of 20
+            #   files associated with the tool.
             #
             #   @return [Array<String>, nil]
             optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!method initialize(file_ids: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter} for more details.
-            #
-            #   @param file_ids [Array<String>] A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
+            #   @param file_ids [Array<String>]
+            #     A list of [file](https://developers.openai.com/api/reference/resources/files)
+            #     IDs made available to the `code_interpreter` tool. There can be a maximum of 20
+            #     files associated with the tool.
           end
 
           # @see OpenAI::Models::Beta::Thread::ToolResources#file_search
           class FileSearch < OpenAI::Internal::Type::BaseModel
             # @!attribute vector_store_ids
             #   The
-            #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+            #   [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
             #   attached to this thread. There can be a maximum of 1 vector store attached to
             #   the thread.
             #
@@ -110,10 +120,11 @@ module OpenAI
             optional :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!method initialize(vector_store_ids: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::Thread::ToolResources::FileSearch} for more details.
-            #
-            #   @param vector_store_ids [Array<String>] The [vector store](https://platform.openai.com/docs/api-reference/vector-stores/
+            #   @param vector_store_ids [Array<String>]
+            #     The
+            #     [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+            #     attached to this thread. There can be a maximum of 1 vector store attached to
+            #     the thread.
           end
         end
       end

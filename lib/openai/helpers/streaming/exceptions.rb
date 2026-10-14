@@ -3,7 +3,8 @@
 module OpenAI
   module Helpers
     module Streaming
-      class StreamError < StandardError; end
+      class StreamError < StandardError
+      end
 
       class LengthFinishReasonError < StreamError
         attr_reader :completion

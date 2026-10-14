@@ -14,7 +14,8 @@ module OpenAI
         #   Specifying a particular function via `{"name": "my_function"}` forces the model
         #   to call that function.
         #
-        #   @param name [String] The name of the function to call.
+        #   @param name [String]
+        #     The name of the function to call.
       end
     end
 

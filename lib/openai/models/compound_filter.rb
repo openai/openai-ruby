@@ -17,14 +17,14 @@ module OpenAI
       required :type, enum: -> { OpenAI::CompoundFilter::Type }
 
       # @!method initialize(filters:, type:)
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::CompoundFilter} for more details.
-      #
       #   Combine multiple filters using `and` or `or`.
       #
-      #   @param filters [Array<OpenAI::Models::ComparisonFilter, Object>] Array of filters to combine. Items can be `ComparisonFilter` or `CompoundFilter`
+      #   @param filters [Array<OpenAI::Models::ComparisonFilter, Object>]
+      #     Array of filters to combine. Items can be `ComparisonFilter` or
+      #     `CompoundFilter`.
       #
-      #   @param type [Symbol, OpenAI::Models::CompoundFilter::Type] Type of operation: `and` or `or`.
+      #   @param type [Symbol, OpenAI::Models::CompoundFilter::Type]
+      #     Type of operation: `and` or `or`.
 
       # A filter used to compare a specified attribute key to a given value using a
       # defined comparison operation.

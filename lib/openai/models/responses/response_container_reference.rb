@@ -20,7 +20,8 @@ module OpenAI
         #
         #   @param container_id [String]
         #
-        #   @param type [Symbol, :container_reference] The environment type. Always `container_reference`.
+        #   @param type [Symbol, :container_reference]
+        #     The environment type. Always `container_reference`.
       end
     end
   end
