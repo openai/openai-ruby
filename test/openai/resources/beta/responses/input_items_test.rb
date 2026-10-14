@@ -177,6 +177,7 @@ class OpenAI::Test::Resources::Beta::Responses::InputItemsTest < OpenAI::Test::R
             action: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Action | nil,
             agent: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Agent | nil,
             background: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Background | nil,
+            error: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Error | nil,
             output_format: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::OutputFormat | nil,
             quality: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Quality | nil,
             revised_prompt: String | nil,

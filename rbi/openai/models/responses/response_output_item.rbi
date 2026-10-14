@@ -357,6 +357,13 @@ module OpenAI
           }
           attr_accessor :background
 
+          # Details of a moderation failure, when available.
+          sig { returns(T.nilable(OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error)) }
+          attr_reader :error
+
+          sig { params(error: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::OrHash).void }
+          attr_writer :error
+
           # The output format used for generation.
           sig {
             returns(T.nilable(OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::OutputFormat::TaggedSymbol))
@@ -390,6 +397,8 @@ module OpenAI
 
               background: T.nilable(OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Background::OrSymbol),
 
+              error: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::OrHash,
+
               output_format: T.nilable(
                 OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::OutputFormat::OrSymbol
               ),
@@ -421,6 +430,9 @@ module OpenAI
             # The background setting used for generation.
             background: nil,
 
+            # Details of a moderation failure, when available.
+            error: nil,
+
             # The output format used for generation.
             output_format: nil,
 
@@ -451,6 +463,7 @@ module OpenAI
                 background: T.nilable(
                   OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Background::TaggedSymbol
                 ),
+                error: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error,
                 output_format: T.nilable(
                   OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::OutputFormat::TaggedSymbol
                 ),
@@ -545,6 +558,184 @@ module OpenAI
               )
             }
             def self.values
+            end
+          end
+
+          class Error < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The error code.
+            sig { returns(T.nilable(String)) }
+            attr_accessor :code
+
+            # A description of the error.
+            sig { returns(String) }
+            attr_accessor :message
+
+            # The related request parameter.
+            sig { returns(T.nilable(String)) }
+            attr_accessor :param
+
+            # The error type.
+            sig { returns(String) }
+            attr_accessor :type
+
+            # Public details for a `moderation_blocked` error, when available.
+            sig {
+              returns(T.nilable(OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails))
+            }
+            attr_reader :moderation_details
+
+            sig {
+              params(
+                moderation_details: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::OrHash
+              )
+                .void
+            }
+            attr_writer :moderation_details
+
+            # Details of a moderation failure, when available.
+            sig do
+              params(
+
+                code: T.nilable(String),
+
+                message: String,
+
+                param: T.nilable(String),
+
+                type: String,
+
+                moderation_details: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::OrHash
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The error code.
+              code:,
+
+              # A description of the error.
+              message:,
+
+              # The related request parameter.
+              param:,
+
+              # The error type.
+              type:,
+
+              # Public details for a `moderation_blocked` error, when available.
+
+              moderation_details: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  code: T.nilable(String),
+                  message: String,
+                  param: T.nilable(String),
+                  type: String,
+                  moderation_details: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails
+                }
+              )
+            end
+            def to_hash
+            end
+
+            class ModerationDetails < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # Public moderation categories. New category values may be added over time.
+              sig { returns(T::Array[String]) }
+              attr_accessor :categories
+
+              # The stage where moderation blocked the image generation call.
+              sig {
+                returns(
+                  OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage::TaggedSymbol
+                )
+              }
+              attr_accessor :moderation_stage
+
+              # Public details for a `moderation_blocked` error, when available.
+              sig do
+                params(
+
+                  categories: T::Array[String],
+
+                  moderation_stage: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage::OrSymbol
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # Public moderation categories. New category values may be added over time.
+                categories:,
+
+                # The stage where moderation blocked the image generation call.
+
+                moderation_stage:
+              )
+              end
+
+              sig do
+                override.returns(
+                  {
+                    categories: T::Array[String],
+                    moderation_stage: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage::TaggedSymbol
+                  }
+                )
+              end
+              def to_hash
+              end
+
+              # The stage where moderation blocked the image generation call.
+              module ModerationStage
+                extend OpenAI::Internal::Type::Enum
+
+                TaggedSymbol = T.type_alias {
+                  T.all(
+                    Symbol,
+                    OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage
+                  )
+                }
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                INPUT = T.let(
+                  :input,
+                  OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage::TaggedSymbol
+                )
+                OUTPUT = T.let(
+                  :output,
+                  OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage::TaggedSymbol
+                )
+                UNKNOWN = T.let(
+                  :unknown,
+                  OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage::TaggedSymbol
+                )
+
+                sig {
+                  override.returns(
+                    T::Array[
+                      OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage::TaggedSymbol
+                    ]
+                  )
+                }
+                def self.values
+                end
+              end
             end
           end
 

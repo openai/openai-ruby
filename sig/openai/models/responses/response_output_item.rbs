@@ -226,6 +226,7 @@ module OpenAI
             ?type: :image_generation_call,
             ?action: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::action?,
             ?background: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::background?,
+            ?error: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error,
             ?output_format: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::output_format?,
             ?quality: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::quality?,
             ?revised_prompt: String?,
@@ -251,6 +252,14 @@ module OpenAI
           # The background setting used for generation.
           attr_accessor background: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::background?
 
+          # Details of a moderation failure, when available.
+          attr_reader error: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error?
+
+          # Details of a moderation failure, when available.
+          def error=: (
+            OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error
+          ) -> OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error
+
           # The output format used for generation.
           attr_accessor output_format: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::output_format?
 
@@ -274,6 +283,8 @@ module OpenAI
           #   The action used for image generation.
           # @param background
           #   The background setting used for generation.
+          # @param error
+          #   Details of a moderation failure, when available.
           # @param output_format
           #   The output format used for generation.
           # @param quality
@@ -291,6 +302,7 @@ module OpenAI
             status: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::status,
             ?action: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::action?,
             ?background: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::background?,
+            ?error: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error,
             ?output_format: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::output_format?,
             ?quality: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::quality?,
             ?revised_prompt: String?,
@@ -305,6 +317,7 @@ module OpenAI
             ?type: :image_generation_call,
             ?action: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::action?,
             ?background: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::background?,
+            ?error: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error,
             ?output_format: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::output_format?,
             ?quality: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::quality?,
             ?revised_prompt: String?,
@@ -346,6 +359,103 @@ module OpenAI
             AUTO: :auto
 
             def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::background]
+          end
+
+          type error =
+            {
+              code: String?,
+              message: String,
+              param: String?,
+              type: String,
+              ?moderation_details: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails
+            }
+
+          class Error < OpenAI::Internal::Type::BaseModel
+            # The error code.
+            attr_accessor code: String?
+
+            # A description of the error.
+            attr_accessor message: String
+
+            # The related request parameter.
+            attr_accessor param: String?
+
+            # The error type.
+            attr_accessor type: String
+
+            # Public details for a `moderation_blocked` error, when available.
+            attr_reader moderation_details: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails?
+
+            # Public details for a `moderation_blocked` error, when available.
+            def moderation_details=: (
+              OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails
+            ) -> OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails
+
+            # @param code
+            #   The error code.
+            # @param message
+            #   A description of the error.
+            # @param param
+            #   The related request parameter.
+            # @param type
+            #   The error type.
+            # @param moderation_details
+            #   Public details for a `moderation_blocked` error, when available.
+            def initialize: (
+              code: String?,
+              message: String,
+              param: String?,
+              type: String,
+              ?moderation_details: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails
+            ) -> void
+
+            def to_hash: -> {
+              code: String?,
+              message: String,
+              param: String?,
+              type: String,
+              ?moderation_details: OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails
+            }
+
+            type moderation_details =
+              {
+                categories: ::Array[String],
+                moderation_stage: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::moderation_stage
+              }
+
+            class ModerationDetails < OpenAI::Internal::Type::BaseModel
+              # Public moderation categories. New category values may be added over time.
+              attr_accessor categories: ::Array[String]
+
+              # The stage where moderation blocked the image generation call.
+              attr_accessor moderation_stage: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::moderation_stage
+
+              # @param categories
+              #   Public moderation categories. New category values may be added over time.
+              # @param moderation_stage
+              #   The stage where moderation blocked the image generation call.
+              def initialize: (
+                categories: ::Array[String],
+                moderation_stage: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::moderation_stage
+              ) -> void
+
+              def to_hash: -> {
+                categories: ::Array[String],
+                moderation_stage: OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::moderation_stage
+              }
+
+              type moderation_stage = :input | :output | :unknown
+
+              module ModerationStage
+                extend OpenAI::Internal::Type::Enum
+
+                INPUT: :input
+                OUTPUT: :output
+                UNKNOWN: :unknown
+
+                def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::moderation_stage]
+              end
+            end
           end
 
           type output_format = :png | :webp | :jpeg
